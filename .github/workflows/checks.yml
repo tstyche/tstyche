@@ -1,0 +1,102 @@
+name: checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - run: corepack enable
+      - run: yarn install
+      - run: yarn build
+      - run: yarn lint:cspell
+      - run: yarn lint:eslint
+      - run: yarn lint:prettier
+
+  test-types:
+    name: Test Types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - run: corepack enable
+      - run: yarn install
+      - run: yarn build
+      - run: yarn test:types --target 4.7,5.0,latest
+      - run: yarn test:examples --target 4.7,5.0,latest
+
+  typecheck:
+    name: Typecheck Scripts & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - run: corepack enable
+      - run: yarn install
+      - run: yarn build
+      - run: yarn typecheck
+
+  test-node:
+    name: Test Build on Node.js v${{ matrix.node-version }}
+    needs:
+      - typecheck
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["16.14", "16.x", "18.x", "20.x", "21.x"]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: corepack enable
+      - run: yarn install
+        env:
+          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
+      - run: yarn build
+        env:
+          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
+      - run: yarn test
+        env:
+          FORCE_COLOR: true
+          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
+
+  test-os:
+    name: Test Build on ${{ matrix.os }} using Node.js LTS
+    needs:
+      - typecheck
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macOS-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - run: corepack enable
+      - run: yarn install
+      - run: yarn build
+      - run: yarn test
+        env:
+          FORCE_COLOR: true

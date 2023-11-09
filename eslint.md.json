@@ -1,0 +1,7 @@
+{
+  "extends": ["./eslint.base.json", "plugin:markdown/recommended"],
+  "plugins": ["markdown"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}

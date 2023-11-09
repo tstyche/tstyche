@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`aliased imports: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/aliased-import.tst.ts
+  - todo is todo?
+  - skip is string?
+  is describe?
+    - todo is todo too?
+    + is void?
+    - skip is never?
+  - skip is never too?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      3 skipped, 2 todo, 1 passed, 6 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'aliased'.
+"
+`;
+
+exports[`named imports: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/named-import.tst.ts
+  - todo is todo?
+  - skip is string?
+  is describe?
+    - todo is todo too?
+    + is void?
+    - skip is never?
+  - skip is never too?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      3 skipped, 2 todo, 1 passed, 6 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'named'.
+"
+`;
+
+exports[`namespace imports: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/namespace-import.tst.ts
+  - todo is todo?
+  - skip is string?
+  is describe?
+    - todo is todo too?
+    + is void?
+    - skip is never?
+  - skip is never too?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      3 skipped, 2 todo, 1 passed, 6 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'namespace'.
+"
+`;

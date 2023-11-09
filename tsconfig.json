@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+
+    "module": "node16",
+    "moduleResolution": "node16",
+    "paths": {
+      "#*": ["./src/*/index.ts"]
+    },
+    "rootDir": "./",
+    "types": ["node"],
+
+    "noEmit": true,
+    "preserveConstEnums": true,
+
+    "checkJs": true,
+
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "jsx": "react",
+    "jsxFactory": "Scribbler.createElement",
+    "target": "es2022",
+
+    "skipLibCheck": false
+  },
+  "include": ["*.js", "./lib", "./src"]
+}

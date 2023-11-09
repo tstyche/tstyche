@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toBeNull: stderr 1`] = `
+"Error: Type 'void' is not 'null'.
+
+  12 |   expect(returnsNull()).type.toBeNull();
+  13 | 
+> 14 |   expect(returnsVoid()).type.toBeNull();
+     |                              ^
+  15 | });
+  16 | 
+  17 | test("is NOT null?", () => {
+
+       at ./__typetests__/toBeNull.test.ts:14:30 ❭ is null?
+
+Error: Type 'null' is 'null'.
+
+  18 |   expect(returnsVoid()).type.not.toBeNull();
+  19 | 
+> 20 |   expect(returnsNull()).type.not.toBeNull();
+     |                                  ^
+  21 | });
+  22 | 
+
+       at ./__typetests__/toBeNull.test.ts:20:34 ❭ is NOT null?
+
+"
+`;
+
+exports[`toBeNull: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeNull.test.ts
+  × is null?
+  × is NOT null?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 2 failed, 2 passed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

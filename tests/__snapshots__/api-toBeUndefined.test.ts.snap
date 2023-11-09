@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toBeUndefined: stderr 1`] = `
+"Error: Type 'string' is not 'undefined'.
+
+  12 |   expect(returnsUndefined()).type.toBeUndefined();
+  13 | 
+> 14 |   expect(returnsString()).type.toBeUndefined();
+     |                                ^
+  15 | });
+  16 | 
+  17 | test("is NOT undefined?", () => {
+
+       at ./__typetests__/toBeUndefined.test.ts:14:32 ❭ is undefined?
+
+Error: Type 'undefined' is 'undefined'.
+
+  18 |   expect(returnsString()).type.not.toBeUndefined();
+  19 | 
+> 20 |   expect(returnsUndefined()).type.not.toBeUndefined();
+     |                                       ^
+  21 | });
+  22 | 
+
+       at ./__typetests__/toBeUndefined.test.ts:20:39 ❭ is NOT undefined?
+
+"
+`;
+
+exports[`toBeUndefined: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeUndefined.test.ts
+  × is undefined?
+  × is NOT undefined?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 2 failed, 2 passed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

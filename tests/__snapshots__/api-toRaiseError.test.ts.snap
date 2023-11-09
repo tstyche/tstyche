@@ -1,0 +1,786 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toRaiseError: stderr 1`] = `
+"Error: Expression raised a type error.
+
+  11 | test("expression raises a type error", () => {
+  12 |   expect(one("pass")).type.toRaiseError();
+> 13 |   expect(one("fail")).type.not.toRaiseError();
+     |                                ^
+  14 | });
+  15 | 
+  16 | test("expression does not raise a type error", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:13:32 ❭ expression raises a type error
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      11 | test("expression raises a type error", () => {
+      12 |   expect(one("pass")).type.toRaiseError();
+    > 13 |   expect(one("fail")).type.not.toRaiseError();
+         |              ^
+      14 | });
+      15 | 
+      16 | test("expression does not raise a type error", () => {
+
+           at ./__typetests__/toRaiseError.test.ts:13:14
+
+Error: Expression did not raise a type error.
+
+  16 | test("expression does not raise a type error", () => {
+  17 |   expect(one()).type.not.toRaiseError();
+> 18 |   expect(one()).type.toRaiseError();
+     |                      ^
+  19 | });
+  20 | 
+  21 | test("type definition raises a type error", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:18:22 ❭ expression does not raise a type error
+
+Error: Type definition raised a type error.
+
+  21 | test("type definition raises a type error", () => {
+  22 |   expect<One>().type.toRaiseError();
+> 23 |   expect<One>().type.not.toRaiseError();
+     |                          ^
+  24 | });
+  25 | 
+  26 | test("type definition does not raise a type error", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:23:26 ❭ type definition raises a type error
+
+    The raised type error:
+
+    Generic type 'One' requires 1 type argument(s). ts(2314)
+
+      21 | test("type definition raises a type error", () => {
+      22 |   expect<One>().type.toRaiseError();
+    > 23 |   expect<One>().type.not.toRaiseError();
+         |          ^
+      24 | });
+      25 | 
+      26 | test("type definition does not raise a type error", () => {
+
+           at ./__typetests__/toRaiseError.test.ts:23:10
+
+Error: Type definition did not raise a type error.
+
+  26 | test("type definition does not raise a type error", () => {
+  27 |   expect<One<string>>().type.not.toRaiseError();
+> 28 |   expect<One<string>>().type.toRaiseError();
+     |                              ^
+  29 | });
+  30 | 
+  31 | test("expression raises multiple type errors", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:28:30 ❭ type definition does not raise a type error
+
+Error: Expression raised 3 type errors.
+
+  39 |     one("2");
+  40 |     one("3");
+> 41 |   }).type.not.toRaiseError();
+     |               ^
+  42 | });
+  43 | 
+  44 | test("expression raises a type error with matching message", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:41:15 ❭ expression raises multiple type errors
+
+    The raised type errors:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      36 |   }).type.toRaiseError();
+      37 |   expect(() => {
+    > 38 |     one("1");
+         |         ^
+      39 |     one("2");
+      40 |     one("3");
+      41 |   }).type.not.toRaiseError();
+
+           at ./__typetests__/toRaiseError.test.ts:38:9
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      37 |   expect(() => {
+      38 |     one("1");
+    > 39 |     one("2");
+         |         ^
+      40 |     one("3");
+      41 |   }).type.not.toRaiseError();
+      42 | });
+
+           at ./__typetests__/toRaiseError.test.ts:39:9
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      38 |     one("1");
+      39 |     one("2");
+    > 40 |     one("3");
+         |         ^
+      41 |   }).type.not.toRaiseError();
+      42 | });
+      43 | 
+
+           at ./__typetests__/toRaiseError.test.ts:40:9
+
+Error: Expression raised a type error matching substring 'Expected 0 arguments'.
+
+  44 | test("expression raises a type error with matching message", () => {
+  45 |   expect(one("pass")).type.toRaiseError("Expected 0 arguments");
+> 46 |   expect(one("fail")).type.not.toRaiseError("Expected 0 arguments");
+     |                                ^
+  47 | });
+  48 | 
+  49 | test("expression raises type error with not matching message", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:46:32 ❭ expression raises a type error with matching message
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      44 | test("expression raises a type error with matching message", () => {
+      45 |   expect(one("pass")).type.toRaiseError("Expected 0 arguments");
+    > 46 |   expect(one("fail")).type.not.toRaiseError("Expected 0 arguments");
+         |              ^
+      47 | });
+      48 | 
+      49 | test("expression raises type error with not matching message", () => {
+
+           at ./__typetests__/toRaiseError.test.ts:46:14
+
+Error: Expression did not raise a type error matching substring 'Expected 2 arguments'.
+
+  49 | test("expression raises type error with not matching message", () => {
+  50 |   expect(one("pass")).type.not.toRaiseError("Expected 2 arguments");
+> 51 |   expect(one("fail")).type.toRaiseError("Expected 2 arguments");
+     |                            ^
+  52 | });
+  53 | 
+  54 | test("type definition raises a type error with matching message", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:51:28 ❭ expression raises type error with not matching message
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      49 | test("expression raises type error with not matching message", () => {
+      50 |   expect(one("pass")).type.not.toRaiseError("Expected 2 arguments");
+    > 51 |   expect(one("fail")).type.toRaiseError("Expected 2 arguments");
+         |              ^
+      52 | });
+      53 | 
+      54 | test("type definition raises a type error with matching message", () => {
+
+           at ./__typetests__/toRaiseError.test.ts:51:14
+
+Error: Type definition raised a type error matching substring 'requires 1 type argument'.
+
+  54 | test("type definition raises a type error with matching message", () => {
+  55 |   expect<One>().type.toRaiseError("requires 1 type argument");
+> 56 |   expect<One>().type.not.toRaiseError("requires 1 type argument");
+     |                          ^
+  57 | });
+  58 | 
+  59 | test("type definition raises a type error with not matching message", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:56:26 ❭ type definition raises a type error with matching message
+
+    The raised type error:
+
+    Generic type 'One' requires 1 type argument(s). ts(2314)
+
+      54 | test("type definition raises a type error with matching message", () => {
+      55 |   expect<One>().type.toRaiseError("requires 1 type argument");
+    > 56 |   expect<One>().type.not.toRaiseError("requires 1 type argument");
+         |          ^
+      57 | });
+      58 | 
+      59 | test("type definition raises a type error with not matching message", () => {
+
+           at ./__typetests__/toRaiseError.test.ts:56:10
+
+Error: Type definition did not raise a type error matching substring 'requires type argument'.
+
+  59 | test("type definition raises a type error with not matching message", () => {
+  60 |   expect<One>().type.not.toRaiseError("requires type argument");
+> 61 |   expect<One>().type.toRaiseError("requires type argument");
+     |                      ^
+  62 | });
+  63 | 
+  64 | test("expression raises a type error with expected code", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:61:22 ❭ type definition raises a type error with not matching message
+
+    The raised type error:
+
+    Generic type 'One' requires 1 type argument(s). ts(2314)
+
+      59 | test("type definition raises a type error with not matching message", () => {
+      60 |   expect<One>().type.not.toRaiseError("requires type argument");
+    > 61 |   expect<One>().type.toRaiseError("requires type argument");
+         |          ^
+      62 | });
+      63 | 
+      64 | test("expression raises a type error with expected code", () => {
+
+           at ./__typetests__/toRaiseError.test.ts:61:10
+
+Error: Expression raised a type error with code 2554.
+
+  64 | test("expression raises a type error with expected code", () => {
+  65 |   expect(one("pass")).type.toRaiseError(2554);
+> 66 |   expect(one("fail")).type.not.toRaiseError(2554);
+     |                                ^
+  67 | });
+  68 | 
+  69 | test("expression raises a type error with not expected code", () => {
+
+       at ./__typetests__/toRaiseError.test.ts:66:32 ❭ expression raises a type error with expected code
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      64 | test("expression raises a type error with expected code", () => {
+      65 |   expect(one("pass")).type.toRaiseError(2554);
+    > 66 |   expect(one("fail")).type.not.toRaiseError(2554);
+         |              ^
+      67 | });
+      68 | 
+      69 | test("expression raises a type error with not expected code", () => {
+
+           at ./__typetests__/toRaiseError.test.ts:66:14
+
+Error: Expression did not raise a type error with code 2544.
+
+  69 | test("expression raises a type error with not expected code", () => {
+  70 |   expect(one("pass")).type.not.toRaiseError(2544);
+> 71 |   expect(one("fail")).type.toRaiseError(2544);
+     |                            ^
+  72 | });
+  73 | 
+  74 | declare function two<T>(): void;
+
+       at ./__typetests__/toRaiseError.test.ts:71:28 ❭ expression raises a type error with not expected code
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      69 | test("expression raises a type error with not expected code", () => {
+      70 |   expect(one("pass")).type.not.toRaiseError(2544);
+    > 71 |   expect(one("fail")).type.toRaiseError(2544);
+         |              ^
+      72 | });
+      73 | 
+      74 | declare function two<T>(): void;
+
+           at ./__typetests__/toRaiseError.test.ts:71:14
+
+Error: Expression raised a type error matching substring 'Argument of type 'number' is not assignable to parameter of type 'string''.
+
+  87 |     two(1000);
+  88 |     two<string>("fail");
+> 89 |   }).type.not.toRaiseError(
+     |               ^
+  90 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+  91 |     "Expected 0 arguments",
+  92 |   );
+
+       at ./__typetests__/toRaiseError.test.ts:89:15 ❭ expression raises multiple type errors with matching messages
+
+    The raised type error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      85 | 
+      86 |   expect(() => {
+    > 87 |     two(1000);
+         |         ^
+      88 |     two<string>("fail");
+      89 |   }).type.not.toRaiseError(
+      90 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+
+           at ./__typetests__/toRaiseError.test.ts:87:9
+
+Error: Expression raised a type error matching substring 'Expected 0 arguments'.
+
+  87 |     two(1000);
+  88 |     two<string>("fail");
+> 89 |   }).type.not.toRaiseError(
+     |               ^
+  90 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+  91 |     "Expected 0 arguments",
+  92 |   );
+
+       at ./__typetests__/toRaiseError.test.ts:89:15 ❭ expression raises multiple type errors with matching messages
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      86 |   expect(() => {
+      87 |     two(1000);
+    > 88 |     two<string>("fail");
+         |                 ^
+      89 |   }).type.not.toRaiseError(
+      90 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+      91 |     "Expected 0 arguments",
+
+           at ./__typetests__/toRaiseError.test.ts:88:17
+
+Error: Expression did not raise a type error matching substring 'Expected 0 arguments'.
+
+  105 |     two(1000);
+  106 |     two<string>("fail");
+> 107 |   }).type.toRaiseError(
+      |           ^
+  108 |     "Expected 0 arguments",
+  109 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+  110 |   );
+
+        at ./__typetests__/toRaiseError.test.ts:107:11 ❭ expression raises multiple type errors with not matching messages
+
+    The raised type error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      103 | 
+      104 |   expect(() => {
+    > 105 |     two(1000);
+          |         ^
+      106 |     two<string>("fail");
+      107 |   }).type.toRaiseError(
+      108 |     "Expected 0 arguments",
+
+            at ./__typetests__/toRaiseError.test.ts:105:9
+
+Error: Expression did not raise a type error matching substring 'Argument of type 'number' is not assignable to parameter of type 'string''.
+
+  105 |     two(1000);
+  106 |     two<string>("fail");
+> 107 |   }).type.toRaiseError(
+      |           ^
+  108 |     "Expected 0 arguments",
+  109 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+  110 |   );
+
+        at ./__typetests__/toRaiseError.test.ts:107:11 ❭ expression raises multiple type errors with not matching messages
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      104 |   expect(() => {
+      105 |     two(1000);
+    > 106 |     two<string>("fail");
+          |                 ^
+      107 |   }).type.toRaiseError(
+      108 |     "Expected 0 arguments",
+      109 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+
+            at ./__typetests__/toRaiseError.test.ts:106:17
+
+Error: Expression raised a type error with code 2345.
+
+  120 |     two(1000);
+  121 |     two<string>("fail");
+> 122 |   }).type.not.toRaiseError(2345, 2554);
+      |               ^
+  123 | });
+  124 | 
+  125 | test("expression raises multiple type errors with not expected codes", () => {
+
+        at ./__typetests__/toRaiseError.test.ts:122:15 ❭ expression raises multiple type errors with expected codes
+
+    The raised type error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      118 | 
+      119 |   expect(() => {
+    > 120 |     two(1000);
+          |         ^
+      121 |     two<string>("fail");
+      122 |   }).type.not.toRaiseError(2345, 2554);
+      123 | });
+
+            at ./__typetests__/toRaiseError.test.ts:120:9
+
+Error: Expression raised a type error with code 2554.
+
+  120 |     two(1000);
+  121 |     two<string>("fail");
+> 122 |   }).type.not.toRaiseError(2345, 2554);
+      |               ^
+  123 | });
+  124 | 
+  125 | test("expression raises multiple type errors with not expected codes", () => {
+
+        at ./__typetests__/toRaiseError.test.ts:122:15 ❭ expression raises multiple type errors with expected codes
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      119 |   expect(() => {
+      120 |     two(1000);
+    > 121 |     two<string>("fail");
+          |                 ^
+      122 |   }).type.not.toRaiseError(2345, 2554);
+      123 | });
+      124 | 
+
+            at ./__typetests__/toRaiseError.test.ts:121:17
+
+Error: Expression did not raise a type error with code 2554.
+
+  127 |     two(1111);
+  128 |     two<string>("pass");
+> 129 |   }).type.toRaiseError(2554, 2345);
+      |           ^
+  130 | 
+  131 |   expect(() => {
+  132 |     two(1000);
+
+        at ./__typetests__/toRaiseError.test.ts:129:11 ❭ expression raises multiple type errors with not expected codes
+
+    The raised type error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      125 | test("expression raises multiple type errors with not expected codes", () => {
+      126 |   expect(() => {
+    > 127 |     two(1111);
+          |         ^
+      128 |     two<string>("pass");
+      129 |   }).type.toRaiseError(2554, 2345);
+      130 | 
+
+            at ./__typetests__/toRaiseError.test.ts:127:9
+
+Error: Expression did not raise a type error with code 2345.
+
+  127 |     two(1111);
+  128 |     two<string>("pass");
+> 129 |   }).type.toRaiseError(2554, 2345);
+      |           ^
+  130 | 
+  131 |   expect(() => {
+  132 |     two(1000);
+
+        at ./__typetests__/toRaiseError.test.ts:129:11 ❭ expression raises multiple type errors with not expected codes
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      126 |   expect(() => {
+      127 |     two(1111);
+    > 128 |     two<string>("pass");
+          |                 ^
+      129 |   }).type.toRaiseError(2554, 2345);
+      130 | 
+      131 |   expect(() => {
+
+            at ./__typetests__/toRaiseError.test.ts:128:17
+
+Error: Expression raised a type error matching substring 'Argument of type 'number' is not assignable to parameter of type 'string''.
+
+  144 |     two(1000);
+  145 |     two<string>("fail");
+> 146 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
+      |               ^
+  147 | });
+  148 | 
+  149 | test("expression raises multiple type errors with not matching messages and not expected codes", () => {
+
+        at ./__typetests__/toRaiseError.test.ts:146:15 ❭ expression raises multiple type errors with matching messages and expected codes
+
+    The raised type error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      142 | 
+      143 |   expect(() => {
+    > 144 |     two(1000);
+          |         ^
+      145 |     two<string>("fail");
+      146 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
+      147 | });
+
+            at ./__typetests__/toRaiseError.test.ts:144:9
+
+Error: Expression raised a type error with code 2554.
+
+  144 |     two(1000);
+  145 |     two<string>("fail");
+> 146 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
+      |               ^
+  147 | });
+  148 | 
+  149 | test("expression raises multiple type errors with not matching messages and not expected codes", () => {
+
+        at ./__typetests__/toRaiseError.test.ts:146:15 ❭ expression raises multiple type errors with matching messages and expected codes
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      143 |   expect(() => {
+      144 |     two(1000);
+    > 145 |     two<string>("fail");
+          |                 ^
+      146 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
+      147 | });
+      148 | 
+
+            at ./__typetests__/toRaiseError.test.ts:145:17
+
+Error: Expression did not raise a type error with code 2554.
+
+  151 |     two(1111);
+  152 |     two<string>("pass");
+> 153 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
+      |           ^
+  154 | 
+  155 |   expect(() => {
+  156 |     two(1000);
+
+        at ./__typetests__/toRaiseError.test.ts:153:11 ❭ expression raises multiple type errors with not matching messages and not expected codes
+
+    The raised type error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      149 | test("expression raises multiple type errors with not matching messages and not expected codes", () => {
+      150 |   expect(() => {
+    > 151 |     two(1111);
+          |         ^
+      152 |     two<string>("pass");
+      153 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
+      154 | 
+
+            at ./__typetests__/toRaiseError.test.ts:151:9
+
+Error: Expression did not raise a type error matching substring 'Argument of type 'number' is not assignable to parameter of type 'string''.
+
+  151 |     two(1111);
+  152 |     two<string>("pass");
+> 153 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
+      |           ^
+  154 | 
+  155 |   expect(() => {
+  156 |     two(1000);
+
+        at ./__typetests__/toRaiseError.test.ts:153:11 ❭ expression raises multiple type errors with not matching messages and not expected codes
+
+    The raised type error:
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      150 |   expect(() => {
+      151 |     two(1111);
+    > 152 |     two<string>("pass");
+          |                 ^
+      153 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
+      154 | 
+      155 |   expect(() => {
+
+            at ./__typetests__/toRaiseError.test.ts:152:17
+
+Error: Expected only 1 type error, but 2 were raised.
+
+  163 |     two(1111);
+  164 |     two<string>("pass");
+> 165 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
+      |           ^
+  166 | });
+  167 | 
+  168 | test("expression raises more type errors than expected codes", () => {
+
+        at ./__typetests__/toRaiseError.test.ts:165:11 ❭ expression raises more type errors than expected messages
+
+    The raised type errors:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      161 | test("expression raises more type errors than expected messages", () => {
+      162 |   expect(() => {
+    > 163 |     two(1111);
+          |         ^
+      164 |     two<string>("pass");
+      165 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
+      166 | });
+
+            at ./__typetests__/toRaiseError.test.ts:163:9
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      162 |   expect(() => {
+      163 |     two(1111);
+    > 164 |     two<string>("pass");
+          |                 ^
+      165 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
+      166 | });
+      167 | 
+
+            at ./__typetests__/toRaiseError.test.ts:164:17
+
+Error: Expected only 1 type error, but 2 were raised.
+
+  170 |     two(1111);
+  171 |     two<string>("pass");
+> 172 |   }).type.toRaiseError(2345);
+      |           ^
+  173 | });
+  174 | 
+  175 | test("expression raises less type errors than expected messages", () => {
+
+        at ./__typetests__/toRaiseError.test.ts:172:11 ❭ expression raises more type errors than expected codes
+
+    The raised type errors:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      168 | test("expression raises more type errors than expected codes", () => {
+      169 |   expect(() => {
+    > 170 |     two(1111);
+          |         ^
+      171 |     two<string>("pass");
+      172 |   }).type.toRaiseError(2345);
+      173 | });
+
+            at ./__typetests__/toRaiseError.test.ts:170:9
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      169 |   expect(() => {
+      170 |     two(1111);
+    > 171 |     two<string>("pass");
+          |                 ^
+      172 |   }).type.toRaiseError(2345);
+      173 | });
+      174 | 
+
+            at ./__typetests__/toRaiseError.test.ts:171:17
+
+Error: Expected 3 type errors, but only 2 were raised.
+
+  177 |     two(1111);
+  178 |     two<string>("pass");
+> 179 |   }).type.toRaiseError(
+      |           ^
+  180 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+  181 |     "Expected 0 arguments",
+  182 |     "Expected 2 arguments",
+
+        at ./__typetests__/toRaiseError.test.ts:179:11 ❭ expression raises less type errors than expected messages
+
+    The raised type errors:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      175 | test("expression raises less type errors than expected messages", () => {
+      176 |   expect(() => {
+    > 177 |     two(1111);
+          |         ^
+      178 |     two<string>("pass");
+      179 |   }).type.toRaiseError(
+      180 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+
+            at ./__typetests__/toRaiseError.test.ts:177:9
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      176 |   expect(() => {
+      177 |     two(1111);
+    > 178 |     two<string>("pass");
+          |                 ^
+      179 |   }).type.toRaiseError(
+      180 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+      181 |     "Expected 0 arguments",
+
+            at ./__typetests__/toRaiseError.test.ts:178:17
+
+Error: Expected 3 type errors, but only 2 were raised.
+
+  188 |     two(1111);
+  189 |     two<string>("pass");
+> 190 |   }).type.toRaiseError(2345, 2554, 2554);
+      |           ^
+  191 | });
+  192 | 
+
+        at ./__typetests__/toRaiseError.test.ts:190:11 ❭ expression raises less type errors than expected codes
+
+    The raised type errors:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      186 | test("expression raises less type errors than expected codes", () => {
+      187 |   expect(() => {
+    > 188 |     two(1111);
+          |         ^
+      189 |     two<string>("pass");
+      190 |   }).type.toRaiseError(2345, 2554, 2554);
+      191 | });
+
+            at ./__typetests__/toRaiseError.test.ts:188:9
+
+    Expected 0 arguments, but got 1. ts(2554)
+
+      187 |   expect(() => {
+      188 |     two(1111);
+    > 189 |     two<string>("pass");
+          |                 ^
+      190 |   }).type.toRaiseError(2345, 2554, 2554);
+      191 | });
+      192 | 
+
+            at ./__typetests__/toRaiseError.test.ts:189:17
+
+"
+`;
+
+exports[`toRaiseError: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toRaiseError.test.ts
+  × expression raises a type error
+  × expression does not raise a type error
+  × type definition raises a type error
+  × type definition does not raise a type error
+  × expression raises multiple type errors
+  × expression raises a type error with matching message
+  × expression raises type error with not matching message
+  × type definition raises a type error with matching message
+  × type definition raises a type error with not matching message
+  × expression raises a type error with expected code
+  × expression raises a type error with not expected code
+  × expression raises multiple type errors with matching messages
+  × expression raises multiple type errors with not matching messages
+  × expression raises multiple type errors with expected codes
+  × expression raises multiple type errors with not expected codes
+  × expression raises multiple type errors with matching messages and expected codes
+  × expression raises multiple type errors with not matching messages and not expected codes
+  × expression raises more type errors than expected messages
+  × expression raises more type errors than expected codes
+  × expression raises less type errors than expected messages
+  × expression raises less type errors than expected codes
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      21 failed, 21 total
+Assertions: 21 failed, 17 passed, 38 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

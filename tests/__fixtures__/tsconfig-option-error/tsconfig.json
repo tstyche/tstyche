@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2019",
+    "strict": "yes",
+    "strictNullChecks": true,
+    "noEmitOnError": true
+  },
+  "include": ["./"]
+}

@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toBeAssignable: stderr 1`] = `
+"Error: Type '{ middle: string; }' is not assignable to type 'Names'.
+
+  17 |     expect<Names>().type.toBeAssignable({ first: "Rose", last: undefined });
+  18 | 
+> 19 |     expect<Names>().type.toBeAssignable({ middle: "O." });
+     |                          ^
+  20 |   });
+  21 | 
+  22 |   test("is NOT assignable expected value?", () => {
+
+       at ./__typetests__/toBeAssignable.test.ts:19:26 ❭ received type ❭ is assignable expected value?
+
+Error: Type '{ first: string; }' is assignable to type 'Names'.
+
+  23 |     expect<Names>().type.not.toBeAssignable({ middle: "O." });
+  24 | 
+> 25 |     expect<Names>().type.not.toBeAssignable({ first: "Rose" });
+     |                              ^
+  26 |   });
+  27 | 
+  28 |   test("is assignable expected type?", () => {
+
+       at ./__typetests__/toBeAssignable.test.ts:25:30 ❭ received type ❭ is NOT assignable expected value?
+
+Error: Type '{ middle: string; }' is not assignable to type 'Names'.
+
+  32 |     expect<Names>().type.toBeAssignable<{ first: string; last?: string }>();
+  33 | 
+> 34 |     expect<Names>().type.toBeAssignable<{ middle: string }>();
+     |                          ^
+  35 |   });
+  36 | 
+  37 |   test("is NOT assignable expected type?", () => {
+
+       at ./__typetests__/toBeAssignable.test.ts:34:26 ❭ received type ❭ is assignable expected type?
+
+Error: Type '{ first: string; }' is assignable to type 'Names'.
+
+  38 |     expect<Names>().type.not.toBeAssignable<{ middle: string }>();
+  39 | 
+> 40 |     expect<Names>().type.not.toBeAssignable<{ first: string }>();
+     |                              ^
+  41 |   });
+  42 | });
+  43 | 
+
+       at ./__typetests__/toBeAssignable.test.ts:40:30 ❭ received type ❭ is NOT assignable expected type?
+
+Error: Type '{ middle: string; }' is not assignable to type '{ first: string; last: string; }'.
+
+  49 |     });
+  50 | 
+> 51 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignable({
+     |                                                  ^
+  52 |       middle: "O.",
+  53 |     });
+  54 |   });
+
+       at ./__typetests__/toBeAssignable.test.ts:51:50 ❭ received value ❭ is assignable expected value?
+
+Error: Type '{ first: string; }' is assignable to type '{ first: string; }'.
+
+  59 |     });
+  60 | 
+> 61 |     expect({ first: "Jane" }).type.not.toBeAssignable({ first: "Rose" });
+     |                                        ^
+  62 |   });
+  63 | 
+  64 |   test("is assignable expected type?", () => {
+
+       at ./__typetests__/toBeAssignable.test.ts:61:40 ❭ received value ❭ is NOT assignable expected value?
+
+Error: Type '{ middle: string; }' is not assignable to type '{ first: string; last: string; }'.
+
+  68 |     }>();
+  69 | 
+> 70 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignable<{
+     |                                                  ^
+  71 |       middle: string;
+  72 |     }>();
+  73 |   });
+
+       at ./__typetests__/toBeAssignable.test.ts:70:50 ❭ received value ❭ is assignable expected type?
+
+Error: Type '{ first: string; }' is assignable to type '{ first: string; }'.
+
+  78 |     }>();
+  79 | 
+> 80 |     expect({ first: "Jane" }).type.not.toBeAssignable<{ first: string }>();
+     |                                        ^
+  81 |   });
+  82 | });
+  83 | 
+
+       at ./__typetests__/toBeAssignable.test.ts:80:40 ❭ received value ❭ is NOT assignable type?
+
+"
+`;
+
+exports[`toBeAssignable: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeAssignable.test.ts
+  received type
+    × is assignable expected value?
+    × is NOT assignable expected value?
+    × is assignable expected type?
+    × is NOT assignable expected type?
+  received value
+    × is assignable expected value?
+    × is NOT assignable expected value?
+    × is assignable expected type?
+    × is NOT assignable type?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 8 failed, 13 passed, 21 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

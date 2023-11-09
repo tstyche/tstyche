@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`describe.only: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/describe-only.test.ts
+  is describe?
+    - skip is skipped?
+  is only describe?
+    + is never?
+    - skip is skipped?
+    - todo is todo?
+    + is string?
+    is nested describe?
+      + is string?
+      - skip is skipped?
+    is nested only describe?
+      + is string?
+      - todo is todo?
+    is nested skipped describe?
+      - skip is skipped?
+      - skip is skipped?
+  - skip is skipped?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      6 skipped, 2 todo, 4 passed, 12 total
+Assertions: 2 skipped, 4 passed, 6 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'only'.
+"
+`;
+
+exports[`describe.skip: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/describe-skip.test.ts
+  is skipped describe?
+    - skip is skipped?
+  is parent describe?
+    + is string?
+    is nested skipped describe?
+      - skip is skipped too?
+      - todo is todo?
+    - todo is todo?
+  + is string still?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 2 todo, 2 passed, 6 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'skip'.
+"
+`;
+
+exports[`describe.todo: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/describe-todo.test.ts
+  is todo describe?
+  is todo describe too?
+    - todo is todo?
+  is parent skipped describe?
+    - skip is string?
+    is nested todo describe?
+      - todo is todo too?
+      - todo is todo too?
+      - todo and this is todo?
+      - todo is todo?
+    - todo is todo?
+  + is string still?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 skipped, 6 todo, 1 passed, 8 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'todo'.
+"
+`;
+
+exports[`handles 'expect()' nested within 'describe()': stderr 1`] = `
+"Error: 'expect()' cannot be nested within 'describe()' helper.
+
+   6 | 
+   7 | describe("handles nested 'expect()'?", () => {
+>  8 |   expect<never>().type.toBeNever();
+     |   ^
+   9 |   expect<null>().type.toBeNull();
+  10 | 
+  11 |   test("is number?", () => {
+
+       at ./__typetests__/describe-level-expect.tst.ts:8:3
+
+Error: 'expect()' cannot be nested within 'describe()' helper.
+
+   7 | describe("handles nested 'expect()'?", () => {
+   8 |   expect<never>().type.toBeNever();
+>  9 |   expect<null>().type.toBeNull();
+     |   ^
+  10 | 
+  11 |   test("is number?", () => {
+  12 |     expect<number>().type.toBeNumber();
+
+       at ./__typetests__/describe-level-expect.tst.ts:9:3
+
+"
+`;
+
+exports[`handles 'expect()' nested within 'describe()': stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/describe-level-expect.tst.ts
+  + is string?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'describe-level-expect'.
+"
+`;
+
+exports[`includes nested: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/describe-nested.tst.ts
+  is describe?
+    + is void?
+  is parent describe?
+    + is never?
+    is nested describe?
+      + is string?
+  + is string still?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      4 passed, 4 total
+Assertions: 4 passed, 4 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'nested'.
+"
+`;

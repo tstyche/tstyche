@@ -1,0 +1,4 @@
+{
+  "$schema": "../../schema.json",
+  "failFast": "never"
+}

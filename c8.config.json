@@ -1,0 +1,20 @@
+{
+  "all": true,
+  "exclude": [
+    ".yarn/**/*",
+    "coverage/**/*",
+    "build/**/*",
+    "examples/**/*",
+    "lib/**/*",
+    "scripts/**/*",
+    "tests/**/*",
+    "typetests/**/*",
+    "**/__tests__/**/*",
+    "jest.config.js",
+    "rollup.config.js"
+  ],
+  "excludeAfterRemap": true,
+  "mergeAsync": true,
+  "reporter": ["lcov", "text"],
+  "tempDirectory": "./coverage/temp"
+}

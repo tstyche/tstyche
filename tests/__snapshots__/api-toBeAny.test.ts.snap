@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toBeAny: stderr 1`] = `
+"Error: Type 'string' is not 'any'.
+
+  13 |   expect(returnsAny()).type.toBeAny();
+  14 | 
+> 15 |   expect(returnsString()).type.toBeAny();
+     |                                ^
+  16 | });
+  17 | 
+  18 | test("is NOT any?", () => {
+
+       at ./__typetests__/toBeAny.test.ts:15:32 ❭ is any?
+
+Error: Type 'any' is 'any'.
+
+  19 |   expect(returnsString()).type.not.toBeAny();
+  20 | 
+> 21 |   expect(returnsAny()).type.not.toBeAny();
+     |                                 ^
+  22 | });
+  23 | 
+
+       at ./__typetests__/toBeAny.test.ts:21:33 ❭ is NOT any?
+
+"
+`;
+
+exports[`toBeAny: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeAny.test.ts
+  × is any?
+  × is NOT any?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 2 failed, 2 passed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

@@ -1,0 +1,4 @@
+{
+  "$schema": "../../schema.json",
+  "target": ["4.9", "5.0.4", "beta", "latest", "next", "rc"]
+}

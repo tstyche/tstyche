@@ -1,0 +1,3 @@
+.yarn
+lib/*.*
+syntax-error.tst.ts

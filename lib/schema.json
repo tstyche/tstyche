@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {},
+  "properties": {
+    "allowNoTestFiles": {
+      "default": false,
+      "description": "Do not raise an error, if no test files are selected.",
+      "type": "boolean"
+    },
+    "failFast": {
+      "default": false,
+      "description": "Stop running tests after the first failed assertion.",
+      "type": "boolean"
+    },
+    "rootPath": {
+      "default": "./",
+      "description": "The path to a directory containing files of a test project.",
+      "type": "string"
+    },
+    "target": {
+      "default": [
+        "latest"
+      ],
+      "description": "The list of TypeScript versions to be tested on.",
+      "items": {
+        "pattern": "^([45]\\.[0-9](\\.[0-9])?)|beta|latest|next|rc$",
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "testFileMatch": {
+      "default": [
+        "**/*.tst.*",
+        "**/__typetests__/*.test.*",
+        "**/typetests/*.test.*"
+      ],
+      "description": "The list of glob patterns matching the test files.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "type": "object"
+}

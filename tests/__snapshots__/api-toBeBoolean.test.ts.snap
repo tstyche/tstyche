@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toBeBoolean: stderr 1`] = `
+"Error: Type 'string' is not 'boolean'.
+
+  12 |   expect(returnsBoolean()).type.toBeBoolean();
+  13 | 
+> 14 |   expect(returnsString()).type.toBeBoolean();
+     |                                ^
+  15 | });
+  16 | 
+  17 | test("is NOT boolean?", () => {
+
+       at ./__typetests__/toBeBoolean.test.ts:14:32 ❭ is boolean?
+
+Error: Type 'boolean' is 'boolean'.
+
+  18 |   expect(returnsString()).type.not.toBeBoolean();
+  19 | 
+> 20 |   expect(returnsBoolean()).type.not.toBeBoolean();
+     |                                     ^
+  21 | });
+  22 | 
+
+       at ./__typetests__/toBeBoolean.test.ts:20:37 ❭ is NOT boolean?
+
+"
+`;
+
+exports[`toBeBoolean: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeBoolean.test.ts
+  × is boolean?
+  × is NOT boolean?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 2 failed, 2 passed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

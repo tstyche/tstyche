@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toBeNumber: stderr 1`] = `
+"Error: Type 'void' is not 'number'.
+
+  12 |   expect(returnsNumber()).type.toBeNumber();
+  13 | 
+> 14 |   expect(returnsVoid()).type.toBeNumber();
+     |                              ^
+  15 | });
+  16 | 
+  17 | test("is NOT number?", () => {
+
+       at ./__typetests__/toBeNumber.test.ts:14:30 ❭ is number?
+
+Error: Type 'number' is 'number'.
+
+  18 |   expect(returnsVoid()).type.not.toBeNumber();
+  19 | 
+> 20 |   expect(returnsNumber()).type.not.toBeNumber();
+     |                                    ^
+  21 | });
+  22 | 
+
+       at ./__typetests__/toBeNumber.test.ts:20:36 ❭ is NOT number?
+
+"
+`;
+
+exports[`toBeNumber: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeNumber.test.ts
+  × is number?
+  × is NOT number?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 2 failed, 2 passed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

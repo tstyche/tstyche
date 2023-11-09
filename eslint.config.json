@@ -1,0 +1,53 @@
+{
+  "extends": ["./eslint.base.json"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "plugins": ["eslint-plugin-tsdoc"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "tsdoc/syntax": "error"
+      }
+    },
+    {
+      "files": ["src/result/ResultManager.ts"],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off"
+      }
+    },
+    {
+      "files": ["**/__tests__/*.test.ts?(x)", "tests/*.test.ts"],
+      "extends": ["plugin:jest/recommended", "plugin:jest/style", "plugin:jest-formatting/recommended"],
+      "plugins": ["jest", "jest-formatting"],
+      "rules": {
+        "@typescript-eslint/unbound-method": "off",
+        "jest/no-conditional-in-test": "error",
+        "jest/no-duplicate-hooks": "error",
+        "jest/no-test-return-statement": "error",
+        "jest/prefer-each": "error",
+        "jest/prefer-hooks-in-order": "error",
+        "jest/prefer-hooks-on-top": "error",
+        "jest/prefer-lowercase-title": [
+          "error",
+          {
+            "ignoreTopLevelDescribe": true
+          }
+        ],
+        "jest/prefer-spy-on": "error",
+        "jest/require-to-throw-message": "error",
+        "jest/unbound-method": "error"
+      }
+    },
+    {
+      "files": ["**/*.tst.*", "**/__typetests__/*.test.ts", "examples/*.test.ts", "typetests/*.test.ts"],
+      "rules": {
+        "@typescript-eslint/no-confusing-void-expression": "off",
+        "@typescript-eslint/no-invalid-void-type": "off",
+        "@typescript-eslint/no-unused-expressions": "off"
+      }
+    }
+  ],
+  "parserOptions": {
+    "EXPERIMENTAL_useProjectService": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "files": [
+    "**/*.js",
+    "**/*.json",
+    "**/*.md",
+    "docs/**/*",
+    "examples/**/*",
+    "lib/**/*",
+    "scripts/**/*",
+    "src/**/*",
+    "tests/**/*",
+    "typetests/**/*"
+  ],
+  "ignorePaths": ["**/__snapshots__/**/*"],
+  "language": "en-US",
+  "useGitignore": true,
+  "words": ["lcov", "tsdoc", "tsserverlibrary", "tstyche", "typecheck", "typetests", "wireit"]
+}

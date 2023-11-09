@@ -1,0 +1,15 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "editor.formatOnSave": true,
+  "editor.rulers": [80, 120],
+  "eslint.options": { "overrideConfigFile": "./eslint.config.json" },
+  "files.associations": {
+    "eslint.*.json": "jsonc",
+    "tstyche.config.json": "jsonc"
+  },
+  "jest.jestCommandLine": "yarn test:unit --watchPathIgnorePatterns '<rootDir>/tests/'",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

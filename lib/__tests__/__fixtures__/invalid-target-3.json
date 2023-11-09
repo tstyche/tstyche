@@ -1,0 +1,4 @@
+{
+  "$schema": "../../schema.json",
+  "target": ["latest", "latest"]
+}
