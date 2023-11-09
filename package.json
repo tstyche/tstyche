@@ -1,6 +1,6 @@
 {
   "name": "tstyche",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "The Essential Type Testing Tool.",
   "keywords": [
     "typescript",
@@ -30,8 +30,7 @@
   "types": "./build/index.d.cts",
   "bin": "build/bin.js",
   "files": [
-    "build/**/*.d.ts",
-    "build/**/*.js",
+    "build/*",
     "lib/*.json"
   ],
   "scripts": {
