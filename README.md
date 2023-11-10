@@ -1,6 +1,9 @@
 # TSTyche
 
+[![version][version-src]][version-href]
 [![license][license-src]][license-href]
+[![checks][checks-src]][checks-href]
+[![coverage][coverage-src]][coverage-href]
 
 The Essential Type Testing Tool.
 
@@ -69,12 +72,17 @@ This simple!
 
 ## Documentation
 
-Visit [https://tstyche.org][documentation-href] to view the full documentation.
+Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 
 ## License
 
 [MIT][license-href] © TSTyche
 
-[documentation-href]: https://tstyche.org
+[version-src]: https://badgen.net/npm/v/tstyche
+[version-href]: https://npmjs.com/package/tstyche
 [license-src]: https://badgen.net/github/license/tstyche/tstyche
 [license-href]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
+[checks-src]: https://badgen.net/github/checks/tstyche/tstyche
+[checks-href]: https://github.com/tstyche/tstyche/actions/workflows/checks.yml
+[coverage-src]: https://badgen.net/codecov/c/github/tstyche/tstyche
+[coverage-href]: https://app.codecov.io/gh/tstyche/tstyche
