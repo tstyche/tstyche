@@ -119,4 +119,5 @@ jobs:
       - uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3
         with:
           directory: "./coverage"
-          files: "!./temp"
+          dry_run: true
+          files: "!./coverage/temp"
