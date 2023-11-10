@@ -104,6 +104,8 @@ jobs:
 
   test-coverage:
     name: Collect Test Coverage
+    needs:
+      - typecheck
     runs-on: ubuntu-latest
 
     steps:
