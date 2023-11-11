@@ -21,13 +21,13 @@
   "exports": {
     ".": {
       "import": "./build/index.js",
-      "require": "./build/index.cjs"
+      "require": "./build/index-cjs.js"
     },
     "./package.json": "./package.json",
     "./tstyche": "./build/tstyche.js"
   },
-  "main": "./build/index.cjs",
-  "types": "./build/index.d.cts",
+  "main": "./build/index-cjs.js",
+  "types": "./build/index-cjs.d.ts",
   "bin": "build/bin.js",
   "files": [
     "build/*",
