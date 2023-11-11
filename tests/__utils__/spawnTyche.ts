@@ -10,9 +10,9 @@ function normalizeOutput(output: string) {
 
 export function spawnTyche(
   fixture: string,
-  args: Array<string> = [],
+  args?: Array<string>,
 ): { status: number | null; stderr: string; stdout: string } {
-  const { error, status, stderr, stdout } = spawnSync(["tstyche", ...args].join(" "), {
+  const { error, status, stderr, stdout } = spawnSync("tstyche", args, {
     cwd: getFixtureUrl(fixture),
     env: {
       ...process.env,
