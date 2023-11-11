@@ -19,6 +19,7 @@ export function spawnTyche(
       ["TSTYCHE_NO_COLOR"]: "on",
     },
     shell: true,
+    windowsVerbatimArguments: true,
   });
 
   if (error) {
