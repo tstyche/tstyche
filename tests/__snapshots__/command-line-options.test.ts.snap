@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`command line options '--target' option: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + is string?
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + is string?
+
+Targets:    2 passed, 2 total
+Test files: 2 passed, 2 total
+Tests:      2 passed, 2 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
