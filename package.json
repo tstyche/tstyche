@@ -26,8 +26,8 @@
     "./package.json": "./package.json",
     "./tstyche": "./build/tstyche.js"
   },
-  "main": "./build/index.cjs",
-  "types": "./build/index.d.cts",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "bin": "build/bin.js",
   "files": [
     "build/*",
