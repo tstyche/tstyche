@@ -87,8 +87,7 @@ const config = [
   {
     input: "./src/types.ts",
     output: {
-      // TODO use '.cts' extension after dropping support for TypeScript 4.6
-      file: "./build/index-cjs.d.ts",
+      file: "./build/index.d.cts",
       format: "cjs",
     },
     plugins: [dts()],
@@ -112,8 +111,7 @@ const config = [
   {
     input: "./src/main.ts",
     output: {
-      // TODO use '.cjs' extension after dropping support for TypeScript 4.6
-      file: "./build/index-cjs.js",
+      file: "./build/index.cjs",
       format: "cjs",
     },
     plugins: [
