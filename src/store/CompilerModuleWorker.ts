@@ -41,7 +41,7 @@ export class CompilerModuleWorker {
       return tsserverFilePath;
     }
 
-    EventEmitter.dispatch(["store:info", { compilerVersion, installationPath }]);
+    EventEmitter.dispatch(["store:info", { compilerVersion, installationPath: this.#normalizePath(installationPath) }]);
 
     await fs.mkdir(installationPath, { recursive: true });
 
@@ -125,5 +125,13 @@ export class CompilerModuleWorker {
         reject(new Error(`Process exited with code ${String(code)}.`));
       });
     });
+  }
+
+  #normalizePath(filePath: string) {
+    if (path.sep === "/") {
+      return filePath;
+    }
+
+    return filePath.replace(/\\/g, "/");
   }
 }
