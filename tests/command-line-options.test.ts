@@ -20,6 +20,67 @@ afterEach(async () => {
 });
 
 describe("command line options", () => {
+  describe("'--install' option", () => {
+    test("default", async () => {
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
+
+      expect(stdout).toMatch(
+        /^adds TypeScript \d\.\d\.\d to <<cwd>>\/tests\/__fixtures__\/command-line-options\/\.store\/\d\.\d\.\d/,
+      );
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("with 'target' configuration option", async () => {
+      const config = { target: ["4.8", "5.0"] };
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
+
+      expect(stdout).toMatchInlineSnapshot(`
+        "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.8.4
+        adds TypeScript 5.0.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/5.0.4
+        "
+      `);
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("with '--target' command line options", async () => {
+      const config = { target: ["5.0", "latest"] };
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install --target 4.9"], {
+        ["TSTYCHE_STORE_PATH"]: "./.store",
+      });
+
+      expect(stdout).toMatchInlineSnapshot(`
+        "adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.9.5
+        "
+      `);
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+  });
+
   test("'--target' option", async () => {
     await writeFixture(fixture, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,

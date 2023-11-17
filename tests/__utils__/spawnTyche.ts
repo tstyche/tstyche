@@ -11,12 +11,14 @@ function normalizeOutput(output: string) {
 export function spawnTyche(
   fixture: string,
   args?: Array<string>,
+  env?: Record<string, string>,
 ): { status: number | null; stderr: string; stdout: string } {
   const { error, status, stderr, stdout } = spawnSync("tstyche", args, {
     cwd: getFixtureUrl(fixture),
     env: {
       ...process.env,
       ["TSTYCHE_NO_COLOR"]: "on",
+      ...env,
     },
     shell: true,
     windowsVerbatimArguments: true,
