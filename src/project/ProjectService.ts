@@ -20,7 +20,7 @@ export class ProjectService {
 
     const noopWatcher = { close: doNothing };
 
-    const noopLogger = {
+    const noopLogger: ts.server.Logger = {
       close: doNothing,
       endGroup: doNothing,
       getLogFileName: returnUndefined,
@@ -33,7 +33,7 @@ export class ProjectService {
     };
 
     const host: ts.server.ServerHost = {
-      ...compiler.sys,
+      ...this.compiler.sys,
       clearImmediate,
       clearTimeout,
       setImmediate,
