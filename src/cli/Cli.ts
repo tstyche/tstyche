@@ -59,7 +59,7 @@ export class Cli {
       return;
     }
 
-    const compiler = await this.#storeService.loadCompilerModule("local", this.#abortController.signal);
+    const compiler = await this.#storeService.load("local", this.#abortController.signal);
 
     if (!compiler) {
       return;
@@ -124,7 +124,7 @@ export class Cli {
 
     if (configService.commandLineOptions.install === true) {
       for (const tag of resolvedConfig.target) {
-        await this.#storeService.prepareCompilerModule(tag, this.#abortController.signal);
+        await this.#storeService.install(tag, this.#abortController.signal);
       }
 
       return;

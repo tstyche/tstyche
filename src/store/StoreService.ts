@@ -21,7 +21,7 @@ export class StoreService {
     this.#manifestWorker = new ManifestWorker(this.#cachePath, async () => this.prune());
   }
 
-  getSupportedTags(): Array<string> {
+  get supportedTags(): Array<string> {
     if (!this.#manifest) {
       this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
 
@@ -31,44 +31,7 @@ export class StoreService {
     return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions].sort();
   }
 
-  async loadCompilerModule(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
-    let modulePath: string | undefined;
-
-    if (tag === "local") {
-      try {
-        modulePath = this.#nodeRequire.resolve("typescript/lib/tsserverlibrary.js");
-      } catch {
-        // TypeScript is not installed locally, let's load "latest" from the store
-        tag = "latest";
-      }
-    }
-
-    if (modulePath == null) {
-      modulePath = await this.prepareCompilerModule(tag, signal);
-    }
-
-    if (modulePath != null) {
-      return this.#nodeRequire(modulePath) as typeof ts;
-    }
-
-    return;
-  }
-
-  #onDiagnostic(diagnostic: Diagnostic) {
-    EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
-  }
-
-  async open(signal?: AbortSignal): Promise<void> {
-    if (this.#manifest) {
-      return;
-    }
-
-    this.#manifest = await this.#manifestWorker.open(signal);
-
-    // TODO versions not used for 60 days should be garbage collected
-  }
-
-  async prepareCompilerModule(tag: string, signal?: AbortSignal): Promise<string | undefined> {
+  async install(tag: string, signal?: AbortSignal): Promise<string | undefined> {
     if (!this.#manifest) {
       this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
 
@@ -103,6 +66,43 @@ export class StoreService {
     }
 
     return modulePath;
+  }
+
+  async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
+    let modulePath: string | undefined;
+
+    if (tag === "local") {
+      try {
+        modulePath = this.#nodeRequire.resolve("typescript/lib/tsserverlibrary.js");
+      } catch {
+        // TypeScript is not installed locally, let's load "latest" from the store
+        tag = "latest";
+      }
+    }
+
+    if (modulePath == null) {
+      modulePath = await this.install(tag, signal);
+    }
+
+    if (modulePath != null) {
+      return this.#nodeRequire(modulePath) as typeof ts;
+    }
+
+    return;
+  }
+
+  #onDiagnostic(diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
+  }
+
+  async open(signal?: AbortSignal): Promise<void> {
+    if (this.#manifest) {
+      return;
+    }
+
+    this.#manifest = await this.#manifestWorker.open(signal);
+
+    // TODO versions not used for 60 days should be garbage collected
   }
 
   async prune(): Promise<void> {

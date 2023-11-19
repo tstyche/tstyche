@@ -31,7 +31,7 @@ export class TaskRunner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await this.#storeService.loadCompilerModule(versionTag, signal);
+      const compiler = await this.#storeService.load(versionTag, signal);
 
       if (compiler) {
         const testFileRunner = new TestFileRunner(this.resolvedConfig, compiler);

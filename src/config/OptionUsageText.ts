@@ -19,7 +19,7 @@ export class OptionUsageText {
 
     switch (optionName) {
       case "target": {
-        const supportedTags = this.#storeService.getSupportedTags();
+        const { supportedTags } = this.#storeService;
         const supportedTagsText = `Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`;
 
         switch (this.#optionGroup) {
