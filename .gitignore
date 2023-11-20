@@ -1,7 +1,6 @@
 .cspellcache
 .eslintcache
 .yarn
-.wireit
 build
 dist
 coverage

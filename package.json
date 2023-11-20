@@ -36,7 +36,9 @@
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
     "clean": "rm -rf build",
-    "generate": "wireit",
+    "generate": "yarn generate:schema && yarn generate:types",
+    "generate:schema": "node scripts/generate-schema.js",
+    "generate:types": "node scripts/generate-types.js",
     "lint": "yarn lint:cspell && yarn lint:eslint && yarn lint:prettier",
     "lint:cspell": "cspell --cache --config cspell.config.json --quiet",
     "lint:eslint": "yarn lint:eslint:md && yarn lint:eslint:ts",
@@ -79,8 +81,7 @@
     "rollup-plugin-tsconfig-paths": "1.5.2",
     "ts-node": "10.9.1",
     "tslib": "2.6.2",
-    "typescript": "5.2.2",
-    "wireit": "0.14.1"
+    "typescript": "5.2.2"
   },
   "peerDependencies": {
     "typescript": "4.x || 5.x"
@@ -93,34 +94,5 @@
   "packageManager": "yarn@4.0.2",
   "engines": {
     "node": "^16.14 || 18.x || >=20.x"
-  },
-  "wireit": {
-    "generate": {
-      "dependencies": [
-        "generate:schema",
-        "generate:types"
-      ]
-    },
-    "generate:schema": {
-      "command": "node scripts/generate-schema.js",
-      "files": [
-        "./build",
-        "./scripts/generate-schema.js"
-      ],
-      "output": [
-        "./lib/schema.json"
-      ]
-    },
-    "generate:types": {
-      "command": "node scripts/generate-types.js",
-      "files": [
-        "./build",
-        "./scripts/generate-types.js"
-      ],
-      "output": [
-        "./lib/CommandLineOptions.ts",
-        "./lib/ConfigFileOptions.ts"
-      ]
-    }
   }
 }
