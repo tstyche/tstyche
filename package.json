@@ -30,8 +30,7 @@
   "types": "./build/index.d.ts",
   "bin": "build/bin.js",
   "files": [
-    "build/*",
-    "lib/*.json"
+    "build/*"
   ],
   "scripts": {
     "build": "rollup --config rollup.config.js",
