@@ -532,9 +532,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-companies@npm:^3.0.27":
-  version: 3.0.27
-  resolution: "@cspell/dict-companies@npm:3.0.27"
-  checksum: fdf974d1097efaa4e2ae6fe68097d102004c4d56fb057b6d3f2a167ae16bf6cc7c9c7f75f8eb39bc840e58d6a54f4c867be55ab184766f733e9e1ce3b7526383
+  version: 3.0.28
+  resolution: "@cspell/dict-companies@npm:3.0.28"
+  checksum: 0af71a52b5717aa05d7412ef1e21ba66dbf505882fdc86c4270eec0c45eae54985be9c3a79e8b6337e7354d6ad30f458562d3854a62b543a255bf884cc60c311
   languageName: node
   linkType: hard
 
@@ -630,9 +630,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-filetypes@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@cspell/dict-filetypes@npm:3.0.2"
-  checksum: cf58d201a846b8640a963d9ec3f416d8014f6824d34e2772c36f8c4108172cfa3bf00c0dc15649ad975bb656acaa29f19a86adb6016a8451c9d594ae5757a194
+  version: 3.0.3
+  resolution: "@cspell/dict-filetypes@npm:3.0.3"
+  checksum: 0a64f24fc4e5e0ec00e4a9982c3da228cf2dc5536f780785af31e3d257ea98d428464c0d35fabd5335ade751051ab0cce6fd2b1aa650a2b63515dfe8752bbd41
   languageName: node
   linkType: hard
 
@@ -749,9 +749,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.0.12":
-  version: 5.0.12
-  resolution: "@cspell/dict-npm@npm:5.0.12"
-  checksum: b04eedd7a4b1261321261b602530e75801d0ea9343f336c4ee82a7677abccdc3f5315c8af54f5f2ad361d8879b013026152194a58bef8626e0945936fd4f2e88
+  version: 5.0.13
+  resolution: "@cspell/dict-npm@npm:5.0.13"
+  checksum: 86e8e7d1869e13d43a4d0c148f6da3d24bfefe7cf85f0a39fa69c9a2abf8956ab0f0c90a3deda1a9016ac806935dd7a93bb2d378acb488ca4bf55773f1548fbd
   languageName: node
   linkType: hard
 
@@ -814,9 +814,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^3.3.9":
-  version: 3.3.9
-  resolution: "@cspell/dict-software-terms@npm:3.3.9"
-  checksum: 41928d33cc1238d30f0cd5296ac057ecbd3e5e5bbf15c5469c55bf98ae50768ddef7a58ac9e3a5126f6c88b6cb87ecd79c62b08a2120884f38408b71f0d1f59e
+  version: 3.3.10
+  resolution: "@cspell/dict-software-terms@npm:3.3.10"
+  checksum: 87662fc47a2a3ded13712b927b7d8577af1a381808d302fcb01849bd19c27955084b17b674619d1260036b464a9ab7b448e7218a08bb242611aac3c195e65aa7
   languageName: node
   linkType: hard
 
@@ -1615,16 +1615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 20.9.0
-  resolution: "@types/node@npm:20.9.0"
-  dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 755d07de735eafda4e20af75ad9d03bdbfddef327d790e9a896142eac7493db5d8501591376e1c8227aa12eeb88e522bc727c6024504842ed40e539e8a466db9
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:20.9.2":
+"@types/node@npm:*, @types/node@npm:20.9.2":
   version: 20.9.2
   resolution: "@types/node@npm:20.9.2"
   dependencies:
@@ -2344,9 +2335,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001541":
-  version: 1.0.30001561
-  resolution: "caniuse-lite@npm:1.0.30001561"
-  checksum: 6e84c84026fee53edbdbb5aded7a04a036aae4c2e367cf6bdc90c6783a591e2fdcfcdebcc4e774aca61092e542a61200c8c16b06659396492426033c4dbcc618
+  version: 1.0.30001563
+  resolution: "caniuse-lite@npm:1.0.30001563"
+  checksum: a8b367d43e0307ec243d8df8515d563fa3de895e9698eec4539037aed400da81e0df737164da2a6b7104ab6e75b4ea63db0adebcaabe326f2792841980259256
   languageName: node
   linkType: hard
 
@@ -2898,9 +2889,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.535":
-  version: 1.4.581
-  resolution: "electron-to-chromium@npm:1.4.581"
-  checksum: b545ece73fab4be8556873bc6e16da2276ae1c1712e75639d44f94f6210c81d2ff1bce8ebbc41df646e808c7c8bb2efa93e6ba35918b5d02a5d9ebfe493b0f57
+  version: 1.4.588
+  resolution: "electron-to-chromium@npm:1.4.588"
+  checksum: 3fd7b3f83a8c7a45187df7483cc5c48f39b78e5b5e07468c6a75211329472776f20d75e4e45519c77d83e18fdb6a16c4d0dd749c056a5797cc77d32822f225d9
   languageName: node
   linkType: hard
 
@@ -3471,11 +3462,11 @@ __metadata:
   linkType: hard
 
 "file-entry-cache@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "file-entry-cache@npm:7.0.1"
+  version: 7.0.2
+  resolution: "file-entry-cache@npm:7.0.2"
   dependencies:
-    flat-cache: "npm:^3.1.1"
-  checksum: fc0e4f830777e07087f97da9a6734820fdffa2945583355433f40d9819dd97b89f16ac87c07118737a6bc3eb9cf4bd896e7b38b07f0768aefcf44da33e797363
+    flat-cache: "npm:^3.2.0"
+  checksum: 822664e35c3e295e6a8ca7ec490d8d8077017607f41f94b29922f1f49c6dd07025048e3ed528e2909a1439eba66d60f802c0774aa612cf6ee053ee4ecc16c8c5
   languageName: node
   linkType: hard
 
@@ -3518,7 +3509,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flat-cache@npm:^3.0.4, flat-cache@npm:^3.1.1":
+"flat-cache@npm:^3.0.4, flat-cache@npm:^3.2.0":
   version: 3.2.0
   resolution: "flat-cache@npm:3.2.0"
   dependencies:
@@ -3946,9 +3937,9 @@ __metadata:
   linkType: hard
 
 "ignore@npm:^5.2.0, ignore@npm:^5.2.4":
-  version: 5.2.4
-  resolution: "ignore@npm:5.2.4"
-  checksum: 7c7cd90edd9fea6e037f9b9da4b01bf0a86b198ce78345f9bbd983929d68ff14830be31111edc5d70c264921f4962404d75b7262b4d9cc3bc12381eccbd03096
+  version: 5.3.0
+  resolution: "ignore@npm:5.3.0"
+  checksum: dc06bea5c23aae65d0725a957a0638b57e235ae4568dda51ca142053ed2c352de7e3bc93a69b2b32ac31966a1952e9a93c5ef2e2ab7c6b06aef9808f6b55b571
   languageName: node
   linkType: hard
 
@@ -5010,11 +5001,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^10.0.1, lru-cache@npm:^9.1.1 || ^10.0.0":
-  version: 10.0.2
-  resolution: "lru-cache@npm:10.0.2"
-  dependencies:
-    semver: "npm:^7.3.5"
-  checksum: 5c83a7a2a320a445129cb67a1794437db5483942df63536026fba1cb7ba2e1f7456037876cc9d31076132010f92cb943bee358d336dd94105e50ea971e6d737d
+  version: 10.0.3
+  resolution: "lru-cache@npm:10.0.3"
+  checksum: e1745db7682df7ea890aced922975528e9fd85897459e003ff3b71d7f69656792ddd9c50e852b7c461000b9c08a9370b110bfbe6e44de3d81f43c197eaa652b1
   languageName: node
   linkType: hard
 
