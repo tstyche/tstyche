@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toBeBigInt: stderr 1`] = `
-"Error: Type 'void' is not 'bigint'.
+"Error: Type 'bigint' is not identical to type 'void'.
 
   12 |   expect(returnsBigInt()).type.toBeBigInt();
   13 | 
@@ -13,7 +13,7 @@ exports[`toBeBigInt: stderr 1`] = `
 
        at ./__typetests__/toBeBigInt.test.ts:14:30 ❭ is bigint?
 
-Error: Type 'bigint' is 'bigint'.
+Error: Type 'bigint' is identical to type 'bigint'.
 
   18 |   expect(returnsVoid()).type.not.toBeBigInt();
   19 | 

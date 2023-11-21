@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toBeUnknown: stderr 1`] = `
-"Error: Type 'string' is not 'unknown'.
+"Error: Type 'unknown' is not identical to type 'string'.
 
   12 |   expect(returnsUnknown()).type.toBeUnknown();
   13 | 
@@ -13,7 +13,7 @@ exports[`toBeUnknown: stderr 1`] = `
 
        at ./__typetests__/toBeUnknown.test.ts:14:32 ❭ is unknown?
 
-Error: Type 'unknown' is 'unknown'.
+Error: Type 'unknown' is identical to type 'unknown'.
 
   18 |   expect(returnsString()).type.not.toBeUnknown();
   19 | 

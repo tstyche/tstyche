@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toBeSymbol: stderr 1`] = `
-"Error: Type 'void' is not 'symbol'.
+"Error: Type 'symbol' is not identical to type 'void'.
 
   12 |   expect(returnsSymbol()).type.toBeSymbol();
   13 | 
@@ -13,7 +13,7 @@ exports[`toBeSymbol: stderr 1`] = `
 
        at ./__typetests__/toBeSymbol.test.ts:14:30 ❭ is symbol?
 
-Error: Type 'symbol' is 'symbol'.
+Error: Type 'symbol' is identical to type 'symbol'.
 
   18 |   expect(returnsVoid()).type.not.toBeSymbol();
   19 | 

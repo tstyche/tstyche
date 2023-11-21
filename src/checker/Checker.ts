@@ -262,7 +262,9 @@ export class Checker {
 
     return [
       Diagnostic.error(
-        assertion.isNot ? `Type '${sourceText}' is '${targetText}'.` : `Type '${sourceText}' is not '${targetText}'.`,
+        assertion.isNot
+          ? `Type '${targetText}' is identical to type '${sourceText}'.`
+          : `Type '${targetText}' is not identical to type '${sourceText}'.`,
         origin,
       ),
     ];

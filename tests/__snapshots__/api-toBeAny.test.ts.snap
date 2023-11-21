@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toBeAny: stderr 1`] = `
-"Error: Type 'string' is not 'any'.
+"Error: Type 'any' is not identical to type 'string'.
 
   13 |   expect(returnsAny()).type.toBeAny();
   14 | 
@@ -13,7 +13,7 @@ exports[`toBeAny: stderr 1`] = `
 
        at ./__typetests__/toBeAny.test.ts:15:32 ❭ is any?
 
-Error: Type 'any' is 'any'.
+Error: Type 'any' is identical to type 'any'.
 
   19 |   expect(returnsString()).type.not.toBeAny();
   20 | 
