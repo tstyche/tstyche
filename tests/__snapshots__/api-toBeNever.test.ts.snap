@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toBeNever: stderr 1`] = `
-"Error: Type 'string' is not 'never'.
+"Error: Type 'never' is not identical to type 'string'.
 
   12 |   expect(returnsNever()).type.toBeNever();
   13 | 
@@ -13,7 +13,7 @@ exports[`toBeNever: stderr 1`] = `
 
        at ./__typetests__/toBeNever.test.ts:14:32 ❭ is never?
 
-Error: Type 'never' is 'never'.
+Error: Type 'never' is identical to type 'never'.
 
   18 |   expect(returnsString()).type.not.toBeNever();
   19 | 

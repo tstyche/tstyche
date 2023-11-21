@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toBeString: stderr 1`] = `
-"Error: Type 'void' is not 'string'.
+"Error: Type 'string' is not identical to type 'void'.
 
   12 |   expect(returnsString()).type.toBeString();
   13 | 
@@ -13,7 +13,7 @@ exports[`toBeString: stderr 1`] = `
 
        at ./__typetests__/toBeString.test.ts:14:30 ❭ is string?
 
-Error: Type 'string' is 'string'.
+Error: Type 'string' is identical to type 'string'.
 
   18 |   expect(returnsVoid()).type.not.toBeString();
   19 | 

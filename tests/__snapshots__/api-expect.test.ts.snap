@@ -240,7 +240,7 @@ Ran test files matching 'expect-skip.test.ts'.
 `;
 
 exports[`expect: stderr 1`] = `
-"Error: Type 'void' is not 'undefined'.
+"Error: Type 'undefined' is not identical to type 'void'.
 
    5 | });
    6 | 
@@ -252,7 +252,7 @@ exports[`expect: stderr 1`] = `
 
        at ./__typetests__/top-level-expect.tst.ts:7:21
 
-Error: Type 'number' is not 'void'.
+Error: Type 'void' is not identical to type 'number'.
 
   10 |   test("is number?", () => {
   11 |     expect<number>().type.toBeNumber();
@@ -264,7 +264,7 @@ Error: Type 'number' is not 'void'.
 
        at ./__typetests__/top-level-expect.tst.ts:12:27 ❭ is describe? ❭ is number?
 
-Error: Type 'number' is not 'void'.
+Error: Type 'void' is not identical to type 'number'.
 
   15 | 
   16 | expect<null>().type.toBeNull();
@@ -296,7 +296,7 @@ Ran test files matching 'top-level-expect.tst.ts'.
 `;
 
 exports[`handles '--failFast' option: stderr 1`] = `
-"Error: Type 'void' is not 'undefined'.
+"Error: Type 'undefined' is not identical to type 'void'.
 
    5 | });
    6 | 
