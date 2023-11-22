@@ -31,7 +31,7 @@ test("firstItem", () => {
 
 To organize, debug and plan tests TSTyche has:
 
-- `test()`, `it()`, `describe()` and `context()` helpers;
+- `test()`, `it()` and `describe()` helpers,
 - with `.only`, `.skip` and `.todo` run mode flags.
 
 ## Assertions
@@ -39,18 +39,18 @@ To organize, debug and plan tests TSTyche has:
 The assertions can be used to write type tests (like in the above example) or mixed in your functional tests:
 
 ```ts
+import assert from "node:assert/strict";
+import { test } from "node:test";
 import * as tstyche from "tstyche";
 
 function secondItem<T>(target: Array<T>): T | undefined {
   return target[1];
 }
 
-describe("secondItem", () => {
-  it("should handle numbers", () => {
-    expect(secondItem([1, 2, 3])).toBe(1);
+test("handles numbers", () => {
+  assert.strictEqual(secondItem([1, 2, 3]), 2);
 
-    tstyche.expect(secondItem([1, 2, 3])).type.toEqual<number | undefined>();
-  });
+  tstyche.expect(secondItem([1, 2, 3])).type.toEqual<number | undefined>();
 });
 ```
 
