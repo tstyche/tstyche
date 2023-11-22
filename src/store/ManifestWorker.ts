@@ -2,7 +2,6 @@
 
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import https from "node:https";
 import path from "node:path";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
@@ -36,45 +35,18 @@ export class ManifestWorker {
     this.#prune = prune;
   }
 
-  async #fetch(signal?: AbortSignal) {
-    return new Promise<PackageMetadata>((resolve, reject) => {
-      const request = https.get(
-        // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
-        new URL("typescript", this.#registryUrl),
-        {
-          headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
-          signal,
-        },
-        (result) => {
-          if (result.statusCode !== 200) {
-            reject(new Error(`Request failed with status code ${String(result.statusCode)}.`));
-
-            return;
-          }
-
-          result.setEncoding("utf8");
-
-          let rawData = "";
-
-          result.on("data", (chunk) => {
-            rawData += chunk;
-          });
-
-          result.on("end", () => {
-            try {
-              const packageMetadata = JSON.parse(rawData) as PackageMetadata;
-              resolve(packageMetadata);
-            } catch (error) {
-              reject(error);
-            }
-          });
-        },
-      );
-
-      request.on("error", (error) => {
-        reject(error);
-      });
+  async #fetch(signal: AbortSignal) {
+    const result = await fetch(new URL("typescript", this.#registryUrl), {
+      // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
+      headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
+      signal,
     });
+
+    if (!result.ok) {
+      throw new Error(`Request failed with status code ${String(result.status)}.`);
+    }
+
+    return result.json() as Promise<PackageMetadata>;
   }
 
   isOutdated(manifest: Manifest, ageTolerance = 0): boolean {
