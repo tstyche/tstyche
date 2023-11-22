@@ -59,7 +59,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ["16.14", "16.x", "18.x", "20.x", "21.x"]
+        node-version: ["18.12.0", "18.x", "20.x", "21.x"]
     runs-on: ubuntu-latest
 
     steps:
@@ -70,18 +70,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: corepack enable
       - run: yarn install
-        env:
-          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
       - run: yarn build
-        env:
-          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
       - run: yarn test
         env:
           FORCE_COLOR: true
-          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
 
   test-os:
-    name: Test Build on ${{ matrix.os }} using Node.js LTS
+    name: Test Build on ${{ matrix.os }}
     needs:
       - typecheck
     strategy:
