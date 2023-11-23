@@ -16,7 +16,6 @@ interface PackageMetadata {
 
 export interface Manifest {
   lastUpdated: number;
-  lastUsed?: Record<string, number>;
   resolutions: Record<string, string>;
   versions: Array<string>;
 }

@@ -54,17 +54,6 @@ export class StoreService {
       this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${version}'.`, error));
     }
 
-    if (modulePath != null) {
-      if (!("lastUsed" in this.#manifest)) {
-        this.#manifest.lastUsed = {};
-      }
-
-      this.#manifest.lastUsed[version] = Date.now();
-
-      // TODO
-      // await this.#manifestWorker.persist(this.#manifest);
-    }
-
     return modulePath;
   }
 
@@ -101,8 +90,6 @@ export class StoreService {
     }
 
     this.#manifest = await this.#manifestWorker.open(signal);
-
-    // TODO versions not used for 60 days should be garbage collected
   }
 
   async prune(): Promise<void> {
