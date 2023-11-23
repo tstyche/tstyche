@@ -17,7 +17,6 @@ export class IdentifierLookup {
   ) {
     this.#identifiers = identifiers ?? {
       namedImports: {
-        context: undefined,
         describe: undefined,
         expect: undefined,
         it: undefined,
@@ -109,7 +108,6 @@ export class IdentifierLookup {
     }
 
     switch (identifierName) {
-      case "context":
       case "describe":
         return { brand: TestMemberBrand.Describe, flags };
 

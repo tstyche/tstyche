@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`handles nested 'it()': stderr 1`] = `
-"Error: 'context()' cannot be nested within 'it()' helper.
+"Error: 'describe()' cannot be nested within 'it()' helper.
 
   2 | 
   3 | it("is string?", () => {
-> 4 |   context("nested describe is handled?", () => {
+> 4 |   describe("nested describe is handled?", () => {
     |   ^
   5 |     expect<number>().type.toBeNumber();
   6 |   });

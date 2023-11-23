@@ -1,7 +1,7 @@
-import { context, expect, it } from "tstyche";
+import { describe, expect, it } from "tstyche";
 
 it("is string?", () => {
-  context("nested describe is handled?", () => {
+  describe("nested describe is handled?", () => {
     expect<number>().type.toBeNumber();
   });
 

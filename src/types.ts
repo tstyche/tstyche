@@ -262,10 +262,6 @@ interface Expect {
  */
 export declare const describe: Describe;
 /**
- * Defines a test group.
- */
-export declare const context: Describe;
-/**
  * Defines a single test.
  */
 export declare const test: Test;
