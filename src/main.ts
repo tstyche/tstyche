@@ -11,4 +11,4 @@ const noopChain: () => void = new Proxy(doNothing, {
   },
 });
 
-export { noopChain as context, noopChain as describe, noopChain as expect, noopChain as it, noopChain as test };
+export { noopChain as describe, noopChain as expect, noopChain as it, noopChain as test };
