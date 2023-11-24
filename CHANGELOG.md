@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.0-beta.4] - 2023-11-24
+
+### Added
+
+- Use Node.js Fetch API ([#23](https://github.com/tstyche/tstyche/pull/23))
+
+### Removed
+
+- **Breaking:** Remove the `context()` helper ([#24](https://github.com/tstyche/tstyche/pull/24))
+- **Breaking:** Drop support for Node.js 16 ([#22](https://github.com/tstyche/tstyche/pull/22))
+- **Breaking:** Rename methods of the `StoreService` class ([`5d74201`](https://github.com/tstyche/tstyche/commit/5d74201))
+
+### Fixed
+
+- Tune up behavior of `.skip` and `.only` run mode flags ([#25](https://github.com/tstyche/tstyche/pull/25))
+- Clean up error messages of primitive type matchers ([#21](https://github.com/tstyche/tstyche/pull/21))
+- Normalize `installationPath` path output ([#19](https://github.com/tstyche/tstyche/pull/19))
+
 ## [1.0.0-beta.3] - 2023-11-13
 
 ### Fixed
@@ -22,6 +40,7 @@
 
 _First pre-release._
 
+[1.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.4
 [1.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.3
 [1.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.2
 [1.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.1
