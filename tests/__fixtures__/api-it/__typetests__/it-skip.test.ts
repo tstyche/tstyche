@@ -6,6 +6,8 @@ jest.test("'it.skip' implementation'", () => {
 });
 
 it.skip("is skipped?", () => {
+  const a: string = 123;
+
   expect("abc" as string).type.toBeString();
 });
 

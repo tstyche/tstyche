@@ -6,7 +6,11 @@ jest.test("'describe.skip' implementation'", () => {
 });
 
 describe.skip("is skipped describe?", () => {
+  const a: string = 123;
+
   test("is skipped?", () => {
+    const b: number = "abc";
+
     expect<string>().type.toBeString();
   });
 });

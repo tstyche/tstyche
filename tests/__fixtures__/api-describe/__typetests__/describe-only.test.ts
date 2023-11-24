@@ -5,15 +5,19 @@ jest.test("'describe.only' implementation'", () => {
   jest.expect(describe.only).toBeInstanceOf(Function);
 });
 
-describe("is describe?", () => {
+describe("is skipped describe?", () => {
+  const a: string = 123;
+
   test("is skipped?", () => {
+    const b: number = "abc";
+
     expect<void>().type.toBeVoid();
   });
 });
 
 describe.only("is only describe?", () => {
-  test("is never?", () => {
-    expect<never>().type.toBeNever();
+  test("is number?", () => {
+    expect<number>().type.toBeNumber();
   });
 
   test.skip("is skipped?", () => {

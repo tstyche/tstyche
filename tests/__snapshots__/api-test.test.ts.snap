@@ -72,7 +72,7 @@ pass ./__typetests__/test-skip.test.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      2 skipped, 1 passed, 3 total
-Assertions: 1 passed, 1 total
+Assertions: 2 skipped, 1 passed, 3 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'skip'.

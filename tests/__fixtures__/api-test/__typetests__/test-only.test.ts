@@ -10,6 +10,8 @@ test.only("is only?", () => {
 });
 
 test("is skipped?", () => {
+  const a: string = 123;
+
   expect("abc" as string).type.toBeString();
 });
 
