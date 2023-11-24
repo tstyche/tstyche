@@ -10,9 +10,9 @@ expect.only.fail<string>().type.toBeString();
 
 expect.only.fail<never>().type.toBeString();
 
-describe("is describe?", () => {
-  test("is string?", () => {
-    expect<string>().type.toBeString();
+describe("is skipped describe?", () => {
+  test("is skipped?", () => {
+    expect<never>().type.toBeVoid();
     expect.only.fail<string>().type.toBeString();
 
     expect.only.fail<never>().type.toBeVoid();
@@ -25,11 +25,11 @@ describe("is skipped describe?", () => {
   });
 });
 
-test("is number?", () => {
-  expect<number>().type.toBeNumber();
-  expect.only.fail<number>().type.toBeNumber();
+test.only("is number?", () => {
+  expect.skip<string>().type.toBeNumber();
+  expect.fail<number>().type.toBeNumber();
 
-  expect.only.fail<never>().type.toBeVoid();
+  expect.fail<never>().type.toBeVoid();
 });
 
 test("is skipped?", () => {

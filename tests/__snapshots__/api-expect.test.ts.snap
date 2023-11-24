@@ -83,8 +83,8 @@ Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  14 |   test("is string?", () => {
-  15 |     expect<string>().type.toBeString();
+  14 |   test("is skipped?", () => {
+  15 |     expect<never>().type.toBeVoid();
 > 16 |     expect.only.fail<string>().type.toBeString();
      |     ^
   17 | 
@@ -97,12 +97,12 @@ Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  28 | test("is number?", () => {
-  29 |   expect<number>().type.toBeNumber();
-> 30 |   expect.only.fail<number>().type.toBeNumber();
+  28 | test.only("is number?", () => {
+  29 |   expect.skip<string>().type.toBeNumber();
+> 30 |   expect.fail<number>().type.toBeNumber();
      |   ^
   31 | 
-  32 |   expect.only.fail<never>().type.toBeVoid();
+  32 |   expect.fail<never>().type.toBeVoid();
   33 | });
 
        at ./__typetests__/expect-only-fail.test.ts:30:3
@@ -114,8 +114,8 @@ exports[`expect.only.fail: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/expect-only-fail.test.ts
-  is describe?
-    × is string?
+  is skipped describe?
+    - skip is skipped?
   is skipped describe?
     - skip is skipped?
   × is number?
@@ -124,7 +124,7 @@ fail ./__typetests__/expect-only-fail.test.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      2 failed, 2 skipped, 1 todo, 5 total
+Tests:      1 failed, 3 skipped, 1 todo, 5 total
 Assertions: 3 failed, 5 skipped, 3 passed, 11 total
 Duration:   <<timestamp>>
 
@@ -200,7 +200,7 @@ exports[`expect.only: stdout 1`] = `
 
 pass ./__typetests__/expect-only.test.ts
   is describe?
-    + is string?
+    - skip is skipped?
   is skipped describe?
     - skip is skipped?
   + is number?
@@ -209,7 +209,7 @@ pass ./__typetests__/expect-only.test.ts
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      2 skipped, 1 todo, 2 passed, 5 total
+Tests:      3 skipped, 1 todo, 1 passed, 5 total
 Assertions: 5 skipped, 3 passed, 8 total
 Duration:   <<timestamp>>
 
@@ -226,13 +226,14 @@ pass ./__typetests__/expect-skip.test.ts
   is skipped describe?
     - skip is skipped?
   + is number?
+  + is assignable?
   - skip is skipped?
   - todo is todo?
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      2 skipped, 1 todo, 2 passed, 5 total
-Assertions: 3 skipped, 3 passed, 6 total
+Tests:      2 skipped, 1 todo, 3 passed, 6 total
+Assertions: 6 skipped, 3 passed, 9 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'expect-skip.test.ts'.

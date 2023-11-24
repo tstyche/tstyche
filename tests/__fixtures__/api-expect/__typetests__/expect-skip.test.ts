@@ -26,6 +26,13 @@ test("is number?", () => {
   expect.skip<never>().type.toBeVoid();
 });
 
+test("is assignable?", () => {
+  let a: string | undefined = "abc";
+  a = undefined;
+
+  expect.skip(a).type.toBeVoid();
+});
+
 test.skip("is skipped?", () => {
   expect<never>().type.toBeString();
 });

@@ -15,7 +15,7 @@ pass ./__typetests__/aliased-import.tst.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      3 skipped, 2 todo, 1 passed, 6 total
-Assertions: 2 skipped, 1 passed, 3 total
+Assertions: 3 skipped, 1 passed, 4 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'aliased'.
@@ -37,7 +37,7 @@ pass ./__typetests__/named-import.tst.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      3 skipped, 2 todo, 1 passed, 6 total
-Assertions: 2 skipped, 1 passed, 3 total
+Assertions: 3 skipped, 1 passed, 4 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'named'.
@@ -59,7 +59,7 @@ pass ./__typetests__/namespace-import.tst.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      3 skipped, 2 todo, 1 passed, 6 total
-Assertions: 2 skipped, 1 passed, 3 total
+Assertions: 3 skipped, 1 passed, 4 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'namespace'.

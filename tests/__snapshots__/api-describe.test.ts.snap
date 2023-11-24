@@ -4,10 +4,10 @@ exports[`describe.only: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/describe-only.test.ts
-  is describe?
+  is skipped describe?
     - skip is skipped?
   is only describe?
-    + is never?
+    + is number?
     - skip is skipped?
     - todo is todo?
     + is string?
@@ -25,7 +25,7 @@ pass ./__typetests__/describe-only.test.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      6 skipped, 2 todo, 4 passed, 12 total
-Assertions: 2 skipped, 4 passed, 6 total
+Assertions: 6 skipped, 4 passed, 10 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'only'.
@@ -49,7 +49,7 @@ pass ./__typetests__/describe-skip.test.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      2 skipped, 2 todo, 2 passed, 6 total
-Assertions: 2 passed, 2 total
+Assertions: 2 skipped, 2 passed, 4 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'skip'.
@@ -76,7 +76,7 @@ pass ./__typetests__/describe-todo.test.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      1 skipped, 6 todo, 1 passed, 8 total
-Assertions: 1 passed, 1 total
+Assertions: 1 skipped, 1 passed, 2 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'todo'.

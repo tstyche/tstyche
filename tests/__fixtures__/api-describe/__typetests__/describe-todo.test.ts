@@ -11,6 +11,8 @@ describe.todo("is todo describe too?", () => {
   const a: string = 123;
 
   test("is todo?", () => {
+    const b: number = "abc";
+
     expect(a).type.toBeString();
   });
 });

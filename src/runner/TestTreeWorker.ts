@@ -169,7 +169,10 @@ export class TestTreeWorker {
 
     runMode = this.#resolveRunMode(runMode, describe);
 
-    if (!(runMode & RunMode.Skip || runMode & RunMode.Todo) && describe.diagnostics.length > 0) {
+    if (
+      !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
+      describe.diagnostics.length > 0
+    ) {
       EventEmitter.dispatch([
         "file:error",
         {
@@ -197,13 +200,7 @@ export class TestTreeWorker {
       return;
     }
 
-    if (runMode & RunMode.Skip) {
-      EventEmitter.dispatch(["test:skip", { result: testResult }]);
-
-      return;
-    }
-
-    if (test.diagnostics.length > 0) {
+    if (!(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) && test.diagnostics.length > 0) {
       EventEmitter.dispatch([
         "test:error",
         {
@@ -217,7 +214,7 @@ export class TestTreeWorker {
 
     this.visit(test.members, runMode, testResult);
 
-    if (testResult.expectCount.skipped > 0 && testResult.expectCount.skipped === testResult.expectCount.total) {
+    if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
       EventEmitter.dispatch(["test:skip", { result: testResult }]);
 
       return;
