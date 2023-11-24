@@ -6424,7 +6424,7 @@ __metadata:
     typescript:
       optional: true
   bin:
-    tstyche: build/bin.js
+    tstyche: ./build/bin.js
   languageName: unknown
   linkType: soft
 
