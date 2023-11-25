@@ -1,5 +1,3 @@
-/// <reference lib="es2023" />
-
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import https from "node:https";
@@ -93,7 +91,7 @@ export class ManifestWorker {
 
     let packageMetadata: PackageMetadata | undefined;
 
-    // TODO use 'AbortSignal.any()' after dropping support for Node.js 18
+    // TODO use 'AbortSignal.any()' after dropping support for Node.js 16
     const abortController = new AbortController();
 
     const timeoutSignal = AbortSignal.timeout(this.#timeout);
@@ -138,7 +136,8 @@ export class ManifestWorker {
     const minorVersions = [...new Set(manifest.versions.map((version) => version.slice(0, -2)))];
 
     for (const tag of minorVersions) {
-      const resolvedVersion = manifest.versions.findLast((version) => version.startsWith(tag));
+      // TODO use 'findLast()' after dropping support for Node.js 16
+      const resolvedVersion = manifest.versions.filter((version) => version.startsWith(tag)).pop();
 
       if (resolvedVersion != null) {
         manifest.resolutions[tag] = resolvedVersion;
