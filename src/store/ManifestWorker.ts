@@ -91,7 +91,7 @@ export class ManifestWorker {
 
     let packageMetadata: PackageMetadata | undefined;
 
-    // TODO use 'AbortSignal.any()' after dropping support for Node.js 16
+    // TODO use 'AbortSignal.any()' after dropping support for Node.js 18
     const abortController = new AbortController();
 
     const timeoutSignal = AbortSignal.timeout(this.#timeout);

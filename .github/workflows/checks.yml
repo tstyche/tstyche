@@ -81,7 +81,7 @@ jobs:
           YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
 
   test-os:
-    name: Test Build on ${{ matrix.os }} using Node.js LTS
+    name: Test Build on ${{ matrix.os }}
     needs:
       - typecheck
     strategy:
