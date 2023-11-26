@@ -23,7 +23,7 @@
       ],
       "description": "The list of TypeScript versions to be tested on.",
       "items": {
-        "pattern": "^([45]\\.[0-9](\\.[0-9])?)|beta|latest|next|rc$",
+        "pattern": "^([45]\\.[0-9](\\.[0-9])?)|beta|current|latest|next|rc$",
         "type": "string"
       },
       "type": "array",

@@ -28,7 +28,7 @@ export class StoreService {
       return [];
     }
 
-    return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions].sort();
+    return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
   }
 
   async install(tag: string, signal?: AbortSignal): Promise<string | undefined> {
@@ -95,6 +95,19 @@ export class StoreService {
       return;
     }
 
+    if (tag === "current") {
+      try {
+        tag = (this.#nodeRequire("typescript") as typeof ts).version;
+      } catch (error) {
+        this.#onDiagnostic(
+          Diagnostic.fromError(
+            "Failed to resolve tag 'current'. The 'typescript' package might be not installed.",
+            error,
+          ),
+        );
+      }
+    }
+
     if (this.#manifest.versions.includes(tag)) {
       return tag;
     }
@@ -133,7 +146,7 @@ export class StoreService {
       return false;
     }
 
-    if (this.#manifest.versions.includes(tag) || tag in this.#manifest.resolutions) {
+    if (this.#manifest.versions.includes(tag) || tag in this.#manifest.resolutions || tag === "current") {
       return true;
     }
 
