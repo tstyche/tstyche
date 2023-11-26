@@ -110,6 +110,7 @@ jobs:
           node-version: lts/*
       - run: corepack enable
       - run: yarn install
+      - run: yarn build:sourcemap
       - run: yarn test:coverage:unit
         env:
           FORCE_COLOR: true
