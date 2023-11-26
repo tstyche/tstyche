@@ -1,7 +1,7 @@
 /** @type {import("jest").Config} */
 const config = {
   clearMocks: true,
-  collectCoverageFrom: ["src/**/*"],
+  collectCoverageFrom: ["src/**/*.ts?(x)"],
   coverageDirectory: "./coverage/unit",
   coverageProvider: "v8",
   coverageReporters: ["lcov", "text"],
