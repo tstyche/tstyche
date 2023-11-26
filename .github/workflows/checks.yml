@@ -110,10 +110,21 @@ jobs:
           node-version: lts/*
       - run: corepack enable
       - run: yarn install
-      - run: yarn test:coverage
+      - run: yarn test:coverage:unit
         env:
           FORCE_COLOR: true
       - uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3
         with:
-          directory: ./coverage
+          directory: ./coverage/unit
           files: lcov.info
+          flags: unit-tests
+          move_coverage_to_trash: true
+      - run: yarn test:coverage:e2e
+        env:
+          FORCE_COLOR: true
+      - uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3
+        with:
+          directory: ./coverage/e2e
+          files: lcov.info
+          flags: e2e-tests
+          move_coverage_to_trash: true
