@@ -144,11 +144,11 @@ export class ManifestWorker {
       }
     }
 
-    for (const distributionTagKey of ["beta", "latest", "next", "rc"]) {
-      const distributionTagValue = packageMetadata["dist-tags"][distributionTagKey];
+    for (const tagKey of ["beta", "latest", "next", "rc"]) {
+      const distributionTagValue = packageMetadata["dist-tags"][tagKey];
 
       if (distributionTagValue != null) {
-        manifest.resolutions[distributionTagKey] = distributionTagValue;
+        manifest.resolutions[tagKey] = distributionTagValue;
       }
     }
 
