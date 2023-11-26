@@ -91,7 +91,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@3.7.0",
   "engines": {
     "node": "^16.14 || 18.x || >=20.x"
   }

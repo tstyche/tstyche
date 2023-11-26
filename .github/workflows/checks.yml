@@ -70,15 +70,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: corepack enable
       - run: yarn install
-        env:
-          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
       - run: yarn build
-        env:
-          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
       - run: yarn test
         env:
           FORCE_COLOR: true
-          YARN_IGNORE_NODE: true # TODO remove after dropping support for Node.js 16
 
   test-os:
     name: Test Build on ${{ matrix.os }}
