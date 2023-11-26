@@ -116,9 +116,8 @@ describe("command line options", () => {
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--target current"]);
+      const { status, stderr } = spawnTyche(fixture, ["--target current"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);

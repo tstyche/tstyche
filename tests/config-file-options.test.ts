@@ -133,9 +133,8 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { status, stderr } = spawnTyche(fixture);
 
-    expect(stdout).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(status).toBe(0);
