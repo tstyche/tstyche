@@ -81,38 +81,68 @@ describe("command line options", () => {
     });
   });
 
-  test("'--target' option", async () => {
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  describe("'--target' option", () => {
+    test("handles single target", async () => {
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8"]);
+
+      expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8,latest"]);
+    test("handles multiple targets", async () => {
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
 
-    expect(stdout).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8,latest"]);
 
-    expect(status).toBe(0);
-  });
+      expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
 
-  test("handles not supported '--target' option value", async () => {
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      expect(status).toBe(0);
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, ["--target new"]);
+    test("handles 'current' tag", async () => {
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
 
-    expect(stdout).toBe("");
-    expect(stderr).toMatch(
-      [
-        "Error: TypeScript version 'new' is not supported.",
-        "",
-        "Argument for the '--target' option must be a single tag or a comma separated list of versions.",
-        "Usage examples:",
-      ].join("\r\n"),
-    );
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target current"]);
 
-    expect(status).toBe(1);
+      expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("handles not supported '--target' option value", async () => {
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target new"]);
+
+      expect(stdout).toBe("");
+      expect(stderr).toMatch(
+        [
+          "Error: TypeScript version 'new' is not supported.",
+          "",
+          "Argument for the '--target' option must be a single tag or a comma separated list.",
+          "Usage examples:",
+        ].join("\r\n"),
+      );
+
+      expect(status).toBe(1);
+    });
   });
 });

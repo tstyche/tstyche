@@ -122,6 +122,25 @@ describe("tstyche.config.json", () => {
     expect(status).toBe(0);
   });
 
+  test("handles 'current' as 'target' option value", async () => {
+    const config = {
+      target: ["current"],
+    };
+
+    await writeFixture(fixture, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { status, stderr, stdout } = spawnTyche(fixture);
+
+    expect(stdout).toMatchSnapshot("stdout");
+    expect(stderr).toBe("");
+
+    expect(status).toBe(0);
+  });
+
   test("handles not supported 'target' option value", async () => {
     const config = {
       target: ["new"],

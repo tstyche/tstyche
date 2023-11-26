@@ -19,9 +19,9 @@ exports[`schema.json invalid item of 'target' option must be one of the allowed 
   {
     "instancePath": "/target/0",
     "keyword": "pattern",
-    "message": "must match pattern "^([45]\\.[0-9](\\.[0-9])?)|beta|latest|next|rc$"",
+    "message": "must match pattern "^([45]\\.[0-9](\\.[0-9])?)|beta|current|latest|next|rc$"",
     "params": {
-      "pattern": "^([45]\\.[0-9](\\.[0-9])?)|beta|latest|next|rc$",
+      "pattern": "^([45]\\.[0-9](\\.[0-9])?)|beta|current|latest|next|rc$",
     },
     "schemaPath": "#/properties/target/items/pattern",
   },
