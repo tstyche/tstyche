@@ -17,7 +17,7 @@ export class StoreService {
   constructor() {
     this.#cachePath = Environment.storePath;
 
-    this.#compilerModuleWorker = new CompilerModuleWorker(this.#cachePath);
+    this.#compilerModuleWorker = new CompilerModuleWorker(this.#cachePath, this.#onDiagnostic);
     this.#manifestWorker = new ManifestWorker(this.#cachePath, async () => this.prune());
   }
 
@@ -46,15 +46,7 @@ export class StoreService {
       return;
     }
 
-    let modulePath: string | undefined;
-
-    try {
-      modulePath = await this.#compilerModuleWorker.ensure(version, signal);
-    } catch (error) {
-      this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${version}'.`, error));
-    }
-
-    return modulePath;
+    return this.#compilerModuleWorker.ensure(version, signal);
   }
 
   async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
@@ -80,9 +72,9 @@ export class StoreService {
     return;
   }
 
-  #onDiagnostic(diagnostic: Diagnostic) {
+  #onDiagnostic = (diagnostic: Diagnostic) => {
     EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
-  }
+  };
 
   async open(signal?: AbortSignal): Promise<void> {
     if (this.#manifest) {

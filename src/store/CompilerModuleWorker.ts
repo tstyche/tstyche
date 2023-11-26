@@ -2,39 +2,39 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { setInterval } from "node:timers/promises";
+import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Lock } from "./Lock.js";
 
 export class CompilerModuleWorker {
   #cachePath: string;
+  #onDiagnostic: (diagnostic: Diagnostic) => void;
   #readyFileName = "__ready__";
   #timeout = Environment.timeout * 1000;
 
-  constructor(cachePath: string) {
+  constructor(cachePath: string, onDiagnostic: (diagnostic: Diagnostic) => void) {
     this.#cachePath = cachePath;
+    this.#onDiagnostic = onDiagnostic;
   }
 
-  async ensure(compilerVersion: string, signal?: AbortSignal): Promise<string> {
+  async ensure(compilerVersion: string, signal?: AbortSignal): Promise<string | undefined> {
     const installationPath = path.join(this.#cachePath, compilerVersion);
     const readyFilePath = path.join(installationPath, this.#readyFileName);
     const tsserverFilePath = path.join(installationPath, "node_modules", "typescript", "lib", "tsserverlibrary.js");
     // since TypeScript 5.3 the 'typescript.js' file must be patched, reference: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-53
     const typescriptFilePath = path.join(installationPath, "node_modules", "typescript", "lib", "typescript.js");
 
-    if (Lock.isLocked(installationPath)) {
-      for await (const now of setInterval(1000, Date.now(), { signal })) {
-        const startTime = Date.now();
-
-        if (!Lock.isLocked(installationPath)) {
-          break;
-        }
-
-        if (startTime - now > this.#timeout) {
-          throw new Error(`Lock wait timeout of ${this.#timeout / 1000}s was exceeded.`);
-        }
-      }
+    if (
+      await Lock.isLocked(installationPath, {
+        onDiagnostic: (text) => {
+          this.#onDiagnostic(Diagnostic.error([`Failed to install 'typescript@${compilerVersion}'.`, text]));
+        },
+        signal,
+        timeout: this.#timeout,
+      })
+    ) {
+      return;
     }
 
     if (existsSync(readyFilePath)) {
@@ -43,19 +43,23 @@ export class CompilerModuleWorker {
 
     EventEmitter.dispatch(["store:info", { compilerVersion, installationPath: this.#normalizePath(installationPath) }]);
 
-    await fs.mkdir(installationPath, { recursive: true });
+    try {
+      await fs.mkdir(installationPath, { recursive: true });
 
-    const lock = new Lock(installationPath);
+      const lock = new Lock(installationPath);
 
-    await fs.writeFile(path.join(installationPath, "package.json"), this.#getPackageJson(compilerVersion));
+      await fs.writeFile(path.join(installationPath, "package.json"), this.#getPackageJson(compilerVersion));
 
-    await this.#installPackage(installationPath, signal);
+      await this.#installPackage(installationPath, signal);
 
-    await fs.writeFile(tsserverFilePath, await this.#getPatched(compilerVersion, tsserverFilePath));
-    await fs.writeFile(typescriptFilePath, await this.#getPatched(compilerVersion, typescriptFilePath));
-    await fs.writeFile(readyFilePath, "");
+      await fs.writeFile(tsserverFilePath, await this.#getPatched(compilerVersion, tsserverFilePath));
+      await fs.writeFile(typescriptFilePath, await this.#getPatched(compilerVersion, typescriptFilePath));
+      await fs.writeFile(readyFilePath, "");
 
-    lock.release();
+      lock.release();
+    } catch (error) {
+      this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${compilerVersion}'.`, error));
+    }
 
     return tsserverFilePath;
   }
