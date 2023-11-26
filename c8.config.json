@@ -16,5 +16,6 @@
   "excludeAfterRemap": true,
   "mergeAsync": true,
   "reporter": ["lcov", "text"],
+  "reportsDir": "./coverage/e2e",
   "tempDirectory": "./coverage/temp"
 }

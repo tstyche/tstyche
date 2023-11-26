@@ -2,7 +2,9 @@
 const config = {
   clearMocks: true,
   collectCoverageFrom: ["src/**/*"],
+  coverageDirectory: "./coverage/unit",
   coverageProvider: "v8",
+  coverageReporters: ["lcov", "text"],
   extensionsToTreatAsEsm: [".ts", ".tsx"],
   injectGlobals: false,
   moduleFileExtensions: ["ts", "tsx", "js", "json", "node"],
