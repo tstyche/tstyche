@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.0-beta.5] - 2023-11-27
+
+### Changed
+
+- **Breaking:** Move retry logic to the `Lock` class ([#31](https://github.com/tstyche/tstyche/pull/31))
+- Bring back support for Node.js 16 ([#28](https://github.com/tstyche/tstyche/pull/28), [#27](https://github.com/tstyche/tstyche/pull/27))
+
+### Added
+
+- Add support for the `current` target tag ([#33](https://github.com/tstyche/tstyche/pull/33))
+
+### Fixed
+
+- Allow `.raiseError()` to take template literals as arguments. ([#35](https://github.com/tstyche/tstyche/pull/35))
+
 ## [1.0.0-beta.4] - 2023-11-24
 
 ### Added
@@ -40,6 +55,7 @@
 
 _First pre-release._
 
+[1.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.5
 [1.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.4
 [1.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.3
 [1.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.2
