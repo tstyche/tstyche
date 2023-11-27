@@ -599,7 +599,7 @@ Error: Expected only 1 type error, but 2 were raised.
 
   163 |     two(1111);
   164 |     two<string>("pass");
-> 165 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
+> 165 |   }).type.toRaiseError(\`Argument of type 'number' is not assignable to parameter of type 'string'\`);
       |           ^
   166 | });
   167 | 
@@ -616,7 +616,7 @@ Error: Expected only 1 type error, but 2 were raised.
     > 163 |     two(1111);
           |         ^
       164 |     two<string>("pass");
-      165 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
+      165 |   }).type.toRaiseError(\`Argument of type 'number' is not assignable to parameter of type 'string'\`);
       166 | });
 
             at ./__typetests__/toRaiseError.test.ts:163:9
@@ -627,7 +627,7 @@ Error: Expected only 1 type error, but 2 were raised.
       163 |     two(1111);
     > 164 |     two<string>("pass");
           |                 ^
-      165 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
+      165 |   }).type.toRaiseError(\`Argument of type 'number' is not assignable to parameter of type 'string'\`);
       166 | });
       167 | 
 
@@ -677,7 +677,7 @@ Error: Expected 3 type errors, but only 2 were raised.
   178 |     two<string>("pass");
 > 179 |   }).type.toRaiseError(
       |           ^
-  180 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+  180 |     \`Argument of type 'number' is not assignable to parameter of type 'string'\`,
   181 |     "Expected 0 arguments",
   182 |     "Expected 2 arguments",
 
@@ -693,7 +693,7 @@ Error: Expected 3 type errors, but only 2 were raised.
           |         ^
       178 |     two<string>("pass");
       179 |   }).type.toRaiseError(
-      180 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+      180 |     \`Argument of type 'number' is not assignable to parameter of type 'string'\`,
 
             at ./__typetests__/toRaiseError.test.ts:177:9
 
@@ -704,7 +704,7 @@ Error: Expected 3 type errors, but only 2 were raised.
     > 178 |     two<string>("pass");
           |                 ^
       179 |   }).type.toRaiseError(
-      180 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
+      180 |     \`Argument of type 'number' is not assignable to parameter of type 'string'\`,
       181 |     "Expected 0 arguments",
 
             at ./__typetests__/toRaiseError.test.ts:178:17
