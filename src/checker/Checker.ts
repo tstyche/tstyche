@@ -31,9 +31,12 @@ export class Checker {
 
   #assertStringsOrNumbers(
     nodes: ts.NodeArray<ts.Expression>,
-  ): nodes is ts.NodeArray<ts.StringLiteral | ts.NumericLiteral> {
+  ): nodes is ts.NodeArray<ts.StringLiteral | ts.NumericLiteral | ts.NoSubstitutionTemplateLiteral> {
     return nodes.every(
-      (expression) => this.compiler.isStringLiteral(expression) || this.compiler.isNumericLiteral(expression),
+      (expression) =>
+        this.compiler.isStringLiteral(expression) ||
+        this.compiler.isNumericLiteral(expression) ||
+        this.compiler.isNoSubstitutionTemplateLiteral(expression),
     );
   }
 
@@ -390,7 +393,10 @@ export class Checker {
     }
   }
 
-  #matchExpectedError(diagnostic: ts.Diagnostic, argument: ts.StringLiteral | ts.NumericLiteral) {
+  #matchExpectedError(
+    diagnostic: ts.Diagnostic,
+    argument: ts.StringLiteral | ts.NumericLiteral | ts.NoSubstitutionTemplateLiteral,
+  ) {
     if (this.compiler.isStringLiteral(argument)) {
       return this.compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(argument.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
     }
