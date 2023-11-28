@@ -10,6 +10,10 @@ type Worker<T> = {
 };
 
 interface Sample {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  123: number;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  789?: string | undefined;
   isBusy?: boolean | undefined;
   runTest: (a: string, b: number) => void;
   setup: () => void;
@@ -41,11 +45,17 @@ test("edge cases", () => {
   expect("abc").type.not.toHaveProperty("startsWith");
 });
 
-describe("received type", () => {
-  test("has expected property key", () => {
+describe("when source is a type", () => {
+  test("has target property key", () => {
     expect<Worker<Sample>>().type.toHaveProperty("runTest");
 
     expect<Worker<Sample>>().type.not.toHaveProperty("runTest");
+  });
+
+  test("has expected number property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty(123);
+
+    expect<Worker<Sample>>().type.not.toHaveProperty(123);
   });
 
   test("does NOT have expected property key", () => {
@@ -54,10 +64,22 @@ describe("received type", () => {
     expect<Worker<Sample>>().type.toHaveProperty("endTest");
   });
 
+  test("does NOT have expected number property key", () => {
+    expect<Worker<Sample>>().type.not.toHaveProperty(456);
+
+    expect<Worker<Sample>>().type.toHaveProperty(456);
+  });
+
   test("has expected property key, but it is optional", () => {
     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
 
     expect<Worker<Sample>>().type.toHaveProperty("isBusy");
+  });
+
+  test("has expected number property key, but it is optional", () => {
+    expect<Worker<Sample>>().type.not.toHaveProperty(789);
+
+    expect<Worker<Sample>>().type.toHaveProperty(789);
   });
 
   test("has expected optional property key", () => {
@@ -66,10 +88,22 @@ describe("received type", () => {
     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy?");
   });
 
+  test("has expected optional number property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty("789?");
+
+    expect<Worker<Sample>>().type.not.toHaveProperty("789?");
+  });
+
   test("does NOT have expected optional property key", () => {
     expect<Worker<Sample>>().type.not.toHaveProperty("isRunning?");
 
     expect<Worker<Sample>>().type.toHaveProperty("isRunning?");
+  });
+
+  test("does NOT have expected optional number property key", () => {
+    expect<Worker<Sample>>().type.not.toHaveProperty("234?");
+
+    expect<Worker<Sample>>().type.toHaveProperty("234?");
   });
 
   test("has expected property key, but it is NOT optional", () => {
@@ -77,9 +111,15 @@ describe("received type", () => {
 
     expect<Worker<Sample>>().type.toHaveProperty("runTest?");
   });
+
+  test("has expected optional number property key, but it is NOT optional", () => {
+    expect<Worker<Sample>>().type.toHaveProperty("123?");
+
+    expect<Worker<Sample>>().type.not.toHaveProperty("123?");
+  });
 });
 
-// describe("received value", () => {
+// describe("source is a value", () => {
 //   test("equals expected type", () => {
 //     expect(getNames()).type.toEqual<{ first: string; last?: string }>();
 //     expect(getNames()).type.toEqual<Names>();
