@@ -29,15 +29,21 @@ export class Checker {
     this.#assertNonNullish(assertion.typeChecker, "The 'typeChecker' was not provided.");
   }
 
+  #assertStringsOrNumber(
+    expression: ts.Expression | undefined,
+  ): expression is ts.StringLiteral | ts.NumericLiteral | ts.NoSubstitutionTemplateLiteral {
+    return (
+      expression != null &&
+      (this.compiler.isStringLiteral(expression) ||
+        this.compiler.isNumericLiteral(expression) ||
+        this.compiler.isNoSubstitutionTemplateLiteral(expression))
+    );
+  }
+
   #assertStringsOrNumbers(
     nodes: ts.NodeArray<ts.Expression>,
   ): nodes is ts.NodeArray<ts.StringLiteral | ts.NumericLiteral | ts.NoSubstitutionTemplateLiteral> {
-    return nodes.every(
-      (expression) =>
-        this.compiler.isStringLiteral(expression) ||
-        this.compiler.isNumericLiteral(expression) ||
-        this.compiler.isNoSubstitutionTemplateLiteral(expression),
-    );
+    return nodes.every((expression) => this.#assertStringsOrNumber(expression));
   }
 
   explain(assertion: Assertion): Array<Diagnostic> {
