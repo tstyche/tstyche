@@ -11,7 +11,8 @@
     "typetests/**/*",
     "**/__tests__/**/*",
     "jest.config.js",
-    "rollup.config.js"
+    "rollup.config.js",
+    "**/types.ts"
   ],
   "excludeAfterRemap": true,
   "mergeAsync": true,
