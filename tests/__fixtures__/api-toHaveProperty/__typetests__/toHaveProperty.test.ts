@@ -19,6 +19,7 @@ interface Sample {
 test("edge cases", () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect<any>().type.toHaveProperty("abc");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect<any>().type.not.toHaveProperty("abc");
 
   expect<never>().type.not.toHaveProperty("abc");
