@@ -128,6 +128,11 @@ export class Checker {
         ];
       }
 
+      case "toHaveProperty": {
+        // TODO
+        return [];
+      }
+
       case "toMatch": {
         this.#assertNonNullishSourceType(assertion);
         this.#assertNonNullishTargetType(assertion);
@@ -352,6 +357,46 @@ export class Checker {
         );
 
         return assertion.typeChecker.isTypeIdenticalTo(assertion.sourceType.type, assertion.targetType.type);
+      }
+
+      case "toHaveProperty": {
+        this.#assertNonNullishSourceType(assertion);
+        if (!this.#assertStringsOrNumber(assertion.targetArguments[0])) {
+          throw new Error("An argument for 'target' must be of type 'string | number'.");
+        }
+
+        if (this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Any)) {
+          return true;
+        }
+
+        if (
+          this.#hasTypeFlag(
+            assertion,
+            this.compiler.TypeFlags.Never |
+              this.compiler.TypeFlags.Null |
+              this.compiler.TypeFlags.Undefined |
+              this.compiler.TypeFlags.Unknown |
+              this.compiler.TypeFlags.Void,
+          )
+        ) {
+          return false;
+        }
+
+        let expectedArgumentText = assertion.targetArguments[0].text;
+        let isOptional = false;
+
+        if (expectedArgumentText.endsWith("?")) {
+          expectedArgumentText = expectedArgumentText.slice(0, -1);
+          isOptional = true;
+        }
+
+        return assertion.sourceType.type
+          .getProperties()
+          .some(
+            (property) =>
+              property.name === expectedArgumentText &&
+              isOptional === Boolean(property.flags & this.compiler.SymbolFlags.Optional),
+          );
       }
 
       case "toMatch": {
