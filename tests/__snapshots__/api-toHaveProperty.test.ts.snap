@@ -3,159 +3,159 @@
 exports[`toHaveProperty: stderr 1`] = `
 "Error: Property 'abc' exist on type 'any'.
 
-  20 |   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   21 |   expect<any>().type.toHaveProperty("abc");
-> 22 |   expect<any>().type.not.toHaveProperty("abc");
+  22 |   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+> 23 |   expect<any>().type.not.toHaveProperty("abc");
      |                          ^
-  23 | 
-  24 |   expect<never>().type.not.toHaveProperty("abc");
-  25 |   expect<never>().type.toHaveProperty("abc");
+  24 | 
+  25 |   expect<never>().type.not.toHaveProperty("abc");
+  26 |   expect<never>().type.toHaveProperty("abc");
 
-       at ./__typetests__/toHaveProperty.test.ts:22:26 ❭ edge cases
+       at ./__typetests__/toHaveProperty.test.ts:23:26 ❭ edge cases
 
 Error: Property 'abc' does not exist on type 'never'.
 
-  23 | 
-  24 |   expect<never>().type.not.toHaveProperty("abc");
-> 25 |   expect<never>().type.toHaveProperty("abc");
+  24 | 
+  25 |   expect<never>().type.not.toHaveProperty("abc");
+> 26 |   expect<never>().type.toHaveProperty("abc");
      |                        ^
-  26 | 
-  27 |   expect<null>().type.not.toHaveProperty("abc");
-  28 |   expect<null>().type.toHaveProperty("abc");
+  27 | 
+  28 |   expect<null>().type.not.toHaveProperty("abc");
+  29 |   expect<null>().type.toHaveProperty("abc");
 
-       at ./__typetests__/toHaveProperty.test.ts:25:24 ❭ edge cases
+       at ./__typetests__/toHaveProperty.test.ts:26:24 ❭ edge cases
 
 Error: Property 'abc' does not exist on type 'null'.
 
-  26 | 
-  27 |   expect<null>().type.not.toHaveProperty("abc");
-> 28 |   expect<null>().type.toHaveProperty("abc");
+  27 | 
+  28 |   expect<null>().type.not.toHaveProperty("abc");
+> 29 |   expect<null>().type.toHaveProperty("abc");
      |                       ^
-  29 | 
-  30 |   expect<undefined>().type.not.toHaveProperty("abc");
-  31 |   expect<undefined>().type.toHaveProperty("abc");
+  30 | 
+  31 |   expect<undefined>().type.not.toHaveProperty("abc");
+  32 |   expect<undefined>().type.toHaveProperty("abc");
 
-       at ./__typetests__/toHaveProperty.test.ts:28:23 ❭ edge cases
+       at ./__typetests__/toHaveProperty.test.ts:29:23 ❭ edge cases
 
 Error: Property 'abc' does not exist on type 'undefined'.
 
-  29 | 
-  30 |   expect<undefined>().type.not.toHaveProperty("abc");
-> 31 |   expect<undefined>().type.toHaveProperty("abc");
+  30 | 
+  31 |   expect<undefined>().type.not.toHaveProperty("abc");
+> 32 |   expect<undefined>().type.toHaveProperty("abc");
      |                            ^
-  32 | 
-  33 |   expect<unknown>().type.not.toHaveProperty("abc");
-  34 |   expect<unknown>().type.toHaveProperty("abc");
+  33 | 
+  34 |   expect<unknown>().type.not.toHaveProperty("abc");
+  35 |   expect<unknown>().type.toHaveProperty("abc");
 
-       at ./__typetests__/toHaveProperty.test.ts:31:28 ❭ edge cases
+       at ./__typetests__/toHaveProperty.test.ts:32:28 ❭ edge cases
 
 Error: Property 'abc' does not exist on type 'unknown'.
 
-  32 | 
-  33 |   expect<unknown>().type.not.toHaveProperty("abc");
-> 34 |   expect<unknown>().type.toHaveProperty("abc");
+  33 | 
+  34 |   expect<unknown>().type.not.toHaveProperty("abc");
+> 35 |   expect<unknown>().type.toHaveProperty("abc");
      |                          ^
-  35 | 
-  36 |   expect<void>().type.not.toHaveProperty("abc");
-  37 |   expect<void>().type.toHaveProperty("abc");
+  36 | 
+  37 |   expect<void>().type.not.toHaveProperty("abc");
+  38 |   expect<void>().type.toHaveProperty("abc");
 
-       at ./__typetests__/toHaveProperty.test.ts:34:26 ❭ edge cases
+       at ./__typetests__/toHaveProperty.test.ts:35:26 ❭ edge cases
 
 Error: Property 'abc' does not exist on type 'void'.
 
-  35 | 
-  36 |   expect<void>().type.not.toHaveProperty("abc");
-> 37 |   expect<void>().type.toHaveProperty("abc");
+  36 | 
+  37 |   expect<void>().type.not.toHaveProperty("abc");
+> 38 |   expect<void>().type.toHaveProperty("abc");
      |                       ^
-  38 | 
-  39 |   expect("abc").type.toHaveProperty("startsWith");
-  40 |   expect("abc").type.not.toHaveProperty("startsWith");
+  39 | 
+  40 |   expect("abc").type.toHaveProperty("startsWith");
+  41 |   expect("abc").type.not.toHaveProperty("startsWith");
 
-       at ./__typetests__/toHaveProperty.test.ts:37:23 ❭ edge cases
+       at ./__typetests__/toHaveProperty.test.ts:38:23 ❭ edge cases
 
 Error: Property 'startsWith' exist on type '"abc"'.
 
-  38 | 
-  39 |   expect("abc").type.toHaveProperty("startsWith");
-> 40 |   expect("abc").type.not.toHaveProperty("startsWith");
+  39 | 
+  40 |   expect("abc").type.toHaveProperty("startsWith");
+> 41 |   expect("abc").type.not.toHaveProperty("startsWith");
      |                          ^
-  41 | });
-  42 | 
-  43 | describe("received type", () => {
+  42 | });
+  43 | 
+  44 | describe("received type", () => {
 
-       at ./__typetests__/toHaveProperty.test.ts:40:26 ❭ edge cases
+       at ./__typetests__/toHaveProperty.test.ts:41:26 ❭ edge cases
 
 Error: Property 'runTest' exist on type 'Worker<Sample>'.
 
-  45 |     expect<Worker<Sample>>().type.toHaveProperty("runTest");
-  46 | 
-> 47 |     expect<Worker<Sample>>().type.not.toHaveProperty("runTest");
+  46 |     expect<Worker<Sample>>().type.toHaveProperty("runTest");
+  47 | 
+> 48 |     expect<Worker<Sample>>().type.not.toHaveProperty("runTest");
      |                                       ^
-  48 |   });
-  49 | 
-  50 |   test("does NOT have expected property key", () => {
+  49 |   });
+  50 | 
+  51 |   test("does NOT have expected property key", () => {
 
-       at ./__typetests__/toHaveProperty.test.ts:47:39 ❭ received type ❭ has expected property key
+       at ./__typetests__/toHaveProperty.test.ts:48:39 ❭ received type ❭ has expected property key
 
 Error: Property 'endTest' does not exist on type 'Worker<Sample>'.
 
-  51 |     expect<Worker<Sample>>().type.not.toHaveProperty("endTest");
-  52 | 
-> 53 |     expect<Worker<Sample>>().type.toHaveProperty("endTest");
+  52 |     expect<Worker<Sample>>().type.not.toHaveProperty("endTest");
+  53 | 
+> 54 |     expect<Worker<Sample>>().type.toHaveProperty("endTest");
      |                                   ^
-  54 |   });
-  55 | 
-  56 |   test("has expected property key, but it is optional", () => {
+  55 |   });
+  56 | 
+  57 |   test("has expected property key, but it is optional", () => {
 
-       at ./__typetests__/toHaveProperty.test.ts:53:35 ❭ received type ❭ does NOT have expected property key
+       at ./__typetests__/toHaveProperty.test.ts:54:35 ❭ received type ❭ does NOT have expected property key
 
 Error: Property 'isBusy?' is optional in type 'Worker<Sample>'.
 
-  57 |     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
-  58 | 
-> 59 |     expect<Worker<Sample>>().type.toHaveProperty("isBusy");
+  58 |     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
+  59 | 
+> 60 |     expect<Worker<Sample>>().type.toHaveProperty("isBusy");
      |                                   ^
-  60 |   });
-  61 | 
-  62 |   test("has expected optional property key", () => {
+  61 |   });
+  62 | 
+  63 |   test("has expected optional property key", () => {
 
-       at ./__typetests__/toHaveProperty.test.ts:59:35 ❭ received type ❭ has expected property key, but it is optional
+       at ./__typetests__/toHaveProperty.test.ts:60:35 ❭ received type ❭ has expected property key, but it is optional
 
 Error: Optional property 'isBusy?' exist on type 'Worker<Sample>'.
 
-  63 |     expect<Worker<Sample>>().type.toHaveProperty("isBusy?");
-  64 | 
-> 65 |     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy?");
+  64 |     expect<Worker<Sample>>().type.toHaveProperty("isBusy?");
+  65 | 
+> 66 |     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy?");
      |                                       ^
-  66 |   });
-  67 | 
-  68 |   test("does NOT have expected optional property key", () => {
+  67 |   });
+  68 | 
+  69 |   test("does NOT have expected optional property key", () => {
 
-       at ./__typetests__/toHaveProperty.test.ts:65:39 ❭ received type ❭ has expected optional property key
+       at ./__typetests__/toHaveProperty.test.ts:66:39 ❭ received type ❭ has expected optional property key
 
 Error: Optional property 'isRunning?' does not exist on type 'Worker<Sample>'.
 
-  69 |     expect<Worker<Sample>>().type.not.toHaveProperty("isRunning?");
-  70 | 
-> 71 |     expect<Worker<Sample>>().type.toHaveProperty("isRunning?");
+  70 |     expect<Worker<Sample>>().type.not.toHaveProperty("isRunning?");
+  71 | 
+> 72 |     expect<Worker<Sample>>().type.toHaveProperty("isRunning?");
      |                                   ^
-  72 |   });
-  73 | 
-  74 |   test("has expected property key, but it is NOT optional", () => {
+  73 |   });
+  74 | 
+  75 |   test("has expected property key, but it is NOT optional", () => {
 
-       at ./__typetests__/toHaveProperty.test.ts:71:35 ❭ received type ❭ does NOT have expected optional property key
+       at ./__typetests__/toHaveProperty.test.ts:72:35 ❭ received type ❭ does NOT have expected optional property key
 
 Error: Property 'runTest' is not optional in type 'Worker<Sample>'.
 
-  75 |     expect<Worker<Sample>>().type.not.toHaveProperty("runTest?");
-  76 | 
-> 77 |     expect<Worker<Sample>>().type.toHaveProperty("runTest?");
+  76 |     expect<Worker<Sample>>().type.not.toHaveProperty("runTest?");
+  77 | 
+> 78 |     expect<Worker<Sample>>().type.toHaveProperty("runTest?");
      |                                   ^
-  78 |   });
-  79 | });
-  80 | 
+  79 |   });
+  80 | });
+  81 | 
 
-       at ./__typetests__/toHaveProperty.test.ts:77:35 ❭ received type ❭ has expected property key, but it is NOT optional
+       at ./__typetests__/toHaveProperty.test.ts:78:35 ❭ received type ❭ has expected property key, but it is NOT optional
 
 "
 `;
