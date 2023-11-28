@@ -1,2 +1,2 @@
 export { StoreService } from "./StoreService.js";
-export type { TypeChecker } from "./TypeChecker.js";
+export type { TypeChecker } from "./types.js";
