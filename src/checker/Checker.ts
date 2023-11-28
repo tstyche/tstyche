@@ -446,20 +446,20 @@ export class Checker {
           return false;
         }
 
-        let expectedArgumentText = assertion.targetArguments[0].text;
-        let isOptional = false;
+        let targetArgumentText = assertion.targetArguments[0].text;
+        let targetIsOptional = false;
 
-        if (expectedArgumentText.endsWith("?")) {
-          expectedArgumentText = expectedArgumentText.slice(0, -1);
-          isOptional = true;
+        if (targetArgumentText.endsWith("?")) {
+          targetArgumentText = targetArgumentText.slice(0, -1);
+          targetIsOptional = true;
         }
 
         return assertion.sourceType.type
           .getProperties()
           .some(
             (property) =>
-              property.name === expectedArgumentText &&
-              isOptional === Boolean(property.flags & this.compiler.SymbolFlags.Optional),
+              property.name === targetArgumentText &&
+              targetIsOptional === Boolean(property.flags & this.compiler.SymbolFlags.Optional),
           );
       }
 
