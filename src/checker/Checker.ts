@@ -31,12 +31,9 @@ export class Checker {
 
   #assertStringsOrNumbers(
     nodes: ts.NodeArray<ts.Expression>,
-  ): nodes is ts.NodeArray<ts.StringLiteral | ts.NumericLiteral | ts.NoSubstitutionTemplateLiteral> {
+  ): nodes is ts.NodeArray<ts.StringLiteralLike | ts.NumericLiteral> {
     return nodes.every(
-      (expression) =>
-        this.compiler.isStringLiteral(expression) ||
-        this.compiler.isNumericLiteral(expression) ||
-        this.compiler.isNoSubstitutionTemplateLiteral(expression),
+      (expression) => this.compiler.isStringLiteralLike(expression) || this.compiler.isNumericLiteral(expression),
     );
   }
 
@@ -206,7 +203,7 @@ export class Checker {
           const isMatch = this.#matchExpectedError(diagnostic, argument);
 
           if (!assertion.isNot && !isMatch) {
-            const expectedText = this.compiler.isStringLiteral(argument)
+            const expectedText = this.compiler.isStringLiteralLike(argument)
               ? `matching substring '${argument.text}'`
               : `with code ${argument.text}`;
 
@@ -221,7 +218,7 @@ export class Checker {
           }
 
           if (assertion.isNot && isMatch) {
-            const expectedText = this.compiler.isStringLiteral(argument)
+            const expectedText = this.compiler.isStringLiteralLike(argument)
               ? `matching substring '${argument.text}'`
               : `with code ${argument.text}`;
 
@@ -374,7 +371,7 @@ export class Checker {
         }
 
         return assertion.targetArguments.every((expectedArgument, index) => {
-          if (this.compiler.isStringLiteral(expectedArgument)) {
+          if (this.compiler.isStringLiteralLike(expectedArgument)) {
             return this.compiler
               .flattenDiagnosticMessageText(assertion.diagnostics[index]?.messageText, " ", 0)
               .includes(expectedArgument.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
@@ -393,11 +390,8 @@ export class Checker {
     }
   }
 
-  #matchExpectedError(
-    diagnostic: ts.Diagnostic,
-    argument: ts.StringLiteral | ts.NumericLiteral | ts.NoSubstitutionTemplateLiteral,
-  ) {
-    if (this.compiler.isStringLiteral(argument)) {
+  #matchExpectedError(diagnostic: ts.Diagnostic, argument: ts.StringLiteralLike | ts.NumericLiteral) {
+    if (this.compiler.isStringLiteralLike(argument)) {
       return this.compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(argument.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
     }
 
