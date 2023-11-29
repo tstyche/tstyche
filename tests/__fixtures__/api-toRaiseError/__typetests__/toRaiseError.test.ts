@@ -46,6 +46,11 @@ test("expression raises a type error with matching message", () => {
   expect(one("fail")).type.not.toRaiseError("Expected 0 arguments");
 });
 
+test("expression raises a type error with matching message passed as a template literal", () => {
+  expect(one("pass")).type.toRaiseError(`Expected 0 arguments`);
+  expect(one("fail")).type.not.toRaiseError(`Expected 0 arguments`);
+});
+
 test("expression raises type error with not matching message", () => {
   expect(one("pass")).type.not.toRaiseError("Expected 2 arguments");
   expect(one("fail")).type.toRaiseError("Expected 2 arguments");
@@ -54,6 +59,11 @@ test("expression raises type error with not matching message", () => {
 test("type definition raises a type error with matching message", () => {
   expect<One>().type.toRaiseError("requires 1 type argument");
   expect<One>().type.not.toRaiseError("requires 1 type argument");
+});
+
+test("type definition raises a type error with matching message passed as a template literal", () => {
+  expect<One>().type.toRaiseError(`requires 1 type argument`);
+  expect<One>().type.not.toRaiseError(`requires 1 type argument`);
 });
 
 test("type definition raises a type error with not matching message", () => {
@@ -162,7 +172,7 @@ test("expression raises more type errors than expected messages", () => {
   expect(() => {
     two(1111);
     two<string>("pass");
-  }).type.toRaiseError(`Argument of type 'number' is not assignable to parameter of type 'string'`);
+  }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
 });
 
 test("expression raises more type errors than expected codes", () => {
@@ -177,7 +187,7 @@ test("expression raises less type errors than expected messages", () => {
     two(1111);
     two<string>("pass");
   }).type.toRaiseError(
-    `Argument of type 'number' is not assignable to parameter of type 'string'`,
+    "Argument of type 'number' is not assignable to parameter of type 'string'",
     "Expected 0 arguments",
     "Expected 2 arguments",
   );
