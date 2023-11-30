@@ -136,9 +136,13 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the target property key exists on the source type.
+   * Checks if an optional property key exists on the source type.
    */
-  toHaveProperty: (target: string | number) => void;
+  toHaveOptionalProperty: (key: PropertyKey) => void;
+  /**
+   * Checks if a property key exists on the source type.
+   */
+  toHaveProperty: (key: PropertyKey) => void;
   /**
    * Checks if the target type is a subtype the source type.
    */
