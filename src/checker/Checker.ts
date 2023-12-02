@@ -146,8 +146,8 @@ export class Checker {
         return [
           Diagnostic.error(
             assertion.isNot
-              ? `Property '${targetArgumentText}' is defined in type '${sourceText}'.`
-              : `Property '${targetArgumentText}' is not defined in type '${sourceText}'.`,
+              ? `Property '${targetArgumentText}' exists on type '${sourceText}'.`
+              : `Property '${targetArgumentText}' does not exist on type '${sourceText}'.`,
             origin,
           ),
         ];
@@ -382,6 +382,23 @@ export class Checker {
       case "toHaveProperty": {
         this.#assertNonNullishSourceType(assertion);
         this.#assertNonNullishTargetType(assertion);
+
+        if (this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Any)) {
+          return true;
+        }
+
+        if (
+          this.#hasTypeFlag(
+            assertion,
+            this.compiler.TypeFlags.Never |
+              this.compiler.TypeFlags.Null |
+              this.compiler.TypeFlags.Undefined |
+              this.compiler.TypeFlags.Unknown |
+              this.compiler.TypeFlags.Void,
+          )
+        ) {
+          return false;
+        }
 
         let targetArgumentText: string;
 
