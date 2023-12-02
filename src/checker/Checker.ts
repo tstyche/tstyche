@@ -31,7 +31,7 @@ export class Checker {
 
   #assertStringsOrNumber(
     expression: ts.Expression | undefined,
-  ): expression is ts.StringLiteral | ts.NumericLiteral | ts.NoSubstitutionTemplateLiteral {
+  ): expression is ts.StringLiteralLike | ts.NumericLiteral {
     return (
       expression != null &&
       (this.compiler.isStringLiteralLike(expression) || this.compiler.isNumericLiteral(expression))
@@ -128,70 +128,28 @@ export class Checker {
 
       case "toHaveProperty": {
         this.#assertNonNullishSourceType(assertion);
-        if (!this.#assertStringsOrNumber(assertion.targetArguments[0])) {
-          throw new Error("An argument for 'target' must be of type 'string | number'.");
-        }
+        this.#assertNonNullishTargetType(assertion);
 
         const sourceText = assertion.typeChecker.typeToString(assertion.sourceType.type);
+        let targetArgumentText: string;
 
-        const targetArgumentText = assertion.targetArguments[0].text;
-        let targetIsOptional = false;
-        let targetText: string;
-
-        if (targetArgumentText.endsWith("?")) {
-          targetText = `Optional property`;
-          targetIsOptional = true;
+        if (assertion.targetType.type.flags & this.compiler.TypeFlags.StringOrNumberLiteral) {
+          targetArgumentText = String((assertion.targetType.type as ts.StringLiteralType | ts.NumberLiteralType).value);
+        } else if (assertion.targetType.type.flags & this.compiler.TypeFlags.UniqueESSymbol) {
+          targetArgumentText = `[${this.compiler.unescapeLeadingUnderscores(
+            (assertion.targetType.type as ts.UniqueESSymbolType).symbol.escapedName,
+          )}]`;
         } else {
-          targetText = `Property`;
-        }
-
-        if (this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Any)) {
-          return [Diagnostic.error(`Property '${targetArgumentText}' exist on type 'any'.`, origin)];
-        }
-
-        if (
-          this.#hasTypeFlag(
-            assertion,
-            this.compiler.TypeFlags.Never |
-              this.compiler.TypeFlags.Null |
-              this.compiler.TypeFlags.Undefined |
-              this.compiler.TypeFlags.Unknown |
-              this.compiler.TypeFlags.Void,
-          )
-        ) {
-          return [Diagnostic.error(`Property '${targetArgumentText}' does not exist on type '${sourceText}'.`, origin)];
-        }
-
-        const hasProperty = assertion.sourceType.type
-          .getProperties()
-          .some(
-            (property) => property.name === (targetIsOptional ? targetArgumentText.slice(0, -1) : targetArgumentText),
-          );
-
-        if (hasProperty) {
-          if (targetIsOptional) {
-            return [
-              Diagnostic.error(
-                assertion.isNot
-                  ? `${targetText} '${targetArgumentText}' exist on type '${sourceText}'.`
-                  : `Property '${targetArgumentText.slice(0, -1)}' is not optional in type '${sourceText}'.`,
-                origin,
-              ),
-            ];
-          } else {
-            return [
-              Diagnostic.error(
-                assertion.isNot
-                  ? `${targetText} '${targetArgumentText}' exist on type '${sourceText}'.`
-                  : `Property '${targetArgumentText}?' is optional in type '${sourceText}'.`,
-                origin,
-              ),
-            ];
-          }
+          throw new Error("An argument for 'key' must be of type 'string | number | symbol'.");
         }
 
         return [
-          Diagnostic.error(`${targetText} '${targetArgumentText}' does not exist on type '${sourceText}'.`, origin),
+          Diagnostic.error(
+            assertion.isNot
+              ? `Property '${targetArgumentText}' is defined in type '${sourceText}'.`
+              : `Property '${targetArgumentText}' is not defined in type '${sourceText}'.`,
+            origin,
+          ),
         ];
       }
 
@@ -423,42 +381,23 @@ export class Checker {
 
       case "toHaveProperty": {
         this.#assertNonNullishSourceType(assertion);
-        if (!this.#assertStringsOrNumber(assertion.targetArguments[0])) {
-          throw new Error("An argument for 'target' must be of type 'string | number'.");
-        }
+        this.#assertNonNullishTargetType(assertion);
 
-        if (this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Any)) {
-          return true;
-        }
+        let targetArgumentText: string;
 
-        if (
-          this.#hasTypeFlag(
-            assertion,
-            this.compiler.TypeFlags.Never |
-              this.compiler.TypeFlags.Null |
-              this.compiler.TypeFlags.Undefined |
-              this.compiler.TypeFlags.Unknown |
-              this.compiler.TypeFlags.Void,
-          )
-        ) {
-          return false;
-        }
-
-        let targetArgumentText = assertion.targetArguments[0].text;
-        let targetIsOptional = false;
-
-        if (targetArgumentText.endsWith("?")) {
-          targetArgumentText = targetArgumentText.slice(0, -1);
-          targetIsOptional = true;
-        }
-
-        return assertion.sourceType.type
-          .getProperties()
-          .some(
-            (property) =>
-              property.name === targetArgumentText &&
-              targetIsOptional === Boolean(property.flags & this.compiler.SymbolFlags.Optional),
+        if (assertion.targetType.type.flags & this.compiler.TypeFlags.StringOrNumberLiteral) {
+          targetArgumentText = String((assertion.targetType.type as ts.StringLiteralType | ts.NumberLiteralType).value);
+        } else if (assertion.targetType.type.flags & this.compiler.TypeFlags.UniqueESSymbol) {
+          targetArgumentText = this.compiler.unescapeLeadingUnderscores(
+            (assertion.targetType.type as ts.UniqueESSymbolType).escapedName,
           );
+        } else {
+          throw new Error("An argument for 'key' must be of type 'string | number | symbol'.");
+        }
+
+        return assertion.sourceType.type.getProperties().some((property) => {
+          return this.compiler.unescapeLeadingUnderscores(property.escapedName) === targetArgumentText;
+        });
       }
 
       case "toMatch": {
