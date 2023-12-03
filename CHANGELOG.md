@@ -1,19 +1,29 @@
 # Changelog
 
+## [1.0.0-beta.6] - 2023-12-03
+
+### Added
+
+- **New!** Add `.toHaveProperty()` matcher ([#36](https://github.com/tstyche/tstyche/pull/36))
+
+### Fixed
+
+- Accept template literals as arguments of the `.toRaiseError()` matcher ([#38](https://github.com/tstyche/tstyche/pull/38))
+
 ## [1.0.0-beta.5] - 2023-11-27
 
 ### Changed
 
-- **Breaking:** Move retry logic to the `Lock` class ([#31](https://github.com/tstyche/tstyche/pull/31))
+- **Breaking!** Move retry logic to the `Lock` class ([#31](https://github.com/tstyche/tstyche/pull/31))
 - Bring back support for Node.js 16 ([#28](https://github.com/tstyche/tstyche/pull/28), [#27](https://github.com/tstyche/tstyche/pull/27))
 
 ### Added
 
-- Add support for the `current` target tag ([#33](https://github.com/tstyche/tstyche/pull/33))
+- **New!** Add support for the `current` target tag ([#33](https://github.com/tstyche/tstyche/pull/33))
 
 ### Fixed
 
-- Allow `.raiseError()` to take template literals as arguments. ([#35](https://github.com/tstyche/tstyche/pull/35))
+- Allow `.raiseError()` to take template literals as arguments ([#35](https://github.com/tstyche/tstyche/pull/35))
 
 ## [1.0.0-beta.4] - 2023-11-24
 
@@ -23,9 +33,9 @@
 
 ### Removed
 
-- **Breaking:** Remove the `context()` helper ([#24](https://github.com/tstyche/tstyche/pull/24))
-- **Breaking:** Drop support for Node.js 16 ([#22](https://github.com/tstyche/tstyche/pull/22))
-- **Breaking:** Rename methods of the `StoreService` class ([`5d74201`](https://github.com/tstyche/tstyche/commit/5d74201))
+- **Breaking!** Remove the `context()` helper ([#24](https://github.com/tstyche/tstyche/pull/24))
+- **Breaking!** Drop support for Node.js 16 ([#22](https://github.com/tstyche/tstyche/pull/22))
+- **Breaking!** Rename methods of the `StoreService` class ([`5d74201`](https://github.com/tstyche/tstyche/commit/5d74201))
 
 ### Fixed
 
@@ -55,6 +65,7 @@
 
 _First pre-release._
 
+[1.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.6
 [1.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.5
 [1.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.4
 [1.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.3
