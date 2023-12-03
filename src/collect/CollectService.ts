@@ -21,6 +21,7 @@ export class CollectService {
     "toBeUnknown",
     "toBeVoid",
     "toEqual",
+    "toHaveProperty",
     "toMatch",
     "toRaiseError",
   ];

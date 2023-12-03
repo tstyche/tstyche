@@ -29,12 +29,19 @@ export class Checker {
     this.#assertNonNullish(assertion.typeChecker, "The 'typeChecker' was not provided.");
   }
 
+  #assertStringsOrNumber(
+    expression: ts.Expression | undefined,
+  ): expression is ts.StringLiteralLike | ts.NumericLiteral {
+    return (
+      expression != null &&
+      (this.compiler.isStringLiteralLike(expression) || this.compiler.isNumericLiteral(expression))
+    );
+  }
+
   #assertStringsOrNumbers(
     nodes: ts.NodeArray<ts.Expression>,
   ): nodes is ts.NodeArray<ts.StringLiteralLike | ts.NumericLiteral> {
-    return nodes.every(
-      (expression) => this.compiler.isStringLiteralLike(expression) || this.compiler.isNumericLiteral(expression),
-    );
+    return nodes.every((expression) => this.#assertStringsOrNumber(expression));
   }
 
   explain(assertion: Assertion): Array<Diagnostic> {
@@ -114,6 +121,33 @@ export class Checker {
             assertion.isNot
               ? `Type '${targetTypeText}' is identical to type '${sourceTypeText}'.`
               : `Type '${targetTypeText}' is not identical to type '${sourceTypeText}'.`,
+            origin,
+          ),
+        ];
+      }
+
+      case "toHaveProperty": {
+        this.#assertNonNullishSourceType(assertion);
+        this.#assertNonNullishTargetType(assertion);
+
+        const sourceText = assertion.typeChecker.typeToString(assertion.sourceType.type);
+        let targetArgumentText: string;
+
+        if (assertion.targetType.type.flags & this.compiler.TypeFlags.StringOrNumberLiteral) {
+          targetArgumentText = String((assertion.targetType.type as ts.StringLiteralType | ts.NumberLiteralType).value);
+        } else if (assertion.targetType.type.flags & this.compiler.TypeFlags.UniqueESSymbol) {
+          targetArgumentText = `[${this.compiler.unescapeLeadingUnderscores(
+            (assertion.targetType.type as ts.UniqueESSymbolType).symbol.escapedName,
+          )}]`;
+        } else {
+          throw new Error("An argument for 'key' must be of type 'string | number | symbol'.");
+        }
+
+        return [
+          Diagnostic.error(
+            assertion.isNot
+              ? `Property '${targetArgumentText}' exists on type '${sourceText}'.`
+              : `Property '${targetArgumentText}' does not exist on type '${sourceText}'.`,
             origin,
           ),
         ];
@@ -343,6 +377,34 @@ export class Checker {
         );
 
         return assertion.typeChecker.isTypeIdenticalTo(assertion.sourceType.type, assertion.targetType.type);
+      }
+
+      case "toHaveProperty": {
+        this.#assertNonNullishSourceType(assertion);
+        this.#assertNonNullishTargetType(assertion);
+
+        if (!(assertion.sourceType.type.flags & this.compiler.TypeFlags.StructuredType)) {
+          const receivedText = assertion.typeChecker?.typeToString(assertion.sourceType.type);
+
+          // TODO errors must be reported through the 'onDiagnostics()' method, which has tyo be implemented first
+          throw new Error(`An argument for 'source' must be of object type, received: '${receivedText}'.`);
+        }
+
+        let targetArgumentText: string;
+
+        if (assertion.targetType.type.flags & this.compiler.TypeFlags.StringOrNumberLiteral) {
+          targetArgumentText = String((assertion.targetType.type as ts.StringLiteralType | ts.NumberLiteralType).value);
+        } else if (assertion.targetType.type.flags & this.compiler.TypeFlags.UniqueESSymbol) {
+          targetArgumentText = this.compiler.unescapeLeadingUnderscores(
+            (assertion.targetType.type as ts.UniqueESSymbolType).escapedName,
+          );
+        } else {
+          throw new Error("An argument for 'key' must be of type 'string | number | symbol'.");
+        }
+
+        return assertion.sourceType.type.getProperties().some((property) => {
+          return this.compiler.unescapeLeadingUnderscores(property.escapedName) === targetArgumentText;
+        });
       }
 
       case "toMatch": {
