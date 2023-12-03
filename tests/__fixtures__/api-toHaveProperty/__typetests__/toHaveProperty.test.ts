@@ -153,6 +153,30 @@ describe("when source is an enum", () => {
   });
 });
 
+describe("when source is an intersection", () => {
+  interface Colorful {
+    color: string;
+  }
+  interface Circle {
+    radius: number;
+  }
+
+  type ColorfulCircle = Colorful & Circle;
+
+  test("has expected property key", () => {
+    expect<ColorfulCircle>().type.toHaveProperty("color");
+    expect<ColorfulCircle>().type.toHaveProperty("radius");
+
+    expect<ColorfulCircle>().type.not.toHaveProperty("radius");
+  });
+
+  test("does NOT have expected property key", () => {
+    expect<ColorfulCircle>().type.not.toHaveProperty("shade");
+
+    expect<ColorfulCircle>().type.toHaveProperty("shade");
+  });
+});
+
 describe("when source is a value", () => {
   test("has expected string property key", () => {
     expect(sample).type.toHaveProperty("runTest");
