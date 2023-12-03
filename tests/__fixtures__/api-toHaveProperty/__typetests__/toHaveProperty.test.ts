@@ -9,47 +9,73 @@ type Worker<T> = {
   [K in keyof T as Exclude<K, "setup" | "teardown">]: T[K];
 };
 
+const kOne = Symbol("one");
+const kTwo = Symbol.for("two");
+const kFour = Symbol.for("four");
+
+const enum E1 {
+  A,
+  B,
+  C,
+}
+const enum E2 {
+  A = "A",
+  B = "B",
+  C = "C",
+}
+
 interface Sample {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   123: number;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   789?: string | undefined;
+  [E1.A]: string;
+  [E2.B]: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __check: boolean;
   isBusy?: boolean | undefined;
+  [kOne]: () => void;
+  [kTwo]: () => void;
   runTest: (a: string, b: number) => void;
   setup: () => void;
   teardown: () => void;
 }
 
-test("edge cases", () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  expect<any>().type.toHaveProperty("abc");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  expect<any>().type.not.toHaveProperty("abc");
-
-  expect<never>().type.not.toHaveProperty("abc");
-  expect<never>().type.toHaveProperty("abc");
-
-  expect<null>().type.not.toHaveProperty("abc");
-  expect<null>().type.toHaveProperty("abc");
-
-  expect<undefined>().type.not.toHaveProperty("abc");
-  expect<undefined>().type.toHaveProperty("abc");
-
-  expect<unknown>().type.not.toHaveProperty("abc");
-  expect<unknown>().type.toHaveProperty("abc");
-
-  expect<void>().type.not.toHaveProperty("abc");
-  expect<void>().type.toHaveProperty("abc");
-
-  expect("abc").type.toHaveProperty("startsWith");
-  expect("abc").type.not.toHaveProperty("startsWith");
-});
+const sample = {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  123: 3,
+  [E1.A]: true,
+  [E2.B]: null,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __check: true,
+  [kOne]: "one",
+  [kTwo]: "two",
+  runTest: () => false,
+};
 
 describe("when source is a type", () => {
-  test("has target property key", () => {
+  test("has expected string property key", () => {
     expect<Worker<Sample>>().type.toHaveProperty("runTest");
 
     expect<Worker<Sample>>().type.not.toHaveProperty("runTest");
+  });
+
+  test("has expected optional string property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty("isBusy");
+
+    expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
+  });
+
+  test("has expected escaped string property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty("__check");
+
+    expect<Worker<Sample>>().type.not.toHaveProperty("__check");
+  });
+
+  test("does NOT have expected string property key", () => {
+    expect<Worker<Sample>>().type.not.toHaveProperty("endTest");
+
+    expect<Worker<Sample>>().type.toHaveProperty("endTest");
   });
 
   test("has expected number property key", () => {
@@ -58,10 +84,10 @@ describe("when source is a type", () => {
     expect<Worker<Sample>>().type.not.toHaveProperty(123);
   });
 
-  test("does NOT have expected property key", () => {
-    expect<Worker<Sample>>().type.not.toHaveProperty("endTest");
+  test("has expected optional number property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty(789);
 
-    expect<Worker<Sample>>().type.toHaveProperty("endTest");
+    expect<Worker<Sample>>().type.not.toHaveProperty(789);
   });
 
   test("does NOT have expected number property key", () => {
@@ -70,78 +96,133 @@ describe("when source is a type", () => {
     expect<Worker<Sample>>().type.toHaveProperty(456);
   });
 
-  test("has expected property key, but it is optional", () => {
-    expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
+  test("has expected symbol property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty(kOne);
 
-    expect<Worker<Sample>>().type.toHaveProperty("isBusy");
+    expect<Worker<Sample>>().type.not.toHaveProperty(kOne);
   });
 
-  test("has expected number property key, but it is optional", () => {
-    expect<Worker<Sample>>().type.not.toHaveProperty(789);
+  test("has expected global symbol property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty(kTwo);
 
-    expect<Worker<Sample>>().type.toHaveProperty(789);
+    expect<Worker<Sample>>().type.not.toHaveProperty(kTwo);
   });
 
-  test("has expected optional property key", () => {
-    expect<Worker<Sample>>().type.toHaveProperty("isBusy?");
+  test("does NOT have expected symbol property key", () => {
+    expect<Worker<Sample>>().type.not.toHaveProperty(kFour);
 
-    expect<Worker<Sample>>().type.not.toHaveProperty("isBusy?");
+    expect<Worker<Sample>>().type.toHaveProperty(kFour);
   });
 
-  test("has expected optional number property key", () => {
-    expect<Worker<Sample>>().type.toHaveProperty("789?");
+  test("has expected numeric enum property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty(E1.A);
 
-    expect<Worker<Sample>>().type.not.toHaveProperty("789?");
+    expect<Worker<Sample>>().type.not.toHaveProperty(E1.A);
   });
 
-  test("does NOT have expected optional property key", () => {
-    expect<Worker<Sample>>().type.not.toHaveProperty("isRunning?");
+  test("does NOT have expected numeric enum property key", () => {
+    expect<Worker<Sample>>().type.not.toHaveProperty(E1.B);
 
-    expect<Worker<Sample>>().type.toHaveProperty("isRunning?");
+    expect<Worker<Sample>>().type.toHaveProperty(E1.B);
   });
 
-  test("does NOT have expected optional number property key", () => {
-    expect<Worker<Sample>>().type.not.toHaveProperty("234?");
+  test("has expected string enum property key", () => {
+    expect<Worker<Sample>>().type.toHaveProperty(E2.B);
 
-    expect<Worker<Sample>>().type.toHaveProperty("234?");
+    expect<Worker<Sample>>().type.not.toHaveProperty(E2.B);
   });
 
-  test("has expected property key, but it is NOT optional", () => {
-    expect<Worker<Sample>>().type.not.toHaveProperty("runTest?");
+  test("does NOT have expected string enum property key", () => {
+    expect<Worker<Sample>>().type.not.toHaveProperty(E2.A);
 
-    expect<Worker<Sample>>().type.toHaveProperty("runTest?");
-  });
-
-  test("has expected optional number property key, but it is NOT optional", () => {
-    expect<Worker<Sample>>().type.toHaveProperty("123?");
-
-    expect<Worker<Sample>>().type.not.toHaveProperty("123?");
+    expect<Worker<Sample>>().type.toHaveProperty(E2.A);
   });
 });
 
-// describe("source is a value", () => {
-//   test("equals expected type", () => {
-//     expect(getNames()).type.toEqual<{ first: string; last?: string }>();
-//     expect(getNames()).type.toEqual<Names>();
+describe("when source is an enum", () => {
+  test("has expected property key", () => {
+    expect<typeof E1>().type.toHaveProperty("A");
 
-//     expect(getNames()).type.toEqual<{ first: string; last: string }>();
-//   });
+    expect<typeof E1>().type.not.toHaveProperty("A");
+  });
 
-//   test("does NOT equal expected type", () => {
-//     expect(getNames()).type.not.toEqual<{ first: string; last: string }>();
+  test("does NOT have expected property key", () => {
+    expect<typeof E1>().type.not.toHaveProperty("F");
 
-//     expect(getNames()).type.not.toEqual<{ first: string; last?: string }>();
-//   });
+    expect<typeof E1>().type.toHaveProperty("F");
+  });
+});
 
-//   test("equals expected value", () => {
-//     expect({ height: 14, width: 25 }).type.toEqual(getSize());
+describe("when source is a value", () => {
+  test("has expected string property key", () => {
+    expect(sample).type.toHaveProperty("runTest");
 
-//     expect({ height: 14 }).type.toEqual(getSize());
-//   });
+    expect(sample).type.not.toHaveProperty("runTest");
+  });
 
-//   test("does NOT equal expected value", () => {
-//     expect({ height: 14 }).type.not.toEqual(getSize());
+  test("has expected escaped string property key", () => {
+    expect(sample).type.toHaveProperty("__check");
 
-//     expect({ height: 14, width: 25 }).type.not.toEqual(getSize());
-//   });
-// });
+    expect(sample).type.not.toHaveProperty("__check");
+  });
+
+  test("does NOT have expected string property key", () => {
+    expect(sample).type.not.toHaveProperty("endTest");
+
+    expect(sample).type.toHaveProperty("endTest");
+  });
+
+  test("has expected number property key", () => {
+    expect(sample).type.toHaveProperty(123);
+
+    expect(sample).type.not.toHaveProperty(123);
+  });
+
+  test("does NOT have expected number property key", () => {
+    expect(sample).type.not.toHaveProperty(456);
+
+    expect(sample).type.toHaveProperty(456);
+  });
+
+  test("has expected symbol property key", () => {
+    expect(sample).type.toHaveProperty(kOne);
+
+    expect(sample).type.not.toHaveProperty(kOne);
+  });
+
+  test("has expected global symbol property key", () => {
+    expect(sample).type.toHaveProperty(kTwo);
+
+    expect(sample).type.not.toHaveProperty(kTwo);
+  });
+
+  test("does NOT have expected symbol property key", () => {
+    expect(sample).type.not.toHaveProperty(kFour);
+
+    expect(sample).type.toHaveProperty(kFour);
+  });
+
+  test("has expected numeric enum property key", () => {
+    expect(sample).type.toHaveProperty(E1.A);
+
+    expect(sample).type.not.toHaveProperty(E1.A);
+  });
+
+  test("does NOT have expected numeric enum property key", () => {
+    expect(sample).type.not.toHaveProperty(E1.B);
+
+    expect(sample).type.toHaveProperty(E1.B);
+  });
+
+  test("has expected string enum property key", () => {
+    expect(sample).type.toHaveProperty(E2.B);
+
+    expect(sample).type.not.toHaveProperty(E2.B);
+  });
+
+  test("does NOT have expected string enum property key", () => {
+    expect(sample).type.not.toHaveProperty(E2.A);
+
+    expect(sample).type.toHaveProperty(E2.A);
+  });
+});
