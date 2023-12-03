@@ -383,21 +383,11 @@ export class Checker {
         this.#assertNonNullishSourceType(assertion);
         this.#assertNonNullishTargetType(assertion);
 
-        if (this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Any)) {
-          return true;
-        }
+        if (!(assertion.sourceType.type.flags & this.compiler.TypeFlags.StructuredType)) {
+          const receivedText = assertion.typeChecker?.typeToString(assertion.sourceType.type);
 
-        if (
-          this.#hasTypeFlag(
-            assertion,
-            this.compiler.TypeFlags.Never |
-              this.compiler.TypeFlags.Null |
-              this.compiler.TypeFlags.Undefined |
-              this.compiler.TypeFlags.Unknown |
-              this.compiler.TypeFlags.Void,
-          )
-        ) {
-          return false;
+          // TODO errors must be reported through the 'onDiagnostics()' method, which has tyo be implemented first
+          throw new Error(`An argument for 'source' must be of object type, received: '${receivedText}'.`);
         }
 
         let targetArgumentText: string;
