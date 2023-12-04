@@ -41,19 +41,20 @@ export class Checker {
     this.#assertNonNullish(assertion.typeChecker, "The 'typeChecker' was not provided.");
   }
 
-  #assertStringsOrNumber(
-    expression: ts.Expression | undefined,
-  ): expression is ts.StringLiteralLike | ts.NumericLiteral {
-    return (
-      expression != null &&
-      (this.compiler.isStringLiteralLike(expression) || this.compiler.isNumericLiteral(expression))
-    );
-  }
-
   #assertStringsOrNumbers(
-    nodes: ts.NodeArray<ts.Expression>,
-  ): nodes is ts.NodeArray<ts.StringLiteralLike | ts.NumericLiteral> {
-    return nodes.every((expression) => this.#assertStringsOrNumber(expression));
+    expressions: ts.NodeArray<ts.Expression>,
+    onDiagnostics?: (expression: ts.Expression) => void,
+  ): expressions is ts.NodeArray<ts.StringLiteralLike | ts.NumericLiteral> {
+    let result = true;
+
+    for (const expression of expressions) {
+      if (!(this.compiler.isStringLiteralLike(expression) || this.compiler.isNumericLiteral(expression))) {
+        onDiagnostics?.(expression);
+        result = false;
+      }
+    }
+
+    return result;
   }
 
   explain(assertion: Assertion): Array<Diagnostic> {
@@ -397,7 +398,7 @@ export class Checker {
         if (!this.#assertNonNullishTarget(assertion)) {
           const origin = {
             end: assertion.matcherName.getEnd(),
-            file: assertion.node.getSourceFile(),
+            file: assertion.matcherName.getSourceFile(),
             start: assertion.matcherName.getStart(),
           };
 
@@ -434,7 +435,7 @@ export class Checker {
         if (!this.#assertNonNullishTarget(assertion)) {
           const origin = {
             end: assertion.matcherName.getEnd(),
-            file: assertion.node.getSourceFile(),
+            file: assertion.matcherName.getSourceFile(),
             start: assertion.matcherName.getStart(),
           };
 
@@ -507,8 +508,44 @@ export class Checker {
       }
 
       case "toRaiseError": {
-        if (!this.#assertStringsOrNumbers(assertion.targetArguments)) {
-          throw new Error("An argument for 'target' must be of type 'string | number'.");
+        if (!this.#assertNonNullishSource(assertion)) {
+          const origin = {
+            end: assertion.node.getEnd(),
+            file: assertion.node.getSourceFile(),
+            start: assertion.node.getStart(),
+          };
+
+          onDiagnostics([
+            Diagnostic.error("An argument for 'source' or type argument for 'Source' must be provided.", origin),
+          ]);
+
+          return;
+        }
+
+        const diagnostics: Array<Diagnostic> = [];
+
+        if (
+          !this.#assertStringsOrNumbers(assertion.targetArguments, (targetArgument) => {
+            const targetType = assertion.typeChecker?.getTypeAtLocation(targetArgument);
+            const receivedText = targetType == null ? "" : assertion.typeChecker?.typeToString(targetType);
+
+            const origin = {
+              end: targetArgument.getEnd(),
+              file: targetArgument.getSourceFile(),
+              start: targetArgument.getStart(),
+            };
+
+            diagnostics.push(
+              Diagnostic.error(
+                `An argument for 'target' must be of type 'string | number', received: '${receivedText}'.`,
+                origin,
+              ),
+            );
+          })
+        ) {
+          onDiagnostics(diagnostics);
+
+          return;
         }
 
         if (assertion.targetArguments.length === 0) {
@@ -519,15 +556,9 @@ export class Checker {
           return false;
         }
 
-        return assertion.targetArguments.every((expectedArgument, index) => {
-          if (this.compiler.isStringLiteralLike(expectedArgument)) {
-            return this.compiler
-              .flattenDiagnosticMessageText(assertion.diagnostics[index]?.messageText, " ", 0)
-              .includes(expectedArgument.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
-          }
-
-          return Number(expectedArgument.text) === assertion.diagnostics[index]?.code;
-        });
+        return assertion.targetArguments.every((targetArgument, index) =>
+          this.#matchExpectedError(assertion.diagnostics[index], targetArgument),
+        );
       }
 
       default:
@@ -535,11 +566,11 @@ export class Checker {
     }
   }
 
-  #matchExpectedError(diagnostic: ts.Diagnostic, argument: ts.StringLiteralLike | ts.NumericLiteral) {
+  #matchExpectedError(diagnostic: ts.Diagnostic | undefined, argument: ts.StringLiteralLike | ts.NumericLiteral) {
     if (this.compiler.isStringLiteralLike(argument)) {
-      return this.compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(argument.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
+      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(argument.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
     }
 
-    return Number(argument.text) === diagnostic.code;
+    return Number(argument.text) === diagnostic?.code;
   }
 }
