@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toHaveProperty: stderr 1`] = `
-"Error: An argument or type argument for 'source' must be provided.
+"Error: An argument for 'source' or type argument for 'Source' must be provided.
 
   3 | describe("argument for 'source'", () => {
   4 |   test("must be provided", () => {

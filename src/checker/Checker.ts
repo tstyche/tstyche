@@ -399,7 +399,9 @@ export class Checker {
             start: assertion.node.getStart(),
           };
 
-          onDiagnostics([Diagnostic.error("An argument or type argument for 'source' must be provided.", origin)]);
+          onDiagnostics([
+            Diagnostic.error("An argument for 'source' or type argument for 'Source' must be provided.", origin),
+          ]);
 
           return;
         }
