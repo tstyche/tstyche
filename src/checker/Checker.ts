@@ -322,12 +322,37 @@ export class Checker {
 
     switch (matcher) {
       case "toBeAssignable":
-        this.#assertNonNullishSourceType(assertion);
-        this.#assertNonNullishTargetType(assertion);
+        if (!this.#assertNonNullishSource(assertion)) {
+          const origin = {
+            end: assertion.node.getEnd(),
+            file: assertion.node.getSourceFile(),
+            start: assertion.node.getStart(),
+          };
+
+          onDiagnostics([
+            Diagnostic.error("An argument for 'source' or type argument for 'Source' must be provided.", origin),
+          ]);
+
+          return;
+        }
+
+        if (!this.#assertNonNullishTarget(assertion)) {
+          const origin = {
+            end: assertion.matcherName.getEnd(),
+            file: assertion.matcherName.getSourceFile(),
+            start: assertion.matcherName.getStart(),
+          };
+
+          onDiagnostics([
+            Diagnostic.error("An argument for 'target' or type argument for 'Target' must be provided.", origin),
+          ]);
+
+          return;
+        }
 
         this.#assertNonNullish(
           assertion.typeChecker?.isTypeAssignableTo,
-          "The 'isTypeAssignableTo' method is missing in the provided type checker.",
+          "The 'isTypeAssignableTo()' method is missing in the provided type checker.",
         );
 
         return assertion.typeChecker.isTypeAssignableTo(assertion.targetType.type, assertion.sourceType.type);

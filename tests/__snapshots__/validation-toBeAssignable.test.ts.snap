@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toEqual: stderr 1`] = `
+"Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+> 5 |     expect().type.toBeAssignable<{ test: void }>();
+    |     ^
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/toBeAssignable.tst.ts:5:5
+
+Error: An argument for 'target' or type argument for 'Target' must be provided.
+
+   9 | describe("argument for 'key'", () => {
+  10 |   test("must be provided", () => {
+> 11 |     expect<{ test: void }>().type.toBeAssignable();
+     |                                   ^
+  12 |   });
+  13 | });
+  14 | 
+
+       at ./__typetests__/toBeAssignable.tst.ts:11:35
+
+"
+`;
+
+exports[`toEqual: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeAssignable.tst.ts
+  argument for 'source'
+    × must be provided
+  argument for 'key'
+    × must be provided
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 2 failed, 2 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
