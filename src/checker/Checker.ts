@@ -11,10 +11,22 @@ export class Checker {
     }
   }
 
+  #assertNonNullishSource(assertion: Assertion): assertion is Assertion & {
+    sourceType: NonNullable<Assertion["sourceType"]>;
+  } {
+    return assertion.sourceType != null;
+  }
+
   #assertNonNullishSourceType(assertion: Assertion): asserts assertion is Assertion & {
     sourceType: NonNullable<Assertion["sourceType"]>;
   } {
     this.#assertNonNullish(assertion.sourceType, "An argument for 'source' was not provided.");
+  }
+
+  #assertNonNullishTarget(assertion: Assertion): assertion is Assertion & {
+    targetType: NonNullable<Assertion["targetType"]>;
+  } {
+    return assertion.targetType != null;
   }
 
   #assertNonNullishTargetType(assertion: Assertion): asserts assertion is Assertion & {
@@ -380,8 +392,29 @@ export class Checker {
       }
 
       case "toHaveProperty": {
-        this.#assertNonNullishSourceType(assertion);
-        this.#assertNonNullishTargetType(assertion);
+        if (!this.#assertNonNullishSource(assertion)) {
+          const origin = {
+            end: assertion.node.getEnd(),
+            file: assertion.node.getSourceFile(),
+            start: assertion.node.getStart(),
+          };
+
+          onDiagnostics([Diagnostic.error("An argument or type argument for 'source' must be provided.", origin)]);
+
+          return;
+        }
+
+        if (!this.#assertNonNullishTarget(assertion)) {
+          const origin = {
+            end: assertion.matcherName.getEnd(),
+            file: assertion.node.getSourceFile(),
+            start: assertion.matcherName.getStart(),
+          };
+
+          onDiagnostics([Diagnostic.error("An argument for 'key' must be provided.", origin)]);
+
+          return;
+        }
 
         if (!(assertion.sourceType.type.flags & this.compiler.TypeFlags.StructuredType)) {
           const sourceText =
