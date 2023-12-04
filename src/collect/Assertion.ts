@@ -51,13 +51,17 @@ export class Assertion extends TestMember {
     return this.node.arguments;
   }
 
-  get sourceType(): { source: AssertionSource; type: ts.Type } | undefined {
+  get sourceType(): { position: { end: number; start: number }; source: AssertionSource; type: ts.Type } | undefined {
     if (!this.typeChecker) {
       return;
     }
 
     if (this.node.typeArguments?.[0]) {
       return {
+        position: {
+          end: this.node.typeArguments[0].getEnd(),
+          start: this.node.typeArguments[0].getStart(),
+        },
         source: AssertionSource.TypeArgument,
         type: this.typeChecker.getTypeFromTypeNode(this.node.typeArguments[0]),
       };
@@ -65,6 +69,10 @@ export class Assertion extends TestMember {
 
     if (this.node.arguments[0]) {
       return {
+        position: {
+          end: this.node.arguments[0].getEnd(),
+          start: this.node.arguments[0].getStart(),
+        },
         source: AssertionSource.Argument,
         type: this.typeChecker.getTypeAtLocation(this.node.arguments[0]),
       };
@@ -77,13 +85,17 @@ export class Assertion extends TestMember {
     return this.matcherNode.arguments;
   }
 
-  get targetType(): { source: AssertionSource; type: ts.Type } | undefined {
+  get targetType(): { position: { end: number; start: number }; source: AssertionSource; type: ts.Type } | undefined {
     if (!this.typeChecker) {
       return;
     }
 
     if (this.matcherNode.typeArguments?.[0]) {
       return {
+        position: {
+          end: this.matcherNode.typeArguments[0].getEnd(),
+          start: this.matcherNode.typeArguments[0].getStart(),
+        },
         source: AssertionSource.TypeArgument,
         type: this.typeChecker.getTypeFromTypeNode(this.matcherNode.typeArguments[0]),
       };
@@ -91,6 +103,10 @@ export class Assertion extends TestMember {
 
     if (this.matcherNode.arguments[0]) {
       return {
+        position: {
+          end: this.matcherNode.arguments[0].getEnd(),
+          start: this.matcherNode.arguments[0].getStart(),
+        },
         source: AssertionSource.Argument,
         type: this.typeChecker.getTypeAtLocation(this.matcherNode.arguments[0]),
       };

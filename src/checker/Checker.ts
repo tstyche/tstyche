@@ -304,7 +304,7 @@ export class Checker {
     ];
   }
 
-  match(assertion: Assertion): boolean {
+  match(assertion: Assertion, onDiagnostics: (diagnostics: Array<Diagnostic>) => void): boolean | undefined {
     const matcher = assertion.matcherName.getText();
 
     switch (matcher) {
@@ -384,10 +384,23 @@ export class Checker {
         this.#assertNonNullishTargetType(assertion);
 
         if (!(assertion.sourceType.type.flags & this.compiler.TypeFlags.StructuredType)) {
+          const sourceText =
+            assertion.sourceType.source === AssertionSource.TypeArgument
+              ? "A type argument for 'Source'"
+              : "An argument for 'source'";
+
           const receivedText = assertion.typeChecker?.typeToString(assertion.sourceType.type);
 
-          // TODO errors must be reported through the 'onDiagnostics()' method, which has tyo be implemented first
-          throw new Error(`An argument for 'source' must be of object type, received: '${receivedText}'.`);
+          const origin = {
+            file: assertion.node.getSourceFile(),
+            ...assertion.sourceType.position,
+          };
+
+          onDiagnostics([
+            Diagnostic.error(`${sourceText} must be of an object type, received: '${receivedText}'.`, origin),
+          ]);
+
+          return;
         }
 
         let targetArgumentText: string;
@@ -399,7 +412,21 @@ export class Checker {
             (assertion.targetType.type as ts.UniqueESSymbolType).escapedName,
           );
         } else {
-          throw new Error("An argument for 'key' must be of type 'string | number | symbol'.");
+          const receivedText = assertion.typeChecker?.typeToString(assertion.targetType.type);
+
+          const origin = {
+            file: assertion.node.getSourceFile(),
+            ...assertion.targetType.position,
+          };
+
+          onDiagnostics([
+            Diagnostic.error(
+              `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedText}'.`,
+              origin,
+            ),
+          ]);
+
+          return;
         }
 
         return assertion.sourceType.type.getProperties().some((property) => {
@@ -457,10 +484,6 @@ export class Checker {
       return this.compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(argument.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
     }
 
-    if (this.compiler.isNumericLiteral(argument)) {
-      return Number(argument.text) === diagnostic.code;
-    }
-
-    throw new Error("An argument for 'target' must be of type 'string | number'.");
+    return Number(argument.text) === diagnostic.code;
   }
 }

@@ -126,7 +126,17 @@ export class TestTreeWorker {
       return;
     }
 
-    const isPass = this.#checker.match(assertion);
+    function onDiagnostics(diagnostics: Array<Diagnostic>) {
+      EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
+    }
+
+    const isPass = this.#checker.match(assertion, onDiagnostics);
+
+    if (isPass == null) {
+      // checker encountered an error and already emitted "expect:error"
+
+      return;
+    }
 
     if (assertion.isNot ? !isPass : isPass) {
       if (runMode & RunMode.Fail) {
@@ -139,10 +149,7 @@ export class TestTreeWorker {
 
         EventEmitter.dispatch([
           "expect:error",
-          {
-            diagnostics: [Diagnostic.error(text, origin)], // TODO should come from 'checker.explain' or so
-            result: expectResult,
-          },
+          { diagnostics: [Diagnostic.error(text, origin)], result: expectResult },
         ]);
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);

@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toHaveProperty: stderr 1`] = `
+"Error: An argument for 'source' must be of an object type, received: '"sample"'.
+
+  14 | describe("argument for 'source'", () => {
+  15 |   test("must be of an object type", () => {
+> 16 |     expect("sample").type.toHaveProperty("runTest");
+     |            ^
+  17 |   });
+  18 | });
+  19 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:16:12
+
+Error: A type argument for 'Source' must be of an object type, received: 'any'.
+
+  21 |   test("must be of an object type", () => {
+  22 |     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+> 23 |     expect<any>().type.toHaveProperty("runTest");
+     |            ^
+  24 |   });
+  25 | });
+  26 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:23:12
+
+Error: An argument for 'key' must be of type 'string | number | symbol', received: 'string[]'.
+
+  28 |   test("must be of type 'string | number | symbol'", () => {
+  29 |     // @ts-expect-error test
+> 30 |     expect<Worker<Sample>>().type.toHaveProperty(["isBusy", "runTest"]);
+     |                                                  ^
+  31 |   });
+  32 | });
+  33 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:30:50
+
+"
+`;
+
+exports[`toHaveProperty: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toHaveProperty.tst.ts
+  argument for 'source'
+    × must be of an object type
+  type argument for 'Source'
+    × must be of an object type
+  argument for 'key'
+    × must be of type 'string | number | symbol'
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      3 failed, 3 total
+Assertions: 3 failed, 3 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
