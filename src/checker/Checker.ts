@@ -526,11 +526,7 @@ export class Checker {
               .includes(expectedArgument.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
           }
 
-          if (this.compiler.isNumericLiteral(expectedArgument)) {
-            return Number(expectedArgument.text) === assertion.diagnostics[index]?.code;
-          }
-
-          return false;
+          return Number(expectedArgument.text) === assertion.diagnostics[index]?.code;
         });
       }
 
