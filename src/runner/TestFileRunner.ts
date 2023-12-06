@@ -4,7 +4,7 @@ import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { Expect, type TypeChecker } from "#expect";
+import { Expect } from "#expect";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
 import { RunMode } from "./RunMode.js";
@@ -20,12 +20,6 @@ export class TestFileRunner {
   ) {
     this.#collectService = new CollectService(compiler);
     this.#projectService = new ProjectService(compiler);
-  }
-
-  #assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
-    return (
-      "isTypeAssignableTo" in typeChecker && "isTypeIdenticalTo" in typeChecker && "isTypeSubtypeOf" in typeChecker
-    );
   }
 
   run(testFile: URL, signal?: AbortSignal): void {
@@ -100,7 +94,7 @@ export class TestFileRunner {
 
     const typeChecker = program.getTypeChecker();
 
-    if (!this.#assertTypeChecker(typeChecker)) {
+    if (!Expect.assertTypeChecker(typeChecker)) {
       EventEmitter.dispatch([
         "file:error",
         {

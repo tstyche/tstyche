@@ -22,6 +22,12 @@ export class Expect {
     this.toMatch = new ToMatch(this.typeChecker);
   }
 
+  static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
+    return (
+      "isTypeAssignableTo" in typeChecker && "isTypeIdenticalTo" in typeChecker && "isTypeSubtypeOf" in typeChecker
+    );
+  }
+
   #getType(node: ts.Expression | ts.TypeNode) {
     return this.compiler.isTypeNode(node)
       ? this.typeChecker.getTypeFromTypeNode(node)
