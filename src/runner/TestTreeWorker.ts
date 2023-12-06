@@ -127,15 +127,15 @@ export class TestTreeWorker {
       return;
     }
 
-    const result = this.#expect.match(assertion, expectResult);
+    const matchResult = this.#expect.match(assertion, expectResult);
 
-    if (result == null) {
+    if (matchResult == null) {
       // an error was encountered and the "expect:error" event is already emitted
 
       return;
     }
 
-    if (assertion.isNot ? !result.isMatch : result.isMatch) {
+    if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
       if (runMode & RunMode.Fail) {
         const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
         const origin = {
@@ -155,7 +155,7 @@ export class TestTreeWorker {
       if (runMode & RunMode.Fail) {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       } else {
-        const text = result.explain();
+        const text = matchResult.explain();
         const origin = {
           breadcrumbs: assertion.ancestorNames,
           end: assertion.matcherName.getEnd(),
