@@ -1,5 +1,5 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
-import type { TypeChecker } from "#store";
+import type { TypeChecker } from "#expect";
 import type { Assertion } from "./Assertion.js";
 import type { TestMember } from "./TestMember.js";
 import { TestMemberFlags } from "./TestMemberFlags.js";

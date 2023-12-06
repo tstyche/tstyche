@@ -1,6 +1,6 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
 import { Diagnostic } from "#diagnostic";
-import type { TypeChecker } from "#store";
+import type { TypeChecker } from "#expect";
 import type { Assertion } from "./Assertion.js";
 import { TestMemberBrand } from "./TestMemberBrand.js";
 import type { TestMemberFlags } from "./TestMemberFlags.js";

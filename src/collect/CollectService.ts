@@ -96,12 +96,8 @@ export class CollectService {
     });
   }
 
-  createTestTree(
-    sourceFile: ts.SourceFile,
-    semanticDiagnostics: Array<ts.Diagnostic> = [],
-    typeChecker?: ts.TypeChecker | undefined,
-  ): TestTree {
-    const testTree = new TestTree(this.compiler, semanticDiagnostics, sourceFile, typeChecker);
+  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
+    const testTree = new TestTree(this.compiler, semanticDiagnostics, sourceFile);
 
     this.#collectTestMembers(sourceFile, new IdentifierLookup(this.compiler), testTree);
 
