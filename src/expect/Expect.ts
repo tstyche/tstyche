@@ -5,18 +5,21 @@ import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { ToBeAssignable } from "./ToBeAssignable.js";
 import { ToEqual } from "./ToEqual.js";
+import { ToMatch } from "./ToMatch.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class Expect {
-  #toBeAssignable: ToBeAssignable;
-  #toEqual: ToEqual;
+  toBeAssignable: ToBeAssignable;
+  toEqual: ToEqual;
+  toMatch: ToMatch;
 
   constructor(
     public compiler: typeof ts,
     public typeChecker: TypeChecker,
   ) {
-    this.#toBeAssignable = new ToBeAssignable(this.typeChecker);
-    this.#toEqual = new ToEqual(this.typeChecker);
+    this.toBeAssignable = new ToBeAssignable(this.typeChecker);
+    this.toEqual = new ToEqual(this.typeChecker);
+    this.toMatch = new ToMatch(this.typeChecker);
   }
 
   #getType(node: ts.Expression | ts.TypeNode) {
@@ -29,43 +32,26 @@ export class Expect {
     const matcherNameText = assertion.matcherName.getText();
 
     switch (matcherNameText) {
-      case "toBeAssignable": {
-        const source = assertion.source[0];
-        const target = assertion.target[0];
-
-        if (source == null) {
+      case "toBeAssignable":
+      case "toEqual":
+      case "toMatch":
+        if (assertion.source[0] == null) {
           this.#onNullishSource(assertion, expectResult);
 
           return;
         }
 
-        if (target == null) {
+        if (assertion.target[0] == null) {
           this.#onNullishTarget(assertion, expectResult);
 
           return;
         }
 
-        return this.#toBeAssignable.match(this.#getType(source), this.#getType(target), assertion.isNot);
-      }
-
-      case "toEqual": {
-        const source = assertion.source[0];
-        const target = assertion.target[0];
-
-        if (source == null) {
-          this.#onNullishSource(assertion, expectResult);
-
-          return;
-        }
-
-        if (target == null) {
-          this.#onNullishTarget(assertion, expectResult);
-
-          return;
-        }
-
-        return this.#toEqual.match(this.#getType(source), this.#getType(target), assertion.isNot);
-      }
+        return this[matcherNameText].match(
+          this.#getType(assertion.source[0]),
+          this.#getType(assertion.target[0]),
+          assertion.isNot,
+        );
 
       case "toBeAny":
         return;
