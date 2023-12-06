@@ -63,6 +63,7 @@ export class CollectService {
 
         const notNode = this.#getMatchingChainNode(modifierNode, [this.notIdentifier]);
 
+        // TODO no need to check for matcher name, the `Expect` class will handle unimplemented matchers
         const matcherNode = this.#getMatchingChainNode(notNode ?? modifierNode, this.matcherIdentifiers)?.parent;
 
         if (matcherNode == null || !this.#isMatcherNode(matcherNode)) {

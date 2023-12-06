@@ -66,8 +66,27 @@ export class Expect {
         return;
 
       default:
+        this.#onNotSupportedMatcher(assertion, expectResult);
+
         return;
     }
+  }
+
+  #onNotSupportedMatcher(assertion: Assertion, expectResult: ExpectResult) {
+    const matcherNameText = assertion.matcherName.getText();
+    const origin = {
+      end: assertion.matcherName.getEnd(),
+      file: assertion.matcherName.getSourceFile(),
+      start: assertion.matcherName.getStart(),
+    };
+
+    EventEmitter.dispatch([
+      "expect:error",
+      {
+        diagnostics: [Diagnostic.error(`The '${matcherNameText}()' matcher is not supported.`, origin)],
+        result: expectResult,
+      },
+    ]);
   }
 
   #onNullishSource(assertion: Assertion, expectResult: ExpectResult) {
