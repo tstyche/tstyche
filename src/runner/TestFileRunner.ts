@@ -95,17 +95,10 @@ export class TestFileRunner {
     const typeChecker = program.getTypeChecker();
 
     if (!Expect.assertTypeChecker(typeChecker)) {
-      EventEmitter.dispatch([
-        "file:error",
-        {
-          diagnostics: [
-            Diagnostic.error(
-              "The required 'isTypeAssignableTo()', 'isTypeIdenticalTo()' and 'isTypeSubtypeOf()' methods are missing in the provided type checker.",
-            ),
-          ],
-          result: fileResult,
-        },
-      ]);
+      const text =
+        "The required 'isTypeAssignableTo()', 'isTypeIdenticalTo()' and 'isTypeSubtypeOf()' methods are missing in the provided type checker.";
+
+      EventEmitter.dispatch(["file:error", { diagnostics: [Diagnostic.error(text)], result: fileResult }]);
 
       return;
     }

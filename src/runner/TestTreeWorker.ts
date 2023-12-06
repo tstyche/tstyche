@@ -155,7 +155,7 @@ export class TestTreeWorker {
       if (runMode & RunMode.Fail) {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       } else {
-        const text = [result.explain()];
+        const text = result.explain();
         const origin = {
           breadcrumbs: assertion.ancestorNames,
           end: assertion.matcherName.getEnd(),
