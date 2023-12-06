@@ -13,6 +13,8 @@ export interface MatcherNode extends ts.CallExpression {
 export class Assertion extends TestMember {
   isNot: boolean;
   override name = "";
+  /** @deprecated Must be removed */
+  typeChecker?: ts.TypeChecker | undefined;
 
   constructor(
     brand: TestMemberBrand,

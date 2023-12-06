@@ -69,23 +69,6 @@ export class Checker {
     };
 
     switch (matcher) {
-      case "toBeAssignable": {
-        this.#assertNonNullishSourceType(assertion);
-        this.#assertNonNullishTargetType(assertion);
-
-        const sourceTypeText = assertion.typeChecker.typeToString(assertion.sourceType.type);
-        const targetTypeText = assertion.typeChecker.typeToString(assertion.targetType.type);
-
-        return [
-          Diagnostic.error(
-            assertion.isNot
-              ? `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.`
-              : `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`,
-            origin,
-          ),
-        ];
-      }
-
       case "toBeAny":
         return this.#isType(assertion, "any");
 
@@ -122,23 +105,6 @@ export class Checker {
       case "toBeVoid":
         return this.#isType(assertion, "void");
 
-      case "toEqual": {
-        this.#assertNonNullishSourceType(assertion);
-        this.#assertNonNullishTargetType(assertion);
-
-        const sourceTypeText = assertion.typeChecker.typeToString(assertion.sourceType.type);
-        const targetTypeText = assertion.typeChecker.typeToString(assertion.targetType.type);
-
-        return [
-          Diagnostic.error(
-            assertion.isNot
-              ? `Type '${targetTypeText}' is identical to type '${sourceTypeText}'.`
-              : `Type '${targetTypeText}' is not identical to type '${sourceTypeText}'.`,
-            origin,
-          ),
-        ];
-      }
-
       case "toHaveProperty": {
         this.#assertNonNullishSourceType(assertion);
         this.#assertNonNullishTargetType(assertion);
@@ -161,23 +127,6 @@ export class Checker {
             assertion.isNot
               ? `Property '${targetArgumentText}' exists on type '${sourceText}'.`
               : `Property '${targetArgumentText}' does not exist on type '${sourceText}'.`,
-            origin,
-          ),
-        ];
-      }
-
-      case "toMatch": {
-        this.#assertNonNullishSourceType(assertion);
-        this.#assertNonNullishTargetType(assertion);
-
-        const sourceTypeText = assertion.typeChecker.typeToString(assertion.sourceType.type);
-        const targetTypeText = assertion.typeChecker.typeToString(assertion.targetType.type);
-
-        return [
-          Diagnostic.error(
-            assertion.isNot
-              ? `Type '${targetTypeText}' is a subtype of type '${sourceTypeText}'.`
-              : `Type '${targetTypeText}' is not a subtype of type '${sourceTypeText}'.`,
             origin,
           ),
         ];
@@ -321,42 +270,6 @@ export class Checker {
     const matcher = assertion.matcherName.getText();
 
     switch (matcher) {
-      case "toBeAssignable":
-        if (!this.#assertNonNullishSource(assertion)) {
-          const origin = {
-            end: assertion.node.getEnd(),
-            file: assertion.node.getSourceFile(),
-            start: assertion.node.getStart(),
-          };
-
-          onDiagnostics([
-            Diagnostic.error("An argument for 'source' or type argument for 'Source' must be provided.", origin),
-          ]);
-
-          return;
-        }
-
-        if (!this.#assertNonNullishTarget(assertion)) {
-          const origin = {
-            end: assertion.matcherName.getEnd(),
-            file: assertion.matcherName.getSourceFile(),
-            start: assertion.matcherName.getStart(),
-          };
-
-          onDiagnostics([
-            Diagnostic.error("An argument for 'target' or type argument for 'Target' must be provided.", origin),
-          ]);
-
-          return;
-        }
-
-        this.#assertNonNullish(
-          assertion.typeChecker?.isTypeAssignableTo,
-          "The 'isTypeAssignableTo()' method is missing in the provided type checker.",
-        );
-
-        return assertion.typeChecker.isTypeAssignableTo(assertion.targetType.type, assertion.sourceType.type);
-
       case "toBeAny": {
         return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Any);
       }
@@ -403,43 +316,6 @@ export class Checker {
 
       case "toBeVoid": {
         return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Void);
-      }
-
-      case "toEqual": {
-        if (!this.#assertNonNullishSource(assertion)) {
-          const origin = {
-            end: assertion.node.getEnd(),
-            file: assertion.node.getSourceFile(),
-            start: assertion.node.getStart(),
-          };
-
-          onDiagnostics([
-            Diagnostic.error("An argument for 'source' or type argument for 'Source' must be provided.", origin),
-          ]);
-
-          return;
-        }
-
-        if (!this.#assertNonNullishTarget(assertion)) {
-          const origin = {
-            end: assertion.matcherName.getEnd(),
-            file: assertion.matcherName.getSourceFile(),
-            start: assertion.matcherName.getStart(),
-          };
-
-          onDiagnostics([
-            Diagnostic.error("An argument for 'target' or type argument for 'Target' must be provided.", origin),
-          ]);
-
-          return;
-        }
-
-        this.#assertNonNullish(
-          assertion.typeChecker?.isTypeIdenticalTo,
-          "The 'isTypeIdenticalTo()' method is missing in the provided type checker.",
-        );
-
-        return assertion.typeChecker.isTypeIdenticalTo(assertion.sourceType.type, assertion.targetType.type);
       }
 
       case "toHaveProperty": {
@@ -518,43 +394,6 @@ export class Checker {
         return assertion.sourceType.type.getProperties().some((property) => {
           return this.compiler.unescapeLeadingUnderscores(property.escapedName) === targetArgumentText;
         });
-      }
-
-      case "toMatch": {
-        if (!this.#assertNonNullishSource(assertion)) {
-          const origin = {
-            end: assertion.node.getEnd(),
-            file: assertion.node.getSourceFile(),
-            start: assertion.node.getStart(),
-          };
-
-          onDiagnostics([
-            Diagnostic.error("An argument for 'source' or type argument for 'Source' must be provided.", origin),
-          ]);
-
-          return;
-        }
-
-        if (!this.#assertNonNullishTarget(assertion)) {
-          const origin = {
-            end: assertion.matcherName.getEnd(),
-            file: assertion.matcherName.getSourceFile(),
-            start: assertion.matcherName.getStart(),
-          };
-
-          onDiagnostics([
-            Diagnostic.error("An argument for 'target' or type argument for 'Target' must be provided.", origin),
-          ]);
-
-          return;
-        }
-
-        this.#assertNonNullish(
-          assertion.typeChecker?.isTypeSubtypeOf,
-          "The 'isTypeSubtypeOf()' method is missing in the provided type checker.",
-        );
-
-        return assertion.typeChecker.isTypeSubtypeOf(assertion.sourceType.type, assertion.targetType.type);
       }
 
       case "toRaiseError": {
