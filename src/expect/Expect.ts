@@ -148,7 +148,7 @@ export class Expect {
           return;
         }
 
-        return this.toHaveProperty.match(this.#getType(assertion.source[0]), targetType, assertion.isNot);
+        return this.toHaveProperty.match(sourceType, targetType, assertion.isNot);
       }
 
       default:
