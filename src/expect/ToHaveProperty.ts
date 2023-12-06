@@ -22,8 +22,8 @@ export class ToHaveProperty {
     }
 
     return isNot
-      ? `Property '${targetArgumentText}' exists on type '${sourceTypeText}'.`
-      : `Property '${targetArgumentText}' does not exist on type '${sourceTypeText}'.`;
+      ? [{ text: `Property '${targetArgumentText}' exists on type '${sourceTypeText}'.` }]
+      : [{ text: `Property '${targetArgumentText}' does not exist on type '${sourceTypeText}'.` }];
   }
 
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {

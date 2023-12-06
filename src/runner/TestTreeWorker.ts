@@ -155,7 +155,6 @@ export class TestTreeWorker {
       if (runMode & RunMode.Fail) {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       } else {
-        const text = matchResult.explain();
         const origin = {
           breadcrumbs: assertion.ancestorNames,
           end: assertion.matcherName.getEnd(),
@@ -163,7 +162,19 @@ export class TestTreeWorker {
           start: assertion.matcherName.getStart(),
         };
 
-        EventEmitter.dispatch(["expect:fail", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+        const diagnostics: Array<Diagnostic> = [];
+
+        for (const explanation of matchResult.explain()) {
+          const diagnostic = Diagnostic.error(explanation.text, origin);
+
+          if ("related" in explanation) {
+            diagnostic.add({ related: explanation.related });
+          }
+
+          diagnostics.push(diagnostic);
+        }
+
+        EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
       }
     }
   }

@@ -9,8 +9,8 @@ export class ToEqual {
     const targetTypeText = this.typeChecker.typeToString(targetType);
 
     return isNot
-      ? `Type '${targetTypeText}' is identical to type '${sourceTypeText}'.`
-      : `Type '${targetTypeText}' is not identical to type '${sourceTypeText}'.`;
+      ? [{ text: `Type '${targetTypeText}' is identical to type '${sourceTypeText}'.` }]
+      : [{ text: `Type '${targetTypeText}' is not identical to type '${sourceTypeText}'.` }];
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {

@@ -18,8 +18,8 @@ export class PrimitiveTypeMatcher {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
 
     return isNot
-      ? `Type '${this.#targetTypeText}' is identical to type '${sourceTypeText}'.`
-      : `Type '${this.#targetTypeText}' is not identical to type '${sourceTypeText}'.`;
+      ? [{ text: `Type '${this.#targetTypeText}' is identical to type '${sourceTypeText}'.` }]
+      : [{ text: `Type '${this.#targetTypeText}' is not identical to type '${sourceTypeText}'.` }];
   }
 
   match(sourceType: ts.Type, isNot: boolean): MatchResult {

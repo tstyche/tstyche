@@ -9,8 +9,8 @@ export class ToBeAssignable {
     const targetTypeText = this.typeChecker.typeToString(targetType);
 
     return isNot
-      ? `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.`
-      : `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`;
+      ? [{ text: `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.` }]
+      : [{ text: `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.` }];
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {

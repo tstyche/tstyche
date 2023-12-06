@@ -9,8 +9,8 @@ export class ToMatch {
     const targetTypeText = this.typeChecker.typeToString(targetType);
 
     return isNot
-      ? `Type '${targetTypeText}' is a subtype of type '${sourceTypeText}'.`
-      : `Type '${targetTypeText}' is not a subtype of type '${sourceTypeText}'.`;
+      ? [{ text: `Type '${targetTypeText}' is a subtype of type '${sourceTypeText}'.` }]
+      : [{ text: `Type '${targetTypeText}' is not a subtype of type '${sourceTypeText}'.` }];
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {

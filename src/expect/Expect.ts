@@ -8,6 +8,7 @@ import { ToBeAssignable } from "./ToBeAssignable.js";
 import { ToEqual } from "./ToEqual.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
+import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class Expect {
@@ -27,6 +28,7 @@ export class Expect {
   toEqual: ToEqual;
   toHaveProperty: ToHaveProperty;
   toMatch: ToMatch;
+  toRaiseError: ToRaiseError;
 
   constructor(
     public compiler: typeof ts,
@@ -52,6 +54,7 @@ export class Expect {
     this.toEqual = new ToEqual(this.typeChecker);
     this.toHaveProperty = new ToHaveProperty(this.compiler, this.typeChecker);
     this.toMatch = new ToMatch(this.typeChecker);
+    this.toRaiseError = new ToRaiseError(this.compiler, this.typeChecker);
   }
 
   static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
@@ -64,6 +67,16 @@ export class Expect {
     return this.compiler.isTypeNode(node)
       ? this.typeChecker.getTypeFromTypeNode(node)
       : this.typeChecker.getTypeAtLocation(node);
+  }
+
+  #getTypes(nodes: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>) {
+    return nodes.map((node) => this.#getType(node));
+  }
+
+  #isArrayOfStringOrNumberLiteralTypes(
+    types: Array<ts.Type>,
+  ): types is Array<ts.StringLiteralType | ts.NumberLiteralType> {
+    return types.every((type) => this.#isStringOrNumberLiteralType(type));
   }
 
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
@@ -151,6 +164,28 @@ export class Expect {
         return this.toHaveProperty.match(sourceType, targetType, assertion.isNot);
       }
 
+      case "toRaiseError": {
+        if (assertion.source[0] == null) {
+          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const targetTypes = this.#getTypes(assertion.target);
+
+        if (!this.#isArrayOfStringOrNumberLiteralTypes(targetTypes)) {
+          this.#onTargetArgumentsMustBeStringOrNumberLiteralTypes(assertion.target, expectResult);
+
+          return;
+        }
+
+        return this.toRaiseError.match(
+          { diagnostics: assertion.diagnostics, node: assertion.source[0] },
+          targetTypes,
+          assertion.isNot,
+        );
+      }
+
       default:
         this.#onNotSupportedMatcherName(assertion, expectResult);
 
@@ -158,14 +193,14 @@ export class Expect {
     }
   }
 
-  #onKeyArgumentMustBeOfType(target: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const receivedTypeText = this.typeChecker.typeToString(this.#getType(target));
+  #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
 
     const text = `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedTypeText}'.`;
     const origin = {
-      end: target.getEnd(),
-      file: target.getSourceFile(),
-      start: target.getStart(),
+      end: node.getEnd(),
+      file: node.getSourceFile(),
+      start: node.getStart(),
     };
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
@@ -204,15 +239,15 @@ export class Expect {
     ]);
   }
 
-  #onSourceArgumentMustBeObjectType(source: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const sourceText = this.compiler.isTypeNode(source) ? "A type argument for 'Source'" : "An argument for 'source'";
-    const receivedTypeText = this.typeChecker.typeToString(this.#getType(source));
+  #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const sourceText = this.compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
+    const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
 
     const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
     const origin = {
-      end: source.getEnd(),
-      file: source.getSourceFile(),
-      start: source.getStart(),
+      end: node.getEnd(),
+      file: node.getSourceFile(),
+      start: node.getStart(),
     };
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
@@ -252,5 +287,35 @@ export class Expect {
         result: expectResult,
       },
     ]);
+  }
+
+  #onTargetArgumentsMustBeStringOrNumberLiteralTypes(
+    nodes: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>,
+    expectResult: ExpectResult,
+  ) {
+    const diagnostics: Array<Diagnostic> = [];
+
+    for (const node of nodes) {
+      const receivedType = this.#getType(node);
+
+      if (!this.#isStringOrNumberLiteralType(receivedType)) {
+        const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
+
+        const origin = {
+          end: node.getEnd(),
+          file: node.getSourceFile(),
+          start: node.getStart(),
+        };
+
+        diagnostics.push(
+          Diagnostic.error(
+            `An argument for 'target' must be of type 'string | number', received: '${receivedTypeText}'.`,
+            origin,
+          ),
+        );
+      }
+    }
+
+    EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
   }
 }
