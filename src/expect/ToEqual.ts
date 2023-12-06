@@ -2,7 +2,7 @@ import type ts from "typescript/lib/tsserverlibrary.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToEqual {
-  constructor(public typeChecker: Required<TypeChecker>) {}
+  constructor(public typeChecker: TypeChecker) {}
 
   #explain(sourceType: ts.Type, targetType: ts.Type, isNot: boolean) {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);

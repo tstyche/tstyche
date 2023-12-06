@@ -69,42 +69,6 @@ export class Checker {
     };
 
     switch (matcher) {
-      case "toBeAny":
-        return this.#isType(assertion, "any");
-
-      case "toBeBigInt":
-        return this.#isType(assertion, "bigint");
-
-      case "toBeBoolean":
-        return this.#isType(assertion, "boolean");
-
-      case "toBeNever":
-        return this.#isType(assertion, "never");
-
-      case "toBeNull":
-        return this.#isType(assertion, "null");
-
-      case "toBeNumber":
-        return this.#isType(assertion, "number");
-
-      case "toBeString":
-        return this.#isType(assertion, "string");
-
-      case "toBeSymbol":
-        return this.#isType(assertion, "symbol");
-
-      case "toBeUndefined":
-        return this.#isType(assertion, "undefined");
-
-      case "toBeUniqueSymbol":
-        return this.#isType(assertion, "unique symbol");
-
-      case "toBeUnknown":
-        return this.#isType(assertion, "unknown");
-
-      case "toBeVoid":
-        return this.#isType(assertion, "void");
-
       case "toHaveProperty": {
         this.#assertNonNullishSourceType(assertion);
         this.#assertNonNullishTargetType(assertion);
@@ -237,87 +201,10 @@ export class Checker {
     }
   }
 
-  #hasTypeFlag(assertion: Assertion, targetTypeFlag: ts.TypeFlags) {
-    this.#assertNonNullishSourceType(assertion);
-
-    return Boolean(assertion.sourceType.type.flags & targetTypeFlag);
-  }
-
-  #isType(assertion: Assertion, targetText: string) {
-    this.#assertNonNullishSourceType(assertion);
-    this.#assertNonNullishTypeChecker(assertion);
-
-    const origin: DiagnosticOrigin = {
-      breadcrumbs: assertion.ancestorNames,
-      end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
-
-    const sourceText = assertion.typeChecker.typeToString(assertion.sourceType.type);
-
-    return [
-      Diagnostic.error(
-        assertion.isNot
-          ? `Type '${targetText}' is identical to type '${sourceText}'.`
-          : `Type '${targetText}' is not identical to type '${sourceText}'.`,
-        origin,
-      ),
-    ];
-  }
-
   match(assertion: Assertion, onDiagnostics: (diagnostics: Array<Diagnostic>) => void): boolean | undefined {
     const matcher = assertion.matcherName.getText();
 
     switch (matcher) {
-      case "toBeAny": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Any);
-      }
-
-      case "toBeBigInt": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.BigInt);
-      }
-
-      case "toBeBoolean": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Boolean);
-      }
-
-      case "toBeNever": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Never);
-      }
-
-      case "toBeNull": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Null);
-      }
-
-      case "toBeNumber": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Number);
-      }
-
-      case "toBeString": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.String);
-      }
-
-      case "toBeSymbol": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.ESSymbol);
-      }
-
-      case "toBeUndefined": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Undefined);
-      }
-
-      case "toBeUniqueSymbol": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.UniqueESSymbol);
-      }
-
-      case "toBeUnknown": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Unknown);
-      }
-
-      case "toBeVoid": {
-        return this.#hasTypeFlag(assertion, this.compiler.TypeFlags.Void);
-      }
-
       case "toHaveProperty": {
         if (!this.#assertNonNullishSource(assertion)) {
           const origin = {

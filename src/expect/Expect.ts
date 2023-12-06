@@ -3,13 +3,26 @@ import type { Assertion } from "#collect";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
+import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToBeAssignable } from "./ToBeAssignable.js";
 import { ToEqual } from "./ToEqual.js";
 import { ToMatch } from "./ToMatch.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class Expect {
+  toBeAny: PrimitiveTypeMatcher;
   toBeAssignable: ToBeAssignable;
+  toBeBigInt: PrimitiveTypeMatcher;
+  toBeBoolean: PrimitiveTypeMatcher;
+  toBeNever: PrimitiveTypeMatcher;
+  toBeNull: PrimitiveTypeMatcher;
+  toBeNumber: PrimitiveTypeMatcher;
+  toBeString: PrimitiveTypeMatcher;
+  toBeSymbol: PrimitiveTypeMatcher;
+  toBeUndefined: PrimitiveTypeMatcher;
+  toBeUniqueSymbol: PrimitiveTypeMatcher;
+  toBeUnknown: PrimitiveTypeMatcher;
+  toBeVoid: PrimitiveTypeMatcher;
   toEqual: ToEqual;
   toMatch: ToMatch;
 
@@ -17,7 +30,23 @@ export class Expect {
     public compiler: typeof ts,
     public typeChecker: TypeChecker,
   ) {
+    this.toBeAny = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Any, "any");
     this.toBeAssignable = new ToBeAssignable(this.typeChecker);
+    this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt, "bigint");
+    this.toBeBoolean = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Boolean, "boolean");
+    this.toBeNever = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Never, "never");
+    this.toBeNull = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Null, "null");
+    this.toBeNumber = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Number, "number");
+    this.toBeString = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.String, "string");
+    this.toBeSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.ESSymbol, "symbol");
+    this.toBeUndefined = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Undefined, "undefined");
+    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(
+      this.typeChecker,
+      this.compiler.TypeFlags.UniqueESSymbol,
+      "unique symbol",
+    );
+    this.toBeUnknown = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Unknown, "unknown");
+    this.toBeVoid = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Void, "void");
     this.toEqual = new ToEqual(this.typeChecker);
     this.toMatch = new ToMatch(this.typeChecker);
   }
@@ -60,10 +89,24 @@ export class Expect {
         );
 
       case "toBeAny":
-        return;
-
       case "toBeBigInt":
-        return;
+      case "toBeBoolean":
+      case "toBeNever":
+      case "toBeNull":
+      case "toBeNumber":
+      case "toBeString":
+      case "toBeSymbol":
+      case "toBeUndefined":
+      case "toBeUniqueSymbol":
+      case "toBeUnknown":
+      case "toBeVoid":
+        if (assertion.source[0] == null) {
+          this.#onNullishSource(assertion, expectResult);
+
+          return;
+        }
+
+        return this[matcherNameText].match(this.#getType(assertion.source[0]), assertion.isNot);
 
       default:
         this.#onNotSupportedMatcher(assertion, expectResult);
