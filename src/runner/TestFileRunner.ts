@@ -4,6 +4,7 @@ import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { Expect, type TypeChecker } from "#expect";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
 import { RunMode } from "./RunMode.js";
@@ -19,6 +20,12 @@ export class TestFileRunner {
   ) {
     this.#collectService = new CollectService(compiler);
     this.#projectService = new ProjectService(compiler);
+  }
+
+  #assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
+    return (
+      "isTypeAssignableTo" in typeChecker && "isTypeIdenticalTo" in typeChecker && "isTypeSubtypeOf" in typeChecker
+    );
   }
 
   run(testFile: URL, signal?: AbortSignal): void {
@@ -77,9 +84,7 @@ export class TestFileRunner {
       return;
     }
 
-    const typeChecker = program.getTypeChecker();
-
-    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics, typeChecker);
+    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
     if (testTree.diagnostics.length > 0) {
       EventEmitter.dispatch([
@@ -93,7 +98,27 @@ export class TestFileRunner {
       return;
     }
 
-    const testTreeWorker = new TestTreeWorker(this.resolvedConfig, this.compiler, {
+    const typeChecker = program.getTypeChecker();
+
+    if (!this.#assertTypeChecker(typeChecker)) {
+      EventEmitter.dispatch([
+        "file:error",
+        {
+          diagnostics: [
+            Diagnostic.error(
+              "The required 'isTypeAssignableTo()', 'isTypeIdenticalTo()' and 'isTypeSubtypeOf()' methods are missing in the provided type checker.",
+            ),
+          ],
+          result: fileResult,
+        },
+      ]);
+
+      return;
+    }
+
+    const expect = new Expect(this.compiler, typeChecker);
+
+    const testTreeWorker = new TestTreeWorker(this.resolvedConfig, this.compiler, expect, {
       fileResult,
       hasOnly: testTree.hasOnly,
       position,
