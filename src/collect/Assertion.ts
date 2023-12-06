@@ -1,5 +1,4 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
-import { AssertionSource } from "./AssertionSource.js";
 import { TestMember } from "./TestMember.js";
 import type { TestMemberBrand } from "./TestMemberBrand.js";
 import type { TestMemberFlags } from "./TestMemberFlags.js";
@@ -13,8 +12,6 @@ export interface MatcherNode extends ts.CallExpression {
 export class Assertion extends TestMember {
   isNot: boolean;
   override name = "";
-  /** @deprecated Must be removed */
-  typeChecker?: ts.TypeChecker | undefined;
 
   constructor(
     brand: TestMemberBrand,
@@ -57,92 +54,12 @@ export class Assertion extends TestMember {
     return this.node.arguments;
   }
 
-  /**
-   * @deprecated Use 'source' instead.
-   */
-  get sourceArguments(): ts.NodeArray<ts.Expression> {
-    return this.node.arguments;
-  }
-
-  /**
-   * @deprecated Use 'source' instead.
-   */
-  get sourceType(): { position: { end: number; start: number }; source: AssertionSource; type: ts.Type } | undefined {
-    if (!this.typeChecker) {
-      return;
-    }
-
-    if (this.node.typeArguments?.[0]) {
-      return {
-        position: {
-          end: this.node.typeArguments[0].getEnd(),
-          start: this.node.typeArguments[0].getStart(),
-        },
-        source: AssertionSource.TypeArgument,
-        type: this.typeChecker.getTypeFromTypeNode(this.node.typeArguments[0]),
-      };
-    }
-
-    if (this.node.arguments[0]) {
-      return {
-        position: {
-          end: this.node.arguments[0].getEnd(),
-          start: this.node.arguments[0].getStart(),
-        },
-        source: AssertionSource.Argument,
-        type: this.typeChecker.getTypeAtLocation(this.node.arguments[0]),
-      };
-    }
-
-    return;
-  }
-
   get target(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
     if (this.matcherNode.typeArguments != null) {
       return this.matcherNode.typeArguments;
     }
 
     return this.matcherNode.arguments;
-  }
-
-  /**
-   * @deprecated Use 'target' instead.
-   */
-  get targetArguments(): ts.NodeArray<ts.Expression> {
-    return this.matcherNode.arguments;
-  }
-
-  /**
-   * @deprecated Use 'target' instead.
-   */
-  get targetType(): { position: { end: number; start: number }; source: AssertionSource; type: ts.Type } | undefined {
-    if (!this.typeChecker) {
-      return;
-    }
-
-    if (this.matcherNode.typeArguments?.[0]) {
-      return {
-        position: {
-          end: this.matcherNode.typeArguments[0].getEnd(),
-          start: this.matcherNode.typeArguments[0].getStart(),
-        },
-        source: AssertionSource.TypeArgument,
-        type: this.typeChecker.getTypeFromTypeNode(this.matcherNode.typeArguments[0]),
-      };
-    }
-
-    if (this.matcherNode.arguments[0]) {
-      return {
-        position: {
-          end: this.matcherNode.arguments[0].getEnd(),
-          start: this.matcherNode.arguments[0].getStart(),
-        },
-        source: AssertionSource.Argument,
-        type: this.typeChecker.getTypeAtLocation(this.matcherNode.arguments[0]),
-      };
-    }
-
-    return;
   }
 
   #mapDiagnostics() {
