@@ -6,6 +6,7 @@ export * from "#config";
 export * from "#diagnostic";
 export * from "#environment";
 export * from "#events";
+export * from "#expect";
 export * from "#logger";
 export * from "#project";
 export * from "#reporters";
