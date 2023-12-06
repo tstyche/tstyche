@@ -6,7 +6,7 @@ describe("argument for 'source'", () => {
   });
 });
 
-describe("argument for 'key'", () => {
+describe("argument for 'target'", () => {
   test("must be provided", () => {
     expect<{ test: void }>().type.toBeAssignable();
   });

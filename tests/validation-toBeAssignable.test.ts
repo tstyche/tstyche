@@ -1,7 +1,7 @@
 import { expect, test } from "@jest/globals";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-test("toEqual", () => {
+test("toBeAssignable", () => {
   const { status, stderr, stdout } = spawnTyche("validation-toBeAssignable");
 
   expect(stdout).toMatchSnapshot("stdout");
