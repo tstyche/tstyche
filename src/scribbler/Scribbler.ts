@@ -105,7 +105,7 @@ export class Scribbler {
       if (element.type === "ansi" && !this.#noColor) {
         const flags =
           typeof element.props?.["escapes"] === "string" || Array.isArray(element.props?.["escapes"])
-            ? element.props?.["escapes"]
+            ? element.props["escapes"]
             : undefined;
 
         if (flags != null) {
