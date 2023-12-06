@@ -6,6 +6,7 @@ import type { ExpectResult } from "#result";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToBeAssignable } from "./ToBeAssignable.js";
 import { ToEqual } from "./ToEqual.js";
+import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
@@ -24,6 +25,7 @@ export class Expect {
   toBeUnknown: PrimitiveTypeMatcher;
   toBeVoid: PrimitiveTypeMatcher;
   toEqual: ToEqual;
+  toHaveProperty: ToHaveProperty;
   toMatch: ToMatch;
 
   constructor(
@@ -48,6 +50,7 @@ export class Expect {
     this.toBeUnknown = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Unknown, "unknown");
     this.toBeVoid = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Void, "void");
     this.toEqual = new ToEqual(this.typeChecker);
+    this.toHaveProperty = new ToHaveProperty(this.compiler, this.typeChecker);
     this.toMatch = new ToMatch(this.typeChecker);
   }
 
@@ -63,6 +66,14 @@ export class Expect {
       : this.typeChecker.getTypeAtLocation(node);
   }
 
+  #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
+    return Boolean(type.flags & this.compiler.TypeFlags.StringOrNumberLiteral);
+  }
+
+  #isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
+    return Boolean(type.flags & this.compiler.TypeFlags.UniqueESSymbol);
+  }
+
   match(assertion: Assertion, expectResult: ExpectResult): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
@@ -71,13 +82,13 @@ export class Expect {
       case "toEqual":
       case "toMatch":
         if (assertion.source[0] == null) {
-          this.#onNullishSource(assertion, expectResult);
+          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
 
           return;
         }
 
         if (assertion.target[0] == null) {
-          this.#onNullishTarget(assertion, expectResult);
+          this.#onTargetArgumentMustBeProvided(assertion, expectResult);
 
           return;
         }
@@ -101,21 +112,82 @@ export class Expect {
       case "toBeUnknown":
       case "toBeVoid":
         if (assertion.source[0] == null) {
-          this.#onNullishSource(assertion, expectResult);
+          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
 
           return;
         }
 
         return this[matcherNameText].match(this.#getType(assertion.source[0]), assertion.isNot);
 
+      case "toHaveProperty": {
+        if (assertion.source[0] == null) {
+          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const sourceType = this.#getType(assertion.source[0]);
+
+        if (!(sourceType.flags & this.compiler.TypeFlags.StructuredType)) {
+          this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
+
+          return;
+        }
+
+        if (assertion.target[0] == null) {
+          this.#onKeyArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const targetType = this.#getType(assertion.target[0]);
+
+        if (!(this.#isStringOrNumberLiteralType(targetType) || this.#isUniqueSymbolType(targetType))) {
+          this.#onKeyArgumentMustBeOfType(assertion.target[0], expectResult);
+
+          return;
+        }
+
+        return this.toHaveProperty.match(this.#getType(assertion.source[0]), targetType, assertion.isNot);
+      }
+
       default:
-        this.#onNotSupportedMatcher(assertion, expectResult);
+        this.#onNotSupportedMatcherName(assertion, expectResult);
 
         return;
     }
   }
 
-  #onNotSupportedMatcher(assertion: Assertion, expectResult: ExpectResult) {
+  #onKeyArgumentMustBeOfType(target: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const receivedTypeText = this.typeChecker.typeToString(this.#getType(target));
+
+    const text = `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedTypeText}'.`;
+    const origin = {
+      end: target.getEnd(),
+      file: target.getSourceFile(),
+      start: target.getStart(),
+    };
+
+    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+  }
+
+  #onKeyArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
+    const origin = {
+      end: assertion.matcherName.getEnd(),
+      file: assertion.matcherName.getSourceFile(),
+      start: assertion.matcherName.getStart(),
+    };
+
+    EventEmitter.dispatch([
+      "expect:error",
+      {
+        diagnostics: [Diagnostic.error("An argument for 'key' must be provided.", origin)],
+        result: expectResult,
+      },
+    ]);
+  }
+
+  #onNotSupportedMatcherName(assertion: Assertion, expectResult: ExpectResult) {
     const matcherNameText = assertion.matcherName.getText();
     const origin = {
       end: assertion.matcherName.getEnd(),
@@ -132,7 +204,21 @@ export class Expect {
     ]);
   }
 
-  #onNullishSource(assertion: Assertion, expectResult: ExpectResult) {
+  #onSourceArgumentMustBeObjectType(source: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const sourceText = this.compiler.isTypeNode(source) ? "A type argument for 'Source'" : "An argument for 'source'";
+    const receivedTypeText = this.typeChecker.typeToString(this.#getType(source));
+
+    const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
+    const origin = {
+      end: source.getEnd(),
+      file: source.getSourceFile(),
+      start: source.getStart(),
+    };
+
+    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+  }
+
+  #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
     const origin = {
       end: assertion.node.getEnd(),
       file: assertion.node.getSourceFile(),
@@ -150,7 +236,7 @@ export class Expect {
     ]);
   }
 
-  #onNullishTarget(assertion: Assertion, expectResult: ExpectResult) {
+  #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
     const origin = {
       end: assertion.matcherName.getEnd(),
       file: assertion.matcherName.getSourceFile(),

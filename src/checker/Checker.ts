@@ -23,18 +23,6 @@ export class Checker {
     this.#assertNonNullish(assertion.sourceType, "An argument for 'source' was not provided.");
   }
 
-  #assertNonNullishTarget(assertion: Assertion): assertion is Assertion & {
-    targetType: NonNullable<Assertion["targetType"]>;
-  } {
-    return assertion.targetType != null;
-  }
-
-  #assertNonNullishTargetType(assertion: Assertion): asserts assertion is Assertion & {
-    targetType: NonNullable<Assertion["targetType"]>;
-  } {
-    this.#assertNonNullish(assertion.targetType, "An argument for 'target' was not provided.");
-  }
-
   #assertNonNullishTypeChecker(assertion: Assertion): asserts assertion is Assertion & {
     typeChecker: NonNullable<Assertion["typeChecker"]>;
   } {
@@ -69,33 +57,6 @@ export class Checker {
     };
 
     switch (matcher) {
-      case "toHaveProperty": {
-        this.#assertNonNullishSourceType(assertion);
-        this.#assertNonNullishTargetType(assertion);
-
-        const sourceText = assertion.typeChecker.typeToString(assertion.sourceType.type);
-        let targetArgumentText: string;
-
-        if (assertion.targetType.type.flags & this.compiler.TypeFlags.StringOrNumberLiteral) {
-          targetArgumentText = String((assertion.targetType.type as ts.StringLiteralType | ts.NumberLiteralType).value);
-        } else if (assertion.targetType.type.flags & this.compiler.TypeFlags.UniqueESSymbol) {
-          targetArgumentText = `[${this.compiler.unescapeLeadingUnderscores(
-            (assertion.targetType.type as ts.UniqueESSymbolType).symbol.escapedName,
-          )}]`;
-        } else {
-          throw new Error("An argument for 'key' must be of type 'string | number | symbol'.");
-        }
-
-        return [
-          Diagnostic.error(
-            assertion.isNot
-              ? `Property '${targetArgumentText}' exists on type '${sourceText}'.`
-              : `Property '${targetArgumentText}' does not exist on type '${sourceText}'.`,
-            origin,
-          ),
-        ];
-      }
-
       case "toRaiseError": {
         this.#assertNonNullishSourceType(assertion);
         if (!this.#assertStringsOrNumbers(assertion.targetArguments)) {
@@ -205,84 +166,6 @@ export class Checker {
     const matcher = assertion.matcherName.getText();
 
     switch (matcher) {
-      case "toHaveProperty": {
-        if (!this.#assertNonNullishSource(assertion)) {
-          const origin = {
-            end: assertion.node.getEnd(),
-            file: assertion.node.getSourceFile(),
-            start: assertion.node.getStart(),
-          };
-
-          onDiagnostics([
-            Diagnostic.error("An argument for 'source' or type argument for 'Source' must be provided.", origin),
-          ]);
-
-          return;
-        }
-
-        if (!this.#assertNonNullishTarget(assertion)) {
-          const origin = {
-            end: assertion.matcherName.getEnd(),
-            file: assertion.matcherName.getSourceFile(),
-            start: assertion.matcherName.getStart(),
-          };
-
-          onDiagnostics([Diagnostic.error("An argument for 'key' must be provided.", origin)]);
-
-          return;
-        }
-
-        if (!(assertion.sourceType.type.flags & this.compiler.TypeFlags.StructuredType)) {
-          const sourceText =
-            assertion.sourceType.source === AssertionSource.TypeArgument
-              ? "A type argument for 'Source'"
-              : "An argument for 'source'";
-
-          const receivedText = assertion.typeChecker?.typeToString(assertion.sourceType.type);
-
-          const origin = {
-            file: assertion.node.getSourceFile(),
-            ...assertion.sourceType.position,
-          };
-
-          onDiagnostics([
-            Diagnostic.error(`${sourceText} must be of an object type, received: '${receivedText}'.`, origin),
-          ]);
-
-          return;
-        }
-
-        let targetArgumentText: string;
-
-        if (assertion.targetType.type.flags & this.compiler.TypeFlags.StringOrNumberLiteral) {
-          targetArgumentText = String((assertion.targetType.type as ts.StringLiteralType | ts.NumberLiteralType).value);
-        } else if (assertion.targetType.type.flags & this.compiler.TypeFlags.UniqueESSymbol) {
-          targetArgumentText = this.compiler.unescapeLeadingUnderscores(
-            (assertion.targetType.type as ts.UniqueESSymbolType).escapedName,
-          );
-        } else {
-          const receivedText = assertion.typeChecker?.typeToString(assertion.targetType.type);
-
-          const origin = {
-            file: assertion.node.getSourceFile(),
-            ...assertion.targetType.position,
-          };
-
-          onDiagnostics([
-            Diagnostic.error(
-              `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedText}'.`,
-              origin,
-            ),
-          ]);
-
-          return;
-        }
-
-        return assertion.sourceType.type.getProperties().some((property) => {
-          return this.compiler.unescapeLeadingUnderscores(property.escapedName) === targetArgumentText;
-        });
-      }
-
       case "toRaiseError": {
         if (!this.#assertNonNullishSource(assertion)) {
           const origin = {
