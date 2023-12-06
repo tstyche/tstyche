@@ -47,10 +47,24 @@ export class Assertion extends TestMember {
     return this.matcherNode.expression.name;
   }
 
+  get source(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
+    if (this.node.typeArguments != null) {
+      return this.node.typeArguments;
+    }
+
+    return this.node.arguments;
+  }
+
+  /**
+   * @deprecated Use 'source' instead.
+   */
   get sourceArguments(): ts.NodeArray<ts.Expression> {
     return this.node.arguments;
   }
 
+  /**
+   * @deprecated Use 'source' instead.
+   */
   get sourceType(): { position: { end: number; start: number }; source: AssertionSource; type: ts.Type } | undefined {
     if (!this.typeChecker) {
       return;
@@ -81,10 +95,24 @@ export class Assertion extends TestMember {
     return;
   }
 
+  get target(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
+    if (this.matcherNode.typeArguments != null) {
+      return this.matcherNode.typeArguments;
+    }
+
+    return this.matcherNode.arguments;
+  }
+
+  /**
+   * @deprecated Use 'target' instead.
+   */
   get targetArguments(): ts.NodeArray<ts.Expression> {
     return this.matcherNode.arguments;
   }
 
+  /**
+   * @deprecated Use 'target' instead.
+   */
   get targetType(): { position: { end: number; start: number }; source: AssertionSource; type: ts.Type } | undefined {
     if (!this.typeChecker) {
       return;
