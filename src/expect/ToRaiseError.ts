@@ -10,7 +10,7 @@ export class ToRaiseError {
 
   #explain(
     source: { diagnostics: Array<ts.Diagnostic>; node: ts.Expression | ts.TypeNode },
-    targets: Array<ts.StringLiteralType | ts.NumberLiteralType>,
+    targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ) {
     const sourceText = this.compiler.isTypeNode(source.node) ? "Type definition" : "Expression";
@@ -19,7 +19,7 @@ export class ToRaiseError {
       return [Diagnostic.error(`${sourceText} did not raise a type error.`)];
     }
 
-    if (isNot && targets.length === 0) {
+    if (isNot && targetTypes.length === 0) {
       const related = [
         Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
         ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
@@ -31,13 +31,13 @@ export class ToRaiseError {
       return [Diagnostic.error(text).add({ related })];
     }
 
-    if (source.diagnostics.length !== targets.length) {
+    if (source.diagnostics.length !== targetTypes.length) {
       const expectedText =
-        source.diagnostics.length > targets.length
-          ? `only ${targets.length} type error${targets.length === 1 ? "" : "s"}`
-          : `${targets.length} type error${targets.length === 1 ? "" : "s"}`;
+        source.diagnostics.length > targetTypes.length
+          ? `only ${targetTypes.length} type error${targetTypes.length === 1 ? "" : "s"}`
+          : `${targetTypes.length} type error${targetTypes.length === 1 ? "" : "s"}`;
       const foundText =
-        source.diagnostics.length > targets.length
+        source.diagnostics.length > targetTypes.length
           ? `${source.diagnostics.length}`
           : `only ${source.diagnostics.length}`;
 
@@ -54,7 +54,7 @@ export class ToRaiseError {
 
     const diagnostics: Array<Diagnostic> = [];
 
-    targets.forEach((argument, index) => {
+    targetTypes.forEach((argument, index) => {
       const diagnostic = source.diagnostics[index];
 
       if (!diagnostic) {
@@ -101,19 +101,19 @@ export class ToRaiseError {
 
   match(
     source: { diagnostics: Array<ts.Diagnostic>; node: ts.Expression | ts.TypeNode },
-    targets: Array<ts.StringLiteralType | ts.NumberLiteralType>,
+    targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ): MatchResult {
-    const explain = () => this.#explain(source, targets, isNot);
+    const explain = () => this.#explain(source, targetTypes, isNot);
 
-    if (targets.length === 0) {
+    if (targetTypes.length === 0) {
       return {
         explain,
         isMatch: source.diagnostics.length > 0,
       };
     }
 
-    if (source.diagnostics.length !== targets.length) {
+    if (source.diagnostics.length !== targetTypes.length) {
       return {
         explain,
         isMatch: false,
@@ -122,15 +122,15 @@ export class ToRaiseError {
 
     return {
       explain,
-      isMatch: targets.every((target, index) => this.#matchExpectedError(source.diagnostics[index], target)),
+      isMatch: targetTypes.every((type, index) => this.#matchExpectedError(source.diagnostics[index], type)),
     };
   }
 
-  #matchExpectedError(diagnostic: ts.Diagnostic | undefined, target: ts.StringLiteralType | ts.NumberLiteralType) {
-    if (this.#isStringLiteralType(target)) {
-      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(target.value); // TODO consider removing '\r\n', '\n' and leading/trailing spaces from 'target.value'
+  #matchExpectedError(diagnostic: ts.Diagnostic | undefined, type: ts.StringLiteralType | ts.NumberLiteralType) {
+    if (this.#isStringLiteralType(type)) {
+      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(type.value); // TODO consider removing '\r\n', '\n' and leading/trailing spaces from 'type.value'
     }
 
-    return target.value === diagnostic?.code;
+    return type.value === diagnostic?.code;
   }
 }
