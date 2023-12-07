@@ -164,11 +164,9 @@ export class TestTreeWorker {
 
         const diagnostics: Array<Diagnostic> = [];
 
-        for (const explanation of matchResult.explain()) {
-          const diagnostic = Diagnostic.error(explanation.text, origin);
-
-          if ("related" in explanation) {
-            diagnostic.add({ related: explanation.related });
+        for (const diagnostic of matchResult.explain()) {
+          if (diagnostic.origin == null) {
+            diagnostic.add({ origin });
           }
 
           diagnostics.push(diagnostic);

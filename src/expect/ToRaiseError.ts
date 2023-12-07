@@ -1,6 +1,6 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
 import { Diagnostic } from "#diagnostic";
-import type { MatchExplanation, MatchResult, TypeChecker } from "./types.js";
+import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToRaiseError {
   constructor(
@@ -16,7 +16,7 @@ export class ToRaiseError {
     const sourceText = this.compiler.isTypeNode(source.node) ? "Type definition" : "Expression";
 
     if (source.diagnostics.length === 0) {
-      return [{ text: `${sourceText} did not raise a type error.` }];
+      return [Diagnostic.error(`${sourceText} did not raise a type error.`)];
     }
 
     if (isNot && targets.length === 0) {
@@ -28,7 +28,7 @@ export class ToRaiseError {
         source.diagnostics.length === 1 ? "a" : source.diagnostics.length
       } type error${source.diagnostics.length === 1 ? "" : "s"}.`;
 
-      return [{ related, text }];
+      return [Diagnostic.error(text).add({ related })];
     }
 
     if (source.diagnostics.length !== targets.length) {
@@ -49,10 +49,10 @@ export class ToRaiseError {
         source.diagnostics.length === 1 ? "was" : "were"
       } raised.`;
 
-      return [{ related, text }];
+      return [Diagnostic.error(text).add({ related })];
     }
 
-    const explanations: Array<MatchExplanation> = [];
+    const diagnostics: Array<Diagnostic> = [];
 
     targets.forEach((argument, index) => {
       const diagnostic = source.diagnostics[index];
@@ -74,7 +74,7 @@ export class ToRaiseError {
         ];
         const text = `${sourceText} did not raise a type error ${expectedText}.`;
 
-        explanations.push({ related, text });
+        diagnostics.push(Diagnostic.error(text).add({ related }));
       }
 
       if (isNot && isMatch) {
@@ -88,17 +88,11 @@ export class ToRaiseError {
         ];
         const text = `${sourceText} raised a type error ${expectedText}.`;
 
-        explanations.push({ related, text });
-
-        // TODO consider using 'Diagnostics' directly instead of 'MatchExplanations'
-        //
-        // diagnostics.push(
-        //   Diagnostic.error(`${sourceText} raised a type error ${expectedText}.`, origin).add({ related }),
-        // );
+        diagnostics.push(Diagnostic.error(text).add({ related }));
       }
     });
 
-    return explanations;
+    return diagnostics;
   }
 
   #isStringLiteralType(type: ts.Type): type is ts.StringLiteralType {

@@ -1,4 +1,5 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
+import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToBeAssignable {
@@ -9,8 +10,8 @@ export class ToBeAssignable {
     const targetTypeText = this.typeChecker.typeToString(targetType);
 
     return isNot
-      ? [{ text: `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.` }]
-      : [{ text: `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.` }];
+      ? [Diagnostic.error(`Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.`)]
+      : [Diagnostic.error(`Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`)];
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {

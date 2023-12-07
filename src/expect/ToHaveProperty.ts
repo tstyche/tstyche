@@ -1,4 +1,5 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
+import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToHaveProperty {
@@ -22,8 +23,8 @@ export class ToHaveProperty {
     }
 
     return isNot
-      ? [{ text: `Property '${targetArgumentText}' exists on type '${sourceTypeText}'.` }]
-      : [{ text: `Property '${targetArgumentText}' does not exist on type '${sourceTypeText}'.` }];
+      ? [Diagnostic.error(`Property '${targetArgumentText}' exists on type '${sourceTypeText}'.`)]
+      : [Diagnostic.error(`Property '${targetArgumentText}' does not exist on type '${sourceTypeText}'.`)];
   }
 
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {

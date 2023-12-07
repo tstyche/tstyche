@@ -1,4 +1,5 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
+import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToMatch {
@@ -9,8 +10,8 @@ export class ToMatch {
     const targetTypeText = this.typeChecker.typeToString(targetType);
 
     return isNot
-      ? [{ text: `Type '${targetTypeText}' is a subtype of type '${sourceTypeText}'.` }]
-      : [{ text: `Type '${targetTypeText}' is not a subtype of type '${sourceTypeText}'.` }];
+      ? [Diagnostic.error(`Type '${targetTypeText}' is a subtype of type '${sourceTypeText}'.`)]
+      : [Diagnostic.error(`Type '${targetTypeText}' is not a subtype of type '${sourceTypeText}'.`)];
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {

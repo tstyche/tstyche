@@ -1,13 +1,8 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
 import type { Diagnostic } from "#diagnostic";
 
-export interface MatchExplanation {
-  related?: Array<Diagnostic>;
-  text: string;
-}
-
 export interface MatchResult {
-  explain: () => Array<MatchExplanation>;
+  explain: () => Array<Diagnostic>;
   isMatch: boolean;
 }
 

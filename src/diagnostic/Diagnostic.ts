@@ -18,9 +18,13 @@ export class Diagnostic {
     public origin?: DiagnosticOrigin,
   ) {}
 
-  add(options: { code?: string; related?: Array<Diagnostic> }): this {
+  add(options: { code?: string; origin?: DiagnosticOrigin; related?: Array<Diagnostic> }): this {
     if (options.code != null) {
       this.code = options.code;
+    }
+
+    if (options.origin != null) {
+      this.origin = options.origin;
     }
 
     if (options.related != null) {
