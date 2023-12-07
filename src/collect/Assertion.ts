@@ -1,5 +1,4 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
-import { AssertionSource } from "./AssertionSource.js";
 import { TestMember } from "./TestMember.js";
 import type { TestMemberBrand } from "./TestMemberBrand.js";
 import type { TestMemberFlags } from "./TestMemberFlags.js";
@@ -47,56 +46,20 @@ export class Assertion extends TestMember {
     return this.matcherNode.expression.name;
   }
 
-  get sourceArguments(): ts.NodeArray<ts.Expression> {
+  get source(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
+    if (this.node.typeArguments != null) {
+      return this.node.typeArguments;
+    }
+
     return this.node.arguments;
   }
 
-  get sourceType(): { source: AssertionSource; type: ts.Type } | undefined {
-    if (!this.typeChecker) {
-      return;
+  get target(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
+    if (this.matcherNode.typeArguments != null) {
+      return this.matcherNode.typeArguments;
     }
 
-    if (this.node.typeArguments?.[0]) {
-      return {
-        source: AssertionSource.TypeArgument,
-        type: this.typeChecker.getTypeFromTypeNode(this.node.typeArguments[0]),
-      };
-    }
-
-    if (this.node.arguments[0]) {
-      return {
-        source: AssertionSource.Argument,
-        type: this.typeChecker.getTypeAtLocation(this.node.arguments[0]),
-      };
-    }
-
-    return;
-  }
-
-  get targetArguments(): ts.NodeArray<ts.Expression> {
     return this.matcherNode.arguments;
-  }
-
-  get targetType(): { source: AssertionSource; type: ts.Type } | undefined {
-    if (!this.typeChecker) {
-      return;
-    }
-
-    if (this.matcherNode.typeArguments?.[0]) {
-      return {
-        source: AssertionSource.TypeArgument,
-        type: this.typeChecker.getTypeFromTypeNode(this.matcherNode.typeArguments[0]),
-      };
-    }
-
-    if (this.matcherNode.arguments[0]) {
-      return {
-        source: AssertionSource.Argument,
-        type: this.typeChecker.getTypeAtLocation(this.matcherNode.arguments[0]),
-      };
-    }
-
-    return;
   }
 
   #mapDiagnostics() {

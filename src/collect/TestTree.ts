@@ -1,5 +1,4 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
-import type { TypeChecker } from "#store";
 import type { Assertion } from "./Assertion.js";
 import type { TestMember } from "./TestMember.js";
 import { TestMemberFlags } from "./TestMemberFlags.js";
@@ -11,7 +10,6 @@ export class TestTree {
     public compiler: typeof ts,
     public diagnostics: Array<ts.Diagnostic>,
     public sourceFile: ts.SourceFile,
-    public typeChecker?: TypeChecker,
   ) {}
 
   get hasOnly(): boolean {

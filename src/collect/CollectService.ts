@@ -63,6 +63,7 @@ export class CollectService {
 
         const notNode = this.#getMatchingChainNode(modifierNode, [this.notIdentifier]);
 
+        // TODO no need to check for matcher name, the `Expect` class will handle unimplemented matchers
         const matcherNode = this.#getMatchingChainNode(notNode ?? modifierNode, this.matcherIdentifiers)?.parent;
 
         if (matcherNode == null || !this.#isMatcherNode(matcherNode)) {
@@ -96,12 +97,8 @@ export class CollectService {
     });
   }
 
-  createTestTree(
-    sourceFile: ts.SourceFile,
-    semanticDiagnostics: Array<ts.Diagnostic> = [],
-    typeChecker?: ts.TypeChecker | undefined,
-  ): TestTree {
-    const testTree = new TestTree(this.compiler, semanticDiagnostics, sourceFile, typeChecker);
+  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
+    const testTree = new TestTree(this.compiler, semanticDiagnostics, sourceFile);
 
     this.#collectTestMembers(sourceFile, new IdentifierLookup(this.compiler), testTree);
 

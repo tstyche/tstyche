@@ -4,6 +4,7 @@ import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { Expect } from "#expect";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
 import { RunMode } from "./RunMode.js";
@@ -77,9 +78,7 @@ export class TestFileRunner {
       return;
     }
 
-    const typeChecker = program.getTypeChecker();
-
-    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics, typeChecker);
+    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
     if (testTree.diagnostics.length > 0) {
       EventEmitter.dispatch([
@@ -93,7 +92,20 @@ export class TestFileRunner {
       return;
     }
 
-    const testTreeWorker = new TestTreeWorker(this.resolvedConfig, this.compiler, {
+    const typeChecker = program.getTypeChecker();
+
+    if (!Expect.assertTypeChecker(typeChecker)) {
+      const text =
+        "The required 'isTypeAssignableTo()', 'isTypeIdenticalTo()' and 'isTypeSubtypeOf()' methods are missing in the provided type checker.";
+
+      EventEmitter.dispatch(["file:error", { diagnostics: [Diagnostic.error(text)], result: fileResult }]);
+
+      return;
+    }
+
+    const expect = new Expect(this.compiler, typeChecker);
+
+    const testTreeWorker = new TestTreeWorker(this.resolvedConfig, this.compiler, expect, {
       fileResult,
       hasOnly: testTree.hasOnly,
       position,

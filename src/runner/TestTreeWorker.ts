@@ -1,9 +1,9 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
-import { Checker } from "#checker";
 import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import type { Expect } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
 import { RunMode } from "./RunMode.js";
 
@@ -15,7 +15,7 @@ interface TestFileWorkerOptions {
 }
 
 export class TestTreeWorker {
-  #checker: Checker;
+  #expect: Expect;
   #fileResult: FileResult;
   #hasOnly: boolean;
   #position: number | undefined;
@@ -24,13 +24,14 @@ export class TestTreeWorker {
   constructor(
     readonly resolvedConfig: ResolvedConfig,
     public compiler: typeof ts,
+    expect: Expect,
     options: TestFileWorkerOptions,
   ) {
-    this.#checker = new Checker(compiler);
+    this.#expect = expect;
+    this.#fileResult = options.fileResult;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
     this.#signal = options.signal;
-    this.#fileResult = options.fileResult;
   }
 
   #resolveRunMode(mode: RunMode, member: TestMember): RunMode {
@@ -126,9 +127,15 @@ export class TestTreeWorker {
       return;
     }
 
-    const isPass = this.#checker.match(assertion);
+    const matchResult = this.#expect.match(assertion, expectResult);
 
-    if (assertion.isNot ? !isPass : isPass) {
+    if (matchResult == null) {
+      // an error was encountered and the "expect:error" event is already emitted
+
+      return;
+    }
+
+    if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
       if (runMode & RunMode.Fail) {
         const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
         const origin = {
@@ -139,10 +146,7 @@ export class TestTreeWorker {
 
         EventEmitter.dispatch([
           "expect:error",
-          {
-            diagnostics: [Diagnostic.error(text, origin)], // TODO should come from 'checker.explain' or so
-            result: expectResult,
-          },
+          { diagnostics: [Diagnostic.error(text, origin)], result: expectResult },
         ]);
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
@@ -151,13 +155,24 @@ export class TestTreeWorker {
       if (runMode & RunMode.Fail) {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       } else {
-        EventEmitter.dispatch([
-          "expect:fail",
-          {
-            diagnostics: this.#checker.explain(assertion),
-            result: expectResult,
-          },
-        ]);
+        const origin = {
+          breadcrumbs: assertion.ancestorNames,
+          end: assertion.matcherName.getEnd(),
+          file: assertion.matcherName.getSourceFile(),
+          start: assertion.matcherName.getStart(),
+        };
+
+        const diagnostics: Array<Diagnostic> = [];
+
+        for (const diagnostic of matchResult.explain()) {
+          if (diagnostic.origin == null) {
+            diagnostic.add({ origin });
+          }
+
+          diagnostics.push(diagnostic);
+        }
+
+        EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
       }
     }
   }

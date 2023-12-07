@@ -1,6 +1,5 @@
 import type ts from "typescript/lib/tsserverlibrary.js";
 import { Diagnostic } from "#diagnostic";
-import type { TypeChecker } from "#store";
 import type { Assertion } from "./Assertion.js";
 import { TestMemberBrand } from "./TestMemberBrand.js";
 import type { TestMemberFlags } from "./TestMemberFlags.js";
@@ -11,7 +10,6 @@ export class TestMember {
   diagnostics: Array<ts.Diagnostic>;
   members: Array<TestMember | Assertion> = [];
   name: string;
-  typeChecker?: TypeChecker | undefined;
 
   constructor(
     public brand: TestMemberBrand,
@@ -20,7 +18,6 @@ export class TestMember {
     public flags: TestMemberFlags,
   ) {
     this.compiler = parent.compiler;
-    this.typeChecker = parent.typeChecker;
 
     this.diagnostics = this.#mapDiagnostics(node, this.parent);
     this.name = this.#resolveName(node);
