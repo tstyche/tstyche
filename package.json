@@ -6,7 +6,8 @@
     "typescript",
     "types",
     "test",
-    "runner"
+    "runner",
+    "expect"
   ],
   "homepage": "https://tstyche.org",
   "bugs": {
