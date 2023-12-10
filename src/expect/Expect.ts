@@ -64,9 +64,9 @@ export class Expect {
   }
 
   #getType(node: ts.Expression | ts.TypeNode) {
-    return this.compiler.isTypeNode(node)
-      ? this.typeChecker.getTypeFromTypeNode(node)
-      : this.typeChecker.getTypeAtLocation(node);
+    return this.compiler.isExpression(node)
+      ? this.typeChecker.getTypeAtLocation(node)
+      : this.typeChecker.getTypeFromTypeNode(node);
   }
 
   #getTypes(nodes: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>) {
