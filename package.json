@@ -76,7 +76,7 @@
     "jest": "29.7.0",
     "jest-serializer-ansi-escapes": "2.0.1",
     "magic-string": "0.30.5",
-    "prettier": "3.1.0",
+    "prettier": "3.1.1",
     "rollup": "4.7.0",
     "rollup-plugin-dts": "6.1.0",
     "rollup-plugin-tsconfig-paths": "1.5.2",
