@@ -11,6 +11,7 @@ export class CollectService {
     "toBeAssignable",
     "toBeBigInt",
     "toBeBoolean",
+    "toBeCallableWith",
     "toBeNever",
     "toBeNull",
     "toBeNumber",

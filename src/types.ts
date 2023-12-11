@@ -87,6 +87,19 @@ interface Matchers {
    */
   toBeBoolean: () => void;
   /**
+   * Checks if an argument of the target type is assignable to a parameter the source type.
+   */
+  toBeCallableWith: {
+    /**
+     * Checks if an argument of the target type is assignable to a parameter the source type.
+     */
+    <Target extends [...arguments: Array<unknown>]>(): void;
+    /**
+     * Checks if an argument of type of the target expression is assignable to a parameter the source type.
+     */
+    (...target: Array<unknown>): void;
+  };
+  /**
    * Checks if the `never` type is identical to the source type.
    */
   toBeNever: () => void;
