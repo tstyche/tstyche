@@ -14,5 +14,5 @@
   "ignorePaths": ["**/__snapshots__/**/*"],
   "language": "en-US",
   "useGitignore": true,
-  "words": ["tsdoc", "tsserverlibrary", "tstyche", "typecheck", "typetests"]
+  "words": ["packagephobia", "tsdoc", "tsserverlibrary", "tstyche", "typecheck", "typetests"]
 }

@@ -2,7 +2,7 @@
 
 [![version][version-src]][version-href]
 [![license][license-src]][license-href]
-[![checks][checks-src]][checks-href]
+[![packagephobia][packagephobia-src]][packagephobia-href]
 [![coverage][coverage-src]][coverage-href]
 
 The Essential Type Testing Tool.
@@ -83,7 +83,7 @@ Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 [version-href]: https://npmjs.com/package/tstyche
 [license-src]: https://badgen.net/github/license/tstyche/tstyche
 [license-href]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
-[checks-src]: https://badgen.net/github/checks/tstyche/tstyche
-[checks-href]: https://github.com/tstyche/tstyche/actions/workflows/checks.yml
+[packagephobia-src]: https://badgen.net/packagephobia/install/tstyche
+[packagephobia-href]: https://packagephobia.com/result?p=tstyche
 [coverage-src]: https://badgen.net/codecov/c/github/tstyche/tstyche
 [coverage-href]: https://app.codecov.io/gh/tstyche/tstyche
