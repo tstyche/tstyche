@@ -1622,12 +1622,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:20.10.4":
+"@types/node@npm:*":
   version: 20.10.4
   resolution: "@types/node@npm:20.10.4"
   dependencies:
     undici-types: ~5.26.4
   checksum: 054b296417e771ab524bea63cf3289559c6bdf290d45428f7cc68e9b00030ff7a0ece47b8c99a26b4f47a443919813bcf42beadff2f0bea7d8125fa541d92eb0
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:20.10.5":
+  version: 20.10.5
+  resolution: "@types/node@npm:20.10.5"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: e216b679f545a8356960ce985a0e53c3a58fff0eacd855e180b9e223b8db2b5bd07b744a002b8c1f0c37f9194648ab4578533b5c12df2ec10cc02f61d20948d2
   languageName: node
   linkType: hard
 
@@ -6348,7 +6357,7 @@ __metadata:
   dependencies:
     "@jest/globals": 29.7.0
     "@rollup/plugin-typescript": 11.1.5
-    "@types/node": 20.10.4
+    "@types/node": 20.10.5
     "@typescript-eslint/eslint-plugin": 6.14.0
     "@typescript-eslint/parser": 6.14.0
     ajv: 8.12.0
