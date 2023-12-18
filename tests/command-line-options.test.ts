@@ -376,4 +376,17 @@ test.only("external is string?", () => {
       expect(status).toBe(1);
     });
   });
+
+  test("'--version' option", async () => {
+    await writeFixture(fixture, {
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { status, stderr, stdout } = spawnTyche(fixture, ["--version"]);
+
+    expect(stdout).toMatch(/^\d+\.\d+\.\d+/);
+    expect(stderr).toBe("");
+
+    expect(status).toBe(0);
+  });
 });
