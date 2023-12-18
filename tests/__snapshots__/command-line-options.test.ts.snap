@@ -73,6 +73,79 @@ Ran tests matching 'external' and not matching 'number' in all test files.
 "
 `;
 
+exports[`command line options '--skip' option overrides the '.only' run mode flag: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  - skip internal is string?
+  - skip internal is number?
+  + external is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 passed, 3 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests not matching 'internal' in all test files.
+"
+`;
+
+exports[`command line options '--skip' option selects test group to run: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  internal
+    - skip is string?
+  - skip internal is number?
+  + external is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 passed, 3 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests not matching 'internal' in all test files.
+"
+`;
+
+exports[`command line options '--skip' option selects tests to run: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  - skip internal is string?
+  - skip internal is number?
+  + external is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 passed, 3 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests not matching 'internal' in all test files.
+"
+`;
+
+exports[`command line options '--skip' option with '--only' command line options: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  - skip internal is string?
+  - skip internal is number?
+  + external is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 passed, 3 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests matching 'number' and not matching 'internal' in all test files.
+"
+`;
+
 exports[`command line options '--target' option handles multiple targets: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
