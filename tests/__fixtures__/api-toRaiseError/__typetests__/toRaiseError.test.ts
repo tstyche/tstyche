@@ -182,6 +182,16 @@ test("expression raises more type errors than expected codes", () => {
   }).type.toRaiseError(2345);
 });
 
+test("expression raises only one type error, but several messages are expected", () => {
+  expect(() => {
+    two(1111);
+  }).type.toRaiseError(
+    "Argument of type 'number' is not assignable to parameter of type 'string'",
+    "Expected 0 arguments",
+    "Expected 2 arguments",
+  );
+});
+
 test("expression raises less type errors than expected messages", () => {
   expect(() => {
     two(1111);
@@ -191,6 +201,12 @@ test("expression raises less type errors than expected messages", () => {
     "Expected 0 arguments",
     "Expected 2 arguments",
   );
+});
+
+test("expression raises only one type error, but several codes are expected", () => {
+  expect(() => {
+    two<string>("pass");
+  }).type.toRaiseError(2345, 2554, 2554);
 });
 
 test("expression raises less type errors than expected codes", () => {
