@@ -197,6 +197,122 @@ test("internal is string?", () => {
     });
   });
 
+  describe("'--skip' option", () => {
+    test("selects tests to run", async () => {
+      const testText = `import { expect, test } from "tstyche";
+test("internal is string?", () => {
+  expect<string>().type.toBeString();
+});
+
+test("internal is number?", () => {
+  expect<number>().type.toBeNumber();
+});
+
+test("external is string?", () => {
+  expect<string>().type.toBeString();
+});
+`;
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: testText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--skip internal"]);
+
+      expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("selects test group to run", async () => {
+      const testText = `import { describe, expect, test } from "tstyche";
+describe("internal", () => {
+  test("is string?", () => {
+    expect<string>().type.toBeString();
+  });
+});
+
+test("internal is number?", () => {
+  expect<number>().type.toBeNumber();
+});
+
+test("external is string?", () => {
+  expect<string>().type.toBeString();
+});
+`;
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: testText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--skip internal"]);
+
+      expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("overrides the '.only' run mode flag", async () => {
+      const testText = `import { expect, test } from "tstyche";
+test.only("internal is string?", () => {
+  expect<string>().type.toBeString();
+});
+
+test.only("internal is number?", () => {
+  expect<number>().type.toBeNumber();
+});
+
+test.only("external is string?", () => {
+  expect<string>().type.toBeString();
+});
+`;
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: testText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--skip internal"]);
+
+      expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("with '--only' command line options", async () => {
+      const testText = `import { expect, test } from "tstyche";
+test("internal is string?", () => {
+  expect<string>().type.toBeString();
+});
+
+test("internal is number?", () => {
+  expect<number>().type.toBeNumber();
+});
+
+test.only("external is string?", () => {
+  expect<string>().type.toBeString();
+});
+`;
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: testText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--only number", "--skip internal"]);
+
+      expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+  });
+
   describe("'--target' option", () => {
     test("handles single target", async () => {
       await writeFixture(fixture, {
