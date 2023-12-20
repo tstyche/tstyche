@@ -5,6 +5,7 @@ import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToBeAssignable } from "./ToBeAssignable.js";
+import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToEqual } from "./ToEqual.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
@@ -16,6 +17,7 @@ export class Expect {
   toBeAssignable: ToBeAssignable;
   toBeBigInt: PrimitiveTypeMatcher;
   toBeBoolean: PrimitiveTypeMatcher;
+  toBeCallableWith: ToBeCallableWith;
   toBeNever: PrimitiveTypeMatcher;
   toBeNull: PrimitiveTypeMatcher;
   toBeNumber: PrimitiveTypeMatcher;
@@ -38,6 +40,7 @@ export class Expect {
     this.toBeAssignable = new ToBeAssignable(this.typeChecker);
     this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt, "bigint");
     this.toBeBoolean = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Boolean, "boolean");
+    this.toBeCallableWith = new ToBeCallableWith(this.compiler, this.typeChecker);
     this.toBeNever = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Never, "never");
     this.toBeNull = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Null, "null");
     this.toBeNumber = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Number, "number");
@@ -131,6 +134,43 @@ export class Expect {
         }
 
         return this[matcherNameText].match(this.#getType(assertion.source[0]), assertion.isNot);
+
+      case "toBeCallableWith": {
+        if (assertion.source[0] == null) {
+          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const sourceType = this.#getType(assertion.source[0]);
+        const sourceCallSignatures = sourceType.getCallSignatures();
+
+        if (sourceCallSignatures.length === 0) {
+          const sourceTypeText = this.typeChecker.typeToString(sourceType);
+
+          console.log("This expression is not callable.", `Type '${sourceTypeText}' has no call signatures.`);
+        }
+
+        let targetNodes: Array<ts.Expression> | Array<ts.TypeNode | ts.NamedTupleMember> = [];
+
+        if (assertion.target[0] != null) {
+          if (this.compiler.isExpression(assertion.target[0])) {
+            targetNodes = [...(assertion.target as ts.NodeArray<ts.Expression>)];
+          }
+
+          if (this.compiler.isTypeNode(assertion.target[0])) {
+            if (this.compiler.isTupleTypeNode(assertion.target[0])) {
+              targetNodes = [...assertion.target[0].elements];
+            } else {
+              const receivedTypeText = this.typeChecker.typeToString(this.#getType(assertion.target[0]));
+
+              console.log(`A type argument for 'Target' must be of tuple type, received: '${receivedTypeText}'.`);
+            }
+          }
+        }
+
+        return this.toBeCallableWith.match(sourceCallSignatures, targetNodes, assertion.isNot);
+      }
 
       case "toHaveProperty": {
         if (assertion.source[0] == null) {
