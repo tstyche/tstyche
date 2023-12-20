@@ -4,7 +4,6 @@ import https from "node:https";
 import path from "node:path";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
-import { EventEmitter } from "#events";
 
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
@@ -23,12 +22,14 @@ export class ManifestWorker {
   #cachePath: string;
   #manifestFileName = "store-manifest.json";
   #manifestFilePath: string;
+  #onDiagnostic: (diagnostic: Diagnostic) => void;
   #prune: () => Promise<void>;
   #registryUrl = new URL("https://registry.npmjs.org");
   #timeout = Environment.timeout * 1000;
 
-  constructor(cachePath: string, prune: () => Promise<void>) {
+  constructor(cachePath: string, onDiagnostic: (diagnostic: Diagnostic) => void, prune: () => Promise<void>) {
     this.#cachePath = cachePath;
+    this.#onDiagnostic = onDiagnostic;
     this.#manifestFilePath = path.join(cachePath, this.#manifestFileName);
     this.#prune = prune;
   }
@@ -153,10 +154,6 @@ export class ManifestWorker {
     }
 
     return manifest;
-  }
-
-  #onDiagnostic(diagnostic: Diagnostic) {
-    EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
   }
 
   async open(signal?: AbortSignal): Promise<Manifest | undefined> {
