@@ -18,7 +18,7 @@ export class StoreService {
     this.#cachePath = Environment.storePath;
 
     this.#compilerModuleWorker = new CompilerModuleWorker(this.#cachePath, this.#onDiagnostic);
-    this.#manifestWorker = new ManifestWorker(this.#cachePath, async () => this.prune());
+    this.#manifestWorker = new ManifestWorker(this.#cachePath, this.#onDiagnostic, this.prune);
   }
 
   get supportedTags(): Array<string> {
@@ -84,9 +84,9 @@ export class StoreService {
     this.#manifest = await this.#manifestWorker.open(signal);
   }
 
-  async prune(): Promise<void> {
+  prune = async (): Promise<void> => {
     await fs.rm(this.#cachePath, { force: true, recursive: true });
-  }
+  };
 
   resolveTag(tag: string): string | undefined {
     if (!this.#manifest) {

@@ -27,39 +27,75 @@ Error: An argument for 'source' must be of an object type, received: '"sample"'.
 
 Error: A type argument for 'Source' must be of an object type, received: 'any'.
 
-  14 |   test("must be of an object type", () => {
-  15 |     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-> 16 |     expect<any>().type.toHaveProperty("runTest");
+  17 | 
+  18 |     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+> 19 |     expect<any>().type.toHaveProperty("runTest");
      |            ^
-  17 |   });
-  18 | });
-  19 | 
+  20 |     expect<never>().type.toHaveProperty("runTest");
+  21 |     expect(null).type.toHaveProperty("runTest");
+  22 |     expect<"one" | "two">().type.toHaveProperty("runTest");
 
-       at ./__typetests__/toHaveProperty.tst.ts:16:12
+       at ./__typetests__/toHaveProperty.tst.ts:19:12
+
+Error: A type argument for 'Source' must be of an object type, received: 'never'.
+
+  18 |     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  19 |     expect<any>().type.toHaveProperty("runTest");
+> 20 |     expect<never>().type.toHaveProperty("runTest");
+     |            ^
+  21 |     expect(null).type.toHaveProperty("runTest");
+  22 |     expect<"one" | "two">().type.toHaveProperty("runTest");
+  23 |   });
+
+       at ./__typetests__/toHaveProperty.tst.ts:20:12
+
+Error: An argument for 'source' must be of an object type, received: 'null'.
+
+  19 |     expect<any>().type.toHaveProperty("runTest");
+  20 |     expect<never>().type.toHaveProperty("runTest");
+> 21 |     expect(null).type.toHaveProperty("runTest");
+     |            ^
+  22 |     expect<"one" | "two">().type.toHaveProperty("runTest");
+  23 |   });
+  24 | });
+
+       at ./__typetests__/toHaveProperty.tst.ts:21:12
+
+Error: A type argument for 'Source' must be of an object type, received: '"one" | "two"'.
+
+  20 |     expect<never>().type.toHaveProperty("runTest");
+  21 |     expect(null).type.toHaveProperty("runTest");
+> 22 |     expect<"one" | "two">().type.toHaveProperty("runTest");
+     |            ^
+  23 |   });
+  24 | });
+  25 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:22:12
 
 Error: An argument for 'key' must be provided.
 
-  21 |   test("must be provided", () => {
-  22 |     // @ts-expect-error test
-> 23 |     expect<{ test: () => void }>().type.toHaveProperty();
+  27 |   test("must be provided", () => {
+  28 |     // @ts-expect-error test
+> 29 |     expect<{ test: () => void }>().type.toHaveProperty();
      |                                         ^
-  24 |   });
-  25 | 
-  26 |   test("must be of type 'string | number | symbol'", () => {
+  30 |   });
+  31 | 
+  32 |   test("must be of type 'string | number | symbol'", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:23:41
+       at ./__typetests__/toHaveProperty.tst.ts:29:41
 
 Error: An argument for 'key' must be of type 'string | number | symbol', received: 'string[]'.
 
-  26 |   test("must be of type 'string | number | symbol'", () => {
-  27 |     // @ts-expect-error test
-> 28 |     expect<{ test: () => void }>().type.toHaveProperty(["test"]);
+  32 |   test("must be of type 'string | number | symbol'", () => {
+  33 |     // @ts-expect-error test
+> 34 |     expect<{ test: () => void }>().type.toHaveProperty(["test"]);
      |                                                        ^
-  29 |   });
-  30 | });
-  31 | 
+  35 |   });
+  36 | });
+  37 | 
 
-       at ./__typetests__/toHaveProperty.tst.ts:28:56
+       at ./__typetests__/toHaveProperty.tst.ts:34:56
 
 "
 `;
@@ -80,7 +116,7 @@ fail ./__typetests__/toHaveProperty.tst.ts
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      5 failed, 5 total
-Assertions: 5 failed, 5 total
+Assertions: 8 failed, 1 passed, 9 total
 Duration:   <<timestamp>>
 
 Ran all test files.

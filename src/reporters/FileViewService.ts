@@ -9,12 +9,7 @@ export class FileViewService {
     return this.#messages.length > 0;
   }
 
-  addMessage(message: JSX.Element | Array<JSX.Element>): void {
-    if (Array.isArray(message)) {
-      this.#messages.push(...message);
-      return;
-    }
-
+  addMessage(message: JSX.Element): void {
     this.#messages.push(message);
   }
 

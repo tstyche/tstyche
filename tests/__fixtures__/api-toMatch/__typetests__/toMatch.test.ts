@@ -23,19 +23,19 @@ interface Size {
 declare function getSize(): Size;
 
 test("difference from '.toBeAssignable()'", () => {
-  // the 'any' type is assignable to, but is not a subtype of all types
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect<{ a: string }>().type.toBeAssignable<any>();
+  // But all types are not subtypes of the 'any' type
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect<any>().type.not.toMatch<{ a: string }>();
 
-  // a number is assignable to, but is not a subtype of an enum type
   expect<Direction>().type.toBeAssignable<number>();
+  // But an enum type is not a subtype of a number
   expect<number>().type.not.toMatch<Direction>();
 
-  // an object type without a particular property is assignable to,
-  // but is not a subtype of an object type in which that property is optional
   expect<{ a: string; b?: number }>().type.toBeAssignable<{ a: string }>();
+  // But an object type with an optional property is not a subtype
+  // of the same object type without that particular property
   expect<{ a: string }>().type.not.toMatch<{ a: string; b?: number }>();
 });
 
