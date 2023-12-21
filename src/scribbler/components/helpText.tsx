@@ -1,8 +1,8 @@
 import { OptionBrand, type OptionDefinition } from "#config";
 import { Color } from "../Color.js";
+import { Line } from "../Line.js";
 import { Scribbler } from "../Scribbler.js";
-import { Line } from "./Line.js";
-import { Text } from "./Text.js";
+import { Text } from "../Text.js";
 
 const usageExamples: Array<[commandText: string, descriptionText: string]> = [
   ["tstyche", "Run all tests."],

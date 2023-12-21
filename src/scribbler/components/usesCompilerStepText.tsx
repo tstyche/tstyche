@@ -1,8 +1,8 @@
 import { Color } from "../Color.js";
+import { Line } from "../Line.js";
 import { Scribbler } from "../Scribbler.js";
-import { Line } from "./Line.js";
+import { Text } from "../Text.js";
 import { RelativePathText } from "./RelativePathText.js";
-import { Text } from "./Text.js";
 
 class ProjectNameText implements JSX.ElementClass {
   constructor(readonly props: { filePath: string }) {}

@@ -1,5 +1,5 @@
-import { Color } from "../Color.js";
-import { Scribbler } from "../Scribbler.js";
+import { Color } from "./Color.js";
+import { Scribbler } from "./Scribbler.js";
 
 interface TextProps {
   children?: JSX.ElementChildrenAttribute["children"];

@@ -1,9 +1,9 @@
 import type { DiagnosticOrigin } from "#diagnostic";
 import { Color } from "../Color.js";
+import { Line } from "../Line.js";
 import { Scribbler } from "../Scribbler.js";
-import { Line } from "./Line.js";
+import { Text } from "../Text.js";
 import { RelativePathText } from "./RelativePathText.js";
-import { Text } from "./Text.js";
 
 export class CodeSpanText implements JSX.ElementClass {
   constructor(readonly props: DiagnosticOrigin) {}

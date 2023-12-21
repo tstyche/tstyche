@@ -1,6 +1,6 @@
 import path from "node:path";
 import { Scribbler } from "../Scribbler.js";
-import { Text } from "./Text.js";
+import { Text } from "../Text.js";
 
 export class RelativePathText implements JSX.ElementClass {
   constructor(readonly props: { isDirectory?: boolean; to: string }) {}

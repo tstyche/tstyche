@@ -1,7 +1,7 @@
 import { Color } from "../Color.js";
+import { Line } from "../Line.js";
 import { Scribbler } from "../Scribbler.js";
-import { Line } from "./Line.js";
-import { Text } from "./Text.js";
+import { Text } from "../Text.js";
 
 export function addsPackageStepText(compilerVersion: string, installationPath: string): JSX.Element {
   return (
