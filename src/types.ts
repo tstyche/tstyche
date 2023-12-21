@@ -87,15 +87,15 @@ interface Matchers {
    */
   toBeBoolean: () => void;
   /**
-   * Checks if an argument of the target type is assignable to a parameter the source type.
+   * Checks if the source type can be called with the target arguments.
    */
   toBeCallableWith: {
     /**
-     * Checks if an argument of the target type is assignable to a parameter the source type.
+     * Checks if the source type can be called with arguments of the target type.
      */
     <Target extends [...arguments: Array<unknown>]>(): void;
     /**
-     * Checks if an argument of type of the target expression is assignable to a parameter the source type.
+     * Checks if the source type can be called with the target arguments.
      */
     (...target: Array<unknown>): void;
   };
