@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { Scribbler } from "#scribbler";
+import { Scribbler } from "../../Scribbler.js";
 import { formattedText } from "../formattedText.js";
 
 const scribbler = new Scribbler();
