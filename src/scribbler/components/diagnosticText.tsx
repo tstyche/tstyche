@@ -1,9 +1,9 @@
 import { type Diagnostic, DiagnosticCategory } from "#diagnostic";
 import { Color } from "../Color.js";
+import { Line } from "../Line.js";
 import { Scribbler } from "../Scribbler.js";
+import { Text } from "../Text.js";
 import { CodeSpanText } from "./CodeSpanText.js";
-import { Line } from "./Line.js";
-import { Text } from "./Text.js";
 
 class DiagnosticText implements JSX.ElementClass {
   constructor(readonly props: { diagnostic: Diagnostic }) {}

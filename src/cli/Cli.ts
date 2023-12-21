@@ -4,10 +4,8 @@ import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter, type EventHandler } from "#events";
 import { Logger } from "#logger";
-import { addsPackageStepText, diagnosticText } from "#scribbler";
+import { addsPackageStepText, diagnosticText, formattedText, helpText } from "#scribbler";
 import { StoreService } from "#store";
-import { formattedText } from "./components/formattedText.js";
-import { helpText } from "./components/helpText.js";
 
 export class Cli {
   #abortController = new AbortController();
