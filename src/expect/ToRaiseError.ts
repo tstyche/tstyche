@@ -13,7 +13,7 @@ export class ToRaiseError {
     targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ) {
-    const sourceText = this.compiler.isTypeNode(source.node) ? "Type definition" : "Expression";
+    const sourceText = this.compiler.isTypeNode(source.node) ? "Type expression" : "Expression";
 
     if (source.diagnostics.length === 0) {
       return [Diagnostic.error(`${sourceText} did not raise a type error.`)];
