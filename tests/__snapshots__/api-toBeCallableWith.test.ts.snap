@@ -9,93 +9,189 @@ exports[`toBeCallableWith: stderr 1`] = `
      |                                 ^
   12 |   });
   13 | 
-  14 |   test("expression requires an argument", () => {
+  14 |   test("expression does not take arguments", () => {
 
        at ./__typetests__/toBeCallableWith.test.ts:11:33 ❭ when target is a value ❭ expression can be called without arguments
 
-Error: Expression requires 1 argument.
+Error: Expression does not take arguments.
 
-  14 |   test("expression requires an argument", () => {
-  15 |     expect((a: string) => a).type.not.toBeCallableWith();
-> 16 |     expect((a: string) => a).type.toBeCallableWith();
-     |                                   ^
+  14 |   test("expression does not take arguments", () => {
+  15 |     expect(() => null).type.not.toBeCallableWith("one");
+> 16 |     expect(() => null).type.toBeCallableWith("one");
+     |                             ^
   17 |   });
   18 | 
-  19 |   test("type expression can be called without arguments", () => {
+  19 |   test("expression can be called with provided argument", () => {
 
-       at ./__typetests__/toBeCallableWith.test.ts:16:35 ❭ when target is a value ❭ expression requires an argument
+       at ./__typetests__/toBeCallableWith.test.ts:16:29 ❭ when target is a value ❭ expression does not take arguments
+
+Error: Expression can be called with provided argument.
+
+  19 |   test("expression can be called with provided argument", () => {
+  20 |     expect((a: string) => a).type.toBeCallableWith("one");
+> 21 |     expect((a: string) => a).type.not.toBeCallableWith("one");
+     |                                       ^
+  22 |   });
+  23 | 
+  24 |   test("expression requires an argument", () => {
+
+       at ./__typetests__/toBeCallableWith.test.ts:21:39 ❭ when target is a value ❭ expression can be called with provided argument
+
+Error: Expression requires 1 argument.
+
+  24 |   test("expression requires an argument", () => {
+  25 |     expect((a: string) => a).type.not.toBeCallableWith();
+> 26 |     expect((a: string) => a).type.toBeCallableWith();
+     |                                   ^
+  27 |   });
+  28 | 
+  29 |   test("type expression can be called without arguments", () => {
+
+       at ./__typetests__/toBeCallableWith.test.ts:26:35 ❭ when target is a value ❭ expression requires an argument
 
 Error: Type expression can be called without arguments.
 
-  19 |   test("type expression can be called without arguments", () => {
-  20 |     expect<() => null>().type.toBeCallableWith();
-> 21 |     expect<() => null>().type.not.toBeCallableWith();
+  29 |   test("type expression can be called without arguments", () => {
+  30 |     expect<() => null>().type.toBeCallableWith();
+> 31 |     expect<() => null>().type.not.toBeCallableWith();
      |                                   ^
-  22 |   });
-  23 | 
-  24 |   test("type expression requires an argument", () => {
+  32 |   });
+  33 | 
+  34 |   test("type expression does not take arguments", () => {
 
-       at ./__typetests__/toBeCallableWith.test.ts:21:35 ❭ when target is a value ❭ type expression can be called without arguments
+       at ./__typetests__/toBeCallableWith.test.ts:31:35 ❭ when target is a value ❭ type expression can be called without arguments
+
+Error: Type expression does not take arguments.
+
+  34 |   test("type expression does not take arguments", () => {
+  35 |     expect<() => null>().type.not.toBeCallableWith("one");
+> 36 |     expect<() => null>().type.toBeCallableWith("one");
+     |                               ^
+  37 |   });
+  38 | 
+  39 |   test("type expression can be called with provided argument", () => {
+
+       at ./__typetests__/toBeCallableWith.test.ts:36:31 ❭ when target is a value ❭ type expression does not take arguments
+
+Error: Type expression can be called with provided argument.
+
+  39 |   test("type expression can be called with provided argument", () => {
+  40 |     expect<(a: string) => string>().type.toBeCallableWith("one");
+> 41 |     expect<(a: string) => string>().type.not.toBeCallableWith("one");
+     |                                              ^
+  42 |   });
+  43 | 
+  44 |   test("type expression requires an argument", () => {
+
+       at ./__typetests__/toBeCallableWith.test.ts:41:46 ❭ when target is a value ❭ type expression can be called with provided argument
 
 Error: Type expression requires 1 argument.
 
-  24 |   test("type expression requires an argument", () => {
-  25 |     expect<(a: string) => string>().type.not.toBeCallableWith();
-> 26 |     expect<(a: string) => string>().type.toBeCallableWith();
+  44 |   test("type expression requires an argument", () => {
+  45 |     expect<(a: string) => string>().type.not.toBeCallableWith();
+> 46 |     expect<(a: string) => string>().type.toBeCallableWith();
      |                                          ^
-  27 |   });
-  28 | });
-  29 | 
+  47 |   });
+  48 | });
+  49 | 
 
-       at ./__typetests__/toBeCallableWith.test.ts:26:42 ❭ when target is a value ❭ type expression requires an argument
+       at ./__typetests__/toBeCallableWith.test.ts:46:42 ❭ when target is a value ❭ type expression requires an argument
 
 Error: Expression can be called without arguments.
 
-  31 |   test("expression can be called without arguments", () => {
-  32 |     expect(() => null).type.toBeCallableWith<[]>();
-> 33 |     expect(() => null).type.not.toBeCallableWith<[]>();
+  51 |   test("expression can be called without arguments", () => {
+  52 |     expect(() => null).type.toBeCallableWith<[]>();
+> 53 |     expect(() => null).type.not.toBeCallableWith<[]>();
      |                                 ^
-  34 |   });
-  35 | 
-  36 |   test("expression requires an argument", () => {
+  54 |   });
+  55 | 
+  56 |   test("expression does not take arguments", () => {
 
-       at ./__typetests__/toBeCallableWith.test.ts:33:33 ❭ when target is a type ❭ expression can be called without arguments
+       at ./__typetests__/toBeCallableWith.test.ts:53:33 ❭ when target is a type ❭ expression can be called without arguments
+
+Error: Expression does not take arguments.
+
+  56 |   test("expression does not take arguments", () => {
+  57 |     expect(() => null).type.not.toBeCallableWith<["one"]>();
+> 58 |     expect(() => null).type.toBeCallableWith<["one"]>();
+     |                             ^
+  59 |   });
+  60 | 
+  61 |   test("expression can be called with provided argument", () => {
+
+       at ./__typetests__/toBeCallableWith.test.ts:58:29 ❭ when target is a type ❭ expression does not take arguments
+
+Error: Expression can be called with provided argument.
+
+  61 |   test("expression can be called with provided argument", () => {
+  62 |     expect((a: string) => a).type.toBeCallableWith<["one"]>();
+> 63 |     expect((a: string) => a).type.not.toBeCallableWith<["one"]>();
+     |                                       ^
+  64 |   });
+  65 | 
+  66 |   test("expression requires an argument", () => {
+
+       at ./__typetests__/toBeCallableWith.test.ts:63:39 ❭ when target is a type ❭ expression can be called with provided argument
 
 Error: Expression requires 1 argument.
 
-  36 |   test("expression requires an argument", () => {
-  37 |     expect((a: string) => a).type.not.toBeCallableWith<[]>();
-> 38 |     expect((a: string) => a).type.toBeCallableWith<[]>();
+  66 |   test("expression requires an argument", () => {
+  67 |     expect((a: string) => a).type.not.toBeCallableWith<[]>();
+> 68 |     expect((a: string) => a).type.toBeCallableWith<[]>();
      |                                   ^
-  39 |   });
-  40 | 
-  41 |   test("type expression can be called without arguments", () => {
+  69 |   });
+  70 | 
+  71 |   test("type expression can be called without arguments", () => {
 
-       at ./__typetests__/toBeCallableWith.test.ts:38:35 ❭ when target is a type ❭ expression requires an argument
+       at ./__typetests__/toBeCallableWith.test.ts:68:35 ❭ when target is a type ❭ expression requires an argument
 
 Error: Type expression can be called without arguments.
 
-  41 |   test("type expression can be called without arguments", () => {
-  42 |     expect<() => null>().type.toBeCallableWith<[]>();
-> 43 |     expect<() => null>().type.not.toBeCallableWith<[]>();
+  71 |   test("type expression can be called without arguments", () => {
+  72 |     expect<() => null>().type.toBeCallableWith<[]>();
+> 73 |     expect<() => null>().type.not.toBeCallableWith<[]>();
      |                                   ^
-  44 |   });
-  45 | 
-  46 |   test("type expression requires an argument", () => {
+  74 |   });
+  75 | 
+  76 |   test("type expression does not take arguments", () => {
 
-       at ./__typetests__/toBeCallableWith.test.ts:43:35 ❭ when target is a type ❭ type expression can be called without arguments
+       at ./__typetests__/toBeCallableWith.test.ts:73:35 ❭ when target is a type ❭ type expression can be called without arguments
+
+Error: Type expression does not take arguments.
+
+  76 |   test("type expression does not take arguments", () => {
+  77 |     expect<() => null>().type.not.toBeCallableWith<["one"]>();
+> 78 |     expect<() => null>().type.toBeCallableWith<["one"]>();
+     |                               ^
+  79 |   });
+  80 | 
+  81 |   test("type expression can be called with provided argument", () => {
+
+       at ./__typetests__/toBeCallableWith.test.ts:78:31 ❭ when target is a type ❭ type expression does not take arguments
+
+Error: Type expression can be called with provided argument.
+
+  81 |   test("type expression can be called with provided argument", () => {
+  82 |     expect<(a: string) => string>().type.toBeCallableWith<["one"]>();
+> 83 |     expect<(a: string) => string>().type.not.toBeCallableWith<["one"]>();
+     |                                              ^
+  84 |   });
+  85 | 
+  86 |   test("type expression requires an argument", () => {
+
+       at ./__typetests__/toBeCallableWith.test.ts:83:46 ❭ when target is a type ❭ type expression can be called with provided argument
 
 Error: Type expression requires 1 argument.
 
-  46 |   test("type expression requires an argument", () => {
-  47 |     expect<(a: string) => string>().type.not.toBeCallableWith<[]>();
-> 48 |     expect<(a: string) => string>().type.toBeCallableWith<[]>();
+  86 |   test("type expression requires an argument", () => {
+  87 |     expect<(a: string) => string>().type.not.toBeCallableWith<[]>();
+> 88 |     expect<(a: string) => string>().type.toBeCallableWith<[]>();
      |                                          ^
-  49 |   });
-  50 | });
-  51 | 
+  89 |   });
+  90 | });
+  91 | 
 
-       at ./__typetests__/toBeCallableWith.test.ts:48:42 ❭ when target is a type ❭ type expression requires an argument
+       at ./__typetests__/toBeCallableWith.test.ts:88:42 ❭ when target is a type ❭ type expression requires an argument
 
 "
 `;
@@ -106,19 +202,27 @@ exports[`toBeCallableWith: stdout 1`] = `
 fail ./__typetests__/toBeCallableWith.test.ts
   when target is a value
     × expression can be called without arguments
+    × expression does not take arguments
+    × expression can be called with provided argument
     × expression requires an argument
     × type expression can be called without arguments
+    × type expression does not take arguments
+    × type expression can be called with provided argument
     × type expression requires an argument
   when target is a type
     × expression can be called without arguments
+    × expression does not take arguments
+    × expression can be called with provided argument
     × expression requires an argument
     × type expression can be called without arguments
+    × type expression does not take arguments
+    × type expression can be called with provided argument
     × type expression requires an argument
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      8 failed, 8 total
-Assertions: 8 failed, 8 passed, 16 total
+Tests:      16 failed, 16 total
+Assertions: 16 failed, 16 passed, 32 total
 Duration:   <<timestamp>>
 
 Ran all test files.
