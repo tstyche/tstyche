@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toBeCallableWith: stderr 1`] = `
+"Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+> 5 |     expect().type.toBeCallableWith();
+    |     ^
+  6 |   });
+  7 | 
+  8 |   test("expression must be callable", () => {
+
+      at ./__typetests__/toBeCallableWith.tst.ts:5:5
+
+Error: This expression is not callable. Type '"sample"' has no call signatures.
+
+   7 | 
+   8 |   test("expression must be callable", () => {
+>  9 |     expect("sample").type.toBeCallableWith();
+     |            ^
+  10 |   });
+  11 | 
+  12 |   test("type expression must be callable", () => {
+
+       at ./__typetests__/toBeCallableWith.tst.ts:9:12
+
+Error: This type expression is not callable. Type '{ a: 123; }' has no call signatures.
+
+  11 | 
+  12 |   test("type expression must be callable", () => {
+> 13 |     expect<{ a: 123 }>().type.toBeCallableWith();
+     |            ^
+  14 |   });
+  15 | });
+  16 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:13:12
+
+Error: A type argument for 'Target' must be of tuple type.
+
+  18 |   test("must be of tuple type", () => {
+  19 |     // @ts-expect-error test
+> 20 |     expect<() => void>().type.toBeCallableWith<null>();
+     |                                                ^
+  21 |   });
+  22 | });
+  23 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:20:48
+
+"
+`;
+
+exports[`toBeCallableWith: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeCallableWith.tst.ts
+  argument for 'source'
+    × must be provided
+    × expression must be callable
+    × type expression must be callable
+  argument for 'Target'
+    × must be of tuple type
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      4 failed, 4 total
+Assertions: 4 failed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

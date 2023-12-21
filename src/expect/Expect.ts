@@ -146,9 +146,9 @@ export class Expect {
         const signatures = sourceType.getCallSignatures();
 
         if (signatures.length === 0) {
-          const sourceTypeText = this.typeChecker.typeToString(sourceType);
+          this.#onSourceArgumentIsNotCallable(assertion.source[0], expectResult);
 
-          console.log("This expression is not callable.", `Type '${sourceTypeText}' has no call signatures.`);
+          return;
         }
 
         let targetNodes: Array<ts.Expression> | Array<ts.TypeNode | ts.NamedTupleMember> = [];
@@ -162,9 +162,9 @@ export class Expect {
             if (this.compiler.isTupleTypeNode(assertion.target[0])) {
               targetNodes = [...assertion.target[0].elements];
             } else {
-              const receivedTypeText = this.typeChecker.typeToString(this.#getType(assertion.target[0]));
+              this.#onTargetArgumentsMustBeTupleType(assertion.target[0], expectResult);
 
-              console.log(`A type argument for 'Target' must be of tuple type, received: '${receivedTypeText}'.`);
+              return;
             }
           }
         }
@@ -283,6 +283,20 @@ export class Expect {
     ]);
   }
 
+  #onSourceArgumentIsNotCallable(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const sourceText = this.compiler.isTypeNode(node) ? "type expression" : "expression";
+    const sourceTypeText = this.typeChecker.typeToString(this.#getType(node));
+
+    const text = `This ${sourceText} is not callable. Type '${sourceTypeText}' has no call signatures.`;
+    const origin = {
+      end: node.getEnd(),
+      file: node.getSourceFile(),
+      start: node.getStart(),
+    };
+
+    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+  }
+
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const sourceText = this.compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
     const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
@@ -361,5 +375,21 @@ export class Expect {
     }
 
     EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
+  }
+
+  #onTargetArgumentsMustBeTupleType(node: ts.TypeNode, expectResult: ExpectResult) {
+    const origin = {
+      end: node.getEnd(),
+      file: node.getSourceFile(),
+      start: node.getStart(),
+    };
+
+    EventEmitter.dispatch([
+      "expect:error",
+      {
+        diagnostics: [Diagnostic.error("A type argument for 'Target' must be of tuple type.", origin)],
+        result: expectResult,
+      },
+    ]);
   }
 }
