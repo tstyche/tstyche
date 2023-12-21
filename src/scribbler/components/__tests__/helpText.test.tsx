@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import ansiEscapesSerializer from "jest-serializer-ansi-escapes";
 import { OptionBrand, type OptionDefinition } from "#config";
-import { Scribbler } from "#scribbler";
+import { Scribbler } from "../../Scribbler.js";
 import { helpText } from "../helpText.js";
 
 expect.addSnapshotSerializer(ansiEscapesSerializer);

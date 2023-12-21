@@ -1,5 +1,5 @@
-import type { Color } from "../Color.js";
-import { Scribbler } from "../Scribbler.js";
+import type { Color } from "./Color.js";
+import { Scribbler } from "./Scribbler.js";
 import { Text } from "./Text.js";
 
 interface LineProps {
