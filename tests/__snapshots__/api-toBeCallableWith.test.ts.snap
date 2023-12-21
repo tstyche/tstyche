@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`toBeCallable: stderr 1`] = `
+exports[`toBeCallableWith: stderr 1`] = `
 "Error: Expression can be called without arguments.
 
    9 |   test("expression can be called without arguments", () => {
@@ -11,7 +11,7 @@ exports[`toBeCallable: stderr 1`] = `
   13 | 
   14 |   test("expression requires an argument", () => {
 
-       at ./__typetests__/toBeCallable.test.ts:11:33 ❭ when target is a value ❭ expression can be called without arguments
+       at ./__typetests__/toBeCallableWith.test.ts:11:33 ❭ when target is a value ❭ expression can be called without arguments
 
 Error: Expression requires 1 argument.
 
@@ -23,7 +23,7 @@ Error: Expression requires 1 argument.
   18 | 
   19 |   test("type expression can be called without arguments", () => {
 
-       at ./__typetests__/toBeCallable.test.ts:16:35 ❭ when target is a value ❭ expression requires an argument
+       at ./__typetests__/toBeCallableWith.test.ts:16:35 ❭ when target is a value ❭ expression requires an argument
 
 Error: Type expression can be called without arguments.
 
@@ -35,7 +35,7 @@ Error: Type expression can be called without arguments.
   23 | 
   24 |   test("type expression requires an argument", () => {
 
-       at ./__typetests__/toBeCallable.test.ts:21:35 ❭ when target is a value ❭ type expression can be called without arguments
+       at ./__typetests__/toBeCallableWith.test.ts:21:35 ❭ when target is a value ❭ type expression can be called without arguments
 
 Error: Type expression requires 1 argument.
 
@@ -47,7 +47,7 @@ Error: Type expression requires 1 argument.
   28 | });
   29 | 
 
-       at ./__typetests__/toBeCallable.test.ts:26:42 ❭ when target is a value ❭ type expression requires an argument
+       at ./__typetests__/toBeCallableWith.test.ts:26:42 ❭ when target is a value ❭ type expression requires an argument
 
 Error: Expression can be called without arguments.
 
@@ -59,7 +59,7 @@ Error: Expression can be called without arguments.
   35 | 
   36 |   test("expression requires an argument", () => {
 
-       at ./__typetests__/toBeCallable.test.ts:33:33 ❭ when target is a type ❭ expression can be called without arguments
+       at ./__typetests__/toBeCallableWith.test.ts:33:33 ❭ when target is a type ❭ expression can be called without arguments
 
 Error: Expression requires 1 argument.
 
@@ -71,7 +71,7 @@ Error: Expression requires 1 argument.
   40 | 
   41 |   test("type expression can be called without arguments", () => {
 
-       at ./__typetests__/toBeCallable.test.ts:38:35 ❭ when target is a type ❭ expression requires an argument
+       at ./__typetests__/toBeCallableWith.test.ts:38:35 ❭ when target is a type ❭ expression requires an argument
 
 Error: Type expression can be called without arguments.
 
@@ -83,7 +83,7 @@ Error: Type expression can be called without arguments.
   45 | 
   46 |   test("type expression requires an argument", () => {
 
-       at ./__typetests__/toBeCallable.test.ts:43:35 ❭ when target is a type ❭ type expression can be called without arguments
+       at ./__typetests__/toBeCallableWith.test.ts:43:35 ❭ when target is a type ❭ type expression can be called without arguments
 
 Error: Type expression requires 1 argument.
 
@@ -95,15 +95,15 @@ Error: Type expression requires 1 argument.
   50 | });
   51 | 
 
-       at ./__typetests__/toBeCallable.test.ts:48:42 ❭ when target is a type ❭ type expression requires an argument
+       at ./__typetests__/toBeCallableWith.test.ts:48:42 ❭ when target is a type ❭ type expression requires an argument
 
 "
 `;
 
-exports[`toBeCallable: stdout 1`] = `
+exports[`toBeCallableWith: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeCallable.test.ts
+fail ./__typetests__/toBeCallableWith.test.ts
   when target is a value
     × expression can be called without arguments
     × expression requires an argument
