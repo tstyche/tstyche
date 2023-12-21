@@ -35,39 +35,39 @@ Error: Expression did not raise a type error.
      |                      ^
   19 | });
   20 | 
-  21 | test("type definition raises a type error", () => {
+  21 | test("type expression raises a type error", () => {
 
        at ./__typetests__/toRaiseError.test.ts:18:22 ❭ expression does not raise a type error
 
-Error: Type definition raised a type error.
+Error: Type expression raised a type error.
 
-  21 | test("type definition raises a type error", () => {
+  21 | test("type expression raises a type error", () => {
   22 |   expect<One>().type.toRaiseError();
 > 23 |   expect<One>().type.not.toRaiseError();
      |                          ^
   24 | });
   25 | 
-  26 | test("type definition does not raise a type error", () => {
+  26 | test("type expression does not raise a type error", () => {
 
-       at ./__typetests__/toRaiseError.test.ts:23:26 ❭ type definition raises a type error
+       at ./__typetests__/toRaiseError.test.ts:23:26 ❭ type expression raises a type error
 
     The raised type error:
 
     Generic type 'One' requires 1 type argument(s). ts(2314)
 
-      21 | test("type definition raises a type error", () => {
+      21 | test("type expression raises a type error", () => {
       22 |   expect<One>().type.toRaiseError();
     > 23 |   expect<One>().type.not.toRaiseError();
          |          ^
       24 | });
       25 | 
-      26 | test("type definition does not raise a type error", () => {
+      26 | test("type expression does not raise a type error", () => {
 
            at ./__typetests__/toRaiseError.test.ts:23:10
 
-Error: Type definition did not raise a type error.
+Error: Type expression did not raise a type error.
 
-  26 | test("type definition does not raise a type error", () => {
+  26 | test("type expression does not raise a type error", () => {
   27 |   expect<One<string>>().type.not.toRaiseError();
 > 28 |   expect<One<string>>().type.toRaiseError();
      |                              ^
@@ -75,7 +75,7 @@ Error: Type definition did not raise a type error.
   30 | 
   31 | test("expression raises multiple type errors", () => {
 
-       at ./__typetests__/toRaiseError.test.ts:28:30 ❭ type definition does not raise a type error
+       at ./__typetests__/toRaiseError.test.ts:28:30 ❭ type expression does not raise a type error
 
 Error: Expression raised 3 type errors.
 
@@ -187,7 +187,7 @@ Error: Expression did not raise a type error matching substring 'Expected 2 argu
      |                            ^
   57 | });
   58 | 
-  59 | test("type definition raises a type error with matching message", () => {
+  59 | test("type expression raises a type error with matching message", () => {
 
        at ./__typetests__/toRaiseError.test.ts:56:28 ❭ expression raises type error with not matching message
 
@@ -201,65 +201,65 @@ Error: Expression did not raise a type error matching substring 'Expected 2 argu
          |              ^
       57 | });
       58 | 
-      59 | test("type definition raises a type error with matching message", () => {
+      59 | test("type expression raises a type error with matching message", () => {
 
            at ./__typetests__/toRaiseError.test.ts:56:14
 
-Error: Type definition raised a type error matching substring 'requires 1 type argument'.
+Error: Type expression raised a type error matching substring 'requires 1 type argument'.
 
-  59 | test("type definition raises a type error with matching message", () => {
+  59 | test("type expression raises a type error with matching message", () => {
   60 |   expect<One>().type.toRaiseError("requires 1 type argument");
 > 61 |   expect<One>().type.not.toRaiseError("requires 1 type argument");
      |                          ^
   62 | });
   63 | 
-  64 | test("type definition raises a type error with matching message passed as a template literal", () => {
+  64 | test("type expression raises a type error with matching message passed as a template literal", () => {
 
-       at ./__typetests__/toRaiseError.test.ts:61:26 ❭ type definition raises a type error with matching message
+       at ./__typetests__/toRaiseError.test.ts:61:26 ❭ type expression raises a type error with matching message
 
     The raised type error:
 
     Generic type 'One' requires 1 type argument(s). ts(2314)
 
-      59 | test("type definition raises a type error with matching message", () => {
+      59 | test("type expression raises a type error with matching message", () => {
       60 |   expect<One>().type.toRaiseError("requires 1 type argument");
     > 61 |   expect<One>().type.not.toRaiseError("requires 1 type argument");
          |          ^
       62 | });
       63 | 
-      64 | test("type definition raises a type error with matching message passed as a template literal", () => {
+      64 | test("type expression raises a type error with matching message passed as a template literal", () => {
 
            at ./__typetests__/toRaiseError.test.ts:61:10
 
-Error: Type definition raised a type error matching substring 'requires 1 type argument'.
+Error: Type expression raised a type error matching substring 'requires 1 type argument'.
 
-  64 | test("type definition raises a type error with matching message passed as a template literal", () => {
+  64 | test("type expression raises a type error with matching message passed as a template literal", () => {
   65 |   expect<One>().type.toRaiseError(\`requires 1 type argument\`);
 > 66 |   expect<One>().type.not.toRaiseError(\`requires 1 type argument\`);
      |                          ^
   67 | });
   68 | 
-  69 | test("type definition raises a type error with not matching message", () => {
+  69 | test("type expression raises a type error with not matching message", () => {
 
-       at ./__typetests__/toRaiseError.test.ts:66:26 ❭ type definition raises a type error with matching message passed as a template literal
+       at ./__typetests__/toRaiseError.test.ts:66:26 ❭ type expression raises a type error with matching message passed as a template literal
 
     The raised type error:
 
     Generic type 'One' requires 1 type argument(s). ts(2314)
 
-      64 | test("type definition raises a type error with matching message passed as a template literal", () => {
+      64 | test("type expression raises a type error with matching message passed as a template literal", () => {
       65 |   expect<One>().type.toRaiseError(\`requires 1 type argument\`);
     > 66 |   expect<One>().type.not.toRaiseError(\`requires 1 type argument\`);
          |          ^
       67 | });
       68 | 
-      69 | test("type definition raises a type error with not matching message", () => {
+      69 | test("type expression raises a type error with not matching message", () => {
 
            at ./__typetests__/toRaiseError.test.ts:66:10
 
-Error: Type definition did not raise a type error matching substring 'requires type argument'.
+Error: Type expression did not raise a type error matching substring 'requires type argument'.
 
-  69 | test("type definition raises a type error with not matching message", () => {
+  69 | test("type expression raises a type error with not matching message", () => {
   70 |   expect<One>().type.not.toRaiseError("requires type argument");
 > 71 |   expect<One>().type.toRaiseError("requires type argument");
      |                      ^
@@ -267,13 +267,13 @@ Error: Type definition did not raise a type error matching substring 'requires t
   73 | 
   74 | test("expression raises a type error with expected code", () => {
 
-       at ./__typetests__/toRaiseError.test.ts:71:22 ❭ type definition raises a type error with not matching message
+       at ./__typetests__/toRaiseError.test.ts:71:22 ❭ type expression raises a type error with not matching message
 
     The raised type error:
 
     Generic type 'One' requires 1 type argument(s). ts(2314)
 
-      69 | test("type definition raises a type error with not matching message", () => {
+      69 | test("type expression raises a type error with not matching message", () => {
       70 |   expect<One>().type.not.toRaiseError("requires type argument");
     > 71 |   expect<One>().type.toRaiseError("requires type argument");
          |          ^
@@ -859,15 +859,15 @@ exports[`toRaiseError: stdout 1`] = `
 fail ./__typetests__/toRaiseError.test.ts
   × expression raises a type error
   × expression does not raise a type error
-  × type definition raises a type error
-  × type definition does not raise a type error
+  × type expression raises a type error
+  × type expression does not raise a type error
   × expression raises multiple type errors
   × expression raises a type error with matching message
   × expression raises a type error with matching message passed as a template literal
   × expression raises type error with not matching message
-  × type definition raises a type error with matching message
-  × type definition raises a type error with matching message passed as a template literal
-  × type definition raises a type error with not matching message
+  × type expression raises a type error with matching message
+  × type expression raises a type error with matching message passed as a template literal
+  × type expression raises a type error with not matching message
   × expression raises a type error with expected code
   × expression raises a type error with not expected code
   × expression raises multiple type errors with matching messages

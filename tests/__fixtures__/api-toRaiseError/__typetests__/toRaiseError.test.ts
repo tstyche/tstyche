@@ -18,12 +18,12 @@ test("expression does not raise a type error", () => {
   expect(one()).type.toRaiseError();
 });
 
-test("type definition raises a type error", () => {
+test("type expression raises a type error", () => {
   expect<One>().type.toRaiseError();
   expect<One>().type.not.toRaiseError();
 });
 
-test("type definition does not raise a type error", () => {
+test("type expression does not raise a type error", () => {
   expect<One<string>>().type.not.toRaiseError();
   expect<One<string>>().type.toRaiseError();
 });
@@ -56,17 +56,17 @@ test("expression raises type error with not matching message", () => {
   expect(one("fail")).type.toRaiseError("Expected 2 arguments");
 });
 
-test("type definition raises a type error with matching message", () => {
+test("type expression raises a type error with matching message", () => {
   expect<One>().type.toRaiseError("requires 1 type argument");
   expect<One>().type.not.toRaiseError("requires 1 type argument");
 });
 
-test("type definition raises a type error with matching message passed as a template literal", () => {
+test("type expression raises a type error with matching message passed as a template literal", () => {
   expect<One>().type.toRaiseError(`requires 1 type argument`);
   expect<One>().type.not.toRaiseError(`requires 1 type argument`);
 });
 
-test("type definition raises a type error with not matching message", () => {
+test("type expression raises a type error with not matching message", () => {
   expect<One>().type.not.toRaiseError("requires type argument");
   expect<One>().type.toRaiseError("requires type argument");
 });
