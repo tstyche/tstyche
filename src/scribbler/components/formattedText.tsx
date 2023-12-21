@@ -1,5 +1,5 @@
-import { Scribbler } from "../Scribbler.js";
 import { Line } from "../Line.js";
+import { Scribbler } from "../Scribbler.js";
 
 export class JsonText implements JSX.ElementClass {
   constructor(readonly props: { input: Array<string> | Record<string, unknown> }) {}
