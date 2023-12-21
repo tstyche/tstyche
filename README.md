@@ -25,7 +25,8 @@ function firstItem<T>(target: Array<T>): T | undefined {
 test("firstItem", () => {
   expect(firstItem(["a", "b", "c"])).type.toEqual<string | undefined>();
 
-  expect(firstItem()).type.toRaiseError("Expected 1 argument");
+  expect(firstItem).type.not.toBeCallableWith(["a", 1]);
+  expect(firstItem).type.not.toBeCallableWith();
 });
 ```
 
