@@ -1,8 +1,8 @@
 import * as jest from "@jest/globals";
 import { describe, expect, test } from "tstyche";
 
-jest.test("'toBeCallable' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toBeCallable", jest.expect.any(Function));
+jest.test("'toBeCallableWith' implementation", () => {
+  jest.expect(expect).toHaveProperty("type.toBeCallableWith", jest.expect.any(Function));
 });
 
 describe("when target is a value", () => {
