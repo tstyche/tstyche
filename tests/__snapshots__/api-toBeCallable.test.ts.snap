@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toBeCallable: stderr 1`] = `
+"Error: Expression can be called without arguments.
+
+   9 |   test("expression can be called without arguments", () => {
+  10 |     expect(() => null).type.toBeCallableWith();
+> 11 |     expect(() => null).type.not.toBeCallableWith();
+     |                                 ^
+  12 |   });
+  13 | 
+  14 |   test("expression requires an argument", () => {
+
+       at ./__typetests__/toBeCallable.test.ts:11:33 ❭ when target is a value ❭ expression can be called without arguments
+
+Error: Expression requires 1 argument.
+
+  14 |   test("expression requires an argument", () => {
+  15 |     expect((a: string) => a).type.not.toBeCallableWith();
+> 16 |     expect((a: string) => a).type.toBeCallableWith();
+     |                                   ^
+  17 |   });
+  18 | 
+  19 |   test("type expression can be called without arguments", () => {
+
+       at ./__typetests__/toBeCallable.test.ts:16:35 ❭ when target is a value ❭ expression requires an argument
+
+Error: Type expression can be called without arguments.
+
+  19 |   test("type expression can be called without arguments", () => {
+  20 |     expect<() => null>().type.toBeCallableWith();
+> 21 |     expect<() => null>().type.not.toBeCallableWith();
+     |                                   ^
+  22 |   });
+  23 | 
+  24 |   test("type expression requires an argument", () => {
+
+       at ./__typetests__/toBeCallable.test.ts:21:35 ❭ when target is a value ❭ type expression can be called without arguments
+
+Error: Type expression requires 1 argument.
+
+  24 |   test("type expression requires an argument", () => {
+  25 |     expect<(a: string) => string>().type.not.toBeCallableWith();
+> 26 |     expect<(a: string) => string>().type.toBeCallableWith();
+     |                                          ^
+  27 |   });
+  28 | });
+  29 | 
+
+       at ./__typetests__/toBeCallable.test.ts:26:42 ❭ when target is a value ❭ type expression requires an argument
+
+Error: Expression can be called without arguments.
+
+  31 |   test("expression can be called without arguments", () => {
+  32 |     expect(() => null).type.toBeCallableWith<[]>();
+> 33 |     expect(() => null).type.not.toBeCallableWith<[]>();
+     |                                 ^
+  34 |   });
+  35 | 
+  36 |   test("expression requires an argument", () => {
+
+       at ./__typetests__/toBeCallable.test.ts:33:33 ❭ when target is a type ❭ expression can be called without arguments
+
+Error: Expression requires 1 argument.
+
+  36 |   test("expression requires an argument", () => {
+  37 |     expect((a: string) => a).type.not.toBeCallableWith<[]>();
+> 38 |     expect((a: string) => a).type.toBeCallableWith<[]>();
+     |                                   ^
+  39 |   });
+  40 | 
+  41 |   test("type expression can be called without arguments", () => {
+
+       at ./__typetests__/toBeCallable.test.ts:38:35 ❭ when target is a type ❭ expression requires an argument
+
+Error: Type expression can be called without arguments.
+
+  41 |   test("type expression can be called without arguments", () => {
+  42 |     expect<() => null>().type.toBeCallableWith<[]>();
+> 43 |     expect<() => null>().type.not.toBeCallableWith<[]>();
+     |                                   ^
+  44 |   });
+  45 | 
+  46 |   test("type expression requires an argument", () => {
+
+       at ./__typetests__/toBeCallable.test.ts:43:35 ❭ when target is a type ❭ type expression can be called without arguments
+
+Error: Type expression requires 1 argument.
+
+  46 |   test("type expression requires an argument", () => {
+  47 |     expect<(a: string) => string>().type.not.toBeCallableWith<[]>();
+> 48 |     expect<(a: string) => string>().type.toBeCallableWith<[]>();
+     |                                          ^
+  49 |   });
+  50 | });
+  51 | 
+
+       at ./__typetests__/toBeCallable.test.ts:48:42 ❭ when target is a type ❭ type expression requires an argument
+
+"
+`;
+
+exports[`toBeCallable: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeCallable.test.ts
+  when target is a value
+    × expression can be called without arguments
+    × expression requires an argument
+    × type expression can be called without arguments
+    × type expression requires an argument
+  when target is a type
+    × expression can be called without arguments
+    × expression requires an argument
+    × type expression can be called without arguments
+    × type expression requires an argument
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 8 failed, 8 passed, 16 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

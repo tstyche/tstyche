@@ -143,9 +143,9 @@ export class Expect {
         }
 
         const sourceType = this.#getType(assertion.source[0]);
-        const sourceCallSignatures = sourceType.getCallSignatures();
+        const signatures = sourceType.getCallSignatures();
 
-        if (sourceCallSignatures.length === 0) {
+        if (signatures.length === 0) {
           const sourceTypeText = this.typeChecker.typeToString(sourceType);
 
           console.log("This expression is not callable.", `Type '${sourceTypeText}' has no call signatures.`);
@@ -169,7 +169,7 @@ export class Expect {
           }
         }
 
-        return this.toBeCallableWith.match(sourceCallSignatures, targetNodes, assertion.isNot);
+        return this.toBeCallableWith.match({ node: assertion.source[0], signatures }, targetNodes, assertion.isNot);
       }
 
       case "toHaveProperty": {
