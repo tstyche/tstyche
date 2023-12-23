@@ -43,7 +43,7 @@
     "lint": "yarn lint:cspell && yarn lint:eslint && yarn lint:prettier",
     "lint:cspell": "cspell --cache --config cspell.config.json --quiet",
     "lint:eslint": "eslint ./ --cache --config eslint.config.json --ext .js,.cts,.ts,.tsx",
-    "lint:prettier": "prettier ./ --cache --check",
+    "lint:prettier": "prettier ./ --cache --cache-location ./.prettiercache --check",
     "pretest": "yarn tstyche --install --target 4.8,latest",
     "test": "yarn pretest && NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --config jest.config.js",
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test",
