@@ -8,6 +8,6 @@ test("firstItem", () => {
   expect(firstItem(["a", "b", "c"])).type.toEqual<string | undefined>();
   expect(firstItem([1, 2, 3])).type.toEqual<number | undefined>();
 
-  expect.fail(firstItem).type.not.toBeCallableWith(["a", 1]);
   expect(firstItem).type.not.toBeCallableWith();
+  expect.fail(firstItem).type.not.toBeCallableWith(["a", 1]);
 });
