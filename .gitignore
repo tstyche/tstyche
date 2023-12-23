@@ -1,6 +1,4 @@
-.cspellcache
-.eslintcache
-.prettiercache
+.cache
 .yarn
 build
 dist
