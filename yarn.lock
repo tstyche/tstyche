@@ -3043,17 +3043,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:9.1.0":
-  version: 9.1.0
-  resolution: "eslint-config-prettier@npm:9.1.0"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  bin:
-    eslint-config-prettier: bin/cli.js
-  checksum: 9229b768c879f500ee54ca05925f31b0c0bafff3d9f5521f98ff05127356de78c81deb9365c86a5ec4efa990cb72b74df8612ae15965b14136044c73e1f6a907
-  languageName: node
-  linkType: hard
-
 "eslint-import-resolver-node@npm:^0.3.9":
   version: 0.3.9
   resolution: "eslint-import-resolver-node@npm:0.3.9"
@@ -6377,7 +6366,6 @@ __metadata:
     c8: 8.0.1
     cspell: 8.2.3
     eslint: 8.56.0
-    eslint-config-prettier: 9.1.0
     eslint-import-resolver-typescript: 3.6.1
     eslint-plugin-import: 2.29.1
     eslint-plugin-jest: 27.6.0
