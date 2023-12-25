@@ -21,9 +21,14 @@ describe("when target is a value", () => {
     expect((a: string) => a).type.not.toBeCallableWith("one");
   });
 
-  test("expression requires an argument", () => {
+  test("expression requires 1 argument", () => {
     expect((a: string) => a).type.not.toBeCallableWith();
     expect((a: string) => a).type.toBeCallableWith();
+  });
+
+  test("expression takes only 1 argument", () => {
+    expect((a: string) => a).type.not.toBeCallableWith("one", "two");
+    expect((a: string) => a).type.toBeCallableWith("one", "two");
   });
 
   test("type expression can be called without arguments", () => {
@@ -41,9 +46,14 @@ describe("when target is a value", () => {
     expect<(a: string) => string>().type.not.toBeCallableWith("one");
   });
 
-  test("type expression requires an argument", () => {
+  test("type expression requires 1 argument", () => {
     expect<(a: string) => string>().type.not.toBeCallableWith();
     expect<(a: string) => string>().type.toBeCallableWith();
+  });
+
+  test("type expression takes only 1 argument", () => {
+    expect<(a: string) => string>().type.not.toBeCallableWith("one", "two");
+    expect<(a: string) => string>().type.toBeCallableWith("one", "two");
   });
 });
 
@@ -63,9 +73,14 @@ describe("when target is a type", () => {
     expect((a: string) => a).type.not.toBeCallableWith<["one"]>();
   });
 
-  test("expression requires an argument", () => {
+  test("expression requires 1 argument", () => {
     expect((a: string) => a).type.not.toBeCallableWith<[]>();
     expect((a: string) => a).type.toBeCallableWith<[]>();
+  });
+
+  test("expression takes only 1 argument", () => {
+    expect((a: string) => a).type.not.toBeCallableWith<["one", "two"]>();
+    expect((a: string) => a).type.toBeCallableWith<["one", "two"]>();
   });
 
   test("type expression can be called without arguments", () => {
@@ -83,8 +98,13 @@ describe("when target is a type", () => {
     expect<(a: string) => string>().type.not.toBeCallableWith<["one"]>();
   });
 
-  test("type expression requires an argument", () => {
+  test("type expression requires 1 argument", () => {
     expect<(a: string) => string>().type.not.toBeCallableWith<[]>();
     expect<(a: string) => string>().type.toBeCallableWith<[]>();
+  });
+
+  test("type expression takes only 1 argument", () => {
+    expect<(a: string) => string>().type.not.toBeCallableWith<["one", "two"]>();
+    expect<(a: string) => string>().type.toBeCallableWith<["one", "two"]>();
   });
 });

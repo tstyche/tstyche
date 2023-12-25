@@ -22,15 +22,19 @@ export class ToBeCallableWith {
     const parameterCountText = [...new Set(parameterCount)].join(", or ");
     const parameterCountNumber = Number(parameterCountText);
 
+    let expectedText: string;
+
+    if (parameterCountNumber === 0) {
+      expectedText = "does not take";
+    } else if (argumentCount > parameterCountNumber) {
+      expectedText = `takes only ${parameterCountText}`;
+    } else {
+      expectedText = `requires ${parameterCountText}`;
+    }
+
     return isNot
       ? [Diagnostic.error(`${sourceText} can be called ${argumentCountText}.`)]
-      : [
-          Diagnostic.error([
-            `${sourceText} ${parameterCountNumber === 0 ? "does not take" : `requires ${parameterCountText}`} argument${
-              parameterCountNumber === 1 ? "" : "s"
-            }.`,
-          ]),
-        ];
+      : [Diagnostic.error([`${sourceText} ${expectedText} argument${parameterCountNumber === 1 ? "" : "s"}.`])];
   }
 
   match(
