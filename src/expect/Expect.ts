@@ -151,16 +151,16 @@ export class Expect {
           return;
         }
 
-        let targetNodes: Array<ts.Expression> | Array<ts.TypeNode | ts.NamedTupleMember> = [];
+        let target: Array<ts.Expression> | ts.TupleType = [];
 
         if (assertion.target[0] != null) {
           if (this.compiler.isExpression(assertion.target[0])) {
-            targetNodes = [...(assertion.target as ts.NodeArray<ts.Expression>)];
+            target = [...(assertion.target as ts.NodeArray<ts.Expression>)];
           }
 
           if (this.compiler.isTypeNode(assertion.target[0])) {
             if (this.compiler.isTupleTypeNode(assertion.target[0])) {
-              targetNodes = [...assertion.target[0].elements];
+              target = (this.typeChecker.getTypeFromTypeNode(assertion.target[0]) as ts.TupleTypeReference).target;
             } else {
               this.#onTargetArgumentsMustBeTupleType(assertion.target[0], expectResult);
 
@@ -169,7 +169,7 @@ export class Expect {
           }
         }
 
-        return this.toBeCallableWith.match({ node: assertion.source[0], signatures }, targetNodes, assertion.isNot);
+        return this.toBeCallableWith.match({ node: assertion.source[0], signatures }, target, assertion.isNot);
       }
 
       case "toHaveProperty": {

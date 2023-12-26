@@ -1,11 +1,24 @@
-import { expect, test } from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-test("toBeCallableWith", () => {
-  const { status, stderr, stdout } = spawnTyche("api-toBeCallableWith");
+const fixture = "api-toBeCallableWith";
 
-  expect(stdout).toMatchSnapshot("stdout");
-  expect(stderr).toMatchSnapshot("stderr");
+describe("toBeCallableWith", () => {
+  test("argument count mismatch", () => {
+    const { status, stderr, stdout } = spawnTyche(fixture, ["argument-count"]);
 
-  expect(status).toBe(1);
+    expect(stdout).toMatchSnapshot("stdout");
+    expect(stderr).toMatchSnapshot("stderr");
+
+    expect(status).toBe(1);
+  });
+
+  test("optional parameters", () => {
+    const { status, stderr, stdout } = spawnTyche(fixture, ["optional-parameters"]);
+
+    expect(stdout).toMatchSnapshot("stdout");
+    expect(stderr).toMatchSnapshot("stderr");
+
+    expect(status).toBe(1);
+  });
 });
