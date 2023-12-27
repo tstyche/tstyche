@@ -4,8 +4,8 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const fixture = "api-toBeCallableWith";
 
 describe("toBeCallableWith", () => {
-  test("argument count mismatch", () => {
-    const { status, stderr, stdout } = spawnTyche(fixture, ["argument-count"]);
+  test("arity check", () => {
+    const { status, stderr, stdout } = spawnTyche(fixture, ["arity-check"]);
 
     expect(stdout).toMatchSnapshot("stdout");
     expect(stderr).toMatchSnapshot("stderr");
