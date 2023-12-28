@@ -36,7 +36,7 @@
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
-    "clean": "rm -rf .cache build ",
+    "clean": "rm -rf .cache build",
     "generate": "yarn generate:schema && yarn generate:types",
     "generate:schema": "node scripts/generate-schema.js",
     "generate:types": "node scripts/generate-types.js",
@@ -44,14 +44,14 @@
     "lint:cspell": "cspell --cache --cache-location ./.cache/cspell --config cspell.config.json --quiet",
     "lint:eslint": "eslint ./ --cache --cache-location ./.cache/eslint --config eslint.config.json --ext .js,.cts,.ts,.tsx",
     "lint:prettier": "prettier ./ --cache --cache-location ./.cache/prettier --check",
-    "pretest": "yarn tstyche --install --target 4.8,latest",
+    "pretest": "tstyche --install --target 4.8,latest",
     "test": "yarn pretest && NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --config jest.config.js",
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test",
     "test:e2e": "yarn test --testMatch '**/tests/*.test.ts'",
     "test:examples": "tstyche examples",
     "test:types": "tstyche tests",
     "test:unit": "yarn test --testMatch '**/src/**/__tests__/*.test.ts?(x)'",
-    "typecheck": "yarn tsc --noEmit --project tsconfig.json"
+    "typecheck": "tsc --noEmit --project tsconfig.json"
   },
   "devDependencies": {
     "@jest/globals": "29.7.0",
