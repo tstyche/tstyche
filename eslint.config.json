@@ -138,7 +138,6 @@
       "files": ["*.ts", "*.tsx"],
       "plugins": ["eslint-plugin-tsdoc"],
       "rules": {
-        "@typescript-eslint/no-unused-vars": "off",
         "tsdoc/syntax": "error"
       }
     },
@@ -146,6 +145,12 @@
       "files": ["src/result/ResultManager.ts"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
+      }
+    },
+    {
+      "files": ["src/types.ts"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
       }
     },
     {
@@ -176,7 +181,8 @@
       "rules": {
         "@typescript-eslint/no-confusing-void-expression": "off",
         "@typescript-eslint/no-invalid-void-type": "off",
-        "@typescript-eslint/no-unused-expressions": "off"
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-vars": "off"
       }
     }
   ],

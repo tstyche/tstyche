@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.0-beta.7] - 2023-12-29
+
+### Changed
+
+- **Breaking!** Add new `Expect` class to validate provided values and orchestrate matchers logic ([#39](https://github.com/tstyche/tstyche/pull/39))
+
+### Added
+
+- **New!** Load local language service plugins to support files like `.svelte` or `.vue` ([#56](https://github.com/tstyche/tstyche/pull/56))
+
+### Fixed
+
+- Make the source argument checks stricter for the `.toHaveProperty()` matcher ([#46](https://github.com/tstyche/tstyche/pull/46))
+
 ## [1.0.0-beta.6] - 2023-12-03
 
 ### Added
@@ -65,6 +79,7 @@
 
 _First pre-release._
 
+[1.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.7
 [1.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.6
 [1.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.5
 [1.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.4
