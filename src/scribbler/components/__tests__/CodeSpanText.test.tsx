@@ -29,11 +29,11 @@ describe("function types", () => {
 `;
 
 function mockedGetLineAndCharacterOfPosition(position: number) {
-  const target = mockFileText.substring(0, position + 1).split("\n");
+  const target = mockFileText.slice(0, position + 1).split("\n");
 
   const line = target.length - 1;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const character = target[line]!.length ? target[line]!.length - 1 : 0;
+  const character = target[line]!.length > 0 ? target[line]!.length - 1 : 0;
 
   return { character, line };
 }
