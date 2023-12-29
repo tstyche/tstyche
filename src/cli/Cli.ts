@@ -49,11 +49,38 @@ export class Cli {
     }
   };
 
-  async run(commandLineArgs: Array<string>): Promise<void> {
+  async run(commandLineArguments: Array<string>): Promise<void> {
     EventEmitter.addHandler(this.#onStartupEvent);
+
+    if (commandLineArguments.includes("--help")) {
+      const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
+
+      this.#logger.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
+
+      return;
+    }
+
+    if (commandLineArguments.includes("--prune")) {
+      await this.#storeService.prune();
+
+      return;
+    }
+
+    if (commandLineArguments.includes("--version")) {
+      this.#logger.writeMessage(formattedText(TSTyche.version));
+
+      return;
+    }
+
     await this.#storeService.open(this.#abortController.signal);
 
     if (this.#process.exitCode === 1) {
+      return;
+    }
+
+    if (commandLineArguments.includes("--update")) {
+      await this.#storeService.update();
+
       return;
     }
 
@@ -63,39 +90,11 @@ export class Cli {
       return;
     }
 
-    // TODO defer validation of --target
-    // This would improve performance of --help and would allow to use --cleanup in case if something gets broken with the store
     const configService = new ConfigService(compiler, this.#storeService);
 
-    configService.parseCommandLine(commandLineArgs);
+    configService.parseCommandLine(commandLineArguments);
 
     if (this.#process.exitCode === 1) {
-      return;
-    }
-
-    if (configService.commandLineOptions.prune === true) {
-      await this.#storeService.prune();
-
-      return;
-    }
-
-    if (configService.commandLineOptions.help === true) {
-      const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
-
-      this.#logger.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
-
-      return;
-    }
-
-    if (configService.commandLineOptions.update === true) {
-      await this.#storeService.update();
-
-      return;
-    }
-
-    if (configService.commandLineOptions.version === true) {
-      this.#logger.writeMessage(formattedText(TSTyche.version));
-
       return;
     }
 
