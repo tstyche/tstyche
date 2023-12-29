@@ -38,6 +38,16 @@ const sampleCommandLineOptionDefinitions = new Map<string, OptionDefinition>([
   ],
 
   [
+    "sampleTrue",
+    {
+      brand: OptionBrand.True,
+      description: "A sample option of true type.",
+      group: 2,
+      name: "sampleTrue",
+    },
+  ],
+
+  [
     "sampleListOfStrings",
     {
       brand: OptionBrand.List,
@@ -83,6 +93,9 @@ describe("helpText", () => {
 
         <blue>--sampleBoolean</>  <gray>boolean</>
         A sample option of boolean type.
+
+        <blue>--sampleTrue</>
+        A sample option of true type.
 
         <blue>--sampleListOfString</>  <gray>list of strings</>
         A sample option of list of strings type.

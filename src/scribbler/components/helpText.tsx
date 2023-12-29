@@ -44,13 +44,13 @@ class HelpHeaderText implements JSX.ElementClass {
 class CommandText implements JSX.ElementClass {
   constructor(
     readonly props: {
-      hint?: JSX.Element;
+      hint?: JSX.Element | undefined;
       text: string | JSX.Element;
     },
   ) {}
 
   render(): JSX.Element {
-    let hint: JSX.Element | undefined = undefined;
+    let hint: JSX.Element | undefined;
 
     if (this.props.hint != null) {
       hint = <HintText>{this.props.hint}</HintText>;
@@ -73,7 +73,7 @@ class OptionDescriptionText implements JSX.ElementClass {
   }
 }
 
-class CliUsageText implements JSX.ElementClass {
+class CommandLineUsageText implements JSX.ElementClass {
   render(): JSX.Element {
     const usageText = usageExamples.map(([commandText, descriptionText]) => (
       <Text>
@@ -87,7 +87,7 @@ class CliUsageText implements JSX.ElementClass {
   }
 }
 
-class OptionNameText implements JSX.ElementClass {
+class CommandLineOptionNameText implements JSX.ElementClass {
   constructor(readonly props: { text: string }) {}
 
   render(): JSX.Element {
@@ -95,10 +95,10 @@ class OptionNameText implements JSX.ElementClass {
   }
 }
 
-class OptionHintText implements JSX.ElementClass {
+class CommandLineOptionHintText implements JSX.ElementClass {
   constructor(readonly props: { definition: OptionDefinition }) {}
 
-  render(): JSX.Element {
+  render(): JSX.Element | null {
     if (this.props.definition.brand === OptionBrand.List) {
       return (
         <Text>
@@ -111,21 +111,26 @@ class OptionHintText implements JSX.ElementClass {
   }
 }
 
-class CliOptionsText implements JSX.ElementClass {
+class CommandLineOptionsText implements JSX.ElementClass {
   constructor(readonly props: { optionDefinitions: Map<string, OptionDefinition> }) {}
 
   render(): JSX.Element {
     const definitions = [...this.props.optionDefinitions.values()];
-    const optionsText = definitions.map((definition) => (
-      <Text>
-        <CommandText
-          text={<OptionNameText text={definition.name} />}
-          hint={<OptionHintText definition={definition} />}
-        />
-        <OptionDescriptionText text={definition.description} />
-        <Line />
-      </Text>
-    ));
+    const optionsText = definitions.map((definition) => {
+      let hint: JSX.Element | undefined;
+
+      if (definition.brand !== OptionBrand.True) {
+        hint = <CommandLineOptionHintText definition={definition} />;
+      }
+
+      return (
+        <Text>
+          <CommandText text={<CommandLineOptionNameText text={definition.name} />} hint={hint} />
+          <OptionDescriptionText text={definition.description} />
+          <Line />
+        </Text>
+      );
+    });
 
     return (
       <Text>
@@ -148,9 +153,9 @@ export function helpText(optionDefinitions: Map<string, OptionDefinition>, tstyc
     <Text>
       <HelpHeaderText tstycheVersion={tstycheVersion} />
       <Line />
-      <CliUsageText />
+      <CommandLineUsageText />
       <Line />
-      <CliOptionsText optionDefinitions={optionDefinitions} />
+      <CommandLineOptionsText optionDefinitions={optionDefinitions} />
       <Line />
       <HelpFooterText />
       <Line />
