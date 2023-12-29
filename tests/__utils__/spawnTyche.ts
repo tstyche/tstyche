@@ -3,7 +3,7 @@ import { getFixtureUrl } from "./getFixtureUrl.js";
 
 function normalizeOutput(output: string) {
   return output
-    .replaceAll(process.cwd().replace(/\\/g, "/"), "<<cwd>>")
+    .replaceAll(process.cwd().replaceAll("\\", "/"), "<<cwd>>")
     .replaceAll(/(Duration:\s{2})\s((?:\d\.?)+s)/g, "$1 <<timestamp>>")
     .replaceAll(/(uses TypeScript)\s(\d\.?)+/g, "$1 <<version>>");
 }

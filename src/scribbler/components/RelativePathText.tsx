@@ -6,7 +6,7 @@ export class RelativePathText implements JSX.ElementClass {
   constructor(readonly props: { isDirectory?: boolean; to: string }) {}
 
   render(): JSX.Element {
-    const relativePath = path.relative("", this.props.to).replace(/\\/g, "/");
+    const relativePath = path.relative("", this.props.to).replaceAll("\\", "/");
 
     if (relativePath === "") {
       return <Text>{"./"}</Text>;

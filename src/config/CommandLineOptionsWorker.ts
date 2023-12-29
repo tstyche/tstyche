@@ -44,7 +44,7 @@ export class CommandLineOptionsWorker {
       return filePath;
     }
 
-    return filePath.replace(/\\/g, "/");
+    return filePath.replaceAll("\\", "/");
   }
 
   #onExpectsArgumentDiagnostic(optionDefinition: OptionDefinition) {
@@ -106,16 +106,6 @@ export class CommandLineOptionsWorker {
           }
 
           this.#commandLineOptions[optionDefinition.name] = optionValues;
-          index++;
-          break;
-        }
-
-        this.#onExpectsArgumentDiagnostic(optionDefinition);
-        break;
-
-      case OptionBrand.Number:
-        if (optionValue != null) {
-          this.#commandLineOptions[optionDefinition.name] = Number(optionValue);
           index++;
           break;
         }

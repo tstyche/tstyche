@@ -32,7 +32,7 @@ export class Environment {
       return value;
     }
 
-    return value.replace(/\\/g, "/");
+    return value.replaceAll("\\", "/");
   }
 
   static #parseBoolean(value: string | undefined) {

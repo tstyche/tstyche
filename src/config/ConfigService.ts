@@ -55,7 +55,7 @@ export class ConfigService {
       return filePath;
     }
 
-    return filePath.replace(/\\/g, "/");
+    return filePath.replaceAll("\\", "/");
   }
 
   #onDiagnostic = (diagnostic: Diagnostic) => {

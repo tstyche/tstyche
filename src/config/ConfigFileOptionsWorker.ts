@@ -55,7 +55,7 @@ export class ConfigFileOptionsWorker {
       return filePath;
     }
 
-    return filePath.replace(/\\/g, "/");
+    return filePath.replaceAll("\\", "/");
   }
 
   async parse(sourceText: string): Promise<void> {
