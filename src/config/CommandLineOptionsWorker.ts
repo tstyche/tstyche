@@ -86,6 +86,10 @@ export class CommandLineOptionsWorker {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
+      case OptionBrand.True:
+        this.#commandLineOptions[optionDefinition.name] = true;
+        break;
+
       case OptionBrand.Boolean:
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 

@@ -98,6 +98,7 @@ function createInterfaceDeclaration(identifierText, commentText, optionDefinitio
   for (const [key, optionDefinition] of optionDefinitions) {
     switch (optionDefinition.brand) {
       case tstyche.OptionBrand.Boolean:
+      case tstyche.OptionBrand.True:
         members.push(
           createPrimitivePropertySignature(
             key,
