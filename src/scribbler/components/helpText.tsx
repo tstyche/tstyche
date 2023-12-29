@@ -115,7 +115,7 @@ class CliOptionsText implements JSX.ElementClass {
   constructor(readonly props: { optionDefinitions: Map<string, OptionDefinition> }) {}
 
   render(): JSX.Element {
-    const definitions = Array.from(this.props.optionDefinitions.values());
+    const definitions = [...this.props.optionDefinitions.values()];
     const optionsText = definitions.map((definition) => (
       <Text>
         <CommandText

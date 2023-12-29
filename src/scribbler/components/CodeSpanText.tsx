@@ -20,22 +20,23 @@ export class CodeSpanText implements JSX.ElementClass {
 
     const codeSpan: Array<JSX.Element> = [];
 
-    for (let i = firstLine; i <= lastLine; i++) {
-      const lineStart = this.props.file.getPositionOfLineAndCharacter(i, 0);
+    for (let index = firstLine; index <= lastLine; index++) {
+      const lineStart = this.props.file.getPositionOfLineAndCharacter(index, 0);
       const lineEnd =
-        i === lastLineInFile ? this.props.file.text.length : this.props.file.getPositionOfLineAndCharacter(i + 1, 0);
+        index === lastLineInFile
+          ? this.props.file.text.length
+          : this.props.file.getPositionOfLineAndCharacter(index + 1, 0);
 
-      const lineNumberText = String(i + 1);
-      const lineText = this.props.file.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
+      const lineNumberText = String(index + 1);
+      const lineText = this.props.file.text.slice(lineStart, lineEnd).trimEnd().replaceAll("\t", " ");
 
-      if (i === markedLine) {
+      if (index === markedLine) {
         codeSpan.push(
           <Line>
             <Text color={Color.Red}>{">"}</Text> {lineNumberText.padStart(lineNumberMaxWidth)}{" "}
             <Text color={Color.Gray}>|</Text> {lineText}
           </Line>,
-        );
-        codeSpan.push(
+
           <Line>
             {" ".repeat(lineNumberMaxWidth + 3)}
             <Text color={Color.Gray}>|</Text>

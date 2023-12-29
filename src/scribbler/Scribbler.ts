@@ -78,7 +78,7 @@ export class Scribbler {
   }
 
   #escapeSequence(attributes: string | Array<string>): string {
-    return ["\x1b[", Array.isArray(attributes) ? attributes.join(";") : attributes, "m"].join("");
+    return ["\u001B[", Array.isArray(attributes) ? attributes.join(";") : attributes, "m"].join("");
   }
 
   #indentEachLine(lines: string, level: number) {

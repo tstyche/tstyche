@@ -48,7 +48,7 @@ export class Logger {
       return;
     }
 
-    this.#stdout.write("\x1b[1A\x1b[0K");
+    this.#stdout.write("\u001B[1A\u001B[0K");
   }
 
   /**
