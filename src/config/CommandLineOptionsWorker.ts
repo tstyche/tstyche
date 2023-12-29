@@ -60,7 +60,7 @@ export class CommandLineOptionsWorker {
     let index = 0;
     let arg = commandLineArgs[index];
 
-    while (arg !== undefined) {
+    while (arg != null) {
       index++;
 
       if (arg.startsWith("--")) {

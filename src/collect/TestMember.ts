@@ -63,9 +63,7 @@ export class TestMember {
   }
 
   #resolveName(node: ts.CallExpression): string {
-    return node.arguments[0] !== undefined && this.compiler.isStringLiteral(node.arguments[0])
-      ? node.arguments[0].text
-      : "";
+    return node.arguments[0] != null && this.compiler.isStringLiteral(node.arguments[0]) ? node.arguments[0].text : "";
   }
 
   // TODO consider moving validation logic to the collector and passing 'onDiagnostics()' around
