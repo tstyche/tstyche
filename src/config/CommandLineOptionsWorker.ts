@@ -113,16 +113,6 @@ export class CommandLineOptionsWorker {
         this.#onExpectsArgumentDiagnostic(optionDefinition);
         break;
 
-      case OptionBrand.Number:
-        if (optionValue != null) {
-          this.#commandLineOptions[optionDefinition.name] = Number(optionValue);
-          index++;
-          break;
-        }
-
-        this.#onExpectsArgumentDiagnostic(optionDefinition);
-        break;
-
       case OptionBrand.String:
         if (optionValue != null) {
           if (optionDefinition.name === "config") {
