@@ -43,6 +43,7 @@ export class ProjectService {
     };
 
     this.#service = new this.compiler.server.ProjectService({
+      allowLocalPluginLoads: true,
       cancellationToken: this.compiler.server.nullCancellationToken,
       host,
       logger: noopLogger,
