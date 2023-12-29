@@ -6,8 +6,8 @@ import { Text } from "../Text.js";
 
 const usageExamples: Array<[commandText: string, descriptionText: string]> = [
   ["tstyche", "Run all tests."],
-  ["tstyche path/to/first.test.ts second", "Only run the test files with matching path."],
-  ["tstyche --target 4.7,4.8,latest", "Test on all specified versions of TypeScript."],
+  ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
+  ["tstyche --target 4.7,5.0.4,latest", "Test on all specified versions of TypeScript."],
 ];
 
 class HintText implements JSX.ElementClass {
@@ -129,7 +129,7 @@ class CliOptionsText implements JSX.ElementClass {
 
     return (
       <Text>
-        <Line>CLI Options</Line>
+        <Line>Command Line Options</Line>
         <Line />
         {optionsText}
       </Text>

@@ -66,14 +66,14 @@ describe("helpText", () => {
         <blue>tstyche</>
         Run all tests.
 
-        <blue>tstyche path/to/first.test.ts second</>
+        <blue>tstyche path/to/first.test.ts</>
         Only run the test files with matching path.
 
-        <blue>tstyche --target 4.7,4.8,latest</>
+        <blue>tstyche --target 4.7,5.0.4,latest</>
         Test on all specified versions of TypeScript.
 
 
-      CLI Options
+      Command Line Options
 
         <blue>--sampleString</>  <gray>string</>
         A sample option of string type.

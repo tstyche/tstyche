@@ -17,7 +17,7 @@ export interface CommandLineOptions {
      */
     failFast?: boolean;
     /**
-     * Print the list of CLI options with brief descriptions and exit.
+     * Print the list of command line options with brief descriptions and exit.
      */
     help?: boolean;
     /**

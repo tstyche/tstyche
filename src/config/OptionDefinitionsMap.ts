@@ -70,7 +70,7 @@ export class OptionDefinitionsMap {
 
     {
       brand: OptionBrand.Boolean,
-      description: "Print the list of CLI options with brief descriptions and exit.",
+      description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,
       name: "help",
     },
