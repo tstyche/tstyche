@@ -44,7 +44,7 @@ export class CommandLineOptionsWorker {
       return filePath;
     }
 
-    return filePath.replace(/\\/g, "/");
+    return filePath.replaceAll("\\", "/");
   }
 
   #onExpectsArgumentDiagnostic(optionDefinition: OptionDefinition) {

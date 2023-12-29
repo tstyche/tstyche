@@ -136,6 +136,6 @@ export class CompilerModuleWorker {
       return filePath;
     }
 
-    return filePath.replace(/\\/g, "/");
+    return filePath.replaceAll("\\", "/");
   }
 }

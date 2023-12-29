@@ -45,7 +45,7 @@ function mockedGetPositionOfLineAndCharacter(line: number, character: number) {
 }
 
 const mockFile = {
-  fileName: path.resolve("path", "to", "sample.test.ts").replace(/\\/g, "/"), // Compiler API always uses posix path separators
+  fileName: path.resolve("path", "to", "sample.test.ts").replaceAll("\\", "/"), // Compiler API always uses posix path separators
   getLineAndCharacterOfPosition(position: number) {
     return mockedGetLineAndCharacterOfPosition(position);
   },
