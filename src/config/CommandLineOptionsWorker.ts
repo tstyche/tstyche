@@ -67,7 +67,7 @@ export class CommandLineOptionsWorker {
       } else if (arg.startsWith("-")) {
         this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownOption(arg)));
       } else {
-        this.#pathMatch.push(arg);
+        this.#pathMatch.push(Path.normalizePath(arg));
       }
 
       arg = commandLineArgs[index];

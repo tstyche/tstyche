@@ -103,7 +103,7 @@ export class ConfigService {
       ...ConfigService.#defaultOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
-      pathMatch: this.#pathMatch.map((match) => Path.normalizePath(match)),
+      pathMatch: this.#pathMatch,
     };
 
     return mergedOptions;
