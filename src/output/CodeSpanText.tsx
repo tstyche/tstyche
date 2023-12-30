@@ -1,9 +1,6 @@
 import type { DiagnosticOrigin } from "#diagnostic";
-import { Color } from "../Color.js";
-import { Line } from "../Line.js";
-import { Scribbler } from "../Scribbler.js";
-import { Text } from "../Text.js";
-import { RelativePathText } from "./RelativePathText.js";
+import { Path } from "#path";
+import { Color, Line, Scribbler, Text } from "#scribbler";
 
 export class CodeSpanText implements JSX.ElementClass {
   constructor(readonly props: DiagnosticOrigin) {}
@@ -64,10 +61,7 @@ export class CodeSpanText implements JSX.ElementClass {
     const location = (
       <Line>
         {" ".repeat(lineNumberMaxWidth + 5)}
-        <Text color={Color.Gray}>at</Text>{" "}
-        <Text color={Color.Cyan}>
-          <RelativePathText to={this.props.file.fileName} />
-        </Text>
+        <Text color={Color.Gray}>at</Text> <Text color={Color.Cyan}>{Path.relative("", this.props.file.fileName)}</Text>
         <Text color={Color.Gray}>
           :{String(markedLine + 1)}:{String(markedCharacter + 1)}
         </Text>

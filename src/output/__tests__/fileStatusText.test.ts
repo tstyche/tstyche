@@ -2,13 +2,13 @@ import { URL } from "node:url";
 import { describe, expect, test } from "@jest/globals";
 import ansiEscapesSerializer from "jest-serializer-ansi-escapes";
 import { ResultStatus } from "#result";
-import { Scribbler } from "../../Scribbler.js";
+import { Scribbler } from "#scribbler";
+import { fileStatusText } from "../fileStatusText.js";
 
 expect.addSnapshotSerializer(ansiEscapesSerializer);
 
-const sampleTestFile = new URL("../../../../path/to/sample.test.ts", import.meta.url);
+const sampleTestFile = new URL("../../../path/to/sample.test.ts", import.meta.url);
 
-const { fileStatusText } = await import("../fileStatusText.js");
 const scribbler = new Scribbler();
 
 describe("fileStatusText", () => {

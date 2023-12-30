@@ -1,6 +1,6 @@
-import path from "node:path";
 import type ts from "typescript/lib/tsserverlibrary.js";
 import { Diagnostic } from "#diagnostic";
+import { Path } from "#path";
 import type { StoreService } from "#store";
 import { OptionBrand } from "./OptionBrand.js";
 import {
@@ -48,14 +48,6 @@ export class ConfigFileOptionsWorker {
       node.kind === this.compiler.SyntaxKind.StringLiteral &&
       sourceFile.text.slice(this.#skipTrivia(node.pos, sourceFile), node.end).startsWith('"')
     );
-  }
-
-  #normalizePath(filePath: string) {
-    if (path.sep === "/") {
-      return filePath;
-    }
-
-    return filePath.replaceAll("\\", "/");
   }
 
   async parse(sourceText: string): Promise<void> {
@@ -168,7 +160,7 @@ export class ConfigFileOptionsWorker {
           let value = (valueExpression as ts.StringLiteral).text;
 
           if (optionDefinition.name === "rootPath") {
-            value = this.#normalizePath(path.resolve(path.dirname(this.#configFilePath), value));
+            value = Path.resolve(Path.dirname(this.#configFilePath), value);
           }
 
           const origin = {

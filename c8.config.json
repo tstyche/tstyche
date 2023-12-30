@@ -13,6 +13,7 @@
     "jest.config.js",
     "rollup.config.js",
     "**/index.ts",
+    "**/tstyche.ts",
     "**/types.ts"
   ],
   "excludeAfterRemap": true,

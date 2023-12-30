@@ -7,6 +7,8 @@ export * from "#environment";
 export * from "#events";
 export * from "#expect";
 export * from "#logger";
+export * from "#output";
+export * from "#path";
 export * from "#project";
 export * from "#reporters";
 export * from "#result";

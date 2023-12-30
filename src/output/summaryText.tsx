@@ -1,8 +1,5 @@
 import type { ResultCount } from "#result";
-import { Color } from "../Color.js";
-import { Line } from "../Line.js";
-import { Scribbler } from "../Scribbler.js";
-import { Text } from "../Text.js";
+import { Color, Line, Scribbler, Text } from "#scribbler";
 
 class RowText implements JSX.ElementClass {
   constructor(readonly props: { label: string; text: JSX.Element }) {}

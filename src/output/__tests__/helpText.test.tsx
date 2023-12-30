@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import ansiEscapesSerializer from "jest-serializer-ansi-escapes";
 import { OptionBrand, type OptionDefinition } from "#config";
-import { Scribbler } from "../../Scribbler.js";
+import { Scribbler } from "#scribbler";
 import { helpText } from "../helpText.js";
 
 expect.addSnapshotSerializer(ansiEscapesSerializer);
@@ -34,6 +34,16 @@ const sampleCommandLineOptionDefinitions = new Map<string, OptionDefinition>([
       description: "A sample option of boolean type.",
       group: 2,
       name: "sampleBoolean",
+    },
+  ],
+
+  [
+    "sampleTrue",
+    {
+      brand: OptionBrand.True,
+      description: "A sample option of true type.",
+      group: 2,
+      name: "sampleTrue",
     },
   ],
 
@@ -83,6 +93,9 @@ describe("helpText", () => {
 
         <blue>--sampleBoolean</>  <gray>boolean</>
         A sample option of boolean type.
+
+        <blue>--sampleTrue</>
+        A sample option of true type.
 
         <blue>--sampleListOfString</>  <gray>list of strings</>
         A sample option of list of strings type.

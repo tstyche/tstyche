@@ -1,6 +1,4 @@
-import { Line } from "../Line.js";
-import { Scribbler } from "../Scribbler.js";
-import { Text } from "../Text.js";
+import { Line, Scribbler, Text } from "#scribbler";
 
 export function fileViewText(lines: Array<JSX.Element>, addEmptyFinalLine: boolean): JSX.Element {
   return (

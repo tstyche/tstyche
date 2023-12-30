@@ -1,9 +1,9 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import path from "node:path";
 import type ts from "typescript/lib/tsserverlibrary.js";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { Path } from "#path";
 import type { StoreService } from "#store";
 import { type CommandLineOptions, CommandLineOptionsWorker } from "./CommandLineOptionsWorker.js";
 import { type ConfigFileOptions, ConfigFileOptionsWorker } from "./ConfigFileOptionsWorker.js";
@@ -50,14 +50,6 @@ export class ConfigService {
     return ConfigService.#defaultOptions;
   }
 
-  #normalizePath(filePath: string) {
-    if (path.sep === "/") {
-      return filePath;
-    }
-
-    return filePath.replaceAll("\\", "/");
-  }
-
   #onDiagnostic = (diagnostic: Diagnostic) => {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostic] }]);
   };
@@ -80,10 +72,10 @@ export class ConfigService {
     filePath?: string, // TODO take URL as well
     sourceText?: string,
   ): Promise<void> {
-    const configFilePath = filePath ?? this.#commandLineOptions.config ?? path.resolve("./tstyche.config.json");
+    const configFilePath = filePath ?? this.#commandLineOptions.config ?? Path.resolve("./tstyche.config.json");
 
     this.#configFileOptions = {
-      rootPath: this.#normalizePath(path.dirname(configFilePath)),
+      rootPath: Path.dirname(configFilePath),
     };
 
     let configFileText = sourceText ?? "";
@@ -111,7 +103,7 @@ export class ConfigService {
       ...ConfigService.#defaultOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
-      pathMatch: this.#pathMatch.map((match) => this.#normalizePath(match)),
+      pathMatch: this.#pathMatch,
     };
 
     return mergedOptions;
@@ -130,7 +122,7 @@ export class ConfigService {
     if (pathMatch.length > 0) {
       testFilePaths = testFilePaths.filter((testFilePath) =>
         pathMatch.some((match) => {
-          const relativeTestFilePath = this.#normalizePath(`./${path.relative("", testFilePath)}`);
+          const relativeTestFilePath = Path.relative("", testFilePath);
 
           return relativeTestFilePath.toLowerCase().includes(match.toLowerCase());
         }),

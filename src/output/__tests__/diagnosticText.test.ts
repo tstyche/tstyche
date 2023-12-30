@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import ansiEscapesSerializer from "jest-serializer-ansi-escapes";
 import { Diagnostic } from "#diagnostic";
-import { Scribbler } from "../../Scribbler.js";
+import { Scribbler } from "#scribbler";
 import { diagnosticText } from "../diagnosticText.js";
 
 expect.addSnapshotSerializer(ansiEscapesSerializer);

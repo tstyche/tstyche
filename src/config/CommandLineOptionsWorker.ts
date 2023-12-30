@@ -1,5 +1,5 @@
-import path from "node:path";
 import { Diagnostic } from "#diagnostic";
+import { Path } from "#path";
 import type { StoreService } from "#store";
 import { OptionBrand } from "./OptionBrand.js";
 import { type OptionDefinition, OptionDefinitionsMap, type OptionValue } from "./OptionDefinitionsMap.js";
@@ -39,14 +39,6 @@ export class CommandLineOptionsWorker {
     this.#optionValidator = new OptionValidator(OptionGroup.CommandLine, this.#storeService, this.#onDiagnostic);
   }
 
-  #normalizePath(filePath: string) {
-    if (path.sep === "/") {
-      return filePath;
-    }
-
-    return filePath.replaceAll("\\", "/");
-  }
-
   #onExpectsArgumentDiagnostic(optionDefinition: OptionDefinition) {
     const text = [
       this.#optionDiagnosticText.expectsArgument(optionDefinition.name),
@@ -60,7 +52,7 @@ export class CommandLineOptionsWorker {
     let index = 0;
     let arg = commandLineArgs[index];
 
-    while (arg !== undefined) {
+    while (arg != null) {
       index++;
 
       if (arg.startsWith("--")) {
@@ -75,7 +67,7 @@ export class CommandLineOptionsWorker {
       } else if (arg.startsWith("-")) {
         this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownOption(arg)));
       } else {
-        this.#pathMatch.push(arg);
+        this.#pathMatch.push(Path.normalizeSlashes(arg));
       }
 
       arg = commandLineArgs[index];
@@ -86,6 +78,10 @@ export class CommandLineOptionsWorker {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
+      case OptionBrand.True:
+        this.#commandLineOptions[optionDefinition.name] = true;
+        break;
+
       case OptionBrand.Boolean:
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 
@@ -116,7 +112,7 @@ export class CommandLineOptionsWorker {
       case OptionBrand.String:
         if (optionValue != null) {
           if (optionDefinition.name === "config") {
-            optionValue = this.#normalizePath(path.resolve(optionValue));
+            optionValue = Path.resolve(optionValue);
           }
 
           this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);

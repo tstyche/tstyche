@@ -31,7 +31,7 @@ interface BaseOptionDefinition {
 }
 
 interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
-  brand: OptionBrand.String | OptionBrand.Number | OptionBrand.Boolean;
+  brand: OptionBrand.String | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.True;
 }
 
 interface ListTypeOptionDefinition extends BaseOptionDefinition {
@@ -69,21 +69,21 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.Boolean,
+      brand: OptionBrand.True,
       description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,
       name: "help",
     },
 
     {
-      brand: OptionBrand.Boolean,
+      brand: OptionBrand.True,
       description: "Install specified versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "install",
     },
 
     {
-      brand: OptionBrand.Boolean,
+      brand: OptionBrand.True,
       description: "Print the list of the selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",
@@ -97,7 +97,7 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.Boolean,
+      brand: OptionBrand.True,
       description: "Remove all installed versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "prune",
@@ -111,7 +111,7 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.Boolean,
+      brand: OptionBrand.True,
       description: "Print the resolved configuration and exit.",
       group: OptionGroup.CommandLine,
       name: "showConfig",
@@ -148,14 +148,14 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.Boolean,
+      brand: OptionBrand.True,
       description: "Fetch the 'typescript' package metadata from the registry and exit.",
       group: OptionGroup.CommandLine,
       name: "update",
     },
 
     {
-      brand: OptionBrand.Boolean,
+      brand: OptionBrand.True,
       description: "Print the version number and exit.",
       group: OptionGroup.CommandLine,
       name: "version",

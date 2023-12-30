@@ -1,5 +1,5 @@
 import type { Event } from "#events";
-import { summaryText } from "#scribbler";
+import { summaryText } from "#output";
 import { Reporter } from "./Reporter.js";
 
 export class SummaryReporter extends Reporter {
