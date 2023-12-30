@@ -2,18 +2,18 @@ import path from "node:path";
 
 export class Path {
   static basename(filePath: string): string {
-    return Path.normalize(path.basename(filePath));
+    return Path.normalizeSlashes(path.basename(filePath));
   }
 
   static dirname(filePath: string): string {
-    return Path.normalize(path.dirname(filePath));
+    return Path.normalizeSlashes(path.dirname(filePath));
   }
 
   static join(...filePaths: Array<string>): string {
-    return Path.normalize(path.join(...filePaths));
+    return Path.normalizeSlashes(path.join(...filePaths));
   }
 
-  static normalize(filePath: string): string {
+  static normalizeSlashes(filePath: string): string {
     if (path.sep === "/") {
       return filePath;
     }
@@ -28,10 +28,10 @@ export class Path {
       relativePath = `./${relativePath}`;
     }
 
-    return Path.normalize(relativePath);
+    return Path.normalizeSlashes(relativePath);
   }
 
   static resolve(...filePaths: Array<string>): string {
-    return Path.normalize(path.resolve(...filePaths));
+    return Path.normalizeSlashes(path.resolve(...filePaths));
   }
 }
