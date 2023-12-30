@@ -7,9 +7,9 @@ import type { TestTree } from "./TestTree.js";
 
 export class TestMember {
   compiler: typeof ts;
-  diagnostics: Array<ts.Diagnostic>;
+  diagnostics = new Set<ts.Diagnostic>();
   members: Array<TestMember | Assertion> = [];
-  name: string;
+  name = "";
 
   constructor(
     public brand: TestMemberBrand,
@@ -19,8 +19,25 @@ export class TestMember {
   ) {
     this.compiler = parent.compiler;
 
-    this.diagnostics = this.#mapDiagnostics(node, this.parent);
-    this.name = this.#resolveName(node);
+    if (node.arguments[0] != null && this.compiler.isStringLiteralLike(node.arguments[0])) {
+      this.name = node.arguments[0].text;
+    }
+
+    if (
+      node.arguments[1] != null &&
+      parent.compiler.isFunctionLike(node.arguments[1]) &&
+      parent.compiler.isBlock(node.arguments[1].body)
+    ) {
+      const blockStart = node.arguments[1].body.getStart();
+      const blockEnd = node.arguments[1].body.getEnd();
+
+      for (const diagnostic of parent.diagnostics) {
+        if (diagnostic.start != null && diagnostic.start >= blockStart && diagnostic.start <= blockEnd) {
+          this.diagnostics.add(diagnostic);
+          parent.diagnostics.delete(diagnostic);
+        }
+      }
+    }
   }
 
   get ancestorNames(): Array<string> {
@@ -34,36 +51,6 @@ export class TestMember {
     }
 
     return ancestorNames;
-  }
-
-  #mapDiagnostics(node: ts.CallExpression, parent: TestTree | TestMember) {
-    const mapped: Array<ts.Diagnostic> = [];
-    const unmapped: Array<ts.Diagnostic> = [];
-
-    if (
-      node.arguments[1] != null &&
-      parent.compiler.isFunctionLike(node.arguments[1]) &&
-      parent.compiler.isBlock(node.arguments[1].body)
-    ) {
-      const blockStart = node.arguments[1].body.getStart();
-      const blockEnd = node.arguments[1].body.getEnd();
-
-      parent.diagnostics.forEach((diagnostic) => {
-        if (diagnostic.start != null && diagnostic.start >= blockStart && diagnostic.start <= blockEnd) {
-          mapped.push(diagnostic);
-        } else {
-          unmapped.push(diagnostic);
-        }
-      });
-
-      parent.diagnostics = unmapped;
-    }
-
-    return mapped;
-  }
-
-  #resolveName(node: ts.CallExpression): string {
-    return node.arguments[0] != null && this.compiler.isStringLiteral(node.arguments[0]) ? node.arguments[0].text : "";
   }
 
   // TODO consider moving validation logic to the collector and passing 'onDiagnostics()' around

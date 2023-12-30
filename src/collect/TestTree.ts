@@ -8,7 +8,7 @@ export class TestTree {
 
   constructor(
     public compiler: typeof ts,
-    public diagnostics: Array<ts.Diagnostic>,
+    public diagnostics: Set<ts.Diagnostic>,
     public sourceFile: ts.SourceFile,
   ) {}
 
