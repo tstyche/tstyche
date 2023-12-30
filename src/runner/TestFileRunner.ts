@@ -80,11 +80,11 @@ export class TestFileRunner {
 
     const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    if (testTree.diagnostics.length > 0) {
+    if (testTree.diagnostics.size > 0) {
       EventEmitter.dispatch([
         "file:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics(testTree.diagnostics, this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.compiler),
           result: fileResult,
         },
       ]);

@@ -184,7 +184,7 @@ export class Expect {
         }
 
         return this.toRaiseError.match(
-          { diagnostics: assertion.diagnostics, node: assertion.source[0] },
+          { diagnostics: [...assertion.diagnostics], node: assertion.source[0] },
           targetTypes,
           assertion.isNot,
         );
