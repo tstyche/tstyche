@@ -1,8 +1,5 @@
 import { Path } from "#path";
-import { Color } from "../Color.js";
-import { Line } from "../Line.js";
-import { Scribbler } from "../Scribbler.js";
-import { Text } from "../Text.js";
+import { Color, Line, Scribbler, Text } from "#scribbler";
 
 class ProjectNameText implements JSX.ElementClass {
   constructor(readonly props: { filePath: string }) {}
@@ -22,8 +19,11 @@ export function usesCompilerStepText(
   tsconfigFilePath: string | undefined,
   options?: { prependEmptyLine: boolean },
 ): JSX.Element {
-  const projectPathText =
-    typeof tsconfigFilePath === "string" ? <ProjectNameText filePath={tsconfigFilePath} /> : undefined;
+  let projectPathText: JSX.Element | undefined;
+
+  if (tsconfigFilePath != null) {
+    projectPathText = <ProjectNameText filePath={tsconfigFilePath} />;
+  }
 
   return (
     <Text>

@@ -1,6 +1,6 @@
 import { Diagnostic } from "#diagnostic";
 import type { Event } from "#events";
-import { addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#scribbler";
+import { addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
 import { FileViewService } from "./FileViewService.js";
 import { Reporter } from "./Reporter.js";
 

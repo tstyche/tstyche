@@ -2,7 +2,7 @@ import path from "node:path";
 import { describe, expect, test } from "@jest/globals";
 import ansiEscapesSerializer from "jest-serializer-ansi-escapes";
 import type ts from "typescript/lib/tsserverlibrary.js";
-import { Scribbler } from "../../Scribbler.js";
+import { Scribbler } from "#scribbler";
 import { CodeSpanText } from "../CodeSpanText.js";
 
 expect.addSnapshotSerializer(ansiEscapesSerializer);

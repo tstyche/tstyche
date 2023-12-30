@@ -4,7 +4,7 @@ import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter, type EventHandler } from "#events";
 import { Logger } from "#logger";
-import { addsPackageStepText, diagnosticText, formattedText, helpText } from "#scribbler";
+import { addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
 import { StoreService } from "#store";
 
 export class Cli {

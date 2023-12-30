@@ -1,4 +1,4 @@
-import { describeNameText, fileViewText, testNameText } from "#scribbler";
+import { describeNameText, fileViewText, testNameText } from "#output";
 
 export class FileViewService {
   #indent = 0;
