@@ -1,8 +1,8 @@
+import { Path } from "#path";
 import { Color } from "../Color.js";
 import { Line } from "../Line.js";
 import { Scribbler } from "../Scribbler.js";
 import { Text } from "../Text.js";
-import { RelativePathText } from "./RelativePathText.js";
 
 class ProjectNameText implements JSX.ElementClass {
   constructor(readonly props: { filePath: string }) {}
@@ -11,7 +11,7 @@ class ProjectNameText implements JSX.ElementClass {
     return (
       <Text color={Color.Gray}>
         {" with "}
-        <RelativePathText to={this.props.filePath} />
+        {Path.relative("", this.props.filePath)}
       </Text>
     );
   }

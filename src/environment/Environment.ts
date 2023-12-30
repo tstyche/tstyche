@@ -1,9 +1,9 @@
 import os from "node:os";
-import path from "node:path";
+import { Path } from "#path";
 
 export class Environment {
   static #noColor = Environment.#resolveNoColor();
-  static #storePath = Environment.#normalizePath(Environment.#resolveStorePath());
+  static #storePath = Environment.#resolveStorePath();
   static #timeout = Environment.#resolveTimeout();
 
   /**
@@ -25,14 +25,6 @@ export class Environment {
    */
   static get timeout(): number {
     return Environment.#timeout;
-  }
-
-  static #normalizePath(value: string) {
-    if (path.sep === "/") {
-      return value;
-    }
-
-    return value.replaceAll("\\", "/");
   }
 
   static #parseBoolean(value: string | undefined) {
@@ -57,22 +49,22 @@ export class Environment {
 
   static #resolveStorePath() {
     if (process.env["TSTYCHE_STORE_PATH"] != null) {
-      return path.resolve(process.env["TSTYCHE_STORE_PATH"]);
+      return Path.resolve(process.env["TSTYCHE_STORE_PATH"]);
     }
 
     if (process.platform === "darwin") {
-      return path.resolve(os.homedir(), "Library", "TSTyche");
+      return Path.resolve(os.homedir(), "Library", "TSTyche");
     }
 
     if (process.env["LocalAppData"] != null) {
-      return path.resolve(process.env["LocalAppData"], "TSTyche");
+      return Path.resolve(process.env["LocalAppData"], "TSTyche");
     }
 
     if (process.env["XDG_DATA_HOME"] != null) {
-      return path.resolve(process.env["XDG_DATA_HOME"], "TSTyche");
+      return Path.resolve(process.env["XDG_DATA_HOME"], "TSTyche");
     }
 
-    return path.resolve(os.homedir(), ".local", "share", "TSTyche");
+    return Path.resolve(os.homedir(), ".local", "share", "TSTyche");
   }
 
   static #resolveTimeout() {
