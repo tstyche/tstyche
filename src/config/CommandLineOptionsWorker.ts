@@ -1,5 +1,5 @@
-import path from "node:path";
 import { Diagnostic } from "#diagnostic";
+import { Path } from "#path";
 import type { StoreService } from "#store";
 import { OptionBrand } from "./OptionBrand.js";
 import { type OptionDefinition, OptionDefinitionsMap, type OptionValue } from "./OptionDefinitionsMap.js";
@@ -37,14 +37,6 @@ export class CommandLineOptionsWorker {
     this.#optionUsageText = new OptionUsageText(OptionGroup.CommandLine, this.#storeService);
 
     this.#optionValidator = new OptionValidator(OptionGroup.CommandLine, this.#storeService, this.#onDiagnostic);
-  }
-
-  #normalizePath(filePath: string) {
-    if (path.sep === "/") {
-      return filePath;
-    }
-
-    return filePath.replaceAll("\\", "/");
   }
 
   #onExpectsArgumentDiagnostic(optionDefinition: OptionDefinition) {
@@ -120,7 +112,7 @@ export class CommandLineOptionsWorker {
       case OptionBrand.String:
         if (optionValue != null) {
           if (optionDefinition.name === "config") {
-            optionValue = this.#normalizePath(path.resolve(optionValue));
+            optionValue = Path.resolve(optionValue);
           }
 
           this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);

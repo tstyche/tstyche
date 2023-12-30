@@ -1,22 +1,25 @@
-import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { Path } from "#path";
 import { type FileResultStatus, ResultStatus } from "#result";
 import { Color } from "../Color.js";
 import { Line } from "../Line.js";
 import { Scribbler } from "../Scribbler.js";
 import { Text } from "../Text.js";
-import { RelativePathText } from "./RelativePathText.js";
 
 class FileNameText implements JSX.ElementClass {
   constructor(readonly props: { filePath: string }) {}
 
   render(): JSX.Element {
+    const relativePath = Path.relative("", this.props.filePath);
+    const lastPathSeparator = relativePath.lastIndexOf("/");
+
+    const directoryNameText = relativePath.slice(0, lastPathSeparator + 1);
+    const fileNameText = relativePath.slice(lastPathSeparator + 1);
+
     return (
       <Text>
-        <Text color={Color.Gray}>
-          <RelativePathText isDirectory={true} to={path.dirname(this.props.filePath)} />
-        </Text>
-        {path.basename(this.props.filePath)}
+        <Text color={Color.Gray}>{directoryNameText}</Text>
+        {fileNameText}
       </Text>
     );
   }

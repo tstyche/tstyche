@@ -1,10 +1,10 @@
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import path from "node:path";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
+import { Path } from "#path";
 import { Lock } from "./Lock.js";
 
 export class CompilerModuleWorker {
@@ -19,11 +19,11 @@ export class CompilerModuleWorker {
   }
 
   async ensure(compilerVersion: string, signal?: AbortSignal): Promise<string | undefined> {
-    const installationPath = path.join(this.#cachePath, compilerVersion);
-    const readyFilePath = path.join(installationPath, this.#readyFileName);
-    const tsserverFilePath = path.join(installationPath, "node_modules", "typescript", "lib", "tsserverlibrary.js");
+    const installationPath = Path.join(this.#cachePath, compilerVersion);
+    const readyFilePath = Path.join(installationPath, this.#readyFileName);
+    const tsserverFilePath = Path.join(installationPath, "node_modules", "typescript", "lib", "tsserverlibrary.js");
     // since TypeScript 5.3 the 'typescript.js' file must be patched, reference: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-53
-    const typescriptFilePath = path.join(installationPath, "node_modules", "typescript", "lib", "typescript.js");
+    const typescriptFilePath = Path.join(installationPath, "node_modules", "typescript", "lib", "typescript.js");
 
     if (
       await Lock.isLocked(installationPath, {
@@ -41,14 +41,14 @@ export class CompilerModuleWorker {
       return tsserverFilePath;
     }
 
-    EventEmitter.dispatch(["store:info", { compilerVersion, installationPath: this.#normalizePath(installationPath) }]);
+    EventEmitter.dispatch(["store:info", { compilerVersion, installationPath }]);
 
     try {
       await fs.mkdir(installationPath, { recursive: true });
 
       const lock = new Lock(installationPath);
 
-      await fs.writeFile(path.join(installationPath, "package.json"), this.#getPackageJson(compilerVersion));
+      await fs.writeFile(Path.join(installationPath, "package.json"), this.#getPackageJson(compilerVersion));
 
       await this.#installPackage(installationPath, signal);
 
@@ -129,13 +129,5 @@ export class CompilerModuleWorker {
         reject(new Error(`Process exited with code ${String(code)}.`));
       });
     });
-  }
-
-  #normalizePath(filePath: string) {
-    if (path.sep === "/") {
-      return filePath;
-    }
-
-    return filePath.replaceAll("\\", "/");
   }
 }

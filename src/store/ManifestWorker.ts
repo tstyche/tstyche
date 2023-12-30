@@ -1,9 +1,9 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import https from "node:https";
-import path from "node:path";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
+import { Path } from "#path";
 
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
@@ -30,7 +30,7 @@ export class ManifestWorker {
   constructor(cachePath: string, onDiagnostic: (diagnostic: Diagnostic) => void, prune: () => Promise<void>) {
     this.#cachePath = cachePath;
     this.#onDiagnostic = onDiagnostic;
-    this.#manifestFilePath = path.join(cachePath, this.#manifestFileName);
+    this.#manifestFilePath = Path.join(cachePath, this.#manifestFileName);
     this.#prune = prune;
   }
 
