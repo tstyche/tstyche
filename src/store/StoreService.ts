@@ -54,7 +54,7 @@ export class StoreService {
 
     if (tag === "local") {
       try {
-        modulePath = this.#nodeRequire.resolve("typescript/lib/tsserverlibrary.js");
+        modulePath = this.#nodeRequire.resolve("typescript");
       } catch {
         // TypeScript is not installed locally, let's load "latest" from the store
         tag = "latest";
