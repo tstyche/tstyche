@@ -4,12 +4,8 @@ export class Version {
     const targetElements = target.split(/\.|-/);
 
     function compare(index = 0): boolean {
-      const sourceElement = sourceElements[index];
-      const targetElement = targetElements[index];
-
-      if (sourceElement == null || targetElement == null) {
-        return false;
-      }
+      const sourceElement = sourceElements[index]!;
+      const targetElement = targetElements[index]!;
 
       if (sourceElement > targetElement) {
         return true;

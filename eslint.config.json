@@ -142,7 +142,7 @@
       }
     },
     {
-      "files": ["src/result/ResultManager.ts"],
+      "files": ["src/result/ResultManager.ts", "src/store/Version.ts"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
       }
