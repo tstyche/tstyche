@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
+import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
@@ -66,7 +67,10 @@ export class StoreService {
     }
 
     if (modulePath != null) {
-      return this.#nodeRequire(modulePath) as typeof ts;
+      const moduleSpecifier = pathToFileURL(modulePath).toString();
+      const { default: compilerModule } = (await import(moduleSpecifier)) as { default: typeof ts };
+
+      return compilerModule;
     }
 
     return;
