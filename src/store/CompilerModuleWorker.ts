@@ -6,6 +6,7 @@ import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { Lock } from "./Lock.js";
+import { Version } from "./Version.js";
 
 export class CompilerModuleWorker {
   #cachePath: string;
@@ -38,6 +39,10 @@ export class CompilerModuleWorker {
     }
 
     if (existsSync(readyFilePath)) {
+      if (Version.satisfies(compilerVersion, "5.3")) {
+        return typescriptFilePath;
+      }
+
       return tsserverFilePath;
     }
 
@@ -52,13 +57,21 @@ export class CompilerModuleWorker {
 
       await this.#installPackage(installationPath, signal);
 
-      await fs.writeFile(tsserverFilePath, await this.#getPatched(compilerVersion, tsserverFilePath));
-      await fs.writeFile(typescriptFilePath, await this.#getPatched(compilerVersion, typescriptFilePath));
+      if (Version.satisfies(compilerVersion, "5.3")) {
+        await fs.writeFile(typescriptFilePath, await this.#getPatched(compilerVersion, typescriptFilePath));
+      } else {
+        await fs.writeFile(tsserverFilePath, await this.#getPatched(compilerVersion, tsserverFilePath));
+      }
+
       await fs.writeFile(readyFilePath, "");
 
       lock.release();
     } catch (error) {
       this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${compilerVersion}'.`, error));
+    }
+
+    if (Version.satisfies(compilerVersion, "5.3")) {
+      return typescriptFilePath;
     }
 
     return tsserverFilePath;
@@ -94,7 +107,7 @@ export class CompilerModuleWorker {
 
     const fileContent = await fs.readFile(filePath, { encoding: "utf8" });
 
-    if (version.startsWith("5")) {
+    if (Version.satisfies(version, "5")) {
       return fileContent.replace(/(\s+)isTypeAssignableTo,/, ts5Patch);
     } else {
       return fileContent.replace(/(\s+)isTypeAssignableTo: isTypeAssignableTo,/, ts4Patch);
