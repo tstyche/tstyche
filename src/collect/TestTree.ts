@@ -1,4 +1,4 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import type { Assertion } from "./Assertion.js";
 import type { TestMember } from "./TestMember.js";
 import { TestMemberFlags } from "./TestMemberFlags.js";
@@ -8,7 +8,7 @@ export class TestTree {
 
   constructor(
     public compiler: typeof ts,
-    public diagnostics: Array<ts.Diagnostic>,
+    public diagnostics: Set<ts.Diagnostic>,
     public sourceFile: ts.SourceFile,
   ) {}
 

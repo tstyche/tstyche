@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
-import type ts from "typescript/lib/tsserverlibrary.js";
+import { pathToFileURL } from "node:url";
+import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
@@ -54,7 +55,7 @@ export class StoreService {
 
     if (tag === "local") {
       try {
-        modulePath = this.#nodeRequire.resolve("typescript/lib/tsserverlibrary.js");
+        modulePath = this.#nodeRequire.resolve("typescript");
       } catch {
         // TypeScript is not installed locally, let's load "latest" from the store
         tag = "latest";
@@ -66,7 +67,10 @@ export class StoreService {
     }
 
     if (modulePath != null) {
-      return this.#nodeRequire(modulePath) as typeof ts;
+      const moduleSpecifier = pathToFileURL(modulePath).toString();
+      const { default: compilerModule } = (await import(moduleSpecifier)) as { default: typeof ts };
+
+      return compilerModule;
     }
 
     return;

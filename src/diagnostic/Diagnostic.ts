@@ -1,4 +1,4 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import { DiagnosticCategory } from "./DiagnosticCategory.js";
 
 export interface DiagnosticOrigin {

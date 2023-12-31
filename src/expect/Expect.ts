@@ -1,4 +1,4 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -224,7 +224,7 @@ export class Expect {
         }
 
         return this.toRaiseError.match(
-          { diagnostics: assertion.diagnostics, node: assertion.source[0] },
+          { diagnostics: [...assertion.diagnostics], node: assertion.source[0] },
           targetTypes,
           assertion.isNot,
         );

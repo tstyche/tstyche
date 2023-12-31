@@ -1,4 +1,4 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import { Assertion, type MatcherNode } from "./Assertion.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestMember } from "./TestMember.js";
@@ -99,7 +99,7 @@ export class CollectService {
   }
 
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
-    const testTree = new TestTree(this.compiler, semanticDiagnostics, sourceFile);
+    const testTree = new TestTree(this.compiler, new Set(semanticDiagnostics), sourceFile);
 
     this.#collectTestMembers(sourceFile, new IdentifierLookup(this.compiler), testTree);
 

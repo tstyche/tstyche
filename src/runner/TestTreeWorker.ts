@@ -1,4 +1,4 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
@@ -115,11 +115,11 @@ export class TestTreeWorker {
       return;
     }
 
-    if (assertion.diagnostics.length > 0 && assertion.matcherName.getText() !== "toRaiseError") {
+    if (assertion.diagnostics.size > 0 && assertion.matcherName.getText() !== "toRaiseError") {
       EventEmitter.dispatch([
         "expect:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics(assertion.diagnostics, this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...assertion.diagnostics], this.compiler),
           result: expectResult,
         },
       ]);
@@ -186,12 +186,12 @@ export class TestTreeWorker {
 
     if (
       !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
-      describe.diagnostics.length > 0
+      describe.diagnostics.size > 0
     ) {
       EventEmitter.dispatch([
         "file:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics(describe.diagnostics, this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics], this.compiler),
           result: this.#fileResult,
         },
       ]);
@@ -215,11 +215,11 @@ export class TestTreeWorker {
       return;
     }
 
-    if (!(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) && test.diagnostics.length > 0) {
+    if (!(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) && test.diagnostics.size > 0) {
       EventEmitter.dispatch([
         "test:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics(test.diagnostics, this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...test.diagnostics], this.compiler),
           result: testResult,
         },
       ]);
