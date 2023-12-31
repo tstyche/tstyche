@@ -68,9 +68,9 @@ export class StoreService {
 
     if (modulePath != null) {
       const moduleSpecifier = pathToFileURL(modulePath).toString();
-      const { default: module } = (await import(moduleSpecifier)) as { default: typeof ts };
+      const { default: compilerModule } = (await import(moduleSpecifier)) as { default: typeof ts };
 
-      return module;
+      return compilerModule;
     }
 
     return;
