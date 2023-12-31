@@ -66,7 +66,9 @@ export class StoreService {
     }
 
     if (modulePath != null) {
-      return this.#nodeRequire(modulePath) as typeof ts;
+      const { default: module } = (await import(modulePath)) as { default: typeof ts };
+
+      return module;
     }
 
     return;
