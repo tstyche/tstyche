@@ -1,4 +1,4 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import { TestMember } from "./TestMember.js";
 import type { TestMemberBrand } from "./TestMemberBrand.js";
 import type { TestMemberFlags } from "./TestMemberFlags.js";

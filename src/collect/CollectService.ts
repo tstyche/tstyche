@@ -1,4 +1,4 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import { Assertion, type MatcherNode } from "./Assertion.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestMember } from "./TestMember.js";

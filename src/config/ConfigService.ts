@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";

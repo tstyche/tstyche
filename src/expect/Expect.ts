@@ -1,4 +1,4 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
