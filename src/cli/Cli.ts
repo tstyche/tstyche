@@ -5,6 +5,7 @@ import { Environment } from "#environment";
 import { EventEmitter, type EventHandler } from "#events";
 import { Logger } from "#logger";
 import { addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
+import { Patch } from "#patch";
 import { StoreService } from "#store";
 
 export class Cli {
@@ -71,6 +72,8 @@ export class Cli {
 
       return;
     }
+
+    Patch.register();
 
     await this.#storeService.open(this.#abortController.signal);
 
