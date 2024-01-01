@@ -126,6 +126,7 @@
     "no-return-await": "off",
     "no-underscore-dangle": "error",
     "no-unused-expressions": "off",
+    "no-unused-private-class-members": "error",
     "no-use-before-define": "off",
     "no-useless-concat": "error",
     "prefer-object-has-own": "error",
