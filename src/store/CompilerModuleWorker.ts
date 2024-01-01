@@ -38,36 +38,29 @@ export class CompilerModuleWorker {
       return;
     }
 
-    if (existsSync(readyFilePath)) {
-      if (Version.satisfies(compilerVersion, "5.3")) {
-        return typescriptFilePath;
+    if (!existsSync(readyFilePath)) {
+      EventEmitter.dispatch(["store:info", { compilerVersion, installationPath }]);
+
+      try {
+        await fs.mkdir(installationPath, { recursive: true });
+
+        const lock = new Lock(installationPath);
+
+        await fs.writeFile(Path.join(installationPath, "package.json"), this.#getPackageJson(compilerVersion));
+        await this.#installPackage(installationPath, signal);
+
+        if (Version.satisfies(compilerVersion, "5.3")) {
+          await fs.writeFile(typescriptFilePath, await this.#getPatched(compilerVersion, typescriptFilePath));
+        } else {
+          await fs.writeFile(tsserverFilePath, await this.#getPatched(compilerVersion, tsserverFilePath));
+        }
+
+        await fs.writeFile(readyFilePath, "");
+
+        lock.release();
+      } catch (error) {
+        this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${compilerVersion}'.`, error));
       }
-
-      return tsserverFilePath;
-    }
-
-    EventEmitter.dispatch(["store:info", { compilerVersion, installationPath }]);
-
-    try {
-      await fs.mkdir(installationPath, { recursive: true });
-
-      const lock = new Lock(installationPath);
-
-      await fs.writeFile(Path.join(installationPath, "package.json"), this.#getPackageJson(compilerVersion));
-
-      await this.#installPackage(installationPath, signal);
-
-      if (Version.satisfies(compilerVersion, "5.3")) {
-        await fs.writeFile(typescriptFilePath, await this.#getPatched(compilerVersion, typescriptFilePath));
-      } else {
-        await fs.writeFile(tsserverFilePath, await this.#getPatched(compilerVersion, tsserverFilePath));
-      }
-
-      await fs.writeFile(readyFilePath, "");
-
-      lock.release();
-    } catch (error) {
-      this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${compilerVersion}'.`, error));
     }
 
     if (Version.satisfies(compilerVersion, "5.3")) {
