@@ -11,10 +11,10 @@ interface LoadFnOutput {
 
 export async function load(
   moduleSpecifier: string,
-  context: LoadHookContext,
-  nextLoad: (moduleSpecifier: string, context?: LoadHookContext) => Promise<LoadFnOutput>,
+  hookContext: LoadHookContext,
+  nextLoad: (moduleSpecifier: string, hookContext?: LoadHookContext) => Promise<LoadFnOutput>,
 ): Promise<LoadFnOutput> {
-  const result = await nextLoad(moduleSpecifier, context);
+  const result = await nextLoad(moduleSpecifier, hookContext);
 
   if (
     moduleSpecifier.endsWith("typescript/lib/typescript.js") ||
