@@ -73,7 +73,7 @@ export class Cli {
       return;
     }
 
-    register("./loader.js", import.meta.url);
+    register("./hooks.js", import.meta.url);
 
     await this.#storeService.open(this.#abortController.signal);
 

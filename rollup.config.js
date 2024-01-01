@@ -97,8 +97,8 @@ const config = [
     external: [/^node:/, "./tstyche.js"],
     input: {
       bin: "./src/bin.ts",
+      hooks: "./src/hooks.ts",
       index: "./src/main.ts",
-      loader: "./src/loader.ts",
       tstyche: "./src/tstyche.ts",
     },
     output,
