@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import path from "node:path";
 
 export class Patch {
   static register(): void {
@@ -7,8 +8,8 @@ export class Patch {
     fs.readFileSync = new Proxy(fs.readFileSync, {
       apply(target, thisArgument, argumentList: [string]) {
         if (
-          argumentList[0].endsWith("typescript/lib/typescript.js") ||
-          argumentList[0].endsWith("typescript/lib/tsserverlibrary.js")
+          argumentList[0].endsWith(path.join("typescript", "lib", "typescript.js")) ||
+          argumentList[0].endsWith(path.join("typescript", "lib", "tsserverlibrary.js"))
         ) {
           return readFileSync(argumentList[0], { encoding: "utf8" }).replace(
             "isTypeAssignableTo,",
