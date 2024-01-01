@@ -1,3 +1,4 @@
+import { register } from "node:module";
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
@@ -71,6 +72,8 @@ export class Cli {
 
       return;
     }
+
+    register("./loader.js", import.meta.url);
 
     await this.#storeService.open(this.#abortController.signal);
 

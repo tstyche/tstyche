@@ -98,6 +98,7 @@ const config = [
     input: {
       bin: "./src/bin.ts",
       index: "./src/main.ts",
+      loader: "./src/loader.ts",
       tstyche: "./src/tstyche.ts",
     },
     output,
