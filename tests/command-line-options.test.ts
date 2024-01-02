@@ -79,6 +79,44 @@ describe("command line options", () => {
 
       expect(status).toBe(0);
     });
+
+    test("handles 'current' target received from the configuration file", async () => {
+      const config = { target: ["current"] };
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install"], {
+        ["TSTYCHE_STORE_PATH"]: "./.store",
+      });
+
+      expect(stdout).toBe("");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("handles 'current' target received from the command line", async () => {
+      const config = { target: ["5.0", "latest"] };
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install --target current"], {
+        ["TSTYCHE_STORE_PATH"]: "./.store",
+      });
+
+      expect(stdout).toBe("");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
   });
 
   describe("'--only' option", () => {
