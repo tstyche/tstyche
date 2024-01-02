@@ -1,9 +1,11 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
+import vm from "node:vm";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
+import { Path } from "#path";
 import { CompilerModuleWorker } from "./CompilerModuleWorker.js";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
 
@@ -77,10 +79,29 @@ export class StoreService {
     }
 
     if (modulePath != null) {
-      return this.#nodeRequire(modulePath) as typeof ts;
+      return this.#loadModule(modulePath);
     }
 
     return;
+  }
+
+  async #loadModule(modulePath: string) {
+    const exports = {};
+    const require = createRequire(modulePath);
+    const module = { exports };
+
+    let sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
+    sourceText = sourceText.replace("isTypeAssignableTo,", "isTypeAssignableTo, isTypeIdenticalTo, isTypeSubtypeOf,");
+
+    const compiledWrapper = vm.compileFunction(
+      sourceText,
+      ["exports", "require", "module", "__filename", "__dirname"],
+      { filename: modulePath },
+    );
+
+    compiledWrapper(exports, require, module, modulePath, Path.dirname(modulePath));
+
+    return module.exports as typeof ts;
   }
 
   #onDiagnostic = (diagnostic: Diagnostic) => {
