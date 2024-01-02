@@ -33,7 +33,7 @@ export class StoreService {
     return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
   }
 
-  async install(tag = "latest", signal?: AbortSignal): Promise<string | undefined> {
+  async install(tag: string, signal?: AbortSignal): Promise<string | undefined> {
     if (!this.#manifest) {
       this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
 
@@ -58,11 +58,13 @@ export class StoreService {
   async load(tag: string | undefined, signal?: AbortSignal): Promise<typeof ts | undefined> {
     let modulePath: string | undefined;
 
-    if (tag === undefined || tag === "current") {
+    if (tag == null || tag === "current") {
       try {
         modulePath = this.#nodeRequire.resolve("typescript");
       } catch {
         // TypeScript is not installed locally, falling back to load "latest" from the store
+      } finally {
+        tag ??= "latest";
       }
     }
 
