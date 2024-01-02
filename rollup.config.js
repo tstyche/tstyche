@@ -19,11 +19,15 @@ function tidyJs() {
   return {
     name: "tidy-js",
 
-    renderChunk(code, chunkInfo) {
+    async renderChunk(code, chunkInfo) {
       if (chunkInfo.fileName === tstycheEntry) {
         const magicString = new MagicString(code);
 
-        magicString.replaceAll("../../package.json", "../package.json");
+        const packageConfig = await fs.readFile(new URL("./package.json", import.meta.url), { encoding: "utf8" });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { version } = /** @type {{version: string}} */ (JSON.parse(packageConfig));
+
+        magicString.replaceAll("__version__", version);
 
         return {
           code: magicString.toString(),
