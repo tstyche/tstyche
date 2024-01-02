@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import type { ResolvedConfig } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
@@ -11,6 +10,7 @@ export class TSTyche {
   #abortController = new AbortController();
   #storeService: StoreService;
   #taskRunner: TaskRunner;
+  static readonly version = "__version__";
 
   constructor(
     readonly resolvedConfig: ResolvedConfig,
@@ -19,13 +19,6 @@ export class TSTyche {
     this.#storeService = storeService;
     this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#storeService);
     this.#addEventHandlers();
-  }
-
-  static get version(): string {
-    const packageConfig = readFileSync(new URL("../../package.json", import.meta.url), { encoding: "utf8" });
-    const { version } = JSON.parse(packageConfig) as { version: string };
-
-    return version;
   }
 
   #addEventHandlers(): void {
