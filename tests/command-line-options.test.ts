@@ -21,22 +21,6 @@ afterEach(async () => {
 
 describe("command line options", () => {
   describe("'--install' option", () => {
-    test("default", async () => {
-      await writeFixture(fixture, {
-        ["__typetests__/dummy.test.ts"]: isStringTestText,
-        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      });
-
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--install"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
-
-      expect(stdout).toMatch(
-        /^adds TypeScript \d\.\d\.\d to <<cwd>>\/tests\/__fixtures__\/command-line-options\/\.store\/\d\.\d\.\d/,
-      );
-      expect(stderr).toBe("");
-
-      expect(status).toBe(0);
-    });
-
     test("with 'target' configuration option", async () => {
       const config = { target: ["4.8", "5.0"] };
 
@@ -358,7 +342,7 @@ test.only("external is string?", () => {
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8"]);
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
 
       expect(stdout).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
@@ -372,22 +356,11 @@ test.only("external is string?", () => {
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8,latest"]);
-
-      expect(stdout).toMatchSnapshot("stdout");
-      expect(stderr).toBe("");
-
-      expect(status).toBe(0);
-    });
-
-    test("handles 'current' tag", async () => {
-      await writeFixture(fixture, {
-        ["__typetests__/dummy.test.ts"]: isStringTestText,
-        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8,current"], {
+        ["TSTYCHE_STORE_PATH"]: "./.store",
       });
 
-      const { status, stderr } = spawnTyche(fixture, ["--target current"]);
-
+      expect(stdout).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);

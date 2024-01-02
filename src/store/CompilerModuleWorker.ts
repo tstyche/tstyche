@@ -9,18 +9,18 @@ import { Lock } from "./Lock.js";
 import { Version } from "./Version.js";
 
 export class CompilerModuleWorker {
-  #cachePath: string;
   #onDiagnostic: (diagnostic: Diagnostic) => void;
   #readyFileName = "__ready__";
+  #storePath: string;
   #timeout = Environment.timeout * 1000;
 
-  constructor(cachePath: string, onDiagnostic: (diagnostic: Diagnostic) => void) {
-    this.#cachePath = cachePath;
+  constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void) {
+    this.#storePath = storePath;
     this.#onDiagnostic = onDiagnostic;
   }
 
   async ensure(compilerVersion: string, signal?: AbortSignal): Promise<string | undefined> {
-    const installationPath = Path.join(this.#cachePath, compilerVersion);
+    const installationPath = Path.join(this.#storePath, compilerVersion);
     const readyFilePath = Path.join(installationPath, this.#readyFileName);
     const tsserverFilePath = Path.join(installationPath, "node_modules", "typescript", "lib", "tsserverlibrary.js");
     // since TypeScript 5.3 the 'typescript.js' file must be patched, reference: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-53

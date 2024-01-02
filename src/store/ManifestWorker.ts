@@ -19,18 +19,18 @@ export interface Manifest {
 }
 
 export class ManifestWorker {
-  #cachePath: string;
   #manifestFileName = "store-manifest.json";
   #manifestFilePath: string;
   #onDiagnostic: (diagnostic: Diagnostic) => void;
   #prune: () => Promise<void>;
   #registryUrl = new URL("https://registry.npmjs.org");
+  #storePath: string;
   #timeout = Environment.timeout * 1000;
 
-  constructor(cachePath: string, onDiagnostic: (diagnostic: Diagnostic) => void, prune: () => Promise<void>) {
-    this.#cachePath = cachePath;
+  constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void, prune: () => Promise<void>) {
+    this.#storePath = storePath;
     this.#onDiagnostic = onDiagnostic;
-    this.#manifestFilePath = Path.join(cachePath, this.#manifestFileName);
+    this.#manifestFilePath = Path.join(storePath, this.#manifestFileName);
     this.#prune = prune;
   }
 
@@ -211,8 +211,8 @@ export class ManifestWorker {
   }
 
   async persist(manifest: Manifest): Promise<void> {
-    if (!existsSync(this.#cachePath)) {
-      await fs.mkdir(this.#cachePath, { recursive: true });
+    if (!existsSync(this.#storePath)) {
+      await fs.mkdir(this.#storePath, { recursive: true });
     }
 
     await fs.writeFile(this.#manifestFilePath, JSON.stringify(manifest));

@@ -105,7 +105,7 @@ describe("tstyche.config.json", () => {
 
   test("'target' option", async () => {
     const config = {
-      target: ["4.8", "latest"],
+      target: ["4.8", "current"],
     };
 
     await writeFixture(fixture, {
@@ -114,7 +114,9 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { status, stderr, stdout } = spawnTyche(fixture, /* args */ undefined, {
+      ["TSTYCHE_STORE_PATH"]: "./.store",
+    });
 
     expect(stdout).toMatchSnapshot("stdout");
     expect(stderr).toBe("");

@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
+import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { StoreService } from "#store";
@@ -24,7 +25,7 @@ export class ConfigService {
     allowNoTestFiles: false,
     failFast: false,
     rootPath: "./",
-    target: ["latest"],
+    target: [Environment.isTypeScriptInstalled ? "current" : "latest"],
     testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
   };
 
