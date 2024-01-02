@@ -55,29 +55,31 @@ export class StoreService {
     return this.#compilerModuleWorker.ensure(version, signal);
   }
 
-  async load(tag: string | undefined, signal?: AbortSignal): Promise<typeof ts | undefined> {
+  async load(tag?: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
     let modulePath: string | undefined;
 
     if (tag == null || tag === "current") {
       try {
         modulePath = this.#nodeRequire.resolve("typescript");
-      } catch {
-        // TypeScript is not installed locally, falling back to load "latest" from the store
-      } finally {
-        tag ??= "latest";
+      } catch (error) {
+        if (tag === "current") {
+          this.#onDiagnostic(
+            Diagnostic.fromError(
+              "Failed to resolve locally installed 'typescript' package. It might be not installed.",
+              error,
+            ),
+          );
+        }
       }
     }
 
     if (modulePath == null) {
       if (tag === "current") {
-        this.#onDiagnostic(
-          Diagnostic.error("Failed to resolve tag 'current'. The 'typescript' package might be not installed."),
-        );
-
         return;
       }
 
-      modulePath = await this.install(tag, signal);
+      // If TypeScript is not installed and "current" was not specified, "latest" is loaded from the store as a fallback
+      modulePath = await this.install(tag ?? "latest", signal);
     }
 
     if (modulePath != null) {
