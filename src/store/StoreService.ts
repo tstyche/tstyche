@@ -10,17 +10,17 @@ import { CompilerModuleWorker } from "./CompilerModuleWorker.js";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
 
 export class StoreService {
-  #cachePath: string;
   #compilerModuleWorker: CompilerModuleWorker;
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
   #nodeRequire = createRequire(import.meta.url);
+  #storePath: string;
 
   constructor() {
-    this.#cachePath = Environment.storePath;
+    this.#storePath = Environment.storePath;
 
-    this.#compilerModuleWorker = new CompilerModuleWorker(this.#cachePath, this.#onDiagnostic);
-    this.#manifestWorker = new ManifestWorker(this.#cachePath, this.#onDiagnostic, this.prune);
+    this.#compilerModuleWorker = new CompilerModuleWorker(this.#storePath, this.#onDiagnostic);
+    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostic, this.prune);
   }
 
   get supportedTags(): Array<string> {
@@ -55,21 +55,20 @@ export class StoreService {
     return this.#compilerModuleWorker.ensure(version, signal);
   }
 
-  async load(tag?: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
+  async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
     let modulePath: string | undefined;
 
-    if (tag == null || tag === "current") {
+    if (tag === "current") {
       try {
+        // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
         modulePath = this.#nodeRequire.resolve("typescript");
       } catch (error) {
-        if (tag === "current") {
-          this.#onDiagnostic(
-            Diagnostic.fromError(
-              "Failed to resolve locally installed 'typescript' package. It might be not installed.",
-              error,
-            ),
-          );
-        }
+        this.#onDiagnostic(
+          Diagnostic.fromError(
+            "Failed to resolve locally installed 'typescript' package. It might be not installed.",
+            error,
+          ),
+        );
       }
     }
 
@@ -78,8 +77,7 @@ export class StoreService {
         return;
       }
 
-      // If TypeScript is not installed and "current" was not specified, "latest" is loaded from the store as a fallback
-      modulePath = await this.install(tag ?? "latest", signal);
+      modulePath = await this.install(tag, signal);
     }
 
     if (modulePath != null) {
@@ -121,7 +119,7 @@ export class StoreService {
   }
 
   prune = async (): Promise<void> => {
-    await fs.rm(this.#cachePath, { force: true, recursive: true });
+    await fs.rm(this.#storePath, { force: true, recursive: true });
   };
 
   resolveTag(tag: string): string | undefined {

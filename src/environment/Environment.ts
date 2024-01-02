@@ -1,10 +1,19 @@
+import { createRequire } from "node:module";
 import os from "node:os";
 import { Path } from "#path";
 
 export class Environment {
+  static #isTypeScriptInstalled = Environment.#resolveIsTypeScriptInstalled();
   static #noColor = Environment.#resolveNoColor();
   static #storePath = Environment.#resolveStorePath();
   static #timeout = Environment.#resolveTimeout();
+
+  /**
+   * Whether the TypeScript package is installed.
+   */
+  static get isTypeScriptInstalled(): boolean {
+    return Environment.#isTypeScriptInstalled;
+  }
 
   /**
    * Specifies whether color should be disabled in the output.
@@ -33,6 +42,17 @@ export class Environment {
     }
 
     return false;
+  }
+
+  static #resolveIsTypeScriptInstalled() {
+    try {
+      // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
+      createRequire(import.meta.url).resolve("typescript");
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   static #resolveNoColor() {

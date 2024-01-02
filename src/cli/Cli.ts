@@ -84,7 +84,10 @@ export class Cli {
       return;
     }
 
-    const compiler = await this.#storeService.load(/* tag */ undefined, this.#abortController.signal);
+    const compiler = await this.#storeService.load(
+      Environment.isTypeScriptInstalled ? "current" : "latest",
+      this.#abortController.signal,
+    );
 
     if (!compiler) {
       return;

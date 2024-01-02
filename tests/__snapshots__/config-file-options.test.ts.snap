@@ -19,7 +19,8 @@ Ran all test files.
 `;
 
 exports[`tstyche.config.json 'target' option: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-file-options/.store/4.8.4
+uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
   + is string?

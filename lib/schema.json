@@ -19,7 +19,7 @@
     },
     "target": {
       "default": [
-        "latest"
+        "current"
       ],
       "description": "The list of TypeScript versions to be tested on.",
       "items": {
