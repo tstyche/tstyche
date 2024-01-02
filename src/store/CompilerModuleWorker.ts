@@ -38,36 +38,23 @@ export class CompilerModuleWorker {
       return;
     }
 
-    if (existsSync(readyFilePath)) {
-      if (Version.satisfies(compilerVersion, "5.3")) {
-        return typescriptFilePath;
+    if (!existsSync(readyFilePath)) {
+      EventEmitter.dispatch(["store:info", { compilerVersion, installationPath }]);
+
+      try {
+        await fs.mkdir(installationPath, { recursive: true });
+
+        const lock = new Lock(installationPath);
+
+        await fs.writeFile(Path.join(installationPath, "package.json"), this.#getPackageJson(compilerVersion));
+        await this.#installPackage(installationPath, signal);
+
+        await fs.writeFile(readyFilePath, "");
+
+        lock.release();
+      } catch (error) {
+        this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${compilerVersion}'.`, error));
       }
-
-      return tsserverFilePath;
-    }
-
-    EventEmitter.dispatch(["store:info", { compilerVersion, installationPath }]);
-
-    try {
-      await fs.mkdir(installationPath, { recursive: true });
-
-      const lock = new Lock(installationPath);
-
-      await fs.writeFile(Path.join(installationPath, "package.json"), this.#getPackageJson(compilerVersion));
-
-      await this.#installPackage(installationPath, signal);
-
-      if (Version.satisfies(compilerVersion, "5.3")) {
-        await fs.writeFile(typescriptFilePath, await this.#getPatched(compilerVersion, typescriptFilePath));
-      } else {
-        await fs.writeFile(tsserverFilePath, await this.#getPatched(compilerVersion, tsserverFilePath));
-      }
-
-      await fs.writeFile(readyFilePath, "");
-
-      lock.release();
-    } catch (error) {
-      this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${compilerVersion}'.`, error));
     }
 
     if (Version.satisfies(compilerVersion, "5.3")) {
@@ -92,26 +79,6 @@ export class CompilerModuleWorker {
     };
 
     return JSON.stringify(packageJson, null, 2);
-  }
-
-  async #getPatched(version: string, filePath: string) {
-    function ts5Patch(match: string, indent: string) {
-      return [match, indent, "isTypeIdenticalTo,", indent, "isTypeSubtypeOf,"].join("");
-    }
-
-    function ts4Patch(match: string, indent: string) {
-      return [match, indent, "isTypeIdenticalTo: isTypeIdenticalTo,", indent, "isTypeSubtypeOf: isTypeSubtypeOf,"].join(
-        "",
-      );
-    }
-
-    const fileContent = await fs.readFile(filePath, { encoding: "utf8" });
-
-    if (Version.satisfies(version, "5")) {
-      return fileContent.replace(/(\s+)isTypeAssignableTo,/, ts5Patch);
-    } else {
-      return fileContent.replace(/(\s+)isTypeAssignableTo: isTypeAssignableTo,/, ts4Patch);
-    }
   }
 
   async #installPackage(cwd: string, signal?: AbortSignal) {

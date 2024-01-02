@@ -1,10 +1,11 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
-import { pathToFileURL } from "node:url";
+import vm from "node:vm";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
+import { Path } from "#path";
 import { CompilerModuleWorker } from "./CompilerModuleWorker.js";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
 
@@ -39,6 +40,10 @@ export class StoreService {
       return;
     }
 
+    if (tag === "current") {
+      return;
+    }
+
     const version = this.resolveTag(tag);
 
     if (version == null) {
@@ -50,30 +55,57 @@ export class StoreService {
     return this.#compilerModuleWorker.ensure(version, signal);
   }
 
-  async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
+  async load(tag?: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
     let modulePath: string | undefined;
 
-    if (tag === "local") {
+    if (tag == null || tag === "current") {
       try {
         modulePath = this.#nodeRequire.resolve("typescript");
-      } catch {
-        // TypeScript is not installed locally, let's load "latest" from the store
-        tag = "latest";
+      } catch (error) {
+        if (tag === "current") {
+          this.#onDiagnostic(
+            Diagnostic.fromError(
+              "Failed to resolve locally installed 'typescript' package. It might be not installed.",
+              error,
+            ),
+          );
+        }
       }
     }
 
     if (modulePath == null) {
-      modulePath = await this.install(tag, signal);
+      if (tag === "current") {
+        return;
+      }
+
+      // If TypeScript is not installed and "current" was not specified, "latest" is loaded from the store as a fallback
+      modulePath = await this.install(tag ?? "latest", signal);
     }
 
     if (modulePath != null) {
-      const moduleSpecifier = pathToFileURL(modulePath).toString();
-      const { default: compilerModule } = (await import(moduleSpecifier)) as { default: typeof ts };
-
-      return compilerModule;
+      return this.#loadModule(modulePath);
     }
 
     return;
+  }
+
+  async #loadModule(modulePath: string) {
+    const exports = {};
+    const require = createRequire(modulePath);
+    const module = { exports };
+
+    let sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
+    sourceText = sourceText.replace("isTypeAssignableTo,", "isTypeAssignableTo, isTypeIdenticalTo, isTypeSubtypeOf,");
+
+    const compiledWrapper = vm.compileFunction(
+      sourceText,
+      ["exports", "require", "module", "__filename", "__dirname"],
+      { filename: modulePath },
+    );
+
+    compiledWrapper(exports, require, module, modulePath, Path.dirname(modulePath));
+
+    return module.exports as typeof ts;
   }
 
   #onDiagnostic = (diagnostic: Diagnostic) => {
@@ -99,20 +131,7 @@ export class StoreService {
       return;
     }
 
-    if (tag === "current") {
-      try {
-        tag = (this.#nodeRequire("typescript") as typeof ts).version;
-      } catch (error) {
-        this.#onDiagnostic(
-          Diagnostic.fromError(
-            "Failed to resolve tag 'current'. The 'typescript' package might be not installed.",
-            error,
-          ),
-        );
-      }
-    }
-
-    if (this.#manifest.versions.includes(tag)) {
+    if (tag === "current" || this.#manifest.versions.includes(tag)) {
       return tag;
     }
 
