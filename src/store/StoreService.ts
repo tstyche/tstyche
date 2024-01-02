@@ -31,10 +31,14 @@ export class StoreService {
     return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
   }
 
-  async install(tag: string, signal?: AbortSignal): Promise<string | undefined> {
+  async install(tag = "latest", signal?: AbortSignal): Promise<string | undefined> {
     if (!this.#manifest) {
       this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
 
+      return;
+    }
+
+    if (tag === "current") {
       return;
     }
 
@@ -49,19 +53,26 @@ export class StoreService {
     return this.#compilerModuleWorker.ensure(version, signal);
   }
 
-  async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
+  async load(tag: string | undefined, signal?: AbortSignal): Promise<typeof ts | undefined> {
     let modulePath: string | undefined;
 
-    if (tag === "local") {
+    if (tag === undefined || tag === "current") {
       try {
         modulePath = this.#nodeRequire.resolve("typescript");
       } catch {
-        // TypeScript is not installed locally, let's load "latest" from the store
-        tag = "latest";
+        // TypeScript is not installed locally, falling back to load "latest" from the store
       }
     }
 
     if (modulePath == null) {
+      if (tag === "current") {
+        this.#onDiagnostic(
+          Diagnostic.error("Failed to resolve tag 'current'. The 'typescript' package might be not installed."),
+        );
+
+        return;
+      }
+
       modulePath = await this.install(tag, signal);
     }
 
@@ -95,20 +106,7 @@ export class StoreService {
       return;
     }
 
-    if (tag === "current") {
-      try {
-        tag = (this.#nodeRequire("typescript") as typeof ts).version;
-      } catch (error) {
-        this.#onDiagnostic(
-          Diagnostic.fromError(
-            "Failed to resolve tag 'current'. The 'typescript' package might be not installed.",
-            error,
-          ),
-        );
-      }
-    }
-
-    if (this.#manifest.versions.includes(tag)) {
+    if (tag === "current" || this.#manifest.versions.includes(tag)) {
       return tag;
     }
 
