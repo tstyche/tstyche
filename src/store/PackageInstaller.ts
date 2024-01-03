@@ -8,7 +8,7 @@ import { Path } from "#path";
 import { Lock } from "./Lock.js";
 import { Version } from "./Version.js";
 
-export class ModuleInstaller {
+export class PackageInstaller {
   #onDiagnostic: (diagnostic: Diagnostic) => void;
   #readyFileName = "__ready__";
   #storePath: string;
@@ -57,7 +57,7 @@ export class ModuleInstaller {
         };
 
         await fs.writeFile(Path.join(installationPath, "package.json"), JSON.stringify(packageJson, null, 2));
-        await this.#installPackage(installationPath, signal);
+        await this.#install(installationPath, signal);
 
         await fs.writeFile(readyFilePath, "");
 
@@ -75,7 +75,7 @@ export class ModuleInstaller {
     return Path.join(installationPath, "node_modules", "typescript", "lib", "tsserverlibrary.js");
   }
 
-  async #installPackage(cwd: string, signal?: AbortSignal) {
+  async #install(cwd: string, signal?: AbortSignal) {
     const args = ["install", "--ignore-scripts", "--no-bin-links", "--no-package-lock"];
 
     return new Promise<void>((resolve, reject) => {
