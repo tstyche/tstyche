@@ -105,7 +105,15 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": ["*.js", "**/*.test.{ts,tsx}", "scripts/*"]
+        "devDependencies": [
+          "*.js",
+          "**/__tests__/*",
+          "**/__typetests__/*",
+          "**/benchmarks/*",
+          "**/scripts/*",
+          "**/tests/*",
+          "**/typetests/*"
+        ]
       }
     ],
     "simple-import-sort/imports": [
@@ -141,6 +149,12 @@
       "plugins": ["eslint-plugin-tsdoc"],
       "rules": {
         "tsdoc/syntax": "error"
+      }
+    },
+    {
+      "files": ["benchmarks/tstyche.bench.js"],
+      "rules": {
+        "no-console": "off"
       }
     },
     {

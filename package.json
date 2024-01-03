@@ -34,6 +34,7 @@
     "build/*"
   ],
   "scripts": {
+    "bench": "node benchmarks/*.bench.js",
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
     "clean": "rm -rf .cache build",
@@ -55,6 +56,7 @@
     "typecheck": "tsc --noEmit --project tsconfig.json"
   },
   "devDependencies": {
+    "@codspeed/tinybench-plugin": "2.3.1",
     "@jest/globals": "29.7.0",
     "@rollup/plugin-typescript": "11.1.5",
     "@types/node": "20.10.6",
@@ -77,6 +79,7 @@
     "rollup": "4.9.2",
     "rollup-plugin-dts": "6.1.0",
     "rollup-plugin-tsconfig-paths": "1.5.2",
+    "tinybench": "2.5.1",
     "ts-node": "10.9.2",
     "tslib": "2.6.2",
     "typescript": "5.3.3"
