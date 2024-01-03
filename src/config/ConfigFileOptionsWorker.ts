@@ -175,12 +175,6 @@ export class ConfigFileOptionsWorker {
         }
         break;
 
-      case this.compiler.SyntaxKind.NumericLiteral:
-        if (optionDefinition.brand === OptionBrand.Number) {
-          return Number((valueExpression as ts.NumericLiteral).text);
-        }
-        break;
-
       case this.compiler.SyntaxKind.ArrayLiteralExpression:
         if (optionDefinition.brand === OptionBrand.List) {
           const value: Array<OptionValue> = [];
