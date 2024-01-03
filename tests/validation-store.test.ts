@@ -15,14 +15,14 @@ const tsconfig = {
   include: ["./"],
 };
 
-const fixture = "validation-store-manifest";
+const fixture = "validation-store";
 
 afterEach(async () => {
   await clearFixture(fixture);
 });
 
-describe("store-manifest", () => {
-  test("unparsable manifest file", async () => {
+describe("manifest file", () => {
+  test("unparsable text", async () => {
     const storeManifest = '{"$version":"1","last';
 
     await writeFixture(fixture, {
@@ -45,11 +45,11 @@ describe("store-manifest", () => {
     expect(status).toBe(0);
   });
 
-  test("manifest with not matching '$version'", async () => {
-    const storeManifest = '{"$version":"0"}';
+  test("different '$version'", async () => {
+    const storeManifest = { $version: "0" };
 
     await writeFixture(fixture, {
-      [".store/store-manifest.json"]: storeManifest,
+      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
@@ -63,6 +63,33 @@ describe("store-manifest", () => {
     });
 
     expect(JSON.parse(result)).toMatchObject({ $version: "1" });
+
+    expect(stderr).toBe("");
+    expect(status).toBe(0);
+  });
+
+  test("outdated", async () => {
+    const storeManifest = {
+      $version: "1",
+      lastUpdated: "1701584999000",
+      versions: ["5.0.2", "5.0.3", "5.0.4"],
+    };
+
+    await writeFixture(fixture, {
+      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { status, stderr } = spawnTyche(fixture, /* args */ undefined, {
+      ["TSTYCHE_STORE_PATH"]: "./.store",
+    });
+
+    const result = await fs.readFile(new URL(".store/store-manifest.json", getFixtureUrl(fixture)), {
+      encoding: "utf8",
+    });
+
+    expect(JSON.parse(result)).not.toMatchObject(storeManifest);
 
     expect(stderr).toBe("");
     expect(status).toBe(0);
