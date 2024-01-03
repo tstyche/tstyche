@@ -41,7 +41,7 @@ function tidyJs() {
     async writeBundle() {
       const cliEntryFilePath = path.resolve(output.dir, binEntry);
 
-      return fs.chmod(cliEntryFilePath, 0o755);
+      await fs.chmod(cliEntryFilePath, 0o755);
     },
   };
 }
