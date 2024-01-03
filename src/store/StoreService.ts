@@ -6,20 +6,20 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import { CompilerModuleWorker } from "./CompilerModuleWorker.js";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
+import { ModuleInstaller } from "./ModuleInstaller.js";
 
 export class StoreService {
-  #compilerModuleWorker: CompilerModuleWorker;
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
+  #moduleInstaller: ModuleInstaller;
   #nodeRequire = createRequire(import.meta.url);
   #storePath: string;
 
   constructor() {
     this.#storePath = Environment.storePath;
 
-    this.#compilerModuleWorker = new CompilerModuleWorker(this.#storePath, this.#onDiagnostic);
+    this.#moduleInstaller = new ModuleInstaller(this.#storePath, this.#onDiagnostic);
     this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostic, this.prune);
   }
 
@@ -52,7 +52,7 @@ export class StoreService {
       return;
     }
 
-    return this.#compilerModuleWorker.ensure(version, signal);
+    return this.#moduleInstaller.ensure(version, signal);
   }
 
   async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {

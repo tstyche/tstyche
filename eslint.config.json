@@ -111,7 +111,7 @@
     "simple-import-sort/imports": [
       "error",
       {
-        // The default grouping, but with no blank lines.
+        // the default grouping, but with no blank lines.
         "groups": [["^\\u0000", "^node:", "^@?\\w", "^", "^\\."]]
       }
     ],
