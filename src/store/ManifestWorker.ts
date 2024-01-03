@@ -39,11 +39,9 @@ export class ManifestWorker {
   async #create(signal?: AbortSignal) {
     const manifest = await this.#load(signal);
 
-    if (manifest == null) {
-      return;
+    if (manifest != null) {
+      await this.persist(manifest);
     }
-
-    await this.persist(manifest);
 
     return manifest;
   }
@@ -51,9 +49,9 @@ export class ManifestWorker {
   async #fetch(signal?: AbortSignal) {
     return new Promise<PackageMetadata>((resolve, reject) => {
       const request = https.get(
-        // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
         new URL("typescript", this.#registryUrl),
         {
+          // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
           headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
           signal,
         },
