@@ -26,6 +26,25 @@ afterEach(async () => {
 });
 
 describe("tstyche.config.json", () => {
+  describe("'$schema' key", () => {
+    test("is allowed", async () => {
+      const config = { $schema: "https://tstyche.org/schemas/config.json" };
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture);
+
+      expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+  });
+
   describe("'allowNoTestFiles: false' option", () => {
     test("errors when no test files are selected", async () => {
       const config = { allowNoTestFiles: false };
