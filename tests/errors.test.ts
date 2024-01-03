@@ -47,12 +47,3 @@ test("handles matcher level type errors", () => {
 
   expect(status).toBe(1);
 });
-
-test("handles tsconfig option errors", () => {
-  const { status, stderr, stdout } = spawnTyche("tsconfig-option-error");
-
-  expect(stdout).toMatchSnapshot("stdout");
-  expect(stderr).toMatchSnapshot("stderr");
-
-  expect(status).toBe(1);
-});

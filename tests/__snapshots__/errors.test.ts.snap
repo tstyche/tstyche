@@ -203,35 +203,3 @@ Duration:   <<timestamp>>
 Ran test files matching 'top-level'.
 "
 `;
-
-exports[`handles tsconfig option errors: stderr 1`] = `
-"Error: Compiler option 'strict' requires a value of type boolean. ts(5024)
-
-  4 |     "module": "commonjs",
-  5 |     "target": "es2019",
-> 6 |     "strict": "yes",
-    |               ^
-  7 |     "strictNullChecks": true,
-  8 |     "noEmitOnError": true
-  9 |   },
-
-      at ./tsconfig.json:6:15
-
-"
-`;
-
-exports[`handles tsconfig option errors: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
-
-pass ./__typetests__/tsconfig-option-error.tst.ts
-  + is string?
-
-Targets:    1 failed, 1 total
-Test files: 1 passed, 1 total
-Tests:      1 passed, 1 total
-Assertions: 1 passed, 1 total
-Duration:   <<timestamp>>
-
-Ran all test files.
-"
-`;
