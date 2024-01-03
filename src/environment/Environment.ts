@@ -9,7 +9,7 @@ export class Environment {
   static #timeout = Environment.#resolveTimeout();
 
   /**
-   * Whether the TypeScript package is installed.
+   * Is `true` if the TypeScript package is installed.
    */
   static get isTypeScriptInstalled(): boolean {
     return Environment.#isTypeScriptInstalled;
