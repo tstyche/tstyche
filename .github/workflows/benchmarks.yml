@@ -19,7 +19,7 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - uses: CodSpeedHQ/action@v2
+      - uses: CodSpeedHQ/action@ad0378e48c3cb4c700f1cdc5e10943dbad3cc4ec # v2
         with:
           run: yarn bench
           token: ${{ secrets.CODSPEED_TOKEN }}
