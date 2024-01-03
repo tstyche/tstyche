@@ -105,7 +105,7 @@ describe("tstyche.config.json", () => {
 
   test("'target' option", async () => {
     const config = {
-      target: ["4.8", "current"],
+      target: ["4.8", "5.3.2", "current"],
     };
 
     await writeFixture(fixture, {

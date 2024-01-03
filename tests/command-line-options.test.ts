@@ -396,11 +396,24 @@ test.only("external is string?", () => {
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8,current"], {
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target 4.8,5.3.2,current"], {
         ["TSTYCHE_STORE_PATH"]: "./.store",
       });
 
       expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("handles 'current' tag", async () => {
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr } = spawnTyche(fixture, ["--target current"]);
+
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
