@@ -1,5 +1,7 @@
+import { existsSync } from "node:fs";
 import { afterEach, describe, expect, test } from "@jest/globals";
 import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getFixtureUrl } from "./__utils__/getFixtureUrl.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -213,6 +215,44 @@ test("internal is string?", () => {
       const { status, stderr, stdout } = spawnTyche(fixture, ["--only external", "--skip number"]);
 
       expect(stdout).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+  });
+
+  describe("'--prune' option", () => {
+    test("removes store directory", async () => {
+      const storeManifest = { $version: "0" };
+      const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+
+      await writeFixture(fixture, {
+        [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      expect(existsSync(storeUrl)).toBe(true);
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--prune"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
+
+      expect(existsSync(storeUrl)).toBe(false);
+
+      expect(stdout).toBe("");
+      expect(stderr).toBe("");
+
+      expect(status).toBe(0);
+    });
+
+    test("does nothing, if directory does not exist", async () => {
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--prune"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
+
+      expect(stdout).toBe("");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
