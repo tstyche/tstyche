@@ -13,6 +13,7 @@ interface PackageMetadata {
 }
 
 export interface Manifest {
+  $version?: string | undefined;
   lastUpdated: number;
   resolutions: Record<string, string>;
   versions: Array<string>;
@@ -26,6 +27,7 @@ export class ManifestWorker {
   #registryUrl = new URL("https://registry.npmjs.org");
   #storePath: string;
   #timeout = Environment.timeout * 1000;
+  readonly #version = "1";
 
   constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void, prune: () => Promise<void>) {
     this.#storePath = storePath;
@@ -34,12 +36,22 @@ export class ManifestWorker {
     this.#prune = prune;
   }
 
+  async #create(signal?: AbortSignal) {
+    const manifest = await this.#load(signal);
+
+    if (manifest != null) {
+      await this.persist(manifest);
+    }
+
+    return manifest;
+  }
+
   async #fetch(signal?: AbortSignal) {
     return new Promise<PackageMetadata>((resolve, reject) => {
       const request = https.get(
-        // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
         new URL("typescript", this.#registryUrl),
         {
+          // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
           headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
           signal,
         },
@@ -85,6 +97,7 @@ export class ManifestWorker {
 
   async #load(signal?: AbortSignal, isUpdate = false) {
     const manifest: Manifest = {
+      $version: this.#version,
       lastUpdated: Date.now(),
       resolutions: {},
       versions: [],
@@ -160,15 +173,7 @@ export class ManifestWorker {
     let manifest: Manifest | undefined;
 
     if (!existsSync(this.#manifestFilePath)) {
-      manifest = await this.#load(signal);
-
-      if (manifest == null) {
-        return;
-      }
-
-      await this.persist(manifest);
-
-      return manifest;
+      return this.#create(signal);
     }
 
     let manifestText: string | undefined;
@@ -185,26 +190,18 @@ export class ManifestWorker {
 
     try {
       manifest = JSON.parse(manifestText) as Manifest;
-    } catch (error) {
-      this.#onDiagnostic(
-        Diagnostic.fromError(
-          [
-            `Failed to parse '${this.#manifestFilePath}'.`,
-            "Cached files appeared to be corrupt and got removed. Try running 'tstyche' again.",
-          ],
-          error,
-        ),
-      );
+    } catch {
+      // the manifest will be removed and recreated
     }
 
-    if (manifest == null) {
+    if (manifest == null || manifest.$version !== this.#version) {
       await this.#prune();
 
-      return;
+      return this.#create(signal);
     }
 
     if (this.isOutdated(manifest)) {
-      manifest = await this.update(manifest, signal);
+      return this.update(manifest, signal);
     }
 
     return manifest;
