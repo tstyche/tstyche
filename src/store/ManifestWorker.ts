@@ -120,7 +120,7 @@ export class ManifestWorker {
     signal?.addEventListener(
       "abort",
       () => {
-        abortController.abort(`Fetch got canceled by request.`);
+        abortController.abort("Fetch got canceled by request.");
       },
       { once: true },
     );

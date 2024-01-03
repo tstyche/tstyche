@@ -178,7 +178,7 @@ for (const [identifierText, description, optionDefinitions] of filesToGenerate) 
 
   await fs.writeFile(
     declarationFileUrl,
-    [`// This is a generated file. See: ../scripts/generate-types.js\n`, `${declarationFileText}\n`].join("\n"),
+    ["// This is a generated file. See: ../scripts/generate-types.js\n", `${declarationFileText}\n`].join("\n"),
   );
 
   process.stdout.write(`Declaration was written to: '${declarationFileUrl.toString()}'\n`);
