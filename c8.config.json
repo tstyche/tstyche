@@ -4,6 +4,7 @@
     ".yarn/**/*",
     "coverage/**/*",
     "build/**/*",
+    "benchmarks/**/*",
     "examples/**/*",
     "lib/**/*",
     "scripts/**/*",
