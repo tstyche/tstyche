@@ -24,7 +24,7 @@ bench
   .add("small run with two target", () => {
     spawnTyche(["examples", "--target 4.9,current"]);
   })
-  .add("large run", () => {
+  .add("large run with default target", () => {
     spawnTyche();
   })
   .add("large run with two target", () => {
