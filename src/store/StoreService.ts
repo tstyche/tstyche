@@ -10,6 +10,7 @@ import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
 import { PackageInstaller } from "./PackageInstaller.js";
 
 export class StoreService {
+  #compilerInstanceCache = new Map<string, typeof ts>();
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
   #nodeRequire = createRequire(import.meta.url);
@@ -56,6 +57,12 @@ export class StoreService {
   }
 
   async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
+    let compilerInstance = this.#compilerInstanceCache.get(tag);
+
+    if (compilerInstance != null) {
+      return compilerInstance;
+    }
+
     let modulePath: string | undefined;
 
     if (tag === "current") {
@@ -77,11 +84,30 @@ export class StoreService {
         return;
       }
 
-      modulePath = await this.install(tag, signal);
+      const version = this.resolveTag(tag);
+
+      if (version == null) {
+        this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
+
+        return;
+      }
+
+      compilerInstance = this.#compilerInstanceCache.get(version);
+
+      if (compilerInstance != null) {
+        return compilerInstance;
+      }
+
+      modulePath = await this.#packageInstaller.ensure(version, signal);
     }
 
     if (modulePath != null) {
-      return this.#loadModule(modulePath);
+      compilerInstance = await this.#loadModule(modulePath);
+
+      this.#compilerInstanceCache.set(tag, compilerInstance);
+      this.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
+
+      return compilerInstance;
     }
 
     return;
