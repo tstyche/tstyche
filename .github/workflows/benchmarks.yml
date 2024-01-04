@@ -12,6 +12,8 @@ jobs:
     name: Benchmarks
     runs-on: ubuntu-latest
     steps:
+      - name: Install hyperfine
+        run: cargo install --locked hyperfine
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
         with:
@@ -19,7 +21,4 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - uses: CodSpeedHQ/action@5ef3186765fa3fafd8b2729b064025d19626050c # v2
-        with:
-          run: yarn bench
-          token: ${{ secrets.CODSPEED_TOKEN }}
+      - run: yarn bench --export-json examples.bench.json
