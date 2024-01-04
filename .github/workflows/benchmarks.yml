@@ -1,17 +1,19 @@
 name: Benchmarks
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-  pull_request:
-  workflow_dispatch:
 
 jobs:
   benchmarks:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     name: Benchmarks
     runs-on: ubuntu-latest
     steps:
+      - name: Install Hyperfine
+        run: cargo install --locked hyperfine
+
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
         with:
@@ -19,7 +21,13 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - uses: CodSpeedHQ/action@5ef3186765fa3fafd8b2729b064025d19626050c # v2
-        with:
-          run: yarn bench
-          token: ${{ secrets.CODSPEED_TOKEN }}
+      - run: yarn bench
+
+      - uses: bencherdev/bencher@main
+      - name: Run Bencher
+        run: |
+          bencher run \
+          --adapter 'shell_hyperfine' \
+          --file 'examples.bench.json' \
+          --project 'tstyche' \
+          --token "${{ secrets.BENCHER_TOKEN }}"
