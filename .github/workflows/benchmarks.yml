@@ -12,8 +12,9 @@ jobs:
     name: Benchmarks
     runs-on: ubuntu-latest
     env:
-      BENCHER_PROJECT: tstyche
       BENCHER_ADAPTER: shell_hyperfine
+      BENCHER_API_TOKEN: ${{ secrets.BENCHER_TOKEN }}
+      BENCHER_PROJECT: tstyche
     steps:
       - name: Install hyperfine
         run: cargo install --locked hyperfine
