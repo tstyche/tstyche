@@ -11,7 +11,7 @@ jobs:
     name: Benchmarks
     runs-on: ubuntu-latest
     steps:
-      - name: Install Hyperfine
+      - name: Install hyperfine
         run: cargo install --locked hyperfine
 
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -24,7 +24,7 @@ jobs:
       - run: yarn bench
 
       - uses: bencherdev/bencher@main
-      - name: Run Bencher
+      - name: Run bencher
         run: |
           bencher run \
           --adapter 'shell_hyperfine' \
