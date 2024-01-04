@@ -29,6 +29,5 @@ jobs:
           bencher run \
           --adapter 'shell_hyperfine' \
           --file 'examples.bench.json' \
-          --github-actions "${{ secrets.GITHUB_TOKEN }}" \
           --project 'tstyche' \
           --token "${{ secrets.BENCHER_TOKEN }}"
