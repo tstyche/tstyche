@@ -34,7 +34,7 @@
     "build/*"
   ],
   "scripts": {
-    "bench": "node benchmarks/tstyche.bench.js",
+    "bench": "node --hash-seed=1 --random-seed=1 --no-opt --predictable --predictable-gc-schedule --interpreted-frames-native-stack benchmarks/tstyche.bench.js",
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
     "clean": "rm -rf .cache build",
