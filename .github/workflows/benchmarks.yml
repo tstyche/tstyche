@@ -21,4 +21,4 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - run: yarn bench --export-json examples.bench.json
+      - run: yarn bench --export-json 'examples.bench.json' --style 'color'
