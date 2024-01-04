@@ -95,7 +95,7 @@ export class ManifestWorker {
     return false;
   }
 
-  async #load(signal?: AbortSignal, isUpdate = false) {
+  async #load(signal?: AbortSignal, options: { quite: boolean } = { quite: false }) {
     const manifest: Manifest = {
       $version: this.#version,
       lastUpdated: Date.now(),
@@ -128,7 +128,7 @@ export class ManifestWorker {
     try {
       packageMetadata = await this.#fetch(abortController.signal);
     } catch (error) {
-      if (!isUpdate) {
+      if (!options.quite) {
         const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.href}'.`];
 
         if (error instanceof Error && error.name !== "AbortError") {
@@ -169,7 +169,7 @@ export class ManifestWorker {
     return manifest;
   }
 
-  async open(signal?: AbortSignal): Promise<Manifest | undefined> {
+  async open(signal?: AbortSignal, options?: { refresh?: boolean }): Promise<Manifest | undefined> {
     let manifest: Manifest | undefined;
 
     if (!existsSync(this.#manifestFilePath)) {
@@ -200,8 +200,15 @@ export class ManifestWorker {
       return this.#create(signal);
     }
 
-    if (this.isOutdated(manifest)) {
-      return this.update(manifest, signal);
+    if (this.isOutdated(manifest) || options?.refresh === true) {
+      const quite = options?.refresh !== true;
+
+      const freshManifest = await this.#load(signal, { quite });
+
+      if (freshManifest != null) {
+        manifest = { ...manifest, ...freshManifest };
+        await this.persist(manifest);
+      }
     }
 
     return manifest;
@@ -213,16 +220,5 @@ export class ManifestWorker {
     }
 
     await fs.writeFile(this.#manifestFilePath, JSON.stringify(manifest));
-  }
-
-  async update(manifest: Manifest, signal?: AbortSignal): Promise<Manifest> {
-    const freshManifest = await this.#load(signal, /* isUpdate */ true);
-
-    if (freshManifest != null) {
-      manifest = { ...manifest, ...freshManifest };
-      await this.persist(manifest);
-    }
-
-    return manifest;
   }
 }

@@ -177,13 +177,7 @@ export class StoreService {
   }
 
   async update(signal?: AbortSignal): Promise<void> {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
-
-      return;
-    }
-
-    await this.#manifestWorker.update(this.#manifest, signal);
+    await this.#manifestWorker.open(signal, { refresh: true });
   }
 
   validateTag(tag: string): boolean {

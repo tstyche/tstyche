@@ -72,15 +72,16 @@ export class Cli {
       return;
     }
 
-    await this.#storeService.open(this.#abortController.signal);
+    if (commandLineArguments.includes("--update")) {
+      await this.#storeService.update(this.#abortController.signal);
 
-    if (this.#process.exitCode === 1) {
       return;
     }
 
-    if (commandLineArguments.includes("--update")) {
-      await this.#storeService.update();
+    // TODO do not '.open()' here, this must be done only if needed
+    await this.#storeService.open(this.#abortController.signal);
 
+    if (this.#process.exitCode === 1) {
       return;
     }
 
