@@ -1,13 +1,11 @@
 name: Benchmarks
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
+    branches: main
 
 jobs:
   benchmarks:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     name: Benchmarks
     runs-on: ubuntu-latest
     steps:
