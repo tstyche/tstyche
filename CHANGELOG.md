@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.0-beta.9] - 2024-01-05
+
+### Fixed
+
+- Fix `"target": ["current"]` support for TypeScript 5.2 and below ([#83](https://github.com/tstyche/tstyche/pull/83))
+
 ## [1.0.0-beta.8] - 2024-01-05
 
 ### Changed
@@ -94,6 +100,7 @@
 
 _First pre-release._
 
+[1.0.0-beta.9]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.9
 [1.0.0-beta.8]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.8
 [1.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.7
 [1.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.6
