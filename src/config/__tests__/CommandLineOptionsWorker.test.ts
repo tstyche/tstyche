@@ -53,7 +53,7 @@ describe("CommandLineOptionsWorker", () => {
         },
         testCase: "when called with file names mixed with boolean option flag",
       },
-    ])("$testCase", ({ commandLineArgs, expected }) => {
+    ])("$testCase", async ({ commandLineArgs, expected }) => {
       const commandLineOptions = {};
       const pathMatch: Array<string> = [];
 
@@ -66,7 +66,7 @@ describe("CommandLineOptionsWorker", () => {
         onDiagnostics,
       );
 
-      commandLineWorker.parse(commandLineArgs);
+      await commandLineWorker.parse(commandLineArgs);
 
       expect({ commandLineOptions, pathMatch }).toEqual(expected);
       expect(onDiagnostics).not.toHaveBeenCalled();
@@ -118,7 +118,7 @@ describe("CommandLineOptionsWorker", () => {
         },
         testCase: "when called with two boolean option flags",
       },
-    ])("$testCase", ({ commandLineArgs, expected }) => {
+    ])("$testCase", async ({ commandLineArgs, expected }) => {
       const commandLineOptions = {};
       const pathMatch: Array<string> = [];
 
@@ -131,7 +131,7 @@ describe("CommandLineOptionsWorker", () => {
         onDiagnostics,
       );
 
-      commandLineWorker.parse(commandLineArgs);
+      await commandLineWorker.parse(commandLineArgs);
 
       expect({ commandLineOptions, pathMatch }).toEqual(expected);
       expect(onDiagnostics).not.toHaveBeenCalled();
