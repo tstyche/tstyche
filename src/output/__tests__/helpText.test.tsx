@@ -71,39 +71,39 @@ describe("helpText", () => {
     const text = scribbler.render(helpText(sampleCommandLineOptionDefinitions, sampleVersion));
 
     expect(text).toMatchInlineSnapshot(`
-      "The TSTyche Type Test Runner  <gray>1.2.3</>
+"The TSTyche Type Test Runner  <gray>1.2.3</>
 
-        <blue>tstyche</>
-        Run all tests.
+  <blue>tstyche</>
+  Run all tests.
 
-        <blue>tstyche path/to/first.test.ts</>
-        Only run the test files with matching path.
+  <blue>tstyche path/to/first.test.ts</>
+  Only run the test files with matching path.
 
-        <blue>tstyche --target 4.7,5.0.4,latest</>
-        Test on all specified versions of TypeScript.
-
-
-      Command Line Options
-
-        <blue>--sampleString</>  <gray>string</>
-        A sample option of string type.
-
-        <blue>--sampleNumber</>  <gray>number</>
-        A sample option of number type.
-
-        <blue>--sampleBoolean</>  <gray>boolean</>
-        A sample option of boolean type.
-
-        <blue>--sampleTrue</>
-        A sample option of true type.
-
-        <blue>--sampleListOfString</>  <gray>list of strings</>
-        A sample option of list of strings type.
+  <blue>tstyche --target 4.7,5.3.2,current</>
+  Test on all specified versions of TypeScript.
 
 
-      To learn more, visit https://tstyche.org
+Command Line Options
 
-      "
-    `);
+  <blue>--sampleString</>  <gray>string</>
+  A sample option of string type.
+
+  <blue>--sampleNumber</>  <gray>number</>
+  A sample option of number type.
+
+  <blue>--sampleBoolean</>  <gray>boolean</>
+  A sample option of boolean type.
+
+  <blue>--sampleTrue</>
+  A sample option of true type.
+
+  <blue>--sampleListOfString</>  <gray>list of strings</>
+  A sample option of list of strings type.
+
+
+To learn more, visit https://tstyche.org
+
+"
+`);
   });
 });
