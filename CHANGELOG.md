@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.0-beta.8] - 2024-01-05
+
+### Changed
+
+- **Breaking!** Make `"target": ["current"]` the default instead of `"target": ["latest"]` ([#81](https://github.com/tstyche/tstyche/pull/81), [#80](https://github.com/tstyche/tstyche/pull/80), [#66](https://github.com/tstyche/tstyche/pull/66))
+- **New!** Load the installed TypeScript package for type testing instead of installing another copy to the store ([#71](https://github.com/tstyche/tstyche/pull/71), [#64](https://github.com/tstyche/tstyche/pull/64))
+
+### Added
+
+- Add the `Path` class ([#59](https://github.com/tstyche/tstyche/pull/59))
+
+### Fixed
+
+- Correctly handle command line options that do not take a value ([#58](https://github.com/tstyche/tstyche/pull/58))
+
 ## [1.0.0-beta.7] - 2023-12-29
 
 ### Changed
@@ -79,6 +94,7 @@
 
 _First pre-release._
 
+[1.0.0-beta.8]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.8
 [1.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.7
 [1.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.6
 [1.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.5
