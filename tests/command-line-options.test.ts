@@ -444,31 +444,53 @@ test.only("external is string?", () => {
     });
   });
 
-  test("'--update' option", async () => {
-    const storeManifest = {
-      $version: "1",
-      lastUpdated: "1701584999000",
-      versions: ["5.0.2", "5.0.3", "5.0.4"],
-    };
+  describe("'--update' option", () => {
+    test("creates missing store manifest", async () => {
+      const storeUrl = new URL(".store/", getFixtureUrl(fixture));
 
-    await writeFixture(fixture, {
-      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      expect(existsSync(storeUrl)).toBe(false);
+
+      const { status, stderr } = spawnTyche(fixture, ["--update"], {
+        ["TSTYCHE_STORE_PATH"]: "./.store",
+      });
+
+      expect(existsSync(storeUrl)).toBe(true);
+
+      expect(stderr).toBe("");
+      expect(status).toBe(0);
     });
 
-    const { status, stderr } = spawnTyche(fixture, ["--update"], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
+    test("updates existing store manifest", async () => {
+      const storeManifest = {
+        $version: "1",
+        lastUpdated: Date.now().toString(), // this would be considered fresh during regular test run
+        versions: ["5.0.2", "5.0.3", "5.0.4"],
+      };
+
+      await writeFixture(fixture, {
+        [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+
+      const { status, stderr } = spawnTyche(fixture, ["--update"], {
+        ["TSTYCHE_STORE_PATH"]: "./.store",
+      });
+
+      const result = await fs.readFile(new URL(".store/store-manifest.json", getFixtureUrl(fixture)), {
+        encoding: "utf8",
+      });
+
+      expect(JSON.parse(result)).not.toMatchObject(storeManifest);
+
+      expect(stderr).toBe("");
+      expect(status).toBe(0);
     });
-
-    const result = await fs.readFile(new URL(".store/store-manifest.json", getFixtureUrl(fixture)), {
-      encoding: "utf8",
-    });
-
-    expect(JSON.parse(result)).not.toMatchObject(storeManifest);
-
-    expect(stderr).toBe("");
-    expect(status).toBe(0);
   });
 
   test("'--version' option", async () => {
