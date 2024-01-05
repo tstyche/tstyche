@@ -13,15 +13,5 @@
   "ignorePaths": ["**/__snapshots__/**/*"],
   "language": "en-US",
   "useGitignore": true,
-  "words": [
-    "codspeed",
-    "lcov",
-    "packagephobia",
-    "tinybench",
-    "tsdoc",
-    "tsserverlibrary",
-    "tstyche",
-    "typecheck",
-    "typetests"
-  ]
+  "words": ["lcov", "packagephobia", "tsdoc", "tsserverlibrary", "tstyche", "typecheck", "typetests"]
 }
