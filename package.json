@@ -34,7 +34,7 @@
     "build/*"
   ],
   "scripts": {
-    "bench": "./benchmarks/examples.bench.sh",
+    "bench": "./benchmarks/tstyche.bench.sh",
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
     "clean": "rm -rf .cache build",

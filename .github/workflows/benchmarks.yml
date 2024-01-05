@@ -26,6 +26,6 @@ jobs:
         run: |
           bencher run \
           --adapter 'shell_hyperfine' \
-          --file 'examples.bench.json' \
+          --file 'tstyche.bench.json' \
           --project 'tstyche' \
           --token "${{ secrets.BENCHER_TOKEN }}"
