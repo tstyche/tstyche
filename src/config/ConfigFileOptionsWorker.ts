@@ -169,7 +169,7 @@ export class ConfigFileOptionsWorker {
             start: this.#skipTrivia(valueExpression.pos, sourceFile),
           };
 
-          this.#optionValidator.check(optionDefinition.name, value, optionDefinition.brand, origin);
+          await this.#optionValidator.check(optionDefinition.name, value, optionDefinition.brand, origin);
 
           return value;
         }

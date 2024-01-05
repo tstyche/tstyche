@@ -22,7 +22,12 @@ export class OptionValidator {
     this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
   }
 
-  check(optionName: string, optionValue: string, optionBrand: OptionBrand, origin?: DiagnosticOrigin): void {
+  async check(
+    optionName: string,
+    optionValue: string,
+    optionBrand: OptionBrand,
+    origin?: DiagnosticOrigin,
+  ): Promise<void> {
     switch (optionName) {
       case "config":
       case "rootPath":
@@ -34,18 +39,16 @@ export class OptionValidator {
         break;
 
       case "target":
-        {
-          if (!this.#storeService.validateTag(optionValue)) {
-            this.#onDiagnostic(
-              Diagnostic.error(
-                [
-                  this.#optionDiagnosticText.versionIsNotSupported(optionValue),
-                  ...this.#optionUsageText.get(optionName, optionBrand),
-                ],
-                origin,
-              ),
-            );
-          }
+        if (!(await this.#storeService.validateTag(optionValue))) {
+          this.#onDiagnostic(
+            Diagnostic.error(
+              [
+                this.#optionDiagnosticText.versionIsNotSupported(optionValue),
+                ...(await this.#optionUsageText.get(optionName, optionBrand)),
+              ],
+              origin,
+            ),
+          );
         }
         break;
 

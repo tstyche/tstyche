@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { afterEach, describe, expect, test } from "@jest/globals";
 import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
@@ -15,14 +16,74 @@ const tsconfig = {
   include: ["./"],
 };
 
-const fixture = "validation-store";
+const fixture = "store-manifest";
 
 afterEach(async () => {
   await clearFixture(fixture);
 });
 
-describe("manifest file", () => {
-  test("unparsable text", async () => {
+describe("store manifest", () => {
+  test("if target is default, store manifest is not generated", async () => {
+    const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+
+    await writeFixture(fixture, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    expect(existsSync(storeUrl)).toBe(false);
+
+    const { status, stderr } = spawnTyche(fixture, [], {
+      ["TSTYCHE_STORE_PATH"]: "./.store",
+    });
+
+    expect(existsSync(storeUrl)).toBe(false);
+
+    expect(stderr).toBe("");
+    expect(status).toBe(0);
+  });
+
+  test("if target is 'current', store manifest is not generated", async () => {
+    const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+
+    await writeFixture(fixture, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    expect(existsSync(storeUrl)).toBe(false);
+
+    const { status, stderr } = spawnTyche(fixture, ["--target", "current"], {
+      ["TSTYCHE_STORE_PATH"]: "./.store",
+    });
+
+    expect(existsSync(storeUrl)).toBe(false);
+
+    expect(stderr).toBe("");
+    expect(status).toBe(0);
+  });
+
+  test("if target is specified, store manifest is generated", async () => {
+    const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+
+    await writeFixture(fixture, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    expect(existsSync(storeUrl)).toBe(false);
+
+    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"], {
+      ["TSTYCHE_STORE_PATH"]: "./.store",
+    });
+
+    expect(existsSync(storeUrl)).toBe(true);
+
+    expect(stderr).toBe("");
+    expect(status).toBe(0);
+  });
+
+  test("if text is unparsable, store manifest is regenerated", async () => {
     const storeManifest = '{"$version":"1","last';
 
     await writeFixture(fixture, {
@@ -31,7 +92,7 @@ describe("manifest file", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr } = spawnTyche(fixture, /* args */ undefined, {
+    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"], {
       ["TSTYCHE_STORE_PATH"]: "./.store",
     });
 
@@ -45,7 +106,7 @@ describe("manifest file", () => {
     expect(status).toBe(0);
   });
 
-  test("different '$version'", async () => {
+  test("if '$version' is different, store manifest is regenerated", async () => {
     const storeManifest = { $version: "0" };
 
     await writeFixture(fixture, {
@@ -54,7 +115,7 @@ describe("manifest file", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr } = spawnTyche(fixture, /* args */ undefined, {
+    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"], {
       ["TSTYCHE_STORE_PATH"]: "./.store",
     });
 
@@ -68,7 +129,7 @@ describe("manifest file", () => {
     expect(status).toBe(0);
   });
 
-  test("outdated", async () => {
+  test("if is outdated, store manifest is regenerated", async () => {
     const storeManifest = {
       $version: "1",
       lastUpdated: "1701584999000",
@@ -81,7 +142,7 @@ describe("manifest file", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr } = spawnTyche(fixture, /* args */ undefined, {
+    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"], {
       ["TSTYCHE_STORE_PATH"]: "./.store",
     });
 

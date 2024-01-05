@@ -24,10 +24,10 @@ export class StoreService {
     this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostic, this.prune);
   }
 
-  get supportedTags(): Array<string> {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
+  async getSupportedTags(signal?: AbortSignal): Promise<Array<string>> {
+    await this.open(signal);
 
+    if (!this.#manifest) {
       return [];
     }
 
@@ -35,17 +35,11 @@ export class StoreService {
   }
 
   async install(tag: string, signal?: AbortSignal): Promise<string | undefined> {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
-
-      return;
-    }
-
     if (tag === "current") {
       return;
     }
 
-    const version = this.resolveTag(tag);
+    const version = await this.resolveTag(tag, signal);
 
     if (version == null) {
       this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
@@ -84,7 +78,7 @@ export class StoreService {
         return;
       }
 
-      const version = this.resolveTag(tag);
+      const version = await this.resolveTag(tag, signal);
 
       if (version == null) {
         this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
@@ -148,14 +142,18 @@ export class StoreService {
     await fs.rm(this.#storePath, { force: true, recursive: true });
   };
 
-  resolveTag(tag: string): string | undefined {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
+  async resolveTag(tag: string, signal?: AbortSignal): Promise<string | undefined> {
+    if (tag === "current") {
+      return tag;
+    }
 
+    await this.open(signal);
+
+    if (!this.#manifest) {
       return;
     }
 
-    if (tag === "current" || this.#manifest.versions.includes(tag)) {
+    if (this.#manifest.versions.includes(tag)) {
       return tag;
     }
 
@@ -180,10 +178,14 @@ export class StoreService {
     await this.#manifestWorker.open(signal, { refresh: true });
   }
 
-  validateTag(tag: string): boolean {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
+  async validateTag(tag: string, signal?: AbortSignal): Promise<boolean> {
+    if (tag === "current") {
+      return true;
+    }
 
+    await this.open(signal);
+
+    if (!this.#manifest) {
       return false;
     }
 

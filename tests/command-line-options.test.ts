@@ -445,7 +445,7 @@ test.only("external is string?", () => {
   });
 
   describe("'--update' option", () => {
-    test("creates missing store manifest", async () => {
+    test("creates store manifest if it is not present", async () => {
       const storeUrl = new URL(".store/", getFixtureUrl(fixture));
 
       await writeFixture(fixture, {

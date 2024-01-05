@@ -14,12 +14,12 @@ export class OptionUsageText {
     this.#storeService = storeService;
   }
 
-  get(optionName: string, optionBrand: OptionBrand): Array<string> {
+  async get(optionName: string, optionBrand: OptionBrand): Promise<Array<string>> {
     const usageText: Array<string> = [];
 
     switch (optionName) {
       case "target": {
-        const { supportedTags } = this.#storeService;
+        const supportedTags = await this.#storeService.getSupportedTags();
         const supportedTagsText = `Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`;
 
         switch (this.#optionGroup) {
