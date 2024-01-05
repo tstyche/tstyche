@@ -55,7 +55,7 @@ export class ConfigService {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostic] }]);
   };
 
-  parseCommandLine(commandLineArgs: Array<string>): void {
+  async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {
     this.#commandLineOptions = {};
     this.#pathMatch = [];
 
@@ -66,7 +66,7 @@ export class ConfigService {
       this.#onDiagnostic,
     );
 
-    commandLineWorker.parse(commandLineArgs);
+    await commandLineWorker.parse(commandLineArgs);
   }
 
   async readConfigFile(

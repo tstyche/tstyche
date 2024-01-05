@@ -78,9 +78,6 @@ export class Cli {
       return;
     }
 
-    // TODO do not '.open()' here, this must be done only if needed
-    await this.#storeService.open(this.#abortController.signal);
-
     if (this.#process.exitCode === 1) {
       return;
     }
@@ -96,7 +93,7 @@ export class Cli {
 
     const configService = new ConfigService(compiler, this.#storeService);
 
-    configService.parseCommandLine(commandLineArguments);
+    await configService.parseCommandLine(commandLineArguments);
 
     if (this.#process.exitCode === 1) {
       return;
