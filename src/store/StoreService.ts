@@ -57,12 +57,15 @@ export class StoreService {
       return compilerInstance;
     }
 
-    let modulePath: string | undefined;
+    const modulePaths: Array<string> = [];
 
     if (tag === "current") {
       try {
-        // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
-        modulePath = this.#nodeRequire.resolve("typescript");
+        modulePaths.push(
+          // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
+          this.#nodeRequire.resolve("typescript/lib/tsserverlibrary.js"),
+          this.#nodeRequire.resolve("typescript"),
+        );
       } catch (error) {
         this.#onDiagnostic(
           Diagnostic.fromError(
@@ -73,7 +76,7 @@ export class StoreService {
       }
     }
 
-    if (modulePath == null) {
+    if (modulePaths.length === 0) {
       if (tag === "current") {
         return;
       }
@@ -92,11 +95,15 @@ export class StoreService {
         return compilerInstance;
       }
 
-      modulePath = await this.#packageInstaller.ensure(version, signal);
+      const installedModulePath = await this.#packageInstaller.ensure(version, signal);
+
+      if (installedModulePath != null) {
+        modulePaths.push(installedModulePath);
+      }
     }
 
-    if (modulePath != null) {
-      compilerInstance = await this.#loadModule(modulePath);
+    if (modulePaths.length !== 0) {
+      compilerInstance = await this.#loadModule(modulePaths);
 
       this.#compilerInstanceCache.set(tag, compilerInstance);
       this.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
@@ -107,21 +114,31 @@ export class StoreService {
     return;
   }
 
-  async #loadModule(modulePath: string) {
+  async #loadModule(modulePaths: Array<string>) {
     const exports = {};
-    const require = createRequire(modulePath);
     const module = { exports };
 
-    let sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
-    sourceText = sourceText.replace("isTypeAssignableTo,", "isTypeAssignableTo, isTypeIdenticalTo, isTypeSubtypeOf,");
+    for (const modulePath of modulePaths) {
+      const require = createRequire(modulePath);
 
-    const compiledWrapper = vm.compileFunction(
-      sourceText,
-      ["exports", "require", "module", "__filename", "__dirname"],
-      { filename: modulePath },
-    );
+      let sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
 
-    compiledWrapper(exports, require, module, modulePath, Path.dirname(modulePath));
+      if (sourceText.length < 3000) {
+        continue;
+      }
+
+      sourceText = sourceText.replace("isTypeAssignableTo,", "isTypeAssignableTo, isTypeIdenticalTo, isTypeSubtypeOf,");
+
+      const compiledWrapper = vm.compileFunction(
+        sourceText,
+        ["exports", "require", "module", "__filename", "__dirname"],
+        { filename: modulePath },
+      );
+
+      compiledWrapper(exports, require, module, modulePath, Path.dirname(modulePath));
+
+      break;
+    }
 
     return module.exports as typeof ts;
   }
@@ -180,6 +197,7 @@ export class StoreService {
 
   async validateTag(tag: string, signal?: AbortSignal): Promise<boolean> {
     if (tag === "current") {
+      // TODO in this case return 'Environment.isTypeScriptInstalled'
       return true;
     }
 
