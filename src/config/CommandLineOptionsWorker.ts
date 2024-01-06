@@ -95,7 +95,7 @@ export class CommandLineOptionsWorker {
           const optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== ""); // in case if a comma was at the end of a list, e.g. "--target 5.0,latest,"
+            .filter((value) => value !== ""); // in case if a comma was at the end of a list, e.g. "--target 5.0,current,"
 
           for (const optionValue of optionValues) {
             await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);

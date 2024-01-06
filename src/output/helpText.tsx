@@ -4,7 +4,7 @@ import { Color, Line, Scribbler, Text } from "#scribbler";
 const usageExamples: Array<[commandText: string, descriptionText: string]> = [
   ["tstyche", "Run all tests."],
   ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
-  ["tstyche --target 4.7,5.3.2,current", "Test on all specified versions of TypeScript."],
+  ["tstyche --target 4.9,5.3.2,current", "Test on all specified versions of TypeScript."],
 ];
 
 class HintText implements JSX.ElementClass {
