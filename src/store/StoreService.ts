@@ -13,7 +13,6 @@ export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
-  #nodeRequire = createRequire(import.meta.url);
   #packageInstaller: PackageInstaller;
   #storePath: string;
 
@@ -57,30 +56,11 @@ export class StoreService {
       return compilerInstance;
     }
 
-    const modulePaths: Array<string> = [];
+    let modulePath: string | undefined;
 
-    if (tag === "current") {
-      try {
-        modulePaths.push(
-          // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
-          this.#nodeRequire.resolve("typescript/lib/tsserverlibrary.js"),
-          this.#nodeRequire.resolve("typescript"),
-        );
-      } catch (error) {
-        this.#onDiagnostic(
-          Diagnostic.fromError(
-            "Failed to resolve locally installed 'typescript' package. It might be not installed.",
-            error,
-          ),
-        );
-      }
-    }
-
-    if (modulePaths.length === 0) {
-      if (tag === "current") {
-        return;
-      }
-
+    if (tag === "current" && Environment.typescriptPath != null) {
+      modulePath = Environment.typescriptPath;
+    } else {
       const version = await this.resolveTag(tag, signal);
 
       if (version == null) {
@@ -95,47 +75,44 @@ export class StoreService {
         return compilerInstance;
       }
 
-      const installedModulePath = await this.#packageInstaller.ensure(version, signal);
-
-      if (installedModulePath != null) {
-        modulePaths.push(installedModulePath);
-      }
+      modulePath = await this.#packageInstaller.ensure(version, signal);
     }
 
-    if (modulePaths.length !== 0) {
-      compilerInstance = await this.#loadModule(modulePaths);
+    if (modulePath != null) {
+      compilerInstance = await this.#loadModule(modulePath);
 
       this.#compilerInstanceCache.set(tag, compilerInstance);
       this.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
-
-      return compilerInstance;
     }
 
-    return;
+    return compilerInstance;
   }
 
-  async #loadModule(modulePaths: Array<string>) {
+  async #loadModule(modulePath: string) {
     const exports = {};
     const module = { exports };
 
-    for (const modulePath of modulePaths) {
-      const require = createRequire(modulePath);
+    const candidatePaths = [Path.join(Path.dirname(modulePath), "tsserverlibrary.js"), modulePath];
 
-      let sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
+    for (const candidatePath of candidatePaths) {
+      const sourceText = await fs.readFile(candidatePath, { encoding: "utf8" });
 
-      if (sourceText.length < 3000) {
+      const modifiedSourceText = sourceText.replace(
+        "return checker;",
+        "return { ...checker, isTypeIdenticalTo, isTypeSubtypeOf };",
+      );
+
+      if (modifiedSourceText.length === sourceText.length) {
         continue;
       }
 
-      sourceText = sourceText.replace("isTypeAssignableTo,", "isTypeAssignableTo, isTypeIdenticalTo, isTypeSubtypeOf,");
-
       const compiledWrapper = vm.compileFunction(
-        sourceText,
+        modifiedSourceText,
         ["exports", "require", "module", "__filename", "__dirname"],
-        { filename: modulePath },
+        { filename: candidatePath },
       );
 
-      compiledWrapper(exports, require, module, modulePath, Path.dirname(modulePath));
+      compiledWrapper(exports, createRequire(candidatePath), module, candidatePath, Path.dirname(candidatePath));
 
       break;
     }
@@ -197,8 +174,7 @@ export class StoreService {
 
   async validateTag(tag: string, signal?: AbortSignal): Promise<boolean> {
     if (tag === "current") {
-      // TODO in this case return 'Environment.isTypeScriptInstalled'
-      return true;
+      return Environment.typescriptPath != null;
     }
 
     await this.open(signal);

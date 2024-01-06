@@ -83,7 +83,7 @@ export class Cli {
     }
 
     const compiler = await this.#storeService.load(
-      Environment.isTypeScriptInstalled ? "current" : "latest",
+      Environment.typescriptPath == null ? "latest" : "current",
       this.#abortController.signal,
     );
 
@@ -113,6 +113,7 @@ export class Cli {
           noColor: Environment.noColor,
           storePath: Environment.storePath,
           timeout: Environment.timeout,
+          typescriptPath: Environment.typescriptPath,
           ...resolvedConfig,
         }),
       );

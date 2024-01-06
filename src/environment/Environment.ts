@@ -3,17 +3,10 @@ import os from "node:os";
 import { Path } from "#path";
 
 export class Environment {
-  static #isTypeScriptInstalled = Environment.#resolveIsTypeScriptInstalled();
   static #noColor = Environment.#resolveNoColor();
   static #storePath = Environment.#resolveStorePath();
   static #timeout = Environment.#resolveTimeout();
-
-  /**
-   * Is `true` if the TypeScript package is installed.
-   */
-  static get isTypeScriptInstalled(): boolean {
-    return Environment.#isTypeScriptInstalled;
-  }
+  static #typescriptPath = Environment.#resolveTypeScriptPath();
 
   /**
    * Specifies whether color should be disabled in the output.
@@ -36,23 +29,19 @@ export class Environment {
     return Environment.#timeout;
   }
 
+  /**
+   * The path to the currently installed TypeScript module.
+   */
+  static get typescriptPath(): string | undefined {
+    return Environment.#typescriptPath;
+  }
+
   static #parseBoolean(value: string | undefined) {
     if (value != null) {
       return ["1", "on", "t", "true", "y", "yes"].includes(value.toLowerCase());
     }
 
     return false;
-  }
-
-  static #resolveIsTypeScriptInstalled() {
-    try {
-      // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
-      createRequire(import.meta.url).resolve("typescript");
-
-      return true;
-    } catch {
-      return false;
-    }
   }
 
   static #resolveNoColor() {
@@ -93,5 +82,24 @@ export class Environment {
     }
 
     return 30;
+  }
+
+  static #resolveTypeScriptPath() {
+    let moduleId = "typescript";
+
+    if (process.env["TSTYCHE_TYPESCRIPT_PATH"] != null) {
+      moduleId = process.env["TSTYCHE_TYPESCRIPT_PATH"];
+    }
+
+    let resolvedPath: string | undefined;
+
+    try {
+      // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
+      resolvedPath = createRequire(import.meta.url).resolve(moduleId);
+    } catch {
+      // the path cannot be resolved
+    }
+
+    return resolvedPath;
   }
 }

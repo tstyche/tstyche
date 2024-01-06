@@ -25,7 +25,7 @@ export class ConfigService {
     allowNoTestFiles: false,
     failFast: false,
     rootPath: "./",
-    target: [Environment.isTypeScriptInstalled ? "current" : "latest"],
+    target: [Environment.typescriptPath == null ? "latest" : "current"],
     testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
   };
 
