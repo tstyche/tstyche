@@ -36,8 +36,8 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - run: yarn test:types --target 4.7,5.0,latest
-      - run: yarn test:examples --target 4.7,5.0,latest
+      - run: yarn test:types --target 4.7,5.0,current
+      - run: yarn test:examples --target 4.7,5.0,current
 
   typecheck:
     name: Typecheck Scripts & Tests
