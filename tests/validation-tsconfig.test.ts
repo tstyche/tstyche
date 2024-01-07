@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
 import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -33,8 +34,8 @@ describe("tsconfig", () => {
 
     const { status, stderr, stdout } = spawnTyche(fixture);
 
-    expect(stdout).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(status).toBe(1);
   });

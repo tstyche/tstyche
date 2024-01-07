@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
 import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -38,7 +39,7 @@ describe("tstyche.config.json", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -57,7 +58,7 @@ describe("tstyche.config.json", () => {
       const { status, stderr, stdout } = spawnTyche(fixture);
 
       expect(stdout).toBe("");
-      expect(stderr).toMatchSnapshot("stderr");
+      expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
       expect(status).toBe(1);
     });
@@ -74,7 +75,7 @@ describe("tstyche.config.json", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -117,7 +118,7 @@ describe("tstyche.config.json", () => {
     const { status, stderr, stdout } = spawnTyche(fixture, ["--config ./config/tstyche.json"]);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot();
+    expect(normalizeOutput(stderr)).toMatchSnapshot();
 
     expect(status).toBe(1);
   });
@@ -137,7 +138,7 @@ describe("tstyche.config.json", () => {
       ["TSTYCHE_STORE_PATH"]: "./.store",
     });
 
-    expect(stdout).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(status).toBe(0);
@@ -177,7 +178,7 @@ describe("tstyche.config.json", () => {
 
     const { status, stderr, stdout } = spawnTyche(fixture);
 
-    expect(stdout).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(status).toBe(0);
@@ -199,7 +200,7 @@ describe("tstyche.config.json", () => {
     const { status, stderr, stdout } = spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(status).toBe(1);
   });
@@ -218,7 +219,7 @@ describe("tstyche.config.json", () => {
     const { status, stderr, stdout } = spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(status).toBe(1);
   });
@@ -237,7 +238,7 @@ describe("tstyche.config.json", () => {
     const { status, stderr, stdout } = spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(status).toBe(1);
   });
@@ -254,7 +255,7 @@ describe("tstyche.config.json", () => {
     const { status, stderr, stdout } = spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(status).toBe(1);
   });
@@ -273,7 +274,7 @@ describe("tstyche.config.json", () => {
     const { status, stderr, stdout } = spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(status).toBe(1);
   });
@@ -292,7 +293,7 @@ describe("tstyche.config.json", () => {
     const { status, stderr, stdout } = spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(status).toBe(1);
   });
@@ -311,7 +312,7 @@ describe("tstyche.config.json", () => {
     const { status, stderr, stdout } = spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(status).toBe(1);
   });

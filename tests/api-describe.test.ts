@@ -1,4 +1,5 @@
 import { expect, test } from "@jest/globals";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const fixture = "api-describe";
@@ -6,7 +7,7 @@ const fixture = "api-describe";
 test("includes nested", () => {
   const { status, stderr, stdout } = spawnTyche(fixture, ["nested"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
 
   expect(status).toBe(0);
@@ -15,7 +16,7 @@ test("includes nested", () => {
 test("describe.only", () => {
   const { status, stderr, stdout } = spawnTyche(fixture, ["only"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
 
   expect(status).toBe(0);
@@ -24,7 +25,7 @@ test("describe.only", () => {
 test("describe.skip", () => {
   const { status, stderr, stdout } = spawnTyche(fixture, ["skip"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
 
   expect(status).toBe(0);
@@ -33,7 +34,7 @@ test("describe.skip", () => {
 test("describe.todo", () => {
   const { status, stderr, stdout } = spawnTyche(fixture, ["todo"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
 
   expect(status).toBe(0);
@@ -42,8 +43,8 @@ test("describe.todo", () => {
 test("handles 'expect()' nested within 'describe()'", () => {
   const { status, stderr, stdout } = spawnTyche(fixture, ["describe-level-expect"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
-  expect(stderr).toMatchSnapshot("stderr");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
   expect(status).toBe(1);
 });

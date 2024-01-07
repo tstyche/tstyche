@@ -145,6 +145,12 @@
   },
   "overrides": [
     {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      }
+    },
+    {
       "files": ["*.ts", "*.tsx"],
       "plugins": ["eslint-plugin-tsdoc"],
       "rules": {

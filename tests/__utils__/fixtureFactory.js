@@ -2,11 +2,18 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { getFixtureUrl } from "./getFixtureUrl.js";
 
-export async function clearFixture(fixture: string): Promise<void> {
+/**
+ * @param {string} fixture
+ */
+export async function clearFixture(fixture) {
   return fs.rm(getFixtureUrl(fixture), { force: true, recursive: true });
 }
 
-export async function writeFixture(fixture: string, files: Record<string, string>): Promise<void> {
+/**
+ * @param {string} fixture
+ * @param {Record<string, string>} files
+ */
+export async function writeFixture(fixture, files) {
   const fixtureUrl = getFixtureUrl(fixture);
 
   await fs.mkdir(fixtureUrl, { recursive: true });

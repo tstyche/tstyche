@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import { afterEach, describe, expect, test } from "@jest/globals";
 import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
 import { getFixtureUrl } from "./__utils__/getFixtureUrl.js";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -35,7 +36,7 @@ describe("command line options", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--install"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
 
-      expect(stdout).toMatchInlineSnapshot(`
+      expect(normalizeOutput(stdout)).toMatchInlineSnapshot(`
         "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.8.4
         adds TypeScript 5.0.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/5.0.4
         "
@@ -58,7 +59,7 @@ describe("command line options", () => {
         ["TSTYCHE_STORE_PATH"]: "./.store",
       });
 
-      expect(stdout).toMatchInlineSnapshot(`
+      expect(normalizeOutput(stdout)).toMatchInlineSnapshot(`
         "adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.9.5
         "
       `);
@@ -129,7 +130,7 @@ test("internal is string?", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--only", "external"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -159,7 +160,7 @@ test("internal is string?", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--only", "external"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -187,7 +188,7 @@ test("internal is string?", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--only", "external"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -215,7 +216,7 @@ test("internal is string?", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--only", "external", "--skip", "number"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -283,7 +284,7 @@ test("external is string?", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--skip", "internal"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -313,7 +314,7 @@ test("external is string?", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--skip", "internal"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -341,7 +342,7 @@ test.only("external is string?", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--skip", "internal"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -369,7 +370,7 @@ test.only("external is string?", () => {
 
       const { status, stderr, stdout } = spawnTyche(fixture, ["--only", "number", "--skip", "internal"]);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -387,7 +388,7 @@ test.only("external is string?", () => {
         ["TSTYCHE_STORE_PATH"]: "./.store",
       });
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
@@ -403,7 +404,7 @@ test.only("external is string?", () => {
         ["TSTYCHE_STORE_PATH"]: "./.store",
       });
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
       expect(status).toBe(0);
