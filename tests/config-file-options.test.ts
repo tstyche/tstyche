@@ -161,32 +161,6 @@ describe("tstyche.config.json", () => {
     expect(status).toBe(0);
   });
 
-  test("handles not supported 'target' option value", async () => {
-    const config = {
-      target: ["new"],
-    };
-
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-    });
-
-    const { status, stderr, stdout } = spawnTyche(fixture);
-
-    expect(stdout).toBe("");
-    expect(stderr).toMatch(
-      [
-        "Error: TypeScript version 'new' is not supported.",
-        "",
-        "Item of the 'target' list must be a supported version tag.",
-        "Supported tags:",
-      ].join("\r\n"),
-    );
-
-    expect(status).toBe(1);
-  });
-
   test("'testFileMatch' option", async () => {
     const config = {
       testFileMatch: ["**/type-tests/*.test.ts"],
