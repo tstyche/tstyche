@@ -48,10 +48,11 @@ describe("'--target' command line option", () => {
     });
 
     const { status, stderr, stdout } = spawnTyche(fixture, ["--target", "current"], {
+      ["TSTYCHE_STORE_PATH"]: "./.store",
       ["TSTYCHE_TYPESCRIPT_PATH"]: "",
     });
 
-    expect(stdout).toBe("");
+    expect(stdout).toMatch(/^adds TypeScript/);
     expect(stderr).toMatch(
       [
         "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
@@ -77,7 +78,7 @@ describe("'target' configuration file option", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { status, stderr, stdout } = spawnTyche(fixture, []);
 
     expect(stdout).toBe("");
     expect(stderr).toMatch(
@@ -104,10 +105,11 @@ describe("'target' configuration file option", () => {
     });
 
     const { status, stderr, stdout } = spawnTyche(fixture, [], {
+      ["TSTYCHE_STORE_PATH"]: "./.store",
       ["TSTYCHE_TYPESCRIPT_PATH"]: "",
     });
 
-    expect(stdout).toBe("");
+    expect(stdout).toMatch(/^adds TypeScript/);
     expect(stderr).toMatch(
       [
         "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
