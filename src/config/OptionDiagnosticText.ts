@@ -51,6 +51,10 @@ export class OptionDiagnosticText {
   }
 
   versionIsNotSupported(value: string): string {
+    if (value === "current") {
+      return "Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.";
+    }
+
     return `TypeScript version '${value}' is not supported.`;
   }
 }

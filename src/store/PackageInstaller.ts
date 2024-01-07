@@ -6,7 +6,6 @@ import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { Lock } from "./Lock.js";
-import { Version } from "./Version.js";
 
 export class PackageInstaller {
   #onDiagnostic: (diagnostic: Diagnostic) => void;
@@ -67,12 +66,7 @@ export class PackageInstaller {
       }
     }
 
-    // reference: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-53
-    if (Version.satisfies(compilerVersion, "5.3")) {
-      return Path.join(installationPath, "node_modules", "typescript", "lib", "typescript.js");
-    }
-
-    return Path.join(installationPath, "node_modules", "typescript", "lib", "tsserverlibrary.js");
+    return Path.join(installationPath, "node_modules", "typescript", "lib", "typescript.js");
   }
 
   async #install(cwd: string, signal?: AbortSignal) {
