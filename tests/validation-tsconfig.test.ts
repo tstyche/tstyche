@@ -32,12 +32,12 @@ describe("tsconfig", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("does not exist", async () => {
@@ -45,10 +45,10 @@ describe("tsconfig", () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { status, stderr } = spawnTyche(fixture);
+    const { exitCode, stderr } = await spawnTyche(fixture);
 
     expect(stderr).toMatch(/^Warning: The default compiler options are used for the following tests files./);
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 });

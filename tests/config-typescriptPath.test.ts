@@ -28,19 +28,19 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    spawnTyche(fixture, ["--install", "--target", "5.2.2"]);
+    await spawnTyche(fixture, ["--install", "--target", "5.2.2"]);
 
     const typescriptPath = fileURLToPath(
       new URL("./.store/5.2.2/node_modules/typescript/lib/typescript.js", getFixtureUrl(fixture)),
     );
 
-    const { status, stderr, stdout } = spawnTyche(fixture, [], {
-      ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath,
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+      env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
     });
 
     expect(stdout).toMatch(/^uses TypeScript 5.2.2/);
     expect(stderr).toBe("");
 
-    expect(status).toBe(0);
+    expect(exitCode).toBe(0);
   });
 });

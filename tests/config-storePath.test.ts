@@ -32,8 +32,8 @@ describe("'TSTYCHE_STORE_PATH' environment variable", () => {
 
     expect(existsSync(storeUrl)).toBe(false);
 
-    const { status, stderr, stdout } = spawnTyche(fixture, ["--install", "--target", "5.2.2"], {
-      ["TSTYCHE_STORE_PATH"]: "./dummy-store",
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--install", "--target", "5.2.2"], {
+      env: { ["TSTYCHE_STORE_PATH"]: "./dummy-store" },
     });
 
     expect(existsSync(storeUrl)).toBe(true);
@@ -42,6 +42,6 @@ describe("'TSTYCHE_STORE_PATH' environment variable", () => {
     expect(stdout).toMatch(/dummy-store\/5.2.2\r\n$/);
     expect(stderr).toBe("");
 
-    expect(status).toBe(0);
+    expect(exitCode).toBe(0);
   });
 });

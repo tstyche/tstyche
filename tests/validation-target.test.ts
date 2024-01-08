@@ -26,7 +26,7 @@ describe("'--target' command line option", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, ["--target", "new"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "new"]);
 
     expect(stdout).toBe("");
     expect(stderr).toMatch(
@@ -38,7 +38,7 @@ describe("'--target' command line option", () => {
       ].join("\r\n"),
     );
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("when 'current' is requested, but TypeScript is not installed", async () => {
@@ -47,8 +47,8 @@ describe("'--target' command line option", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, ["--target", "current"], {
-      ["TSTYCHE_TYPESCRIPT_PATH"]: "",
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"], {
+      env: { ["TSTYCHE_TYPESCRIPT_PATH"]: "" },
     });
 
     expect(stdout).toMatch(/^adds TypeScript/);
@@ -61,7 +61,7 @@ describe("'--target' command line option", () => {
       ].join("\r\n"),
     );
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 });
 
@@ -77,7 +77,7 @@ describe("'target' configuration file option", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, []);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, []);
 
     expect(stdout).toBe("");
     expect(stderr).toMatch(
@@ -89,7 +89,7 @@ describe("'target' configuration file option", () => {
       ].join("\r\n"),
     );
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("when 'current' is requested, but TypeScript is not installed", async () => {
@@ -103,8 +103,8 @@ describe("'target' configuration file option", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, [], {
-      ["TSTYCHE_TYPESCRIPT_PATH"]: "",
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+      env: { ["TSTYCHE_TYPESCRIPT_PATH"]: "" },
     });
 
     expect(stdout).toMatch(/^adds TypeScript/);
@@ -117,6 +117,6 @@ describe("'target' configuration file option", () => {
       ].join("\r\n"),
     );
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 });

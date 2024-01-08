@@ -4,38 +4,38 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const fixture = "type-error";
 
-test("handles top level type errors", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["top-level"]);
+test("handles top level type errors", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["top-level"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(1);
+  expect(exitCode).toBe(1);
 });
 
-test("handles describe level type errors", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["describe-level"]);
+test("handles describe level type errors", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["describe-level"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(1);
+  expect(exitCode).toBe(1);
 });
 
-test("handles test level type errors", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["test-level"]);
+test("handles test level type errors", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["test-level"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(1);
+  expect(exitCode).toBe(1);
 });
 
-test("handles matcher level type errors", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["matcher-level"]);
+test("handles matcher level type errors", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["matcher-level"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(1);
+  expect(exitCode).toBe(1);
 });

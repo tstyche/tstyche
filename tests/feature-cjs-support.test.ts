@@ -4,20 +4,20 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const fixture = "feature-cjs-support";
 
-test("supports CJS projects written CJS syntax", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["cjs-syntax"]);
+test("supports CJS projects written CJS syntax", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["cjs-syntax"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(0);
+  expect(exitCode).toBe(0);
 });
 
-test("supports CJS projects written in ESM syntax", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["esm-syntax"]);
+test("supports CJS projects written in ESM syntax", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["esm-syntax"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(0);
+  expect(exitCode).toBe(0);
 });

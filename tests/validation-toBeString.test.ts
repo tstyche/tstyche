@@ -2,11 +2,11 @@ import { expect, test } from "@jest/globals";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-test("toBeString", () => {
-  const { status, stderr, stdout } = spawnTyche("validation-toBeString");
+test("toBeString", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche("validation-toBeString");
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(1);
+  expect(exitCode).toBe(1);
 });

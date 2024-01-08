@@ -39,10 +39,10 @@ test("when syntax errors are encountered", async () => {
     ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
   });
 
-  const { status, stderr, stdout } = spawnTyche(fixture);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(1);
+  expect(exitCode).toBe(1);
 });
