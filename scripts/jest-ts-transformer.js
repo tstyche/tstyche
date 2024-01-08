@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
