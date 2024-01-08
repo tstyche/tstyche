@@ -1,7 +1,6 @@
 .cache
 .yarn
 build
-dist
 coverage
 node_modules
 *.log
