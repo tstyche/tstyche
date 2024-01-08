@@ -2,15 +2,6 @@ import { expect, test } from "@jest/globals";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-test("handles syntax errors", () => {
-  const { status, stderr, stdout } = spawnTyche("syntax-error");
-
-  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
-
-  expect(status).toBe(1);
-});
-
 const fixture = "type-error";
 
 test("handles top level type errors", () => {

@@ -1,6 +1,3 @@
 .yarn
 build
 coverage
-
-syntax-error.tst.ts
-tsconfig-option-error.tst.ts
