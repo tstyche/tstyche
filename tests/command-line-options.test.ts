@@ -34,7 +34,7 @@ describe("command line options", () => {
         ["tstyche.config.json"]: JSON.stringify(config, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--install"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install"]);
 
       expect(normalizeOutput(stdout)).toMatchInlineSnapshot(`
         "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.8.4
@@ -55,9 +55,7 @@ describe("command line options", () => {
         ["tstyche.config.json"]: JSON.stringify(config, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--install", "--target", "4.9"], {
-        ["TSTYCHE_STORE_PATH"]: "./.store",
-      });
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install", "--target", "4.9"]);
 
       expect(normalizeOutput(stdout)).toMatchInlineSnapshot(`
         "adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.9.5
@@ -77,9 +75,7 @@ describe("command line options", () => {
         ["tstyche.config.json"]: JSON.stringify(config, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--install"], {
-        ["TSTYCHE_STORE_PATH"]: "./.store",
-      });
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install"]);
 
       expect(stdout).toBe("");
       expect(stderr).toBe("");
@@ -96,9 +92,7 @@ describe("command line options", () => {
         ["tstyche.config.json"]: JSON.stringify(config, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--install", "--target", "current"], {
-        ["TSTYCHE_STORE_PATH"]: "./.store",
-      });
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--install", "--target", "current"]);
 
       expect(stdout).toBe("");
       expect(stderr).toBe("");
@@ -226,7 +220,7 @@ test("internal is string?", () => {
   describe("'--prune' option", () => {
     test("removes store directory", async () => {
       const storeManifest = { $version: "0" };
-      const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+      const storeUrl = new URL("./.store", getFixtureUrl(fixture));
 
       await writeFixture(fixture, {
         [".store/store-manifest.json"]: JSON.stringify(storeManifest),
@@ -236,7 +230,7 @@ test("internal is string?", () => {
 
       expect(existsSync(storeUrl)).toBe(true);
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--prune"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--prune"]);
 
       expect(existsSync(storeUrl)).toBe(false);
 
@@ -252,7 +246,7 @@ test("internal is string?", () => {
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--prune"], { ["TSTYCHE_STORE_PATH"]: "./.store" });
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--prune"]);
 
       expect(stdout).toBe("");
       expect(stderr).toBe("");
@@ -384,9 +378,7 @@ test.only("external is string?", () => {
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--target", "4.8"], {
-        ["TSTYCHE_STORE_PATH"]: "./.store",
-      });
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target", "4.8"]);
 
       expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
@@ -400,9 +392,7 @@ test.only("external is string?", () => {
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture, ["--target", "4.8,5.3.2,current"], {
-        ["TSTYCHE_STORE_PATH"]: "./.store",
-      });
+      const { status, stderr, stdout } = spawnTyche(fixture, ["--target", "4.8,5.3.2,current"]);
 
       expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
@@ -426,7 +416,7 @@ test.only("external is string?", () => {
 
   describe("'--update' option", () => {
     test("creates store manifest if it is not present", async () => {
-      const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+      const storeUrl = new URL("./.store", getFixtureUrl(fixture));
 
       await writeFixture(fixture, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -435,9 +425,7 @@ test.only("external is string?", () => {
 
       expect(existsSync(storeUrl)).toBe(false);
 
-      const { status, stderr } = spawnTyche(fixture, ["--update"], {
-        ["TSTYCHE_STORE_PATH"]: "./.store",
-      });
+      const { status, stderr } = spawnTyche(fixture, ["--update"]);
 
       expect(existsSync(storeUrl)).toBe(true);
 
@@ -458,11 +446,9 @@ test.only("external is string?", () => {
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       });
 
-      const { status, stderr } = spawnTyche(fixture, ["--update"], {
-        ["TSTYCHE_STORE_PATH"]: "./.store",
-      });
+      const { status, stderr } = spawnTyche(fixture, ["--update"]);
 
-      const result = await fs.readFile(new URL(".store/store-manifest.json", getFixtureUrl(fixture)), {
+      const result = await fs.readFile(new URL("./.store/store-manifest.json", getFixtureUrl(fixture)), {
         encoding: "utf8",
       });
 

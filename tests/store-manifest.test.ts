@@ -23,8 +23,8 @@ afterEach(async () => {
 });
 
 describe("store manifest", () => {
-  test("if target is default, store manifest is not generated", async () => {
-    const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+  test("when target is default, store manifest is not generated", async () => {
+    const storeUrl = new URL("./.store", getFixtureUrl(fixture));
 
     await writeFixture(fixture, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -33,9 +33,7 @@ describe("store manifest", () => {
 
     expect(existsSync(storeUrl)).toBe(false);
 
-    const { status, stderr } = spawnTyche(fixture, [], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
-    });
+    const { status, stderr } = spawnTyche(fixture, []);
 
     expect(existsSync(storeUrl)).toBe(false);
 
@@ -43,8 +41,8 @@ describe("store manifest", () => {
     expect(status).toBe(0);
   });
 
-  test("if target is 'current', store manifest is not generated", async () => {
-    const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+  test("when target is 'current', store manifest is not generated", async () => {
+    const storeUrl = new URL("./.store", getFixtureUrl(fixture));
 
     await writeFixture(fixture, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -53,9 +51,7 @@ describe("store manifest", () => {
 
     expect(existsSync(storeUrl)).toBe(false);
 
-    const { status, stderr } = spawnTyche(fixture, ["--target", "current"], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
-    });
+    const { status, stderr } = spawnTyche(fixture, ["--target", "current"]);
 
     expect(existsSync(storeUrl)).toBe(false);
 
@@ -63,8 +59,8 @@ describe("store manifest", () => {
     expect(status).toBe(0);
   });
 
-  test("if target is specified, store manifest is generated", async () => {
-    const storeUrl = new URL(".store/", getFixtureUrl(fixture));
+  test("when target is specified, store manifest is generated", async () => {
+    const storeUrl = new URL("./.store", getFixtureUrl(fixture));
 
     await writeFixture(fixture, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -73,9 +69,7 @@ describe("store manifest", () => {
 
     expect(existsSync(storeUrl)).toBe(false);
 
-    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
-    });
+    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"]);
 
     expect(existsSync(storeUrl)).toBe(true);
 
@@ -83,7 +77,7 @@ describe("store manifest", () => {
     expect(status).toBe(0);
   });
 
-  test("if text is unparsable, store manifest is regenerated", async () => {
+  test("when text is unparsable, store manifest is regenerated", async () => {
     const storeManifest = '{"$version":"1","last';
 
     await writeFixture(fixture, {
@@ -92,11 +86,9 @@ describe("store manifest", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
-    });
+    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"]);
 
-    const result = await fs.readFile(new URL(".store/store-manifest.json", getFixtureUrl(fixture)), {
+    const result = await fs.readFile(new URL("./.store/store-manifest.json", getFixtureUrl(fixture)), {
       encoding: "utf8",
     });
 
@@ -106,7 +98,7 @@ describe("store manifest", () => {
     expect(status).toBe(0);
   });
 
-  test("if '$version' is different, store manifest is regenerated", async () => {
+  test("when '$version' is different, store manifest is regenerated", async () => {
     const storeManifest = { $version: "0" };
 
     await writeFixture(fixture, {
@@ -115,11 +107,9 @@ describe("store manifest", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
-    });
+    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"]);
 
-    const result = await fs.readFile(new URL(".store/store-manifest.json", getFixtureUrl(fixture)), {
+    const result = await fs.readFile(new URL("./.store/store-manifest.json", getFixtureUrl(fixture)), {
       encoding: "utf8",
     });
 
@@ -129,7 +119,7 @@ describe("store manifest", () => {
     expect(status).toBe(0);
   });
 
-  test("if is outdated, store manifest is regenerated", async () => {
+  test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = {
       $version: "1",
       lastUpdated: "1701584999000",
@@ -142,11 +132,9 @@ describe("store manifest", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
-    });
+    const { status, stderr } = spawnTyche(fixture, ["--target", "5.2"]);
 
-    const result = await fs.readFile(new URL(".store/store-manifest.json", getFixtureUrl(fixture)), {
+    const result = await fs.readFile(new URL("./.store/store-manifest.json", getFixtureUrl(fixture)), {
       encoding: "utf8",
     });
 

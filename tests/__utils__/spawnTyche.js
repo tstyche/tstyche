@@ -12,6 +12,7 @@ export function spawnTyche(fixture, args, env) {
     env: {
       ...process.env,
       ["TSTYCHE_NO_COLOR"]: "on",
+      ["TSTYCHE_STORE_PATH"]: "./.store",
       ...env,
     },
     shell: true,

@@ -134,9 +134,7 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, /* args */ undefined, {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
-    });
+    const { status, stderr, stdout } = spawnTyche(fixture);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");

@@ -48,7 +48,6 @@ describe("'--target' command line option", () => {
     });
 
     const { status, stderr, stdout } = spawnTyche(fixture, ["--target", "current"], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
       ["TSTYCHE_TYPESCRIPT_PATH"]: "",
     });
 
@@ -105,7 +104,6 @@ describe("'target' configuration file option", () => {
     });
 
     const { status, stderr, stdout } = spawnTyche(fixture, [], {
-      ["TSTYCHE_STORE_PATH"]: "./.store",
       ["TSTYCHE_TYPESCRIPT_PATH"]: "",
     });
 
