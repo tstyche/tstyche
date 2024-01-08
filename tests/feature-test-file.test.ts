@@ -2,7 +2,7 @@ import { expect, test } from "@jest/globals";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "api-file";
+const fixture = "feature-test-file";
 
 test("allows a file to be empty", () => {
   const { status, stderr, stdout } = spawnTyche(fixture, ["empty-file"]);

@@ -2,7 +2,7 @@ import { expect, test } from "@jest/globals";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "cjs-support";
+const fixture = "feature-cjs-support";
 
 test("supports CJS projects written CJS syntax", () => {
   const { status, stderr, stdout } = spawnTyche(fixture, ["cjs-syntax"]);

@@ -2,7 +2,7 @@ import { expect, test } from "@jest/globals";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "api-imports";
+const fixture = "feature-imports";
 
 test("named imports", () => {
   const { status, stderr, stdout } = spawnTyche(fixture, ["named"]);
