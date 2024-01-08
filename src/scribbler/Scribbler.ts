@@ -45,7 +45,7 @@ export interface ScribblerOptions {
   /**
    * Do not include ANSI color escape codes in the output. Default: `false`.
    */
-  noColors?: boolean;
+  noColor?: boolean;
 }
 
 /**
@@ -58,7 +58,7 @@ export class Scribbler {
    * @param options - {@link ScribblerOptions | Options} to configure an instance of the Scribbler.
    */
   constructor(options?: ScribblerOptions) {
-    this.#noColor = options?.noColors ?? false;
+    this.#noColor = options?.noColor ?? false;
   }
 
   /**

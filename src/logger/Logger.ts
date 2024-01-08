@@ -36,7 +36,7 @@ export class Logger {
     this.#stderr = options?.stderr ?? process.stderr;
     this.#stdout = options?.stdout ?? process.stdout;
 
-    this.#scribbler = new Scribbler({ noColors: this.#noColor });
+    this.#scribbler = new Scribbler({ noColor: this.#noColor });
   }
 
   /**
