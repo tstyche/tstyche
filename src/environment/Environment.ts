@@ -36,21 +36,13 @@ export class Environment {
     return Environment.#typescriptPath;
   }
 
-  static #parseBoolean(value: string | undefined) {
-    if (value != null) {
-      return ["1", "on", "t", "true", "y", "yes"].includes(value.toLowerCase());
-    }
-
-    return false;
-  }
-
   static #resolveNoColor() {
     if (process.env["TSTYCHE_NO_COLOR"] != null) {
-      return Environment.#parseBoolean(process.env["TSTYCHE_NO_COLOR"]);
+      return process.env["TSTYCHE_NO_COLOR"] !== "";
     }
 
-    if (process.env["NO_COLOR"] != null && process.env["NO_COLOR"] !== "") {
-      return true;
+    if (process.env["NO_COLOR"] != null) {
+      return process.env["NO_COLOR"] !== "";
     }
 
     return false;
