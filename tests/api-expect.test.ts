@@ -7,17 +7,8 @@ const fixture = "api-expect";
 // TODO check for validation errors
 // TODO expect cannot be nested because of run mode flags must be inherited
 
-test("expect", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["top-level-expect.tst.ts"]);
-
-  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
-
-  expect(exitCode).toBe(1);
-});
-
 test("handles '--failFast' option", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["top-level-expect.tst.ts", "--failFast"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["fail-fast-expect.tst.ts", "--failFast"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");

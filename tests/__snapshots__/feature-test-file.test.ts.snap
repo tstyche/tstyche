@@ -3,20 +3,20 @@
 exports[`allows a file to be empty: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/empty-file.tst.ts
+pass ./__typetests__/dummy.test.ts
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'empty-file'.
+Ran all test files.
 "
 `;
 
 exports[`allows a file to have only an empty describe: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/empty-describe.tst.ts
+pass ./__typetests__/dummy.test.ts
   parent
     empty describe
 
@@ -24,16 +24,14 @@ Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'empty-describe'.
+Ran all test files.
 "
 `;
 
 exports[`allows a file to have only empty tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/empty-test.tst.ts
-  parent
-    empty describe
+pass ./__typetests__/dummy.test.ts
   + empty test
 
 Targets:    1 passed, 1 total
@@ -41,16 +39,43 @@ Test files: 1 passed, 1 total
 Tests:      1 passed, 1 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'empty-test'.
+Ran all test files.
+"
+`;
+
+exports[`allows a file to have only expect: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`allows a file to have only skipped describe: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  skipped describe
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
 "
 `;
 
 exports[`allows a file to have only skipped tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/skip-file.tst.ts
-  is skipped describe?
-    - skip is skipped?
+pass ./__typetests__/dummy.test.ts
+  - skip is skipped?
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
@@ -58,16 +83,30 @@ Tests:      1 skipped, 1 total
 Assertions: 1 skipped, 1 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'skip-file'.
+Ran all test files.
+"
+`;
+
+exports[`allows a file to have only todo describe: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  have todo this
+  and this one
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
 "
 `;
 
 exports[`allows a file to have only todo tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/todo-file.tst.ts
-  have todo this
-    - todo at some point
+pass ./__typetests__/dummy.test.ts
+  - todo have todo this
   - todo and this one
 
 Targets:    1 passed, 1 total
@@ -75,6 +114,6 @@ Test files: 1 passed, 1 total
 Tests:      2 todo, 2 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'todo-file'.
+Ran all test files.
 "
 `;

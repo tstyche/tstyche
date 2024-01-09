@@ -1,11 +1,26 @@
-import { expect, test } from "@jest/globals";
+import { afterEach, expect, test } from "@jest/globals";
+import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
+const tsconfig = {
+  extends: "../tsconfig.json",
+  include: ["./"],
+};
+
 const fixture = "feature-test-file";
 
+afterEach(async () => {
+  await clearFixture(fixture);
+});
+
 test("allows a file to be empty", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["empty-file"]);
+  await writeFixture(fixture, {
+    ["__typetests__/dummy.test.ts"]: "",
+    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  });
+
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -14,7 +29,61 @@ test("allows a file to be empty", async () => {
 });
 
 test("allows a file to have only an empty describe", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["empty-describe"]);
+  const testText = `import { describe } from "tstyche";
+describe("parent", () => {
+  describe("empty describe", function () {
+    // no test
+  });
+});
+`;
+
+  await writeFixture(fixture, {
+    ["__typetests__/dummy.test.ts"]: testText,
+    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  });
+
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+  expect(stderr).toBe("");
+
+  expect(exitCode).toBe(0);
+});
+
+test("allows a file to have only skipped describe", async () => {
+  const testText = `import { describe } from "tstyche";
+describe.skip("skipped describe", function () {
+  test("is skipped?", () => {
+    expect<void>().type.toBeVoid();
+  });
+});
+`;
+
+  await writeFixture(fixture, {
+    ["__typetests__/dummy.test.ts"]: testText,
+    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  });
+
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+  expect(stderr).toBe("");
+
+  expect(exitCode).toBe(0);
+});
+
+test("allows a file to have only todo describe", async () => {
+  const testText = `import { describe } from "tstyche";
+describe.todo("have todo this", () => {});
+describe.todo("and this one");
+`;
+
+  await writeFixture(fixture, {
+    ["__typetests__/dummy.test.ts"]: testText,
+    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  });
+
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -23,7 +92,18 @@ test("allows a file to have only an empty describe", async () => {
 });
 
 test("allows a file to have only empty tests", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["empty-test"]);
+  const testText = `import { describe, test } from "tstyche";
+test("empty test", () => {
+  // no assertion
+});
+`;
+
+  await writeFixture(fixture, {
+    ["__typetests__/dummy.test.ts"]: testText,
+    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  });
+
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -32,7 +112,18 @@ test("allows a file to have only empty tests", async () => {
 });
 
 test("allows a file to have only skipped tests", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["skip-file"]);
+  const testText = `import { describe, expect, test } from "tstyche";
+test.skip("is skipped?", () => {
+  expect<void>().type.toBeVoid();
+});
+`;
+
+  await writeFixture(fixture, {
+    ["__typetests__/dummy.test.ts"]: testText,
+    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  });
+
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -41,7 +132,35 @@ test("allows a file to have only skipped tests", async () => {
 });
 
 test("allows a file to have only todo tests", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["todo-file"]);
+  const testText = `import { describe, test } from "tstyche";
+test.todo("have todo this", () => {});
+test.todo("and this one");
+`;
+
+  await writeFixture(fixture, {
+    ["__typetests__/dummy.test.ts"]: testText,
+    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  });
+
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+  expect(stderr).toBe("");
+
+  expect(exitCode).toBe(0);
+});
+
+test("allows a file to have only expect", async () => {
+  const testText = `import { describe, expect, test } from "tstyche";
+expect<number>().type.toBeNumber();
+`;
+
+  await writeFixture(fixture, {
+    ["__typetests__/dummy.test.ts"]: testText,
+    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+  });
+
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");

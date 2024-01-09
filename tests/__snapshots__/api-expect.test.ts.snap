@@ -240,62 +240,6 @@ Ran test files matching 'expect-skip.test.ts'.
 "
 `;
 
-exports[`expect: stderr 1`] = `
-"Error: Type 'undefined' is not identical to type 'void'.
-
-   5 | });
-   6 | 
->  7 | expect<void>().type.toBeUndefined();
-     |                     ^
-   8 | 
-   9 | describe("is describe?", () => {
-  10 |   test("is number?", () => {
-
-       at ./__typetests__/top-level-expect.tst.ts:7:21
-
-Error: Type 'void' is not identical to type 'number'.
-
-  10 |   test("is number?", () => {
-  11 |     expect<number>().type.toBeNumber();
-> 12 |     expect<number>().type.toBeVoid();
-     |                           ^
-  13 |   });
-  14 | });
-  15 | 
-
-       at ./__typetests__/top-level-expect.tst.ts:12:27 ❭ is describe? ❭ is number?
-
-Error: Type 'void' is not identical to type 'number'.
-
-  15 | 
-  16 | expect<null>().type.toBeNull();
-> 17 | expect<number>().type.toBeVoid();
-     |                       ^
-  18 | 
-
-       at ./__typetests__/top-level-expect.tst.ts:17:23
-
-"
-`;
-
-exports[`expect: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
-
-fail ./__typetests__/top-level-expect.tst.ts
-  + is string?
-  is describe?
-    × is number?
-
-Targets:    1 failed, 1 total
-Test files: 1 failed, 1 total
-Tests:      1 failed, 1 passed, 2 total
-Assertions: 3 failed, 3 passed, 6 total
-Duration:   <<timestamp>>
-
-Ran test files matching 'top-level-expect.tst.ts'.
-"
-`;
-
 exports[`handles '--failFast' option: stderr 1`] = `
 "Error: Type 'undefined' is not identical to type 'void'.
 
@@ -307,7 +251,7 @@ exports[`handles '--failFast' option: stderr 1`] = `
    9 | describe("is describe?", () => {
   10 |   test("is number?", () => {
 
-       at ./__typetests__/top-level-expect.tst.ts:7:21
+       at ./__typetests__/fail-fast-expect.tst.ts:7:21
 
 "
 `;
@@ -315,7 +259,7 @@ exports[`handles '--failFast' option: stderr 1`] = `
 exports[`handles '--failFast' option: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/top-level-expect.tst.ts
+fail ./__typetests__/fail-fast-expect.tst.ts
   + is string?
 
 Targets:    1 failed, 1 total
@@ -324,6 +268,6 @@ Tests:      1 passed, 1 total
 Assertions: 1 failed, 1 passed, 2 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'top-level-expect.tst.ts'.
+Ran test files matching 'fail-fast-expect.tst.ts'.
 "
 `;
