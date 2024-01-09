@@ -108,16 +108,7 @@ export class Cli {
     const resolvedConfig = configService.resolveConfig();
 
     if (configService.commandLineOptions.showConfig === true) {
-      this.#logger.writeMessage(
-        formattedText({
-          noColor: Environment.noColor,
-          noInteractive: Environment.noInteractive,
-          storePath: Environment.storePath,
-          timeout: Environment.timeout,
-          typescriptPath: Environment.typescriptPath,
-          ...resolvedConfig,
-        }),
-      );
+      this.#logger.writeMessage(formattedText({ ...Environment, ...resolvedConfig }));
 
       return;
     }
