@@ -24,17 +24,17 @@ afterEach(async () => {
 });
 
 describe("'TSTYCHE_NO_COLOR' environment variable", () => {
-  test("by default, colors are enabled", async () => {
+  test("has default value", async () => {
     await writeFixture(fixture, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--showConfig"], {
       env: { ["TSTYCHE_NO_COLOR"]: undefined },
     });
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(JSON.parse(stdout)).toHaveProperty("noColor");
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);

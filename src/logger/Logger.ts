@@ -40,26 +40,10 @@ export class Logger {
   }
 
   /**
-   * Moves the cursor one line up and erases the line when the `stdout` stream
-   * is interactive. Otherwise does nothing.
+   * Moves the cursor one line up in the `stdout` stream and erases that line.
    */
   eraseLastLine(): void {
-    if (!this.isInteractive()) {
-      return;
-    }
-
     this.#stdout.write("\u001B[1A\u001B[0K");
-  }
-
-  /**
-   * Returns `true` if the `stdout` stream is interactive.
-   */
-  isInteractive(): boolean {
-    if ("isTTY" in this.#stdout && typeof this.#stdout.isTTY === "boolean") {
-      return this.#stdout.isTTY;
-    }
-
-    return false;
   }
 
   #write(stream: NodeJS.WritableStream, body: JSX.Element | Array<JSX.Element>): void {

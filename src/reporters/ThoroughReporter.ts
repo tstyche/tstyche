@@ -1,4 +1,5 @@
 import { Diagnostic } from "#diagnostic";
+import { Environment } from "#environment";
 import type { Event } from "#events";
 import { addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
 import { FileViewService } from "./FileViewService.js";
@@ -79,7 +80,7 @@ export class ThoroughReporter extends Reporter {
         break;
 
       case "file:start":
-        if (this.logger.isInteractive()) {
+        if (!Environment.noInteractive) {
           this.logger.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
         }
 
@@ -94,7 +95,10 @@ export class ThoroughReporter extends Reporter {
         break;
 
       case "file:end":
-        this.logger.eraseLastLine();
+        if (!Environment.noInteractive) {
+          this.logger.eraseLastLine();
+        }
+
         this.logger.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
 
         this.logger.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));

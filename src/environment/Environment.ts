@@ -4,6 +4,7 @@ import { Path } from "#path";
 
 export class Environment {
   static #noColor = Environment.#resolveNoColor();
+  static #noInteractive = Environment.#resolveNoInteractive();
   static #storePath = Environment.#resolveStorePath();
   static #timeout = Environment.#resolveTimeout();
   static #typescriptPath = Environment.#resolveTypeScriptPath();
@@ -13,6 +14,13 @@ export class Environment {
    */
   static get noColor(): boolean {
     return Environment.#noColor;
+  }
+
+  /**
+   * Specifies whether interactive elements should be disabled in the output.
+   */
+  static get noInteractive(): boolean {
+    return Environment.#noInteractive;
   }
 
   /**
@@ -46,6 +54,14 @@ export class Environment {
     }
 
     return false;
+  }
+
+  static #resolveNoInteractive() {
+    if (process.env["TSTYCHE_NO_INTERACTIVE"] != null) {
+      return process.env["TSTYCHE_NO_INTERACTIVE"] !== "";
+    }
+
+    return !process.stdout.isTTY;
   }
 
   static #resolveStorePath() {
