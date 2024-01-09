@@ -14,11 +14,12 @@
     "jest.config.js",
     "rollup.config.js",
     "**/index.ts",
+    "**/main.ts",
     "**/tstyche.ts",
     "**/types.ts"
   ],
   "excludeAfterRemap": true,
   "mergeAsync": true,
-  "reporter": ["lcov", "text"],
+  "reporter": ["json", "text"],
   "tempDirectory": "./coverage/temp"
 }
