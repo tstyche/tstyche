@@ -8,7 +8,7 @@ const tsconfig = {
   include: ["./"],
 };
 
-const fixture = "feature-test-file";
+const fixture = "feature-runner";
 
 afterEach(async () => {
   await clearFixture(fixture);
