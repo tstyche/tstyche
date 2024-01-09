@@ -58,7 +58,7 @@ export class Environment {
 
   static #resolveNoInteractive() {
     if (process.env["TSTYCHE_NO_INTERACTIVE"] != null) {
-      return process.env["TSTYCHE_NO_INTERACTIVE"] !== "";
+      return Boolean(process.env["TSTYCHE_NO_INTERACTIVE"]);
     }
 
     return !process.stdout.isTTY;
