@@ -111,6 +111,7 @@ export class Cli {
       this.#logger.writeMessage(
         formattedText({
           noColor: Environment.noColor,
+          noInteractive: Environment.noInteractive,
           storePath: Environment.storePath,
           timeout: Environment.timeout,
           typescriptPath: Environment.typescriptPath,
