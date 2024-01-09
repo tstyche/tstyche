@@ -13,14 +13,14 @@ const tsconfig = {
   include: ["./"],
 };
 
-const fixture = "config-noColor";
+const fixture = "config-help";
 
 afterEach(async () => {
   await clearFixture(fixture);
 });
 
 describe("'--help' command line option", () => {
-  test("has default value", async () => {
+  test("prints the list of command line options", async () => {
     await writeFixture(fixture, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),

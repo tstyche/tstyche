@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`'--help' command line option has default value: stdout 1`] = `
+exports[`'--help' command line option prints the list of command line options: stdout 1`] = `
 "The TSTyche Type Test Runner  <<version>>
 
   tstyche
