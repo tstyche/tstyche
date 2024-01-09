@@ -19,6 +19,6 @@
   ],
   "excludeAfterRemap": true,
   "mergeAsync": true,
-  "reporter": ["cobertura", "text"],
+  "reporter": ["json", "text"],
   "tempDirectory": "./coverage/temp"
 }
