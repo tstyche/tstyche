@@ -30,7 +30,7 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--showConfig"], {
       env: { ["TSTYCHE_NO_COLOR"]: undefined },
     });
 
