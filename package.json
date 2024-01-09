@@ -48,7 +48,7 @@
     "prepack": "yarn clean && yarn build",
     "prepublish": "yarn test",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --config jest.config.js",
-    "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test",
+    "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
     "test:e2e": "yarn test --testMatch '**/tests/*.test.ts'",
     "test:examples": "tstyche examples",
     "test:types": "tstyche tests",

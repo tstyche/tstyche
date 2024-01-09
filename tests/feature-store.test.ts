@@ -16,7 +16,7 @@ const tsconfig = {
   include: ["./"],
 };
 
-const fixture = "feature-store-manifest";
+const fixture = "feature-store";
 
 afterEach(async () => {
   await clearFixture(fixture);

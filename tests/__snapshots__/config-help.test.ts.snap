@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'--help' command line option has default value: stdout 1`] = `
+"The TSTyche Type Test Runner  <<version>>
+
+  tstyche
+  Run all tests.
+
+  tstyche path/to/first.test.ts
+  Only run the test files with matching path.
+
+  tstyche --target 4.9,5.3.2,current
+  Test on all specified versions of TypeScript.
+
+
+Command Line Options
+
+  --allowNoTestFiles  boolean
+  Do not raise an error, if no test files are selected.
+
+  --config  string
+  The path to a TSTyche configuration file.
+
+  --failFast  boolean
+  Stop running tests after the first failed assertion.
+
+  --help
+  Print the list of command line options with brief descriptions and exit.
+
+  --install
+  Install specified versions of the 'typescript' package and exit.
+
+  --listFiles
+  Print the list of the selected test files and exit.
+
+  --only  string
+  Only run tests with matching name.
+
+  --prune
+  Remove all installed versions of the 'typescript' package and exit.
+
+  --showConfig
+  Print the resolved configuration and exit.
+
+  --skip  string
+  Skip tests with matching name.
+
+  --target  list of strings
+  The list of TypeScript versions to be tested on.
+
+  --update
+  Fetch the 'typescript' package metadata from the registry and exit.
+
+  --version
+  Print the version number and exit.
+
+
+To learn more, visit https://tstyche.org
+
+"
+`;
