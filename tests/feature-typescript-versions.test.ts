@@ -112,23 +112,30 @@ const storeUrl = new URL("./.store/", getFixtureUrl(fixture));
 const manifestText = await fs.readFile(new URL("./store-manifest.json", storeUrl), { encoding: "utf8" });
 const { resolutions } = JSON.parse(manifestText) as { resolutions: Record<string, string> };
 
-// remove 'beta', 'latest', 'next' and 'rc'
-const tags = Object.values(resolutions).slice(0, -4);
+const versionTags = Object.entries(resolutions)
+  .map(([tag, version]) => {
+    if (["beta", "latest", "next", "rc"].includes(tag)) {
+      return;
+    }
+
+    return version;
+  })
+  .filter((version) => version != null) as Array<string>;
 
 afterAll(async () => {
   await clearFixture(fixture);
 });
 
-test.each(tags)("uses TypeScript %s", async (tag) => {
-  await spawnTyche(fixture, ["--install", "--target", tag]);
+test.each(versionTags)("uses TypeScript %s", async (version) => {
+  await spawnTyche(fixture, ["--install", "--target", version]);
 
-  const typescriptPath = fileURLToPath(new URL(`./${tag}/node_modules/typescript/lib/typescript.js`, storeUrl));
+  const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
 
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"], {
     env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
   });
 
-  expect(stdout).toMatch(RegExp(`^uses TypeScript ${tag}`));
+  expect(stdout).toMatch(RegExp(`^uses TypeScript ${version}`));
   expect(stderr).toBe("");
 
   expect(exitCode).toBe(0);
