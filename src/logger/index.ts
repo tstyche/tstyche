@@ -1,1 +1,1 @@
-export { Logger, type LoggerOptions } from "./Logger.js";
+export { Logger, type LoggerOptions, type WriteStream } from "./Logger.js";
