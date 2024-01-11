@@ -84,7 +84,7 @@ const config = [
     output,
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { emitDeclarationOnly: true } }),
+      typescript(),
       dts({ compilerOptions: { types: ["node"] } }),
       tidyDts(),
     ],
@@ -96,7 +96,11 @@ const config = [
       file: "./build/index.d.cts",
       format: "cjs",
     },
-    plugins: [dts()],
+    plugins: [
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      typescript(),
+      dts(),
+    ],
   },
 
   {
