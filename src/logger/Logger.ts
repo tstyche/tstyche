@@ -1,3 +1,5 @@
+import process from "node:process";
+import type { Writable } from "node:stream";
 import { Environment } from "#environment";
 import { Scribbler } from "#scribbler";
 
@@ -12,11 +14,11 @@ export interface LoggerOptions {
   /**
    * A stream to write warnings and errors. Default: `process.stdout`.
    */
-  stderr?: NodeJS.WritableStream;
+  stderr?: Writable;
   /**
    * A stream to write informational messages. Default: `process.stderr`.
    */
-  stdout?: NodeJS.WritableStream;
+  stdout?: Writable;
 }
 
 /**
@@ -25,8 +27,8 @@ export interface LoggerOptions {
 export class Logger {
   #noColor: boolean;
   #scribbler: Scribbler;
-  #stderr: NodeJS.WritableStream;
-  #stdout: NodeJS.WritableStream;
+  #stderr: Writable;
+  #stdout: Writable;
 
   /**
    * @param options - {@link LoggerOptions | Options} to configure an instance of the Logger.
@@ -46,7 +48,7 @@ export class Logger {
     this.#stdout.write("\u001B[1A\u001B[0K");
   }
 
-  #write(stream: NodeJS.WritableStream, body: JSX.Element | Array<JSX.Element>): void {
+  #write(stream: Writable, body: JSX.Element | Array<JSX.Element>): void {
     const elements = Array.isArray(body) ? body : [body];
 
     for (const element of elements) {

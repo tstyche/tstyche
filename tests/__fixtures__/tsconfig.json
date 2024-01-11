@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "exactOptionalPropertyTypes": false,
-    "noEmit": true
+    "noEmit": true,
+    "types": []
   },
   "include": ["./"],
   "exclude": []

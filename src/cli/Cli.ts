@@ -1,3 +1,4 @@
+import process from "node:process";
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
@@ -10,12 +11,9 @@ import { StoreService } from "#store";
 export class Cli {
   #abortController = new AbortController();
   #logger: Logger;
-  #process: NodeJS.Process;
   #storeService: StoreService;
 
-  constructor(process: NodeJS.Process) {
-    this.#process = process;
-
+  constructor() {
     this.#logger = new Logger();
     this.#storeService = new StoreService();
   }
@@ -32,7 +30,7 @@ export class Cli {
           switch (diagnostic.category) {
             case DiagnosticCategory.Error:
               this.#abortController.abort();
-              this.#process.exitCode = 1;
+              process.exitCode = 1;
 
               this.#logger.writeError(diagnosticText(diagnostic));
               break;
@@ -78,7 +76,7 @@ export class Cli {
       return;
     }
 
-    if (this.#process.exitCode === 1) {
+    if (process.exitCode === 1) {
       return;
     }
 
@@ -95,13 +93,13 @@ export class Cli {
 
     await configService.parseCommandLine(commandLineArguments);
 
-    if (this.#process.exitCode === 1) {
+    if (process.exitCode === 1) {
       return;
     }
 
     await configService.readConfigFile();
 
-    if (this.#process.exitCode === 1) {
+    if (process.exitCode === 1) {
       return;
     }
 
@@ -132,7 +130,7 @@ export class Cli {
 
     const testFiles = configService.selectTestFiles();
 
-    if (this.#process.exitCode === 1) {
+    if (process.exitCode === 1) {
       return;
     }
 

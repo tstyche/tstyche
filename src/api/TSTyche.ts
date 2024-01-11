@@ -1,3 +1,4 @@
+import process from "node:process";
 import { pathToFileURL } from "node:url";
 import type { ResolvedConfig } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
