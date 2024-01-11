@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import os from "node:os";
+import process from "node:process";
 import { Path } from "#path";
 
 export class Environment {

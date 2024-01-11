@@ -5678,17 +5678,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup-plugin-tsconfig-paths@npm:1.5.2":
-  version: 1.5.2
-  resolution: "rollup-plugin-tsconfig-paths@npm:1.5.2"
-  dependencies:
-    typescript-paths: ^1.5.1
-  peerDependencies:
-    rollup: ^2 || ^3 || ^4
-  checksum: 6940959c1f411044a2eff9912d7d263833e80ea577c04c10e708fba83d46e0518d439e6659eb61bd7e233f835897092460e6ac541eea580bb74d00765814379d
-  languageName: node
-  linkType: hard
-
 "rollup@npm:4.9.4":
   version: 4.9.4
   resolution: "rollup@npm:4.9.4"
@@ -6255,7 +6244,6 @@ __metadata:
     prettier: 3.1.1
     rollup: 4.9.4
     rollup-plugin-dts: 6.1.0
-    rollup-plugin-tsconfig-paths: 1.5.2
     ts-node: 10.9.2
     tslib: 2.6.2
     typescript: 5.3.3
@@ -6370,15 +6358,6 @@ __metadata:
   dependencies:
     is-typedarray: ^1.0.0
   checksum: 99c11aaa8f45189fcfba6b8a4825fd684a321caa9bd7a76a27cf0c7732c174d198b99f449c52c3818107430b5f41c0ccbbfb75cb2ee3ca4a9451710986d61a60
-  languageName: node
-  linkType: hard
-
-"typescript-paths@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "typescript-paths@npm:1.5.1"
-  peerDependencies:
-    typescript: ^4.7.2 || ^5
-  checksum: e77571f979c1ac5a5bee749c69ac77089ab24ed3749286856787a6a75a67c440880469e44fe0ae36662fa498e8a7b2508cb30407444feb014d0945dea4fef6c9
   languageName: node
   linkType: hard
 
