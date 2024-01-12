@@ -74,7 +74,6 @@ export class ProjectService {
     };
 
     if (this.compiler.version.startsWith("5")) {
-      projectConfig["allowArbitraryExtensions"] = true;
       projectConfig["allowImportingTsExtensions"] = true;
       projectConfig.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
     }
