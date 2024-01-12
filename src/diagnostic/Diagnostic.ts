@@ -92,8 +92,7 @@ export class Diagnostic {
     return `${text}.`;
   }
 
-  // TODO warning logic could be added if there is a need
-  // static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {
-  //   return new Diagnostic(text, DiagnosticCategory.Warning, origin);
-  // }
+  static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {
+    return new Diagnostic(text, DiagnosticCategory.Warning, origin);
+  }
 }
