@@ -40,27 +40,20 @@ export class Diagnostic {
 
   static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
-      let category = DiagnosticCategory.Warning;
-
-      if (diagnostic.category === compiler.DiagnosticCategory.Error) {
-        category = DiagnosticCategory.Error;
-      }
-
+      const category = DiagnosticCategory.Error;
       const code = `ts(${diagnostic.code})`;
-
+      let origin: DiagnosticOrigin | undefined;
       const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\r\n");
 
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
-        const origin = {
+        origin = {
           end: diagnostic.start + diagnostic.length,
           file: diagnostic.file,
           start: diagnostic.start,
         };
-
-        return new Diagnostic(text, category, origin).add({ code });
       }
 
-      return new Diagnostic(text, category).add({ code });
+      return new Diagnostic(text, category, origin).add({ code });
     });
   }
 
@@ -99,7 +92,8 @@ export class Diagnostic {
     return `${text}.`;
   }
 
-  static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {
-    return new Diagnostic(text, DiagnosticCategory.Warning, origin);
-  }
+  // TODO warning logic could be added if there is a need
+  // static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {
+  //   return new Diagnostic(text, DiagnosticCategory.Warning, origin);
+  // }
 }

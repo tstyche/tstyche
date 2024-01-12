@@ -53,9 +53,10 @@ export function diagnosticText(diagnostic: Diagnostic): JSX.Element {
       prefix = <Text color={Color.Red}>Error: </Text>;
       break;
 
-    case DiagnosticCategory.Warning:
-      prefix = <Text color={Color.Yellow}>Warning: </Text>;
-      break;
+    // TODO warning logic could be added if there is a need
+    // case DiagnosticCategory.Warning:
+    //   prefix = <Text color={Color.Yellow}>Warning: </Text>;
+    //   break;
 
     default:
       break;

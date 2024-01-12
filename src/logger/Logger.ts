@@ -73,11 +73,8 @@ export class Logger {
     this.#write(this.#stderr, body);
   }
 
+  // TODO rename 'writeOutput'
   writeMessage(body: JSX.Element | Array<JSX.Element>): void {
     this.#write(this.#stdout, body);
-  }
-
-  writeWarning(body: JSX.Element | Array<JSX.Element>): void {
-    this.#write(this.#stderr, body);
   }
 }
