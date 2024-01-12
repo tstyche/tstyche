@@ -39,16 +39,4 @@ describe("tsconfig", () => {
 
     expect(exitCode).toBe(1);
   });
-
-  test("does not exist", async () => {
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
-
-    const { exitCode, stderr } = await spawnTyche(fixture);
-
-    expect(stderr).toMatch(/^Warning: The default compiler options are used for the following tests files./);
-
-    expect(exitCode).toBe(1);
-  });
 });

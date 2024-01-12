@@ -51,10 +51,35 @@ export class ProjectService {
       useInferredProjectPerProjectRoot: true,
       useSingleInferredProject: false,
     });
+
+    this.#service.setCompilerOptionsForInferredProjects(this.#getCompilerOptionsForInferredProjects());
   }
 
   closeFile(filePath: string): void {
     this.#service.closeClientFile(filePath);
+  }
+
+  #getCompilerOptionsForInferredProjects() {
+    const projectConfig: ts.server.protocol.InferredProjectCompilerOptions = {
+      allowJs: true,
+      checkJs: true,
+      esModuleInterop: true,
+      jsx: "preserve" as ts.server.protocol.JsxEmit,
+      module: "esnext" as ts.server.protocol.ModuleKind,
+      moduleResolution: "node" as ts.server.protocol.ModuleResolutionKind,
+      resolveJsonModule: true,
+      strictFunctionTypes: true,
+      strictNullChecks: true,
+      target: "esnext" as ts.server.protocol.ScriptTarget,
+    };
+
+    if (this.compiler.version.startsWith("5")) {
+      projectConfig["allowArbitraryExtensions"] = true;
+      projectConfig["allowImportingTsExtensions"] = true;
+      projectConfig.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
+    }
+
+    return projectConfig;
   }
 
   getDefaultProject(filePath: string): ts.server.Project | undefined {
