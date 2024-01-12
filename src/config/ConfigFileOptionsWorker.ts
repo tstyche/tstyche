@@ -51,10 +51,6 @@ export class ConfigFileOptionsWorker {
   }
 
   async parse(sourceText: string): Promise<void> {
-    if (sourceText === "") {
-      return;
-    }
-
     const configSourceFile = this.compiler.parseJsonText(this.#configFilePath, sourceText) as ts.JsonSourceFile & {
       parseDiagnostics: Array<ts.Diagnostic>;
     };
