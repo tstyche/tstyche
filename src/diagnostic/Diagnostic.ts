@@ -40,15 +40,10 @@ export class Diagnostic {
 
   static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
-      let category: DiagnosticCategory;
+      let category = DiagnosticCategory.Warning;
 
-      switch (diagnostic.category) {
-        case compiler.DiagnosticCategory.Error:
-          category = DiagnosticCategory.Error;
-          break;
-
-        default:
-          category = DiagnosticCategory.Warning;
+      if (diagnostic.category === compiler.DiagnosticCategory.Error) {
+        category = DiagnosticCategory.Error;
       }
 
       const code = `ts(${diagnostic.code})`;
