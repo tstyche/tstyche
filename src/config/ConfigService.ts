@@ -24,7 +24,7 @@ export class ConfigService {
   static #defaultOptions: Required<ConfigFileOptions> = {
     allowNoTestFiles: false,
     failFast: false,
-    rootPath: "./",
+    rootPath: Path.resolve("./"),
     target: [Environment.typescriptPath == null ? "latest" : "current"],
     testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
   };
