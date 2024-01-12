@@ -21,11 +21,11 @@ export interface LoggerOptions {
    */
   noColor?: boolean;
   /**
-   * A stream to write warnings and errors. Default: `process.stdout`.
+   * A stream to write warnings and errors. Default: `process.stderr`.
    */
   stderr?: WriteStream;
   /**
-   * A stream to write informational messages. Default: `process.stderr`.
+   * A stream to write informational messages. Default: `process.stdout`.
    */
   stdout?: WriteStream;
 }
