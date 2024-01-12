@@ -69,23 +69,20 @@ export class ConfigService {
     await commandLineWorker.parse(commandLineArgs);
   }
 
-  async readConfigFile(
-    filePath?: string, // TODO take URL as well
-    sourceText?: string,
-  ): Promise<void> {
-    const configFilePath = filePath ?? this.#commandLineOptions.config ?? Path.resolve("./tstyche.config.json");
+  async readConfigFile(): Promise<void> {
+    const configFilePath = this.#commandLineOptions.config ?? Path.resolve("./tstyche.config.json");
+
+    if (!existsSync(configFilePath)) {
+      return;
+    }
 
     this.#configFileOptions = {
       rootPath: Path.dirname(configFilePath),
     };
 
-    let configFileText = sourceText ?? "";
-
-    if (sourceText == null && existsSync(configFilePath)) {
-      configFileText = await fs.readFile(configFilePath, {
-        encoding: "utf8",
-      });
-    }
+    const configFileText = await fs.readFile(configFilePath, {
+      encoding: "utf8",
+    });
 
     const configFileWorker = new ConfigFileOptionsWorker(
       this.compiler,
@@ -98,7 +95,6 @@ export class ConfigService {
     await configFileWorker.parse(configFileText);
   }
 
-  // TODO could take 'configFileOptions: ConfigFileOptions' and add them on top of everything for programmatic usage
   resolveConfig(): ResolvedConfig {
     const mergedOptions = {
       ...ConfigService.#defaultOptions,
