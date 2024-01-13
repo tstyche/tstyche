@@ -5436,12 +5436,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.1.1":
-  version: 3.1.1
-  resolution: "prettier@npm:3.1.1"
+"prettier@npm:3.2.1":
+  version: 3.2.1
+  resolution: "prettier@npm:3.2.1"
   bin:
     prettier: bin/prettier.cjs
-  checksum: e386855e3a1af86a748e16953f168be555ce66d6233f4ba54eb6449b88eb0c6b2ca79441b11eae6d28a7f9a5c96440ce50864b9d5f6356d331d39d6bb66c648e
+  checksum: 01a5fcf1db4e8172365473e540a328304e501a20bf9b4577e359e431e480d602bcf082d51020aba24bd70ceda528632c6ff8039cedb2d430aeb4af2ca7652817
   languageName: node
   linkType: hard
 
@@ -6241,7 +6241,7 @@ __metadata:
     jest: 29.7.0
     jest-serializer-ansi-escapes: 2.0.1
     magic-string: 0.30.5
-    prettier: 3.1.1
+    prettier: 3.2.1
     rollup: 4.9.5
     rollup-plugin-dts: 6.1.0
     ts-node: 10.9.2
