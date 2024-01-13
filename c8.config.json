@@ -1,25 +1,27 @@
 {
   "all": true,
   "exclude": [
-    ".yarn/**/*",
-    "coverage/**/*",
-    "build/**/*",
     "benchmarks/**/*",
+    "build/**/*",
+    "coverage/**/*",
     "examples/**/*",
     "lib/**/*",
     "scripts/**/*",
     "tests/**/*",
     "typetests/**/*",
     "**/__tests__/**/*",
-    "jest.config.js",
-    "rollup.config.js",
     "**/index.ts",
     "**/main.ts",
     "**/tstyche.ts",
-    "**/types.ts"
+    "**/types.ts",
+    "*.config.js"
   ],
   "excludeAfterRemap": true,
   "mergeAsync": true,
   "reporter": ["json", "text"],
-  "tempDirectory": "./coverage/temp"
+  "reporterOptions": {
+    "json": { "file": "report.json" },
+    "text": { "file": "report.txt", "skipFull": true }
+  },
+  "tempDirectory": "./coverage/.cache"
 }
