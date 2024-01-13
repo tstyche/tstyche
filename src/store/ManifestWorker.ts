@@ -206,8 +206,9 @@ export class ManifestWorker {
       const freshManifest = await this.#load(signal, { quite });
 
       if (freshManifest != null) {
-        manifest = { ...manifest, ...freshManifest };
-        await this.persist(manifest);
+        await this.persist(freshManifest);
+
+        return freshManifest;
       }
     }
 

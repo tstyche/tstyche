@@ -76,10 +76,6 @@ export class Cli {
       return;
     }
 
-    if (process.exitCode === 1) {
-      return;
-    }
-
     const compiler = await this.#storeService.load(
       Environment.typescriptPath == null ? "latest" : "current",
       this.#abortController.signal,
