@@ -6,9 +6,9 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
+import { Version } from "#version";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
 import { PackageInstaller } from "./PackageInstaller.js";
-import { Version } from "./Version.js";
 
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();

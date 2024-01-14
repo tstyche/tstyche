@@ -1,12 +1,11 @@
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { afterAll, expect, test } from "@jest/globals";
+import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
 import { getFixtureUrl } from "./__utils__/getFixtureUrl.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-// this '@ts-expect-error' directive is not ideal, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
-const toBeAssignableTestText = `// @ts-expect-error
+const toBeAssignableTestText = `
 import { expect, test } from "tstyche";
 
 interface Sample {
@@ -23,7 +22,7 @@ test("is assignable?", () => {
   });
 });`;
 
-const toEqualTestText = `// @ts-expect-error
+const toEqualTestText = `
 import { expect, test } from "tstyche";
 
 interface Sample {
@@ -37,7 +36,7 @@ test("is equal?", () => {
 
 `;
 
-const toHavePropertyTestText = `// @ts-expect-error
+const toHavePropertyTestText = `
 import { expect } from "tstyche";
 
 interface Sample {
@@ -53,7 +52,7 @@ expect<Sample>().type.not.toHaveProperty("setup");
 expect<Sample>().type.not.toHaveProperty("teardown");
 `;
 
-const toMatchTestText = `// @ts-expect-error
+const toMatchTestText = `
 import { expect, test } from "tstyche";
 
 interface Options {
@@ -69,7 +68,7 @@ test("is a match?", () => {
 });
 `;
 
-const toRaiseErrorTestText = `// @ts-expect-error
+const toRaiseErrorTestText = `
 import { expect, test } from "tstyche";
 
 interface Matchers<R, T = unknown> {
@@ -84,26 +83,9 @@ test("Matchers", () => {
   expect<Matchers>().type.toRaiseError("requires between 1 and 2 type arguments");
 });`;
 
-// TODO use default tsconfig after implementing
-const tsconfig = {
-  compilerOptions: {
-    module: "esnext",
-    moduleResolution: "node",
-    strictNullChecks: true,
-  },
-  include: ["./"],
-};
-
 const fixture = "feature-typescript-versions";
 
-await writeFixture(fixture, {
-  ["__typetests__/toBeAssignable.test.ts"]: toBeAssignableTestText,
-  ["__typetests__/toEqual.test.ts"]: toEqualTestText,
-  ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
-  ["__typetests__/toMatch.test.ts"]: toMatchTestText,
-  ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
-  ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-});
+await writeFixture(fixture);
 
 await spawnTyche(fixture, ["--update"]);
 
@@ -113,30 +95,77 @@ const manifestText = await fs.readFile(new URL("./store-manifest.json", storeUrl
 const { resolutions } = JSON.parse(manifestText) as { resolutions: Record<string, string> };
 
 const versionTags = Object.entries(resolutions)
-  .map(([tag, version]) => {
-    if (["beta", "latest", "next", "rc"].includes(tag)) {
-      return;
-    }
-
-    return version;
-  })
-  .filter((version) => version != null) as Array<string>;
+  .filter((resolution) => resolution[0].startsWith("5"))
+  .map((resolution) => resolution[1]);
 
 afterAll(async () => {
   await clearFixture(fixture);
 });
 
-test.each(versionTags)("uses TypeScript %s", async (version) => {
-  await spawnTyche(fixture, ["--install", "--target", version]);
-
-  const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
-
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"], {
-    env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
+describe("TypeScript 4.x", () => {
+  beforeAll(async () => {
+    await writeFixture(fixture, {
+      // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
+      ["__typetests__/toBeAssignable.test.ts"]: `// @ts-expect-error${toBeAssignableTestText}`,
+      ["__typetests__/toEqual.test.ts"]: `// @ts-expect-error${toEqualTestText}`,
+      ["__typetests__/toHaveProperty.test.ts"]: `// @ts-expect-error${toHavePropertyTestText}`,
+      ["__typetests__/toMatch.test.ts"]: `// @ts-expect-error${toMatchTestText}`,
+      ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error${toRaiseErrorTestText}`,
+    });
   });
 
-  expect(stdout).toMatch(RegExp(`^uses TypeScript ${version}`));
-  expect(stderr).toBe("");
+  test.each([
+    "4.0.2",
+    "4.0.8",
+    "4.1.6",
+    "4.2.4",
+    "4.3.5",
+    "4.4.4",
+    "4.5.5",
+    "4.6.4",
+    "4.7.2",
+    "4.7.4",
+    "4.8.4",
+    "4.9.5",
+  ])("uses TypeScript %s as current target", async (version) => {
+    await spawnTyche(fixture, ["--install", "--target", version]);
 
-  expect(exitCode).toBe(0);
+    const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"], {
+      env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
+    });
+
+    expect(stdout).toMatch(RegExp(`^uses TypeScript ${version}\r\n`));
+    expect(stderr).toBe("");
+
+    expect(exitCode).toBe(0);
+  });
+});
+
+describe("TypeScript 5.x", () => {
+  beforeAll(async () => {
+    await writeFixture(fixture, {
+      ["__typetests__/toBeAssignable.test.ts"]: toBeAssignableTestText,
+      ["__typetests__/toEqual.test.ts"]: toEqualTestText,
+      ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
+      ["__typetests__/toMatch.test.ts"]: toMatchTestText,
+      ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
+    });
+  });
+
+  test.each(["5.0.2", ...versionTags])("uses TypeScript %s as current target", async (version) => {
+    await spawnTyche(fixture, ["--install", "--target", version]);
+
+    const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"], {
+      env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
+    });
+
+    expect(stdout).toMatch(RegExp(`^uses TypeScript ${version}\r\n`));
+    expect(stderr).toBe("");
+
+    expect(exitCode).toBe(0);
+  });
 });

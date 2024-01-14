@@ -9,14 +9,14 @@ test("is string?", () => {
 });
 `;
 
-const fixture = "validation-tsconfig";
+const fixture = "validation-runner";
 
 afterEach(async () => {
   await clearFixture(fixture);
 });
 
-describe("tsconfig", () => {
-  test("has errors", async () => {
+describe("compiler options", () => {
+  test("when TSConfig file has errors", async () => {
     const tsconfig = {
       compilerOptions: {
         noEmitOnError: true,
@@ -36,18 +36,6 @@ describe("tsconfig", () => {
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
-
-    expect(exitCode).toBe(1);
-  });
-
-  test("does not exist", async () => {
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
-
-    const { exitCode, stderr } = await spawnTyche(fixture);
-
-    expect(stderr).toMatch(/^Warning: The default compiler options are used for the following tests files./);
 
     expect(exitCode).toBe(1);
   });
