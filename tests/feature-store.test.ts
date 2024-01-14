@@ -119,10 +119,35 @@ describe("store manifest", () => {
     expect(exitCode).toBe(0);
   });
 
+  test("when is up to date, store manifest is not regenerated", async () => {
+    const storeManifest = {
+      $version: "1",
+      lastUpdated: Date.now() - 60 * 60 * 1000 /* 2 hours */,
+      versions: ["5.0.2", "5.0.3", "5.0.4"],
+    };
+
+    await writeFixture(fixture, {
+      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixture, ["--target", "5.0.2"]);
+
+    const result = await fs.readFile(new URL("./.store/store-manifest.json", getFixtureUrl(fixture)), {
+      encoding: "utf8",
+    });
+
+    expect(JSON.parse(result)).toMatchObject(storeManifest);
+
+    expect(stderr).toBe("");
+    expect(exitCode).toBe(0);
+  });
+
   test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = {
       $version: "1",
-      lastUpdated: "1701584999000",
+      lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000 /* 2 hours and 15 minutes */,
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 

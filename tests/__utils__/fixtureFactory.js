@@ -11,12 +11,16 @@ export async function clearFixture(fixture) {
 
 /**
  * @param {string} fixture
- * @param {Record<string, string>} files
+ * @param {Record<string, string>} [files]
  */
 export async function writeFixture(fixture, files) {
   const fixtureUrl = getFixtureUrl(fixture);
 
   await fs.mkdir(fixtureUrl, { recursive: true });
+
+  if (files == null) {
+    return;
+  }
 
   for (const file in files) {
     const content = files[file];

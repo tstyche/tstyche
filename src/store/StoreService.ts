@@ -8,6 +8,7 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
 import { PackageInstaller } from "./PackageInstaller.js";
+import { Version } from "./Version.js";
 
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();
@@ -151,21 +152,7 @@ export class StoreService {
       return tag;
     }
 
-    const version = this.#manifest.resolutions[tag];
-
-    if (
-      this.#manifestWorker.isOutdated(this.#manifest, /* ageTolerance */ 60 /* one minute */) &&
-      Object.keys(this.#manifest.resolutions).slice(-5).includes(tag)
-    ) {
-      this.#onDiagnostic(
-        Diagnostic.warning([
-          "Failed to update metadata of the 'typescript' package from the registry.",
-          `The resolution of the '${tag}' tag may be outdated.`,
-        ]),
-      );
-    }
-
-    return version;
+    return this.#manifest.resolutions[tag];
   }
 
   async update(signal?: AbortSignal): Promise<void> {
@@ -183,13 +170,10 @@ export class StoreService {
       return false;
     }
 
-    if (this.#manifest.versions.includes(tag) || tag in this.#manifest.resolutions || tag === "current") {
-      return true;
-    }
-
     if (
-      this.#manifest.resolutions["latest"] != null &&
-      tag.startsWith(this.#manifest.resolutions["latest"].slice(0, 3))
+      this.#manifestWorker.isOutdated(this.#manifest, /* ageTolerance */ 60 /* one minute */) &&
+      (!Version.isVersionTag(tag) ||
+        (this.#manifest.resolutions["latest"] != null && Version.satisfies(tag, this.#manifest.resolutions["latest"])))
     ) {
       this.#onDiagnostic(
         Diagnostic.warning([
@@ -199,6 +183,6 @@ export class StoreService {
       );
     }
 
-    return false;
+    return this.#manifest.versions.includes(tag) || tag in this.#manifest.resolutions || tag === "current";
   }
 }
