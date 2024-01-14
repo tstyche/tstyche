@@ -19,11 +19,15 @@ afterEach(async () => {
   await clearFixture(fixture);
 });
 
-describe("resolution of a tag may be outdated", () => {
+describe("warns if resolution of a tag may be outdated", () => {
   test.each([
     {
       target: "5.3.4",
       testCase: "when a patch version higher than 'latest' is requested",
+    },
+    {
+      target: "5.3",
+      testCase: "when a minor version equal to 'latest' is requested",
     },
     {
       target: "5.4",
@@ -55,6 +59,8 @@ describe("resolution of a tag may be outdated", () => {
       $version: "1",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000 /* 2 hours and 15 minutes */,
       resolutions: {
+        ["5.2"]: "5.2.2",
+        ["5.3"]: "5.3.3",
         beta: "5.3.0-beta",
         latest: "5.3.3",
         next: "5.4.0-dev.20240112",
@@ -79,5 +85,48 @@ describe("resolution of a tag may be outdated", () => {
         `The resolution of the '${target}' tag may be outdated.`,
       ].join("\r\n\r\n"),
     );
+  });
+});
+
+describe("does not warn if resolution of a tag may be outdated", () => {
+  test.each([
+    {
+      target: "5.3.3",
+      testCase: "when a patch version equal to 'latest' is requested",
+    },
+    {
+      target: "5.2.2",
+      testCase: "when a patch version lower than 'latest' is requested",
+    },
+    {
+      target: "5.2",
+      testCase: "when a minor version lower than 'latest' is requested",
+    },
+  ])("$testCase", async ({ target }) => {
+    const storeManifest = {
+      $version: "1",
+      lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000 /* 2 hours and 15 minutes */,
+      resolutions: {
+        ["5.2"]: "5.2.2",
+        ["5.3"]: "5.3.3",
+        beta: "5.3.0-beta",
+        latest: "5.3.3",
+        next: "5.4.0-dev.20240112",
+        rc: "5.3.1-rc",
+      },
+      versions: ["5.2.2", "5.3.2", "5.3.3"],
+    };
+
+    await writeFixture(fixture, {
+      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { stderr } = await spawnTyche(fixture, ["--showConfig", "--target", target], {
+      env: { ["TSTYCHE_TIMEOUT"]: "0.001" },
+    });
+
+    expect(stderr).toBe("");
   });
 });

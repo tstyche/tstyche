@@ -173,7 +173,8 @@ export class StoreService {
     if (
       this.#manifestWorker.isOutdated(this.#manifest, /* ageTolerance */ 60 /* one minute */) &&
       (!Version.isVersionTag(tag) ||
-        (this.#manifest.resolutions["latest"] != null && Version.satisfies(tag, this.#manifest.resolutions["latest"])))
+        (this.#manifest.resolutions["latest"] != null &&
+          Version.isGreaterThan(tag, this.#manifest.resolutions["latest"])))
     ) {
       this.#onDiagnostic(
         Diagnostic.warning([
