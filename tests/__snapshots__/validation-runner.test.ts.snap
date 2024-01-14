@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`tsconfig has errors: stderr 1`] = `
+exports[`compiler options when TSConfig file has errors: stderr 1`] = `
 "Error: Compiler option 'strict' requires a value of type boolean. ts(5024)
 
   2 |   "compilerOptions": {
@@ -16,7 +16,7 @@ exports[`tsconfig has errors: stderr 1`] = `
 "
 `;
 
-exports[`tsconfig has errors: stdout 1`] = `
+exports[`compiler options when TSConfig file has errors: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts

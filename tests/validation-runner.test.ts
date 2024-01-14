@@ -9,14 +9,14 @@ test("is string?", () => {
 });
 `;
 
-const fixture = "validation-tsconfig";
+const fixture = "validation-runner";
 
 afterEach(async () => {
   await clearFixture(fixture);
 });
 
-describe("tsconfig", () => {
-  test("has errors", async () => {
+describe("compiler options", () => {
+  test("when TSConfig file has errors", async () => {
     const tsconfig = {
       compilerOptions: {
         noEmitOnError: true,

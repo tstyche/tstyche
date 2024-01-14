@@ -1,6 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`allows a file to be empty: stdout 1`] = `
+exports[`compiler options when TSConfig file is missing, sets default compiler options: stdout 1`] = `
+"uses TypeScript <<version>>
+
+pass ./__typetests__/dummy.test.ts
+  + 'strictNullChecks': true
+  + 'strictFunctionTypes': true
+  + 'useUnknownInCatchVariables': false
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      3 passed, 3 total
+Assertions: 3 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`test file allows a file to be empty: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -13,7 +31,7 @@ Ran all test files.
 "
 `;
 
-exports[`allows a file to have only an empty describe: stdout 1`] = `
+exports[`test file allows a file to have only an empty describe: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -28,7 +46,7 @@ Ran all test files.
 "
 `;
 
-exports[`allows a file to have only empty tests: stdout 1`] = `
+exports[`test file allows a file to have only empty tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -43,7 +61,7 @@ Ran all test files.
 "
 `;
 
-exports[`allows a file to have only expect: stdout 1`] = `
+exports[`test file allows a file to have only expect: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -57,7 +75,7 @@ Ran all test files.
 "
 `;
 
-exports[`allows a file to have only skipped describe: stdout 1`] = `
+exports[`test file allows a file to have only skipped describe: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -71,7 +89,7 @@ Ran all test files.
 "
 `;
 
-exports[`allows a file to have only skipped tests: stdout 1`] = `
+exports[`test file allows a file to have only skipped tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -87,7 +105,7 @@ Ran all test files.
 "
 `;
 
-exports[`allows a file to have only todo describe: stdout 1`] = `
+exports[`test file allows a file to have only todo describe: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -102,7 +120,7 @@ Ran all test files.
 "
 `;
 
-exports[`allows a file to have only todo tests: stdout 1`] = `
+exports[`test file allows a file to have only todo tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
