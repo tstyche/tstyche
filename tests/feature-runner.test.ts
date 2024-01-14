@@ -14,7 +14,7 @@ afterEach(async () => {
   await clearFixture(fixture);
 });
 
-describe("test file", () => {
+describe("test files", () => {
   test("allows a file to be empty", async () => {
     await writeFixture(fixture, {
       ["__typetests__/dummy.test.ts"]: "",
