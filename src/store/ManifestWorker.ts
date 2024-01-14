@@ -59,6 +59,9 @@ export class ManifestWorker {
           if (result.statusCode !== 200) {
             reject(new Error(`Request failed with status code ${String(result.statusCode)}.`));
 
+            // consume response data to free up memory
+            result.resume();
+
             return;
           }
 
@@ -206,8 +209,9 @@ export class ManifestWorker {
       const freshManifest = await this.#load(signal, { quite });
 
       if (freshManifest != null) {
-        manifest = { ...manifest, ...freshManifest };
-        await this.persist(manifest);
+        await this.persist(freshManifest);
+
+        return freshManifest;
       }
     }
 

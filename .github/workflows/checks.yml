@@ -111,7 +111,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
         with:
-          node-version: lts/*
+          node-version: 21
       - run: corepack enable
       - run: yarn install
       - run: yarn test:coverage
@@ -120,4 +120,4 @@ jobs:
       - uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3
         with:
           directory: ./coverage
-          files: coverage-final.json
+          files: report.json
