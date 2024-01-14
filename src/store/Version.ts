@@ -1,9 +1,17 @@
 export class Version {
+  static isGreaterThan(source: string, target: string): boolean {
+    return !(source === target) && Version.#satisfies(source, target);
+  }
+
+  static isSatisfiedWith(source: string, target: string): boolean {
+    return source === target || Version.#satisfies(source, target);
+  }
+
   static isVersionTag(target: string): boolean {
     return /^\d+/.test(target);
   }
 
-  static satisfies(source: string, target: string): boolean {
+  static #satisfies(source: string, target: string): boolean {
     const sourceElements = source.split(/\.|-/);
     const targetElements = target.split(/\.|-/);
 
@@ -15,15 +23,15 @@ export class Version {
         return true;
       }
 
-      if (sourceElement === targetElement) {
-        if (index === targetElements.length - 1) {
-          return true;
-        }
-
-        return compare(index + 1);
+      if (sourceElement < targetElement) {
+        return false;
       }
 
-      return false;
+      if (index === sourceElements.length - 1 || index === targetElements.length - 1) {
+        return true;
+      }
+
+      return compare(index + 1);
     }
 
     return compare();
