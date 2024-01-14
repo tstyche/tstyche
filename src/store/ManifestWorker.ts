@@ -59,6 +59,9 @@ export class ManifestWorker {
           if (result.statusCode !== 200) {
             reject(new Error(`Request failed with status code ${String(result.statusCode)}.`));
 
+            // consume response data to free up memory
+            result.resume();
+
             return;
           }
 
