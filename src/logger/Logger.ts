@@ -7,9 +7,9 @@ import { Scribbler } from "#scribbler";
  */
 export interface WriteStream {
   /**
-   * @param chunk - Data to write.
+   * @param log - Message to write to the stream.
    */
-  write: (chunk: string) => void;
+  write: (log: string) => void;
 }
 
 /**
