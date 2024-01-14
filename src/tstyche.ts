@@ -15,3 +15,4 @@ export * from "#result";
 export * from "#runner";
 export * from "#scribbler";
 export * from "#store";
+export * from "#version";

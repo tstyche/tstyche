@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { Version } from "#version";
 
 export class ProjectService {
   #service: ts.server.ProjectService;
@@ -73,7 +74,7 @@ export class ProjectService {
       target: "esnext" as ts.server.protocol.ScriptTarget,
     };
 
-    if (this.compiler.version.startsWith("5")) {
+    if (Version.isSatisfiedWith(this.compiler.version, "5")) {
       projectConfig["allowImportingTsExtensions"] = true;
       projectConfig.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
     }

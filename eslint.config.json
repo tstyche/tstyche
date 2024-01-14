@@ -164,7 +164,7 @@
       }
     },
     {
-      "files": ["src/result/ResultManager.ts", "src/store/Version.ts"],
+      "files": ["src/result/ResultManager.ts", "src/version/Version.ts"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
       }
