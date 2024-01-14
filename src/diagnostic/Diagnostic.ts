@@ -40,32 +40,20 @@ export class Diagnostic {
 
   static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
-      let category: DiagnosticCategory;
-
-      switch (diagnostic.category) {
-        case compiler.DiagnosticCategory.Error:
-          category = DiagnosticCategory.Error;
-          break;
-
-        default:
-          category = DiagnosticCategory.Warning;
-      }
-
+      const category = DiagnosticCategory.Error;
       const code = `ts(${diagnostic.code})`;
-
+      let origin: DiagnosticOrigin | undefined;
       const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\r\n");
 
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
-        const origin = {
+        origin = {
           end: diagnostic.start + diagnostic.length,
           file: diagnostic.file,
           start: diagnostic.start,
         };
-
-        return new Diagnostic(text, category, origin).add({ code });
       }
 
-      return new Diagnostic(text, category).add({ code });
+      return new Diagnostic(text, category, origin).add({ code });
     });
   }
 

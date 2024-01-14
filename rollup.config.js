@@ -3,7 +3,6 @@ import path from "node:path";
 import typescript from "@rollup/plugin-typescript";
 import MagicString from "magic-string";
 import dts from "rollup-plugin-dts";
-import tsconfigPaths from "rollup-plugin-tsconfig-paths";
 
 const output = {
   dir: "./build",
@@ -19,11 +18,15 @@ function tidyJs() {
   return {
     name: "tidy-js",
 
-    renderChunk(code, chunkInfo) {
+    async renderChunk(code, chunkInfo) {
       if (chunkInfo.fileName === tstycheEntry) {
         const magicString = new MagicString(code);
 
-        magicString.replaceAll("../../package.json", "../package.json");
+        const packageConfig = await fs.readFile(new URL("./package.json", import.meta.url), { encoding: "utf8" });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfig));
+
+        magicString.replaceAll("__version__", version);
 
         return {
           code: magicString.toString(),
@@ -37,7 +40,7 @@ function tidyJs() {
     async writeBundle() {
       const cliEntryFilePath = path.resolve(output.dir, binEntry);
 
-      return fs.chmod(cliEntryFilePath, 0o755);
+      await fs.chmod(cliEntryFilePath, 0o755);
     },
   };
 }
@@ -54,8 +57,6 @@ function tidyDts() {
     renderChunk(code, chunkInfo) {
       if (chunkInfo.fileName === tstycheEntry) {
         const magicString = new MagicString(code);
-
-        magicString.prepend('/// <reference types="node" resolution-mode="require"/>\n\n');
 
         magicString.replaceAll("import", "import type");
 
@@ -75,13 +76,18 @@ function tidyDts() {
 /** @type {Array<import("rollup").RollupOptions>} */
 const config = [
   {
+    external: [/^node:/],
     input: {
       index: "./src/types.ts",
       tstyche: "./src/tstyche.ts",
     },
     output,
-    // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-    plugins: [tsconfigPaths(), dts(), tidyDts()],
+    plugins: [
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      typescript(),
+      dts({ compilerOptions: { types: ["node"] } }),
+      tidyDts(),
+    ],
   },
 
   {
@@ -90,7 +96,11 @@ const config = [
       file: "./build/index.d.cts",
       format: "cjs",
     },
-    plugins: [dts()],
+    plugins: [
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      typescript(),
+      dts(),
+    ],
   },
 
   {

@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'TSTYCHE_NO_COLOR' environment variable overrides 'NO_COLOR' and disables colors: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'TSTYCHE_NO_COLOR' environment variable overrides 'NO_COLOR' and enables colors: stdout 1`] = `
+"<blue>uses</> TypeScript 5.3.3<gray> with ./tsconfig.json</>
+
+<green>pass</> <gray>./__typetests__/</>dummy.test.ts
+  <green>+</> <gray>is string?</>
+
+Targets:    <green>1 passed</>, 1 total
+Test files: <green>1 passed</>, 1 total
+Tests:      <green>1 passed</>, 1 total
+Assertions: <green>1 passed</>, 1 total
+Duration:   <<timestamp>>
+
+<gray>Ran </><gray>all test files.</>
+"
+`;
+
+exports[`'TSTYCHE_NO_COLOR' environment variable when 'NO_COLOR' is falsy, colors are enabled: stdout 1`] = `
+"<blue>uses</> TypeScript 5.3.3<gray> with ./tsconfig.json</>
+
+<green>pass</> <gray>./__typetests__/</>dummy.test.ts
+  <green>+</> <gray>is string?</>
+
+Targets:    <green>1 passed</>, 1 total
+Test files: <green>1 passed</>, 1 total
+Tests:      <green>1 passed</>, 1 total
+Assertions: <green>1 passed</>, 1 total
+Duration:   <<timestamp>>
+
+<gray>Ran </><gray>all test files.</>
+"
+`;
+
+exports[`'TSTYCHE_NO_COLOR' environment variable when 'NO_COLOR' is truthy, colors are disabled: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'TSTYCHE_NO_COLOR' environment variable when falsy, colors are enabled: stdout 1`] = `
+"<blue>uses</> TypeScript 5.3.3<gray> with ./tsconfig.json</>
+
+<green>pass</> <gray>./__typetests__/</>dummy.test.ts
+  <green>+</> <gray>is string?</>
+
+Targets:    <green>1 passed</>, 1 total
+Test files: <green>1 passed</>, 1 total
+Tests:      <green>1 passed</>, 1 total
+Assertions: <green>1 passed</>, 1 total
+Duration:   <<timestamp>>
+
+<gray>Ran </><gray>all test files.</>
+"
+`;
+
+exports[`'TSTYCHE_NO_COLOR' environment variable when truthy, colors are disabled: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

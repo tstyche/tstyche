@@ -147,7 +147,14 @@ Ran tests matching 'number' and not matching 'internal' in all test files.
 `;
 
 exports[`command line options '--target' option handles multiple targets: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.8.4
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + is string?
+
+adds TypeScript 5.3.2 to <<cwd>>/tests/__fixtures__/command-line-options/.store/5.3.2
+uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
   + is string?
@@ -157,10 +164,10 @@ uses TypeScript <<version>> with ./tsconfig.json
 pass ./__typetests__/dummy.test.ts
   + is string?
 
-Targets:    2 passed, 2 total
-Test files: 2 passed, 2 total
-Tests:      2 passed, 2 total
-Assertions: 2 passed, 2 total
+Targets:    3 passed, 3 total
+Test files: 3 passed, 3 total
+Tests:      3 passed, 3 total
+Assertions: 3 passed, 3 total
 Duration:   <<timestamp>>
 
 Ran all test files.
@@ -168,7 +175,8 @@ Ran all test files.
 `;
 
 exports[`command line options '--target' option handles single target: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.8.4
+uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
   + is string?

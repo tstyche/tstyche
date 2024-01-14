@@ -1,16 +1,27 @@
+import { createRequire } from "node:module";
 import os from "node:os";
+import process from "node:process";
 import { Path } from "#path";
 
 export class Environment {
   static #noColor = Environment.#resolveNoColor();
+  static #noInteractive = Environment.#resolveNoInteractive();
   static #storePath = Environment.#resolveStorePath();
   static #timeout = Environment.#resolveTimeout();
+  static #typescriptPath = Environment.#resolveTypeScriptPath();
 
   /**
    * Specifies whether color should be disabled in the output.
    */
   static get noColor(): boolean {
     return Environment.#noColor;
+  }
+
+  /**
+   * Specifies whether interactive elements should be disabled in the output.
+   */
+  static get noInteractive(): boolean {
+    return Environment.#noInteractive;
   }
 
   /**
@@ -27,24 +38,31 @@ export class Environment {
     return Environment.#timeout;
   }
 
-  static #parseBoolean(value: string | undefined) {
-    if (value != null) {
-      return ["1", "on", "t", "true", "y", "yes"].includes(value.toLowerCase());
+  /**
+   * The path to the currently installed TypeScript module.
+   */
+  static get typescriptPath(): string | undefined {
+    return Environment.#typescriptPath;
+  }
+
+  static #resolveNoColor() {
+    if (process.env["TSTYCHE_NO_COLOR"] != null) {
+      return process.env["TSTYCHE_NO_COLOR"] !== "";
+    }
+
+    if (process.env["NO_COLOR"] != null) {
+      return process.env["NO_COLOR"] !== "";
     }
 
     return false;
   }
 
-  static #resolveNoColor() {
-    if (process.env["TSTYCHE_NO_COLOR"] != null) {
-      return Environment.#parseBoolean(process.env["TSTYCHE_NO_COLOR"]);
+  static #resolveNoInteractive() {
+    if (process.env["TSTYCHE_NO_INTERACTIVE"] != null) {
+      return process.env["TSTYCHE_NO_INTERACTIVE"] !== "";
     }
 
-    if (process.env["NO_COLOR"] != null && process.env["NO_COLOR"] !== "") {
-      return true;
-    }
-
-    return false;
+    return !process.stdout.isTTY;
   }
 
   static #resolveStorePath() {
@@ -73,5 +91,24 @@ export class Environment {
     }
 
     return 30;
+  }
+
+  static #resolveTypeScriptPath() {
+    let moduleId = "typescript";
+
+    if (process.env["TSTYCHE_TYPESCRIPT_PATH"] != null) {
+      moduleId = process.env["TSTYCHE_TYPESCRIPT_PATH"];
+    }
+
+    let resolvedPath: string | undefined;
+
+    try {
+      // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
+      resolvedPath = createRequire(import.meta.url).resolve(moduleId);
+    } catch {
+      // the path cannot be resolved
+    }
+
+    return resolvedPath;
   }
 }

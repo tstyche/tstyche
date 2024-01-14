@@ -1,23 +1,27 @@
 {
   "all": true,
   "exclude": [
-    ".yarn/**/*",
-    "coverage/**/*",
+    "benchmarks/**/*",
     "build/**/*",
+    "coverage/**/*",
     "examples/**/*",
     "lib/**/*",
     "scripts/**/*",
     "tests/**/*",
     "typetests/**/*",
     "**/__tests__/**/*",
-    "jest.config.js",
-    "rollup.config.js",
     "**/index.ts",
+    "**/main.ts",
     "**/tstyche.ts",
-    "**/types.ts"
+    "**/types.ts",
+    "*.config.js"
   ],
   "excludeAfterRemap": true,
   "mergeAsync": true,
-  "reporter": ["lcov", "text"],
-  "tempDirectory": "./coverage/temp"
+  "reporter": ["json", "text"],
+  "reporterOptions": {
+    "json": { "file": "report.json" },
+    "text": { "file": "report.txt", "skipFull": true }
+  },
+  "tempDirectory": "./coverage/.cache"
 }

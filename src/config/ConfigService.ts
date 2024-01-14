@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
+import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { StoreService } from "#store";
@@ -23,8 +24,8 @@ export class ConfigService {
   static #defaultOptions: Required<ConfigFileOptions> = {
     allowNoTestFiles: false,
     failFast: false,
-    rootPath: "./",
-    target: ["latest"],
+    rootPath: Path.resolve("./"),
+    target: [Environment.typescriptPath == null ? "latest" : "current"],
     testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
   };
 
@@ -54,7 +55,7 @@ export class ConfigService {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostic] }]);
   };
 
-  parseCommandLine(commandLineArgs: Array<string>): void {
+  async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {
     this.#commandLineOptions = {};
     this.#pathMatch = [];
 
@@ -65,26 +66,23 @@ export class ConfigService {
       this.#onDiagnostic,
     );
 
-    commandLineWorker.parse(commandLineArgs);
+    await commandLineWorker.parse(commandLineArgs);
   }
 
-  async readConfigFile(
-    filePath?: string, // TODO take URL as well
-    sourceText?: string,
-  ): Promise<void> {
-    const configFilePath = filePath ?? this.#commandLineOptions.config ?? Path.resolve("./tstyche.config.json");
+  async readConfigFile(): Promise<void> {
+    const configFilePath = this.#commandLineOptions.config ?? Path.resolve("./tstyche.config.json");
+
+    if (!existsSync(configFilePath)) {
+      return;
+    }
 
     this.#configFileOptions = {
       rootPath: Path.dirname(configFilePath),
     };
 
-    let configFileText = sourceText ?? "";
-
-    if (sourceText == null && existsSync(configFilePath)) {
-      configFileText = await fs.readFile(configFilePath, {
-        encoding: "utf8",
-      });
-    }
+    const configFileText = await fs.readFile(configFilePath, {
+      encoding: "utf8",
+    });
 
     const configFileWorker = new ConfigFileOptionsWorker(
       this.compiler,
@@ -97,7 +95,6 @@ export class ConfigService {
     await configFileWorker.parse(configFileText);
   }
 
-  // TODO could take 'configFileOptions: ConfigFileOptions' and add them on top of everything for programmatic usage
   resolveConfig(): ResolvedConfig {
     const mergedOptions = {
       ...ConfigService.#defaultOptions,

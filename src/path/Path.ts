@@ -1,10 +1,6 @@
 import path from "node:path";
 
 export class Path {
-  static basename(filePath: string): string {
-    return Path.normalizeSlashes(path.basename(filePath));
-  }
-
   static dirname(filePath: string): string {
     return Path.normalizeSlashes(path.dirname(filePath));
   }

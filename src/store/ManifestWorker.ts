@@ -13,39 +13,54 @@ interface PackageMetadata {
 }
 
 export interface Manifest {
+  $version?: string | undefined;
   lastUpdated: number;
   resolutions: Record<string, string>;
   versions: Array<string>;
 }
 
 export class ManifestWorker {
-  #cachePath: string;
   #manifestFileName = "store-manifest.json";
   #manifestFilePath: string;
   #onDiagnostic: (diagnostic: Diagnostic) => void;
   #prune: () => Promise<void>;
   #registryUrl = new URL("https://registry.npmjs.org");
+  #storePath: string;
   #timeout = Environment.timeout * 1000;
+  readonly #version = "1";
 
-  constructor(cachePath: string, onDiagnostic: (diagnostic: Diagnostic) => void, prune: () => Promise<void>) {
-    this.#cachePath = cachePath;
+  constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void, prune: () => Promise<void>) {
+    this.#storePath = storePath;
     this.#onDiagnostic = onDiagnostic;
-    this.#manifestFilePath = Path.join(cachePath, this.#manifestFileName);
+    this.#manifestFilePath = Path.join(storePath, this.#manifestFileName);
     this.#prune = prune;
+  }
+
+  async #create(signal?: AbortSignal) {
+    const manifest = await this.#load(signal);
+
+    if (manifest != null) {
+      await this.persist(manifest);
+    }
+
+    return manifest;
   }
 
   async #fetch(signal?: AbortSignal) {
     return new Promise<PackageMetadata>((resolve, reject) => {
       const request = https.get(
-        // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
         new URL("typescript", this.#registryUrl),
         {
+          // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
           headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
           signal,
         },
         (result) => {
           if (result.statusCode !== 200) {
             reject(new Error(`Request failed with status code ${String(result.statusCode)}.`));
+
+            // consume response data to free up memory
+            result.resume();
 
             return;
           }
@@ -83,8 +98,9 @@ export class ManifestWorker {
     return false;
   }
 
-  async #load(signal?: AbortSignal, isUpdate = false) {
+  async #load(signal?: AbortSignal, options: { quite: boolean } = { quite: false }) {
     const manifest: Manifest = {
+      $version: this.#version,
       lastUpdated: Date.now(),
       resolutions: {},
       versions: [],
@@ -107,7 +123,7 @@ export class ManifestWorker {
     signal?.addEventListener(
       "abort",
       () => {
-        abortController.abort(`Fetch got canceled by request.`);
+        abortController.abort("Fetch got canceled by request.");
       },
       { once: true },
     );
@@ -115,7 +131,7 @@ export class ManifestWorker {
     try {
       packageMetadata = await this.#fetch(abortController.signal);
     } catch (error) {
-      if (!isUpdate) {
+      if (!options.quite) {
         const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.href}'.`];
 
         if (error instanceof Error && error.name !== "AbortError") {
@@ -156,19 +172,11 @@ export class ManifestWorker {
     return manifest;
   }
 
-  async open(signal?: AbortSignal): Promise<Manifest | undefined> {
+  async open(signal?: AbortSignal, options?: { refresh?: boolean }): Promise<Manifest | undefined> {
     let manifest: Manifest | undefined;
 
     if (!existsSync(this.#manifestFilePath)) {
-      manifest = await this.#load(signal);
-
-      if (manifest == null) {
-        return;
-      }
-
-      await this.persist(manifest);
-
-      return manifest;
+      return this.#create(signal);
     }
 
     let manifestText: string | undefined;
@@ -185,47 +193,36 @@ export class ManifestWorker {
 
     try {
       manifest = JSON.parse(manifestText) as Manifest;
-    } catch (error) {
-      this.#onDiagnostic(
-        Diagnostic.fromError(
-          [
-            `Failed to parse '${this.#manifestFilePath}'.`,
-            "Cached files appeared to be corrupt and got removed. Try running 'tstyche' again.",
-          ],
-          error,
-        ),
-      );
+    } catch {
+      // the manifest will be removed and recreated
     }
 
-    if (manifest == null) {
+    if (manifest == null || manifest.$version !== this.#version) {
       await this.#prune();
 
-      return;
+      return this.#create(signal);
     }
 
-    if (this.isOutdated(manifest)) {
-      manifest = await this.update(manifest, signal);
+    if (this.isOutdated(manifest) || options?.refresh === true) {
+      const quite = options?.refresh !== true;
+
+      const freshManifest = await this.#load(signal, { quite });
+
+      if (freshManifest != null) {
+        await this.persist(freshManifest);
+
+        return freshManifest;
+      }
     }
 
     return manifest;
   }
 
   async persist(manifest: Manifest): Promise<void> {
-    if (!existsSync(this.#cachePath)) {
-      await fs.mkdir(this.#cachePath, { recursive: true });
+    if (!existsSync(this.#storePath)) {
+      await fs.mkdir(this.#storePath, { recursive: true });
     }
 
     await fs.writeFile(this.#manifestFilePath, JSON.stringify(manifest));
-  }
-
-  async update(manifest: Manifest, signal?: AbortSignal): Promise<Manifest> {
-    const freshManifest = await this.#load(signal, /* isUpdate */ true);
-
-    if (freshManifest != null) {
-      manifest = { ...manifest, ...freshManifest };
-      await this.persist(manifest);
-    }
-
-    return manifest;
   }
 }

@@ -6,27 +6,28 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import { CompilerModuleWorker } from "./CompilerModuleWorker.js";
+import { Version } from "#version";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
+import { PackageInstaller } from "./PackageInstaller.js";
 
 export class StoreService {
-  #cachePath: string;
-  #compilerModuleWorker: CompilerModuleWorker;
+  #compilerInstanceCache = new Map<string, typeof ts>();
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
-  #nodeRequire = createRequire(import.meta.url);
+  #packageInstaller: PackageInstaller;
+  #storePath: string;
 
   constructor() {
-    this.#cachePath = Environment.storePath;
+    this.#storePath = Environment.storePath;
 
-    this.#compilerModuleWorker = new CompilerModuleWorker(this.#cachePath, this.#onDiagnostic);
-    this.#manifestWorker = new ManifestWorker(this.#cachePath, this.#onDiagnostic, this.prune);
+    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#onDiagnostic);
+    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostic, this.prune);
   }
 
-  get supportedTags(): Array<string> {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
+  async getSupportedTags(signal?: AbortSignal): Promise<Array<string>> {
+    await this.open(signal);
 
+    if (!this.#manifest) {
       return [];
     }
 
@@ -34,17 +35,11 @@ export class StoreService {
   }
 
   async install(tag: string, signal?: AbortSignal): Promise<string | undefined> {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
-
-      return;
-    }
-
     if (tag === "current") {
       return;
     }
 
-    const version = this.resolveTag(tag);
+    const version = await this.resolveTag(tag, signal);
 
     if (version == null) {
       this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
@@ -52,58 +47,76 @@ export class StoreService {
       return;
     }
 
-    return this.#compilerModuleWorker.ensure(version, signal);
+    return this.#packageInstaller.ensure(version, signal);
   }
 
-  async load(tag?: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
-    let modulePath: string | undefined;
+  async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
+    let compilerInstance = this.#compilerInstanceCache.get(tag);
 
-    if (tag == null || tag === "current") {
-      try {
-        modulePath = this.#nodeRequire.resolve("typescript");
-      } catch (error) {
-        if (tag === "current") {
-          this.#onDiagnostic(
-            Diagnostic.fromError(
-              "Failed to resolve locally installed 'typescript' package. It might be not installed.",
-              error,
-            ),
-          );
-        }
-      }
+    if (compilerInstance != null) {
+      return compilerInstance;
     }
 
-    if (modulePath == null) {
-      if (tag === "current") {
+    let modulePath: string | undefined;
+
+    if (tag === "current" && Environment.typescriptPath != null) {
+      modulePath = Environment.typescriptPath;
+    } else {
+      const version = await this.resolveTag(tag, signal);
+
+      if (version == null) {
+        this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
+
         return;
       }
 
-      // If TypeScript is not installed and "current" was not specified, "latest" is loaded from the store as a fallback
-      modulePath = await this.install(tag ?? "latest", signal);
+      compilerInstance = this.#compilerInstanceCache.get(version);
+
+      if (compilerInstance != null) {
+        return compilerInstance;
+      }
+
+      modulePath = await this.#packageInstaller.ensure(version, signal);
     }
 
     if (modulePath != null) {
-      return this.#loadModule(modulePath);
+      compilerInstance = await this.#loadModule(modulePath);
+
+      this.#compilerInstanceCache.set(tag, compilerInstance);
+      this.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
     }
 
-    return;
+    return compilerInstance;
   }
 
   async #loadModule(modulePath: string) {
     const exports = {};
-    const require = createRequire(modulePath);
     const module = { exports };
 
-    let sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
-    sourceText = sourceText.replace("isTypeAssignableTo,", "isTypeAssignableTo, isTypeIdenticalTo, isTypeSubtypeOf,");
+    const candidatePaths = [Path.join(Path.dirname(modulePath), "tsserverlibrary.js"), modulePath];
 
-    const compiledWrapper = vm.compileFunction(
-      sourceText,
-      ["exports", "require", "module", "__filename", "__dirname"],
-      { filename: modulePath },
-    );
+    for (const candidatePath of candidatePaths) {
+      const sourceText = await fs.readFile(candidatePath, { encoding: "utf8" });
 
-    compiledWrapper(exports, require, module, modulePath, Path.dirname(modulePath));
+      const modifiedSourceText = sourceText.replace(
+        "return checker;",
+        "return { ...checker, isTypeIdenticalTo, isTypeSubtypeOf };",
+      );
+
+      if (modifiedSourceText.length === sourceText.length) {
+        continue;
+      }
+
+      const compiledWrapper = vm.compileFunction(
+        modifiedSourceText,
+        ["exports", "require", "module", "__filename", "__dirname"],
+        { filename: candidatePath },
+      );
+
+      compiledWrapper(exports, createRequire(candidatePath), module, candidatePath, Path.dirname(candidatePath));
+
+      break;
+    }
 
     return module.exports as typeof ts;
   }
@@ -121,61 +134,47 @@ export class StoreService {
   }
 
   prune = async (): Promise<void> => {
-    await fs.rm(this.#cachePath, { force: true, recursive: true });
+    await fs.rm(this.#storePath, { force: true, recursive: true });
   };
 
-  resolveTag(tag: string): string | undefined {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
-
-      return;
-    }
-
-    if (tag === "current" || this.#manifest.versions.includes(tag)) {
+  async resolveTag(tag: string, signal?: AbortSignal): Promise<string | undefined> {
+    if (tag === "current") {
       return tag;
     }
 
-    const version = this.#manifest.resolutions[tag];
+    await this.open(signal);
 
-    if (
-      this.#manifestWorker.isOutdated(this.#manifest, /* ageTolerance */ 60 /* one minute */) &&
-      Object.keys(this.#manifest.resolutions).slice(-5).includes(tag)
-    ) {
-      this.#onDiagnostic(
-        Diagnostic.warning([
-          "Failed to update metadata of the 'typescript' package from the registry.",
-          `The resolution of the '${tag}' tag may be outdated.`,
-        ]),
-      );
-    }
-
-    return version;
-  }
-
-  async update(signal?: AbortSignal): Promise<void> {
     if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
-
       return;
     }
 
-    await this.#manifestWorker.update(this.#manifest, signal);
+    if (this.#manifest.versions.includes(tag)) {
+      return tag;
+    }
+
+    return this.#manifest.resolutions[tag];
   }
 
-  validateTag(tag: string): boolean {
-    if (!this.#manifest) {
-      this.#onDiagnostic(Diagnostic.error("Store manifest is not open. Call 'StoreService.open()' first."));
+  async update(signal?: AbortSignal): Promise<void> {
+    await this.#manifestWorker.open(signal, { refresh: true });
+  }
 
+  async validateTag(tag: string, signal?: AbortSignal): Promise<boolean> {
+    if (tag === "current") {
+      return Environment.typescriptPath != null;
+    }
+
+    await this.open(signal);
+
+    if (!this.#manifest) {
       return false;
     }
 
-    if (this.#manifest.versions.includes(tag) || tag in this.#manifest.resolutions || tag === "current") {
-      return true;
-    }
-
     if (
-      this.#manifest.resolutions["latest"] != null &&
-      tag.startsWith(this.#manifest.resolutions["latest"].slice(0, 3))
+      this.#manifestWorker.isOutdated(this.#manifest, /* ageTolerance */ 60 /* one minute */) &&
+      (!Version.isVersionTag(tag) ||
+        (this.#manifest.resolutions["latest"] != null &&
+          Version.isGreaterThan(tag, this.#manifest.resolutions["latest"])))
     ) {
       this.#onDiagnostic(
         Diagnostic.warning([
@@ -185,6 +184,6 @@ export class StoreService {
       );
     }
 
-    return false;
+    return this.#manifest.versions.includes(tag) || tag in this.#manifest.resolutions || tag === "current";
   }
 }

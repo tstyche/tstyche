@@ -1,5 +1,16 @@
+import process from "node:process";
 import { Environment } from "#environment";
 import { Scribbler } from "#scribbler";
+
+/**
+ * A stream to output messages.
+ */
+export interface WriteStream {
+  /**
+   * @param chunk - Data to write.
+   */
+  write: (chunk: string) => void;
+}
 
 /**
  * Options to configure an instance of the {@link Logger}.
@@ -10,13 +21,13 @@ export interface LoggerOptions {
    */
   noColor?: boolean;
   /**
-   * A stream to write warnings and errors. Default: `process.stdout`.
+   * A stream to write warnings and errors. Default: `process.stderr`.
    */
-  stderr?: NodeJS.WritableStream;
+  stderr?: WriteStream;
   /**
-   * A stream to write informational messages. Default: `process.stderr`.
+   * A stream to write informational messages. Default: `process.stdout`.
    */
-  stdout?: NodeJS.WritableStream;
+  stdout?: WriteStream;
 }
 
 /**
@@ -25,8 +36,8 @@ export interface LoggerOptions {
 export class Logger {
   #noColor: boolean;
   #scribbler: Scribbler;
-  #stderr: NodeJS.WritableStream;
-  #stdout: NodeJS.WritableStream;
+  #stderr: WriteStream;
+  #stdout: WriteStream;
 
   /**
    * @param options - {@link LoggerOptions | Options} to configure an instance of the Logger.
@@ -36,33 +47,17 @@ export class Logger {
     this.#stderr = options?.stderr ?? process.stderr;
     this.#stdout = options?.stdout ?? process.stdout;
 
-    this.#scribbler = new Scribbler({ noColors: this.#noColor });
+    this.#scribbler = new Scribbler({ noColor: this.#noColor });
   }
 
   /**
-   * Moves the cursor one line up and erases the line when the `stdout` stream
-   * is interactive. Otherwise does nothing.
+   * Moves the cursor one line up in the `stdout` stream and erases that line.
    */
   eraseLastLine(): void {
-    if (!this.isInteractive()) {
-      return;
-    }
-
     this.#stdout.write("\u001B[1A\u001B[0K");
   }
 
-  /**
-   * Returns `true` if the `stdout` stream is interactive.
-   */
-  isInteractive(): boolean {
-    if ("isTTY" in this.#stdout && typeof this.#stdout.isTTY === "boolean") {
-      return this.#stdout.isTTY;
-    }
-
-    return false;
-  }
-
-  #write(stream: NodeJS.WritableStream, body: JSX.Element | Array<JSX.Element>): void {
+  #write(stream: WriteStream, body: JSX.Element | Array<JSX.Element>): void {
     const elements = Array.isArray(body) ? body : [body];
 
     for (const element of elements) {

@@ -1,4 +1,4 @@
-import { Diagnostic } from "#diagnostic";
+import { Environment } from "#environment";
 import type { Event } from "#events";
 import { addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
 import { FileViewService } from "./FileViewService.js";
@@ -58,15 +58,6 @@ export class ThoroughReporter extends Reporter {
 
           this.#hasReportedAdds = false;
 
-          if (payload.projectConfigFilePath == null) {
-            const text = [
-              "The default compiler options are used for the following tests files.",
-              "Make sure that 'tsconfig.json' exists and the test files are included in the program.",
-            ];
-
-            this.logger.writeWarning(diagnosticText(Diagnostic.warning(text)));
-          }
-
           this.#currentCompilerVersion = payload.compilerVersion;
           this.#currentProjectConfigFilePath = payload.projectConfigFilePath;
         }
@@ -79,7 +70,7 @@ export class ThoroughReporter extends Reporter {
         break;
 
       case "file:start":
-        if (this.logger.isInteractive()) {
+        if (!Environment.noInteractive) {
           this.logger.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
         }
 
@@ -94,7 +85,10 @@ export class ThoroughReporter extends Reporter {
         break;
 
       case "file:end":
-        this.logger.eraseLastLine();
+        if (!Environment.noInteractive) {
+          this.logger.eraseLastLine();
+        }
+
         this.logger.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
 
         this.logger.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));

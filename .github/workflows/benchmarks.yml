@@ -1,0 +1,35 @@
+name: Benchmarks
+
+on:
+  push:
+    branches: main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  benchmarks:
+    name: Benchmarks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install hyperfine
+        run: cargo install --locked hyperfine
+
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
+        with:
+          node-version: lts/*
+      - run: corepack enable
+      - run: yarn install
+      - run: yarn build
+      - run: yarn bench
+
+      - uses: bencherdev/bencher@main
+      - name: Run bencher
+        run: |
+          bencher run \
+          --adapter 'shell_hyperfine' \
+          --file 'tstyche.bench.json' \
+          --project 'tstyche' \
+          --token "${{ secrets.BENCHER_TOKEN }}"

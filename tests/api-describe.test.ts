@@ -1,49 +1,50 @@
 import { expect, test } from "@jest/globals";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const fixture = "api-describe";
 
-test("includes nested", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["nested"]);
+test("includes nested", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["nested"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
 
-  expect(status).toBe(0);
+  expect(exitCode).toBe(0);
 });
 
-test("describe.only", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["only"]);
+test("describe.only", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["only"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
 
-  expect(status).toBe(0);
+  expect(exitCode).toBe(0);
 });
 
-test("describe.skip", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["skip"]);
+test("describe.skip", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["skip"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
 
-  expect(status).toBe(0);
+  expect(exitCode).toBe(0);
 });
 
-test("describe.todo", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["todo"]);
+test("describe.todo", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["todo"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
 
-  expect(status).toBe(0);
+  expect(exitCode).toBe(0);
 });
 
-test("handles 'expect()' nested within 'describe()'", () => {
-  const { status, stderr, stdout } = spawnTyche(fixture, ["describe-level-expect"]);
+test("handles 'expect()' nested within 'describe()'", async () => {
+  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["describe-level-expect"]);
 
-  expect(stdout).toMatchSnapshot("stdout");
-  expect(stderr).toMatchSnapshot("stderr");
+  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-  expect(status).toBe(1);
+  expect(exitCode).toBe(1);
 });

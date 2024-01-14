@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
 import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -26,6 +27,25 @@ afterEach(async () => {
 });
 
 describe("tstyche.config.json", () => {
+  describe("'$schema' key", () => {
+    test("is allowed", async () => {
+      const config = { $schema: "https://tstyche.org/schemas/config.json" };
+
+      await writeFixture(fixture, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+      expect(stderr).toBe("");
+
+      expect(exitCode).toBe(0);
+    });
+  });
+
   describe("'allowNoTestFiles: false' option", () => {
     test("errors when no test files are selected", async () => {
       const config = { allowNoTestFiles: false };
@@ -35,12 +55,12 @@ describe("tstyche.config.json", () => {
         ["tstyche.config.json"]: JSON.stringify(config, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture);
+      const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
       expect(stdout).toBe("");
-      expect(stderr).toMatchSnapshot("stderr");
+      expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-      expect(status).toBe(1);
+      expect(exitCode).toBe(1);
     });
   });
 
@@ -53,12 +73,12 @@ describe("tstyche.config.json", () => {
         ["tstyche.config.json"]: JSON.stringify(config, null, 2),
       });
 
-      const { status, stderr, stdout } = spawnTyche(fixture);
+      const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
-      expect(stdout).toMatchSnapshot("stdout");
+      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
       expect(stderr).toBe("");
 
-      expect(status).toBe(0);
+      expect(exitCode).toBe(0);
     });
   });
 
@@ -73,7 +93,7 @@ describe("tstyche.config.json", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, ["--config ./config/tstyche.json", "--showConfig"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--config ./config/tstyche.json", "--showConfig"]);
 
     expect(JSON.parse(stdout)).toMatchObject({
       config: expect.stringMatching(/config-file-options\/config\/tstyche.json$/),
@@ -81,7 +101,7 @@ describe("tstyche.config.json", () => {
     });
     expect(stderr).toBe("");
 
-    expect(status).toBe(0);
+    expect(exitCode).toBe(0);
   });
 
   test("handles not existing 'rootPath' option path", async () => {
@@ -95,17 +115,17 @@ describe("tstyche.config.json", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, ["--config ./config/tstyche.json"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--config ./config/tstyche.json"]);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot();
+    expect(normalizeOutput(stderr)).toMatchSnapshot();
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("'target' option", async () => {
     const config = {
-      target: ["4.8", "latest"],
+      target: ["4.8", "5.3.2", "current"],
     };
 
     await writeFixture(fixture, {
@@ -114,12 +134,12 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
-    expect(stdout).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
-    expect(status).toBe(0);
+    expect(exitCode).toBe(0);
   });
 
   test("handles 'current' as 'target' option value", async () => {
@@ -133,37 +153,11 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr } = spawnTyche(fixture);
+    const { exitCode, stderr } = await spawnTyche(fixture);
 
     expect(stderr).toBe("");
 
-    expect(status).toBe(0);
-  });
-
-  test("handles not supported 'target' option value", async () => {
-    const config = {
-      target: ["new"],
-    };
-
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-    });
-
-    const { status, stderr, stdout } = spawnTyche(fixture);
-
-    expect(stdout).toBe("");
-    expect(stderr).toMatch(
-      [
-        "Error: TypeScript version 'new' is not supported.",
-        "",
-        "Item of the 'target' list must be a supported version tag.",
-        "Supported tags:",
-      ].join("\r\n"),
-    );
-
-    expect(status).toBe(1);
+    expect(exitCode).toBe(0);
   });
 
   test("'testFileMatch' option", async () => {
@@ -180,12 +174,12 @@ describe("tstyche.config.json", () => {
       ["type-tests/isString.test.ts"]: isStringTestText,
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
-    expect(stdout).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
-    expect(status).toBe(0);
+    expect(exitCode).toBe(0);
   });
 
   test("handles unknown options", async () => {
@@ -201,12 +195,12 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("handles option argument of wrong type", async () => {
@@ -220,12 +214,12 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("handles list item of wrong type", async () => {
@@ -239,12 +233,12 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("handles wrong root value", async () => {
@@ -256,12 +250,12 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("handles single quoted property names", async () => {
@@ -275,12 +269,12 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: configText,
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("handles single quoted values", async () => {
@@ -294,12 +288,12 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: configText,
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("handles single quoted list items", async () => {
@@ -313,12 +307,12 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: configText,
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
   test("handles comments", async () => {
@@ -339,7 +333,7 @@ describe("tstyche.config.json", () => {
       ["tstyche.config.json"]: configText,
     });
 
-    const { status, stderr, stdout } = spawnTyche(fixture, ["--showConfig"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--showConfig"]);
 
     expect(JSON.parse(stdout)).toMatchObject({
       failFast: true,
@@ -348,6 +342,6 @@ describe("tstyche.config.json", () => {
     });
     expect(stderr).toBe("");
 
-    expect(status).toBe(0);
+    expect(exitCode).toBe(0);
   });
 });

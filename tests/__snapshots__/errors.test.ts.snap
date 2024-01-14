@@ -80,56 +80,6 @@ Ran test files matching 'matcher-level'.
 "
 `;
 
-exports[`handles syntax errors: stderr 1`] = `
-"Error: Expression expected. ts(1109)
-
-  4 | 
-  5 | test("is syntax error?", () => {
-> 6 |   one(());
-    |        ^
-  7 | });
-  8 | 
-  9 | test("is syntax error?", () => {
-
-      at ./__typetests__/syntax-error.tst.ts:6:8
-
-Error: Argument expression expected. ts(1135)
-
-   9 | test("is syntax error?", () => {
-  10 |   one(
-> 11 | });
-     | ^
-  12 | 
-  13 | test("is skipped?", () => {
-  14 |   expect(one("abc")).type.toBeVoid();
-
-       at ./__typetests__/syntax-error.tst.ts:11:1
-
-Error: ')' expected. ts(1005)
-
-  16 | 
-  17 | test("is broken?"
-> 18 | 
-     | ^
-
-       at ./__typetests__/syntax-error.tst.ts:18:1
-
-"
-`;
-
-exports[`handles syntax errors: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
-
-fail ./__typetests__/syntax-error.tst.ts
-
-Targets:    1 failed, 1 total
-Test files: 1 failed, 1 total
-Duration:   <<timestamp>>
-
-Ran all test files.
-"
-`;
-
 exports[`handles test level type errors: stderr 1`] = `
 "Error: Property 'toBeString' does not exist on type 'Modifier'. ts(2339)
 
@@ -201,37 +151,5 @@ Test files: 1 failed, 1 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'top-level'.
-"
-`;
-
-exports[`handles tsconfig option errors: stderr 1`] = `
-"Error: Compiler option 'strict' requires a value of type boolean. ts(5024)
-
-  4 |     "module": "commonjs",
-  5 |     "target": "es2019",
-> 6 |     "strict": "yes",
-    |               ^
-  7 |     "strictNullChecks": true,
-  8 |     "noEmitOnError": true
-  9 |   },
-
-      at ./tsconfig.json:6:15
-
-"
-`;
-
-exports[`handles tsconfig option errors: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
-
-pass ./__typetests__/tsconfig-option-error.tst.ts
-  + is string?
-
-Targets:    1 failed, 1 total
-Test files: 1 passed, 1 total
-Tests:      1 passed, 1 total
-Assertions: 1 passed, 1 total
-Duration:   <<timestamp>>
-
-Ran all test files.
 "
 `;

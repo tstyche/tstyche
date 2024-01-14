@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'TSTYCHE_NO_INTERACTIVE' environment variable when falsy, interactive elements  are enabled: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+runs ./__typetests__/dummy.test.ts
+<moveCursorUpBy1Row>
+<eraseLineEnd>
+pass ./__typetests__/dummy.test.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'TSTYCHE_NO_INTERACTIVE' environment variable when truthy, interactive elements are disabled: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

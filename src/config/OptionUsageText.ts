@@ -14,19 +14,19 @@ export class OptionUsageText {
     this.#storeService = storeService;
   }
 
-  get(optionName: string, optionBrand: OptionBrand): Array<string> {
+  async get(optionName: string, optionBrand: OptionBrand): Promise<Array<string>> {
     const usageText: Array<string> = [];
 
     switch (optionName) {
       case "target": {
-        const { supportedTags } = this.#storeService;
+        const supportedTags = await this.#storeService.getSupportedTags();
         const supportedTagsText = `Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`;
 
         switch (this.#optionGroup) {
           case OptionGroup.CommandLine:
             usageText.push(
               "Argument for the '--target' option must be a single tag or a comma separated list.",
-              "Usage examples: '--target 4.9', '--target 5.0.4', '--target 4.7,4.8,latest'.",
+              "Usage examples: '--target 4.9', '--target latest', '--target 4.9,5.3.2,current'.",
               supportedTagsText,
             );
             break;

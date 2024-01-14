@@ -39,16 +39,16 @@ export class CommandLineOptionsWorker {
     this.#optionValidator = new OptionValidator(OptionGroup.CommandLine, this.#storeService, this.#onDiagnostic);
   }
 
-  #onExpectsArgumentDiagnostic(optionDefinition: OptionDefinition) {
+  async #onExpectsArgumentDiagnostic(optionDefinition: OptionDefinition) {
     const text = [
       this.#optionDiagnosticText.expectsArgument(optionDefinition.name),
-      ...this.#optionUsageText.get(optionDefinition.name, optionDefinition.brand),
+      ...(await this.#optionUsageText.get(optionDefinition.name, optionDefinition.brand)),
     ];
 
     this.#onDiagnostic(Diagnostic.error(text));
   }
 
-  parse(commandLineArgs: Array<string>): void {
+  async parse(commandLineArgs: Array<string>): Promise<void> {
     let index = 0;
     let arg = commandLineArgs[index];
 
@@ -60,7 +60,7 @@ export class CommandLineOptionsWorker {
         const optionDefinition = this.#commandLineOptionDefinitions.get(optionName);
 
         if (optionDefinition) {
-          index = this.#parseOptionValue(commandLineArgs, index, optionDefinition);
+          index = await this.#parseOptionValue(commandLineArgs, index, optionDefinition);
         } else {
           this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownOption(arg)));
         }
@@ -74,7 +74,7 @@ export class CommandLineOptionsWorker {
     }
   }
 
-  #parseOptionValue(commandLineArgs: Array<string>, index: number, optionDefinition: OptionDefinition) {
+  async #parseOptionValue(commandLineArgs: Array<string>, index: number, optionDefinition: OptionDefinition) {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
@@ -95,10 +95,10 @@ export class CommandLineOptionsWorker {
           const optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== ""); // in case if a comma was at the end of a list, e.g. "--target 5.0,latest,"
+            .filter((value) => value !== ""); // in case if a comma was at the end of a list, e.g. "--target 5.0,current,"
 
           for (const optionValue of optionValues) {
-            this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+            await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
           }
 
           this.#commandLineOptions[optionDefinition.name] = optionValues;
@@ -106,7 +106,7 @@ export class CommandLineOptionsWorker {
           break;
         }
 
-        this.#onExpectsArgumentDiagnostic(optionDefinition);
+        await this.#onExpectsArgumentDiagnostic(optionDefinition);
         break;
 
       case OptionBrand.String:
@@ -115,7 +115,7 @@ export class CommandLineOptionsWorker {
             optionValue = Path.resolve(optionValue);
           }
 
-          this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+          await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
 
           this.#commandLineOptions[optionDefinition.name] = optionValue;
 
@@ -123,7 +123,7 @@ export class CommandLineOptionsWorker {
           break;
         }
 
-        this.#onExpectsArgumentDiagnostic(optionDefinition);
+        await this.#onExpectsArgumentDiagnostic(optionDefinition);
         break;
 
       default:

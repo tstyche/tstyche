@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`when syntax errors are encountered: stderr 1`] = `
+"Error: Expression expected. ts(1109)
+
+  4 | 
+  5 | test("is syntax error?", () => {
+> 6 |   one(());
+    |        ^
+  7 | });
+  8 | 
+  9 | test("is syntax error?", () => {
+
+      at ./__typetests__/dummy.test.ts:6:8
+
+Error: Argument expression expected. ts(1135)
+
+   9 | test("is syntax error?", () => {
+  10 |   one(
+> 11 | });
+     | ^
+  12 | 
+  13 | test("is skipped?", () => {
+  14 |   expect(one("abc")).type.toBeVoid();
+
+       at ./__typetests__/dummy.test.ts:11:1
+
+Error: ')' expected. ts(1005)
+
+  16 | 
+  17 | test("is broken?"
+> 18 | 
+     | ^
+
+       at ./__typetests__/dummy.test.ts:18:1
+
+"
+`;
+
+exports[`when syntax errors are encountered: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/dummy.test.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

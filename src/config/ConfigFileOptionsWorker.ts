@@ -51,10 +51,6 @@ export class ConfigFileOptionsWorker {
   }
 
   async parse(sourceText: string): Promise<void> {
-    if (sourceText === "") {
-      return;
-    }
-
     const configSourceFile = this.compiler.parseJsonText(this.#configFilePath, sourceText) as ts.JsonSourceFile & {
       parseDiagnostics: Array<ts.Diagnostic>;
     };
@@ -169,15 +165,9 @@ export class ConfigFileOptionsWorker {
             start: this.#skipTrivia(valueExpression.pos, sourceFile),
           };
 
-          this.#optionValidator.check(optionDefinition.name, value, optionDefinition.brand, origin);
+          await this.#optionValidator.check(optionDefinition.name, value, optionDefinition.brand, origin);
 
           return value;
-        }
-        break;
-
-      case this.compiler.SyntaxKind.NumericLiteral:
-        if (optionDefinition.brand === OptionBrand.Number) {
-          return Number((valueExpression as ts.NumericLiteral).text);
         }
         break;
 

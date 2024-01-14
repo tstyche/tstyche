@@ -1,3 +1,4 @@
+import process from "node:process";
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
@@ -10,12 +11,9 @@ import { StoreService } from "#store";
 export class Cli {
   #abortController = new AbortController();
   #logger: Logger;
-  #process: NodeJS.Process;
   #storeService: StoreService;
 
-  constructor(process: NodeJS.Process) {
-    this.#process = process;
-
+  constructor() {
     this.#logger = new Logger();
     this.#storeService = new StoreService();
   }
@@ -32,7 +30,7 @@ export class Cli {
           switch (diagnostic.category) {
             case DiagnosticCategory.Error:
               this.#abortController.abort();
-              this.#process.exitCode = 1;
+              process.exitCode = 1;
 
               this.#logger.writeError(diagnosticText(diagnostic));
               break;
@@ -72,19 +70,16 @@ export class Cli {
       return;
     }
 
-    await this.#storeService.open(this.#abortController.signal);
-
-    if (this.#process.exitCode === 1) {
-      return;
-    }
-
     if (commandLineArguments.includes("--update")) {
-      await this.#storeService.update();
+      await this.#storeService.update(this.#abortController.signal);
 
       return;
     }
 
-    const compiler = await this.#storeService.load(/* tag */ undefined, this.#abortController.signal);
+    const compiler = await this.#storeService.load(
+      Environment.typescriptPath == null ? "latest" : "current",
+      this.#abortController.signal,
+    );
 
     if (!compiler) {
       return;
@@ -92,15 +87,15 @@ export class Cli {
 
     const configService = new ConfigService(compiler, this.#storeService);
 
-    configService.parseCommandLine(commandLineArguments);
+    await configService.parseCommandLine(commandLineArguments);
 
-    if (this.#process.exitCode === 1) {
+    if (process.exitCode === 1) {
       return;
     }
 
     await configService.readConfigFile();
 
-    if (this.#process.exitCode === 1) {
+    if (process.exitCode === 1) {
       return;
     }
 
@@ -110,8 +105,10 @@ export class Cli {
       this.#logger.writeMessage(
         formattedText({
           noColor: Environment.noColor,
+          noInteractive: Environment.noInteractive,
           storePath: Environment.storePath,
           timeout: Environment.timeout,
+          typescriptPath: Environment.typescriptPath,
           ...resolvedConfig,
         }),
       );
@@ -129,7 +126,7 @@ export class Cli {
 
     const testFiles = configService.selectTestFiles();
 
-    if (this.#process.exitCode === 1) {
+    if (process.exitCode === 1) {
       return;
     }
 

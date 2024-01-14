@@ -1,4 +1,5 @@
 import { existsSync, rmSync, writeFileSync } from "node:fs";
+import process from "node:process";
 
 export interface IsLockedOptions {
   onDiagnostic?: (diagnostic: string) => void;
