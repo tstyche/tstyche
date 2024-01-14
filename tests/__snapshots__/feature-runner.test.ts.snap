@@ -18,7 +18,7 @@ Ran all test files.
 "
 `;
 
-exports[`test file allows a file to be empty: stdout 1`] = `
+exports[`test files allows a file to be empty: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -31,7 +31,7 @@ Ran all test files.
 "
 `;
 
-exports[`test file allows a file to have only an empty describe: stdout 1`] = `
+exports[`test files allows a file to have only an empty describe: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -46,7 +46,7 @@ Ran all test files.
 "
 `;
 
-exports[`test file allows a file to have only empty tests: stdout 1`] = `
+exports[`test files allows a file to have only empty tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -61,7 +61,7 @@ Ran all test files.
 "
 `;
 
-exports[`test file allows a file to have only expect: stdout 1`] = `
+exports[`test files allows a file to have only expect: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -75,7 +75,7 @@ Ran all test files.
 "
 `;
 
-exports[`test file allows a file to have only skipped describe: stdout 1`] = `
+exports[`test files allows a file to have only skipped describe: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -89,7 +89,7 @@ Ran all test files.
 "
 `;
 
-exports[`test file allows a file to have only skipped tests: stdout 1`] = `
+exports[`test files allows a file to have only skipped tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -105,7 +105,7 @@ Ran all test files.
 "
 `;
 
-exports[`test file allows a file to have only todo describe: stdout 1`] = `
+exports[`test files allows a file to have only todo describe: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
@@ -120,7 +120,7 @@ Ran all test files.
 "
 `;
 
-exports[`test file allows a file to have only todo tests: stdout 1`] = `
+exports[`test files allows a file to have only todo tests: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/dummy.test.ts
