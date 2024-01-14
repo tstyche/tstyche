@@ -1,33 +1,34 @@
 import { describe, expect, test } from "@jest/globals";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const fixture = "api-toBeCallableWith";
 
 describe("toBeCallableWith", () => {
-  test("parameter arity", () => {
-    const { status, stderr, stdout } = spawnTyche(fixture, ["parameter-arity"]);
+  test("parameter arity", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["parameter-arity"]);
 
-    expect(stdout).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
-  test("optional parameters", () => {
-    const { status, stderr, stdout } = spawnTyche(fixture, ["optional-parameters"]);
+  test("optional parameters", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["optional-parameters"]);
 
-    expect(stdout).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 
-  test("default parameters", () => {
-    const { status, stderr, stdout } = spawnTyche(fixture, ["default-parameters"]);
+  test("default parameters", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["default-parameters"]);
 
-    expect(stdout).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
-    expect(status).toBe(1);
+    expect(exitCode).toBe(1);
   });
 });
