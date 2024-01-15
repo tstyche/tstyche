@@ -184,13 +184,13 @@ __metadata:
   linkType: hard
 
 "@babel/helpers@npm:^7.23.7":
-  version: 7.23.7
-  resolution: "@babel/helpers@npm:7.23.7"
+  version: 7.23.8
+  resolution: "@babel/helpers@npm:7.23.8"
   dependencies:
     "@babel/template": ^7.22.15
     "@babel/traverse": ^7.23.7
     "@babel/types": ^7.23.6
-  checksum: 4f3bdf35fb54ff79107c6020ba1e36a38213a15b05ca0fa06c553b65f566e185fba6339fb3344be04593ebc244ed0bbb0c6087e73effe0d053a30bcd2db3a013
+  checksum: 8b522d527921f8df45a983dc7b8e790c021250addf81ba7900ba016e165442a527348f6f877aa55e1debb3eef9e860a334b4e8d834e6c9b438ed61a63d9a7ad4
   languageName: node
   linkType: hard
 
@@ -800,9 +800,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-rust@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@cspell/dict-rust@npm:4.0.1"
-  checksum: 146d3af5d0b1b84ec62059353416cd5d4b53995ed0a0edb47b96ed89f1b8b82881e76c1bac46311318f41d1619eab87d81e0cdc94855f50b79cfa0719333cbb1
+  version: 4.0.2
+  resolution: "@cspell/dict-rust@npm:4.0.2"
+  checksum: c4d817cbf77ca6d97562b106cf78c43c6090465191d29db3210e431cf1b9d5ef4b6ac98d9da9c79ccaeab3da39b8d6edf952870507f40d0f051245d45d44d2c0
   languageName: node
   linkType: hard
 
@@ -923,13 +923,13 @@ __metadata:
   linkType: hard
 
 "@humanwhocodes/config-array@npm:^0.11.13":
-  version: 0.11.13
-  resolution: "@humanwhocodes/config-array@npm:0.11.13"
+  version: 0.11.14
+  resolution: "@humanwhocodes/config-array@npm:0.11.14"
   dependencies:
-    "@humanwhocodes/object-schema": ^2.0.1
-    debug: ^4.1.1
+    "@humanwhocodes/object-schema": ^2.0.2
+    debug: ^4.3.1
     minimatch: ^3.0.5
-  checksum: f8ea57b0d7ed7f2d64cd3944654976829d9da91c04d9c860e18804729a33f7681f78166ef4c761850b8c324d362f7d53f14c5c44907a6b38b32c703ff85e4805
+  checksum: 861ccce9eaea5de19546653bccf75bf09fe878bc39c3aab00aeee2d2a0e654516adad38dd1098aab5e3af0145bbcbf3f309bdf4d964f8dab9dcd5834ae4c02f2
   languageName: node
   linkType: hard
 
@@ -940,10 +940,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/object-schema@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@humanwhocodes/object-schema@npm:2.0.1"
-  checksum: 24929487b1ed48795d2f08346a0116cc5ee4634848bce64161fb947109352c562310fd159fc64dda0e8b853307f5794605191a9547f7341158559ca3c8262a45
+"@humanwhocodes/object-schema@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@humanwhocodes/object-schema@npm:2.0.2"
+  checksum: 2fc11503361b5fb4f14714c700c02a3f4c7c93e9acd6b87a29f62c522d90470f364d6161b03d1cc618b979f2ae02aed1106fd29d302695d8927e2fc8165ba8ee
   languageName: node
   linkType: hard
 
@@ -1254,12 +1254,12 @@ __metadata:
   linkType: hard
 
 "@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.17, @jridgewell/trace-mapping@npm:^0.3.18, @jridgewell/trace-mapping@npm:^0.3.9":
-  version: 0.3.20
-  resolution: "@jridgewell/trace-mapping@npm:0.3.20"
+  version: 0.3.21
+  resolution: "@jridgewell/trace-mapping@npm:0.3.21"
   dependencies:
     "@jridgewell/resolve-uri": ^3.1.0
     "@jridgewell/sourcemap-codec": ^1.4.14
-  checksum: cd1a7353135f385909468ff0cf20bdd37e59f2ee49a13a966dedf921943e222082c583ade2b579ff6cd0d8faafcb5461f253e1bf2a9f48fec439211fdbe788f5
+  checksum: e91d3943c6d84687503ba033600d42b2a81d9eaf32758fee06449cd1415c59b944af08841e99f030b71f83bb5f814969e96fc8aa29e469eb3ea1b46597d13cff
   languageName: node
   linkType: hard
 
@@ -1613,16 +1613,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 20.10.7
-  resolution: "@types/node@npm:20.10.7"
-  dependencies:
-    undici-types: ~5.26.4
-  checksum: 86f4f96f5169538f47bbd652ab8e3712cd307701481ff3e9ce0c1ea7d8424a38b5ac4a1d33088cdd9ea1bfe68fd27bbae005a21969aa6d9a36295904da6f09f2
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:20.11.0":
+"@types/node@npm:*, @types/node@npm:20.11.0":
   version: 20.11.0
   resolution: "@types/node@npm:20.11.0"
   dependencies:
@@ -1871,9 +1862,9 @@ __metadata:
   linkType: hard
 
 "acorn-walk@npm:^8.1.1":
-  version: 8.3.1
-  resolution: "acorn-walk@npm:8.3.1"
-  checksum: 5c8926ddb5400bc825b6baca782931f9df4ace603ba1a517f5243290fd9cdb089d52877840687b5d5c939591ebc314e2e63721514feaa37c6829c828f2b940ce
+  version: 8.3.2
+  resolution: "acorn-walk@npm:8.3.2"
+  checksum: 3626b9d26a37b1b427796feaa5261faf712307a8920392c8dce9a5739fb31077667f4ad2ec71c7ac6aaf9f61f04a9d3d67ff56f459587206fc04aa31c27ef392
   languageName: node
   linkType: hard
 
@@ -2840,9 +2831,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.601":
-  version: 1.4.623
-  resolution: "electron-to-chromium@npm:1.4.623"
-  checksum: 69b285f1046571bde9cda95089397e1388dc5268c71b361832ade9eae6d9987229fa150856e024f845c68848e235f0fcdaf730f0d03b061239c75c968b521d11
+  version: 1.4.630
+  resolution: "electron-to-chromium@npm:1.4.630"
+  checksum: 9bf16b06b245d6937845bbef17c0babdf8e01845c8aa31eb2d7dc3a88cd34291d2dec0d8e329450a5b8dfcf5d3dc96c56aa1c8b224d942e3b1d508e9e3cb9788
   languageName: node
   linkType: hard
 
@@ -3765,7 +3756,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"has-property-descriptors@npm:^1.0.0":
+"has-property-descriptors@npm:^1.0.0, has-property-descriptors@npm:^1.0.1":
   version: 1.0.1
   resolution: "has-property-descriptors@npm:1.0.1"
   dependencies:
@@ -5754,13 +5745,13 @@ __metadata:
   linkType: hard
 
 "safe-regex-test@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "safe-regex-test@npm:1.0.0"
+  version: 1.0.2
+  resolution: "safe-regex-test@npm:1.0.2"
   dependencies:
-    call-bind: ^1.0.2
-    get-intrinsic: ^1.1.3
+    call-bind: ^1.0.5
+    get-intrinsic: ^1.2.2
     is-regex: ^1.1.4
-  checksum: bc566d8beb8b43c01b94e67de3f070fd2781685e835959bbbaaec91cc53381145ca91f69bd837ce6ec244817afa0a5e974fc4e40a2957f0aca68ac3add1ddd34
+  checksum: 4af5ce05a2daa4f6d4bfd5a3c64fc33d6b886f6592122e93c0efad52f7147b9b605e5ffc03c269a1e3d1f8db2a23bc636628a961c9fd65bafdc09503330673fd
   languageName: node
   linkType: hard
 
@@ -5792,14 +5783,15 @@ __metadata:
   linkType: hard
 
 "set-function-length@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "set-function-length@npm:1.1.1"
+  version: 1.2.0
+  resolution: "set-function-length@npm:1.2.0"
   dependencies:
     define-data-property: ^1.1.1
-    get-intrinsic: ^1.2.1
+    function-bind: ^1.1.2
+    get-intrinsic: ^1.2.2
     gopd: ^1.0.1
-    has-property-descriptors: ^1.0.0
-  checksum: c131d7569cd7e110cafdfbfbb0557249b538477624dfac4fc18c376d879672fa52563b74029ca01f8f4583a8acb35bb1e873d573a24edb80d978a7ee607c6e06
+    has-property-descriptors: ^1.0.1
+  checksum: 63e34b45a2ff9abb419f52583481bf8ba597d33c0c85e56999085eb6078a0f7fbb4222051981c287feceeb358aa7789e7803cea2c82ac94c0ab37059596aff79
   languageName: node
   linkType: hard
 
