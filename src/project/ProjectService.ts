@@ -61,7 +61,7 @@ export class ProjectService {
   }
 
   #getCompilerOptionsForInferredProjects() {
-    const projectConfig: ts.server.protocol.InferredProjectCompilerOptions = {
+    const compilerOptions: ts.server.protocol.CompilerOptions = {
       allowJs: true,
       checkJs: true,
       esModuleInterop: true,
@@ -75,11 +75,11 @@ export class ProjectService {
     };
 
     if (Version.isSatisfiedWith(this.compiler.version, "5")) {
-      projectConfig["allowImportingTsExtensions"] = true;
-      projectConfig.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
+      compilerOptions["allowImportingTsExtensions"] = true;
+      compilerOptions.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
     }
 
-    return projectConfig;
+    return compilerOptions;
   }
 
   getDefaultProject(filePath: string): ts.server.Project | undefined {
