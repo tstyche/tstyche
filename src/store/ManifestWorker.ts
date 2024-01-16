@@ -78,6 +78,8 @@ export class ManifestWorker {
               const packageMetadata = JSON.parse(rawData) as PackageMetadata;
               resolve(packageMetadata);
             } catch (error) {
+              // TODO consider adding rejection reason
+              // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
               reject(error);
             }
           });

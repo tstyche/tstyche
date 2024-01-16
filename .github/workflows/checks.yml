@@ -6,8 +6,8 @@ on:
       - main
       - renovate/**
   pull_request:
-    branches-ignore:
-      - renovate/**
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
