@@ -15,7 +15,6 @@ concurrency:
 
 jobs:
   lint:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.head_ref != 'renovate/**') }}
     name: Lint
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +30,6 @@ jobs:
       - run: yarn lint:prettier
 
   test-types:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.head_ref != 'renovate/**') }}
     name: Test Types
     runs-on: ubuntu-latest
     steps:
@@ -46,7 +44,6 @@ jobs:
       - run: yarn test:examples --target 4.7,5.0,current
 
   typecheck:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.head_ref != 'renovate/**') }}
     name: Typecheck Scripts & Tests
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +57,6 @@ jobs:
       - run: yarn typecheck
 
   test-node:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.head_ref != 'renovate/**') }}
     name: Test Build on Node.js v${{ matrix.node-version }}
     needs:
       - typecheck
@@ -84,7 +80,6 @@ jobs:
           FORCE_COLOR: true
 
   test-os:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.head_ref != 'renovate/**') }}
     name: Test Build on ${{ matrix.os }}
     needs:
       - typecheck
@@ -107,7 +102,6 @@ jobs:
           FORCE_COLOR: true
 
   test-coverage:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.head_ref != 'renovate/**') }}
     name: Collect Test Coverage
     needs:
       - typecheck
