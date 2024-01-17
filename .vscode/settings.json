@@ -10,6 +10,7 @@
     "eslint.config.json": "jsonc",
     "tstyche.config.json": "jsonc"
   },
+  "prettier.configPath": "./prettier.config.json",
   "typescript.preferences.importModuleSpecifierEnding": "js",
   "typescript.tsdk": "node_modules/typescript/lib"
 }
