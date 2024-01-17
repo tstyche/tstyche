@@ -2,13 +2,7 @@
   "name": "tstyche",
   "version": "1.0.0-beta.9",
   "description": "The Essential Type Testing Tool.",
-  "keywords": [
-    "typescript",
-    "types",
-    "test",
-    "runner",
-    "expect"
-  ],
+  "keywords": ["typescript", "types", "test", "runner", "expect"],
   "homepage": "https://tstyche.org",
   "bugs": {
     "url": "https://github.com/tstyche/tstyche/issues"
@@ -30,9 +24,7 @@
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "bin": "./build/bin.js",
-  "files": [
-    "build/*"
-  ],
+  "files": ["build/*"],
   "scripts": {
     "bench": "./benchmarks/tstyche.bench.sh",
     "build": "rollup --config rollup.config.js",
@@ -44,7 +36,7 @@
     "lint": "yarn lint:cspell && yarn lint:eslint && yarn lint:prettier",
     "lint:cspell": "cspell --cache --cache-location ./.cache/cspell --config cspell.config.json --quiet",
     "lint:eslint": "eslint ./ --cache --cache-location ./.cache/eslint --config eslint.config.json --ext .js,.cts,.ts,.tsx",
-    "lint:prettier": "prettier ./ --cache --cache-location ./.cache/prettier --check",
+    "lint:prettier": "prettier ./ --cache --cache-location ./.cache/prettier --check --config prettier.config.json",
     "prepack": "yarn clean && yarn build",
     "prepublish": "yarn test",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --config jest.config.js",
