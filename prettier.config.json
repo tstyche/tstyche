@@ -1,9 +1,16 @@
 {
+  "$schema": "https://json.schemastore.org/prettierrc",
   "overrides": [
     {
       "files": ["*.json"],
       "options": {
         "parser": "json"
+      }
+    },
+    {
+      "files": ["package.json"],
+      "options": {
+        "parser": "json-stringify"
       }
     }
   ]

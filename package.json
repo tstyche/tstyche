@@ -2,7 +2,13 @@
   "name": "tstyche",
   "version": "1.0.0-beta.9",
   "description": "The Essential Type Testing Tool.",
-  "keywords": ["typescript", "types", "test", "runner", "expect"],
+  "keywords": [
+    "typescript",
+    "types",
+    "test",
+    "runner",
+    "expect"
+  ],
   "homepage": "https://tstyche.org",
   "bugs": {
     "url": "https://github.com/tstyche/tstyche/issues"
@@ -24,7 +30,9 @@
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "bin": "./build/bin.js",
-  "files": ["build/*"],
+  "files": [
+    "build/*"
+  ],
   "scripts": {
     "bench": "./benchmarks/tstyche.bench.sh",
     "build": "rollup --config rollup.config.js",
