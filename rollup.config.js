@@ -8,9 +8,7 @@ const output = {
   dir: "./build",
 };
 
-/**
- * @returns {import("rollup").Plugin}
- */
+/** @returns {import("rollup").Plugin} */
 function tidyJs() {
   const binEntry = "bin.js";
   const tstycheEntry = "tstyche.js";
@@ -45,9 +43,7 @@ function tidyJs() {
   };
 }
 
-/**
- * @returns {import("rollup").Plugin}
- */
+/** @returns {import("rollup").Plugin} */
 function tidyDts() {
   const tstycheEntry = "tstyche.d.ts";
 

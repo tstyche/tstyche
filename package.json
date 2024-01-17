@@ -44,7 +44,7 @@
     "lint": "yarn lint:cspell && yarn lint:eslint && yarn lint:prettier",
     "lint:cspell": "cspell --config cspell.config.json --quiet",
     "lint:eslint": "eslint ./ --config eslint.config.json --ext .js,.cts,.ts,.tsx",
-    "lint:prettier": "prettier ./ --check --config prettier.config.json",
+    "lint:prettier": "prettier ./ --check --config prettier.config.js",
     "prepack": "yarn clean && yarn build",
     "prepublish": "yarn test",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --config jest.config.js",

@@ -20,8 +20,13 @@
   "mergeAsync": true,
   "reporter": ["json", "text"],
   "reporterOptions": {
-    "json": { "file": "report.json" },
-    "text": { "file": "report.txt", "skipFull": true }
+    "json": {
+      "file": "report.json"
+    },
+    "text": {
+      "file": "report.txt",
+      "skipFull": true
+    }
   },
   "tempDirectory": "./coverage/.cache"
 }
