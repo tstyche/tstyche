@@ -105,7 +105,7 @@ class MatchText implements JSX.ElementClass {
       <Text>
         {this.props.text.map((match, index, list) => (
           <Text>
-            '{match}'{index === list.length - 1 ? <Text>{" "}</Text> : <Text color={Color.Gray}>,</Text>}
+            '{match}'{index === list.length - 1 ? <Text>{" "}</Text> : <Text color={Color.Gray}>{", "}</Text>}
           </Text>
         ))}
         <Text color={Color.Gray}>or</Text> '{lastItem}'
