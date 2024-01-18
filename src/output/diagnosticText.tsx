@@ -6,10 +6,9 @@ class DiagnosticText implements JSX.ElementClass {
   constructor(readonly props: { diagnostic: Diagnostic }) {}
 
   render(): JSX.Element {
-    const code =
-      typeof this.props.diagnostic.code === "string" ? (
-        <Text color={Color.Gray}> {this.props.diagnostic.code}</Text>
-      ) : undefined;
+    const code = typeof this.props.diagnostic.code === "string"
+      ? <Text color={Color.Gray}>{" "}{this.props.diagnostic.code}</Text>
+      : undefined;
 
     const text = Array.isArray(this.props.diagnostic.text) ? this.props.diagnostic.text : [this.props.diagnostic.text];
 
@@ -27,12 +26,14 @@ class DiagnosticText implements JSX.ElementClass {
       <DiagnosticText diagnostic={relatedDiagnostic} />
     ));
 
-    const codeSpan = this.props.diagnostic.origin ? (
-      <Text>
-        <Line />
-        <CodeSpanText {...this.props.diagnostic.origin} />
-      </Text>
-    ) : undefined;
+    const codeSpan = this.props.diagnostic.origin
+      ? (
+        <Text>
+          <Line />
+          <CodeSpanText {...this.props.diagnostic.origin} />
+        </Text>
+      )
+      : undefined;
 
     return (
       <Text>
@@ -50,11 +51,11 @@ export function diagnosticText(diagnostic: Diagnostic): JSX.Element {
 
   switch (diagnostic.category) {
     case DiagnosticCategory.Error:
-      prefix = <Text color={Color.Red}>Error: </Text>;
+      prefix = <Text color={Color.Red}>{"Error: "}</Text>;
       break;
 
     case DiagnosticCategory.Warning:
-      prefix = <Text color={Color.Yellow}>Warning: </Text>;
+      prefix = <Text color={Color.Yellow}>{"Warning: "}</Text>;
       break;
 
     default:

@@ -122,7 +122,7 @@ describe("store manifest", () => {
   test("when is up to date, store manifest is not regenerated", async () => {
     const storeManifest = {
       $version: "1",
-      lastUpdated: Date.now() - 60 * 60 * 1000 /* 2 hours */,
+      lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
@@ -147,7 +147,7 @@ describe("store manifest", () => {
   test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = {
       $version: "1",
-      lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000 /* 2 hours and 15 minutes */,
+      lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 

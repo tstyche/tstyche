@@ -40,17 +40,18 @@ export class TestTreeWorker {
     }
 
     if (
-      member.flags & TestMemberFlags.Only ||
-      (this.resolvedConfig.only != null &&
-        member.name.toLowerCase().includes(this.resolvedConfig.only.toLowerCase())) ||
-      (this.#position != null && member.node.getStart() === this.#position) // TODO position must override '.skip'
+      member.flags & TestMemberFlags.Only
+      || (this.resolvedConfig.only != null
+        && member.name.toLowerCase().includes(this.resolvedConfig.only.toLowerCase()))
+      || (this.#position != null && member.node.getStart() === this.#position) // TODO position must override '.skip'
     ) {
       mode |= RunMode.Only;
     }
 
     if (
-      member.flags & TestMemberFlags.Skip ||
-      (this.resolvedConfig.skip != null && member.name.toLowerCase().includes(this.resolvedConfig.skip.toLowerCase()))
+      member.flags & TestMemberFlags.Skip
+      || (this.resolvedConfig.skip != null
+        && member.name.toLowerCase().includes(this.resolvedConfig.skip.toLowerCase()))
     ) {
       mode |= RunMode.Skip;
     }
@@ -185,8 +186,8 @@ export class TestTreeWorker {
     runMode = this.#resolveRunMode(runMode, describe);
 
     if (
-      !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
-      describe.diagnostics.size > 0
+      !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo)
+      && describe.diagnostics.size > 0
     ) {
       EventEmitter.dispatch([
         "file:error",

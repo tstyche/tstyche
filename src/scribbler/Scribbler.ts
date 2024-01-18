@@ -103,10 +103,9 @@ export class Scribbler {
       }
 
       if (element.type === "ansi" && !this.#noColor) {
-        const flags =
-          typeof element.props?.["escapes"] === "string" || Array.isArray(element.props?.["escapes"])
-            ? element.props["escapes"]
-            : undefined;
+        const flags = typeof element.props?.["escapes"] === "string" || Array.isArray(element.props?.["escapes"])
+          ? element.props["escapes"]
+          : undefined;
 
         if (flags != null) {
           return this.#escapeSequence(flags);

@@ -1,8 +1,8 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
+    "dprint.dprint",
     "editorconfig.editorconfig",
-    "esbenp.prettier-vscode",
     "streetsidesoftware.code-spell-checker"
   ]
 }

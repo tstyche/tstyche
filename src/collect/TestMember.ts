@@ -24,9 +24,9 @@ export class TestMember {
     }
 
     if (
-      node.arguments[1] != null &&
-      parent.compiler.isFunctionLike(node.arguments[1]) &&
-      parent.compiler.isBlock(node.arguments[1].body)
+      node.arguments[1] != null
+      && parent.compiler.isFunctionLike(node.arguments[1])
+      && parent.compiler.isBlock(node.arguments[1].body)
     ) {
       const blockStart = node.arguments[1].body.getStart();
       const blockEnd = node.arguments[1].body.getEnd();

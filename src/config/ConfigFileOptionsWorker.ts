@@ -45,8 +45,8 @@ export class ConfigFileOptionsWorker {
 
   #isDoubleQuotedString(node: ts.Node, sourceFile: ts.SourceFile): boolean {
     return (
-      node.kind === this.compiler.SyntaxKind.StringLiteral &&
-      sourceFile.text.slice(this.#skipTrivia(node.pos, sourceFile), node.end).startsWith('"')
+      node.kind === this.compiler.SyntaxKind.StringLiteral
+      && sourceFile.text.slice(this.#skipTrivia(node.pos, sourceFile), node.end).startsWith('"')
     );
   }
 

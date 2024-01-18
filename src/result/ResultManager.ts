@@ -89,9 +89,9 @@ export class ResultManager {
 
       case "file:end":
         if (
-          this.#fileResult!.status === ResultStatus.Failed ||
-          this.#fileResult!.expectCount.failed > 0 ||
-          this.#fileResult!.testCount.failed > 0
+          this.#fileResult!.status === ResultStatus.Failed
+          || this.#fileResult!.expectCount.failed > 0
+          || this.#fileResult!.testCount.failed > 0
         ) {
           this.#result!.fileCount.failed++;
           this.#targetResult!.status = ResultStatus.Failed;

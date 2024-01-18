@@ -61,13 +61,16 @@ function createArrayPropertySignature(identifierText, itemDefinition, commentTex
  * @param {boolean} isNullable
  */
 function createPrimitivePropertySignature(identifierText, syntaxKind, commentText, isNullable = false) {
-  const typeNode = isNullable
-    ? ts.factory.createUnionTypeNode([
-        ts.factory.createKeywordTypeNode(syntaxKind),
-        ts.factory.createLiteralTypeNode(ts.factory.createNull()),
-        ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
-      ])
-    : ts.factory.createKeywordTypeNode(syntaxKind);
+  /** @type {ts.TypeNode} */
+  let typeNode = ts.factory.createKeywordTypeNode(syntaxKind);
+
+  if (isNullable) {
+    typeNode = ts.factory.createUnionTypeNode([
+      typeNode,
+      ts.factory.createLiteralTypeNode(ts.factory.createNull()),
+      ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
+    ]);
+  }
 
   const propertySignature = ts.factory.createPropertySignature(
     /* modifiers */ undefined,

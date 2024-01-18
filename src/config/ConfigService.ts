@@ -122,7 +122,7 @@ export class ConfigService {
           const relativeTestFilePath = Path.relative("", testFilePath);
 
           return relativeTestFilePath.toLowerCase().includes(match.toLowerCase());
-        }),
+        })
       );
     }
 

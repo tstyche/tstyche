@@ -880,6 +880,55 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dprint/darwin-arm64@npm:0.45.0":
+  version: 0.45.0
+  resolution: "@dprint/darwin-arm64@npm:0.45.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@dprint/darwin-x64@npm:0.45.0":
+  version: 0.45.0
+  resolution: "@dprint/darwin-x64@npm:0.45.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@dprint/linux-arm64-glibc@npm:0.45.0":
+  version: 0.45.0
+  resolution: "@dprint/linux-arm64-glibc@npm:0.45.0"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@dprint/linux-arm64-musl@npm:0.45.0":
+  version: 0.45.0
+  resolution: "@dprint/linux-arm64-musl@npm:0.45.0"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@dprint/linux-x64-glibc@npm:0.45.0":
+  version: 0.45.0
+  resolution: "@dprint/linux-x64-glibc@npm:0.45.0"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@dprint/linux-x64-musl@npm:0.45.0":
+  version: 0.45.0
+  resolution: "@dprint/linux-x64-musl@npm:0.45.0"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@dprint/win32-x64@npm:0.45.0":
+  version: 0.45.0
+  resolution: "@dprint/win32-x64@npm:0.45.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.4.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
@@ -2829,6 +2878,38 @@ __metadata:
   dependencies:
     is-obj: ^2.0.0
   checksum: 0f47600a4b93e1dc37261da4e6909652c008832a5d3684b5bf9a9a0d3f4c67ea949a86dceed9b72f5733ed8e8e6383cc5958df3bbd0799ee317fd181f2ece700
+  languageName: node
+  linkType: hard
+
+"dprint@npm:0.45.0":
+  version: 0.45.0
+  resolution: "dprint@npm:0.45.0"
+  dependencies:
+    "@dprint/darwin-arm64": 0.45.0
+    "@dprint/darwin-x64": 0.45.0
+    "@dprint/linux-arm64-glibc": 0.45.0
+    "@dprint/linux-arm64-musl": 0.45.0
+    "@dprint/linux-x64-glibc": 0.45.0
+    "@dprint/linux-x64-musl": 0.45.0
+    "@dprint/win32-x64": 0.45.0
+  dependenciesMeta:
+    "@dprint/darwin-arm64":
+      optional: true
+    "@dprint/darwin-x64":
+      optional: true
+    "@dprint/linux-arm64-glibc":
+      optional: true
+    "@dprint/linux-arm64-musl":
+      optional: true
+    "@dprint/linux-x64-glibc":
+      optional: true
+    "@dprint/linux-x64-musl":
+      optional: true
+    "@dprint/win32-x64":
+      optional: true
+  bin:
+    dprint: bin.js
+  checksum: 07985073f333c58ec9f9b5b35e520adb2243a397ca6c9808509f761ac4feaec0a94854cd69ccc1219a14f187b47e2715a38109c830ee96f2580f72029c0df738
   languageName: node
   linkType: hard
 
@@ -5436,15 +5517,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.2.4":
-  version: 3.2.4
-  resolution: "prettier@npm:3.2.4"
-  bin:
-    prettier: bin/prettier.cjs
-  checksum: 6ec9385a836e0b9bac549e585101c086d1521c31d7b882d5c8bb7d7646da0693da5f31f4fff6dc080710e5e2d34c85e6fb2f8766876b3645c8be2f33b9c3d1a3
-  languageName: node
-  linkType: hard
-
 "pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
@@ -6232,6 +6304,7 @@ __metadata:
     ajv: 8.12.0
     c8: 9.1.0
     cspell: 8.3.2
+    dprint: 0.45.0
     eslint: 8.56.0
     eslint-import-resolver-typescript: 3.6.1
     eslint-plugin-import: 2.29.1
@@ -6242,7 +6315,6 @@ __metadata:
     jest: 29.7.0
     jest-serializer-ansi-escapes: 2.0.1
     magic-string: 0.30.5
-    prettier: 3.2.4
     rollup: 4.9.5
     rollup-plugin-dts: 6.1.0
     ts-node: 10.9.2

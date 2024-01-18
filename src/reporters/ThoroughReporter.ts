@@ -46,13 +46,13 @@ export class ThoroughReporter extends Reporter {
 
       case "project:info":
         if (
-          this.#currentCompilerVersion !== payload.compilerVersion ||
-          this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
+          this.#currentCompilerVersion !== payload.compilerVersion
+          || this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
         ) {
           this.logger.writeMessage(
             usesCompilerStepText(payload.compilerVersion, payload.projectConfigFilePath, {
-              prependEmptyLine:
-                this.#currentCompilerVersion != null && !this.#hasReportedAdds && !this.#hasReportedError,
+              prependEmptyLine: this.#currentCompilerVersion != null && !this.#hasReportedAdds
+                && !this.#hasReportedError,
             }),
           );
 

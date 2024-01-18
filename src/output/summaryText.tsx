@@ -28,33 +28,41 @@ class CountText implements JSX.ElementClass {
   render(): JSX.Element {
     return (
       <Text>
-        {this.props.failed > 0 ? (
-          <Text>
-            <Text color={Color.Red}>{String(this.props.failed)} failed</Text>
-            <Text>, </Text>
-          </Text>
-        ) : undefined}
-        {this.props.skipped > 0 ? (
-          <Text>
-            <Text color={Color.Yellow}>{String(this.props.skipped)} skipped</Text>
-            <Text>, </Text>
-          </Text>
-        ) : undefined}
-        {this.props.todo > 0 ? (
-          <Text>
-            <Text color={Color.Magenta}>{String(this.props.todo)} todo</Text>
-            <Text>, </Text>
-          </Text>
-        ) : undefined}
-        {this.props.passed > 0 ? (
-          <Text>
-            <Text color={Color.Green}>{String(this.props.passed)} passed</Text>
-            <Text>, </Text>
-          </Text>
-        ) : undefined}
+        {this.props.failed > 0
+          ? (
+            <Text>
+              <Text color={Color.Red}>{String(this.props.failed)} failed</Text>
+              <Text>{", "}</Text>
+            </Text>
+          )
+          : undefined}
+        {this.props.skipped > 0
+          ? (
+            <Text>
+              <Text color={Color.Yellow}>{String(this.props.skipped)} skipped</Text>
+              <Text>{", "}</Text>
+            </Text>
+          )
+          : undefined}
+        {this.props.todo > 0
+          ? (
+            <Text>
+              <Text color={Color.Magenta}>{String(this.props.todo)} todo</Text>
+              <Text>{", "}</Text>
+            </Text>
+          )
+          : undefined}
+        {this.props.passed > 0
+          ? (
+            <Text>
+              <Text color={Color.Green}>{String(this.props.passed)} passed</Text>
+              <Text>{", "}</Text>
+            </Text>
+          )
+          : undefined}
         <Text>
           {String(this.props.total)}
-          <Text> total</Text>
+          <Text>{" total"}</Text>
         </Text>
       </Text>
     );
@@ -97,7 +105,7 @@ class MatchText implements JSX.ElementClass {
       <Text>
         {this.props.text.map((match, index, list) => (
           <Text>
-            '{match}'{index === list.length - 1 ? <Text> </Text> : <Text color={Color.Gray}>, </Text>}
+            '{match}'{index === list.length - 1 ? <Text>{" "}</Text> : <Text color={Color.Gray}>,</Text>}
           </Text>
         ))}
         <Text color={Color.Gray}>or</Text> '{lastItem}'
@@ -121,7 +129,7 @@ class RanFilesText implements JSX.ElementClass {
     if (this.props.onlyMatch != null) {
       testNameMatch.push(
         <Text>
-          <Text color={Color.Gray}>matching </Text>
+          <Text color={Color.Gray}>{"matching "}</Text>
           <MatchText text={this.props.onlyMatch} />
         </Text>,
       );
@@ -130,8 +138,8 @@ class RanFilesText implements JSX.ElementClass {
     if (this.props.skipMatch != null) {
       testNameMatch.push(
         <Text>
-          {this.props.onlyMatch == null ? undefined : <Text color={Color.Gray}> and </Text>}
-          <Text color={Color.Gray}>not matching </Text>
+          {this.props.onlyMatch == null ? undefined : <Text color={Color.Gray}>{" and "}</Text>}
+          <Text color={Color.Gray}>{"not matching "}</Text>
           <MatchText text={this.props.skipMatch} />
         </Text>,
       );
@@ -142,7 +150,7 @@ class RanFilesText implements JSX.ElementClass {
     if (this.props.pathMatch.length > 0) {
       pathMatch = (
         <Text>
-          <Text color={Color.Gray}>test files matching </Text>
+          <Text color={Color.Gray}>{"test files matching "}</Text>
           <MatchText text={this.props.pathMatch} />
           <Text color={Color.Gray}>.</Text>
         </Text>
@@ -153,10 +161,10 @@ class RanFilesText implements JSX.ElementClass {
 
     return (
       <Line>
-        <Text color={Color.Gray}>Ran </Text>
-        {testNameMatch.length > 0 ? <Text color={Color.Gray}>tests </Text> : undefined}
+        <Text color={Color.Gray}>{"Ran "}</Text>
+        {testNameMatch.length > 0 ? <Text color={Color.Gray}>{"tests "}</Text> : undefined}
         {testNameMatch}
-        {testNameMatch.length > 0 ? <Text color={Color.Gray}> in </Text> : undefined}
+        {testNameMatch.length > 0 ? <Text color={Color.Gray}>{" in "}</Text> : undefined}
         {pathMatch}
       </Line>
     );

@@ -19,10 +19,9 @@ export class CodeSpanText implements JSX.ElementClass {
 
     for (let index = firstLine; index <= lastLine; index++) {
       const lineStart = this.props.file.getPositionOfLineAndCharacter(index, 0);
-      const lineEnd =
-        index === lastLineInFile
-          ? this.props.file.text.length
-          : this.props.file.getPositionOfLineAndCharacter(index + 1, 0);
+      const lineEnd = index === lastLineInFile
+        ? this.props.file.text.length
+        : this.props.file.getPositionOfLineAndCharacter(index + 1, 0);
 
       const lineNumberText = String(index + 1);
       const lineText = this.props.file.text.slice(lineStart, lineEnd).trimEnd().replaceAll("\t", " ");
@@ -33,7 +32,6 @@ export class CodeSpanText implements JSX.ElementClass {
             <Text color={Color.Red}>{">"}</Text> {lineNumberText.padStart(lineNumberMaxWidth)}{" "}
             <Text color={Color.Gray}>|</Text> {lineText}
           </Line>,
-
           <Line>
             {" ".repeat(lineNumberMaxWidth + 3)}
             <Text color={Color.Gray}>|</Text>
@@ -54,7 +52,7 @@ export class CodeSpanText implements JSX.ElementClass {
     }
 
     const breadcrumbs = this.props.breadcrumbs?.flatMap((ancestor) => [
-      <Text color={Color.Gray}> ❭ </Text>,
+      <Text color={Color.Gray}>{" ❭ "}</Text>,
       <Text>{ancestor}</Text>,
     ]);
 
