@@ -10,8 +10,6 @@ const config = {
     ["^#(.*)$"]: "<rootDir>/src/$1",
     ["^(\\.{1,2}/.*)\\.js$"]: "$1",
   },
-  // TODO remove after fixing https://github.com/jestjs/jest/issues/14305
-  prettierPath: null,
   randomize: true,
   testMatch: ["**/*.test.ts?(x)", "!**/examples/**/*", "!**/typetests/**/*"],
   testTimeout: 75000,

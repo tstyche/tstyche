@@ -143,8 +143,8 @@ export class Expect {
         const nonPrimitiveType = { flags: this.compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
 
         if (
-          sourceType.flags & (this.compiler.TypeFlags.Any | this.compiler.TypeFlags.Never) ||
-          !this.typeChecker.isTypeAssignableTo(sourceType, nonPrimitiveType)
+          sourceType.flags & (this.compiler.TypeFlags.Any | this.compiler.TypeFlags.Never)
+          || !this.typeChecker.isTypeAssignableTo(sourceType, nonPrimitiveType)
         ) {
           this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
 

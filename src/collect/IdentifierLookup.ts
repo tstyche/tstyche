@@ -37,9 +37,9 @@ export class IdentifierLookup {
 
   handleImportDeclaration(node: ts.ImportDeclaration): void {
     if (
-      this.#moduleSpecifiers.includes(node.moduleSpecifier.getText()) &&
-      node.importClause?.isTypeOnly !== true &&
-      node.importClause?.namedBindings != null
+      this.#moduleSpecifiers.includes(node.moduleSpecifier.getText())
+      && node.importClause?.isTypeOnly !== true
+      && node.importClause?.namedBindings != null
     ) {
       if (this.compiler.isNamedImports(node.importClause.namedBindings)) {
         for (const element of node.importClause.namedBindings.elements) {
@@ -97,8 +97,8 @@ export class IdentifierLookup {
     let identifierName: string | undefined;
 
     if (
-      this.compiler.isPropertyAccessExpression(expression) &&
-      expression.expression.getText() === this.#identifiers.namespace
+      this.compiler.isPropertyAccessExpression(expression)
+      && expression.expression.getText() === this.#identifiers.namespace
     ) {
       identifierName = expression.name.getText();
     } else {

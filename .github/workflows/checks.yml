@@ -14,9 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  check:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
-    name: Lint
+    name: Check & Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -26,9 +26,10 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - run: yarn lint:cspell
-      - run: yarn lint:eslint
-      - run: yarn lint:prettier
+      - run: yarn check:spelling
+      - run: yarn check:formatting
+      - run: yarn check:types
+      - run: yarn lint
 
   test-types:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -45,25 +46,11 @@ jobs:
       - run: yarn test:types --target 4.7,5.0,current
       - run: yarn test:examples --target 4.7,5.0,current
 
-  typecheck:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
-    name: Typecheck Scripts & Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
-        with:
-          node-version: lts/*
-      - run: corepack enable
-      - run: yarn install
-      - run: yarn build
-      - run: yarn typecheck
-
   test-node:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Test Build on Node.js v${{ matrix.node-version }}
     needs:
-      - typecheck
+      - check
     strategy:
       fail-fast: false
       matrix:
@@ -87,7 +74,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Test Build on ${{ matrix.os }}
     needs:
-      - typecheck
+      - check
     strategy:
       fail-fast: false
       matrix:
@@ -110,7 +97,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Collect Test Coverage
     needs:
-      - typecheck
+      - check
     runs-on: ubuntu-latest
 
     steps:

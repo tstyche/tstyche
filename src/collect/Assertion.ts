@@ -30,11 +30,11 @@ export class Assertion extends TestMember {
 
     for (const diagnostic of parent.diagnostics) {
       if (
-        diagnostic.start != null &&
-        argStart != null &&
-        argEnd != null &&
-        diagnostic.start >= argStart &&
-        diagnostic.start <= argEnd
+        diagnostic.start != null
+        && argStart != null
+        && argEnd != null
+        && diagnostic.start >= argStart
+        && diagnostic.start <= argEnd
       ) {
         this.diagnostics.add(diagnostic);
         parent.diagnostics.delete(diagnostic);

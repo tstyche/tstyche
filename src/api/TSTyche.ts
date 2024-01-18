@@ -26,8 +26,8 @@ export class TSTyche {
     EventEmitter.addHandler(([eventName, payload]) => {
       if (eventName.includes("error") || eventName.includes("fail")) {
         if (
-          "diagnostics" in payload &&
-          !payload.diagnostics.some(({ category }) => category === DiagnosticCategory.Error)
+          "diagnostics" in payload
+          && !payload.diagnostics.some(({ category }) => category === DiagnosticCategory.Error)
         ) {
           return;
         }

@@ -57,7 +57,7 @@ describe("warns if resolution of a tag may be outdated", () => {
   ])("$testCase", async ({ target }) => {
     const storeManifest = {
       $version: "1",
-      lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000 /* 2 hours and 15 minutes */,
+      lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
       resolutions: {
         ["5.2"]: "5.2.2",
         ["5.3"]: "5.3.3",
@@ -105,7 +105,7 @@ describe("does not warn if resolution of a tag may be outdated", () => {
   ])("$testCase", async ({ target }) => {
     const storeManifest = {
       $version: "1",
-      lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000 /* 2 hours and 15 minutes */,
+      lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, /* 2 hours and 15 minutes */
       resolutions: {
         ["5.2"]: "5.2.2",
         ["5.3"]: "5.3.3",
