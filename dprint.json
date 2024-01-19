@@ -14,7 +14,7 @@
     "exportDeclaration.sortNamedExports": "maintain",
     "importDeclaration.sortNamedImports": "maintain"
   },
-  "excludes": ["coverage/**", "build/**", "lib/**", "node_modules/**"],
+  "excludes": ["coverage/**", "build/**", "lib/*.*", "node_modules/**"],
 
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.88.9.wasm",
