@@ -9,17 +9,17 @@ describe("describeNameText", () => {
     const text = scribbler.render(describeNameText("sample describe name"));
 
     expect(text).toMatchInlineSnapshot(`
-      "  sample describe name
-      "
-    `);
+"  sample describe name
+"
+`);
   });
 
   test("describe name text with indent", () => {
     const text = scribbler.render(describeNameText("sample describe name", 2));
 
     expect(text).toMatchInlineSnapshot(`
-      "      sample describe name
-      "
-    `);
+"      sample describe name
+"
+`);
   });
 });

@@ -16,10 +16,10 @@ describe("fileViewText", () => {
     );
 
     expect(text).toMatchInlineSnapshot(`
-      "Sample element one
-      Sample element two
-      "
-    `);
+"Sample element one
+Sample element two
+"
+`);
   });
 
   test("formats file view text with empty line appended", async () => {
@@ -30,11 +30,11 @@ describe("fileViewText", () => {
     );
 
     expect(text).toMatchInlineSnapshot(`
-      "Sample element one
-      Sample element two
+"Sample element one
+Sample element two
 
-      "
-    `);
+"
+`);
   });
 
   test("formats empty file view text", async () => {
@@ -51,8 +51,8 @@ describe("fileViewText", () => {
     const text = scribbler.render(fileViewText([], true));
 
     expect(text).toMatchInlineSnapshot(`
-      "
-      "
-    `);
+"
+"
+`);
   });
 });

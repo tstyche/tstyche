@@ -36,10 +36,10 @@ describe("command line options", () => {
       const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--install"]);
 
       expect(normalizeOutput(stdout)).toMatchInlineSnapshot(`
-        "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.8.4
-        adds TypeScript 5.0.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/5.0.4
-        "
-      `);
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.8.4
+adds TypeScript 5.0.4 to <<cwd>>/tests/__fixtures__/command-line-options/.store/5.0.4
+"
+`);
       expect(stderr).toBe("");
 
       expect(exitCode).toBe(0);
@@ -57,9 +57,9 @@ describe("command line options", () => {
       const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--install", "--target", "4.9"]);
 
       expect(normalizeOutput(stdout)).toMatchInlineSnapshot(`
-        "adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.9.5
-        "
-      `);
+"adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/command-line-options/.store/4.9.5
+"
+`);
       expect(stderr).toBe("");
 
       expect(exitCode).toBe(0);

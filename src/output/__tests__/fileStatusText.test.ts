@@ -16,26 +16,26 @@ describe("fileStatusText", () => {
     const text = scribbler.render(fileStatusText(ResultStatus.Failed, sampleTestFile));
 
     expect(text).toMatchInlineSnapshot(`
-      "<red>fail</> <gray>./path/to/</>sample.test.ts
-      "
-    `);
+"<red>fail</> <gray>./path/to/</>sample.test.ts
+"
+`);
   });
 
   test("formats passing file status text", () => {
     const text = scribbler.render(fileStatusText(ResultStatus.Passed, sampleTestFile));
 
     expect(text).toMatchInlineSnapshot(`
-      "<green>pass</> <gray>./path/to/</>sample.test.ts
-      "
-    `);
+"<green>pass</> <gray>./path/to/</>sample.test.ts
+"
+`);
   });
 
   test("formats running file status text", () => {
     const text = scribbler.render(fileStatusText(ResultStatus.Runs, sampleTestFile));
 
     expect(text).toMatchInlineSnapshot(`
-      "<yellow>runs</> <gray>./path/to/</>sample.test.ts
-      "
-    `);
+"<yellow>runs</> <gray>./path/to/</>sample.test.ts
+"
+`);
   });
 });

@@ -15,30 +15,30 @@ describe("usesCompilerStepText", () => {
     const text = scribbler.render(usesCompilerStepText("1.2.3", sampleTsconfigFilePath));
 
     expect(text).toMatchInlineSnapshot(`
-      "<blue>uses</> TypeScript 1.2.3<gray> with ./path/to/tsconfig.json</>
+"<blue>uses</> TypeScript 1.2.3<gray> with ./path/to/tsconfig.json</>
 
-      "
-    `);
+"
+`);
   });
 
   test("formats uses compiler step text with empty line prepended", () => {
     const text = scribbler.render(usesCompilerStepText("1.2.3", sampleTsconfigFilePath, { prependEmptyLine: true }));
 
     expect(text).toMatchInlineSnapshot(`
-      "
-      <blue>uses</> TypeScript 1.2.3<gray> with ./path/to/tsconfig.json</>
+"
+<blue>uses</> TypeScript 1.2.3<gray> with ./path/to/tsconfig.json</>
 
-      "
-    `);
+"
+`);
   });
 
   test("formats uses compiler step text without TSConfig path", () => {
     const text = scribbler.render(usesCompilerStepText("1.2.3", undefined));
 
     expect(text).toMatchInlineSnapshot(`
-      "<blue>uses</> TypeScript 1.2.3
+"<blue>uses</> TypeScript 1.2.3
 
-      "
-    `);
+"
+`);
   });
 });

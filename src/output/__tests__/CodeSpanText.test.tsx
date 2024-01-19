@@ -62,17 +62,17 @@ describe("CodeSpanText", () => {
     const text = scribbler.render(<CodeSpanText end={392} file={mockFile} start={385} />);
 
     expect(text).toMatchInlineSnapshot(`
-      "  <gray>11 | </>
-        <gray>12 |   test("takes one argument", () => {</>
-      <red>></> 13 <gray>|</>     expect(takesOne).type.toEqual<(a: number) => number>();
-           <gray>|</>                           <red>^</>
-        <gray>14 |   });</>
-        <gray>15 | </>
-        <gray>16 |   test("takes two arguments", () => {</>
+"  <gray>11 | </>
+  <gray>12 |   test("takes one argument", () => {</>
+<red>></> 13 <gray>|</>     expect(takesOne).type.toEqual<(a: number) => number>();
+     <gray>|</>                           <red>^</>
+  <gray>14 |   });</>
+  <gray>15 | </>
+  <gray>16 |   test("takes two arguments", () => {</>
 
-             <gray>at</> <cyan>./path/to/sample.test.ts</><gray>:13:27</>
-      "
-    `);
+       <gray>at</> <cyan>./path/to/sample.test.ts</><gray>:13:27</>
+"
+`);
   });
 });
 

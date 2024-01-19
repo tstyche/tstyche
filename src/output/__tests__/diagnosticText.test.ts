@@ -13,22 +13,22 @@ describe("diagnosticText", () => {
     const text = scribbler.render(diagnosticText(Diagnostic.error("sample text")));
 
     expect(text).toMatchInlineSnapshot(`
-      "<red>Error: </>sample text
+"<red>Error: </>sample text
 
-      "
-    `);
+"
+`);
   });
 
   test("formats diagnostic text with more than two lines", () => {
     const text = scribbler.render(diagnosticText(Diagnostic.error(["sample text", "with more than", "two lines"])));
 
     expect(text).toMatchInlineSnapshot(`
-      "<red>Error: </>sample text
+"<red>Error: </>sample text
 
-      with more than
-      two lines
+with more than
+two lines
 
-      "
-    `);
+"
+`);
   });
 });

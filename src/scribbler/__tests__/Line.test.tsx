@@ -25,9 +25,9 @@ describe("Line", () => {
     const text = scribbler.render(<Line color={Color.Green}>Sample text</Line>);
 
     expect(text).toMatchInlineSnapshot(`
-      "<green>Sample text</>
-      "
-    `);
+"<green>Sample text</>
+"
+`);
   });
 
   test("renders text with all attributes", () => {
@@ -38,8 +38,8 @@ describe("Line", () => {
     );
 
     expect(text).toMatchInlineSnapshot(`
-      "    <red>Sample text</>
-      "
-    `);
+"    <red>Sample text</>
+"
+`);
   });
 });
