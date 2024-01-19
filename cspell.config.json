@@ -1,4 +1,8 @@
 {
+  "cache": {
+    "cacheLocation": "./.cache/cspell",
+    "useCache": true
+  },
   "files": [
     "**/*.js",
     "**/*.json",
