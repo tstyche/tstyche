@@ -11,7 +11,6 @@ const config = {
     ["^(\\.{1,2}/.*)\\.js$"]: "$1",
   },
   randomize: true,
-  testMatch: ["**/*.test.[jt]s?(x)", "!**/examples/**/*", "!**/typetests/**/*"],
   testTimeout: 75000,
   transform: {
     ["\\.tsx?$"]: "./scripts/jest-ts-transformer.js",

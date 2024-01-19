@@ -1,4 +1,4 @@
 {
   "$schema": "./lib/schema.json",
-  "testFileMatch": ["examples/*.test.ts", "tests/*.test.js", "typetests/*.test.ts"]
+  "testFileMatch": ["examples/*.tst.ts", "tests/*.test.js", "typetests/*.tst.ts"]
 }

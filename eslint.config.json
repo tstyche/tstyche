@@ -158,12 +158,6 @@
       }
     },
     {
-      "files": ["benchmarks/tstyche.bench.js"],
-      "rules": {
-        "no-console": "off"
-      }
-    },
-    {
       "files": ["src/result/ResultManager.ts", "src/version/Version.ts"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
@@ -176,7 +170,7 @@
       }
     },
     {
-      "files": ["**/__tests__/*.test.ts?(x)", "tests/*.test.ts"],
+      "files": ["**/__tests__/*.test.[jt]s?(x)", "tests/*.test.js"],
       "extends": ["plugin:jest/recommended", "plugin:jest/style", "plugin:jest-formatting/recommended"],
       "plugins": ["jest", "jest-formatting"],
       "rules": {
@@ -199,7 +193,7 @@
       }
     },
     {
-      "files": ["**/*.tst.*", "**/__typetests__/*.test.ts", "examples/*.test.ts", "typetests/*.test.ts"],
+      "files": ["**/*.tst.*", "**/__typetests__/*.test.ts"],
       "rules": {
         "@typescript-eslint/no-confusing-void-expression": "off",
         "@typescript-eslint/no-invalid-void-type": "off",
