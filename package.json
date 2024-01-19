@@ -51,7 +51,7 @@
     "prepublish": "yarn test",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --config jest.config.js",
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
-    "test:e2e": "yarn test --testMatch '**/tests/*.test.ts'",
+    "test:e2e": "yarn test --testMatch '**/tests/*.test.js'",
     "test:examples": "tstyche examples",
     "test:types": "tstyche tests",
     "test:unit": "yarn test --testMatch '**/src/**/__tests__/*.test.ts?(x)'"
