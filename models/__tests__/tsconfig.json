@@ -6,5 +6,6 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["./"]
+  "include": ["./"],
+  "exclude": []
 }

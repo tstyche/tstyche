@@ -81,7 +81,7 @@ const config = [
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript(),
-      dts({ compilerOptions: { types: ["node"] } }),
+      dts(),
       tidyDts(),
     ],
   },

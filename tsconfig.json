@@ -16,7 +16,7 @@
       "#*": ["./source/*/index.ts"]
     },
     "rootDir": "./",
-    "types": [],
+    "types": ["node"],
 
     "noEmit": true,
     "preserveConstEnums": true,
@@ -32,5 +32,6 @@
 
     "skipLibCheck": false
   },
-  "include": ["*.js", "./source"]
+  "include": ["*.js", "./source"],
+  "exclude": ["**/__tests__/**/*"]
 }
