@@ -54,7 +54,7 @@
     "test:e2e": "yarn test --testMatch '**/tests/*.test.js'",
     "test:examples": "tstyche examples",
     "test:types": "tstyche tests",
-    "test:unit": "yarn test --testMatch '**/src/**/__tests__/*.test.ts?(x)'"
+    "test:unit": "yarn test --testMatch '**/source/**/__tests__/*.test.ts?(x)'"
   },
   "devDependencies": {
     "@jest/globals": "29.7.0",

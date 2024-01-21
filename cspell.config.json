@@ -9,7 +9,7 @@
     "**/*.md",
     "examples/**/*",
     "models/**/*",
-    "src/**/*",
+    "source/**/*",
     "tests/**/*",
     "typetests/**/*"
   ],

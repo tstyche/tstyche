@@ -13,7 +13,7 @@
     "module": "node16",
     "moduleResolution": "node16",
     "paths": {
-      "#*": ["./src/*/index.ts"]
+      "#*": ["./source/*/index.ts"]
     },
     "rootDir": "./",
     "types": [],
@@ -32,5 +32,5 @@
 
     "skipLibCheck": false
   },
-  "include": ["*.js", "./src"]
+  "include": ["*.js", "./source"]
 }

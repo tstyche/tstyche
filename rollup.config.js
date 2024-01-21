@@ -74,8 +74,8 @@ const config = [
   {
     external: [/^node:/],
     input: {
-      index: "./src/types.ts",
-      tstyche: "./src/tstyche.ts",
+      index: "./source/types.ts",
+      tstyche: "./source/tstyche.ts",
     },
     output,
     plugins: [
@@ -87,7 +87,7 @@ const config = [
   },
 
   {
-    input: "./src/types.ts",
+    input: "./source/types.ts",
     output: {
       file: "./build/index.d.cts",
       format: "cjs",
@@ -102,9 +102,9 @@ const config = [
   {
     external: [/^node:/, "./tstyche.js"],
     input: {
-      bin: "./src/bin.ts",
-      index: "./src/main.ts",
-      tstyche: "./src/tstyche.ts",
+      bin: "./source/bin.ts",
+      index: "./source/main.ts",
+      tstyche: "./source/tstyche.ts",
     },
     output,
     plugins: [
@@ -115,7 +115,7 @@ const config = [
   },
 
   {
-    input: "./src/main.ts",
+    input: "./source/main.ts",
     output: {
       file: "./build/index.cjs",
       format: "cjs",

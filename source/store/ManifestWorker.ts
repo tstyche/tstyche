@@ -134,7 +134,7 @@ export class ManifestWorker {
       packageMetadata = await this.#fetch(abortController.signal);
     } catch (error) {
       if (!options.quite) {
-        const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.href}'.`];
+        const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.toString()}'.`];
 
         if (error instanceof Error && error.name !== "AbortError") {
           text.push("Might be there is an issue with the registry or the network connection.");

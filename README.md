@@ -1,9 +1,9 @@
 # TSTyche
 
-[![version][version-src]][version-href]
-[![license][license-src]][license-href]
-[![packagephobia][packagephobia-src]][packagephobia-href]
-[![coverage][coverage-src]][coverage-href]
+[![version][version-badge]][version-url]
+[![license][license-badge]][license-url]
+[![packagephobia][packagephobia-badge]][packagephobia-url]
+[![coverage][coverage-badge]][coverage-url]
 
 The Essential Type Testing Tool.
 
@@ -77,13 +77,13 @@ Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 
 ## License
 
-[MIT][license-href] © TSTyche
+[MIT][license-url] © TSTyche
 
-[version-src]: https://badgen.net/npm/v/tstyche
-[version-href]: https://npmjs.com/package/tstyche
-[license-src]: https://badgen.net/github/license/tstyche/tstyche
-[license-href]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
-[packagephobia-src]: https://badgen.net/packagephobia/install/tstyche
-[packagephobia-href]: https://packagephobia.com/result?p=tstyche
-[coverage-src]: https://badgen.net/codecov/c/github/tstyche/tstyche
-[coverage-href]: https://app.codecov.io/gh/tstyche/tstyche
+[version-badge]: https://badgen.net/npm/v/tstyche
+[version-url]: https://npmjs.com/package/tstyche
+[license-badge]: https://badgen.net/github/license/tstyche/tstyche
+[license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
+[packagephobia-badge]: https://badgen.net/packagephobia/install/tstyche
+[packagephobia-url]: https://packagephobia.com/result?p=tstyche
+[coverage-badge]: https://badgen.net/codecov/c/github/tstyche/tstyche
+[coverage-url]: https://app.codecov.io/gh/tstyche/tstyche

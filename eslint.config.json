@@ -158,13 +158,13 @@
       }
     },
     {
-      "files": ["src/result/ResultManager.ts", "src/version/Version.ts"],
+      "files": ["source/result/ResultManager.ts", "source/version/Version.ts"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
       }
     },
     {
-      "files": ["src/types.ts"],
+      "files": ["source/types.ts"],
       "rules": {
         "@typescript-eslint/no-unused-vars": "off"
       }

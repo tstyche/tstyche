@@ -1,13 +1,11 @@
 /** @type {import("jest").Config} */
 const config = {
   clearMocks: true,
-  collectCoverageFrom: ["src/**/*"],
-  coverageProvider: "v8",
   extensionsToTreatAsEsm: [".ts", ".tsx"],
   injectGlobals: false,
   moduleFileExtensions: ["ts", "tsx", "js", "json", "node"],
   moduleNameMapper: {
-    ["^#(.*)$"]: "<rootDir>/src/$1",
+    ["^#(.*)$"]: "<rootDir>/source/$1",
     ["^(\\.{1,2}/.*)\\.js$"]: "$1",
   },
   randomize: true,
