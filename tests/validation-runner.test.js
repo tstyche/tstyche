@@ -31,7 +31,7 @@ describe("compiler options", () => {
 
   test("when search string does not select test files", async () => {
     await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["__typetests__/dummy.tst.ts"]: isStringTestText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["sample"]);
@@ -54,7 +54,7 @@ describe("compiler options", () => {
     };
 
     await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["__typetests__/dummy.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
