@@ -74,7 +74,7 @@ describe("'--listFiles' command line option", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--listFiles"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeOutput(stderr)).toBe("");
 
     expect(exitCode).toBe(0);
   });
