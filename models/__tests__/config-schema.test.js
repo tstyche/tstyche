@@ -10,9 +10,7 @@ const ajv = new Ajv({ allErrors: true });
  * @returns {Record<string, unknown>}
  */
 function readJsonFile(filePath) {
-  const jsonText = readFileSync(new URL(filePath, import.meta.url), {
-    encoding: "utf8",
-  });
+  const jsonText = readFileSync(new URL(filePath, import.meta.url), { encoding: "utf8" });
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return JSON.parse(jsonText);
@@ -27,9 +25,9 @@ function readJsonFixtureFile(fixtureFileName) {
   return readJsonFile(fixturePath);
 }
 
-const schema = readJsonFile("../schema.json");
+const configSchema = readJsonFile("../config-schema.json");
 
-describe("schema.json", () => {
+describe("config-schema.json", () => {
   describe("valid", () => {
     test.each([
       {
@@ -57,7 +55,7 @@ describe("schema.json", () => {
         testCase: "'testFileMatch' option",
       },
     ])("$testCase", ({ fixtureFileName }) => {
-      const validate = ajv.compile(schema);
+      const validate = ajv.compile(configSchema);
       const fixture = readJsonFixtureFile(fixtureFileName);
 
       expect(validate(fixture)).toBe(true);
@@ -107,7 +105,7 @@ describe("schema.json", () => {
         testCase: "value of 'testFileMatch' option must be of type Array",
       },
     ])("$testCase", ({ fixtureFileName }) => {
-      const validate = ajv.compile(schema);
+      const validate = ajv.compile(configSchema);
       const fixture = readJsonFixtureFile(fixtureFileName);
 
       expect(validate(fixture)).toBe(false);

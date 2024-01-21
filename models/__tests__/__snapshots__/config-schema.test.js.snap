@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`schema.json invalid item of 'target' option must be of type string 1`] = `
+exports[`config-schema.json invalid item of 'target' option must be of type string 1`] = `
 [
   {
     "instancePath": "/target/0",
@@ -14,7 +14,7 @@ exports[`schema.json invalid item of 'target' option must be of type string 1`] 
 ]
 `;
 
-exports[`schema.json invalid item of 'target' option must be one of the allowed values 1`] = `
+exports[`config-schema.json invalid item of 'target' option must be one of the allowed values 1`] = `
 [
   {
     "instancePath": "/target/0",
@@ -28,7 +28,7 @@ exports[`schema.json invalid item of 'target' option must be one of the allowed 
 ]
 `;
 
-exports[`schema.json invalid item of 'testFileMatch' option must be of type string 1`] = `
+exports[`config-schema.json invalid item of 'testFileMatch' option must be of type string 1`] = `
 [
   {
     "instancePath": "/testFileMatch/0",
@@ -42,7 +42,7 @@ exports[`schema.json invalid item of 'testFileMatch' option must be of type stri
 ]
 `;
 
-exports[`schema.json invalid items of 'target' option must NOT be identical 1`] = `
+exports[`config-schema.json invalid items of 'target' option must NOT be identical 1`] = `
 [
   {
     "instancePath": "/target",
@@ -57,7 +57,7 @@ exports[`schema.json invalid items of 'target' option must NOT be identical 1`] 
 ]
 `;
 
-exports[`schema.json invalid items of 'testFileMatch' option must NOT be identical 1`] = `
+exports[`config-schema.json invalid items of 'testFileMatch' option must NOT be identical 1`] = `
 [
   {
     "instancePath": "/testFileMatch",
@@ -72,7 +72,7 @@ exports[`schema.json invalid items of 'testFileMatch' option must NOT be identic
 ]
 `;
 
-exports[`schema.json invalid value of 'disableTestFileLookup' option must be of type boolean 1`] = `
+exports[`config-schema.json invalid value of 'disableTestFileLookup' option must be of type boolean 1`] = `
 [
   {
     "instancePath": "/disableTestFileLookup",
@@ -86,7 +86,7 @@ exports[`schema.json invalid value of 'disableTestFileLookup' option must be of 
 ]
 `;
 
-exports[`schema.json invalid value of 'failFast' option must be of type boolean 1`] = `
+exports[`config-schema.json invalid value of 'failFast' option must be of type boolean 1`] = `
 [
   {
     "instancePath": "/failFast",
@@ -100,7 +100,7 @@ exports[`schema.json invalid value of 'failFast' option must be of type boolean 
 ]
 `;
 
-exports[`schema.json invalid value of 'rootPath' option must be of type string 1`] = `
+exports[`config-schema.json invalid value of 'rootPath' option must be of type string 1`] = `
 [
   {
     "instancePath": "/rootPath",
@@ -114,7 +114,7 @@ exports[`schema.json invalid value of 'rootPath' option must be of type string 1
 ]
 `;
 
-exports[`schema.json invalid value of 'target' option must be of type Array 1`] = `
+exports[`config-schema.json invalid value of 'target' option must be of type Array 1`] = `
 [
   {
     "instancePath": "/target",
@@ -128,7 +128,7 @@ exports[`schema.json invalid value of 'target' option must be of type Array 1`] 
 ]
 `;
 
-exports[`schema.json invalid value of 'testFileMatch' option must be of type Array 1`] = `
+exports[`config-schema.json invalid value of 'testFileMatch' option must be of type Array 1`] = `
 [
   {
     "instancePath": "/testFileMatch",
