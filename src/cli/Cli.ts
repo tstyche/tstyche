@@ -124,16 +124,20 @@ export class Cli {
       return;
     }
 
-    const testFiles = configService.selectTestFiles();
+    let testFiles: Array<string> = [];
 
-    if (process.exitCode === 1) {
-      return;
-    }
+    if (!resolvedConfig.disableTestFileLookup) {
+      testFiles = configService.selectTestFiles();
 
-    if (configService.commandLineOptions.listFiles === true) {
-      this.#logger.writeMessage(formattedText(testFiles));
+      if (testFiles.length === 0) {
+        return;
+      }
 
-      return;
+      if (configService.commandLineOptions.listFiles === true) {
+        this.#logger.writeMessage(formattedText(testFiles));
+
+        return;
+      }
     }
 
     EventEmitter.removeHandler(this.#onStartupEvent);

@@ -6,7 +6,6 @@ const options: tstyche.CommandLineOptions = {};
 describe("CommandLineOptions", () => {
   test("all options", () => {
     expect(options).type.toBeAssignable({
-      allowNoTestFiles: true,
       config: "./config/tstyche.json",
       failFast: true,
       help: true,
@@ -20,12 +19,6 @@ describe("CommandLineOptions", () => {
       update: true,
       version: true,
     });
-  });
-
-  test("'allowNoTestFiles' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
-      allowNoTestFiles?: boolean;
-    }>();
   });
 
   test("'config' option", () => {

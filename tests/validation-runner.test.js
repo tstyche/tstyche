@@ -16,6 +16,32 @@ afterEach(async () => {
 });
 
 describe("compiler options", () => {
+  test("when no test files are present", async () => {
+    await writeFixture(fixture, {
+      ["tstyche.config.json"]: "{}",
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+
+    expect(exitCode).toBe(1);
+  });
+
+  test("when search string does not select test files", async () => {
+    await writeFixture(fixture, {
+      ["__typetests__/dummy.tst.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["sample"]);
+
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+
+    expect(exitCode).toBe(1);
+  });
+
   test("when TSConfig file has errors", async () => {
     const tsconfig = {
       compilerOptions: {
@@ -28,7 +54,7 @@ describe("compiler options", () => {
     };
 
     await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["__typetests__/dummy.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 

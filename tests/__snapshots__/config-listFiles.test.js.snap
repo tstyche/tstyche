@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'--listFiles' command line option lists test files and exist: stdout 1`] = `
+"[
+  "<<cwd>>/tests/__fixtures__/config-listFiles/__typetests__/isNumber.tst.ts",
+  "<<cwd>>/tests/__fixtures__/config-listFiles/__typetests__/isString.tst.ts"
+]
+"
+`;
+
+exports[`'--listFiles' command line option when 'disableTestFileLookup: true' is set, does nothing: stdout 1`] = `
+"Targets:    1 passed, 1 total
+Test files: 0 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'--listFiles' command line option when search string is provided after the option: stdout 1`] = `
+"[
+  "<<cwd>>/tests/__fixtures__/config-listFiles/__typetests__/isString.tst.ts"
+]
+"
+`;
+
+exports[`'--listFiles' command line option when search string is provided before the option: stdout 1`] = `
+"[
+  "<<cwd>>/tests/__fixtures__/config-listFiles/__typetests__/isNumber.tst.ts"
+]
+"
+`;

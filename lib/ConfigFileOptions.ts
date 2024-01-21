@@ -5,9 +5,9 @@
  */
 export interface ConfigFileOptions {
     /**
-     * Do not raise an error, if no test files are selected.
+     * Do not search for the test files.
      */
-    allowNoTestFiles?: boolean;
+    disableTestFileLookup?: boolean;
     /**
      * Stop running tests after the first failed assertion.
      */

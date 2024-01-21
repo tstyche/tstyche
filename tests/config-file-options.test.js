@@ -46,42 +46,6 @@ describe("tstyche.config.json", () => {
     });
   });
 
-  describe("'allowNoTestFiles: false' option", () => {
-    test("errors when no test files are selected", async () => {
-      const config = { allowNoTestFiles: false };
-
-      await writeFixture(fixture, {
-        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-      });
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixture);
-
-      expect(stdout).toBe("");
-      expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
-
-      expect(exitCode).toBe(1);
-    });
-  });
-
-  describe("'allowNoTestFiles: true' option", () => {
-    test("warns when no test files are selected", async () => {
-      const config = { allowNoTestFiles: true };
-
-      await writeFixture(fixture, {
-        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-      });
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixture);
-
-      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-      expect(stderr).toBe("");
-
-      expect(exitCode).toBe(0);
-    });
-  });
-
   test("'rootPath' option", async () => {
     const config = {
       rootPath: "../",
