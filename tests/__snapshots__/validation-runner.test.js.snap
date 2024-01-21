@@ -19,7 +19,7 @@ exports[`compiler options when TSConfig file has errors: stderr 1`] = `
 exports[`compiler options when TSConfig file has errors: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/dummy.test.ts
+pass ./__typetests__/dummy.tst.ts
   + is string?
 
 Targets:    1 failed, 1 total
