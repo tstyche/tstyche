@@ -22,7 +22,7 @@ export class ConfigService {
   #configFileOptions: ConfigFileOptions = {};
 
   static #defaultOptions: Required<ConfigFileOptions> = {
-    allowNoTestFiles: false,
+    disableTestFileLookup: false,
     failFast: false,
     rootPath: Path.resolve("./"),
     target: [Environment.typescriptPath == null ? "latest" : "current"],
@@ -107,7 +107,7 @@ export class ConfigService {
   }
 
   selectTestFiles(): Array<string> {
-    const { allowNoTestFiles, pathMatch, rootPath, testFileMatch } = this.resolveConfig();
+    const { pathMatch, rootPath, testFileMatch } = this.resolveConfig();
 
     let testFilePaths = this.compiler.sys.readDirectory(
       rootPath,
@@ -126,7 +126,7 @@ export class ConfigService {
       );
     }
 
-    if (testFilePaths.length === 0 && !allowNoTestFiles) {
+    if (testFilePaths.length === 0) {
       const text = [
         "No test files were selected using current configuration.",
         `Root path:       ${rootPath}`,

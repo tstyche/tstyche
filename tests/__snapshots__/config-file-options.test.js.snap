@@ -16,24 +16,6 @@ Ran all test files.
 "
 `;
 
-exports[`tstyche.config.json 'allowNoTestFiles: false' option errors when no test files are selected: stderr 1`] = `
-"Error: No test files were selected using current configuration.
-
-Root path:       <<cwd>>/tests/__fixtures__/config-file-options
-Test file match: **/*.tst.*, **/__typetests__/*.test.*, **/typetests/*.test.*
-
-"
-`;
-
-exports[`tstyche.config.json 'allowNoTestFiles: true' option warns when no test files are selected: stdout 1`] = `
-"Targets:    1 passed, 1 total
-Test files: 0 total
-Duration:   <<timestamp>>
-
-Ran all test files.
-"
-`;
-
 exports[`tstyche.config.json 'target' option: stdout 1`] = `
 "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-file-options/.store/4.8.4
 uses TypeScript <<version>> with ./tsconfig.json

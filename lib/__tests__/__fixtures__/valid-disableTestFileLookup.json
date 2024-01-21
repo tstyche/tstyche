@@ -1,4 +1,4 @@
 {
   "$schema": "../../schema.json",
-  "allowNoTestFiles": true
+  "disableTestFileLookup": true
 }

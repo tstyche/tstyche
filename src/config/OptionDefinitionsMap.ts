@@ -48,17 +48,17 @@ interface ObjectTypeOptionDefinition extends BaseOptionDefinition {
 export class OptionDefinitionsMap {
   static #definitions: Array<OptionDefinition> = [
     {
-      brand: OptionBrand.Boolean,
-      description: "Do not raise an error, if no test files are selected.",
-      group: OptionGroup.ConfigFile | OptionGroup.CommandLine,
-      name: "allowNoTestFiles",
-    },
-
-    {
       brand: OptionBrand.String,
       description: "The path to a TSTyche configuration file.",
       group: OptionGroup.CommandLine,
       name: "config",
+    },
+
+    {
+      brand: OptionBrand.Boolean,
+      description: "Do not search for the test files.",
+      group: OptionGroup.ConfigFile,
+      name: "disableTestFileLookup",
     },
 
     {

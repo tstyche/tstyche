@@ -15,9 +15,6 @@ exports[`'--help' command line option prints the list of command line options: s
 
 Command Line Options
 
-  --allowNoTestFiles  boolean
-  Do not raise an error, if no test files are selected.
-
   --config  string
   The path to a TSTyche configuration file.
 

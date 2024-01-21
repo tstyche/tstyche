@@ -5,10 +5,6 @@
  */
 export interface CommandLineOptions {
     /**
-     * Do not raise an error, if no test files are selected.
-     */
-    allowNoTestFiles?: boolean;
-    /**
      * The path to a TSTyche configuration file.
      */
     config?: string;

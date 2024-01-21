@@ -72,16 +72,16 @@ exports[`schema.json invalid items of 'testFileMatch' option must NOT be identic
 ]
 `;
 
-exports[`schema.json invalid value of 'allowNoTestFiles' option must be of type boolean 1`] = `
+exports[`schema.json invalid value of 'disableTestFileLookup' option must be of type boolean 1`] = `
 [
   {
-    "instancePath": "/allowNoTestFiles",
+    "instancePath": "/disableTestFileLookup",
     "keyword": "type",
     "message": "must be boolean",
     "params": {
       "type": "boolean",
     },
-    "schemaPath": "#/properties/allowNoTestFiles/type",
+    "schemaPath": "#/properties/disableTestFileLookup/type",
   },
 ]
 `;
