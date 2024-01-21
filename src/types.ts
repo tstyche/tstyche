@@ -66,6 +66,10 @@ interface Matchers {
    */
   toBeAny: () => void;
   /**
+   * Checks if the source decorator function can be applied to the target class or class member.
+   */
+  toBeApplicable: (target: unknown, context: DecoratorContext) => void;
+  /**
    * Checks if the target type is assignable to the source type.
    */
   toBeAssignable: {
