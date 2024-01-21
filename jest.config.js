@@ -13,7 +13,7 @@ const config = {
   randomize: true,
   testTimeout: 75000,
   transform: {
-    ["\\.tsx?$"]: "./scripts/jest-ts-transformer.js",
+    ["\\.tsx?$"]: "./tests/__scripts__/jest-ts-transformer.js",
   },
   workerThreads: true,
 };

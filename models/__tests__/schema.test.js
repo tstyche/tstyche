@@ -1,10 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, test } from "@jest/globals";
-import ajvModule from "ajv";
-
-// TODO: https://github.com/ajv-validator/ajv/issues/2047
-const Ajv = ajvModule.default;
+import Ajv from "ajv";
 
 const ajv = new Ajv({ allErrors: true });
 

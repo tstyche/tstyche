@@ -8,8 +8,7 @@
     "**/*.json",
     "**/*.md",
     "examples/**/*",
-    "lib/**/*",
-    "scripts/**/*",
+    "models/**/*",
     "src/**/*",
     "tests/**/*",
     "typetests/**/*"

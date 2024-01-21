@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import process from "node:process";
 import * as tstyche from "tstyche/tstyche";
 
 /**
@@ -120,7 +121,7 @@ for (const [key, optionDefinition] of configFileOptionDefinitions) {
   );
 }
 
-const schemaFileUrl = new URL("../lib/schema.json", import.meta.url);
+const schemaFileUrl = new URL("../schema.json", import.meta.url);
 
 await fs.writeFile(schemaFileUrl, `${JSON.stringify(jsonSchema, null, 2)}\n`);
 

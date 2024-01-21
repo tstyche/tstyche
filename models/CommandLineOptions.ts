@@ -1,4 +1,4 @@
-// This is a generated file. See: ../scripts/generate-types.js
+// This is a generated file. See: ./__scripts__/generate-types.js
 
 /**
  * Options passed through the command line.

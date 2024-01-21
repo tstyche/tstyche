@@ -8,7 +8,7 @@ import { OptionGroup } from "./OptionGroup.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
 
-export type { CommandLineOptions } from "../../lib/CommandLineOptions.js";
+export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
 
 export class CommandLineOptionsWorker {
   #commandLineOptionDefinitions: Map<string, OptionDefinition>;

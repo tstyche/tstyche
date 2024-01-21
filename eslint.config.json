@@ -107,10 +107,10 @@
       {
         "devDependencies": [
           "*.js",
+          "**/__scripts__/*",
           "**/__tests__/*",
           "**/__typetests__/*",
           "**/benchmarks/*",
-          "**/scripts/*",
           "**/tests/*",
           "**/typetests/*"
         ]

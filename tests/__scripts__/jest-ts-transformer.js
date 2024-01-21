@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
+import process from "node:process";
 import { create } from "ts-node";
 import ts from "typescript";
 

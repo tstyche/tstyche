@@ -13,7 +13,7 @@ import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionGroup } from "./OptionGroup.js";
 import { OptionValidator } from "./OptionValidator.js";
 
-export type { ConfigFileOptions } from "../../lib/ConfigFileOptions.js";
+export type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
 
 export class ConfigFileOptionsWorker {
   #configFileOptionDefinitions: Map<string, OptionDefinition>;
