@@ -532,9 +532,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-companies@npm:^3.0.29":
-  version: 3.0.29
-  resolution: "@cspell/dict-companies@npm:3.0.29"
-  checksum: ba2ee3fc7942ff932316038dc2a59b0edcf48321d9f31b75e1858637bd51be9b00bdafc2f3b70fa9d7e78cfbd016e08ef782cdf50bfc76b51e1bf22b1340e286
+  version: 3.0.31
+  resolution: "@cspell/dict-companies@npm:3.0.31"
+  checksum: 6fd3ee3bd4485c54231e72bb6602166c51074571177a51f9fdbc71a5afc50e2ad7b43a85d93971c81912cadd00722042a0a48e94cb59627a4a8705dab32b4736
   languageName: node
   linkType: hard
 
@@ -623,9 +623,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-en_us@npm:^4.3.13":
-  version: 4.3.13
-  resolution: "@cspell/dict-en_us@npm:4.3.13"
-  checksum: 4fc0d8458f3760a436956870742207214c73ae97da294117cae4fa8cf174b40dd6d237f8cb5d1bd4d8f82e3bfbd98cf885a9d79da1823f354d92a2724090a4f2
+  version: 4.3.14
+  resolution: "@cspell/dict-en_us@npm:4.3.14"
+  checksum: 113a06fdbbb12dadc00825c181102d09fde11d02cfb810639d460464f4f62d0a409f13300cd669ff679d3ba34d0a01246e544e091e2c26993a6f4304477e736e
   languageName: node
   linkType: hard
 
@@ -658,9 +658,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-gaming-terms@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "@cspell/dict-gaming-terms@npm:1.0.4"
-  checksum: 3e57f5567747a8598b3e4de4f63a3b8090cccf7688f3e91f0a9e005e916645db1224ea600afd5b497b7e8c6a1f9291dfd4cb932278dfd423657107203a2ace0b
+  version: 1.0.5
+  resolution: "@cspell/dict-gaming-terms@npm:1.0.5"
+  checksum: 25d50653ed5e940f9302cc5536c37a20854bb274dec9302d73c5349e51ec623d33d99e4fe283e3b30e70f452063361fbc4cae7dc603232fa82004262f37d0f50
   languageName: node
   linkType: hard
 
@@ -749,9 +749,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.0.14":
-  version: 5.0.14
-  resolution: "@cspell/dict-npm@npm:5.0.14"
-  checksum: 791a23e8b6a726d77a9098f25b582e6a511be699f878526a036f9f0ec08ccf0c2082ec53a5ee056b59d3a22fe5f21e8e3d11e5c839a10e17cb919c8c71f74537
+  version: 5.0.15
+  resolution: "@cspell/dict-npm@npm:5.0.15"
+  checksum: 8be1089f438261ff09eda368b5451448b0701d514f79d555196139ad45144e94184a5df3bdf48379e667f15dc84e8f97ed2a178c097b7ec1a448fbe18e24a3fc
   languageName: node
   linkType: hard
 
@@ -1303,12 +1303,12 @@ __metadata:
   linkType: hard
 
 "@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.17, @jridgewell/trace-mapping@npm:^0.3.18, @jridgewell/trace-mapping@npm:^0.3.9":
-  version: 0.3.21
-  resolution: "@jridgewell/trace-mapping@npm:0.3.21"
+  version: 0.3.22
+  resolution: "@jridgewell/trace-mapping@npm:0.3.22"
   dependencies:
     "@jridgewell/resolve-uri": ^3.1.0
     "@jridgewell/sourcemap-codec": ^1.4.14
-  checksum: e91d3943c6d84687503ba033600d42b2a81d9eaf32758fee06449cd1415c59b944af08841e99f030b71f83bb5f814969e96fc8aa29e469eb3ea1b46597d13cff
+  checksum: ac7dd2cfe0b479aa1b81776d40d789243131cc792dc8b6b6a028c70fcd6171958ae1a71bf67b618ffe3c0c3feead9870c095ee46a5e30319410d92976b28f498
   languageName: node
   linkType: hard
 
@@ -1521,11 +1521,11 @@ __metadata:
   linkType: hard
 
 "@sinonjs/commons@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@sinonjs/commons@npm:3.0.0"
+  version: 3.0.1
+  resolution: "@sinonjs/commons@npm:3.0.1"
   dependencies:
     type-detect: 4.0.8
-  checksum: b4b5b73d4df4560fb8c0c7b38c7ad4aeabedd362f3373859d804c988c725889cde33550e4bcc7cd316a30f5152a2d1d43db71b6d0c38f5feef71fd8d016763f8
+  checksum: a7c3e7cc612352f4004873747d9d8b2d4d90b13a6d483f685598c945a70e734e255f1ca5dc49702515533c403b32725defff148177453b3f3915bcb60e9d4601
   languageName: node
   linkType: hard
 
@@ -1662,16 +1662,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 20.11.0
-  resolution: "@types/node@npm:20.11.0"
-  dependencies:
-    undici-types: ~5.26.4
-  checksum: 1bd6890db7e0404d11c33d28f46f19f73256f0ba35d19f0ef2a0faba09f366f188915fb9338eebebcc472075c1c4941e17c7002786aa69afa44980737846b200
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:20.11.5":
+"@types/node@npm:*, @types/node@npm:20.11.5":
   version: 20.11.5
   resolution: "@types/node@npm:20.11.5"
   dependencies:
@@ -2377,9 +2368,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001565":
-  version: 1.0.30001576
-  resolution: "caniuse-lite@npm:1.0.30001576"
-  checksum: b8b332675fe703d5e57b02df5f100345f2a3796c537a42422f5bfc82d3256b8bad3f4e2788553656d2650006d13a4b5db99725e2a9462cc0c8035ba494ba1857
+  version: 1.0.30001579
+  resolution: "caniuse-lite@npm:1.0.30001579"
+  checksum: 7539dcff74d2243a30c428393dc690c87fa34d7da36434731853e9bcfe783757763b2971f5cc878e25242a93e184e53f167d11bd74955af956579f7af71cc764
   languageName: node
   linkType: hard
 
@@ -2921,9 +2912,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.601":
-  version: 1.4.630
-  resolution: "electron-to-chromium@npm:1.4.630"
-  checksum: 9bf16b06b245d6937845bbef17c0babdf8e01845c8aa31eb2d7dc3a88cd34291d2dec0d8e329450a5b8dfcf5d3dc96c56aa1c8b224d942e3b1d508e9e3cb9788
+  version: 1.4.640
+  resolution: "electron-to-chromium@npm:1.4.640"
+  checksum: 021b8da324b2e574ffd9cd6943a74f8116d1947dbd4a43c89025594c469e18f2437b2b354363528dbc822538f510137c6ae315bce9b94b1d1f6e5d1c9cd302ef
   languageName: node
   linkType: hard
 
@@ -5814,14 +5805,14 @@ __metadata:
   linkType: hard
 
 "safe-array-concat@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "safe-array-concat@npm:1.0.1"
+  version: 1.1.0
+  resolution: "safe-array-concat@npm:1.1.0"
   dependencies:
-    call-bind: ^1.0.2
-    get-intrinsic: ^1.2.1
+    call-bind: ^1.0.5
+    get-intrinsic: ^1.2.2
     has-symbols: ^1.0.3
     isarray: ^2.0.5
-  checksum: 001ecf1d8af398251cbfabaf30ed66e3855127fbceee178179524b24160b49d15442f94ed6c0db0b2e796da76bb05b73bf3cc241490ec9c2b741b41d33058581
+  checksum: 5c71eaa999168ee7474929f1cd3aae80f486353a651a094d9968936692cf90aa065224929a6486dcda66334a27dce4250a83612f9e0fef6dced1a925d3ac7296
   languageName: node
   linkType: hard
 
