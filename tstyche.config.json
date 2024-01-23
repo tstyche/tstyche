@@ -1,4 +1,4 @@
 {
   "$schema": "./models/config-schema.json",
-  "testFileMatch": ["examples/*.tst.ts", "models/__typetests__/*.tst.ts", "tests/*.test.js"]
+  "testFileMatch": ["examples/*", "models/__typetests__/*", "tests/*"]
 }

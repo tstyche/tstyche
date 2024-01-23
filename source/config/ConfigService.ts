@@ -111,7 +111,7 @@ export class ConfigService {
 
     let testFilePaths = this.compiler.sys.readDirectory(
       rootPath,
-      /* extensions */ undefined,
+      ["ts", "tsx", "mts", "cts", "js", "jsx", "mjs", "cjs"],
       /* exclude */ undefined,
       /* include */ testFileMatch,
     );
