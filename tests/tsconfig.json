@@ -4,6 +4,6 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["./"],
-  "exclude": ["./__fixtures__/"]
+  "include": ["**/*"],
+  "exclude": ["__fixtures__/**/*"]
 }

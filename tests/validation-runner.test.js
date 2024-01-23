@@ -50,7 +50,7 @@ describe("compiler options", () => {
         strictNullChecks: true,
       },
       extends: "../tsconfig.json",
-      include: ["./"],
+      include: ["**/*"],
     };
 
     await writeFixture(fixture, {

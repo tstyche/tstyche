@@ -5,7 +5,7 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const tsconfig = {
   extends: "../tsconfig.json",
-  include: ["./"],
+  include: ["**/*"],
 };
 
 const fixture = "feature-runner";

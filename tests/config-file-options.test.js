@@ -17,7 +17,7 @@ test("is number?", () => {
 
 const tsconfig = {
   extends: "../tsconfig.json",
-  include: ["./"],
+  include: ["**/*"],
 };
 
 const fixture = "config-file-options";

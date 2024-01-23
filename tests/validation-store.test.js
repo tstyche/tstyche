@@ -10,7 +10,7 @@ test("is string?", () => {
 
 const tsconfig = {
   extends: "../tsconfig.json",
-  include: ["./"],
+  include: ["**/*"],
 };
 
 const fixture = "validation-store";

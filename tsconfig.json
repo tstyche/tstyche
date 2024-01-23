@@ -32,6 +32,6 @@
 
     "skipLibCheck": false
   },
-  "include": ["*.js", "./source"],
+  "include": ["*.js", "source/**/*"],
   "exclude": ["**/__tests__/**/*"]
 }

@@ -24,7 +24,7 @@ test("is broken?"
 
 const tsconfig = {
   extends: "../tsconfig.json",
-  include: ["./"],
+  include: ["**/*"],
 };
 
 const fixture = "validation-syntax-errors";
