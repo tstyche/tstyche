@@ -33,7 +33,7 @@ describe("store manifest", () => {
 
     expect(existsSync(storeUrl)).toBe(false);
 
-    const { exitCode, stderr } = await spawnTyche(fixture, []);
+    const { exitCode, stderr } = await spawnTyche(fixture);
 
     expect(existsSync(storeUrl)).toBe(false);
 

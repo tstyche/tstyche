@@ -35,7 +35,7 @@ describe("'--target' command line option", () => {
         "",
         "Argument for the '--target' option must be a single tag or a comma separated list.",
         "Usage examples:",
-      ].join("\r\n"),
+      ].join("\n"),
     );
 
     expect(exitCode).toBe(1);
@@ -58,7 +58,7 @@ describe("'--target' command line option", () => {
         "",
         "Argument for the '--target' option must be a single tag or a comma separated list.",
         "Usage examples:",
-      ].join("\r\n"),
+      ].join("\n"),
     );
 
     expect(exitCode).toBe(1);
@@ -77,7 +77,7 @@ describe("'target' configuration file option", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, []);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
 
     expect(stdout).toBe("");
     expect(stderr).toMatch(
@@ -86,7 +86,7 @@ describe("'target' configuration file option", () => {
         "",
         "Item of the 'target' list must be a supported version tag.",
         "Supported tags:",
-      ].join("\r\n"),
+      ].join("\n"),
     );
 
     expect(exitCode).toBe(1);
@@ -114,7 +114,7 @@ describe("'target' configuration file option", () => {
         "",
         "Item of the 'target' list must be a supported version tag.",
         "Supported tags:",
-      ].join("\r\n"),
+      ].join("\n"),
     );
 
     expect(exitCode).toBe(1);

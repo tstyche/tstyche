@@ -137,7 +137,7 @@ describe("TypeScript 4.x", () => {
       env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
     });
 
-    expect(stdout).toMatch(RegExp(`^uses TypeScript ${version}\r\n`));
+    expect(stdout).toMatch(RegExp(`^uses TypeScript ${version}\n`));
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
@@ -164,7 +164,7 @@ describe("TypeScript 5.x", () => {
       env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
     });
 
-    expect(stdout).toMatch(RegExp(`^uses TypeScript ${version}\r\n`));
+    expect(stdout).toMatch(RegExp(`^uses TypeScript ${version}\n`));
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
