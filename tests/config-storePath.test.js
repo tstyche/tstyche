@@ -39,7 +39,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", () => {
     expect(existsSync(storeUrl)).toBe(true);
 
     expect(stdout).toMatch(/^adds TypeScript 5.2.2 to /);
-    expect(stdout).toMatch(/dummy-store\/5.2.2\r\n$/);
+    expect(stdout).toMatch(/dummy-store\/5.2.2\n$/);
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);

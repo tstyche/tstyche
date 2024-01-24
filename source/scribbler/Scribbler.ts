@@ -27,7 +27,7 @@ declare global {
         children?: never;
         escapes: Color | Array<Color>;
       };
-      newline: {
+      newLine: {
         children?: never;
       };
       text: {
@@ -43,6 +43,10 @@ declare global {
  */
 export interface ScribblerOptions {
   /**
+   * The end of line sequence to be used in the output. Default: `"\n"`.
+   */
+  newLine?: string;
+  /**
    * Do not include ANSI color escape codes in the output. Default: `false`.
    */
   noColor?: boolean;
@@ -52,12 +56,14 @@ export interface ScribblerOptions {
  * Provides the JSX factory function and renderer.
  */
 export class Scribbler {
+  #newLine: string;
   #noColor: boolean;
 
   /**
    * @param options - {@link ScribblerOptions | Options} to configure an instance of the Scribbler.
    */
   constructor(options?: ScribblerOptions) {
+    this.#newLine = options?.newLine ?? "\n";
     this.#noColor = options?.noColor ?? false;
   }
 
@@ -112,8 +118,8 @@ export class Scribbler {
         }
       }
 
-      if (element.type === "newline") {
-        return "\r\n";
+      if (element.type === "newLine") {
+        return this.#newLine;
       }
 
       if (element.type === "text") {

@@ -12,13 +12,13 @@ describe("Line", () => {
   test("renders text", () => {
     const text = scribbler.render(<Line>Sample text</Line>);
 
-    expect(text).toBe("Sample text\r\n");
+    expect(text).toBe("Sample text\n");
   });
 
   test("renders text with indent", () => {
     const text = scribbler.render(<Line indent={2}>Sample text</Line>);
 
-    expect(text).toBe("    Sample text\r\n");
+    expect(text).toBe("    Sample text\n");
   });
 
   test("renders text with color", () => {

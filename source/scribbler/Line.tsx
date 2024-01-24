@@ -17,7 +17,7 @@ export class Line implements JSX.ElementClass {
         <Text color={this.props.color} indent={this.props.indent}>
           {this.props.children}
         </Text>
-        <newline />
+        <newLine />
       </text>
     );
   }

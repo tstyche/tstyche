@@ -83,7 +83,7 @@ describe("warns if resolution of a tag may be outdated", () => {
       [
         "Warning: Failed to update metadata of the 'typescript' package from the registry.",
         `The resolution of the '${target}' tag may be outdated.`,
-      ].join("\r\n\r\n"),
+      ].join("\n\n"),
     );
   });
 });

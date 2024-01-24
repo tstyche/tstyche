@@ -43,7 +43,7 @@ export class Diagnostic {
       const category = DiagnosticCategory.Error;
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
-      const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\r\n");
+      const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
 
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
         origin = {
