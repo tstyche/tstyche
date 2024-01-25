@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'rootPath' configuration file option when specified path does not exist 1`] = `
+"Error: The specified path '<<cwd>>/tests/__fixtures__/validation-rootPath/nope' does not exist.
+
+  1 | {
+> 2 |   "rootPath": "../nope"
+    |               ^
+  3 | }
+
+      at ./config/tstyche.json:2:15
+
+"
+`;
