@@ -151,13 +151,6 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "plugins": ["eslint-plugin-tsdoc"],
-      "rules": {
-        "tsdoc/syntax": "error"
-      }
-    },
-    {
       "files": ["source/result/ResultManager.ts", "source/version/Version.ts"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"

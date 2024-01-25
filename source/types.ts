@@ -174,7 +174,7 @@ interface Expect {
   /**
    * Builds an assertion.
    *
-   * @typeParam Source - The type against which the assertion will be made.
+   * @template Source - The type against which the assertion will be made.
    */
   <Source>(): Modifier;
   /**
@@ -187,7 +187,7 @@ interface Expect {
     /**
      * Mark an assertion as supposed to fail.
      *
-     * @typeParam Source - The type against which the assertion will be made.
+     * @template Source - The type against which the assertion will be made.
      */
     <Source>(): Modifier;
     /**
@@ -204,7 +204,7 @@ interface Expect {
     /**
      * Marks an assertion as focused.
      *
-     * @typeParam Source - The type against which the assertion will be made.
+     * @template Source - The type against which the assertion will be made.
      */
     <Source>(): Modifier;
     /**
@@ -217,7 +217,7 @@ interface Expect {
       /**
        * Mark an assertion as supposed to fail.
        *
-       * @typeParam Source - The type against which the assertion will be made.
+       * @template Source - The type against which the assertion will be made.
        */
       <Source>(): Modifier;
       /**
@@ -235,7 +235,7 @@ interface Expect {
     /**
      * Marks an assertion as skipped.
      *
-     * @typeParam Source - The type against which the assertion will be made.
+     * @template Source - The type against which the assertion will be made.
      */
     <Source>(): Modifier;
     /**
@@ -248,7 +248,7 @@ interface Expect {
       /**
        * Marks an assertion as supposed to fail.
        *
-       * @typeParam Source - The type against which the assertion will be made.
+       * @template Source - The type against which the assertion will be made.
        */
       <Source>(): Modifier;
       /**
