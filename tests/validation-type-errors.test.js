@@ -2,7 +2,7 @@ import { expect, test } from "@jest/globals";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "type-error";
+const fixture = "validation-type-errors";
 
 test("handles top level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["top-level"]);
