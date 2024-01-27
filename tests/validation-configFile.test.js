@@ -158,3 +158,24 @@ describe("'tstyche.config.json' file", () => {
     expect(exitCode).toBe(0);
   });
 });
+
+describe("'--config' command line option", () => {
+  test("when option argument is missing", async () => {
+    await writeFixture(fixture);
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--config"]);
+
+    expect(stdout).toBe("");
+    expect(stderr).toBe(
+      [
+        "Error: Option '--config' expects an argument.",
+        "",
+        "Option '--config' requires an argument of type string.",
+        "",
+        "",
+      ].join("\n"),
+    );
+
+    expect(exitCode).toBe(1);
+  });
+});
