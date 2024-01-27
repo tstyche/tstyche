@@ -22,7 +22,7 @@ afterEach(async () => {
 });
 
 describe("'--listFiles' command line option", () => {
-  test("lists test files and exist", async () => {
+  test("lists test files", async () => {
     await writeFixture(fixture, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -36,7 +36,7 @@ describe("'--listFiles' command line option", () => {
     expect(exitCode).toBe(0);
   });
 
-  test("when search string is provided before the option", async () => {
+  test("when search string is specified before the option", async () => {
     await writeFixture(fixture, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -50,7 +50,7 @@ describe("'--listFiles' command line option", () => {
     expect(exitCode).toBe(0);
   });
 
-  test("when search string is provided after the option", async () => {
+  test("when search string is specified after the option", async () => {
     await writeFixture(fixture, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -64,7 +64,7 @@ describe("'--listFiles' command line option", () => {
     expect(exitCode).toBe(0);
   });
 
-  test("when 'disableTestFileLookup: true' is set, does nothing", async () => {
+  test("when 'disableTestFileLookup: true' is specified", async () => {
     await writeFixture(fixture, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
