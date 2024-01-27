@@ -3,7 +3,7 @@ import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "config-file";
+const fixture = "validation-configFile";
 
 afterEach(async () => {
   await clearFixture(fixture);
