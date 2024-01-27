@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`'--target' command line option when 'current' tag is specified: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'--target' command line option when 'target' configuration file option is specified: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
 exports[`'--target' command line option when multiple targets are specified: stdout 1`] = `
 "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
 uses TypeScript <<version>> with ./tsconfig.json

@@ -61,8 +61,9 @@ describe("'--target' command line option", () => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixture, ["--target", "current"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"]);
 
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
@@ -79,14 +80,15 @@ describe("'--target' command line option", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixture, ["--target", "current"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"]);
 
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });
 
-  test("when search string is provided before the option", async () => {
+  test("when search string is specified before the option", async () => {
     await writeFixture(fixture, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -100,7 +102,7 @@ describe("'--target' command line option", () => {
     expect(exitCode).toBe(0);
   });
 
-  test("when search string is provided after the option", async () => {
+  test("when search string is specified after the option", async () => {
     await writeFixture(fixture, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
