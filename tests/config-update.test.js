@@ -5,17 +5,6 @@ import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
 import { getFixtureUrl } from "./__utils__/getFixtureUrl.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const isStringTestText = `import { expect, test } from "tstyche";
-test("is string?", () => {
-  expect<string>().type.toBeString();
-});
-`;
-
-const tsconfig = {
-  extends: "../tsconfig.json",
-  include: ["**/*"],
-};
-
 const fixture = "config-update";
 
 afterEach(async () => {
@@ -23,46 +12,62 @@ afterEach(async () => {
 });
 
 describe("'--update' command line option", () => {
-  test("creates store manifest if it is not present", async () => {
+  test.each([
+    {
+      args: ["--update"],
+      testCase: "creates store manifest if it is not present",
+    },
+    {
+      args: ["--update", "false"],
+      testCase: "does not take arguments",
+    },
+    {
+      args: ["feature", "--update"],
+      testCase: "ignores search string specified before the option",
+    },
+    {
+      args: ["--update", "feature"],
+      testCase: "ignores search string specified after the option",
+    },
+  ])("$testCase", async ({ args }) => {
     const storeUrl = new URL("./.store", getFixtureUrl(fixture));
 
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    });
+    await writeFixture(fixture);
 
     expect(existsSync(storeUrl)).toBe(false);
 
-    const { exitCode, stderr } = await spawnTyche(fixture, ["--update"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, args);
 
     expect(existsSync(storeUrl)).toBe(true);
 
+    expect(stdout).toBe("");
     expect(stderr).toBe("");
+
     expect(exitCode).toBe(0);
   });
 
   test("updates existing store manifest", async () => {
-    const storeManifest = {
+    const oldStoreManifest = {
       $version: "1",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
     await writeFixture(fixture, {
-      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      [".store/store-manifest.json"]: JSON.stringify(oldStoreManifest),
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixture, ["--update"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--update"]);
 
-    const result = await fs.readFile(new URL("./.store/store-manifest.json", getFixtureUrl(fixture)), {
+    const newStoreManifestText = await fs.readFile(new URL("./.store/store-manifest.json", getFixtureUrl(fixture)), {
       encoding: "utf8",
     });
 
-    expect(JSON.parse(result)).not.toMatchObject(storeManifest);
+    expect(JSON.parse(newStoreManifestText)).not.toMatchObject(oldStoreManifest);
 
+    expect(stdout).toBe("");
     expect(stderr).toBe("");
+
     expect(exitCode).toBe(0);
   });
 });
