@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'--only' command line option does not override the '.skip' run mode flag: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + external is string?
+  - skip external is number?
+  - skip internal is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 passed, 3 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests matching 'external' in all test files.
+"
+`;
+
+exports[`'--only' command line option selects test group to run: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  external
+    + is string?
+  + external is number?
+  - skip internal is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 skipped, 2 passed, 3 total
+Assertions: 1 skipped, 2 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests matching 'external' in all test files.
+"
+`;
+
+exports[`'--only' command line option selects tests to run: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + external is string?
+  + external is number?
+  - skip internal is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 skipped, 2 passed, 3 total
+Assertions: 1 skipped, 2 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests matching 'external' in all test files.
+"
+`;
+
+exports[`'--only' command line option when '--skip' command line option is specified: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/dummy.test.ts
+  + external is string?
+  - skip external is number?
+  - skip internal is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 passed, 3 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests matching 'external' and not matching 'number' in all test files.
+"
+`;
+
+exports[`'--only' command line option when search string is specified after the option: stdout 1`] = `
+"uses TypeScript <<version>>
+
+pass ./__typetests__/dummy.test.ts
+  + external is string?
+  + external is number?
+  - skip internal is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 skipped, 2 passed, 3 total
+Assertions: 1 skipped, 2 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests matching 'external' in test files matching 'dummy'.
+"
+`;
+
+exports[`'--only' command line option when search string is specified before the option: stdout 1`] = `
+"uses TypeScript <<version>>
+
+pass ./__typetests__/dummy.test.ts
+  + external is string?
+  + external is number?
+  - skip internal is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 skipped, 2 passed, 3 total
+Assertions: 1 skipped, 2 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran tests matching 'external' in test files matching 'dummy'.
+"
+`;

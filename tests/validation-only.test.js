@@ -2,24 +2,24 @@ import { afterEach, describe, expect, test } from "@jest/globals";
 import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "validation-skip";
+const fixture = "validation-only";
 
 afterEach(async () => {
   await clearFixture(fixture);
 });
 
-describe("'--skip' command line option", () => {
+describe("'--only' command line option", () => {
   test("when option argument is missing", async () => {
     await writeFixture(fixture);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--skip"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--only"]);
 
     expect(stdout).toBe("");
     expect(stderr).toBe(
       [
-        "Error: Option '--skip' expects an argument.",
+        "Error: Option '--only' expects an argument.",
         "",
-        "Option '--skip' requires an argument of type string.",
+        "Option '--only' requires an argument of type string.",
         "",
         "",
       ].join("\n"),
