@@ -9,7 +9,7 @@ test("is string?", () => {
 });
 `;
 
-const fixture = "config-config-file";
+const fixture = "config-configFile";
 
 afterEach(async () => {
   await clearFixture(fixture);
@@ -82,8 +82,8 @@ describe("'--config' command line option", () => {
     ]);
 
     expect(JSON.parse(stdout)).toMatchObject({
-      config: expect.stringMatching(/config-config-file\/config\/tstyche\.json$/),
-      rootPath: expect.stringMatching(/config-config-file$/),
+      config: expect.stringMatching(/config-configFile\/config\/tstyche\.json$/),
+      rootPath: expect.stringMatching(/config-configFile$/),
     });
     expect(stderr).toBe("");
 
