@@ -20,13 +20,30 @@ afterEach(async () => {
 });
 
 describe("'--help' command line option", () => {
-  test("prints the list of command line options", async () => {
+  test.each([
+    {
+      args: ["--help"],
+      testCase: "prints the list of command line options",
+    },
+    {
+      args: ["--help", "false"],
+      testCase: "does not take arguments",
+    },
+    {
+      args: ["feature", "--help"],
+      testCase: "ignores search string specified before the option",
+    },
+    {
+      args: ["--help", "feature"],
+      testCase: "ignores search string specified after the option",
+    },
+  ])("$testCase", async ({ args }) => {
     await writeFixture(fixture, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--help"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixture, args);
 
     expect(stdout.replace(/(Runner)\s\s(\d\.?)+.+/, "$1  <<version>>")).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
