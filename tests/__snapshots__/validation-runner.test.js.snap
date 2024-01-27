@@ -32,7 +32,7 @@ Ran all test files.
 "
 `;
 
-exports[`compiler options when no test files are present: stderr 1`] = `
+exports[`search strings when no test files are present: stderr 1`] = `
 "Error: No test files were selected using current configuration.
 
 Root path:       <<cwd>>/tests/__fixtures__/validation-runner
@@ -41,9 +41,9 @@ Test file match: **/*.tst.*, **/__typetests__/*.test.*, **/typetests/*.test.*
 "
 `;
 
-exports[`compiler options when no test files are present: stdout 1`] = `""`;
+exports[`search strings when no test files are present: stdout 1`] = `""`;
 
-exports[`compiler options when search string does not select test files: stderr 1`] = `
+exports[`search strings when search string does not select test files: stderr 1`] = `
 "Error: No test files were selected using current configuration.
 
 Root path:       <<cwd>>/tests/__fixtures__/validation-runner
@@ -53,4 +53,4 @@ Path match:      sample
 "
 `;
 
-exports[`compiler options when search string does not select test files: stdout 1`] = `""`;
+exports[`search strings when search string does not select test files: stdout 1`] = `""`;

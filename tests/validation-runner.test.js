@@ -15,7 +15,7 @@ afterEach(async () => {
   await clearFixture(fixture);
 });
 
-describe("compiler options", () => {
+describe("search strings", () => {
   test("when no test files are present", async () => {
     await writeFixture(fixture, {
       ["tstyche.config.json"]: "{}",
@@ -41,7 +41,9 @@ describe("compiler options", () => {
 
     expect(exitCode).toBe(1);
   });
+});
 
+describe("compiler options", () => {
   test("when TSConfig file has errors", async () => {
     const tsconfig = {
       compilerOptions: {
