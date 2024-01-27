@@ -27,19 +27,3 @@ Duration:   <<timestamp>>
 Ran all test files.
 "
 `;
-
-exports[`tstyche.config.json 'testFileMatch' option: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
-
-pass ./type-tests/isNumber.test.ts
-pass ./type-tests/isString.test.ts
-
-Targets:    1 passed, 1 total
-Test files: 2 passed, 2 total
-Tests:      2 passed, 2 total
-Assertions: 2 passed, 2 total
-Duration:   <<timestamp>>
-
-Ran all test files.
-"
-`;

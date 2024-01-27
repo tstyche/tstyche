@@ -21,8 +21,8 @@ describe("'tstyche.config.json' file", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--showConfig"]);
 
-    expect(JSON.parse(stdout)).not.toMatchObject({
-      config: expect.any(String),
+    expect(JSON.parse(stdout)).toMatchObject({
+      failFast: false,
     });
     expect(stderr).toBe("");
 

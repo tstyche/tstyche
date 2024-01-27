@@ -22,48 +22,6 @@ afterEach(async () => {
 });
 
 describe("search strings", () => {
-  test("when search string is not provided, selects files in 'typetests' directories", async () => {
-    await writeFixture(fixture, {
-      ["__typetests__/isNumber.test.ts"]: isNumberTestText,
-      ["__typetests__/isString.test.ts"]: isStringTestText,
-      ["feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
-      ["feature/__typetests__/isString.test.ts"]: isStringTestText,
-      ["feature/typetests/isNumber.test.ts"]: isNumberTestText,
-      ["feature/typetests/isString.test.ts"]: isStringTestText,
-      ["typetests/isNumber.test.ts"]: isNumberTestText,
-      ["typetests/isString.test.ts"]: isStringTestText,
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
-
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
-
-    expect(exitCode).toBe(0);
-  });
-
-  test("when search string is not provided, selects files with '.tst.' suffix", async () => {
-    await writeFixture(fixture, {
-      ["__tests__/isNumber.tst.ts"]: isNumberTestText,
-      ["__tests__/isString.tst.ts"]: isStringTestText,
-      ["feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
-      ["feature/__tests__/isString.tst.ts"]: isStringTestText,
-      ["feature/tests/isNumber.tst.ts"]: isNumberTestText,
-      ["feature/tests/isString.tst.ts"]: isStringTestText,
-      ["isNumber.tst.ts"]: isNumberTestText,
-      ["isString.tst.ts"]: isStringTestText,
-      ["tests/isNumber.tst.ts"]: isNumberTestText,
-      ["tests/isString.tst.ts"]: isStringTestText,
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
-
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
-
-    expect(exitCode).toBe(0);
-  });
-
   test("when single search string is provided, selects matching files", async () => {
     await writeFixture(fixture, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,

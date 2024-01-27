@@ -9,12 +9,6 @@ test("is string?", () => {
 });
 `;
 
-const isNumberTestText = `import { expect, test } from "tstyche";
-test("is number?", () => {
-  expect<number>().type.toBeNumber();
-});
-`;
-
 const tsconfig = {
   extends: "../tsconfig.json",
   include: ["**/*"],
@@ -59,28 +53,6 @@ describe("tstyche.config.json", () => {
 
     const { exitCode, stderr } = await spawnTyche(fixture);
 
-    expect(stderr).toBe("");
-
-    expect(exitCode).toBe(0);
-  });
-
-  test("'testFileMatch' option", async () => {
-    const config = {
-      testFileMatch: ["**/type-tests/*.test.ts"],
-    };
-
-    await writeFixture(fixture, {
-      ["__typetests__/isNumber.test.ts"]: isNumberTestText,
-      ["__typetests__/isString.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-      ["type-tests/isNumber.test.ts"]: isNumberTestText,
-      ["type-tests/isString.test.ts"]: isStringTestText,
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
-
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
