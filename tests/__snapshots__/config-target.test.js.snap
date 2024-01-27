@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'--target' command line option when multiple targets are specified: stdout 1`] = `
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+adds TypeScript 5.3.2 to <<cwd>>/tests/__fixtures__/config-target/.store/5.3.2
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    3 passed, 3 total
+Test files: 3 passed, 3 total
+Tests:      3 passed, 3 total
+Assertions: 3 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'--target' command line option when search string is provided after the option: stdout 1`] = `
+"uses TypeScript <<version>>
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'isString'.
+"
+`;
+
+exports[`'--target' command line option when search string is provided before the option: stdout 1`] = `
+"uses TypeScript <<version>>
+
+pass ./__typetests__/isNumber.tst.ts
+  + is number?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'isNumber'.
+"
+`;
+
+exports[`'--target' command line option when single target is specified: stdout 1`] = `
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'target' configuration file option when multiple targets are specified: stdout 1`] = `
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+adds TypeScript 5.3.2 to <<cwd>>/tests/__fixtures__/config-target/.store/5.3.2
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    3 passed, 3 total
+Test files: 3 passed, 3 total
+Tests:      3 passed, 3 total
+Assertions: 3 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'target' configuration file option when single target is specified: stdout 1`] = `
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;

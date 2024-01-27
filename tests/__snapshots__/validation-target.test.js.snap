@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'target' configuration file option when item of the list is not a string: stderr 1`] = `
+"Error: Item of the 'target' list must be of type string.
+
+  2 |   "target": [
+  3 |     "4.8",
+> 4 |     5
+    |     ^
+  5 |   ]
+  6 | }
+
+      at ./tstyche.config.json:4:5
+
+"
+`;
+
+exports[`'target' configuration file option when option argument is not a list: stderr 1`] = `
+"Error: Option 'target' requires an argument of type list.
+
+  1 | {
+> 2 |   "target": "current"
+    |             ^
+  3 | }
+
+      at ./tstyche.config.json:2:13
+
+"
+`;

@@ -370,49 +370,6 @@ test.only("external is string?", () => {
     });
   });
 
-  describe("'--target' option", () => {
-    test("handles single target", async () => {
-      await writeFixture(fixture, {
-        ["__typetests__/dummy.test.ts"]: isStringTestText,
-        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      });
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "4.8"]);
-
-      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-      expect(stderr).toBe("");
-
-      expect(exitCode).toBe(0);
-    });
-
-    test("handles multiple targets", async () => {
-      await writeFixture(fixture, {
-        ["__typetests__/dummy.test.ts"]: isStringTestText,
-        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      });
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "4.8,5.3.2,current"]);
-
-      expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-      expect(stderr).toBe("");
-
-      expect(exitCode).toBe(0);
-    });
-
-    test("handles 'current' tag", async () => {
-      await writeFixture(fixture, {
-        ["__typetests__/dummy.test.ts"]: isStringTestText,
-        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      });
-
-      const { exitCode, stderr } = await spawnTyche(fixture, ["--target", "current"]);
-
-      expect(stderr).toBe("");
-
-      expect(exitCode).toBe(0);
-    });
-  });
-
   test("'--version' option", async () => {
     await writeFixture(fixture, {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
