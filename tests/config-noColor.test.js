@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
 import ansiEscapesSerializer from "jest-serializer-ansi-escapes";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -12,25 +12,17 @@ test("is string?", () => {
 });
 `;
 
-const tsconfig = {
-  extends: "../tsconfig.json",
-  include: ["**/*"],
-};
-
-const fixture = "config-noColor";
+const fixtureUrl = getFixtureUrl("config-noColor", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'TSTYCHE_NO_COLOR' environment variable", () => {
   test("has default value", async () => {
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    });
+    await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--showConfig"], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
       env: { ["TSTYCHE_NO_COLOR"]: undefined },
     });
 
@@ -41,12 +33,11 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
   });
 
   test("when truthy, colors are disabled", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: { ["TSTYCHE_NO_COLOR"]: "true" },
     });
 
@@ -57,12 +48,11 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
   });
 
   test("when falsy, colors are enabled", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: { ["TSTYCHE_NO_COLOR"]: "" },
     });
 
@@ -73,12 +63,11 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
   });
 
   test("when 'NO_COLOR' is truthy, colors are disabled", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {
         ["NO_COLOR"]: "true",
         ["TSTYCHE_NO_COLOR"]: undefined,
@@ -92,12 +81,11 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
   });
 
   test("when 'NO_COLOR' is falsy, colors are enabled", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {
         ["NO_COLOR"]: "",
         ["TSTYCHE_NO_COLOR"]: undefined,
@@ -111,12 +99,11 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
   });
 
   test("overrides 'NO_COLOR' and enables colors", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {
         ["NO_COLOR"]: "true",
         ["TSTYCHE_NO_COLOR"]: "",
@@ -130,12 +117,11 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
   });
 
   test("overrides 'NO_COLOR' and disables colors", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {
         ["NO_COLOR"]: "",
         ["TSTYCHE_NO_COLOR"]: "true",

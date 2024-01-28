@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -10,14 +10,14 @@ test("is string?", () => {
 `;
 
 const tsconfig = {
-  extends: "../tsconfig.json",
+  extends: "../../tsconfig.json",
   include: ["**/*"],
 };
 
-const fixture = "config-install";
+const fixtureUrl = getFixtureUrl("config-install", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'--install' command line option", () => {
@@ -41,17 +41,17 @@ describe("'--install' command line option", () => {
   ])("$testCase", async ({ args }) => {
     const config = { target: ["5.0", "latest"] };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     expect(normalizeOutput(stdout)).toBe(
       [
-        "adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/config-install/.store/4.9.5",
+        "adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/.generated/config-install/.store/4.9.5",
         "",
       ].join("\n"),
     );
@@ -63,18 +63,18 @@ describe("'--install' command line option", () => {
   test("when 'target' configuration option is specified", async () => {
     const config = { target: ["4.8", "5.0"] };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--install"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install"]);
 
     expect(normalizeOutput(stdout)).toBe(
       [
-        "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-install/.store/4.8.4",
-        "adds TypeScript 5.0.4 to <<cwd>>/tests/__fixtures__/config-install/.store/5.0.4",
+        "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/.generated/config-install/.store/4.8.4",
+        "adds TypeScript 5.0.4 to <<cwd>>/tests/__fixtures__/.generated/config-install/.store/5.0.4",
         "",
       ].join("\n"),
     );
@@ -86,13 +86,13 @@ describe("'--install' command line option", () => {
   test("when 'current' target specified in the configuration file", async () => {
     const config = { target: ["current"] };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--install"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install"]);
 
     expect(stdout).toBe("");
     expect(stderr).toBe("");
@@ -103,13 +103,13 @@ describe("'--install' command line option", () => {
   test("when 'current' target specified in the command", async () => {
     const config = { target: ["5.0", "latest"] };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--install", "--target", "current"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "current"]);
 
     expect(stdout).toBe("");
     expect(stderr).toBe("");

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -8,15 +8,10 @@ test("is string?", () => {
 });
 `;
 
-const tsconfig = {
-  extends: "../tsconfig.json",
-  include: ["**/*"],
-};
-
-const fixture = "validation-store";
+const fixtureUrl = getFixtureUrl("validation-store", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("warns if resolution of a tag may be outdated", () => {
@@ -69,14 +64,15 @@ describe("warns if resolution of a tag may be outdated", () => {
       versions: ["5.3.2", "5.3.3"],
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: JSON.stringify(storeManifest),
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { stderr } = await spawnTyche(fixture, ["--showConfig", "--target", target], {
-      env: { ["TSTYCHE_TIMEOUT"]: "0.001" },
+    const { stderr } = await spawnTyche(fixtureUrl, ["--showConfig", "--target", target], {
+      env: {
+        ["TSTYCHE_TIMEOUT"]: "0.001",
+      },
     });
 
     expect(stderr).toMatch(
@@ -117,14 +113,15 @@ describe("does not warn if resolution of a tag may be outdated", () => {
       versions: ["5.2.2", "5.3.2", "5.3.3"],
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: JSON.stringify(storeManifest),
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { stderr } = await spawnTyche(fixture, ["--showConfig", "--target", target], {
-      env: { ["TSTYCHE_TIMEOUT"]: "0.001" },
+    const { stderr } = await spawnTyche(fixtureUrl, ["--showConfig", "--target", target], {
+      env: {
+        ["TSTYCHE_TIMEOUT"]: "0.001",
+      },
     });
 
     expect(stderr).toBe("");

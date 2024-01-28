@@ -1,21 +1,21 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "feature-runner";
+const fixtureUrl = getFixtureUrl("feature-runner", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("test files", () => {
   test("allows a file to be empty", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: "",
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -32,11 +32,11 @@ describe("parent", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -53,11 +53,11 @@ describe.skip("skipped describe", function () {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -71,11 +71,11 @@ describe.todo("have todo this", () => {});
 describe.todo("and this one");
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -90,11 +90,11 @@ test("empty test", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -109,11 +109,11 @@ test.skip("is skipped?", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -127,11 +127,11 @@ test.todo("have todo this", () => {});
 test.todo("and this one");
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -144,11 +144,11 @@ test.todo("and this one");
 expect<number>().type.toBeNumber();
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -186,11 +186,11 @@ test("'useUnknownInCatchVariables': false", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");

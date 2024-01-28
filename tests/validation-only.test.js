@@ -1,18 +1,18 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "validation-only";
+const fixtureUrl = getFixtureUrl("validation-only", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'--only' command line option", () => {
   test("when option argument is missing", async () => {
-    await writeFixture(fixture);
+    await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--only"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only"]);
 
     expect(stdout).toBe("");
     expect(stderr).toBe(

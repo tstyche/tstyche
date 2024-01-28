@@ -1,11 +1,12 @@
 import { expect, test } from "@jest/globals";
+import { getFixtureUrl } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "feature-cjs-support";
+const fixtureUrl = getFixtureUrl("feature-cjs-support");
 
 test("supports CJS projects written CJS syntax", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["cjs-syntax"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["cjs-syntax"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -14,7 +15,7 @@ test("supports CJS projects written CJS syntax", async () => {
 });
 
 test("supports CJS projects written in ESM syntax", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["esm-syntax"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["esm-syntax"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");

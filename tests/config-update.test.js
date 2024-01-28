@@ -1,14 +1,13 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
-import { getFixtureUrl } from "./__utils__/getFixtureUrl.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "config-update";
+const fixtureUrl = getFixtureUrl("config-update", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'--update' command line option", () => {
@@ -30,13 +29,13 @@ describe("'--update' command line option", () => {
       testCase: "ignores search string specified after the option",
     },
   ])("$testCase", async ({ args }) => {
-    const storeUrl = new URL("./.store", getFixtureUrl(fixture));
+    const storeUrl = new URL("./.store", fixtureUrl);
 
-    await writeFixture(fixture);
+    await writeFixture(fixtureUrl);
 
     expect(existsSync(storeUrl)).toBe(false);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     expect(existsSync(storeUrl)).toBe(true);
 
@@ -53,13 +52,13 @@ describe("'--update' command line option", () => {
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: JSON.stringify(oldStoreManifest),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--update"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"]);
 
-    const newStoreManifestText = await fs.readFile(new URL("./.store/store-manifest.json", getFixtureUrl(fixture)), {
+    const newStoreManifestText = await fs.readFile(new URL("./.store/store-manifest.json", fixtureUrl), {
       encoding: "utf8",
     });
 

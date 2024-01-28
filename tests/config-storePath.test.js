@@ -1,7 +1,6 @@
+import { existsSync } from "node:fs";
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { existsSync } from "fs";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
-import { getFixtureUrl } from "./__utils__/getFixtureUrl.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -10,30 +9,39 @@ test("is string?", () => {
 });
 `;
 
-const tsconfig = {
-  extends: "../tsconfig.json",
-  include: ["**/*"],
-};
-
-const fixture = "config-storePath";
+const fixtureUrl = getFixtureUrl("config-storePath", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'TSTYCHE_STORE_PATH' environment variable", () => {
-  test("uses provided path", async () => {
-    const storeUrl = new URL("./dummy-store", getFixtureUrl(fixture));
-
-    await writeFixture(fixture, {
+  test("has default value", async () => {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    expect(JSON.parse(stdout)).toHaveProperty("storePath");
+    expect(stderr).toBe("");
+
+    expect(exitCode).toBe(0);
+  });
+
+  test("when specified, uses the path", async () => {
+    const storeUrl = new URL("./dummy-store", fixtureUrl);
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
     expect(existsSync(storeUrl)).toBe(false);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--install", "--target", "5.2.2"], {
-      env: { ["TSTYCHE_STORE_PATH"]: "./dummy-store" },
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
+      env: {
+        ["TSTYCHE_STORE_PATH"]: "./dummy-store",
+      },
     });
 
     expect(existsSync(storeUrl)).toBe(true);

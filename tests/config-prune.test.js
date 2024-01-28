@@ -1,7 +1,6 @@
 import { existsSync } from "node:fs";
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
-import { getFixtureUrl } from "./__utils__/getFixtureUrl.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -10,15 +9,10 @@ test("is string?", () => {
 });
 `;
 
-const tsconfig = {
-  extends: "../tsconfig.json",
-  include: ["**/*"],
-};
-
-const fixture = "config-prune";
+const fixtureUrl = getFixtureUrl("config-prune", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'--prune' command line option", () => {
@@ -41,17 +35,16 @@ describe("'--prune' command line option", () => {
     },
   ])("$testCase", async ({ args }) => {
     const storeManifest = { $version: "0" };
-    const storeUrl = new URL("./.store", getFixtureUrl(fixture));
+    const storeUrl = new URL("./.store", fixtureUrl);
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: JSON.stringify(storeManifest),
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
     expect(existsSync(storeUrl)).toBe(true);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     expect(existsSync(storeUrl)).toBe(false);
 
@@ -62,12 +55,11 @@ describe("'--prune' command line option", () => {
   });
 
   test("does nothing, if directory does not exist", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--prune"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--prune"]);
 
     expect(stdout).toBe("");
     expect(stderr).toBe("");

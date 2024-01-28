@@ -1,11 +1,12 @@
 import { expect, test } from "@jest/globals";
+import { getFixtureUrl } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "api-it";
+const fixtureUrl = getFixtureUrl("api-it");
 
 test("handles nested 'it()'", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["nested"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["nested"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -14,7 +15,7 @@ test("handles nested 'it()'", async () => {
 });
 
 test("it.only", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["only"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -23,7 +24,7 @@ test("it.only", async () => {
 });
 
 test("it.skip", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["skip"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -32,7 +33,7 @@ test("it.skip", async () => {
 });
 
 test("it.todo", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["todo"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");

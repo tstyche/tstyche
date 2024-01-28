@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -8,15 +8,10 @@ test("is string?", () => {
 });
 `;
 
-const tsconfig = {
-  extends: "../tsconfig.json",
-  include: ["**/*"],
-};
-
-const fixture = "validation-update";
+const fixtureUrl = getFixtureUrl("validation-update", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'--update' command line option", () => {
@@ -27,13 +22,12 @@ describe("'--update' command line option", () => {
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: JSON.stringify(storeManifest),
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--update"], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"], {
       env: { ["TSTYCHE_TIMEOUT"]: "0.001" },
     });
 

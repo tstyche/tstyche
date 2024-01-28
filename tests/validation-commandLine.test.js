@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -9,10 +9,10 @@ test("is string?", () => {
 });
 `;
 
-const fixture = "validation-commandLine";
+const fixtureUrl = getFixtureUrl("validation-commandLine", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'tstyche' command", () => {
@@ -26,9 +26,9 @@ describe("'tstyche' command", () => {
       testCase: "handles unknown command line option in a short form",
     },
   ])("$testCase", async ({ args }) => {
-    await writeFixture(fixture);
+    await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -37,11 +37,11 @@ describe("'tstyche' command", () => {
   });
 
   test("when no test files are present", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: "{}",
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -50,11 +50,11 @@ describe("'tstyche' command", () => {
   });
 
   test("when search string does not select test files", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["sample"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["sample"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");

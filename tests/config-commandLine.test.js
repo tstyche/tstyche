@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -15,22 +15,22 @@ test("is number?", () => {
 });
 `;
 
-const fixture = "config-commandLine";
+const fixtureUrl = getFixtureUrl("config-commandLine", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'tstyche' command", () => {
   test("when called without arguments, selects all matching files", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
       ["feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
       ["feature/__tests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -39,14 +39,14 @@ describe("'tstyche' command", () => {
   });
 
   test("when single search string is provided, selects matching files", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
       ["feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
       ["feature/__tests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["number"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["number"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -55,14 +55,14 @@ describe("'tstyche' command", () => {
   });
 
   test("when multiple search strings are provided, selects matching files", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
       ["feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
       ["feature/__tests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["string", "feature"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["string", "feature"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -71,14 +71,14 @@ describe("'tstyche' command", () => {
   });
 
   test("when relative search string is provided, selects matching files", async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
       ["feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
       ["feature/__tests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["./feature/__tests__/isNumber"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["./feature/__tests__/isNumber"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -90,9 +90,12 @@ describe("'tstyche' command", () => {
     const config = {
       testFileMatch: ["**/feature/__tests__/**.*"],
     };
-    const tsconfig = { extends: "../../../tsconfig.json", include: ["**/*"] };
+    const tsconfig = {
+      extends: "../../../../tsconfig.json",
+      include: ["**/*"],
+    };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["feature/__tests__/__snapshot__/isNumber.test.ts.snap"]: "isNumberSnap",
@@ -103,7 +106,7 @@ describe("'tstyche' command", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["number"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["number"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");

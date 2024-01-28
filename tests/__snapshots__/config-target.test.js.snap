@@ -33,13 +33,13 @@ Ran all test files.
 `;
 
 exports[`'--target' command line option when multiple targets are specified: stdout 1`] = `
-"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/.generated/config-target/.store/4.8.4
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts
   + is string?
 
-adds TypeScript 5.3.2 to <<cwd>>/tests/__fixtures__/config-target/.store/5.3.2
+adds TypeScript 5.3.2 to <<cwd>>/tests/__fixtures__/.generated/config-target/.store/5.3.2
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts
@@ -93,7 +93,7 @@ Ran test files matching 'isNumber'.
 `;
 
 exports[`'--target' command line option when single target is specified: stdout 1`] = `
-"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/.generated/config-target/.store/4.8.4
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts
@@ -110,13 +110,13 @@ Ran all test files.
 `;
 
 exports[`'target' configuration file option when multiple targets are specified: stdout 1`] = `
-"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/.generated/config-target/.store/4.8.4
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts
   + is string?
 
-adds TypeScript 5.3.2 to <<cwd>>/tests/__fixtures__/config-target/.store/5.3.2
+adds TypeScript 5.3.2 to <<cwd>>/tests/__fixtures__/.generated/config-target/.store/5.3.2
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts
@@ -138,7 +138,7 @@ Ran all test files.
 `;
 
 exports[`'target' configuration file option when single target is specified: stdout 1`] = `
-"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/config-target/.store/4.8.4
+"adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/.generated/config-target/.store/4.8.4
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts

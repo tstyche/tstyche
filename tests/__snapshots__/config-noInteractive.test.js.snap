@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`'TSTYCHE_NO_INTERACTIVE' environment variable when falsy, interactive elements  are enabled: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
+"uses TypeScript <<version>>
 
 runs ./__typetests__/dummy.test.ts
 <moveCursorUpBy1Row>
@@ -20,7 +20,7 @@ Ran all test files.
 `;
 
 exports[`'TSTYCHE_NO_INTERACTIVE' environment variable when truthy, interactive elements are disabled: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
+"uses TypeScript <<version>>
 
 pass ./__typetests__/dummy.test.ts
   + is string?

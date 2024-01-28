@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -10,14 +10,14 @@ test("is string?", () => {
 `;
 
 const tsconfig = {
-  extends: "../tsconfig.json",
+  extends: "../../tsconfig.json",
   include: ["**/*"],
 };
 
-const fixture = "config-only";
+const fixtureUrl = getFixtureUrl("config-only", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'--only' command line option", () => {
@@ -36,12 +36,12 @@ test("internal is string?", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--only", "external"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only", "external"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -66,12 +66,12 @@ test("internal is string?", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--only", "external"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only", "external"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -94,12 +94,12 @@ test("internal is string?", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--only", "external"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only", "external"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -122,12 +122,12 @@ test("internal is string?", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--only", "external", "--skip", "number"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only", "external", "--skip", "number"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
@@ -150,12 +150,12 @@ test("internal is string?", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["dummy", "--only", "external"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["dummy", "--only", "external"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(normalizeOutput(stderr)).toBe("");
@@ -178,12 +178,12 @@ test("internal is string?", () => {
 });
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: testText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--only", "external", "dummy"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only", "external", "dummy"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(normalizeOutput(stderr)).toBe("");

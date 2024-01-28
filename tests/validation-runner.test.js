@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -9,10 +9,10 @@ test("is string?", () => {
 });
 `;
 
-const fixture = "validation-runner";
+const fixtureUrl = getFixtureUrl("validation-runner", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("compiler options", () => {
@@ -23,16 +23,16 @@ describe("compiler options", () => {
         strict: "yes",
         strictNullChecks: true,
       },
-      extends: "../tsconfig.json",
+      extends: "../../tsconfig.json",
       include: ["**/*"],
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");

@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -23,23 +23,23 @@ test("is broken?"
 `;
 
 const tsconfig = {
-  extends: "../tsconfig.json",
+  extends: "../../tsconfig.json",
   include: ["**/*"],
 };
 
-const fixture = "validation-syntax-errors";
+const fixtureUrl = getFixtureUrl("validation-syntax-errors", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 test("when syntax errors are encountered", async () => {
-  await writeFixture(fixture, {
+  await writeFixture(fixtureUrl, {
     ["__typetests__/dummy.test.ts"]: isStringTestText,
     ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
   });
 
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");

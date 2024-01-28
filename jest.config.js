@@ -8,6 +8,7 @@ const config = {
     ["^#(.*)$"]: "<rootDir>/source/$1",
     ["^(\\.{1,2}/.*)\\.js$"]: "$1",
   },
+  modulePathIgnorePatterns: ["\\.generated"],
   randomize: true,
   testTimeout: 75000,
   transform: {

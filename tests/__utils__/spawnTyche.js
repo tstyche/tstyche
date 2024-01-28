@@ -1,16 +1,15 @@
 import { spawn } from "node:child_process";
-import { getFixtureUrl } from "./getFixtureUrl.js";
 
 /**
- * @param {string} fixture
+ * @param {URL} fixtureUrl
  * @param {Array<string>} [args]
  * @param {{ env?: Record<string, string | undefined> }} [options]
  * @returns {Promise<{ exitCode: number | null, stderr: string, stdout: string }>}
  */
-export async function spawnTyche(fixture, args, options) {
+export async function spawnTyche(fixtureUrl, args, options) {
   return new Promise((resolve, reject) => {
     const tstyche = spawn("tstyche", args, {
-      cwd: getFixtureUrl(fixture),
+      cwd: fixtureUrl,
       env: {
         ...process.env,
         ["TSTYCHE_NO_COLOR"]: "true",

@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "validation-configFile";
+const fixtureUrl = getFixtureUrl("validation-configFile", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'tstyche.config.json' file", () => {
@@ -17,11 +17,11 @@ describe("'tstyche.config.json' file", () => {
       testFileMatch: ["**/packages/*/__typetests__/*.test.ts"],
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -34,11 +34,11 @@ describe("'tstyche.config.json' file", () => {
       failFast: "always",
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -51,11 +51,11 @@ describe("'tstyche.config.json' file", () => {
       testFileMatch: [true],
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -66,11 +66,11 @@ describe("'tstyche.config.json' file", () => {
   test("handles wrong root value", async () => {
     const config = [{ setupTimeout: 30 }];
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -83,11 +83,11 @@ describe("'tstyche.config.json' file", () => {
   'failFast': true
 }`;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: configText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -100,11 +100,11 @@ describe("'tstyche.config.json' file", () => {
   "rootPath": '../'
 }`;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: configText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -117,11 +117,11 @@ describe("'tstyche.config.json' file", () => {
   "target": ['4.8']
 }`;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: configText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
@@ -142,11 +142,11 @@ describe("'tstyche.config.json' file", () => {
 }
 `;
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: configText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--showConfig"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     expect(JSON.parse(stdout)).toMatchObject({
       failFast: true,
@@ -161,9 +161,9 @@ describe("'tstyche.config.json' file", () => {
 
 describe("'--config' command line option", () => {
   test("when option argument is missing", async () => {
-    await writeFixture(fixture);
+    await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--config"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config"]);
 
     expect(stdout).toBe("");
     expect(stderr).toBe(

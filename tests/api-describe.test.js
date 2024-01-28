@@ -1,11 +1,12 @@
 import { expect, test } from "@jest/globals";
+import { getFixtureUrl } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "api-describe";
+const fixtureUrl = getFixtureUrl("api-describe");
 
 test("includes nested", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["nested"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["nested"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -14,7 +15,7 @@ test("includes nested", async () => {
 });
 
 test("describe.only", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["only"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -23,7 +24,7 @@ test("describe.only", async () => {
 });
 
 test("describe.skip", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["skip"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -32,7 +33,7 @@ test("describe.skip", async () => {
 });
 
 test("describe.todo", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["todo"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(stderr).toBe("");
@@ -41,7 +42,7 @@ test("describe.todo", async () => {
 });
 
 test("handles 'expect()' nested within 'describe()'", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["describe-level-expect"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["describe-level-expect"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
   expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");

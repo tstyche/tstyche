@@ -1,22 +1,20 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import fs from "node:fs/promises";
+import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const isStringTestText = `import { expect, test } from "tstyche";
-test("is string?", () => {
-  expect<string>().type.toBeString();
+const packageConfigText = await fs.readFile(new URL("../package.json", import.meta.url), { encoding: "utf8" });
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
+
+const fixtureUrl = getFixtureUrl("config-help", { generated: true });
+
+beforeAll(async () => {
+  await writeFixture(fixtureUrl);
 });
-`;
 
-const tsconfig = {
-  extends: "../tsconfig.json",
-  include: ["**/*"],
-};
-
-const fixture = "config-help";
-
-afterEach(async () => {
-  await clearFixture(fixture);
+afterAll(async () => {
+  await clearFixture(fixtureUrl);
 });
 
 describe("'--help' command line option", () => {
@@ -38,14 +36,11 @@ describe("'--help' command line option", () => {
       testCase: "ignores search string specified after the option",
     },
   ])("$testCase", async ({ args }) => {
-    await writeFixture(fixture, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    });
+    await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(stdout.replace(/(Runner)\s\s(\d\.?)+.+/, "$1  <<version>>")).toMatchSnapshot("stdout");
+    expect(stdout.replace(version, "<<version>>")).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);

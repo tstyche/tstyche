@@ -9,7 +9,7 @@ exports[`compiler options when TSConfig file has errors: stderr 1`] = `
     |               ^
   5 |     "strictNullChecks": true
   6 |   },
-  7 |   "extends": "../tsconfig.json",
+  7 |   "extends": "../../tsconfig.json",
 
       at ./tsconfig.json:4:15
 

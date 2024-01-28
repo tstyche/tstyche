@@ -47,7 +47,7 @@ Ran all test files.
 `;
 
 exports[`'testFileMatch' configuration file option specified pattern, selects only matching files: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
+"uses TypeScript <<version>>
 
 pass ./type-tests/isNumber.tst.ts
 pass ./type-tests/isString.tst.ts

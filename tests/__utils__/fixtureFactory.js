@@ -1,21 +1,26 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { getFixtureUrl } from "./getFixtureUrl.js";
 
 /**
- * @param {string} fixture
+ * @param {URL} fixtureUrl
  */
-export async function clearFixture(fixture) {
-  return fs.rm(getFixtureUrl(fixture), { force: true, recursive: true });
+export async function clearFixture(fixtureUrl) {
+  return fs.rm(fixtureUrl, { force: true, recursive: true });
 }
 
 /**
  * @param {string} fixture
+ * @param {{ generated?: boolean }} [options]
+ */
+export function getFixtureUrl(fixture, options = { generated: false }) {
+  return new URL(`../__fixtures__/${options.generated === true ? ".generated/" : ""}${fixture}/`, import.meta.url);
+}
+
+/**
+ * @param {URL} fixtureUrl
  * @param {Record<string, string>} [files]
  */
-export async function writeFixture(fixture, files) {
-  const fixtureUrl = getFixtureUrl(fixture);
-
+export async function writeFixture(fixtureUrl, files) {
   await fs.mkdir(fixtureUrl, { recursive: true });
 
   if (files == null) {

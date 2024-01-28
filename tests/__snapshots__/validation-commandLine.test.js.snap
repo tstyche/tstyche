@@ -15,7 +15,7 @@ exports[`'tstyche' command handles unknown command line option in a short form: 
 exports[`'tstyche' command when no test files are present: stderr 1`] = `
 "Error: No test files were selected using current configuration.
 
-Root path:       <<cwd>>/tests/__fixtures__/validation-commandLine
+Root path:       <<cwd>>/tests/__fixtures__/.generated/validation-commandLine
 Test file match: **/*.tst.*, **/__typetests__/*.test.*, **/typetests/*.test.*
 
 "
@@ -26,7 +26,7 @@ exports[`'tstyche' command when no test files are present: stdout 1`] = `""`;
 exports[`'tstyche' command when search string does not select test files: stderr 1`] = `
 "Error: No test files were selected using current configuration.
 
-Root path:       <<cwd>>/tests/__fixtures__/validation-commandLine
+Root path:       <<cwd>>/tests/__fixtures__/.generated/validation-commandLine
 Test file match: **/*.tst.*, **/__typetests__/*.test.*, **/typetests/*.test.*
 Path match:      sample
 

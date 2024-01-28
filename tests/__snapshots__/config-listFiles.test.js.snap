@@ -2,8 +2,8 @@
 
 exports[`'--listFiles' command line option lists test files: stdout 1`] = `
 "[
-  "<<cwd>>/tests/__fixtures__/config-listFiles/__typetests__/isNumber.tst.ts",
-  "<<cwd>>/tests/__fixtures__/config-listFiles/__typetests__/isString.tst.ts"
+  "<<cwd>>/tests/__fixtures__/.generated/config-listFiles/__typetests__/isNumber.tst.ts",
+  "<<cwd>>/tests/__fixtures__/.generated/config-listFiles/__typetests__/isString.tst.ts"
 ]
 "
 `;
@@ -19,14 +19,14 @@ Ran all test files.
 
 exports[`'--listFiles' command line option when search string is specified after the option: stdout 1`] = `
 "[
-  "<<cwd>>/tests/__fixtures__/config-listFiles/__typetests__/isString.tst.ts"
+  "<<cwd>>/tests/__fixtures__/.generated/config-listFiles/__typetests__/isString.tst.ts"
 ]
 "
 `;
 
 exports[`'--listFiles' command line option when search string is specified before the option: stdout 1`] = `
 "[
-  "<<cwd>>/tests/__fixtures__/config-listFiles/__typetests__/isNumber.tst.ts"
+  "<<cwd>>/tests/__fixtures__/.generated/config-listFiles/__typetests__/isNumber.tst.ts"
 ]
 "
 `;

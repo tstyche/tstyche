@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixture = "validation-rootPath";
+const fixtureUrl = getFixtureUrl("validation-rootPath", { generated: true });
 
 afterEach(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("'rootPath' configuration file option", () => {
@@ -15,11 +15,11 @@ describe("'rootPath' configuration file option", () => {
       rootPath: "../nope",
     };
 
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["config/tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--config ./config/tstyche.json"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config ./config/tstyche.json"]);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot();

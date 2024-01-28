@@ -1,8 +1,7 @@
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
-import { clearFixture, writeFixture } from "./__utils__/fixtureFactory.js";
-import { getFixtureUrl } from "./__utils__/getFixtureUrl.js";
+import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const toBeAssignableTestText = `
@@ -83,13 +82,13 @@ test("Matchers", () => {
   expect<Matchers>().type.toRaiseError("requires between 1 and 2 type arguments");
 });`;
 
-const fixture = "feature-typescript-versions";
+const fixtureUrl = getFixtureUrl("feature-typescript-versions", { generated: true });
 
-await writeFixture(fixture);
+await writeFixture(fixtureUrl);
 
-await spawnTyche(fixture, ["--update"]);
+await spawnTyche(fixtureUrl, ["--update"]);
 
-const storeUrl = new URL("./.store/", getFixtureUrl(fixture));
+const storeUrl = new URL("./.store/", fixtureUrl);
 
 const manifestText = await fs.readFile(new URL("./store-manifest.json", storeUrl), { encoding: "utf8" });
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -100,12 +99,12 @@ const versionTags = Object.entries(resolutions)
   .map((resolution) => resolution[1]);
 
 afterAll(async () => {
-  await clearFixture(fixture);
+  await clearFixture(fixtureUrl);
 });
 
 describe("TypeScript 4.x", () => {
   beforeAll(async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
       ["__typetests__/toBeAssignable.test.ts"]: `// @ts-expect-error${toBeAssignableTestText}`,
       ["__typetests__/toEqual.test.ts"]: `// @ts-expect-error${toEqualTestText}`,
@@ -129,11 +128,11 @@ describe("TypeScript 4.x", () => {
     "4.8.4",
     "4.9.5",
   ])("uses TypeScript %s as current target", async (version) => {
-    await spawnTyche(fixture, ["--install", "--target", version]);
+    await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
     const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
       env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
     });
 
@@ -146,7 +145,7 @@ describe("TypeScript 4.x", () => {
 
 describe("TypeScript 5.x", () => {
   beforeAll(async () => {
-    await writeFixture(fixture, {
+    await writeFixture(fixtureUrl, {
       ["__typetests__/toBeAssignable.test.ts"]: toBeAssignableTestText,
       ["__typetests__/toEqual.test.ts"]: toEqualTestText,
       ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
@@ -156,11 +155,11 @@ describe("TypeScript 5.x", () => {
   });
 
   test.each(["5.0.2", ...versionTags])("uses TypeScript %s as current target", async (version) => {
-    await spawnTyche(fixture, ["--install", "--target", version]);
+    await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
     const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixture, ["--target", "current"], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
       env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
     });
 
