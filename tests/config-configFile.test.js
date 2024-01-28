@@ -63,6 +63,35 @@ describe("'tstyche.config.json' file", () => {
 
     expect(exitCode).toBe(0);
   });
+
+  test("comments are allowed", async () => {
+    const configText = `{
+  /* test */
+  "failFast": true,
+  /* test */ "target": ["rc"],
+  // test
+  "testFileMatch": /* test */ [
+    "examples/**/*.test.ts" /* test */,
+    /* test */ "**/__typetests__/*.test.ts"
+  ]
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    expect(JSON.parse(stdout)).toMatchObject({
+      failFast: true,
+      target: ["rc"],
+      testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
+    });
+    expect(stderr).toBe("");
+
+    expect(exitCode).toBe(0);
+  });
 });
 
 describe("'--config' command line option", () => {

@@ -16,19 +16,10 @@ afterEach(async () => {
 });
 
 describe("'tstyche' command", () => {
-  test.each([
-    {
-      args: ["--cache"],
-      testCase: "handles unknown command line option in a long form",
-    },
-    {
-      args: ["-c"],
-      testCase: "handles unknown command line option in a short form",
-    },
-  ])("$testCase", async ({ args }) => {
+  test("handles unknown command line options", async () => {
     await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--check", "--quick", "-t"]);
 
     expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");

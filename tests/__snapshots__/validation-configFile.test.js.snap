@@ -67,6 +67,19 @@ exports[`'tstyche.config.json' file handles single quoted values: stderr 1`] = `
 "
 `;
 
+exports[`'tstyche.config.json' file handles syntax error: stderr 1`] = `
+"Error: '}' expected. ts(1005)
+
+  1 | {
+  2 |   'failFast': true
+> 3 | 
+    | ^
+
+      at ./tstyche.config.json:3:1
+
+"
+`;
+
 exports[`'tstyche.config.json' file handles unknown options: stderr 1`] = `
 "Error: Unknown option 'cache'.
 
@@ -106,6 +119,21 @@ exports[`'tstyche.config.json' file handles wrong root value: stderr 1`] = `
   5 | ]
 
       at ./tstyche.config.json:1:1
+
+"
+`;
+
+exports[`'tstyche.config.json' file when tabs are used for indentation, handles option argument of wrong type: stderr 1`] = `
+"Error: Option 'rootPath' requires an argument of type string.
+
+  1 | {
+  2 |  "failFast": false,
+> 3 |  "rootPath": true
+    |              ^
+  4 | }
+  5 | 
+
+      at ./tstyche.config.json:3:14
 
 "
 `;

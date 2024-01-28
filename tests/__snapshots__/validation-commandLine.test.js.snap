@@ -1,13 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`'tstyche' command handles unknown command line option in a long form: stderr 1`] = `
-"Error: Unknown option '--cache'.
+exports[`'tstyche' command handles unknown command line options: stderr 1`] = `
+"Error: Unknown option '--check'.
 
-"
-`;
+Error: Unknown option '--quick'.
 
-exports[`'tstyche' command handles unknown command line option in a short form: stderr 1`] = `
-"Error: Unknown option '-c'.
+Error: Unknown option '-t'.
 
 "
 `;

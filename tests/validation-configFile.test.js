@@ -46,6 +46,25 @@ describe("'tstyche.config.json' file", () => {
     expect(exitCode).toBe(1);
   });
 
+  test("when tabs are used for indentation, handles option argument of wrong type", async () => {
+    const configText = `{
+\t"failFast": false,
+\t"rootPath": true
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    expect(stdout).toBe("");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+
+    expect(exitCode).toBe(1);
+  });
+
   test("handles list item of wrong type", async () => {
     const config = {
       testFileMatch: [true],
@@ -68,6 +87,23 @@ describe("'tstyche.config.json' file", () => {
 
     await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    expect(stdout).toBe("");
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+
+    expect(exitCode).toBe(1);
+  });
+
+  test("handles syntax error", async () => {
+    const configText = `{
+  'failFast': true
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -127,35 +163,6 @@ describe("'tstyche.config.json' file", () => {
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(exitCode).toBe(1);
-  });
-
-  test("handles comments", async () => {
-    const configText = `{
-  /* test */
-  "failFast": true,
-  /* test */ "target": ["rc"],
-  // test
-  "testFileMatch": /* test */ [
-    "examples/**/*.test.ts" /* test */,
-    /* test */ "**/__typetests__/*.test.ts"
-  ]
-}
-`;
-
-    await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
-
-    expect(JSON.parse(stdout)).toMatchObject({
-      failFast: true,
-      target: ["rc"],
-      testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
-    });
-    expect(stderr).toBe("");
-
-    expect(exitCode).toBe(0);
   });
 });
 
