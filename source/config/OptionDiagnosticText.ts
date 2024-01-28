@@ -46,10 +46,6 @@ export class OptionDiagnosticText {
     return `Unknown option '${optionName}'.`;
   }
 
-  unknownProperty(optionName: string): string {
-    return `Unknown property '${optionName}'.`;
-  }
-
   versionIsNotSupported(value: string): string {
     if (value === "current") {
       return "Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.";

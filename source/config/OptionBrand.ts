@@ -4,5 +4,4 @@ export const enum OptionBrand {
   Boolean = "boolean",
   True = "true", // an option which does not take a value
   List = "list",
-  Object = "object",
 }

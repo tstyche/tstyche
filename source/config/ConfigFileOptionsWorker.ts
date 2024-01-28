@@ -122,12 +122,6 @@ export class ConfigFileOptionsWorker {
     isListItem = false,
   ): Promise<OptionValue> {
     switch (valueExpression.kind) {
-      case this.compiler.SyntaxKind.NullKeyword:
-        if (optionDefinition.nullable === true) {
-          return null;
-        }
-        break;
-
       case this.compiler.SyntaxKind.TrueKeyword:
         if (optionDefinition.brand === OptionBrand.Boolean) {
           return true;
@@ -182,50 +176,6 @@ export class ConfigFileOptionsWorker {
           }
 
           return value;
-        }
-        break;
-
-      case this.compiler.SyntaxKind.ObjectLiteralExpression:
-        if (optionDefinition.brand === OptionBrand.Object && "getDefinition" in optionDefinition) {
-          const propertyDefinition = optionDefinition.getDefinition(OptionGroup.ConfigFile);
-          const propertyOptions: Record<string, OptionValue> = {};
-
-          for (const property of (valueExpression as ts.ObjectLiteralExpression).properties) {
-            if (this.compiler.isPropertyAssignment(property)) {
-              if (!this.#isDoubleQuotedString(property.name, sourceFile)) {
-                const origin = {
-                  end: property.end,
-                  file: sourceFile,
-                  start: this.#skipTrivia(property.pos, sourceFile),
-                };
-
-                this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.doubleQuotesExpected(), origin));
-                continue;
-              }
-
-              const optionName = this.#resolvePropertyName(property);
-
-              const optionDefinition = propertyDefinition.get(optionName);
-
-              if (optionDefinition) {
-                propertyOptions[optionDefinition.name] = await this.#parseOptionValue(
-                  sourceFile,
-                  property.initializer,
-                  optionDefinition,
-                );
-              } else {
-                const origin = {
-                  end: property.end,
-                  file: sourceFile,
-                  start: this.#skipTrivia(property.pos, sourceFile),
-                };
-
-                this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownProperty(optionName), origin));
-              }
-            }
-          }
-
-          return propertyOptions;
         }
         break;
 

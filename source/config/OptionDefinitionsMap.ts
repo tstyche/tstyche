@@ -2,22 +2,18 @@ import { OptionBrand } from "./OptionBrand.js";
 import { OptionGroup } from "./OptionGroup.js";
 
 export interface ItemDefinition {
-  brand: OptionBrand.String | OptionBrand.Object;
-  getDefinition?: (optionGroup: OptionGroup) => Map<string, OptionDefinition>;
+  brand: OptionBrand.String;
   name: string;
-  nullable?: boolean;
   pattern?: string;
-  properties?: Array<OptionDefinition>;
 }
 
-export type OptionDefinition = PrimitiveTypeOptionDefinition | ListTypeOptionDefinition | ObjectTypeOptionDefinition;
+export type OptionDefinition = PrimitiveTypeOptionDefinition | ListTypeOptionDefinition;
 
 export type OptionValue =
+  | Array<OptionValue>
   | string
   | number
   | boolean
-  | Array<OptionValue>
-  | { [key: string]: OptionValue }
   | null
   | undefined;
 
@@ -26,8 +22,6 @@ interface BaseOptionDefinition {
   description: string;
   group: OptionGroup;
   name: string;
-  nullable?: boolean;
-  required?: boolean;
 }
 
 interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
@@ -37,12 +31,6 @@ interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
 interface ListTypeOptionDefinition extends BaseOptionDefinition {
   brand: OptionBrand.List;
   items: ItemDefinition;
-}
-
-interface ObjectTypeOptionDefinition extends BaseOptionDefinition {
-  brand: OptionBrand.Object;
-  getDefinition: (optionGroup: OptionGroup) => Map<string, OptionDefinition>;
-  properties: Array<OptionDefinition>;
 }
 
 export class OptionDefinitionsMap {

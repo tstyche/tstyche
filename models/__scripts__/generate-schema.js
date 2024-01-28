@@ -4,14 +4,11 @@ import * as tstyche from "tstyche/tstyche";
 
 /**
  * @typedef {object} JsonSchemaDefinition
- * @property {string} [$ref]
  * @property {boolean} [additionalProperties]
  * @property {unknown} [default]
  * @property {string} [description]
  * @property {JsonSchemaDefinition} [items]
  * @property {string} [pattern]
- * @property {Record<string, JsonSchemaDefinition>} [properties]
- * @property {Array<string>} [required]
  * @property {string | Array<string>} type
  * @property {boolean} [uniqueItems]
  */
@@ -19,7 +16,6 @@ import * as tstyche from "tstyche/tstyche";
 /**
  * @typedef {object} JsonSchema
  * @property {string} $schema
- * @property {Record<string, JsonSchemaDefinition>} definitions
  * @property {Record<string, JsonSchemaDefinition>} properties
  * @property {string} type
  */
@@ -27,7 +23,6 @@ import * as tstyche from "tstyche/tstyche";
 /** @type {JsonSchema} */
 const jsonSchema = {
   $schema: "http://json-schema.org/draft-07/schema#",
-  definitions: {},
   properties: {},
   type: "object",
 };
@@ -54,7 +49,7 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
 
   switch (optionDefinition.brand) {
     case tstyche.OptionBrand.Boolean:
-      jsonSchemaDefinition.type = optionDefinition.nullable === true ? ["boolean", "null"] : "boolean";
+      jsonSchemaDefinition.type = "boolean";
       break;
 
     case tstyche.OptionBrand.List:
@@ -65,43 +60,11 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
       break;
 
     case tstyche.OptionBrand.Number:
-      jsonSchemaDefinition.type = optionDefinition.nullable === true ? ["number", "null"] : "number";
-      break;
-
-    case tstyche.OptionBrand.Object:
-      {
-        if (!optionDefinition.properties) {
-          break;
-        }
-
-        const definitionKey = `${optionDefinition.name}Options`;
-        jsonSchemaDefinition.$ref = `#/definitions/${definitionKey}`;
-
-        /** @type {Record<string, JsonSchemaDefinition>} */
-        const propertyDefinitions = {};
-
-        /** @type {Array<string>} */
-        const required = [];
-
-        for (const property of optionDefinition.properties) {
-          propertyDefinitions[property.name] = createJsonSchemaDefinition(property);
-
-          if (property.required === true) {
-            required.push(property.name);
-          }
-        }
-
-        jsonSchema.definitions[definitionKey] = {
-          additionalProperties: false,
-          properties: propertyDefinitions,
-          required,
-          type: "object",
-        };
-      }
+      jsonSchemaDefinition.type = "number";
       break;
 
     case tstyche.OptionBrand.String:
-      jsonSchemaDefinition.type = optionDefinition.nullable === true ? ["string", "null"] : "string";
+      jsonSchemaDefinition.type = "string";
       break;
 
     default:

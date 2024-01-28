@@ -59,19 +59,9 @@ function createArrayPropertySignature(identifierText, itemDefinition, commentTex
  * @param {string} identifierText
  * @param {ts.KeywordTypeSyntaxKind} syntaxKind
  * @param {string} commentText
- * @param {boolean} isNullable
  */
-function createPrimitivePropertySignature(identifierText, syntaxKind, commentText, isNullable = false) {
-  /** @type {ts.TypeNode} */
-  let typeNode = ts.factory.createKeywordTypeNode(syntaxKind);
-
-  if (isNullable) {
-    typeNode = ts.factory.createUnionTypeNode([
-      typeNode,
-      ts.factory.createLiteralTypeNode(ts.factory.createNull()),
-      ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
-    ]);
-  }
+function createPrimitivePropertySignature(identifierText, syntaxKind, commentText) {
+  const typeNode = ts.factory.createKeywordTypeNode(syntaxKind);
 
   const propertySignature = ts.factory.createPropertySignature(
     /* modifiers */ undefined,
@@ -108,7 +98,6 @@ function createInterfaceDeclaration(identifierText, commentText, optionDefinitio
             key,
             ts.SyntaxKind.BooleanKeyword,
             optionDefinition.description,
-            optionDefinition.nullable,
           ),
         );
         break;
@@ -123,7 +112,6 @@ function createInterfaceDeclaration(identifierText, commentText, optionDefinitio
             key,
             ts.SyntaxKind.NumberKeyword,
             optionDefinition.description,
-            optionDefinition.nullable,
           ),
         );
         break;
@@ -134,7 +122,6 @@ function createInterfaceDeclaration(identifierText, commentText, optionDefinitio
             key,
             ts.SyntaxKind.StringKeyword,
             optionDefinition.description,
-            optionDefinition.nullable,
           ),
         );
         break;
