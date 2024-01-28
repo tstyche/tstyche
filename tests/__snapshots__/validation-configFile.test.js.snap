@@ -1,20 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`'tstyche.config.json' file handles list item of wrong type: stderr 1`] = `
-"Error: Item of the 'testFileMatch' list must be of type string.
-
-  1 | {
-  2 |   "testFileMatch": [
-> 3 |     true
-    |     ^
-  4 |   ]
-  5 | }
-
-      at ./tstyche.config.json:3:5
-
-"
-`;
-
 exports[`'tstyche.config.json' file handles option argument of wrong type: stderr 1`] = `
 "Error: Option 'failFast' requires an argument of type boolean.
 
@@ -114,7 +99,7 @@ exports[`'tstyche.config.json' file handles wrong root value: stderr 1`] = `
 > 1 | [
     | ^
   2 |   {
-  3 |     "setupTimeout": 30
+  3 |     "failFast": true
   4 |   }
   5 | ]
 

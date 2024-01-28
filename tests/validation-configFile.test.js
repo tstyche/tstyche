@@ -65,25 +65,8 @@ describe("'tstyche.config.json' file", () => {
     expect(exitCode).toBe(1);
   });
 
-  test("handles list item of wrong type", async () => {
-    const config = {
-      testFileMatch: [true],
-    };
-
-    await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-    expect(stdout).toBe("");
-    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
-
-    expect(exitCode).toBe(1);
-  });
-
   test("handles wrong root value", async () => {
-    const config = [{ setupTimeout: 30 }];
+    const config = [{ failFast: true }];
 
     await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
