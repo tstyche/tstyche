@@ -114,5 +114,4 @@ jobs:
         with:
           directory: ./coverage
           files: report.json
-        env:
           token: ${{ secrets.CODECOV_TOKEN }}
