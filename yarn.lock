@@ -4934,7 +4934,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:0.30.5, magic-string@npm:^0.30.4":
+"magic-string@npm:0.30.6":
+  version: 0.30.6
+  resolution: "magic-string@npm:0.30.6"
+  dependencies:
+    "@jridgewell/sourcemap-codec": ^1.4.15
+  checksum: d6d825aeccfc6eea2b27423e34d51b315ff81f1bfa35c5978c0e82486fdbb4f71777aa144c0f04f4c7cbe4fe531a38cbeff928a0abaf511cf75ec7691ed9e117
+  languageName: node
+  linkType: hard
+
+"magic-string@npm:^0.30.4":
   version: 0.30.5
   resolution: "magic-string@npm:0.30.5"
   dependencies:
@@ -6257,7 +6266,7 @@ __metadata:
     eslint-plugin-simple-import-sort: 10.0.0
     jest: 29.7.0
     jest-serializer-ansi-escapes: 2.0.1
-    magic-string: 0.30.5
+    magic-string: 0.30.6
     rollup: 4.9.6
     rollup-plugin-dts: 6.1.0
     ts-node: 10.9.2
