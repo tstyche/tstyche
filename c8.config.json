@@ -27,5 +27,5 @@
       "skipFull": true
     }
   },
-  "tempDirectory": "./coverage/.cache"
+  "tempDirectory": "./.cache/coverage"
 }
