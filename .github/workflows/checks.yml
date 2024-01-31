@@ -110,7 +110,7 @@ jobs:
       - run: yarn test:coverage
         env:
           FORCE_COLOR: true
-      - uses: codecov/codecov-action@a7b945cea47ad44d8340fae2b004cb982191264f # v4
+      - uses: codecov/codecov-action@f30e4959ba63075080d4f7f90cacc18d9f3fafd7 # v4
         with:
           directory: ./coverage
           files: report.json
