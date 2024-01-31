@@ -123,7 +123,6 @@ describe("TypeScript 4.x", () => {
     "4.4.4",
     "4.5.5",
     "4.6.4",
-    "4.7.2",
     "4.7.4",
     "4.8.4",
     "4.9.5",
@@ -154,7 +153,10 @@ describe("TypeScript 5.x", () => {
     });
   });
 
-  test.each(["5.0.2", ...versionTags])("uses TypeScript %s as current target", async (version) => {
+  test.each([
+    "5.0.2",
+    ...versionTags,
+  ])("uses TypeScript %s as current target", async (version) => {
     await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
     const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));

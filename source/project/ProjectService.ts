@@ -74,7 +74,11 @@ export class ProjectService {
       target: "esnext" as ts.server.protocol.ScriptTarget,
     };
 
-    if (Version.isSatisfiedWith(this.compiler.version, "5")) {
+    if (Version.isSatisfiedWith(this.compiler.version, "5.4")) {
+      defaultCompilerOptions.module = "preserve" as ts.server.protocol.ModuleKind;
+    }
+
+    if (Version.isSatisfiedWith(this.compiler.version, "5.0")) {
       defaultCompilerOptions["allowImportingTsExtensions"] = true;
       defaultCompilerOptions.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
     }
