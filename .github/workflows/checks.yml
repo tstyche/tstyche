@@ -113,5 +113,5 @@ jobs:
       - uses: codecov/codecov-action@f30e4959ba63075080d4f7f90cacc18d9f3fafd7 # v4
         with:
           directory: ./coverage
-          files: ./report.json
+          files: ./report.json,!./.cache
           token: ${{ secrets.CODECOV_TOKEN }}
