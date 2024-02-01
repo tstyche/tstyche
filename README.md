@@ -1,5 +1,7 @@
 # TSTyche
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d0d1354921be468db8f355dc3efdf806)](https://app.codacy.com/gh/tstyche/tstyche?utm_source=github.com&utm_medium=referral&utm_content=tstyche/tstyche&utm_campaign=Badge_Grade)
+
 [![version][version-badge]][version-url]
 [![license][license-badge]][license-url]
 [![packagephobia][packagephobia-badge]][packagephobia-url]
