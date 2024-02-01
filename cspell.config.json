@@ -19,6 +19,7 @@
   "language": "en-US",
   "useGitignore": true,
   "words": [
+    "codacy",
     "dprint",
     "lcovonly",
     "packagephobia",
