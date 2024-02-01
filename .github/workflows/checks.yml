@@ -110,8 +110,7 @@ jobs:
       - run: yarn test:coverage
         env:
           FORCE_COLOR: true
-      - uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457 # v3
+      - uses: codacy/codacy-coverage-reporter-action@v1
         with:
-          directory: ./coverage
-          files: report.json
-          token: ${{ secrets.CODECOV_TOKEN }}
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./coverage/lcov.info

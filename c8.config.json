@@ -17,15 +17,12 @@
   ],
   "excludeAfterRemap": true,
   "mergeAsync": true,
-  "reporter": ["json", "text"],
+  "reporter": ["lcovonly", "text"],
   "reporterOptions": {
-    "json": {
-      "file": "report.json"
-    },
     "text": {
       "file": "report.txt",
       "skipFull": true
     }
   },
-  "tempDirectory": "./coverage/.cache"
+  "tempDirectory": "./.cache/coverage"
 }
