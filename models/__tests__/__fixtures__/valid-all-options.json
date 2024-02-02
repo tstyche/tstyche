@@ -1,5 +1,5 @@
 {
-  "$schema": "../../schema.json",
+  "$schema": "../../config-schema.json",
   "disableTestFileLookup": true,
   "failFast": true,
   "rootPath": "../",

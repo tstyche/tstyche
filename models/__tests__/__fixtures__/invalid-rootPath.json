@@ -1,4 +1,4 @@
 {
-  "$schema": "../../schema.json",
+  "$schema": "../../config-schema.json",
   "rootPath": true
 }
