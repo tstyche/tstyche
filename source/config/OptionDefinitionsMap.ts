@@ -44,13 +44,6 @@ export class OptionDefinitionsMap {
 
     {
       brand: OptionBrand.Boolean,
-      description: "Do not search for the test files.",
-      group: OptionGroup.ConfigFile,
-      name: "disableTestFileLookup",
-    },
-
-    {
-      brand: OptionBrand.Boolean,
       description: "Stop running tests after the first failed assertion.",
       group: OptionGroup.ConfigFile | OptionGroup.CommandLine,
       name: "failFast",

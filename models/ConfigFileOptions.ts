@@ -5,10 +5,6 @@
  */
 export interface ConfigFileOptions {
     /**
-     * Do not search for the test files.
-     */
-    disableTestFileLookup?: boolean;
-    /**
      * Stop running tests after the first failed assertion.
      */
     failFast?: boolean;

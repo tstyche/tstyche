@@ -8,7 +8,7 @@ exports[`'--listFiles' command line option lists test files: stdout 1`] = `
 "
 `;
 
-exports[`'--listFiles' command line option when 'disableTestFileLookup: true' is specified: stdout 1`] = `
+exports[`'--listFiles' command line option when 'testFileMatch' is specified as an empty list: stdout 1`] = `
 "Targets:    1 passed, 1 total
 Test files: 0 total
 Duration:   <<timestamp>>

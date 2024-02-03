@@ -72,20 +72,6 @@ exports[`config-schema.json invalid items of 'testFileMatch' option must NOT be 
 ]
 `;
 
-exports[`config-schema.json invalid value of 'disableTestFileLookup' option must be of type boolean 1`] = `
-[
-  {
-    "instancePath": "/disableTestFileLookup",
-    "keyword": "type",
-    "message": "must be boolean",
-    "params": {
-      "type": "boolean",
-    },
-    "schemaPath": "#/properties/disableTestFileLookup/type",
-  },
-]
-`;
-
 exports[`config-schema.json invalid value of 'failFast' option must be of type boolean 1`] = `
 [
   {

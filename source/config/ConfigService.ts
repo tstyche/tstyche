@@ -22,7 +22,6 @@ export class ConfigService {
   #configFileOptions: ConfigFileOptions = {};
 
   static #defaultOptions: Required<ConfigFileOptions> = {
-    disableTestFileLookup: false,
     failFast: false,
     rootPath: Path.resolve("./"),
     target: [Environment.typescriptPath == null ? "latest" : "current"],

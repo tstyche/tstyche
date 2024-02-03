@@ -1,6 +1,5 @@
 {
   "$schema": "../../config-schema.json",
-  "disableTestFileLookup": true,
   "failFast": true,
   "rootPath": "../",
   "target": ["4.9", "5.0.4", "beta", "latest", "next", "rc"],

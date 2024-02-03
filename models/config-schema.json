@@ -1,11 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "disableTestFileLookup": {
-      "default": false,
-      "description": "Do not search for the test files.",
-      "type": "boolean"
-    },
     "failFast": {
       "default": false,
       "description": "Stop running tests after the first failed assertion.",
