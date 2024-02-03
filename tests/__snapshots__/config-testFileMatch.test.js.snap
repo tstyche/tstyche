@@ -46,6 +46,15 @@ Ran all test files.
 "
 `;
 
+exports[`'testFileMatch' configuration file option specified empty list, does not select files: stdout 1`] = `
+"Targets:    1 passed, 1 total
+Test files: 0 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
 exports[`'testFileMatch' configuration file option specified pattern, selects only matching files: stdout 1`] = `
 "uses TypeScript <<version>>
 

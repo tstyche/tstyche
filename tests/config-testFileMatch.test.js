@@ -84,4 +84,23 @@ describe("'testFileMatch' configuration file option", () => {
 
     expect(exitCode).toBe(0);
   });
+
+  test("specified empty list, does not select files", async () => {
+    const config = {
+      testFileMatch: [],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.test.ts"]: isNumberTestText,
+      ["__typetests__/isString.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(stderr).toBe("");
+
+    expect(exitCode).toBe(0);
+  });
 });

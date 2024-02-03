@@ -126,7 +126,7 @@ export class Cli {
 
     let testFiles: Array<string> = [];
 
-    if (!resolvedConfig.disableTestFileLookup) {
+    if (resolvedConfig.testFileMatch.length !== 0 && !resolvedConfig.disableTestFileLookup) {
       testFiles = configService.selectTestFiles();
 
       if (testFiles.length === 0) {

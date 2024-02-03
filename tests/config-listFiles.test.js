@@ -31,7 +31,7 @@ describe("'--listFiles' command line option", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--listFiles"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toBe("");
+    expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });
@@ -45,7 +45,7 @@ describe("'--listFiles' command line option", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["isNumber", "--listFiles"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toBe("");
+    expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });
@@ -59,7 +59,7 @@ describe("'--listFiles' command line option", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--listFiles", "isString"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toBe("");
+    expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });
@@ -74,7 +74,7 @@ describe("'--listFiles' command line option", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--listFiles"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toBe("");
+    expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });
