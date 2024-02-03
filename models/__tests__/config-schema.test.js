@@ -35,10 +35,6 @@ describe("config-schema.json", () => {
         testCase: "all options",
       },
       {
-        fixtureFileName: "valid-disableTestFileLookup.json",
-        testCase: "'disableTestFileLookup' option",
-      },
-      {
         fixtureFileName: "valid-failFast.json",
         testCase: "'failFast' option",
       },
@@ -64,10 +60,6 @@ describe("config-schema.json", () => {
 
   describe("invalid", () => {
     test.each([
-      {
-        fixtureFileName: "invalid-disableTestFileLookup.json",
-        testCase: "value of 'disableTestFileLookup' option must be of type boolean",
-      },
       {
         fixtureFileName: "invalid-failFast.json",
         testCase: "value of 'failFast' option must be of type boolean",

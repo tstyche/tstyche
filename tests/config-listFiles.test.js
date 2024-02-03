@@ -64,11 +64,15 @@ describe("'--listFiles' command line option", () => {
     expect(exitCode).toBe(0);
   });
 
-  test("when 'disableTestFileLookup: true' is specified", async () => {
+  test("when 'testFileMatch' is specified as an empty list", async () => {
+    const config = {
+      testFileMatch: [],
+    };
+
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify({ disableTestFileLookup: true }, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--listFiles"]);
