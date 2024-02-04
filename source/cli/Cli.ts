@@ -9,7 +9,6 @@ import { addsPackageStepText, diagnosticText, formattedText, helpText } from "#o
 import { StoreService } from "#store";
 
 export class Cli {
-  #abortController = new AbortController();
   #logger: Logger;
   #storeService: StoreService;
 
@@ -29,7 +28,6 @@ export class Cli {
         for (const diagnostic of payload.diagnostics) {
           switch (diagnostic.category) {
             case DiagnosticCategory.Error:
-              this.#abortController.abort();
               process.exitCode = 1;
 
               this.#logger.writeError(diagnosticText(diagnostic));
@@ -71,14 +69,13 @@ export class Cli {
     }
 
     if (commandLineArguments.includes("--update")) {
-      await this.#storeService.update(this.#abortController.signal);
+      await this.#storeService.update();
 
       return;
     }
 
     const compiler = await this.#storeService.load(
       Environment.typescriptPath == null ? "latest" : "current",
-      this.#abortController.signal,
     );
 
     if (!compiler) {
@@ -118,7 +115,7 @@ export class Cli {
 
     if (configService.commandLineOptions.install === true) {
       for (const tag of resolvedConfig.target) {
-        await this.#storeService.install(tag, this.#abortController.signal);
+        await this.#storeService.install(tag);
       }
 
       return;
