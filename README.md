@@ -1,8 +1,9 @@
 # TSTyche
 
 [![version][version-badge]][version-url]
-[![license][license-badge]][license-url]
+[![requirements][requirements-badge]][requirements-url]
 [![packagephobia][packagephobia-badge]][packagephobia-url]
+[![license][license-badge]][license-url]
 [![codacy-quality][codacy-quality-badge]][codacy-quality-url]
 [![codacy-coverage][codacy-coverage-badge]][codacy-coverage-url]
 
@@ -82,6 +83,8 @@ Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 
 [version-badge]: https://badgen.net/npm/v/tstyche
 [version-url]: https://npmjs.com/package/tstyche
+[requirements-badge]: https://badgen.net/npm/node/tstyche
+[requirements-url]: https://tstyche.org/reference/requirements
 [license-badge]: https://badgen.net/github/license/tstyche/tstyche
 [license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
 [packagephobia-badge]: https://badgen.net/packagephobia/install/tstyche
