@@ -1,11 +1,9 @@
 # TSTyche
 
 [![version][version-badge]][version-url]
-[![requirements][requirements-badge]][requirements-url]
-[![packagephobia][packagephobia-badge]][packagephobia-url]
 [![license][license-badge]][license-url]
-[![codacy-quality][codacy-quality-badge]][codacy-quality-url]
-[![codacy-coverage][codacy-coverage-badge]][codacy-coverage-url]
+[![packagephobia][packagephobia-badge]][packagephobia-url]
+[![coverage][coverage-badge]][coverage-url]
 
 The Essential Type Testing Tool.
 
@@ -83,13 +81,9 @@ Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 
 [version-badge]: https://badgen.net/npm/v/tstyche
 [version-url]: https://npmjs.com/package/tstyche
-[requirements-badge]: https://badgen.net/npm/node/tstyche
-[requirements-url]: https://tstyche.org/reference/requirements
 [license-badge]: https://badgen.net/github/license/tstyche/tstyche
 [license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
 [packagephobia-badge]: https://badgen.net/packagephobia/install/tstyche
 [packagephobia-url]: https://packagephobia.com/result?p=tstyche
-[codacy-quality-badge]: https://badgen.net/codacy/grade/a581ca5c323a455886b7bdd9623c4ec8?icon=codacy
-[codacy-quality-url]: https://app.codacy.com/gh/tstyche/tstyche/dashboard
-[codacy-coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8?icon=codacy
-[codacy-coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
+[coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
+[coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
