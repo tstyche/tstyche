@@ -110,7 +110,6 @@
           "**/__scripts__/*",
           "**/__tests__/*",
           "**/__typetests__/*",
-          "**/benchmarks/*",
           "**/tests/*",
           "**/typetests/*"
         ]

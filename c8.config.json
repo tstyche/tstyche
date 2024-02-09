@@ -1,7 +1,6 @@
 {
   "all": true,
   "exclude": [
-    "benchmarks/**/*",
     "build/**/*",
     "coverage/**/*",
     "examples/**/*",
