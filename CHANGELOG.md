@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.0-rc.1] - 2024-02-10
+
+### Changed
+
+- **Breaking!** Remove the `disableTestFileLookup` option in favor of `testFileMatch: []` ([#121](https://github.com/tstyche/tstyche/pull/121))
+
+### Added
+
+- **New!** Set `module: "preserve"` in the default compiler options for inferred project that are using TypeScript 5.4 and up ([#111](https://github.com/tstyche/tstyche/pull/111))
+
+### Fixed
+
+- Do not select test files, if `testFileMatch` is an empty list ([#120](https://github.com/tstyche/tstyche/pull/120))
+
 ## [1.0.0-rc] - 2024-01-28
 
 ### Changed
@@ -116,6 +130,7 @@
 
 _First pre-release._
 
+[1.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.1
 [1.0.0-rc]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc
 [1.0.0-beta.9]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.9
 [1.0.0-beta.8]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.8
