@@ -4,6 +4,7 @@
 [![license][license-badge]][license-url]
 [![packagephobia][packagephobia-badge]][packagephobia-url]
 [![coverage][coverage-badge]][coverage-url]
+[![discord][discord-badge]][discord-url]
 
 The Essential Type Testing Tool.
 
@@ -87,3 +88,5 @@ Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 [packagephobia-url]: https://packagephobia.com/result?p=tstyche
 [coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
 [coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
+[discord-badge]: https://badgen.net/static/chat/on%20Discord
+[discord-url]: https://discord.gg/gCSasd3QJq
