@@ -3179,12 +3179,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-simple-import-sort@npm:11.0.0":
-  version: 11.0.0
-  resolution: "eslint-plugin-simple-import-sort@npm:11.0.0"
+"eslint-plugin-simple-import-sort@npm:12.0.0":
+  version: 12.0.0
+  resolution: "eslint-plugin-simple-import-sort@npm:12.0.0"
   peerDependencies:
     eslint: ">=5.0.0"
-  checksum: 04ae14c8f0abf169ab272d2aa30ec6f08db4fee9ef81b137c31025e2ae57d56ec03de14d7e1c2c71fa8db0e65e4aded029ac0595710acfc5cf9e1f2ff9ebc11d
+  checksum: 1b97055a9e8782099a788d030d3ceb03729bd7c9fe145eb617e5857c8c429d3124f1926621f4a363e1f2fad23037285b5b43ee01c6597eedb5f19b1d2f50604b
   languageName: node
   linkType: hard
 
@@ -6270,7 +6270,7 @@ __metadata:
     eslint-plugin-import: 2.29.1
     eslint-plugin-jest: 27.6.3
     eslint-plugin-jest-formatting: 3.1.0
-    eslint-plugin-simple-import-sort: 11.0.0
+    eslint-plugin-simple-import-sort: 12.0.0
     jest: 29.7.0
     jest-serializer-ansi-escapes: 2.0.1
     magic-string: 0.30.7
