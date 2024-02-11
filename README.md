@@ -76,6 +76,10 @@ This simple!
 
 Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 
+## Feedback
+
+If you have any questions or suggestions, [start a discussion](https://github.com/tstyche/tstyche/discussions/new/choose) or [open an issue](https://github.com/tstyche/tstyche/issues/new/choose) on GitHub. Preferring a chat? Join our [Discord server][discord-url].
+
 ## License
 
 [MIT][license-url] © TSTyche
