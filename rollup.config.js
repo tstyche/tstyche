@@ -8,6 +8,10 @@ const output = {
   dir: "./build",
 };
 
+const packageConfigText = await fs.readFile(new URL("./package.json", import.meta.url), { encoding: "utf8" });
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
+
 /** @returns {import("rollup").Plugin} */
 function tidyJs() {
   const binEntry = "bin.js";
@@ -16,13 +20,9 @@ function tidyJs() {
   return {
     name: "tidy-js",
 
-    async renderChunk(code, chunkInfo) {
+    renderChunk(code, chunkInfo) {
       if (chunkInfo.fileName === tstycheEntry) {
         const magicString = new MagicString(code);
-
-        const packageConfigText = await fs.readFile(new URL("./package.json", import.meta.url), { encoding: "utf8" });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
         magicString.replaceAll("__version__", version);
 
@@ -57,6 +57,8 @@ function tidyDts() {
         magicString.replaceAll("import", "import type");
 
         magicString.replaceAll("const enum", "enum");
+
+        magicString.replaceAll("__version__", version);
 
         return {
           code: magicString.toString(),
