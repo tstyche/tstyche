@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`'rootPath' configuration file option when specified path does not exist 1`] = `
+exports[`'rootPath' configuration file option when specified path does not exist: stderr 1`] = `
 "Error: The specified path '<<cwd>>/tests/__fixtures__/.generated/validation-rootPath/nope' does not exist.
 
   1 | {

@@ -9,7 +9,7 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("validation-target", { generated: true });
+const fixtureUrl = getFixtureUrl("validation-testFileMatch", { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);

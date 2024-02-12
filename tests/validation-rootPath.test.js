@@ -22,7 +22,7 @@ describe("'rootPath' configuration file option", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config ./config/tstyche.json"]);
 
     expect(stdout).toBe("");
-    expect(normalizeOutput(stderr)).toMatchSnapshot();
+    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(exitCode).toBe(1);
   });
