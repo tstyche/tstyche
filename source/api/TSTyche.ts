@@ -27,15 +27,13 @@ export class TSTyche {
       if (eventName.includes("error") || eventName.includes("fail")) {
         if (
           "diagnostics" in payload
-          && !payload.diagnostics.some(({ category }) => category === DiagnosticCategory.Error)
+          && payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
         ) {
-          return;
-        }
+          process.exitCode = 1;
 
-        process.exitCode = 1;
-
-        if (this.resolvedConfig.failFast) {
-          this.#abortController.abort();
+          if (this.resolvedConfig.failFast) {
+            this.#abortController.abort();
+          }
         }
       }
     });
