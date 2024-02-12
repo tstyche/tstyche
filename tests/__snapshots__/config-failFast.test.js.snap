@@ -1,0 +1,366 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`'--failFast' command line option overrides configuration file option, when it is set to 'false': stderr 1`] = `
+"Error: Type 'number' is identical to type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+
+"
+`;
+
+exports[`'--failFast' command line option overrides configuration file option, when it is set to 'false': stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 1 failed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'--failFast' command line option overrides configuration file option, when it is set to 'true': stderr 1`] = `
+"Error: Type 'number' is identical to type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+
+Error: Type 'number' is identical to type 'number'.
+
+  2 | test("is number?", () => {
+  3 |   expect<number>().type.not.toBeNumber();
+> 4 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:4:29 ❭ is number?
+
+Error: Type 'string' is identical to type 'string'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is string?", () => {
+> 3 |   expect<string>().type.not.toBeString();
+    |                             ^
+  4 |   expect<string>().type.not.toBeString();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isString.tst.ts:3:29 ❭ is string?
+
+Error: Type 'string' is identical to type 'string'.
+
+  2 | test("is string?", () => {
+  3 |   expect<string>().type.not.toBeString();
+> 4 |   expect<string>().type.not.toBeString();
+    |                             ^
+  5 | });
+  6 | 
+
+      at ./__typetests__/isString.tst.ts:4:29 ❭ is string?
+
+"
+`;
+
+exports[`'--failFast' command line option overrides configuration file option, when it is set to 'true': stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+
+fail ./__typetests__/isString.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 2 failed, 2 total
+Tests:      2 failed, 2 total
+Assertions: 4 failed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'--failFast' command line option stops running tests after the first failure: stderr 1`] = `
+"Error: Type 'number' is identical to type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+
+"
+`;
+
+exports[`'--failFast' command line option stops running tests after the first failure: stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 1 failed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'--failFast' command line option when 'false' is passed as an argument: stderr 1`] = `
+"Error: Type 'number' is identical to type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+
+Error: Type 'number' is identical to type 'number'.
+
+  2 | test("is number?", () => {
+  3 |   expect<number>().type.not.toBeNumber();
+> 4 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:4:29 ❭ is number?
+
+Error: Type 'string' is identical to type 'string'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is string?", () => {
+> 3 |   expect<string>().type.not.toBeString();
+    |                             ^
+  4 |   expect<string>().type.not.toBeString();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isString.tst.ts:3:29 ❭ is string?
+
+Error: Type 'string' is identical to type 'string'.
+
+  2 | test("is string?", () => {
+  3 |   expect<string>().type.not.toBeString();
+> 4 |   expect<string>().type.not.toBeString();
+    |                             ^
+  5 | });
+  6 | 
+
+      at ./__typetests__/isString.tst.ts:4:29 ❭ is string?
+
+"
+`;
+
+exports[`'--failFast' command line option when 'false' is passed as an argument: stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+
+fail ./__typetests__/isString.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 2 failed, 2 total
+Tests:      2 failed, 2 total
+Assertions: 4 failed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'--failFast' command line option when 'true' is passed as an argument: stderr 1`] = `
+"Error: Type 'number' is identical to type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+
+"
+`;
+
+exports[`'--failFast' command line option when 'true' is passed as an argument: stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 1 failed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
+
+exports[`'--failFast' command line option when search string is specified after the option: stderr 1`] = `
+"Error: Type 'string' is identical to type 'string'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is string?", () => {
+> 3 |   expect<string>().type.not.toBeString();
+    |                             ^
+  4 |   expect<string>().type.not.toBeString();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isString.tst.ts:3:29 ❭ is string?
+
+"
+`;
+
+exports[`'--failFast' command line option when search string is specified after the option: stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isString.tst.ts
+  × is string?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 1 failed, 1 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'isString'.
+"
+`;
+
+exports[`'--failFast' command line option when search string is specified before the option: stderr 1`] = `
+"Error: Type 'number' is identical to type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+
+"
+`;
+
+exports[`'--failFast' command line option when search string is specified before the option: stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+  × is number?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 1 failed, 1 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'isNumber'.
+"
+`;
+
+exports[`'--failFast' command line option when the option is specified several times: stderr 1`] = `
+"Error: Type 'number' is identical to type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+
+Error: Type 'number' is identical to type 'number'.
+
+  2 | test("is number?", () => {
+  3 |   expect<number>().type.not.toBeNumber();
+> 4 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:4:29 ❭ is number?
+
+"
+`;
+
+exports[`'--failFast' command line option when the option is specified several times: stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+  × is number?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 2 failed, 2 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'isNumber'.
+"
+`;
+
+exports[`'failFast' configuration file option stops running tests after the first failure: stderr 1`] = `
+"Error: Type 'number' is identical to type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<number>().type.not.toBeNumber();
+    |                             ^
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+
+"
+`;
+
+exports[`'failFast' configuration file option stops running tests after the first failure: stdout 1`] = `
+"uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 1 failed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.
+"
+`;
