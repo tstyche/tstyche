@@ -1,9 +1,7 @@
 /** @type {import("jest").Config} */
 const config = {
-  clearMocks: true,
   extensionsToTreatAsEsm: [".ts", ".tsx"],
   injectGlobals: false,
-  moduleFileExtensions: ["ts", "tsx", "js", "json", "node"],
   moduleNameMapper: {
     ["^#(.*)$"]: "<rootDir>/source/$1",
     ["^(\\.{1,2}/.*)\\.js$"]: "$1",

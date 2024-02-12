@@ -1,9 +1,5 @@
-import { afterEach, describe, expect, jest, test } from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 import { Line, Scribbler } from "#scribbler";
-
-afterEach(() => {
-  jest.resetModules();
-});
 
 const scribbler = new Scribbler();
 
