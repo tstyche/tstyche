@@ -3,26 +3,26 @@
 exports[`toBeAny: stderr 1`] = `
 "Error: Type 'any' is not identical to type 'string'.
 
-  13 |   expect(returnsAny()).type.toBeAny();
-  14 | 
-> 15 |   expect(returnsString()).type.toBeAny();
+   8 |   expect(returnsAny()).type.toBeAny();
+   9 | 
+> 10 |   expect(returnsString()).type.toBeAny();
      |                                ^
-  16 | });
-  17 | 
-  18 | test("is NOT any?", () => {
+  11 | });
+  12 | 
+  13 | test("is NOT any?", () => {
 
-       at ./__typetests__/toBeAny.test.ts:15:32 ❭ is any?
+       at ./__typetests__/toBeAny.tst.ts:10:32 ❭ is any?
 
 Error: Type 'any' is identical to type 'any'.
 
-  19 |   expect(returnsString()).type.not.toBeAny();
-  20 | 
-> 21 |   expect(returnsAny()).type.not.toBeAny();
+  14 |   expect(returnsString()).type.not.toBeAny();
+  15 | 
+> 16 |   expect(returnsAny()).type.not.toBeAny();
      |                                 ^
-  22 | });
-  23 | 
+  17 | });
+  18 | 
 
-       at ./__typetests__/toBeAny.test.ts:21:33 ❭ is NOT any?
+       at ./__typetests__/toBeAny.tst.ts:16:33 ❭ is NOT any?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'any' is identical to type 'any'.
 exports[`toBeAny: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeAny.test.ts
+fail ./__typetests__/toBeAny.tst.ts
   × is any?
   × is NOT any?
 

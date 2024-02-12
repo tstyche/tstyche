@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, test } from "tstyche";
-
-jest.test("'test.only' implementation", () => {
-  jest.expect(test.only).toBeInstanceOf(Function);
-});
 
 test.only("is only?", () => {
   expect("abc" as string).type.toBeString();

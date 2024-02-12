@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { describe, expect, test } from "tstyche";
-
-jest.test("'toMatch' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toMatch", jest.expect.any(Function));
-});
 
 enum Direction {
   Up = 1,

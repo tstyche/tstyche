@@ -3,7 +3,7 @@
 exports[`describe.only: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/describe-only.test.ts
+pass ./__typetests__/describe-only.tst.ts
   is skipped describe?
     - skip is skipped?
   is only describe?
@@ -35,7 +35,7 @@ Ran test files matching 'only'.
 exports[`describe.skip: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/describe-skip.test.ts
+pass ./__typetests__/describe-skip.tst.ts
   is skipped describe?
     - skip is skipped?
   is parent describe?
@@ -59,7 +59,7 @@ Ran test files matching 'skip'.
 exports[`describe.todo: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/describe-todo.test.ts
+pass ./__typetests__/describe-todo.tst.ts
   is todo describe?
   is todo describe too?
     - todo is todo?

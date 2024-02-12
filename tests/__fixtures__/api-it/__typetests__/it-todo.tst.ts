@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, it } from "tstyche";
-
-jest.test("'it.todo' implementation", () => {
-  jest.expect(it.todo).toBeInstanceOf(Function);
-});
 
 it.todo("is todo?");
 

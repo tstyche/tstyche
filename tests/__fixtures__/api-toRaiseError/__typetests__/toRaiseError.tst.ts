@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, test } from "tstyche";
-
-jest.test("'toRaiseError' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toRaiseError", jest.expect.any(Function));
-});
 
 type One<T> = () => T;
 declare const one: One<string>;

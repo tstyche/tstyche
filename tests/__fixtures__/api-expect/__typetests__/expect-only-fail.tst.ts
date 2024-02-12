@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { describe, expect, test } from "tstyche";
-
-jest.test("'expect.only.fail' implementation'", () => {
-  jest.expect(expect.only.fail).toBeInstanceOf(Function);
-});
 
 expect<string>().type.toBeString();
 expect.only.fail<string>().type.toBeString();

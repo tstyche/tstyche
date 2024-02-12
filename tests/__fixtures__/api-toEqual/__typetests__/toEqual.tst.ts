@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { describe, expect, test } from "tstyche";
-
-jest.test("'toEqual' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toEqual", jest.expect.any(Function));
-});
 
 interface Names {
   first: string;

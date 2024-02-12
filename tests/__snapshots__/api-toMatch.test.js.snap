@@ -3,99 +3,99 @@
 exports[`toMatch: stderr 1`] = `
 "Error: Type '{ b: number; }' is not a subtype of type '{ a: string; b?: number | undefined; }'.
 
-  49 |     expect<{ a: string; b?: number }>().type.toMatch<{ b?: number }>();
-  50 | 
-> 51 |     expect<{ a: string; b?: number }>().type.toMatch<{ b: number }>();
+  44 |     expect<{ a: string; b?: number }>().type.toMatch<{ b?: number }>();
+  45 | 
+> 46 |     expect<{ a: string; b?: number }>().type.toMatch<{ b: number }>();
      |                                              ^
-  52 |   });
-  53 | 
-  54 |   test("does NOT match expected type", () => {
+  47 |   });
+  48 | 
+  49 |   test("does NOT match expected type", () => {
 
-       at ./__typetests__/toMatch.test.ts:51:46 ❭ received type ❭ matches expected type
+       at ./__typetests__/toMatch.tst.ts:46:46 ❭ received type ❭ matches expected type
 
 Error: Type '{ a: string; b?: number | undefined; }' is not a subtype of type '{ a: string; }'.
 
-  58 |     expect<{ a: string }>().type.not.toMatch<{ a: string; b?: number }>();
-  59 | 
-> 60 |     expect<{ a: string }>().type.toMatch<{ a: string; b?: number }>();
+  53 |     expect<{ a: string }>().type.not.toMatch<{ a: string; b?: number }>();
+  54 | 
+> 55 |     expect<{ a: string }>().type.toMatch<{ a: string; b?: number }>();
      |                                  ^
-  61 |   });
-  62 | 
-  63 |   test("matches expected value", () => {
+  56 |   });
+  57 | 
+  58 |   test("matches expected value", () => {
 
-       at ./__typetests__/toMatch.test.ts:60:34 ❭ received type ❭ does NOT match expected type
+       at ./__typetests__/toMatch.tst.ts:55:34 ❭ received type ❭ does NOT match expected type
 
 Error: Type 'Names' is not a subtype of type '{ first: string; }'.
 
-  65 |     expect<{ first: string; last?: string }>().type.toMatch(getNames());
-  66 | 
-> 67 |     expect<{ first: string }>().type.toMatch(getNames());
+  60 |     expect<{ first: string; last?: string }>().type.toMatch(getNames());
+  61 | 
+> 62 |     expect<{ first: string }>().type.toMatch(getNames());
      |                                      ^
-  68 |   });
-  69 | 
-  70 |   test("does NOT match expected value", () => {
+  63 |   });
+  64 | 
+  65 |   test("does NOT match expected value", () => {
 
-       at ./__typetests__/toMatch.test.ts:67:38 ❭ received type ❭ matches expected value
+       at ./__typetests__/toMatch.tst.ts:62:38 ❭ received type ❭ matches expected value
 
 Error: Type 'Names' is not a subtype of type '{ first?: string | undefined; }'.
 
-  71 |     expect<{ first?: string }>().type.not.toMatch(getNames());
-  72 | 
-> 73 |     expect<{ first?: string }>().type.toMatch(getNames());
+  66 |     expect<{ first?: string }>().type.not.toMatch(getNames());
+  67 | 
+> 68 |     expect<{ first?: string }>().type.toMatch(getNames());
      |                                       ^
-  74 |   });
-  75 | });
-  76 | 
+  69 |   });
+  70 | });
+  71 | 
 
-       at ./__typetests__/toMatch.test.ts:73:39 ❭ received type ❭ does NOT match expected value
-
-Error: Type '{ last: string; }' is not a subtype of type 'Names'.
-
-  84 |     expect(getNames()).type.toMatch<{ last?: string }>();
-  85 | 
-> 86 |     expect(getNames()).type.toMatch<{ last: string }>();
-     |                             ^
-  87 |   });
-  88 | 
-  89 |   test("does NOT match expected type", () => {
-
-       at ./__typetests__/toMatch.test.ts:86:29 ❭ received value ❭ matches expected type
+       at ./__typetests__/toMatch.tst.ts:68:39 ❭ received type ❭ does NOT match expected value
 
 Error: Type '{ last: string; }' is not a subtype of type 'Names'.
 
-  91 | 
-  92 |     expect(getNames()).type.not.toMatch<{ last: string }>();
-> 93 |     expect(getNames()).type.toMatch<{ last: string }>();
+  79 |     expect(getNames()).type.toMatch<{ last?: string }>();
+  80 | 
+> 81 |     expect(getNames()).type.toMatch<{ last: string }>();
      |                             ^
-  94 |   });
-  95 | 
-  96 |   test("matches expected value", () => {
+  82 |   });
+  83 | 
+  84 |   test("does NOT match expected type", () => {
 
-       at ./__typetests__/toMatch.test.ts:93:29 ❭ received value ❭ does NOT match expected type
+       at ./__typetests__/toMatch.tst.ts:81:29 ❭ received value ❭ matches expected type
+
+Error: Type '{ last: string; }' is not a subtype of type 'Names'.
+
+  86 | 
+  87 |     expect(getNames()).type.not.toMatch<{ last: string }>();
+> 88 |     expect(getNames()).type.toMatch<{ last: string }>();
+     |                             ^
+  89 |   });
+  90 | 
+  91 |   test("matches expected value", () => {
+
+       at ./__typetests__/toMatch.tst.ts:88:29 ❭ received value ❭ does NOT match expected type
 
 Error: Type 'Names' is not a subtype of type '{ last: string; }'.
 
-  100 |     expect({ first: "One", last: "Two" }).type.toMatch(getNames());
-  101 | 
-> 102 |     expect({ last: "Two" }).type.toMatch(getNames());
+   95 |     expect({ first: "One", last: "Two" }).type.toMatch(getNames());
+   96 | 
+>  97 |     expect({ last: "Two" }).type.toMatch(getNames());
       |                                  ^
-  103 |   });
-  104 | 
-  105 |   test("does NOT match expected value", () => {
+   98 |   });
+   99 | 
+  100 |   test("does NOT match expected value", () => {
 
-        at ./__typetests__/toMatch.test.ts:102:34 ❭ received value ❭ matches expected value
+        at ./__typetests__/toMatch.tst.ts:97:34 ❭ received value ❭ matches expected value
 
 Error: Type 'Names' is a subtype of type '{ first: string; }'.
 
-  106 |     expect({ last: "Two" }).type.not.toMatch(getNames());
-  107 | 
-> 108 |     expect({ first: "One" }).type.not.toMatch(getNames());
+  101 |     expect({ last: "Two" }).type.not.toMatch(getNames());
+  102 | 
+> 103 |     expect({ first: "One" }).type.not.toMatch(getNames());
       |                                       ^
-  109 |   });
-  110 | });
-  111 | 
+  104 |   });
+  105 | });
+  106 | 
 
-        at ./__typetests__/toMatch.test.ts:108:39 ❭ received value ❭ does NOT match expected value
+        at ./__typetests__/toMatch.tst.ts:103:39 ❭ received value ❭ does NOT match expected value
 
 "
 `;
@@ -103,7 +103,7 @@ Error: Type 'Names' is a subtype of type '{ first: string; }'.
 exports[`toMatch: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toMatch.test.ts
+fail ./__typetests__/toMatch.tst.ts
   + difference from '.toBeAssignable()'
   received type
     × matches expected type

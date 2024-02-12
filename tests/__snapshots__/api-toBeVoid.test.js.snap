@@ -3,26 +3,26 @@
 exports[`toBeVoid: stderr 1`] = `
 "Error: Type 'void' is not identical to type 'string'.
 
-  12 |   expect(returnsVoid()).type.toBeVoid();
-  13 | 
-> 14 |   expect(returnsString()).type.toBeVoid();
+   7 |   expect(returnsVoid()).type.toBeVoid();
+   8 | 
+>  9 |   expect(returnsString()).type.toBeVoid();
      |                                ^
-  15 | });
-  16 | 
-  17 | test("is NOT void?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT void?", () => {
 
-       at ./__typetests__/toBeVoid.test.ts:14:32 ❭ is void?
+       at ./__typetests__/toBeVoid.tst.ts:9:32 ❭ is void?
 
 Error: Type 'void' is identical to type 'void'.
 
-  18 |   expect(returnsString()).type.not.toBeVoid();
-  19 | 
-> 20 |   expect(returnsVoid()).type.not.toBeVoid();
+  13 |   expect(returnsString()).type.not.toBeVoid();
+  14 | 
+> 15 |   expect(returnsVoid()).type.not.toBeVoid();
      |                                  ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeVoid.test.ts:20:34 ❭ is NOT void?
+       at ./__typetests__/toBeVoid.tst.ts:15:34 ❭ is NOT void?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'void' is identical to type 'void'.
 exports[`toBeVoid: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeVoid.test.ts
+fail ./__typetests__/toBeVoid.tst.ts
   × is void?
   × is NOT void?
 

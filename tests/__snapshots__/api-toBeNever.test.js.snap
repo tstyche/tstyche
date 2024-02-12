@@ -3,26 +3,26 @@
 exports[`toBeNever: stderr 1`] = `
 "Error: Type 'never' is not identical to type 'string'.
 
-  12 |   expect(returnsNever()).type.toBeNever();
-  13 | 
-> 14 |   expect(returnsString()).type.toBeNever();
+   7 |   expect(returnsNever()).type.toBeNever();
+   8 | 
+>  9 |   expect(returnsString()).type.toBeNever();
      |                                ^
-  15 | });
-  16 | 
-  17 | test("is NOT never?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT never?", () => {
 
-       at ./__typetests__/toBeNever.test.ts:14:32 ❭ is never?
+       at ./__typetests__/toBeNever.tst.ts:9:32 ❭ is never?
 
 Error: Type 'never' is identical to type 'never'.
 
-  18 |   expect(returnsString()).type.not.toBeNever();
-  19 | 
-> 20 |   expect(returnsNever()).type.not.toBeNever();
+  13 |   expect(returnsString()).type.not.toBeNever();
+  14 | 
+> 15 |   expect(returnsNever()).type.not.toBeNever();
      |                                   ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeNever.test.ts:20:35 ❭ is NOT never?
+       at ./__typetests__/toBeNever.tst.ts:15:35 ❭ is NOT never?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'never' is identical to type 'never'.
 exports[`toBeNever: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeNever.test.ts
+fail ./__typetests__/toBeNever.tst.ts
   × is never?
   × is NOT never?
 

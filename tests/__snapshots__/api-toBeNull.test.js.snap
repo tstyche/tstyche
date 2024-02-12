@@ -3,26 +3,26 @@
 exports[`toBeNull: stderr 1`] = `
 "Error: Type 'null' is not identical to type 'void'.
 
-  12 |   expect(returnsNull()).type.toBeNull();
-  13 | 
-> 14 |   expect(returnsVoid()).type.toBeNull();
+   7 |   expect(returnsNull()).type.toBeNull();
+   8 | 
+>  9 |   expect(returnsVoid()).type.toBeNull();
      |                              ^
-  15 | });
-  16 | 
-  17 | test("is NOT null?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT null?", () => {
 
-       at ./__typetests__/toBeNull.test.ts:14:30 ❭ is null?
+       at ./__typetests__/toBeNull.tst.ts:9:30 ❭ is null?
 
 Error: Type 'null' is identical to type 'null'.
 
-  18 |   expect(returnsVoid()).type.not.toBeNull();
-  19 | 
-> 20 |   expect(returnsNull()).type.not.toBeNull();
+  13 |   expect(returnsVoid()).type.not.toBeNull();
+  14 | 
+> 15 |   expect(returnsNull()).type.not.toBeNull();
      |                                  ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeNull.test.ts:20:34 ❭ is NOT null?
+       at ./__typetests__/toBeNull.tst.ts:15:34 ❭ is NOT null?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'null' is identical to type 'null'.
 exports[`toBeNull: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeNull.test.ts
+fail ./__typetests__/toBeNull.tst.ts
   × is null?
   × is NOT null?
 

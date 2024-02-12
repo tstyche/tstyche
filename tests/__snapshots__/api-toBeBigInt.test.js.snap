@@ -3,26 +3,26 @@
 exports[`toBeBigInt: stderr 1`] = `
 "Error: Type 'bigint' is not identical to type 'void'.
 
-  12 |   expect(returnsBigInt()).type.toBeBigInt();
-  13 | 
-> 14 |   expect(returnsVoid()).type.toBeBigInt();
+   7 |   expect(returnsBigInt()).type.toBeBigInt();
+   8 | 
+>  9 |   expect(returnsVoid()).type.toBeBigInt();
      |                              ^
-  15 | });
-  16 | 
-  17 | test("is NOT bigint?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT bigint?", () => {
 
-       at ./__typetests__/toBeBigInt.test.ts:14:30 ❭ is bigint?
+       at ./__typetests__/toBeBigInt.tst.ts:9:30 ❭ is bigint?
 
 Error: Type 'bigint' is identical to type 'bigint'.
 
-  18 |   expect(returnsVoid()).type.not.toBeBigInt();
-  19 | 
-> 20 |   expect(returnsBigInt()).type.not.toBeBigInt();
+  13 |   expect(returnsVoid()).type.not.toBeBigInt();
+  14 | 
+> 15 |   expect(returnsBigInt()).type.not.toBeBigInt();
      |                                    ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeBigInt.test.ts:20:36 ❭ is NOT bigint?
+       at ./__typetests__/toBeBigInt.tst.ts:15:36 ❭ is NOT bigint?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'bigint' is identical to type 'bigint'.
 exports[`toBeBigInt: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeBigInt.test.ts
+fail ./__typetests__/toBeBigInt.tst.ts
   × is bigint?
   × is NOT bigint?
 

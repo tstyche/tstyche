@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, test } from "tstyche";
-
-jest.test("'toBeBoolean' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toBeBoolean", jest.expect.any(Function));
-});
 
 declare function returnsBoolean(): boolean;
 declare function returnsString(): string;

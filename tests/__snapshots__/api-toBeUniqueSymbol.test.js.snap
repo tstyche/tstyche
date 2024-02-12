@@ -3,26 +3,26 @@
 exports[`toBeUniqueSymbol: stderr 1`] = `
 "Error: Type 'unique symbol' is not identical to type 'void'.
 
-  14 |   expect(returnsUniqueSymbol()).type.toBeUniqueSymbol();
-  15 | 
-> 16 |   expect(returnsVoid()).type.toBeUniqueSymbol();
+   9 |   expect(returnsUniqueSymbol()).type.toBeUniqueSymbol();
+  10 | 
+> 11 |   expect(returnsVoid()).type.toBeUniqueSymbol();
      |                              ^
-  17 | });
-  18 | 
-  19 | test("is NOT unique symbol?", () => {
+  12 | });
+  13 | 
+  14 | test("is NOT unique symbol?", () => {
 
-       at ./__typetests__/toBeUniqueSymbol.test.ts:16:30 ❭ is unique symbol?
+       at ./__typetests__/toBeUniqueSymbol.tst.ts:11:30 ❭ is unique symbol?
 
 Error: Type 'unique symbol' is identical to type 'unique symbol'.
 
-  20 |   expect(returnsVoid()).type.not.toBeUniqueSymbol();
-  21 | 
-> 22 |   expect(returnsUniqueSymbol()).type.not.toBeUniqueSymbol();
+  15 |   expect(returnsVoid()).type.not.toBeUniqueSymbol();
+  16 | 
+> 17 |   expect(returnsUniqueSymbol()).type.not.toBeUniqueSymbol();
      |                                          ^
-  23 | });
-  24 | 
+  18 | });
+  19 | 
 
-       at ./__typetests__/toBeUniqueSymbol.test.ts:22:42 ❭ is NOT unique symbol?
+       at ./__typetests__/toBeUniqueSymbol.tst.ts:17:42 ❭ is NOT unique symbol?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'unique symbol' is identical to type 'unique symbol'.
 exports[`toBeUniqueSymbol: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeUniqueSymbol.test.ts
+fail ./__typetests__/toBeUniqueSymbol.tst.ts
   × is unique symbol?
   × is NOT unique symbol?
 

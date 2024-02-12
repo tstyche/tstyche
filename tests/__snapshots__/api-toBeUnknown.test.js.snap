@@ -3,26 +3,26 @@
 exports[`toBeUnknown: stderr 1`] = `
 "Error: Type 'unknown' is not identical to type 'string'.
 
-  12 |   expect(returnsUnknown()).type.toBeUnknown();
-  13 | 
-> 14 |   expect(returnsString()).type.toBeUnknown();
+   7 |   expect(returnsUnknown()).type.toBeUnknown();
+   8 | 
+>  9 |   expect(returnsString()).type.toBeUnknown();
      |                                ^
-  15 | });
-  16 | 
-  17 | test("is NOT unknown?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT unknown?", () => {
 
-       at ./__typetests__/toBeUnknown.test.ts:14:32 ❭ is unknown?
+       at ./__typetests__/toBeUnknown.tst.ts:9:32 ❭ is unknown?
 
 Error: Type 'unknown' is identical to type 'unknown'.
 
-  18 |   expect(returnsString()).type.not.toBeUnknown();
-  19 | 
-> 20 |   expect(returnsUnknown()).type.not.toBeUnknown();
+  13 |   expect(returnsString()).type.not.toBeUnknown();
+  14 | 
+> 15 |   expect(returnsUnknown()).type.not.toBeUnknown();
      |                                     ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeUnknown.test.ts:20:37 ❭ is NOT unknown?
+       at ./__typetests__/toBeUnknown.tst.ts:15:37 ❭ is NOT unknown?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'unknown' is identical to type 'unknown'.
 exports[`toBeUnknown: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeUnknown.test.ts
+fail ./__typetests__/toBeUnknown.tst.ts
   × is unknown?
   × is NOT unknown?
 

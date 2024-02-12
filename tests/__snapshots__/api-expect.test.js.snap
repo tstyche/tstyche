@@ -5,43 +5,43 @@ exports[`expect.fail: stderr 1`] = `
 
 Consider removing the '.fail' flag.
 
-   7 | 
-   8 | expect<string>().type.toBeString();
->  9 | expect.fail<string>().type.toBeString();
-     | ^
-  10 | 
-  11 | expect.fail<never>().type.toBeString();
-  12 | 
+  2 | 
+  3 | expect<string>().type.toBeString();
+> 4 | expect.fail<string>().type.toBeString();
+    | ^
+  5 | 
+  6 | expect.fail<never>().type.toBeString();
+  7 | 
 
-       at ./__typetests__/expect-fail.test.ts:9:1
+      at ./__typetests__/expect-fail.tst.ts:4:1
 
 Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  14 |   test("is string?", () => {
-  15 |     expect<string>().type.toBeString();
-> 16 |     expect.fail<string>().type.toBeString();
+   9 |   test("is string?", () => {
+  10 |     expect<string>().type.toBeString();
+> 11 |     expect.fail<string>().type.toBeString();
      |     ^
-  17 | 
-  18 |     expect.fail<never>().type.toBeVoid();
-  19 |   });
+  12 | 
+  13 |     expect.fail<never>().type.toBeVoid();
+  14 |   });
 
-       at ./__typetests__/expect-fail.test.ts:16:5
+       at ./__typetests__/expect-fail.tst.ts:11:5
 
 Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  22 | test("is number?", () => {
-  23 |   expect<number>().type.toBeNumber();
-> 24 |   expect.fail<number>().type.toBeNumber();
+  17 | test("is number?", () => {
+  18 |   expect<number>().type.toBeNumber();
+> 19 |   expect.fail<number>().type.toBeNumber();
      |   ^
-  25 | 
-  26 |   expect.fail<never>().type.toBeVoid();
-  27 | });
+  20 | 
+  21 |   expect.fail<never>().type.toBeVoid();
+  22 | });
 
-       at ./__typetests__/expect-fail.test.ts:24:3
+       at ./__typetests__/expect-fail.tst.ts:19:3
 
 "
 `;
@@ -49,7 +49,7 @@ Consider removing the '.fail' flag.
 exports[`expect.fail: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/expect-fail.test.ts
+fail ./__typetests__/expect-fail.tst.ts
   is describe?
     × is string?
   × is number?
@@ -60,7 +60,7 @@ Tests:      2 failed, 2 total
 Assertions: 3 failed, 6 passed, 9 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'expect-fail.test.ts'.
+Ran test files matching 'expect-fail.tst.ts'.
 "
 `;
 
@@ -69,43 +69,43 @@ exports[`expect.only.fail: stderr 1`] = `
 
 Consider removing the '.fail' flag.
 
-   7 | 
-   8 | expect<string>().type.toBeString();
->  9 | expect.only.fail<string>().type.toBeString();
-     | ^
-  10 | 
-  11 | expect.only.fail<never>().type.toBeString();
-  12 | 
+  2 | 
+  3 | expect<string>().type.toBeString();
+> 4 | expect.only.fail<string>().type.toBeString();
+    | ^
+  5 | 
+  6 | expect.only.fail<never>().type.toBeString();
+  7 | 
 
-       at ./__typetests__/expect-only-fail.test.ts:9:1
+      at ./__typetests__/expect-only-fail.tst.ts:4:1
 
 Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  14 |   test("is skipped?", () => {
-  15 |     expect<never>().type.toBeVoid();
-> 16 |     expect.only.fail<string>().type.toBeString();
+   9 |   test("is skipped?", () => {
+  10 |     expect<never>().type.toBeVoid();
+> 11 |     expect.only.fail<string>().type.toBeString();
      |     ^
-  17 | 
-  18 |     expect.only.fail<never>().type.toBeVoid();
-  19 |   });
+  12 | 
+  13 |     expect.only.fail<never>().type.toBeVoid();
+  14 |   });
 
-       at ./__typetests__/expect-only-fail.test.ts:16:5
+       at ./__typetests__/expect-only-fail.tst.ts:11:5
 
 Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  28 | test.only("is number?", () => {
-  29 |   expect.skip<string>().type.toBeNumber();
-> 30 |   expect.fail<number>().type.toBeNumber();
+  23 | test.only("is number?", () => {
+  24 |   expect.skip<string>().type.toBeNumber();
+> 25 |   expect.fail<number>().type.toBeNumber();
      |   ^
-  31 | 
-  32 |   expect.fail<never>().type.toBeVoid();
-  33 | });
+  26 | 
+  27 |   expect.fail<never>().type.toBeVoid();
+  28 | });
 
-       at ./__typetests__/expect-only-fail.test.ts:30:3
+       at ./__typetests__/expect-only-fail.tst.ts:25:3
 
 "
 `;
@@ -113,7 +113,7 @@ Consider removing the '.fail' flag.
 exports[`expect.only.fail: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/expect-only-fail.test.ts
+fail ./__typetests__/expect-only-fail.tst.ts
   is skipped describe?
     - skip is skipped?
   is skipped describe?
@@ -128,77 +128,14 @@ Tests:      1 failed, 3 skipped, 1 todo, 5 total
 Assertions: 3 failed, 5 skipped, 3 passed, 11 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'expect-only-fail.test.ts'.
-"
-`;
-
-exports[`expect.only.skip: stderr 1`] = `
-"Error: The assertion was supposed to fail, but it passed.
-
-Consider removing the '.fail' flag.
-
-   7 | 
-   8 | expect.skip.fail<string>().type.toBeString();
->  9 | expect.fail<string>().type.toBeString();
-     | ^
-  10 | 
-  11 | describe("is describe?", () => {
-  12 |   test("is string?", () => {
-
-       at ./__typetests__/expect-skip-fail.test.ts:9:1
-
-Error: The assertion was supposed to fail, but it passed.
-
-Consider removing the '.fail' flag.
-
-  12 |   test("is string?", () => {
-  13 |     expect.skip.fail<string>().type.toBeString();
-> 14 |     expect.fail<string>().type.toBeString();
-     |     ^
-  15 |   });
-  16 | });
-  17 | 
-
-       at ./__typetests__/expect-skip-fail.test.ts:14:5
-
-Error: The assertion was supposed to fail, but it passed.
-
-Consider removing the '.fail' flag.
-
-  18 | test("is number?", () => {
-  19 |   expect.skip.fail<number>().type.toBeNumber();
-> 20 |   expect.fail<number>().type.toBeNumber();
-     |   ^
-  21 | });
-  22 | 
-
-       at ./__typetests__/expect-skip-fail.test.ts:20:3
-
-"
-`;
-
-exports[`expect.only.skip: stdout 1`] = `
-"uses TypeScript <<version>> with ./tsconfig.json
-
-fail ./__typetests__/expect-skip-fail.test.ts
-  is describe?
-    × is string?
-  × is number?
-
-Targets:    1 failed, 1 total
-Test files: 1 failed, 1 total
-Tests:      2 failed, 2 total
-Assertions: 3 failed, 3 skipped, 6 total
-Duration:   <<timestamp>>
-
-Ran test files matching 'expect-skip-fail.test.ts'.
+Ran test files matching 'expect-only-fail.tst.ts'.
 "
 `;
 
 exports[`expect.only: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/expect-only.test.ts
+pass ./__typetests__/expect-only.tst.ts
   is describe?
     - skip is skipped?
   is skipped describe?
@@ -213,14 +150,77 @@ Tests:      3 skipped, 1 todo, 1 passed, 5 total
 Assertions: 5 skipped, 3 passed, 8 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'expect-only.test.ts'.
+Ran test files matching 'expect-only.tst.ts'.
+"
+`;
+
+exports[`expect.skip.fail: stderr 1`] = `
+"Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+  2 | 
+  3 | expect.skip.fail<string>().type.toBeString();
+> 4 | expect.fail<string>().type.toBeString();
+    | ^
+  5 | 
+  6 | describe("is describe?", () => {
+  7 |   test("is string?", () => {
+
+      at ./__typetests__/expect-skip-fail.tst.ts:4:1
+
+Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+   7 |   test("is string?", () => {
+   8 |     expect.skip.fail<string>().type.toBeString();
+>  9 |     expect.fail<string>().type.toBeString();
+     |     ^
+  10 |   });
+  11 | });
+  12 | 
+
+       at ./__typetests__/expect-skip-fail.tst.ts:9:5
+
+Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+  13 | test("is number?", () => {
+  14 |   expect.skip.fail<number>().type.toBeNumber();
+> 15 |   expect.fail<number>().type.toBeNumber();
+     |   ^
+  16 | });
+  17 | 
+
+       at ./__typetests__/expect-skip-fail.tst.ts:15:3
+
+"
+`;
+
+exports[`expect.skip.fail: stdout 1`] = `
+"uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/expect-skip-fail.tst.ts
+  is describe?
+    × is string?
+  × is number?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 3 failed, 3 skipped, 6 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'expect-skip-fail.tst.ts'.
 "
 `;
 
 exports[`expect.skip: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/expect-skip.test.ts
+pass ./__typetests__/expect-skip.tst.ts
   is describe?
     + is string?
   is skipped describe?
@@ -236,7 +236,7 @@ Tests:      2 skipped, 1 todo, 3 passed, 6 total
 Assertions: 6 skipped, 3 passed, 9 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'expect-skip.test.ts'.
+Ran test files matching 'expect-skip.tst.ts'.
 "
 `;
 

@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, test } from "tstyche";
-
-jest.test("'toBeNumber' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toBeNumber", jest.expect.any(Function));
-});
 
 declare function returnsNumber(): number;
 declare function returnsVoid(): void;

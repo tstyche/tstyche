@@ -3,26 +3,26 @@
 exports[`toBeNumber: stderr 1`] = `
 "Error: Type 'number' is not identical to type 'void'.
 
-  12 |   expect(returnsNumber()).type.toBeNumber();
-  13 | 
-> 14 |   expect(returnsVoid()).type.toBeNumber();
+   7 |   expect(returnsNumber()).type.toBeNumber();
+   8 | 
+>  9 |   expect(returnsVoid()).type.toBeNumber();
      |                              ^
-  15 | });
-  16 | 
-  17 | test("is NOT number?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT number?", () => {
 
-       at ./__typetests__/toBeNumber.test.ts:14:30 ❭ is number?
+       at ./__typetests__/toBeNumber.tst.ts:9:30 ❭ is number?
 
 Error: Type 'number' is identical to type 'number'.
 
-  18 |   expect(returnsVoid()).type.not.toBeNumber();
-  19 | 
-> 20 |   expect(returnsNumber()).type.not.toBeNumber();
+  13 |   expect(returnsVoid()).type.not.toBeNumber();
+  14 | 
+> 15 |   expect(returnsNumber()).type.not.toBeNumber();
      |                                    ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeNumber.test.ts:20:36 ❭ is NOT number?
+       at ./__typetests__/toBeNumber.tst.ts:15:36 ❭ is NOT number?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'number' is identical to type 'number'.
 exports[`toBeNumber: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeNumber.test.ts
+fail ./__typetests__/toBeNumber.tst.ts
   × is number?
   × is NOT number?
 

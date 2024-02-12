@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, test } from "tstyche";
-
-jest.test("'toBeSymbol' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toBeSymbol", jest.expect.any(Function));
-});
 
 declare function returnsSymbol(): symbol;
 declare function returnsVoid(): void;

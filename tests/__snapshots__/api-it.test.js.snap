@@ -44,7 +44,7 @@ Ran test files matching 'nested'.
 exports[`it.only: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/it-only.test.ts
+pass ./__typetests__/it-only.tst.ts
   + is only?
   - skip is skipped?
   + is only too?
@@ -64,7 +64,7 @@ Ran test files matching 'only'.
 exports[`it.skip: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/it-skip.test.ts
+pass ./__typetests__/it-skip.tst.ts
   - skip is skipped?
   + is string?
   - skip is skipped too?
@@ -82,7 +82,7 @@ Ran test files matching 'skip'.
 exports[`it.todo: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-pass ./__typetests__/it-todo.test.ts
+pass ./__typetests__/it-todo.tst.ts
   - todo is todo?
   + is string?
   - todo is todo too?

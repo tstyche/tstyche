@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, test } from "tstyche";
-
-jest.test("'test.skip' implementation'", () => {
-  jest.expect(test.skip).toBeInstanceOf(Function);
-});
 
 test.skip("is skipped?", () => {
   const a: string = 123;

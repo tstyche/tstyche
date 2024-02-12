@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { describe, expect, test } from "tstyche";
-
-jest.test("'toHaveProperty' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toHaveProperty", jest.expect.any(Function));
-});
 
 type Worker<T> = {
   [K in keyof T as Exclude<K, "setup" | "teardown">]: T[K];

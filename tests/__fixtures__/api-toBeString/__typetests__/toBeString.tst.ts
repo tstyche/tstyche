@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, test } from "tstyche";
-
-jest.test("'toBeString' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toBeString", jest.expect.any(Function));
-});
 
 declare function returnsString(): string;
 declare function returnsVoid(): void;

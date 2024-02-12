@@ -3,26 +3,26 @@
 exports[`toBeString: stderr 1`] = `
 "Error: Type 'string' is not identical to type 'void'.
 
-  12 |   expect(returnsString()).type.toBeString();
-  13 | 
-> 14 |   expect(returnsVoid()).type.toBeString();
+   7 |   expect(returnsString()).type.toBeString();
+   8 | 
+>  9 |   expect(returnsVoid()).type.toBeString();
      |                              ^
-  15 | });
-  16 | 
-  17 | test("is NOT string?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT string?", () => {
 
-       at ./__typetests__/toBeString.test.ts:14:30 ❭ is string?
+       at ./__typetests__/toBeString.tst.ts:9:30 ❭ is string?
 
 Error: Type 'string' is identical to type 'string'.
 
-  18 |   expect(returnsVoid()).type.not.toBeString();
-  19 | 
-> 20 |   expect(returnsString()).type.not.toBeString();
+  13 |   expect(returnsVoid()).type.not.toBeString();
+  14 | 
+> 15 |   expect(returnsString()).type.not.toBeString();
      |                                    ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeString.test.ts:20:36 ❭ is NOT string?
+       at ./__typetests__/toBeString.tst.ts:15:36 ❭ is NOT string?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'string' is identical to type 'string'.
 exports[`toBeString: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeString.test.ts
+fail ./__typetests__/toBeString.tst.ts
   × is string?
   × is NOT string?
 

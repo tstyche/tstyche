@@ -3,26 +3,26 @@
 exports[`toBeBoolean: stderr 1`] = `
 "Error: Type 'boolean' is not identical to type 'string'.
 
-  12 |   expect(returnsBoolean()).type.toBeBoolean();
-  13 | 
-> 14 |   expect(returnsString()).type.toBeBoolean();
+   7 |   expect(returnsBoolean()).type.toBeBoolean();
+   8 | 
+>  9 |   expect(returnsString()).type.toBeBoolean();
      |                                ^
-  15 | });
-  16 | 
-  17 | test("is NOT boolean?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT boolean?", () => {
 
-       at ./__typetests__/toBeBoolean.test.ts:14:32 ❭ is boolean?
+       at ./__typetests__/toBeBoolean.tst.ts:9:32 ❭ is boolean?
 
 Error: Type 'boolean' is identical to type 'boolean'.
 
-  18 |   expect(returnsString()).type.not.toBeBoolean();
-  19 | 
-> 20 |   expect(returnsBoolean()).type.not.toBeBoolean();
+  13 |   expect(returnsString()).type.not.toBeBoolean();
+  14 | 
+> 15 |   expect(returnsBoolean()).type.not.toBeBoolean();
      |                                     ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeBoolean.test.ts:20:37 ❭ is NOT boolean?
+       at ./__typetests__/toBeBoolean.tst.ts:15:37 ❭ is NOT boolean?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'boolean' is identical to type 'boolean'.
 exports[`toBeBoolean: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeBoolean.test.ts
+fail ./__typetests__/toBeBoolean.tst.ts
   × is boolean?
   × is NOT boolean?
 

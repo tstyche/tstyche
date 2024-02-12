@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { describe, expect, test } from "tstyche";
-
-jest.test("'toBeAssignable' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toBeAssignable", jest.expect.any(Function));
-});
 
 interface Names {
   first: string;

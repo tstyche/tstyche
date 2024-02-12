@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { expect, test } from "tstyche";
-
-jest.test("'toBeUniqueSymbol' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toBeUniqueSymbol", jest.expect.any(Function));
-});
 
 declare const mockedSymbol: unique symbol;
 

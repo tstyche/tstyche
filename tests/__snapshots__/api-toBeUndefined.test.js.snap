@@ -3,26 +3,26 @@
 exports[`toBeUndefined: stderr 1`] = `
 "Error: Type 'undefined' is not identical to type 'string'.
 
-  12 |   expect(returnsUndefined()).type.toBeUndefined();
-  13 | 
-> 14 |   expect(returnsString()).type.toBeUndefined();
+   7 |   expect(returnsUndefined()).type.toBeUndefined();
+   8 | 
+>  9 |   expect(returnsString()).type.toBeUndefined();
      |                                ^
-  15 | });
-  16 | 
-  17 | test("is NOT undefined?", () => {
+  10 | });
+  11 | 
+  12 | test("is NOT undefined?", () => {
 
-       at ./__typetests__/toBeUndefined.test.ts:14:32 ❭ is undefined?
+       at ./__typetests__/toBeUndefined.tst.ts:9:32 ❭ is undefined?
 
 Error: Type 'undefined' is identical to type 'undefined'.
 
-  18 |   expect(returnsString()).type.not.toBeUndefined();
-  19 | 
-> 20 |   expect(returnsUndefined()).type.not.toBeUndefined();
+  13 |   expect(returnsString()).type.not.toBeUndefined();
+  14 | 
+> 15 |   expect(returnsUndefined()).type.not.toBeUndefined();
      |                                       ^
-  21 | });
-  22 | 
+  16 | });
+  17 | 
 
-       at ./__typetests__/toBeUndefined.test.ts:20:39 ❭ is NOT undefined?
+       at ./__typetests__/toBeUndefined.tst.ts:15:39 ❭ is NOT undefined?
 
 "
 `;
@@ -30,7 +30,7 @@ Error: Type 'undefined' is identical to type 'undefined'.
 exports[`toBeUndefined: stdout 1`] = `
 "uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeUndefined.test.ts
+fail ./__typetests__/toBeUndefined.tst.ts
   × is undefined?
   × is NOT undefined?
 
