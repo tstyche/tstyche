@@ -10,7 +10,7 @@ hyperfine \
   'tstyche examples --target 5.2' \
   --command-name 'warm cache: tstyche examples --target 5.2' \
   --prepare '' \
-  'tstyche examples --target 4.9' \
+  'tstyche examples --skip Readonly --target 4.9' \
   --command-name 'warm cache: tstyche examples --target 4.9' \
   --prepare '' \
   'tstyche examples' \
@@ -19,6 +19,6 @@ hyperfine \
   'tstyche examples --target 5.2' \
   --command-name 'cold cache: tstyche examples --target 5.2' \
   --prepare 'tstyche --prune && npm cache clean --force' \
-  'tstyche examples --target 4.9' \
+  'tstyche examples --skip Readonly --target 4.9' \
   --command-name 'cold cache: tstyche examples --target 4.9' \
-  --prepare 'tstyche --prune && npm cache clean --force' \
+  --prepare 'tstyche --prune && npm cache clean --force'
