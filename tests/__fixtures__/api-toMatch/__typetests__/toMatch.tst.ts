@@ -32,6 +32,11 @@ test("difference from '.toBeAssignable()'", () => {
   // But an object type with an optional property is not a subtype
   // of the same object type without that particular property
   expect<{ a: string }>().type.not.toMatch<{ a: string; b?: number }>();
+
+  expect<{ a: string }>().type.toBeAssignable<{ readonly a: string }>();
+  // But an object type with a particular property is not a subtype
+  // of the same object type with that property marked 'readonly'
+  expect<{ readonly a: string }>().type.not.toMatch<{ a: string }>();
 });
 
 describe("received type", () => {

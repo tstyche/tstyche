@@ -59,7 +59,9 @@ export class Expect {
 
   static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
     return (
-      "isTypeAssignableTo" in typeChecker && "isTypeIdenticalTo" in typeChecker && "isTypeSubtypeOf" in typeChecker
+      "isTypeAssignableTo" in typeChecker
+      && "isTypeIdenticalTo" in typeChecker
+      && "isTypeSubtypeOf" in typeChecker
     );
   }
 

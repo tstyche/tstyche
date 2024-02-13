@@ -15,7 +15,8 @@ export class ToMatch {
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {
-    const isMatch = this.typeChecker.isTypeSubtypeOf(sourceType, targetType);
+    const isMatch = this.typeChecker.isTypeStrictSubtypeOf?.(sourceType, targetType)
+      ?? this.typeChecker.isTypeSubtypeOf(sourceType, targetType);
 
     return {
       explain: () => this.#explain(sourceType, targetType, isNot),
