@@ -9,5 +9,6 @@ export interface MatchResult {
 export interface TypeChecker extends ts.TypeChecker {
   isTypeAssignableTo: (source: ts.Type, target: ts.Type) => boolean;
   isTypeIdenticalTo: (source: ts.Type, target: ts.Type) => boolean;
+  isTypeStrictSubtypeOf?: (source: ts.Type, target: ts.Type) => boolean;
   isTypeSubtypeOf: (source: ts.Type, target: ts.Type) => boolean;
 }

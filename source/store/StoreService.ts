@@ -98,14 +98,21 @@ export class StoreService {
     for (const candidatePath of candidatePaths) {
       const sourceText = await fs.readFile(candidatePath, { encoding: "utf8" });
 
-      const modifiedSourceText = sourceText.replace(
-        "return checker;",
-        "return { ...checker, isTypeIdenticalTo, isTypeSubtypeOf };",
-      );
-
-      if (modifiedSourceText.length === sourceText.length) {
+      if (!sourceText.includes("isTypeAssignableTo")) {
         continue;
       }
+
+      const exposedMethods = ["isTypeIdenticalTo", "isTypeSubtypeOf"];
+
+      if (sourceText.includes("isTypeStrictSubtypeOf")) {
+        // the 'isTypeStrictSubtypeOf()' method got added since TypeScript 5
+        exposedMethods.push("isTypeStrictSubtypeOf");
+      }
+
+      const modifiedSourceText = sourceText.replace(
+        "return checker;",
+        `return { ...checker, ${exposedMethods.join(", ")} };`,
+      );
 
       const compiledWrapper = vm.compileFunction(
         modifiedSourceText,

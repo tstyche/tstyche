@@ -15,14 +15,14 @@ test("is assignable?", () => {
 });
 
 interface Options {
-  environment?: string;
+  readonly environment?: string;
   timers?: "fake" | "real";
 }
 
 const options: Options = {};
 
 test("is a match?", () => {
-  expect(options).type.toMatch<{ environment?: string }>();
+  expect(options).type.toMatch<{ readonly environment?: string }>();
   expect(options).type.toMatch<{ timers?: "fake" | "real" }>();
 });
 

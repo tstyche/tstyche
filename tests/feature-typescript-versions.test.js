@@ -4,8 +4,7 @@ import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const toBeAssignableTestText = `
-import { expect, test } from "tstyche";
+const toBeAssignableTestText = `import { expect, test } from "tstyche";
 
 interface Sample {
   locale?: Array<"en" | "de">;
@@ -21,8 +20,7 @@ test("is assignable?", () => {
   });
 });`;
 
-const toEqualTestText = `
-import { expect, test } from "tstyche";
+const toEqualTestText = `import { expect, test } from "tstyche";
 
 interface Sample {
   getLength: () => number;
@@ -35,8 +33,7 @@ test("is equal?", () => {
 
 `;
 
-const toHavePropertyTestText = `
-import { expect } from "tstyche";
+const toHavePropertyTestText = `import { expect } from "tstyche";
 
 interface Sample {
   description: string;
@@ -51,24 +48,22 @@ expect<Sample>().type.not.toHaveProperty("setup");
 expect<Sample>().type.not.toHaveProperty("teardown");
 `;
 
-const toMatchTestText = `
-import { expect, test } from "tstyche";
+const toMatchTestText = `import { expect, test } from "tstyche";
 
 interface Options {
-  environment?: string;
+  readonly environment?: string;
   timers?: "fake" | "real";
 }
 
 const options: Options = {};
 
 test("is a match?", () => {
-  expect(options).type.toMatch<{ environment?: string }>();
+  expect(options).type.toMatch<{ readonly environment?: string }>();
   expect(options).type.toMatch<{ timers?: "fake" | "real" }>();
 });
 `;
 
-const toRaiseErrorTestText = `
-import { expect, test } from "tstyche";
+const toRaiseErrorTestText = `import { expect, test } from "tstyche";
 
 interface Matchers<R, T = unknown> {
   [key: string]: (expected: T) => R;
@@ -106,11 +101,11 @@ describe("TypeScript 4.x", () => {
   beforeAll(async () => {
     await writeFixture(fixtureUrl, {
       // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
-      ["__typetests__/toBeAssignable.test.ts"]: `// @ts-expect-error${toBeAssignableTestText}`,
-      ["__typetests__/toEqual.test.ts"]: `// @ts-expect-error${toEqualTestText}`,
-      ["__typetests__/toHaveProperty.test.ts"]: `// @ts-expect-error${toHavePropertyTestText}`,
-      ["__typetests__/toMatch.test.ts"]: `// @ts-expect-error${toMatchTestText}`,
-      ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error${toRaiseErrorTestText}`,
+      ["__typetests__/toBeAssignable.test.ts"]: `// @ts-expect-error\n${toBeAssignableTestText}`,
+      ["__typetests__/toEqual.test.ts"]: `// @ts-expect-error\n${toEqualTestText}`,
+      ["__typetests__/toHaveProperty.test.ts"]: `// @ts-expect-error\n${toHavePropertyTestText}`,
+      ["__typetests__/toMatch.test.ts"]: `// @ts-expect-error\n${toMatchTestText}`,
+      ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error\n${toRaiseErrorTestText}`,
     });
   });
 
