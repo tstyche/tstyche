@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.0-rc.2] - 2024-02-14
+
+### Fixed
+
+- Use the `isTypeRelatedTo()` method directly, to make strict subtype checks possible ([#127](https://github.com/tstyche/tstyche/pull/127), [#126](https://github.com/tstyche/tstyche/pull/126))
+
 ## [1.0.0-rc.1] - 2024-02-10
 
 ### Changed
@@ -130,6 +136,7 @@
 
 _First pre-release._
 
+[1.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.2
 [1.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.1
 [1.0.0-rc]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc
 [1.0.0-beta.9]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.9
