@@ -44,8 +44,7 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: yarn test:types --target 4.7,5.0,current
-      - run: yarn test:examples --skip Readonly --target 4.7
-      - run: yarn test:examples --target 5.0,current
+      - run: yarn test:examples --target 4.7,5.0,current
 
   test-node:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))

@@ -15,7 +15,7 @@ export class ToBeAssignable {
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {
-    const isMatch = this.typeChecker.isTypeAssignableTo(targetType, sourceType);
+    const isMatch = this.typeChecker.isTypeRelatedTo(targetType, sourceType, this.typeChecker.relation.assignable);
 
     return {
       explain: () => this.#explain(sourceType, targetType, isNot),

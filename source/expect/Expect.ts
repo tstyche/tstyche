@@ -58,11 +58,7 @@ export class Expect {
   }
 
   static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
-    return (
-      "isTypeAssignableTo" in typeChecker
-      && "isTypeIdenticalTo" in typeChecker
-      && "isTypeSubtypeOf" in typeChecker
-    );
+    return ("isTypeRelatedTo" in typeChecker && "relation" in typeChecker);
   }
 
   #getType(node: ts.Expression | ts.TypeNode) {
@@ -146,7 +142,7 @@ export class Expect {
 
         if (
           sourceType.flags & (this.compiler.TypeFlags.Any | this.compiler.TypeFlags.Never)
-          || !this.typeChecker.isTypeAssignableTo(sourceType, nonPrimitiveType)
+          || !this.typeChecker.isTypeRelatedTo(sourceType, nonPrimitiveType, this.typeChecker.relation.assignable)
         ) {
           this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
 

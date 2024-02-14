@@ -15,7 +15,7 @@ export class ToEqual {
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {
-    const isMatch = this.typeChecker.isTypeIdenticalTo(sourceType, targetType);
+    const isMatch = this.typeChecker.isTypeRelatedTo(sourceType, targetType, this.typeChecker.relation.identity);
 
     return {
       explain: () => this.#explain(sourceType, targetType, isNot),
