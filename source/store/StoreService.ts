@@ -98,20 +98,18 @@ export class StoreService {
     for (const candidatePath of candidatePaths) {
       const sourceText = await fs.readFile(candidatePath, { encoding: "utf8" });
 
-      if (!sourceText.includes("isTypeAssignableTo")) {
+      if (!sourceText.includes("isTypeRelatedTo")) {
         continue;
       }
 
-      const exposedMethods = ["isTypeIdenticalTo", "isTypeSubtypeOf"];
-
-      if (sourceText.includes("isTypeStrictSubtypeOf")) {
-        // the 'isTypeStrictSubtypeOf()' method got added since TypeScript 5
-        exposedMethods.push("isTypeStrictSubtypeOf");
-      }
+      const toExpose = [
+        "isTypeRelatedTo",
+        "relation: { assignable: assignableRelation, identity: identityRelation, subtype: strictSubtypeRelation }",
+      ];
 
       const modifiedSourceText = sourceText.replace(
         "return checker;",
-        `return { ...checker, ${exposedMethods.join(", ")} };`,
+        `return { ...checker, ${toExpose.join(", ")} };`,
       );
 
       const compiledWrapper = vm.compileFunction(

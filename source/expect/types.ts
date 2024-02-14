@@ -6,9 +6,9 @@ export interface MatchResult {
   isMatch: boolean;
 }
 
+type Relation = Map<string, unknown>;
+
 export interface TypeChecker extends ts.TypeChecker {
-  isTypeAssignableTo: (source: ts.Type, target: ts.Type) => boolean;
-  isTypeIdenticalTo: (source: ts.Type, target: ts.Type) => boolean;
-  isTypeStrictSubtypeOf?: (source: ts.Type, target: ts.Type) => boolean;
-  isTypeSubtypeOf: (source: ts.Type, target: ts.Type) => boolean;
+  isTypeRelatedTo: (source: ts.Type, target: ts.Type, relation: Relation) => boolean;
+  relation: { assignable: Relation; identity: Relation; subtype: Relation };
 }
