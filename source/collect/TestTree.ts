@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import type { Assertion } from "./Assertion.js";
+import { TestMemberFlags } from "./enums.js";
 import type { TestMember } from "./TestMember.js";
-import { TestMemberFlags } from "./TestMemberFlags.js";
 
 export class TestTree {
   members: Array<TestMember | Assertion> = [];

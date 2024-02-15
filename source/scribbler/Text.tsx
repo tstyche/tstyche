@@ -1,4 +1,4 @@
-import { Color } from "./Color.js";
+import { Color } from "./enums.js";
 import { Scribbler } from "./Scribbler.js";
 
 interface TextProps {

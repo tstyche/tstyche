@@ -5,7 +5,7 @@ import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { Expect } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
-import { RunMode } from "./RunMode.js";
+import { RunMode } from "./enums.js";
 
 interface TestFileWorkerOptions {
   fileResult: FileResult;

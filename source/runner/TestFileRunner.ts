@@ -7,7 +7,7 @@ import { EventEmitter } from "#events";
 import { Expect } from "#expect";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
-import { RunMode } from "./RunMode.js";
+import { RunMode } from "./enums.js";
 import { TestTreeWorker } from "./TestTreeWorker.js";
 
 export class TestFileRunner {

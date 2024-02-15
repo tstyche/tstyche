@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import ansiEscapesSerializer from "jest-serializer-ansi-escapes";
-import { Color } from "../Color.js";
+import { Color } from "../enums.js";
 import { Scribbler } from "../Scribbler.js";
 import { Text } from "../Text.js";
 

@@ -1,7 +1,6 @@
 import type { StoreService } from "#store";
-import type { OptionBrand } from "./OptionBrand.js";
+import { type OptionBrand, OptionGroup } from "./enums.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
-import { OptionGroup } from "./OptionGroup.js";
 
 export class OptionUsageText {
   #optionDiagnosticText: OptionDiagnosticText;

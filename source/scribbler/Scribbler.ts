@@ -1,4 +1,4 @@
-import type { Color } from "./Color.js";
+import type { Color } from "./enums.js";
 
 type ElementChildren = Array<ElementChildren> | JSX.Element | string | undefined;
 

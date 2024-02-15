@@ -1,8 +1,7 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import type { Assertion } from "./Assertion.js";
-import { TestMemberBrand } from "./TestMemberBrand.js";
-import type { TestMemberFlags } from "./TestMemberFlags.js";
+import { TestMemberBrand, type TestMemberFlags } from "./enums.js";
 import type { TestTree } from "./TestTree.js";
 
 export class TestMember {

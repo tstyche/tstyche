@@ -1,5 +1,4 @@
-import type { OptionBrand } from "./OptionBrand.js";
-import { OptionGroup } from "./OptionGroup.js";
+import { type OptionBrand, OptionGroup } from "./enums.js";
 
 export class OptionDiagnosticText {
   #optionGroup: OptionGroup;

@@ -1,9 +1,8 @@
 import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import type { StoreService } from "#store";
-import type { OptionBrand } from "./OptionBrand.js";
+import type { OptionBrand, OptionGroup } from "./enums.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
-import type { OptionGroup } from "./OptionGroup.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 
 export class OptionValidator {

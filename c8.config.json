@@ -8,6 +8,8 @@
     "tests/**/*",
     "typetests/**/*",
     "**/__tests__/**/*",
+    "**/__typetests__/**/*",
+    "**/enums.ts",
     "**/index.ts",
     "**/main.ts",
     "**/tstyche.ts",

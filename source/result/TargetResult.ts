@@ -1,10 +1,12 @@
+import { ResultStatus } from "./enums.js";
 import type { ProjectResult } from "./ProjectResult.js";
-import { ResultStatus } from "./ResultStatus.js";
 import { ResultTiming } from "./ResultTiming.js";
+
+export type TargetResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed;
 
 export class TargetResult {
   results = new Map<string | undefined, ProjectResult>();
-  status: ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed = ResultStatus.Runs;
+  status: TargetResultStatus = ResultStatus.Runs;
   timing = new ResultTiming();
 
   constructor(

@@ -1,4 +1,4 @@
-import type { Color } from "./Color.js";
+import type { Color } from "./enums.js";
 import { Scribbler } from "./Scribbler.js";
 import { Text } from "./Text.js";
 

@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { DiagnosticCategory } from "./DiagnosticCategory.js";
+import { DiagnosticCategory } from "./enums.js";
 
 export interface DiagnosticOrigin {
   breadcrumbs?: Array<string>;

@@ -1,6 +1,5 @@
 import type ts from "typescript";
-import { TestMemberBrand } from "./TestMemberBrand.js";
-import { TestMemberFlags } from "./TestMemberFlags.js";
+import { TestMemberBrand, TestMemberFlags } from "./enums.js";
 
 export interface Identifiers {
   namedImports: Record<string, string | undefined>;

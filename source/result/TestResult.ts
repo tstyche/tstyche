@@ -1,9 +1,9 @@
 import type { TestMember } from "#collect";
 import type { Diagnostic } from "#diagnostic";
 import type { DescribeResult } from "./DescribeResult.js";
+import { ResultStatus } from "./enums.js";
 import type { ExpectResult } from "./ExpectResult.js";
 import { ResultCount } from "./ResultCount.js";
-import { ResultStatus } from "./ResultStatus.js";
 import { ResultTiming } from "./ResultTiming.js";
 
 export class TestResult {

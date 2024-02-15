@@ -1,5 +1,4 @@
-import { OptionBrand } from "./OptionBrand.js";
-import { OptionGroup } from "./OptionGroup.js";
+import { OptionBrand, OptionGroup } from "./enums.js";
 
 export interface ItemDefinition {
   brand: OptionBrand.String;
