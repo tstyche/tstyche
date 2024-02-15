@@ -82,8 +82,8 @@ const config = [
     output,
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript(),
-      dts(),
+      typescript({ tsconfig: "./source/tsconfig.json" }),
+      dts({ tsconfig: "./source/tsconfig.json" }),
       tidyDts(),
     ],
   },
@@ -96,8 +96,8 @@ const config = [
     },
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript(),
-      dts(),
+      typescript({ tsconfig: "./source/tsconfig.json" }),
+      dts({ tsconfig: "./source/tsconfig.json" }),
     ],
   },
 
@@ -111,7 +111,7 @@ const config = [
     output,
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true } }),
+      typescript({ compilerOptions: { removeComments: true }, tsconfig: "./source/tsconfig.json" }),
       tidyJs(),
     ],
   },
@@ -124,7 +124,7 @@ const config = [
     },
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true } }),
+      typescript({ compilerOptions: { removeComments: true }, tsconfig: "./source/tsconfig.json" }),
     ],
   },
 ];

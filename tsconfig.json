@@ -12,9 +12,6 @@
 
     "module": "node16",
     "moduleResolution": "node16",
-    "paths": {
-      "#*": ["./source/*/index.ts"]
-    },
     "rootDir": "./",
     "types": ["node"],
 
@@ -26,12 +23,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
-    "jsx": "react",
-    "jsxFactory": "Scribbler.createElement",
-    "target": "es2022",
-
-    "skipLibCheck": false
+    "target": "es2022"
   },
-  "include": ["*.js", "source/**/*"],
-  "exclude": ["**/__tests__/**/*"]
+  "exclude": ["build/**/*"]
 }

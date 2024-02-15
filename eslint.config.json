@@ -200,7 +200,12 @@
   "settings": {
     "import/ignore": ["typescript"],
     "import/resolver": {
-      "typescript": {}
+      "typescript": {
+        "project": [
+          "./source/tsconfig.json",
+          "./tsconfig.json"
+        ]
+      }
     }
   }
 }
