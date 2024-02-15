@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toBeUniqueSymbol: stderr 1`] = `
-"Error: Type 'unique symbol' is not identical to type 'void'.
+"Error: The source type is 'void'.
 
    9 |   expect(returnsUniqueSymbol()).type.toBeUniqueSymbol();
   10 | 
@@ -13,7 +13,7 @@ exports[`toBeUniqueSymbol: stderr 1`] = `
 
        at ./__typetests__/toBeUniqueSymbol.tst.ts:11:30 ❭ is unique symbol?
 
-Error: Type 'unique symbol' is identical to type 'unique symbol'.
+Error: The source type is 'unique symbol'.
 
   15 |   expect(returnsVoid()).type.not.toBeUniqueSymbol();
   16 | 

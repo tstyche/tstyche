@@ -241,7 +241,7 @@ Ran test files matching 'expect-skip.tst.ts'.
 `;
 
 exports[`handles '--failFast' option: stderr 1`] = `
-"Error: Type 'undefined' is not identical to type 'void'.
+"Error: The source type is 'void'.
 
    5 | });
    6 | 

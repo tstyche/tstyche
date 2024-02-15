@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`toBeBoolean: stderr 1`] = `
-"Error: Type 'boolean' is not identical to type 'string'.
+"Error: The source type is 'string'.
 
    7 |   expect(returnsBoolean()).type.toBeBoolean();
    8 | 
@@ -13,7 +13,7 @@ exports[`toBeBoolean: stderr 1`] = `
 
        at ./__typetests__/toBeBoolean.tst.ts:9:32 ❭ is boolean?
 
-Error: Type 'boolean' is identical to type 'boolean'.
+Error: The source type is 'boolean'.
 
   13 |   expect(returnsString()).type.not.toBeBoolean();
   14 | 

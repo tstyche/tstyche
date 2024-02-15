@@ -4,30 +4,25 @@ import type { MatchResult, TypeChecker } from "./types.js";
 
 export class PrimitiveTypeMatcher {
   #targetTypeFlag: ts.TypeFlags;
-  #targetTypeText: string;
 
   constructor(
     public typeChecker: TypeChecker,
     targetTypeFlag: ts.TypeFlags,
-    targetTypeText: string,
   ) {
     this.#targetTypeFlag = targetTypeFlag;
-    this.#targetTypeText = targetTypeText;
   }
 
-  #explain(sourceType: ts.Type, isNot: boolean) {
+  #explain(sourceType: ts.Type) {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
 
-    return isNot
-      ? [Diagnostic.error(`Type '${this.#targetTypeText}' is identical to type '${sourceTypeText}'.`)]
-      : [Diagnostic.error(`Type '${this.#targetTypeText}' is not identical to type '${sourceTypeText}'.`)];
+    return [Diagnostic.error(`The source type is '${sourceTypeText}'.`)];
   }
 
-  match(sourceType: ts.Type, isNot: boolean): MatchResult {
+  match(sourceType: ts.Type): MatchResult {
     const isMatch = Boolean(sourceType.flags & this.#targetTypeFlag);
 
     return {
-      explain: () => this.#explain(sourceType, isNot),
+      explain: () => this.#explain(sourceType),
       isMatch,
     };
   }

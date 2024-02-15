@@ -34,23 +34,19 @@ export class Expect {
     public compiler: typeof ts,
     public typeChecker: TypeChecker,
   ) {
-    this.toBeAny = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Any, "any");
+    this.toBeAny = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Any);
     this.toBeAssignable = new ToBeAssignable(this.typeChecker);
-    this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt, "bigint");
-    this.toBeBoolean = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Boolean, "boolean");
-    this.toBeNever = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Never, "never");
-    this.toBeNull = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Null, "null");
-    this.toBeNumber = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Number, "number");
-    this.toBeString = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.String, "string");
-    this.toBeSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.ESSymbol, "symbol");
-    this.toBeUndefined = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Undefined, "undefined");
-    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(
-      this.typeChecker,
-      this.compiler.TypeFlags.UniqueESSymbol,
-      "unique symbol",
-    );
-    this.toBeUnknown = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Unknown, "unknown");
-    this.toBeVoid = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Void, "void");
+    this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt);
+    this.toBeBoolean = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Boolean);
+    this.toBeNever = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Never);
+    this.toBeNull = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Null);
+    this.toBeNumber = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Number);
+    this.toBeString = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.String);
+    this.toBeSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.ESSymbol);
+    this.toBeUndefined = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Undefined);
+    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.UniqueESSymbol);
+    this.toBeUnknown = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Unknown);
+    this.toBeVoid = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Void);
     this.toEqual = new ToEqual(this.typeChecker);
     this.toHaveProperty = new ToHaveProperty(this.compiler, this.typeChecker);
     this.toMatch = new ToMatch(this.typeChecker);
@@ -128,7 +124,7 @@ export class Expect {
           return;
         }
 
-        return this[matcherNameText].match(this.#getType(assertion.source[0]), assertion.isNot);
+        return this[matcherNameText].match(this.#getType(assertion.source[0]));
 
       case "toHaveProperty": {
         if (assertion.source[0] == null) {
