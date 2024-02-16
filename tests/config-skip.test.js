@@ -158,7 +158,7 @@ test("external is string?", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["dummy", "--skip", "internal"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toBe("");
+    expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });
@@ -186,7 +186,7 @@ test("external is string?", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--skip", "internal", "dummy"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toBe("");
+    expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });

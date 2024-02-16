@@ -19,8 +19,6 @@ Test file match: **/*.tst.*, **/__typetests__/*.test.*, **/typetests/*.test.*
 "
 `;
 
-exports[`'tstyche' command when no test files are present: stdout 1`] = `""`;
-
 exports[`'tstyche' command when search string does not select test files: stderr 1`] = `
 "Error: No test files were selected using current configuration.
 
@@ -30,5 +28,3 @@ Path match:      sample
 
 "
 `;
-
-exports[`'tstyche' command when search string does not select test files: stdout 1`] = `""`;

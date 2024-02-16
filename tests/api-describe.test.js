@@ -62,7 +62,7 @@ test("handles 'expect()' nested within 'describe()'", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["describe-level-expect"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+  expect(stderr).toMatchSnapshot("stderr");
 
   expect(exitCode).toBe(1);
 });

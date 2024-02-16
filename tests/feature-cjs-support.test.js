@@ -9,7 +9,7 @@ test("supports CJS projects written CJS syntax", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["cjs-syntax"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+  expect(stderr).toMatchSnapshot("stderr");
 
   expect(exitCode).toBe(0);
 });
@@ -18,7 +18,7 @@ test("supports CJS projects written in ESM syntax", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["esm-syntax"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+  expect(stderr).toMatchSnapshot("stderr");
 
   expect(exitCode).toBe(0);
 });

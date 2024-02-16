@@ -13,7 +13,7 @@ test("handles '--failFast' option", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["fail-fast-expect.tst.ts", "--failFast"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+  expect(stderr).toMatchSnapshot("stderr");
 
   expect(exitCode).toBe(1);
 });
@@ -30,7 +30,7 @@ test("expect.fail", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-fail.tst.ts"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+  expect(stderr).toMatchSnapshot("stderr");
 
   expect(exitCode).toBe(1);
 });
@@ -56,7 +56,7 @@ test("expect.only.fail", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-only-fail.tst.ts"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+  expect(stderr).toMatchSnapshot("stderr");
 
   expect(exitCode).toBe(1);
 });
@@ -82,7 +82,7 @@ test("expect.skip.fail", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-skip-fail.tst.ts"]);
 
   expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+  expect(stderr).toMatchSnapshot("stderr");
 
   expect(exitCode).toBe(1);
 });

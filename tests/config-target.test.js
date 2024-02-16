@@ -97,7 +97,7 @@ describe("'--target' command line option", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["isNumber", "--target", "current"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toBe("");
+    expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });
@@ -111,7 +111,7 @@ describe("'--target' command line option", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current", "isString"]);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toBe("");
+    expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
   });

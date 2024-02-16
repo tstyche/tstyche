@@ -35,7 +35,7 @@ describe("compiler options", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+    expect(stderr).toMatchSnapshot("stderr");
 
     expect(exitCode).toBe(1);
   });

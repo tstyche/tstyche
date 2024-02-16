@@ -22,7 +22,7 @@ describe("'tstyche' command", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--check", "--quick", "-t"]);
 
     expect(stdout).toBe("");
-    expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
+    expect(stderr).toMatchSnapshot("stderr");
 
     expect(exitCode).toBe(1);
   });
@@ -34,7 +34,7 @@ describe("'tstyche' command", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(exitCode).toBe(1);
@@ -47,7 +47,7 @@ describe("'tstyche' command", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["sample"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(stdout).toBe("");
     expect(normalizeOutput(stderr)).toMatchSnapshot("stderr");
 
     expect(exitCode).toBe(1);
