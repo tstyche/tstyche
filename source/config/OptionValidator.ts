@@ -2,9 +2,9 @@ import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import type { StoreService } from "#store";
 import type { OptionBrand, OptionGroup } from "./enums.js";
+import { previewFeatures } from "./OptionDefinitionsMap.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
-import { Previews } from "./Previews.js";
 
 export class OptionValidator {
   #onDiagnostic: (diagnostic: Diagnostic) => void;
@@ -39,7 +39,7 @@ export class OptionValidator {
         break;
 
       case "previewFeatures":
-        if (!Previews.validateFeature(optionValue)) {
+        if (!previewFeatures.has(optionValue)) {
           this.#onDiagnostic(
             Diagnostic.error(
               [

@@ -1,7 +1,7 @@
 import type { StoreService } from "#store";
 import { type OptionBrand, OptionGroup } from "./enums.js";
+import { previewFeatures } from "./OptionDefinitionsMap.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
-import { Previews } from "./Previews.js";
 
 export class OptionUsageText {
   #optionDiagnosticText: OptionDiagnosticText;
@@ -19,7 +19,7 @@ export class OptionUsageText {
 
     switch (optionName) {
       case "previewFeatures": {
-        const supportedPreviewFeatures = Previews.getSupportedFeatures();
+        const supportedPreviewFeatures = [...previewFeatures.values()];
         const supportedPreviewFeaturesText = `Supported preview features: ${
           ["'", supportedPreviewFeatures.join("', '"), "'"].join("")
         }.`;

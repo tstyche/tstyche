@@ -32,6 +32,8 @@ interface ListTypeOptionDefinition extends BaseOptionDefinition {
   items: ItemDefinition;
 }
 
+export const previewFeatures = new Set<string>([]);
+
 export class OptionDefinitionsMap {
   static #definitions: Array<OptionDefinition> = [
     {
