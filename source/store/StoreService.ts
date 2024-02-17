@@ -189,6 +189,6 @@ export class StoreService {
       );
     }
 
-    return this.#manifest.versions.includes(tag) || tag in this.#manifest.resolutions || tag === "current";
+    return tag in this.#manifest.resolutions || this.#manifest.versions.includes(tag);
   }
 }

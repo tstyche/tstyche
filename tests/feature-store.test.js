@@ -112,6 +112,7 @@ describe("store manifest", () => {
     const storeManifest = {
       $version: "1",
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
+      resolutions: {},
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
@@ -136,6 +137,7 @@ describe("store manifest", () => {
     const storeManifest = {
       $version: "1",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+      resolutions: {},
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
