@@ -9,6 +9,10 @@ export interface ConfigFileOptions {
      */
     failFast?: boolean;
     /**
+     * The list of the preview features to enable.
+     */
+    previewFeatures?: Array<string>;
+    /**
      * The path to a directory containing files of a test project.
      */
     rootPath?: string;

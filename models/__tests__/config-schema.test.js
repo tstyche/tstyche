@@ -43,6 +43,10 @@ describe("config-schema.json", () => {
         testCase: "'rootPath' option",
       },
       {
+        fixtureFileName: "valid-previewFeatures.json",
+        testCase: "'previewFeatures' option",
+      },
+      {
         fixtureFileName: "valid-target.json",
         testCase: "'target' option",
       },
@@ -63,6 +67,18 @@ describe("config-schema.json", () => {
       {
         fixtureFileName: "invalid-failFast.json",
         testCase: "value of 'failFast' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-previewFeatures-1.json",
+        testCase: "item of 'previewFeatures' option must be of type string",
+      },
+      {
+        fixtureFileName: "invalid-previewFeatures-3.json",
+        testCase: "items of 'previewFeatures' option must NOT be identical",
+      },
+      {
+        fixtureFileName: "invalid-previewFeatures-4.json",
+        testCase: "value of 'previewFeatures' option must be of type Array",
       },
       {
         fixtureFileName: "invalid-rootPath.json",

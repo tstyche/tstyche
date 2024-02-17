@@ -4,6 +4,7 @@ import type { StoreService } from "#store";
 import type { OptionBrand, OptionGroup } from "./enums.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
+import { Previews } from "./Previews.js";
 
 export class OptionValidator {
   #onDiagnostic: (diagnostic: Diagnostic) => void;
@@ -35,6 +36,21 @@ export class OptionValidator {
 
           this.#onDiagnostic(Diagnostic.error(text, origin));
         }
+        break;
+
+      case "previewFeatures":
+        if (!Previews.validateFeature(optionValue)) {
+          this.#onDiagnostic(
+            Diagnostic.error(
+              [
+                this.#optionDiagnosticText.previewFeatureIsNotSupported(optionValue),
+                ...(await this.#optionUsageText.get(optionName, optionBrand)),
+              ],
+              origin,
+            ),
+          );
+        }
+
         break;
 
       case "target":

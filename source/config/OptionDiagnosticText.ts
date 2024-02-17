@@ -35,6 +35,10 @@ export class OptionDiagnosticText {
     }
   }
 
+  previewFeatureIsNotSupported(value: string): string {
+    return `Preview feature '${value}' is not supported.`;
+  }
+
   requiresArgumentType(optionName: string, optionBrand: OptionBrand): string {
     optionName = this.#optionName(optionName);
 

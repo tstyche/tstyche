@@ -6,6 +6,14 @@
       "description": "Stop running tests after the first failed assertion.",
       "type": "boolean"
     },
+    "previewFeatures": {
+      "description": "The list of the preview features to enable.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
     "rootPath": {
       "default": "./",
       "description": "The path to a directory containing files of a test project.",

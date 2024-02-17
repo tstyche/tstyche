@@ -1,6 +1,7 @@
 import type { StoreService } from "#store";
 import { type OptionBrand, OptionGroup } from "./enums.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
+import { Previews } from "./Previews.js";
 
 export class OptionUsageText {
   #optionDiagnosticText: OptionDiagnosticText;
@@ -17,6 +18,20 @@ export class OptionUsageText {
     const usageText: Array<string> = [];
 
     switch (optionName) {
+      case "previewFeatures": {
+        const supportedPreviewFeatures = Previews.getSupportedFeatures();
+        const supportedPreviewFeaturesText = `Supported preview features: ${
+          ["'", supportedPreviewFeatures.join("', '"), "'"].join("")
+        }.`;
+
+        usageText.push(
+          "Item of the 'previewFeatures' list must be a name of a supported preview feature.",
+          supportedPreviewFeaturesText,
+        );
+
+        break;
+      }
+
       case "target": {
         const supportedTags = await this.#storeService.getSupportedTags();
         const supportedTagsText = `Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`;

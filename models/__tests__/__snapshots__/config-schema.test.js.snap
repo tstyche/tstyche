@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`config-schema.json invalid item of 'previewFeatures' option must be of type string 1`] = `
+[
+  {
+    "instancePath": "/previewFeatures/1",
+    "keyword": "type",
+    "message": "must be string",
+    "params": {
+      "type": "string",
+    },
+    "schemaPath": "#/properties/previewFeatures/items/type",
+  },
+]
+`;
+
 exports[`config-schema.json invalid item of 'target' option must be of type string 1`] = `
 [
   {
@@ -38,6 +52,21 @@ exports[`config-schema.json invalid item of 'testFileMatch' option must be of ty
       "type": "string",
     },
     "schemaPath": "#/properties/testFileMatch/items/type",
+  },
+]
+`;
+
+exports[`config-schema.json invalid items of 'previewFeatures' option must NOT be identical 1`] = `
+[
+  {
+    "instancePath": "/previewFeatures",
+    "keyword": "uniqueItems",
+    "message": "must NOT have duplicate items (items ## 1 and 0 are identical)",
+    "params": {
+      "i": 0,
+      "j": 1,
+    },
+    "schemaPath": "#/properties/previewFeatures/uniqueItems",
   },
 ]
 `;
@@ -82,6 +111,20 @@ exports[`config-schema.json invalid value of 'failFast' option must be of type b
       "type": "boolean",
     },
     "schemaPath": "#/properties/failFast/type",
+  },
+]
+`;
+
+exports[`config-schema.json invalid value of 'previewFeatures' option must be of type Array 1`] = `
+[
+  {
+    "instancePath": "/previewFeatures",
+    "keyword": "type",
+    "message": "must be array",
+    "params": {
+      "type": "array",
+    },
+    "schemaPath": "#/properties/previewFeatures/type",
   },
 ]
 `;

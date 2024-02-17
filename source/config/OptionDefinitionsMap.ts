@@ -77,6 +77,17 @@ export class OptionDefinitionsMap {
     },
 
     {
+      brand: OptionBrand.List,
+      description: "The list of the preview features to enable.",
+      group: OptionGroup.ConfigFile,
+      items: {
+        brand: OptionBrand.String,
+        name: "previewFeatures",
+      },
+      name: "previewFeatures",
+    },
+
+    {
       brand: OptionBrand.True,
       description: "Remove all installed versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
