@@ -35,7 +35,7 @@ describe("'--target' command line option", () => {
     expect(exitCode).toBe(1);
   });
 
-  test("when not supported version is requested", async () => {
+  test("when not supported version is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -55,7 +55,7 @@ describe("'--target' command line option", () => {
     expect(exitCode).toBe(1);
   });
 
-  test("when 'current' is requested, but TypeScript is not installed", async () => {
+  test("when 'current' is specified, but TypeScript is not installed", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -115,7 +115,7 @@ describe("'target' configuration file option", () => {
     expect(exitCode).toBe(1);
   });
 
-  test("when not supported version is requested", async () => {
+  test("when not supported version is specified", async () => {
     const config = {
       target: ["new"],
     };
@@ -140,7 +140,7 @@ describe("'target' configuration file option", () => {
     expect(exitCode).toBe(1);
   });
 
-  test("when 'current' is requested, but TypeScript is not installed", async () => {
+  test("when 'current' is specified, but TypeScript is not installed", async () => {
     const config = {
       target: ["current"],
     };
