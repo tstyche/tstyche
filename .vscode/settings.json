@@ -11,6 +11,7 @@
     "cspell.config.json": "jsonc",
     "dprint.json": "jsonc",
     "eslint.config.json": "jsonc",
+    "mocha.config.json": "jsonc",
     "tstyche.config.json": "jsonc"
   },
   "typescript.preferences.importModuleSpecifierEnding": "js",

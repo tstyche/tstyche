@@ -1,10 +1,8 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
-import ansiEscapesSerializer from "jest-serializer-ansi-escapes";
+import prettyAnsi from "pretty-ansi";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
-
-expect.addSnapshotSerializer(ansiEscapesSerializer);
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -56,7 +54,7 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       env: { ["TSTYCHE_NO_COLOR"]: "" },
     });
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(prettyAnsi(normalizeOutput(stdout))).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
@@ -92,7 +90,7 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       },
     });
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(prettyAnsi(normalizeOutput(stdout))).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
@@ -110,7 +108,7 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       },
     });
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
+    expect(prettyAnsi(normalizeOutput(stdout))).toMatchSnapshot("stdout");
     expect(stderr).toBe("");
 
     expect(exitCode).toBe(0);
