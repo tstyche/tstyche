@@ -1,9 +1,10 @@
-import { describe, expect, test } from "@jest/globals";
-import { Version } from "../Version.js";
+import { expect } from "chai";
+import { describe, test } from "mocha";
+import { Version } from "tstyche/tstyche";
 
-describe("Version", () => {
-  describe("'isVersionTag' method", () => {
-    test.each([
+describe("Version", function() {
+  describe("'isVersionTag' method", function() {
+    const cases = [
       {
         expected: true,
         target: "6",
@@ -50,15 +51,19 @@ describe("Version", () => {
         target: "rc",
         testCase: "when target is 'rc'",
       },
-    ])("$testCase", ({ expected, target }) => {
-      const result = Version.isVersionTag(target);
+    ];
 
-      expect(result).toBe(expected);
+    cases.forEach(({ expected, target, testCase }) => {
+      test(testCase, function() {
+        const result = Version.isVersionTag(target);
+
+        expect(result).to.equal(expected);
+      });
     });
   });
 
-  describe("'isGreaterThan' method", () => {
-    test.each([
+  describe("'isGreaterThan' method", function() {
+    const cases = [
       {
         expected: true,
         source: "5.3",
@@ -157,15 +162,19 @@ describe("Version", () => {
         target: "5.4.0-dev.20231231",
         testCase: "when source is provided in 'x.y.z-dev' form and target newer 'dev' release",
       },
-    ])("$testCase", ({ expected, source, target }) => {
-      const result = Version.isGreaterThan(source, target);
+    ];
 
-      expect(result).toBe(expected);
+    cases.forEach(({ expected, source, target, testCase }) => {
+      test(testCase, function() {
+        const result = Version.isGreaterThan(source, target);
+
+        expect(result).to.equal(expected);
+      });
     });
   });
 
-  describe("'isSatisfiedWith' method", () => {
-    test.each([
+  describe("'isSatisfiedWith' method", function() {
+    const cases = [
       {
         expected: true,
         source: "5.3.2",
@@ -264,10 +273,14 @@ describe("Version", () => {
         target: "5.4.0-dev.20231207",
         testCase: "when target is provided in 'x.y.z-dev' form and source newer 'dev' release",
       },
-    ])("$testCase", ({ expected, source, target }) => {
-      const result = Version.isSatisfiedWith(source, target);
+    ];
 
-      expect(result).toBe(expected);
+    cases.forEach(({ expected, source, target, testCase }) => {
+      test(testCase, function() {
+        const result = Version.isSatisfiedWith(source, target);
+
+        expect(result).to.equal(expected);
+      });
     });
   });
 });
