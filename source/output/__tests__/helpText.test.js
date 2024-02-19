@@ -4,7 +4,7 @@ import prettyAnsi from "pretty-ansi";
 import { helpText, OptionBrand, Scribbler } from "tstyche/tstyche";
 
 /**
- * @type {Map<string, any>}
+ * @type {Map<string, import("tstyche/tstyche").OptionDefinition>}
  */
 const sampleCommandLineOptionDefinitions = new Map([
   [
@@ -68,7 +68,6 @@ const scribbler = new Scribbler();
 
 describe("helpText", () => {
   test("formats help text", () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const text = scribbler.render(helpText(sampleCommandLineOptionDefinitions, sampleVersion));
 
     expect(prettyAnsi(text)).to.equal([
