@@ -5685,10 +5685,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-ansi@npm:1.0.0":
-  version: 1.0.0
-  resolution: "pretty-ansi@npm:1.0.0"
-  checksum: a2ce7a834c5e3945ed1c39aa347679602de5e09ac21af486504a0be81e2b1168825281805ff58fcf36e4ea99e708ae72a4e9e0cfb295278b15617d02a90e2e27
+"pretty-ansi@npm:2.0.0":
+  version: 2.0.0
+  resolution: "pretty-ansi@npm:2.0.0"
+  checksum: 782fb6111a3acb3a1a52859e702852075cf63249854fbf5ddb23b1a12f35447f77d3ed432acae8c4f32ce6cc5e4e66e79aaafd457a707d5ae260c82b2acf9e5f
   languageName: node
   linkType: hard
 
@@ -6478,7 +6478,7 @@ __metadata:
     jest: 29.7.0
     magic-string: 0.30.7
     mocha: 10.3.0
-    pretty-ansi: 1.0.0
+    pretty-ansi: 2.0.0
     rollup: 4.12.0
     rollup-plugin-dts: 6.1.0
     tslib: 2.6.2
