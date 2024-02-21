@@ -1,0 +1,4 @@
+{
+  "$schema": "../../config-schema.json",
+  "previewFeatures": ["toBeCallableWith", "toBeConstructableWith"]
+}

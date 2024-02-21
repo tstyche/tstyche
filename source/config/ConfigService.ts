@@ -23,6 +23,7 @@ export class ConfigService {
 
   static #defaultOptions: Required<ConfigFileOptions> = {
     failFast: false,
+    previewFeatures: [],
     rootPath: Path.resolve("./"),
     target: [Environment.typescriptPath == null ? "latest" : "current"],
     testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],

@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import type { StoreService } from "#store";
 import type { OptionBrand, OptionGroup } from "./enums.js";
+import { previewFeatures } from "./OptionDefinitionsMap.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 
@@ -35,6 +36,21 @@ export class OptionValidator {
 
           this.#onDiagnostic(Diagnostic.error(text, origin));
         }
+        break;
+
+      case "previewFeatures":
+        if (!previewFeatures.has(optionValue)) {
+          this.#onDiagnostic(
+            Diagnostic.error(
+              [
+                this.#optionDiagnosticText.previewFeatureIsNotSupported(optionValue),
+                ...(await this.#optionUsageText.get(optionName, optionBrand)),
+              ],
+              origin,
+            ),
+          );
+        }
+
         break;
 
       case "target":

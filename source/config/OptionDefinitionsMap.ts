@@ -32,6 +32,8 @@ interface ListTypeOptionDefinition extends BaseOptionDefinition {
   items: ItemDefinition;
 }
 
+export const previewFeatures = new Set<string>([]);
+
 export class OptionDefinitionsMap {
   static #definitions: Array<OptionDefinition> = [
     {
@@ -74,6 +76,17 @@ export class OptionDefinitionsMap {
       description: "Only run tests with matching name.",
       group: OptionGroup.CommandLine,
       name: "only",
+    },
+
+    {
+      brand: OptionBrand.List,
+      description: "The list of the preview features to enable.",
+      group: OptionGroup.ConfigFile,
+      items: {
+        brand: OptionBrand.String,
+        name: "previewFeatures",
+      },
+      name: "previewFeatures",
     },
 
     {
