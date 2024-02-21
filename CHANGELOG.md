@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.0] - 2024-02-20
+
+_Stable release based on [1.0.0-rc.2]._
+
 ## [1.0.0-rc.2] - 2024-02-14
 
 ### Fixed
@@ -136,6 +140,7 @@
 
 _First pre-release._
 
+[1.0.0]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0
 [1.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.2
 [1.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.1
 [1.0.0-rc]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc

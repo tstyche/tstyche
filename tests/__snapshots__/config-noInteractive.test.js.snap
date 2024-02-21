@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`'TSTYCHE_NO_INTERACTIVE' environment variable when falsy, interactive elements  are enabled: stdout 1`] = `
+exports[`'TSTYCHE_NO_INTERACTIVE' environment variable when falsy, interactive elements are enabled: stdout 1`] = `
 "uses TypeScript <<version>>
 
 runs ./__typetests__/dummy.test.ts
