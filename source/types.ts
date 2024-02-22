@@ -79,47 +79,47 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the `bigint` type is identical to the source type.
+   * Checks if the source type is `bigint`.
    */
   toBeBigInt: () => void;
   /**
-   * Checks if the `boolean` type is identical to the source type.
+   * Checks if the source type is `boolean`.
    */
   toBeBoolean: () => void;
   /**
-   * Checks if the `never` type is identical to the source type.
+   * Checks if the source type is `never`.
    */
   toBeNever: () => void;
   /**
-   * Checks if the `null` type is identical to the source type.
+   * Checks if the source type is `null`.
    */
   toBeNull: () => void;
   /**
-   * Checks if the `number` type is identical to the source type.
+   * Checks if the source type is `number`.
    */
   toBeNumber: () => void;
   /**
-   * Checks if the `string` type is identical to the source type.
+   * Checks if the source type is `string`.
    */
   toBeString: () => void;
   /**
-   * Checks if the `symbol` type is identical to the source type.
+   * Checks if the source type is `symbol`.
    */
   toBeSymbol: () => void;
   /**
-   * Checks if the `undefined` type is identical to the source type.
+   * Checks if the source type is `undefined`.
    */
   toBeUndefined: () => void;
   /**
-   * Checks if the `unique symbol` type is identical to the source type.
+   * Checks if the source type is `unique symbol`.
    */
   toBeUniqueSymbol: () => void;
   /**
-   * Checks if the `unknown` type is identical to the source type.
+   * Checks if the source type is `unknown`.
    */
   toBeUnknown: () => void;
   /**
-   * Checks if the `void` type is identical to the source type.
+   * Checks if the source type is `void`.
    */
   toBeVoid: () => void;
   /**
