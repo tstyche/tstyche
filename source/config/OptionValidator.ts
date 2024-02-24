@@ -38,7 +38,7 @@ export class OptionValidator {
         break;
 
       case "target":
-        if (!(await this.#storeService.validateTag(optionValue))) {
+        if (await this.#storeService.validateTag(optionValue) === false) {
           this.#onDiagnostic(
             Diagnostic.error(
               [

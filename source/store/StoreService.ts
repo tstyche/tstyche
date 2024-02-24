@@ -172,7 +172,7 @@ export class StoreService {
     await this.open(signal);
 
     if (!this.#manifest) {
-      return false;
+      return undefined;
     }
 
     if (
