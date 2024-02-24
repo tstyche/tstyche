@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, test } from "@jest/globals";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -19,7 +20,7 @@ test("when fetching of metadata from the registry times out", async () => {
     ["__typetests__/dummy.test.ts"]: isStringTestText,
   });
 
-  const { stderr } = await spawnTyche(fixtureUrl, ["--showConfig", "--target", "5.1"], {
+  const { stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
     env: {
       ["TSTYCHE_TIMEOUT"]: "0.01",
     },
@@ -28,8 +29,31 @@ test("when fetching of metadata from the registry times out", async () => {
   expect(stderr).toMatch(
     [
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org/'.",
+      "",
       "Setup timeout of 0.01s was exceeded.",
-    ].join("\n\n"),
+    ].join("\n"),
+  );
+});
+
+test("when installing 'typescript' times out", async () => {
+  await writeFixture(fixtureUrl, {
+    ["__typetests__/dummy.test.ts"]: isStringTestText,
+  });
+
+  await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+
+  const { stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
+    env: {
+      ["TSTYCHE_TIMEOUT"]: "0.01",
+    },
+  });
+
+  expect(normalizeOutput(stderr)).toMatch(
+    [
+      "Error: Failed to install 'typescript@5.1.6'.",
+      "",
+      "Error: setup timeout of 0.01s was exceeded",
+    ].join("\n"),
   );
 });
 
