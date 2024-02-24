@@ -46,8 +46,6 @@ export class PackageInstaller {
     try {
       await fs.mkdir(installationPath, { recursive: true });
 
-        const lock = new Lock(installationPath);
-
       const packageJson = {
         /* eslint-disable sort-keys */
         name: "tstyche-typescript",
