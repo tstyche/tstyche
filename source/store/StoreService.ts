@@ -164,7 +164,7 @@ export class StoreService {
     await this.#manifestWorker.open(signal, { refresh: true });
   }
 
-  async validateTag(tag: string, signal?: AbortSignal): Promise<boolean> {
+  async validateTag(tag: string, signal?: AbortSignal): Promise<boolean | undefined> {
     if (tag === "current") {
       return Environment.typescriptPath != null;
     }
@@ -172,7 +172,7 @@ export class StoreService {
     await this.open(signal);
 
     if (!this.#manifest) {
-      return false;
+      return undefined;
     }
 
     if (
