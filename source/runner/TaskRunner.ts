@@ -2,6 +2,7 @@ import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { Result, ResultManager, TargetResult } from "#result";
 import type { StoreService } from "#store";
+import type { CancellationToken } from "#token";
 import { TestFileRunner } from "./TestFileRunner.js";
 
 export class TaskRunner {
@@ -21,7 +22,7 @@ export class TaskRunner {
     });
   }
 
-  async run(testFiles: Array<URL>, target: Array<string>, signal?: AbortSignal): Promise<Result> {
+  async run(testFiles: Array<URL>, target: Array<string>, cancellationToken?: CancellationToken): Promise<Result> {
     const result = new Result(this.resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["start", { result }]);
@@ -31,13 +32,13 @@ export class TaskRunner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await this.#storeService.load(versionTag, signal);
+      const compiler = await this.#storeService.load(versionTag, cancellationToken);
 
       if (compiler) {
         const testFileRunner = new TestFileRunner(this.resolvedConfig, compiler);
 
         for (const testFile of testFiles) {
-          testFileRunner.run(testFile, signal);
+          testFileRunner.run(testFile, cancellationToken);
         }
       }
 
