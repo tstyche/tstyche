@@ -52,11 +52,11 @@
     "prepublish": "yarn test",
     "test": "yarn test:unit && yarn test:schema && yarn test:e2e",
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
-    "test:e2e": "mocha tests/__new__/* --config mocha.config.json",
+    "test:e2e": "mocha tests/__new__/*.js --config mocha.config.json",
     "test:examples": "tstyche examples",
     "test:types": "tstyche tests",
-    "test:schema": "mocha models/__tests__/* --config mocha.config.json",
-    "test:unit": "mocha source/*/__tests__/* --config mocha.config.json"
+    "test:schema": "mocha models/__tests__/*.js --config mocha.config.json",
+    "test:unit": "mocha source/*/__tests__/*.js --config mocha.config.json"
   },
   "devDependencies": {
     "@jest/globals": "29.7.0",
