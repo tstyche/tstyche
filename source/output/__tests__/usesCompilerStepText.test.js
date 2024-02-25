@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+import { strict as assert } from "node:assert";
 import path from "node:path";
 import { describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
