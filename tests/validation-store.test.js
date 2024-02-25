@@ -22,7 +22,7 @@ test("when fetching of metadata from the registry times out", async () => {
 
   const { stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
     env: {
-      ["TSTYCHE_TIMEOUT"]: "0.01",
+      ["TSTYCHE_TIMEOUT"]: "0.001",
     },
   });
 
@@ -30,7 +30,7 @@ test("when fetching of metadata from the registry times out", async () => {
     [
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org/'.",
       "",
-      "Setup timeout of 0.01s was exceeded.",
+      "Setup timeout of 0.001s was exceeded.",
     ].join("\n"),
   );
 });
@@ -44,7 +44,7 @@ test("when installing 'typescript' times out", async () => {
 
   const { stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
     env: {
-      ["TSTYCHE_TIMEOUT"]: "0.01",
+      ["TSTYCHE_TIMEOUT"]: "0.001",
     },
   });
 
@@ -52,7 +52,7 @@ test("when installing 'typescript' times out", async () => {
     [
       "Error: Failed to install 'typescript@5.1.6'.",
       "",
-      "Error: setup timeout of 0.01s was exceeded",
+      "Error: setup timeout of 0.001s was exceeded",
     ].join("\n"),
   );
 });
