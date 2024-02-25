@@ -43,6 +43,7 @@ jobs:
           node-version: lts/*
       - uses: actions/download-artifact@v4
         with:
+          name: build-${{ github.sha }}
           path: build/
       - run: corepack enable
       - run: yarn install
