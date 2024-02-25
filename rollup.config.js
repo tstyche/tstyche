@@ -1,8 +1,12 @@
+import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
 import path from "node:path";
+import process from "node:process";
 import typescript from "@rollup/plugin-typescript";
 import MagicString from "magic-string";
 import dts from "rollup-plugin-dts";
+
+assert.match(process.versions.node, /^20/, "This library must be build using Node.js LTS version.");
 
 const output = {
   dir: "./build",
