@@ -66,7 +66,7 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - run: yarn test:e2e
+      - run: yarn test
         env:
           FORCE_COLOR: true
 
