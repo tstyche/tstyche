@@ -23,7 +23,6 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: corepack enable
       - run: yarn install
       - run: yarn build
       - run: yarn check:spelling
@@ -40,7 +39,6 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: corepack enable
       - run: yarn install
       - run: yarn build
       - run: yarn test:types --target 4.7,5.0,current
@@ -63,7 +61,6 @@ jobs:
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: corepack enable
       - run: yarn install
       - run: yarn build
       - run: yarn test
@@ -86,7 +83,6 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: corepack enable
       - run: yarn install
       - run: yarn build
       - run: yarn test
@@ -105,7 +101,6 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: latest
-      - run: corepack enable
       - run: yarn install
       - run: yarn test:coverage
         env:
