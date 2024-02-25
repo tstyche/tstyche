@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { describe, test } from "mocha";
 import { Version } from "tstyche/tstyche";
 
@@ -57,7 +57,7 @@ describe("Version", function() {
       test(testCase, function() {
         const result = Version.isVersionTag(target);
 
-        expect(result).to.equal(expected);
+        assert.equal(result, expected);
       });
     });
   });
@@ -168,7 +168,7 @@ describe("Version", function() {
       test(testCase, function() {
         const result = Version.isGreaterThan(source, target);
 
-        expect(result).to.equal(expected);
+        assert.equal(result, expected);
       });
     });
   });
@@ -279,7 +279,7 @@ describe("Version", function() {
       test(testCase, function() {
         const result = Version.isSatisfiedWith(source, target);
 
-        expect(result).to.equal(expected);
+        assert.equal(result, expected);
       });
     });
   });
