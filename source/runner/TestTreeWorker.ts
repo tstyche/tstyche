@@ -5,21 +5,22 @@ import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { Expect } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
+import type { CancellationToken } from "#token";
 import { RunMode } from "./enums.js";
 
 interface TestFileWorkerOptions {
+  cancellationToken: CancellationToken | undefined;
   fileResult: FileResult;
   hasOnly: boolean;
   position: number | undefined;
-  signal: AbortSignal | undefined;
 }
 
 export class TestTreeWorker {
+  #cancellationToken: CancellationToken | undefined;
   #expect: Expect;
   #fileResult: FileResult;
   #hasOnly: boolean;
   #position: number | undefined;
-  #signal: AbortSignal | undefined;
 
   constructor(
     readonly resolvedConfig: ResolvedConfig,
@@ -27,11 +28,11 @@ export class TestTreeWorker {
     expect: Expect,
     options: TestFileWorkerOptions,
   ) {
+    this.#cancellationToken = options.cancellationToken;
     this.#expect = expect;
     this.#fileResult = options.fileResult;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
-    this.#signal = options.signal;
   }
 
   #resolveRunMode(mode: RunMode, member: TestMember): RunMode {
@@ -69,7 +70,7 @@ export class TestTreeWorker {
     parentResult: DescribeResult | TestResult | undefined,
   ): void {
     for (const member of members) {
-      if (this.#signal?.aborted === true) {
+      if (this.#cancellationToken?.isCancellationRequested === true) {
         break;
       }
 

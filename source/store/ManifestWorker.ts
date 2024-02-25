@@ -36,8 +36,8 @@ export class ManifestWorker {
     this.#prune = prune;
   }
 
-  async #create(signal?: AbortSignal) {
-    const manifest = await this.#load(signal);
+  async #create() {
+    const manifest = await this.#load();
 
     if (manifest != null) {
       await this.persist(manifest);
@@ -46,48 +46,47 @@ export class ManifestWorker {
     return manifest;
   }
 
-  async #fetch(signal?: AbortSignal) {
+  async #fetch() {
     return new Promise<PackageMetadata>((resolve, reject) => {
       const request = https.get(
         new URL("typescript", this.#registryUrl),
         {
           // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
           headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
-          signal,
+          timeout: this.#timeout,
         },
-        (result) => {
-          if (result.statusCode !== 200) {
-            reject(new Error(`Request failed with status code ${String(result.statusCode)}.`));
+        (response) => {
+          if (response.statusCode !== 200) {
+            reject(new Error(`Request failed with status code ${String(response.statusCode)}.`));
 
             // consume response data to free up memory
-            result.resume();
+            response.resume();
 
             return;
           }
 
-          result.setEncoding("utf8");
+          response.setEncoding("utf8");
 
           let rawData = "";
 
-          result.on("data", (chunk) => {
+          response.on("data", (chunk) => {
             rawData += chunk;
           });
 
-          result.on("end", () => {
-            try {
-              const packageMetadata = JSON.parse(rawData) as PackageMetadata;
-              resolve(packageMetadata);
-            } catch (error) {
-              // TODO consider adding rejection reason
-              // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-              reject(error);
-            }
+          response.on("end", () => {
+            const packageMetadata = JSON.parse(rawData) as PackageMetadata;
+
+            resolve(packageMetadata);
           });
         },
       );
 
       request.on("error", (error) => {
         reject(error);
+      });
+
+      request.on("timeout", () => {
+        request.destroy();
       });
     });
   }
@@ -100,7 +99,7 @@ export class ManifestWorker {
     return false;
   }
 
-  async #load(signal?: AbortSignal, options: { quite: boolean } = { quite: false }) {
+  async #load(options?: { quite?: boolean }) {
     const manifest: Manifest = {
       $version: this.#version,
       lastUpdated: Date.now(),
@@ -110,41 +109,23 @@ export class ManifestWorker {
 
     let packageMetadata: PackageMetadata | undefined;
 
-    // TODO use 'AbortSignal.any()' after dropping support for Node.js 18
-    const abortController = new AbortController();
-
-    const timeoutSignal = AbortSignal.timeout(this.#timeout);
-    timeoutSignal.addEventListener(
-      "abort",
-      () => {
-        abortController.abort(`Setup timeout of ${this.#timeout / 1000}s was exceeded.`);
-      },
-      { once: true },
-    );
-
-    signal?.addEventListener(
-      "abort",
-      () => {
-        abortController.abort("Fetch got canceled by request.");
-      },
-      { once: true },
-    );
-
     try {
-      packageMetadata = await this.#fetch(abortController.signal);
+      packageMetadata = await this.#fetch();
     } catch (error) {
-      if (!options.quite) {
-        const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.toString()}'.`];
-
-        if (error instanceof Error && error.name !== "AbortError") {
-          text.push("Might be there is an issue with the registry or the network connection.");
-        }
-
-        this.#onDiagnostic(Diagnostic.fromError(text, error));
+      if (options?.quite === true) {
+        return;
       }
-    }
 
-    if (!packageMetadata) {
+      const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.toString()}'.`];
+
+      if (error instanceof Error && "code" in error && error.code === "ECONNRESET") {
+        text.push(`Setup timeout of ${this.#timeout / 1000}s was exceeded.`);
+      } else {
+        text.push("Might be there is an issue with the registry or the network connection.");
+      }
+
+      this.#onDiagnostic(Diagnostic.fromError(text, error));
+
       return;
     }
 
@@ -174,11 +155,11 @@ export class ManifestWorker {
     return manifest;
   }
 
-  async open(signal?: AbortSignal, options?: { refresh?: boolean }): Promise<Manifest | undefined> {
+  async open(options?: { refresh?: boolean }): Promise<Manifest | undefined> {
     let manifest: Manifest | undefined;
 
     if (!existsSync(this.#manifestFilePath)) {
-      return this.#create(signal);
+      return this.#create();
     }
 
     let manifestText: string | undefined;
@@ -202,13 +183,13 @@ export class ManifestWorker {
     if (manifest == null || manifest.$version !== this.#version) {
       await this.#prune();
 
-      return this.#create(signal);
+      return this.#create();
     }
 
     if (this.isOutdated(manifest) || options?.refresh === true) {
       const quite = options?.refresh !== true;
 
-      const freshManifest = await this.#load(signal, { quite });
+      const freshManifest = await this.#load({ quite });
 
       if (freshManifest != null) {
         await this.persist(freshManifest);

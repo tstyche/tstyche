@@ -78,7 +78,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macOS-latest]
+        os: [macOS-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:

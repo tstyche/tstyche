@@ -5,6 +5,7 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
+import type { CancellationToken } from "#token";
 import { Lock } from "./Lock.js";
 
 export class PackageInstaller {
@@ -18,7 +19,7 @@ export class PackageInstaller {
     this.#onDiagnostic = onDiagnostic;
   }
 
-  async ensure(compilerVersion: string, signal?: AbortSignal): Promise<string | undefined> {
+  async ensure(compilerVersion: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
     const installationPath = Path.join(this.#storePath, compilerVersion);
     const readyFilePath = Path.join(installationPath, this.#readyFileName);
     const modulePath = Path.join(installationPath, "node_modules", "typescript", "lib", "typescript.js");
@@ -29,10 +30,10 @@ export class PackageInstaller {
 
     if (
       await Lock.isLocked(installationPath, {
+        cancellationToken,
         onDiagnostic: (text) => {
           this.#onDiagnostic(Diagnostic.error([`Failed to install 'typescript@${compilerVersion}'.`, text]));
         },
-        signal,
         timeout: this.#timeout,
       })
     ) {
@@ -60,7 +61,7 @@ export class PackageInstaller {
       };
 
       await fs.writeFile(Path.join(installationPath, "package.json"), JSON.stringify(packageJson, null, 2));
-      await this.#install(installationPath, signal);
+      await this.#install(installationPath);
 
       await fs.writeFile(readyFilePath, "");
 
@@ -74,14 +75,13 @@ export class PackageInstaller {
     return;
   }
 
-  async #install(cwd: string, signal?: AbortSignal) {
+  async #install(cwd: string) {
     const args = ["install", "--ignore-scripts", "--no-bin-links", "--no-package-lock"];
 
     return new Promise<void>((resolve, reject) => {
       const spawnedNpm = spawn("npm", args, {
         cwd,
         shell: true,
-        signal,
         stdio: "ignore",
         timeout: this.#timeout,
       });

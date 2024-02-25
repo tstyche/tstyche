@@ -60,21 +60,16 @@ export class Diagnostic {
   static fromError(text: string | Array<string>, error: unknown): Diagnostic {
     const messageText = Array.isArray(text) ? text : [text];
 
-    if (error instanceof Error) {
-      if (error.cause != null) {
-        messageText.push(this.#normalizeMessage(String(error.cause)));
+    if (error instanceof Error && error.stack != null) {
+      if (messageText.length > 1) {
+        messageText.push("");
       }
 
-      messageText.push(this.#normalizeMessage(String(error.message)));
+      const stackLines = error.stack
+        .split("\n")
+        .map((line) => line.trimStart());
 
-      if (error.stack != null) {
-        const stackLines = error.stack
-          .split("\n")
-          .slice(1)
-          .map((line) => line.trimStart());
-
-        messageText.push(...stackLines);
-      }
+      messageText.push(...stackLines);
     }
 
     return Diagnostic.error(messageText);
@@ -82,14 +77,6 @@ export class Diagnostic {
 
   static isTsDiagnosticWithLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticWithLocation {
     return diagnostic.file != null && diagnostic.start != null && diagnostic.length != null;
-  }
-
-  static #normalizeMessage(text: string) {
-    if (text.endsWith(".")) {
-      return text;
-    }
-
-    return `${text}.`;
   }
 
   static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {

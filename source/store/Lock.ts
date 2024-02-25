@@ -1,9 +1,10 @@
 import { existsSync, rmSync, writeFileSync } from "node:fs";
 import process from "node:process";
+import type { CancellationToken } from "#token";
 
 export interface IsLockedOptions {
+  cancellationToken?: CancellationToken | undefined;
   onDiagnostic?: (diagnostic: string) => void;
-  signal?: AbortSignal | undefined;
   timeout?: number;
 }
 
@@ -39,7 +40,7 @@ export class Lock {
     const waitStartTime = Date.now();
 
     while (isLocked) {
-      if (options.signal?.aborted === true) {
+      if (options.cancellationToken?.isCancellationRequested === true) {
         break;
       }
 

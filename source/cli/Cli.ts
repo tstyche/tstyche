@@ -7,8 +7,10 @@ import { EventEmitter, type EventHandler } from "#events";
 import { Logger } from "#logger";
 import { addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
 import { StoreService } from "#store";
+import { CancellationToken } from "#token";
 
 export class Cli {
+  #cancellationToken = new CancellationToken();
   #logger: Logger;
   #storeService: StoreService;
 
@@ -28,9 +30,10 @@ export class Cli {
         for (const diagnostic of payload.diagnostics) {
           switch (diagnostic.category) {
             case DiagnosticCategory.Error:
-              process.exitCode = 1;
-
+              this.#cancellationToken.cancel();
               this.#logger.writeError(diagnosticText(diagnostic));
+
+              process.exitCode = 1;
               break;
 
             case DiagnosticCategory.Warning:
@@ -86,13 +89,14 @@ export class Cli {
 
     await configService.parseCommandLine(commandLineArguments);
 
-    if (process.exitCode === 1) {
+    if (this.#cancellationToken.isCancellationRequested) {
       return;
     }
 
     await configService.readConfigFile();
 
-    if (process.exitCode === 1) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (this.#cancellationToken.isCancellationRequested) {
       return;
     }
 
