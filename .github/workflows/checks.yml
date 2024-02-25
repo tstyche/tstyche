@@ -66,10 +66,6 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - if: ${{ matrix.node-version }} != "16.0"
-        run: yarn test:unit
-        env:
-          FORCE_COLOR: true
       - run: yarn test:e2e
         env:
           FORCE_COLOR: true
@@ -82,7 +78,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macOS-latest]
+        os: [macOS-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
