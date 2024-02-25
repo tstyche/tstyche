@@ -6,6 +6,7 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
+import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
 import { PackageInstaller } from "./PackageInstaller.js";
@@ -24,8 +25,8 @@ export class StoreService {
     this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostic, this.prune);
   }
 
-  async getSupportedTags(signal?: AbortSignal): Promise<Array<string>> {
-    await this.open(signal);
+  async getSupportedTags(): Promise<Array<string>> {
+    await this.open();
 
     if (!this.#manifest) {
       return [];
@@ -34,12 +35,12 @@ export class StoreService {
     return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
   }
 
-  async install(tag: string, signal?: AbortSignal): Promise<string | undefined> {
+  async install(tag: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
     if (tag === "current") {
       return;
     }
 
-    const version = await this.resolveTag(tag, signal);
+    const version = await this.resolveTag(tag);
 
     if (version == null) {
       this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
@@ -47,10 +48,10 @@ export class StoreService {
       return;
     }
 
-    return this.#packageInstaller.ensure(version, signal);
+    return this.#packageInstaller.ensure(version, cancellationToken);
   }
 
-  async load(tag: string, signal?: AbortSignal): Promise<typeof ts | undefined> {
+  async load(tag: string, cancellationToken?: CancellationToken): Promise<typeof ts | undefined> {
     let compilerInstance = this.#compilerInstanceCache.get(tag);
 
     if (compilerInstance != null) {
@@ -62,7 +63,7 @@ export class StoreService {
     if (tag === "current" && Environment.typescriptPath != null) {
       modulePath = Environment.typescriptPath;
     } else {
-      const version = await this.resolveTag(tag, signal);
+      const version = await this.resolveTag(tag);
 
       if (version == null) {
         this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
@@ -76,7 +77,7 @@ export class StoreService {
         return compilerInstance;
       }
 
-      modulePath = await this.#packageInstaller.ensure(version, signal);
+      modulePath = await this.#packageInstaller.ensure(version, cancellationToken);
     }
 
     if (modulePath != null) {
@@ -130,24 +131,24 @@ export class StoreService {
     EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
   };
 
-  async open(signal?: AbortSignal): Promise<void> {
+  async open(): Promise<void> {
     if (this.#manifest) {
       return;
     }
 
-    this.#manifest = await this.#manifestWorker.open(signal);
+    this.#manifest = await this.#manifestWorker.open();
   }
 
   prune = async (): Promise<void> => {
     await fs.rm(this.#storePath, { force: true, recursive: true });
   };
 
-  async resolveTag(tag: string, signal?: AbortSignal): Promise<string | undefined> {
+  async resolveTag(tag: string): Promise<string | undefined> {
     if (tag === "current") {
       return tag;
     }
 
-    await this.open(signal);
+    await this.open();
 
     if (!this.#manifest) {
       return;
@@ -160,16 +161,16 @@ export class StoreService {
     return this.#manifest.resolutions[tag];
   }
 
-  async update(signal?: AbortSignal): Promise<void> {
-    await this.#manifestWorker.open(signal, { refresh: true });
+  async update(): Promise<void> {
+    await this.#manifestWorker.open({ refresh: true });
   }
 
-  async validateTag(tag: string, signal?: AbortSignal): Promise<boolean | undefined> {
+  async validateTag(tag: string): Promise<boolean | undefined> {
     if (tag === "current") {
       return Environment.typescriptPath != null;
     }
 
-    await this.open(signal);
+    await this.open();
 
     if (!this.#manifest) {
       return undefined;

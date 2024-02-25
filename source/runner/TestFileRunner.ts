@@ -7,6 +7,7 @@ import { EventEmitter } from "#events";
 import { Expect } from "#expect";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
+import type { CancellationToken } from "#token";
 import { RunMode } from "./enums.js";
 import { TestTreeWorker } from "./TestTreeWorker.js";
 
@@ -22,8 +23,8 @@ export class TestFileRunner {
     this.#projectService = new ProjectService(compiler);
   }
 
-  run(testFile: URL, signal?: AbortSignal): void {
-    if (signal?.aborted === true) {
+  run(testFile: URL, cancellationToken?: CancellationToken): void {
+    if (cancellationToken?.isCancellationRequested === true) {
       return;
     }
 
@@ -36,14 +37,19 @@ export class TestFileRunner {
 
     EventEmitter.dispatch(["file:start", { result: fileResult }]);
 
-    this.#runFile(testFilePath, fileResult, position, signal);
+    this.#runFile(testFilePath, fileResult, position, cancellationToken);
 
     EventEmitter.dispatch(["file:end", { result: fileResult }]);
 
     this.#projectService.closeFile(testFilePath);
   }
 
-  #runFile(testFilePath: string, fileResult: FileResult, position: number | undefined, signal?: AbortSignal) {
+  #runFile(
+    testFilePath: string,
+    fileResult: FileResult,
+    position: number | undefined,
+    cancellationToken?: CancellationToken,
+  ) {
     const languageService = this.#projectService.getLanguageService(testFilePath);
 
     if (!languageService) {
@@ -105,10 +111,10 @@ export class TestFileRunner {
     const expect = new Expect(this.compiler, typeChecker);
 
     const testTreeWorker = new TestTreeWorker(this.resolvedConfig, this.compiler, expect, {
+      cancellationToken,
       fileResult,
       hasOnly: testTree.hasOnly,
       position,
-      signal,
     });
 
     testTreeWorker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);

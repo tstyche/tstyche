@@ -6,9 +6,10 @@ import { EventEmitter } from "#events";
 import { SummaryReporter, ThoroughReporter } from "#reporters";
 import { TaskRunner } from "#runner";
 import type { StoreService } from "#store";
+import { CancellationToken } from "#token";
 
 export class TSTyche {
-  #abortController = new AbortController();
+  #cancellationToken = new CancellationToken();
   #storeService: StoreService;
   #taskRunner: TaskRunner;
   static readonly version = "__version__";
@@ -32,7 +33,7 @@ export class TSTyche {
           process.exitCode = 1;
 
           if (this.resolvedConfig.failFast) {
-            this.#abortController.abort();
+            this.#cancellationToken.cancel();
           }
         }
       }
@@ -65,7 +66,7 @@ export class TSTyche {
     await this.#taskRunner.run(
       this.#normalizePaths(testFiles),
       this.resolvedConfig.target,
-      this.#abortController.signal,
+      this.#cancellationToken,
     );
   }
 }
