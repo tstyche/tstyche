@@ -1,0 +1,22 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toMatch.tst.ts
+  + difference from '.toBeAssignable()'
+  received type
+    × matches expected type
+    × does NOT match expected type
+    × matches expected value
+    × does NOT match expected value
+  received value
+    × matches expected type
+    × does NOT match expected type
+    × matches expected value
+    × does NOT match expected value
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 1 passed, 9 total
+Assertions: 8 failed, 30 passed, 38 total
+Duration:   <<timestamp>>
+
+Ran all test files.

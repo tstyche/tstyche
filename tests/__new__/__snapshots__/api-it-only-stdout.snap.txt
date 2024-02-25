@@ -1,0 +1,16 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/it-only.tst.ts
+  + is only?
+  - skip is skipped?
+  + is only too?
+  - todo is todo?
+  - skip is skipped too?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 todo, 2 passed, 5 total
+Assertions: 2 skipped, 2 passed, 4 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'only'.

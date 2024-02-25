@@ -1,0 +1,15 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/test-todo.tst.ts
+  - todo is todo?
+  + is string?
+  - todo is todo too?
+  - todo and this one is todo?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      3 todo, 1 passed, 4 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'todo'.

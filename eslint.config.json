@@ -107,11 +107,11 @@
       {
         "devDependencies": [
           "*.js",
-          "**/__scripts__/*",
-          "**/__tests__/*",
-          "**/__typetests__/*",
-          "**/tests/*",
-          "**/typetests/*"
+          "**/__scripts__/**/*",
+          "**/__tests__/**/*",
+          "**/__typetests__/**/*",
+          "**/tests/**/*",
+          "**/typetests/**/*"
         ]
       }
     ],

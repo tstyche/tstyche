@@ -1,0 +1,45 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toHaveProperty.tst.ts
+  when source is a type
+    × has expected string property key
+    × has expected optional string property key
+    × has expected escaped string property key
+    × does NOT have expected string property key
+    × has expected number property key
+    × has expected optional number property key
+    × does NOT have expected number property key
+    × has expected symbol property key
+    × has expected global symbol property key
+    × does NOT have expected symbol property key
+    × has expected numeric enum property key
+    × does NOT have expected numeric enum property key
+    × has expected string enum property key
+    × does NOT have expected string enum property key
+  when source is an enum
+    × has expected property key
+    × does NOT have expected property key
+  when source is an intersection
+    × has expected property key
+    × does NOT have expected property key
+  when source is a value
+    × has expected string property key
+    × has expected escaped string property key
+    × does NOT have expected string property key
+    × has expected number property key
+    × does NOT have expected number property key
+    × has expected symbol property key
+    × has expected global symbol property key
+    × does NOT have expected symbol property key
+    × has expected numeric enum property key
+    × does NOT have expected numeric enum property key
+    × has expected string enum property key
+    × does NOT have expected string enum property key
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      30 failed, 30 total
+Assertions: 30 failed, 31 passed, 61 total
+Duration:   <<timestamp>>
+
+Ran all test files.
