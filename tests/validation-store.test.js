@@ -29,9 +29,8 @@ test("when fetching of metadata from the registry times out", async () => {
   expect(stderr).toMatch(
     [
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org/'.",
-      // TODO add after refactoring 'Diagnostic.fromError()'
-      // "",
-      // "Setup timeout of 0.01s was exceeded.",
+      "",
+      "Setup timeout of 0.01s was exceeded.",
     ].join("\n"),
   );
 });
@@ -52,9 +51,8 @@ test("when installing 'typescript' times out", async () => {
   expect(normalizeOutput(stderr)).toMatch(
     [
       "Error: Failed to install 'typescript@5.1.6'.",
-      // TODO add after refactoring 'Diagnostic.fromError()'
-      // "",
-      // "Error: setup timeout of 0.01s was exceeded",
+      "",
+      "Error: setup timeout of 0.01s was exceeded",
     ].join("\n"),
   );
 });
