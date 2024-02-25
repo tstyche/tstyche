@@ -14,9 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
+  build:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
-    name: Check & Lint
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -25,12 +25,35 @@ jobs:
           node-version: lts/*
       - run: yarn install
       - run: yarn build
+      - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
+
+  check:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+    name: Check & Lint
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: lts/*
+      - uses: actions/download-artifact@eaceaf801fd36c7dee90939fad912460b18a1ffe # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
+      - run: yarn install
       - run: yarn check:spelling
       - run: yarn check:formatting
       - run: yarn check:types
       - run: yarn lint
 
   test-types:
+    needs:
+      - build
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Test Types
     runs-on: ubuntu-latest
@@ -39,8 +62,11 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
+      - uses: actions/download-artifact@eaceaf801fd36c7dee90939fad912460b18a1ffe # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
       - run: yarn install
-      - run: yarn build
       - run: yarn test:types --target 4.7,5.0,current
       - run: yarn test:examples --target 4.7,5.0,current
 
@@ -49,10 +75,11 @@ jobs:
     name: Test Build on Node.js v${{ matrix.node-version }}
     needs:
       - check
+      - build
     strategy:
       fail-fast: false
       matrix:
-        node-version: ["14.17", "14.x", "16.x", "18.x", "20.x", "21.x"]
+        node-version: ["16.0", "16.x", "18.x", "20.x", "21.x"]
     runs-on: ubuntu-latest
 
     steps:
@@ -61,8 +88,11 @@ jobs:
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: ${{ matrix.node-version }}
+      - uses: actions/download-artifact@eaceaf801fd36c7dee90939fad912460b18a1ffe # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
       - run: yarn install
-      - run: yarn build
       - run: yarn test
         env:
           FORCE_COLOR: true
@@ -72,6 +102,7 @@ jobs:
     name: Test Build on ${{ matrix.os }}
     needs:
       - check
+      - build
     strategy:
       fail-fast: false
       matrix:
@@ -83,8 +114,11 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
+      - uses: actions/download-artifact@eaceaf801fd36c7dee90939fad912460b18a1ffe # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
       - run: yarn install
-      - run: yarn build
       - run: yarn test
         env:
           FORCE_COLOR: true

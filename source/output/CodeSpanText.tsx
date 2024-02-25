@@ -24,7 +24,7 @@ export class CodeSpanText implements JSX.ElementClass {
         : this.props.file.getPositionOfLineAndCharacter(index + 1, 0);
 
       const lineNumberText = String(index + 1);
-      const lineText = this.props.file.text.slice(lineStart, lineEnd).trimEnd().replaceAll("\t", " ");
+      const lineText = this.props.file.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
       if (index === markedLine) {
         codeSpan.push(

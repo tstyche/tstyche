@@ -91,7 +91,7 @@ export class Scribbler {
     const indentStep = "  ";
     const notEmptyLineRegExp = /^(?!$)/gm;
 
-    return lines.replaceAll(notEmptyLineRegExp, indentStep.repeat(level));
+    return lines.replace(notEmptyLineRegExp, indentStep.repeat(level));
   }
 
   /**
