@@ -14,7 +14,7 @@ export class Path {
       return filePath;
     }
 
-    return filePath.replaceAll("\\", "/");
+    return filePath.replace(/\\/g, "/");
   }
 
   static relative(from: string, to: string): string {
