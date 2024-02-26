@@ -1,24 +1,27 @@
+import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
-import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
+import { after, before, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const packageConfigText = await fs.readFile(new URL("../package.json", import.meta.url), { encoding: "utf8" });
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
-const fixtureUrl = getFixtureUrl("config-version", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-beforeAll(async () => {
+before(async () => {
   await writeFixture(fixtureUrl);
 });
 
-afterAll(async () => {
+after(async () => {
   await clearFixture(fixtureUrl);
 });
 
 describe("'--version' command line option", () => {
-  test.each([
+  const testCases = [
     {
       args: ["--version"],
       testCase: "prints the TSTyche version number",
@@ -35,12 +38,16 @@ describe("'--version' command line option", () => {
       args: ["--version", "feature"],
       testCase: "ignores search string specified after the option",
     },
-  ])("$testCase", async ({ args }) => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+  ];
 
-    expect(stdout).toBe(`${version}\n`);
-    expect(stderr).toBe("");
+  testCases.forEach(({ args, testCase }) => {
+    test(testCase, async () => {
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(exitCode).toBe(0);
+      assert.equal(stdout, `${version}\n`);
+      assert.equal(stderr, "");
+
+      assert.equal(exitCode, 0);
+    });
   });
 });

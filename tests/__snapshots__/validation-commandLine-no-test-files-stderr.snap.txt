@@ -1,0 +1,5 @@
+Error: No test files were selected using current configuration.
+
+Root path:       <<cwd>>/tests/__fixtures__/.generated/validation-commandLine
+Test file match: **/*.tst.*, **/__typetests__/*.test.*, **/typetests/*.test.*
+

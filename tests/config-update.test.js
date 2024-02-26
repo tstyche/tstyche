@@ -1,17 +1,20 @@
+import { strict as assert } from "node:assert";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixtureUrl = getFixtureUrl("config-update", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);
 });
 
 describe("'--update' command line option", () => {
-  test.each([
+  const testCases = [
     {
       args: ["--update"],
       testCase: "creates store manifest if it is not present",
@@ -28,32 +31,36 @@ describe("'--update' command line option", () => {
       args: ["--update", "feature"],
       testCase: "ignores search string specified after the option",
     },
-  ])("$testCase", async ({ args }) => {
-    const storeUrl = new URL("./.store", fixtureUrl);
+  ];
 
-    await writeFixture(fixtureUrl);
+  testCases.forEach(({ args, testCase }) => {
+    test(testCase, async () => {
+      const storeUrl = new URL("./.store", fixtureUrl);
 
-    expect(existsSync(storeUrl)).toBe(false);
+      await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+      assert.equal(existsSync(storeUrl), false);
 
-    expect(existsSync(storeUrl)).toBe(true);
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(stdout).toBe("");
-    expect(stderr).toBe("");
+      assert.equal(existsSync(storeUrl), true);
 
-    expect(exitCode).toBe(0);
+      assert.equal(stdout, "");
+      assert.equal(stderr, "");
+
+      assert.equal(exitCode, 0);
+    });
   });
 
   test("updates existing store manifest", async () => {
-    const oldStoreManifest = {
+    const oldStoreManifest = JSON.stringify({
       $version: "1",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       versions: ["5.0.2", "5.0.3", "5.0.4"],
-    };
+    });
 
     await writeFixture(fixtureUrl, {
-      [".store/store-manifest.json"]: JSON.stringify(oldStoreManifest),
+      [".store/store-manifest.json"]: oldStoreManifest,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"]);
@@ -62,11 +69,11 @@ describe("'--update' command line option", () => {
       encoding: "utf8",
     });
 
-    expect(JSON.parse(newStoreManifestText)).not.toMatchObject(oldStoreManifest);
+    assert.notEqual(newStoreManifestText, oldStoreManifest);
 
-    expect(stdout).toBe("");
-    expect(stderr).toBe("");
+    assert.equal(stdout, "");
+    assert.equal(stderr, "");
 
-    expect(exitCode).toBe(0);
+    assert.equal(exitCode, 0);
   });
 });

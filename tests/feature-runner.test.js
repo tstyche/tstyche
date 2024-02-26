@@ -1,9 +1,13 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixtureUrl = getFixtureUrl("feature-runner", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);
@@ -17,10 +21,14 @@ describe("test files", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-empty-file`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("allows a file to have only an empty describe", async () => {
@@ -38,10 +46,14 @@ describe("parent", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-empty-describe`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("allows a file to have only skipped describe", async () => {
@@ -59,10 +71,14 @@ describe.skip("skipped describe", function () {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-skipped-describe`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("allows a file to have only todo describe", async () => {
@@ -77,13 +93,17 @@ describe.todo("and this one");
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-todo-describe`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only empty tests", async () => {
+  test("allows a file to have only empty test", async () => {
     const testText = `import { describe, test } from "tstyche";
 test("empty test", () => {
   // no assertion
@@ -96,13 +116,17 @@ test("empty test", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-empty-test`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only skipped tests", async () => {
+  test("allows a file to have only skipped test", async () => {
     const testText = `import { describe, expect, test } from "tstyche";
 test.skip("is skipped?", () => {
   expect<void>().type.toBeVoid();
@@ -115,13 +139,17 @@ test.skip("is skipped?", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-skipped-test`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only todo tests", async () => {
+  test("allows a file to have only todo test", async () => {
     const testText = `import { describe, test } from "tstyche";
 test.todo("have todo this", () => {});
 test.todo("and this one");
@@ -133,10 +161,14 @@ test.todo("and this one");
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-todo-test`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("allows a file to have only expect", async () => {
@@ -150,10 +182,14 @@ expect<number>().type.toBeNumber();
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-only-expect`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 });
 
@@ -192,9 +228,13 @@ test("'useUnknownInCatchVariables': false", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-sets-default-compiler-options`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 });

@@ -1,0 +1,11 @@
+Error: Property 'toBeString' does not exist on type 'Modifier'. ts(2339)
+
+  12 | test("reported type error?", () => {
+  13 |   // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- Testing purpose
+> 14 |   expect<string>().toBeString();
+     |                    ^
+  15 | });
+  16 | 
+
+       at ./__typetests__/test-level.tst.ts:14:20
+

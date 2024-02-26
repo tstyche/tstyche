@@ -1,6 +1,10 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchObject } from "./__utils__/matchObject.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -10,7 +14,8 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-noColor", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);
@@ -24,10 +29,10 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       env: { ["TSTYCHE_NO_COLOR"]: undefined },
     });
 
-    expect(JSON.parse(stdout)).toHaveProperty("noColor");
-    expect(stderr).toBe("");
+    matchObject(stdout, { noColor: false });
+    assert.equal(stderr, "");
 
-    expect(exitCode).toBe(0);
+    assert.equal(exitCode, 0);
   });
 
   test("when truthy, colors are disabled", async () => {
@@ -39,10 +44,14 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       env: { ["TSTYCHE_NO_COLOR"]: "true" },
     });
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-tstycheNoColors-true-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("when falsy, colors are enabled", async () => {
@@ -54,10 +63,14 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       env: { ["TSTYCHE_NO_COLOR"]: "" },
     });
 
-    expect(prettyAnsi(normalizeOutput(stdout))).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+      fileName: `${testFileName}-tstycheNoColors-false-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("when 'NO_COLOR' is truthy, colors are disabled", async () => {
@@ -72,10 +85,14 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       },
     });
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-noColors-true-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("when 'NO_COLOR' is falsy, colors are enabled", async () => {
@@ -90,10 +107,14 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       },
     });
 
-    expect(prettyAnsi(normalizeOutput(stdout))).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+      fileName: `${testFileName}-noColors-false-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("overrides 'NO_COLOR' and enables colors", async () => {
@@ -108,10 +129,14 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       },
     });
 
-    expect(prettyAnsi(normalizeOutput(stdout))).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+      fileName: `${testFileName}-tstycheNoColors-false-overrides-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("overrides 'NO_COLOR' and disables colors", async () => {
@@ -126,9 +151,13 @@ describe("'TSTYCHE_NO_COLOR' environment variable", () => {
       },
     });
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-tstycheNoColors-true-overrides-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 });

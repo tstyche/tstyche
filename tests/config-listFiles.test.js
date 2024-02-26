@@ -1,5 +1,8 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -15,7 +18,8 @@ test("is number?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-listFiles", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);
@@ -28,12 +32,17 @@ describe("'--listFiles' command line option", () => {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--listFiles"]);
+    const args = ["--listFiles"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("when search string is specified before the option", async () => {
@@ -42,12 +51,17 @@ describe("'--listFiles' command line option", () => {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["isNumber", "--listFiles"]);
+    const args = ["isNumber", "--listFiles"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("when search string is specified after the option", async () => {
@@ -56,12 +70,17 @@ describe("'--listFiles' command line option", () => {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--listFiles", "isString"]);
+    const args = ["--listFiles", "isString"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("when 'testFileMatch' is specified as an empty list", async () => {
@@ -77,9 +96,12 @@ describe("'--listFiles' command line option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--listFiles"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-testFileMatch-[]-stdout`,
+      testFileUrl: import.meta.url,
+    });
+    assert.equal(stderr, "");
 
-    expect(exitCode).toBe(0);
+    assert.equal(exitCode, 0);
   });
 });

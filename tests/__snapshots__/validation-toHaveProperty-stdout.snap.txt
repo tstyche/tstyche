@@ -1,0 +1,19 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toHaveProperty.tst.ts
+  argument for 'source'
+    × must be provided
+    × must be of an object type
+  type argument for 'Source'
+    × must be of an object type
+  argument for 'key'
+    × must be provided
+    × must be of type 'string | number | symbol'
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      5 failed, 5 total
+Assertions: 8 failed, 1 passed, 9 total
+Duration:   <<timestamp>>
+
+Ran all test files.

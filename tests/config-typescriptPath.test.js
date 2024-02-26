@@ -1,6 +1,10 @@
+import { strict as assert } from "node:assert";
 import { fileURLToPath } from "node:url";
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchObject } from "./__utils__/matchObject.js";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -9,7 +13,8 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-typescriptPath", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);
@@ -21,10 +26,13 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    expect(JSON.parse(stdout)).toHaveProperty("typescriptPath");
-    expect(stderr).toBe("");
+    matchObject(normalizeOutput(stdout), {
+      typescriptPath: "<<cwd>>/node_modules/typescript/lib/typescript.js",
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
@@ -45,10 +53,10 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
         },
       });
 
-      expect(stdout).toMatch(/^uses TypeScript 5.2.2/);
-      expect(stderr).toBe("");
+      assert.match(stdout, /^uses TypeScript 5.2.2/);
+      assert.equal(stderr, "");
 
-      expect(exitCode).toBe(0);
+      assert.equal(exitCode, 0);
     });
   });
 });

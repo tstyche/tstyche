@@ -1,0 +1,23 @@
+Error: Expected 0 arguments, but got 1. ts(2554)
+
+   5 | 
+   6 | test("has matcher type error?", () => {
+>  7 |   expect(one()).type.toBeVoid(true);
+     |                               ^
+   8 | });
+   9 | 
+  10 | test("has assertion type error?", () => {
+
+       at ./__typetests__/matcher-level.tst.ts:7:31
+
+Error: Expected 0 arguments, but got 1. ts(2554)
+
+  11 |   expect(one("pass")).type.toRaiseError();
+  12 | 
+> 13 |   expect(one("fail")).type.toBeVoid();
+     |              ^
+  14 | });
+  15 | 
+
+       at ./__typetests__/matcher-level.tst.ts:13:14
+

@@ -1,0 +1,9 @@
+Error: '}' expected. ts(1005)
+
+  1 | {
+  2 |   'failFast': true
+> 3 | 
+    | ^
+
+      at ./tstyche.config.json:3:1
+

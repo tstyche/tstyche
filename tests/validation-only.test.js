@@ -1,8 +1,11 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixtureUrl = getFixtureUrl("validation-only", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);
@@ -14,8 +17,10 @@ describe("'--only' command line option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only"]);
 
-    expect(stdout).toBe("");
-    expect(stderr).toBe(
+    assert.equal(stdout, "");
+
+    assert.equal(
+      stderr,
       [
         "Error: Option '--only' expects an argument.",
         "",
@@ -25,6 +30,6 @@ describe("'--only' command line option", () => {
       ].join("\n"),
     );
 
-    expect(exitCode).toBe(1);
+    assert.equal(exitCode, 1);
   });
 });

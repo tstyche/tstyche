@@ -1,0 +1,12 @@
+Error: Expected 2 arguments, but got 1. ts(2554)
+
+  13 | 
+  14 | describe("reported type error?", () => {
+> 15 |   test("with type error");
+     |   ^
+  16 | 
+  17 |   test("looks at this test?", () => {
+  18 |     expect<number>().type.toBeNumber();
+
+       at ./__typetests__/describe-level.tst.ts:15:3
+

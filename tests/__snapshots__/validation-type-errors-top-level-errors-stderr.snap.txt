@@ -1,0 +1,24 @@
+Error: Type 'string' is not assignable to type 'number'. ts(2322)
+
+   5 | });
+   6 | 
+>  7 | const a: number = "nine";
+     |       ^
+   8 | 
+   9 | if (a > 9) {
+  10 |   //
+
+       at ./__typetests__/top-level.tst.ts:7:7
+
+Error: Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+  11 | }
+  12 | 
+> 13 | test(284963, () => {
+     |      ^
+  14 |   expect<string>().type.toBeString();
+  15 | });
+  16 | 
+
+       at ./__typetests__/top-level.tst.ts:13:6
+

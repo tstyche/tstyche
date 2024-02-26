@@ -1,5 +1,8 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -8,7 +11,8 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("validation-target", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);
@@ -22,17 +26,18 @@ describe("'--target' command line option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target"]);
 
-    expect(stdout).toBe("");
-    expect(stderr).toMatch(
-      [
-        "Error: Option '--target' expects an argument.",
-        "",
-        "Argument for the '--target' option must be a single tag or a comma separated list.",
-        "Usage examples:",
-      ].join("\n"),
-    );
+    assert.equal(stdout, "");
 
-    expect(exitCode).toBe(1);
+    const expected = [
+      "Error: Option '--target' expects an argument.",
+      "",
+      "Argument for the '--target' option must be a single tag or a comma separated list.",
+      "Usage examples:",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+
+    assert.equal(exitCode, 1);
   });
 
   test("when not supported version is specified", async () => {
@@ -42,17 +47,18 @@ describe("'--target' command line option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "new"]);
 
-    expect(stdout).toBe("");
-    expect(stderr).toMatch(
-      [
-        "Error: TypeScript version 'new' is not supported.",
-        "",
-        "Argument for the '--target' option must be a single tag or a comma separated list.",
-        "Usage examples:",
-      ].join("\n"),
-    );
+    assert.equal(stdout, "");
 
-    expect(exitCode).toBe(1);
+    const expected = [
+      "Error: TypeScript version 'new' is not supported.",
+      "",
+      "Argument for the '--target' option must be a single tag or a comma separated list.",
+      "Usage examples:",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+
+    assert.equal(exitCode, 1);
   });
 
   test("when 'current' is specified, but TypeScript is not installed", async () => {
@@ -64,22 +70,23 @@ describe("'--target' command line option", () => {
       env: { ["TSTYCHE_TYPESCRIPT_PATH"]: "" },
     });
 
-    expect(stdout).toMatch(/^adds TypeScript/);
-    expect(stderr).toMatch(
-      [
-        "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
-        "",
-        "Argument for the '--target' option must be a single tag or a comma separated list.",
-        "Usage examples:",
-      ].join("\n"),
-    );
+    assert.match(stdout, /^adds TypeScript/);
 
-    expect(exitCode).toBe(1);
+    const expected = [
+      "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
+      "",
+      "Argument for the '--target' option must be a single tag or a comma separated list.",
+      "Usage examples:",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+
+    assert.equal(exitCode, 1);
   });
 });
 
 describe("'target' configuration file option", () => {
-  test("when option argument is not a list", async () => {
+  test("when option value is not a list", async () => {
     const config = {
       target: "current",
     };
@@ -91,10 +98,14 @@ describe("'target' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    assert.equal(stdout, "");
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-wrong-option-value-type-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
   test("when item of the list is not a string", async () => {
@@ -109,10 +120,14 @@ describe("'target' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(stdout).toBe("");
-    expect(stderr).toMatchSnapshot("stderr");
+    assert.equal(stdout, "");
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-wrong-list-item-type-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
   test("when not supported version is specified", async () => {
@@ -127,17 +142,18 @@ describe("'target' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(stdout).toBe("");
-    expect(stderr).toMatch(
-      [
-        "Error: TypeScript version 'new' is not supported.",
-        "",
-        "Item of the 'target' list must be a supported version tag.",
-        "Supported tags:",
-      ].join("\n"),
-    );
+    assert.equal(stdout, "");
 
-    expect(exitCode).toBe(1);
+    const expected = [
+      "Error: TypeScript version 'new' is not supported.",
+      "",
+      "Item of the 'target' list must be a supported version tag.",
+      "Supported tags:",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+
+    assert.equal(exitCode, 1);
   });
 
   test("when 'current' is specified, but TypeScript is not installed", async () => {
@@ -154,16 +170,17 @@ describe("'target' configuration file option", () => {
       env: { ["TSTYCHE_TYPESCRIPT_PATH"]: "" },
     });
 
-    expect(stdout).toMatch(/^adds TypeScript/);
-    expect(stderr).toMatch(
-      [
-        "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
-        "",
-        "Item of the 'target' list must be a supported version tag.",
-        "Supported tags:",
-      ].join("\n"),
-    );
+    assert.match(stdout, /^adds TypeScript/);
 
-    expect(exitCode).toBe(1);
+    const expected = [
+      "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
+      "",
+      "Item of the 'target' list must be a supported version tag.",
+      "Supported tags:",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+
+    assert.equal(exitCode, 1);
   });
 });

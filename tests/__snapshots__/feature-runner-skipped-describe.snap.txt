@@ -1,0 +1,10 @@
+uses TypeScript <<version>>
+
+pass ./__typetests__/dummy.test.ts
+  skipped describe
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.

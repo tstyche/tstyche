@@ -189,6 +189,7 @@ export class ConfigFileOptionsWorker {
     };
     const text = isListItem
       ? this.#optionDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
+      // TODO here it would be better to require "a value of type", not "an argument of type"
       : this.#optionDiagnosticText.requiresArgumentType(optionDefinition.name, optionDefinition.brand);
 
     this.#onDiagnostic(Diagnostic.error(text, origin));

@@ -163,14 +163,16 @@
     },
     {
       "files": [
-        "**/__tests__/*.test.[jt]s?(x)"
-        // TODO enable later
-        // "tests/*.test.js"
+        "**/__tests__/*.test.[jt]s?(x)",
+        "tests/*.test.js"
       ],
       "extends": ["plugin:mocha/recommended"],
       "plugins": ["mocha"],
       "rules": {
-        "mocha/no-setup-in-describe": "off"
+        "mocha/max-top-level-suites": ["warn", { "limit": 2 }],
+        "mocha/no-global-tests": "off",
+        "mocha/no-setup-in-describe": "off",
+        "mocha/no-top-level-hooks": "off"
       }
     },
     {
