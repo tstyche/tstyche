@@ -59,7 +59,6 @@
     "test:unit": "mocha source/*/__tests__/*.js --config mocha.config.json"
   },
   "devDependencies": {
-    "@jest/globals": "29.7.0",
     "@rollup/plugin-typescript": "11.1.6",
     "@types/mocha": "10.0.6",
     "@types/node": "20.11.20",
