@@ -1,7 +1,10 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
-import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
-import { normalizeOutput } from "./__utils__/normalizeOutput.js";
-import { spawnTyche } from "./__utils__/spawnTyche.js";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
+import { clearFixture, getFixtureUrl, writeFixture } from "../__utils__/fixtureFactory.js";
+import { getTestFileName } from "../__utils__/getTestFileName.js";
+import { matchObject } from "../__utils__/matchObject.js";
+import { normalizeOutput } from "../__utils__/normalizeOutput.js";
+import { spawnTyche } from "../__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -9,7 +12,8 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-configFile", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
 afterEach(async () => {
   await clearFixture(fixtureUrl);
@@ -21,12 +25,13 @@ describe("'tstyche.config.json' file", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    expect(JSON.parse(stdout)).toMatchObject({
+    matchObject(stdout, {
       failFast: false,
     });
-    expect(stderr).toBe("");
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("when exist in the current directory", async () => {
@@ -40,12 +45,13 @@ describe("'tstyche.config.json' file", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    expect(JSON.parse(stdout)).toMatchObject({
+    matchObject(stdout, {
       failFast: true,
     });
-    expect(stderr).toBe("");
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 
   test("the '$schema' key is allowed", async () => {
@@ -56,12 +62,12 @@ describe("'tstyche.config.json' file", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    assert.doesNotMatch(stdout, /schema/);
+    assert.equal(stderr, "");
 
-    expect(exitCode).toBe(0);
+    assert.equal(exitCode, 0);
   });
 
   test("comments are allowed", async () => {
@@ -83,14 +89,15 @@ describe("'tstyche.config.json' file", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    expect(JSON.parse(stdout)).toMatchObject({
+    matchObject(stdout, {
       failFast: true,
       target: ["rc"],
       testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
     });
-    expect(stderr).toBe("");
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 });
 
@@ -110,12 +117,13 @@ describe("'--config' command line option", () => {
       "--showConfig",
     ]);
 
-    expect(JSON.parse(stdout)).toMatchObject({
-      config: expect.stringMatching(/config-configFile\/config\/tstyche\.json$/),
-      rootPath: expect.stringMatching(/config-configFile$/),
+    matchObject(normalizeOutput(stdout), {
+      config: "<<cwd>>/tests/__fixtures__/.generated/config-configFile/config/tstyche.json",
+      rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile",
     });
-    expect(stderr).toBe("");
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 });
