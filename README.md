@@ -91,8 +91,8 @@ If you have any questions or suggestions, [start a discussion](https://github.co
 [license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
 [requirements-badge]: https://badgen.net/npm/node/tstyche
 [requirements-url]: https://tstyche.org/reference/requirements
-[install-size-badge]: https://badgen.net/install-size/install/tstyche
-[install-size-url]: https://install-size.com/result?p=tstyche
+[install-size-badge]: https://badgen.net/packagephobia/install/tstyche
+[install-size-url]: https://packagephobia.com/result?p=tstyche
 [coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
 [coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
 [discord-badge]: https://badgen.net/static/chat/on%20Discord
