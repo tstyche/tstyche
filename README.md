@@ -2,6 +2,7 @@
 
 [![version][version-badge]][version-url]
 [![license][license-badge]][license-url]
+[![node][node-badge]][node-url]
 [![packagephobia][packagephobia-badge]][packagephobia-url]
 [![coverage][coverage-badge]][coverage-url]
 [![discord][discord-badge]][discord-url]
@@ -88,6 +89,8 @@ If you have any questions or suggestions, [start a discussion](https://github.co
 [version-url]: https://npmjs.com/package/tstyche
 [license-badge]: https://badgen.net/github/license/tstyche/tstyche
 [license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
+[node-badge]: https://badgen.net/npm/node/tstyche
+[node-url]: https://badgen.net/npm/node/tstyche
 [packagephobia-badge]: https://badgen.net/packagephobia/install/tstyche
 [packagephobia-url]: https://packagephobia.com/result?p=tstyche
 [coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
