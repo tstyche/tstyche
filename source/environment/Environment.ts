@@ -104,7 +104,7 @@ export class Environment {
 
     try {
       // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
-      resolvedPath = createRequire(import.meta.url).resolve(moduleId);
+      resolvedPath = Path.normalizeSlashes(createRequire(import.meta.url).resolve(moduleId));
     } catch {
       // the path cannot be resolved
     }
