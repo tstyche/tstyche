@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert";
-// import { test } from "mocha";
+import { test } from "mocha";
 import * as tstyche from "tstyche";
 import { getFixtureUrl } from "./__utils__/fixtureFactory.js";
 import { getTestFileName } from "./__utils__/getTestFileName.js";
