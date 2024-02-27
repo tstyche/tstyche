@@ -39,28 +39,33 @@ test("when fetching of metadata from the registry times out", async () => {
   assert.equal(exitCode, 1);
 });
 
-test("when installing 'typescript' times out", async () => {
-  await writeFixture(fixtureUrl, {
-    ["__typetests__/dummy.test.ts"]: isStringTestText,
-  });
+test("when installing 'typescript' times out", async function() {
+  if (process.versions.node.startsWith("14.17")) {
+    // Node.js 14.17 does not support 'timeout' option in 'child_process.spawn()'
+    this.skip();
+  } else {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
 
-  await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-  const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
-    env: {
-      ["TSTYCHE_TIMEOUT"]: "0.001",
-    },
-  });
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
+      env: {
+        ["TSTYCHE_TIMEOUT"]: "0.001",
+      },
+    });
 
-  const expected = [
-    "Error: Failed to install 'typescript@5.1.6'.",
-    "",
-    "Error: setup timeout of 0.001s was exceeded",
-  ].join("\n");
+    const expected = [
+      "Error: Failed to install 'typescript@5.1.6'.",
+      "",
+      "Error: setup timeout of 0.001s was exceeded",
+    ].join("\n");
 
-  assert.match(stderr, new RegExp(`^${expected}`));
+    assert.match(stderr, new RegExp(`^${expected}`));
 
-  assert.equal(exitCode, 1);
+    assert.equal(exitCode, 1);
+  }
 });
 
 describe("warns if resolution of a tag may be outdated", () => {
