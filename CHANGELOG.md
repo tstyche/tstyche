@@ -4,7 +4,9 @@
 
 ### Added
 
-- **New!** Support for Node.js 14 ([#136](https://github.com/tstyche/tstyche/pull/136), [#135](https://github.com/tstyche/tstyche/pull/135), [#137](https://github.com/tstyche/tstyche/pull/137))
+- **New!** Support for Node.js 14 ([#136](https://github.com/tstyche/tstyche/pull/136))
+
+- Add the `CancellationToken` class ([#135](https://github.com/tstyche/tstyche/pull/135))
 
 ### Fixed
 
