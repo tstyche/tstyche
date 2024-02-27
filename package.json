@@ -54,8 +54,8 @@
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
     "test:e2e": "mocha tests/*.js --config mocha.config.json",
     "test:examples": "tstyche examples",
-    "test:types": "tstyche tests",
     "test:schema": "mocha models/__tests__/*.js --config mocha.config.json",
+    "test:types": "tstyche tests",
     "test:unit": "mocha source/*/__tests__/*.js --config mocha.config.json"
   },
   "devDependencies": {
