@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.0] - 2024-02-27
+
+### Added
+
+- **New!** Support for Node.js 14 ([#136](https://github.com/tstyche/tstyche/pull/136), [#135](https://github.com/tstyche/tstyche/pull/135), [#137](https://github.com/tstyche/tstyche/pull/137))
+
+### Fixed
+
+- Improve behavior of timeout errors ([#133](https://github.com/tstyche/tstyche/pull/133), [#134](https://github.com/tstyche/tstyche/pull/134))
+
 ## [1.0.0] - 2024-02-20
 
 _Stable release based on [1.0.0-rc.2]._
@@ -140,6 +150,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[1.1.0]: https://github.com/tstyche/tstyche/releases/tag/v1.1.0
 [1.0.0]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0
 [1.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.2
 [1.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.1
