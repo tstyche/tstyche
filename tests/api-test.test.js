@@ -25,8 +25,8 @@ test("test.only", async function() {
     fileName: `${testFileName}-only-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });
 
@@ -41,8 +41,8 @@ test("test.skip", async function() {
     fileName: `${testFileName}-skip-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });
 
@@ -57,7 +57,7 @@ test("test.todo", async function() {
     fileName: `${testFileName}-todo-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });

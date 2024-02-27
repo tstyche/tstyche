@@ -28,6 +28,7 @@ test("expect.fail", async function() {
     fileName: `${testFileName}-fail-stdout`,
     testFileUrl: import.meta.url,
   });
+
   await matchSnapshot(stderr, {
     fileName: `${testFileName}-fail-stderr`,
     testFileUrl: import.meta.url,
@@ -47,8 +48,8 @@ test("expect.only", async function() {
     fileName: `${testFileName}-only-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });
 
@@ -63,6 +64,7 @@ test("expect.only.fail", async function() {
     fileName: `${testFileName}-only-fail-stdout`,
     testFileUrl: import.meta.url,
   });
+
   await matchSnapshot(stderr, {
     fileName: `${testFileName}-only-fail-stderr`,
     testFileUrl: import.meta.url,
@@ -82,8 +84,8 @@ test("expect.skip", async function() {
     fileName: `${testFileName}-skip-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });
 
@@ -98,6 +100,7 @@ test("expect.skip.fail", async function() {
     fileName: `${testFileName}-skip-fail-stdout`,
     testFileUrl: import.meta.url,
   });
+
   await matchSnapshot(stderr, {
     fileName: `${testFileName}-skip-fail-stderr`,
     testFileUrl: import.meta.url,

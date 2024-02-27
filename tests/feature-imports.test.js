@@ -18,7 +18,6 @@ test("named imports", async function() {
   });
 
   assert.equal(stderr, "");
-
   assert.equal(exitCode, 0);
 });
 
@@ -31,7 +30,6 @@ test("aliased imports", async function() {
   });
 
   assert.equal(stderr, "");
-
   assert.equal(exitCode, 0);
 });
 
@@ -44,6 +42,5 @@ test("namespace imports", async function() {
   });
 
   assert.equal(stderr, "");
-
   assert.equal(exitCode, 0);
 });

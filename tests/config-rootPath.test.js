@@ -24,7 +24,6 @@ describe("'rootPath' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -49,7 +48,6 @@ describe("'rootPath' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -74,7 +72,6 @@ describe("'rootPath' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

@@ -53,7 +53,6 @@ describe("'--help' command line option", function() {
       });
 
       assert.equal(stderr, "");
-
       assert.equal(exitCode, 0);
     });
   });

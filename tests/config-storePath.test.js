@@ -33,7 +33,6 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -60,7 +59,6 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function() {
     );
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

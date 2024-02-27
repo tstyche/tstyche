@@ -13,8 +13,6 @@ test("is string?", () => {
 });
 `;
 
-// TODO check that TypeScript is reused if already installed
-
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
@@ -38,7 +36,6 @@ describe("compiler module", function() {
 
     assert.match(stdout, /^adds TypeScript 5.2.2/);
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -59,7 +56,6 @@ describe("compiler module", function() {
 
     assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

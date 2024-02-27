@@ -35,9 +35,7 @@ describe("'--update' command line option", function() {
     });
 
     assert.equal(stdout, "");
-
     assert.match(stderr, /^Error: Failed to fetch metadata of the 'typescript' package/);
-
     assert.equal(exitCode, 1);
   });
 });

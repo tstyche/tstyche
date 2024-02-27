@@ -47,7 +47,6 @@ describe("'--update' command line option", function() {
 
       assert.equal(stdout, "");
       assert.equal(stderr, "");
-
       assert.equal(exitCode, 0);
     });
   });
@@ -73,7 +72,6 @@ describe("'--update' command line option", function() {
 
     assert.equal(stdout, "");
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

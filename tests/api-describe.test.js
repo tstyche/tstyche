@@ -17,8 +17,8 @@ test("includes nested", async function() {
     fileName: `${testFileName}-nested-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });
 
@@ -37,8 +37,8 @@ test("describe.only", async function() {
     fileName: `${testFileName}-only-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });
 
@@ -53,8 +53,8 @@ test("describe.skip", async function() {
     fileName: `${testFileName}-skip-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });
 
@@ -69,7 +69,7 @@ test("describe.todo", async function() {
     fileName: `${testFileName}-todo-stdout`,
     testFileUrl: import.meta.url,
   });
-  assert.equal(stderr, "");
 
+  assert.equal(stderr, "");
   assert.equal(exitCode, 0);
 });

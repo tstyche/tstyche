@@ -138,7 +138,6 @@ describe("TypeScript 4.x", function() {
 
       assert.match(stdout, RegExp(`^uses TypeScript ${version}\n`));
       assert.equal(stderr, "");
-
       assert.equal(exitCode, 0);
     });
   });
@@ -172,7 +171,6 @@ describe("TypeScript 5.x", function() {
 
       assert.match(stdout, RegExp(`^uses TypeScript ${version}\n`));
       assert.equal(stderr, "");
-
       assert.equal(exitCode, 0);
     });
   });

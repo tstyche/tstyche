@@ -31,7 +31,6 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -55,7 +54,6 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", function() {
 
       assert.match(stdout, /^uses TypeScript 5.2.2/);
       assert.equal(stderr, "");
-
       assert.equal(exitCode, 0);
     });
   });

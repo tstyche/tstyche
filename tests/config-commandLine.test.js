@@ -42,7 +42,6 @@ describe("'tstyche' command", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -62,7 +61,6 @@ describe("'tstyche' command", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -82,7 +80,6 @@ describe("'tstyche' command", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -102,7 +99,6 @@ describe("'tstyche' command", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -134,7 +130,6 @@ describe("'tstyche' command", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

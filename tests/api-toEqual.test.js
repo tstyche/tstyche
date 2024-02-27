@@ -26,5 +26,6 @@ test("toEqual", async function() {
     fileName: `${testFileName}-stderr`,
     testFileUrl: import.meta.url,
   });
+
   assert.equal(exitCode, 1);
 });

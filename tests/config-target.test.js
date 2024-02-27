@@ -46,7 +46,6 @@ describe("'--target' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -65,7 +64,6 @@ describe("'--target' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -84,7 +82,6 @@ describe("'--target' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -107,7 +104,6 @@ describe("'--target' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -126,7 +122,6 @@ describe("'--target' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -145,7 +140,6 @@ describe("'--target' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });
@@ -170,7 +164,6 @@ describe("'target' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -193,7 +186,6 @@ describe("'target' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -216,7 +208,6 @@ describe("'target' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

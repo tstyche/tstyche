@@ -64,7 +64,6 @@ describe("'--install' command line option", function() {
       );
 
       assert.equal(stderr, "");
-
       assert.equal(exitCode, 0);
     });
   });
@@ -90,7 +89,6 @@ describe("'--install' command line option", function() {
     );
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -107,7 +105,6 @@ describe("'--install' command line option", function() {
 
     assert.equal(stdout, "");
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -124,7 +121,6 @@ describe("'--install' command line option", function() {
 
     assert.equal(stdout, "");
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

@@ -35,7 +35,6 @@ test("when fetching of metadata from the registry times out", async function() {
   ].join("\n");
 
   assert.match(stderr, new RegExp(`^${expected}`));
-
   assert.equal(exitCode, 1);
 });
 
@@ -63,7 +62,6 @@ test("when installing 'typescript' times out", async function() {
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
-
     assert.equal(exitCode, 1);
   }
 });
@@ -187,7 +185,6 @@ describe("does not warn if resolution of a tag may be outdated", function() {
       });
 
       assert.equal(stderr, "");
-
       assert.equal(exitCode, 0);
     });
   });

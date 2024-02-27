@@ -29,9 +29,11 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    matchObject(stdout, { noInteractive: true });
-    assert.equal(stderr, "");
+    matchObject(stdout, {
+      noInteractive: true,
+    });
 
+    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -50,8 +52,8 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
       fileName: `${testFileName}-tstycheNoInteractive-true-stdout`,
       testFileUrl: import.meta.url,
     });
-    assert.equal(stderr, "");
 
+    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -70,8 +72,8 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
       fileName: `${testFileName}-tstycheNoInteractive-false-stdout`,
       testFileUrl: import.meta.url,
     });
-    assert.equal(stderr, "");
 
+    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

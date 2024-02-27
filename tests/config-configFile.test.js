@@ -30,7 +30,6 @@ describe("'tstyche.config.json' file", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -50,7 +49,6 @@ describe("'tstyche.config.json' file", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -66,7 +64,6 @@ describe("'tstyche.config.json' file", function() {
 
     assert.doesNotMatch(stdout, /schema/);
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -96,7 +93,6 @@ describe("'tstyche.config.json' file", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });
@@ -123,7 +119,6 @@ describe("'--config' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

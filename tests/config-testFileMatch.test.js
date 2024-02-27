@@ -46,7 +46,6 @@ describe("'testFileMatch' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -72,7 +71,6 @@ describe("'testFileMatch' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -97,7 +95,6 @@ describe("'testFileMatch' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -120,7 +117,6 @@ describe("'testFileMatch' configuration file option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

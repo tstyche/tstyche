@@ -16,6 +16,7 @@ test("handles nested 'describe()' or 'test()'", async function() {
     fileName: `${testFileName}-handles-nested-stdout`,
     testFileUrl: import.meta.url,
   });
+
   await matchSnapshot(stderr, {
     fileName: `${testFileName}-handles-nested-stderr`,
     testFileUrl: import.meta.url,

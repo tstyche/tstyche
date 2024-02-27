@@ -27,7 +27,6 @@ describe("test files", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -52,7 +51,6 @@ describe("parent", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -77,7 +75,6 @@ describe.skip("skipped describe", function () {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -99,7 +96,6 @@ describe.todo("and this one");
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -122,7 +118,6 @@ test("empty test", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -145,7 +140,6 @@ test.skip("is skipped?", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -167,7 +161,6 @@ test.todo("and this one");
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -188,7 +181,6 @@ expect<number>().type.toBeNumber();
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });
@@ -234,7 +226,6 @@ test("'useUnknownInCatchVariables': false", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

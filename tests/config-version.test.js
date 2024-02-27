@@ -46,7 +46,6 @@ describe("'--version' command line option", function() {
 
       assert.equal(stdout, `${version}\n`);
       assert.equal(stderr, "");
-
       assert.equal(exitCode, 0);
     });
   });

@@ -16,6 +16,7 @@ test("handles 'expect()' nested within 'describe()'", async function() {
     fileName: `${testFileName}-handles-expect-stdout`,
     testFileUrl: import.meta.url,
   });
+
   await matchSnapshot(stderr, {
     fileName: `${testFileName}-handles-expect-stderr`,
     testFileUrl: import.meta.url,

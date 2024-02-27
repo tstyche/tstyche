@@ -41,7 +41,6 @@ describe("'--listFiles' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -60,7 +59,6 @@ describe("'--listFiles' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -79,7 +77,6 @@ describe("'--listFiles' command line option", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -100,8 +97,8 @@ describe("'--listFiles' command line option", function() {
       fileName: `${testFileName}-testFileMatch-[]-stdout`,
       testFileUrl: import.meta.url,
     });
-    assert.equal(stderr, "");
 
+    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

@@ -29,9 +29,11 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
       env: { ["TSTYCHE_NO_COLOR"]: undefined },
     });
 
-    matchObject(stdout, { noColor: false });
-    assert.equal(stderr, "");
+    matchObject(stdout, {
+      noColor: false,
+    });
 
+    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -50,7 +52,6 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -69,7 +70,6 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -91,7 +91,6 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -113,7 +112,6 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -135,7 +133,6 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -157,7 +154,6 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

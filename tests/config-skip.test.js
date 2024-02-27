@@ -54,7 +54,6 @@ test("external is string?", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -89,7 +88,6 @@ test("external is string?", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -122,7 +120,6 @@ test.only("external is string?", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -155,7 +152,6 @@ test.only("external is string?", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -188,7 +184,6 @@ test("external is string?", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 
@@ -221,7 +216,6 @@ test("external is string?", () => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

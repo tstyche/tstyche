@@ -36,7 +36,6 @@ describe("'--target' command line option", function() {
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
-
     assert.equal(exitCode, 1);
   });
 
@@ -57,7 +56,6 @@ describe("'--target' command line option", function() {
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
-
     assert.equal(exitCode, 1);
   });
 
@@ -80,7 +78,6 @@ describe("'--target' command line option", function() {
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
-
     assert.equal(exitCode, 1);
   });
 });
@@ -152,7 +149,6 @@ describe("'target' configuration file option", function() {
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
-
     assert.equal(exitCode, 1);
   });
 
@@ -180,7 +176,6 @@ describe("'target' configuration file option", function() {
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
-
     assert.equal(exitCode, 1);
   });
 });
