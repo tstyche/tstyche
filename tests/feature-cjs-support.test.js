@@ -9,7 +9,7 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName);
 
-test("supports CJS projects written CJS syntax", async () => {
+test("supports CJS projects written CJS syntax", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["cjs-syntax"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -25,7 +25,7 @@ test("supports CJS projects written CJS syntax", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("supports CJS projects written in ESM syntax", async () => {
+test("supports CJS projects written in ESM syntax", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["esm-syntax"]);
 
   await matchSnapshot(normalizeOutput(stdout), {

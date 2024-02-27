@@ -9,7 +9,7 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName);
 
-test("named imports", async () => {
+test("named imports", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["named"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -22,7 +22,7 @@ test("named imports", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("aliased imports", async () => {
+test("aliased imports", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["aliased"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -35,7 +35,7 @@ test("aliased imports", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("namespace imports", async () => {
+test("namespace imports", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["namespace"]);
 
   await matchSnapshot(normalizeOutput(stdout), {

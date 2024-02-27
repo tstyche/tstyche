@@ -10,7 +10,7 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName);
 
-test("includes nested", async () => {
+test("includes nested", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["nested"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -22,15 +22,15 @@ test("includes nested", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'describe()' implementation'", () => {
+test("'describe()' implementation'", function() {
   assert(typeof tstyche.describe === "function");
 });
 
-test("'describe.only' implementation'", () => {
+test("'describe.only' implementation'", function() {
   assert(typeof tstyche.describe.only === "function");
 });
 
-test("describe.only", async () => {
+test("describe.only", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -42,11 +42,11 @@ test("describe.only", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'describe.skip' implementation'", () => {
+test("'describe.skip' implementation'", function() {
   assert(typeof tstyche.describe.skip === "function");
 });
 
-test("describe.skip", async () => {
+test("describe.skip", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -58,11 +58,11 @@ test("describe.skip", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'describe.todo' implementation'", () => {
+test("'describe.todo' implementation'", function() {
   assert(typeof tstyche.describe.todo === "function");
 });
 
-test("describe.todo", async () => {
+test("describe.todo", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
   await matchSnapshot(normalizeOutput(stdout), {

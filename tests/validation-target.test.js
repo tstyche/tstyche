@@ -14,12 +14,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--target' command line option", () => {
-  test("when option argument is missing", async () => {
+describe("'--target' command line option", function() {
+  test("when option argument is missing", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -40,7 +40,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when not supported version is specified", async () => {
+  test("when not supported version is specified", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -61,7 +61,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'current' is specified, but TypeScript is not installed", async () => {
+  test("when 'current' is specified, but TypeScript is not installed", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -85,8 +85,8 @@ describe("'--target' command line option", () => {
   });
 });
 
-describe("'target' configuration file option", () => {
-  test("when option value is not a list", async () => {
+describe("'target' configuration file option", function() {
+  test("when option value is not a list", async function() {
     const config = {
       target: "current",
     };
@@ -108,7 +108,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when item of the list is not a string", async () => {
+  test("when item of the list is not a string", async function() {
     const config = {
       target: ["4.8", 5],
     };
@@ -130,7 +130,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when not supported version is specified", async () => {
+  test("when not supported version is specified", async function() {
     const config = {
       target: ["new"],
     };
@@ -156,7 +156,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'current' is specified, but TypeScript is not installed", async () => {
+  test("when 'current' is specified, but TypeScript is not installed", async function() {
     const config = {
       target: ["current"],
     };

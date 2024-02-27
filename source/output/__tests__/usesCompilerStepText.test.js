@@ -8,8 +8,8 @@ const sampleTsconfigFilePath = path.resolve("path", "to", "tsconfig.json");
 
 const scribbler = new Scribbler();
 
-describe("usesCompilerStepText", () => {
-  test("formats uses compiler step text", () => {
+describe("usesCompilerStepText", function() {
+  test("formats uses compiler step text", function() {
     const text = scribbler.render(usesCompilerStepText("1.2.3", sampleTsconfigFilePath));
 
     assert.equal(
@@ -22,7 +22,7 @@ describe("usesCompilerStepText", () => {
     );
   });
 
-  test("formats uses compiler step text with empty line prepended", () => {
+  test("formats uses compiler step text with empty line prepended", function() {
     const text = scribbler.render(usesCompilerStepText("1.2.3", sampleTsconfigFilePath, { prependEmptyLine: true }));
 
     assert.equal(
@@ -36,7 +36,7 @@ describe("usesCompilerStepText", () => {
     );
   });
 
-  test("formats uses compiler step text without TSConfig path", () => {
+  test("formats uses compiler step text without TSConfig path", function() {
     const text = scribbler.render(usesCompilerStepText("1.2.3", undefined));
 
     assert.equal(

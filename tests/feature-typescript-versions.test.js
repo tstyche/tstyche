@@ -96,12 +96,12 @@ const versionTags = Object.entries(resolutions)
   .filter((resolution) => resolution[0].startsWith("5"))
   .map((resolution) => resolution[1]);
 
-after(async () => {
+after(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("TypeScript 4.x", () => {
-  before(async () => {
+describe("TypeScript 4.x", function() {
+  before(async function() {
     await writeFixture(fixtureUrl, {
       // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
       ["__typetests__/toBeAssignable.test.ts"]: `// @ts-expect-error\n${toBeAssignableTestText}`,
@@ -127,7 +127,7 @@ describe("TypeScript 4.x", () => {
   ];
 
   testCases.forEach((version) => {
-    test("uses TypeScript %s as current target", async () => {
+    test("uses TypeScript %s as current target", async function() {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
       const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
@@ -144,8 +144,8 @@ describe("TypeScript 4.x", () => {
   });
 });
 
-describe("TypeScript 5.x", () => {
-  before(async () => {
+describe("TypeScript 5.x", function() {
+  before(async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/toBeAssignable.test.ts"]: toBeAssignableTestText,
       ["__typetests__/toEqual.test.ts"]: toEqualTestText,
@@ -161,7 +161,7 @@ describe("TypeScript 5.x", () => {
   ];
 
   testCases.forEach((version) => {
-    test("uses TypeScript %s as current target", async () => {
+    test("uses TypeScript %s as current target", async function() {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
       const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));

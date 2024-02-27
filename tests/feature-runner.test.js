@@ -9,12 +9,12 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("test files", () => {
-  test("allows a file to be empty", async () => {
+describe("test files", function() {
+  test("allows a file to be empty", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: "",
     });
@@ -31,7 +31,7 @@ describe("test files", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only an empty describe", async () => {
+  test("allows a file to have only an empty describe", async function() {
     const testText = `import { describe } from "tstyche";
 describe("parent", () => {
   describe("empty describe", function () {
@@ -56,7 +56,7 @@ describe("parent", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only skipped describe", async () => {
+  test("allows a file to have only skipped describe", async function() {
     const testText = `import { describe } from "tstyche";
 describe.skip("skipped describe", function () {
   test("is skipped?", () => {
@@ -81,7 +81,7 @@ describe.skip("skipped describe", function () {
     assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only todo describe", async () => {
+  test("allows a file to have only todo describe", async function() {
     const testText = `import { describe } from "tstyche";
 describe.todo("have todo this", () => {});
 describe.todo("and this one");
@@ -103,7 +103,7 @@ describe.todo("and this one");
     assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only empty test", async () => {
+  test("allows a file to have only empty test", async function() {
     const testText = `import { describe, test } from "tstyche";
 test("empty test", () => {
   // no assertion
@@ -126,7 +126,7 @@ test("empty test", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only skipped test", async () => {
+  test("allows a file to have only skipped test", async function() {
     const testText = `import { describe, expect, test } from "tstyche";
 test.skip("is skipped?", () => {
   expect<void>().type.toBeVoid();
@@ -149,7 +149,7 @@ test.skip("is skipped?", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only todo test", async () => {
+  test("allows a file to have only todo test", async function() {
     const testText = `import { describe, test } from "tstyche";
 test.todo("have todo this", () => {});
 test.todo("and this one");
@@ -171,7 +171,7 @@ test.todo("and this one");
     assert.equal(exitCode, 0);
   });
 
-  test("allows a file to have only expect", async () => {
+  test("allows a file to have only expect", async function() {
     const testText = `import { describe, expect, test } from "tstyche";
 expect<number>().type.toBeNumber();
 `;
@@ -193,8 +193,8 @@ expect<number>().type.toBeNumber();
   });
 });
 
-describe("compiler options", () => {
-  test("when TSConfig file is missing, sets default compiler options", async () => {
+describe("compiler options", function() {
+  test("when TSConfig file is missing, sets default compiler options", async function() {
     const testText = `import { expect, test } from "tstyche";
 
 test("'strictNullChecks': true", () => {

@@ -5,8 +5,8 @@ import { Scribbler, testNameText } from "tstyche/tstyche";
 
 const scribbler = new Scribbler();
 
-describe("testNameText", () => {
-  test("formats failing test name text", () => {
+describe("testNameText", function() {
+  test("formats failing test name text", function() {
     const text = scribbler.render(testNameText("fail", "sample test name"));
 
     assert.equal(
@@ -18,7 +18,7 @@ describe("testNameText", () => {
     );
   });
 
-  test("formats failing test name text with indent", () => {
+  test("formats failing test name text with indent", function() {
     const text = scribbler.render(testNameText("fail", "sample test name", 2));
 
     assert.equal(
@@ -30,7 +30,7 @@ describe("testNameText", () => {
     );
   });
 
-  test("formats passing test name text", () => {
+  test("formats passing test name text", function() {
     const text = scribbler.render(testNameText("pass", "sample test name"));
 
     assert.equal(
@@ -42,7 +42,7 @@ describe("testNameText", () => {
     );
   });
 
-  test("formats passing test name text with indent", () => {
+  test("formats passing test name text with indent", function() {
     const text = scribbler.render(testNameText("pass", "sample test name", 2));
 
     assert.equal(
@@ -54,7 +54,7 @@ describe("testNameText", () => {
     );
   });
 
-  test("formats skipped test name text", () => {
+  test("formats skipped test name text", function() {
     const text = scribbler.render(testNameText("skip", "sample test name"));
 
     assert.equal(
@@ -66,7 +66,7 @@ describe("testNameText", () => {
     );
   });
 
-  test("formats skipped test name text with indent", () => {
+  test("formats skipped test name text with indent", function() {
     const text = scribbler.render(testNameText("skip", "sample test name", 2));
 
     assert.equal(
@@ -78,7 +78,7 @@ describe("testNameText", () => {
     );
   });
 
-  test("formats todo test name text", () => {
+  test("formats todo test name text", function() {
     const text = scribbler.render(testNameText("todo", "sample test name"));
 
     assert.equal(
@@ -90,7 +90,7 @@ describe("testNameText", () => {
     );
   });
 
-  test("formats todo test name text with indent", () => {
+  test("formats todo test name text with indent", function() {
     const text = scribbler.render(testNameText("todo", "sample test name", 2));
 
     assert.equal(

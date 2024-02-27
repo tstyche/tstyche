@@ -9,12 +9,12 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'rootPath' configuration file option", () => {
-  test("when specified path does not exist", async () => {
+describe("'rootPath' configuration file option", function() {
+  test("when specified path does not exist", async function() {
     const config = {
       rootPath: "../nope",
     };
@@ -35,7 +35,7 @@ describe("'rootPath' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when specified value is not string", async () => {
+  test("when specified value is not string", async function() {
     const config = {
       rootPath: true,
     };

@@ -13,15 +13,15 @@ const fixtureUrl = getFixtureUrl(testFileName);
 // TODO check for validation errors
 // TODO currently 'expect()' cannot be nested because run mode flags are not inherited
 
-test("'expect()' implementation'", () => {
+test("'expect()' implementation'", function() {
   assert(typeof tstyche.expect === "function");
 });
 
-test("'expect.fail' implementation'", () => {
+test("'expect.fail' implementation'", function() {
   assert(typeof tstyche.expect.fail === "function");
 });
 
-test("expect.fail", async () => {
+test("expect.fail", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-fail.tst.ts"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -36,11 +36,11 @@ test("expect.fail", async () => {
   assert.equal(exitCode, 1);
 });
 
-test("'expect.only' implementation'", () => {
+test("'expect.only' implementation'", function() {
   assert(typeof tstyche.expect.only === "function");
 });
 
-test("expect.only", async () => {
+test("expect.only", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-only.tst.ts"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -52,11 +52,11 @@ test("expect.only", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'expect.only.fail' implementation'", () => {
+test("'expect.only.fail' implementation'", function() {
   assert(typeof tstyche.expect.only.fail === "function");
 });
 
-test("expect.only.fail", async () => {
+test("expect.only.fail", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-only-fail.tst.ts"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -71,11 +71,11 @@ test("expect.only.fail", async () => {
   assert.equal(exitCode, 1);
 });
 
-test("'expect.skip' implementation'", () => {
+test("'expect.skip' implementation'", function() {
   assert(typeof tstyche.expect.skip === "function");
 });
 
-test("expect.skip", async () => {
+test("expect.skip", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-skip.tst.ts"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -87,11 +87,11 @@ test("expect.skip", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'expect.skip.fail' implementation'", () => {
+test("'expect.skip.fail' implementation'", function() {
   assert(typeof tstyche.expect.skip.fail === "function");
 });
 
-test("expect.skip.fail", async () => {
+test("expect.skip.fail", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-skip-fail.tst.ts"]);
 
   await matchSnapshot(normalizeOutput(stdout), {

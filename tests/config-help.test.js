@@ -13,15 +13,15 @@ const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfig
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-before(async () => {
+before(async function() {
   await writeFixture(fixtureUrl);
 });
 
-after(async () => {
+after(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--help' command line option", () => {
+describe("'--help' command line option", function() {
   const testCases = [
     {
       args: ["--help"],
@@ -42,7 +42,7 @@ describe("'--help' command line option", () => {
   ];
 
   testCases.forEach(({ args, testCase }) => {
-    test(testCase, async () => {
+    test(testCase, async function() {
       await writeFixture(fixtureUrl);
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);

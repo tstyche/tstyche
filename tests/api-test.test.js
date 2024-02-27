@@ -10,15 +10,15 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName);
 
-test("'test()' implementation", () => {
+test("'test()' implementation", function() {
   assert(typeof tstyche.test === "function");
 });
 
-test("'test.only' implementation", () => {
+test("'test.only' implementation", function() {
   assert(typeof tstyche.test.only === "function");
 });
 
-test("test.only", async () => {
+test("test.only", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -30,11 +30,11 @@ test("test.only", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'test.skip' implementation", () => {
+test("'test.skip' implementation", function() {
   assert(typeof tstyche.test.skip === "function");
 });
 
-test("test.skip", async () => {
+test("test.skip", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -46,11 +46,11 @@ test("test.skip", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'test.todo' implementation", () => {
+test("'test.todo' implementation", function() {
   assert(typeof tstyche.test.todo === "function");
 });
 
-test("test.todo", async () => {
+test("test.todo", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
   await matchSnapshot(normalizeOutput(stdout), {

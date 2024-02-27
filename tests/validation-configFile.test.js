@@ -8,12 +8,12 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'tstyche.config.json' file", () => {
-  test("handles unknown options", async () => {
+describe("'tstyche.config.json' file", function() {
+  test("handles unknown options", async function() {
     const config = {
       cache: "all",
       silent: true,
@@ -36,7 +36,7 @@ describe("'tstyche.config.json' file", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("handles option value of wrong type", async () => {
+  test("handles option value of wrong type", async function() {
     const config = {
       failFast: "always",
     };
@@ -57,7 +57,7 @@ describe("'tstyche.config.json' file", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when tabs are used for indentation, handles option value of wrong type", async () => {
+  test("when tabs are used for indentation, handles option value of wrong type", async function() {
     const configText = `{
 \t"failFast": false,
 \t"rootPath": true
@@ -80,7 +80,7 @@ describe("'tstyche.config.json' file", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("handles wrong root value", async () => {
+  test("handles wrong root value", async function() {
     const config = [{ failFast: true }];
 
     await writeFixture(fixtureUrl, {
@@ -99,7 +99,7 @@ describe("'tstyche.config.json' file", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("handles syntax error", async () => {
+  test("handles syntax error", async function() {
     const configText = `{
   'failFast': true
 `;
@@ -120,7 +120,7 @@ describe("'tstyche.config.json' file", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("handles single quoted option names", async () => {
+  test("handles single quoted option names", async function() {
     const configText = `{
   'failFast': true
 }`;
@@ -141,7 +141,7 @@ describe("'tstyche.config.json' file", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("handles single quoted option values", async () => {
+  test("handles single quoted option values", async function() {
     const configText = `{
   "rootPath": '../'
 }`;
@@ -162,7 +162,7 @@ describe("'tstyche.config.json' file", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("handles single quoted list values", async () => {
+  test("handles single quoted list values", async function() {
     const configText = `{
   "target": ['4.8']
 }`;
@@ -184,8 +184,8 @@ describe("'tstyche.config.json' file", () => {
   });
 });
 
-describe("'--config' command line option", () => {
-  test("when option argument is missing", async () => {
+describe("'--config' command line option", function() {
+  test("when option argument is missing", async function() {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config"]);

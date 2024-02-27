@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert";
-import { test } from "mocha";
+// import { test } from "mocha";
 import * as tstyche from "tstyche";
 import { getFixtureUrl } from "./__utils__/fixtureFactory.js";
 import { getTestFileName } from "./__utils__/getTestFileName.js";
@@ -10,15 +10,15 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName);
 
-test("'it()' implementation", () => {
+test("'it()' implementation", function() {
   assert(typeof tstyche.it === "function");
 });
 
-test("'it.only' implementation", () => {
+test("'it.only' implementation", function() {
   assert(typeof tstyche.it.only === "function");
 });
 
-test("it.only", async () => {
+test("it.only", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -30,11 +30,11 @@ test("it.only", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'it.skip' implementation", () => {
+test("'it.skip' implementation", function() {
   assert(typeof tstyche.it.skip === "function");
 });
 
-test("it.skip", async () => {
+test("it.skip", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
@@ -46,11 +46,11 @@ test("it.skip", async () => {
   assert.equal(exitCode, 0);
 });
 
-test("'it.todo' implementation", () => {
+test("'it.todo' implementation", function() {
   assert(typeof tstyche.it.todo === "function");
 });
 
-test("it.todo", async () => {
+test("it.todo", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
   await matchSnapshot(normalizeOutput(stdout), {

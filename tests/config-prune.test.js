@@ -14,11 +14,11 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--prune' command line option", () => {
+describe("'--prune' command line option", function() {
   const testCases = [
     {
       args: ["--prune"],
@@ -39,7 +39,7 @@ describe("'--prune' command line option", () => {
   ];
 
   testCases.forEach(({ args, testCase }) => {
-    test(testCase, async () => {
+    test(testCase, async function() {
       const storeManifest = { $version: "0" };
       const storeUrl = new URL("./.store", fixtureUrl);
 
@@ -61,7 +61,7 @@ describe("'--prune' command line option", () => {
     });
   });
 
-  test("does nothing, if directory does not exist", async () => {
+  test("does nothing, if directory does not exist", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });

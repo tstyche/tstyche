@@ -8,12 +8,12 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'failFast' configuration file option", () => {
-  test("when specified value is not boolean", async () => {
+describe("'failFast' configuration file option", function() {
+  test("when specified value is not boolean", async function() {
     const config = {
       failFast: "never",
     };

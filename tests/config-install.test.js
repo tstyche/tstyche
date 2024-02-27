@@ -19,11 +19,11 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--install' command line option", () => {
+describe("'--install' command line option", function() {
   const testCases = [
     {
       args: ["--install", "--target", "4.9"],
@@ -44,7 +44,7 @@ describe("'--install' command line option", () => {
   ];
 
   testCases.forEach(({ args, testCase }) => {
-    test(testCase, async () => {
+    test(testCase, async function() {
       const config = { target: ["5.0", "latest"] };
 
       await writeFixture(fixtureUrl, {
@@ -69,7 +69,7 @@ describe("'--install' command line option", () => {
     });
   });
 
-  test("when 'target' configuration option is specified", async () => {
+  test("when 'target' configuration option is specified", async function() {
     const config = { target: ["4.8", "5.0"] };
 
     await writeFixture(fixtureUrl, {
@@ -94,7 +94,7 @@ describe("'--install' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' target specified in the configuration file", async () => {
+  test("when 'current' target specified in the configuration file", async function() {
     const config = { target: ["current"] };
 
     await writeFixture(fixtureUrl, {
@@ -111,7 +111,7 @@ describe("'--install' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' target specified in the command", async () => {
+  test("when 'current' target specified in the command", async function() {
     const config = { target: ["5.0", "latest"] };
 
     await writeFixture(fixtureUrl, {

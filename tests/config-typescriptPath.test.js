@@ -16,12 +16,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
-  test("has default value", async () => {
+describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", function() {
+  test("has default value", async function() {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -35,8 +35,8 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
     assert.equal(exitCode, 0);
   });
 
-  describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
-    test("uses provided path", async () => {
+  describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", function() {
+    test("uses provided path", async function() {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });

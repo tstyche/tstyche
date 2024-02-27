@@ -26,12 +26,12 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--target' command line option", () => {
-  test("when single target is specified", async () => {
+describe("'--target' command line option", function() {
+  test("when single target is specified", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -50,7 +50,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when multiple targets are specified", async () => {
+  test("when multiple targets are specified", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -69,7 +69,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' tag is specified", async () => {
+  test("when 'current' tag is specified", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -88,7 +88,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'target' configuration file option is specified", async () => {
+  test("when 'target' configuration file option is specified", async function() {
     const config = {
       target: ["4.8", "current"],
     };
@@ -111,7 +111,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified before the option", async () => {
+  test("when search string is specified before the option", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -130,7 +130,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified after the option", async () => {
+  test("when search string is specified after the option", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -150,8 +150,8 @@ describe("'--target' command line option", () => {
   });
 });
 
-describe("'target' configuration file option", () => {
-  test("when single target is specified", async () => {
+describe("'target' configuration file option", function() {
+  test("when single target is specified", async function() {
     const config = {
       target: ["4.8"],
     };
@@ -174,7 +174,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when multiple targets are specified", async () => {
+  test("when multiple targets are specified", async function() {
     const config = {
       target: ["4.8", "5.3.2", "current"],
     };
@@ -197,7 +197,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' tag is specified", async () => {
+  test("when 'current' tag is specified", async function() {
     const config = {
       target: ["current"],
     };

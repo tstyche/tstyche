@@ -10,11 +10,11 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName);
 
-test("'toRaiseError' implementation", () => {
+test("'toRaiseError' implementation", function() {
   assert(typeof tstyche.expect().type.toRaiseError === "function");
 });
 
-test("toRaiseError", async () => {
+test("toRaiseError", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await matchSnapshot(normalizeOutput(stdout), {

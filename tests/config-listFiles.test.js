@@ -21,12 +21,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--listFiles' command line option", () => {
-  test("lists test files", async () => {
+describe("'--listFiles' command line option", function() {
+  test("lists test files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -45,7 +45,7 @@ describe("'--listFiles' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified before the option", async () => {
+  test("when search string is specified before the option", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -64,7 +64,7 @@ describe("'--listFiles' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified after the option", async () => {
+  test("when search string is specified after the option", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -83,7 +83,7 @@ describe("'--listFiles' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'testFileMatch' is specified as an empty list", async () => {
+  test("when 'testFileMatch' is specified as an empty list", async function() {
     const config = {
       testFileMatch: [],
     };

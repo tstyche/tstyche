@@ -21,12 +21,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'testFileMatch' configuration file option", () => {
-  test("default patterns, select files in 'typetests' directories", async () => {
+describe("'testFileMatch' configuration file option", function() {
+  test("default patterns, select files in 'typetests' directories", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -50,7 +50,7 @@ describe("'testFileMatch' configuration file option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("default patterns, select files with '.tst.' suffix", async () => {
+  test("default patterns, select files with '.tst.' suffix", async function() {
     await writeFixture(fixtureUrl, {
       ["__tests__/isNumber.tst.ts"]: isNumberTestText,
       ["__tests__/isString.tst.ts"]: isStringTestText,
@@ -76,7 +76,7 @@ describe("'testFileMatch' configuration file option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("specified pattern, selects only matching files", async () => {
+  test("specified pattern, selects only matching files", async function() {
     const config = {
       testFileMatch: ["**/type-tests/*.tst.ts"],
     };
@@ -101,7 +101,7 @@ describe("'testFileMatch' configuration file option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("specified empty list, does not select files", async () => {
+  test("specified empty list, does not select files", async function() {
     const config = {
       testFileMatch: [],
     };

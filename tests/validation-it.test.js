@@ -9,7 +9,7 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName);
 
-test("handles nested 'describe()' or 'it()'", async () => {
+test("handles nested 'describe()' or 'it()'", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-nested"]);
 
   await matchSnapshot(normalizeOutput(stdout), {

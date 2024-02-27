@@ -21,12 +21,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'tstyche' command", () => {
-  test("when called without arguments, selects all matching files", async () => {
+describe("'tstyche' command", function() {
+  test("when called without arguments, selects all matching files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -46,7 +46,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when single search string is provided, selects matching files", async () => {
+  test("when single search string is provided, selects matching files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -66,7 +66,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when multiple search strings are provided, selects matching files", async () => {
+  test("when multiple search strings are provided, selects matching files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -86,7 +86,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when relative search string is provided, selects matching files", async () => {
+  test("when relative search string is provided, selects matching files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -106,7 +106,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("only the files matched by the 'testFileMatch' patterns are selected", async () => {
+  test("only the files matched by the 'testFileMatch' patterns are selected", async function() {
     const config = {
       testFileMatch: ["**/feature/__tests__/**.*"],
     };

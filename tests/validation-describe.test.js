@@ -9,7 +9,7 @@ import { spawnTyche } from "./__utils__/spawnTyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureUrl(testFileName);
 
-test("handles 'expect()' nested within 'describe()'", async () => {
+test("handles 'expect()' nested within 'describe()'", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-expect"]);
 
   await matchSnapshot(normalizeOutput(stdout), {
