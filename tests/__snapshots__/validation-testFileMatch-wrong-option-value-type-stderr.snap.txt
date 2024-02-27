@@ -1,0 +1,9 @@
+Error: Option 'testFileMatch' requires an argument of type list.
+
+  1 | {
+> 2 |   "testFileMatch": "feature"
+    |                    ^
+  3 | }
+
+      at ./tstyche.config.json:2:20
+

@@ -1,5 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/mocharc",
   "parallel": true,
-  "spec": ["source/**/__tests__/*.test.js"]
+  "reporter": "dot",
+  "slow": 5000,
+  "timeout": 75000
 }

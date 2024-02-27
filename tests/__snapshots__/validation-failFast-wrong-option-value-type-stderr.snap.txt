@@ -1,0 +1,9 @@
+Error: Option 'failFast' requires an argument of type boolean.
+
+  1 | {
+> 2 |   "failFast": "never"
+    |               ^
+  3 | }
+
+      at ./tstyche.config.json:2:15
+

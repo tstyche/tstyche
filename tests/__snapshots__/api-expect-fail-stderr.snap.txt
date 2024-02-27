@@ -1,0 +1,42 @@
+Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+  2 | 
+  3 | expect<string>().type.toBeString();
+> 4 | expect.fail<string>().type.toBeString();
+    | ^
+  5 | 
+  6 | expect.fail<never>().type.toBeString();
+  7 | 
+
+      at ./__typetests__/expect-fail.tst.ts:4:1
+
+Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+   9 |   test("is string?", () => {
+  10 |     expect<string>().type.toBeString();
+> 11 |     expect.fail<string>().type.toBeString();
+     |     ^
+  12 | 
+  13 |     expect.fail<never>().type.toBeVoid();
+  14 |   });
+
+       at ./__typetests__/expect-fail.tst.ts:11:5
+
+Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+  17 | test("is number?", () => {
+  18 |   expect<number>().type.toBeNumber();
+> 19 |   expect.fail<number>().type.toBeNumber();
+     |   ^
+  20 | 
+  21 |   expect.fail<never>().type.toBeVoid();
+  22 | });
+
+       at ./__typetests__/expect-fail.tst.ts:19:3
+

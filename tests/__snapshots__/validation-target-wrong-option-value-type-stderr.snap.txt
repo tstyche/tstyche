@@ -1,0 +1,9 @@
+Error: Option 'target' requires an argument of type list.
+
+  1 | {
+> 2 |   "target": "current"
+    |             ^
+  3 | }
+
+      at ./tstyche.config.json:2:13
+

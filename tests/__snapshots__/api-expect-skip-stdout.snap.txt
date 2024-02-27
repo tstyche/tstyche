@@ -1,0 +1,19 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/expect-skip.tst.ts
+  is describe?
+    + is string?
+  is skipped describe?
+    - skip is skipped?
+  + is number?
+  + is assignable?
+  - skip is skipped?
+  - todo is todo?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 todo, 3 passed, 6 total
+Assertions: 6 skipped, 3 passed, 9 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'expect-skip.tst.ts'.

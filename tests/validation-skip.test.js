@@ -1,21 +1,26 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixtureUrl = getFixtureUrl("validation-skip", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--skip' command line option", () => {
-  test("when option argument is missing", async () => {
+describe("'--skip' command line option", function() {
+  test("when option argument is missing", async function() {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--skip"]);
 
-    expect(stdout).toBe("");
-    expect(stderr).toBe(
+    assert.equal(stdout, "");
+
+    assert.equal(
+      stderr,
       [
         "Error: Option '--skip' expects an argument.",
         "",
@@ -25,6 +30,6 @@ describe("'--skip' command line option", () => {
       ].join("\n"),
     );
 
-    expect(exitCode).toBe(1);
+    assert.equal(exitCode, 1);
   });
 });

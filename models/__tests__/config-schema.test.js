@@ -1,7 +1,8 @@
+import { strict as assert } from "node:assert";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { describe, expect, test } from "@jest/globals";
 import Ajv from "ajv";
+import { describe, test } from "mocha";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -27,9 +28,9 @@ function readJsonFixtureFile(fixtureFileName) {
 
 const configSchema = readJsonFile("../config-schema.json");
 
-describe("config-schema.json", () => {
-  describe("valid", () => {
-    test.each([
+describe("config-schema.json", function() {
+  describe("valid", function() {
+    const testCases = [
       {
         fixtureFileName: "valid-all-options.json",
         testCase: "all options",
@@ -50,16 +51,20 @@ describe("config-schema.json", () => {
         fixtureFileName: "valid-testFileMatch.json",
         testCase: "'testFileMatch' option",
       },
-    ])("$testCase", ({ fixtureFileName }) => {
-      const validate = ajv.compile(configSchema);
-      const fixture = readJsonFixtureFile(fixtureFileName);
+    ];
 
-      expect(validate(fixture)).toBe(true);
+    testCases.forEach(({ fixtureFileName, testCase }) => {
+      test(testCase, function() {
+        const validate = ajv.compile(configSchema);
+        const fixture = readJsonFixtureFile(fixtureFileName);
+
+        assert.equal(validate(fixture), true);
+      });
     });
   });
 
-  describe("invalid", () => {
-    test.each([
+  describe("invalid", function() {
+    const testCases = [
       {
         fixtureFileName: "invalid-failFast.json",
         testCase: "value of 'failFast' option must be of type boolean",
@@ -96,12 +101,15 @@ describe("config-schema.json", () => {
         fixtureFileName: "invalid-testFileMatch-3.json",
         testCase: "value of 'testFileMatch' option must be of type Array",
       },
-    ])("$testCase", ({ fixtureFileName }) => {
-      const validate = ajv.compile(configSchema);
-      const fixture = readJsonFixtureFile(fixtureFileName);
+    ];
 
-      expect(validate(fixture)).toBe(false);
-      expect(validate.errors).toMatchSnapshot();
+    testCases.forEach(({ fixtureFileName, testCase }) => {
+      test(testCase, function() {
+        const validate = ajv.compile(configSchema);
+        const fixture = readJsonFixtureFile(fixtureFileName);
+
+        assert.equal(validate(fixture), false);
+      });
     });
   });
 });

@@ -1,5 +1,8 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -9,14 +12,15 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("validation-runner", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("compiler options", () => {
-  test("when TSConfig file has errors", async () => {
+describe("compiler options", function() {
+  test("when TSConfig file has errors", async function() {
     const tsconfig = {
       compilerOptions: {
         noEmitOnError: true,
@@ -34,9 +38,16 @@ describe("compiler options", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-tsconfig-errors-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-tsconfig-errors-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 });

@@ -1,6 +1,8 @@
+import { strict as assert } from "node:assert";
 import { existsSync } from "node:fs";
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -9,14 +11,15 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-prune", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--prune' command line option", () => {
-  test.each([
+describe("'--prune' command line option", function() {
+  const testCases = [
     {
       args: ["--prune"],
       testCase: "removes store directory",
@@ -33,37 +36,39 @@ describe("'--prune' command line option", () => {
       args: ["--prune", "feature"],
       testCase: "ignores search string specified after the option",
     },
-  ])("$testCase", async ({ args }) => {
-    const storeManifest = { $version: "0" };
-    const storeUrl = new URL("./.store", fixtureUrl);
+  ];
 
-    await writeFixture(fixtureUrl, {
-      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
+  testCases.forEach(({ args, testCase }) => {
+    test(testCase, async function() {
+      const storeManifest = { $version: "0" };
+      const storeUrl = new URL("./.store", fixtureUrl);
+
+      await writeFixture(fixtureUrl, {
+        [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      assert.equal(existsSync(storeUrl), true);
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+
+      assert.equal(existsSync(storeUrl), false);
+
+      assert.equal(stdout, "");
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
     });
-
-    expect(existsSync(storeUrl)).toBe(true);
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
-
-    expect(existsSync(storeUrl)).toBe(false);
-
-    expect(stdout).toBe("");
-    expect(stderr).toBe("");
-
-    expect(exitCode).toBe(0);
   });
 
-  test("does nothing, if directory does not exist", async () => {
+  test("does nothing, if directory does not exist", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--prune"]);
 
-    expect(stdout).toBe("");
-    expect(stderr).toBe("");
-
-    expect(exitCode).toBe(0);
+    assert.equal(stdout, "");
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });

@@ -14,7 +14,6 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: corepack enable
       - run: yarn install
       - run: yarn build
       - run: yarn test:types --target next

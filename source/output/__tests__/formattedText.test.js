@@ -1,11 +1,11 @@
-import assert from "node:assert/strict";
+import { strict as assert } from "node:assert";
 import { describe, test } from "mocha";
 import { formattedText, Scribbler } from "tstyche/tstyche";
 
 const scribbler = new Scribbler();
 
-describe("formattedText", () => {
-  test("formats string", () => {
+describe("formattedText", function() {
+  test("formats string", function() {
     const string = scribbler.render(formattedText("1.2.3"));
 
     assert.equal(
@@ -17,7 +17,7 @@ describe("formattedText", () => {
     );
   });
 
-  test("formats list", () => {
+  test("formats list", function() {
     const list = scribbler.render(formattedText(["path/to/first.test.ts", "path/to/second.test.ts"]));
 
     assert.equal(
@@ -32,7 +32,7 @@ describe("formattedText", () => {
     );
   });
 
-  test("formats object", () => {
+  test("formats object", function() {
     // eslint-disable-next-line sort-keys -- testing purpose
     const record = scribbler.render(formattedText({ k: "keys", a: "all", s: "sorted" }));
 

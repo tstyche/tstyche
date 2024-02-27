@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+import { strict as assert } from "node:assert";
 import { URL } from "node:url";
 import { describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
@@ -8,8 +8,8 @@ const sampleTestFile = new URL("../../../path/to/sample.test.ts", import.meta.ur
 
 const scribbler = new Scribbler();
 
-describe("fileStatusText", () => {
-  test("formats failing file status text", () => {
+describe("fileStatusText", function() {
+  test("formats failing file status text", function() {
     const text = scribbler.render(fileStatusText(ResultStatus.Failed, sampleTestFile));
 
     assert.equal(
@@ -21,7 +21,7 @@ describe("fileStatusText", () => {
     );
   });
 
-  test("formats passing file status text", () => {
+  test("formats passing file status text", function() {
     const text = scribbler.render(fileStatusText(ResultStatus.Passed, sampleTestFile));
 
     assert.equal(
@@ -33,7 +33,7 @@ describe("fileStatusText", () => {
     );
   });
 
-  test("formats running file status text", () => {
+  test("formats running file status text", function() {
     const text = scribbler.render(fileStatusText(ResultStatus.Runs, sampleTestFile));
 
     assert.equal(

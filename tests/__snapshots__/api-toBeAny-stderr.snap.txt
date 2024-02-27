@@ -1,0 +1,23 @@
+Error: The source type is 'string'.
+
+   8 |   expect(returnsAny()).type.toBeAny();
+   9 | 
+> 10 |   expect(returnsString()).type.toBeAny();
+     |                                ^
+  11 | });
+  12 | 
+  13 | test("is NOT any?", () => {
+
+       at ./__typetests__/toBeAny.tst.ts:10:32 ❭ is any?
+
+Error: The source type is 'any'.
+
+  14 |   expect(returnsString()).type.not.toBeAny();
+  15 | 
+> 16 |   expect(returnsAny()).type.not.toBeAny();
+     |                                 ^
+  17 | });
+  18 | 
+
+       at ./__typetests__/toBeAny.tst.ts:16:33 ❭ is NOT any?
+

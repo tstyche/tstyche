@@ -1,28 +1,33 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchObject } from "./__utils__/matchObject.js";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixtureUrl = getFixtureUrl("config-rootPath", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'rootPath' configuration file option", () => {
-  test("when 'tstyche.config.json' file does not exist, is set to the current directory", async () => {
+describe("'rootPath' configuration file option", function() {
+  test("when 'tstyche.config.json' file does not exist, is set to the current directory", async function() {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    expect(JSON.parse(stdout)).toMatchObject({
-      rootPath: expect.stringMatching(/config-rootPath$/),
+    matchObject(normalizeOutput(stdout), {
+      rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath",
     });
-    expect(stderr).toBe("");
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when 'tstyche.config.json' file exist, is set to the path of the directory from which the file was loaded", async () => {
+  test("when 'tstyche.config.json' file exist, is set to the path of the directory from which the file was loaded", async function() {
     const config = {
       failFast: true,
     };
@@ -37,16 +42,16 @@ describe("'rootPath' configuration file option", () => {
       "--showConfig",
     ]);
 
-    expect(JSON.parse(stdout)).toMatchObject({
-      config: expect.stringMatching(/config-rootPath\/config\/tstyche.json$/),
-      rootPath: expect.stringMatching(/config-rootPath\/config$/),
+    matchObject(normalizeOutput(stdout), {
+      config: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
+      rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config",
     });
-    expect(stderr).toBe("");
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when specified, the path is resolved relative to the configuration file", async () => {
+  test("when specified, the path is resolved relative to the configuration file", async function() {
     const config = {
       rootPath: "../",
     };
@@ -61,12 +66,12 @@ describe("'rootPath' configuration file option", () => {
       "--showConfig",
     ]);
 
-    expect(JSON.parse(stdout)).toMatchObject({
-      config: expect.stringMatching(/config-rootPath\/config\/tstyche.json$/),
-      rootPath: expect.stringMatching(/config-rootPath$/),
+    matchObject(normalizeOutput(stdout), {
+      config: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
+      rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath",
     });
-    expect(stderr).toBe("");
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });

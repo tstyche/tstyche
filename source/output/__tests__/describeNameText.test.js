@@ -1,11 +1,11 @@
-import assert from "node:assert/strict";
+import { strict as assert } from "node:assert";
 import { describe, test } from "mocha";
 import { describeNameText, Scribbler } from "tstyche/tstyche";
 
 const scribbler = new Scribbler();
 
-describe("describeNameText", () => {
-  test("describe name text", () => {
+describe("describeNameText", function() {
+  test("describe name text", function() {
     const text = scribbler.render(describeNameText("sample describe name"));
 
     assert.equal(
@@ -17,7 +17,7 @@ describe("describeNameText", () => {
     );
   });
 
-  test("describe name text with indent", () => {
+  test("describe name text with indent", function() {
     const text = scribbler.render(describeNameText("sample describe name", 2));
 
     assert.equal(

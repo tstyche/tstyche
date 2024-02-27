@@ -1,59 +1,63 @@
-import { expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { test } from "mocha";
 import * as tstyche from "tstyche";
 import { getFixtureUrl } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixtureUrl = getFixtureUrl("api-test");
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName);
 
-test("handles nested 'test()'", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["nested"]);
-
-  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(stderr).toMatchSnapshot("stderr");
-
-  expect(exitCode).toBe(1);
+test("'test()' implementation", function() {
+  assert(typeof tstyche.test === "function");
 });
 
-test("'test()' implementation", () => {
-  expect(tstyche.test).toBeInstanceOf(Function);
+test("'test.only' implementation", function() {
+  assert(typeof tstyche.test.only === "function");
 });
 
-test("'test.only' implementation", () => {
-  expect(tstyche.test.only).toBeInstanceOf(Function);
-});
-
-test("test.only", async () => {
+test("test.only", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
-  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(stderr).toBe("");
+  await matchSnapshot(normalizeOutput(stdout), {
+    fileName: `${testFileName}-only-stdout`,
+    testFileUrl: import.meta.url,
+  });
 
-  expect(exitCode).toBe(0);
+  assert.equal(stderr, "");
+  assert.equal(exitCode, 0);
 });
 
-test("'test.skip' implementation", () => {
-  expect(tstyche.test.skip).toBeInstanceOf(Function);
+test("'test.skip' implementation", function() {
+  assert(typeof tstyche.test.skip === "function");
 });
 
-test("test.skip", async () => {
+test("test.skip", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
-  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(stderr).toBe("");
+  await matchSnapshot(normalizeOutput(stdout), {
+    fileName: `${testFileName}-skip-stdout`,
+    testFileUrl: import.meta.url,
+  });
 
-  expect(exitCode).toBe(0);
+  assert.equal(stderr, "");
+  assert.equal(exitCode, 0);
 });
 
-test("'test.todo' implementation", () => {
-  expect(tstyche.test.todo).toBeInstanceOf(Function);
+test("'test.todo' implementation", function() {
+  assert(typeof tstyche.test.todo === "function");
 });
 
-test("test.todo", async () => {
+test("test.todo", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
-  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(stderr).toBe("");
+  await matchSnapshot(normalizeOutput(stdout), {
+    fileName: `${testFileName}-todo-stdout`,
+    testFileUrl: import.meta.url,
+  });
 
-  expect(exitCode).toBe(0);
+  assert.equal(stderr, "");
+  assert.equal(exitCode, 0);
 });

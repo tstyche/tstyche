@@ -107,11 +107,11 @@
       {
         "devDependencies": [
           "*.js",
-          "**/__scripts__/*",
-          "**/__tests__/*",
-          "**/__typetests__/*",
-          "**/tests/*",
-          "**/typetests/*"
+          "**/__scripts__/**/*",
+          "**/__tests__/**/*",
+          "**/__typetests__/**/*",
+          "**/tests/**/*",
+          "**/typetests/**/*"
         ]
       }
     ],
@@ -162,26 +162,17 @@
       }
     },
     {
-      "files": ["**/__tests__/*.test.[jt]s?(x)", "tests/*.test.js"],
-      "extends": ["plugin:jest/recommended", "plugin:jest/style", "plugin:jest-formatting/recommended"],
-      "plugins": ["jest", "jest-formatting"],
+      "files": [
+        "**/__tests__/*.test.[jt]s?(x)",
+        "tests/*.test.js"
+      ],
+      "extends": ["plugin:mocha/recommended"],
+      "plugins": ["mocha"],
       "rules": {
-        "@typescript-eslint/unbound-method": "off",
-        "jest/no-conditional-in-test": "error",
-        "jest/no-duplicate-hooks": "error",
-        "jest/no-test-return-statement": "error",
-        "jest/prefer-each": "error",
-        "jest/prefer-hooks-in-order": "error",
-        "jest/prefer-hooks-on-top": "error",
-        "jest/prefer-lowercase-title": [
-          "error",
-          {
-            "ignoreTopLevelDescribe": true
-          }
-        ],
-        "jest/prefer-spy-on": "error",
-        "jest/require-to-throw-message": "error",
-        "jest/unbound-method": "error"
+        "mocha/max-top-level-suites": ["warn", { "limit": 2 }],
+        "mocha/no-global-tests": "off",
+        "mocha/no-setup-in-describe": "off",
+        "mocha/no-top-level-hooks": "off"
       }
     },
     {

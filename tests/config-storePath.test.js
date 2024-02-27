@@ -1,6 +1,10 @@
+import { strict as assert } from "node:assert";
 import { existsSync } from "node:fs";
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchObject } from "./__utils__/matchObject.js";
+import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -9,34 +13,37 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-storePath", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'TSTYCHE_STORE_PATH' environment variable", () => {
-  test("has default value", async () => {
+describe("'TSTYCHE_STORE_PATH' environment variable", function() {
+  test("has default value", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    expect(JSON.parse(stdout)).toHaveProperty("storePath");
-    expect(stderr).toBe("");
+    matchObject(normalizeOutput(stdout), {
+      storePath: "<<cwd>>/tests/__fixtures__/.generated/config-storePath/.store",
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when specified, uses the path", async () => {
+  test("when specified, uses the path", async function() {
     const storeUrl = new URL("./dummy-store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    expect(existsSync(storeUrl)).toBe(false);
+    assert.equal(existsSync(storeUrl), false);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
       env: {
@@ -44,12 +51,14 @@ describe("'TSTYCHE_STORE_PATH' environment variable", () => {
       },
     });
 
-    expect(existsSync(storeUrl)).toBe(true);
+    assert.equal(existsSync(storeUrl), true);
 
-    expect(stdout).toMatch(/^adds TypeScript 5.2.2 to /);
-    expect(stdout).toMatch(/dummy-store\/5.2.2\n$/);
-    expect(stderr).toBe("");
+    assert.equal(
+      normalizeOutput(stdout),
+      "adds TypeScript 5.2.2 to <<cwd>>/tests/__fixtures__/.generated/config-storePath/dummy-store/5.2.2\n",
+    );
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });

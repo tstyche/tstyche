@@ -1,20 +1,31 @@
-import { expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { test } from "mocha";
 import * as tstyche from "tstyche";
 import { getFixtureUrl } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
-const fixtureUrl = getFixtureUrl("api-toEqual");
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName);
 
-test("'toEqual' implementation", () => {
-  expect(tstyche.expect).toHaveProperty("type.toEqual", expect.any(Function));
+test("'toEqual' implementation", function() {
+  assert(typeof tstyche.expect().type.toEqual === "function");
 });
 
-test("toEqual", async () => {
+test("toEqual", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-  expect(stderr).toMatchSnapshot("stderr");
+  await matchSnapshot(normalizeOutput(stdout), {
+    fileName: `${testFileName}-stdout`,
+    testFileUrl: import.meta.url,
+  });
 
-  expect(exitCode).toBe(1);
+  await matchSnapshot(stderr, {
+    fileName: `${testFileName}-stderr`,
+    testFileUrl: import.meta.url,
+  });
+
+  assert.equal(exitCode, 1);
 });

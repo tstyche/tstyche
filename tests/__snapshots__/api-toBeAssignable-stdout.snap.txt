@@ -1,0 +1,21 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeAssignable.tst.ts
+  received type
+    × is assignable expected value?
+    × is NOT assignable expected value?
+    × is assignable expected type?
+    × is NOT assignable expected type?
+  received value
+    × is assignable expected value?
+    × is NOT assignable expected value?
+    × is assignable expected type?
+    × is NOT assignable type?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 8 failed, 13 passed, 21 total
+Duration:   <<timestamp>>
+
+Ran all test files.

@@ -1,5 +1,8 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -17,103 +20,147 @@ test("is number?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-failFast", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--failFast' command line option", () => {
-  test("stops running tests after the first failure", async () => {
+describe("'--failFast' command line option", function() {
+  test("stops running tests after the first failure", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--failFast"]);
+    const args = ["--failFast"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
-  test("when 'true' is passed as an argument", async () => {
+  test("when 'true' is passed as an argument", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--failFast", "true"]);
+    const args = ["--failFast", "true"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
-  test("when 'false' is passed as an argument", async () => {
+  test("when 'false' is passed as an argument", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--failFast", "false"]);
+    const args = ["--failFast", "false"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
-  test("when the option is specified several times", async () => {
+  test("when the option is specified several times", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "--failFast",
-      "isNumber",
-      "--failFast",
-      "false",
-    ]);
+    const args = ["--failFast", "isNumber", "--failFast", "false"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
-  test("when search string is specified before the option", async () => {
+  test("when search string is specified before the option", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["isNumber", "--failFast"]);
+    const args = ["isNumber", "--failFast"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
-  test("when search string is specified after the option", async () => {
+  test("when search string is specified after the option", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--failFast", "isString"]);
+    const args = ["--failFast", "isString"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
-  test("overrides configuration file option, when it is set to 'true'", async () => {
+  test("overrides configuration file option, when it is set to 'true'", async function() {
     const config = {
       failFast: true,
     };
@@ -126,13 +173,20 @@ describe("'--failFast' command line option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--failFast", "false"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overrides-failFast-true-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-overrides-failFast-true-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
-  test("overrides configuration file option, when it is set to 'false'", async () => {
+  test("overrides configuration file option, when it is set to 'false'", async function() {
     const config = {
       failFast: false,
     };
@@ -145,15 +199,22 @@ describe("'--failFast' command line option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--failFast"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overrides-failFast-false-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-overrides-failFast-false-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 });
 
-describe("'failFast' configuration file option", () => {
-  test("stops running tests after the first failure", async () => {
+describe("'failFast' configuration file option", function() {
+  test("stops running tests after the first failure", async function() {
     const config = {
       failFast: true,
     };
@@ -166,9 +227,42 @@ describe("'failFast' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toMatchSnapshot("stderr");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-failFast-true-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(1);
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-failFast-true-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  test("does not stop running tests after the first failure", async function() {
+    const config = {
+      failFast: false,
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-failFast-false-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await matchSnapshot(stderr, {
+      fileName: `${testFileName}-failFast-false-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 });

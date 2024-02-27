@@ -1,0 +1,96 @@
+Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+> 5 |     expect().type.toHaveProperty("runTest");
+    |     ^
+  6 |   });
+  7 | 
+  8 |   test("must be of an object type", () => {
+
+      at ./__typetests__/toHaveProperty.tst.ts:5:5
+
+Error: An argument for 'source' must be of an object type, received: '"sample"'.
+
+   7 | 
+   8 |   test("must be of an object type", () => {
+>  9 |     expect("sample").type.toHaveProperty("runTest");
+     |            ^
+  10 |   });
+  11 | });
+  12 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:9:12
+
+Error: A type argument for 'Source' must be of an object type, received: 'any'.
+
+  17 | 
+  18 |     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+> 19 |     expect<any>().type.toHaveProperty("runTest");
+     |            ^
+  20 |     expect<never>().type.toHaveProperty("runTest");
+  21 |     expect(null).type.toHaveProperty("runTest");
+  22 |     expect<"one" | "two">().type.toHaveProperty("runTest");
+
+       at ./__typetests__/toHaveProperty.tst.ts:19:12
+
+Error: A type argument for 'Source' must be of an object type, received: 'never'.
+
+  18 |     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  19 |     expect<any>().type.toHaveProperty("runTest");
+> 20 |     expect<never>().type.toHaveProperty("runTest");
+     |            ^
+  21 |     expect(null).type.toHaveProperty("runTest");
+  22 |     expect<"one" | "two">().type.toHaveProperty("runTest");
+  23 |   });
+
+       at ./__typetests__/toHaveProperty.tst.ts:20:12
+
+Error: An argument for 'source' must be of an object type, received: 'null'.
+
+  19 |     expect<any>().type.toHaveProperty("runTest");
+  20 |     expect<never>().type.toHaveProperty("runTest");
+> 21 |     expect(null).type.toHaveProperty("runTest");
+     |            ^
+  22 |     expect<"one" | "two">().type.toHaveProperty("runTest");
+  23 |   });
+  24 | });
+
+       at ./__typetests__/toHaveProperty.tst.ts:21:12
+
+Error: A type argument for 'Source' must be of an object type, received: '"one" | "two"'.
+
+  20 |     expect<never>().type.toHaveProperty("runTest");
+  21 |     expect(null).type.toHaveProperty("runTest");
+> 22 |     expect<"one" | "two">().type.toHaveProperty("runTest");
+     |            ^
+  23 |   });
+  24 | });
+  25 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:22:12
+
+Error: An argument for 'key' must be provided.
+
+  27 |   test("must be provided", () => {
+  28 |     // @ts-expect-error test
+> 29 |     expect<{ test: () => void }>().type.toHaveProperty();
+     |                                         ^
+  30 |   });
+  31 | 
+  32 |   test("must be of type 'string | number | symbol'", () => {
+
+       at ./__typetests__/toHaveProperty.tst.ts:29:41
+
+Error: An argument for 'key' must be of type 'string | number | symbol', received: 'string[]'.
+
+  32 |   test("must be of type 'string | number | symbol'", () => {
+  33 |     // @ts-expect-error test
+> 34 |     expect<{ test: () => void }>().type.toHaveProperty(["test"]);
+     |                                                        ^
+  35 |   });
+  36 | });
+  37 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:34:56
+

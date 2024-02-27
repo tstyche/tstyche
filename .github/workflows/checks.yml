@@ -23,7 +23,6 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: corepack enable
       - run: yarn install
       - run: yarn build
       - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
@@ -46,7 +45,6 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: corepack enable
       - run: yarn install
       - run: yarn check:spelling
       - run: yarn check:formatting
@@ -68,7 +66,6 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: corepack enable
       - run: yarn install
       - run: yarn test:types --target 4.7,5.0,current
       - run: yarn test:examples --target 4.7,5.0,current
@@ -82,7 +79,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ["16.0", "16.x", "18.x", "20.x", "21.x"]
+        node-version: ['14.17', '14.x', '16.x', '18.x', '20.x', '21.x']
     runs-on: ubuntu-latest
 
     steps:
@@ -95,7 +92,6 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: corepack enable
       - run: yarn install
       - run: yarn test
         env:
@@ -122,7 +118,6 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: corepack enable
       - run: yarn install
       - run: yarn test
         env:
@@ -139,8 +134,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
-          node-version: latest
-      - run: corepack enable
+          node-version: lts/*
       - run: yarn install
       - run: yarn test:coverage
         env:

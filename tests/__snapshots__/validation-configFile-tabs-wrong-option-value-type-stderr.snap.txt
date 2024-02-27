@@ -1,0 +1,11 @@
+Error: Option 'rootPath' requires an argument of type string.
+
+  1 | {
+  2 |  "failFast": false,
+> 3 |  "rootPath": true
+    |              ^
+  4 | }
+  5 | 
+
+      at ./tstyche.config.json:3:14
+

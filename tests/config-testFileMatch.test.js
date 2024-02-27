@@ -1,5 +1,8 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -15,14 +18,15 @@ test("is number?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-testFileMatch", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'testFileMatch' configuration file option", () => {
-  test("default patterns, select files in 'typetests' directories", async () => {
+describe("'testFileMatch' configuration file option", function() {
+  test("default patterns, select files in 'typetests' directories", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -36,13 +40,16 @@ describe("'testFileMatch' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-default-patterns-typetests-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("default patterns, select files with '.tst.' suffix", async () => {
+  test("default patterns, select files with '.tst.' suffix", async function() {
     await writeFixture(fixtureUrl, {
       ["__tests__/isNumber.tst.ts"]: isNumberTestText,
       ["__tests__/isString.tst.ts"]: isStringTestText,
@@ -58,13 +65,16 @@ describe("'testFileMatch' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-default-patterns-tst-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("specified pattern, selects only matching files", async () => {
+  test("specified pattern, selects only matching files", async function() {
     const config = {
       testFileMatch: ["**/type-tests/*.tst.ts"],
     };
@@ -79,13 +89,16 @@ describe("'testFileMatch' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-specified-patterns-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("specified empty list, does not select files", async () => {
+  test("specified empty list, does not select files", async function() {
     const config = {
       testFileMatch: [],
     };
@@ -98,9 +111,12 @@ describe("'testFileMatch' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-specified-empty-list-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });

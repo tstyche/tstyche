@@ -1,5 +1,8 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -20,56 +23,69 @@ const tsconfig = {
   include: ["**/*"],
 };
 
-const fixtureUrl = getFixtureUrl("config-target", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--target' command line option", () => {
-  test("when single target is specified", async () => {
+describe("'--target' command line option", function() {
+  test("when single target is specified", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "4.8"]);
+    const args = ["--target", "4.8"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when multiple targets are specified", async () => {
+  test("when multiple targets are specified", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "4.8,5.3.2,current"]);
+    const args = ["--target", "4.8,5.3.2,current"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when 'current' tag is specified", async () => {
+  test("when 'current' tag is specified", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"]);
+    const args = ["--target", "current"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when 'target' configuration file option is specified", async () => {
+  test("when 'target' configuration file option is specified", async function() {
     const config = {
       target: ["4.8", "current"],
     };
@@ -82,43 +98,54 @@ describe("'--target' command line option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overrides-target-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified before the option", async () => {
+  test("when search string is specified before the option", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["isNumber", "--target", "current"]);
+    const args = ["isNumber", "--target", "current"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified after the option", async () => {
+  test("when search string is specified after the option", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current", "isString"]);
+    const args = ["--target", "current", "isString"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });
 
-describe("'target' configuration file option", () => {
-  test("when single target is specified", async () => {
+describe("'target' configuration file option", function() {
+  test("when single target is specified", async function() {
     const config = {
       target: ["4.8"],
     };
@@ -131,13 +158,16 @@ describe("'target' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-target-4.8-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when multiple targets are specified", async () => {
+  test("when multiple targets are specified", async function() {
     const config = {
       target: ["4.8", "5.3.2", "current"],
     };
@@ -150,13 +180,16 @@ describe("'target' configuration file option", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-target-4.8-5.3.2-current-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when 'current' tag is specified", async () => {
+  test("when 'current' tag is specified", async function() {
     const config = {
       target: ["current"],
     };
@@ -167,10 +200,14 @@ describe("'target' configuration file option", () => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-target-current-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });

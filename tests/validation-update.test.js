@@ -1,5 +1,7 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -8,14 +10,15 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("validation-update", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--update' command line option", () => {
-  test("failed to fetch metadata of the 'typescript' package", async () => {
+describe("'--update' command line option", function() {
+  test("failed to fetch metadata of the 'typescript' package", async function() {
     const storeManifest = {
       $version: "1",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
@@ -31,9 +34,8 @@ describe("'--update' command line option", () => {
       env: { ["TSTYCHE_TIMEOUT"]: "0.001" },
     });
 
-    expect(stdout).toBe("");
-    expect(stderr).toMatch(/^Error: Failed to fetch metadata of the 'typescript' package/);
-
-    expect(exitCode).toBe(1);
+    assert.equal(stdout, "");
+    assert.match(stderr, /^Error: Failed to fetch metadata of the 'typescript' package/);
+    assert.equal(exitCode, 1);
   });
 });

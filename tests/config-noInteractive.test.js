@@ -1,6 +1,10 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchObject } from "./__utils__/matchObject.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -10,27 +14,30 @@ test("is string?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-noInteractive", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'TSTYCHE_NO_INTERACTIVE' environment variable", () => {
-  test("has default value", async () => {
+describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
+  test("has default value", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    expect(JSON.parse(stdout)).toHaveProperty("noInteractive");
-    expect(stderr).toBe("");
+    matchObject(stdout, {
+      noInteractive: true,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when truthy, interactive elements are disabled", async () => {
+  test("when truthy, interactive elements are disabled", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -41,13 +48,16 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", () => {
       },
     });
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-tstycheNoInteractive-true-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when falsy, interactive elements are enabled", async () => {
+  test("when falsy, interactive elements are enabled", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -58,9 +68,12 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", () => {
       },
     });
 
-    expect(prettyAnsi(normalizeOutput(stdout))).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+      fileName: `${testFileName}-tstycheNoInteractive-false-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });

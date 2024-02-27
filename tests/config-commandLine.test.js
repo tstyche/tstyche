@@ -1,5 +1,8 @@
-import { afterEach, describe, expect, test } from "@jest/globals";
+import { strict as assert } from "node:assert";
+import { afterEach, describe, test } from "mocha";
 import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
+import { getTestFileName } from "./__utils__/getTestFileName.js";
+import { matchSnapshot } from "./__utils__/matchSnapshot.js";
 import { normalizeOutput } from "./__utils__/normalizeOutput.js";
 import { spawnTyche } from "./__utils__/spawnTyche.js";
 
@@ -15,14 +18,15 @@ test("is number?", () => {
 });
 `;
 
-const fixtureUrl = getFixtureUrl("config-commandLine", { generated: true });
+const testFileName = getTestFileName(import.meta.url);
+const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
 
-afterEach(async () => {
+afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'tstyche' command", () => {
-  test("when called without arguments, selects all matching files", async () => {
+describe("'tstyche' command", function() {
+  test("when called without arguments, selects all matching files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -32,13 +36,16 @@ describe("'tstyche' command", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-without-arguments-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when single search string is provided, selects matching files", async () => {
+  test("when single search string is provided, selects matching files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -48,13 +55,16 @@ describe("'tstyche' command", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["number"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-single-search-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when multiple search strings are provided, selects matching files", async () => {
+  test("when multiple search strings are provided, selects matching files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -64,13 +74,16 @@ describe("'tstyche' command", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["string", "feature"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-multiple-search-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("when relative search string is provided, selects matching files", async () => {
+  test("when relative search string is provided, selects matching files", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -80,13 +93,16 @@ describe("'tstyche' command", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["./feature/__tests__/isNumber"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-relative-search-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  test("only the files matched by the 'testFileMatch' patterns are selected", async () => {
+  test("only the files matched by the 'testFileMatch' patterns are selected", async function() {
     const config = {
       testFileMatch: ["**/feature/__tests__/**.*"],
     };
@@ -108,9 +124,12 @@ describe("'tstyche' command", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["number"]);
 
-    expect(normalizeOutput(stdout)).toMatchSnapshot("stdout");
-    expect(stderr).toBe("");
+    await matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-testFileMatch-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-    expect(exitCode).toBe(0);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });

@@ -1,6 +1,7 @@
 {
   "all": true,
   "exclude": [
+    ".yarn/**",
     "build/**/*",
     "coverage/**/*",
     "examples/**/*",
