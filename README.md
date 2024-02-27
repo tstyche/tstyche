@@ -2,8 +2,8 @@
 
 [![version][version-badge]][version-url]
 [![license][license-badge]][license-url]
-[![node][node-badge]][node-url]
-[![packagephobia][packagephobia-badge]][packagephobia-url]
+[![requirements][requirements-badge]][requirements-url]
+[![install-size][install-size-badge]][install-size-url]
 [![coverage][coverage-badge]][coverage-url]
 [![discord][discord-badge]][discord-url]
 
@@ -89,10 +89,10 @@ If you have any questions or suggestions, [start a discussion](https://github.co
 [version-url]: https://npmjs.com/package/tstyche
 [license-badge]: https://badgen.net/github/license/tstyche/tstyche
 [license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
-[node-badge]: https://badgen.net/npm/node/tstyche
-[node-url]: https://badgen.net/npm/node/tstyche
-[packagephobia-badge]: https://badgen.net/packagephobia/install/tstyche
-[packagephobia-url]: https://packagephobia.com/result?p=tstyche
+[requirements-badge]: https://badgen.net/npm/node/tstyche
+[requirements-url]: https://tstyche.org/reference/requirements
+[install-size-badge]: https://badgen.net/install-size/install/tstyche
+[install-size-url]: https://install-size.com/result?p=tstyche
 [coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
 [coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
 [discord-badge]: https://badgen.net/static/chat/on%20Discord
