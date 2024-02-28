@@ -21,11 +21,15 @@ test("includes nested", async function() {
 });
 
 test("'describe()' implementation'", function() {
-  assert.isFunction(tstyche.describe);
+  tstyche.describe("sample", () => {
+    //
+  });
 });
 
 test("'describe.only' implementation'", function() {
-  assert.isFunction(tstyche.describe.only);
+  tstyche.describe.only("sample", () => {
+    //
+  });
 });
 
 test("describe.only", async function() {
@@ -41,7 +45,9 @@ test("describe.only", async function() {
 });
 
 test("'describe.skip' implementation'", function() {
-  assert.isFunction(tstyche.describe.skip);
+  tstyche.describe.skip("sample", () => {
+    //
+  });
 });
 
 test("describe.skip", async function() {
@@ -57,7 +63,10 @@ test("describe.skip", async function() {
 });
 
 test("'describe.todo' implementation'", function() {
-  assert.isFunction(tstyche.describe.todo);
+  tstyche.describe.todo("sample");
+  tstyche.describe.todo("sample", () => {
+    //
+  });
 });
 
 test("describe.todo", async function() {

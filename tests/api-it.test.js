@@ -9,11 +9,15 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'it()' implementation", function() {
-  assert.isFunction(tstyche.it);
+  tstyche.it("sample", () => {
+    //
+  });
 });
 
 test("'it.only' implementation", function() {
-  assert.isFunction(tstyche.it.only);
+  tstyche.it.only("sample", () => {
+    //
+  });
 });
 
 test("it.only", async function() {
@@ -29,7 +33,9 @@ test("it.only", async function() {
 });
 
 test("'it.skip' implementation", function() {
-  assert.isFunction(tstyche.it.skip);
+  tstyche.it.skip("sample", () => {
+    //
+  });
 });
 
 test("it.skip", async function() {
@@ -45,7 +51,10 @@ test("it.skip", async function() {
 });
 
 test("'it.todo' implementation", function() {
-  assert.isFunction(tstyche.it.todo);
+  tstyche.it.todo("sample");
+  tstyche.it.todo("sample", () => {
+    //
+  });
 });
 
 test("it.todo", async function() {

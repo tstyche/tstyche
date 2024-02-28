@@ -12,11 +12,11 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 // TODO currently 'expect()' cannot be nested because run mode flags are not inherited
 
 test("'expect()' implementation'", function() {
-  assert.isFunction(tstyche.expect);
+  tstyche.expect(null).type.toBeNull();
 });
 
 test("'expect.fail' implementation'", function() {
-  assert.isFunction(tstyche.expect.fail);
+  tstyche.expect.fail(null).type.toBeNever();
 });
 
 test("expect.fail", async function() {
@@ -36,7 +36,7 @@ test("expect.fail", async function() {
 });
 
 test("'expect.only' implementation'", function() {
-  assert.isFunction(tstyche.expect.only);
+  tstyche.expect.only(null).type.toBeNull();
 });
 
 test("expect.only", async function() {
@@ -52,7 +52,7 @@ test("expect.only", async function() {
 });
 
 test("'expect.only.fail' implementation'", function() {
-  assert.isFunction(tstyche.expect.only.fail);
+  tstyche.expect.only.fail(null).type.toBeNever();
 });
 
 test("expect.only.fail", async function() {
@@ -72,7 +72,7 @@ test("expect.only.fail", async function() {
 });
 
 test("'expect.skip' implementation'", function() {
-  assert.isFunction(tstyche.expect.skip);
+  tstyche.expect.skip(null).type.toBeNever();
 });
 
 test("expect.skip", async function() {
@@ -88,7 +88,7 @@ test("expect.skip", async function() {
 });
 
 test("'expect.skip.fail' implementation'", function() {
-  assert.isFunction(tstyche.expect.skip.fail);
+  tstyche.expect.skip.fail(null).type.toBeNever();
 });
 
 test("expect.skip.fail", async function() {

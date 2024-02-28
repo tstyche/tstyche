@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeAssignable' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeAssignable);
+  tstyche.expect("sample").type.toBeAssignable("sample");
+  tstyche.expect("123").type.not.toBeAssignable(123);
 });
 
 test("toBeAssignable", async function() {

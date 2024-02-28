@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeUndefined' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeUndefined);
+  tstyche.expect(undefined).type.toBeUndefined();
+  tstyche.expect(null).type.not.toBeUndefined();
 });
 
 test("toBeUndefined", async function() {

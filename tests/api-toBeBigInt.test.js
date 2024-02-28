@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeBigInt' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeBigInt);
+  tstyche.expect(BigInt(123)).type.toBeBigInt();
+  tstyche.expect(123).type.not.toBeBigInt();
 });
 
 test("toBeBigInt", async function() {

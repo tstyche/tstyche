@@ -9,7 +9,11 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeUniqueSymbol' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeUniqueSymbol);
+  /** @type {unique symbol} */
+  const s = Symbol();
+
+  tstyche.expect(s).type.toBeUniqueSymbol();
+  tstyche.expect(Symbol()).type.not.toBeUniqueSymbol();
 });
 
 test("toBeUniqueSymbol", async function() {

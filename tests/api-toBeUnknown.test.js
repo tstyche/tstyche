@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeUnknown' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeUnknown);
+  tstyche.expect(/** @type {unknown} */ (null)).type.toBeUnknown();
+  tstyche.expect(/** @type {never} */ (null)).type.not.toBeUnknown();
 });
 
 test("toBeUnknown", async function() {

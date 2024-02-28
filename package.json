@@ -55,7 +55,7 @@
     "test:e2e": "mocha tests/*.js --config mocha.config.json",
     "test:examples": "tstyche examples",
     "test:schema": "mocha models/__tests__/*.js --config mocha.config.json",
-    "test:types": "tstyche tests",
+    "test:types": "tstyche typetests",
     "test:unit": "mocha source/*/__tests__/*.js --config mocha.config.json"
   },
   "devDependencies": {

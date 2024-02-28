@@ -9,7 +9,14 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toRaiseError' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toRaiseError);
+  function check() {
+    return;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+  tstyche.expect(check(false)).type.toRaiseError();
+  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+  tstyche.expect(check()).type.not.toRaiseError();
 });
 
 test("toRaiseError", async function() {

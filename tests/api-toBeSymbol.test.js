@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeSymbol' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeSymbol);
+  tstyche.expect(Symbol()).type.toBeSymbol();
+  tstyche.expect(true).type.not.toBeSymbol();
 });
 
 test("toBeSymbol", async function() {

@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeAny' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeAny);
+  tstyche.expect(/** @type {any} */ (null)).type.toBeAny();
+  tstyche.expect(/** @type {never} */ (null)).type.not.toBeAny();
 });
 
 test("toBeAny", async function() {

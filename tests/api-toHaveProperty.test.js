@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toHaveProperty' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toHaveProperty);
+  tstyche.expect({ one: true }).type.toHaveProperty("one");
+  tstyche.expect({ one: true }).type.not.toHaveProperty("two");
 });
 
 test("toHaveProperty", async function() {

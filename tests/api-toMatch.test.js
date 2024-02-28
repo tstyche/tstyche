@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toMatch' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toMatch);
+  tstyche.expect({ one: false }).type.toMatch({ one: true });
+  tstyche.expect({ one: true }).type.not.toMatch({ two: false });
 });
 
 test("toMatch", async function() {

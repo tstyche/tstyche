@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeString' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeString);
+  tstyche.expect(/** @type {string} */ ("sample")).type.toBeString();
+  tstyche.expect(true).type.not.toBeString();
 });
 
 test("toBeString", async function() {

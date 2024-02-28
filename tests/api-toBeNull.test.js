@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeNull' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toBeNull);
+  tstyche.expect(null).type.toBeNull();
+  tstyche.expect(undefined).type.not.toBeNull();
 });
 
 test("toBeNull", async function() {

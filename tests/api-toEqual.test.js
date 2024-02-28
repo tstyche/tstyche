@@ -9,7 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toEqual' implementation", function() {
-  assert.isFunction(tstyche.expect().type.toEqual);
+  tstyche.expect("sample").type.toEqual("sample");
+  tstyche.expect("123").type.not.toEqual(123);
 });
 
 test("toEqual", async function() {
