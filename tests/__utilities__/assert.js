@@ -29,8 +29,8 @@ export function matchObject(source, target) {
   }
 
   for (const targetKey of Object.keys(target)) {
-    assert.equal(targetKey in source, true, `The '${targetKey}' property does not exist in the target.`);
-    assert.deepEqual(source[targetKey], target[targetKey], `The value of the '${targetKey}' property does not match.`);
+    assert.equal(targetKey in source, true, `The '${targetKey}' property does not exist.`);
+    assert.deepEqual(source[targetKey], target[targetKey], `Values of the '${targetKey}' properties do not match.`);
   }
 }
 
