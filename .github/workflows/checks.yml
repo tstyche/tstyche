@@ -32,7 +32,7 @@ jobs:
 
   check:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
-    name: Check & Lint
+    name: Check
     needs:
       - build
     runs-on: ubuntu-latest
@@ -49,6 +49,23 @@ jobs:
       - run: yarn check:spelling
       - run: yarn check:formatting
       - run: yarn check:types
+
+  lint:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+    name: Lint
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: lts/*
+      - uses: actions/download-artifact@87c55149d96e628cc2ef7e6fc2aab372015aec85 # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
+      - run: yarn install
       - run: yarn lint
 
   test-types:
@@ -74,7 +91,6 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Test Build on Node.js v${{ matrix.node-version }}
     needs:
-      - check
       - build
     strategy:
       fail-fast: false
@@ -101,7 +117,6 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Test Build on ${{ matrix.os }}
     needs:
-      - check
       - build
     strategy:
       fail-fast: false
@@ -126,8 +141,6 @@ jobs:
   test-coverage:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Collect Test Coverage
-    needs:
-      - check
     runs-on: ubuntu-latest
 
     steps:
