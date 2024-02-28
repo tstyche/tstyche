@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -26,7 +25,7 @@ describe("'tstyche' command", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-unknown-options-stderr`,
       testFileUrl: import.meta.url,
     });
@@ -43,7 +42,7 @@ describe("'tstyche' command", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(normalizeOutput(stderr), {
+    await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-no-test-files-stderr`,
       testFileUrl: import.meta.url,
     });
@@ -60,7 +59,7 @@ describe("'tstyche' command", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(normalizeOutput(stderr), {
+    await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-no-test-files-selected-stderr`,
       testFileUrl: import.meta.url,
     });

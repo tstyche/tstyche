@@ -1,7 +1,7 @@
-import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { after, before, describe, test } from "mocha";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 

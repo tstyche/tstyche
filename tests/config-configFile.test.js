@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { matchObject } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -24,7 +23,7 @@ describe("'tstyche.config.json' file", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    matchObject(stdout, {
+    assert.matchObject(stdout, {
       failFast: false,
     });
 
@@ -43,7 +42,7 @@ describe("'tstyche.config.json' file", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    matchObject(stdout, {
+    assert.matchObject(stdout, {
       failFast: true,
     });
 
@@ -85,7 +84,7 @@ describe("'tstyche.config.json' file", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    matchObject(stdout, {
+    assert.matchObject(stdout, {
       failFast: true,
       target: ["rc"],
       testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
@@ -112,7 +111,7 @@ describe("'--config' command line option", function() {
       "--showConfig",
     ]);
 
-    matchObject(normalizeOutput(stdout), {
+    assert.matchObject(normalizeOutput(stdout), {
       config: "<<cwd>>/tests/__fixtures__/.generated/config-configFile/config/tstyche.json",
       rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile",
     });

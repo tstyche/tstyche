@@ -1,7 +1,6 @@
-import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
 import { afterEach, describe, test } from "mocha";
-import { fileDoesNotExists, fileExists, matchObject } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -26,11 +25,11 @@ describe("compiler module", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    fileDoesNotExists(compilerModuleUrl);
+    assert.fileDoesNotExists(compilerModuleUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    fileExists(compilerModuleUrl);
+    assert.fileExists(compilerModuleUrl);
 
     assert.match(stdout, /^adds TypeScript 5.2.2/);
     assert.equal(stderr, "");
@@ -44,13 +43,13 @@ describe("compiler module", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    fileDoesNotExists(compilerModuleUrl);
+    assert.fileDoesNotExists(compilerModuleUrl);
 
     await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    fileExists(compilerModuleUrl);
+    assert.fileExists(compilerModuleUrl);
 
     assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(stderr, "");
@@ -66,11 +65,11 @@ describe("store manifest", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExists(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
-    fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExists(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -83,11 +82,11 @@ describe("store manifest", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExists(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "current"]);
 
-    fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExists(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -100,11 +99,11 @@ describe("store manifest", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExists(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    fileExists(storeUrl);
+    assert.fileExists(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -144,7 +143,7 @@ describe("store manifest", function() {
       encoding: "utf8",
     });
 
-    matchObject(result, { $version: "1" });
+    assert.matchObject(result, { $version: "1" });
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);

@@ -1,7 +1,6 @@
-import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
 import { after, before, describe, test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -46,7 +45,7 @@ describe("'--help' command line option", function() {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-      await matchSnapshot(stdout.replace(version, "<<version>>"), {
+      await assert.matchSnapshot(stdout.replace(version, "<<version>>"), {
         fileName: `${testFileName}-stdout`,
         testFileUrl: import.meta.url,
       });

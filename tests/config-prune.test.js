@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { fileDoesNotExists, fileExists } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -47,11 +46,11 @@ describe("'--prune' command line option", function() {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
 
-      fileExists(storeUrl);
+      assert.fileExists(storeUrl);
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-      fileDoesNotExists(storeUrl);
+      assert.fileDoesNotExists(storeUrl);
 
       assert.equal(stdout, "");
       assert.equal(stderr, "");

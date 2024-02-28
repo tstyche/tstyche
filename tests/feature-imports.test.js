@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -11,7 +10,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 test("named imports", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["named"]);
 
-  await matchSnapshot(normalizeOutput(stdout), {
+  await assert.matchSnapshot(normalizeOutput(stdout), {
     fileName: `${testFileName}-names-imports`,
     testFileUrl: import.meta.url,
   });
@@ -23,7 +22,7 @@ test("named imports", async function() {
 test("aliased imports", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["aliased"]);
 
-  await matchSnapshot(normalizeOutput(stdout), {
+  await assert.matchSnapshot(normalizeOutput(stdout), {
     fileName: `${testFileName}-aliased-imports`,
     testFileUrl: import.meta.url,
   });
@@ -35,7 +34,7 @@ test("aliased imports", async function() {
 test("namespace imports", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["namespace"]);
 
-  await matchSnapshot(normalizeOutput(stdout), {
+  await assert.matchSnapshot(normalizeOutput(stdout), {
     fileName: `${testFileName}-namespace-imports`,
     testFileUrl: import.meta.url,
   });

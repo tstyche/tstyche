@@ -1,7 +1,6 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
-import { matchObject, matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -27,7 +26,7 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    matchObject(stdout, {
+    assert.matchObject(stdout, {
       noInteractive: true,
     });
 
@@ -46,7 +45,7 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
       },
     });
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-tstycheNoInteractive-true-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -66,7 +65,7 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
       },
     });
 
-    await matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+    await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
       fileName: `${testFileName}-tstycheNoInteractive-false-stdout`,
       testFileUrl: import.meta.url,
     });

@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -44,12 +43,12 @@ test("when syntax errors are encountered", async function() {
 
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  await matchSnapshot(normalizeOutput(stdout), {
+  await assert.matchSnapshot(normalizeOutput(stdout), {
     fileName: `${testFileName}-syntax-errors-stdout`,
     testFileUrl: import.meta.url,
   });
 
-  await matchSnapshot(stderr, {
+  await assert.matchSnapshot(stderr, {
     fileName: `${testFileName}-syntax-errors-stderr`,
     testFileUrl: import.meta.url,
   });

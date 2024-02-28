@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { fileDoesNotExists, fileExists, matchObject } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -26,7 +25,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    matchObject(normalizeOutput(stdout), {
+    assert.matchObject(normalizeOutput(stdout), {
       storePath: "<<cwd>>/tests/__fixtures__/.generated/config-storePath/.store",
     });
 
@@ -41,7 +40,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExists(storeUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
       env: {
@@ -49,7 +48,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function() {
       },
     });
 
-    fileExists(storeUrl);
+    assert.fileExists(storeUrl);
 
     assert.equal(
       normalizeOutput(stdout),

@@ -1,7 +1,6 @@
-import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
 import { afterEach, describe, test } from "mocha";
-import { fileDoesNotExists, fileExists } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -38,11 +37,11 @@ describe("'--update' command line option", function() {
 
       await writeFixture(fixtureUrl);
 
-      fileDoesNotExists(storeUrl);
+      assert.fileDoesNotExists(storeUrl);
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-      fileExists(storeUrl);
+      assert.fileExists(storeUrl);
 
       assert.equal(stdout, "");
       assert.equal(stderr, "");

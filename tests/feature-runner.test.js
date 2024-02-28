@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -20,7 +19,7 @@ describe("test files", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-empty-file`,
       testFileUrl: import.meta.url,
     });
@@ -44,7 +43,7 @@ describe("parent", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-empty-describe`,
       testFileUrl: import.meta.url,
     });
@@ -68,7 +67,7 @@ describe.skip("skipped describe", function () {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-skipped-describe`,
       testFileUrl: import.meta.url,
     });
@@ -89,7 +88,7 @@ describe.todo("and this one");
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-todo-describe`,
       testFileUrl: import.meta.url,
     });
@@ -111,7 +110,7 @@ test("empty test", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-empty-test`,
       testFileUrl: import.meta.url,
     });
@@ -133,7 +132,7 @@ test.skip("is skipped?", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-skipped-test`,
       testFileUrl: import.meta.url,
     });
@@ -154,7 +153,7 @@ test.todo("and this one");
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-todo-test`,
       testFileUrl: import.meta.url,
     });
@@ -174,7 +173,7 @@ expect<number>().type.toBeNumber();
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-only-expect`,
       testFileUrl: import.meta.url,
     });
@@ -219,7 +218,7 @@ test("'useUnknownInCatchVariables': false", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-sets-default-compiler-options`,
       testFileUrl: import.meta.url,
     });

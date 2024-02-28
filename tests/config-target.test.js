@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -39,7 +38,7 @@ describe("'--target' command line option", function() {
     const args = ["--target", "4.8"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -57,7 +56,7 @@ describe("'--target' command line option", function() {
     const args = ["--target", "4.8,5.3.2,current"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -75,7 +74,7 @@ describe("'--target' command line option", function() {
     const args = ["--target", "current"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -97,7 +96,7 @@ describe("'--target' command line option", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"]);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-overrides-target-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -115,7 +114,7 @@ describe("'--target' command line option", function() {
     const args = ["isNumber", "--target", "current"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -133,7 +132,7 @@ describe("'--target' command line option", function() {
     const args = ["--target", "current", "isString"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -157,7 +156,7 @@ describe("'target' configuration file option", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-target-4.8-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -179,7 +178,7 @@ describe("'target' configuration file option", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-target-4.8-5.3.2-current-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -201,7 +200,7 @@ describe("'target' configuration file option", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-target-current-stdout`,
       testFileUrl: import.meta.url,
     });

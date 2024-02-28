@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -32,7 +31,7 @@ describe("'testFileMatch' configuration file option", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
@@ -54,7 +53,7 @@ describe("'testFileMatch' configuration file option", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-list-item-type-stderr`,
       testFileUrl: import.meta.url,
     });

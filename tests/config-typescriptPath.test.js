@@ -1,7 +1,6 @@
-import { strict as assert } from "node:assert";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, test } from "mocha";
-import { matchObject } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -25,7 +24,7 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    matchObject(normalizeOutput(stdout), {
+    assert.matchObject(normalizeOutput(stdout), {
       typescriptPath: "<<cwd>>/node_modules/typescript/lib/typescript.js",
     });
 

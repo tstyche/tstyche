@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -11,12 +10,12 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 test("handles nested 'describe()' or 'it()'", async function() {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-nested"]);
 
-  await matchSnapshot(normalizeOutput(stdout), {
+  await assert.matchSnapshot(normalizeOutput(stdout), {
     fileName: `${testFileName}-handles-nested-stdout`,
     testFileUrl: import.meta.url,
   });
 
-  await matchSnapshot(stderr, {
+  await assert.matchSnapshot(stderr, {
     fileName: `${testFileName}-handles-nested-stderr`,
     testFileUrl: import.meta.url,
   });

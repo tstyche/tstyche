@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -27,7 +26,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-unknown-options-stderr`,
       testFileUrl: import.meta.url,
     });
@@ -48,7 +47,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
@@ -71,7 +70,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-tabs-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
@@ -90,7 +89,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-root-value`,
       testFileUrl: import.meta.url,
     });
@@ -111,7 +110,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-syntax-error`,
       testFileUrl: import.meta.url,
     });
@@ -132,7 +131,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-single-quoted-option-names`,
       testFileUrl: import.meta.url,
     });
@@ -153,7 +152,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-single-quoted-option-values`,
       testFileUrl: import.meta.url,
     });
@@ -174,7 +173,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.equal(stdout, "");
 
-    await matchSnapshot(stderr, {
+    await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-single-quoted-list-values`,
       testFileUrl: import.meta.url,
     });

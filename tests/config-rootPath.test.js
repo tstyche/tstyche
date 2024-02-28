@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { matchObject } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -18,7 +17,7 @@ describe("'rootPath' configuration file option", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    matchObject(normalizeOutput(stdout), {
+    assert.matchObject(normalizeOutput(stdout), {
       rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath",
     });
 
@@ -41,7 +40,7 @@ describe("'rootPath' configuration file option", function() {
       "--showConfig",
     ]);
 
-    matchObject(normalizeOutput(stdout), {
+    assert.matchObject(normalizeOutput(stdout), {
       config: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
       rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config",
     });
@@ -65,7 +64,7 @@ describe("'rootPath' configuration file option", function() {
       "--showConfig",
     ]);
 
-    matchObject(normalizeOutput(stdout), {
+    assert.matchObject(normalizeOutput(stdout), {
       config: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
       rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath",
     });

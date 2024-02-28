@@ -1,6 +1,5 @@
-import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { matchSnapshot } from "./__utilities__/assert.js";
+import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -35,7 +34,7 @@ describe("'tstyche' command", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-without-arguments-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -54,7 +53,7 @@ describe("'tstyche' command", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["number"]);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-single-search-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -73,7 +72,7 @@ describe("'tstyche' command", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["string", "feature"]);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-multiple-search-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -92,7 +91,7 @@ describe("'tstyche' command", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["./feature/__tests__/isNumber"]);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-relative-search-stdout`,
       testFileUrl: import.meta.url,
     });
@@ -123,7 +122,7 @@ describe("'tstyche' command", function() {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["number"]);
 
-    await matchSnapshot(normalizeOutput(stdout), {
+    await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-testFileMatch-stdout`,
       testFileUrl: import.meta.url,
     });
