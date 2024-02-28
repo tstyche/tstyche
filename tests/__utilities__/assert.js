@@ -2,10 +2,7 @@ import { strict as assert } from "node:assert";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 
-export { strictEqual as equal } from "node:assert";
-export { notStrictEqual as notEqual } from "node:assert";
-export { match } from "node:assert";
-export { doesNotMatch } from "node:assert";
+export { doesNotMatch, strictEqual as equal, match, notStrictEqual as notEqual } from "node:assert";
 
 /**
  * @param {string | URL} source
@@ -19,13 +16,6 @@ export function fileExists(source) {
  */
 export function fileDoesNotExists(source) {
   assert.equal(existsSync(source), false, `File ${source.toString()} exists.`);
-}
-
-/**
- * @param {object} source
- */
-export function isFunction(source) {
-  assert(typeof source === "function");
 }
 
 /**
