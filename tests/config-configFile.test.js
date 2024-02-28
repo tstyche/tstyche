@@ -1,10 +1,9 @@
 import { strict as assert } from "node:assert";
 import { afterEach, describe, test } from "mocha";
-import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
-import { getTestFileName } from "./__utils__/getTestFileName.js";
-import { matchObject } from "./__utils__/matchObject.js";
-import { normalizeOutput } from "./__utils__/normalizeOutput.js";
-import { spawnTyche } from "./__utils__/spawnTyche.js";
+import { matchObject } from "./__utilities__/assert.js";
+import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import { normalizeOutput } from "./__utilities__/output.js";
+import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -13,7 +12,7 @@ test("is string?", () => {
 `;
 
 const testFileName = getTestFileName(import.meta.url);
-const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
+const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 afterEach(async function() {
   await clearFixture(fixtureUrl);

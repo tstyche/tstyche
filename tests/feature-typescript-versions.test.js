@@ -2,9 +2,8 @@ import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { after, before, describe, test } from "mocha";
-import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
-import { getTestFileName } from "./__utils__/getTestFileName.js";
-import { spawnTyche } from "./__utils__/spawnTyche.js";
+import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const toBeAssignableTestText = `import { expect, test } from "tstyche";
 
@@ -80,7 +79,7 @@ test("Matchers", () => {
 });`;
 
 const testFileName = getTestFileName(import.meta.url);
-const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
+const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await writeFixture(fixtureUrl);
 

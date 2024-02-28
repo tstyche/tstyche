@@ -1,17 +1,16 @@
 import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
 import { after, before, describe, test } from "mocha";
-import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
-import { getTestFileName } from "./__utils__/getTestFileName.js";
-import { matchSnapshot } from "./__utils__/matchSnapshot.js";
-import { spawnTyche } from "./__utils__/spawnTyche.js";
+import { matchSnapshot } from "./__utilities__/assert.js";
+import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const packageConfigText = await fs.readFile(new URL("../package.json", import.meta.url), { encoding: "utf8" });
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
 const testFileName = getTestFileName(import.meta.url);
-const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
+const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 before(async function() {
   await writeFixture(fixtureUrl);

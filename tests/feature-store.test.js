@@ -1,11 +1,9 @@
 import { strict as assert } from "node:assert";
-import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { afterEach, describe, test } from "mocha";
-import { clearFixture, getFixtureUrl, writeFixture } from "./__utils__/fixtureFactory.js";
-import { getTestFileName } from "./__utils__/getTestFileName.js";
-import { matchObject } from "./__utils__/matchObject.js";
-import { spawnTyche } from "./__utils__/spawnTyche.js";
+import { fileDoesNotExists, fileExists, matchObject } from "./__utilities__/assert.js";
+import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -14,7 +12,7 @@ test("is string?", () => {
 `;
 
 const testFileName = getTestFileName(import.meta.url);
-const fixtureUrl = getFixtureUrl(testFileName, { generated: true });
+const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 afterEach(async function() {
   await clearFixture(fixtureUrl);
@@ -28,11 +26,11 @@ describe("compiler module", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.equal(existsSync(compilerModuleUrl), false);
+    fileDoesNotExists(compilerModuleUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.equal(existsSync(compilerModuleUrl), true);
+    fileExists(compilerModuleUrl);
 
     assert.match(stdout, /^adds TypeScript 5.2.2/);
     assert.equal(stderr, "");
@@ -46,13 +44,13 @@ describe("compiler module", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.equal(existsSync(compilerModuleUrl), false);
+    fileDoesNotExists(compilerModuleUrl);
 
     await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.equal(existsSync(compilerModuleUrl), true);
+    fileExists(compilerModuleUrl);
 
     assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(stderr, "");
@@ -68,11 +66,11 @@ describe("store manifest", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.equal(existsSync(storeUrl), false);
+    fileDoesNotExists(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
-    assert.equal(existsSync(storeUrl), false);
+    fileDoesNotExists(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -85,11 +83,11 @@ describe("store manifest", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.equal(existsSync(storeUrl), false);
+    fileDoesNotExists(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "current"]);
 
-    assert.equal(existsSync(storeUrl), false);
+    fileDoesNotExists(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -102,11 +100,11 @@ describe("store manifest", function() {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.equal(existsSync(storeUrl), false);
+    fileDoesNotExists(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.equal(existsSync(storeUrl), true);
+    fileExists(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);

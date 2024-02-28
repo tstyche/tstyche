@@ -1,14 +1,13 @@
 import { strict as assert } from "node:assert";
 import { test } from "mocha";
 import * as tstyche from "tstyche";
-import { getFixtureUrl } from "./__utils__/fixtureFactory.js";
-import { getTestFileName } from "./__utils__/getTestFileName.js";
-import { matchSnapshot } from "./__utils__/matchSnapshot.js";
-import { normalizeOutput } from "./__utils__/normalizeOutput.js";
-import { spawnTyche } from "./__utils__/spawnTyche.js";
+import { matchSnapshot } from "./__utilities__/assert.js";
+import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
+import { normalizeOutput } from "./__utilities__/output.js";
+import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const testFileName = getTestFileName(import.meta.url);
-const fixtureUrl = getFixtureUrl(testFileName);
+const fixtureUrl = getFixtureFileUrl(testFileName);
 
 // TODO check for validation errors
 // TODO currently 'expect()' cannot be nested because run mode flags are not inherited
