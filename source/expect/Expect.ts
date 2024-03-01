@@ -5,6 +5,8 @@ import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToBeAssignable } from "./ToBeAssignable.js";
+import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
+import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToEqual } from "./ToEqual.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
@@ -14,6 +16,8 @@ import type { MatchResult, TypeChecker } from "./types.js";
 export class Expect {
   toBeAny: PrimitiveTypeMatcher;
   toBeAssignable: ToBeAssignable;
+  toBeAssignableTo: ToBeAssignableTo;
+  toBeAssignableWith: ToBeAssignableWith;
   toBeBigInt: PrimitiveTypeMatcher;
   toBeBoolean: PrimitiveTypeMatcher;
   toBeNever: PrimitiveTypeMatcher;
@@ -36,6 +40,8 @@ export class Expect {
   ) {
     this.toBeAny = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Any);
     this.toBeAssignable = new ToBeAssignable(this.typeChecker);
+    this.toBeAssignableTo = new ToBeAssignableTo(this.typeChecker);
+    this.toBeAssignableWith = new ToBeAssignableWith(this.typeChecker);
     this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt);
     this.toBeBoolean = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Boolean);
     this.toBeNever = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Never);
@@ -86,6 +92,8 @@ export class Expect {
 
     switch (matcherNameText) {
       case "toBeAssignable":
+      case "toBeAssignableTo":
+      case "toBeAssignableWith":
       case "toEqual":
       case "toMatch":
         if (assertion.source[0] == null) {

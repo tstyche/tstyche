@@ -58,7 +58,7 @@ test("handles numbers", () => {
 
 Here is the list of all matchers:
 
-- `.toBeAssignable()`, `.toEqual()`, `.toMatch()` compares types or types of expression,
+- `.toBeAssignableTo()`, `.toBeAssignableWith()`, `.toEqual()`, `.toMatch()` compares types or types of expression,
 - `.toHaveProperty()` looks up keys on an object type,
 - `.toRaiseError()` captures the type error message or code,
 - `.toBeString()`, `.toBeNumber()`, `.toBeVoid()` and 9 more shorthand checks for primitive types.

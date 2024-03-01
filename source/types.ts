@@ -79,6 +79,32 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
+   * Checks if the source type is assignable to the target type.
+   */
+  toBeAssignableTo: {
+    /**
+     * Checks if the source type is assignable to the target type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the source type is assignable to type of the target expression.
+     */
+    (target: unknown): void;
+  };
+  /**
+   * Checks if the source type is assignable with the target type.
+   */
+  toBeAssignableWith: {
+    /**
+     * Checks if the source type is assignable with the target type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the source type is assignable with type of the target expression.
+     */
+    (target: unknown): void;
+  };
+  /**
    * Checks if the source type is `bigint`.
    */
   toBeBigInt: () => void;
