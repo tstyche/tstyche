@@ -62,7 +62,7 @@ interface Test {
 
 interface Matchers {
   /**
-   * Checks if the `any` type is identical to the source type.
+   * Checks if the source type is `any`.
    */
   toBeAny: () => void;
   /**
