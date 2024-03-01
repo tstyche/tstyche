@@ -32,27 +32,25 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", function() {
     assert.equal(exitCode, 0);
   });
 
-  describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", function() {
-    test("uses provided path", async function() {
-      await writeFixture(fixtureUrl, {
-        ["__typetests__/dummy.test.ts"]: isStringTestText,
-      });
-
-      await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"]);
-
-      const typescriptPath = fileURLToPath(
-        new URL("./.store/5.2.2/node_modules/typescript/lib/typescript.js", fixtureUrl),
-      );
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-        env: {
-          ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath,
-        },
-      });
-
-      assert.match(stdout, /^uses TypeScript 5.2.2/);
-      assert.equal(stderr, "");
-      assert.equal(exitCode, 0);
+  test("uses provided path", async function() {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
+
+    await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"]);
+
+    const typescriptPath = fileURLToPath(
+      new URL("./.store/5.2.2/node_modules/typescript/lib/typescript.js", fixtureUrl),
+    );
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
+      env: {
+        ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath,
+      },
+    });
+
+    assert.match(stdout, /^uses TypeScript 5.2.2/);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });
