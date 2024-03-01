@@ -9,6 +9,8 @@ export class CollectService {
   readonly matcherIdentifiers = [
     "toBeAny",
     "toBeAssignable",
+    "toBeAssignableTo",
+    "toBeAssignableWith",
     "toBeBigInt",
     "toBeBoolean",
     "toBeNever",

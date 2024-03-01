@@ -17,23 +17,23 @@ interface Size {
 }
 declare function getSize(): Size;
 
-test("difference from '.toBeAssignable()'", () => {
+test("difference from '.toBeAssignableTo()'", () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  expect<{ a: string }>().type.toBeAssignable<any>();
+  expect<any>().type.toBeAssignableTo<string>();
   // But all types are not subtypes of the 'any' type
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  expect<any>().type.not.toMatch<{ a: string }>();
+  expect<any>().type.not.toMatch<string>();
 
-  expect<Direction>().type.toBeAssignable<number>();
+  expect<number>().type.toBeAssignableTo<Direction>();
   // But an enum type is not a subtype of a number
   expect<number>().type.not.toMatch<Direction>();
 
-  expect<{ a: string; b?: number }>().type.toBeAssignable<{ a: string }>();
+  expect<{ a: string }>().type.toBeAssignableTo<{ a: string; b?: number }>();
   // But an object type with an optional property is not a subtype
   // of the same object type without that particular property
   expect<{ a: string }>().type.not.toMatch<{ a: string; b?: number }>();
 
-  expect<{ a: string }>().type.toBeAssignable<{ readonly a: string }>();
+  expect<{ readonly a: string }>().type.toBeAssignableTo<{ a: string }>();
   // But an object type with a particular property is not a subtype
   // of the same object type with that property marked 'readonly'
   expect<{ readonly a: string }>().type.not.toMatch<{ a: string }>();

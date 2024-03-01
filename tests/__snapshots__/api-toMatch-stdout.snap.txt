@@ -1,7 +1,7 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/toMatch.tst.ts
-  + difference from '.toBeAssignable()'
+  + difference from '.toBeAssignableTo()'
   received type
     × matches expected type
     × does NOT match expected type

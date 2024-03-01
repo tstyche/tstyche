@@ -200,7 +200,7 @@ test("'strictFunctionTypes': true", () => {
     return a;
   }
 
-  expect<(a: string | number) => void>().type.not.toBeAssignable(y);
+  expect<(a: string | number) => void>().type.not.toBeAssignableWith(y);
 });
 
 test("'useUnknownInCatchVariables': false", () => {

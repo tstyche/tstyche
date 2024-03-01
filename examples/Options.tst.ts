@@ -6,9 +6,9 @@ interface Options {
 }
 
 test("is assignable?", () => {
-  expect<Options>().type.toBeAssignable({});
+  expect<Options>().type.toBeAssignableWith({});
 
-  expect<Options>().type.toBeAssignable({
+  expect<Options>().type.toBeAssignableWith({
     locale: ["en" as const, "de" as const],
     root: "./",
   });
@@ -26,10 +26,10 @@ test("is a match?", () => {
   expect(options).type.toMatch<{ timers?: "fake" | "real" }>();
 });
 
-expect<"fake" | "real">().type.toBeAssignable<"fake">();
+expect<"fake" | "real">().type.toBeAssignableWith<"fake">();
 // But type '"fake" | "real"' is not assignable to type '"fake"'
 expect<"fake" | "real">().type.not.toMatch<"fake">();
 
-expect<string>().type.toBeAssignable<"node">();
+expect<string>().type.toBeAssignableWith<"node">();
 // But type 'string' is not assignable to type '"node"'
 expect<string>().type.not.toMatch<"node">();
