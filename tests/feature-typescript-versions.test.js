@@ -133,7 +133,7 @@ describe("TypeScript 4.x", function() {
   ];
 
   testCases.forEach((version) => {
-    test("uses TypeScript %s as current target", async function() {
+    test(`uses TypeScript ${version} as current target`, async function() {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
       const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
@@ -167,7 +167,7 @@ describe("TypeScript 5.x", function() {
   ];
 
   testCases.forEach((version) => {
-    test("uses TypeScript %s as current target", async function() {
+    test(`uses TypeScript ${version} as current target`, async function() {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
       const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
