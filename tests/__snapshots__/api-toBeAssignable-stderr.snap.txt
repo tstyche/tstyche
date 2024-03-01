@@ -1,4 +1,4 @@
-Error: Type '{ middle: string; }' is not assignable to type 'Names'.
+Error: Type 'Names' is not assignable with type '{ middle: string; }'.
 
   12 |     expect<Names>().type.toBeAssignable({ first: "Rose", last: undefined });
   13 | 
@@ -10,7 +10,7 @@ Error: Type '{ middle: string; }' is not assignable to type 'Names'.
 
        at ./__typetests__/toBeAssignable.tst.ts:14:26 ❭ received type ❭ is assignable expected value?
 
-Error: Type '{ first: string; }' is assignable to type 'Names'.
+Error: Type 'Names' is assignable with type '{ first: string; }'.
 
   18 |     expect<Names>().type.not.toBeAssignable({ middle: "O." });
   19 | 
@@ -22,7 +22,7 @@ Error: Type '{ first: string; }' is assignable to type 'Names'.
 
        at ./__typetests__/toBeAssignable.tst.ts:20:30 ❭ received type ❭ is NOT assignable expected value?
 
-Error: Type '{ middle: string; }' is not assignable to type 'Names'.
+Error: Type 'Names' is not assignable with type '{ middle: string; }'.
 
   27 |     expect<Names>().type.toBeAssignable<{ first: string; last?: string }>();
   28 | 
@@ -34,7 +34,7 @@ Error: Type '{ middle: string; }' is not assignable to type 'Names'.
 
        at ./__typetests__/toBeAssignable.tst.ts:29:26 ❭ received type ❭ is assignable expected type?
 
-Error: Type '{ first: string; }' is assignable to type 'Names'.
+Error: Type 'Names' is assignable with type '{ first: string; }'.
 
   33 |     expect<Names>().type.not.toBeAssignable<{ middle: string }>();
   34 | 
@@ -46,7 +46,7 @@ Error: Type '{ first: string; }' is assignable to type 'Names'.
 
        at ./__typetests__/toBeAssignable.tst.ts:35:30 ❭ received type ❭ is NOT assignable expected type?
 
-Error: Type '{ middle: string; }' is not assignable to type '{ first: string; last: string; }'.
+Error: Type '{ first: string; last: string; }' is not assignable with type '{ middle: string; }'.
 
   44 |     });
   45 | 
@@ -58,7 +58,7 @@ Error: Type '{ middle: string; }' is not assignable to type '{ first: string; la
 
        at ./__typetests__/toBeAssignable.tst.ts:46:50 ❭ received value ❭ is assignable expected value?
 
-Error: Type '{ first: string; }' is assignable to type '{ first: string; }'.
+Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
 
   54 |     });
   55 | 
@@ -70,7 +70,7 @@ Error: Type '{ first: string; }' is assignable to type '{ first: string; }'.
 
        at ./__typetests__/toBeAssignable.tst.ts:56:40 ❭ received value ❭ is NOT assignable expected value?
 
-Error: Type '{ middle: string; }' is not assignable to type '{ first: string; last: string; }'.
+Error: Type '{ first: string; last: string; }' is not assignable with type '{ middle: string; }'.
 
   63 |     }>();
   64 | 
@@ -82,7 +82,7 @@ Error: Type '{ middle: string; }' is not assignable to type '{ first: string; la
 
        at ./__typetests__/toBeAssignable.tst.ts:65:50 ❭ received value ❭ is assignable expected type?
 
-Error: Type '{ first: string; }' is assignable to type '{ first: string; }'.
+Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
 
   73 |     }>();
   74 | 

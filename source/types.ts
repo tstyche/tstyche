@@ -66,17 +66,17 @@ interface Matchers {
    */
   toBeAny: () => void;
   /**
-   * Checks if the target type is assignable to the source type.
+   * Checks if the source type is assignable with the target type.
    *
    * @deprecated This matcher has been renamed to `.toBeAssignableWith()`.
    */
   toBeAssignable: {
     /**
-     * Checks if the target type is assignable to the source type.
+     * Checks if the source type is assignable with the target type.
      */
     <Target>(): void;
     /**
-     * Checks if type of the target expression is assignable to the source type.
+     * Checks if the source type is assignable with type of the target expression.
      */
     (target: unknown): void;
   };
@@ -151,15 +151,15 @@ interface Matchers {
    */
   toBeVoid: () => void;
   /**
-   * Check if the target type is identical to the source type.
+   * Checks if the source type is identical to the target type.
    */
   toEqual: {
     /**
-     * Checks if the target type is identical to the source type.
+     * Checks if the source type is identical to the target type.
      */
     <Target>(): void;
     /**
-     * Checks if type of the target expression is identical to the source type.
+     * Checks if the source type is identical to type of the target expression.
      */
     (target: unknown): void;
   };
@@ -168,15 +168,15 @@ interface Matchers {
    */
   toHaveProperty: (key: string | number | symbol) => void;
   /**
-   * Checks if the target type is a subtype the source type.
+   * Checks if the source type matches the target type.
    */
   toMatch: {
     /**
-     * Checks if the target type is a subtype the source type.
+     * Checks if the source type matches the target type.
      */
     <Target>(): void;
     /**
-     * Checks if type of the target expression is a subtype the source type.
+     * Checks if the source type matches type of the target expression.
      */
     (target: unknown): void;
   };

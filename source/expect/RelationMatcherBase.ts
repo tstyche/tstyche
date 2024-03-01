@@ -5,6 +5,7 @@ import type { MatchResult, Relation, TypeChecker } from "./types.js";
 export abstract class RelationMatcherBase {
   abstract relation: Relation;
   abstract relationExplanationText: string;
+  abstract relationExplanationVerb: string;
 
   constructor(public typeChecker: TypeChecker) {}
 
@@ -13,8 +14,16 @@ export abstract class RelationMatcherBase {
     const targetTypeText = this.typeChecker.typeToString(targetType);
 
     return isNot
-      ? [Diagnostic.error(`Type '${targetTypeText}' is ${this.relationExplanationText} type '${sourceTypeText}'.`)]
-      : [Diagnostic.error(`Type '${targetTypeText}' is not ${this.relationExplanationText} type '${sourceTypeText}'.`)];
+      ? [
+        Diagnostic.error(
+          `Type '${sourceTypeText}' ${this.relationExplanationVerb} ${this.relationExplanationText} type '${targetTypeText}'.`,
+        ),
+      ]
+      : [
+        Diagnostic.error(
+          `Type '${sourceTypeText}' ${this.relationExplanationVerb} not ${this.relationExplanationText} type '${targetTypeText}'.`,
+        ),
+      ];
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {
