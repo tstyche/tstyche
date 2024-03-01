@@ -4,7 +4,6 @@ import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
-import { ToBeAssignable } from "./ToBeAssignable.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToEqual } from "./ToEqual.js";
@@ -15,7 +14,7 @@ import type { MatchResult, TypeChecker } from "./types.js";
 
 export class Expect {
   toBeAny: PrimitiveTypeMatcher;
-  toBeAssignable: ToBeAssignable;
+  toBeAssignable: ToBeAssignableWith;
   toBeAssignableTo: ToBeAssignableTo;
   toBeAssignableWith: ToBeAssignableWith;
   toBeBigInt: PrimitiveTypeMatcher;
@@ -39,7 +38,7 @@ export class Expect {
     public typeChecker: TypeChecker,
   ) {
     this.toBeAny = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Any);
-    this.toBeAssignable = new ToBeAssignable(this.typeChecker);
+    this.toBeAssignable = new ToBeAssignableWith(this.typeChecker);
     this.toBeAssignableTo = new ToBeAssignableTo(this.typeChecker);
     this.toBeAssignableWith = new ToBeAssignableWith(this.typeChecker);
     this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt);
