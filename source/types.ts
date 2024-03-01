@@ -67,6 +67,8 @@ interface Matchers {
   toBeAny: () => void;
   /**
    * Checks if the target type is assignable to the source type.
+   *
+   * @deprecated This matcher has been renamed to `.toBeAssignableWith()`.
    */
   toBeAssignable: {
     /**
