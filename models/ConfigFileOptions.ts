@@ -9,9 +9,9 @@ export interface ConfigFileOptions {
      */
     failFast?: boolean;
     /**
-     * The list of allowed file extensions.
+     * The allowed file extension list.
      */
-    fileExtensions?: Array<string>;
+    fileExtension?: Array<string>;
     /**
      * The path to a directory containing files of a test project.
      */

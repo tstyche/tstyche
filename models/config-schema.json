@@ -6,7 +6,7 @@
       "description": "Stop running tests after the first failed assertion.",
       "type": "boolean"
     },
-    "fileExtensions": {
+    "fileExtension": {
       "default": [
         "ts",
         "tsx",
@@ -17,7 +17,7 @@
         "mjs",
         "cjs"
       ],
-      "description": "The list of allowed file extensions.",
+      "description": "The allowed file extension list.",
       "items": {
         "type": "string"
       },

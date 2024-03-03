@@ -10,10 +10,10 @@ afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-describe("'fileExtensions' configuration file option", function() {
+describe("'fileExtension' configuration file option", function() {
   test("when option value is not a list", async function() {
     const config = {
-      fileExtensions: "json",
+      fileExtension: "json",
     };
 
     await writeFixture(fixtureUrl, {
@@ -34,7 +34,7 @@ describe("'fileExtensions' configuration file option", function() {
 
   test("when item of the list is not a string", async function() {
     const config = {
-      fileExtensions: ["json", true],
+      fileExtension: ["json", true],
     };
 
     await writeFixture(fixtureUrl, {
