@@ -23,6 +23,7 @@ export class ConfigService {
 
   static #defaultOptions: Required<ConfigFileOptions> = {
     failFast: false,
+    fileExtensions: ["ts", "tsx", "mts", "cts", "js", "jsx", "mjs", "cjs"],
     rootPath: Path.resolve("./"),
     target: [Environment.typescriptPath == null ? "latest" : "current"],
     testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
@@ -106,11 +107,11 @@ export class ConfigService {
   }
 
   selectTestFiles(): Array<string> {
-    const { pathMatch, rootPath, testFileMatch } = this.resolveConfig();
+    const { fileExtensions, pathMatch, rootPath, testFileMatch } = this.resolveConfig();
 
     let testFilePaths = this.compiler.sys.readDirectory(
       rootPath,
-      ["ts", "tsx", "mts", "cts", "js", "jsx", "mjs", "cjs"],
+      fileExtensions,
       /* exclude */ undefined,
       /* include */ testFileMatch,
     );

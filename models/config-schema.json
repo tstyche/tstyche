@@ -6,6 +6,24 @@
       "description": "Stop running tests after the first failed assertion.",
       "type": "boolean"
     },
+    "fileExtensions": {
+      "default": [
+        "ts",
+        "tsx",
+        "mts",
+        "cts",
+        "js",
+        "jsx",
+        "mjs",
+        "cjs"
+      ],
+      "description": "The list of allowed file extensions.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
     "rootPath": {
       "default": "./",
       "description": "The path to a directory containing files of a test project.",
