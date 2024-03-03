@@ -40,6 +40,10 @@ describe("config-schema.json", function() {
         testCase: "'failFast' option",
       },
       {
+        fixtureFileName: "valid-fileExtensions.json",
+        testCase: "'fileExtensions' option",
+      },
+      {
         fixtureFileName: "valid-rootPath.json",
         testCase: "'rootPath' option",
       },
@@ -68,6 +72,18 @@ describe("config-schema.json", function() {
       {
         fixtureFileName: "invalid-failFast.json",
         testCase: "value of 'failFast' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-fileExtensions-1.json",
+        testCase: "item of 'fileExtensions' option must be of type string",
+      },
+      {
+        fixtureFileName: "invalid-fileExtensions-3.json",
+        testCase: "items of 'fileExtensions' option must NOT be identical",
+      },
+      {
+        fixtureFileName: "invalid-fileExtensions-4.json",
+        testCase: "value of 'fileExtensions' option must be of type Array",
       },
       {
         fixtureFileName: "invalid-rootPath.json",
