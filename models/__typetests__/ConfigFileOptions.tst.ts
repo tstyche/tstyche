@@ -21,7 +21,7 @@ describe("ConfigFileOptions", () => {
 
   test("'fileExtensions' option", () => {
     expect<tstyche.ConfigFileOptions>().type.toMatch<{
-      target?: Array<string>;
+      fileExtensions?: Array<string>;
     }>();
   });
 
