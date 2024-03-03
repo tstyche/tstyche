@@ -50,13 +50,13 @@ export class OptionDefinitionsMap {
 
     {
       brand: OptionBrand.List,
-      description: "The list of allowed file extensions.",
+      description: "The allowed file extension list.",
       group: OptionGroup.ConfigFile,
       items: {
         brand: OptionBrand.String,
-        name: "fileExtensions",
+        name: "fileExtension",
       },
-      name: "fileExtensions",
+      name: "fileExtension",
     },
 
     {

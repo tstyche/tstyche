@@ -1,0 +1,6 @@
+[
+  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/ctsSample.test.cts",
+  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/mtsSample.test.mts",
+  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/tsSample.test.ts",
+  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/tsxSample.test.tsx"
+]

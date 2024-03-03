@@ -1,6 +1,6 @@
-Error: Item of the 'fileExtensions' list must be of type string.
+Error: Item of the 'fileExtension' list must be of type string.
 
-  2 |   "fileExtensions": [
+  2 |   "fileExtension": [
   3 |     "json",
 > 4 |     true
     |     ^

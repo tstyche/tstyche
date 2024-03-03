@@ -1,4 +1,4 @@
 {
   "$schema": "../../config-schema.json",
-  "fileExtensions": "json"
+  "fileExtension": "json"
 }

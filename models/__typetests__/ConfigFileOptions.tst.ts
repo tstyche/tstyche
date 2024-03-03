@@ -19,9 +19,9 @@ describe("ConfigFileOptions", () => {
     }>();
   });
 
-  test("'fileExtensions' option", () => {
+  test("'fileExtension' option", () => {
     expect<tstyche.ConfigFileOptions>().type.toMatch<{
-      fileExtensions?: Array<string>;
+      fileExtension?: Array<string>;
     }>();
   });
 
