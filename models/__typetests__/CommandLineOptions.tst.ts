@@ -5,7 +5,7 @@ const options: tstyche.CommandLineOptions = {};
 
 describe("CommandLineOptions", () => {
   test("all options", () => {
-    expect(options).type.toBeAssignable({
+    expect(options).type.toBeAssignableWith({
       config: "./config/tstyche.json",
       failFast: true,
       help: true,
