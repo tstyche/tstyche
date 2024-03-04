@@ -73,10 +73,14 @@ interface Matchers {
   toBeAssignable: {
     /**
      * Checks if the source type is assignable with the target type.
+     *
+     * @deprecated This matcher has been renamed to `.toBeAssignableWith()`.
      */
     <Target>(): void;
     /**
      * Checks if the source type is assignable with type of the target expression.
+     *
+     * @deprecated This matcher has been renamed to `.toBeAssignableWith()`.
      */
     (target: unknown): void;
   };

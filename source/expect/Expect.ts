@@ -95,6 +95,10 @@ export class Expect {
       case "toBeAssignableWith":
       case "toEqual":
       case "toMatch":
+        if (matcherNameText === "toBeAssignable") {
+          this.#onDeprecatedMatcher(assertion, expectResult, "toBeAssignableWith");
+        }
+
         if (assertion.source[0] == null) {
           this.#onSourceArgumentMustBeProvided(assertion, expectResult);
 
@@ -196,6 +200,25 @@ export class Expect {
 
         return;
     }
+  }
+
+  #onDeprecatedMatcher(assertion: Assertion, expectResult: ExpectResult, newNameText: string) {
+    const oldNameText = assertion.matcherName.getText();
+
+    const text = [
+      `'.${oldNameText}()' has been renamed to '.${newNameText}()'.`,
+      `Please update the test. '.${oldNameText}()' is deprecated and will be removed in TSTyche 2.`,
+    ];
+    const origin = {
+      end: assertion.matcherName.getEnd(),
+      file: assertion.matcherName.getSourceFile(),
+      start: assertion.matcherName.getStart(),
+    };
+
+    EventEmitter.dispatch([
+      "expect:error",
+      { diagnostics: [Diagnostic.warning(text, origin)], result: expectResult },
+    ]);
   }
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {

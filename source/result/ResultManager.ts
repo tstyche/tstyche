@@ -190,6 +190,10 @@ export class ResultManager {
         break;
 
       case "expect:error":
+        if (payload.diagnostics.every((diagnostic) => diagnostic.category === DiagnosticCategory.Warning)) {
+          return;
+        }
+
         this.#result!.expectCount.failed++;
         this.#fileResult!.expectCount.failed++;
 
