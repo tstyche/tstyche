@@ -73,7 +73,7 @@
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-mocha": "10.3.0",
     "eslint-plugin-simple-import-sort": "12.0.0",
-    "magic-string": "0.30.8",
+    "magic-string": "0.30.7",
     "mocha": "10.3.0",
     "pretty-ansi": "2.0.0",
     "rollup": "4.12.0",
