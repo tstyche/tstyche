@@ -5,7 +5,7 @@ import type { MatchResult, Relation, TypeChecker } from "./types.js";
 export abstract class RelationMatcherBase {
   abstract relation: Relation;
   abstract relationExplanationText: string;
-  abstract relationExplanationVerb: string;
+  relationExplanationVerb = "is";
 
   constructor(public typeChecker: TypeChecker) {}
 
