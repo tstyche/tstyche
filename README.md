@@ -25,7 +25,7 @@ function firstItem<T>(target: Array<T>): T | undefined {
 }
 
 test("firstItem", () => {
-  expect(firstItem(["a", "b", "c"])).type.toEqual<string | undefined>();
+  expect(firstItem(["a", "b", "c"])).type.toBe<string | undefined>();
 
   expect(firstItem()).type.toRaiseError("Expected 1 argument");
 });
@@ -52,13 +52,13 @@ function secondItem<T>(target: Array<T>): T | undefined {
 test("handles numbers", () => {
   assert.strictEqual(secondItem([1, 2, 3]), 2);
 
-  tstyche.expect(secondItem([1, 2, 3])).type.toEqual<number | undefined>();
+  tstyche.expect(secondItem([1, 2, 3])).type.toBe<number | undefined>();
 });
 ```
 
 Here is the list of all matchers:
 
-- `.toBeAssignableTo()`, `.toBeAssignableWith()`, `.toEqual()`, `.toMatch()` compares types or types of expression,
+- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()`, `.toMatch()` compare types or types of expression,
 - `.toHaveProperty()` looks up keys on an object type,
 - `.toRaiseError()` captures the type error message or code,
 - `.toBeString()`, `.toBeNumber()`, `.toBeVoid()` and 9 more shorthand checks for primitive types.

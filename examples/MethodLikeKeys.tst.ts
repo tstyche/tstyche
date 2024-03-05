@@ -13,6 +13,6 @@ interface Sample {
   getWidth?: () => number;
 }
 
-test("is equal?", () => {
-  expect<MethodLikeKeys<Sample>>().type.toEqual<"getLength" | "getWidth">();
+test("MethodLikeKeys", () => {
+  expect<MethodLikeKeys<Sample>>().type.toBe<"getLength" | "getWidth">();
 });
