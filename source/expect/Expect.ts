@@ -4,15 +4,16 @@ import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
+import { ToBe } from "./ToBe.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
-import { ToEqual } from "./ToEqual.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class Expect {
+  toBe: ToBe;
   toBeAny: PrimitiveTypeMatcher;
   toBeAssignable: ToBeAssignableWith;
   toBeAssignableTo: ToBeAssignableTo;
@@ -28,7 +29,7 @@ export class Expect {
   toBeUniqueSymbol: PrimitiveTypeMatcher;
   toBeUnknown: PrimitiveTypeMatcher;
   toBeVoid: PrimitiveTypeMatcher;
-  toEqual: ToEqual;
+  toEqual: ToBe;
   toHaveProperty: ToHaveProperty;
   toMatch: ToMatch;
   toRaiseError: ToRaiseError;
@@ -37,6 +38,7 @@ export class Expect {
     public compiler: typeof ts,
     public typeChecker: TypeChecker,
   ) {
+    this.toBe = new ToBe(this.typeChecker);
     this.toBeAny = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Any);
     this.toBeAssignable = new ToBeAssignableWith(this.typeChecker);
     this.toBeAssignableTo = new ToBeAssignableTo(this.typeChecker);
@@ -52,7 +54,7 @@ export class Expect {
     this.toBeUniqueSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.UniqueESSymbol);
     this.toBeUnknown = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Unknown);
     this.toBeVoid = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Void);
-    this.toEqual = new ToEqual(this.typeChecker);
+    this.toEqual = new ToBe(this.typeChecker);
     this.toHaveProperty = new ToHaveProperty(this.compiler, this.typeChecker);
     this.toMatch = new ToMatch(this.typeChecker);
     this.toRaiseError = new ToRaiseError(this.compiler, this.typeChecker);
@@ -90,6 +92,7 @@ export class Expect {
     const matcherNameText = assertion.matcherName.getText();
 
     switch (matcherNameText) {
+      case "toBe":
       case "toBeAssignable":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
@@ -97,6 +100,9 @@ export class Expect {
       case "toMatch":
         if (matcherNameText === "toBeAssignable") {
           this.#onDeprecatedMatcher(assertion, expectResult, "toBeAssignableWith");
+        }
+        if (matcherNameText === "toEqual") {
+          this.#onDeprecatedMatcher(assertion, expectResult, "toBe");
         }
 
         if (assertion.source[0] == null) {
@@ -207,7 +213,7 @@ export class Expect {
 
     const text = [
       `'.${oldNameText}()' has been renamed to '.${newNameText}()'.`,
-      `Please update the test. '.${oldNameText}()' is deprecated and will be removed in TSTyche 2.`,
+      `Please update the test. '.${oldNameText}()' is deprecated and will be removed in TSTyche 3.`,
     ];
     const origin = {
       end: assertion.matcherName.getEnd(),

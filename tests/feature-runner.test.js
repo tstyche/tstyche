@@ -192,7 +192,7 @@ test("'strictNullChecks': true", () => {
     return a;
   }
 
-  expect(x()).type.not.toEqual<string>();
+  expect(x()).type.not.toBe<string>();
 });
 
 test("'strictFunctionTypes': true", () => {

@@ -27,17 +27,14 @@ test("is assignable with?", () => {
   expect<Awaitable<string>>().type.not.toBeAssignableWith(Promise.resolve(123));
 });`;
 
-const toEqualTestText = `import { expect, test } from "tstyche";
+const toBeTestText = `import { expect, test } from "tstyche";
 
 interface Sample {
   getLength: () => number;
   getWidth?: () => number;
 }
 
-test("is equal?", () => {
-  expect<keyof Sample>().type.toEqual<"getLength" | "getWidth">();
-});
-
+expect<keyof Sample>().type.toBe<"getLength" | "getWidth">();
 `;
 
 const toHavePropertyTestText = `import { expect } from "tstyche";
@@ -109,9 +106,9 @@ describe("TypeScript 4.x", function() {
   before(async function() {
     await writeFixture(fixtureUrl, {
       // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
+      ["__typetests__/toBe.test.ts"]: `// @ts-expect-error\n${toBeTestText}`,
       ["__typetests__/toBeAssignableTo.test.ts"]: `// @ts-expect-error\n${toBeAssignableToTestText}`,
       ["__typetests__/toBeAssignableWith.test.ts"]: `// @ts-expect-error\n${toBeAssignableWithTestText}`,
-      ["__typetests__/toEqual.test.ts"]: `// @ts-expect-error\n${toEqualTestText}`,
       ["__typetests__/toHaveProperty.test.ts"]: `// @ts-expect-error\n${toHavePropertyTestText}`,
       ["__typetests__/toMatch.test.ts"]: `// @ts-expect-error\n${toMatchTestText}`,
       ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error\n${toRaiseErrorTestText}`,
@@ -152,9 +149,9 @@ describe("TypeScript 4.x", function() {
 describe("TypeScript 5.x", function() {
   before(async function() {
     await writeFixture(fixtureUrl, {
+      ["__typetests__/toBe.test.ts"]: toBeTestText,
       ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
       ["__typetests__/toBeAssignableWith.test.ts"]: toBeAssignableWithTestText,
-      ["__typetests__/toEqual.test.ts"]: toEqualTestText,
       ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
       ["__typetests__/toMatch.test.ts"]: toMatchTestText,
       ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,

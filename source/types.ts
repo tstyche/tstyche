@@ -62,6 +62,19 @@ interface Test {
 
 interface Matchers {
   /**
+   * Checks if the source type is identical to the target type.
+   */
+  toBe: {
+    /**
+     * Checks if the source type is identical to the target type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the source type is identical to type of the target expression.
+     */
+    (target: unknown): void;
+  };
+  /**
    * Checks if the source type is `any`.
    */
   toBeAny: () => void;
@@ -156,14 +169,20 @@ interface Matchers {
   toBeVoid: () => void;
   /**
    * Checks if the source type is identical to the target type.
+   *
+   * @deprecated This matcher has been renamed to `.toBe()`.
    */
   toEqual: {
     /**
      * Checks if the source type is identical to the target type.
+     *
+     * @deprecated This matcher has been renamed to `.toBe()`.
      */
     <Target>(): void;
     /**
      * Checks if the source type is identical to type of the target expression.
+     *
+     * @deprecated This matcher has been renamed to `.toBe()`.
      */
     (target: unknown): void;
   };

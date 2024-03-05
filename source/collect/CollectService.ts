@@ -7,6 +7,7 @@ import { TestTree } from "./TestTree.js";
 
 export class CollectService {
   readonly matcherIdentifiers = [
+    "toBe",
     "toBeAny",
     "toBeAssignable",
     "toBeAssignableTo",
