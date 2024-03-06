@@ -50,12 +50,12 @@
     "lint": "eslint ./ --config eslint.config.json --ext .js,.cts,.ts,.tsx",
     "prepack": "yarn clean && yarn build",
     "prepublish": "yarn test",
-    "test": "yarn test:unit && yarn && yarn test:e2e",
+    "test": "yarn test:unit && yarn test:e2e",
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
     "test:e2e": "mocha tests/*.test.* --config mocha.config.json",
     "test:examples": "tstyche examples",
     "test:types": "tstyche typetests",
-    "test:unit": "mocha (models|source)/**/__tests__/*.test.* --config mocha.config.json"
+    "test:unit": "mocha **/__tests__/*.test.* --config mocha.config.json"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "11.1.6",
@@ -78,7 +78,7 @@
     "rollup": "4.12.1",
     "rollup-plugin-dts": "6.1.0",
     "tslib": "2.6.2",
-    "typescript": "5.3.3"
+    "typescript": "5.4.2"
   },
   "peerDependencies": {
     "typescript": "4.x || 5.x"

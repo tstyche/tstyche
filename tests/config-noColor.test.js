@@ -44,7 +44,7 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-tstycheNoColors-true-stdout`,
+      fileName: `${testFileName}-tstycheNoColor-true-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -62,7 +62,7 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
-      fileName: `${testFileName}-tstycheNoColors-false-stdout`,
+      fileName: `${testFileName}-tstycheNoColor-false-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -125,7 +125,7 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
-      fileName: `${testFileName}-tstycheNoColors-false-overrides-stdout`,
+      fileName: `${testFileName}-tstycheNoColor-false-overrides-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -146,7 +146,7 @@ describe("'TSTYCHE_NO_COLOR' environment variable", function() {
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-tstycheNoColors-true-overrides-stdout`,
+      fileName: `${testFileName}-tstycheNoColor-true-overrides-stdout`,
       testFileUrl: import.meta.url,
     });
 
