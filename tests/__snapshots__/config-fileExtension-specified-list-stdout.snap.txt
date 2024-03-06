@@ -1,3 +1,0 @@
-[
-  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/jsSample.test.js"
-]
