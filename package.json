@@ -50,13 +50,12 @@
     "lint": "eslint ./ --config eslint.config.json --ext .js,.cts,.ts,.tsx",
     "prepack": "yarn clean && yarn build",
     "prepublish": "yarn test",
-    "test": "yarn test:unit && yarn test:schema && yarn test:e2e",
+    "test": "yarn test:unit && yarn && yarn test:e2e",
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
-    "test:e2e": "mocha tests/*.js --config mocha.config.json",
+    "test:e2e": "mocha tests/*.test.* --config mocha.config.json",
     "test:examples": "tstyche examples",
-    "test:schema": "mocha models/__tests__/*.js --config mocha.config.json",
     "test:types": "tstyche typetests",
-    "test:unit": "mocha source/*/__tests__/*.js --config mocha.config.json"
+    "test:unit": "mocha (models|source)/**/__tests__/*.test.* --config mocha.config.json"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "11.1.6",
