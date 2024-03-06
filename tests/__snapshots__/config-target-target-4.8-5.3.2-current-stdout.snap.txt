@@ -1,11 +1,11 @@
 adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/.generated/config-target/.store/4.8.4
-uses TypeScript <<version>> with ./tsconfig.json
+uses TypeScript 4.8.4 with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts
   + is string?
 
 adds TypeScript 5.3.2 to <<cwd>>/tests/__fixtures__/.generated/config-target/.store/5.3.2
-uses TypeScript <<version>> with ./tsconfig.json
+uses TypeScript 5.3.2 with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts
   + is string?

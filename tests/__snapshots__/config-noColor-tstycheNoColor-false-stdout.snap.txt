@@ -1,4 +1,4 @@
-<blue>uses</> TypeScript 5.4.2
+<blue>uses</> TypeScript <<version>>
 
 <green>pass</> <gray>./__typetests__/</>dummy.test.ts
   <green>+</> <gray>is string?</>
