@@ -49,17 +49,6 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.List,
-      description: "The allowed file extension list.",
-      group: OptionGroup.ConfigFile,
-      items: {
-        brand: OptionBrand.String,
-        name: "fileExtension",
-      },
-      name: "fileExtension",
-    },
-
-    {
       brand: OptionBrand.True,
       description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,

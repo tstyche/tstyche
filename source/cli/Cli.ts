@@ -127,7 +127,7 @@ export class Cli {
 
     let testFiles: Array<string> = [];
 
-    if (resolvedConfig.fileExtension.length !== 0 && resolvedConfig.testFileMatch.length !== 0) {
+    if (resolvedConfig.testFileMatch.length !== 0) {
       testFiles = configService.selectTestFiles();
 
       if (testFiles.length === 0) {

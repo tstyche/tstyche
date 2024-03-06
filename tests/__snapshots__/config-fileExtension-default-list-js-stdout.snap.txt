@@ -1,6 +1,0 @@
-[
-  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/cjsSample.test.cjs",
-  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/jsSample.test.js",
-  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/jsxSample.test.jsx",
-  "<<cwd>>/tests/__fixtures__/.generated/config-fileExtension/__typetests__/mjsSample.test.mjs"
-]

@@ -19,12 +19,6 @@ describe("ConfigFileOptions", () => {
     }>();
   });
 
-  test("'fileExtension' option", () => {
-    expect<tstyche.ConfigFileOptions>().type.toMatch<{
-      fileExtension?: Array<string>;
-    }>();
-  });
-
   test("'rootPath' option", () => {
     expect<tstyche.ConfigFileOptions>().type.toMatch<{
       rootPath?: string;

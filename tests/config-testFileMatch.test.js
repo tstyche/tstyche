@@ -24,7 +24,7 @@ afterEach(async function() {
 });
 
 describe("'testFileMatch' configuration file option", function() {
-  test("default patterns, select files in 'typetests' directories", async function() {
+  test("default patterns, select files with '.test.' suffix in 'typetests' directories", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -74,7 +74,7 @@ describe("'testFileMatch' configuration file option", function() {
 
   test("specified pattern, selects only matching files", async function() {
     const config = {
-      testFileMatch: ["**/type-tests/*.tst.ts"],
+      testFileMatch: ["**/type-tests/*.tst.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -89,6 +89,34 @@ describe("'testFileMatch' configuration file option", function() {
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-specified-patterns-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("specified pattern, selects files with all extensions", async function() {
+    const config = {
+      testFileMatch: ["**/__typetests__/*"],
+    };
+
+    const tsconfig = {
+      extends: "../../../tsconfig.json",
+      include: ["**/*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["__typetests__/tsconfig.json"]: JSON.stringify(tsconfig),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-specified-patterns-with-all-extensions-stdout`,
       testFileUrl: import.meta.url,
     });
 

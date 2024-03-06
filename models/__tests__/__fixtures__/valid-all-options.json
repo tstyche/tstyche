@@ -1,7 +1,6 @@
 {
   "$schema": "../../config-schema.json",
   "failFast": true,
-  "fileExtension": ["js", "ts"],
   "rootPath": "../",
   "target": ["4.9", "5.0.4", "beta", "latest", "next", "rc"],
   "testFileMatch": ["examples/*.test.ts", "**/__typetests__/*.test.ts"]

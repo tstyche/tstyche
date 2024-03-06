@@ -1,9 +1,0 @@
-Error: Option 'fileExtension' requires an argument of type list.
-
-  1 | {
-> 2 |   "fileExtension": "json"
-    |                    ^
-  3 | }
-
-      at ./tstyche.config.json:2:20
-
