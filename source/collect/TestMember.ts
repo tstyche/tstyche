@@ -57,22 +57,9 @@ export class TestMember {
     const diagnostics: Array<Diagnostic> = [];
 
     const getText = (node: ts.CallExpression) =>
-      `'${node.expression.getText()}()' cannot be nested within '${this.node.expression.getText()}()' helper.`;
+      `'${node.expression.getText()}()' cannot be nested within '${this.node.expression.getText()}()'.`;
 
     switch (this.brand) {
-      case TestMemberBrand.Expect:
-        // TODO test this properly
-        //
-        // for (const member of this.members) {
-        //   errors.push({
-        //     end: member.node.getEnd(),
-        //     file: member.node.getSourceFile(),
-        //     start: member.node.getStart(),
-        //     text: getText(member.node),
-        //   });
-        // }
-        break;
-
       case TestMemberBrand.Describe:
         for (const member of this.members) {
           if (member.brand === TestMemberBrand.Expect) {
@@ -88,6 +75,7 @@ export class TestMember {
         break;
 
       case TestMemberBrand.Test:
+      case TestMemberBrand.Expect:
         for (const member of this.members) {
           if (member.brand !== TestMemberBrand.Expect) {
             diagnostics.push(

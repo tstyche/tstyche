@@ -8,7 +8,7 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("handles nested 'describe()' or 'it()'", async function() {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-nested"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
     fileName: `${testFileName}-handles-nested-stdout`,

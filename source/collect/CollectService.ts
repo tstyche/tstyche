@@ -73,7 +73,13 @@ export class CollectService {
           return;
         }
 
-        parent.members.push(new Assertion(meta.brand, node, parent, meta.flags, matcherNode, modifierNode, notNode));
+        const assertion = new Assertion(meta.brand, node, parent, meta.flags, matcherNode, modifierNode, notNode);
+
+        parent.members.push(assertion);
+
+        this.compiler.forEachChild(node, (node) => {
+          this.#collectTestMembers(node, identifiers, assertion);
+        });
 
         return;
       }
