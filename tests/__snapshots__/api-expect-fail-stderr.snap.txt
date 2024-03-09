@@ -16,27 +16,27 @@ Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-   9 |   test("is string?", () => {
-  10 |     expect<string>().type.toBeString();
-> 11 |     expect.fail<string>().type.toBeString();
+  13 |   test("is string?", () => {
+  14 |     expect<string>().type.toBeString();
+> 15 |     expect.fail<string>().type.toBeString();
      |     ^
-  12 | 
-  13 |     expect.fail<never>().type.toBeVoid();
-  14 |   });
+  16 | 
+  17 |     expect.fail<never>().type.toBeVoid();
+  18 |   });
 
-       at ./__typetests__/expect-fail.tst.ts:11:5
+       at ./__typetests__/expect-fail.tst.ts:15:5
 
 Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  17 | test("is number?", () => {
-  18 |   expect<number>().type.toBeNumber();
-> 19 |   expect.fail<number>().type.toBeNumber();
+  21 | test("is number?", () => {
+  22 |   expect<number>().type.toBeNumber();
+> 23 |   expect.fail<number>().type.toBeNumber();
      |   ^
-  20 | 
-  21 |   expect.fail<never>().type.toBeVoid();
-  22 | });
+  24 | 
+  25 |   expect.fail<never>().type.toBeVoid();
+  26 | });
 
-       at ./__typetests__/expect-fail.tst.ts:19:3
+       at ./__typetests__/expect-fail.tst.ts:23:3
 
