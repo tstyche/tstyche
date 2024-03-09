@@ -58,26 +58,26 @@ export class ToBeCallableWith {
   ) {
     const sourceText = this.compiler.isTypeNode(source.node) ? "Type expression" : "Expression";
 
-    const argumentCountText =
-      argumentCount.max === 0 ? "without arguments" : `with provided argument${argumentCount.max === 1 ? "" : "s"}`;
+    const argumentCountText = argumentCount.max === 0
+      ? "without arguments"
+      : `with provided argument${argumentCount.max === 1 ? "" : "s"}`;
 
-    const parameterCount =
-      source.signatures.length === 1 && source.signatures[0] != null
-        ? this.#countParameters(source.signatures[0].getDeclaration())
-        : { max: 0, min: 0 }; // TODO handle overloads
+    const parameterCount = source.signatures.length === 1 && source.signatures[0] != null
+      ? this.#countParameters(source.signatures[0].getDeclaration())
+      : { max: 0, min: 0 }; // TODO handle overloads
 
     let parameterCountText: string;
 
     if (parameterCount.max === 0) {
       parameterCountText = "does not take arguments";
     } else if (argumentCount.max > parameterCount.max) {
-      parameterCountText = `takes ${parameterCount.max > parameterCount.min ? "at most " : "only "}${
-        parameterCount.max
-      } argument${parameterCount.max === 1 ? "" : "s"}`;
+      parameterCountText = `takes ${
+        parameterCount.max > parameterCount.min ? "at most " : "only "
+      }${parameterCount.max} argument${parameterCount.max === 1 ? "" : "s"}`;
     } else {
-      parameterCountText = `requires ${parameterCount.min < parameterCount.max ? "at least " : ""}${
-        parameterCount.min
-      } argument${parameterCount.min === 1 ? "" : "s"}`;
+      parameterCountText = `requires ${
+        parameterCount.min < parameterCount.max ? "at least " : ""
+      }${parameterCount.min} argument${parameterCount.min === 1 ? "" : "s"}`;
     }
 
     return isNot
