@@ -34,9 +34,10 @@ describe("'tstyche.config.json' file", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("handles option value of wrong type", async function() {
+  test("handles option values of wrong type", async function() {
     const config = {
       failFast: "always",
+      "rootPath": true,
     };
 
     await writeFixture(fixtureUrl, {
@@ -55,9 +56,9 @@ describe("'tstyche.config.json' file", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("when tabs are used for indentation, handles option value of wrong type", async function() {
+  test("when tabs are used for indentation, handles option values of wrong type", async function() {
     const configText = `{
-\t"failFast": false,
+\t"failFast": "always",
 \t"rootPath": true
 }
 `;
@@ -183,7 +184,7 @@ describe("'tstyche.config.json' file", function() {
 });
 
 describe("'--config' command line option", function() {
-  test("when option argument is missing", async function() {
+  test("when option value is missing", async function() {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config"]);
@@ -193,9 +194,9 @@ describe("'--config' command line option", function() {
     assert.equal(
       stderr,
       [
-        "Error: Option '--config' expects an argument.",
+        "Error: Option '--config' expects a value.",
         "",
-        "Option '--config' requires an argument of type string.",
+        "Option '--config' requires a value of type string.",
         "",
         "",
       ].join("\n"),

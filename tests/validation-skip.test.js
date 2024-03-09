@@ -11,7 +11,7 @@ afterEach(async function() {
 });
 
 describe("'--skip' command line option", function() {
-  test("when option argument is missing", async function() {
+  test("when option value is missing", async function() {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--skip"]);
@@ -21,9 +21,9 @@ describe("'--skip' command line option", function() {
     assert.equal(
       stderr,
       [
-        "Error: Option '--skip' expects an argument.",
+        "Error: Option '--skip' expects a value.",
         "",
-        "Option '--skip' requires an argument of type string.",
+        "Option '--skip' requires a value of type string.",
         "",
         "",
       ].join("\n"),

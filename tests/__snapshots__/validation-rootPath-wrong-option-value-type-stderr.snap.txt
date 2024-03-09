@@ -1,4 +1,4 @@
-Error: Option 'rootPath' requires an argument of type string.
+Error: Option 'rootPath' requires a value of type string.
 
   1 | {
 > 2 |   "rootPath": true

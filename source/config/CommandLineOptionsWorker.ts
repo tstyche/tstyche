@@ -38,9 +38,9 @@ export class CommandLineOptionsWorker {
     this.#optionValidator = new OptionValidator(OptionGroup.CommandLine, this.#storeService, this.#onDiagnostic);
   }
 
-  async #onExpectsArgumentDiagnostic(optionDefinition: OptionDefinition) {
+  async #onExpectsValue(optionDefinition: OptionDefinition) {
     const text = [
-      this.#optionDiagnosticText.expectsArgument(optionDefinition.name),
+      this.#optionDiagnosticText.expectsValue(optionDefinition.name),
       ...(await this.#optionUsageText.get(optionDefinition.name, optionDefinition.brand)),
     ];
 
@@ -105,7 +105,7 @@ export class CommandLineOptionsWorker {
           break;
         }
 
-        await this.#onExpectsArgumentDiagnostic(optionDefinition);
+        await this.#onExpectsValue(optionDefinition);
         break;
 
       case OptionBrand.String:
@@ -122,7 +122,7 @@ export class CommandLineOptionsWorker {
           break;
         }
 
-        await this.#onExpectsArgumentDiagnostic(optionDefinition);
+        await this.#onExpectsValue(optionDefinition);
         break;
 
       default:

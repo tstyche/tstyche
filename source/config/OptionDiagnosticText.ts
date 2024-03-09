@@ -11,14 +11,14 @@ export class OptionDiagnosticText {
     return "String literal with double quotes expected.";
   }
 
-  expectsArgument(optionName: string): string {
-    optionName = this.#optionName(optionName);
-
-    return `Option '${optionName}' expects an argument.`;
-  }
-
   expectsListItemType(optionName: string, optionBrand: OptionBrand): string {
     return `Item of the '${optionName}' list must be of type ${optionBrand}.`;
+  }
+
+  expectsValue(optionName: string): string {
+    optionName = this.#optionName(optionName);
+
+    return `Option '${optionName}' expects a value.`;
   }
 
   fileDoesNotExist(filePath: string): string {
@@ -35,10 +35,10 @@ export class OptionDiagnosticText {
     }
   }
 
-  requiresArgumentType(optionName: string, optionBrand: OptionBrand): string {
+  requiresValueType(optionName: string, optionBrand: OptionBrand): string {
     optionName = this.#optionName(optionName);
 
-    return `Option '${optionName}' requires an argument of type ${optionBrand}.`;
+    return `Option '${optionName}' requires a value of type ${optionBrand}.`;
   }
 
   unknownOption(optionName: string): string {

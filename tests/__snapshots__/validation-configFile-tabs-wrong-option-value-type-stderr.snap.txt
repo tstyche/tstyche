@@ -1,7 +1,18 @@
-Error: Option 'rootPath' requires an argument of type string.
+Error: Option 'failFast' requires a value of type boolean.
 
   1 | {
-  2 |  "failFast": false,
+> 2 |  "failFast": "always",
+    |              ^
+  3 |  "rootPath": true
+  4 | }
+  5 | 
+
+      at ./tstyche.config.json:2:14
+
+Error: Option 'rootPath' requires a value of type string.
+
+  1 | {
+  2 |  "failFast": "always",
 > 3 |  "rootPath": true
     |              ^
   4 | }

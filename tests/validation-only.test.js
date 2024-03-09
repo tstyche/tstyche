@@ -11,7 +11,7 @@ afterEach(async function() {
 });
 
 describe("'--only' command line option", function() {
-  test("when option argument is missing", async function() {
+  test("when option value is missing", async function() {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only"]);
@@ -21,9 +21,9 @@ describe("'--only' command line option", function() {
     assert.equal(
       stderr,
       [
-        "Error: Option '--only' expects an argument.",
+        "Error: Option '--only' expects a value.",
         "",
-        "Option '--only' requires an argument of type string.",
+        "Option '--only' requires a value of type string.",
         "",
         "",
       ].join("\n"),
