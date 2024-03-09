@@ -1,0 +1,9 @@
+Error: Option 'rootPath' requires a value of type string.
+
+  1 | {
+> 2 |   "rootPath": true
+    |               ^
+  3 | }
+
+      at ./tstyche.config.json:2:15
+

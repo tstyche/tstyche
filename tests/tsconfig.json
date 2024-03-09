@@ -2,8 +2,8 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "types": []
+    "types": ["node"]
   },
-  "include": ["./"],
-  "exclude": ["./__fixtures__/"]
+  "include": ["**/*"],
+  "exclude": ["__fixtures__/**/*"]
 }

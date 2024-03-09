@@ -1,0 +1,240 @@
+Error: Expression can be called without arguments.
+
+  4 |   test("expression can be called without arguments", () => {
+  5 |     expect(() => null).type.toBeCallableWith();
+> 6 |     expect(() => null).type.not.toBeCallableWith();
+    |                                 ^
+  7 |   });
+  8 | 
+  9 |   test("expression does not take arguments", () => {
+
+      at ./__typetests__/parameter-arity.test.ts:6:33 ❭ when target is a value ❭ expression can be called without arguments
+
+Error: Expression does not take arguments.
+
+   9 |   test("expression does not take arguments", () => {
+  10 |     expect(() => null).type.not.toBeCallableWith("one");
+> 11 |     expect(() => null).type.toBeCallableWith("one");
+     |                             ^
+  12 |   });
+  13 | 
+  14 |   test("expression can be called with provided argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:11:29 ❭ when target is a value ❭ expression does not take arguments
+
+Error: Expression can be called with provided argument.
+
+  14 |   test("expression can be called with provided argument", () => {
+  15 |     expect((a: string) => a).type.toBeCallableWith("one");
+> 16 |     expect((a: string) => a).type.not.toBeCallableWith("one");
+     |                                       ^
+  17 |   });
+  18 | 
+  19 |   test("expression requires 1 argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:16:39 ❭ when target is a value ❭ expression can be called with provided argument
+
+Error: Expression requires 1 argument.
+
+  19 |   test("expression requires 1 argument", () => {
+  20 |     expect((a: string) => a).type.not.toBeCallableWith();
+> 21 |     expect((a: string) => a).type.toBeCallableWith();
+     |                                   ^
+  22 |   });
+  23 | 
+  24 |   test("expression takes only 1 argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:21:35 ❭ when target is a value ❭ expression requires 1 argument
+
+Error: Expression takes only 1 argument.
+
+  24 |   test("expression takes only 1 argument", () => {
+  25 |     expect((a: string) => a).type.not.toBeCallableWith("one", "two");
+> 26 |     expect((a: string) => a).type.toBeCallableWith("one", "two");
+     |                                   ^
+  27 |   });
+  28 | 
+  29 |   test("type expression can be called without arguments", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:26:35 ❭ when target is a value ❭ expression takes only 1 argument
+
+Error: Type expression can be called without arguments.
+
+  29 |   test("type expression can be called without arguments", () => {
+  30 |     expect<() => null>().type.toBeCallableWith();
+> 31 |     expect<() => null>().type.not.toBeCallableWith();
+     |                                   ^
+  32 |   });
+  33 | 
+  34 |   test("type expression does not take arguments", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:31:35 ❭ when target is a value ❭ type expression can be called without arguments
+
+Error: Type expression does not take arguments.
+
+  34 |   test("type expression does not take arguments", () => {
+  35 |     expect<() => null>().type.not.toBeCallableWith("one");
+> 36 |     expect<() => null>().type.toBeCallableWith("one");
+     |                               ^
+  37 |   });
+  38 | 
+  39 |   test("type expression can be called with provided argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:36:31 ❭ when target is a value ❭ type expression does not take arguments
+
+Error: Type expression can be called with provided argument.
+
+  39 |   test("type expression can be called with provided argument", () => {
+  40 |     expect<(a: string) => string>().type.toBeCallableWith("one");
+> 41 |     expect<(a: string) => string>().type.not.toBeCallableWith("one");
+     |                                              ^
+  42 |   });
+  43 | 
+  44 |   test("type expression requires 1 argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:41:46 ❭ when target is a value ❭ type expression can be called with provided argument
+
+Error: Type expression requires 1 argument.
+
+  44 |   test("type expression requires 1 argument", () => {
+  45 |     expect<(a: string) => string>().type.not.toBeCallableWith();
+> 46 |     expect<(a: string) => string>().type.toBeCallableWith();
+     |                                          ^
+  47 |   });
+  48 | 
+  49 |   test("type expression takes only 1 argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:46:42 ❭ when target is a value ❭ type expression requires 1 argument
+
+Error: Type expression takes only 1 argument.
+
+  49 |   test("type expression takes only 1 argument", () => {
+  50 |     expect<(a: string) => string>().type.not.toBeCallableWith("one", "two");
+> 51 |     expect<(a: string) => string>().type.toBeCallableWith("one", "two");
+     |                                          ^
+  52 |   });
+  53 | });
+  54 | 
+
+       at ./__typetests__/parameter-arity.test.ts:51:42 ❭ when target is a value ❭ type expression takes only 1 argument
+
+Error: Expression can be called without arguments.
+
+  56 |   test("expression can be called without arguments", () => {
+  57 |     expect(() => null).type.toBeCallableWith<[]>();
+> 58 |     expect(() => null).type.not.toBeCallableWith<[]>();
+     |                                 ^
+  59 |   });
+  60 | 
+  61 |   test("expression does not take arguments", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:58:33 ❭ when target is a type ❭ expression can be called without arguments
+
+Error: Expression does not take arguments.
+
+  61 |   test("expression does not take arguments", () => {
+  62 |     expect(() => null).type.not.toBeCallableWith<["one"]>();
+> 63 |     expect(() => null).type.toBeCallableWith<["one"]>();
+     |                             ^
+  64 |   });
+  65 | 
+  66 |   test("expression can be called with provided argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:63:29 ❭ when target is a type ❭ expression does not take arguments
+
+Error: Expression can be called with provided argument.
+
+  66 |   test("expression can be called with provided argument", () => {
+  67 |     expect((a: string) => a).type.toBeCallableWith<["one"]>();
+> 68 |     expect((a: string) => a).type.not.toBeCallableWith<["one"]>();
+     |                                       ^
+  69 |   });
+  70 | 
+  71 |   test("expression requires 1 argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:68:39 ❭ when target is a type ❭ expression can be called with provided argument
+
+Error: Expression requires 1 argument.
+
+  71 |   test("expression requires 1 argument", () => {
+  72 |     expect((a: string) => a).type.not.toBeCallableWith<[]>();
+> 73 |     expect((a: string) => a).type.toBeCallableWith<[]>();
+     |                                   ^
+  74 |   });
+  75 | 
+  76 |   test("expression takes only 1 argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:73:35 ❭ when target is a type ❭ expression requires 1 argument
+
+Error: Expression takes only 1 argument.
+
+  76 |   test("expression takes only 1 argument", () => {
+  77 |     expect((a: string) => a).type.not.toBeCallableWith<["one", "two"]>();
+> 78 |     expect((a: string) => a).type.toBeCallableWith<["one", "two"]>();
+     |                                   ^
+  79 |   });
+  80 | 
+  81 |   test("type expression can be called without arguments", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:78:35 ❭ when target is a type ❭ expression takes only 1 argument
+
+Error: Type expression can be called without arguments.
+
+  81 |   test("type expression can be called without arguments", () => {
+  82 |     expect<() => null>().type.toBeCallableWith<[]>();
+> 83 |     expect<() => null>().type.not.toBeCallableWith<[]>();
+     |                                   ^
+  84 |   });
+  85 | 
+  86 |   test("type expression does not take arguments", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:83:35 ❭ when target is a type ❭ type expression can be called without arguments
+
+Error: Type expression does not take arguments.
+
+  86 |   test("type expression does not take arguments", () => {
+  87 |     expect<() => null>().type.not.toBeCallableWith<["one"]>();
+> 88 |     expect<() => null>().type.toBeCallableWith<["one"]>();
+     |                               ^
+  89 |   });
+  90 | 
+  91 |   test("type expression can be called with provided argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:88:31 ❭ when target is a type ❭ type expression does not take arguments
+
+Error: Type expression can be called with provided argument.
+
+  91 |   test("type expression can be called with provided argument", () => {
+  92 |     expect<(a: string) => string>().type.toBeCallableWith<["one"]>();
+> 93 |     expect<(a: string) => string>().type.not.toBeCallableWith<["one"]>();
+     |                                              ^
+  94 |   });
+  95 | 
+  96 |   test("type expression requires 1 argument", () => {
+
+       at ./__typetests__/parameter-arity.test.ts:93:46 ❭ when target is a type ❭ type expression can be called with provided argument
+
+Error: Type expression requires 1 argument.
+
+   96 |   test("type expression requires 1 argument", () => {
+   97 |     expect<(a: string) => string>().type.not.toBeCallableWith<[]>();
+>  98 |     expect<(a: string) => string>().type.toBeCallableWith<[]>();
+      |                                          ^
+   99 |   });
+  100 | 
+  101 |   test("type expression takes only 1 argument", () => {
+
+        at ./__typetests__/parameter-arity.test.ts:98:42 ❭ when target is a type ❭ type expression requires 1 argument
+
+Error: Type expression takes only 1 argument.
+
+  101 |   test("type expression takes only 1 argument", () => {
+  102 |     expect<(a: string) => string>().type.not.toBeCallableWith<["one", "two"]>();
+> 103 |     expect<(a: string) => string>().type.toBeCallableWith<["one", "two"]>();
+      |                                          ^
+  104 |   });
+  105 | });
+  106 | 
+
+        at ./__typetests__/parameter-arity.test.ts:103:42 ❭ when target is a type ❭ type expression takes only 1 argument
+

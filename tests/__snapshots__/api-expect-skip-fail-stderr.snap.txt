@@ -1,0 +1,41 @@
+Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+  2 | 
+  3 | expect.skip.fail<string>().type.toBeString();
+> 4 | expect.fail<string>().type.toBeString();
+    | ^
+  5 | 
+  6 | expect.skip.fail(() => {
+  7 |   expect<number>().type.toBeNumber();
+
+      at ./__typetests__/expect-skip-fail.tst.ts:4:1
+
+Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+  11 |   test("is string?", () => {
+  12 |     expect.skip.fail<string>().type.toBeString();
+> 13 |     expect.fail<string>().type.toBeString();
+     |     ^
+  14 |   });
+  15 | });
+  16 | 
+
+       at ./__typetests__/expect-skip-fail.tst.ts:13:5
+
+Error: The assertion was supposed to fail, but it passed.
+
+Consider removing the '.fail' flag.
+
+  17 | test("is number?", () => {
+  18 |   expect.skip.fail<number>().type.toBeNumber();
+> 19 |   expect.fail<number>().type.toBeNumber();
+     |   ^
+  20 | });
+  21 | 
+
+       at ./__typetests__/expect-skip-fail.tst.ts:19:3
+

@@ -1,9 +1,11 @@
 # TSTyche
 
-[![version][version-src]][version-href]
-[![license][license-src]][license-href]
-[![packagephobia][packagephobia-src]][packagephobia-href]
-[![coverage][coverage-src]][coverage-href]
+[![version][version-badge]][version-url]
+[![license][license-badge]][license-url]
+[![requirements][requirements-badge]][requirements-url]
+[![install-size][install-size-badge]][install-size-url]
+[![coverage][coverage-badge]][coverage-url]
+[![discord][discord-badge]][discord-url]
 
 The Essential Type Testing Tool.
 
@@ -23,7 +25,7 @@ function firstItem<T>(target: Array<T>): T | undefined {
 }
 
 test("firstItem", () => {
-  expect(firstItem(["a", "b", "c"])).type.toEqual<string | undefined>();
+  expect(firstItem(["a", "b", "c"])).type.toBe<string | undefined>();
 
   expect(firstItem).type.not.toBeCallableWith();
   expect(firstItem).type.not.toBeCallableWith(["a", 1]);
@@ -51,13 +53,13 @@ function secondItem<T>(target: Array<T>): T | undefined {
 test("handles numbers", () => {
   assert.strictEqual(secondItem([1, 2, 3]), 2);
 
-  tstyche.expect(secondItem([1, 2, 3])).type.toEqual<number | undefined>();
+  tstyche.expect(secondItem([1, 2, 3])).type.toBe<number | undefined>();
 });
 ```
 
 Here is the list of all matchers:
 
-- `.toBeAssignable()`, `.toEqual()`, `.toMatch()` compares types or types of expression,
+- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()`, `.toMatch()` compare types or types of expression,
 - `.toHaveProperty()` looks up keys on an object type,
 - `.toRaiseError()` captures the type error message or code,
 - `.toBeString()`, `.toBeNumber()`, `.toBeVoid()` and 9 more shorthand checks for primitive types.
@@ -76,15 +78,23 @@ This simple!
 
 Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 
+## Feedback
+
+If you have any questions or suggestions, [start a discussion](https://github.com/tstyche/tstyche/discussions/new/choose) or [open an issue](https://github.com/tstyche/tstyche/issues/new/choose) on GitHub. Preferring a chat? Join our [Discord server][discord-url].
+
 ## License
 
-[MIT][license-href] © TSTyche
+[MIT][license-url] © TSTyche
 
-[version-src]: https://badgen.net/npm/v/tstyche
-[version-href]: https://npmjs.com/package/tstyche
-[license-src]: https://badgen.net/github/license/tstyche/tstyche
-[license-href]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
-[packagephobia-src]: https://badgen.net/packagephobia/install/tstyche
-[packagephobia-href]: https://packagephobia.com/result?p=tstyche
-[coverage-src]: https://badgen.net/codecov/c/github/tstyche/tstyche
-[coverage-href]: https://app.codecov.io/gh/tstyche/tstyche
+[version-badge]: https://badgen.net/npm/v/tstyche
+[version-url]: https://npmjs.com/package/tstyche
+[license-badge]: https://badgen.net/github/license/tstyche/tstyche
+[license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
+[requirements-badge]: https://badgen.net/npm/node/tstyche
+[requirements-url]: https://tstyche.org/reference/requirements
+[install-size-badge]: https://badgen.net/packagephobia/install/tstyche
+[install-size-url]: https://packagephobia.com/result?p=tstyche
+[coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
+[coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
+[discord-badge]: https://badgen.net/static/chat/on%20Discord
+[discord-url]: https://discord.gg/gCSasd3QJq

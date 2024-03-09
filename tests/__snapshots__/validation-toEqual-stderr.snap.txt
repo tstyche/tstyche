@@ -1,0 +1,52 @@
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+> 5 |     expect().type.toEqual<{ test: void }>();
+    |                   ^
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/toEqual.tst.ts:5:19
+
+Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+> 5 |     expect().type.toEqual<{ test: void }>();
+    |     ^
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/toEqual.tst.ts:5:5
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+   9 | describe("argument for 'target'", () => {
+  10 |   test("must be provided", () => {
+> 11 |     expect<{ test: void }>().type.toEqual();
+     |                                   ^
+  12 |   });
+  13 | });
+  14 | 
+
+       at ./__typetests__/toEqual.tst.ts:11:35
+
+Error: An argument for 'target' or type argument for 'Target' must be provided.
+
+   9 | describe("argument for 'target'", () => {
+  10 |   test("must be provided", () => {
+> 11 |     expect<{ test: void }>().type.toEqual();
+     |                                   ^
+  12 |   });
+  13 | });
+  14 | 
+
+       at ./__typetests__/toEqual.tst.ts:11:35
+

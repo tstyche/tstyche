@@ -1,0 +1,13 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeBigInt.tst.ts
+  × is bigint?
+  × is NOT bigint?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 2 failed, 2 passed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.

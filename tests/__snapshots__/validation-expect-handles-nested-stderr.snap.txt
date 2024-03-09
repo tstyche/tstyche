@@ -1,0 +1,36 @@
+Error: 'describe()' cannot be nested within 'expect()'.
+
+  2 | 
+  3 | expect(() => {
+> 4 |   describe("cannot be nested", () => {
+    |   ^
+  5 |     //
+  6 |   });
+  7 | 
+
+      at ./__typetests__/handles-nested.tst.ts:4:3
+
+Error: 'it()' cannot be nested within 'expect()'.
+
+   6 |   });
+   7 | 
+>  8 |   it("cannot be nested", () => {
+     |   ^
+   9 |     //
+  10 |   });
+  11 | 
+
+       at ./__typetests__/handles-nested.tst.ts:8:3
+
+Error: 'test()' cannot be nested within 'expect()'.
+
+  10 |   });
+  11 | 
+> 12 |   test("cannot be nested", () => {
+     |   ^
+  13 |     //
+  14 |   });
+  15 | 
+
+       at ./__typetests__/handles-nested.tst.ts:12:3
+

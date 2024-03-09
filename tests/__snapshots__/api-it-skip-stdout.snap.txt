@@ -1,0 +1,14 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/it-skip.tst.ts
+  - skip is skipped?
+  + is string?
+  - skip is skipped too?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 skipped, 1 passed, 3 total
+Assertions: 2 skipped, 1 passed, 3 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'skip'.

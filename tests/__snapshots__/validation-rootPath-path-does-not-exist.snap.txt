@@ -1,0 +1,9 @@
+Error: The specified path '<<cwd>>/tests/__fixtures__/.generated/validation-rootPath/nope' does not exist.
+
+  1 | {
+> 2 |   "rootPath": "../nope"
+    |               ^
+  3 | }
+
+      at ./config/tstyche.json:2:15
+

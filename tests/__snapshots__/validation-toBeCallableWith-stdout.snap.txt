@@ -1,0 +1,17 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeCallableWith.tst.ts
+  argument for 'source'
+    × must be provided
+    × expression must be callable
+    × type expression must be callable
+  argument for 'Target'
+    × must be of tuple type
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      4 failed, 4 total
+Assertions: 4 failed, 4 total
+Duration:   <<timestamp>>
+
+Ran all test files.

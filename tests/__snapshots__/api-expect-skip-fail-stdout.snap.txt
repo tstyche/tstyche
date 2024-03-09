@@ -1,0 +1,14 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/expect-skip-fail.tst.ts
+  is describe?
+    × is string?
+  × is number?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 3 failed, 4 skipped, 1 passed, 8 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'expect-skip-fail.tst.ts'.

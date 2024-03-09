@@ -1,0 +1,6 @@
+Error: Unknown option '--check'.
+
+Error: Unknown option '--quick'.
+
+Error: Unknown option '-t'.
+

@@ -1,5 +1,57 @@
 # Changelog
 
+## [1.1.0] - 2024-02-27
+
+### Added
+
+- **New!** Support for Node.js 14 ([#136](https://github.com/tstyche/tstyche/pull/136))
+
+- Add the `CancellationToken` class ([#135](https://github.com/tstyche/tstyche/pull/135))
+
+### Fixed
+
+- Improve behavior of timeout errors ([#133](https://github.com/tstyche/tstyche/pull/133), [#134](https://github.com/tstyche/tstyche/pull/134))
+
+## [1.0.0] - 2024-02-20
+
+_Stable release based on [1.0.0-rc.2]._
+
+## [1.0.0-rc.2] - 2024-02-14
+
+### Fixed
+
+- Use the `isTypeRelatedTo()` method directly, to make strict subtype checks possible ([#127](https://github.com/tstyche/tstyche/pull/127), [#126](https://github.com/tstyche/tstyche/pull/126))
+
+## [1.0.0-rc.1] - 2024-02-10
+
+### Changed
+
+- **Breaking!** Remove the `disableTestFileLookup` option in favor of `testFileMatch: []` ([#121](https://github.com/tstyche/tstyche/pull/121))
+
+### Added
+
+- **New!** Set `module: "preserve"` in the default compiler options for inferred project that are using TypeScript 5.4 and up ([#111](https://github.com/tstyche/tstyche/pull/111))
+
+### Fixed
+
+- Do not select test files, if `testFileMatch` is an empty list ([#120](https://github.com/tstyche/tstyche/pull/120))
+
+## [1.0.0-rc] - 2024-01-28
+
+### Changed
+
+- **Breaking!** Replace the `allowNoTestFiles` option with `disableTestFileLookup` ([#104](https://github.com/tstyche/tstyche/pull/104))
+
+### Added
+
+- **New!** Set default compiler options for inferred (e.g. JavaScript) projects ([#93](https://github.com/tstyche/tstyche/pull/93))
+- Add the `TSTYCHE_NO_INTERACTIVE` environment variable ([#88](https://github.com/tstyche/tstyche/pull/88))
+- Add the `TSTYCHE_TYPESCRIPT_PATH` environment variable ([#84](https://github.com/tstyche/tstyche/pull/84))
+
+### Fixed
+
+- Only select TypeScript and JavaScript files for test run ([#105](https://github.com/tstyche/tstyche/pull/105))
+
 ## [1.0.0-beta.9] - 2024-01-05
 
 ### Fixed
@@ -100,6 +152,11 @@
 
 _First pre-release._
 
+[1.1.0]: https://github.com/tstyche/tstyche/releases/tag/v1.1.0
+[1.0.0]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0
+[1.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.2
+[1.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.1
+[1.0.0-rc]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc
 [1.0.0-beta.9]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.9
 [1.0.0-beta.8]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.8
 [1.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-beta.7

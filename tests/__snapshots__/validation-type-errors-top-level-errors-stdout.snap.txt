@@ -1,0 +1,9 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/top-level.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'top-level'.

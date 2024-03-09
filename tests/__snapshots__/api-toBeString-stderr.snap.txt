@@ -1,0 +1,23 @@
+Error: The source type is 'void'.
+
+   7 |   expect(returnsString()).type.toBeString();
+   8 | 
+>  9 |   expect(returnsVoid()).type.toBeString();
+     |                              ^
+  10 | });
+  11 | 
+  12 | test("is NOT string?", () => {
+
+       at ./__typetests__/toBeString.tst.ts:9:30 ❭ is string?
+
+Error: The source type is 'string'.
+
+  13 |   expect(returnsVoid()).type.not.toBeString();
+  14 | 
+> 15 |   expect(returnsString()).type.not.toBeString();
+     |                                    ^
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeString.tst.ts:15:36 ❭ is NOT string?
+

@@ -1,0 +1,404 @@
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  15 | test("edge cases", () => {
+  16 |   /* eslint-disable @typescript-eslint/no-explicit-any */
+> 17 |   expect<any>().type.not.toEqual<never>();
+     |                          ^
+  18 |   expect<any>().type.not.toEqual<unknown>();
+  19 |   /* eslint-enable @typescript-eslint/no-explicit-any */
+  20 | 
+
+       at ./__typetests__/toEqual.tst.ts:17:26
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  16 |   /* eslint-disable @typescript-eslint/no-explicit-any */
+  17 |   expect<any>().type.not.toEqual<never>();
+> 18 |   expect<any>().type.not.toEqual<unknown>();
+     |                          ^
+  19 |   /* eslint-enable @typescript-eslint/no-explicit-any */
+  20 | 
+  21 |   expect(Date).type.toEqual<typeof Date>();
+
+       at ./__typetests__/toEqual.tst.ts:18:26
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  19 |   /* eslint-enable @typescript-eslint/no-explicit-any */
+  20 | 
+> 21 |   expect(Date).type.toEqual<typeof Date>();
+     |                     ^
+  22 | });
+  23 | 
+  24 | describe("received type", () => {
+
+       at ./__typetests__/toEqual.tst.ts:21:21
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  24 | describe("received type", () => {
+  25 |   test("equals expected type", () => {
+> 26 |     expect<{ a: string; b: number }>().type.toEqual<{ a: string; b: number }>();
+     |                                             ^
+  27 |     expect<Names>().type.toEqual<{ first: string; last?: string }>();
+  28 | 
+  29 |     expect<Names>().type.toEqual<{ first: string; last: string }>();
+
+       at ./__typetests__/toEqual.tst.ts:26:45
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  25 |   test("equals expected type", () => {
+  26 |     expect<{ a: string; b: number }>().type.toEqual<{ a: string; b: number }>();
+> 27 |     expect<Names>().type.toEqual<{ first: string; last?: string }>();
+     |                          ^
+  28 | 
+  29 |     expect<Names>().type.toEqual<{ first: string; last: string }>();
+  30 |   });
+
+       at ./__typetests__/toEqual.tst.ts:27:26
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  27 |     expect<Names>().type.toEqual<{ first: string; last?: string }>();
+  28 | 
+> 29 |     expect<Names>().type.toEqual<{ first: string; last: string }>();
+     |                          ^
+  30 |   });
+  31 | 
+  32 |   test("does NOT equal expected type", () => {
+
+       at ./__typetests__/toEqual.tst.ts:29:26
+
+Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
+
+  27 |     expect<Names>().type.toEqual<{ first: string; last?: string }>();
+  28 | 
+> 29 |     expect<Names>().type.toEqual<{ first: string; last: string }>();
+     |                          ^
+  30 |   });
+  31 | 
+  32 |   test("does NOT equal expected type", () => {
+
+       at ./__typetests__/toEqual.tst.ts:29:26 ❭ received type ❭ equals expected type
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  31 | 
+  32 |   test("does NOT equal expected type", () => {
+> 33 |     expect<Names>().type.not.toEqual<{ first: string; last: string }>();
+     |                              ^
+  34 | 
+  35 |     expect<Names>().type.not.toEqual<{ first: string; last?: string }>();
+  36 |   });
+
+       at ./__typetests__/toEqual.tst.ts:33:30
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  33 |     expect<Names>().type.not.toEqual<{ first: string; last: string }>();
+  34 | 
+> 35 |     expect<Names>().type.not.toEqual<{ first: string; last?: string }>();
+     |                              ^
+  36 |   });
+  37 | 
+  38 |   test("equals expected value", () => {
+
+       at ./__typetests__/toEqual.tst.ts:35:30
+
+Error: Type 'Names' is identical to type '{ first: string; last?: string | undefined; }'.
+
+  33 |     expect<Names>().type.not.toEqual<{ first: string; last: string }>();
+  34 | 
+> 35 |     expect<Names>().type.not.toEqual<{ first: string; last?: string }>();
+     |                              ^
+  36 |   });
+  37 | 
+  38 |   test("equals expected value", () => {
+
+       at ./__typetests__/toEqual.tst.ts:35:30 ❭ received type ❭ does NOT equal expected type
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  37 | 
+  38 |   test("equals expected value", () => {
+> 39 |     expect<Names>().type.toEqual(getNames());
+     |                          ^
+  40 |     expect<{ first: string; last?: string }>().type.toEqual(getNames());
+  41 | 
+  42 |     expect<{ first: string; last: string }>().type.toEqual(getNames());
+
+       at ./__typetests__/toEqual.tst.ts:39:26
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  38 |   test("equals expected value", () => {
+  39 |     expect<Names>().type.toEqual(getNames());
+> 40 |     expect<{ first: string; last?: string }>().type.toEqual(getNames());
+     |                                                     ^
+  41 | 
+  42 |     expect<{ first: string; last: string }>().type.toEqual(getNames());
+  43 |   });
+
+       at ./__typetests__/toEqual.tst.ts:40:53
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  40 |     expect<{ first: string; last?: string }>().type.toEqual(getNames());
+  41 | 
+> 42 |     expect<{ first: string; last: string }>().type.toEqual(getNames());
+     |                                                    ^
+  43 |   });
+  44 | 
+  45 |   test("does NOT equal expected value", () => {
+
+       at ./__typetests__/toEqual.tst.ts:42:52
+
+Error: Type '{ first: string; last: string; }' is not identical to type 'Names'.
+
+  40 |     expect<{ first: string; last?: string }>().type.toEqual(getNames());
+  41 | 
+> 42 |     expect<{ first: string; last: string }>().type.toEqual(getNames());
+     |                                                    ^
+  43 |   });
+  44 | 
+  45 |   test("does NOT equal expected value", () => {
+
+       at ./__typetests__/toEqual.tst.ts:42:52 ❭ received type ❭ equals expected value
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  44 | 
+  45 |   test("does NOT equal expected value", () => {
+> 46 |     expect<{ first: string; last: string }>().type.not.toEqual(getNames());
+     |                                                        ^
+  47 | 
+  48 |     expect<{ first: string; last?: string }>().type.not.toEqual(getNames());
+  49 |   });
+
+       at ./__typetests__/toEqual.tst.ts:46:56
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  46 |     expect<{ first: string; last: string }>().type.not.toEqual(getNames());
+  47 | 
+> 48 |     expect<{ first: string; last?: string }>().type.not.toEqual(getNames());
+     |                                                         ^
+  49 |   });
+  50 | });
+  51 | 
+
+       at ./__typetests__/toEqual.tst.ts:48:57
+
+Error: Type '{ first: string; last?: string | undefined; }' is identical to type 'Names'.
+
+  46 |     expect<{ first: string; last: string }>().type.not.toEqual(getNames());
+  47 | 
+> 48 |     expect<{ first: string; last?: string }>().type.not.toEqual(getNames());
+     |                                                         ^
+  49 |   });
+  50 | });
+  51 | 
+
+       at ./__typetests__/toEqual.tst.ts:48:57 ❭ received type ❭ does NOT equal expected value
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  52 | describe("received value", () => {
+  53 |   test("equals expected type", () => {
+> 54 |     expect(getNames()).type.toEqual<{ first: string; last?: string }>();
+     |                             ^
+  55 |     expect(getNames()).type.toEqual<Names>();
+  56 | 
+  57 |     expect(getNames()).type.toEqual<{ first: string; last: string }>();
+
+       at ./__typetests__/toEqual.tst.ts:54:29
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  53 |   test("equals expected type", () => {
+  54 |     expect(getNames()).type.toEqual<{ first: string; last?: string }>();
+> 55 |     expect(getNames()).type.toEqual<Names>();
+     |                             ^
+  56 | 
+  57 |     expect(getNames()).type.toEqual<{ first: string; last: string }>();
+  58 |   });
+
+       at ./__typetests__/toEqual.tst.ts:55:29
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  55 |     expect(getNames()).type.toEqual<Names>();
+  56 | 
+> 57 |     expect(getNames()).type.toEqual<{ first: string; last: string }>();
+     |                             ^
+  58 |   });
+  59 | 
+  60 |   test("does NOT equal expected type", () => {
+
+       at ./__typetests__/toEqual.tst.ts:57:29
+
+Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
+
+  55 |     expect(getNames()).type.toEqual<Names>();
+  56 | 
+> 57 |     expect(getNames()).type.toEqual<{ first: string; last: string }>();
+     |                             ^
+  58 |   });
+  59 | 
+  60 |   test("does NOT equal expected type", () => {
+
+       at ./__typetests__/toEqual.tst.ts:57:29 ❭ received value ❭ equals expected type
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  59 | 
+  60 |   test("does NOT equal expected type", () => {
+> 61 |     expect(getNames()).type.not.toEqual<{ first: string; last: string }>();
+     |                                 ^
+  62 | 
+  63 |     expect(getNames()).type.not.toEqual<{ first: string; last?: string }>();
+  64 |   });
+
+       at ./__typetests__/toEqual.tst.ts:61:33
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  61 |     expect(getNames()).type.not.toEqual<{ first: string; last: string }>();
+  62 | 
+> 63 |     expect(getNames()).type.not.toEqual<{ first: string; last?: string }>();
+     |                                 ^
+  64 |   });
+  65 | 
+  66 |   test("equals expected value", () => {
+
+       at ./__typetests__/toEqual.tst.ts:63:33
+
+Error: Type 'Names' is identical to type '{ first: string; last?: string | undefined; }'.
+
+  61 |     expect(getNames()).type.not.toEqual<{ first: string; last: string }>();
+  62 | 
+> 63 |     expect(getNames()).type.not.toEqual<{ first: string; last?: string }>();
+     |                                 ^
+  64 |   });
+  65 | 
+  66 |   test("equals expected value", () => {
+
+       at ./__typetests__/toEqual.tst.ts:63:33 ❭ received value ❭ does NOT equal expected type
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  65 | 
+  66 |   test("equals expected value", () => {
+> 67 |     expect({ height: 14, width: 25 }).type.toEqual(getSize());
+     |                                            ^
+  68 | 
+  69 |     expect({ height: 14 }).type.toEqual(getSize());
+  70 |   });
+
+       at ./__typetests__/toEqual.tst.ts:67:44
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  67 |     expect({ height: 14, width: 25 }).type.toEqual(getSize());
+  68 | 
+> 69 |     expect({ height: 14 }).type.toEqual(getSize());
+     |                                 ^
+  70 |   });
+  71 | 
+  72 |   test("does NOT equal expected value", () => {
+
+       at ./__typetests__/toEqual.tst.ts:69:33
+
+Error: Type '{ height: number; }' is not identical to type 'Size'.
+
+  67 |     expect({ height: 14, width: 25 }).type.toEqual(getSize());
+  68 | 
+> 69 |     expect({ height: 14 }).type.toEqual(getSize());
+     |                                 ^
+  70 |   });
+  71 | 
+  72 |   test("does NOT equal expected value", () => {
+
+       at ./__typetests__/toEqual.tst.ts:69:33 ❭ received value ❭ equals expected value
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  71 | 
+  72 |   test("does NOT equal expected value", () => {
+> 73 |     expect({ height: 14 }).type.not.toEqual(getSize());
+     |                                     ^
+  74 | 
+  75 |     expect({ height: 14, width: 25 }).type.not.toEqual(getSize());
+  76 |   });
+
+       at ./__typetests__/toEqual.tst.ts:73:37
+
+Warning: '.toEqual()' has been renamed to '.toBe()'.
+
+Please update the test. '.toEqual()' is deprecated and will be removed in TSTyche 3.
+
+  73 |     expect({ height: 14 }).type.not.toEqual(getSize());
+  74 | 
+> 75 |     expect({ height: 14, width: 25 }).type.not.toEqual(getSize());
+     |                                                ^
+  76 |   });
+  77 | });
+  78 | 
+
+       at ./__typetests__/toEqual.tst.ts:75:48
+
+Error: Type '{ height: number; width: number; }' is identical to type 'Size'.
+
+  73 |     expect({ height: 14 }).type.not.toEqual(getSize());
+  74 | 
+> 75 |     expect({ height: 14, width: 25 }).type.not.toEqual(getSize());
+     |                                                ^
+  76 |   });
+  77 | });
+  78 | 
+
+       at ./__typetests__/toEqual.tst.ts:75:48 ❭ received value ❭ does NOT equal expected value
+

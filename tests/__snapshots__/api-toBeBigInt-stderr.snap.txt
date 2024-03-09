@@ -1,0 +1,23 @@
+Error: The source type is 'void'.
+
+   7 |   expect(returnsBigInt()).type.toBeBigInt();
+   8 | 
+>  9 |   expect(returnsVoid()).type.toBeBigInt();
+     |                              ^
+  10 | });
+  11 | 
+  12 | test("is NOT bigint?", () => {
+
+       at ./__typetests__/toBeBigInt.tst.ts:9:30 ❭ is bigint?
+
+Error: The source type is 'bigint'.
+
+  13 |   expect(returnsVoid()).type.not.toBeBigInt();
+  14 | 
+> 15 |   expect(returnsBigInt()).type.not.toBeBigInt();
+     |                                    ^
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeBigInt.tst.ts:15:36 ❭ is NOT bigint?
+

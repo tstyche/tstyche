@@ -1,9 +1,4 @@
-import * as jest from "@jest/globals";
 import { describe, expect, test } from "tstyche";
-
-jest.test("'toBeCallableWith' implementation", () => {
-  jest.expect(expect).toHaveProperty("type.toBeCallableWith", jest.expect.any(Function));
-});
 
 describe("when target is a value", () => {
   test("expression can be called without arguments", () => {

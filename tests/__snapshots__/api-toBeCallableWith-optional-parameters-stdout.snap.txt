@@ -1,0 +1,37 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/optional-parameters.tst.ts
+  when target is a value
+    × expression can be called without arguments
+    × expression requires at least 1 argument
+    × expression can be called with provided argument
+    × expression can be called with provided arguments
+    × expression takes at most 1 argument
+    × expression takes at most 2 arguments
+    × type expression can be called without arguments
+    × type expression requires at least 1 argument
+    × type expression can be called with provided argument
+    × expression can be called with provided arguments
+    × type expression takes at most 1 argument
+    × expression takes at most 2 arguments
+  when target is a type
+    × expression can be called without arguments
+    × expression requires at least 1 argument
+    × expression can be called with provided argument
+    × expression can be called with provided arguments
+    × expression takes at most 1 argument
+    × expression takes at most 2 arguments
+    × type expression can be called without arguments
+    × type expression requires at least 1 argument
+    × type expression can be called with provided argument
+    × type expression can be called with provided arguments
+    × type expression takes at most 1 argument
+    × type expression takes at most 2 arguments
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      24 failed, 24 total
+Assertions: 76 failed, 76 passed, 152 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'optional-parameters'.

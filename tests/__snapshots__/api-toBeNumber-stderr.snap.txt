@@ -1,0 +1,23 @@
+Error: The source type is 'void'.
+
+   7 |   expect(returnsNumber()).type.toBeNumber();
+   8 | 
+>  9 |   expect(returnsVoid()).type.toBeNumber();
+     |                              ^
+  10 | });
+  11 | 
+  12 | test("is NOT number?", () => {
+
+       at ./__typetests__/toBeNumber.tst.ts:9:30 ❭ is number?
+
+Error: The source type is 'number'.
+
+  13 |   expect(returnsVoid()).type.not.toBeNumber();
+  14 | 
+> 15 |   expect(returnsNumber()).type.not.toBeNumber();
+     |                                    ^
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeNumber.tst.ts:15:36 ❭ is NOT number?
+

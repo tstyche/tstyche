@@ -107,12 +107,11 @@
       {
         "devDependencies": [
           "*.js",
-          "**/__tests__/*",
-          "**/__typetests__/*",
-          "**/benchmarks/*",
-          "**/scripts/*",
-          "**/tests/*",
-          "**/typetests/*"
+          "**/__scripts__/**/*",
+          "**/__tests__/**/*",
+          "**/__typetests__/**/*",
+          "**/tests/**/*",
+          "**/typetests/**/*"
         ]
       }
     ],
@@ -151,55 +150,33 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "plugins": ["eslint-plugin-tsdoc"],
-      "rules": {
-        "tsdoc/syntax": "error"
-      }
-    },
-    {
-      "files": ["benchmarks/tstyche.bench.js"],
-      "rules": {
-        "no-console": "off"
-      }
-    },
-    {
-      "files": ["src/result/ResultManager.ts", "src/version/Version.ts"],
+      "files": ["source/result/ResultManager.ts", "source/version/Version.ts"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
       }
     },
     {
-      "files": ["src/types.ts"],
+      "files": ["source/types.ts"],
       "rules": {
         "@typescript-eslint/no-unused-vars": "off"
       }
     },
     {
-      "files": ["**/__tests__/*.test.ts?(x)", "tests/*.test.ts"],
-      "extends": ["plugin:jest/recommended", "plugin:jest/style", "plugin:jest-formatting/recommended"],
-      "plugins": ["jest", "jest-formatting"],
+      "files": [
+        "**/__tests__/*.test.[jt]s?(x)",
+        "tests/*.test.js"
+      ],
+      "extends": ["plugin:mocha/recommended"],
+      "plugins": ["mocha"],
       "rules": {
-        "@typescript-eslint/unbound-method": "off",
-        "jest/no-conditional-in-test": "error",
-        "jest/no-duplicate-hooks": "error",
-        "jest/no-test-return-statement": "error",
-        "jest/prefer-each": "error",
-        "jest/prefer-hooks-in-order": "error",
-        "jest/prefer-hooks-on-top": "error",
-        "jest/prefer-lowercase-title": [
-          "error",
-          {
-            "ignoreTopLevelDescribe": true
-          }
-        ],
-        "jest/prefer-spy-on": "error",
-        "jest/require-to-throw-message": "error",
-        "jest/unbound-method": "error"
+        "mocha/max-top-level-suites": ["warn", { "limit": 2 }],
+        "mocha/no-global-tests": "off",
+        "mocha/no-setup-in-describe": "off",
+        "mocha/no-top-level-hooks": "off"
       }
     },
     {
-      "files": ["**/*.tst.*", "**/__typetests__/*.test.ts", "examples/*.test.ts", "typetests/*.test.ts"],
+      "files": ["**/*.tst.*", "**/__typetests__/*.test.ts"],
       "rules": {
         "@typescript-eslint/no-confusing-void-expression": "off",
         "@typescript-eslint/no-invalid-void-type": "off",
@@ -214,7 +191,12 @@
   "settings": {
     "import/ignore": ["typescript"],
     "import/resolver": {
-      "typescript": {}
+      "typescript": {
+        "project": [
+          "./source/tsconfig.json",
+          "./tsconfig.json"
+        ]
+      }
     }
   }
 }

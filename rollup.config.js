@@ -1,16 +1,22 @@
+import { strict as assert } from "node:assert";
 import fs from "node:fs/promises";
 import path from "node:path";
+import process from "node:process";
 import typescript from "@rollup/plugin-typescript";
 import MagicString from "magic-string";
 import dts from "rollup-plugin-dts";
+
+assert.match(process.versions.node, /^20/, "This library must be build using Node.js LTS version.");
 
 const output = {
   dir: "./build",
 };
 
-/**
- * @returns {import("rollup").Plugin}
- */
+const packageConfigText = await fs.readFile(new URL("./package.json", import.meta.url), { encoding: "utf8" });
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
+
+/** @returns {import("rollup").Plugin} */
 function tidyJs() {
   const binEntry = "bin.js";
   const tstycheEntry = "tstyche.js";
@@ -18,13 +24,9 @@ function tidyJs() {
   return {
     name: "tidy-js",
 
-    async renderChunk(code, chunkInfo) {
+    renderChunk(code, chunkInfo) {
       if (chunkInfo.fileName === tstycheEntry) {
         const magicString = new MagicString(code);
-
-        const packageConfig = await fs.readFile(new URL("./package.json", import.meta.url), { encoding: "utf8" });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfig));
 
         magicString.replaceAll("__version__", version);
 
@@ -45,9 +47,7 @@ function tidyJs() {
   };
 }
 
-/**
- * @returns {import("rollup").Plugin}
- */
+/** @returns {import("rollup").Plugin} */
 function tidyDts() {
   const tstycheEntry = "tstyche.d.ts";
 
@@ -61,6 +61,8 @@ function tidyDts() {
         magicString.replaceAll("import", "import type");
 
         magicString.replaceAll("const enum", "enum");
+
+        magicString.replaceAll("__version__", version);
 
         return {
           code: magicString.toString(),
@@ -78,55 +80,55 @@ const config = [
   {
     external: [/^node:/],
     input: {
-      index: "./src/types.ts",
-      tstyche: "./src/tstyche.ts",
+      index: "./source/types.ts",
+      tstyche: "./source/tstyche.ts",
     },
     output,
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript(),
-      dts({ compilerOptions: { types: ["node"] } }),
+      typescript({ tsconfig: "./source/tsconfig.json" }),
+      dts({ tsconfig: "./source/tsconfig.json" }),
       tidyDts(),
     ],
   },
 
   {
-    input: "./src/types.ts",
+    input: "./source/types.ts",
     output: {
       file: "./build/index.d.cts",
       format: "cjs",
     },
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript(),
-      dts(),
+      typescript({ tsconfig: "./source/tsconfig.json" }),
+      dts({ tsconfig: "./source/tsconfig.json" }),
     ],
   },
 
   {
     external: [/^node:/, "./tstyche.js"],
     input: {
-      bin: "./src/bin.ts",
-      index: "./src/main.ts",
-      tstyche: "./src/tstyche.ts",
+      bin: "./source/bin.ts",
+      index: "./source/main.ts",
+      tstyche: "./source/tstyche.ts",
     },
     output,
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true } }),
+      typescript({ compilerOptions: { removeComments: true }, tsconfig: "./source/tsconfig.json" }),
       tidyJs(),
     ],
   },
 
   {
-    input: "./src/main.ts",
+    input: "./source/main.ts",
     output: {
       file: "./build/index.cjs",
       format: "cjs",
     },
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true } }),
+      typescript({ compilerOptions: { removeComments: true }, tsconfig: "./source/tsconfig.json" }),
     ],
   },
 ];

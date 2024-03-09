@@ -6,118 +6,154 @@ on:
       - main
       - renovate/**
   pull_request:
-    branches-ignore:
-      - renovate/**
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Lint
+  build:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: corepack enable
       - run: yarn install
       - run: yarn build
-      - run: yarn lint:cspell
-      - run: yarn lint:eslint
-      - run: yarn lint:prettier
+      - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
+
+  check:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+    name: Check
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: lts/*
+      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
+      - run: yarn install
+      - run: yarn check:spelling
+      - run: yarn check:formatting
+      - run: yarn check:types
+
+  lint:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+    name: Lint
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: lts/*
+      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
+      - run: yarn install
+      - run: yarn lint
 
   test-types:
+    needs:
+      - build
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Test Types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: corepack enable
+      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
       - run: yarn install
-      - run: yarn build
       - run: yarn test:types --target 4.7,5.0,current
       - run: yarn test:examples --target 4.7,5.0,current
-
-  typecheck:
-    name: Typecheck Scripts & Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
-        with:
-          node-version: lts/*
-      - run: corepack enable
-      - run: yarn install
-      - run: yarn build
-      - run: yarn typecheck
+      - run: yarn tstyche tests/*.js --target current
 
   test-node:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Test Build on Node.js v${{ matrix.node-version }}
     needs:
-      - typecheck
+      - build
     strategy:
       fail-fast: false
       matrix:
-        node-version: ["16.14", "16.x", "18.x", "20.x", "21.x"]
+        node-version: ['14.17', '14.x', '16.x', '18.x', '20.x', '21.x']
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: corepack enable
+      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
       - run: yarn install
-      - run: yarn build
       - run: yarn test
         env:
           FORCE_COLOR: true
 
   test-os:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Test Build on ${{ matrix.os }}
     needs:
-      - typecheck
+      - build
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macOS-latest]
+        os: [macOS-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: corepack enable
+      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
       - run: yarn install
-      - run: yarn build
       - run: yarn test
         env:
           FORCE_COLOR: true
 
   test-coverage:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     name: Collect Test Coverage
-    needs:
-      - typecheck
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
-          node-version: latest
-      - run: corepack enable
+          node-version: lts/*
       - run: yarn install
       - run: yarn test:coverage
         env:
           FORCE_COLOR: true
-      - uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3
+      - uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1
         with:
-          directory: ./coverage
-          files: report.json
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./coverage/lcov.info
