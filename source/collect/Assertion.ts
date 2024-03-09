@@ -7,7 +7,6 @@ export interface MatcherNode extends ts.CallExpression {
   expression: ts.PropertyAccessExpression;
 }
 
-// TODO try not extending after implementing 'onDiagnostics'
 export class Assertion extends TestMember {
   isNot: boolean;
 

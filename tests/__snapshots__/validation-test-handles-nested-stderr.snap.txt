@@ -1,4 +1,4 @@
-Error: 'describe()' cannot be nested within 'test()' helper.
+Error: 'describe()' cannot be nested within 'test()'.
 
   2 | 
   3 | test("is string?", () => {
@@ -10,7 +10,7 @@ Error: 'describe()' cannot be nested within 'test()' helper.
 
       at ./__typetests__/handles-nested.tst.ts:4:3
 
-Error: 'test()' cannot be nested within 'test()' helper.
+Error: 'test()' cannot be nested within 'test()'.
 
    6 |   });
    7 | 

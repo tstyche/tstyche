@@ -105,6 +105,8 @@ export class TestTreeWorker {
   }
 
   #visitAssertion(assertion: Assertion, runMode: RunMode, parentResult: TestResult | undefined) {
+    this.visit(assertion.members, runMode, parentResult);
+
     const expectResult = new ExpectResult(assertion, parentResult);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);

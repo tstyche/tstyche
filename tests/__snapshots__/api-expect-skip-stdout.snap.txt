@@ -13,7 +13,7 @@ pass ./__typetests__/expect-skip.tst.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      2 skipped, 1 todo, 3 passed, 6 total
-Assertions: 6 skipped, 3 passed, 9 total
+Assertions: 7 skipped, 4 passed, 11 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'expect-skip.tst.ts'.

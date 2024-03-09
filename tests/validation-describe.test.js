@@ -8,7 +8,7 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("handles 'expect()' nested within 'describe()'", async function() {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-expect"]);
+  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
     fileName: `${testFileName}-handles-expect-stdout`,

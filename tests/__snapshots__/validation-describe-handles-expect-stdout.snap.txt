@@ -9,4 +9,4 @@ Tests:      1 passed, 1 total
 Assertions: 1 passed, 1 total
 Duration:   <<timestamp>>
 
-Ran test files matching 'handles-expect'.
+Ran all test files.

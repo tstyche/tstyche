@@ -12,7 +12,7 @@ fail ./__typetests__/expect-only-fail.tst.ts
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      1 failed, 3 skipped, 1 todo, 5 total
-Assertions: 3 failed, 5 skipped, 3 passed, 11 total
+Assertions: 3 failed, 6 skipped, 4 passed, 13 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'expect-only-fail.tst.ts'.

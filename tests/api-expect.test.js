@@ -8,9 +8,6 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-// TODO check for validation errors
-// TODO currently 'expect()' cannot be nested because run mode flags are not inherited
-
 test("'expect()' implementation'", function() {
   tstyche.expect(null).type.toBeNull();
 });

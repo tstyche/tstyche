@@ -1,4 +1,4 @@
-Error: 'expect()' cannot be nested within 'describe()' helper.
+Error: 'expect()' cannot be nested within 'describe()'.
 
    6 | 
    7 | describe("nested 'expect()' is handled?", () => {
@@ -10,7 +10,7 @@ Error: 'expect()' cannot be nested within 'describe()' helper.
 
        at ./__typetests__/handles-expect.tst.ts:8:3
 
-Error: 'expect()' cannot be nested within 'describe()' helper.
+Error: 'expect()' cannot be nested within 'describe()'.
 
    7 | describe("nested 'expect()' is handled?", () => {
    8 |   expect<never>().type.toBeNever();
