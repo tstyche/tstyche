@@ -7,6 +7,7 @@ import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToBe } from "./ToBe.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
+import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
@@ -20,6 +21,7 @@ export class Expect {
   toBeAssignableWith: ToBeAssignableWith;
   toBeBigInt: PrimitiveTypeMatcher;
   toBeBoolean: PrimitiveTypeMatcher;
+  toBeCallableWith: ToBeCallableWith;
   toBeNever: PrimitiveTypeMatcher;
   toBeNull: PrimitiveTypeMatcher;
   toBeNumber: PrimitiveTypeMatcher;
@@ -45,6 +47,7 @@ export class Expect {
     this.toBeAssignableWith = new ToBeAssignableWith(this.typeChecker);
     this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt);
     this.toBeBoolean = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Boolean);
+    this.toBeCallableWith = new ToBeCallableWith(this.compiler, this.typeChecker);
     this.toBeNever = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Never);
     this.toBeNull = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Null);
     this.toBeNumber = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Number);
@@ -142,6 +145,43 @@ export class Expect {
         }
 
         return this[matcherNameText].match(this.#getType(assertion.source[0]));
+
+      case "toBeCallableWith": {
+        if (assertion.source[0] == null) {
+          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const sourceType = this.#getType(assertion.source[0]);
+        const signatures = sourceType.getCallSignatures();
+
+        if (signatures.length === 0) {
+          this.#onSourceArgumentIsNotCallable(assertion.source[0], expectResult);
+
+          return;
+        }
+
+        let target: Array<ts.Expression> | ts.TupleType = [];
+
+        if (assertion.target[0] != null) {
+          if (this.compiler.isExpression(assertion.target[0])) {
+            target = [...(assertion.target as ts.NodeArray<ts.Expression>)];
+          }
+
+          if (this.compiler.isTypeNode(assertion.target[0])) {
+            if (this.compiler.isTupleTypeNode(assertion.target[0])) {
+              target = (this.typeChecker.getTypeFromTypeNode(assertion.target[0]) as ts.TupleTypeReference).target;
+            } else {
+              this.#onTargetArgumentsMustBeTupleType(assertion.target[0], expectResult);
+
+              return;
+            }
+          }
+        }
+
+        return this.toBeCallableWith.match({ node: assertion.source[0], signatures }, target, assertion.isNot);
+      }
 
       case "toHaveProperty": {
         if (assertion.source[0] == null) {
@@ -273,6 +313,20 @@ export class Expect {
     ]);
   }
 
+  #onSourceArgumentIsNotCallable(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const sourceText = this.compiler.isTypeNode(node) ? "type expression" : "expression";
+    const sourceTypeText = this.typeChecker.typeToString(this.#getType(node));
+
+    const text = `This ${sourceText} is not callable. Type '${sourceTypeText}' has no call signatures.`;
+    const origin = {
+      end: node.getEnd(),
+      file: node.getSourceFile(),
+      start: node.getStart(),
+    };
+
+    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+  }
+
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const sourceText = this.compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
     const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
@@ -351,5 +405,21 @@ export class Expect {
     }
 
     EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
+  }
+
+  #onTargetArgumentsMustBeTupleType(node: ts.TypeNode, expectResult: ExpectResult) {
+    const origin = {
+      end: node.getEnd(),
+      file: node.getSourceFile(),
+      start: node.getStart(),
+    };
+
+    EventEmitter.dispatch([
+      "expect:error",
+      {
+        diagnostics: [Diagnostic.error("A type argument for 'Target' must be of tuple type.", origin)],
+        result: expectResult,
+      },
+    ]);
   }
 }

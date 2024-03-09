@@ -132,6 +132,19 @@ interface Matchers {
    */
   toBeBoolean: () => void;
   /**
+   * Checks if the source type can be called with the target arguments.
+   */
+  toBeCallableWith: {
+    /**
+     * Checks if the source type can be called with arguments of the target type.
+     */
+    <Target extends [...args: Array<unknown>]>(): void;
+    /**
+     * Checks if the source type can be called with the target arguments.
+     */
+    (...target: Array<unknown>): void;
+  };
+  /**
    * Checks if the source type is `never`.
    */
   toBeNever: () => void;
