@@ -48,7 +48,7 @@ describe("'--failFast' command line option", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'true' is passed as an argument", async function() {
+  test("when 'true' is specified as a value", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -70,7 +70,7 @@ describe("'--failFast' command line option", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'false' is passed as an argument", async function() {
+  test("when 'false' is specified as a value", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,

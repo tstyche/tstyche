@@ -24,7 +24,7 @@ export class OptionUsageText {
         switch (this.#optionGroup) {
           case OptionGroup.CommandLine:
             usageText.push(
-              "Argument for the '--target' option must be a single tag or a comma separated list.",
+              "Value for the '--target' option must be a single tag or a comma separated list.",
               "Usage examples: '--target 4.9', '--target latest', '--target 4.9,5.3.2,current'.",
               supportedTagsText,
             );
@@ -38,7 +38,7 @@ export class OptionUsageText {
       }
 
       default:
-        usageText.push(this.#optionDiagnosticText.requiresArgumentType(optionName, optionBrand));
+        usageText.push(this.#optionDiagnosticText.requiresValueType(optionName, optionBrand));
     }
 
     return usageText;

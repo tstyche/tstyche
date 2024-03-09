@@ -17,7 +17,7 @@ afterEach(async function() {
 });
 
 describe("'--target' command line option", function() {
-  test("when option argument is missing", async function() {
+  test("when option value is missing", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -27,9 +27,9 @@ describe("'--target' command line option", function() {
     assert.equal(stdout, "");
 
     const expected = [
-      "Error: Option '--target' expects an argument.",
+      "Error: Option '--target' expects a value.",
       "",
-      "Argument for the '--target' option must be a single tag or a comma separated list.",
+      "Value for the '--target' option must be a single tag or a comma separated list.",
       "Usage examples:",
     ].join("\n");
 
@@ -49,7 +49,7 @@ describe("'--target' command line option", function() {
     const expected = [
       "Error: TypeScript version 'new' is not supported.",
       "",
-      "Argument for the '--target' option must be a single tag or a comma separated list.",
+      "Value for the '--target' option must be a single tag or a comma separated list.",
       "Usage examples:",
     ].join("\n");
 
@@ -71,7 +71,7 @@ describe("'--target' command line option", function() {
     const expected = [
       "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
       "",
-      "Argument for the '--target' option must be a single tag or a comma separated list.",
+      "Value for the '--target' option must be a single tag or a comma separated list.",
       "Usage examples:",
     ].join("\n");
 
