@@ -6,6 +6,7 @@ import { Environment } from "#environment";
 import { EventEmitter, type EventHandler } from "#events";
 import { Logger } from "#logger";
 import { addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
+import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationToken } from "#token";
 
@@ -26,6 +27,7 @@ export class Cli {
         break;
 
       case "config:error":
+      case "select:error":
       case "store:error":
         for (const diagnostic of payload.diagnostics) {
           switch (diagnostic.category) {
@@ -128,7 +130,9 @@ export class Cli {
     let testFiles: Array<string> = [];
 
     if (resolvedConfig.testFileMatch.length !== 0) {
-      testFiles = configService.selectTestFiles();
+      const selectService = new SelectService(resolvedConfig);
+
+      testFiles = await selectService.selectFiles();
 
       if (testFiles.length === 0) {
         return;

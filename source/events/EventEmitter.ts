@@ -5,6 +5,7 @@ export type Event =
   | ["start", { result: Result }]
   | ["end", { result: Result }]
   | ["config:error", { diagnostics: Array<Diagnostic> }]
+  | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["store:info", { compilerVersion: string; installationPath: string }]
   | ["store:error", { diagnostics: Array<Diagnostic> }]
   | ["target:start", { result: TargetResult }]

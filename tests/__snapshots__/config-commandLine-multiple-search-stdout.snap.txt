@@ -1,8 +1,8 @@
 uses TypeScript <<version>>
 
+pass ./__typetests__/isString.test.ts
 pass ./feature/__tests__/isNumber.tst.ts
 pass ./feature/__tests__/isString.tst.ts
-pass ./__typetests__/isString.test.ts
 
 Targets:    1 passed, 1 total
 Test files: 3 passed, 3 total
