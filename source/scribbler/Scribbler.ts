@@ -56,8 +56,10 @@ export interface ScribblerOptions {
  * Provides the JSX factory function and renderer.
  */
 export class Scribbler {
+  #indentStep = "  ";
   #newLine: string;
   #noColor: boolean;
+  #notEmptyLinePattern = /^(?!$)/gm;
 
   /**
    * @param options - {@link ScribblerOptions | Options} to configure an instance of the Scribbler.
@@ -88,10 +90,7 @@ export class Scribbler {
   }
 
   #indentEachLine(lines: string, level: number) {
-    const indentStep = "  ";
-    const notEmptyLineRegExp = /^(?!$)/gm;
-
-    return lines.replace(notEmptyLineRegExp, indentStep.repeat(level));
+    return lines.replace(this.#notEmptyLinePattern, this.#indentStep.repeat(level));
   }
 
   /**
