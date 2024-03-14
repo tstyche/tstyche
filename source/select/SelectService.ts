@@ -62,7 +62,7 @@ export class SelectService {
       this.#onDiagnostic(Diagnostic.error(text));
     }
 
-    return testFilePaths;
+    return testFilePaths.sort();
   }
 
   async #visitDirectory(currentPath: string, testFilePaths: Array<string>): Promise<void> {
