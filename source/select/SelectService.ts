@@ -62,6 +62,7 @@ export class SelectService {
       this.#onDiagnostic(Diagnostic.error(text));
     }
 
+    // sorting ensures output remains the same on different systems
     return testFilePaths.sort();
   }
 
