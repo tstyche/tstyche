@@ -28,6 +28,8 @@ export class RegexWorker {
         optionalSegmentCount++;
       }
 
+      resultPattern += `\\/`;
+
       if (segment.startsWith("*")) {
         segmentPattern += `([^./][^/]*)?`;
         segment = segment.substring(1);
@@ -37,8 +39,6 @@ export class RegexWorker {
       }
 
       segmentPattern += segment.replace(this.#reservedCharacterPattern, this.#replaceReservedCharacter);
-
-      resultPattern += `\\/`;
 
       if (segmentPattern !== segment) {
         // no need to exclude 'node_modules' when a segment has no wildcards
