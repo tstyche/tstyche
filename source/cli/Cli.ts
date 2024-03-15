@@ -105,7 +105,7 @@ export class Cli {
 
     const resolvedConfig = configService.resolveConfig();
 
-    if (configService.commandLineOptions.showConfig === true) {
+    if (commandLineArguments.includes("--showConfig")) {
       this.#logger.writeMessage(
         formattedText({
           noColor: Environment.noColor,
@@ -120,7 +120,7 @@ export class Cli {
       return;
     }
 
-    if (configService.commandLineOptions.install === true) {
+    if (commandLineArguments.includes("--install")) {
       for (const tag of resolvedConfig.target) {
         await this.#storeService.install(tag);
       }
@@ -138,7 +138,7 @@ export class Cli {
         return;
       }
 
-      if (configService.commandLineOptions.listFiles === true) {
+      if (commandLineArguments.includes("--listFiles")) {
         this.#logger.writeMessage(formattedText(testFiles));
 
         return;
