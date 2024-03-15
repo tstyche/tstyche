@@ -22,7 +22,7 @@ export class StoreService {
     this.#storePath = Environment.storePath;
 
     this.#packageInstaller = new PackageInstaller(this.#storePath, this.#onDiagnostic);
-    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostic, this.prune);
+    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostic);
   }
 
   async getSupportedTags(): Promise<Array<string>> {
@@ -127,9 +127,9 @@ export class StoreService {
     return module.exports as typeof ts;
   }
 
-  #onDiagnostic = (diagnostic: Diagnostic) => {
+  #onDiagnostic(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
-  };
+  }
 
   async open(): Promise<void> {
     if (this.#manifest) {
@@ -138,10 +138,6 @@ export class StoreService {
 
     this.#manifest = await this.#manifestWorker.open();
   }
-
-  prune = async (): Promise<void> => {
-    await fs.rm(this.#storePath, { force: true, recursive: true });
-  };
 
   async resolveTag(tag: string): Promise<string | undefined> {
     if (tag === "current") {

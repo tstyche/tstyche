@@ -1,3 +1,4 @@
+import fs from "node:fs/promises";
 import process from "node:process";
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
@@ -60,7 +61,7 @@ export class Cli {
     }
 
     if (commandLineArguments.includes("--prune")) {
-      await this.#storeService.prune();
+      await fs.rm(Environment.storePath, { force: true, recursive: true });
 
       return;
     }
