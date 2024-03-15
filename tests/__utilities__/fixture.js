@@ -3,10 +3,19 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 /**
- * @param {URL} fixtureFileUrl
+ * @param {URL} fixtureUrl
  */
-export async function clearFixture(fixtureFileUrl) {
-  return fs.rm(fixtureFileUrl, { force: true, recursive: true });
+export async function clearFixture(fixtureUrl) {
+  return fs.rm(fixtureUrl, { force: true, recursive: true });
+}
+
+/**
+ * @param {URL} fixtureUrl
+ * @param {string} source
+ * @param {string} target
+ */
+export async function createSymbolicLink(fixtureUrl, source, target) {
+  await fs.symlink(new URL(source, fixtureUrl), new URL(target, fixtureUrl));
 }
 
 /**
@@ -27,11 +36,11 @@ export function getTestFileName(testFileUrl) {
 }
 
 /**
- * @param {URL} fixtureFileUrl
+ * @param {URL} fixtureUrl
  * @param {Record<string, string>} [files]
  */
-export async function writeFixture(fixtureFileUrl, files) {
-  await fs.mkdir(fixtureFileUrl, { recursive: true });
+export async function writeFixture(fixtureUrl, files) {
+  await fs.mkdir(fixtureUrl, { recursive: true });
 
   if (files == null) {
     return;
@@ -42,11 +51,11 @@ export async function writeFixture(fixtureFileUrl, files) {
     const directory = path.dirname(file);
 
     if (directory !== ".") {
-      await fs.mkdir(new URL(directory, fixtureFileUrl), { recursive: true });
+      await fs.mkdir(new URL(directory, fixtureUrl), { recursive: true });
     }
 
     if (content != null) {
-      await fs.writeFile(new URL(file, fixtureFileUrl), content);
+      await fs.writeFile(new URL(file, fixtureUrl), content);
     }
   }
 }

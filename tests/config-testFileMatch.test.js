@@ -1,6 +1,12 @@
 import { afterEach, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
-import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import {
+  clearFixture,
+  createSymbolicLink,
+  getFixtureFileUrl,
+  getTestFileName,
+  writeFixture,
+} from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -174,6 +180,29 @@ describe("'testFileMatch' configuration file option", function() {
 
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-node_modules-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+
+    test("can select symbolic links", async function() {
+      const config = {
+        testFileMatch: ["**/*.tst.*"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["isNumber.tst.ts"]: isNumberTestText,
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      await createSymbolicLink(fixtureUrl, "isNumber.tst.ts", "isNumber-link.tst.ts");
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      await assert.matchSnapshot(normalizeOutput(stdout), {
+        fileName: `${testFileName}-specified-patterns-symbolic-links`,
         testFileUrl: import.meta.url,
       });
 
