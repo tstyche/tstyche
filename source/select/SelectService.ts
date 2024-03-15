@@ -1,4 +1,4 @@
-import { readdir, stat } from "node:fs/promises";
+import fs from "node:fs/promises";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -72,7 +72,7 @@ export class SelectService {
     let entries: Array<FileSystemEntryMeta & { name: string }> = [];
 
     try {
-      entries = await readdir(targetPath, { withFileTypes: true });
+      entries = await fs.readdir(targetPath, { withFileTypes: true });
     } catch {
       // continue regardless of error
     }
@@ -82,7 +82,7 @@ export class SelectService {
 
       if (entry.isSymbolicLink()) {
         try {
-          entryMeta = await stat([targetPath, entry.name].join("/"));
+          entryMeta = await fs.stat([targetPath, entry.name].join("/"));
         } catch {
           continue; // regardless of error
         }
