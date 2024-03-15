@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
+import type { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
@@ -103,42 +103,5 @@ export class ConfigService {
     };
 
     return mergedOptions;
-  }
-
-  selectTestFiles(): Array<string> {
-    const { pathMatch, rootPath, testFileMatch } = this.resolveConfig();
-
-    let testFilePaths = this.compiler.sys.readDirectory(
-      rootPath,
-      /* extensions */ undefined,
-      /* exclude */ undefined,
-      /* include */ testFileMatch,
-    );
-
-    if (pathMatch.length > 0) {
-      testFilePaths = testFilePaths.filter((testFilePath) =>
-        pathMatch.some((match) => {
-          const relativeTestFilePath = Path.relative("", testFilePath);
-
-          return relativeTestFilePath.toLowerCase().includes(match.toLowerCase());
-        })
-      );
-    }
-
-    if (testFilePaths.length === 0) {
-      const text = [
-        "No test files were selected using current configuration.",
-        `Root path:       ${rootPath}`,
-        `Test file match: ${testFileMatch.join(", ")}`,
-      ];
-
-      if (pathMatch.length > 0) {
-        text.push(`Path match:      ${pathMatch.join(", ")}`);
-      }
-
-      this.#onDiagnostic(Diagnostic.error(text));
-    }
-
-    return testFilePaths;
   }
 }
