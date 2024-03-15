@@ -1,0 +1,16 @@
+uses TypeScript <<version>>
+
+pass ./packages/core/typetests/awaitable.test.ts
+pass ./packages/parsers/json/typetests/JsonObject.test.ts
+pass ./packages/typetests/api.test.ts
+pass ./tests/nested/one.tst.ts
+pass ./tests/one.test.ts
+pass ./tests/two.ts
+
+Targets:    1 passed, 1 total
+Test files: 6 passed, 6 total
+Tests:      6 passed, 6 total
+Assertions: 6 passed, 6 total
+Duration:   <<timestamp>>
+
+Ran all test files.
