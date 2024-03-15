@@ -6,11 +6,6 @@ export class RegexWorker {
     const segments = pattern.split("/");
 
     let resultPattern = "\\.";
-
-    if (segments[0] === ".") {
-      segments.unshift();
-    }
-
     let optionalSegmentCount = 0;
 
     for (let segment of segments) {
