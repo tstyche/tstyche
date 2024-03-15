@@ -20,7 +20,7 @@ export class Path {
   static relative(from: string, to: string): string {
     let relativePath = path.relative(from, to);
 
-    if (!relativePath.startsWith(".")) {
+    if (!relativePath.startsWith("./")) {
       relativePath = `./${relativePath}`;
     }
 
