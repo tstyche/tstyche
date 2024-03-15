@@ -24,7 +24,7 @@ afterEach(async function() {
 });
 
 describe("'testFileMatch' configuration file option", function() {
-  test("default patterns, select files with '.test.' suffix in 'typetests' directories", async function() {
+  test("default patterns, select files with '.test.*' suffix in 'typetests' directories", async function() {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -47,7 +47,7 @@ describe("'testFileMatch' configuration file option", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("default patterns, select files with '.tst.' suffix", async function() {
+  test("default patterns, select files with '.tst.*' suffix", async function() {
     await writeFixture(fixtureUrl, {
       ["__tests__/isNumber.tst.ts"]: isNumberTestText,
       ["__tests__/isString.tst.ts"]: isStringTestText,
@@ -117,6 +117,192 @@ describe("'testFileMatch' configuration file option", function() {
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-specified-patterns-with-all-extensions-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("the '?' wildcard does not select the '.' paths", async function() {
+    const config = {
+      testFileMatch: ["?generated/?isNumber.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      [".generated/isString.tst.ts"]: isStringTestText,
+      ["_generated/.isNumber.tst.ts"]: isNumberTestText,
+      ["_generated/_isNumber.tst.ts"]: isNumberTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-question-mark-does-not-select-dot-paths`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("the '*' wildcard does not select the '.' paths", async function() {
+    const config = {
+      testFileMatch: ["*/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      [".generated/isString.tst.ts"]: isStringTestText,
+      ["_generated/.isNumber.tst.ts"]: isNumberTestText,
+      ["_generated/_isNumber.tst.ts"]: isNumberTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-single-asterisk-does-not-select-dot-paths`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("the '**' wildcard does not select the '.' paths", async function() {
+    const config = {
+      testFileMatch: ["**/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      [".generated/isString.tst.ts"]: isStringTestText,
+      ["_generated/.nested/isNumber.tst.ts"]: isNumberTestText,
+      ["_generated/_nested/isNumber.tst.ts"]: isNumberTestText,
+      ["_generated/isNumber.tst.ts"]: isNumberTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-double-asterisk-does-not-select-dot-paths`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("the '.' paths are selected, if specified explicitly", async function() {
+    const config = {
+      testFileMatch: ["**/.generated/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      [".generated/isString.tst.ts"]: isStringTestText,
+      [".nested/isNumber.tst.ts"]: isNumberTestText,
+      ["_generated/isNumber.tst.ts"]: isNumberTestText,
+      ["_nested/.generated/isNumber.tst.ts"]: isNumberTestText,
+      ["isNumber.tst.ts"]: isNumberTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-dot-paths-specified-explicitly-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("the '?' wildcard does not select files within the 'node_modules' directories", async function() {
+    const config = {
+      testFileMatch: ["?ode_modules/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["_ode_modules/isNumber.tst.ts"]: isNumberTestText,
+      ["node_modules/isString.tst.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-question-mark-does-not-select-node_modules-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("the '*' wildcard does not select files within the 'node_modules' directories", async function() {
+    const config = {
+      testFileMatch: ["*/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["node_modules/isString.tst.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-single-asterisk-does-not-select-node_modules-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("the '**' wildcard does not select files within the 'node_modules' directories", async function() {
+    const config = {
+      testFileMatch: ["**/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["local/node_modules/isString.tst.ts"]: isStringTestText,
+      ["node_modules/isString.tst.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-double-asterisk-does-not-select-node_modules-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("the 'node_modules' directories are selected, if specified explicitly", async function() {
+    const config = {
+      testFileMatch: ["**/node_modules/**/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["local/node_modules/isString.tst.ts"]: isStringTestText,
+      ["node_modules/isString.tst.ts"]: isStringTestText,
+      ["node_modules/nested/isString.tst.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-node_modules-specified-explicitly-stdout`,
       testFileUrl: import.meta.url,
     });
 

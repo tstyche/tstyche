@@ -38,12 +38,14 @@ export class RegexWorker {
 
       segmentPattern += segment.replace(this.#reservedCharacterPattern, this.#replaceReservedCharacter);
 
+      resultPattern += `\\/`;
+
       if (segmentPattern !== segment) {
         // no need to exclude 'node_modules' when a segment has no wildcards
         resultPattern += "(?!(node_modules)(\\/|$))";
       }
 
-      resultPattern += `\\/${segmentPattern}`;
+      resultPattern += segmentPattern;
     }
 
     resultPattern += ")?".repeat(optionalSegmentCount);
