@@ -2,17 +2,15 @@ export class RegexWorker {
   // escaping any non-word and non-whitespace character sounds inefficient, but this is future proof
   #reservedCharacterPattern = /[^\w\s/]/g;
 
+  // all wildcards must not match path segments that start with a dot '[^./]'
+  // as well as the 'node_modules' directories '(?!(node_modules)(\\/|$))'
   #parseGlob(pattern: string, usageTarget: "directories" | "files") {
     const segments = pattern.split("/");
 
     let resultPattern = "\\.";
     let optionalSegmentCount = 0;
 
-    for (let segment of segments) {
-      let segmentPattern = "";
-
-      // all wildcards must not match path segments that start with a dot '[^./]'
-      // as well as the 'node_modules' directories '(?!(node_modules)(\\/|$))'
+    for (const segment of segments) {
       if (segment === "**") {
         resultPattern += "(\\/(?!(node_modules)(\\/|$))[^./][^/]*)*?";
         continue;
@@ -25,18 +23,10 @@ export class RegexWorker {
 
       resultPattern += `\\/`;
 
-      if (segment.startsWith("*")) {
-        segmentPattern += `([^./][^/]*)?`;
-        segment = segment.substring(1);
-      } else if (segment.startsWith("?")) {
-        segmentPattern += "[^./]";
-        segment = segment.substring(1);
-      }
+      const segmentPattern = segment.replace(this.#reservedCharacterPattern, this.#replaceReservedCharacter);
 
-      segmentPattern += segment.replace(this.#reservedCharacterPattern, this.#replaceReservedCharacter);
-
+      // no need to exclude 'node_modules' when a segment has no wildcards
       if (segmentPattern !== segment) {
-        // no need to exclude 'node_modules' when a segment has no wildcards
         resultPattern += "(?!(node_modules)(\\/|$))";
       }
 
@@ -54,13 +44,13 @@ export class RegexWorker {
     return new RegExp(`^(${patternText})$`);
   }
 
-  #replaceReservedCharacter(this: void, match: string) {
+  #replaceReservedCharacter(this: void, match: string, offset: number) {
     switch (match) {
       case "*":
-        return "([^/]*)?";
+        return (offset === 0) ? "([^./][^/]*)?" : "([^/]*)?";
 
       case "?":
-        return "[^/]";
+        return (offset === 0) ? "[^./]" : "[^/]";
 
       default:
         return `\\${match}`;
