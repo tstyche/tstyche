@@ -50,9 +50,9 @@ export class ConfigService {
     return ConfigService.#defaultOptions;
   }
 
-  #onDiagnostic = (diagnostic: Diagnostic) => {
+  #onDiagnostic(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostic] }]);
-  };
+  }
 
   async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {
     this.#commandLineOptions = {};

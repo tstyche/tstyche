@@ -23,17 +23,15 @@ export class ManifestWorker {
   #manifestFileName = "store-manifest.json";
   #manifestFilePath: string;
   #onDiagnostic: (diagnostic: Diagnostic) => void;
-  #prune: () => Promise<void>;
   #registryUrl = new URL("https://registry.npmjs.org");
   #storePath: string;
   #timeout = Environment.timeout * 1000;
   readonly #version = "1";
 
-  constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void, prune: () => Promise<void>) {
+  constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void) {
     this.#storePath = storePath;
     this.#onDiagnostic = onDiagnostic;
     this.#manifestFilePath = Path.join(storePath, this.#manifestFileName);
-    this.#prune = prune;
   }
 
   async #create() {
@@ -181,7 +179,7 @@ export class ManifestWorker {
     }
 
     if (manifest == null || manifest.$version !== this.#version) {
-      await this.#prune();
+      await fs.rm(this.#storePath, { force: true, recursive: true });
 
       return this.#create();
     }
