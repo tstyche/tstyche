@@ -16,8 +16,8 @@ export class RegexWorker {
     for (let segment of segments) {
       let segmentPattern = "";
 
-      // wildcards must not match path segments that start with a dot '[^./]'
-      // and 'node_modules' directories '(?!(node_modules)(\\/|$))'
+      // all wildcards must not match path segments that start with a dot '[^./]'
+      // as well as the 'node_modules' directories '(?!(node_modules)(\\/|$))'
       if (segment === "**") {
         resultPattern += "(\\/(?!(node_modules)(\\/|$))[^./][^/]*)*?";
         continue;
@@ -38,8 +38,8 @@ export class RegexWorker {
 
       segmentPattern += segment.replace(this.#reservedCharacterPattern, this.#replaceReservedCharacter);
 
-      // segment has no wildcards
       if (segmentPattern !== segment) {
+        // no need to exclude 'node_modules' when a segment has no wildcards
         resultPattern += "(?!(node_modules)(\\/|$))";
       }
 
@@ -58,14 +58,15 @@ export class RegexWorker {
   }
 
   #replaceReservedCharacter(this: void, match: string) {
-    if (match === "*") {
-      return "([^/]*)?";
-    }
+    switch (match) {
+      case "*":
+        return "([^/]*)?";
 
-    if (match === "?") {
-      return "[^/]";
-    }
+      case "?":
+        return "[^/]";
 
-    return `\\${match}`;
+      default:
+        return `\\${match}`;
+    }
   }
 }
