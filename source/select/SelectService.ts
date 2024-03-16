@@ -3,7 +3,7 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import { RegexWorker } from "./RegexWorker.js";
+import { GlobPattern } from "./GlobPattern.js";
 
 interface FileSystemEntryMeta {
   isDirectory: () => boolean;
@@ -12,22 +12,19 @@ interface FileSystemEntryMeta {
 }
 
 export class SelectService {
-  #includeDirectoryPattern: RegExp;
-  #includeFilePattern: RegExp;
-  #regexWorker: RegexWorker;
+  #includeDirectoryRegex: RegExp;
+  #includeFileRegex: RegExp;
 
   constructor(readonly resolvedConfig: ResolvedConfig) {
-    this.#regexWorker = new RegexWorker();
-
-    this.#includeDirectoryPattern = this.#regexWorker.parseGlobs(resolvedConfig.testFileMatch, "directories");
-    this.#includeFilePattern = this.#regexWorker.parseGlobs(resolvedConfig.testFileMatch, "files");
+    this.#includeDirectoryRegex = GlobPattern.toRegex(resolvedConfig.testFileMatch, "directories");
+    this.#includeFileRegex = GlobPattern.toRegex(resolvedConfig.testFileMatch, "files");
   }
 
-  isDirectoryIncluded(directoryPath: string): boolean {
-    return this.#includeDirectoryPattern.test(directoryPath);
+  #isDirectoryIncluded(directoryPath: string): boolean {
+    return this.#includeDirectoryRegex.test(directoryPath);
   }
 
-  isFileIncluded(filePath: string): boolean {
+  #isFileIncluded(filePath: string): boolean {
     if (
       this.resolvedConfig.pathMatch.length > 0
       && !this.resolvedConfig.pathMatch.some((match) => filePath.toLowerCase().includes(match.toLowerCase()))
@@ -35,7 +32,7 @@ export class SelectService {
       return false;
     }
 
-    return this.#includeFilePattern.test(filePath);
+    return this.#includeFileRegex.test(filePath);
   }
 
   #onDiagnostic(this: void, diagnostic: Diagnostic) {
@@ -92,13 +89,13 @@ export class SelectService {
 
       const entryPath = [currentPath, entry.name].join("/");
 
-      if (entryMeta.isDirectory() && this.isDirectoryIncluded(entryPath)) {
+      if (entryMeta.isDirectory() && this.#isDirectoryIncluded(entryPath)) {
         await this.#visitDirectory(entryPath, testFilePaths);
 
         continue;
       }
 
-      if (entryMeta.isFile() && this.isFileIncluded(entryPath)) {
+      if (entryMeta.isFile() && this.#isFileIncluded(entryPath)) {
         testFilePaths.push([targetPath, entry.name].join("/"));
       }
     }

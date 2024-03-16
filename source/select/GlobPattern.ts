@@ -1,10 +1,10 @@
-export class RegexWorker {
+export class GlobPattern {
   // escaping any non-word and non-whitespace character sounds inefficient, but this is future proof
-  #reservedCharacterPattern = /[^\w\s/]/g;
+  static #reservedCharacterRegex = /[^\w\s/]/g;
 
   // all wildcards must not match path segments that start with a dot '[^./]'
   // as well as the 'node_modules' directories '(?!(node_modules)(\\/|$))'
-  #parseGlob(pattern: string, usageTarget: "directories" | "files") {
+  static #parse(pattern: string, usageTarget: "directories" | "files") {
     const segments = pattern.split("/");
 
     let resultPattern = "\\.";
@@ -23,7 +23,10 @@ export class RegexWorker {
 
       resultPattern += `\\/`;
 
-      const segmentPattern = segment.replace(this.#reservedCharacterPattern, this.#replaceReservedCharacter);
+      const segmentPattern = segment.replace(
+        GlobPattern.#reservedCharacterRegex,
+        GlobPattern.#replaceReservedCharacter,
+      );
 
       // no need to exclude 'node_modules' when a segment has no wildcards
       if (segmentPattern !== segment) {
@@ -38,13 +41,7 @@ export class RegexWorker {
     return resultPattern;
   }
 
-  parseGlobs(patterns: Array<string>, usageTarget: "directories" | "files"): RegExp {
-    const patternText = patterns.map((pattern) => `(${this.#parseGlob(pattern, usageTarget)})`).join("|");
-
-    return new RegExp(`^(${patternText})$`);
-  }
-
-  #replaceReservedCharacter(this: void, match: string, offset: number) {
+  static #replaceReservedCharacter(this: void, match: string, offset: number) {
     switch (match) {
       case "*":
         return (offset === 0) ? "([^./][^/]*)?" : "([^/]*)?";
@@ -55,5 +52,11 @@ export class RegexWorker {
       default:
         return `\\${match}`;
     }
+  }
+
+  static toRegex(patterns: Array<string>, usageTarget: "directories" | "files"): RegExp {
+    const patternText = patterns.map((pattern) => `(${GlobPattern.#parse(pattern, usageTarget)})`).join("|");
+
+    return new RegExp(`^(${patternText})$`);
   }
 }
