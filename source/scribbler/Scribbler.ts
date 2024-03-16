@@ -59,7 +59,7 @@ export class Scribbler {
   #indentStep = "  ";
   #newLine: string;
   #noColor: boolean;
-  #notEmptyLinePattern = /^(?!$)/gm;
+  #notEmptyLineRegex = /^(?!$)/gm;
 
   /**
    * @param options - {@link ScribblerOptions | Options} to configure an instance of the Scribbler.
@@ -90,7 +90,7 @@ export class Scribbler {
   }
 
   #indentEachLine(lines: string, level: number) {
-    return lines.replace(this.#notEmptyLinePattern, this.#indentStep.repeat(level));
+    return lines.replace(this.#notEmptyLineRegex, this.#indentStep.repeat(level));
   }
 
   /**
