@@ -5,7 +5,7 @@ import { Reporter } from "./Reporter.js";
 export class SummaryReporter extends Reporter {
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
-      case "end":
+      case "run:end":
         this.logger.writeMessage(
           summaryText({
             duration: payload.result.timing.duration,

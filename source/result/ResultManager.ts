@@ -20,12 +20,12 @@ export class ResultManager {
 
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
-      case "start":
+      case "run:start":
         this.#result = payload.result;
         this.#result.timing.start = Date.now();
         break;
 
-      case "end":
+      case "run:end":
         this.#result!.timing.end = Date.now();
         this.#result = undefined;
         break;

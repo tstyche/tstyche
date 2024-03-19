@@ -2,12 +2,12 @@ import type { Diagnostic } from "#diagnostic";
 import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, TestResult } from "#result";
 
 export type Event =
-  | ["start", { result: Result }]
-  | ["end", { result: Result }]
   | ["config:error", { diagnostics: Array<Diagnostic> }]
   | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["store:info", { compilerVersion: string; installationPath: string }]
   | ["store:error", { diagnostics: Array<Diagnostic> }]
+  | ["run:start", { result: Result }]
+  | ["run:end", { result: Result }]
   | ["target:start", { result: TargetResult }]
   | ["target:end", { result: TargetResult }]
   | ["project:info", { compilerVersion: string; projectConfigFilePath: string | undefined }]

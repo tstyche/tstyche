@@ -25,7 +25,7 @@ export class TaskRunner {
   async run(testFiles: Array<URL>, target: Array<string>, cancellationToken?: CancellationToken): Promise<Result> {
     const result = new Result(this.resolvedConfig, testFiles);
 
-    EventEmitter.dispatch(["start", { result }]);
+    EventEmitter.dispatch(["run:start", { result }]);
 
     for (const versionTag of target) {
       const targetResult = new TargetResult(versionTag, testFiles);
@@ -45,7 +45,7 @@ export class TaskRunner {
       EventEmitter.dispatch(["target:end", { result: targetResult }]);
     }
 
-    EventEmitter.dispatch(["end", { result }]);
+    EventEmitter.dispatch(["run:end", { result }]);
 
     return result;
   }
