@@ -6,6 +6,7 @@ export type Event =
   | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["store:info", { compilerVersion: string; installationPath: string }]
   | ["store:error", { diagnostics: Array<Diagnostic> }]
+  | ["input", { key: string }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
   | ["target:start", { result: TargetResult }]
@@ -29,7 +30,7 @@ export type Event =
   | ["expect:pass", { result: ExpectResult }]
   | ["expect:skip", { result: ExpectResult }];
 
-export type EventHandler = (event: Event) => void;
+export type EventHandler = (event: Event) => void | Promise<void>;
 
 export class EventEmitter {
   static #handlers = new Set<EventHandler>();
@@ -40,7 +41,13 @@ export class EventEmitter {
 
   static dispatch(event: Event): void {
     for (const handler of EventEmitter.#handlers) {
-      handler(event);
+      const result = handler(event);
+
+      if (typeof result === "object") {
+        result.catch((error) => {
+          throw error;
+        });
+      }
     }
   }
 

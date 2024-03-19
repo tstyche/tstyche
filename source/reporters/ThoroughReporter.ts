@@ -20,7 +20,7 @@ export class ThoroughReporter extends Reporter {
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
       case "run:start":
-        this.#isFileViewExpanded = payload.result.testFiles.length === 1;
+        this.#isFileViewExpanded = payload.result.testFiles.length === 1 && this.resolvedConfig.watch !== true;
         break;
 
       case "store:info":

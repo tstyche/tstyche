@@ -51,7 +51,15 @@ export class Logger {
   }
 
   /**
-   * Moves the cursor one line up in the `stdout` stream and erases that line.
+   * Erases all visible output, clears all lines saved in the scroll-back buffer
+   * and moves the cursor to the upper left corner.
+   */
+  clear(): void {
+    this.#stdout.write("\u001B[2J\u001B[3J\u001B[H");
+  }
+
+  /**
+   * Moves the cursor one line up and erases that line.
    */
   eraseLastLine(): void {
     this.#stdout.write("\u001B[1A\u001B[0K");
