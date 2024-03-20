@@ -13,7 +13,7 @@ export class CodeSpanText implements JSX.ElementClass {
     );
     const firstLine = Math.max(markedLine - 2, 0);
     const lastLine = Math.min(firstLine + 5, lastLineInFile);
-    const lineNumberMaxWidth = `${lastLine + 1}`.length;
+    const lineNumberMaxWidth = String(lastLine + 1).length;
 
     const codeSpan: Array<JSX.Element> = [];
 

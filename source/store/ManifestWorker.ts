@@ -68,7 +68,7 @@ export class ManifestWorker {
           let rawData = "";
 
           response.on("data", (chunk) => {
-            rawData += chunk;
+            rawData += chunk as string;
           });
 
           response.on("end", () => {
@@ -117,7 +117,7 @@ export class ManifestWorker {
       const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.toString()}'.`];
 
       if (error instanceof Error && "code" in error && error.code === "ECONNRESET") {
-        text.push(`Setup timeout of ${this.#timeout / 1000}s was exceeded.`);
+        text.push(`Setup timeout of ${String(this.#timeout / 1000)}s was exceeded.`);
       } else {
         text.push("Might be there is an issue with the registry or the network connection.");
       }

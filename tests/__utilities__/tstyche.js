@@ -24,12 +24,14 @@ export async function spawnTyche(fixtureUrl, args, options) {
     let stdoutOutput = "";
 
     tstyche.stdout.on("data", (data) => {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
       stdoutOutput += data;
     });
 
     let stderrOutput = "";
 
     tstyche.stderr.on("data", (data) => {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
       stderrOutput += data;
     });
 
