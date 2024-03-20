@@ -140,6 +140,13 @@ export class OptionDefinitionsMap {
       group: OptionGroup.CommandLine,
       name: "version",
     },
+
+    {
+      brand: OptionBrand.Boolean,
+      description: "Watch for changes and rerun related tests files.",
+      group: OptionGroup.CommandLine,
+      name: "watch",
+    },
   ];
 
   static for(optionGroup: OptionGroup): Map<string, OptionDefinition> {

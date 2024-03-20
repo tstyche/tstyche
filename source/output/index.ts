@@ -8,3 +8,4 @@ export { helpText } from "./helpText.js";
 export { summaryText } from "./summaryText.js";
 export { testNameText } from "./testNameText.js";
 export { usesCompilerStepText } from "./usesCompilerStepText.js";
+export { watchModeUsageText } from "./watchModeUsageText.js";

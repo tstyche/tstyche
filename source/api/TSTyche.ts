@@ -3,10 +3,12 @@ import { pathToFileURL } from "node:url";
 import type { ResolvedConfig } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { SummaryReporter, ThoroughReporter } from "#reporters";
+import { type Reporter, SummaryReporter, ThoroughReporter, WatchModeReporter } from "#reporters";
 import { TaskRunner } from "#runner";
+import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationToken } from "#token";
+import { Watcher } from "#watcher";
 
 export class TSTyche {
   #cancellationToken = new CancellationToken();
@@ -20,6 +22,7 @@ export class TSTyche {
   ) {
     this.#storeService = storeService;
     this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#storeService);
+
     this.#addEventHandlers();
   }
 
@@ -30,7 +33,9 @@ export class TSTyche {
           "diagnostics" in payload
           && payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
         ) {
-          process.exitCode = 1;
+          if (this.resolvedConfig.watch !== true) {
+            process.exitCode = 1;
+          }
 
           if (this.resolvedConfig.failFast) {
             this.#cancellationToken.cancel();
@@ -39,11 +44,17 @@ export class TSTyche {
       }
     });
 
-    const outputHandlers = [new ThoroughReporter(this.resolvedConfig), new SummaryReporter(this.resolvedConfig)];
+    const reporters: Array<Reporter> = [new ThoroughReporter(this.resolvedConfig)];
 
-    for (const outputHandler of outputHandlers) {
+    if (this.resolvedConfig.watch === true) {
+      reporters.push(new WatchModeReporter(this.resolvedConfig));
+    } else {
+      reporters.push(new SummaryReporter(this.resolvedConfig));
+    }
+
+    for (const reporter of reporters) {
       EventEmitter.addHandler((event) => {
-        outputHandler.handleEvent(event);
+        reporter.handleEvent(event);
       });
     }
   }
@@ -68,5 +79,13 @@ export class TSTyche {
       this.resolvedConfig.target,
       this.#cancellationToken,
     );
+  }
+
+  async watch(testFiles: Array<string>, selectService: SelectService): Promise<void> {
+    const runCallback = async (testFiles: Array<string>) => this.run(testFiles);
+
+    const watcher = new Watcher(this.resolvedConfig, runCallback, selectService, testFiles);
+
+    await watcher.watch();
   }
 }

@@ -35,6 +35,10 @@ export class SelectService {
     return this.#includeFileRegex.test(filePath);
   }
 
+  isTestFile(filePath: string): boolean {
+    return this.#isFileIncluded(Path.relative(this.resolvedConfig.rootPath, filePath));
+  }
+
   #onDiagnostic(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["select:error", { diagnostics: [diagnostic] }]);
   }

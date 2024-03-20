@@ -73,7 +73,7 @@
     "@typescript-eslint/no-import-type-side-effects": "error",
     "@typescript-eslint/no-invalid-void-type": ["error", { "allowAsThisParameter": true }],
     "@typescript-eslint/no-unused-expressions": "error",
-    "@typescript-eslint/no-unused-vars": ["error", { "caughtErrors": "all" }],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "caughtErrors": "all" }],
     "@typescript-eslint/no-use-before-define": "error",
     "@typescript-eslint/prefer-literal-enum-member": ["error", { "allowBitwiseExpressions": true }],
     "@typescript-eslint/prefer-string-starts-ends-with": "error",
