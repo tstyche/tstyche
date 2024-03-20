@@ -80,8 +80,8 @@ class DurationText implements JSX.ElementClass {
 
     return (
       <Text>
-        {minutes > 0 ? `${minutes}m ` : undefined}
-        {`${Math.round(seconds * 10) / 10}s`}
+        {minutes > 0 ? `${String(minutes)}m ` : undefined}
+        {`${String(Math.round(seconds * 10) / 10)}s`}
       </Text>
     );
   }

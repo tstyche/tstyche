@@ -25,12 +25,12 @@ describe("type argument for 'Source'", () => {
 
 describe("argument for 'key'", () => {
   test("must be provided", () => {
-    // @ts-expect-error test
+    // @ts-expect-error test test test
     expect<{ test: () => void }>().type.toHaveProperty();
   });
 
   test("must be of type 'string | number | symbol'", () => {
-    // @ts-expect-error test
+    // @ts-expect-error test test test
     expect<{ test: () => void }>().type.toHaveProperty(["test"]);
   });
 });
