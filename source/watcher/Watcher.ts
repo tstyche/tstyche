@@ -30,9 +30,8 @@ export class Watcher {
   ) {
     this.#inputHandler = new InputService();
     this.#runCallback = runCallback;
-    this.#runChangedDebounced = this.#debounce(async () => {
-      await this.#runChanged();
-    }, 100);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    this.#runChangedDebounced = this.#debounce(this.#runChanged, 100);
     this.#selectService = selectService;
     this.#testFiles = new Set(testFiles);
 
