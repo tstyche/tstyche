@@ -4,7 +4,6 @@ import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { SelectService } from "#select";
-import { debounce } from "./debounce.js";
 import { InputService, type ReadStream } from "./InputService.js";
 
 export interface WatcherOptions {
@@ -18,6 +17,7 @@ export class Watcher {
   #changedTestFiles = new Set<string>();
   #inputHandler: InputService;
   #runCallback: RunCallback;
+  #runChangedDebounced: () => Promise<void>;
   #selectService: SelectService;
   #testFiles: Set<string>;
   #watcher: AsyncIterable<fs.FileChangeInfo<string>> | undefined;
@@ -30,6 +30,9 @@ export class Watcher {
   ) {
     this.#inputHandler = new InputService();
     this.#runCallback = runCallback;
+    this.#runChangedDebounced = this.#debounce(async () => {
+      await this.#runChanged();
+    }, 100);
     this.#selectService = selectService;
     this.#testFiles = new Set(testFiles);
 
@@ -52,6 +55,19 @@ export class Watcher {
         }
       }
     });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  #debounce<T extends (...args: any) => any>(target: T, delay: number): T {
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+
+    return function(this: ThisParameterType<T>, ...args: Parameters<T>) {
+      clearTimeout(timeout);
+
+      timeout = setTimeout(() => {
+        target.apply(this, args);
+      }, delay);
+    } as T;
   }
 
   #onChanged(fileName: string) {
@@ -85,7 +101,6 @@ export class Watcher {
     await this.#runCallback([...this.#testFiles].sort());
   }
 
-  @debounce(100)
   async #runChanged() {
     await this.#runCallback([...this.#changedTestFiles].sort());
 
@@ -113,7 +128,7 @@ export class Watcher {
         }
 
         if (this.#changedTestFiles.size !== 0) {
-          await this.#runChanged();
+          await this.#runChangedDebounced();
         }
       }
     } catch (error) {
