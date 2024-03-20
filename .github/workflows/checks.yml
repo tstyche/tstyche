@@ -110,7 +110,7 @@ jobs:
           name: build-${{ github.sha }}
           path: build/
       - run: yarn install
-      - run: yarn test
+      - run: yarn test:e2e
         env:
           FORCE_COLOR: true
 
