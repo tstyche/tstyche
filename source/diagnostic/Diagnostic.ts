@@ -41,7 +41,7 @@ export class Diagnostic {
   static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const category = DiagnosticCategory.Error;
-      const code = `ts(${diagnostic.code})`;
+      const code = `ts(${String(diagnostic.code)})`;
       let origin: DiagnosticOrigin | undefined;
       const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
 

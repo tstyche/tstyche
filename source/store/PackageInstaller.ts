@@ -96,7 +96,7 @@ export class PackageInstaller {
         }
 
         if (signal != null) {
-          reject(new Error(`setup timeout of ${this.#timeout / 1000}s was exceeded`));
+          reject(new Error(`setup timeout of ${String(this.#timeout / 1000)}s was exceeded`));
         }
 
         reject(new Error(`process exited with code ${String(code)}`));

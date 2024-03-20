@@ -73,7 +73,7 @@ Error: A type argument for 'Source' must be of an object type, received: '"one" 
 Error: An argument for 'key' must be provided.
 
   27 |   test("must be provided", () => {
-  28 |     // @ts-expect-error test
+  28 |     // @ts-expect-error test test test
 > 29 |     expect<{ test: () => void }>().type.toHaveProperty();
      |                                         ^
   30 |   });
@@ -85,7 +85,7 @@ Error: An argument for 'key' must be provided.
 Error: An argument for 'key' must be of type 'string | number | symbol', received: 'string[]'.
 
   32 |   test("must be of type 'string | number | symbol'", () => {
-  33 |     // @ts-expect-error test
+  33 |     // @ts-expect-error test test test
 > 34 |     expect<{ test: () => void }>().type.toHaveProperty(["test"]);
      |                                                        ^
   35 |   });
