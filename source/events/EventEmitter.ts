@@ -44,7 +44,7 @@ export class EventEmitter {
       const result = handler(event);
 
       if (typeof result === "object") {
-        result.catch((error) => {
+        result.catch((error: unknown) => {
           throw error;
         });
       }
