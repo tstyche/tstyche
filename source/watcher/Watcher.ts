@@ -57,7 +57,7 @@ export class Watcher {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  #debounce<T extends (...args: any) => any>(target: T, delay: number): T {
+  #debounce<T extends (...args: any) => any>(target: T, delay: number) {
     let timeout: ReturnType<typeof setTimeout> | undefined;
 
     return function(this: ThisParameterType<T>, ...args: Parameters<T>) {
