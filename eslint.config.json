@@ -80,6 +80,7 @@
     "@typescript-eslint/promise-function-async": "error",
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
+
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-duplicates": "error",
@@ -96,6 +97,7 @@
         ]
       }
     ],
+
     "simple-import-sort/imports": [
       "error",
       {
@@ -104,11 +106,13 @@
       }
     ],
     "simple-import-sort/exports": "error",
+
     "curly": "error",
     "eqeqeq": ["error", "smart"],
     "func-style": ["error", "declaration"],
     "object-shorthand": "error",
     "no-console": "warn",
+    "no-fallthrough": ["error", { "commentPattern": "break is omitted" }],
     "no-implicit-coercion": "error",
     "no-negated-condition": "error",
     "no-nested-ternary": "error",

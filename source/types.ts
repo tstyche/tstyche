@@ -81,19 +81,22 @@ interface Matchers {
   /**
    * Checks if the source type is assignable with the target type.
    *
-   * @deprecated This matcher has been renamed to `.toBeAssignableWith()`.
+   * @deprecated Use `.toBeAssignableWith()` or `.toBeAssignableTo()` instead. This matcher will be removed in TSTyche 3.
+   * To learn more, visit https://tstyche.org/guide/upgrade.
    */
   toBeAssignable: {
     /**
      * Checks if the source type is assignable with the target type.
      *
-     * @deprecated This matcher has been renamed to `.toBeAssignableWith()`.
+     * @deprecated Use `.toBeAssignableWith()` or `.toBeAssignableTo()` instead. This matcher will be removed in TSTyche 3.
+     * To learn more, visit https://tstyche.org/guide/upgrade.
      */
     <Target>(): void;
     /**
      * Checks if the source type is assignable with type of the target expression.
      *
-     * @deprecated This matcher has been renamed to `.toBeAssignableWith()`.
+     * @deprecated Use `.toBeAssignableWith()` or `.toBeAssignableTo()` instead. This matcher will be removed in TSTyche 3.
+     * To learn more, visit https://tstyche.org/guide/upgrade.
      */
     (target: unknown): void;
   };
@@ -170,19 +173,22 @@ interface Matchers {
   /**
    * Checks if the source type is identical to the target type.
    *
-   * @deprecated This matcher has been renamed to `.toBe()`.
+   * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
+   * To learn more, visit https://tstyche.org/guide/upgrade.
    */
   toEqual: {
     /**
      * Checks if the source type is identical to the target type.
      *
-     * @deprecated This matcher has been renamed to `.toBe()`.
+     * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
+     * To learn more, visit https://tstyche.org/guide/upgrade.
      */
     <Target>(): void;
     /**
      * Checks if the source type is identical to type of the target expression.
      *
-     * @deprecated This matcher has been renamed to `.toBe()`.
+     * @deprecated This matcher will be removed in TSTyche 3.
+     * To learn more, visit https://tstyche.org/guide/upgrade.
      */
     (target: unknown): void;
   };

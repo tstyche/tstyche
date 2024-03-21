@@ -92,19 +92,15 @@ export class Expect {
     const matcherNameText = assertion.matcherName.getText();
 
     switch (matcherNameText) {
-      case "toBe":
       case "toBeAssignable":
+      case "toEqual":
+        this.#onDeprecatedMatcher(assertion);
+        // break is omitted intentionally
+
+      case "toBe":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
-      case "toEqual":
       case "toMatch":
-        if (matcherNameText === "toBeAssignable") {
-          this.#onDeprecatedMatcher(assertion, expectResult, "toBeAssignableWith");
-        }
-        if (matcherNameText === "toEqual") {
-          this.#onDeprecatedMatcher(assertion, expectResult, "toBe");
-        }
-
         if (assertion.source[0] == null) {
           this.#onSourceArgumentMustBeProvided(assertion, expectResult);
 
@@ -208,12 +204,12 @@ export class Expect {
     }
   }
 
-  #onDeprecatedMatcher(assertion: Assertion, expectResult: ExpectResult, newNameText: string) {
+  #onDeprecatedMatcher(assertion: Assertion) {
     const oldNameText = assertion.matcherName.getText();
 
     const text = [
-      `'.${oldNameText}()' has been renamed to '.${newNameText}()'.`,
-      `Please update the test. '.${oldNameText}()' is deprecated and will be removed in TSTyche 3.`,
+      `'.${oldNameText}()' is deprecated and will be removed in TSTyche 3.`,
+      "To learn more, visit https://tstyche.org/guide/upgrade",
     ];
     const origin = {
       end: assertion.matcherName.getEnd(),
@@ -222,8 +218,8 @@ export class Expect {
     };
 
     EventEmitter.dispatch([
-      "expect:error",
-      { diagnostics: [Diagnostic.warning(text, origin)], result: expectResult },
+      "deprecation:info",
+      { diagnostics: [Diagnostic.warning(text, origin)] },
     ]);
   }
 
