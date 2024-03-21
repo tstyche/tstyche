@@ -2,46 +2,22 @@ import process from "node:process";
 import { Environment } from "#environment";
 import { Scribbler } from "#scribbler";
 
-/**
- * A stream to output messages.
- */
 export interface WriteStream {
-  /**
-   * @param log - Message to write to the stream.
-   */
   write: (log: string) => void;
 }
 
-/**
- * Options to configure an instance of the {@link Logger}.
- */
 export interface LoggerOptions {
-  /**
-   * Specifies whether color should be disabled in the output. Default: `Environment.noColor`.
-   */
   noColor?: boolean;
-  /**
-   * A stream to write warnings and errors. Default: `process.stderr`.
-   */
   stderr?: WriteStream;
-  /**
-   * A stream to write informational messages. Default: `process.stdout`.
-   */
   stdout?: WriteStream;
 }
 
-/**
- * Wraps the provided streams with a set of convenience methods.
- */
 export class Logger {
   #noColor: boolean;
   #scribbler: Scribbler;
   #stderr: WriteStream;
   #stdout: WriteStream;
 
-  /**
-   * @param options - {@link LoggerOptions | Options} to configure an instance of the Logger.
-   */
   constructor(options?: LoggerOptions) {
     this.#noColor = options?.noColor ?? Environment.noColor;
     this.#stderr = options?.stderr ?? process.stderr;
@@ -50,18 +26,14 @@ export class Logger {
     this.#scribbler = new Scribbler({ noColor: this.#noColor });
   }
 
-  /**
-   * Erases all visible output, clears all lines saved in the scroll-back buffer
-   * and moves the cursor to the upper left corner.
-   */
   clear(): void {
+    // Erases all visible output, clears all lines saved in the scroll-back buffer
+    // and moves the cursor to the upper left corner.
     this.#stdout.write("\u001B[2J\u001B[3J\u001B[H");
   }
 
-  /**
-   * Moves the cursor one line up and erases that line.
-   */
   eraseLastLine(): void {
+    // Moves the cursor one line up and erases that line.
     this.#stdout.write("\u001B[1A\u001B[0K");
   }
 

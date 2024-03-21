@@ -38,40 +38,22 @@ declare global {
   }
 }
 
-/**
- * Options to configure an instance of the {@link Scribbler}.
- */
 export interface ScribblerOptions {
-  /**
-   * The end of line sequence to be used in the output. Default: `"\n"`.
-   */
   newLine?: string;
-  /**
-   * Do not include ANSI color escape codes in the output. Default: `false`.
-   */
   noColor?: boolean;
 }
 
-/**
- * Provides the JSX factory function and renderer.
- */
 export class Scribbler {
   #indentStep = "  ";
   #newLine: string;
   #noColor: boolean;
   #notEmptyLineRegex = /^(?!$)/gm;
 
-  /**
-   * @param options - {@link ScribblerOptions | Options} to configure an instance of the Scribbler.
-   */
   constructor(options?: ScribblerOptions) {
     this.#newLine = options?.newLine ?? "\n";
     this.#noColor = options?.noColor ?? false;
   }
 
-  /**
-   * Creates a new text element of the given `type`.
-   */
   static createElement(
     type: ComponentConstructor | string,
     props: Record<string, unknown> | null,
@@ -93,9 +75,6 @@ export class Scribbler {
     return lines.replace(this.#notEmptyLineRegex, this.#indentStep.repeat(level));
   }
 
-  /**
-   * Renders the provided JSX `element` and returns the resulting string.
-   */
   render(element: JSX.Element | null): string {
     if (element != null) {
       if (typeof element.type === "function") {
