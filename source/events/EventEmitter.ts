@@ -4,7 +4,7 @@ import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, Te
 export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
   | ["deprecation:info", { diagnostics: Array<Diagnostic> }]
-  | ["input", { key: string }]
+  | ["input:info", { key: string }]
   | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]

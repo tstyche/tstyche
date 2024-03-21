@@ -36,7 +36,7 @@ export class Watcher {
     this.#testFiles = new Set(testFiles);
 
     EventEmitter.addHandler(async ([eventName, payload]) => {
-      if (eventName === "input") {
+      if (eventName === "input:info") {
         switch (payload.key) {
           case "\u000D": // Return
           case "\u0041": // Latin capital letter A

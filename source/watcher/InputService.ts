@@ -22,7 +22,7 @@ export class InputService {
     this.#stdin.setEncoding("utf8");
 
     this.#stdin.on("data", (key) => {
-      EventEmitter.dispatch(["input", { key }]);
+      EventEmitter.dispatch(["input:info", { key }]);
     });
 
     this.#stdin.unref();
