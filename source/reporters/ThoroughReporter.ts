@@ -12,6 +12,7 @@ export class ThoroughReporter extends Reporter {
   #hasReportedAdds = false;
   #hasReportedError = false;
   #isFileViewExpanded = false;
+  #seenDeprecations = new Set<string>();
 
   get #isLastFile() {
     return this.#fileCount === 0;
@@ -19,6 +20,15 @@ export class ThoroughReporter extends Reporter {
 
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
+      case "deprecation:info":
+        for (const diagnostic of payload.diagnostics) {
+          if (!this.#seenDeprecations.has(diagnostic.text.toString())) {
+            this.#fileView.addMessage(diagnosticText(diagnostic));
+            this.#seenDeprecations.add(diagnostic.text.toString());
+          }
+        }
+        break;
+
       case "run:start":
         this.#isFileViewExpanded = payload.result.testFiles.length === 1 && this.resolvedConfig.watch !== true;
         break;

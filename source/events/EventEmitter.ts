@@ -3,12 +3,13 @@ import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, Te
 
 export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
-  | ["select:error", { diagnostics: Array<Diagnostic> }]
-  | ["store:info", { compilerVersion: string; installationPath: string }]
-  | ["store:error", { diagnostics: Array<Diagnostic> }]
+  | ["deprecation:info", { diagnostics: Array<Diagnostic> }]
   | ["input", { key: string }]
+  | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
+  | ["store:info", { compilerVersion: string; installationPath: string }]
+  | ["store:error", { diagnostics: Array<Diagnostic> }]
   | ["target:start", { result: TargetResult }]
   | ["target:end", { result: TargetResult }]
   | ["project:info", { compilerVersion: string; projectConfigFilePath: string | undefined }]
