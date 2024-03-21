@@ -44,7 +44,9 @@ export class TSTyche {
       }
     });
 
-    const reporters: Array<Reporter> = [new ThoroughReporter(this.resolvedConfig)];
+    const reporters: Array<Reporter> = [
+      new ThoroughReporter(this.resolvedConfig),
+    ];
 
     if (this.resolvedConfig.watch === true) {
       reporters.push(new WatchModeReporter(this.resolvedConfig));
