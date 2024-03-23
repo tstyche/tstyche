@@ -31,7 +31,7 @@ export type Event =
   | ["expect:pass", { result: ExpectResult }]
   | ["expect:skip", { result: ExpectResult }];
 
-export type EventHandler = (event: Event) => void | Promise<void>;
+export type EventHandler = (event: Event) => void;
 
 export class EventEmitter {
   static #handlers = new Set<EventHandler>();
@@ -42,13 +42,7 @@ export class EventEmitter {
 
   static dispatch(event: Event): void {
     for (const handler of EventEmitter.#handlers) {
-      const result = handler(event);
-
-      if (typeof result === "object") {
-        result.catch((error: unknown) => {
-          throw error;
-        });
-      }
+      handler(event);
     }
   }
 
