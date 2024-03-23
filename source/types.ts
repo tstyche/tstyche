@@ -75,10 +75,6 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the source type is `any`.
-   */
-  toBeAny: () => void;
-  /**
    * Checks if the source type is assignable with the target type.
    *
    * @deprecated Use `.toBeAssignableWith()` or `.toBeAssignableTo()` instead. This matcher will be removed in TSTyche 3.
@@ -127,6 +123,56 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
+   * Checks if the source type is identical to the target type.
+   *
+   * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
+   * To learn more, visit https://tstyche.org/guide/upgrade.
+   */
+  toEqual: {
+    /**
+     * Checks if the source type is identical to the target type.
+     *
+     * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
+     * To learn more, visit https://tstyche.org/guide/upgrade.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the source type is identical to type of the target expression.
+     *
+     * @deprecated This matcher will be removed in TSTyche 3.
+     * To learn more, visit https://tstyche.org/guide/upgrade.
+     */
+    (target: unknown): void;
+  };
+  /**
+   * Checks if a property key exists on the source type.
+   */
+  toHaveProperty: (key: string | number | symbol) => void;
+  /**
+   * Checks if the source type matches the target type.
+   */
+  toMatch: {
+    /**
+     * Checks if the source type matches the target type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the source type matches type of the target expression.
+     */
+    (target: unknown): void;
+  };
+  /**
+   * Checks if the source type raises an error.
+   */
+  toRaiseError: (...target: Array<string | number>) => void;
+}
+
+interface Matchers {
+  /**
+   * Checks if the source type is `any`.
+   */
+  toBeAny: () => void;
+  /**
    * Checks if the source type is `bigint`.
    */
   toBeBigInt: () => void;
@@ -170,49 +216,6 @@ interface Matchers {
    * Checks if the source type is `void`.
    */
   toBeVoid: () => void;
-  /**
-   * Checks if the source type is identical to the target type.
-   *
-   * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
-   * To learn more, visit https://tstyche.org/guide/upgrade.
-   */
-  toEqual: {
-    /**
-     * Checks if the source type is identical to the target type.
-     *
-     * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
-     * To learn more, visit https://tstyche.org/guide/upgrade.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type is identical to type of the target expression.
-     *
-     * @deprecated This matcher will be removed in TSTyche 3.
-     * To learn more, visit https://tstyche.org/guide/upgrade.
-     */
-    (target: unknown): void;
-  };
-  /**
-   * Checks if a property key exists on the source type.
-   */
-  toHaveProperty: (key: string | number | symbol) => void;
-  /**
-   * Checks if the source type matches the target type.
-   */
-  toMatch: {
-    /**
-     * Checks if the source type matches the target type.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type matches type of the target expression.
-     */
-    (target: unknown): void;
-  };
-  /**
-   * Checks if the source type raises an error.
-   */
-  toRaiseError: (...target: Array<string | number>) => void;
 }
 
 interface Modifier {
