@@ -35,13 +35,14 @@ export class Watcher {
     this.#selectService = selectService;
     this.#testFiles = new Set(testFiles);
 
-    EventEmitter.addHandler(async ([eventName, payload]) => {
+    EventEmitter.addHandler(([eventName, payload]) => {
       if (eventName === "input:info") {
         switch (payload.key) {
           case "\u000D": // Return
           case "\u0041": // Latin capital letter A
           case "\u0061": // Latin small letter A
-            await this.#runAll();
+            // TODO 'runAll()' should not be async
+            void this.#runAll();
             break;
 
           case "\u0003": // Ctrl-C
