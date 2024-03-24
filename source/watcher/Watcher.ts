@@ -2,20 +2,16 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
+import { InputService } from "#input";
 import { Path } from "#path";
 import type { SelectService } from "#select";
-import { InputService, type ReadStream } from "./InputService.js";
-
-export interface WatcherOptions {
-  stdin?: ReadStream;
-}
 
 export type RunCallback = (testFiles: Array<string>) => Promise<void>;
 
 export class Watcher {
   #abortController = new AbortController();
   #changedTestFiles = new Set<string>();
-  #inputHandler: InputService;
+  #inputService: InputService;
   #runCallback: RunCallback;
   #runChangedDebounced: () => Promise<void>;
   #selectService: SelectService;
@@ -28,7 +24,7 @@ export class Watcher {
     selectService: SelectService,
     testFiles: Array<string>,
   ) {
-    this.#inputHandler = new InputService();
+    this.#inputService = new InputService();
     this.#runCallback = runCallback;
     // eslint-disable-next-line @typescript-eslint/unbound-method
     this.#runChangedDebounced = this.#debounce(this.#runChanged, 100);
@@ -86,7 +82,7 @@ export class Watcher {
   }
 
   #onExit() {
-    this.#inputHandler.dispose();
+    this.#inputService.dispose();
     this.#watcher = undefined;
   }
 
