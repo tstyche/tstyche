@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
+import { Environment } from "#environment";
 import type { StoreService } from "#store";
 import type { OptionBrand, OptionGroup } from "./enums.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
@@ -31,22 +32,31 @@ export class OptionValidator {
       case "config":
       case "rootPath":
         if (!existsSync(optionValue)) {
-          const text = [this.#optionDiagnosticText.fileDoesNotExist(optionValue)];
-
-          this.#onDiagnostic(Diagnostic.error(text, origin));
+          this.#onDiagnostic(
+            Diagnostic.error([
+              this.#optionDiagnosticText.fileDoesNotExist(optionValue),
+            ], origin),
+          );
         }
         break;
 
       case "target":
         if (await this.#storeService.validateTag(optionValue) === false) {
           this.#onDiagnostic(
-            Diagnostic.error(
-              [
-                this.#optionDiagnosticText.versionIsNotSupported(optionValue),
-                ...(await this.#optionUsageText.get(optionName, optionBrand)),
-              ],
-              origin,
-            ),
+            Diagnostic.error([
+              this.#optionDiagnosticText.versionIsNotSupported(optionValue),
+              ...(await this.#optionUsageText.get(optionName, optionBrand)),
+            ], origin),
+          );
+        }
+        break;
+
+      case "watch":
+        if (Environment.isCi) {
+          this.#onDiagnostic(
+            Diagnostic.error([
+              this.#optionDiagnosticText.watchCannotBeEnabledInCiEnvironment(),
+            ], origin),
           );
         }
         break;

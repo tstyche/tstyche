@@ -82,6 +82,8 @@ export class CommandLineOptionsWorker {
         break;
 
       case OptionBrand.Boolean:
+        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 
         if (optionValue === "false" || optionValue === "true") {
@@ -90,7 +92,7 @@ export class CommandLineOptionsWorker {
         break;
 
       case OptionBrand.List:
-        if (optionValue != null) {
+        if (optionValue !== "") {
           const optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
@@ -109,7 +111,7 @@ export class CommandLineOptionsWorker {
         break;
 
       case OptionBrand.String:
-        if (optionValue != null) {
+        if (optionValue !== "") {
           if (optionDefinition.name === "config") {
             optionValue = Path.resolve(optionValue);
           }
@@ -132,11 +134,7 @@ export class CommandLineOptionsWorker {
     return index;
   }
 
-  #resolveOptionValue(optionValue: string | undefined) {
-    if (optionValue == null || optionValue.startsWith("-")) {
-      return;
-    }
-
-    return optionValue;
+  #resolveOptionValue(target = "") {
+    return target.startsWith("-") ? "" : target;
   }
 }

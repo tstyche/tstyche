@@ -149,9 +149,6 @@ export class Cli {
     const tstyche = new TSTyche(resolvedConfig, this.#storeService);
 
     if (resolvedConfig.watch === true) {
-      // TODO must fail if specified in CI environment
-      // Error: The watch mode cannot be enabled in CI environment
-
       await tstyche.watch(testFiles, selectService);
     } else {
       await tstyche.run(testFiles);
