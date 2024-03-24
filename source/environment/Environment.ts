@@ -4,11 +4,19 @@ import process from "node:process";
 import { Path } from "#path";
 
 export class Environment {
+  static #isCi = Environment.#resolveIsCi();
   static #noColor = Environment.#resolveNoColor();
   static #noInteractive = Environment.#resolveNoInteractive();
   static #storePath = Environment.#resolveStorePath();
   static #timeout = Environment.#resolveTimeout();
   static #typescriptPath = Environment.#resolveTypeScriptPath();
+
+  /**
+   * Is `true` if the process is running in a continuous integration environment.
+   */
+  static get isCi(): boolean {
+    return Environment.#isCi;
+  }
 
   /**
    * Specifies whether color should be disabled in the output.
@@ -43,6 +51,14 @@ export class Environment {
    */
   static get typescriptPath(): string | undefined {
     return Environment.#typescriptPath;
+  }
+
+  static #resolveIsCi() {
+    if (process.env["CI"] != null) {
+      return process.env["CI"] !== "";
+    }
+
+    return false;
   }
 
   static #resolveNoColor() {
