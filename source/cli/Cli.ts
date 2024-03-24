@@ -5,26 +5,25 @@ import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter, type EventHandler } from "#events";
-import { Logger } from "#logger";
-import { addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
+import { addsPackageStepText, diagnosticText, formattedText, helpText, OutputService } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationToken } from "#token";
 
 export class Cli {
   #cancellationToken = new CancellationToken();
-  #logger: Logger;
+  #outputService: OutputService;
   #storeService: StoreService;
 
   constructor() {
-    this.#logger = new Logger();
+    this.#outputService = new OutputService();
     this.#storeService = new StoreService();
   }
 
   #onStartupEvent: EventHandler = ([eventName, payload]) => {
     switch (eventName) {
       case "store:info":
-        this.#logger.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
+        this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
         break;
 
       case "config:error":
@@ -34,13 +33,13 @@ export class Cli {
           switch (diagnostic.category) {
             case DiagnosticCategory.Error:
               this.#cancellationToken.cancel();
-              this.#logger.writeError(diagnosticText(diagnostic));
+              this.#outputService.writeError(diagnosticText(diagnostic));
 
               process.exitCode = 1;
               break;
 
             case DiagnosticCategory.Warning:
-              this.#logger.writeWarning(diagnosticText(diagnostic));
+              this.#outputService.writeWarning(diagnosticText(diagnostic));
               break;
           }
         }
@@ -57,7 +56,7 @@ export class Cli {
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
 
-      this.#logger.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
+      this.#outputService.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
 
       return;
     }
@@ -69,7 +68,7 @@ export class Cli {
     }
 
     if (commandLineArguments.includes("--version")) {
-      this.#logger.writeMessage(formattedText(TSTyche.version));
+      this.#outputService.writeMessage(formattedText(TSTyche.version));
 
       return;
     }
@@ -106,7 +105,7 @@ export class Cli {
     const resolvedConfig = configService.resolveConfig();
 
     if (commandLineArguments.includes("--showConfig")) {
-      this.#logger.writeMessage(
+      this.#outputService.writeMessage(
         formattedText({
           noColor: Environment.noColor,
           noInteractive: Environment.noInteractive,
@@ -139,7 +138,7 @@ export class Cli {
       }
 
       if (commandLineArguments.includes("--listFiles")) {
-        this.#logger.writeMessage(formattedText(testFiles));
+        this.#outputService.writeMessage(formattedText(testFiles));
 
         return;
       }

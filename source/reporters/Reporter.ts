@@ -1,12 +1,12 @@
 import type { ResolvedConfig } from "#config";
 import type { Event } from "#events";
-import { Logger } from "#logger";
+import { OutputService } from "#output";
 
 export abstract class Reporter {
-  protected logger: Logger;
+  protected outputService: OutputService;
 
   constructor(readonly resolvedConfig: ResolvedConfig) {
-    this.logger = new Logger();
+    this.outputService = new OutputService();
   }
 
   abstract handleEvent([eventName, payload]: Event): void;

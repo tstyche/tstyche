@@ -6,11 +6,11 @@ export class WatchModeReporter extends Reporter {
   handleEvent([eventName]: Event): void {
     switch (eventName) {
       case "run:start":
-        this.logger.clear();
+        this.outputService.clearTerminal();
         break;
 
       case "run:end":
-        this.logger.writeMessage(watchModeUsageText());
+        this.outputService.writeMessage(watchModeUsageText());
         break;
 
       default:

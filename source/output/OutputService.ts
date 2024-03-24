@@ -6,19 +6,19 @@ export interface WriteStream {
   write: (log: string) => void;
 }
 
-export interface LoggerOptions {
+export interface OutputServiceOptions {
   noColor?: boolean;
   stderr?: WriteStream;
   stdout?: WriteStream;
 }
 
-export class Logger {
+export class OutputService {
   #noColor: boolean;
   #scribbler: Scribbler;
   #stderr: WriteStream;
   #stdout: WriteStream;
 
-  constructor(options?: LoggerOptions) {
+  constructor(options?: OutputServiceOptions) {
     this.#noColor = options?.noColor ?? Environment.noColor;
     this.#stderr = options?.stderr ?? process.stderr;
     this.#stdout = options?.stdout ?? process.stdout;
@@ -26,7 +26,7 @@ export class Logger {
     this.#scribbler = new Scribbler({ noColor: this.#noColor });
   }
 
-  clear(): void {
+  clearTerminal(): void {
     // Erases all visible output, clears all lines saved in the scroll-back buffer
     // and moves the cursor to the upper left corner.
     this.#stdout.write("\u001B[2J\u001B[3J\u001B[H");

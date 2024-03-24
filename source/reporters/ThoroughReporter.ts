@@ -34,14 +34,14 @@ export class ThoroughReporter extends Reporter {
         break;
 
       case "store:info":
-        this.logger.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
+        this.outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
 
         this.#hasReportedAdds = true;
         break;
 
       case "store:error":
         for (const diagnostic of payload.diagnostics) {
-          this.logger.writeError(diagnosticText(diagnostic));
+          this.outputService.writeError(diagnosticText(diagnostic));
         }
         break;
 
@@ -59,7 +59,7 @@ export class ThoroughReporter extends Reporter {
           this.#currentCompilerVersion !== payload.compilerVersion
           || this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
         ) {
-          this.logger.writeMessage(
+          this.outputService.writeMessage(
             usesCompilerStepText(payload.compilerVersion, payload.projectConfigFilePath, {
               prependEmptyLine: this.#currentCompilerVersion != null && !this.#hasReportedAdds
                 && !this.#hasReportedError,
@@ -75,13 +75,13 @@ export class ThoroughReporter extends Reporter {
 
       case "project:error":
         for (const diagnostic of payload.diagnostics) {
-          this.logger.writeError(diagnosticText(diagnostic));
+          this.outputService.writeError(diagnosticText(diagnostic));
         }
         break;
 
       case "file:start":
         if (!Environment.noInteractive) {
-          this.logger.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
+          this.outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
         }
 
         this.#fileCount--;
@@ -96,15 +96,15 @@ export class ThoroughReporter extends Reporter {
 
       case "file:end":
         if (!Environment.noInteractive) {
-          this.logger.eraseLastLine();
+          this.outputService.eraseLastLine();
         }
 
-        this.logger.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
+        this.outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
 
-        this.logger.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
+        this.outputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
 
         if (this.#fileView.hasErrors) {
-          this.logger.writeError(this.#fileView.getMessages());
+          this.outputService.writeError(this.#fileView.getMessages());
           this.#hasReportedError = true;
         }
 

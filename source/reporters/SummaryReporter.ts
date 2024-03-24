@@ -6,7 +6,7 @@ export class SummaryReporter extends Reporter {
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
       case "run:end":
-        this.logger.writeMessage(
+        this.outputService.writeMessage(
           summaryText({
             duration: payload.result.timing.duration,
             expectCount: payload.result.expectCount,
