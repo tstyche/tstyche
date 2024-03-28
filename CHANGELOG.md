@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0.0-beta.0] - 2024-03-28
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/release-notes/tstyche-2)._
+
+### Changed
+
+- **Breaking!** Allow selecting test files with any extensions ([#153](https://github.com/tstyche/tstyche/pull/153))
+- **Breaking!** Deprecate `.toEqual()` in favour of `.toBe()` ([#151](https://github.com/tstyche/tstyche/pull/151))
+- **Breaking!** Deprecate `.toBeAssignable()` in favour of `.toBeAssignableWith()` ([#142](https://github.com/tstyche/tstyche/pull/142))
+
+### Added
+
+- Do not allow `--watch` in CI environments ([#173](https://github.com/tstyche/tstyche/pull/173))
+- **New!** Add the watch mode ([#170](https://github.com/tstyche/tstyche/pull/170))
+- Add the `SelectService` class ([#165](https://github.com/tstyche/tstyche/pull/165))
+- Collect and handle nested `expect()` assertions ([#156](https://github.com/tstyche/tstyche/pull/156))
+- **New!** Add `.toBe()` matcher ([#151](https://github.com/tstyche/tstyche/pull/151))
+- **New!** Add `.toBeAssignableTo()` and `.toBeAssignableWith()` matchers ([#141](https://github.com/tstyche/tstyche/pull/141))
+
 ## [1.1.0] - 2024-02-27
 
 ### Added
@@ -152,6 +171,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[2.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-beta.0
 [1.1.0]: https://github.com/tstyche/tstyche/releases/tag/v1.1.0
 [1.0.0]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0
 [1.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0-rc.2
