@@ -205,11 +205,11 @@ export class Expect {
   }
 
   #onDeprecatedMatcher(assertion: Assertion) {
-    const oldNameText = assertion.matcherName.getText();
+    const matcherNameText = assertion.matcherName.getText();
 
     const text = [
-      `'.${oldNameText}()' is deprecated and will be removed in TSTyche 3.`,
-      "To learn more, visit https://tstyche.org/guide/upgrade",
+      `'.${matcherNameText}()' is deprecated and will be removed in TSTyche 3.`,
+      "To learn more, visit https://tstyche.org/release-notes/tstyche-2",
     ];
     const origin = {
       end: assertion.matcherName.getEnd(),

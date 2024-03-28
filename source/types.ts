@@ -78,21 +78,21 @@ interface Matchers {
    * Checks if the source type is assignable with the target type.
    *
    * @deprecated Use `.toBeAssignableWith()` or `.toBeAssignableTo()` instead. This matcher will be removed in TSTyche 3.
-   * To learn more, visit https://tstyche.org/guide/upgrade.
+   * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
    */
   toBeAssignable: {
     /**
      * Checks if the source type is assignable with the target type.
      *
      * @deprecated Use `.toBeAssignableWith()` or `.toBeAssignableTo()` instead. This matcher will be removed in TSTyche 3.
-     * To learn more, visit https://tstyche.org/guide/upgrade.
+     * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
      */
     <Target>(): void;
     /**
      * Checks if the source type is assignable with type of the target expression.
      *
      * @deprecated Use `.toBeAssignableWith()` or `.toBeAssignableTo()` instead. This matcher will be removed in TSTyche 3.
-     * To learn more, visit https://tstyche.org/guide/upgrade.
+     * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
      */
     (target: unknown): void;
   };
@@ -126,21 +126,21 @@ interface Matchers {
    * Checks if the source type is identical to the target type.
    *
    * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
-   * To learn more, visit https://tstyche.org/guide/upgrade.
+   * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
    */
   toEqual: {
     /**
      * Checks if the source type is identical to the target type.
      *
      * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
-     * To learn more, visit https://tstyche.org/guide/upgrade.
+     * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
      */
     <Target>(): void;
     /**
      * Checks if the source type is identical to type of the target expression.
      *
      * @deprecated This matcher will be removed in TSTyche 3.
-     * To learn more, visit https://tstyche.org/guide/upgrade.
+     * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
      */
     (target: unknown): void;
   };

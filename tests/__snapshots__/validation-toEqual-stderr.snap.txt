@@ -1,6 +1,6 @@
 Warning: '.toEqual()' is deprecated and will be removed in TSTyche 3.
 
-To learn more, visit https://tstyche.org/guide/upgrade
+To learn more, visit https://tstyche.org/release-notes/tstyche-2
 
   3 | describe("argument for 'source'", () => {
   4 |   test("must be provided", () => {
