@@ -14,7 +14,7 @@
     "exportDeclaration.sortNamedExports": "maintain",
     "importDeclaration.sortNamedImports": "maintain"
   },
-  "excludes": [".cache/**", ".yarn/**", "coverage/**", "build/**", "models/*.*", "node_modules/**"],
+  "excludes": [".cache/**", "coverage/**", "build/**", "models/*.*", "node_modules/**"],
 
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.89.3.wasm",

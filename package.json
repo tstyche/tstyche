@@ -30,28 +30,28 @@
   },
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
-  "bin": "./build/bin.js",
+  "bin": {
+    "tstyche": "build/bin.js"
+  },
   "files": [
     "build/*"
   ],
   "scripts": {
     "bench": "./benchmarks/tstyche.bench.sh",
     "build": "rollup --config rollup.config.js",
-    "build:watch": "yarn build --sourcemap --watch",
-    "check": "yarn check:spelling && yarn check:formatting",
+    "build:watch": "npm run build -- --sourcemap --watch",
+    "check": "npm run check:spelling && npm run check:formatting",
     "check:formatting": "dprint check",
     "check:spelling": "cspell --config cspell.config.json --quiet",
     "check:types": "tsc --noEmit --project tsconfig.json",
     "clean": "rm -rf build",
     "format": "dprint fmt",
-    "generate": "yarn generate:schema && yarn generate:types",
+    "generate": "npm run generate:schema && npm run generate:types",
     "generate:schema": "node ./models/__scripts__/generate-schema.js",
     "generate:types": "node ./models/__scripts__/generate-types.js",
     "lint": "eslint ./ --config eslint.config.json --ext .js,.cts,.ts,.tsx",
-    "prepack": "yarn clean && yarn build",
-    "prepublish": "yarn test",
-    "test": "yarn test:unit && yarn test:e2e",
-    "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:coverage": "npm run build -- --sourcemap && c8 --config c8.config.json npm run test:e2e",
     "test:e2e": "mocha tests/*.test.* --config mocha.config.json",
     "test:examples": "tstyche examples",
     "test:types": "tstyche typetests",
@@ -88,7 +88,6 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.8.1",
   "engines": {
     "node": ">=14.17"
   }
