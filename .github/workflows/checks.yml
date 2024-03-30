@@ -23,8 +23,8 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: npm install
-      - run: npm build
+      - run: npm run install
+      - run: npm run build
       - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
         with:
           name: build-${{ github.sha }}
@@ -45,10 +45,10 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm install
-      - run: npm check:spelling
-      - run: npm check:formatting
-      - run: npm check:types
+      - run: npm run install
+      - run: npm run check:spelling
+      - run: npm run check:formatting
+      - run: npm run check:types
 
   lint:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -65,8 +65,8 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm install
-      - run: npm lint
+      - run: npm run install
+      - run: npm run lint
 
   test-types:
     needs:
@@ -83,10 +83,10 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm install
-      - run: npm test:types -- --target 4.7,5.0,current
-      - run: npm test:examples -- --target 4.7,5.0,current
-      - run: npm tstyche tests/*.js -- --target current
+      - run: npm run install
+      - run: npm run test:types -- --target 4.7,5.0,current
+      - run: npm run test:examples -- --target 4.7,5.0,current
+      - run: npm run tstyche tests/*.js -- --target current
 
   test-node:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -109,8 +109,8 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm install
-      - run: npm test
+      - run: npm run install
+      - run: npm run test
         env:
           FORCE_COLOR: true
 
@@ -134,8 +134,8 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm install
-      - run: npm test
+      - run: npm run install
+      - run: npm run test
         env:
           FORCE_COLOR: true
 
@@ -149,8 +149,8 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: npm install
-      - run: npm test:coverage
+      - run: npm run install
+      - run: npm run test:coverage
         env:
           FORCE_COLOR: true
       - uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1
