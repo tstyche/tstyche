@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: npm run install
+      - run: npm install
       - run: npm run build
       - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
         with:
@@ -45,7 +45,7 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm run install
+      - run: npm install
       - run: npm run check:spelling
       - run: npm run check:formatting
       - run: npm run check:types
@@ -65,7 +65,7 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm run install
+      - run: npm install
       - run: npm run lint
 
   test-types:
@@ -83,7 +83,7 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm run install
+      - run: npm install
       - run: npm run test:types -- --target 4.7,5.0,current
       - run: npm run test:examples -- --target 4.7,5.0,current
       - run: npm run tstyche tests/*.js -- --target current
@@ -109,7 +109,7 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm run install
+      - run: npm install
       - run: npm run test
         env:
           FORCE_COLOR: true
@@ -134,7 +134,7 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: npm run install
+      - run: npm install
       - run: npm run test
         env:
           FORCE_COLOR: true
@@ -149,7 +149,7 @@ jobs:
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
         with:
           node-version: lts/*
-      - run: npm run install
+      - run: npm install
       - run: npm run test:coverage
         env:
           FORCE_COLOR: true
