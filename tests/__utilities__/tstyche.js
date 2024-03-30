@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
  */
 export async function spawnTyche(fixtureUrl, args, options) {
   return new Promise((resolve, reject) => {
-    const tstyche = spawn("tstyche", args, {
+    const tstyche = spawn("npx tstyche", args, {
       // TODO use URL directly after dropping support for Node.js 16.4.0
       cwd: fileURLToPath(fixtureUrl),
       env: {
