@@ -70,7 +70,7 @@ afterEach(async function() {
 
 (isRecursiveWatchAvailable ? describe : describe.skip)("watches file system", function() {
   test("when single test file is changing", async function() {
-    const cli = await spawn(fixtureUrl, ["--watch"]);
+    const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
     await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
     cli.resetOutput();
@@ -105,7 +105,7 @@ afterEach(async function() {
   });
 
   test("when multiple test files are changing", async function() {
-    const cli = await spawn(fixtureUrl, ["--watch"]);
+    const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
     await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
     cli.resetOutput();
@@ -142,7 +142,7 @@ afterEach(async function() {
   });
 
   test.skip("when single test file is removed", async function() {
-    const cli = await spawn(fixtureUrl, ["--watch"]);
+    const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
     await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
     cli.resetOutput();
@@ -168,7 +168,7 @@ afterEach(async function() {
   });
 
   test.skip("when multiple test files are removed", async function() {
-    const cli = await spawn(fixtureUrl, ["--watch"]);
+    const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
     await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
     cli.resetOutput();
@@ -195,7 +195,7 @@ afterEach(async function() {
   });
 
   test("when single test file is renamed", async function() {
-    const cli = await spawn(fixtureUrl, ["--watch"]);
+    const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
     await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
     cli.resetOutput();
@@ -219,7 +219,7 @@ afterEach(async function() {
   });
 
   test("when multiple test files are renamed", async function() {
-    const cli = await spawn(fixtureUrl, ["--watch"]);
+    const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
     await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
     cli.resetOutput();
@@ -270,7 +270,7 @@ afterEach(async function() {
 
   exitTestCases.forEach(({ key, testCase }) => {
     test(testCase, async function() {
-      const cli = await spawn(fixtureUrl, ["--watch"]);
+      const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
       await cli.write(key);
@@ -308,7 +308,7 @@ afterEach(async function() {
 
   runAllTestCases.forEach(({ key, testCase }) => {
     test(testCase, async function() {
-      const cli = await spawn(fixtureUrl, ["--watch"]);
+      const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
       cli.resetOutput();

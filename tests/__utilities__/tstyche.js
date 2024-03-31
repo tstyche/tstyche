@@ -2,7 +2,7 @@ import { spawn as spawnProcess } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import prettyAnsi from "pretty-ansi";
 
-const waitTimeout = process.env["CI"] === "true" ? 75000 : 5000;
+const waitTimeout = process.env["CI"] === "true" ? 75000 : 10000;
 
 /**
  * @param {URL} fixtureUrl
