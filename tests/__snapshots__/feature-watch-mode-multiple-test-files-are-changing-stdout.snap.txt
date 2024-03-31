@@ -1,0 +1,37 @@
+<clearTerminal>
+uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
+
+pass ./a-feature/__typetests__/isNumber.test.ts
+
+uses TypeScript <<version>> with ./b-feature/__typetests__/tsconfig.json
+
+pass ./b-feature/__typetests__/isString.test.ts
+
+uses TypeScript <<version>> with ./c-feature/__typetests__/tsconfig.json
+
+pass ./c-feature/__typetests__/isNumber.test.ts
+
+Press a to run all tests.
+Press x to exit.
+<clearTerminal>
+uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
+
+fail ./a-feature/__typetests__/isNumber.test.ts
+
+uses TypeScript <<version>> with ./b-feature/__typetests__/tsconfig.json
+
+fail ./b-feature/__typetests__/isString.test.ts
+
+Press a to run all tests.
+Press x to exit.
+<clearTerminal>
+uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
+
+pass ./a-feature/__typetests__/isNumber.test.ts
+
+uses TypeScript <<version>> with ./b-feature/__typetests__/tsconfig.json
+
+pass ./b-feature/__typetests__/isString.test.ts
+
+Press a to run all tests.
+Press x to exit.

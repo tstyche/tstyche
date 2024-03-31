@@ -37,6 +37,27 @@ export function getTestFileName(testFileUrl) {
 
 /**
  * @param {URL} fixtureUrl
+ * @param {Array<string>} files
+ */
+export async function removeFixtureFiles(fixtureUrl, files) {
+  for (const filePath of files) {
+    await fs.rm(new URL(filePath, fixtureUrl), { force: true, recursive: true });
+  }
+}
+
+/**
+ * @param {URL} fixtureUrl
+ * @param {Array<[string, string]>} files
+ */
+export async function renameFixtureFiles(fixtureUrl, files) {
+  for (const [oldFilePath, newFilePath] of files) {
+    await fs.rename(new URL(oldFilePath, fixtureUrl), new URL(newFilePath, fixtureUrl));
+  }
+}
+
+// TODO rename to 'writeFixtureFiles'
+/**
+ * @param {URL} fixtureUrl
  * @param {Record<string, string>} [files]
  */
 export async function writeFixture(fixtureUrl, files) {
@@ -46,16 +67,16 @@ export async function writeFixture(fixtureUrl, files) {
     return;
   }
 
-  for (const file in files) {
-    const content = files[file];
-    const directory = path.dirname(file);
+  for (const filePath in files) {
+    const content = files[filePath];
+    const directoryPath = path.dirname(filePath);
 
-    if (directory !== ".") {
-      await fs.mkdir(new URL(directory, fixtureUrl), { recursive: true });
+    if (directoryPath !== ".") {
+      await fs.mkdir(new URL(directoryPath, fixtureUrl), { recursive: true });
     }
 
     if (content != null) {
-      await fs.writeFile(new URL(file, fixtureUrl), content);
+      await fs.writeFile(new URL(filePath, fixtureUrl), content);
     }
   }
 }
