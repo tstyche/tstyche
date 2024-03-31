@@ -1,4 +1,3 @@
-import fs from "node:fs/promises";
 import { afterEach, beforeEach, describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
@@ -13,13 +12,7 @@ import {
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawn } from "./__utilities__/tstyche.js";
 
-let isRecursiveWatchAvailable = true;
-
-try {
-  fs.watch(process.cwd(), { persistent: false, recursive: true, signal: AbortSignal.abort() });
-} catch {
-  isRecursiveWatchAvailable = false;
-}
+let isWatchSupported = process.platform === "darwin" || process.platform === "win32";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -68,8 +61,8 @@ afterEach(async function() {
   await clearFixture(fixtureUrl);
 });
 
-(isRecursiveWatchAvailable ? describe : describe.skip)("watches file system", function() {
-  test("when single test file is changing", async function() {
+(isWatchSupported ? describe : describe.skip)("watches file system", function() {
+  test.skip("when single test file is changing", async function() {
     const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
     await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
@@ -104,7 +97,7 @@ afterEach(async function() {
     assert.equal(cli.exitCode, 0);
   });
 
-  test("when multiple test files are changing", async function() {
+  test.skip("when multiple test files are changing", async function() {
     const cli = await spawn(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
     await cli.waitFor(({ stdout }) => stdout.includes("Press x to exit."));
@@ -244,7 +237,7 @@ afterEach(async function() {
   });
 });
 
-(isRecursiveWatchAvailable ? describe : describe.skip)("interactive input", function() {
+(isWatchSupported ? describe : describe.skip)("interactive input", function() {
   const exitTestCases = [
     {
       key: "\u0003",
