@@ -111,6 +111,7 @@ export class Watcher {
 
     try {
       for await (const event of this.#watcher) {
+        // eslint-disable-next-line no-negated-condition
         if (event.filename != null) {
           const filePath = Path.resolve(this.resolvedConfig.rootPath, event.filename);
 
@@ -122,6 +123,8 @@ export class Watcher {
           }
 
           this.#onChanged(filePath);
+        } else {
+          await this.#runAll();
         }
 
         if (this.#changedTestFiles.size !== 0) {
