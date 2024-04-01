@@ -111,15 +111,22 @@ export class Watcher {
 
     try {
       for await (const event of this.#watcher) {
+        process.stdout.write(JSON.stringify(event, null, 2));
+        process.stdout.write("\n");
+
         if (event.filename != null) {
           const filePath = Path.resolve(this.resolvedConfig.rootPath, event.filename);
 
           // TODO if this is TSTyche config file: emit 'watch, { state: "restart" }' event and 'break' this loop
 
           if (!existsSync(filePath)) {
+            process.stdout.write(`Removed: ${filePath}\n`);
+
             this.#onRemoved(filePath);
             continue;
           }
+
+          process.stdout.write(`Changed: ${filePath}\n`);
 
           this.#onChanged(filePath);
         }
