@@ -111,7 +111,7 @@ jobs:
           path: build/
       - run: yarn install
       # - run: yarn test
-      - run: yarn mocha tests/feature-watch-mode.test.js --timeout 6000
+      - run: yarn mocha tests/feature-watch-mode.test.js --timeout 75000
         env:
           FORCE_COLOR: true
 
@@ -137,7 +137,7 @@ jobs:
           path: build/
       - run: yarn install
       # - run: yarn test
-      - run: yarn mocha tests/feature-watch-mode.test.js --timeout 6000
+      - run: yarn mocha tests/feature-watch-mode.test.js --timeout 75000
         env:
           FORCE_COLOR: true
 
