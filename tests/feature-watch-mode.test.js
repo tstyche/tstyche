@@ -244,7 +244,7 @@ afterEach(async function() {
   });
 });
 
-describe("interactive input", function() {
+(isRecursiveWatchAvailable ? describe : describe.skip)("interactive input", function() {
   const exitTestCases = [
     {
       key: "\u0003",
