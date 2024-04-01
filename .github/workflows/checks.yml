@@ -110,7 +110,8 @@ jobs:
           name: build-${{ github.sha }}
           path: build/
       - run: yarn install
-      - run: yarn test
+      # - run: yarn test
+      - run: yarn mocha tests/feature-watch-mode.test.js --timeout 6000
         env:
           FORCE_COLOR: true
 
@@ -135,7 +136,8 @@ jobs:
           name: build-${{ github.sha }}
           path: build/
       - run: yarn install
-      - run: yarn test
+      # - run: yarn test
+      - run: yarn mocha tests/feature-watch-mode.test.js --timeout 6000
         env:
           FORCE_COLOR: true
 

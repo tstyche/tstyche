@@ -108,7 +108,7 @@ export async function spawn(fixtureUrl, args = [], options) {
     cli.dispatch();
   });
 
-  subprocess.on("exit", (exitCode) => {
+  subprocess.on("close", (exitCode) => {
     cli.exitCode = exitCode;
     cli.dispatch();
   });
