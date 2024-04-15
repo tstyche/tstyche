@@ -75,7 +75,7 @@
     "magic-string": "0.30.9",
     "mocha": "10.4.0",
     "pretty-ansi": "2.0.0",
-    "rollup": "4.14.2",
+    "rollup": "4.14.3",
     "rollup-plugin-dts": "6.1.0",
     "tslib": "2.6.2",
     "typescript": "5.4.5"
