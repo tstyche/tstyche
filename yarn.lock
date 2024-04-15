@@ -259,9 +259,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-en_us@npm:^4.3.17":
-  version: 4.3.17
-  resolution: "@cspell/dict-en_us@npm:4.3.17"
-  checksum: 2ba40e092c56ce2556f150870e460e09a1fa1a89d7feb234adfbba338a7bd9b64b96d91a5e2644abd3064faee7540d3ceaab48fd3bca53fe9ac30ccc940b5637
+  version: 4.3.18
+  resolution: "@cspell/dict-en_us@npm:4.3.18"
+  checksum: a244b3f140490915718b681d67cd4e2155af6dce7666e2da529a8ca60609edff988f029695924ad6130411a9a578c15d3130ded1e16eaefa41a8d10ab7ad69ea
   languageName: node
   linkType: hard
 
@@ -499,9 +499,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-typescript@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "@cspell/dict-typescript@npm:3.1.2"
-  checksum: 3cd0fa39856002975cf05b5584de42f58700a3420bd08b7b073af87dbcc1f66cab45e36a2156dd4e6c926cf67baaa192f02ccf61b9a9e5e94e69e035af54cec1
+  version: 3.1.3
+  resolution: "@cspell/dict-typescript@npm:3.1.3"
+  checksum: 8cb96f889256cb4b0829edf9b534050f6beeb17e0973e7319de3ac2760da4b145712115ec9699145f8aa6eb6001f0d32972aaac38fb070c602060091a5acbcd7
   languageName: node
   linkType: hard
 
@@ -4253,12 +4253,12 @@ __metadata:
   linkType: hard
 
 "socks@npm:^2.7.1":
-  version: 2.8.1
-  resolution: "socks@npm:2.8.1"
+  version: 2.8.3
+  resolution: "socks@npm:2.8.3"
   dependencies:
     ip-address: ^9.0.5
     smart-buffer: ^4.2.0
-  checksum: 29586d42e9c36c5016632b2bcb6595e3adfbcb694b3a652c51bc8741b079c5ec37bdd5675a1a89a1620078c8137208294991fabb50786f92d47759a725b2b62e
+  checksum: 7a6b7f6eedf7482b9e4597d9a20e09505824208006ea8f2c49b71657427f3c137ca2ae662089baa73e1971c62322d535d9d0cf1c9235cf6f55e315c18203eadd
   languageName: node
   linkType: hard
 
