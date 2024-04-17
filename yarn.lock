@@ -3359,7 +3359,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:0.30.9, magic-string@npm:^0.30.4":
+"magic-string@npm:0.30.10":
+  version: 0.30.10
+  resolution: "magic-string@npm:0.30.10"
+  dependencies:
+    "@jridgewell/sourcemap-codec": ^1.4.15
+  checksum: 456fd47c39b296c47dff967e1965121ace35417eab7f45a99e681e725b8661b48e1573c366ee67a27715025b3740773c46b088f115421c7365ea4ea6fa10d399
+  languageName: node
+  linkType: hard
+
+"magic-string@npm:^0.30.4":
   version: 0.30.9
   resolution: "magic-string@npm:0.30.9"
   dependencies:
@@ -4504,7 +4513,7 @@ __metadata:
     eslint-plugin-import: 2.29.1
     eslint-plugin-mocha: 10.4.2
     eslint-plugin-simple-import-sort: 12.1.0
-    magic-string: 0.30.9
+    magic-string: 0.30.10
     mocha: 10.4.0
     pretty-ansi: 2.0.0
     rollup: 4.14.3
