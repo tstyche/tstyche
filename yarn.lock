@@ -259,9 +259,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-en_us@npm:^4.3.17":
-  version: 4.3.18
-  resolution: "@cspell/dict-en_us@npm:4.3.18"
-  checksum: a244b3f140490915718b681d67cd4e2155af6dce7666e2da529a8ca60609edff988f029695924ad6130411a9a578c15d3130ded1e16eaefa41a8d10ab7ad69ea
+  version: 4.3.19
+  resolution: "@cspell/dict-en_us@npm:4.3.19"
+  checksum: e0d3930878ab5be82b3b24584cd97fae7d49668d52ac7425737583681ba9c59de8858654f6325eddff0bf9b1af2177ff1c12ac0c5c45402f207e1a52f765ba95
   languageName: node
   linkType: hard
 
@@ -464,9 +464,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^3.3.18":
-  version: 3.3.18
-  resolution: "@cspell/dict-software-terms@npm:3.3.18"
-  checksum: 12ce7e8ec5ea679bbf7d9f944d1e4f2946c13776b0d4c9543f948c554ada2eed3592185671597e381b8bc39d16dc295a7b43fe0a1bad3092266c2325623557d9
+  version: 3.3.20
+  resolution: "@cspell/dict-software-terms@npm:3.3.20"
+  checksum: 5d62791ed63e943fad58ab08629704e3eb09f616b0fb0fef99d9abb47714fa6d1fd1cf98937273401d3b783b42a4bd8d9eb060d1e6a32a63bdb14cdd1851c4cc
   languageName: node
   linkType: hard
 
@@ -499,9 +499,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-typescript@npm:^3.1.2":
-  version: 3.1.3
-  resolution: "@cspell/dict-typescript@npm:3.1.3"
-  checksum: 8cb96f889256cb4b0829edf9b534050f6beeb17e0973e7319de3ac2760da4b145712115ec9699145f8aa6eb6001f0d32972aaac38fb070c602060091a5acbcd7
+  version: 3.1.4
+  resolution: "@cspell/dict-typescript@npm:3.1.4"
+  checksum: 5f416f74675239131075dc1f76a0cedfc2bcd759edb8e9f1e572b706b022063ac9b24a9174209c4ceecdc942892e1e8b76101fb82824b5732f69f2f43bafb934
   languageName: node
   linkType: hard
 
@@ -3359,21 +3359,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:0.30.10":
+"magic-string@npm:0.30.10, magic-string@npm:^0.30.4":
   version: 0.30.10
   resolution: "magic-string@npm:0.30.10"
   dependencies:
     "@jridgewell/sourcemap-codec": ^1.4.15
   checksum: 456fd47c39b296c47dff967e1965121ace35417eab7f45a99e681e725b8661b48e1573c366ee67a27715025b3740773c46b088f115421c7365ea4ea6fa10d399
-  languageName: node
-  linkType: hard
-
-"magic-string@npm:^0.30.4":
-  version: 0.30.9
-  resolution: "magic-string@npm:0.30.9"
-  dependencies:
-    "@jridgewell/sourcemap-codec": ^1.4.15
-  checksum: a97b9a706b39e9569781dcb662b15ab085ca3af8b916cd69d8485e8565108917c17e4eb03b6b1013389387d827bb3025711ebeafe237f742bc95a90708416147
   languageName: node
   linkType: hard
 
