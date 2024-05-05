@@ -24,7 +24,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 ### Added
 
 - **New!** Support for Node.js 14 ([#136](https://github.com/tstyche/tstyche/pull/136))
-
 - Add the `CancellationToken` class ([#135](https://github.com/tstyche/tstyche/pull/135))
 
 ### Fixed
