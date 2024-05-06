@@ -22,7 +22,7 @@ export class TaskRunner {
     });
   }
 
-  async run(testFiles: Array<URL>, target: Array<string>, cancellationToken?: CancellationToken): Promise<Result> {
+  async run(testFiles: Array<URL>, target: Array<string>, cancellationToken?: CancellationToken): Promise<void> {
     const result = new Result(this.resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["run:start", { result }]);
@@ -46,7 +46,5 @@ export class TaskRunner {
     }
 
     EventEmitter.dispatch(["run:end", { result }]);
-
-    return result;
   }
 }
