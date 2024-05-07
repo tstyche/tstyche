@@ -1,4 +1,5 @@
 import type { Diagnostic } from "#diagnostic";
+import type { TestFile } from "#file";
 import type { DescribeResult } from "./DescribeResult.js";
 import { ResultStatus } from "./enums.js";
 import type { ExpectResult } from "./ExpectResult.js";
@@ -16,5 +17,5 @@ export class FileResult {
   testCount = new ResultCount();
   timing = new ResultTiming();
 
-  constructor(public testFile: URL) {}
+  constructor(public testFile: TestFile) {}
 }

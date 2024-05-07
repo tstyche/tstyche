@@ -1,4 +1,5 @@
 import type { ResolvedConfig } from "#config";
+import type { TestFile } from "#file";
 import { ResultCount } from "./ResultCount.js";
 import { ResultTiming } from "./ResultTiming.js";
 import type { TargetResult } from "./TargetResult.js";
@@ -13,6 +14,6 @@ export class Result {
 
   constructor(
     public resolvedConfig: ResolvedConfig,
-    public testFiles: Array<URL>,
+    public testFiles: Array<TestFile>,
   ) {}
 }

@@ -6,6 +6,7 @@ export * from "#diagnostic";
 export * from "#environment";
 export * from "#events";
 export * from "#expect";
+export * from "#file";
 export * from "#input";
 export * from "#output";
 export * from "#path";

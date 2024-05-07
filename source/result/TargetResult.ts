@@ -1,3 +1,4 @@
+import type { TestFile } from "#file";
 import { ResultStatus } from "./enums.js";
 import type { ProjectResult } from "./ProjectResult.js";
 import { ResultTiming } from "./ResultTiming.js";
@@ -11,6 +12,6 @@ export class TargetResult {
 
   constructor(
     public versionTag: string,
-    public testFiles: Array<URL>,
+    public testFiles: Array<TestFile>,
   ) {}
 }

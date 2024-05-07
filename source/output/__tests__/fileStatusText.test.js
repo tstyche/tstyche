@@ -2,9 +2,10 @@ import { strict as assert } from "node:assert";
 import { URL } from "node:url";
 import { describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
-import { fileStatusText, ResultStatus, Scribbler } from "tstyche/tstyche";
+import { fileStatusText, ResultStatus, Scribbler, TestFile } from "tstyche/tstyche";
 
-const sampleTestFile = new URL("../../../path/to/sample.test.ts", import.meta.url);
+const sampleTestFileUrl = new URL("../../../path/to/sample.test.ts", import.meta.url);
+const sampleTestFile = new TestFile(sampleTestFileUrl);
 
 const scribbler = new Scribbler();
 

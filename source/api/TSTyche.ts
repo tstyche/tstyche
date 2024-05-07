@@ -1,5 +1,4 @@
 import process from "node:process";
-import { pathToFileURL } from "node:url";
 import type { ResolvedConfig } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -61,23 +60,9 @@ export class TSTyche {
     }
   }
 
-  #normalizePaths(testFiles: Array<string | URL>) {
-    return testFiles.map((filePath) => {
-      if (typeof filePath !== "string") {
-        return filePath;
-      }
-
-      if (filePath.startsWith("file:")) {
-        return new URL(filePath);
-      }
-
-      return pathToFileURL(filePath);
-    });
-  }
-
   async run(testFiles: Array<string | URL>): Promise<void> {
     await this.#taskRunner.run(
-      this.#normalizePaths(testFiles),
+      testFiles,
       this.resolvedConfig.target,
       this.#cancellationToken,
     );
