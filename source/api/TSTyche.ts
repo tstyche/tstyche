@@ -2,6 +2,7 @@ import process from "node:process";
 import type { ResolvedConfig } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { TestFile } from "#file";
 import { type Reporter, SummaryReporter, ThoroughReporter, WatchModeReporter } from "#reporters";
 import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
@@ -62,7 +63,7 @@ export class TSTyche {
 
   async run(testFiles: Array<string | URL>): Promise<void> {
     await this.#taskRunner.run(
-      testFiles,
+      testFiles.map((testFile) => new TestFile(testFile)),
       this.resolvedConfig.target,
       this.#cancellationToken,
     );

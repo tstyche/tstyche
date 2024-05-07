@@ -1,6 +1,6 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
-import { TestFile } from "#file";
+import type { TestFile } from "#file";
 import { Result, ResultManager, TargetResult } from "#result";
 import type { StoreService } from "#store";
 import type { CancellationToken } from "#token";
@@ -9,7 +9,6 @@ import { TestFileRunner } from "./TestFileRunner.js";
 export class TaskRunner {
   #resultManager: ResultManager;
   #storeService: StoreService;
-  #testFiles: Array<TestFile> = [];
 
   // TODO should be `taskConfig`, not `resolvedConfig`
   constructor(
@@ -24,19 +23,13 @@ export class TaskRunner {
     });
   }
 
-  async run(
-    testFiles: Array<string | URL>,
-    target: Array<string>,
-    cancellationToken?: CancellationToken,
-  ): Promise<void> {
-    this.#testFiles = testFiles.map((testFile) => new TestFile(testFile));
-
-    const result = new Result(this.resolvedConfig, this.#testFiles);
+  async run(testFiles: Array<TestFile>, target: Array<string>, cancellationToken?: CancellationToken): Promise<void> {
+    const result = new Result(this.resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["run:start", { result }]);
 
     for (const versionTag of target) {
-      const targetResult = new TargetResult(versionTag, this.#testFiles);
+      const targetResult = new TargetResult(versionTag, testFiles);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
@@ -45,7 +38,7 @@ export class TaskRunner {
       if (compiler) {
         const testFileRunner = new TestFileRunner(this.resolvedConfig, compiler);
 
-        for (const testFile of this.#testFiles) {
+        for (const testFile of testFiles) {
           testFileRunner.run(testFile, cancellationToken);
         }
       }
