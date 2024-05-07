@@ -6,7 +6,7 @@ export class TestFile {
   position?: number;
 
   constructor(identifier: string | URL) {
-    this.path = Path.normalizeSlashes(this.#resolveFilePath(identifier));
+    this.path = Path.normalizeSlashes(this.#resolvePath(identifier));
   }
 
   add(options: { position?: number }): this {
@@ -17,7 +17,7 @@ export class TestFile {
     return this;
   }
 
-  #resolveFilePath(identifier: string | URL) {
+  #resolvePath(identifier: string | URL) {
     if (typeof identifier === "string" && !identifier.startsWith("file:")) {
       return identifier;
     }
