@@ -1,5 +1,4 @@
 import { strict as assert } from "node:assert";
-import { URL } from "node:url";
 import { describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
 import { fileStatusText, ResultStatus, Scribbler, TestFile } from "tstyche/tstyche";
