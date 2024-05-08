@@ -60,7 +60,7 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "11.1.6",
     "@types/mocha": "10.0.6",
-    "@types/node": "20.12.10",
+    "@types/node": "20.12.11",
     "@typescript-eslint/eslint-plugin": "7.7.1",
     "@typescript-eslint/parser": "7.7.1",
     "ajv": "8.13.0",
