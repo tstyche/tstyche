@@ -118,7 +118,7 @@ export class TestTreeWorker {
 
     runMode = this.#resolveRunMode(runMode, assertion);
 
-    if ((runMode & RunMode.Skip && !(runMode & RunMode.Only)) || (this.#hasOnly && !(runMode & RunMode.Only))) {
+    if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
       EventEmitter.dispatch(["expect:skip", { result: expectResult }]);
 
       return;
