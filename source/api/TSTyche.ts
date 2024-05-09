@@ -1,8 +1,8 @@
 import process from "node:process";
-import { pathToFileURL } from "node:url";
 import type { ResolvedConfig } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { TestFile } from "#file";
 import { type Reporter, SummaryReporter, ThoroughReporter, WatchModeReporter } from "#reporters";
 import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
@@ -61,23 +61,9 @@ export class TSTyche {
     }
   }
 
-  #normalizePaths(testFiles: Array<string | URL>) {
-    return testFiles.map((filePath) => {
-      if (typeof filePath !== "string") {
-        return filePath;
-      }
-
-      if (filePath.startsWith("file:")) {
-        return new URL(filePath);
-      }
-
-      return pathToFileURL(filePath);
-    });
-  }
-
   async run(testFiles: Array<string | URL>): Promise<void> {
     await this.#taskRunner.run(
-      this.#normalizePaths(testFiles),
+      testFiles.map((testFile) => new TestFile(testFile)),
       this.resolvedConfig.target,
       this.#cancellationToken,
     );

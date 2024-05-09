@@ -44,7 +44,6 @@ export class TestTreeWorker {
       member.flags & TestMemberFlags.Only
       || (this.resolvedConfig.only != null
         && member.name.toLowerCase().includes(this.resolvedConfig.only.toLowerCase()))
-      || (this.#position != null && member.node.getStart() === this.#position) // TODO position must override '.skip'
     ) {
       mode |= RunMode.Only;
     }
@@ -59,6 +58,12 @@ export class TestTreeWorker {
 
     if (member.flags & TestMemberFlags.Todo) {
       mode |= RunMode.Todo;
+    }
+
+    if (this.#position != null && member.node.getStart() === this.#position) {
+      mode |= RunMode.Only;
+      // skip mode is overridden, when 'position' is specified
+      mode &= ~RunMode.Skip;
     }
 
     return mode;

@@ -1,10 +1,10 @@
-import { fileURLToPath } from "node:url";
 import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Expect } from "#expect";
+import type { TestFile } from "#file";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
 import type { CancellationToken } from "#token";
@@ -23,40 +23,36 @@ export class TestFileRunner {
     this.#projectService = new ProjectService(compiler);
   }
 
-  run(testFile: URL, cancellationToken?: CancellationToken): void {
+  run(testFile: TestFile, cancellationToken?: CancellationToken): void {
     if (cancellationToken?.isCancellationRequested === true) {
       return;
     }
 
-    const testFilePath = fileURLToPath(testFile);
-    const position = testFile.searchParams.has("position") ? Number(testFile.searchParams.get("position")) : undefined;
-
-    this.#projectService.openFile(testFilePath, /* sourceText */ undefined, this.resolvedConfig.rootPath);
+    this.#projectService.openFile(testFile.path, /* sourceText */ undefined, this.resolvedConfig.rootPath);
 
     const fileResult = new FileResult(testFile);
 
     EventEmitter.dispatch(["file:start", { result: fileResult }]);
 
-    this.#runFile(testFilePath, fileResult, position, cancellationToken);
+    this.#runFile(testFile, fileResult, cancellationToken);
 
     EventEmitter.dispatch(["file:end", { result: fileResult }]);
 
-    this.#projectService.closeFile(testFilePath);
+    this.#projectService.closeFile(testFile.path);
   }
 
   #runFile(
-    testFilePath: string,
+    testFile: TestFile,
     fileResult: FileResult,
-    position: number | undefined,
     cancellationToken?: CancellationToken,
   ) {
-    const languageService = this.#projectService.getLanguageService(testFilePath);
+    const languageService = this.#projectService.getLanguageService(testFile.path);
 
     if (!languageService) {
       return;
     }
 
-    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(testFilePath);
+    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(testFile.path);
 
     if (syntacticDiagnostics.length > 0) {
       EventEmitter.dispatch([
@@ -70,7 +66,7 @@ export class TestFileRunner {
       return;
     }
 
-    const semanticDiagnostics = languageService.getSemanticDiagnostics(testFilePath);
+    const semanticDiagnostics = languageService.getSemanticDiagnostics(testFile.path);
 
     const program = languageService.getProgram();
 
@@ -78,7 +74,7 @@ export class TestFileRunner {
       return;
     }
 
-    const sourceFile = program.getSourceFile(testFilePath);
+    const sourceFile = program.getSourceFile(testFile.path);
 
     if (!sourceFile) {
       return;
@@ -114,7 +110,7 @@ export class TestFileRunner {
       cancellationToken,
       fileResult,
       hasOnly: testTree.hasOnly,
-      position,
+      position: testFile.position,
     });
 
     testTreeWorker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);

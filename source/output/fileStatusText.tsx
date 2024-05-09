@@ -1,4 +1,4 @@
-import { fileURLToPath } from "node:url";
+import type { TestFile } from "#file";
 import { Path } from "#path";
 import { type FileResultStatus, ResultStatus } from "#result";
 import { Color, Line, Scribbler, Text } from "#scribbler";
@@ -22,7 +22,7 @@ class FileNameText implements JSX.ElementClass {
   }
 }
 
-export function fileStatusText(status: FileResultStatus, testFile: URL): JSX.Element {
+export function fileStatusText(status: FileResultStatus, testFile: TestFile): JSX.Element {
   let statusColor: Color;
   let statusText: string;
 
@@ -43,7 +43,7 @@ export function fileStatusText(status: FileResultStatus, testFile: URL): JSX.Ele
 
   return (
     <Line>
-      <Text color={statusColor}>{statusText}</Text> <FileNameText filePath={fileURLToPath(testFile)} />
+      <Text color={statusColor}>{statusText}</Text> <FileNameText filePath={testFile.path} />
     </Line>
   );
 }

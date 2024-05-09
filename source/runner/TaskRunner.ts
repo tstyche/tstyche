@@ -1,5 +1,6 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
+import type { TestFile } from "#file";
 import { Result, ResultManager, TargetResult } from "#result";
 import type { StoreService } from "#store";
 import type { CancellationToken } from "#token";
@@ -22,7 +23,7 @@ export class TaskRunner {
     });
   }
 
-  async run(testFiles: Array<URL>, target: Array<string>, cancellationToken?: CancellationToken): Promise<void> {
+  async run(testFiles: Array<TestFile>, target: Array<string>, cancellationToken?: CancellationToken): Promise<void> {
     const result = new Result(this.resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["run:start", { result }]);
