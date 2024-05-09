@@ -5,6 +5,8 @@ import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
 
+const isWindows = process.platform === "win32";
+
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
@@ -61,7 +63,7 @@ describe("runs type tests", function() {
     test(`${testCase} with position is pointing to 'expect'`, async function() {
       const testFile = new tstyche.TestFile(identifier);
 
-      await taskRunner.run([testFile.add({ position: 70 })], resolvedConfig.target);
+      await taskRunner.run([testFile.add({ position: isWindows ? 73 : 70 })], resolvedConfig.target);
 
       assert.deepEqual(result?.expectCount, { failed: 0, passed: 1, skipped: 5, todo: 0 });
       assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
@@ -73,7 +75,7 @@ describe("runs type tests", function() {
     test(`${testCase} with position is pointing to 'expect.skip'`, async function() {
       const testFile = new tstyche.TestFile(identifier);
 
-      await taskRunner.run([testFile.add({ position: 261 })], resolvedConfig.target);
+      await taskRunner.run([testFile.add({ position: isWindows ? 273 : 261 })], resolvedConfig.target);
 
       assert.deepEqual(result?.expectCount, { failed: 1, passed: 0, skipped: 5, todo: 0 });
       assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
@@ -85,7 +87,7 @@ describe("runs type tests", function() {
     test(`${testCase} with position is pointing to 'test'`, async function() {
       const testFile = new tstyche.TestFile(identifier);
 
-      await taskRunner.run([testFile.add({ position: 41 })], resolvedConfig.target);
+      await taskRunner.run([testFile.add({ position: isWindows ? 43 : 41 })], resolvedConfig.target);
 
       assert.deepEqual(result?.expectCount, { failed: 0, passed: 1, skipped: 5, todo: 0 });
       assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
@@ -97,7 +99,7 @@ describe("runs type tests", function() {
     test(`${testCase} with position is pointing to 'test.skip'`, async function() {
       const testFile = new tstyche.TestFile(identifier);
 
-      await taskRunner.run([testFile.add({ position: 111 })], resolvedConfig.target);
+      await taskRunner.run([testFile.add({ position: isWindows ? 117 : 111 })], resolvedConfig.target);
 
       assert.deepEqual(result?.expectCount, { failed: 1, passed: 1, skipped: 4, todo: 0 });
       assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
