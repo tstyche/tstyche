@@ -10,7 +10,6 @@ export class TaskRunner {
   #resultManager: ResultManager;
   #storeService: StoreService;
 
-  // TODO should be `taskConfig`, not `resolvedConfig`
   constructor(
     readonly resolvedConfig: ResolvedConfig,
     storeService: StoreService,
@@ -23,12 +22,12 @@ export class TaskRunner {
     });
   }
 
-  async run(testFiles: Array<TestFile>, target: Array<string>, cancellationToken?: CancellationToken): Promise<void> {
+  async run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
     const result = new Result(this.resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["run:start", { result }]);
 
-    for (const versionTag of target) {
+    for (const versionTag of this.resolvedConfig.target) {
       const targetResult = new TargetResult(versionTag, testFiles);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
