@@ -64,7 +64,6 @@ export class TSTyche {
   async run(testFiles: Array<string | URL>): Promise<void> {
     await this.#taskRunner.run(
       testFiles.map((testFile) => new TestFile(testFile)),
-      this.resolvedConfig.target,
       this.#cancellationToken,
     );
   }
