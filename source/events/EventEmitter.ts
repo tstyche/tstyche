@@ -46,7 +46,7 @@ export class EventEmitter {
     }
   }
 
-  static removeHandler(handler: EventHandler): void {
-    EventEmitter.#handlers.delete(handler);
+  static removeAllHandlers(): void {
+    EventEmitter.#handlers = new Set<EventHandler>();
   }
 }

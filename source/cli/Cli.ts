@@ -4,7 +4,7 @@ import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
-import { EventEmitter, type EventHandler } from "#events";
+import { EventEmitter } from "#events";
 import { addsPackageStepText, diagnosticText, formattedText, helpText, OutputService } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
@@ -20,38 +20,36 @@ export class Cli {
     this.#storeService = new StoreService();
   }
 
-  #onStartupEvent: EventHandler = ([eventName, payload]) => {
-    switch (eventName) {
-      case "store:info":
-        this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
-        break;
-
-      case "config:error":
-      case "select:error":
-      case "store:error":
-        for (const diagnostic of payload.diagnostics) {
-          switch (diagnostic.category) {
-            case DiagnosticCategory.Error:
-              this.#cancellationToken.cancel();
-              this.#outputService.writeError(diagnosticText(diagnostic));
-
-              process.exitCode = 1;
-              break;
-
-            case DiagnosticCategory.Warning:
-              this.#outputService.writeWarning(diagnosticText(diagnostic));
-              break;
-          }
-        }
-        break;
-
-      default:
-        break;
-    }
-  };
-
   async run(commandLineArguments: Array<string>): Promise<void> {
-    EventEmitter.addHandler(this.#onStartupEvent);
+    EventEmitter.addHandler(([eventName, payload]) => {
+      switch (eventName) {
+        case "store:info":
+          this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
+          break;
+
+        case "config:error":
+        case "select:error":
+        case "store:error":
+          for (const diagnostic of payload.diagnostics) {
+            switch (diagnostic.category) {
+              case DiagnosticCategory.Error:
+                this.#cancellationToken.cancel();
+                this.#outputService.writeError(diagnosticText(diagnostic));
+
+                process.exitCode = 1;
+                break;
+
+              case DiagnosticCategory.Warning:
+                this.#outputService.writeWarning(diagnosticText(diagnostic));
+                break;
+            }
+          }
+          break;
+
+        default:
+          break;
+      }
+    });
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
@@ -144,7 +142,7 @@ export class Cli {
       }
     }
 
-    EventEmitter.removeHandler(this.#onStartupEvent);
+    EventEmitter.removeAllHandlers();
 
     const tstyche = new TSTyche(resolvedConfig, this.#storeService);
 
