@@ -1,9 +1,12 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices",
     ":automergeBranch",
     ":automergeMinor",
     ":maintainLockFilesWeekly",
-    ":semanticCommits"
+    ":semanticCommits",
+
+    "regexManagers:biomeVersions"
   ]
 }
