@@ -9,7 +9,7 @@
     "plugin:@typescript-eslint/stylistic-type-checked"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "simple-import-sort"],
+  "plugins": ["@typescript-eslint"],
   "root": true,
   "reportUnusedDisableDirectives": true,
   "rules": {
@@ -78,15 +78,6 @@
     "@typescript-eslint/promise-function-async": "error",
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
-
-    "simple-import-sort/imports": [
-      "error",
-      {
-        // the default grouping, but with no blank lines.
-        "groups": [["^\\u0000", "^node:", "^@?\\w", "^", "^\\."]]
-      }
-    ],
-    "simple-import-sort/exports": "error",
 
     "curly": "error",
     "eqeqeq": ["error", "smart"],

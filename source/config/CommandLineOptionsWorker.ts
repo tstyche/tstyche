@@ -1,11 +1,11 @@
 import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
-import { OptionBrand, OptionGroup } from "./enums.js";
 import { type OptionDefinition, OptionDefinitionsMap, type OptionValue } from "./OptionDefinitionsMap.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
+import { OptionBrand, OptionGroup } from "./enums.js";
 
 export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
 

@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
-import { fileStatusText, ResultStatus, Scribbler, TestFile } from "tstyche/tstyche";
+import { ResultStatus, Scribbler, TestFile, fileStatusText } from "tstyche/tstyche";
 
 const sampleTestFileUrl = new URL("../../../path/to/sample.test.ts", import.meta.url);
 const sampleTestFile = new TestFile(sampleTestFileUrl);

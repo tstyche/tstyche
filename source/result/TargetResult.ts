@@ -1,7 +1,7 @@
 import type { TestFile } from "#file";
-import { ResultStatus } from "./enums.js";
 import type { ProjectResult } from "./ProjectResult.js";
 import { ResultTiming } from "./ResultTiming.js";
+import { ResultStatus } from "./enums.js";
 
 export type TargetResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed;
 

@@ -2,7 +2,6 @@ import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
-import { OptionBrand, OptionGroup } from "./enums.js";
 import {
   type ItemDefinition,
   type OptionDefinition,
@@ -11,6 +10,7 @@ import {
 } from "./OptionDefinitionsMap.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionValidator } from "./OptionValidator.js";
+import { OptionBrand, OptionGroup } from "./enums.js";
 
 export type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
 

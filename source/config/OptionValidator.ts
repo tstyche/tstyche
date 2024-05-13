@@ -2,9 +2,9 @@ import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import { Environment } from "#environment";
 import type { StoreService } from "#store";
-import type { OptionBrand, OptionGroup } from "./enums.js";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
+import type { OptionBrand, OptionGroup } from "./enums.js";
 
 export class OptionValidator {
   #onDiagnostic: (diagnostic: Diagnostic) => void;

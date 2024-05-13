@@ -41,6 +41,97 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@biomejs/biome@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/biome@npm:1.7.3"
+  dependencies:
+    "@biomejs/cli-darwin-arm64": 1.7.3
+    "@biomejs/cli-darwin-x64": 1.7.3
+    "@biomejs/cli-linux-arm64": 1.7.3
+    "@biomejs/cli-linux-arm64-musl": 1.7.3
+    "@biomejs/cli-linux-x64": 1.7.3
+    "@biomejs/cli-linux-x64-musl": 1.7.3
+    "@biomejs/cli-win32-arm64": 1.7.3
+    "@biomejs/cli-win32-x64": 1.7.3
+  dependenciesMeta:
+    "@biomejs/cli-darwin-arm64":
+      optional: true
+    "@biomejs/cli-darwin-x64":
+      optional: true
+    "@biomejs/cli-linux-arm64":
+      optional: true
+    "@biomejs/cli-linux-arm64-musl":
+      optional: true
+    "@biomejs/cli-linux-x64":
+      optional: true
+    "@biomejs/cli-linux-x64-musl":
+      optional: true
+    "@biomejs/cli-win32-arm64":
+      optional: true
+    "@biomejs/cli-win32-x64":
+      optional: true
+  bin:
+    biome: bin/biome
+  checksum: ad6a6585f1d6fcb9c060319c614b4437d715637ecedbe5f4d45f170f0532894654e7cf5c80420da38c8c626d76fef4b6334c7ee85e6c790bd5ad4f7aa49c5182
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-darwin-arm64@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/cli-darwin-arm64@npm:1.7.3"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-darwin-x64@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/cli-darwin-x64@npm:1.7.3"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-linux-arm64-musl@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.7.3"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-linux-arm64@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/cli-linux-arm64@npm:1.7.3"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-linux-x64-musl@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/cli-linux-x64-musl@npm:1.7.3"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-linux-x64@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/cli-linux-x64@npm:1.7.3"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-win32-arm64@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/cli-win32-arm64@npm:1.7.3"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-win32-x64@npm:1.7.3":
+  version: 1.7.3
+  resolution: "@biomejs/cli-win32-x64@npm:1.7.3"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@cspell/cspell-bundled-dicts@npm:8.8.1":
   version: 8.8.1
   resolution: "@cspell/cspell-bundled-dicts@npm:8.8.1"
@@ -1795,15 +1886,6 @@ __metadata:
   peerDependencies:
     eslint: ">=7.0.0"
   checksum: 67176a889099cb68733d13ba17af5d13f48dc2a7ac9360b04abe94e81e5e9c35346ae2070aa50dce8a4c80dca4602f62375b074f3485369c3a66867fa683ba3c
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-simple-import-sort@npm:12.1.0":
-  version: 12.1.0
-  resolution: "eslint-plugin-simple-import-sort@npm:12.1.0"
-  peerDependencies:
-    eslint: ">=5.0.0"
-  checksum: 8ba651c8d86359107130e99d11a839fe2b66647731c9582b74657fcfab2ea61fdf85621651f26aab5f8cbfe7516ea0c5d4d8fdcd68c3f9b7115d292f16ed3dde
   languageName: node
   linkType: hard
 
@@ -3573,6 +3655,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tstyche@workspace:."
   dependencies:
+    "@biomejs/biome": 1.7.3
     "@rollup/plugin-typescript": 11.1.6
     "@types/mocha": 10.0.6
     "@types/node": 20.12.11
@@ -3584,7 +3667,6 @@ __metadata:
     dprint: 0.45.1
     eslint: 8.57.0
     eslint-plugin-mocha: 10.4.3
-    eslint-plugin-simple-import-sort: 12.1.0
     magic-string: 0.30.10
     mocha: 10.4.0
     pretty-ansi: 2.0.0

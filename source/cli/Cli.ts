@@ -5,7 +5,7 @@ import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
-import { addsPackageStepText, diagnosticText, formattedText, helpText, OutputService } from "#output";
+import { OutputService, addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationToken } from "#token";

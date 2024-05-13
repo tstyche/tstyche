@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
-import { helpText, OptionBrand, Scribbler } from "tstyche/tstyche";
+import { OptionBrand, Scribbler, helpText } from "tstyche/tstyche";
 
 /**
  * @type {Map<string, import("tstyche/tstyche").OptionDefinition>}

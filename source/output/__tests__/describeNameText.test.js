@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import { describe, test } from "mocha";
-import { describeNameText, Scribbler } from "tstyche/tstyche";
+import { Scribbler, describeNameText } from "tstyche/tstyche";
 
 const scribbler = new Scribbler();
 

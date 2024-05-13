@@ -1,8 +1,8 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import type { Assertion } from "./Assertion.js";
-import { TestMemberBrand, type TestMemberFlags } from "./enums.js";
 import type { TestTree } from "./TestTree.js";
+import { TestMemberBrand, type TestMemberFlags } from "./enums.js";
 
 export class TestMember {
   compiler: typeof ts;
