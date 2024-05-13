@@ -12,11 +12,11 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-test("when fetching of metadata from the registry times out", async function() {
+test("when fetching of metadata from the registry times out", async function () {
   await writeFixture(fixtureUrl, {
     ["__typetests__/dummy.test.ts"]: isStringTestText,
   });
@@ -37,7 +37,7 @@ test("when fetching of metadata from the registry times out", async function() {
   assert.equal(exitCode, 1);
 });
 
-test("when installing 'typescript' times out", async function() {
+test("when installing 'typescript' times out", async function () {
   if (process.versions.node.startsWith("14.17")) {
     // Node.js 14.17 does not support 'timeout' option in 'child_process.spawn()'
     this.skip();
@@ -65,7 +65,7 @@ test("when installing 'typescript' times out", async function() {
   }
 });
 
-describe("warns if resolution of a tag may be outdated", function() {
+describe("warns if resolution of a tag may be outdated", function () {
   const testCases = [
     {
       target: "5.3.4",
@@ -103,7 +103,7 @@ describe("warns if resolution of a tag may be outdated", function() {
   ];
 
   testCases.forEach(({ target, testCase }) => {
-    test(testCase, async function() {
+    test(testCase, async function () {
       const storeManifest = {
         $version: "1",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
@@ -140,7 +140,7 @@ describe("warns if resolution of a tag may be outdated", function() {
   });
 });
 
-describe("does not warn if resolution of a tag may be outdated", function() {
+describe("does not warn if resolution of a tag may be outdated", function () {
   const testCases = [
     {
       target: "5.3.3",
@@ -157,7 +157,7 @@ describe("does not warn if resolution of a tag may be outdated", function() {
   ];
 
   testCases.forEach(({ target, testCase }) => {
-    test(testCase, async function() {
+    test(testCase, async function () {
       const storeManifest = {
         $version: "1",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes

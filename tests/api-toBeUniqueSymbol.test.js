@@ -8,7 +8,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeUniqueSymbol' implementation", function() {
+test("'toBeUniqueSymbol' implementation", function () {
   /** @type {unique symbol} */
   const s = Symbol();
 
@@ -16,7 +16,7 @@ test("'toBeUniqueSymbol' implementation", function() {
   tstyche.expect(Symbol()).type.not.toBeUniqueSymbol();
 });
 
-test("toBeUniqueSymbol", async function() {
+test("toBeUniqueSymbol", async function () {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

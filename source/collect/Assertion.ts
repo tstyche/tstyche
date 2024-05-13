@@ -1,7 +1,7 @@
 import type ts from "typescript";
-import type { TestMemberBrand, TestMemberFlags } from "./enums.js";
 import { TestMember } from "./TestMember.js";
 import type { TestTree } from "./TestTree.js";
+import type { TestMemberBrand, TestMemberFlags } from "./enums.js";
 
 export interface MatcherNode extends ts.CallExpression {
   expression: ts.PropertyAccessExpression;
@@ -28,11 +28,11 @@ export class Assertion extends TestMember {
 
     for (const diagnostic of parent.diagnostics) {
       if (
-        diagnostic.start != null
-        && argStart != null
-        && argEnd != null
-        && diagnostic.start >= argStart
-        && diagnostic.start <= argEnd
+        diagnostic.start != null &&
+        argStart != null &&
+        argEnd != null &&
+        diagnostic.start >= argStart &&
+        diagnostic.start <= argEnd
       ) {
         this.diagnostics.add(diagnostic);
         parent.diagnostics.delete(diagnostic);

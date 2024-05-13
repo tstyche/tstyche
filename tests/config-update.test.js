@@ -7,11 +7,11 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--update' command line option", function() {
+describe("'--update' command line option", function () {
   const testCases = [
     {
       args: ["--update"],
@@ -32,7 +32,7 @@ describe("'--update' command line option", function() {
   ];
 
   testCases.forEach(({ args, testCase }) => {
-    test(testCase, async function() {
+    test(testCase, async function () {
       const storeUrl = new URL("./.store", fixtureUrl);
 
       await writeFixture(fixtureUrl);
@@ -49,7 +49,7 @@ describe("'--update' command line option", function() {
     });
   });
 
-  test("updates existing store manifest", async function() {
+  test("updates existing store manifest", async function () {
     const oldStoreManifest = JSON.stringify({
       $version: "1",
       lastUpdated: Date.now(), // this is considered fresh during regular test run

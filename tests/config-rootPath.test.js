@@ -7,12 +7,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("'rootPath' configuration file option", function() {
-  test("when 'tstyche.config.json' file does not exist, is set to the current directory", async function() {
+describe("'rootPath' configuration file option", function () {
+  test("when 'tstyche.config.json' file does not exist, is set to the current directory", async function () {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -25,7 +25,7 @@ describe("'rootPath' configuration file option", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'tstyche.config.json' file exist, is set to the path of the directory from which the file was loaded", async function() {
+  test("when 'tstyche.config.json' file exist, is set to the path of the directory from which the file was loaded", async function () {
     const config = {
       failFast: true,
     };
@@ -49,7 +49,7 @@ describe("'rootPath' configuration file option", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when specified, the path is resolved relative to the configuration file", async function() {
+  test("when specified, the path is resolved relative to the configuration file", async function () {
     const config = {
       rootPath: "../",
     };

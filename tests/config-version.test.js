@@ -11,15 +11,15 @@ const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfig
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-before(async function() {
+before(async function () {
   await writeFixture(fixtureUrl);
 });
 
-after(async function() {
+after(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--version' command line option", function() {
+describe("'--version' command line option", function () {
   const testCases = [
     {
       args: ["--version"],
@@ -40,7 +40,7 @@ describe("'--version' command line option", function() {
   ];
 
   testCases.forEach(({ args, testCase }) => {
-    test(testCase, async function() {
+    test(testCase, async function () {
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
       assert.equal(stdout, `${version}\n`);

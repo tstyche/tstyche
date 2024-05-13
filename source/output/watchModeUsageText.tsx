@@ -11,9 +11,5 @@ export function watchModeUsageText(): JSX.Element {
     );
   });
 
-  return (
-    <Text>
-      {usageText}
-    </Text>
-  );
+  return <Text>{usageText}</Text>;
 }

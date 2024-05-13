@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
-import { helpText, OptionBrand, Scribbler } from "tstyche/tstyche";
+import { OptionBrand, Scribbler, helpText } from "tstyche/tstyche";
 
 /**
  * @type {Map<string, import("tstyche/tstyche").OptionDefinition>}
@@ -66,8 +66,8 @@ const sampleVersion = "1.2.3";
 
 const scribbler = new Scribbler();
 
-describe("helpText", function() {
-  test("formats help text", function() {
+describe("helpText", function () {
+  test("formats help text", function () {
     const text = scribbler.render(helpText(sampleCommandLineOptionDefinitions, sampleVersion));
 
     assert.equal(

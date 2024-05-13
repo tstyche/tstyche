@@ -8,12 +8,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeNever' implementation", function() {
+test("'toBeNever' implementation", function () {
   tstyche.expect(/** @type {never} */ (null)).type.toBeNever();
   tstyche.expect(/** @type {any} */ (null)).type.not.toBeNever();
 });
 
-test("toBeNever", async function() {
+test("toBeNever", async function () {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

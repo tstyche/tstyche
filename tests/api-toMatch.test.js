@@ -8,12 +8,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toMatch' implementation", function() {
+test("'toMatch' implementation", function () {
   tstyche.expect({ one: false }).type.toMatch({ one: true });
   tstyche.expect({ one: true }).type.not.toMatch({ two: false });
 });
 
-test("toMatch", async function() {
+test("toMatch", async function () {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

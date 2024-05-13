@@ -31,11 +31,11 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-test("when syntax errors are encountered", async function() {
+test("when syntax errors are encountered", async function () {
   await writeFixture(fixtureUrl, {
     ["__typetests__/dummy.test.ts"]: isStringTestText,
     ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),

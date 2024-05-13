@@ -1,6 +1,6 @@
-import type { Color } from "./enums.js";
 import { Scribbler } from "./Scribbler.js";
 import { Text } from "./Text.js";
+import type { Color } from "./enums.js";
 
 interface LineProps {
   children?: JSX.ElementChildrenAttribute["children"];

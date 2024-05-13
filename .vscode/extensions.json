@@ -1,7 +1,7 @@
 {
   "recommendations": [
+    "biomejs.biome",
     "dbaeumer.vscode-eslint",
-    "dprint.dprint",
     "editorconfig.editorconfig",
     "streetsidesoftware.code-spell-checker"
   ]

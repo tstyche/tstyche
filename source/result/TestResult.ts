@@ -1,10 +1,10 @@
 import type { TestMember } from "#collect";
 import type { Diagnostic } from "#diagnostic";
 import type { DescribeResult } from "./DescribeResult.js";
-import { ResultStatus } from "./enums.js";
 import type { ExpectResult } from "./ExpectResult.js";
 import { ResultCount } from "./ResultCount.js";
 import { ResultTiming } from "./ResultTiming.js";
+import { ResultStatus } from "./enums.js";
 
 export class TestResult {
   diagnostics: Array<Diagnostic> = [];

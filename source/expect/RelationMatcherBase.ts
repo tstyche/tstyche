@@ -15,15 +15,15 @@ export abstract class RelationMatcherBase {
 
     return isNot
       ? [
-        Diagnostic.error(
-          `Type '${sourceTypeText}' ${this.relationExplanationVerb} ${this.relationExplanationText} type '${targetTypeText}'.`,
-        ),
-      ]
+          Diagnostic.error(
+            `Type '${sourceTypeText}' ${this.relationExplanationVerb} ${this.relationExplanationText} type '${targetTypeText}'.`,
+          ),
+        ]
       : [
-        Diagnostic.error(
-          `Type '${sourceTypeText}' ${this.relationExplanationVerb} not ${this.relationExplanationText} type '${targetTypeText}'.`,
-        ),
-      ];
+          Diagnostic.error(
+            `Type '${sourceTypeText}' ${this.relationExplanationVerb} not ${this.relationExplanationText} type '${targetTypeText}'.`,
+          ),
+        ];
   }
 
   match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {

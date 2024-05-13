@@ -8,8 +8,8 @@ import type { TestFile } from "#file";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
 import type { CancellationToken } from "#token";
-import { RunMode } from "./enums.js";
 import { TestTreeWorker } from "./TestTreeWorker.js";
+import { RunMode } from "./enums.js";
 
 export class TestFileRunner {
   #collectService: CollectService;
@@ -41,11 +41,7 @@ export class TestFileRunner {
     this.#projectService.closeFile(testFile.path);
   }
 
-  #runFile(
-    testFile: TestFile,
-    fileResult: FileResult,
-    cancellationToken?: CancellationToken,
-  ) {
+  #runFile(testFile: TestFile, fileResult: FileResult, cancellationToken?: CancellationToken) {
     const languageService = this.#projectService.getLanguageService(testFile.path);
 
     if (!languageService) {

@@ -5,9 +5,11 @@ expect.only.fail<string>().type.toBeString();
 
 expect.only.fail<never>().type.toBeString();
 
-expect.only.fail(() => {
-  expect<never>().type.toBeNumber();
-}).type.toBe<void>();
+expect.only
+  .fail(() => {
+    expect<never>().type.toBeNumber();
+  })
+  .type.toBe<void>();
 
 describe("is skipped describe?", () => {
   test("is skipped?", () => {

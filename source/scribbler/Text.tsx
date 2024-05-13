@@ -1,5 +1,5 @@
-import { Color } from "./enums.js";
 import { Scribbler } from "./Scribbler.js";
+import { Color } from "./enums.js";
 
 interface TextProps {
   children?: JSX.ElementChildrenAttribute["children"];

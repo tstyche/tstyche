@@ -28,38 +28,30 @@ class CountText implements JSX.ElementClass {
   render(): JSX.Element {
     return (
       <Text>
-        {this.props.failed > 0
-          ? (
-            <Text>
-              <Text color={Color.Red}>{String(this.props.failed)} failed</Text>
-              <Text>{", "}</Text>
-            </Text>
-          )
-          : undefined}
-        {this.props.skipped > 0
-          ? (
-            <Text>
-              <Text color={Color.Yellow}>{String(this.props.skipped)} skipped</Text>
-              <Text>{", "}</Text>
-            </Text>
-          )
-          : undefined}
-        {this.props.todo > 0
-          ? (
-            <Text>
-              <Text color={Color.Magenta}>{String(this.props.todo)} todo</Text>
-              <Text>{", "}</Text>
-            </Text>
-          )
-          : undefined}
-        {this.props.passed > 0
-          ? (
-            <Text>
-              <Text color={Color.Green}>{String(this.props.passed)} passed</Text>
-              <Text>{", "}</Text>
-            </Text>
-          )
-          : undefined}
+        {this.props.failed > 0 ? (
+          <Text>
+            <Text color={Color.Red}>{String(this.props.failed)} failed</Text>
+            <Text>{", "}</Text>
+          </Text>
+        ) : undefined}
+        {this.props.skipped > 0 ? (
+          <Text>
+            <Text color={Color.Yellow}>{String(this.props.skipped)} skipped</Text>
+            <Text>{", "}</Text>
+          </Text>
+        ) : undefined}
+        {this.props.todo > 0 ? (
+          <Text>
+            <Text color={Color.Magenta}>{String(this.props.todo)} todo</Text>
+            <Text>{", "}</Text>
+          </Text>
+        ) : undefined}
+        {this.props.passed > 0 ? (
+          <Text>
+            <Text color={Color.Green}>{String(this.props.passed)} passed</Text>
+            <Text>{", "}</Text>
+          </Text>
+        ) : undefined}
         <Text>
           {String(this.props.total)}
           <Text>{" total"}</Text>
@@ -105,7 +97,7 @@ class MatchText implements JSX.ElementClass {
       <Text>
         {this.props.text.map((match, index, list) => (
           <Text>
-            '{match}'{index === list.length - 1 ? <Text>{" "}</Text> : <Text color={Color.Gray}>{", "}</Text>}
+            '{match}'{index === list.length - 1 ? <Text> </Text> : <Text color={Color.Gray}>{", "}</Text>}
           </Text>
         ))}
         <Text color={Color.Gray}>or</Text> '{lastItem}'

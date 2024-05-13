@@ -32,12 +32,14 @@ export class ToRaiseError {
     }
 
     if (source.diagnostics.length !== targetTypes.length) {
-      const expectedText = source.diagnostics.length > targetTypes.length
-        ? `only ${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`
-        : `${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`;
-      const foundText = source.diagnostics.length > targetTypes.length
-        ? String(source.diagnostics.length)
-        : `only ${String(source.diagnostics.length)}`;
+      const expectedText =
+        source.diagnostics.length > targetTypes.length
+          ? `only ${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`
+          : `${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`;
+      const foundText =
+        source.diagnostics.length > targetTypes.length
+          ? String(source.diagnostics.length)
+          : `only ${String(source.diagnostics.length)}`;
 
       const related = [
         Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),

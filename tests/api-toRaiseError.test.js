@@ -8,7 +8,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toRaiseError' implementation", function() {
+test("'toRaiseError' implementation", function () {
   function check() {
     return;
   }
@@ -19,7 +19,7 @@ test("'toRaiseError' implementation", function() {
   tstyche.expect(check()).type.not.toRaiseError();
 });
 
-test("toRaiseError", async function() {
+test("toRaiseError", async function () {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
