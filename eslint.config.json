@@ -6,9 +6,7 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/strict-type-checked",
-    "plugin:@typescript-eslint/stylistic-type-checked",
-    "plugin:import/recommended",
-    "plugin:import/typescript"
+    "plugin:@typescript-eslint/stylistic-type-checked"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "simple-import-sort"],
@@ -80,23 +78,6 @@
     "@typescript-eslint/promise-function-async": "error",
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
-
-    "import/first": "error",
-    "import/newline-after-import": "error",
-    "import/no-duplicates": "error",
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": [
-          "*.js",
-          "**/__scripts__/**/*",
-          "**/__tests__/**/*",
-          "**/__typetests__/**/*",
-          "**/tests/**/*",
-          "**/typetests/**/*"
-        ]
-      }
-    ],
 
     "simple-import-sort/imports": [
       "error",
@@ -172,16 +153,5 @@
   ],
   "parserOptions": {
     "EXPERIMENTAL_useProjectService": true
-  },
-  "settings": {
-    "import/ignore": ["typescript"],
-    "import/resolver": {
-      "typescript": {
-        "project": [
-          "./source/tsconfig.json",
-          "./tsconfig.json"
-        ]
-      }
-    }
   }
 }
