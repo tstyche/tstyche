@@ -144,12 +144,8 @@ export class Cli {
 
     EventEmitter.removeAllHandlers();
 
-    const tstyche = new TSTyche(resolvedConfig, this.#storeService);
+    const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
 
-    if (resolvedConfig.watch === true) {
-      await tstyche.watch(testFiles, selectService);
-    } else {
-      await tstyche.run(testFiles);
-    }
+    await tstyche.run(testFiles);
   }
 }
