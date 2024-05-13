@@ -60,7 +60,7 @@ export class TestMember {
       `'${node.expression.getText()}()' cannot be nested within '${this.node.expression.getText()}()'.`;
 
     switch (this.brand) {
-      case TestMemberBrand.Describe:
+      case TestMemberBrand.Describe: {
         for (const member of this.members) {
           if (member.brand === TestMemberBrand.Expect) {
             diagnostics.push(
@@ -73,9 +73,10 @@ export class TestMember {
           }
         }
         break;
+      }
 
       case TestMemberBrand.Test:
-      case TestMemberBrand.Expect:
+      case TestMemberBrand.Expect: {
         for (const member of this.members) {
           if (member.brand !== TestMemberBrand.Expect) {
             diagnostics.push(
@@ -88,6 +89,7 @@ export class TestMember {
           }
         }
         break;
+      }
     }
 
     return diagnostics;

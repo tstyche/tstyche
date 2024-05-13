@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-indexed-object-style */
-
 import { describe, expect, test } from "tstyche";
 
 interface Matchers<R, T = unknown> {

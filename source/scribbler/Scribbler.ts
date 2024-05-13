@@ -2,10 +2,10 @@ import type { Color } from "./enums.js";
 
 type ElementChildren = Array<ElementChildren> | JSX.Element | string | undefined;
 
+// biome-ignore lint/correctness/noUnusedVariables: TODO might be false positive
 type ComponentConstructor = new (props: Record<string, unknown>) => JSX.ElementClass;
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface Element {
       $$typeof: symbol;
@@ -138,9 +138,9 @@ export class Scribbler {
 
         if (child != null && typeof child === "object") {
           text.push(this.render(child));
-          continue;
         }
       }
+
       return text.join("");
     }
 

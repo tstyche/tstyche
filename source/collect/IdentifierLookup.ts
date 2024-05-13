@@ -76,18 +76,22 @@ export class IdentifierLookup {
       }
 
       switch (expression.name.getText()) {
-        case "fail":
+        case "fail": {
           flags |= TestMemberFlags.Fail;
           break;
-        case "only":
+        }
+        case "only": {
           flags |= TestMemberFlags.Only;
           break;
-        case "skip":
+        }
+        case "skip": {
           flags |= TestMemberFlags.Skip;
           break;
-        case "todo":
+        }
+        case "todo": {
           flags |= TestMemberFlags.Todo;
           break;
+        }
       }
 
       expression = expression.expression;

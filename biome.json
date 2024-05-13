@@ -12,13 +12,111 @@
   },
 
   "linter": {
-    "enabled": false,
+    "enabled": true,
+
     "rules": {
-      "recommended": true
+      "recommended": true,
+
+      "complexity": {
+        "noStaticOnlyClass": "off",
+        "useLiteralKeys": "off"
+      },
+
+      "correctness": {
+        "noUnusedPrivateClassMembers": "error",
+        "noUnusedVariables": "error",
+        "useJsxKeyInIterable": "off"
+      },
+
+      "style": {
+        "noImplicitBoolean": "error",
+        "noNegationElse": "error",
+        "useBlockStatements": "error",
+        "useCollapsedElseIf": "error",
+        "useConsistentArrayType": {
+          "level": "error",
+          "options": {
+            "syntax": "generic"
+          }
+        },
+        "useForOf": "error",
+        "useShorthandAssign": "error",
+        "useSingleCaseStatement": "error",
+
+        "noParameterAssign": "off"
+      },
+
+      "suspicious": {
+        "noConsoleLog": "error",
+        "noSkippedTests": "error",
+        "useAwait": "error",
+
+        "noConstEnum": "off"
+      }
     }
   },
 
   "organizeImports": {
     "enabled": true
-  }
+  },
+
+  "overrides": [
+    {
+      "include": ["source/result/ResultManager.ts", "source/version/Version.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["source/types.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["**/*.test.js"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noForEach": "off",
+            "useArrowFunction": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["**/__fixtures__/**/*.tst.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noBannedTypes": "off",
+            "useArrowFunction": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "useEnumInitializers": "off"
+          },
+          "suspicious": {
+            "noConfusingVoidType": "off",
+            "noExplicitAny": "off",
+            "noFocusedTests": "off",
+            "noSkippedTests": "off"
+          }
+        }
+      }
+    }
+  ]
 }

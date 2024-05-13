@@ -49,13 +49,15 @@ export function diagnosticText(diagnostic: Diagnostic): JSX.Element {
   let prefix: JSX.Element | undefined;
 
   switch (diagnostic.category) {
-    case DiagnosticCategory.Error:
+    case DiagnosticCategory.Error: {
       prefix = <Text color={Color.Red}>{"Error: "}</Text>;
       break;
+    }
 
-    case DiagnosticCategory.Warning:
+    case DiagnosticCategory.Warning: {
       prefix = <Text color={Color.Yellow}>{"Warning: "}</Text>;
       break;
+    }
 
     default:
       break;

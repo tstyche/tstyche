@@ -26,7 +26,6 @@ export class Watcher {
   ) {
     this.#inputService = new InputService();
     this.#runCallback = runCallback;
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     this.#runChangedDebounced = this.#debounce(this.#runChanged, 100);
     this.#selectService = selectService;
     this.#testFiles = new Set(testFiles);
@@ -34,26 +33,28 @@ export class Watcher {
     EventEmitter.addHandler(([eventName, payload]) => {
       if (eventName === "input:info") {
         switch (payload.key) {
-          case "\u000D": // Return
-          case "\u0041": // Latin capital letter A
-          case "\u0061": // Latin small letter A
+          case "\u000D" /* Return */:
+          case "\u0041" /* Latin capital letter A */:
+          case "\u0061" /* Latin small letter A */: {
             // TODO 'runAll()' should not be async
             void this.#runAll();
             break;
+          }
 
-          case "\u0003": // Ctrl-C
-          case "\u0004": // Ctrl-D
-          case "\u001B": // Escape
-          case "\u0058": // Latin capital letter X
-          case "\u0078": // Latin small letter X
+          case "\u0003" /* Ctrl-C */:
+          case "\u0004" /* Ctrl-D */:
+          case "\u0058" /* Escape */:
+          case "\u001B" /* Latin capital letter X */:
+          case "\u0078" /* Latin small letter X */: {
             this.#abortController.abort();
             break;
+          }
         }
       }
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: TODO
   #debounce<T extends (...args: any) => any>(target: T, delay: number) {
     let timeout: ReturnType<typeof setTimeout> | undefined;
 

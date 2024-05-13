@@ -91,7 +91,6 @@ await spawnTyche(fixtureUrl, ["--update"]);
 const storeUrl = new URL("./.store/", fixtureUrl);
 
 const manifestText = await fs.readFile(new URL("./store-manifest.json", storeUrl), { encoding: "utf8" });
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const { resolutions } = /** @type {{ resolutions: Record<string, string> }} */ (JSON.parse(manifestText));
 
 const versionTags = Object.entries(resolutions)

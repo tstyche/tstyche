@@ -13,9 +13,7 @@ test("'toRaiseError' implementation", function () {
     return;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
   tstyche.expect(check(false)).type.toRaiseError();
-  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
   tstyche.expect(check()).type.not.toRaiseError();
 });
 

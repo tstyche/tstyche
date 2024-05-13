@@ -6,7 +6,6 @@ test("is string?", () => {
 
 describe.skip("skipped type error?", () => {
   test("with type error", () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- Testing purpose
     expect<string>().toBeString();
   });
 });

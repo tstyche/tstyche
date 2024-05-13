@@ -1,6 +1,5 @@
 import { expect, test } from "tstyche";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare function returnsAny(): any;
 declare function returnsString(): string;
 

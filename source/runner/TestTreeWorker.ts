@@ -92,17 +92,20 @@ export class TestTreeWorker {
       }
 
       switch (member.brand) {
-        case TestMemberBrand.Describe:
+        case TestMemberBrand.Describe: {
           this.#visitDescribe(member, runMode, parentResult as DescribeResult | undefined);
           break;
+        }
 
-        case TestMemberBrand.Test:
+        case TestMemberBrand.Test: {
           this.#visitTest(member, runMode, parentResult as DescribeResult | undefined);
           break;
+        }
 
-        case TestMemberBrand.Expect:
+        case TestMemberBrand.Expect: {
           this.#visitAssertion(member as Assertion, runMode, parentResult as TestResult | undefined);
           break;
+        }
       }
     }
   }
@@ -158,29 +161,27 @@ export class TestTreeWorker {
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       }
+    } else if (runMode & RunMode.Fail) {
+      EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
-      if (runMode & RunMode.Fail) {
-        EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
-      } else {
-        const origin = {
-          breadcrumbs: assertion.ancestorNames,
-          end: assertion.matcherName.getEnd(),
-          file: assertion.matcherName.getSourceFile(),
-          start: assertion.matcherName.getStart(),
-        };
+      const origin = {
+        breadcrumbs: assertion.ancestorNames,
+        end: assertion.matcherName.getEnd(),
+        file: assertion.matcherName.getSourceFile(),
+        start: assertion.matcherName.getStart(),
+      };
 
-        const diagnostics: Array<Diagnostic> = [];
+      const diagnostics: Array<Diagnostic> = [];
 
-        for (const diagnostic of matchResult.explain()) {
-          if (diagnostic.origin == null) {
-            diagnostic.add({ origin });
-          }
-
-          diagnostics.push(diagnostic);
+      for (const diagnostic of matchResult.explain()) {
+        if (diagnostic.origin == null) {
+          diagnostic.add({ origin });
         }
 
-        EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
+        diagnostics.push(diagnostic);
       }
+
+      EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
     }
   }
 

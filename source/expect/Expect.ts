@@ -93,14 +93,14 @@ export class Expect {
 
     switch (matcherNameText) {
       case "toBeAssignable":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: break is omitted intentionally
       case "toEqual":
         this.#onDeprecatedMatcher(assertion);
-      // break is omitted intentionally
 
       case "toBe":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
-      case "toMatch":
+      case "toMatch": {
         if (assertion.source[0] == null) {
           this.#onSourceArgumentMustBeProvided(assertion, expectResult);
 
@@ -118,6 +118,7 @@ export class Expect {
           this.#getType(assertion.target[0]),
           assertion.isNot,
         );
+      }
 
       case "toBeAny":
       case "toBeBigInt":
@@ -130,7 +131,7 @@ export class Expect {
       case "toBeUndefined":
       case "toBeUniqueSymbol":
       case "toBeUnknown":
-      case "toBeVoid":
+      case "toBeVoid": {
         if (assertion.source[0] == null) {
           this.#onSourceArgumentMustBeProvided(assertion, expectResult);
 
@@ -138,6 +139,7 @@ export class Expect {
         }
 
         return this[matcherNameText].match(this.#getType(assertion.source[0]));
+      }
 
       case "toHaveProperty": {
         if (assertion.source[0] == null) {
@@ -197,10 +199,11 @@ export class Expect {
         );
       }
 
-      default:
+      default: {
         this.#onNotSupportedMatcherName(assertion, expectResult);
 
         return;
+      }
     }
   }
 
