@@ -1,7 +1,8 @@
 {
   "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit",
     "source.fixAll": "explicit",
-    "source.organizeImports": "explicit"
+    "source.organizeImports.biome": "explicit"
   },
   "editor.formatOnSave": true,
   "editor.rulers": [80, 120],
