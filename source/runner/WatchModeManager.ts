@@ -20,7 +20,7 @@ export class WatchModeManager {
     this.#runCallback = runCallback;
     this.#selectService = selectService;
     this.#watchService = new WatchService();
-    this.#watchedTestFiles = new Map(testFiles.map(testFile => [testFile.path, testFile]))
+    this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
 
     EventEmitter.addHandler(([eventName, payload]) => {
       switch (eventName) {
