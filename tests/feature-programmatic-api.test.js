@@ -33,7 +33,7 @@ function handler([eventName, payload]) {
 
 tstyche.EventEmitter.addHandler(handler);
 
-describe("runs type tests", function() {
+describe("runs type tests", function () {
   const testCases = [
     {
       identifier: fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),
@@ -50,7 +50,7 @@ describe("runs type tests", function() {
   ];
 
   testCases.forEach(({ testCase, identifier }) => {
-    test(testCase, async function() {
+    test(testCase, async function () {
       await taskRunner.run([new tstyche.TestFile(identifier)]);
 
       assert.deepEqual(result?.expectCount, { failed: 1, passed: 2, skipped: 3, todo: 0 });
@@ -60,7 +60,7 @@ describe("runs type tests", function() {
   });
 
   testCases.forEach(({ testCase, identifier }) => {
-    test(`${testCase} with position is pointing to 'expect'`, async function() {
+    test(`${testCase} with position is pointing to 'expect'`, async function () {
       const testFile = new tstyche.TestFile(identifier);
 
       await taskRunner.run([testFile.add({ position: isWindows ? 73 : 70 })]);
@@ -72,7 +72,7 @@ describe("runs type tests", function() {
   });
 
   testCases.forEach(({ testCase, identifier }) => {
-    test(`${testCase} with position is pointing to 'expect.skip'`, async function() {
+    test(`${testCase} with position is pointing to 'expect.skip'`, async function () {
       const testFile = new tstyche.TestFile(identifier);
 
       await taskRunner.run([testFile.add({ position: isWindows ? 273 : 261 })]);
@@ -84,7 +84,7 @@ describe("runs type tests", function() {
   });
 
   testCases.forEach(({ testCase, identifier }) => {
-    test(`${testCase} with position is pointing to 'test'`, async function() {
+    test(`${testCase} with position is pointing to 'test'`, async function () {
       const testFile = new tstyche.TestFile(identifier);
 
       await taskRunner.run([testFile.add({ position: isWindows ? 43 : 41 })]);
@@ -96,7 +96,7 @@ describe("runs type tests", function() {
   });
 
   testCases.forEach(({ testCase, identifier }) => {
-    test(`${testCase} with position is pointing to 'test.skip'`, async function() {
+    test(`${testCase} with position is pointing to 'test.skip'`, async function () {
       const testFile = new tstyche.TestFile(identifier);
 
       await taskRunner.run([testFile.add({ position: isWindows ? 117 : 111 })]);

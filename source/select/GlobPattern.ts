@@ -44,10 +44,10 @@ export class GlobPattern {
   static #replaceReservedCharacter(this: void, match: string, offset: number) {
     switch (match) {
       case "*":
-        return (offset === 0) ? "([^./][^/]*)?" : "([^/]*)?";
+        return offset === 0 ? "([^./][^/]*)?" : "([^/]*)?";
 
       case "?":
-        return (offset === 0) ? "[^./]" : "[^/]";
+        return offset === 0 ? "[^./]" : "[^/]";
 
       default:
         return `\\${match}`;

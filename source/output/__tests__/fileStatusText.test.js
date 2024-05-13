@@ -8,40 +8,22 @@ const sampleTestFile = new TestFile(sampleTestFileUrl);
 
 const scribbler = new Scribbler();
 
-describe("fileStatusText", function() {
-  test("formats failing file status text", function() {
+describe("fileStatusText", function () {
+  test("formats failing file status text", function () {
     const text = scribbler.render(fileStatusText(ResultStatus.Failed, sampleTestFile));
 
-    assert.equal(
-      prettyAnsi(text),
-      [
-        "<red>fail</> <gray>./path/to/</>sample.test.ts",
-        "",
-      ].join("\n"),
-    );
+    assert.equal(prettyAnsi(text), ["<red>fail</> <gray>./path/to/</>sample.test.ts", ""].join("\n"));
   });
 
-  test("formats passing file status text", function() {
+  test("formats passing file status text", function () {
     const text = scribbler.render(fileStatusText(ResultStatus.Passed, sampleTestFile));
 
-    assert.equal(
-      prettyAnsi(text),
-      [
-        "<green>pass</> <gray>./path/to/</>sample.test.ts",
-        "",
-      ].join("\n"),
-    );
+    assert.equal(prettyAnsi(text), ["<green>pass</> <gray>./path/to/</>sample.test.ts", ""].join("\n"));
   });
 
-  test("formats running file status text", function() {
+  test("formats running file status text", function () {
     const text = scribbler.render(fileStatusText(ResultStatus.Runs, sampleTestFile));
 
-    assert.equal(
-      prettyAnsi(text),
-      [
-        "<yellow>runs</> <gray>./path/to/</>sample.test.ts",
-        "",
-      ].join("\n"),
-    );
+    assert.equal(prettyAnsi(text), ["<yellow>runs</> <gray>./path/to/</>sample.test.ts", ""].join("\n"));
   });
 });

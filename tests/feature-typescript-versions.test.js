@@ -98,12 +98,12 @@ const versionTags = Object.entries(resolutions)
   .filter((resolution) => resolution[0].startsWith("5"))
   .map((resolution) => resolution[1]);
 
-after(async function() {
+after(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("TypeScript 4.x", function() {
-  before(async function() {
+describe("TypeScript 4.x", function () {
+  before(async function () {
     await writeFixture(fixtureUrl, {
       // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
       ["__typetests__/toBe.test.ts"]: `// @ts-expect-error\n${toBeTestText}`,
@@ -115,22 +115,10 @@ describe("TypeScript 4.x", function() {
     });
   });
 
-  const testCases = [
-    "4.0.2",
-    "4.0.8",
-    "4.1.6",
-    "4.2.4",
-    "4.3.5",
-    "4.4.4",
-    "4.5.5",
-    "4.6.4",
-    "4.7.4",
-    "4.8.4",
-    "4.9.5",
-  ];
+  const testCases = ["4.0.2", "4.0.8", "4.1.6", "4.2.4", "4.3.5", "4.4.4", "4.5.5", "4.6.4", "4.7.4", "4.8.4", "4.9.5"];
 
   testCases.forEach((version) => {
-    test(`uses TypeScript ${version} as current target`, async function() {
+    test(`uses TypeScript ${version} as current target`, async function () {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
       const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
@@ -146,8 +134,8 @@ describe("TypeScript 4.x", function() {
   });
 });
 
-describe("TypeScript 5.x", function() {
-  before(async function() {
+describe("TypeScript 5.x", function () {
+  before(async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/toBe.test.ts"]: toBeTestText,
       ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
@@ -158,13 +146,10 @@ describe("TypeScript 5.x", function() {
     });
   });
 
-  const testCases = [
-    "5.0.2",
-    ...versionTags,
-  ];
+  const testCases = ["5.0.2", ...versionTags];
 
   testCases.forEach((version) => {
-    test(`uses TypeScript ${version} as current target`, async function() {
+    test(`uses TypeScript ${version} as current target`, async function () {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
       const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));

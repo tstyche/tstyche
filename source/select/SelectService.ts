@@ -26,8 +26,8 @@ export class SelectService {
 
   #isFileIncluded(filePath: string): boolean {
     if (
-      this.resolvedConfig.pathMatch.length > 0
-      && !this.resolvedConfig.pathMatch.some((match) => filePath.toLowerCase().includes(match.toLowerCase()))
+      this.resolvedConfig.pathMatch.length > 0 &&
+      !this.resolvedConfig.pathMatch.some((match) => filePath.toLowerCase().includes(match.toLowerCase()))
     ) {
       return false;
     }

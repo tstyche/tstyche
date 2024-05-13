@@ -16,27 +16,27 @@ Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  13 |   test("is skipped?", () => {
-  14 |     expect<never>().type.toBeVoid();
-> 15 |     expect.only.fail<string>().type.toBeString();
+  15 |   test("is skipped?", () => {
+  16 |     expect<never>().type.toBeVoid();
+> 17 |     expect.only.fail<string>().type.toBeString();
      |     ^
-  16 | 
-  17 |     expect.only.fail<never>().type.toBeVoid();
-  18 |   });
+  18 | 
+  19 |     expect.only.fail<never>().type.toBeVoid();
+  20 |   });
 
-       at ./__typetests__/expect-only-fail.tst.ts:15:5
+       at ./__typetests__/expect-only-fail.tst.ts:17:5
 
 Error: The assertion was supposed to fail, but it passed.
 
 Consider removing the '.fail' flag.
 
-  27 | test.only("is number?", () => {
-  28 |   expect.skip<string>().type.toBeNumber();
-> 29 |   expect.fail<number>().type.toBeNumber();
+  29 | test.only("is number?", () => {
+  30 |   expect.skip<string>().type.toBeNumber();
+> 31 |   expect.fail<number>().type.toBeNumber();
      |   ^
-  30 | 
-  31 |   expect.fail<never>().type.toBeVoid();
-  32 | });
+  32 | 
+  33 |   expect.fail<never>().type.toBeVoid();
+  34 | });
 
-       at ./__typetests__/expect-only-fail.tst.ts:29:3
+       at ./__typetests__/expect-only-fail.tst.ts:31:3
 

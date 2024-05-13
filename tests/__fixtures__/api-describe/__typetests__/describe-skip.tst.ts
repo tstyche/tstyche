@@ -15,7 +15,7 @@ describe("is parent describe?", () => {
     expect<string>().type.toBeString();
   });
 
-  describe.skip("is nested skipped describe?", function() {
+  describe.skip("is nested skipped describe?", function () {
     test.skip("is skipped too?", () => {
       expect<string>().type.toBeString();
     });

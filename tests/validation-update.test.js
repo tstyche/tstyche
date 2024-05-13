@@ -12,12 +12,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--update' command line option", function() {
-  test("failed to fetch metadata of the 'typescript' package", async function() {
+describe("'--update' command line option", function () {
+  test("failed to fetch metadata of the 'typescript' package", async function () {
     const storeManifest = {
       $version: "1",
       lastUpdated: Date.now(), // this is considered fresh during regular test run

@@ -65,9 +65,7 @@ export class Diagnostic {
         messageText.push("");
       }
 
-      const stackLines = error.stack
-        .split("\n")
-        .map((line) => line.trimStart());
+      const stackLines = error.stack.split("\n").map((line) => line.trimStart());
 
       messageText.push(...stackLines);
     }

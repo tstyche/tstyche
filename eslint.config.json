@@ -119,10 +119,7 @@
       }
     },
     {
-      "files": [
-        "**/__tests__/*.test.[jt]s?(x)",
-        "tests/*.test.js"
-      ],
+      "files": ["**/__tests__/*.test.[jt]s?(x)", "tests/*.test.js"],
       "extends": ["plugin:mocha/recommended"],
       "plugins": ["mocha"],
       "rules": {

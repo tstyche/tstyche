@@ -61,7 +61,7 @@ export class Expect {
   }
 
   static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
-    return ("isTypeRelatedTo" in typeChecker && "relation" in typeChecker);
+    return "isTypeRelatedTo" in typeChecker && "relation" in typeChecker;
   }
 
   #getType(node: ts.Expression | ts.TypeNode) {
@@ -95,7 +95,7 @@ export class Expect {
       case "toBeAssignable":
       case "toEqual":
         this.#onDeprecatedMatcher(assertion);
-        // break is omitted intentionally
+      // break is omitted intentionally
 
       case "toBe":
       case "toBeAssignableTo":
@@ -150,8 +150,8 @@ export class Expect {
         const nonPrimitiveType = { flags: this.compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
 
         if (
-          sourceType.flags & (this.compiler.TypeFlags.Any | this.compiler.TypeFlags.Never)
-          || !this.typeChecker.isTypeRelatedTo(sourceType, nonPrimitiveType, this.typeChecker.relation.assignable)
+          sourceType.flags & (this.compiler.TypeFlags.Any | this.compiler.TypeFlags.Never) ||
+          !this.typeChecker.isTypeRelatedTo(sourceType, nonPrimitiveType, this.typeChecker.relation.assignable)
         ) {
           this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
 
@@ -217,10 +217,7 @@ export class Expect {
       start: assertion.matcherName.getStart(),
     };
 
-    EventEmitter.dispatch([
-      "deprecation:info",
-      { diagnostics: [Diagnostic.warning(text, origin)] },
-    ]);
+    EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
   }
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {

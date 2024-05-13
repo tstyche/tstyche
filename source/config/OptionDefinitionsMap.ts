@@ -8,13 +8,7 @@ export interface ItemDefinition {
 
 export type OptionDefinition = PrimitiveTypeOptionDefinition | ListTypeOptionDefinition;
 
-export type OptionValue =
-  | Array<OptionValue>
-  | string
-  | number
-  | boolean
-  | null
-  | undefined;
+export type OptionValue = Array<OptionValue> | string | number | boolean | null | undefined;
 
 interface BaseOptionDefinition {
   brand: OptionBrand;

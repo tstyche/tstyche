@@ -30,8 +30,8 @@ export class TSTyche {
     EventEmitter.addHandler(([eventName, payload]) => {
       if (eventName.includes("error") || eventName.includes("fail")) {
         if (
-          "diagnostics" in payload
-          && payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
+          "diagnostics" in payload &&
+          payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
         ) {
           if (this.resolvedConfig.watch !== true) {
             process.exitCode = 1;
@@ -44,9 +44,7 @@ export class TSTyche {
       }
     });
 
-    const reporters: Array<Reporter> = [
-      new ThoroughReporter(this.resolvedConfig),
-    ];
+    const reporters: Array<Reporter> = [new ThoroughReporter(this.resolvedConfig)];
 
     if (this.resolvedConfig.watch === true) {
       reporters.push(new WatchModeReporter(this.resolvedConfig));

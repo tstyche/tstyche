@@ -18,12 +18,12 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--only' command line option", function() {
-  test("selects tests to run", async function() {
+describe("'--only' command line option", function () {
+  test("selects tests to run", async function () {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
   expect<string>().type.toBeString();
@@ -55,7 +55,7 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("selects test group to run", async function() {
+  test("selects test group to run", async function () {
     const testText = `import { describe, expect, test } from "tstyche";
 describe("external", () => {
   test("is string?", () => {
@@ -89,7 +89,7 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("does not override the '.skip' run mode flag", async function() {
+  test("does not override the '.skip' run mode flag", async function () {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
   expect<string>().type.toBeString();
@@ -121,7 +121,7 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when '--skip' command line option is specified", async function() {
+  test("when '--skip' command line option is specified", async function () {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
   expect<string>().type.toBeString();
@@ -153,7 +153,7 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified before the option", async function() {
+  test("when search string is specified before the option", async function () {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
   expect<string>().type.toBeString();
@@ -185,7 +185,7 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified after the option", async function() {
+  test("when search string is specified after the option", async function () {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
   expect<string>().type.toBeString();

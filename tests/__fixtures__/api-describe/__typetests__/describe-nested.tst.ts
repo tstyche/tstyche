@@ -11,7 +11,7 @@ describe("is parent describe?", () => {
     expect<never>().type.toBeNever();
   });
 
-  describe("is nested describe?", function() {
+  describe("is nested describe?", function () {
     test("is string?", () => {
       expect<string>().type.toBeString();
     });

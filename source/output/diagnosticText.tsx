@@ -6,9 +6,10 @@ class DiagnosticText implements JSX.ElementClass {
   constructor(readonly props: { diagnostic: Diagnostic }) {}
 
   render(): JSX.Element {
-    const code = typeof this.props.diagnostic.code === "string"
-      ? <Text color={Color.Gray}>{" "}{this.props.diagnostic.code}</Text>
-      : undefined;
+    const code =
+      typeof this.props.diagnostic.code === "string" ? (
+        <Text color={Color.Gray}> {this.props.diagnostic.code}</Text>
+      ) : undefined;
 
     const text = Array.isArray(this.props.diagnostic.text) ? this.props.diagnostic.text : [this.props.diagnostic.text];
 
@@ -26,14 +27,12 @@ class DiagnosticText implements JSX.ElementClass {
       <DiagnosticText diagnostic={relatedDiagnostic} />
     ));
 
-    const codeSpan = this.props.diagnostic.origin
-      ? (
-        <Text>
-          <Line />
-          <CodeSpanText {...this.props.diagnostic.origin} />
-        </Text>
-      )
-      : undefined;
+    const codeSpan = this.props.diagnostic.origin ? (
+      <Text>
+        <Line />
+        <CodeSpanText {...this.props.diagnostic.origin} />
+      </Text>
+    ) : undefined;
 
     return (
       <Text>

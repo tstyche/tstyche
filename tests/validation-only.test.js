@@ -6,12 +6,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--only' command line option", function() {
-  test("when option value is missing", async function() {
+describe("'--only' command line option", function () {
+  test("when option value is missing", async function () {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only"]);
@@ -20,13 +20,9 @@ describe("'--only' command line option", function() {
 
     assert.equal(
       stderr,
-      [
-        "Error: Option '--only' expects a value.",
-        "",
-        "Option '--only' requires a value of type string.",
-        "",
-        "",
-      ].join("\n"),
+      ["Error: Option '--only' expects a value.", "", "Option '--only' requires a value of type string.", "", ""].join(
+        "\n",
+      ),
     );
 
     assert.equal(exitCode, 1);

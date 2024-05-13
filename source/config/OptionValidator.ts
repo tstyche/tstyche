@@ -32,21 +32,20 @@ export class OptionValidator {
       case "config":
       case "rootPath":
         if (!existsSync(optionValue)) {
-          this.#onDiagnostic(
-            Diagnostic.error([
-              this.#optionDiagnosticText.fileDoesNotExist(optionValue),
-            ], origin),
-          );
+          this.#onDiagnostic(Diagnostic.error([this.#optionDiagnosticText.fileDoesNotExist(optionValue)], origin));
         }
         break;
 
       case "target":
-        if (await this.#storeService.validateTag(optionValue) === false) {
+        if ((await this.#storeService.validateTag(optionValue)) === false) {
           this.#onDiagnostic(
-            Diagnostic.error([
-              this.#optionDiagnosticText.versionIsNotSupported(optionValue),
-              ...(await this.#optionUsageText.get(optionName, optionBrand)),
-            ], origin),
+            Diagnostic.error(
+              [
+                this.#optionDiagnosticText.versionIsNotSupported(optionValue),
+                ...(await this.#optionUsageText.get(optionName, optionBrand)),
+              ],
+              origin,
+            ),
           );
         }
         break;
@@ -54,9 +53,7 @@ export class OptionValidator {
       case "watch":
         if (Environment.isCi) {
           this.#onDiagnostic(
-            Diagnostic.error([
-              this.#optionDiagnosticText.watchCannotBeEnabledInCiEnvironment(),
-            ], origin),
+            Diagnostic.error([this.#optionDiagnosticText.watchCannotBeEnabledInCiEnvironment()], origin),
           );
         }
         break;

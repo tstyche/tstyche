@@ -41,11 +41,7 @@ export class TestFileRunner {
     this.#projectService.closeFile(testFile.path);
   }
 
-  #runFile(
-    testFile: TestFile,
-    fileResult: FileResult,
-    cancellationToken?: CancellationToken,
-  ) {
+  #runFile(testFile: TestFile, fileResult: FileResult, cancellationToken?: CancellationToken) {
     const languageService = this.#projectService.getLanguageService(testFile.path);
 
     if (!languageService) {

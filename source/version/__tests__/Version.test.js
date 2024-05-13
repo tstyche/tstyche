@@ -2,8 +2,8 @@ import { strict as assert } from "node:assert";
 import { describe, test } from "mocha";
 import { Version } from "tstyche/tstyche";
 
-describe("Version", function() {
-  describe("'isVersionTag' method", function() {
+describe("Version", function () {
+  describe("'isVersionTag' method", function () {
     const cases = [
       {
         expected: true,
@@ -54,7 +54,7 @@ describe("Version", function() {
     ];
 
     cases.forEach(({ expected, target, testCase }) => {
-      test(testCase, function() {
+      test(testCase, function () {
         const result = Version.isVersionTag(target);
 
         assert.equal(result, expected);
@@ -62,7 +62,7 @@ describe("Version", function() {
     });
   });
 
-  describe("'isGreaterThan' method", function() {
+  describe("'isGreaterThan' method", function () {
     const cases = [
       {
         expected: true,
@@ -165,7 +165,7 @@ describe("Version", function() {
     ];
 
     cases.forEach(({ expected, source, target, testCase }) => {
-      test(testCase, function() {
+      test(testCase, function () {
         const result = Version.isGreaterThan(source, target);
 
         assert.equal(result, expected);
@@ -173,7 +173,7 @@ describe("Version", function() {
     });
   });
 
-  describe("'isSatisfiedWith' method", function() {
+  describe("'isSatisfiedWith' method", function () {
     const cases = [
       {
         expected: true,
@@ -276,7 +276,7 @@ describe("Version", function() {
     ];
 
     cases.forEach(({ expected, source, target, testCase }) => {
-      test(testCase, function() {
+      test(testCase, function () {
         const result = Version.isSatisfiedWith(source, target);
 
         assert.equal(result, expected);

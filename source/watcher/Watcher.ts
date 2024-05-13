@@ -57,7 +57,7 @@ export class Watcher {
   #debounce<T extends (...args: any) => any>(target: T, delay: number) {
     let timeout: ReturnType<typeof setTimeout> | undefined;
 
-    return function(this: ThisParameterType<T>, ...args: Parameters<T>) {
+    return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
       clearTimeout(timeout);
 
       timeout = setTimeout(() => {

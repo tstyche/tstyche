@@ -66,8 +66,8 @@ const sampleVersion = "1.2.3";
 
 const scribbler = new Scribbler();
 
-describe("helpText", function() {
-  test("formats help text", function() {
+describe("helpText", function () {
+  test("formats help text", function () {
     const text = scribbler.render(helpText(sampleCommandLineOptionDefinitions, sampleVersion));
 
     assert.equal(

@@ -8,12 +8,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toHaveProperty' implementation", function() {
+test("'toHaveProperty' implementation", function () {
   tstyche.expect({ one: true }).type.toHaveProperty("one");
   tstyche.expect({ one: true }).type.not.toHaveProperty("two");
 });
 
-test("toHaveProperty", async function() {
+test("toHaveProperty", async function () {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

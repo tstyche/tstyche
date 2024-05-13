@@ -1,7 +1,14 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
+
+  "files": {
+    "ignore": [".cache/**", ".yarn/**", "coverage/**", "build/**", "models/*.*", "package.json"]
+  },
+
   "formatter": {
-    "enabled": false
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 120
   },
 
   "linter": {

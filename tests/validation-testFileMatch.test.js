@@ -12,12 +12,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("'testFileMatch' configuration file option", function() {
-  test("when option value is not a list", async function() {
+describe("'testFileMatch' configuration file option", function () {
+  test("when option value is not a list", async function () {
     const config = {
       testFileMatch: "feature",
     };
@@ -39,7 +39,7 @@ describe("'testFileMatch' configuration file option", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("when item of the list is not a string", async function() {
+  test("when item of the list is not a string", async function () {
     const config = {
       testFileMatch: ["examples/*", false],
     };

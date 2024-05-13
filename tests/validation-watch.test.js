@@ -6,12 +6,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
+afterEach(async function () {
   await clearFixture(fixtureUrl);
 });
 
-describe("'--watch' command line option", function() {
-  test("when enabled in a continuous integration environment", async function() {
+describe("'--watch' command line option", function () {
+  test("when enabled in a continuous integration environment", async function () {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--watch"], {
@@ -22,11 +22,7 @@ describe("'--watch' command line option", function() {
 
     assert.equal(
       stderr,
-      [
-        "Error: The watch mode cannot be enabled in a continuous integration environment.",
-        "",
-        "",
-      ].join("\n"),
+      ["Error: The watch mode cannot be enabled in a continuous integration environment.", "", ""].join("\n"),
     );
 
     assert.equal(exitCode, 1);

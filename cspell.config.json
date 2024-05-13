@@ -13,19 +13,8 @@
     "tests/**/*",
     "typetests/**/*"
   ],
-  "ignorePaths": [
-    "**/__snapshots__/**/*"
-  ],
+  "ignorePaths": ["**/__snapshots__/**/*"],
   "language": "en-US",
   "useGitignore": true,
-  "words": [
-    "codacy",
-    "dprint",
-    "lcovonly",
-    "packagephobia",
-    "tsserverlibrary",
-    "tstyche",
-    "typecheck",
-    "typetests"
-  ]
+  "words": ["codacy", "biomejs", "lcovonly", "packagephobia", "tsserverlibrary", "tstyche", "typecheck", "typetests"]
 }

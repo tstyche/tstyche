@@ -25,7 +25,7 @@ describe.only("is only describe?", () => {
     expect<string>().type.toBeString();
   });
 
-  describe("is nested describe?", function() {
+  describe("is nested describe?", function () {
     test("is string?", () => {
       expect<string>().type.toBeString();
     });
@@ -35,7 +35,7 @@ describe.only("is only describe?", () => {
     });
   });
 
-  describe.only("is nested only describe?", function() {
+  describe.only("is nested only describe?", function () {
     test("is string?", () => {
       expect<string>().type.toBeString();
     });
@@ -43,7 +43,7 @@ describe.only("is only describe?", () => {
     test.todo("is todo?");
   });
 
-  describe.skip("is nested skipped describe?", function() {
+  describe.skip("is nested skipped describe?", function () {
     test("is skipped?", () => {
       expect<string>().type.toBeString();
     });
