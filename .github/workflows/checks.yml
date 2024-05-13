@@ -46,8 +46,8 @@ jobs:
           name: build-${{ github.sha }}
           path: build/
       - run: yarn install
+      - run: yarn check:quality
       - run: yarn check:spelling
-      - run: yarn check:formatting
       - run: yarn check:types
 
   lint:
