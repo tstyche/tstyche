@@ -96,6 +96,21 @@
     },
 
     {
+      "include": ["**/*.tst.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "suspicious": {
+            "noConfusingVoidType": "off",
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+
+    {
       "include": ["**/__fixtures__/**/*.tst.ts"],
       "linter": {
         "rules": {
@@ -103,15 +118,11 @@
             "noBannedTypes": "off",
             "useArrowFunction": "off"
           },
-          "correctness": {
-            "noUnusedVariables": "off"
-          },
           "style": {
-            "useEnumInitializers": "off"
+            "useEnumInitializers": "off",
+            "noUnusedTemplateLiteral": "off"
           },
           "suspicious": {
-            "noConfusingVoidType": "off",
-            "noExplicitAny": "off",
             "noFocusedTests": "off",
             "noSkippedTests": "off"
           }

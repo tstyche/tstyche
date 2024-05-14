@@ -1,6 +1,5 @@
 import { expect, test } from "tstyche";
 
-// biome-ignore lint/suspicious/noExplicitAny: that's fine
 type MethodLike = (...args: any) => any;
 
 type MethodLikeKeys<T> = keyof {
