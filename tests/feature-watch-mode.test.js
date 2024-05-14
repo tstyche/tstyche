@@ -320,11 +320,54 @@ if (isRecursiveWatchAvailable) {
     });
 
     test("when single test file is removed", async function () {
-      //
+      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+      process.resetOutput();
+
+      fs.rmSync(new URL("a-feature/__typetests__/isNumber.test.ts", fixtureUrl));
+
+      await process.waitForIdle();
+      await process.write("a");
+      const fileRemoved = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileRemoved.stdout)), {
+        fileName: `${testFileName}-single-test-file-is-removed-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      await process.write("x");
+
+      const { exitCode, stderr } = await process.waitForExit();
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
     });
 
     test("when multiple test files are removed", async function () {
-      //
+      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+      process.resetOutput();
+
+      fs.rmSync(new URL("a-feature/__typetests__/isNumber.test.ts", fixtureUrl));
+      fs.rmSync(new URL("b-feature/__typetests__/isString.test.ts", fixtureUrl));
+
+      await process.waitForIdle();
+      await process.write("a");
+      const fileRemoved = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileRemoved.stdout)), {
+        fileName: `${testFileName}-multiple-test-files-are-removed-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      await process.write("x");
+
+      const { exitCode, stderr } = await process.waitForExit();
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
     });
   });
 } else {

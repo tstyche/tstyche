@@ -3,5 +3,5 @@
   "exclude": ["node_modules/**"],
   "reporter": "dot",
   "slow": 6000,
-  "timeout": 90000
+  "timeout": 120000
 }
