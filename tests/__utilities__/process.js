@@ -59,8 +59,8 @@ export class Process {
       this.#idleTimeout?.refresh();
     });
 
-    this.#subprocess.on("close", (code) => {
-      this.#onExit.resolve({ code, stderr: this.#output.stderr, stdout: this.#output.stdout });
+    this.#subprocess.on("close", (exitCode) => {
+      this.#onExit.resolve({ exitCode, stderr: this.#output.stderr, stdout: this.#output.stdout });
     });
   }
 
@@ -90,7 +90,7 @@ export class Process {
     });
   }
 
-  /** @type {() => Promise<{ code: number | null, stderr: string, stdout: string }>} */
+  /** @type {() => Promise<{ exitCode: number | null, stderr: string, stdout: string }>} */
   waitForExit() {
     return this.#onExit.promise;
   }
