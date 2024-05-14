@@ -3,6 +3,7 @@ import { EventEmitter } from "#events";
 
 export interface ReadStream {
   addListener: (event: "data", listener: (chunk: string) => void) => this;
+  pause: () => this;
   removeListener: (event: "data", listener: (chunk: string) => void) => this;
   setEncoding: (encoding: "utf8") => this;
   setRawMode?: (mode: boolean) => this;
@@ -23,14 +24,11 @@ export class InputService {
     this.#stdin.setEncoding("utf8");
 
     this.#stdin.addListener("data", this.#onKeyPressed);
-
-    this.#stdin.unref();
   }
 
   close(): void {
     this.#stdin.removeListener("data", this.#onKeyPressed);
-
-    this.#stdin.setRawMode?.(false);
+    this.#stdin.unref();
   }
 
   #onKeyPressed(this: void, key: string): void {
