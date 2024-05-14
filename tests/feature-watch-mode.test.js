@@ -21,6 +21,12 @@ test("is string?", () => {
 });
 `;
 
+const isStringTestWithErrorText = `import { expect, test } from "tstyche";
+test("is string?", () => {
+  expect<number>().type.toBeString();
+});
+`;
+
 const isNumberTestText = `import { expect, test } from "tstyche";
 test("is number?", () => {
   expect<number>().type.toBeNumber();
@@ -50,6 +56,41 @@ afterEach(async function () {
 });
 
 if (isRecursiveWatchAvailable) {
+  describe("file system", function () {
+    test("when single test file is changing", async function () {
+      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+
+      fs.writeFileSync(new URL("c-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestText);
+
+      await process.waitForIdle();
+
+      fs.writeFileSync(new URL("c-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
+
+      await process.waitForIdle();
+
+      fs.writeFileSync(new URL("c-feature/__typetests__/isString.test.ts", fixtureUrl), isNumberTestText);
+
+      await process.waitForIdle();
+      await process.write("x");
+
+      const { code, stderr, stdout } = await process.waitForExit();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+        fileName: `${testFileName}-single-test-file-is-changing-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(stderr)), {
+        fileName: `${testFileName}-single-test-file-is-changing-stderr`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(code, 0);
+    });
+  });
+
   describe("interactive input", function () {
     const exitTestCases = [
       {
