@@ -2,7 +2,7 @@ import fs from "node:fs";
 import { afterEach, beforeEach, describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
-import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { Process } from "./__utilities__/process.js";
 
@@ -41,18 +41,21 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-beforeEach(async function () {
-  await writeFixture(fixtureUrl, {
-    ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
-    ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
-    ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    ["c-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-  });
+beforeEach(function () {
+  fs.mkdirSync(new URL("a-feature/__typetests__", fixtureUrl), { recursive: true });
+  fs.writeFileSync(new URL("a-feature/__typetests__/isNumber.test.ts", fixtureUrl), isNumberTestText);
+  fs.writeFileSync(new URL("a-feature/__typetests__/tsconfig.json", fixtureUrl), JSON.stringify(tsconfig, null, 2));
+
+  fs.mkdirSync(new URL("b-feature/__typetests__", fixtureUrl), { recursive: true });
+  fs.writeFileSync(new URL("b-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestText);
+  fs.writeFileSync(new URL("b-feature/__typetests__/tsconfig.json", fixtureUrl), JSON.stringify(tsconfig, null, 2));
+
+  fs.mkdirSync(new URL("c-feature/__typetests__", fixtureUrl), { recursive: true });
+  fs.writeFileSync(new URL("c-feature/__typetests__/tsconfig.json", fixtureUrl), JSON.stringify(tsconfig, null, 2));
 });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
+afterEach(function () {
+  fs.rmSync(fixtureUrl, { force: true, recursive: true });
 });
 
 if (isRecursiveWatchAvailable) {
