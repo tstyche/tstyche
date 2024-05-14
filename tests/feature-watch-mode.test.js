@@ -81,15 +81,56 @@ if (isRecursiveWatchAvailable) {
         await process.waitForIdle();
         await process.write(key);
 
-        const exit = await process.waitForExit();
+        const { code, stderr, stdout } = await process.waitForExit();
 
-        await assert.matchSnapshot(prettyAnsi(normalizeOutput(exit.stdout)), {
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
           fileName: `${testFileName}-exit-stdout`,
           testFileUrl: import.meta.url,
         });
 
-        assert.equal(exit.stderr, "");
-        assert.equal(exit.code, 0);
+        assert.equal(stderr, "");
+        assert.equal(code, 0);
+      });
+    });
+
+    const runAllTestCases = [
+      {
+        key: "\u000D",
+        testCase: "runs all tests, when 'Return' is pressed",
+      },
+      {
+        key: "\u0020",
+        testCase: "runs all tests, when 'Space' is pressed",
+      },
+      {
+        key: "a",
+        testCase: "runs all tests, when 'a' is pressed",
+      },
+      {
+        key: "A",
+        testCase: "runs all tests, when 'A' is pressed",
+      },
+    ];
+
+    runAllTestCases.forEach(({ key, testCase }) => {
+      test(testCase, async function () {
+        const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+        await process.waitForIdle();
+        await process.write(key);
+
+        await process.waitForIdle();
+        await process.write("x");
+
+        const { code, stderr, stdout } = await process.waitForExit();
+
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+          fileName: `${testFileName}-run-all-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(stderr, "");
+        assert.equal(code, 0);
       });
     });
   });
