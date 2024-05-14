@@ -22,22 +22,18 @@ export class InputService {
     this.#stdin.setRawMode?.(true);
     this.#stdin.setEncoding("utf8");
 
-    this.#stdin.addListener("data", (key) => {
-      this.#onKeyPressed(key);
-    });
+    this.#stdin.addListener("data", this.#onKeyPressed);
 
     this.#stdin.unref();
   }
 
   close(): void {
-    this.#stdin.removeListener("data", (key) => {
-      this.#onKeyPressed(key);
-    });
+    this.#stdin.removeListener("data", this.#onKeyPressed);
 
     this.#stdin.setRawMode?.(false);
   }
 
-  #onKeyPressed(key: string): void {
+  #onKeyPressed(this: void, key: string): void {
     EventEmitter.dispatch(["input:info", { key }]);
   }
 }
