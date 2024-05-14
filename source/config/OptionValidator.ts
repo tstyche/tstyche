@@ -30,13 +30,14 @@ export class OptionValidator {
   ): Promise<void> {
     switch (optionName) {
       case "config":
-      case "rootPath":
+      case "rootPath": {
         if (!existsSync(optionValue)) {
           this.#onDiagnostic(Diagnostic.error([this.#optionDiagnosticText.fileDoesNotExist(optionValue)], origin));
         }
         break;
+      }
 
-      case "target":
+      case "target": {
         if ((await this.#storeService.validateTag(optionValue)) === false) {
           this.#onDiagnostic(
             Diagnostic.error(
@@ -49,14 +50,16 @@ export class OptionValidator {
           );
         }
         break;
+      }
 
-      case "watch":
+      case "watch": {
         if (Environment.isCi) {
           this.#onDiagnostic(
             Diagnostic.error([this.#optionDiagnosticText.watchCannotBeEnabledInCiEnvironment()], origin),
           );
         }
         break;
+      }
 
       default:
         break;

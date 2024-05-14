@@ -23,28 +23,32 @@ export class Cli {
   async run(commandLineArguments: Array<string>): Promise<void> {
     EventEmitter.addHandler(([eventName, payload]) => {
       switch (eventName) {
-        case "store:info":
+        case "store:info": {
           this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
           break;
+        }
 
         case "config:error":
         case "select:error":
-        case "store:error":
+        case "store:error": {
           for (const diagnostic of payload.diagnostics) {
             switch (diagnostic.category) {
-              case DiagnosticCategory.Error:
+              case DiagnosticCategory.Error: {
                 this.#cancellationToken.cancel();
                 this.#outputService.writeError(diagnosticText(diagnostic));
 
                 process.exitCode = 1;
                 break;
+              }
 
-              case DiagnosticCategory.Warning:
+              case DiagnosticCategory.Warning: {
                 this.#outputService.writeWarning(diagnosticText(diagnostic));
                 break;
+              }
             }
           }
           break;
+        }
 
         default:
           break;
@@ -93,7 +97,6 @@ export class Cli {
 
     await configService.readConfigFile();
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.#cancellationToken.isCancellationRequested) {
       return;
     }

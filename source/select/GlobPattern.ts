@@ -21,7 +21,7 @@ export class GlobPattern {
         optionalSegmentCount++;
       }
 
-      resultPattern += `\\/`;
+      resultPattern += "\\/";
 
       const segmentPattern = segment.replace(
         GlobPattern.#reservedCharacterRegex,

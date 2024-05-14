@@ -27,18 +27,21 @@ export function fileStatusText(status: FileResultStatus, testFile: TestFile): JS
   let statusText: string;
 
   switch (status) {
-    case ResultStatus.Runs:
+    case ResultStatus.Runs: {
       statusColor = Color.Yellow;
       statusText = "runs";
       break;
-    case ResultStatus.Passed:
+    }
+    case ResultStatus.Passed: {
       statusColor = Color.Green;
       statusText = "pass";
       break;
-    case ResultStatus.Failed:
+    }
+    case ResultStatus.Failed: {
       statusColor = Color.Red;
       statusText = "fail";
       break;
+    }
   }
 
   return (

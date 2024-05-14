@@ -13,7 +13,6 @@ const ajv = new Ajv({ allErrors: true });
 function readJsonFile(filePath) {
   const jsonText = readFileSync(new URL(filePath, import.meta.url), { encoding: "utf8" });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return JSON.parse(jsonText);
 }
 

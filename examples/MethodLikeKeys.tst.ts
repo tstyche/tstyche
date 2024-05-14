@@ -1,6 +1,6 @@
 import { expect, test } from "tstyche";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: that's fine
 type MethodLike = (...args: any) => any;
 
 type MethodLikeKeys<T> = keyof {

@@ -2,7 +2,7 @@ import { describe, expect, test } from "tstyche";
 
 enum Direction {
   Up = 1,
-  Down,
+  Down = 2,
 }
 
 interface Names {
@@ -18,10 +18,8 @@ interface Size {
 declare function getSize(): Size;
 
 test("difference from '.toBeAssignableTo()'", () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect<any>().type.toBeAssignableTo<string>();
   // But all types are not subtypes of the 'any' type
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect<any>().type.not.toMatch<string>();
 
   expect<number>().type.toBeAssignableTo<Direction>();

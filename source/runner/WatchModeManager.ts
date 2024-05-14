@@ -8,7 +8,7 @@ export type RunCallback = (testFiles: Array<TestFile>) => void;
 
 export class WatchModeManager {
   #changedTestFiles = new Map<string, TestFile>();
-  #inputService: InputService | undefined;
+  #inputService: InputService;
   #runCallback: RunCallback;
   #runTimeout: ReturnType<typeof setTimeout> | undefined;
   #selectService: SelectService;
@@ -24,28 +24,31 @@ export class WatchModeManager {
 
     EventEmitter.addHandler(([eventName, payload]) => {
       switch (eventName) {
-        case "input:info":
+        case "input:info": {
           switch (payload.key) {
-            case "\u000D": // Return
-            case "\u0041": // Latin capital letter A
-            case "\u0061": // Latin small letter A
+            case "\u000D" /* Return */:
+            case "\u0041" /* Latin capital letter A */:
+            case "\u0061" /* Latin small letter A */: {
               this.#rerunAll();
               break;
+            }
 
-            case "\u0003": // Ctrl-C
-            case "\u0004": // Ctrl-D
-            case "\u001B": // Escape
-            case "\u0058": // Latin capital letter X
-            case "\u0078": // Latin small letter X
-              this.#inputService?.close();
+            case "\u0003" /* Ctrl-C */:
+            case "\u0004" /* Ctrl-D */:
+            case "\u001B" /* Escape */:
+            case "\u0058" /* Latin capital letter X */:
+            case "\u0078" /* Latin small letter X */: {
+              this.#inputService.close();
               this.#watchService.close();
               break;
+            }
           }
           break;
+        }
 
         case "watch:info": {
           switch (payload.state) {
-            case "changed":
+            case "changed": {
               {
                 let testFile = this.#watchedTestFiles.get(payload.filePath);
 
@@ -62,11 +65,13 @@ export class WatchModeManager {
                 }
               }
               break;
+            }
 
-            case "removed":
+            case "removed": {
               this.#changedTestFiles.delete(payload.filePath);
               this.#watchedTestFiles.delete(payload.filePath);
               break;
+            }
           }
 
           this.#rerunChanged();

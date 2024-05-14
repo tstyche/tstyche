@@ -146,7 +146,7 @@ export class OptionDefinitionsMap {
   static for(optionGroup: OptionGroup): Map<string, OptionDefinition> {
     const definitionMap = new Map<string, OptionDefinition>();
 
-    for (const definition of this.#definitions) {
+    for (const definition of OptionDefinitionsMap.#definitions) {
       if (definition.group & optionGroup) {
         definitionMap.set(definition.name, definition);
       }

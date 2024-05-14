@@ -21,7 +21,7 @@ export class Assertion extends TestMember {
   ) {
     super(brand, node, parent, flags);
 
-    this.isNot = notNode ? true : false;
+    this.isNot = notNode != null;
 
     const argStart = this.source[0]?.getStart();
     const argEnd = this.source[0]?.getEnd();

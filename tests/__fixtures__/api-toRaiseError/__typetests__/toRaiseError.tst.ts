@@ -42,7 +42,9 @@ test("expression raises a type error with matching message", () => {
 });
 
 test("expression raises a type error with matching message passed as a template literal", () => {
+  // biome-ignore lint/style/noUnusedTemplateLiteral: testing purpose
   expect(one("pass")).type.toRaiseError(`Expected 0 arguments`);
+  // biome-ignore lint/style/noUnusedTemplateLiteral: testing purpose
   expect(one("fail")).type.not.toRaiseError(`Expected 0 arguments`);
 });
 
@@ -57,7 +59,9 @@ test("type expression raises a type error with matching message", () => {
 });
 
 test("type expression raises a type error with matching message passed as a template literal", () => {
+  // biome-ignore lint/style/noUnusedTemplateLiteral: testing purpose
   expect<One>().type.toRaiseError(`requires 1 type argument`);
+  // biome-ignore lint/style/noUnusedTemplateLiteral: testing purpose
   expect<One>().type.not.toRaiseError(`requires 1 type argument`);
 });
 

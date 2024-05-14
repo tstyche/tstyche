@@ -13,10 +13,8 @@ interface Size {
 declare function getSize(): Size;
 
 test("edge cases", () => {
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   expect<any>().type.not.toBe<never>();
   expect<any>().type.not.toBe<unknown>();
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   expect(Date).type.toBe<typeof Date>();
 });

@@ -24,7 +24,6 @@ export function fileDoesNotExists(source) {
  */
 export function matchObject(source, target) {
   if (typeof source === "string") {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     source = /** @type {{ version: string }} */ (JSON.parse(source));
   }
 

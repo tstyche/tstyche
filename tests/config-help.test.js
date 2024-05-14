@@ -5,7 +5,6 @@ import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const packageConfigText = await fs.readFile(new URL("../package.json", import.meta.url), { encoding: "utf8" });
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
 const testFileName = getTestFileName(import.meta.url);
