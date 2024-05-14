@@ -27,6 +27,7 @@ export class WatchModeManager {
         case "input:info": {
           switch (payload.key) {
             case "\u000D" /* Return */:
+            case "\u0020" /* Space */:
             case "\u0041" /* Latin capital letter A */:
             case "\u0061" /* Latin small letter A */: {
               this.#rerunAll();
