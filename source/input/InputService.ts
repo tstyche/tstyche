@@ -2,10 +2,9 @@ import process from "node:process";
 import { EventEmitter } from "#events";
 
 export interface ReadStream {
-  addListener: (event: "data", listener: (chunk: string) => void) => this;
+  addListener: (event: "data", listener: (data: Buffer) => void) => this;
   pause: () => this;
-  removeListener: (event: "data", listener: (chunk: string) => void) => this;
-  setEncoding: (encoding: "utf8") => this;
+  removeListener: (event: "data", listener: (data: Buffer) => void) => this;
   setRawMode?: (mode: boolean) => this;
   unref: () => this;
 }
@@ -21,8 +20,6 @@ export class InputService {
     this.#stdin = options?.stdin ?? process.stdin;
 
     this.#stdin.setRawMode?.(true);
-    this.#stdin.setEncoding("utf8");
-
     this.#stdin.addListener("data", this.#onKeyPressed);
   }
 
@@ -31,7 +28,7 @@ export class InputService {
     this.#stdin.unref();
   }
 
-  #onKeyPressed(this: void, key: string): void {
-    EventEmitter.dispatch(["input:info", { key }]);
+  #onKeyPressed(this: void, data: Buffer): void {
+    EventEmitter.dispatch(["input:info", { key: data.toString() }]);
   }
 }
