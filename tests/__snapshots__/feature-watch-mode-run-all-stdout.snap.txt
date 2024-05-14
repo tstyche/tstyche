@@ -2,6 +2,7 @@
 uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
 
 pass ./a-feature/__typetests__/isNumber.test.ts
+pass ./a-feature/__typetests__/isString.test.ts
 
 uses TypeScript <<version>> with ./b-feature/__typetests__/tsconfig.json
 
@@ -13,6 +14,7 @@ Press x to exit.
 uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
 
 pass ./a-feature/__typetests__/isNumber.test.ts
+pass ./a-feature/__typetests__/isString.test.ts
 
 uses TypeScript <<version>> with ./b-feature/__typetests__/tsconfig.json
 

@@ -1,3 +1,14 @@
+Error: The source type is 'string'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+> 3 |   expect<string>().type.toBeNumber();
+    |                         ^
+  4 | });
+  5 | 
+
+      at ./a-feature/__typetests__/isNumber.test.ts:3:25 ❭ is number?
+
 Error: The source type is 'number'.
 
   1 | import { expect, test } from "tstyche";

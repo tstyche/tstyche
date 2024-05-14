@@ -33,6 +33,12 @@ test("is number?", () => {
 });
 `;
 
+const isNumberTestWithErrorText = `import { expect, test } from "tstyche";
+test("is number?", () => {
+  expect<string>().type.toBeNumber();
+});
+`;
+
 const tsconfig = {
   extends: "../../../../tsconfig.json",
   include: ["**/*"],
@@ -45,6 +51,7 @@ if (isRecursiveWatchAvailable) {
   beforeEach(async function () {
     await writeFixture(fixtureUrl, {
       ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
+      ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
       ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
       ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -145,7 +152,7 @@ if (isRecursiveWatchAvailable) {
       await process.waitForIdle();
       process.resetOutput();
 
-      fs.writeFileSync(new URL("b-feature/__typetests__/isNumber.test.ts", fixtureUrl), isNumberTestText);
+      fs.writeFileSync(new URL("a-feature/__typetests__/isNumber.test.ts", fixtureUrl), isNumberTestWithErrorText);
       fs.writeFileSync(new URL("b-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
 
       const filesChanged = await process.waitForIdle();
