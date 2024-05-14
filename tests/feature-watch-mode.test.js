@@ -81,6 +81,32 @@ if (isRecursiveWatchAvailable) {
 
       assert.equal(code, 0);
     });
+
+    test("when multiple test files are added", async function () {
+      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+
+      fs.writeFileSync(new URL("a-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
+      fs.writeFileSync(new URL("b-feature/__typetests__/isNumber.test.ts", fixtureUrl), isNumberTestText);
+
+      await process.waitForIdle();
+      await process.write("x");
+
+      const { code, stderr, stdout } = await process.waitForExit();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+        fileName: `${testFileName}-multiple-test-files-are-added-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(stderr)), {
+        fileName: `${testFileName}-multiple-test-files-are-added-stderr`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(code, 0);
+    });
   });
 
   describe("interactive input", function () {
