@@ -50,7 +50,7 @@
     "prepack": "yarn clean && yarn build",
     "prepublish": "yarn test",
     "test": "yarn test:unit && yarn test:e2e",
-    "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e --no-parallel",
+    "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
     "test:e2e": "mocha tests/*.test.* --config mocha.config.json",
     "test:examples": "tstyche examples",
     "test:types": "tstyche typetests",

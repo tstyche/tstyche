@@ -1,7 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/mocharc",
   "exclude": ["node_modules/**"],
-  "parallel": true,
   "reporter": "dot",
   "slow": 6000,
   "timeout": 90000
