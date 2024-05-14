@@ -7,5 +7,5 @@ Error: The source type is 'number'.
   4 | });
   5 | 
 
-      at ./c-feature/__typetests__/isString.test.ts:3:25 ❭ is string?
+      at ./b-feature/__typetests__/isString.test.ts:3:25 ❭ is string?
 

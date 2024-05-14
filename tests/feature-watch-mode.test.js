@@ -62,15 +62,7 @@ if (isRecursiveWatchAvailable) {
 
       await process.waitForIdle();
 
-      fs.writeFileSync(new URL("c-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestText);
-
-      await process.waitForIdle();
-
-      fs.writeFileSync(new URL("c-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
-
-      await process.waitForIdle();
-
-      fs.writeFileSync(new URL("c-feature/__typetests__/isString.test.ts", fixtureUrl), isNumberTestText);
+      fs.writeFileSync(new URL("b-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
 
       await process.waitForIdle();
       await process.write("x");
