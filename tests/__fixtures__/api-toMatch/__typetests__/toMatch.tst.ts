@@ -2,7 +2,7 @@ import { describe, expect, test } from "tstyche";
 
 enum Direction {
   Up = 1,
-  Down = 2,
+  Down,
 }
 
 interface Names {

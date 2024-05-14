@@ -9,9 +9,9 @@ const kTwo = Symbol.for("two");
 const kFour = Symbol.for("four");
 
 const enum E1 {
-  A = 0,
-  B = 1,
-  C = 2,
+  A,
+  B,
+  C,
 }
 const enum E2 {
   A = "A",
