@@ -57,12 +57,12 @@ afterEach(async function () {
 
 if (isRecursiveWatchAvailable) {
   describe("file system", function () {
-    test("when single test file is changing", async function () {
+    test("when single test file is added", async function () {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
 
-      fs.writeFileSync(new URL("b-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
+      fs.writeFileSync(new URL("a-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
 
       await process.waitForIdle();
       await process.write("x");
@@ -70,12 +70,12 @@ if (isRecursiveWatchAvailable) {
       const { code, stderr, stdout } = await process.waitForExit();
 
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
-        fileName: `${testFileName}-single-test-file-is-changing-stdout`,
+        fileName: `${testFileName}-single-test-file-is-added-stdout`,
         testFileUrl: import.meta.url,
       });
 
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(stderr)), {
-        fileName: `${testFileName}-single-test-file-is-changing-stderr`,
+        fileName: `${testFileName}-single-test-file-is-added-stderr`,
         testFileUrl: import.meta.url,
       });
 
