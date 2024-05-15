@@ -2,7 +2,7 @@
   "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
 
   "files": {
-    "ignore": [".cache/**", ".yarn/**", "coverage/**", "build/**", "models/*.*", "package.json"]
+    "ignore": [".cache/**", ".yarn/**", "build/**", "coverage/**", "models/*.*", "node_modules/**", "package.json"]
   },
 
   "formatter": {
