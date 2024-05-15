@@ -1,8 +1,8 @@
-# Changelog
+# Releases
 
 ## [2.0.0-beta.0] - 2024-03-28
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/release-notes/tstyche-2)._
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
 
 ### Changed
 
