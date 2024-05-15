@@ -3,6 +3,10 @@ import fs from "node:fs/promises";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 
+export interface WatchOptions {
+  recursive?: boolean;
+}
+
 export class WatchService {
   #abortController = new AbortController();
   #watcher: AsyncIterable<{ filename?: string | null }> | undefined;
@@ -11,8 +15,8 @@ export class WatchService {
     this.#abortController.abort();
   }
 
-  async watch(rootPath: string): Promise<void> {
-    this.#watcher = fs.watch(rootPath, { recursive: true, signal: this.#abortController.signal });
+  async watch(rootPath: string, options?: WatchOptions): Promise<void> {
+    this.#watcher = fs.watch(rootPath, { recursive: options?.recursive, signal: this.#abortController.signal });
 
     try {
       for await (const event of this.#watcher) {

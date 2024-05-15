@@ -2,7 +2,7 @@ import { EventEmitter } from "#events";
 import { TestFile } from "#file";
 import { InputService } from "#input";
 import type { SelectService } from "#select";
-import { WatchService } from "./WatchService.js";
+import { WatchService } from "#watch";
 
 export type RunCallback = (testFiles: Array<TestFile>) => void;
 
@@ -104,6 +104,6 @@ export class WatchModeManager {
   }
 
   async watch(rootPath: string): Promise<void> {
-    await this.#watchService.watch(rootPath);
+    await this.#watchService.watch(rootPath, { recursive: true });
   }
 }
