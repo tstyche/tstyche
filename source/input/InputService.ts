@@ -21,7 +21,6 @@ export class InputService {
 
     this.#stdin.setRawMode?.(true);
     this.#stdin.addListener("data", this.#onKeyPressed);
-    this.#stdin.resume();
   }
 
   close(): void {

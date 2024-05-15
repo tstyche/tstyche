@@ -370,6 +370,4 @@ if (isRecursiveWatchAvailable) {
       assert.equal(exitCode, 0);
     });
   });
-} else {
-  // TODO
 }
