@@ -8,20 +8,22 @@ import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationToken } from "#token";
-import { Watcher } from "#watcher";
 
 export class TSTyche {
   #cancellationToken = new CancellationToken();
+  #selectService: SelectService;
   #storeService: StoreService;
   #taskRunner: TaskRunner;
   static readonly version = "__version__";
 
   constructor(
     readonly resolvedConfig: ResolvedConfig,
+    selectService: SelectService,
     storeService: StoreService,
   ) {
+    this.#selectService = selectService;
     this.#storeService = storeService;
-    this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#storeService);
+    this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#selectService, this.#storeService);
 
     this.#addEventHandlers();
   }
@@ -64,13 +66,5 @@ export class TSTyche {
       testFiles.map((testFile) => new TestFile(testFile)),
       this.#cancellationToken,
     );
-  }
-
-  async watch(testFiles: Array<string>, selectService: SelectService): Promise<void> {
-    const runCallback = async (testFiles: Array<string>) => this.run(testFiles);
-
-    const watcher = new Watcher(this.resolvedConfig, runCallback, selectService, testFiles);
-
-    await watcher.watch();
   }
 }

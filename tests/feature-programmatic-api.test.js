@@ -14,8 +14,9 @@ const storeService = new tstyche.StoreService();
 const configService = new tstyche.ConfigService(ts, storeService);
 
 const resolvedConfig = configService.resolveConfig();
+const selectService = new tstyche.SelectService(resolvedConfig);
 
-const taskRunner = new tstyche.TaskRunner(resolvedConfig, storeService);
+const taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
 
 /**
  * @type {import("tstyche/tstyche").Result | undefined}
