@@ -6,7 +6,6 @@
     ":automergeMinor",
     ":maintainLockFilesWeekly",
     ":semanticCommits",
-
-    "regexManagers:biomeVersions"
+    "customManagers:biomeVersions"
   ]
 }
