@@ -1,6 +1,4 @@
 import { spawn } from "node:child_process";
-import { stderr, stdout } from "node:process";
-import { fileURLToPath } from "node:url";
 
 class Deferred {
   constructor() {
@@ -36,8 +34,7 @@ export class Process {
    */
   constructor(fixtureUrl, args, options) {
     this.#subprocess = spawn("tstyche", args, {
-      // TODO use URL directly after dropping support for Node.js 16.4.0
-      cwd: fileURLToPath(fixtureUrl),
+      cwd: fixtureUrl,
       env: {
         ...process.env,
         ["TSTYCHE_NO_COLOR"]: "true",
