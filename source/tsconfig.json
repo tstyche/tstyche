@@ -4,11 +4,12 @@
     "module": "node16",
     "moduleResolution": "node16",
     "paths": {
-      "#*": ["./*/index.ts"]
+      "#*": ["./*/index.ts"],
+      "#scribbler/jsx-runtime": ["./scribbler/Scribbler.ts"]
     },
 
-    "jsx": "react",
-    "jsxFactory": "Scribbler.createElement",
+    "jsx": "react-jsx",
+    "jsxImportSource": "#scribbler",
 
     "skipLibCheck": false
   },

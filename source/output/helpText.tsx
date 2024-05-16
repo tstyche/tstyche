@@ -1,6 +1,5 @@
 import { OptionBrand, type OptionDefinition } from "#config";
-// biome-ignore lint/correctness/noUnusedImports: TODO false positive
-import { Color, Line, Scribbler, Text } from "#scribbler";
+import { Color, Line, Text } from "#scribbler";
 
 const usageExamples: Array<[commandText: string, descriptionText: string]> = [
   ["tstyche", "Run all tests."],
@@ -96,7 +95,7 @@ class CommandLineOptionNameText implements JSX.ElementClass {
 class CommandLineOptionHintText implements JSX.ElementClass {
   constructor(readonly props: { definition: OptionDefinition }) {}
 
-  render(): JSX.Element | null {
+  render(): JSX.Element {
     if (this.props.definition.brand === OptionBrand.List) {
       return (
         <Text>

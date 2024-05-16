@@ -1,5 +1,4 @@
-// biome-ignore lint/correctness/noUnusedImports: TODO false positive
-import { Line, Scribbler } from "#scribbler";
+import { Line } from "#scribbler";
 
 export class JsonText implements JSX.ElementClass {
   constructor(readonly props: { input: Array<string> | Record<string, unknown> }) {}

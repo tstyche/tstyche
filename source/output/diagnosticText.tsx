@@ -1,6 +1,5 @@
 import { type Diagnostic, DiagnosticCategory } from "#diagnostic";
-// biome-ignore lint/correctness/noUnusedImports: TODO false positive
-import { Color, Line, Scribbler, Text } from "#scribbler";
+import { Color, Line, Text } from "#scribbler";
 import { CodeSpanText } from "./CodeSpanText.js";
 
 class DiagnosticText implements JSX.ElementClass {

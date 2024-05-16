@@ -1,5 +1,4 @@
-// biome-ignore lint/correctness/noUnusedImports: TODO false positive
-import { Color, Line, Scribbler, Text } from "#scribbler";
+import { Color, Line, Text } from "#scribbler";
 
 export function watchModeUsageText(): JSX.Element {
   const usageText = Object.entries({ a: "run all tests", x: "exit" }).map(([key, action]) => {

@@ -16,5 +16,15 @@
   "ignorePaths": ["**/__snapshots__/**/*"],
   "language": "en-US",
   "useGitignore": true,
-  "words": ["codacy", "biomejs", "lcovonly", "packagephobia", "tsserverlibrary", "tstyche", "typecheck", "typetests"]
+  "words": [
+    "biomejs",
+    "codacy",
+    "jsxs",
+    "lcovonly",
+    "packagephobia",
+    "tsserverlibrary",
+    "tstyche",
+    "typecheck",
+    "typetests"
+  ]
 }

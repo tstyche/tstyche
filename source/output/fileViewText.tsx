@@ -1,5 +1,4 @@
-// biome-ignore lint/correctness/noUnusedImports: TODO false positive
-import { Line, Scribbler, Text } from "#scribbler";
+import { Line, Text } from "#scribbler";
 
 export function fileViewText(lines: Array<JSX.Element>, addEmptyFinalLine: boolean): JSX.Element {
   return (
