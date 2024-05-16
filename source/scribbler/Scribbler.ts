@@ -9,7 +9,6 @@ declare global {
   namespace JSX {
     interface Element {
       $$typeof: symbol;
-      children: ElementChildren;
       props: Record<string, unknown>;
       type: ComponentConstructor | string;
     }
@@ -64,10 +63,7 @@ export class Scribbler {
 
   render(element: JSX.Element): string {
     if (typeof element.type === "function") {
-      const instance = new element.type({
-        ...element.props,
-        children: element.children,
-      });
+      const instance = new element.type({ ...element.props });
 
       return this.render(instance.render());
     }
@@ -90,7 +86,7 @@ export class Scribbler {
     if (element.type === "text") {
       const indentLevel = typeof element.props?.["indent"] === "number" ? element.props["indent"] : 0;
 
-      let text = this.#visitElementChildren(element.children);
+      let text = this.#visitElementChildren(element.props["children"] as ElementChildren);
 
       if (indentLevel > 0) {
         text = this.#indentEachLine(text, indentLevel);
@@ -137,13 +133,9 @@ export class Scribbler {
   }
 }
 
-export function jsx(
-  type: ComponentConstructor | string,
-  props: Record<string, unknown> & { children?: ElementChildren },
-): JSX.Element {
+export function jsx(type: ComponentConstructor | string, props: Record<string, unknown>): JSX.Element {
   return {
     $$typeof: Symbol.for("tstyche:scribbler"),
-    children: props.children,
     props,
     type,
   };
