@@ -139,7 +139,7 @@ export class Scribbler {
 
 export function jsx(
   type: ComponentConstructor | string,
-  props: Record<string, unknown> & { children?: Array<ElementChildren> | ElementChildren },
+  props: Record<string, unknown> & { children?: ElementChildren | Array<ElementChildren> },
 ): JSX.Element {
   return {
     $$typeof: Symbol.for("tstyche:scribbler"),
