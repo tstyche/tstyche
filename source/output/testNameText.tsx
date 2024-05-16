@@ -1,5 +1,4 @@
-// biome-ignore lint/correctness/noUnusedImports: TODO false positive
-import { Color, Line, Scribbler, Text } from "#scribbler";
+import { Color, Line, Text } from "#scribbler";
 
 class StatusText implements JSX.ElementClass {
   constructor(readonly props: { status: "fail" | "pass" | "skip" | "todo" }) {}

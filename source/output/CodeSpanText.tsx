@@ -1,7 +1,6 @@
 import type { DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
-// biome-ignore lint/correctness/noUnusedImports: TODO false positive
-import { Color, Line, Scribbler, Text } from "#scribbler";
+import { Color, Line, Text } from "#scribbler";
 
 export class CodeSpanText implements JSX.ElementClass {
   constructor(readonly props: DiagnosticOrigin) {}
