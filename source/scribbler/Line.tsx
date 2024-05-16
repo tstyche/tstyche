@@ -1,3 +1,4 @@
+// biome-ignore lint/correctness/noUnusedImports: TODO false positive
 import { Scribbler } from "./Scribbler.js";
 import { Text } from "./Text.js";
 import type { Color } from "./enums.js";

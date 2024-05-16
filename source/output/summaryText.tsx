@@ -1,4 +1,5 @@
 import type { ResultCount } from "#result";
+// biome-ignore lint/correctness/noUnusedImports: TODO false positive
 import { Color, Line, Scribbler, Text } from "#scribbler";
 
 class RowText implements JSX.ElementClass {

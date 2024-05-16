@@ -1,6 +1,7 @@
 import type { TestFile } from "#file";
 import { Path } from "#path";
 import { type FileResultStatus, ResultStatus } from "#result";
+// biome-ignore lint/correctness/noUnusedImports: TODO false positive
 import { Color, Line, Scribbler, Text } from "#scribbler";
 
 class FileNameText implements JSX.ElementClass {

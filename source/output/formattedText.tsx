@@ -1,3 +1,4 @@
+// biome-ignore lint/correctness/noUnusedImports: TODO false positive
 import { Line, Scribbler } from "#scribbler";
 
 export class JsonText implements JSX.ElementClass {

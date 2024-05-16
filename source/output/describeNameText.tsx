@@ -1,3 +1,4 @@
+// biome-ignore lint/correctness/noUnusedImports: TODO false positive
 import { Line, Scribbler } from "#scribbler";
 
 export function describeNameText(name: string, indent = 0): JSX.Element {

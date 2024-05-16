@@ -1,4 +1,5 @@
 import { Path } from "#path";
+// biome-ignore lint/correctness/noUnusedImports: TODO false positive
 import { Color, Line, Scribbler, Text } from "#scribbler";
 
 class ProjectNameText implements JSX.ElementClass {

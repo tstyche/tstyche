@@ -24,6 +24,7 @@
 
       "correctness": {
         "noUnusedPrivateClassMembers": "error",
+        "noUnusedImports": "error",
         "noUnusedVariables": "error",
         "useJsxKeyInIterable": "off"
       },

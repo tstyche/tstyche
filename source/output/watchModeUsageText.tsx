@@ -1,3 +1,4 @@
+// biome-ignore lint/correctness/noUnusedImports: TODO false positive
 import { Color, Line, Scribbler, Text } from "#scribbler";
 
 export function watchModeUsageText(): JSX.Element {
