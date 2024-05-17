@@ -1,19 +1,10 @@
 import fs from "node:fs";
-import { afterEach, beforeEach, describe, test } from "mocha";
+import { afterEach, before, beforeEach, describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { Process } from "./__utilities__/process.js";
-
-let isRecursiveWatchAvailable;
-
-try {
-  const fsWatcher = fs.watch(process.cwd(), { persistent: false, recursive: true, signal: AbortSignal.abort() });
-  isRecursiveWatchAvailable = fsWatcher != null;
-} catch {
-  //
-}
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -47,20 +38,35 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-if (isRecursiveWatchAvailable) {
-  beforeEach(async function () {
-    await writeFixture(fixtureUrl, {
-      ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
-      ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
-      ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
-      ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["c-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    });
+beforeEach(async function () {
+  await writeFixture(fixtureUrl, {
+    ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
+    ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
+    ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
+    ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    ["c-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
   });
+});
 
-  afterEach(async function () {
-    await clearFixture(fixtureUrl);
+afterEach(async function () {
+  await clearFixture(fixtureUrl);
+});
+
+describe("watch mode", function () {
+  before(function () {
+    let isRecursiveWatchAvailable;
+
+    try {
+      const fsWatcher = fs.watch(process.cwd(), { persistent: false, recursive: true, signal: AbortSignal.abort() });
+      isRecursiveWatchAvailable = fsWatcher != null;
+    } catch {
+      isRecursiveWatchAvailable = false;
+    }
+
+    if (!isRecursiveWatchAvailable) {
+      this.skip();
+    }
   });
 
   describe("interactive input", function () {
@@ -370,4 +376,4 @@ if (isRecursiveWatchAvailable) {
       assert.equal(exitCode, 0);
     });
   });
-}
+});
