@@ -1,3 +1,4 @@
+import type { JSX } from "./Scribbler.js";
 import { Text } from "./Text.js";
 import type { Color } from "./enums.js";
 

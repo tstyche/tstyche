@@ -1,7 +1,7 @@
 import type { TestFile } from "#file";
 import { Path } from "#path";
 import { type FileResultStatus, ResultStatus } from "#result";
-import { Color, Line, Text } from "#scribbler";
+import { Color, type JSX, Line, Text } from "#scribbler";
 
 class FileNameText implements JSX.ElementClass {
   constructor(readonly props: { filePath: string }) {}

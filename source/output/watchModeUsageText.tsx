@@ -1,4 +1,4 @@
-import { Color, Line, Text } from "#scribbler";
+import { Color, type JSX, Line, Text } from "#scribbler";
 
 export function watchModeUsageText(): JSX.Element {
   const usageText = Object.entries({ a: "run all tests", x: "exit" }).map(([key, action]) => {

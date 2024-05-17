@@ -1,5 +1,5 @@
 import { Path } from "#path";
-import { Color, Line, Text } from "#scribbler";
+import { Color, type JSX, Line, Text } from "#scribbler";
 
 class ProjectNameText implements JSX.ElementClass {
   constructor(readonly props: { filePath: string }) {}

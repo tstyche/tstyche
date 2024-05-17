@@ -23,9 +23,11 @@
       },
 
       "correctness": {
-        "noUnusedPrivateClassMembers": "error",
+        "noUndeclaredVariables": "error",
         "noUnusedImports": "error",
+        "noUnusedPrivateClassMembers": "error",
         "noUnusedVariables": "error",
+
         "useJsxKeyInIterable": "off"
       },
 

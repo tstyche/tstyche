@@ -1,4 +1,4 @@
-import { Color, Line, Text } from "#scribbler";
+import { Color, type JSX, Line, Text } from "#scribbler";
 
 export function addsPackageStepText(compilerVersion: string, installationPath: string): JSX.Element {
   return (

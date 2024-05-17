@@ -1,5 +1,5 @@
 import { type Diagnostic, DiagnosticCategory } from "#diagnostic";
-import { Color, Line, Text } from "#scribbler";
+import { Color, type JSX, Line, Text } from "#scribbler";
 import { CodeSpanText } from "./CodeSpanText.js";
 
 class DiagnosticText implements JSX.ElementClass {

@@ -1,4 +1,4 @@
-import { Line } from "#scribbler";
+import { type JSX, Line } from "#scribbler";
 
 export class JsonText implements JSX.ElementClass {
   constructor(readonly props: { input: Array<string> | Record<string, unknown> }) {}

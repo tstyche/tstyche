@@ -1,6 +1,6 @@
 import process from "node:process";
 import { Environment } from "#environment";
-import { Scribbler } from "#scribbler";
+import { type JSX, Scribbler } from "#scribbler";
 
 export interface WriteStream {
   write: (log: string) => void;

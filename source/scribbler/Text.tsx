@@ -1,3 +1,4 @@
+import type { JSX } from "./Scribbler.js";
 import { Color } from "./enums.js";
 
 interface TextProps {

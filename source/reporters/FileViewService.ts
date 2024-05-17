@@ -1,4 +1,5 @@
 import { describeNameText, fileViewText, testNameText } from "#output";
+import type { JSX } from "#scribbler";
 
 export class FileViewService {
   #indent = 0;

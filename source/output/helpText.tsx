@@ -1,5 +1,5 @@
 import { OptionBrand, type OptionDefinition } from "#config";
-import { Color, Line, Text } from "#scribbler";
+import { Color, type JSX, Line, Text } from "#scribbler";
 
 const usageExamples: Array<[commandText: string, descriptionText: string]> = [
   ["tstyche", "Run all tests."],

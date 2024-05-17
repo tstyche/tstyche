@@ -1,6 +1,6 @@
 import type { DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
-import { Color, Line, Text } from "#scribbler";
+import { Color, type JSX, Line, Text } from "#scribbler";
 
 export class CodeSpanText implements JSX.ElementClass {
   constructor(readonly props: DiagnosticOrigin) {}
