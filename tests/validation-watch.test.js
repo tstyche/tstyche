@@ -43,6 +43,8 @@ describe("'--watch' command line option", function () {
       this.skip();
     }
 
+    await writeFixture(fixtureUrl);
+
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--watch"], {
       env: { ["CI"]: undefined },
     });
