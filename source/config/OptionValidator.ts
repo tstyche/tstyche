@@ -58,6 +58,7 @@ export class OptionValidator {
           this.#onDiagnostic(
             Diagnostic.error(this.#optionDiagnosticText.watchCannotBeEnabledInCiEnvironment(), origin),
           );
+          break;
         }
 
         if (!WatchService.isSupported()) {
