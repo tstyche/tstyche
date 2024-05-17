@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import { Environment } from "#environment";
 import type { StoreService } from "#store";
+import { WatchService } from "#watch";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import type { OptionBrand, OptionGroup } from "./enums.js";
@@ -32,7 +33,7 @@ export class OptionValidator {
       case "config":
       case "rootPath": {
         if (!existsSync(optionValue)) {
-          this.#onDiagnostic(Diagnostic.error([this.#optionDiagnosticText.fileDoesNotExist(optionValue)], origin));
+          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
         break;
       }
@@ -55,8 +56,13 @@ export class OptionValidator {
       case "watch": {
         if (Environment.isCi) {
           this.#onDiagnostic(
-            Diagnostic.error([this.#optionDiagnosticText.watchCannotBeEnabledInCiEnvironment()], origin),
+            Diagnostic.error(this.#optionDiagnosticText.watchCannotBeEnabledInCiEnvironment(), origin),
           );
+          break;
+        }
+
+        if (!WatchService.isSupported()) {
+          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.watchIsNotAvailable(), origin));
         }
         break;
       }

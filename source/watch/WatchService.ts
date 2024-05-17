@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, watch } from "node:fs";
 import fs from "node:fs/promises";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
@@ -13,6 +13,19 @@ export class WatchService {
 
   close(): void {
     this.#abortController.abort();
+  }
+
+  static isSupported(): boolean {
+    let isRecursiveWatchAvailable: boolean | undefined;
+
+    try {
+      watch(Path.resolve("."), { persistent: false, recursive: true, signal: AbortSignal.abort() });
+      isRecursiveWatchAvailable = true;
+    } catch {
+      isRecursiveWatchAvailable = false;
+    }
+
+    return isRecursiveWatchAvailable;
   }
 
   async watch(rootPath: string, options?: WatchOptions): Promise<void> {
