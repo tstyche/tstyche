@@ -21,11 +21,11 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'--failFast' command line option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("stops running tests after the first failure", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
@@ -212,6 +212,10 @@ describe("'--failFast' command line option", function () {
 });
 
 describe("'failFast' configuration file option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("stops running tests after the first failure", async function () {
     const config = {
       failFast: true,

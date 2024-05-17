@@ -97,11 +97,11 @@ const versionTags = Object.entries(resolutions)
   .filter((resolution) => resolution[0].startsWith("5"))
   .map((resolution) => resolution[1]);
 
-after(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("TypeScript 4.x", function () {
+  after(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   before(async function () {
     await writeFixture(fixtureUrl, {
       // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
@@ -143,6 +143,10 @@ describe("TypeScript 5.x", function () {
       ["__typetests__/toMatch.test.ts"]: toMatchTestText,
       ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
     });
+  });
+
+  after(async function () {
+    await clearFixture(fixtureUrl);
   });
 
   const testCases = ["5.0.2", ...versionTags];

@@ -13,11 +13,11 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("compiler module", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("when module is not installed", async function () {
     const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
 
@@ -58,6 +58,10 @@ describe("compiler module", function () {
 });
 
 describe("store manifest", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("when target is default, store manifest is not generated", async function () {
     const storeUrl = new URL("./.store", fixtureUrl);
 

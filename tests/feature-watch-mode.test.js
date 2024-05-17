@@ -38,21 +38,6 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-beforeEach(async function () {
-  await writeFixture(fixtureUrl, {
-    ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
-    ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
-    ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
-    ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    ["c-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-  });
-});
-
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("watch mode", function () {
   before(function () {
     let isRecursiveWatchAvailable;
@@ -67,6 +52,21 @@ describe("watch mode", function () {
     if (!isRecursiveWatchAvailable) {
       this.skip();
     }
+  });
+
+  beforeEach(async function () {
+    await writeFixture(fixtureUrl, {
+      ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
+      ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
+      ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
+      ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["c-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+  });
+
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
   });
 
   describe("interactive input", function () {

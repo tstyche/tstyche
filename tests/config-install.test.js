@@ -18,11 +18,11 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'--install' command line option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   const testCases = [
     {
       args: ["--install", "--target", "4.9"],

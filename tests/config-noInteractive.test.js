@@ -14,11 +14,11 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("has default value", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,

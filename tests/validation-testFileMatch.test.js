@@ -12,11 +12,11 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'testFileMatch' configuration file option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("when option value is not a list", async function () {
     const config = {
       testFileMatch: "feature",
