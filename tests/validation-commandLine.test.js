@@ -13,11 +13,11 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'tstyche' command", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("handles unknown command line options", async function () {
     await writeFixture(fixtureUrl);
 

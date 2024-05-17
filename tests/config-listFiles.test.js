@@ -19,11 +19,11 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'--listFiles' command line option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("lists test files", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,

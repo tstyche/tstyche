@@ -25,11 +25,11 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'testFileMatch' configuration file option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   describe("default patterns", function () {
     test("select files with '.test.*' suffix in 'typetests' directories", async function () {
       await writeFixture(fixtureUrl, {

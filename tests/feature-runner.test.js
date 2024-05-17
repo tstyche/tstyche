@@ -7,11 +7,11 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("test files", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("allows a file to be empty", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: "",
@@ -184,6 +184,10 @@ expect<number>().type.toBeNumber();
 });
 
 describe("compiler options", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("when TSConfig file is missing, sets default compiler options", async function () {
     const testText = `import { expect, test } from "tstyche";
 

@@ -13,11 +13,11 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'tstyche.config.json' file", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("when does not exist", async function () {
     await writeFixture(fixtureUrl);
 
@@ -96,6 +96,10 @@ describe("'tstyche.config.json' file", function () {
 });
 
 describe("'--config' command line option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   test("when specified, reads configuration file from the location", async function () {
     const config = {
       rootPath: "../",

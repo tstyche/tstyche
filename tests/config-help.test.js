@@ -10,15 +10,15 @@ const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfig
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-before(async function () {
-  await writeFixture(fixtureUrl);
-});
-
-after(async function () {
-  await clearFixture(fixtureUrl);
-});
-
 describe("'--help' command line option", function () {
+  before(async function () {
+    await writeFixture(fixtureUrl);
+  });
+
+  after(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   const testCases = [
     {
       args: ["--help"],
