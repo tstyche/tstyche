@@ -1,9 +1,9 @@
-import { type JSX, Line } from "#scribbler";
+import { Line, type ScribblerJsx } from "#scribbler";
 
-export class JsonText implements JSX.ElementClass {
+export class JsonText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { input: Array<string> | Record<string, unknown> }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     return <Line>{JSON.stringify(this.#sortObject(this.props.input), null, 2)}</Line>;
   }
 
@@ -22,7 +22,7 @@ export class JsonText implements JSX.ElementClass {
   }
 }
 
-export function formattedText(input: string | Array<string> | Record<string, unknown>): JSX.Element {
+export function formattedText(input: string | Array<string> | Record<string, unknown>): ScribblerJsx.Element {
   if (typeof input === "string") {
     return <Line>{input}</Line>;
   }

@@ -1,5 +1,5 @@
 import { OptionBrand, type OptionDefinition } from "#config";
-import { Color, type JSX, Line, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
 const usageExamples: Array<[commandText: string, descriptionText: string]> = [
   ["tstyche", "Run all tests."],
@@ -7,10 +7,10 @@ const usageExamples: Array<[commandText: string, descriptionText: string]> = [
   ["tstyche --target 4.9,5.3.2,current", "Test on all specified versions of TypeScript."],
 ];
 
-class HintText implements JSX.ElementClass {
-  constructor(readonly props: { children: JSX.Element }) {}
+class HintText implements ScribblerJsx.ElementClass {
+  constructor(readonly props: { children: ScribblerJsx.Element }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     return (
       <Text indent={1} color={Color.Gray}>
         {this.props.children}
@@ -19,10 +19,10 @@ class HintText implements JSX.ElementClass {
   }
 }
 
-class HelpHeaderText implements JSX.ElementClass {
+class HelpHeaderText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { tstycheVersion: string }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     const hint = (
       <HintText>
         <Text>{this.props.tstycheVersion}</Text>
@@ -38,16 +38,16 @@ class HelpHeaderText implements JSX.ElementClass {
   }
 }
 
-class CommandText implements JSX.ElementClass {
+class CommandText implements ScribblerJsx.ElementClass {
   constructor(
     readonly props: {
-      hint?: JSX.Element | undefined;
-      text: string | JSX.Element;
+      hint?: ScribblerJsx.Element | undefined;
+      text: string | ScribblerJsx.Element;
     },
   ) {}
 
-  render(): JSX.Element {
-    let hint: JSX.Element | undefined;
+  render(): ScribblerJsx.Element {
+    let hint: ScribblerJsx.Element | undefined;
 
     if (this.props.hint != null) {
       hint = <HintText>{this.props.hint}</HintText>;
@@ -62,16 +62,16 @@ class CommandText implements JSX.ElementClass {
   }
 }
 
-class OptionDescriptionText implements JSX.ElementClass {
+class OptionDescriptionText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { text: string }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     return <Line indent={1}>{this.props.text}</Line>;
   }
 }
 
-class CommandLineUsageText implements JSX.ElementClass {
-  render(): JSX.Element {
+class CommandLineUsageText implements ScribblerJsx.ElementClass {
+  render(): ScribblerJsx.Element {
     const usageText = usageExamples.map(([commandText, descriptionText]) => (
       <Text>
         <CommandText text={commandText} />
@@ -84,18 +84,18 @@ class CommandLineUsageText implements JSX.ElementClass {
   }
 }
 
-class CommandLineOptionNameText implements JSX.ElementClass {
+class CommandLineOptionNameText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { text: string }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     return <Text>--{this.props.text}</Text>;
   }
 }
 
-class CommandLineOptionHintText implements JSX.ElementClass {
+class CommandLineOptionHintText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { definition: OptionDefinition }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     if (this.props.definition.brand === OptionBrand.List) {
       return (
         <Text>
@@ -108,13 +108,13 @@ class CommandLineOptionHintText implements JSX.ElementClass {
   }
 }
 
-class CommandLineOptionsText implements JSX.ElementClass {
+class CommandLineOptionsText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { optionDefinitions: Map<string, OptionDefinition> }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     const definitions = [...this.props.optionDefinitions.values()];
     const optionsText = definitions.map((definition) => {
-      let hint: JSX.Element | undefined;
+      let hint: ScribblerJsx.Element | undefined;
 
       if (definition.brand !== OptionBrand.True) {
         hint = <CommandLineOptionHintText definition={definition} />;
@@ -139,13 +139,16 @@ class CommandLineOptionsText implements JSX.ElementClass {
   }
 }
 
-class HelpFooterText implements JSX.ElementClass {
-  render(): JSX.Element {
+class HelpFooterText implements ScribblerJsx.ElementClass {
+  render(): ScribblerJsx.Element {
     return <Line>To learn more, visit https://tstyche.org</Line>;
   }
 }
 
-export function helpText(optionDefinitions: Map<string, OptionDefinition>, tstycheVersion: string): JSX.Element {
+export function helpText(
+  optionDefinitions: Map<string, OptionDefinition>,
+  tstycheVersion: string,
+): ScribblerJsx.Element {
   return (
     <Text>
       <HelpHeaderText tstycheVersion={tstycheVersion} />

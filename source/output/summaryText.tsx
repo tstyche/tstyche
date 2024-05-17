@@ -1,10 +1,10 @@
 import type { ResultCount } from "#result";
-import { Color, type JSX, Line, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-class RowText implements JSX.ElementClass {
-  constructor(readonly props: { label: string; text: JSX.Element }) {}
+class RowText implements ScribblerJsx.ElementClass {
+  constructor(readonly props: { label: string; text: ScribblerJsx.Element }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     return (
       <Line>
         {`${this.props.label}:`.padEnd(12)}
@@ -14,7 +14,7 @@ class RowText implements JSX.ElementClass {
   }
 }
 
-class CountText implements JSX.ElementClass {
+class CountText implements ScribblerJsx.ElementClass {
   constructor(
     readonly props: {
       failed: number;
@@ -25,7 +25,7 @@ class CountText implements JSX.ElementClass {
     },
   ) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     return (
       <Text>
         {this.props.failed > 0 ? (
@@ -61,10 +61,10 @@ class CountText implements JSX.ElementClass {
   }
 }
 
-class DurationText implements JSX.ElementClass {
+class DurationText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { duration: number }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     const duration = this.props.duration / 1000;
 
     const minutes = Math.floor(duration / 60);
@@ -79,10 +79,10 @@ class DurationText implements JSX.ElementClass {
   }
 }
 
-class MatchText implements JSX.ElementClass {
+class MatchText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { text: Array<string> | string }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     if (typeof this.props.text === "string") {
       return <Text>'{this.props.text}'</Text>;
     }
@@ -106,7 +106,7 @@ class MatchText implements JSX.ElementClass {
   }
 }
 
-class RanFilesText implements JSX.ElementClass {
+class RanFilesText implements ScribblerJsx.ElementClass {
   constructor(
     readonly props: {
       onlyMatch: string | undefined;
@@ -115,8 +115,8 @@ class RanFilesText implements JSX.ElementClass {
     },
   ) {}
 
-  render(): JSX.Element {
-    const testNameMatch: Array<JSX.Element> = [];
+  render(): ScribblerJsx.Element {
+    const testNameMatch: Array<ScribblerJsx.Element> = [];
 
     if (this.props.onlyMatch != null) {
       testNameMatch.push(
@@ -137,7 +137,7 @@ class RanFilesText implements JSX.ElementClass {
       );
     }
 
-    let pathMatch: JSX.Element | undefined;
+    let pathMatch: ScribblerJsx.Element | undefined;
 
     if (this.props.pathMatch.length > 0) {
       pathMatch = (
@@ -181,7 +181,7 @@ export function summaryText({
   skipMatch: string | undefined;
   targetCount: ResultCount;
   testCount: ResultCount;
-}): JSX.Element {
+}): ScribblerJsx.Element {
   const targetCountText = (
     <RowText
       label="Targets"

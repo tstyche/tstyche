@@ -4,8 +4,8 @@
     "module": "node16",
     "moduleResolution": "node16",
     "paths": {
-      "#*": ["./*/index.ts"],
-      "#scribbler/jsx-runtime": ["./scribbler/Scribbler.ts"]
+      "#scribbler/jsx-runtime": ["./scribbler/jsx-runtime.js"],
+      "#*": ["./*/index.js"]
     },
 
     "jsx": "react-jsx",

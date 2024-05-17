@@ -1,38 +1,4 @@
-import type { Color } from "./enums.js";
-
-type ElementChildren = Array<ElementChildren> | JSX.Element | string | undefined;
-
-// biome-ignore lint/correctness/noUnusedVariables: TODO might be false positive
-type ComponentConstructor = new (props: Record<string, unknown>) => JSX.ElementClass;
-
-export namespace JSX {
-  export interface Element {
-    $$typeof: symbol;
-    props: Record<string, unknown>;
-    type: ComponentConstructor | string;
-  }
-  export interface ElementAttributesProperty {
-    props: Record<string, unknown>;
-  }
-  export interface ElementClass {
-    render: () => JSX.Element;
-  }
-  export interface ElementChildrenAttribute {
-    children: ElementChildren;
-  }
-  export interface IntrinsicElements {
-    ansi: {
-      escapes: Color | Array<Color>;
-    };
-    newLine: {
-      [key: string]: never;
-    };
-    text: {
-      children: ElementChildren;
-      indent?: number | undefined;
-    };
-  }
-}
+import type { ElementChildren, ScribblerJsx } from "./types.js";
 
 export interface ScribblerOptions {
   newLine?: string;
@@ -58,7 +24,7 @@ export class Scribbler {
     return lines.replace(this.#notEmptyLineRegex, this.#indentStep.repeat(level));
   }
 
-  render(element: JSX.Element): string {
+  render(element: ScribblerJsx.Element): string {
     if (typeof element.type === "function") {
       const instance = new element.type({ ...element.props });
 
@@ -129,13 +95,3 @@ export class Scribbler {
     return "";
   }
 }
-
-export function jsx(type: ComponentConstructor | string, props: Record<string, unknown>): JSX.Element {
-  return {
-    $$typeof: Symbol.for("tstyche:scribbler"),
-    props,
-    type,
-  };
-}
-
-export { jsx as jsxs };

@@ -1,6 +1,6 @@
 import process from "node:process";
 import { Environment } from "#environment";
-import { type JSX, Scribbler } from "#scribbler";
+import { Scribbler, type ScribblerJsx } from "#scribbler";
 
 export interface WriteStream {
   write: (log: string) => void;
@@ -37,7 +37,7 @@ export class OutputService {
     this.#stdout.write("\u001B[1A\u001B[0K");
   }
 
-  #write(stream: WriteStream, body: JSX.Element | Array<JSX.Element>): void {
+  #write(stream: WriteStream, body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
     const elements = Array.isArray(body) ? body : [body];
 
     for (const element of elements) {
@@ -49,15 +49,15 @@ export class OutputService {
     }
   }
 
-  writeError(body: JSX.Element | Array<JSX.Element>): void {
+  writeError(body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
     this.#write(this.#stderr, body);
   }
 
-  writeMessage(body: JSX.Element | Array<JSX.Element>): void {
+  writeMessage(body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
     this.#write(this.#stdout, body);
   }
 
-  writeWarning(body: JSX.Element | Array<JSX.Element>): void {
+  writeWarning(body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
     this.#write(this.#stderr, body);
   }
 }

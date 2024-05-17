@@ -1,10 +1,10 @@
 import { Path } from "#path";
-import { Color, type JSX, Line, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-class ProjectNameText implements JSX.ElementClass {
+class ProjectNameText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { filePath: string }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     return (
       <Text color={Color.Gray}>
         {" with "}
@@ -18,8 +18,8 @@ export function usesCompilerStepText(
   compilerVersion: string,
   tsconfigFilePath: string | undefined,
   options?: { prependEmptyLine: boolean },
-): JSX.Element {
-  let projectPathText: JSX.Element | undefined;
+): ScribblerJsx.Element {
+  let projectPathText: ScribblerJsx.Element | undefined;
 
   if (tsconfigFilePath != null) {
     projectPathText = <ProjectNameText filePath={tsconfigFilePath} />;

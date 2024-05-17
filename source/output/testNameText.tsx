@@ -1,6 +1,6 @@
-import { Color, type JSX, Line, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-class StatusText implements JSX.ElementClass {
+class StatusText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { status: "fail" | "pass" | "skip" | "todo" }) {}
 
   render() {
@@ -17,7 +17,11 @@ class StatusText implements JSX.ElementClass {
   }
 }
 
-export function testNameText(status: "fail" | "pass" | "skip" | "todo", name: string, indent = 0): JSX.Element {
+export function testNameText(
+  status: "fail" | "pass" | "skip" | "todo",
+  name: string,
+  indent = 0,
+): ScribblerJsx.Element {
   return (
     <Line indent={indent + 1}>
       <StatusText status={status} /> <Text color={Color.Gray}>{name}</Text>

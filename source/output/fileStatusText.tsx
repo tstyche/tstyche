@@ -1,12 +1,12 @@
 import type { TestFile } from "#file";
 import { Path } from "#path";
 import { type FileResultStatus, ResultStatus } from "#result";
-import { Color, type JSX, Line, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-class FileNameText implements JSX.ElementClass {
+class FileNameText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { filePath: string }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     const relativePath = Path.relative("", this.props.filePath);
     const lastPathSeparator = relativePath.lastIndexOf("/");
 
@@ -22,7 +22,7 @@ class FileNameText implements JSX.ElementClass {
   }
 }
 
-export function fileStatusText(status: FileResultStatus, testFile: TestFile): JSX.Element {
+export function fileStatusText(status: FileResultStatus, testFile: TestFile): ScribblerJsx.Element {
   let statusColor: Color;
   let statusText: string;
 

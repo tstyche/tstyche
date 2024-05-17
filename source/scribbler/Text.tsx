@@ -1,16 +1,16 @@
-import type { JSX } from "./Scribbler.js";
 import { Color } from "./enums.js";
+import type { ScribblerJsx } from "./types.js";
 
 interface TextProps {
-  children?: JSX.ElementChildrenAttribute["children"];
+  children?: ScribblerJsx.ElementChildrenAttribute["children"];
   color?: Color | undefined;
   indent?: number | undefined;
 }
 
-export class Text implements JSX.ElementClass {
+export class Text implements ScribblerJsx.ElementClass {
   constructor(readonly props: TextProps) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     const ansiEscapes: Array<Color> = [];
 
     if (this.props.color != null) {

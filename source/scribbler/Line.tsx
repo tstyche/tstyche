@@ -1,17 +1,17 @@
-import type { JSX } from "./Scribbler.js";
 import { Text } from "./Text.js";
 import type { Color } from "./enums.js";
+import type { ScribblerJsx } from "./types.js";
 
 interface LineProps {
-  children?: JSX.ElementChildrenAttribute["children"];
+  children?: ScribblerJsx.ElementChildrenAttribute["children"];
   color?: Color;
   indent?: number;
 }
 
-export class Line implements JSX.ElementClass {
+export class Line implements ScribblerJsx.ElementClass {
   constructor(readonly props: LineProps) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     return (
       <text>
         <Text color={this.props.color} indent={this.props.indent}>

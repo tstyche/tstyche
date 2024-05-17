@@ -1,11 +1,11 @@
 import type { DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
-import { Color, type JSX, Line, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-export class CodeSpanText implements JSX.ElementClass {
+export class CodeSpanText implements ScribblerJsx.ElementClass {
   constructor(readonly props: DiagnosticOrigin) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     const lastLineInFile = this.props.file.getLineAndCharacterOfPosition(this.props.file.text.length).line;
 
     const { character: markedCharacter, line: markedLine } = this.props.file.getLineAndCharacterOfPosition(
@@ -15,7 +15,7 @@ export class CodeSpanText implements JSX.ElementClass {
     const lastLine = Math.min(firstLine + 5, lastLineInFile);
     const lineNumberMaxWidth = String(lastLine + 1).length;
 
-    const codeSpan: Array<JSX.Element> = [];
+    const codeSpan: Array<ScribblerJsx.Element> = [];
 
     for (let index = firstLine; index <= lastLine; index++) {
       const lineStart = this.props.file.getPositionOfLineAndCharacter(index, 0);

@@ -1,11 +1,11 @@
 import { type Diagnostic, DiagnosticCategory } from "#diagnostic";
-import { Color, type JSX, Line, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 import { CodeSpanText } from "./CodeSpanText.js";
 
-class DiagnosticText implements JSX.ElementClass {
+class DiagnosticText implements ScribblerJsx.ElementClass {
   constructor(readonly props: { diagnostic: Diagnostic }) {}
 
-  render(): JSX.Element {
+  render(): ScribblerJsx.Element {
     const code =
       typeof this.props.diagnostic.code === "string" ? (
         <Text color={Color.Gray}> {this.props.diagnostic.code}</Text>
@@ -45,8 +45,8 @@ class DiagnosticText implements JSX.ElementClass {
   }
 }
 
-export function diagnosticText(diagnostic: Diagnostic): JSX.Element {
-  let prefix: JSX.Element | undefined;
+export function diagnosticText(diagnostic: Diagnostic): ScribblerJsx.Element {
+  let prefix: ScribblerJsx.Element | undefined;
 
   switch (diagnostic.category) {
     case DiagnosticCategory.Error: {

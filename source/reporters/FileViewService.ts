@@ -1,16 +1,16 @@
 import { describeNameText, fileViewText, testNameText } from "#output";
-import type { JSX } from "#scribbler";
+import type { ScribblerJsx } from "#scribbler";
 
 export class FileViewService {
   #indent = 0;
-  #lines: Array<JSX.Element> = [];
-  #messages: Array<JSX.Element> = [];
+  #lines: Array<ScribblerJsx.Element> = [];
+  #messages: Array<ScribblerJsx.Element> = [];
 
   get hasErrors(): boolean {
     return this.#messages.length > 0;
   }
 
-  addMessage(message: JSX.Element): void {
+  addMessage(message: ScribblerJsx.Element): void {
     this.#messages.push(message);
   }
 
@@ -27,11 +27,11 @@ export class FileViewService {
     this.#indent--;
   }
 
-  getMessages(): Array<JSX.Element> {
+  getMessages(): Array<ScribblerJsx.Element> {
     return this.#messages;
   }
 
-  getViewText(options?: { appendEmptyLine: boolean }): JSX.Element {
+  getViewText(options?: { appendEmptyLine: boolean }): ScribblerJsx.Element {
     return fileViewText(this.#lines, options?.appendEmptyLine === true || this.hasErrors);
   }
 
