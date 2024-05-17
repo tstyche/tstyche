@@ -9,6 +9,7 @@ import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationToken } from "#token";
 
+// biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
   #cancellationToken = new CancellationToken();
   #selectService: SelectService;

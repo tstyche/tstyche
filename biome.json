@@ -42,6 +42,7 @@
             "syntax": "generic"
           }
         },
+        "useNamingConvention": "error",
         "useForOf": "error",
         "useShorthandAssign": "error",
         "useSingleCaseStatement": "error",
