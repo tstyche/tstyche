@@ -5,7 +5,7 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@babel/code-frame@npm:^7.22.13":
+"@babel/code-frame@npm:^7.24.2":
   version: 7.24.2
   resolution: "@babel/code-frame@npm:7.24.2"
   dependencies:
@@ -2144,7 +2144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:0.30.10, magic-string@npm:^0.30.4":
+"magic-string@npm:0.30.10, magic-string@npm:^0.30.10":
   version: 0.30.10
   resolution: "magic-string@npm:0.30.10"
   dependencies:
@@ -2662,19 +2662,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup-plugin-dts@npm:6.1.0":
-  version: 6.1.0
-  resolution: "rollup-plugin-dts@npm:6.1.0"
+"rollup-plugin-dts@npm:6.1.1":
+  version: 6.1.1
+  resolution: "rollup-plugin-dts@npm:6.1.1"
   dependencies:
-    "@babel/code-frame": ^7.22.13
-    magic-string: ^0.30.4
+    "@babel/code-frame": ^7.24.2
+    magic-string: ^0.30.10
   peerDependencies:
     rollup: ^3.29.4 || ^4
     typescript: ^4.5 || ^5.0
   dependenciesMeta:
     "@babel/code-frame":
       optional: true
-  checksum: a90f8e975e4515734c84fa17e0feaf8fdd9ed9368722c3908687875903a393cba4d07d9934bae9b91a0c1b6c63ac1ef0ccd7363d3e6e4dc10eabca3540be9f11
+  checksum: e69da1a286570f5a8d990651a613b2063543a71ad3b3471a97e74ea328125ebee77a74b2c800031f8dcccdc92da0d086f833724d13a2c863a2cbdf7e8fc20329
   languageName: node
   linkType: hard
 
@@ -2986,7 +2986,7 @@ __metadata:
     mocha: 10.4.0
     pretty-ansi: 2.0.0
     rollup: 4.17.2
-    rollup-plugin-dts: 6.1.0
+    rollup-plugin-dts: 6.1.1
     tslib: 2.6.2
     typescript: 5.4.5
   peerDependencies:
