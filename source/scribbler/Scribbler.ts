@@ -32,14 +32,7 @@ export class Scribbler {
     }
 
     if (element.type === "ansi" && !this.#noColor) {
-      const flags =
-        typeof element.props?.["escapes"] === "string" || Array.isArray(element.props?.["escapes"])
-          ? element.props["escapes"]
-          : undefined;
-
-      if (flags != null) {
-        return this.#escapeSequence(flags);
-      }
+      return this.#escapeSequence((element.props as ScribblerJsx.IntrinsicElements["ansi"]).escapes);
     }
 
     if (element.type === "newLine") {
@@ -47,12 +40,12 @@ export class Scribbler {
     }
 
     if (element.type === "text") {
-      const indentLevel = typeof element.props?.["indent"] === "number" ? element.props["indent"] : 0;
+      const { children, indent } = element.props as ScribblerJsx.IntrinsicElements["text"];
 
-      let text = this.#visitElementChildren(element.props["children"] as ElementChildren);
+      let text = this.#visitChildren(children);
 
-      if (indentLevel > 0) {
-        text = this.#indentEachLine(text, indentLevel);
+      if (indent != null) {
+        text = this.#indentEachLine(text, indent);
       }
 
       return text;
@@ -61,37 +54,25 @@ export class Scribbler {
     return "";
   }
 
-  #visitElementChildren(children: ElementChildren) {
-    if (typeof children === "string") {
-      return children;
-    }
+  #visitChildren(children: Array<ElementChildren>) {
+    const text: Array<string> = [];
 
-    if (Array.isArray(children)) {
-      const text: Array<string> = [];
-
-      for (const child of children) {
-        if (typeof child === "string") {
-          text.push(child);
-          continue;
-        }
-
-        if (Array.isArray(child)) {
-          text.push(this.#visitElementChildren(child));
-          continue;
-        }
-
-        if (child != null && typeof child === "object") {
-          text.push(this.render(child));
-        }
+    for (const child of children) {
+      if (typeof child === "string") {
+        text.push(child);
+        continue;
       }
 
-      return text.join("");
+      if (Array.isArray(child)) {
+        text.push(this.#visitChildren(child));
+        continue;
+      }
+
+      if (child != null && typeof child === "object") {
+        text.push(this.render(child));
+      }
     }
 
-    if (children != null && typeof children === "object") {
-      return this.render(children);
-    }
-
-    return "";
+    return text.join("");
   }
 }

@@ -28,7 +28,7 @@ export namespace ScribblerJsx {
       [key: string]: never;
     };
     text: {
-      children: ElementChildren;
+      children: Array<ElementChildren>;
       indent?: number | undefined;
     };
   }
