@@ -51,10 +51,13 @@
     "prepublish": "yarn test",
     "test": "yarn test:unit && yarn test:e2e",
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
-    "test:e2e": "mocha tests/*.test.* --config mocha.config.json",
+    "test:e2e": "yarn test:e2e:parallel && yarn test:e2e:serial",
+    "test:e2e:parallel": "yarn test:run tests/*.test.* --exclude tests/feature-watch-mode.test.js --parallel --reporter dot",
+    "test:e2e:serial": "yarn test:run tests/feature-watch-mode.test.js --reporter dot",
     "test:examples": "tstyche examples",
+    "test:run": "mocha --config mocha.config.json",
     "test:types": "tstyche typetests",
-    "test:unit": "mocha **/__tests__/*.test.* --config mocha.config.json"
+    "test:unit": "yarn test:run **/__tests__/*.test.* --parallel --reporter dot"
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.3",

@@ -1,7 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/mocharc",
   "exclude": ["node_modules/**"],
-  "reporter": "dot",
   "slow": 6000,
   "timeout": 120000
 }
