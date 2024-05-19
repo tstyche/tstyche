@@ -20,7 +20,11 @@ export class Scribbler {
     return ["\u001B[", Array.isArray(attributes) ? attributes.join(";") : attributes, "m"].join("");
   }
 
-  #indentEachLine(lines: string, level: number) {
+  #indentEachLine(lines: string, level: number | undefined) {
+    if (level == null) {
+      return lines;
+    }
+
     return lines.replace(this.#notEmptyLineRegex, this.#indentStep.repeat(level));
   }
 
@@ -40,15 +44,9 @@ export class Scribbler {
     }
 
     if (element.type === "text") {
-      const { children, indent } = element.props as ScribblerJsx.IntrinsicElements["text"];
+      const text = this.#visitChildren((element.props as ScribblerJsx.IntrinsicElements["text"]).children);
 
-      let text = this.#visitChildren(children);
-
-      if (indent != null) {
-        text = this.#indentEachLine(text, indent);
-      }
-
-      return text;
+      return this.#indentEachLine(text, (element.props as ScribblerJsx.IntrinsicElements["text"]).indent);
     }
 
     return "";
