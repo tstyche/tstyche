@@ -10,7 +10,13 @@ import { type CommandLineOptions, CommandLineOptionsWorker } from "./CommandLine
 import { type ConfigFileOptions, ConfigFileOptionsWorker } from "./ConfigFileOptionsWorker.js";
 import type { OptionValue } from "./OptionDefinitionsMap.js";
 
-export interface ResolvedConfig extends Omit<CommandLineOptions, keyof ConfigFileOptions>, Required<ConfigFileOptions> {
+export interface ResolvedConfig
+  extends Omit<CommandLineOptions, keyof ConfigFileOptions | "config">,
+    Required<ConfigFileOptions> {
+  /**
+   * The path to a TSTyche configuration file.
+   */
+  configFilePath: string;
   /**
    * Only run test files with matching path.
    */
@@ -20,6 +26,7 @@ export interface ResolvedConfig extends Omit<CommandLineOptions, keyof ConfigFil
 export class ConfigService {
   #commandLineOptions: CommandLineOptions = {};
   #configFileOptions: ConfigFileOptions = {};
+  #configFilePath = Path.resolve("./tstyche.config.json");
 
   static #defaultOptions: Required<ConfigFileOptions> = {
     failFast: false,
@@ -57,24 +64,28 @@ export class ConfigService {
   }
 
   async readConfigFile(): Promise<void> {
-    const configFilePath = this.#commandLineOptions.config ?? Path.resolve("./tstyche.config.json");
+    if (this.#commandLineOptions.config != null) {
+      this.#configFilePath = this.#commandLineOptions.config;
 
-    if (!existsSync(configFilePath)) {
+      delete this.#commandLineOptions.config;
+    }
+
+    if (!existsSync(this.#configFilePath)) {
       return;
     }
 
     this.#configFileOptions = {
-      rootPath: Path.dirname(configFilePath),
+      rootPath: Path.dirname(this.#configFilePath),
     };
 
-    const configFileText = await fs.readFile(configFilePath, {
+    const configFileText = await fs.readFile(this.#configFilePath, {
       encoding: "utf8",
     });
 
     const configFileWorker = new ConfigFileOptionsWorker(
       this.compiler,
       this.#configFileOptions as Record<string, OptionValue>,
-      configFilePath,
+      this.#configFilePath,
       this.#storeService,
       this.#onDiagnostic,
     );
@@ -87,6 +98,7 @@ export class ConfigService {
       ...ConfigService.#defaultOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
+      configFilePath: this.#configFilePath,
       pathMatch: this.#pathMatch,
     };
 
