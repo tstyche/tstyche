@@ -18,7 +18,7 @@ export class Text implements ScribblerJsx.ElementClass {
     }
 
     return (
-      <text indent={this.props.indent}>
+      <text indent={this.props.indent ?? 0}>
         {ansiEscapes.length > 0 ? <ansi escapes={ansiEscapes} /> : undefined}
         {this.props.children}
         {ansiEscapes.length > 0 ? <ansi escapes={Color.Reset} /> : undefined}

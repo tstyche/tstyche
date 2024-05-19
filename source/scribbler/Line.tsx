@@ -13,12 +13,10 @@ export class Line implements ScribblerJsx.ElementClass {
 
   render(): ScribblerJsx.Element {
     return (
-      <text>
-        <Text color={this.props.color} indent={this.props.indent}>
-          {this.props.children}
-        </Text>
+      <Text color={this.props.color} indent={this.props.indent}>
+        {this.props.children}
         <newLine />
-      </text>
+      </Text>
     );
   }
 }

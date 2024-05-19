@@ -28,7 +28,7 @@ export namespace ScribblerJsx {
     };
     text: {
       children: Array<ElementChildren>;
-      indent?: number | undefined;
+      indent: number;
     };
   }
 }

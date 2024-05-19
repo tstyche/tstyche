@@ -20,8 +20,8 @@ export class Scribbler {
     return ["\u001B[", Array.isArray(attributes) ? attributes.join(";") : attributes, "m"].join("");
   }
 
-  #indentEachLine(lines: string, level: number | undefined) {
-    if (level == null) {
+  #indentEachLine(lines: string, level: number) {
+    if (level === 0) {
       return lines;
     }
 
