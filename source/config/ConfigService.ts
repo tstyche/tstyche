@@ -38,18 +38,6 @@ export class ConfigService {
     this.#storeService = storeService;
   }
 
-  get commandLineOptions(): CommandLineOptions {
-    return this.#commandLineOptions;
-  }
-
-  get configFileOptions(): ConfigFileOptions {
-    return this.#configFileOptions;
-  }
-
-  static get defaultOptions(): Required<ConfigFileOptions> {
-    return ConfigService.#defaultOptions;
-  }
-
   #onDiagnostic(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostic] }]);
   }
