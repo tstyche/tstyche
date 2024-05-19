@@ -50,21 +50,20 @@ export class WatchModeManager {
         case "watch:info": {
           switch (payload.state) {
             case "changed": {
-              {
-                let testFile = this.#watchedTestFiles.get(payload.filePath);
+              let testFile = this.#watchedTestFiles.get(payload.filePath);
 
-                if (testFile != null) {
-                  this.#changedTestFiles.set(payload.filePath, testFile);
-                  break;
-                }
-
-                if (this.#selectService.isTestFile(payload.filePath)) {
-                  testFile = new TestFile(payload.filePath);
-
-                  this.#changedTestFiles.set(payload.filePath, testFile);
-                  this.#watchedTestFiles.set(payload.filePath, testFile);
-                }
+              if (testFile != null) {
+                this.#changedTestFiles.set(payload.filePath, testFile);
+                break;
               }
+
+              if (this.#selectService.isTestFile(payload.filePath)) {
+                testFile = new TestFile(payload.filePath);
+
+                this.#changedTestFiles.set(payload.filePath, testFile);
+                this.#watchedTestFiles.set(payload.filePath, testFile);
+              }
+
               break;
             }
 
