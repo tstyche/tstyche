@@ -41,7 +41,7 @@ describe("'rootPath' configuration file option", function () {
     ]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      config: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
+      configFilePath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
       rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config",
     });
 
@@ -65,7 +65,7 @@ describe("'rootPath' configuration file option", function () {
     ]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      config: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
+      configFilePath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
       rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-rootPath",
     });
 
