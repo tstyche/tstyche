@@ -8,7 +8,7 @@ import { EventEmitter } from "#events";
 import { OutputService, addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
-import { CancellationToken } from "#token";
+import { CancellationReason, CancellationToken } from "#token";
 
 export class Cli {
   #cancellationToken = new CancellationToken();
@@ -34,7 +34,7 @@ export class Cli {
           for (const diagnostic of payload.diagnostics) {
             switch (diagnostic.category) {
               case DiagnosticCategory.Error: {
-                this.#cancellationToken.cancel();
+                this.#cancellationToken.cancel(CancellationReason.ConfigError);
                 this.#outputService.writeError(diagnosticText(diagnostic));
 
                 process.exitCode = 1;

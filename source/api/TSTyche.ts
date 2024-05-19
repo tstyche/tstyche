@@ -7,7 +7,7 @@ import { type Reporter, SummaryReporter, ThoroughReporter, WatchModeReporter } f
 import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
-import { CancellationToken } from "#token";
+import { CancellationReason, CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
@@ -41,7 +41,7 @@ export class TSTyche {
           }
 
           if (this.resolvedConfig.failFast) {
-            this.#cancellationToken.cancel();
+            this.#cancellationToken.cancel(CancellationReason.FailFast);
           }
         }
       }

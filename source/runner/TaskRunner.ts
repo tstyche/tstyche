@@ -5,7 +5,7 @@ import type { TestFile } from "#file";
 import { Result, ResultManager, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
-import type { CancellationToken } from "#token";
+import { CancellationReason, type CancellationToken } from "#token";
 import { TestFileRunner } from "./TestFileRunner.js";
 import { WatchModeManager } from "./WatchModeManager.js";
 
@@ -47,6 +47,10 @@ export class TaskRunner {
         for (const testFile of testFiles) {
           testFileRunner.run(testFile, cancellationToken);
         }
+
+        if (cancellationToken?.reason === CancellationReason.FailFast) {
+          cancellationToken.reset();
+        }
       }
 
       EventEmitter.dispatch(["target:end", { result: targetResult }]);
@@ -77,6 +81,10 @@ export class TaskRunner {
 
         for (const testFile of testFiles) {
           testFileRunner.run(testFile, cancellationToken);
+        }
+
+        if (cancellationToken?.reason === CancellationReason.FailFast) {
+          cancellationToken.reset();
         }
       }
 
