@@ -38,7 +38,7 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("watch mode", function () {
+describe("watch", function () {
   before(function () {
     let isRecursiveWatchAvailable;
 
@@ -373,6 +373,37 @@ describe("watch mode", function () {
       const { exitCode, stderr } = await process.waitForExit();
 
       assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+
+    test("when the '--failFast' command line option is set", async function () {
+      const process = new Process(fixtureUrl, ["--failFast", "--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+      process.resetOutput();
+
+      fs.writeFileSync(new URL("a-feature/__typetests__/isNumber.test.ts", fixtureUrl), isNumberTestWithErrorText);
+      fs.writeFileSync(new URL("b-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
+
+      await process.waitForIdle();
+      await process.write("a");
+
+      const filesChanged = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stdout)), {
+        fileName: `${testFileName}-failFast-support-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stderr)), {
+        fileName: `${testFileName}-failFast-support-stderr`,
+        testFileUrl: import.meta.url,
+      });
+
+      await process.write("x");
+
+      const { exitCode } = await process.waitForExit();
+
       assert.equal(exitCode, 0);
     });
   });
