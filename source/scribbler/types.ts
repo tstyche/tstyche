@@ -7,7 +7,6 @@ export type ComponentConstructor = new (props: Record<string, unknown>) => Scrib
 
 export namespace ScribblerJsx {
   export interface Element {
-    $$typeof: symbol;
     props: Record<string, unknown>;
     type: ComponentConstructor | string;
   }

@@ -41,10 +41,6 @@ export class OutputService {
     const elements = Array.isArray(body) ? body : [body];
 
     for (const element of elements) {
-      if (element.$$typeof !== Symbol.for("tstyche:scribbler")) {
-        return;
-      }
-
       stream.write(this.#scribbler.render(element));
     }
   }
