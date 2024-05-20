@@ -30,11 +30,15 @@ export class ConfigService {
 
   #defaultOptions: Required<ConfigFileOptions> = {
     failFast: false,
-    rootPath: Path.resolve("./"),
-    target: [Environment.typescriptPath == null ? "latest" : "current"],
-    testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
-  };
+  rootPath: "./",
+  target: [Environment.typescriptPath == null ? "latest" : "current"],
+  testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
+};
 
+export class ConfigService {
+  #commandLineOptions: CommandLineOptions = {};
+  #configFileOptions: ConfigFileOptions = {};
+  #configFilePath = Path.resolve(defaultOptions.rootPath, "./tstyche.config.json");
   #pathMatch: Array<string> = [];
   #storeService: StoreService;
 
@@ -95,7 +99,7 @@ export class ConfigService {
 
   resolveConfig(): ResolvedConfig {
     const mergedOptions = {
-      ...this.#defaultOptions,
+      ...defaultOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
       configFilePath: this.#configFilePath,
