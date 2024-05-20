@@ -28,7 +28,7 @@ export class ConfigService {
   #configFileOptions: ConfigFileOptions = {};
   #configFilePath = Path.resolve("./tstyche.config.json");
 
-  static #defaultOptions: Required<ConfigFileOptions> = {
+  #defaultOptions: Required<ConfigFileOptions> = {
     failFast: false,
     rootPath: Path.resolve("./"),
     target: [Environment.typescriptPath == null ? "latest" : "current"],
@@ -95,7 +95,7 @@ export class ConfigService {
 
   resolveConfig(): ResolvedConfig {
     const mergedOptions = {
-      ...ConfigService.#defaultOptions,
+      ...this.#defaultOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
       configFilePath: this.#configFilePath,
