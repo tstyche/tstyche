@@ -11,7 +11,6 @@ import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 
 export class Cli {
-  #cancellationToken = new CancellationToken();
   #outputService: OutputService;
   #storeService: StoreService;
 
@@ -20,7 +19,7 @@ export class Cli {
     this.#storeService = new StoreService();
   }
 
-  async run(commandLineArguments: Array<string>): Promise<void> {
+  async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
     EventEmitter.addHandler(([eventName, payload]) => {
       switch (eventName) {
         case "store:info": {
@@ -34,7 +33,7 @@ export class Cli {
           for (const diagnostic of payload.diagnostics) {
             switch (diagnostic.category) {
               case DiagnosticCategory.Error: {
-                this.#cancellationToken.cancel(CancellationReason.ConfigError);
+                cancellationToken.cancel(CancellationReason.ConfigError);
                 this.#outputService.writeError(diagnosticText(diagnostic));
 
                 process.exitCode = 1;
@@ -91,13 +90,13 @@ export class Cli {
 
     await configService.parseCommandLine(commandLineArguments);
 
-    if (this.#cancellationToken.isCancellationRequested) {
+    if (cancellationToken.isCancellationRequested) {
       return;
     }
 
     await configService.readConfigFile();
 
-    if (this.#cancellationToken.isCancellationRequested) {
+    if (cancellationToken.isCancellationRequested) {
       return;
     }
 
@@ -147,6 +146,6 @@ export class Cli {
 
     const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
 
-    await tstyche.run(testFiles);
+    await tstyche.run(testFiles, cancellationToken);
   }
 }

@@ -11,7 +11,6 @@ import { CancellationReason, CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
-  #cancellationToken = new CancellationToken();
   #selectService: SelectService;
   #storeService: StoreService;
   #taskRunner: TaskRunner;
@@ -25,24 +24,21 @@ export class TSTyche {
     this.#selectService = selectService;
     this.#storeService = storeService;
     this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#selectService, this.#storeService);
-
-    this.#addEventHandlers();
   }
 
-  #addEventHandlers(): void {
+  async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
     EventEmitter.addHandler(([eventName, payload]) => {
-      if (eventName.includes("error") || eventName.includes("fail")) {
-        if (
-          "diagnostics" in payload &&
-          payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
-        ) {
-          if (this.resolvedConfig.watch !== true) {
-            process.exitCode = 1;
-          }
+      if (
+        (eventName.endsWith("error") || eventName.endsWith("fail")) &&
+        "diagnostics" in payload &&
+        payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
+      ) {
+        if (this.resolvedConfig.watch !== true) {
+          process.exitCode = 1;
+        }
 
-          if (this.resolvedConfig.failFast) {
-            this.#cancellationToken.cancel(CancellationReason.FailFast);
-          }
+        if (this.resolvedConfig.failFast) {
+          cancellationToken.cancel(CancellationReason.FailFast);
         }
       }
     });
@@ -60,12 +56,12 @@ export class TSTyche {
         reporter.handleEvent(event);
       });
     }
-  }
 
-  async run(testFiles: Array<string | URL>): Promise<void> {
     await this.#taskRunner.run(
       testFiles.map((testFile) => new TestFile(testFile)),
-      this.#cancellationToken,
+      cancellationToken,
     );
+
+    EventEmitter.removeAllHandlers();
   }
 }
