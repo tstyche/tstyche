@@ -19,7 +19,9 @@ export class WatchService {
     let isRecursiveWatchAvailable: boolean | undefined;
 
     try {
-      watch(Path.resolve("."), { persistent: false, recursive: true, signal: AbortSignal.abort() });
+      const watcher = watch(Path.resolve("."), { persistent: false, recursive: true });
+      watcher.close();
+
       isRecursiveWatchAvailable = true;
     } catch {
       isRecursiveWatchAvailable = false;

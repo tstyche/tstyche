@@ -43,7 +43,9 @@ describe("watch", function () {
     let isRecursiveWatchAvailable;
 
     try {
-      fs.watch(process.cwd(), { persistent: false, recursive: true, signal: AbortSignal.abort() });
+      const watcher = fs.watch(process.cwd(), { persistent: false, recursive: true });
+      watcher.close();
+
       isRecursiveWatchAvailable = true;
     } catch {
       isRecursiveWatchAvailable = false;
