@@ -60,22 +60,22 @@ export class ConfigService {
     );
 
     await commandLineWorker.parse(commandLineArgs);
-  }
 
-  async readConfigFile(): Promise<void> {
     if (this.#commandLineOptions.config != null) {
       this.#configFilePath = this.#commandLineOptions.config;
 
       delete this.#commandLineOptions.config;
     }
+  }
+
+  async readConfigFile(): Promise<void> {
+    this.#configFileOptions = {
+      rootPath: Path.dirname(this.#configFilePath),
+    };
 
     if (!existsSync(this.#configFilePath)) {
       return;
     }
-
-    this.#configFileOptions = {
-      rootPath: Path.dirname(this.#configFilePath),
-    };
 
     const configFileText = await fs.readFile(this.#configFilePath, {
       encoding: "utf8",
