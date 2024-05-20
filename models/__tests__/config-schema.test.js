@@ -27,8 +27,8 @@ function readJsonFixtureFile(fixtureFileName) {
 
 const configSchema = readJsonFile("../config-schema.json");
 
-describe("config-schema.json", function() {
-  describe("valid", function() {
+describe("config-schema.json", function () {
+  describe("valid", function () {
     const testCases = [
       {
         fixtureFileName: "valid-all-options.json",
@@ -53,7 +53,7 @@ describe("config-schema.json", function() {
     ];
 
     testCases.forEach(({ fixtureFileName, testCase }) => {
-      test(testCase, function() {
+      test(testCase, function () {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 
@@ -62,7 +62,7 @@ describe("config-schema.json", function() {
     });
   });
 
-  describe("invalid", function() {
+  describe("invalid", function () {
     const testCases = [
       {
         fixtureFileName: "invalid-failFast.json",
@@ -103,7 +103,7 @@ describe("config-schema.json", function() {
     ];
 
     testCases.forEach(({ fixtureFileName, testCase }) => {
-      test(testCase, function() {
+      test(testCase, function () {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 
