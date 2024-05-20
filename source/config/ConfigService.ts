@@ -23,13 +23,8 @@ export interface ResolvedConfig
   pathMatch: Array<string>;
 }
 
-export class ConfigService {
-  #commandLineOptions: CommandLineOptions = {};
-  #configFileOptions: ConfigFileOptions = {};
-  #configFilePath = Path.resolve("./tstyche.config.json");
-
-  #defaultOptions: Required<ConfigFileOptions> = {
-    failFast: false,
+export const defaultOptions: Required<ConfigFileOptions> = {
+  failFast: false,
   rootPath: "./",
   target: [Environment.typescriptPath == null ? "latest" : "current"],
   testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
