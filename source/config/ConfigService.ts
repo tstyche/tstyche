@@ -93,14 +93,12 @@ export class ConfigService {
   }
 
   resolveConfig(): ResolvedConfig {
-    const mergedOptions = {
+    return {
       ...defaultOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
       configFilePath: this.#configFilePath,
       pathMatch: this.#pathMatch,
     };
-
-    return mergedOptions;
   }
 }
