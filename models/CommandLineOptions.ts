@@ -53,7 +53,7 @@ export interface CommandLineOptions {
      */
     version?: boolean;
     /**
-     * Watch for changes and rerun related tests files.
+     * Watch for changes and rerun related test files.
      */
     watch?: boolean;
 }

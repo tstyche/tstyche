@@ -48,8 +48,8 @@ Command Line Options
   --version
   Print the version number and exit.
 
-  --watch  boolean
-  Watch for changes and rerun related tests files.
+  --watch
+  Watch for changes and rerun related test files.
 
 
 To learn more, visit https://tstyche.org

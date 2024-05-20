@@ -78,6 +78,8 @@ export class CommandLineOptionsWorker {
 
     switch (optionDefinition.brand) {
       case OptionBrand.True: {
+        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+
         this.#commandLineOptions[optionDefinition.name] = true;
         break;
       }

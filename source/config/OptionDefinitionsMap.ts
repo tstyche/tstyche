@@ -136,8 +136,8 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.Boolean,
-      description: "Watch for changes and rerun related tests files.",
+      brand: OptionBrand.True,
+      description: "Watch for changes and rerun related test files.",
       group: OptionGroup.CommandLine,
       name: "watch",
     },
