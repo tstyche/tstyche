@@ -23,18 +23,17 @@ export interface ResolvedConfig
   pathMatch: Array<string>;
 }
 
+export const defaultOptions: Required<ConfigFileOptions> = {
+  failFast: false,
+  rootPath: "./",
+  target: [Environment.typescriptPath == null ? "latest" : "current"],
+  testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
+};
+
 export class ConfigService {
   #commandLineOptions: CommandLineOptions = {};
   #configFileOptions: ConfigFileOptions = {};
-  #configFilePath = Path.resolve("./tstyche.config.json");
-
-  #defaultOptions: Required<ConfigFileOptions> = {
-    failFast: false,
-    rootPath: Path.resolve("./"),
-    target: [Environment.typescriptPath == null ? "latest" : "current"],
-    testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
-  };
-
+  #configFilePath = Path.resolve(defaultOptions.rootPath, "./tstyche.config.json");
   #pathMatch: Array<string> = [];
   #storeService: StoreService;
 
@@ -61,22 +60,22 @@ export class ConfigService {
     );
 
     await commandLineWorker.parse(commandLineArgs);
-  }
 
-  async readConfigFile(): Promise<void> {
     if (this.#commandLineOptions.config != null) {
       this.#configFilePath = this.#commandLineOptions.config;
 
       delete this.#commandLineOptions.config;
     }
+  }
+
+  async readConfigFile(): Promise<void> {
+    this.#configFileOptions = {
+      rootPath: Path.dirname(this.#configFilePath),
+    };
 
     if (!existsSync(this.#configFilePath)) {
       return;
     }
-
-    this.#configFileOptions = {
-      rootPath: Path.dirname(this.#configFilePath),
-    };
 
     const configFileText = await fs.readFile(this.#configFilePath, {
       encoding: "utf8",
@@ -94,14 +93,12 @@ export class ConfigService {
   }
 
   resolveConfig(): ResolvedConfig {
-    const mergedOptions = {
-      ...this.#defaultOptions,
+    return {
+      ...defaultOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
       configFilePath: this.#configFilePath,
       pathMatch: this.#pathMatch,
     };
-
-    return mergedOptions;
   }
 }

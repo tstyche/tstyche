@@ -84,7 +84,7 @@ for (const [key, optionDefinition] of configFileOptionDefinitions) {
   jsonSchema.properties[key] = createJsonSchemaDefinition(
     optionDefinition,
     // @ts-expect-error index signature
-    tstyche.ConfigService.defaultOptions[key],
+    tstyche.defaultOptions[key],
   );
 }
 
