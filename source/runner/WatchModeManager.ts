@@ -1,8 +1,24 @@
+import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { TestFile } from "#file";
 import { InputService } from "#input";
+import { Path } from "#path";
 import type { SelectService } from "#select";
-import { WatchService } from "#watch";
+import { CancellationReason, type CancellationToken } from "#token";
+import { Watcher, type WatcherCallback } from "#watch";
+
+class Deferred {
+  promise: Promise<void>;
+  reject!: (reason?: unknown) => void;
+  resolve!: (value: void | PromiseLike<void>) => void;
+
+  constructor() {
+    this.promise = new Promise((resolve, reject) => {
+      this.reject = reject;
+      this.resolve = resolve;
+    });
+  }
+}
 
 export type RunCallback = (testFiles: Array<TestFile>) => void;
 
@@ -12,14 +28,19 @@ export class WatchModeManager {
   #runCallback: RunCallback;
   #runTimeout: ReturnType<typeof setTimeout> | undefined;
   #selectService: SelectService;
-  #watchService: WatchService;
+  #done = new Deferred();
+  #watchers = new Set<Watcher>();
   #watchedTestFiles: Map<string, TestFile>;
 
-  constructor(runCallback: RunCallback, selectService: SelectService, testFiles: Array<TestFile>) {
+  constructor(
+    readonly resolvedConfig: ResolvedConfig,
+    runCallback: RunCallback,
+    selectService: SelectService,
+    testFiles: Array<TestFile>,
+  ) {
     this.#inputService = new InputService();
     this.#runCallback = runCallback;
     this.#selectService = selectService;
-    this.#watchService = new WatchService();
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
 
     EventEmitter.addHandler(([eventName, payload]) => {
@@ -39,42 +60,10 @@ export class WatchModeManager {
             case "\u001B" /* Escape */:
             case "\u0058" /* Latin capital letter X */:
             case "\u0078" /* Latin small letter X */: {
-              this.#inputService.close();
-              this.#watchService.close();
+              this.close();
               break;
             }
           }
-          break;
-        }
-
-        case "watch:info": {
-          switch (payload.state) {
-            case "changed": {
-              let testFile = this.#watchedTestFiles.get(payload.filePath);
-
-              if (testFile != null) {
-                this.#changedTestFiles.set(payload.filePath, testFile);
-                break;
-              }
-
-              if (this.#selectService.isTestFile(payload.filePath)) {
-                testFile = new TestFile(payload.filePath);
-
-                this.#changedTestFiles.set(payload.filePath, testFile);
-                this.#watchedTestFiles.set(payload.filePath, testFile);
-              }
-
-              break;
-            }
-
-            case "removed": {
-              this.#changedTestFiles.delete(payload.filePath);
-              this.#watchedTestFiles.delete(payload.filePath);
-              break;
-            }
-          }
-
-          this.#rerunChanged();
 
           break;
         }
@@ -83,6 +72,15 @@ export class WatchModeManager {
           break;
       }
     });
+  }
+
+  close(): void {
+    for (const watcher of this.#watchers) {
+      watcher.close();
+    }
+
+    this.#inputService.close();
+    this.#done.resolve();
   }
 
   #rerunAll() {
@@ -102,7 +100,47 @@ export class WatchModeManager {
     }
   }
 
-  async watch(rootPath: string): Promise<void> {
-    await this.#watchService.watch(rootPath, { recursive: true });
+  watch(cancellationToken?: CancellationToken): Promise<void> {
+    const onChangedFile: WatcherCallback = (filePath) => {
+      let testFile = this.#watchedTestFiles.get(filePath);
+
+      if (testFile != null) {
+        this.#changedTestFiles.set(filePath, testFile);
+      } else if (this.#selectService.isTestFile(filePath)) {
+        testFile = new TestFile(filePath);
+
+        this.#changedTestFiles.set(filePath, testFile);
+        this.#watchedTestFiles.set(filePath, testFile);
+      }
+
+      this.#rerunChanged();
+    };
+
+    const onRemovedFile: WatcherCallback = (filePath) => {
+      this.#changedTestFiles.delete(filePath);
+      this.#watchedTestFiles.delete(filePath);
+    };
+
+    this.#watchers.add(
+      new Watcher(this.resolvedConfig.rootPath, {
+        onChanged: onChangedFile,
+        onRemoved: onRemovedFile,
+        recursive: true,
+      }),
+    );
+
+    const onChangedConfigFile: WatcherCallback = (filePath) => {
+      if (filePath === this.resolvedConfig.configFilePath) {
+        cancellationToken?.cancel(CancellationReason.ConfigChange);
+      }
+    };
+
+    this.#watchers.add(
+      new Watcher(Path.dirname(this.resolvedConfig.configFilePath), {
+        onChanged: onChangedConfigFile,
+      }),
+    );
+
+    return this.#done.promise;
   }
 }

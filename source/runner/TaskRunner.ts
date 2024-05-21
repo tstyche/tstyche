@@ -98,9 +98,15 @@ export class TaskRunner {
         this.#rerun(testFiles, cancellationToken);
       };
 
-      const watchModeManager = new WatchModeManager(rerunCallback, this.#selectService, testFiles);
+      const watchModeManager = new WatchModeManager(this.resolvedConfig, rerunCallback, this.#selectService, testFiles);
 
-      await watchModeManager.watch(this.resolvedConfig.rootPath);
+      cancellationToken?.onCancellationRequested((reason) => {
+        if (reason !== CancellationReason.FailFast) {
+          watchModeManager.close();
+        }
+      });
+
+      await watchModeManager.watch(cancellationToken);
     }
   }
 }

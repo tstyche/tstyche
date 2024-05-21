@@ -10,7 +10,6 @@ export type Event =
   | ["run:end", { result: Result }]
   | ["store:info", { compilerVersion: string; installationPath: string }]
   | ["store:error", { diagnostics: Array<Diagnostic> }]
-  | ["watch:info", { filePath: string; state: "changed" | "removed" }]
   | ["target:start", { result: TargetResult }]
   | ["target:end", { result: TargetResult }]
   | ["project:info", { compilerVersion: string; projectConfigFilePath: string | undefined }]

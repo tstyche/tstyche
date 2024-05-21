@@ -1,1 +1,1 @@
-export { WatchService, type WatchOptions } from "./WatchService.js";
+export { Watcher, type WatchEventHandler as WatcherCallback, type WatcherOptions } from "./Watcher.js";

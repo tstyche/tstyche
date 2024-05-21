@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import { Environment } from "#environment";
 import type { StoreService } from "#store";
-import { WatchService } from "#watch";
+import { Watcher } from "#watch";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import type { OptionBrand, OptionGroup } from "./enums.js";
@@ -61,7 +61,7 @@ export class OptionValidator {
           break;
         }
 
-        if (!WatchService.isSupported()) {
+        if (!Watcher.isSupported()) {
           this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.watchIsNotAvailable(), origin));
         }
         break;

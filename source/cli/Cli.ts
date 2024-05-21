@@ -36,7 +36,7 @@ export class Cli {
                 cancellationToken.cancel(CancellationReason.ConfigError);
                 this.#outputService.writeError(diagnosticText(diagnostic));
 
-                process.exitCode = 1;
+                process.exitCode = 1; // TODO only if not in the watch mode
                 break;
               }
 
@@ -94,58 +94,63 @@ export class Cli {
       return;
     }
 
-    await configService.readConfigFile();
+    do {
+      // TODO add 'eventHandlers' somehow, they are not installed if the watch mode is restarting
+      cancellationToken.reset();
 
-    if (cancellationToken.isCancellationRequested) {
-      return;
-    }
+      await configService.readConfigFile();
 
-    const resolvedConfig = configService.resolveConfig();
-
-    if (commandLineArguments.includes("--showConfig")) {
-      this.#outputService.writeMessage(
-        formattedText({
-          noColor: Environment.noColor,
-          noInteractive: Environment.noInteractive,
-          storePath: Environment.storePath,
-          timeout: Environment.timeout,
-          typescriptPath: Environment.typescriptPath,
-          ...resolvedConfig,
-        }),
-      );
-
-      return;
-    }
-
-    if (commandLineArguments.includes("--install")) {
-      for (const tag of resolvedConfig.target) {
-        await this.#storeService.install(tag);
+      if (cancellationToken.isCancellationRequested) {
+        break; // TODO should wait for changes, if in the watch mode
       }
 
-      return;
-    }
+      const resolvedConfig = configService.resolveConfig();
 
-    const selectService = new SelectService(resolvedConfig);
-    let testFiles: Array<string> = [];
+      if (commandLineArguments.includes("--showConfig")) {
+        this.#outputService.writeMessage(
+          formattedText({
+            noColor: Environment.noColor,
+            noInteractive: Environment.noInteractive,
+            storePath: Environment.storePath,
+            timeout: Environment.timeout,
+            typescriptPath: Environment.typescriptPath,
+            ...resolvedConfig,
+          }),
+        );
 
-    if (resolvedConfig.testFileMatch.length !== 0) {
-      testFiles = await selectService.selectFiles();
-
-      if (testFiles.length === 0) {
-        return;
+        break;
       }
 
-      if (commandLineArguments.includes("--listFiles")) {
-        this.#outputService.writeMessage(formattedText(testFiles));
+      if (commandLineArguments.includes("--install")) {
+        for (const tag of resolvedConfig.target) {
+          await this.#storeService.install(tag);
+        }
 
-        return;
+        break;
       }
-    }
 
-    EventEmitter.removeAllHandlers();
+      const selectService = new SelectService(resolvedConfig);
+      let testFiles: Array<string> = [];
 
-    const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
+      if (resolvedConfig.testFileMatch.length !== 0) {
+        testFiles = await selectService.selectFiles();
 
-    await tstyche.run(testFiles, cancellationToken);
+        if (testFiles.length === 0) {
+          break; // TODO should wait for changes, if in the watch mode
+        }
+
+        if (commandLineArguments.includes("--listFiles")) {
+          this.#outputService.writeMessage(formattedText(testFiles));
+
+          break;
+        }
+      }
+
+      EventEmitter.removeAllHandlers();
+
+      const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
+
+      await tstyche.run(testFiles, cancellationToken);
+    } while (cancellationToken.reason === CancellationReason.ConfigChange);
   }
 }
