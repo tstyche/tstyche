@@ -19,4 +19,4 @@ export * from "#select";
 export * from "#store";
 export * from "#token";
 export * from "#version";
-export * from "#watch";
+export * from "#watcher";

@@ -5,7 +5,7 @@ import { InputService } from "#input";
 import { Path } from "#path";
 import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
-import { Watcher, type WatcherCallback } from "#watch";
+import { type WatchEventHandler, Watcher } from "#watcher";
 
 class Deferred {
   promise: Promise<void>;
