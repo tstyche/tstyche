@@ -101,7 +101,7 @@ export class WatchModeManager {
   }
 
   watch(cancellationToken?: CancellationToken): Promise<void> {
-    const onChangedFile: WatcherCallback = (filePath) => {
+    const onChangedFile: WatchEventHandler = (filePath) => {
       let testFile = this.#watchedTestFiles.get(filePath);
 
       if (testFile != null) {
@@ -116,7 +116,7 @@ export class WatchModeManager {
       this.#rerunChanged();
     };
 
-    const onRemovedFile: WatcherCallback = (filePath) => {
+    const onRemovedFile: WatchEventHandler = (filePath) => {
       this.#changedTestFiles.delete(filePath);
       this.#watchedTestFiles.delete(filePath);
     };
@@ -129,7 +129,7 @@ export class WatchModeManager {
       }),
     );
 
-    const onChangedConfigFile: WatcherCallback = (filePath) => {
+    const onChangedConfigFile: WatchEventHandler = (filePath) => {
       if (filePath === this.resolvedConfig.configFilePath) {
         cancellationToken?.cancel(CancellationReason.ConfigChange);
       }
