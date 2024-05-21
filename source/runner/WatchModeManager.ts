@@ -106,13 +106,7 @@ export class WatchModeManager {
       this.#watchedTestFiles.delete(filePath);
     };
 
-    this.#watchers.push(
-      new Watcher(this.resolvedConfig.rootPath, {
-        onChanged: onChangedFile,
-        onRemoved: onRemovedFile,
-        recursive: true,
-      }),
-    );
+    this.#watchers.push(new Watcher(this.resolvedConfig.rootPath, onChangedFile, onRemovedFile, true));
 
     const onChangedConfigFile: WatchEventHandler = (filePath) => {
       if (filePath === this.resolvedConfig.configFilePath) {
@@ -120,11 +114,7 @@ export class WatchModeManager {
       }
     };
 
-    this.#watchers.push(
-      new Watcher(Path.dirname(this.resolvedConfig.configFilePath), {
-        onChanged: onChangedConfigFile,
-      }),
-    );
+    this.#watchers.push(new Watcher(Path.dirname(this.resolvedConfig.configFilePath), onChangedConfigFile));
 
     return Promise.all(this.#watchers.map((watcher) => watcher.watch()));
   }

@@ -1,31 +1,29 @@
-import { type FSWatcher, existsSync, watch } from "node:fs";
+import { existsSync, watch } from "node:fs";
+import fs from "node:fs/promises";
 import { Path } from "#path";
 
-export type WatchEventHandler = (filePath: string) => void;
-
-export interface WatcherOptions {
-  onChanged?: WatchEventHandler;
-  onRemoved?: WatchEventHandler;
-  recursive?: boolean;
-}
+export type WatchEventHandler = (filePath: string) => void | Promise<void>;
 
 export class Watcher {
-  #onChanged: WatchEventHandler | undefined;
-  #onRemoved: WatchEventHandler | undefined;
+  #abortController = new AbortController();
+  #onChanged: WatchEventHandler;
+  #onRemoved: WatchEventHandler;
   #recursive: boolean | undefined;
-  #watcher: FSWatcher | undefined;
+  #watcher: AsyncIterable<{ filename?: string | null }> | undefined;
 
   constructor(
     readonly targetPath: string,
-    options?: WatcherOptions,
+    onChanged: WatchEventHandler,
+    onRemoved?: WatchEventHandler,
+    recursive?: boolean,
   ) {
-    this.#onChanged = options?.onChanged;
-    this.#onRemoved = options?.onRemoved ?? options?.onChanged;
-    this.#recursive = options?.recursive;
+    this.#onChanged = onChanged;
+    this.#onRemoved = onRemoved ?? onChanged;
+    this.#recursive = recursive;
   }
 
   close(): void {
-    this.#watcher?.close();
+    this.#abortController.abort();
   }
 
   static isSupported(): boolean {
@@ -43,25 +41,27 @@ export class Watcher {
     return isRecursiveWatchAvailable;
   }
 
-  watch(): Promise<void> {
-    this.#watcher = watch(this.targetPath, { recursive: this.#recursive });
+  async watch(): Promise<void> {
+    this.#watcher = fs.watch(this.targetPath, { recursive: this.#recursive, signal: this.#abortController.signal });
 
-    this.#watcher.on("change", (_eventType, fileName) => {
-      if (fileName != null) {
-        const filePath = Path.resolve(this.targetPath, fileName as string);
+    try {
+      for await (const event of this.#watcher) {
+        if (event.filename != null) {
+          const filePath = Path.resolve(this.targetPath, event.filename);
 
-        if (existsSync(filePath)) {
-          this.#onChanged?.(filePath);
-        } else {
-          this.#onRemoved?.(filePath);
+          if (existsSync(filePath)) {
+            await this.#onChanged(filePath);
+          } else {
+            await this.#onRemoved(filePath);
+          }
         }
       }
-    });
-
-    return new Promise<void>((resolve) => {
-      this.#watcher?.on("close", () => {
-        resolve();
-      });
-    });
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        // the watcher was aborted
+      } else {
+        throw error;
+      }
+    }
   }
 }

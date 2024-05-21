@@ -1,1 +1,1 @@
-export { Watcher, type WatchEventHandler, type WatcherOptions } from "./Watcher.js";
+export { Watcher, type WatchEventHandler } from "./Watcher.js";
