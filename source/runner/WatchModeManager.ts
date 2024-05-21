@@ -7,19 +7,6 @@ import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
 import { type WatchEventHandler, Watcher } from "#watcher";
 
-class Deferred {
-  promise: Promise<void>;
-  reject!: (reason?: unknown) => void;
-  resolve!: (value: void | PromiseLike<void>) => void;
-
-  constructor() {
-    this.promise = new Promise((resolve, reject) => {
-      this.reject = reject;
-      this.resolve = resolve;
-    });
-  }
-}
-
 export type RunCallback = (testFiles: Array<TestFile>) => void;
 
 export class WatchModeManager {
@@ -28,8 +15,7 @@ export class WatchModeManager {
   #runCallback: RunCallback;
   #runTimeout: ReturnType<typeof setTimeout> | undefined;
   #selectService: SelectService;
-  #done = new Deferred();
-  #watchers = new Set<Watcher>();
+  #watchers: Array<Watcher> = [];
   #watchedTestFiles: Map<string, TestFile>;
 
   constructor(
@@ -80,7 +66,6 @@ export class WatchModeManager {
     }
 
     this.#inputService.close();
-    this.#done.resolve();
   }
 
   #rerunAll() {
@@ -100,7 +85,7 @@ export class WatchModeManager {
     }
   }
 
-  watch(cancellationToken?: CancellationToken): Promise<void> {
+  watch(cancellationToken?: CancellationToken): Promise<Array<void>> {
     const onChangedFile: WatchEventHandler = (filePath) => {
       let testFile = this.#watchedTestFiles.get(filePath);
 
@@ -121,7 +106,7 @@ export class WatchModeManager {
       this.#watchedTestFiles.delete(filePath);
     };
 
-    this.#watchers.add(
+    this.#watchers.push(
       new Watcher(this.resolvedConfig.rootPath, {
         onChanged: onChangedFile,
         onRemoved: onRemovedFile,
@@ -135,12 +120,12 @@ export class WatchModeManager {
       }
     };
 
-    this.#watchers.add(
+    this.#watchers.push(
       new Watcher(Path.dirname(this.resolvedConfig.configFilePath), {
         onChanged: onChangedConfigFile,
       }),
     );
 
-    return this.#done.promise;
+    return Promise.all(this.#watchers.map((watcher) => watcher.watch()));
   }
 }

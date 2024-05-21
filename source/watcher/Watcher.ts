@@ -12,27 +12,20 @@ export interface WatcherOptions {
 export class Watcher {
   #onChanged: WatchEventHandler | undefined;
   #onRemoved: WatchEventHandler | undefined;
-  #watcher: FSWatcher;
+  #recursive: boolean | undefined;
+  #watcher: FSWatcher | undefined;
 
-  constructor(targetPath: string, options?: WatcherOptions) {
+  constructor(
+    readonly targetPath: string,
+    options?: WatcherOptions,
+  ) {
     this.#onChanged = options?.onChanged;
     this.#onRemoved = options?.onRemoved ?? options?.onChanged;
-
-    this.#watcher = watch(targetPath, { recursive: options?.recursive }, (_eventType, fileName) => {
-      if (fileName != null) {
-        const filePath = Path.resolve(targetPath, fileName);
-
-        if (existsSync(filePath)) {
-          this.#onChanged?.(filePath);
-        } else {
-          this.#onRemoved?.(filePath);
-        }
-      }
-    });
+    this.#recursive = options?.recursive;
   }
 
   close(): void {
-    this.#watcher.close();
+    this.#watcher?.close();
   }
 
   static isSupported(): boolean {
@@ -48,5 +41,27 @@ export class Watcher {
     }
 
     return isRecursiveWatchAvailable;
+  }
+
+  watch(): Promise<void> {
+    this.#watcher = watch(this.targetPath, { recursive: this.#recursive });
+
+    this.#watcher.on("change", (_eventType, fileName) => {
+      if (fileName != null) {
+        const filePath = Path.resolve(this.targetPath, fileName as string);
+
+        if (existsSync(filePath)) {
+          this.#onChanged?.(filePath);
+        } else {
+          this.#onRemoved?.(filePath);
+        }
+      }
+    });
+
+    return new Promise<void>((resolve) => {
+      this.#watcher?.on("close", () => {
+        resolve();
+      });
+    });
   }
 }
