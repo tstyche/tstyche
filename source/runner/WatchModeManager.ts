@@ -1,4 +1,3 @@
-import { setTimeout } from "node:timers/promises";
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { TestFile } from "#file";
@@ -7,12 +6,13 @@ import { Path } from "#path";
 import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
 import { type WatchEventHandler, Watcher } from "#watcher";
+import { Timeout } from "./Timeout.js";
 
 export type RunCallback = (testFiles: Array<TestFile>) => void | Promise<void>;
 
 export class WatchModeManager {
-  #abortController = new AbortController();
   #changedTestFiles = new Map<string, TestFile>();
+  #timeout = new Timeout();
   #inputService: InputService;
   #runCallback: RunCallback;
   #selectService: SelectService;
@@ -62,6 +62,8 @@ export class WatchModeManager {
   }
 
   close(): void {
+    this.#timeout.clear();
+
     for (const watcher of this.#watchers) {
       watcher.close();
     }
@@ -74,21 +76,17 @@ export class WatchModeManager {
   }
 
   #runChanged() {
-    this.#abortController.abort();
-    this.#abortController = new AbortController();
+    this.#timeout.clear();
 
     if (this.#changedTestFiles.size !== 0) {
-      setTimeout(100, this.#changedTestFiles, { signal: this.#abortController.signal })
-        .then(async (changedTestFiles) => {
-          const testFiles = [...changedTestFiles.values()];
-          this.#changedTestFiles.clear();
-          await this.#runCallback(testFiles);
-        })
-        .catch((error) => {
-          if (error instanceof Error && error.name === "AbortError") {
-            // the timeout was aborted
-          }
-        });
+      const runCallback = async (changedTestFiles: Map<string, TestFile>) => {
+        const testFiles = [...changedTestFiles.values()];
+        this.#changedTestFiles.clear();
+
+        await this.#runCallback(testFiles);
+      };
+
+      this.#timeout.set(runCallback, 100, this.#changedTestFiles);
     }
   }
 
