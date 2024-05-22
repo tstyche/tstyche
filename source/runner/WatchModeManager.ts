@@ -1,3 +1,4 @@
+import { setTimeout } from "node:timers/promises";
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { TestFile } from "#file";
@@ -7,13 +8,13 @@ import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
 import { type WatchEventHandler, Watcher } from "#watcher";
 
-export type RunCallback = (testFiles: Array<TestFile>) => void;
+export type RunCallback = (testFiles: Array<TestFile>) => void | Promise<void>;
 
 export class WatchModeManager {
+  #abortController = new AbortController();
   #changedTestFiles = new Map<string, TestFile>();
   #inputService: InputService;
   #runCallback: RunCallback;
-  #runTimeout: ReturnType<typeof setTimeout> | undefined;
   #selectService: SelectService;
   #watchers: Array<Watcher> = [];
   #watchedTestFiles: Map<string, TestFile>;
@@ -37,7 +38,7 @@ export class WatchModeManager {
             case "\u0020" /* Space */:
             case "\u0041" /* Latin capital letter A */:
             case "\u0061" /* Latin small letter A */: {
-              this.#rerunAll();
+              this.#runAll();
               break;
             }
 
@@ -68,20 +69,26 @@ export class WatchModeManager {
     this.#inputService.close();
   }
 
-  #rerunAll() {
+  #runAll() {
     this.#runCallback([...this.#watchedTestFiles.values()]);
   }
 
-  #rerunChanged() {
-    clearTimeout(this.#runTimeout);
+  #runChanged() {
+    this.#abortController.abort();
+    this.#abortController = new AbortController();
 
     if (this.#changedTestFiles.size !== 0) {
-      this.#runTimeout = setTimeout(() => {
-        const testFiles = [...this.#changedTestFiles.values()];
-        this.#changedTestFiles.clear();
-
-        this.#runCallback(testFiles);
-      }, 100);
+      setTimeout(100, this.#changedTestFiles, { signal: this.#abortController.signal })
+        .then(async (changedTestFiles) => {
+          const testFiles = [...changedTestFiles.values()];
+          this.#changedTestFiles.clear();
+          await this.#runCallback(testFiles);
+        })
+        .catch((error) => {
+          if (error instanceof Error && error.name === "AbortError") {
+            // the timeout was aborted
+          }
+        });
     }
   }
 
@@ -98,7 +105,7 @@ export class WatchModeManager {
         this.#watchedTestFiles.set(filePath, testFile);
       }
 
-      this.#rerunChanged();
+      this.#runChanged();
     };
 
     const onRemovedFile: WatchEventHandler = (filePath) => {

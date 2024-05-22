@@ -59,8 +59,6 @@ export class Watcher {
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
         // the watcher was aborted
-      } else {
-        throw error;
       }
     }
   }
