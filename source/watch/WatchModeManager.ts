@@ -8,11 +8,11 @@ import { CancellationReason, type CancellationToken } from "#token";
 import { Timer } from "./Timer.js";
 import { type WatchEventHandler, Watcher } from "./Watcher.js";
 
-export type RunCallback = (testFiles: Array<TestFile>) => void | Promise<void>;
+export type RunCallback = (testFiles: Array<TestFile>) => Promise<void>;
 
 export class WatchModeManager {
   #changedTestFiles = new Map<string, TestFile>();
-  #inputService: InputService;
+  #inputService = new InputService();
   #runCallback: RunCallback;
   #selectService: SelectService;
   #timer = new Timer();
@@ -25,7 +25,6 @@ export class WatchModeManager {
     selectService: SelectService,
     testFiles: Array<TestFile>,
   ) {
-    this.#inputService = new InputService();
     this.#runCallback = runCallback;
     this.#selectService = selectService;
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
@@ -62,13 +61,12 @@ export class WatchModeManager {
   }
 
   close(): void {
+    this.#inputService.close();
     this.#timer.clear();
 
     for (const watcher of this.#watchers) {
       watcher.close();
     }
-
-    this.#inputService.close();
   }
 
   #runAll() {

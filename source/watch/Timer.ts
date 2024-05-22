@@ -5,7 +5,7 @@ export class Timer {
     clearTimeout(this.#timeout);
   }
 
-  set<T>(callback: (arg: T) => void | Promise<void>, delay: number, arg: T): void {
+  set<T>(callback: (arg: T) => Promise<void>, delay: number, arg: T): void {
     new Promise<T>((resolve) => {
       this.#timeout = setTimeout(resolve, delay, arg);
     }).then(async (arg: T) => {
