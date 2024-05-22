@@ -421,7 +421,7 @@ describe("watch", function () {
     });
   });
 
-  describe.only("TSTyche config file", () => {
+  describe("TSTyche config file", () => {
     beforeEach(async function () {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
