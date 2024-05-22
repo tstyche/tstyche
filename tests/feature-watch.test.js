@@ -56,22 +56,22 @@ describe("watch", function () {
     }
   });
 
-  beforeEach(async function () {
-    await writeFixture(fixtureUrl, {
-      ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
-      ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
-      ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
-      ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["c-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-    });
-  });
-
   afterEach(async function () {
     await clearFixture(fixtureUrl);
   });
 
   describe("interactive input", function () {
+    beforeEach(async function () {
+      await writeFixture(fixtureUrl, {
+        ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
+        ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["c-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+    });
+
     const exitTestCases = [
       {
         key: "\u0003",
@@ -156,7 +156,18 @@ describe("watch", function () {
     });
   });
 
-  describe("file system", function () {
+  describe("type test files", function () {
+    beforeEach(async function () {
+      await writeFixture(fixtureUrl, {
+        ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
+        ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["c-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+    });
+
     test("when single test file is added", async function () {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
@@ -401,6 +412,101 @@ describe("watch", function () {
         fileName: `${testFileName}-failFast-support-stderr`,
         testFileUrl: import.meta.url,
       });
+
+      await process.write("x");
+
+      const { exitCode } = await process.waitForExit();
+
+      assert.equal(exitCode, 0);
+    });
+  });
+
+  describe.only("TSTyche config file", () => {
+    beforeEach(async function () {
+      await writeFixture(fixtureUrl, {
+        ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
+        ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+    });
+
+    test("when TSTyche config file is added", async function () {
+      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+
+      fs.writeFileSync(
+        new URL("tstyche.config.json", fixtureUrl),
+        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
+      );
+
+      const configFileAdded = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileAdded.stdout)), {
+        fileName: `${testFileName}-config-file-is-added-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(configFileAdded.stderr, "");
+
+      await process.write("x");
+
+      const { exitCode } = await process.waitForExit();
+
+      assert.equal(exitCode, 0);
+    });
+
+    test("when TSTyche config file is changed", async function () {
+      fs.writeFileSync(
+        new URL("tstyche.config.json", fixtureUrl),
+        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
+      );
+
+      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+
+      fs.writeFileSync(
+        new URL("tstyche.config.json", fixtureUrl),
+        JSON.stringify({ testFileMatch: ["**/isString.*"] }, null, 2),
+      );
+
+      const configFileAdded = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileAdded.stdout)), {
+        fileName: `${testFileName}-config-file-is-changed-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(configFileAdded.stderr, "");
+
+      await process.write("x");
+
+      const { exitCode } = await process.waitForExit();
+
+      assert.equal(exitCode, 0);
+    });
+
+    test("when TSTyche config file is removed", async function () {
+      fs.writeFileSync(
+        new URL("tstyche.config.json", fixtureUrl),
+        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
+      );
+
+      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+
+      fs.rmSync(new URL("tstyche.config.json", fixtureUrl));
+
+      const configFileAdded = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileAdded.stdout)), {
+        fileName: `${testFileName}-config-file-is-removed-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(configFileAdded.stderr, "");
 
       await process.write("x");
 
