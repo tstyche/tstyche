@@ -5,8 +5,8 @@ import { Result, ResultManager, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationReason, type CancellationToken } from "#token";
+import { type RunCallback, WatchModeManager } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
-import { type RunCallback, WatchModeManager } from "./WatchModeManager.js";
 
 export class TaskRunner {
   #resultManager: ResultManager;

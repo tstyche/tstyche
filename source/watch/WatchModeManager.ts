@@ -5,8 +5,8 @@ import { InputService } from "#input";
 import { Path } from "#path";
 import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
-import { type WatchEventHandler, Watcher } from "#watcher";
 import { Timer } from "./Timer.js";
+import { type WatchEventHandler, Watcher } from "./Watcher.js";
 
 export type RunCallback = (testFiles: Array<TestFile>) => void | Promise<void>;
 
