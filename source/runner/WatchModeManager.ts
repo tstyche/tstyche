@@ -6,16 +6,16 @@ import { Path } from "#path";
 import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
 import { type WatchEventHandler, Watcher } from "#watcher";
-import { Timeout } from "./Timeout.js";
+import { Timer } from "./Timer.js";
 
 export type RunCallback = (testFiles: Array<TestFile>) => void | Promise<void>;
 
 export class WatchModeManager {
   #changedTestFiles = new Map<string, TestFile>();
-  #timeout = new Timeout();
   #inputService: InputService;
   #runCallback: RunCallback;
   #selectService: SelectService;
+  #timer = new Timer();
   #watchers: Array<Watcher> = [];
   #watchedTestFiles: Map<string, TestFile>;
 
@@ -62,7 +62,7 @@ export class WatchModeManager {
   }
 
   close(): void {
-    this.#timeout.clear();
+    this.#timer.clear();
 
     for (const watcher of this.#watchers) {
       watcher.close();
@@ -76,7 +76,7 @@ export class WatchModeManager {
   }
 
   #runChanged() {
-    this.#timeout.clear();
+    this.#timer.clear();
 
     if (this.#changedTestFiles.size !== 0) {
       const runCallback = async (changedTestFiles: Map<string, TestFile>) => {
@@ -86,7 +86,7 @@ export class WatchModeManager {
         await this.#runCallback(testFiles);
       };
 
-      this.#timeout.set(runCallback, 100, this.#changedTestFiles);
+      this.#timer.set(runCallback, 100, this.#changedTestFiles);
     }
   }
 

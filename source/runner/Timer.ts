@@ -1,4 +1,4 @@
-export class Timeout {
+export class Timer {
   #timeout: ReturnType<typeof setTimeout> | undefined;
 
   clear(): void {
