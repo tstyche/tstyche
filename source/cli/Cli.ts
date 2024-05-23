@@ -36,10 +36,7 @@ export class Cli {
                 this.#outputService.writeError(diagnosticText(diagnostic));
 
                 cancellationToken.cancel(CancellationReason.ConfigError);
-
-                if (!commandLineArguments.includes("--watch")) {
-                  process.exitCode = 1;
-                }
+                process.exitCode = 1;
 
                 break;
               }
@@ -103,6 +100,7 @@ export class Cli {
     do {
       if (cancellationToken.reason === CancellationReason.ConfigChange) {
         cancellationToken.reset();
+        process.exitCode = 0;
         EventEmitter.addHandler(setupReporter);
       }
 
