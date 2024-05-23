@@ -4,7 +4,7 @@ import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
-import { EventEmitter } from "#events";
+import { EventEmitter, type EventHandler } from "#events";
 import { OutputService, addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
@@ -20,7 +20,7 @@ export class Cli {
   }
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
-    EventEmitter.addHandler(([eventName, payload]) => {
+    const setupReporter: EventHandler = ([eventName, payload]) => {
       switch (eventName) {
         case "store:info": {
           this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
@@ -33,10 +33,14 @@ export class Cli {
           for (const diagnostic of payload.diagnostics) {
             switch (diagnostic.category) {
               case DiagnosticCategory.Error: {
-                cancellationToken.cancel(CancellationReason.ConfigError);
                 this.#outputService.writeError(diagnosticText(diagnostic));
 
-                process.exitCode = 1; // TODO only if not in the watch mode
+                cancellationToken.cancel(CancellationReason.ConfigError);
+
+                if (!commandLineArguments.includes("--watch")) {
+                  process.exitCode = 1;
+                }
+
                 break;
               }
 
@@ -52,7 +56,9 @@ export class Cli {
         default:
           break;
       }
-    });
+    };
+
+    EventEmitter.addHandler(setupReporter);
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
@@ -95,8 +101,10 @@ export class Cli {
     }
 
     do {
-      // TODO add 'eventHandlers' somehow, they are not installed if the watch mode is restarting
-      cancellationToken.reset();
+      if (cancellationToken.reason === CancellationReason.ConfigChange) {
+        cancellationToken.reset();
+        EventEmitter.addHandler(setupReporter);
+      }
 
       await configService.readConfigFile();
 
@@ -146,7 +154,7 @@ export class Cli {
         }
       }
 
-      EventEmitter.removeAllHandlers();
+      EventEmitter.removeHandler(setupReporter);
 
       const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
 
