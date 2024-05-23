@@ -4,7 +4,7 @@ import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
-import { EventEmitter } from "#events";
+import { EventEmitter, type EventHandler } from "#events";
 import { OutputService, addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
@@ -20,7 +20,7 @@ export class Cli {
   }
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
-    EventEmitter.addHandler(([eventName, payload]) => {
+    const setupReporter: EventHandler = ([eventName, payload]) => {
       switch (eventName) {
         case "store:info": {
           this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
@@ -52,7 +52,9 @@ export class Cli {
         default:
           break;
       }
-    });
+    };
+
+    EventEmitter.addHandler(setupReporter);
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
@@ -142,7 +144,7 @@ export class Cli {
       }
     }
 
-    EventEmitter.removeAllHandlers();
+    EventEmitter.removeHandler(setupReporter);
 
     const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
 
