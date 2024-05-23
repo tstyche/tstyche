@@ -404,12 +404,12 @@ describe("watch", function () {
       const filesChanged = await process.waitForIdle();
 
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stdout)), {
-        fileName: `${testFileName}-failFast-support-stdout`,
+        fileName: `${testFileName}-failFast-option-stdout`,
         testFileUrl: import.meta.url,
       });
 
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stderr)), {
-        fileName: `${testFileName}-failFast-support-stderr`,
+        fileName: `${testFileName}-failFast-option-stderr`,
         testFileUrl: import.meta.url,
       });
 
@@ -471,14 +471,14 @@ describe("watch", function () {
         JSON.stringify({ testFileMatch: ["**/isString.*"] }, null, 2),
       );
 
-      const configFileAdded = await process.waitForIdle();
+      const configFileChanged = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileAdded.stdout)), {
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileChanged.stdout)), {
         fileName: `${testFileName}-config-file-is-changed-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(configFileAdded.stderr, "");
+      assert.equal(configFileChanged.stderr, "");
 
       await process.write("x");
 
@@ -499,14 +499,48 @@ describe("watch", function () {
 
       fs.rmSync(new URL("tstyche.config.json", fixtureUrl));
 
-      const configFileAdded = await process.waitForIdle();
+      const configFileRemoved = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileAdded.stdout)), {
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileRemoved.stdout)), {
         fileName: `${testFileName}-config-file-is-removed-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(configFileAdded.stderr, "");
+      assert.equal(configFileRemoved.stderr, "");
+
+      await process.write("x");
+
+      const { exitCode } = await process.waitForExit();
+
+      assert.equal(exitCode, 0);
+    });
+
+    test("when the '--config' command line option is set", async function () {
+      fs.mkdirSync(new URL("config", fixtureUrl));
+      fs.writeFileSync(
+        new URL("config/tstyche.json", fixtureUrl),
+        JSON.stringify({ rootPath: "../", testFileMatch: ["**/isNumber.*"] }, null, 2),
+      );
+
+      const process = new Process(fixtureUrl, ["--config", "config/tstyche.json", "--watch"], {
+        env: { ["CI"]: undefined },
+      });
+
+      await process.waitForIdle();
+
+      fs.writeFileSync(
+        new URL("config/tstyche.json", fixtureUrl),
+        JSON.stringify({ rootPath: "../", testFileMatch: ["**/isString.*"] }, null, 2),
+      );
+
+      const configFileChanged = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileChanged.stdout)), {
+        fileName: `${testFileName}-config-option-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(configFileChanged.stderr, "");
 
       await process.write("x");
 
