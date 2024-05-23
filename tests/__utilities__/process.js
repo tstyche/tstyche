@@ -23,7 +23,7 @@ export class Process {
   #onExit = new Deferred();
   #output = new Output();
 
-  #idleDelay = process.env["CI"] === "true" ? 800 : 400;
+  #idleDelay = process.env["CI"] === "true" ? 1200 : 400;
   /** @type {NodeJS.Timeout | undefined} */
   #idleTimeout;
 
