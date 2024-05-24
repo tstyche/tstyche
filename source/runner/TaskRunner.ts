@@ -11,7 +11,8 @@ import { WatchModeManager } from "./WatchModeManager.js";
 
 export class TaskRunner {
   #cachedCompilers = new Map<string, typeof ts>();
-  #resultManager: ResultManager;
+  #eventEmitter = new EventEmitter();
+  #resultManager = new ResultManager();
   #selectService: SelectService;
   #storeService: StoreService;
 
@@ -20,13 +21,16 @@ export class TaskRunner {
     selectService: SelectService,
     storeService: StoreService,
   ) {
-    this.#resultManager = new ResultManager();
     this.#selectService = selectService;
     this.#storeService = storeService;
 
-    EventEmitter.addHandler((event) => {
+    this.#eventEmitter.addHandler((event) => {
       this.#resultManager.handleEvent(event);
     });
+  }
+
+  close(): void {
+    this.#eventEmitter.removeHandlers();
   }
 
   #rerun(testFiles: Array<TestFile>, cancellationToken?: CancellationToken) {
@@ -101,6 +105,8 @@ export class TaskRunner {
       const watchModeManager = new WatchModeManager(rerunCallback, this.#selectService, testFiles);
 
       await watchModeManager.watch(this.resolvedConfig.rootPath);
+
+      watchModeManager.close();
     }
   }
 }

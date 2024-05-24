@@ -8,21 +8,20 @@ export type RunCallback = (testFiles: Array<TestFile>) => void;
 
 export class WatchModeManager {
   #changedTestFiles = new Map<string, TestFile>();
-  #inputService: InputService;
+  #eventEmitter = new EventEmitter();
+  #inputService = new InputService();
   #runCallback: RunCallback;
   #runTimeout: ReturnType<typeof setTimeout> | undefined;
   #selectService: SelectService;
-  #watchService: WatchService;
+  #watchService = new WatchService();
   #watchedTestFiles: Map<string, TestFile>;
 
   constructor(runCallback: RunCallback, selectService: SelectService, testFiles: Array<TestFile>) {
-    this.#inputService = new InputService();
     this.#runCallback = runCallback;
     this.#selectService = selectService;
-    this.#watchService = new WatchService();
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
 
-    EventEmitter.addHandler(([eventName, payload]) => {
+    this.#eventEmitter.addHandler(([eventName, payload]) => {
       switch (eventName) {
         case "input:info": {
           switch (payload.key) {
@@ -39,8 +38,7 @@ export class WatchModeManager {
             case "\u001B" /* Escape */:
             case "\u0058" /* Latin capital letter X */:
             case "\u0078" /* Latin small letter X */: {
-              this.#inputService.close();
-              this.#watchService.close();
+              this.close();
               break;
             }
           }
@@ -83,6 +81,12 @@ export class WatchModeManager {
           break;
       }
     });
+  }
+
+  close(): void {
+    this.#inputService.close();
+    this.#watchService.close();
+    this.#eventEmitter.removeHandlers();
   }
 
   #rerunAll() {
