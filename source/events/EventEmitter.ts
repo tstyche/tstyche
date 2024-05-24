@@ -49,6 +49,11 @@ export class EventEmitter {
     }
   }
 
+  removeHandler(handler: EventHandler): void {
+    this.#scopeHandlers.delete(handler);
+    EventEmitter.#handlers.delete(handler);
+  }
+
   removeHandlers(): void {
     for (const handler of this.#scopeHandlers) {
       EventEmitter.#handlers.delete(handler);

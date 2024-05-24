@@ -1,4 +1,3 @@
-import process from "node:process";
 import type { ResolvedConfig } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -38,10 +37,6 @@ export class TSTyche {
         "diagnostics" in payload &&
         payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
       ) {
-        if (this.resolvedConfig.watch !== true) {
-          process.exitCode = 1;
-        }
-
         if (this.resolvedConfig.failFast) {
           cancellationToken.cancel(CancellationReason.FailFast);
         }
