@@ -36,8 +36,10 @@ export type EventHandler = (event: Event) => void;
 
 export class EventEmitter {
   static #handlers = new Set<EventHandler>();
+  #scopeHandlers = new Set<EventHandler>();
 
-  static addHandler(handler: EventHandler): void {
+  addHandler(handler: EventHandler): void {
+    this.#scopeHandlers.add(handler);
     EventEmitter.#handlers.add(handler);
   }
 
@@ -47,11 +49,11 @@ export class EventEmitter {
     }
   }
 
-  static removeAllHandlers(): void {
-    EventEmitter.#handlers = new Set<EventHandler>();
-  }
+  removeHandlers(): void {
+    for (const handler of this.#scopeHandlers) {
+      EventEmitter.#handlers.delete(handler);
+    }
 
-  static removeHandler(handler: EventHandler): void {
-    EventEmitter.#handlers.delete(handler);
+    this.#scopeHandlers.clear();
   }
 }

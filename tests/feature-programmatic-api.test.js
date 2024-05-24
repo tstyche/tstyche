@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { fileURLToPath } from "node:url";
-import { describe, test } from "mocha";
+import { after, before, describe, test } from "mocha";
 import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -17,24 +17,31 @@ const resolvedConfig = configService.resolveConfig();
 const selectService = new tstyche.SelectService(resolvedConfig);
 
 const taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
-
-/**
- * @type {import("tstyche/tstyche").Result | undefined}
- */
-let result;
-
-/**
- * @param {import("tstyche/tstyche").Event} event
- */
-function handler([eventName, payload]) {
-  if (eventName === "run:end") {
-    result = payload.result;
-  }
-}
-
-tstyche.EventEmitter.addHandler(handler);
+const eventEmitter = new tstyche.EventEmitter();
 
 describe("runs type tests", function () {
+  /**
+   * @type {import("tstyche/tstyche").Result | undefined}
+   */
+  let result;
+
+  before(function () {
+    /**
+     * @param {import("tstyche/tstyche").Event} event
+     */
+    const eventHandler = ([eventName, payload]) => {
+      if (eventName === "run:end") {
+        result = payload.result;
+      }
+    };
+
+    eventEmitter.addHandler(eventHandler);
+  });
+
+  after(function () {
+    eventEmitter.removeHandlers();
+  });
+
   const testCases = [
     {
       identifier: fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),

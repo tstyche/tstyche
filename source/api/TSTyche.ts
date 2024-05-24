@@ -11,6 +11,7 @@ import { CancellationReason, CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
+  #eventEmitter = new EventEmitter();
   #selectService: SelectService;
   #storeService: StoreService;
   #taskRunner: TaskRunner;
@@ -26,8 +27,12 @@ export class TSTyche {
     this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#selectService, this.#storeService);
   }
 
+  close(): void {
+    this.#taskRunner.close();
+  }
+
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    EventEmitter.addHandler(([eventName, payload]) => {
+    this.#eventEmitter.addHandler(([eventName, payload]) => {
       if (
         (eventName.endsWith("error") || eventName.endsWith("fail")) &&
         "diagnostics" in payload &&
@@ -52,7 +57,7 @@ export class TSTyche {
     }
 
     for (const reporter of reporters) {
-      EventEmitter.addHandler((event) => {
+      this.#eventEmitter.addHandler((event) => {
         reporter.handleEvent(event);
       });
     }
@@ -62,6 +67,6 @@ export class TSTyche {
       cancellationToken,
     );
 
-    EventEmitter.removeAllHandlers();
+    this.#eventEmitter.removeHandlers();
   }
 }

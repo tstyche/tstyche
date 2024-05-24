@@ -11,16 +11,12 @@ import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 
 export class Cli {
-  #outputService: OutputService;
-  #storeService: StoreService;
-
-  constructor() {
-    this.#outputService = new OutputService();
-    this.#storeService = new StoreService();
-  }
+  #eventEmitter = new EventEmitter();
+  #outputService = new OutputService();
+  #storeService = new StoreService();
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
-    const setupReporter: EventHandler = ([eventName, payload]) => {
+    const eventHandler: EventHandler = ([eventName, payload]) => {
       switch (eventName) {
         case "store:info": {
           this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
@@ -54,7 +50,7 @@ export class Cli {
       }
     };
 
-    EventEmitter.addHandler(setupReporter);
+    this.#eventEmitter.addHandler(eventHandler);
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
@@ -144,10 +140,12 @@ export class Cli {
       }
     }
 
-    EventEmitter.removeHandler(setupReporter);
+    this.#eventEmitter.removeHandlers();
 
     const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
 
     await tstyche.run(testFiles, cancellationToken);
+
+    tstyche.close();
   }
 }
