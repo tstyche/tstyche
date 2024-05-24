@@ -5,10 +5,10 @@ import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter, type EventHandler } from "#events";
 import { OutputService, addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
+import { ExitCodeReporter } from "#reporters";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
-import { ExitCodeHandler } from "./ExitCodeHandler.js";
 
 export class Cli {
   #eventEmitter = new EventEmitter();
@@ -16,10 +16,10 @@ export class Cli {
   #storeService = new StoreService();
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
-    const exitCodeHandler = new ExitCodeHandler();
+    const exitCodeReporter = new ExitCodeReporter();
 
     this.#eventEmitter.addHandler((event) => {
-      exitCodeHandler.handleEvent(event);
+      exitCodeReporter.handleEvent(event);
     });
 
     const setupEventHandler: EventHandler = ([eventName, payload]) => {

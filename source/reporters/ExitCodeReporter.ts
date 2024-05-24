@@ -2,7 +2,7 @@ import process from "node:process";
 import { DiagnosticCategory } from "#diagnostic";
 import type { Event } from "#events";
 
-export class ExitCodeHandler {
+export class ExitCodeReporter {
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
       case "run:start": {
