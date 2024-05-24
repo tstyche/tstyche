@@ -192,7 +192,7 @@ describe("watch", function () {
 
       const { exitCode } = await process.waitForExit();
 
-      assert.equal(exitCode, 0);
+      assert.equal(exitCode, 1);
     });
 
     test("when multiple test files are added", async function () {
@@ -220,7 +220,7 @@ describe("watch", function () {
 
       const { exitCode } = await process.waitForExit();
 
-      assert.equal(exitCode, 0);
+      assert.equal(exitCode, 1);
     });
 
     test("when single test file is changed", async function () {
@@ -247,7 +247,7 @@ describe("watch", function () {
 
       const { exitCode } = await process.waitForExit();
 
-      assert.equal(exitCode, 0);
+      assert.equal(exitCode, 1);
     });
 
     test("when multiple test files are changed", async function () {
@@ -275,7 +275,7 @@ describe("watch", function () {
 
       const { exitCode } = await process.waitForExit();
 
-      assert.equal(exitCode, 0);
+      assert.equal(exitCode, 1);
     });
 
     test("when single test file is renamed", async function () {
@@ -417,7 +417,7 @@ describe("watch", function () {
 
       const { exitCode } = await process.waitForExit();
 
-      assert.equal(exitCode, 0);
+      assert.equal(exitCode, 1);
     });
   });
 

@@ -12,6 +12,7 @@ export type RunCallback = (testFiles: Array<TestFile>) => Promise<void>;
 
 export class WatchModeManager {
   #changedTestFiles = new Map<string, TestFile>();
+  #eventEmitter = new EventEmitter();
   #inputService = new InputService();
   #runCallback: RunCallback;
   #selectService: SelectService;
@@ -29,7 +30,7 @@ export class WatchModeManager {
     this.#selectService = selectService;
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
 
-    EventEmitter.addHandler(([eventName, payload]) => {
+    this.#eventEmitter.addHandler(([eventName, payload]) => {
       switch (eventName) {
         case "input:info": {
           switch (payload.key) {
@@ -67,6 +68,8 @@ export class WatchModeManager {
     for (const watcher of this.#watchers) {
       watcher.close();
     }
+
+    this.#eventEmitter.removeHandlers();
   }
 
   #runAll() {

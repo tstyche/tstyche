@@ -1,4 +1,3 @@
-import process from "node:process";
 import type { ResolvedConfig } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -11,6 +10,7 @@ import { CancellationReason, CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
+  #eventEmitter = new EventEmitter();
   #selectService: SelectService;
   #storeService: StoreService;
   #taskRunner: TaskRunner;
@@ -26,17 +26,17 @@ export class TSTyche {
     this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#selectService, this.#storeService);
   }
 
+  close(): void {
+    this.#taskRunner.close();
+  }
+
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    EventEmitter.addHandler(([eventName, payload]) => {
+    this.#eventEmitter.addHandler(([eventName, payload]) => {
       if (
         (eventName.endsWith("error") || eventName.endsWith("fail")) &&
         "diagnostics" in payload &&
         payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
       ) {
-        if (this.resolvedConfig.watch !== true) {
-          process.exitCode = 1;
-        }
-
         if (this.resolvedConfig.failFast) {
           cancellationToken.cancel(CancellationReason.FailFast);
         }
@@ -52,7 +52,7 @@ export class TSTyche {
     }
 
     for (const reporter of reporters) {
-      EventEmitter.addHandler((event) => {
+      this.#eventEmitter.addHandler((event) => {
         reporter.handleEvent(event);
       });
     }
@@ -62,6 +62,6 @@ export class TSTyche {
       cancellationToken,
     );
 
-    EventEmitter.removeAllHandlers();
+    this.#eventEmitter.removeHandlers();
   }
 }

@@ -1,26 +1,28 @@
 import fs from "node:fs/promises";
-import process from "node:process";
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
 import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter, type EventHandler } from "#events";
 import { OutputService, addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
+import { ExitCodeReporter } from "#reporters";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 
 export class Cli {
-  #outputService: OutputService;
-  #storeService: StoreService;
-
-  constructor() {
-    this.#outputService = new OutputService();
-    this.#storeService = new StoreService();
-  }
+  #eventEmitter = new EventEmitter();
+  #outputService = new OutputService();
+  #storeService = new StoreService();
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
-    const setupReporter: EventHandler = ([eventName, payload]) => {
+    const exitCodeReporter = new ExitCodeReporter();
+
+    this.#eventEmitter.addHandler((event) => {
+      exitCodeReporter.handleEvent(event);
+    });
+
+    const setupEventHandler: EventHandler = ([eventName, payload]) => {
       switch (eventName) {
         case "store:info": {
           this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
@@ -36,8 +38,6 @@ export class Cli {
                 this.#outputService.writeError(diagnosticText(diagnostic));
 
                 cancellationToken.cancel(CancellationReason.ConfigError);
-                process.exitCode = 1;
-
                 break;
               }
 
@@ -55,7 +55,7 @@ export class Cli {
       }
     };
 
-    EventEmitter.addHandler(setupReporter);
+    this.#eventEmitter.addHandler(setupEventHandler);
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
@@ -100,8 +100,9 @@ export class Cli {
     do {
       if (cancellationToken.reason === CancellationReason.ConfigChange) {
         cancellationToken.reset();
-        process.exitCode = 0;
-        EventEmitter.addHandler(setupReporter);
+        exitCodeReporter.resetCode();
+
+        this.#eventEmitter.addHandler(setupEventHandler);
       }
 
       await configService.readConfigFile();
@@ -152,11 +153,14 @@ export class Cli {
         }
       }
 
-      EventEmitter.removeHandler(setupReporter);
+      this.#eventEmitter.removeHandler(setupEventHandler);
 
       const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
 
       await tstyche.run(testFiles, cancellationToken);
+      tstyche.close();
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
+
+    this.#eventEmitter.removeHandlers();
   }
 }

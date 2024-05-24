@@ -9,7 +9,8 @@ import { type RunCallback, WatchModeManager } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
 
 export class TaskRunner {
-  #resultManager: ResultManager;
+  #eventEmitter = new EventEmitter();
+  #resultManager = new ResultManager();
   #selectService: SelectService;
   #storeService: StoreService;
 
@@ -18,13 +19,16 @@ export class TaskRunner {
     selectService: SelectService,
     storeService: StoreService,
   ) {
-    this.#resultManager = new ResultManager();
     this.#selectService = selectService;
     this.#storeService = storeService;
 
-    EventEmitter.addHandler((event) => {
+    this.#eventEmitter.addHandler((event) => {
       this.#resultManager.handleEvent(event);
     });
+  }
+
+  close(): void {
+    this.#eventEmitter.removeHandlers();
   }
 
   async run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
