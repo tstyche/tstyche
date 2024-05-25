@@ -26,16 +26,18 @@ describe("runs type tests", function () {
   let result;
 
   before(function () {
-    /**
-     * @param {import("tstyche/tstyche").Event} event
-     */
-    const eventHandler = ([eventName, payload]) => {
-      if (eventName === "run:end") {
-        result = payload.result;
+    class TestResultHandler {
+      /**
+       * @param {import("tstyche/tstyche").Event} event
+       */
+      handleEvent([eventName, payload]) {
+        if (eventName === "run:end") {
+          result = payload.result;
+        }
       }
-    };
+    }
 
-    eventEmitter.addHandler(eventHandler);
+    eventEmitter.addHandler(new TestResultHandler());
   });
 
   after(function () {
