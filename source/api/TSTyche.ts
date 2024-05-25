@@ -34,6 +34,7 @@ export class TSTyche {
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
+    // TODO move this handler to 'TaskRunner'
     if (this.resolvedConfig.failFast) {
       this.#eventEmitter.addHandler(new CancellationHandler(cancellationToken, CancellationReason.FailFast));
     }
