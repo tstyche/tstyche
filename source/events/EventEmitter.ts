@@ -4,7 +4,6 @@ import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, Te
 export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
   | ["deprecation:info", { diagnostics: Array<Diagnostic> }]
-  | ["input:info", { key: string }]
   | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
@@ -35,24 +34,18 @@ export interface EventHandler {
   handleEvent: (event: Event) => void;
 }
 
-export type EventHandlerLegacy = ((event: Event) => void) | EventHandler;
-
 export class EventEmitter {
-  static #handlers = new Set<EventHandlerLegacy>();
-  #scopeHandlers = new Set<EventHandlerLegacy>();
+  static #handlers = new Set<EventHandler>();
+  #scopeHandlers = new Set<EventHandler>();
 
-  addHandler(handler: EventHandlerLegacy): void {
+  addHandler(handler: EventHandler): void {
     this.#scopeHandlers.add(handler);
     EventEmitter.#handlers.add(handler);
   }
 
   static dispatch(event: Event): void {
     for (const handler of EventEmitter.#handlers) {
-      if ("handleEvent" in handler) {
-        handler.handleEvent(event);
-      } else {
-        handler(event);
-      }
+      handler.handleEvent(event);
     }
   }
 

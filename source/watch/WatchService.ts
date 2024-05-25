@@ -1,19 +1,17 @@
 import type { ResolvedConfig } from "#config";
-import { EventEmitter } from "#events";
 import { TestFile } from "#file";
-import { InputService } from "#input";
+import { type InputHandler, InputService } from "#input";
 import { Path } from "#path";
 import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
 import { Timer } from "./Timer.js";
-import { type WatchEventHandler, Watcher } from "./Watcher.js";
+import { type WatchHandler, Watcher } from "./Watcher.js";
 
 export type RunCallback = (testFiles: Array<TestFile>) => Promise<void>;
 
-export class WatchModeManager {
+export class WatchService {
   #changedTestFiles = new Map<string, TestFile>();
-  #eventEmitter = new EventEmitter();
-  #inputService = new InputService();
+  #inputService: InputService;
   #runCallback: RunCallback;
   #selectService: SelectService;
   #timer = new Timer();
@@ -30,35 +28,28 @@ export class WatchModeManager {
     this.#selectService = selectService;
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
 
-    this.#eventEmitter.addHandler(([eventName, payload]) => {
-      switch (eventName) {
-        case "input:info": {
-          switch (payload.key) {
-            case "\u000D" /* Return */:
-            case "\u0020" /* Space */:
-            case "\u0041" /* Latin capital letter A */:
-            case "\u0061" /* Latin small letter A */: {
-              this.#runAll();
-              break;
-            }
-
-            case "\u0003" /* Ctrl-C */:
-            case "\u0004" /* Ctrl-D */:
-            case "\u001B" /* Escape */:
-            case "\u0058" /* Latin capital letter X */:
-            case "\u0078" /* Latin small letter X */: {
-              this.close();
-              break;
-            }
-          }
-
+    const onPressedKey: InputHandler = (data) => {
+      switch (data.toString()) {
+        case "\u0003" /* Ctrl-C */:
+        case "\u0004" /* Ctrl-D */:
+        case "\u001B" /* Escape */:
+        case "\u0058" /* Latin capital letter X */:
+        case "\u0078" /* Latin small letter X */: {
+          this.close();
           break;
         }
 
-        default:
+        case "\u000D" /* Return */:
+        case "\u0020" /* Space */:
+        case "\u0041" /* Latin capital letter A */:
+        case "\u0061" /* Latin small letter A */: {
+          this.#runAll();
           break;
+        }
       }
-    });
+    };
+
+    this.#inputService = new InputService(onPressedKey);
   }
 
   close(): void {
@@ -68,8 +59,6 @@ export class WatchModeManager {
     for (const watcher of this.#watchers) {
       watcher.close();
     }
-
-    this.#eventEmitter.removeHandlers();
   }
 
   #runAll() {
@@ -92,7 +81,7 @@ export class WatchModeManager {
   }
 
   watch(cancellationToken?: CancellationToken): Promise<Array<void>> {
-    const onChangedFile: WatchEventHandler = (filePath) => {
+    const onChangedFile: WatchHandler = (filePath) => {
       let testFile = this.#watchedTestFiles.get(filePath);
 
       if (testFile != null) {
@@ -107,14 +96,14 @@ export class WatchModeManager {
       this.#runChanged();
     };
 
-    const onRemovedFile: WatchEventHandler = (filePath) => {
+    const onRemovedFile: WatchHandler = (filePath) => {
       this.#changedTestFiles.delete(filePath);
       this.#watchedTestFiles.delete(filePath);
     };
 
     this.#watchers.push(new Watcher(this.resolvedConfig.rootPath, onChangedFile, onRemovedFile, true));
 
-    const onChangedConfigFile: WatchEventHandler = (filePath) => {
+    const onChangedConfigFile: WatchHandler = (filePath) => {
       if (filePath === this.resolvedConfig.configFilePath) {
         cancellationToken?.cancel(CancellationReason.ConfigChange);
       }

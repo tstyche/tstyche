@@ -2,19 +2,19 @@ import { existsSync, watch } from "node:fs";
 import fs from "node:fs/promises";
 import { Path } from "#path";
 
-export type WatchEventHandler = (filePath: string) => void | Promise<void>;
+export type WatchHandler = (filePath: string) => void | Promise<void>;
 
 export class Watcher {
   #abortController = new AbortController();
-  #onChanged: WatchEventHandler;
-  #onRemoved: WatchEventHandler;
+  #onChanged: WatchHandler;
+  #onRemoved: WatchHandler;
   #recursive: boolean | undefined;
   #watcher: AsyncIterable<{ filename?: string | null }> | undefined;
 
   constructor(
     readonly targetPath: string,
-    onChanged: WatchEventHandler,
-    onRemoved?: WatchEventHandler,
+    onChanged: WatchHandler,
+    onRemoved?: WatchHandler,
     recursive?: boolean,
   ) {
     this.#onChanged = onChanged;

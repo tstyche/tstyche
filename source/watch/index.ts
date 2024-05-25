@@ -1,2 +1,2 @@
-export { Watcher, type WatchEventHandler } from "./Watcher.js";
-export { WatchModeManager, type RunCallback } from "./WatchModeManager.js";
+export { Watcher, type WatchHandler } from "./Watcher.js";
+export { WatchService, type RunCallback } from "./WatchService.js";

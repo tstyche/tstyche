@@ -5,7 +5,7 @@ import { Result, ResultHandler, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationReason, type CancellationToken } from "#token";
-import { type RunCallback, WatchModeManager } from "#watch";
+import { type RunCallback, WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
 
 export class TaskRunner {
@@ -74,7 +74,7 @@ export class TaskRunner {
       await this.#run(testFiles, cancellationToken);
     };
 
-    const watchModeManager = new WatchModeManager(this.resolvedConfig, runCallback, this.#selectService, testFiles);
+    const watchModeManager = new WatchService(this.resolvedConfig, runCallback, this.#selectService, testFiles);
 
     cancellationToken?.onCancellationRequested((reason) => {
       if (reason !== CancellationReason.FailFast) {
