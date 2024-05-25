@@ -1,11 +1,10 @@
 import fs from "node:fs/promises";
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
-import { DiagnosticCategory } from "#diagnostic";
 import { Environment } from "#environment";
-import { EventEmitter, type EventHandler } from "#events";
-import { OutputService, addsPackageStepText, diagnosticText, formattedText, helpText } from "#output";
-import { ExitCodeReporter } from "#reporters";
+import { EventEmitter } from "#events";
+import { CancellationHandler, ExitCodeHandler, SetupReporter } from "#handlers";
+import { OutputService, formattedText, helpText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
@@ -16,46 +15,14 @@ export class Cli {
   #storeService = new StoreService();
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
-    const exitCodeReporter = new ExitCodeReporter();
+    const exitCodeHandler = new ExitCodeHandler();
+    this.#eventEmitter.addHandler(exitCodeHandler);
 
-    this.#eventEmitter.addHandler((event) => {
-      exitCodeReporter.handleEvent(event);
-    });
+    const setupReporter = new SetupReporter(this.#outputService);
+    this.#eventEmitter.addHandler(setupReporter);
 
-    const setupEventHandler: EventHandler = ([eventName, payload]) => {
-      switch (eventName) {
-        case "store:info": {
-          this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
-          break;
-        }
-
-        case "config:error":
-        case "select:error":
-        case "store:error": {
-          for (const diagnostic of payload.diagnostics) {
-            switch (diagnostic.category) {
-              case DiagnosticCategory.Error: {
-                this.#outputService.writeError(diagnosticText(diagnostic));
-
-                cancellationToken.cancel(CancellationReason.ConfigError);
-                break;
-              }
-
-              case DiagnosticCategory.Warning: {
-                this.#outputService.writeWarning(diagnosticText(diagnostic));
-                break;
-              }
-            }
-          }
-          break;
-        }
-
-        default:
-          break;
-      }
-    };
-
-    this.#eventEmitter.addHandler(setupEventHandler);
+    const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
+    this.#eventEmitter.addHandler(cancellationHandler);
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
@@ -100,10 +67,12 @@ export class Cli {
     do {
       if (cancellationToken.reason === CancellationReason.ConfigChange) {
         cancellationToken.reset();
-        exitCodeReporter.resetCode();
 
-        this.#eventEmitter.addHandler(setupEventHandler);
+        this.#eventEmitter.addHandler(setupReporter);
+        this.#eventEmitter.addHandler(cancellationHandler);
       }
+
+      exitCodeHandler.resetCode();
 
       await configService.readConfigFile();
 
@@ -153,9 +122,10 @@ export class Cli {
         }
       }
 
-      this.#eventEmitter.removeHandler(setupEventHandler);
+      this.#eventEmitter.removeHandler(setupReporter);
+      this.#eventEmitter.removeHandler(cancellationHandler);
 
-      const tstyche = new TSTyche(resolvedConfig, selectService, this.#storeService);
+      const tstyche = new TSTyche(resolvedConfig, this.#outputService, selectService, this.#storeService);
 
       await tstyche.run(testFiles, cancellationToken);
       tstyche.close();

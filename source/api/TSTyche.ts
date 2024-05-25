@@ -1,8 +1,8 @@
 import type { ResolvedConfig } from "#config";
-import { DiagnosticCategory } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { TestFile } from "#file";
-import { type Reporter, SummaryReporter, ThoroughReporter, WatchModeReporter } from "#reporters";
+import { CancellationHandler, SummaryReporter, ThoroughReporter, WatchModeReporter } from "#handlers";
+import type { OutputService } from "#output";
 import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
@@ -11,6 +11,7 @@ import { CancellationReason, CancellationToken } from "#token";
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
   #eventEmitter = new EventEmitter();
+  #outputService: OutputService;
   #selectService: SelectService;
   #storeService: StoreService;
   #taskRunner: TaskRunner;
@@ -18,9 +19,11 @@ export class TSTyche {
 
   constructor(
     readonly resolvedConfig: ResolvedConfig,
+    outputService: OutputService,
     selectService: SelectService,
     storeService: StoreService,
   ) {
+    this.#outputService = outputService;
     this.#selectService = selectService;
     this.#storeService = storeService;
     this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#selectService, this.#storeService);
@@ -31,30 +34,17 @@ export class TSTyche {
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    this.#eventEmitter.addHandler(([eventName, payload]) => {
-      if (
-        (eventName.endsWith("error") || eventName.endsWith("fail")) &&
-        "diagnostics" in payload &&
-        payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
-      ) {
-        if (this.resolvedConfig.failFast) {
-          cancellationToken.cancel(CancellationReason.FailFast);
-        }
-      }
-    });
-
-    const reporters: Array<Reporter> = [new ThoroughReporter(this.resolvedConfig)];
-
-    if (this.resolvedConfig.watch === true) {
-      reporters.push(new WatchModeReporter(this.resolvedConfig));
-    } else {
-      reporters.push(new SummaryReporter(this.resolvedConfig));
+    // TODO move this handler to 'TaskRunner'
+    if (this.resolvedConfig.failFast) {
+      this.#eventEmitter.addHandler(new CancellationHandler(cancellationToken, CancellationReason.FailFast));
     }
 
-    for (const reporter of reporters) {
-      this.#eventEmitter.addHandler((event) => {
-        reporter.handleEvent(event);
-      });
+    this.#eventEmitter.addHandler(new ThoroughReporter(this.resolvedConfig, this.#outputService));
+
+    if (this.resolvedConfig.watch === true) {
+      this.#eventEmitter.addHandler(new WatchModeReporter(this.#outputService));
+    } else {
+      this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));
     }
 
     await this.#taskRunner.run(

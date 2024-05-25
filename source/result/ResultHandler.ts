@@ -9,7 +9,7 @@ import type { TargetResult } from "./TargetResult.js";
 import type { TestResult } from "./TestResult.js";
 import { ResultStatus } from "./enums.js";
 
-export class ResultManager {
+export class ResultHandler {
   #describeResult: DescribeResult | undefined;
   #expectResult: ExpectResult | undefined;
   #fileResult: FileResult | undefined;

@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import type { TestFile } from "#file";
-import { Result, ResultManager, TargetResult } from "#result";
+import { Result, ResultHandler, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationReason, type CancellationToken } from "#token";
@@ -10,7 +10,6 @@ import { TestFileRunner } from "./TestFileRunner.js";
 
 export class TaskRunner {
   #eventEmitter = new EventEmitter();
-  #resultManager = new ResultManager();
   #selectService: SelectService;
   #storeService: StoreService;
 
@@ -22,9 +21,7 @@ export class TaskRunner {
     this.#selectService = selectService;
     this.#storeService = storeService;
 
-    this.#eventEmitter.addHandler((event) => {
-      this.#resultManager.handleEvent(event);
-    });
+    this.#eventEmitter.addHandler(new ResultHandler());
   }
 
   close(): void {

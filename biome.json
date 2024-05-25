@@ -76,7 +76,7 @@
 
   "overrides": [
     {
-      "include": ["source/result/ResultManager.ts", "source/version/Version.ts"],
+      "include": ["source/result/ResultHandler.ts", "source/version/Version.ts"],
       "linter": {
         "rules": {
           "style": {

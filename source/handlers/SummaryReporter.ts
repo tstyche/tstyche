@@ -1,12 +1,17 @@
 import type { Event } from "#events";
-import { summaryText } from "#output";
-import { Reporter } from "./Reporter.js";
+import { type OutputService, summaryText } from "#output";
 
-export class SummaryReporter extends Reporter {
+export class SummaryReporter {
+  #outputService: OutputService;
+
+  constructor(outputService: OutputService) {
+    this.#outputService = outputService;
+  }
+
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
       case "run:end": {
-        this.outputService.writeMessage(
+        this.#outputService.writeMessage(
           summaryText({
             duration: payload.result.timing.duration,
             expectCount: payload.result.expectCount,
