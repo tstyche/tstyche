@@ -1,17 +1,19 @@
 import process from "node:process";
-import { type Diagnostic, DiagnosticCategory } from "#diagnostic";
-import type { Event } from "#events";
+import { DiagnosticCategory } from "#diagnostic";
+import type { Event, EventHandler } from "#events";
 
-export class ExitCodeHandler {
-  handleEvent([eventName, payload]: Event & [string, { diagnostics?: Array<Diagnostic> }]): void {
+export class ExitCodeHandler implements EventHandler {
+  handleEvent([eventName, payload]: Event): void {
     if (eventName === "run:start") {
       // useful when tests are reran in the watch mode
       this.resetCode();
       return;
     }
 
-    if (payload.diagnostics?.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)) {
-      this.#setCode(1);
+    if ("diagnostics" in payload) {
+      if (payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)) {
+        this.#setCode(1);
+      }
     }
   }
 

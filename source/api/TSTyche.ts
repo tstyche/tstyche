@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { TestFile } from "#file";
-import { CancellationHandler, SummaryReporter, ThoroughReporter, WatchModeReporter } from "#handlers";
+import { CancellationHandler, RuntimeReporter, SummaryReporter, WatchReporter } from "#handlers";
 import type { OutputService } from "#output";
 import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
@@ -39,10 +39,10 @@ export class TSTyche {
       this.#eventEmitter.addHandler(new CancellationHandler(cancellationToken, CancellationReason.FailFast));
     }
 
-    this.#eventEmitter.addHandler(new ThoroughReporter(this.resolvedConfig, this.#outputService));
+    this.#eventEmitter.addHandler(new RuntimeReporter(this.resolvedConfig, this.#outputService));
 
     if (this.resolvedConfig.watch === true) {
-      this.#eventEmitter.addHandler(new WatchModeReporter(this.#outputService));
+      this.#eventEmitter.addHandler(new WatchReporter(this.#outputService));
     } else {
       this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));
     }

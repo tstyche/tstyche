@@ -1,7 +1,7 @@
-import type { Event } from "#events";
-import { type OutputService, watchModeUsageText } from "#output";
+import type { Event, EventHandler } from "#events";
+import { type OutputService, watchUsageText } from "#output";
 
-export class WatchModeReporter {
+export class WatchReporter implements EventHandler {
   #outputService: OutputService;
 
   constructor(outputService: OutputService) {
@@ -16,7 +16,7 @@ export class WatchModeReporter {
       }
 
       case "run:end": {
-        this.#outputService.writeMessage(watchModeUsageText());
+        this.#outputService.writeMessage(watchUsageText());
         break;
       }
 
