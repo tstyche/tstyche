@@ -116,7 +116,7 @@ class CommandLineOptionsText implements ScribblerJsx.ElementClass {
     const optionsText = definitions.map((definition) => {
       let hint: ScribblerJsx.Element | undefined;
 
-      if (definition.brand !== OptionBrand.True) {
+      if (definition.brand !== OptionBrand.BareTrue) {
         hint = <CommandLineOptionHintText definition={definition} />;
       }
 
