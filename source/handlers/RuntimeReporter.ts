@@ -4,7 +4,7 @@ import type { Event } from "#events";
 import { type OutputService, addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
 import { FileViewService } from "./FileViewService.js";
 
-export class ThoroughReporter {
+export class RuntimeReporter {
   #currentCompilerVersion: string | undefined;
   #currentProjectConfigFilePath: string | undefined;
   #fileCount = 0;
