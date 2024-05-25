@@ -1,10 +1,10 @@
+import type { ResolvedConfig } from "#config";
 import { Environment } from "#environment";
 import type { Event } from "#events";
-import { addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
+import { type OutputService, addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
 import { FileViewService } from "./FileViewService.js";
-import { Reporter } from "./Reporter.js";
 
-export class ThoroughReporter extends Reporter {
+export class ThoroughReporter {
   #currentCompilerVersion: string | undefined;
   #currentProjectConfigFilePath: string | undefined;
   #fileCount = 0;
@@ -12,7 +12,15 @@ export class ThoroughReporter extends Reporter {
   #hasReportedAdds = false;
   #hasReportedError = false;
   #isFileViewExpanded = false;
+  #outputService: OutputService;
   #seenDeprecations = new Set<string>();
+
+  constructor(
+    readonly resolvedConfig: ResolvedConfig,
+    outputService: OutputService,
+  ) {
+    this.#outputService = outputService;
+  }
 
   get #isLastFile() {
     return this.#fileCount === 0;
@@ -36,7 +44,7 @@ export class ThoroughReporter extends Reporter {
       }
 
       case "store:info": {
-        this.outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
+        this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
 
         this.#hasReportedAdds = true;
         break;
@@ -44,7 +52,7 @@ export class ThoroughReporter extends Reporter {
 
       case "store:error": {
         for (const diagnostic of payload.diagnostics) {
-          this.outputService.writeError(diagnosticText(diagnostic));
+          this.#outputService.writeError(diagnosticText(diagnostic));
         }
         break;
       }
@@ -65,7 +73,7 @@ export class ThoroughReporter extends Reporter {
           this.#currentCompilerVersion !== payload.compilerVersion ||
           this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
         ) {
-          this.outputService.writeMessage(
+          this.#outputService.writeMessage(
             usesCompilerStepText(payload.compilerVersion, payload.projectConfigFilePath, {
               prependEmptyLine:
                 this.#currentCompilerVersion != null && !this.#hasReportedAdds && !this.#hasReportedError,
@@ -82,14 +90,14 @@ export class ThoroughReporter extends Reporter {
 
       case "project:error": {
         for (const diagnostic of payload.diagnostics) {
-          this.outputService.writeError(diagnosticText(diagnostic));
+          this.#outputService.writeError(diagnosticText(diagnostic));
         }
         break;
       }
 
       case "file:start": {
         if (!Environment.noInteractive) {
-          this.outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
+          this.#outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
         }
 
         this.#fileCount--;
@@ -106,15 +114,15 @@ export class ThoroughReporter extends Reporter {
 
       case "file:end": {
         if (!Environment.noInteractive) {
-          this.outputService.eraseLastLine();
+          this.#outputService.eraseLastLine();
         }
 
-        this.outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
+        this.#outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
 
-        this.outputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
+        this.#outputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
 
         if (this.#fileView.hasErrors) {
-          this.outputService.writeError(this.#fileView.getMessages());
+          this.#outputService.writeError(this.#fileView.getMessages());
           this.#hasReportedError = true;
         }
 

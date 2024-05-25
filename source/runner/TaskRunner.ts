@@ -2,7 +2,7 @@ import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import type { TestFile } from "#file";
-import { Result, ResultManager, TargetResult } from "#result";
+import { Result, ResultHandler, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationReason, type CancellationToken } from "#token";
@@ -12,7 +12,6 @@ import { WatchModeManager } from "./WatchModeManager.js";
 export class TaskRunner {
   #cachedCompilers = new Map<string, typeof ts>();
   #eventEmitter = new EventEmitter();
-  #resultManager = new ResultManager();
   #selectService: SelectService;
   #storeService: StoreService;
 
@@ -24,9 +23,7 @@ export class TaskRunner {
     this.#selectService = selectService;
     this.#storeService = storeService;
 
-    this.#eventEmitter.addHandler((event) => {
-      this.#resultManager.handleEvent(event);
-    });
+    this.#eventEmitter.addHandler(new ResultHandler());
   }
 
   close(): void {

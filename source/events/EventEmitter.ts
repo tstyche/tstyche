@@ -32,7 +32,9 @@ export type Event =
   | ["expect:pass", { result: ExpectResult }]
   | ["expect:skip", { result: ExpectResult }];
 
-export type EventHandler = (event: Event) => void;
+// TODO must be:
+// export interface EventHandler { handleEvent: (event: Event) => void; }
+export type EventHandler = ((event: Event) => void) | { handleEvent: (event: Event) => void };
 
 export class EventEmitter {
   static #handlers = new Set<EventHandler>();
@@ -45,7 +47,11 @@ export class EventEmitter {
 
   static dispatch(event: Event): void {
     for (const handler of EventEmitter.#handlers) {
-      handler(event);
+      if ("handleEvent" in handler) {
+        handler.handleEvent(event);
+      } else {
+        handler(event);
+      }
     }
   }
 
