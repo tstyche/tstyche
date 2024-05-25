@@ -1,8 +1,8 @@
 import { DiagnosticCategory } from "#diagnostic";
-import type { Event } from "#events";
+import type { Event, EventHandler } from "#events";
 import { type OutputService, addsPackageStepText, diagnosticText } from "#output";
 
-export class SetupReporter {
+export class SetupReporter implements EventHandler {
   #outputService: OutputService;
 
   constructor(outputService: OutputService) {

@@ -32,15 +32,17 @@ export type Event =
   | ["expect:pass", { result: ExpectResult }]
   | ["expect:skip", { result: ExpectResult }];
 
-// TODO must be:
-// export interface EventHandler { handleEvent: (event: Event) => void; }
-export type EventHandler = ((event: Event) => void) | { handleEvent: (event: Event) => void };
+export interface EventHandler {
+  handleEvent: (event: Event) => void;
+}
+
+export type EventHandlerLegacy = ((event: Event) => void) | EventHandler;
 
 export class EventEmitter {
-  static #handlers = new Set<EventHandler>();
-  #scopeHandlers = new Set<EventHandler>();
+  static #handlers = new Set<EventHandlerLegacy>();
+  #scopeHandlers = new Set<EventHandlerLegacy>();
 
-  addHandler(handler: EventHandler): void {
+  addHandler(handler: EventHandlerLegacy): void {
     this.#scopeHandlers.add(handler);
     EventEmitter.#handlers.add(handler);
   }

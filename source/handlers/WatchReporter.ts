@@ -1,7 +1,7 @@
-import type { Event } from "#events";
+import type { Event, EventHandler } from "#events";
 import { type OutputService, watchUsageText } from "#output";
 
-export class WatchReporter {
+export class WatchReporter implements EventHandler {
   #outputService: OutputService;
 
   constructor(outputService: OutputService) {

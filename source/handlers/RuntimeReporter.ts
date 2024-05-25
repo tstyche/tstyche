@@ -1,10 +1,10 @@
 import type { ResolvedConfig } from "#config";
 import { Environment } from "#environment";
-import type { Event } from "#events";
+import type { Event, EventHandler } from "#events";
 import { type OutputService, addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
 import { FileViewService } from "./FileViewService.js";
 
-export class RuntimeReporter {
+export class RuntimeReporter implements EventHandler {
   #currentCompilerVersion: string | undefined;
   #currentProjectConfigFilePath: string | undefined;
   #fileCount = 0;
