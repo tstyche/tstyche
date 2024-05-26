@@ -1,16 +1,15 @@
-import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import type { TestFile } from "#file";
+import { CancellationHandler } from "#handlers";
 import { Result, ResultHandler, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
-import { CancellationReason, type CancellationToken } from "#token";
+import { CancellationReason, CancellationToken } from "#token";
+import { type RunCallback, WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
-import { WatchModeManager } from "./WatchModeManager.js";
 
 export class TaskRunner {
-  #cachedCompilers = new Map<string, typeof ts>();
   #eventEmitter = new EventEmitter();
   #selectService: SelectService;
   #storeService: StoreService;
@@ -30,37 +29,26 @@ export class TaskRunner {
     this.#eventEmitter.removeHandlers();
   }
 
-  #rerun(testFiles: Array<TestFile>, cancellationToken?: CancellationToken) {
-    const result = new Result(this.resolvedConfig, testFiles);
+  async run(testFiles: Array<TestFile>, cancellationToken = new CancellationToken()): Promise<void> {
+    let cancellationHandler: CancellationHandler | undefined;
 
-    EventEmitter.dispatch(["run:start", { result }]);
-
-    for (const versionTag of this.resolvedConfig.target) {
-      const targetResult = new TargetResult(versionTag, testFiles);
-
-      EventEmitter.dispatch(["target:start", { result: targetResult }]);
-
-      const compiler = this.#cachedCompilers.get(versionTag);
-
-      if (compiler) {
-        const testFileRunner = new TestFileRunner(this.resolvedConfig, compiler);
-
-        for (const testFile of testFiles) {
-          testFileRunner.run(testFile, cancellationToken);
-        }
-
-        if (cancellationToken?.reason === CancellationReason.FailFast) {
-          cancellationToken.reset();
-        }
-      }
-
-      EventEmitter.dispatch(["target:end", { result: targetResult }]);
+    if (this.resolvedConfig.failFast) {
+      cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
+      this.#eventEmitter.addHandler(cancellationHandler);
     }
 
-    EventEmitter.dispatch(["run:end", { result }]);
+    if (this.resolvedConfig.watch === true) {
+      await this.#watch(testFiles, cancellationToken);
+    } else {
+      await this.#run(testFiles, cancellationToken);
+    }
+
+    if (cancellationHandler != null) {
+      this.#eventEmitter.removeHandler(cancellationHandler);
+    }
   }
 
-  async run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
+  async #run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
     const result = new Result(this.resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["run:start", { result }]);
@@ -73,19 +61,11 @@ export class TaskRunner {
       const compiler = await this.#storeService.load(versionTag, cancellationToken);
 
       if (compiler) {
-        if (this.resolvedConfig.watch === true) {
-          this.#cachedCompilers.set(versionTag, compiler);
-        }
-
-        // TODO instead of caching compilers, it would be better to cache test file runners (or even test projects)
+        // TODO For better performance, test file runners (or even test projects) could be cached in the future
         const testFileRunner = new TestFileRunner(this.resolvedConfig, compiler);
 
         for (const testFile of testFiles) {
           testFileRunner.run(testFile, cancellationToken);
-        }
-
-        if (cancellationToken?.reason === CancellationReason.FailFast) {
-          cancellationToken.reset();
         }
       }
 
@@ -94,16 +74,26 @@ export class TaskRunner {
 
     EventEmitter.dispatch(["run:end", { result }]);
 
-    if (this.resolvedConfig.watch === true) {
-      const rerunCallback = (testFiles: Array<TestFile>) => {
-        this.#rerun(testFiles, cancellationToken);
-      };
-
-      const watchModeManager = new WatchModeManager(rerunCallback, this.#selectService, testFiles);
-
-      await watchModeManager.watch(this.resolvedConfig.rootPath);
-
-      watchModeManager.close();
+    if (cancellationToken?.reason === CancellationReason.FailFast) {
+      cancellationToken.reset();
     }
+  }
+
+  async #watch(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
+    await this.#run(testFiles, cancellationToken);
+
+    const runCallback: RunCallback = async (testFiles) => {
+      await this.#run(testFiles, cancellationToken);
+    };
+
+    const watchModeManager = new WatchService(this.resolvedConfig, runCallback, this.#selectService, testFiles);
+
+    cancellationToken?.onCancellationRequested((reason) => {
+      if (reason !== CancellationReason.FailFast) {
+        watchModeManager.close();
+      }
+    });
+
+    await watchModeManager.watch(cancellationToken);
   }
 }

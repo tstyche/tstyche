@@ -1,12 +1,12 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { TestFile } from "#file";
-import { CancellationHandler, RuntimeReporter, SummaryReporter, WatchReporter } from "#handlers";
+import { RuntimeReporter, SummaryReporter, WatchReporter } from "#handlers";
 import type { OutputService } from "#output";
 import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
-import { CancellationReason, CancellationToken } from "#token";
+import { CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
@@ -34,11 +34,6 @@ export class TSTyche {
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    // TODO move this handler to 'TaskRunner'
-    if (this.resolvedConfig.failFast) {
-      this.#eventEmitter.addHandler(new CancellationHandler(cancellationToken, CancellationReason.FailFast));
-    }
-
     this.#eventEmitter.addHandler(new RuntimeReporter(this.resolvedConfig, this.#outputService));
 
     if (this.resolvedConfig.watch === true) {
