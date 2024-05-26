@@ -535,7 +535,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test.only("when TSTyche config file is changed and no test files are selected", async function () {
+    test("when TSTyche config file is changed and no test files are selected", async function () {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
