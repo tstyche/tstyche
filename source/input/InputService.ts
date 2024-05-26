@@ -29,5 +29,7 @@ export class InputService {
 
   close(): void {
     this.#stdin.removeListener("data", this.#onKeyPressed);
+
+    this.#stdin.setRawMode?.(false);
   }
 }

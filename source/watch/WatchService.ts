@@ -1,9 +1,9 @@
 import type { ResolvedConfig } from "#config";
 import { TestFile } from "#file";
 import { type InputHandler, InputService } from "#input";
-import { Path } from "#path";
 import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
+import { ConfigWatcher } from "./ConfigWatcher.js";
 import { Timer } from "./Timer.js";
 import { type WatchHandler, Watcher } from "./Watcher.js";
 
@@ -103,13 +103,11 @@ export class WatchService {
 
     this.#watchers.push(new Watcher(this.resolvedConfig.rootPath, onChangedFile, onRemovedFile, true));
 
-    const onChangedConfigFile: WatchHandler = (filePath) => {
-      if (filePath === this.resolvedConfig.configFilePath) {
-        cancellationToken?.cancel(CancellationReason.ConfigChange);
-      }
+    const onChangedConfigFile = () => {
+      cancellationToken?.cancel(CancellationReason.ConfigChange);
     };
 
-    this.#watchers.push(new Watcher(Path.dirname(this.resolvedConfig.configFilePath), onChangedConfigFile));
+    this.#watchers.push(new ConfigWatcher(this.resolvedConfig, onChangedConfigFile));
 
     return Promise.all(this.#watchers.map((watcher) => watcher.watch()));
   }

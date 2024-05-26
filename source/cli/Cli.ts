@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { TSTyche } from "#api";
-import { ConfigService, OptionDefinitionsMap, OptionGroup } from "#config";
+import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler, SetupReporter } from "#handlers";
@@ -8,6 +8,7 @@ import { OutputService, formattedText, helpText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
+import { ConfigWatcher } from "#watch";
 
 export class Cli {
   #eventEmitter = new EventEmitter();
@@ -76,11 +77,14 @@ export class Cli {
 
       await configService.readConfigFile();
 
-      if (cancellationToken.isCancellationRequested) {
-        break; // TODO should wait for changes, if in the watch mode
-      }
-
       const resolvedConfig = configService.resolveConfig();
+
+      if (cancellationToken.isCancellationRequested) {
+        if (commandLineArguments.includes("--watch")) {
+          await this.#waitForChangedConfigFile(resolvedConfig, cancellationToken);
+        }
+        continue;
+      }
 
       if (commandLineArguments.includes("--showConfig")) {
         this.#outputService.writeMessage(
@@ -93,16 +97,14 @@ export class Cli {
             ...resolvedConfig,
           }),
         );
-
-        break;
+        continue;
       }
 
       if (commandLineArguments.includes("--install")) {
         for (const tag of resolvedConfig.target) {
           await this.#storeService.install(tag);
         }
-
-        break;
+        continue;
       }
 
       const selectService = new SelectService(resolvedConfig);
@@ -112,13 +114,15 @@ export class Cli {
         testFiles = await selectService.selectFiles();
 
         if (testFiles.length === 0) {
-          break; // TODO should wait for changes, if in the watch mode
+          if (commandLineArguments.includes("--watch")) {
+            await this.#waitForChangedConfigFile(resolvedConfig, cancellationToken);
+          }
+          continue;
         }
 
         if (commandLineArguments.includes("--listFiles")) {
           this.#outputService.writeMessage(formattedText(testFiles));
-
-          break;
+          continue;
         }
       }
 
@@ -132,5 +136,22 @@ export class Cli {
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();
+  }
+
+  #waitForChangedConfigFile(resolvedConfig: ResolvedConfig, cancellationToken: CancellationToken): Promise<void> {
+    cancellationToken.reset();
+
+    this.#outputService.writeMessage(formattedText("Waiting for configuration file changes."));
+
+    const onChangedConfigFile = () => {
+      cancellationToken.cancel(CancellationReason.ConfigChange);
+      this.#outputService.clearTerminal();
+
+      watcher.close();
+    };
+
+    const watcher = new ConfigWatcher(resolvedConfig, onChangedConfigFile);
+
+    return watcher.watch();
   }
 }
