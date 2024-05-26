@@ -28,8 +28,8 @@ export class WatchService {
     this.#selectService = selectService;
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
 
-    const onPressedKey: InputHandler = (data) => {
-      switch (data.toString()) {
+    const onInput: InputHandler = (chunk) => {
+      switch (chunk.toString()) {
         case "\u0003" /* Ctrl-C */:
         case "\u0004" /* Ctrl-D */:
         case "\u001B" /* Escape */:
@@ -49,7 +49,7 @@ export class WatchService {
       }
     };
 
-    this.#inputService = new InputService(onPressedKey);
+    this.#inputService = new InputService(onInput);
   }
 
   close(): void {

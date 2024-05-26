@@ -1,6 +1,6 @@
 import process from "node:process";
 
-export type InputHandler = (data: Buffer) => void;
+export type InputHandler = (chunk: Buffer) => void;
 
 export interface ReadStream {
   addListener: (event: "data", handler: InputHandler) => this;
@@ -14,21 +14,21 @@ export interface InputServiceOptions {
 }
 
 export class InputService {
-  #onKeyPressed: InputHandler;
+  #onInput: InputHandler;
   #stdin: ReadStream;
 
-  constructor(onKeyPressed: InputHandler, options?: InputServiceOptions) {
-    this.#onKeyPressed = onKeyPressed;
+  constructor(onInput: InputHandler, options?: InputServiceOptions) {
+    this.#onInput = onInput;
     this.#stdin = options?.stdin ?? process.stdin;
 
     this.#stdin.setRawMode?.(true);
     this.#stdin.unref();
 
-    this.#stdin.addListener("data", this.#onKeyPressed);
+    this.#stdin.addListener("data", this.#onInput);
   }
 
   close(): void {
-    this.#stdin.removeListener("data", this.#onKeyPressed);
+    this.#stdin.removeListener("data", this.#onInput);
 
     this.#stdin.setRawMode?.(false);
   }
