@@ -13,6 +13,7 @@ export interface OutputServiceOptions {
 }
 
 export class OutputService {
+  #isClear = false;
   #noColor: boolean;
   #scribbler: Scribbler;
   #stderr: WriteStream;
@@ -27,9 +28,12 @@ export class OutputService {
   }
 
   clearTerminal(): void {
-    // Erases all visible output, clears all lines saved in the scroll-back buffer
-    // and moves the cursor to the upper left corner.
-    this.#stdout.write("\u001B[2J\u001B[3J\u001B[H");
+    if (!this.#isClear) {
+      // Erases all visible output, clears all lines saved in the scroll-back buffer
+      // and moves the cursor to the upper left corner.
+      this.#stdout.write("\u001B[2J\u001B[3J\u001B[H");
+      this.#isClear = true;
+    }
   }
 
   eraseLastLine(): void {
@@ -43,6 +47,8 @@ export class OutputService {
     for (const element of elements) {
       stream.write(this.#scribbler.render(element));
     }
+
+    this.#isClear = false;
   }
 
   writeError(body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {

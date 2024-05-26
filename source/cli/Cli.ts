@@ -68,12 +68,13 @@ export class Cli {
     do {
       if (cancellationToken.reason === CancellationReason.ConfigChange) {
         cancellationToken.reset();
+        exitCodeHandler.resetCode();
+
+        this.#outputService.clearTerminal();
 
         this.#eventEmitter.addHandler(setupReporter);
         this.#eventEmitter.addHandler(cancellationHandler);
       }
-
-      exitCodeHandler.resetCode();
 
       await configService.readConfigFile();
 
@@ -145,7 +146,6 @@ export class Cli {
 
     const onChangedConfigFile = () => {
       cancellationToken.cancel(CancellationReason.ConfigChange);
-      this.#outputService.clearTerminal();
 
       watcher.close();
     };
