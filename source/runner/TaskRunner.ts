@@ -1,10 +1,11 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import type { TestFile } from "#file";
+import { CancellationHandler } from "#handlers";
 import { Result, ResultHandler, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
-import { CancellationReason, type CancellationToken } from "#token";
+import { CancellationReason, CancellationToken } from "#token";
 import { type RunCallback, WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
 
@@ -28,11 +29,22 @@ export class TaskRunner {
     this.#eventEmitter.removeHandlers();
   }
 
-  async run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
+  async run(testFiles: Array<TestFile>, cancellationToken = new CancellationToken()): Promise<void> {
+    let cancellationHandler: CancellationHandler | undefined;
+
+    if (this.resolvedConfig.failFast) {
+      cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
+      this.#eventEmitter.addHandler(cancellationHandler);
+    }
+
     if (this.resolvedConfig.watch === true) {
       await this.#watch(testFiles, cancellationToken);
     } else {
       await this.#run(testFiles, cancellationToken);
+    }
+
+    if (cancellationHandler != null) {
+      this.#eventEmitter.removeHandler(cancellationHandler);
     }
   }
 
