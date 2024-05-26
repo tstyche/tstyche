@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { fileURLToPath } from "node:url";
-import { afterEach, beforeEach, describe, test } from "mocha";
+import { after, afterEach, before, beforeEach, describe, test } from "mocha";
 import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -17,11 +17,6 @@ const resolvedConfig = configService.resolveConfig();
 const selectService = new tstyche.SelectService(resolvedConfig);
 
 const eventEmitter = new tstyche.EventEmitter();
-
-/**
- * @type {import("tstyche/tstyche").TaskRunner | undefined}
- */
-let taskRunner;
 
 /**
  * @type {import("tstyche/tstyche").Result | undefined}
@@ -43,16 +38,18 @@ class TestResultHandler {
 }
 
 describe("integration", function () {
-  beforeEach(function () {
-    eventEmitter.addHandler(new TestResultHandler());
-  });
+  describe("test file object", function () {
+    const taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
 
-  afterEach(function () {
-    eventEmitter.removeHandlers();
-    taskRunner?.close();
-  });
+    before(function () {
+      eventEmitter.addHandler(new TestResultHandler());
+    });
 
-  describe("test files", function () {
+    after(function () {
+      eventEmitter.removeHandlers();
+      taskRunner.close();
+    });
+
     const testCases = [
       {
         identifier: fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),
@@ -70,8 +67,9 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(testCase, async function () {
-        taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
-        await taskRunner.run([new tstyche.TestFile(identifier)]);
+        const testFile = new tstyche.TestFile(identifier);
+
+        await taskRunner.run([testFile]);
 
         assert.deepEqual(result?.expectCount, { failed: 1, passed: 2, skipped: 3, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
@@ -81,7 +79,6 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(`${testCase} with position is pointing to 'expect'`, async function () {
-        taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
         const testFile = new tstyche.TestFile(identifier);
 
         await taskRunner.run([testFile.add({ position: isWindows ? 73 : 70 })]);
@@ -94,7 +91,6 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(`${testCase} with position is pointing to 'expect.skip'`, async function () {
-        taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
         const testFile = new tstyche.TestFile(identifier);
 
         await taskRunner.run([testFile.add({ position: isWindows ? 273 : 261 })]);
@@ -107,7 +103,6 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(`${testCase} with position is pointing to 'test'`, async function () {
-        taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
         const testFile = new tstyche.TestFile(identifier);
 
         await taskRunner.run([testFile.add({ position: isWindows ? 43 : 41 })]);
@@ -120,7 +115,6 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(`${testCase} with position is pointing to 'test.skip'`, async function () {
-        taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
         const testFile = new tstyche.TestFile(identifier);
 
         await taskRunner.run([testFile.add({ position: isWindows ? 117 : 111 })]);
@@ -133,6 +127,20 @@ describe("integration", function () {
   });
 
   describe("configuration options", function () {
+    /**
+     * @type {import("tstyche/tstyche").TaskRunner | undefined}
+     */
+    let taskRunner;
+
+    beforeEach(function () {
+      eventEmitter.addHandler(new TestResultHandler());
+    });
+
+    afterEach(function () {
+      eventEmitter.removeHandlers();
+      taskRunner?.close();
+    });
+
     test("when the 'failFast: true'  is set", async function () {
       taskRunner = new tstyche.TaskRunner({ ...resolvedConfig, failFast: true }, selectService, storeService);
       const testFile = new tstyche.TestFile(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
