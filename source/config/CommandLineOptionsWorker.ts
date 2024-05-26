@@ -77,7 +77,7 @@ export class CommandLineOptionsWorker {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
-      case OptionBrand.True: {
+      case OptionBrand.BareTrue: {
         await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
 
         this.#commandLineOptions[optionDefinition.name] = true;
