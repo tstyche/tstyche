@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { Path } from "#path";
+import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
@@ -69,7 +70,14 @@ export class ManifestWorker {
       });
 
       if (!response.ok) {
-        throw new Error(`Request failed with status code ${String(response.status)}.`);
+        this.#onDiagnostic(
+          Diagnostic.error([
+            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.failedWithStatusCode(response.status),
+          ]),
+        );
+
+        return;
       }
 
       packageMetadata = (await response.json()) as PackageMetadata;
@@ -78,15 +86,21 @@ export class ManifestWorker {
         return;
       }
 
-      const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.toString()}'.`];
-
       if (error instanceof Error && error.name === "TimeoutError") {
-        text.push(`Setup timeout of ${String(this.#timeout / 1000)}s was exceeded.`);
+        this.#onDiagnostic(
+          Diagnostic.error([
+            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.setupTimeoutExceeded(this.#timeout),
+          ]),
+        );
       } else {
-        text.push("Might be there is an issue with the registry or the network connection.");
+        this.#onDiagnostic(
+          Diagnostic.error([
+            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.maybeNetworkConnectionIssue(),
+          ]),
+        );
       }
-
-      this.#onDiagnostic(Diagnostic.fromError(text, error));
 
       return;
     }
