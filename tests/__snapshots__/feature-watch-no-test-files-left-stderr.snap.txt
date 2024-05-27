@@ -4,5 +4,3 @@ Root path:       <<cwd>>/tests/__fixtures__/.generated/feature-watch
 Test file match: **/*.tst.*, **/__typetests__/*.test.*, **/typetests/*.test.*
 Path match:      isNumber
 
-Waiting for file changes.
-

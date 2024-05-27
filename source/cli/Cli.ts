@@ -4,7 +4,7 @@ import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig }
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler, SetupReporter } from "#handlers";
-import { OutputService, formattedText, helpText } from "#output";
+import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
@@ -148,7 +148,7 @@ export class Cli {
 
     cancellationToken.reset();
 
-    this.#outputService.writeMessage(formattedText("Waiting for file changes."));
+    this.#outputService.writeMessage(waitingForFileChangesText());
 
     const onChanged = () => {
       cancellationToken.cancel(CancellationReason.ConfigChange);

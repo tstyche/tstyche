@@ -1,5 +1,5 @@
 import type { Event, EventHandler } from "#events";
-import { type OutputService, diagnosticText, watchUsageText } from "#output";
+import { type OutputService, diagnosticText, waitingForFileChangesText, watchUsageText } from "#output";
 
 export class WatchReporter implements EventHandler {
   #outputService: OutputService;
@@ -26,6 +26,8 @@ export class WatchReporter implements EventHandler {
         for (const diagnostic of payload.diagnostics) {
           this.#outputService.writeError(diagnosticText(diagnostic));
         }
+
+        this.#outputService.writeMessage(waitingForFileChangesText());
         break;
       }
 

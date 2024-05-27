@@ -115,8 +115,6 @@ export class WatchService {
           text.push(`Path match:      ${this.resolvedConfig.pathMatch.join(", ")}`);
         }
 
-        text.push("", "Waiting for file changes.");
-
         EventEmitter.dispatch(["watch:error", { diagnostics: [Diagnostic.error(text)] }]);
       }
     };
