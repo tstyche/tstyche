@@ -6,31 +6,31 @@ __metadata:
   cacheKey: 8
 
 "@babel/code-frame@npm:^7.24.2":
-  version: 7.24.2
-  resolution: "@babel/code-frame@npm:7.24.2"
+  version: 7.24.6
+  resolution: "@babel/code-frame@npm:7.24.6"
   dependencies:
-    "@babel/highlight": ^7.24.2
+    "@babel/highlight": ^7.24.6
     picocolors: ^1.0.0
-  checksum: 70e867340cfe09ca5488b2f36372c45cabf43c79a5b6426e6df5ef0611ff5dfa75a57dda841895693de6008f32c21a7c97027a8c7bcabd63a7d17416cbead6f8
+  checksum: 0904514ea7079a9590c1c546cd20b9c1beab9649873f2a0703429860775c1713a8dfb2daacd781a0210bb3930c656c1c436013fb20eaa3644880fb3a2b34541d
   languageName: node
   linkType: hard
 
-"@babel/helper-validator-identifier@npm:^7.24.5":
-  version: 7.24.5
-  resolution: "@babel/helper-validator-identifier@npm:7.24.5"
-  checksum: 75d6f9f475c08f3be87bae4953e9b8d8c72983e16ed2860870b328d048cb20dccb4fcbf85eacbdd817ea1efbb38552a6db9046e2e37bfe13bdec44ac8939024c
+"@babel/helper-validator-identifier@npm:^7.24.6":
+  version: 7.24.6
+  resolution: "@babel/helper-validator-identifier@npm:7.24.6"
+  checksum: a265a6fba570332dca63ad7e749b867d29b52da2573dc62bf19b5b8c5387d4f4296af33da9da7c71ffe3d3abecd743418278f56d38b057ad4b53f09b937fe113
   languageName: node
   linkType: hard
 
-"@babel/highlight@npm:^7.24.2":
-  version: 7.24.5
-  resolution: "@babel/highlight@npm:7.24.5"
+"@babel/highlight@npm:^7.24.6":
+  version: 7.24.6
+  resolution: "@babel/highlight@npm:7.24.6"
   dependencies:
-    "@babel/helper-validator-identifier": ^7.24.5
+    "@babel/helper-validator-identifier": ^7.24.6
     chalk: ^2.4.2
     js-tokens: ^4.0.0
     picocolors: ^1.0.0
-  checksum: eece0e63e9210e902f1ee88f15cabfa31d2693bd2e56806eb849478b859d274c24477081c649cee6a241c4aed7da6f3e05c7afa5c3cd70094006ed095292b0d0
+  checksum: 2f8f7f060eeccc3ddf03ba12c263995de0e6c0dd31ad224bed58d983b3bb08fe34dfc01440396266456a4cad83226c38ad6814805bc5d0c774a056cac9182eca
   languageName: node
   linkType: hard
 
@@ -253,16 +253,16 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-companies@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@cspell/dict-companies@npm:3.1.0"
-  checksum: 017bcae0dceca7ca8e25a106ce0450c69c3994fb9cf73882415bbb81ebd71b666c6ab2733749a9044eb754d9e4f8ee30e870b6860ea8c2f38b40aec89babc4ae
+  version: 3.1.1
+  resolution: "@cspell/dict-companies@npm:3.1.1"
+  checksum: daa0004fb843fd96952faa59d3ee9fe2e2936e19f81ce67033a73cde5b7a90eb7c764d5daf3f1c4b261c5d430c18dfde92a7214ca63c07b6bf62014827422143
   languageName: node
   linkType: hard
 
 "@cspell/dict-cpp@npm:^5.1.6":
-  version: 5.1.6
-  resolution: "@cspell/dict-cpp@npm:5.1.6"
-  checksum: 8b54f87f8d34bf2d865da46f6e3ab251fec8c1c7d147572db2d17a6e2307b4d9f8e31162644d435d1581ffc562b325ababdf5238f06d6849d3ba8d8e1e02c36f
+  version: 5.1.7
+  resolution: "@cspell/dict-cpp@npm:5.1.7"
+  checksum: ce2055e77707d321bdced8d98daffae4c2b38bc9bfd521966ba9e2283943f921a174586ca6db5dc14232813751817a778f1a08a29df565bb2d7afc7ea28090cc
   languageName: node
   linkType: hard
 
@@ -344,9 +344,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-en_us@npm:^4.3.20":
-  version: 4.3.20
-  resolution: "@cspell/dict-en_us@npm:4.3.20"
-  checksum: 9e93e2f92ca8d5f838c0570d18aac4f7b329e76134eed2c13801ee4683ee0a79dda6b84a5766bf0d21ad3d16cd0df7af0b492b05f0a850fd0414cd9f7d456f96
+  version: 4.3.21
+  resolution: "@cspell/dict-en_us@npm:4.3.21"
+  checksum: 6104f10fbe67b8301df9dd3fffc7697579148149efa3f9154edeff7e5d84288806ea8b693cbf0494bbf6daaf3c3ba92ef84ace184502735f03ce45791792fb12
   languageName: node
   linkType: hard
 
@@ -400,9 +400,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-google@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@cspell/dict-google@npm:1.0.0"
-  checksum: d66657d489c5ade5d3a30c75ef151c337681aec2494043b15b0e898f80ee44cfd828b03ba8cde0a92474cdd10ed1407263167f92cc581498076a2adf33c90c1f
+  version: 1.0.1
+  resolution: "@cspell/dict-google@npm:1.0.1"
+  checksum: ced6cb2cc5fa525989f93a115da6c46d2a09c557c165f4b11950561363f93807e26c12f8cd750796d780e14fb48426201f0d289f59e4faa4e4d8a2af237d5769
   languageName: node
   linkType: hard
 
@@ -442,9 +442,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-k8s@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "@cspell/dict-k8s@npm:1.0.3"
-  checksum: b8ed900096805c7c286931d3dd7167599590a491d748468828956c12ce7ae31e5662d2706f060f6b149b1ca8f896d1be937d1c351c4efbeb0434d7a18bdf2222
+  version: 1.0.4
+  resolution: "@cspell/dict-k8s@npm:1.0.4"
+  checksum: f087b33efd817e555d08a6fa05654c8b431a808d23ca7f2bdb19e767bd285208829246ef064a8ddd0c982579cbbc7047054ea32c18c6b5147bdb7254f3c15cfc
   languageName: node
   linkType: hard
 
@@ -512,9 +512,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-public-licenses@npm:^2.0.6":
-  version: 2.0.6
-  resolution: "@cspell/dict-public-licenses@npm:2.0.6"
-  checksum: a07adccccf7ad92eb48cc0b6cc9ac0239a870902a579e072e563af4b65c434ff2da656b233e5765dec330ee5c919ef911cc61e9f63869d2bfa9a96493188a3d9
+  version: 2.0.7
+  resolution: "@cspell/dict-public-licenses@npm:2.0.7"
+  checksum: 7bbd067668499c45bad9eb8e3dae598bc5635e6035160bff7343b87cd31e419387e704fa290d0e23903fff6c80b65838ebe5638e2951dc5d9214df9b98b60ce2
   languageName: node
   linkType: hard
 
@@ -556,9 +556,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^3.3.23":
-  version: 3.3.23
-  resolution: "@cspell/dict-software-terms@npm:3.3.23"
-  checksum: 32beed3499362ec86c40d6e3eb0ed4d38f94f20f20facbca2575c7828852cbcd168d7ceb2ee6a58b77b6384cc1242abd4453316ef41c44a190b9d130f0dee86c
+  version: 3.3.25
+  resolution: "@cspell/dict-software-terms@npm:3.3.25"
+  checksum: 893f7ea11143e703cbc6c0f306498f8c1da864544c2a48029aa89adb035173bc307fb9bb764afc26a124cd6390d97d5243cb91c715049eda67c7a177f4837c16
   languageName: node
   linkType: hard
 
@@ -1039,16 +1039,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"braces@npm:^3.0.2, braces@npm:~3.0.2":
-  version: 3.0.2
-  resolution: "braces@npm:3.0.2"
-  dependencies:
-    fill-range: ^7.0.1
-  checksum: e2a8e769a863f3d4ee887b5fe21f63193a891c68b612ddb4b68d82d1b5f3ff9073af066c343e9867a393fe4c2555dcb33e89b937195feb9c1613d259edfcd459
-  languageName: node
-  linkType: hard
-
-"braces@npm:^3.0.3":
+"braces@npm:^3.0.3, braces@npm:~3.0.2":
   version: 3.0.3
   resolution: "braces@npm:3.0.3"
   dependencies:
@@ -1615,15 +1606,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fill-range@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "fill-range@npm:7.0.1"
-  dependencies:
-    to-regex-range: ^5.0.1
-  checksum: cc283f4e65b504259e64fd969bcf4def4eb08d85565e906b7d36516e87819db52029a76b6363d0f02d0d532f0033c9603b9e2d943d56ee3b0d4f7ad3328ff917
-  languageName: node
-  linkType: hard
-
 "fill-range@npm:^7.1.1":
   version: 7.1.1
   resolution: "fill-range@npm:7.1.1"
@@ -1781,17 +1763,17 @@ __metadata:
   linkType: hard
 
 "glob@npm:^10.2.2, glob@npm:^10.3.10":
-  version: 10.3.15
-  resolution: "glob@npm:10.3.15"
+  version: 10.4.1
+  resolution: "glob@npm:10.4.1"
   dependencies:
     foreground-child: ^3.1.0
-    jackspeak: ^2.3.6
-    minimatch: ^9.0.1
-    minipass: ^7.0.4
-    path-scurry: ^1.11.0
+    jackspeak: ^3.1.2
+    minimatch: ^9.0.4
+    minipass: ^7.1.2
+    path-scurry: ^1.11.1
   bin:
     glob: dist/esm/bin.mjs
-  checksum: c7aeae0b4eea0dfedc6682b71a8ad4d1ea9dfec0f2440571f916e1918c046824c8d441bbe1965c06fede025a0726c6daab5ae8019afe667364f43776eaaf9044
+  checksum: 5d33c686c80bf6877f4284adf99a8c3cbb2a6eccbc92342943fe5d4b42c01d78c1881f2223d950c92a938d0f857e12e37b86a8e5483ab2141822e053b67d0dde
   languageName: node
   linkType: hard
 
@@ -2083,16 +2065,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jackspeak@npm:^2.3.6":
-  version: 2.3.6
-  resolution: "jackspeak@npm:2.3.6"
+"jackspeak@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "jackspeak@npm:3.1.2"
   dependencies:
     "@isaacs/cliui": ^8.0.2
     "@pkgjs/parseargs": ^0.11.0
   dependenciesMeta:
     "@pkgjs/parseargs":
       optional: true
-  checksum: 57d43ad11eadc98cdfe7496612f6bbb5255ea69fe51ea431162db302c2a11011642f50cfad57288bd0aea78384a0612b16e131944ad8ecd09d619041c8531b54
+  checksum: 134276d5f785c518930701a0dcba1f3b0e9ce3e5b1c3e300898e2ae0bbd9b5195088b77252bf2110768de072c426e9e39f47e13912b0b002da4a3f4ff6e16eac
   languageName: node
   linkType: hard
 
@@ -2215,17 +2197,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:^4.0.4":
-  version: 4.0.5
-  resolution: "micromatch@npm:4.0.5"
-  dependencies:
-    braces: ^3.0.2
-    picomatch: ^2.3.1
-  checksum: 02a17b671c06e8fefeeb6ef996119c1e597c942e632a21ef589154f23898c9c6a9858526246abb14f8bca6e77734aa9dcf65476fca47cedfb80d9577d52843fc
-  languageName: node
-  linkType: hard
-
-"micromatch@npm:^4.0.7":
+"micromatch@npm:^4.0.4, micromatch@npm:^4.0.7":
   version: 4.0.7
   resolution: "micromatch@npm:4.0.7"
   dependencies:
@@ -2262,7 +2234,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.1":
+"minimatch@npm:^9.0.4":
   version: 9.0.4
   resolution: "minimatch@npm:9.0.4"
   dependencies:
@@ -2338,10 +2310,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.2, minipass@npm:^7.0.3, minipass@npm:^7.0.4":
-  version: 7.1.1
-  resolution: "minipass@npm:7.1.1"
-  checksum: d2c461947a7530f93de4162aa3ca0a1bed1f121626906f6ec63a5ba05fd7b1d9bee4fe89a37a43db7241c2416be98a799c1796abae583c7180be37be5c392ef6
+"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.2, minipass@npm:^7.0.3, minipass@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "minipass@npm:7.1.2"
+  checksum: 2bfd325b95c555f2b4d2814d49325691c7bee937d753814861b0b49d5edcda55cbbf22b6b6a60bb91eddac8668771f03c5ff647dcd9d0f798e9548b9cdc46ee3
   languageName: node
   linkType: hard
 
@@ -2536,7 +2508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-scurry@npm:^1.11.0":
+"path-scurry@npm:^1.11.1":
   version: 1.11.1
   resolution: "path-scurry@npm:1.11.1"
   dependencies:
@@ -2547,9 +2519,9 @@ __metadata:
   linkType: hard
 
 "picocolors@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "picocolors@npm:1.0.0"
-  checksum: a2e8092dd86c8396bdba9f2b5481032848525b3dc295ce9b57896f931e63fc16f79805144321f72976383fc249584672a75cc18d6777c6b757603f372f745981
+  version: 1.0.1
+  resolution: "picocolors@npm:1.0.1"
+  checksum: fa68166d1f56009fc02a34cdfd112b0dd3cf1ef57667ac57281f714065558c01828cdf4f18600ad6851cbe0093952ed0660b1e0156bddf2184b6aaf5817553a5
   languageName: node
   linkType: hard
 
