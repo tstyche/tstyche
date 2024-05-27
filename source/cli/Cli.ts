@@ -150,25 +150,7 @@ export class Cli {
 
     this.#outputService.writeMessage(formattedText("Waiting for file changes."));
 
-    if (selectService != null) {
-      const onChangedFile: WatchHandler = (filePath) => {
-        if (selectService.isTestFile(filePath)) {
-          cancellationToken.cancel(CancellationReason.ConfigChange);
-
-          for (const watcher of watchers) {
-            watcher.close();
-          }
-        }
-      };
-
-      const onRemovedFile: WatchHandler = () => {
-        // do nothing, only added files are important
-      };
-
-      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedFile, onRemovedFile, /* recursive */ true));
-    }
-
-    const onChangedConfigFile = () => {
+    const onChanged = () => {
       cancellationToken.cancel(CancellationReason.ConfigChange);
 
       for (const watcher of watchers) {
@@ -176,7 +158,21 @@ export class Cli {
       }
     };
 
-    watchers.push(new FileWatcher(resolvedConfig.configFilePath, onChangedConfigFile));
+    watchers.push(new FileWatcher(resolvedConfig.configFilePath, onChanged));
+
+    if (selectService != null) {
+      const onChangedTestFile: WatchHandler = (filePath) => {
+        if (selectService.isTestFile(filePath)) {
+          onChanged();
+        }
+      };
+
+      const onRemoved: WatchHandler = () => {
+        // do nothing, only added files are important
+      };
+
+      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, /* recursive */ true));
+    }
 
     return Promise.all(watchers.map((watcher) => watcher.watch()));
   }
