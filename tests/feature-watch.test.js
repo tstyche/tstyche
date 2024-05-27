@@ -594,12 +594,7 @@ describe("watch", function () {
     });
 
     test("when no test files are left to run", async function () {
-      fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
-        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
-      );
-
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["isNumber", "--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
 
