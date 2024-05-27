@@ -9,4 +9,5 @@ export { OutputService, type OutputServiceOptions, type WriteStream } from "./Ou
 export { summaryText } from "./summaryText.js";
 export { testNameText } from "./testNameText.js";
 export { usesCompilerStepText } from "./usesCompilerStepText.js";
+export { waitingForFileChangesText } from "./waitingForFileChangesText.js";
 export { watchUsageText } from "./watchUsageText.js";

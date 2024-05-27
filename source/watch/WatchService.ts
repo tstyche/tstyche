@@ -1,9 +1,11 @@
-import type { ResolvedConfig } from "#config";
+import { OptionDiagnosticText, type ResolvedConfig } from "#config";
+import { Diagnostic } from "#diagnostic";
+import { EventEmitter } from "#events";
 import { TestFile } from "#file";
 import { type InputHandler, InputService } from "#input";
 import type { SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
-import { ConfigWatcher } from "./ConfigWatcher.js";
+import { FileWatcher } from "./FileWatcher.js";
 import { Timer } from "./Timer.js";
 import { type WatchHandler, Watcher } from "./Watcher.js";
 
@@ -61,8 +63,14 @@ export class WatchService {
     }
   }
 
+  #onDiagnostic(this: void, diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["watch:error", { diagnostics: [diagnostic] }]);
+  }
+
   #runAll() {
-    this.#runCallback([...this.#watchedTestFiles.values()]);
+    if (this.#watchedTestFiles.size !== 0) {
+      this.#runCallback([...this.#watchedTestFiles.values()]);
+    }
   }
 
   #runChanged() {
@@ -99,15 +107,19 @@ export class WatchService {
     const onRemovedFile: WatchHandler = (filePath) => {
       this.#changedTestFiles.delete(filePath);
       this.#watchedTestFiles.delete(filePath);
+
+      if (this.#watchedTestFiles.size === 0) {
+        this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.noTestFilesWereLeft(this.resolvedConfig)));
+      }
     };
 
-    this.#watchers.push(new Watcher(this.resolvedConfig.rootPath, onChangedFile, onRemovedFile, true));
+    this.#watchers.push(new Watcher(this.resolvedConfig.rootPath, onChangedFile, onRemovedFile, /* recursive */ true));
 
     const onChangedConfigFile = () => {
       cancellationToken?.cancel(CancellationReason.ConfigChange);
     };
 
-    this.#watchers.push(new ConfigWatcher(this.resolvedConfig, onChangedConfigFile));
+    this.#watchers.push(new FileWatcher(this.resolvedConfig.configFilePath, onChangedConfigFile));
 
     return Promise.all(this.#watchers.map((watcher) => watcher.watch()));
   }

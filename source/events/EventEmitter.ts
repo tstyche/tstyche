@@ -28,7 +28,8 @@ export type Event =
   | ["expect:error", { diagnostics: Array<Diagnostic>; result: ExpectResult }]
   | ["expect:fail", { diagnostics: Array<Diagnostic>; result: ExpectResult }]
   | ["expect:pass", { result: ExpectResult }]
-  | ["expect:skip", { result: ExpectResult }];
+  | ["expect:skip", { result: ExpectResult }]
+  | ["watch:error", { diagnostics: Array<Diagnostic> }];
 
 export interface EventHandler {
   handleEvent: (event: Event) => void;

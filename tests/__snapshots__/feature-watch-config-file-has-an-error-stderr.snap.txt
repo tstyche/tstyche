@@ -1,6 +1,18 @@
 Error: Option 'failFast' requires a value of type boolean.
 
   1 | {
+> 2 |   "failFast": "no",
+    |               ^
+  3 |   "testFileMatch": [
+  4 |     "**/isNumber.*"
+  5 |   ]
+  6 | }
+
+      at ./tstyche.config.json:2:15
+
+Error: Option 'failFast' requires a value of type boolean.
+
+  1 | {
 > 2 |   "failFast": "yes",
     |               ^
   3 |   "testFileMatch": [

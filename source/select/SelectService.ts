@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import type { ResolvedConfig } from "#config";
+import { OptionDiagnosticText, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
@@ -50,17 +50,7 @@ export class SelectService {
     await this.#visitDirectory(currentPath, testFilePaths);
 
     if (testFilePaths.length === 0) {
-      const text = [
-        "No test files were selected using current configuration.",
-        `Root path:       ${this.resolvedConfig.rootPath}`,
-        `Test file match: ${this.resolvedConfig.testFileMatch.join(", ")}`,
-      ];
-
-      if (this.resolvedConfig.pathMatch.length > 0) {
-        text.push(`Path match:      ${this.resolvedConfig.pathMatch.join(", ")}`);
-      }
-
-      this.#onDiagnostic(Diagnostic.error(text));
+      this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.noTestFilesWereSelected(this.resolvedConfig)));
     }
 
     // sorting ensures output remains the same on different systems

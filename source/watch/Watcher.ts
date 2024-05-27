@@ -1,4 +1,4 @@
-import { existsSync, watch } from "node:fs";
+import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { Path } from "#path";
 
@@ -24,21 +24,6 @@ export class Watcher {
 
   close(): void {
     this.#abortController.abort();
-  }
-
-  static isSupported(): boolean {
-    let isRecursiveWatchAvailable: boolean | undefined;
-
-    try {
-      const watcher = watch(Path.resolve("./"), { persistent: false, recursive: true });
-      watcher.close();
-
-      isRecursiveWatchAvailable = true;
-    } catch {
-      isRecursiveWatchAvailable = false;
-    }
-
-    return isRecursiveWatchAvailable;
   }
 
   async watch(): Promise<void> {

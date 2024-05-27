@@ -4,11 +4,11 @@ import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig }
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler, SetupReporter } from "#handlers";
-import { OutputService, formattedText, helpText } from "#output";
+import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
-import { ConfigWatcher } from "#watch";
+import { FileWatcher, type WatchHandler, Watcher } from "#watch";
 
 export class Cli {
   #eventEmitter = new EventEmitter();
@@ -82,7 +82,7 @@ export class Cli {
 
       if (cancellationToken.isCancellationRequested) {
         if (commandLineArguments.includes("--watch")) {
-          await this.#waitForChangedConfigFile(resolvedConfig, cancellationToken);
+          await this.#waitForChangedFiles(resolvedConfig, /* selectService */ undefined, cancellationToken);
         }
         continue;
       }
@@ -116,7 +116,7 @@ export class Cli {
 
         if (testFiles.length === 0) {
           if (commandLineArguments.includes("--watch")) {
-            await this.#waitForChangedConfigFile(resolvedConfig, cancellationToken);
+            await this.#waitForChangedFiles(resolvedConfig, selectService, cancellationToken);
           }
           continue;
         }
@@ -139,19 +139,41 @@ export class Cli {
     this.#eventEmitter.removeHandlers();
   }
 
-  #waitForChangedConfigFile(resolvedConfig: ResolvedConfig, cancellationToken: CancellationToken): Promise<void> {
+  #waitForChangedFiles(
+    resolvedConfig: ResolvedConfig,
+    selectService: SelectService | undefined,
+    cancellationToken: CancellationToken,
+  ) {
+    const watchers: Array<Watcher> = [];
+
     cancellationToken.reset();
 
-    this.#outputService.writeMessage(formattedText("Waiting for configuration file changes."));
+    this.#outputService.writeMessage(waitingForFileChangesText());
 
-    const onChangedConfigFile = () => {
+    const onChanged = () => {
       cancellationToken.cancel(CancellationReason.ConfigChange);
 
-      watcher.close();
+      for (const watcher of watchers) {
+        watcher.close();
+      }
     };
 
-    const watcher = new ConfigWatcher(resolvedConfig, onChangedConfigFile);
+    watchers.push(new FileWatcher(resolvedConfig.configFilePath, onChanged));
 
-    return watcher.watch();
+    if (selectService != null) {
+      const onChangedTestFile: WatchHandler = (filePath) => {
+        if (selectService.isTestFile(filePath)) {
+          onChanged();
+        }
+      };
+
+      const onRemoved: WatchHandler = () => {
+        // do nothing, only added files are important
+      };
+
+      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, /* recursive */ true));
+    }
+
+    return Promise.all(watchers.map((watcher) => watcher.watch()));
   }
 }
