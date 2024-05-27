@@ -436,7 +436,7 @@ describe("watch", function () {
       });
     });
 
-    test("when TSTyche config file is added", async function () {
+    test("when config file is added", async function () {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -462,7 +462,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when TSTyche config file is changed", async function () {
+    test("when config file is changed", async function () {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
@@ -493,7 +493,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when TSTyche config file has an error", async function () {
+    test("when config file has an error", async function () {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
         JSON.stringify({ failFast: "no", testFileMatch: ["**/isNumber.*"] }, null, 2),
@@ -555,6 +555,11 @@ describe("watch", function () {
       );
 
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+
+      // should do nothing
+      fs.rmSync(new URL("a-feature/__typetests__/isString.test.ts", fixtureUrl));
 
       await process.waitForIdle();
 
@@ -624,7 +629,7 @@ describe("watch", function () {
       assert.equal(exitCode, 1);
     });
 
-    test("when TSTyche config file is removed", async function () {
+    test("when config file is removed", async function () {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
