@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { afterEach, describe, test } from "mocha";
+import { afterEach, before, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -13,12 +13,19 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("compiler module", function () {
+describe("store", function () {
+  before(function () {
+    if (process.versions.node.startsWith("16")) {
+      // store is not supported on Node.js 16
+      this.skip();
+    }
+  });
+
   afterEach(async function () {
     await clearFixture(fixtureUrl);
   });
 
-  test("when module is not installed", async function () {
+  test("when compiler module is not installed", async function () {
     const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -36,7 +43,7 @@ describe("compiler module", function () {
     assert.equal(exitCode, 0);
   });
 
-  test("when module is already installed", async function () {
+  test("when compiler module is already installed", async function () {
     const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -54,12 +61,6 @@ describe("compiler module", function () {
     assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
-  });
-});
-
-describe("store manifest", function () {
-  afterEach(async function () {
-    await clearFixture(fixtureUrl);
   });
 
   test("when target is default, store manifest is not generated", async function () {

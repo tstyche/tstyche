@@ -69,7 +69,7 @@ describe("'tstyche.config.json' file", function () {
     const configText = `{
   /* test */
   "failFast": true,
-  /* test */ "target": ["rc"],
+  /* test */ "target": ["current"],
   // test
   "testFileMatch": /* test */ [
     "examples/**/*.test.ts" /* test */,
@@ -86,7 +86,7 @@ describe("'tstyche.config.json' file", function () {
 
     assert.matchObject(stdout, {
       failFast: true,
-      target: ["rc"],
+      target: ["current"],
       testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
     });
 

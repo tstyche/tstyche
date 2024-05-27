@@ -1,9 +1,9 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import https from "node:https";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { Path } from "#path";
+import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
@@ -44,51 +44,6 @@ export class ManifestWorker {
     return manifest;
   }
 
-  async #fetch() {
-    return new Promise<PackageMetadata>((resolve, reject) => {
-      const request = https.get(
-        new URL("typescript", this.#registryUrl),
-        {
-          // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
-          headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
-          timeout: this.#timeout,
-        },
-        (response) => {
-          if (response.statusCode !== 200) {
-            reject(new Error(`Request failed with status code ${String(response.statusCode)}.`));
-
-            // consume response data to free up memory
-            response.resume();
-
-            return;
-          }
-
-          response.setEncoding("utf8");
-
-          let rawData = "";
-
-          response.on("data", (chunk) => {
-            rawData += chunk as string;
-          });
-
-          response.on("end", () => {
-            const packageMetadata = JSON.parse(rawData) as PackageMetadata;
-
-            resolve(packageMetadata);
-          });
-        },
-      );
-
-      request.on("error", (error) => {
-        reject(error);
-      });
-
-      request.on("timeout", () => {
-        request.destroy();
-      });
-    });
-  }
-
   isOutdated(manifest: Manifest, ageTolerance = 0): boolean {
     if (Date.now() - manifest.lastUpdated > 2 * 60 * 60 * 1000 /* 2 hours */ + ageTolerance * 1000) {
       return true;
@@ -108,21 +63,44 @@ export class ManifestWorker {
     let packageMetadata: PackageMetadata | undefined;
 
     try {
-      packageMetadata = await this.#fetch();
+      const response = await fetch(new URL("typescript", this.#registryUrl), {
+        // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
+        headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
+        signal: AbortSignal.timeout(this.#timeout),
+      });
+
+      if (!response.ok) {
+        this.#onDiagnostic(
+          Diagnostic.error([
+            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.failedWithStatusCode(response.status),
+          ]),
+        );
+
+        return;
+      }
+
+      packageMetadata = (await response.json()) as PackageMetadata;
     } catch (error) {
       if (options?.quite === true) {
         return;
       }
 
-      const text = [`Failed to fetch metadata of the 'typescript' package from '${this.#registryUrl.toString()}'.`];
-
-      if (error instanceof Error && "code" in error && error.code === "ECONNRESET") {
-        text.push(`Setup timeout of ${String(this.#timeout / 1000)}s was exceeded.`);
+      if (error instanceof Error && error.name === "TimeoutError") {
+        this.#onDiagnostic(
+          Diagnostic.error([
+            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.setupTimeoutExceeded(this.#timeout),
+          ]),
+        );
       } else {
-        text.push("Might be there is an issue with the registry or the network connection.");
+        this.#onDiagnostic(
+          Diagnostic.error([
+            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.maybeNetworkConnectionIssue(),
+          ]),
+        );
       }
-
-      this.#onDiagnostic(Diagnostic.fromError(text, error));
 
       return;
     }
