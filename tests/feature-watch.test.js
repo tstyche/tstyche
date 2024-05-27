@@ -574,15 +574,6 @@ describe("watch", function () {
 
       fs.writeFileSync(new URL("a-feature/__typetests__/isVoid.test.ts", fixtureUrl), isVoidTestText);
 
-      await process.waitForIdle();
-
-      fs.rmSync(new URL("a-feature/__typetests__/isVoid.test.ts", fixtureUrl));
-
-      await process.waitForIdle();
-
-      // should do nothing
-      await process.write("a");
-
       const noTestFilesSelected = await process.waitForIdle();
 
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesSelected.stdout)), {
@@ -592,6 +583,42 @@ describe("watch", function () {
 
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesSelected.stderr)), {
         fileName: `${testFileName}-no-test-files-selected-stderr`,
+        testFileUrl: import.meta.url,
+      });
+
+      await process.write("x");
+
+      const { exitCode } = await process.waitForExit();
+
+      assert.equal(exitCode, 0);
+    });
+
+    test("when no test files are left to run", async function () {
+      fs.writeFileSync(
+        new URL("tstyche.config.json", fixtureUrl),
+        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
+      );
+
+      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+
+      fs.rmSync(new URL("a-feature/__typetests__/isNumber.test.ts", fixtureUrl));
+
+      await process.waitForIdle();
+
+      // should do nothing
+      await process.write("a");
+
+      const noTestFilesLeft = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesLeft.stdout)), {
+        fileName: `${testFileName}-no-test-files-left-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesLeft.stderr)), {
+        fileName: `${testFileName}-no-test-files-left-stderr`,
         testFileUrl: import.meta.url,
       });
 

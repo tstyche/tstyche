@@ -1,0 +1,7 @@
+Error: No test files were left to run using current configuration.
+
+Root path:       <<cwd>>/tests/__fixtures__/.generated/feature-watch
+Test file match: **/isNumber.*
+
+Waiting for file changes.
+
