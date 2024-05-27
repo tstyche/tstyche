@@ -1,5 +1,27 @@
 # Releases
 
+## [2.0.0-beta.1] - 2024-05-27
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
+
+### Changed
+
+- **Breaking!** Always set the `configFilePath` property in the resolved config ([#203](https://github.com/tstyche/tstyche/pull/203))
+- **Breaking!** Use the `jsx-runtime` transform for output components ([#199](https://github.com/tstyche/tstyche/pull/199))
+- **Breaking!** Drop support for Node.js 14 ([#198](https://github.com/tstyche/tstyche/pull/198))
+- **Breaking!** Do not return the `Result` from test runner ([#188](https://github.com/tstyche/tstyche/pull/188))
+
+### Fixed
+
+- Always allow passing `cancellationToken` as an argument ([#206](https://github.com/tstyche/tstyche/pull/206))
+- Support the `failFast` option in the watch mode ([#204](https://github.com/tstyche/tstyche/pull/204))
+- Make sure recursive watch is available ([#200](https://github.com/tstyche/tstyche/pull/200))
+
+### Added
+
+- **New!** Watch the TSTyche config file for changes ([#208](https://github.com/tstyche/tstyche/pull/208), [#213](https://github.com/tstyche/tstyche/pull/213))
+- Add the `TestFile` class ([#189](https://github.com/tstyche/tstyche/pull/189))
+
 ## [2.0.0-beta.0] - 2024-03-28
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
@@ -170,6 +192,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[2.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-beta.1
 [2.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-beta.0
 [1.1.0]: https://github.com/tstyche/tstyche/releases/tag/v1.1.0
 [1.0.0]: https://github.com/tstyche/tstyche/releases/tag/v1.0.0
