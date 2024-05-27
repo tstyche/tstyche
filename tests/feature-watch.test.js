@@ -30,6 +30,12 @@ test("is number?", () => {
 });
 `;
 
+const isVoidTestText = `import { expect, test } from "tstyche";
+test("is void?", () => {
+  expect<void>().type.toBeVoid();
+});
+`;
+
 const tsconfig = {
   extends: "../../../../tsconfig.json",
   include: ["**/*"],
@@ -156,7 +162,7 @@ describe("watch", function () {
     });
   });
 
-  describe("type test files", function () {
+  describe("test file changes", function () {
     beforeEach(async function () {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
@@ -421,7 +427,7 @@ describe("watch", function () {
     });
   });
 
-  describe("TSTyche config file", () => {
+  describe("config file changes", () => {
     beforeEach(async function () {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
@@ -487,13 +493,20 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when TSTyche config file is changed and has errors", async function () {
+    test("when TSTyche config file has an error", async function () {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
-        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
+        JSON.stringify({ failFast: "no", testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+      await process.waitForIdle();
+
+      fs.writeFileSync(
+        new URL("tstyche.config.json", fixtureUrl),
+        JSON.stringify({ failFast: false, testFileMatch: ["**/isNumber.*"] }, null, 2),
+      );
 
       await process.waitForIdle();
 
@@ -516,15 +529,15 @@ describe("watch", function () {
         JSON.stringify({ failFast: true, testFileMatch: ["**/isString.*"] }, null, 2),
       );
 
-      const configFileChanged = await process.waitForIdle();
+      const configFileError = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileChanged.stdout)), {
-        fileName: `${testFileName}-config-file-is-changed-and-has-errors-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileError.stdout)), {
+        fileName: `${testFileName}-config-file-has-an-error-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileChanged.stderr)), {
-        fileName: `${testFileName}-config-file-is-changed-and-has-errors-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileError.stderr)), {
+        fileName: `${testFileName}-config-file-has-an-error-stderr`,
         testFileUrl: import.meta.url,
       });
 
@@ -535,10 +548,10 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when TSTyche config file is changed and no test files are selected", async function () {
+    test("when no test files are selected", async function () {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
-        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
+        JSON.stringify({ testFileMatch: ["**/isVoid.*"] }, null, 2),
       );
 
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
@@ -547,25 +560,38 @@ describe("watch", function () {
 
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
-        JSON.stringify({ testFileMatch: ["**/isBoolean.*"] }, null, 2),
+        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
       await process.waitForIdle();
 
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
-        JSON.stringify({ testFileMatch: ["**/isString.*"] }, null, 2),
+        JSON.stringify({ testFileMatch: ["**/isVoid.*"] }, null, 2),
       );
 
-      const configFileChanged = await process.waitForIdle();
+      await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileChanged.stdout)), {
-        fileName: `${testFileName}-config-file-is-changed-and-no-test-files-stdout`,
+      fs.writeFileSync(new URL("a-feature/__typetests__/isVoid.test.ts", fixtureUrl), isVoidTestText);
+
+      await process.waitForIdle();
+
+      fs.rmSync(new URL("a-feature/__typetests__/isVoid.test.ts", fixtureUrl));
+
+      await process.waitForIdle();
+
+      // should do nothing
+      await process.write("a");
+
+      const noTestFilesSelected = await process.waitForIdle();
+
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesSelected.stdout)), {
+        fileName: `${testFileName}-no-test-files-selected-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileChanged.stderr)), {
-        fileName: `${testFileName}-config-file-is-changed-and-no-test-files-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesSelected.stderr)), {
+        fileName: `${testFileName}-no-test-files-selected-stderr`,
         testFileUrl: import.meta.url,
       });
 
@@ -573,7 +599,7 @@ describe("watch", function () {
 
       const { exitCode } = await process.waitForExit();
 
-      assert.equal(exitCode, 0);
+      assert.equal(exitCode, 1);
     });
 
     test("when TSTyche config file is removed", async function () {

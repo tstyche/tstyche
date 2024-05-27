@@ -1,5 +1,5 @@
 import type { Event, EventHandler } from "#events";
-import { type OutputService, watchUsageText } from "#output";
+import { type OutputService, diagnosticText, watchUsageText } from "#output";
 
 export class WatchReporter implements EventHandler {
   #outputService: OutputService;
@@ -8,7 +8,7 @@ export class WatchReporter implements EventHandler {
     this.#outputService = outputService;
   }
 
-  handleEvent([eventName]: Event): void {
+  handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
       case "run:start": {
         this.#outputService.clearTerminal();
@@ -17,6 +17,15 @@ export class WatchReporter implements EventHandler {
 
       case "run:end": {
         this.#outputService.writeMessage(watchUsageText());
+        break;
+      }
+
+      case "watch:error": {
+        this.#outputService.clearTerminal();
+
+        for (const diagnostic of payload.diagnostics) {
+          this.#outputService.writeError(diagnosticText(diagnostic));
+        }
         break;
       }
 

@@ -8,7 +8,7 @@ import { OutputService, formattedText, helpText } from "#output";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
-import { ConfigWatcher } from "#watch";
+import { FileWatcher, type WatchHandler, Watcher } from "#watch";
 
 export class Cli {
   #eventEmitter = new EventEmitter();
@@ -82,7 +82,7 @@ export class Cli {
 
       if (cancellationToken.isCancellationRequested) {
         if (commandLineArguments.includes("--watch")) {
-          await this.#waitForChangedConfigFile(resolvedConfig, cancellationToken);
+          await this.#waitForChangedFiles(resolvedConfig, /* selectService */ undefined, cancellationToken);
         }
         continue;
       }
@@ -116,7 +116,7 @@ export class Cli {
 
         if (testFiles.length === 0) {
           if (commandLineArguments.includes("--watch")) {
-            await this.#waitForChangedConfigFile(resolvedConfig, cancellationToken);
+            await this.#waitForChangedFiles(resolvedConfig, selectService, cancellationToken);
           }
           continue;
         }
@@ -139,19 +139,43 @@ export class Cli {
     this.#eventEmitter.removeHandlers();
   }
 
-  #waitForChangedConfigFile(resolvedConfig: ResolvedConfig, cancellationToken: CancellationToken): Promise<void> {
+  #waitForChangedFiles(
+    resolvedConfig: ResolvedConfig,
+    selectService: SelectService | undefined,
+    cancellationToken: CancellationToken,
+  ) {
+    const watchers: Array<Watcher> = [];
+
     cancellationToken.reset();
 
-    this.#outputService.writeMessage(formattedText("Waiting for configuration file changes."));
+    this.#outputService.writeMessage(formattedText("Waiting for file changes."));
+
+    if (selectService != null) {
+      const onChangedFile: WatchHandler = (filePath) => {
+        if (selectService.isTestFile(filePath)) {
+          cancellationToken.cancel(CancellationReason.ConfigChange);
+
+          for (const watcher of watchers) {
+            watcher.close();
+          }
+        }
+      };
+
+      watchers.push(
+        new Watcher(resolvedConfig.rootPath, onChangedFile, /* onRemoved */ undefined, /* recursive */ true),
+      );
+    }
 
     const onChangedConfigFile = () => {
       cancellationToken.cancel(CancellationReason.ConfigChange);
 
-      watcher.close();
+      for (const watcher of watchers) {
+        watcher.close();
+      }
     };
 
-    const watcher = new ConfigWatcher(resolvedConfig, onChangedConfigFile);
+    watchers.push(new FileWatcher(resolvedConfig.configFilePath, onChangedConfigFile));
 
-    return watcher.watch();
+    return Promise.all(watchers.map((watcher) => watcher.watch()));
   }
 }
