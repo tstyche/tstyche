@@ -161,9 +161,11 @@ export class Cli {
         }
       };
 
-      watchers.push(
-        new Watcher(resolvedConfig.rootPath, onChangedFile, /* onRemoved */ undefined, /* recursive */ true),
-      );
+      const onRemovedFile: WatchHandler = () => {
+        // do nothing, only added files are important
+      };
+
+      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedFile, onRemovedFile, /* recursive */ true));
     }
 
     const onChangedConfigFile = () => {
