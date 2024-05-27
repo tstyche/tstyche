@@ -9,7 +9,6 @@ import type { OptionBrand, OptionGroup } from "./enums.js";
 
 export class OptionValidator {
   #onDiagnostic: (diagnostic: Diagnostic) => void;
-  #optionDiagnosticText: OptionDiagnosticText;
   #optionGroup: OptionGroup;
   #optionUsageText: OptionUsageText;
   #storeService: StoreService;
@@ -19,7 +18,6 @@ export class OptionValidator {
     this.#storeService = storeService;
     this.#onDiagnostic = onDiagnostic;
 
-    this.#optionDiagnosticText = new OptionDiagnosticText(this.#optionGroup);
     this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
   }
 
@@ -33,7 +31,7 @@ export class OptionValidator {
       case "config":
       case "rootPath": {
         if (!existsSync(optionValue)) {
-          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.fileDoesNotExist(optionValue), origin));
+          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
         break;
       }
@@ -43,7 +41,7 @@ export class OptionValidator {
           this.#onDiagnostic(
             Diagnostic.error(
               [
-                this.#optionDiagnosticText.versionIsNotSupported(optionValue),
+                OptionDiagnosticText.versionIsNotSupported(optionValue),
                 ...(await this.#optionUsageText.get(optionName, optionBrand)),
               ],
               origin,
@@ -55,14 +53,12 @@ export class OptionValidator {
 
       case "watch": {
         if (Environment.isCi) {
-          this.#onDiagnostic(
-            Diagnostic.error(this.#optionDiagnosticText.watchCannotBeEnabledInCiEnvironment(), origin),
-          );
+          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.watchCannotBeEnabledInCiEnvironment(), origin));
           break;
         }
 
         if (!Watcher.isSupported()) {
-          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.watchIsNotAvailable(), origin));
+          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.watchIsNotAvailable(), origin));
         }
         break;
       }
