@@ -1,10 +1,5 @@
-import { Line, type ScribblerJsx, Text } from "#scribbler";
+import { Line, type ScribblerJsx } from "#scribbler";
 
 export function waitingForFileChangesText(): ScribblerJsx.Element {
-  return (
-    <Text>
-      Waiting for file changes.
-      <Line />
-    </Text>
-  );
+  return <Line>Waiting for file changes.</Line>;
 }
