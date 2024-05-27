@@ -9,17 +9,14 @@ export class Watcher {
   #onChanged: WatchHandler;
   #onRemoved: WatchHandler;
   #recursive: boolean | undefined;
+  #targetPath: string;
   #watcher: AsyncIterable<{ filename?: string | null }> | undefined;
 
-  constructor(
-    readonly targetPath: string,
-    onChanged: WatchHandler,
-    onRemoved?: WatchHandler,
-    recursive?: boolean,
-  ) {
+  constructor(targetPath: string, onChanged: WatchHandler, onRemoved?: WatchHandler, recursive?: boolean) {
     this.#onChanged = onChanged;
     this.#onRemoved = onRemoved ?? onChanged;
     this.#recursive = recursive;
+    this.#targetPath = targetPath;
   }
 
   close(): void {
@@ -27,12 +24,12 @@ export class Watcher {
   }
 
   async watch(): Promise<void> {
-    this.#watcher = fs.watch(this.targetPath, { recursive: this.#recursive, signal: this.#abortController.signal });
+    this.#watcher = fs.watch(this.#targetPath, { recursive: this.#recursive, signal: this.#abortController.signal });
 
     try {
       for await (const event of this.#watcher) {
         if (event.filename != null) {
-          const filePath = Path.resolve(this.targetPath, event.filename);
+          const filePath = Path.resolve(this.#targetPath, event.filename);
 
           if (existsSync(filePath)) {
             await this.#onChanged(filePath);

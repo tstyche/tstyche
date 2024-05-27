@@ -11,6 +11,7 @@ export class FileWatcher extends Watcher {
       }
     };
 
+    // installing a watcher on a directory allows watching for files that do not exist yet (e.g. config files)
     super(Path.dirname(targetPath), onChangedFile);
   }
 }
