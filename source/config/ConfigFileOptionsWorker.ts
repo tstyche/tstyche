@@ -19,7 +19,7 @@ export class ConfigFileOptionsWorker {
   #configFileOptions: Record<string, OptionValue>;
   #configFilePath: string;
   #onDiagnostic: (diagnostic: Diagnostic) => void;
-  #optionDiagnosticText: OptionDiagnosticText;
+  #optionGroup = OptionGroup.ConfigFile;
   #optionValidator: OptionValidator;
   #storeService: StoreService;
 
@@ -35,11 +35,9 @@ export class ConfigFileOptionsWorker {
     this.#storeService = storeService;
     this.#onDiagnostic = onDiagnostic;
 
-    this.#configFileOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.ConfigFile);
+    this.#configFileOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
-    this.#optionDiagnosticText = new OptionDiagnosticText(OptionGroup.ConfigFile);
-
-    this.#optionValidator = new OptionValidator(OptionGroup.ConfigFile, this.#storeService, this.#onDiagnostic);
+    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostic);
   }
 
   #isDoubleQuotedString(node: ts.Node, sourceFile: ts.SourceFile): boolean {
@@ -81,7 +79,7 @@ export class ConfigFileOptionsWorker {
             start: this.#skipTrivia(property.pos, configSourceFile),
           };
 
-          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.doubleQuotesExpected(), origin));
+          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.doubleQuotesExpected(), origin));
           continue;
         }
 
@@ -106,7 +104,7 @@ export class ConfigFileOptionsWorker {
             start: this.#skipTrivia(property.pos, configSourceFile),
           };
 
-          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownOption(optionName), origin));
+          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.unknownOption(optionName), origin));
         }
       }
     }
@@ -143,7 +141,7 @@ export class ConfigFileOptionsWorker {
             start: this.#skipTrivia(valueExpression.pos, sourceFile),
           };
 
-          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.doubleQuotesExpected(), origin));
+          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.doubleQuotesExpected(), origin));
           return;
         }
 
@@ -192,8 +190,8 @@ export class ConfigFileOptionsWorker {
       start: this.#skipTrivia(valueExpression.pos, sourceFile),
     };
     const text = isListItem
-      ? this.#optionDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
-      : this.#optionDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand);
+      ? OptionDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
+      : OptionDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
 
     this.#onDiagnostic(Diagnostic.error(text, origin));
 

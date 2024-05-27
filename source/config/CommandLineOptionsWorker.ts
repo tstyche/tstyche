@@ -13,7 +13,7 @@ export class CommandLineOptionsWorker {
   #commandLineOptionDefinitions: Map<string, OptionDefinition>;
   #commandLineOptions: Record<string, OptionValue>;
   #onDiagnostic: (diagnostic: Diagnostic) => void;
-  #optionDiagnosticText: OptionDiagnosticText;
+  #optionGroup = OptionGroup.CommandLine;
   #optionUsageText: OptionUsageText;
   #optionValidator: OptionValidator;
   #pathMatch: Array<string>;
@@ -30,17 +30,16 @@ export class CommandLineOptionsWorker {
     this.#storeService = storeService;
     this.#onDiagnostic = onDiagnostic;
 
-    this.#commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
+    this.#commandLineOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
-    this.#optionDiagnosticText = new OptionDiagnosticText(OptionGroup.CommandLine);
-    this.#optionUsageText = new OptionUsageText(OptionGroup.CommandLine, this.#storeService);
+    this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
 
-    this.#optionValidator = new OptionValidator(OptionGroup.CommandLine, this.#storeService, this.#onDiagnostic);
+    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostic);
   }
 
   async #onExpectsValue(optionDefinition: OptionDefinition) {
     const text = [
-      this.#optionDiagnosticText.expectsValue(optionDefinition.name),
+      OptionDiagnosticText.expectsValue(optionDefinition.name, this.#optionGroup),
       ...(await this.#optionUsageText.get(optionDefinition.name, optionDefinition.brand)),
     ];
 
@@ -61,10 +60,10 @@ export class CommandLineOptionsWorker {
         if (optionDefinition) {
           index = await this.#parseOptionValue(commandLineArgs, index, optionDefinition);
         } else {
-          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownOption(arg)));
+          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.unknownOption(arg)));
         }
       } else if (arg.startsWith("-")) {
-        this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownOption(arg)));
+        this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.unknownOption(arg)));
       } else {
         this.#pathMatch.push(Path.normalizeSlashes(arg));
       }

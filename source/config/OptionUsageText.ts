@@ -3,13 +3,11 @@ import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { type OptionBrand, OptionGroup } from "./enums.js";
 
 export class OptionUsageText {
-  #optionDiagnosticText: OptionDiagnosticText;
   #optionGroup: OptionGroup;
   #storeService: StoreService;
 
   constructor(optionGroup: OptionGroup, storeService: StoreService) {
     this.#optionGroup = optionGroup;
-    this.#optionDiagnosticText = new OptionDiagnosticText(this.#optionGroup);
     this.#storeService = storeService;
   }
 
@@ -40,7 +38,7 @@ export class OptionUsageText {
       }
 
       default:
-        usageText.push(this.#optionDiagnosticText.requiresValueType(optionName, optionBrand));
+        usageText.push(OptionDiagnosticText.requiresValueType(optionName, optionBrand, this.#optionGroup));
     }
 
     return usageText;
