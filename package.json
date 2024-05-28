@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tstyche/tstyche.git"
+    "url": "https://github.com/tstyche/tstyche.git"
   },
   "funding": "https://github.com/tstyche/tstyche?sponsor=1",
   "license": "MIT",
