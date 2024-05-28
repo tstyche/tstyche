@@ -51,6 +51,15 @@ export class OptionValidator {
         break;
       }
 
+      case "testFileMatch": {
+        for (const segment of ["/", "../"]) {
+          if (optionValue.startsWith(segment)) {
+            this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.testFileMatchCannotStartWith(segment), origin));
+          }
+        }
+        break;
+      }
+
       case "watch": {
         if (Environment.isCi) {
           this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.watchCannotBeEnabledInCiEnvironment(), origin));

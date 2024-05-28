@@ -135,6 +135,27 @@ describe("'testFileMatch' configuration file option", function () {
       assert.equal(exitCode, 0);
     });
 
+    test("can start with './'", async function () {
+      const config = {
+        testFileMatch: ["./tests/*.ts"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["tests/isNumber.tst.ts"]: isNumberTestText,
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      await assert.matchSnapshot(normalizeOutput(stdout), {
+        fileName: `${testFileName}-specified-patterns-start-with-dot-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+
     test("can select the '.' paths", async function () {
       const config = {
         testFileMatch: ["**/.generated/*.tst.*"],

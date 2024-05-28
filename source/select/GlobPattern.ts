@@ -11,6 +11,10 @@ export class GlobPattern {
     let optionalSegmentCount = 0;
 
     for (const segment of segments) {
+      if (segment === ".") {
+        continue;
+      }
+
       if (segment === "**") {
         resultPattern += "(\\/(?!(node_modules)(\\/|$))[^./][^/]*)*?";
         continue;

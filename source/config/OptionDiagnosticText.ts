@@ -57,6 +57,13 @@ export class OptionDiagnosticText {
     }
   }
 
+  static testFileMatchCannotStartWith(segment: string): Array<string> {
+    return [
+      `A test file match pattern cannot start with '${segment}'.`,
+      "The test files are only collected within the 'rootPath' directory.",
+    ];
+  }
+
   static requiresValueType(optionName: string, optionBrand: OptionBrand, optionGroup: OptionGroup): string {
     optionName = OptionDiagnosticText.#optionName(optionName, optionGroup);
 
