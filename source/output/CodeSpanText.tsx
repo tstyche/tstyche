@@ -34,7 +34,10 @@ export class CodeSpanText implements ScribblerJsx.ElementClass {
       if (index === markedLine) {
         codeSpan.push(
           <Line>
-            <Text color={Color.Red}>{">"}</Text> {lineNumberText.padStart(lineNumberMaxWidth)}{" "}
+            <Text color={Color.Red}>{">"}</Text>
+            <Text> </Text>
+            {lineNumberText.padStart(lineNumberMaxWidth)}
+            <Text> </Text>
             <Text color={Color.Gray}>|</Text> {lineText}
           </Line>,
           <Line>
