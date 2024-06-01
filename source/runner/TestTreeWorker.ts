@@ -16,20 +16,20 @@ interface TestFileWorkerOptions {
 }
 
 export class TestTreeWorker {
+  #compiler: typeof ts;
   #cancellationToken: CancellationToken | undefined;
   #expect: Expect;
   #fileResult: FileResult;
   #hasOnly: boolean;
   #position: number | undefined;
+  #resolvedConfig: ResolvedConfig;
 
-  constructor(
-    readonly resolvedConfig: ResolvedConfig,
-    public compiler: typeof ts,
-    expect: Expect,
-    options: TestFileWorkerOptions,
-  ) {
-    this.#cancellationToken = options.cancellationToken;
+  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts, expect: Expect, options: TestFileWorkerOptions) {
+    this.#resolvedConfig = resolvedConfig;
+    this.#compiler = compiler;
     this.#expect = expect;
+
+    this.#cancellationToken = options.cancellationToken;
     this.#fileResult = options.fileResult;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
@@ -42,14 +42,14 @@ export class TestTreeWorker {
 
     if (
       member.flags & TestMemberFlags.Only ||
-      (this.resolvedConfig.only != null && member.name.toLowerCase().includes(this.resolvedConfig.only.toLowerCase()))
+      (this.#resolvedConfig.only != null && member.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
     ) {
       mode |= RunMode.Only;
     }
 
     if (
       member.flags & TestMemberFlags.Skip ||
-      (this.resolvedConfig.skip != null && member.name.toLowerCase().includes(this.resolvedConfig.skip.toLowerCase()))
+      (this.#resolvedConfig.skip != null && member.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
     ) {
       mode |= RunMode.Skip;
     }
@@ -129,7 +129,7 @@ export class TestTreeWorker {
       EventEmitter.dispatch([
         "expect:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...assertion.diagnostics], this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...assertion.diagnostics], this.#compiler),
           result: expectResult,
         },
       ]);
@@ -199,7 +199,7 @@ export class TestTreeWorker {
       EventEmitter.dispatch([
         "file:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics], this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics], this.#compiler),
           result: this.#fileResult,
         },
       ]);
@@ -227,7 +227,7 @@ export class TestTreeWorker {
       EventEmitter.dispatch([
         "test:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...test.diagnostics], this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...test.diagnostics], this.#compiler),
           result: testResult,
         },
       ]);

@@ -6,8 +6,11 @@ export abstract class RelationMatcherBase {
   abstract relation: Relation;
   abstract relationExplanationText: string;
   relationExplanationVerb = "is";
+  typeChecker: TypeChecker;
 
-  constructor(public typeChecker: TypeChecker) {}
+  constructor(typeChecker: TypeChecker) {
+    this.typeChecker = typeChecker;
+  }
 
   protected explain(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): Array<Diagnostic> {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);

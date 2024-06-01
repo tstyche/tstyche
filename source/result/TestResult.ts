@@ -9,12 +9,14 @@ import { ResultStatus } from "./enums.js";
 export class TestResult {
   diagnostics: Array<Diagnostic> = [];
   expectCount = new ResultCount();
+  parent: DescribeResult | undefined;
   results: Array<ExpectResult> = [];
   status: ResultStatus = ResultStatus.Runs;
+  test: TestMember;
   timing = new ResultTiming();
 
-  constructor(
-    public test: TestMember,
-    public parent: DescribeResult | undefined,
-  ) {}
+  constructor(test: TestMember, parent?: DescribeResult) {
+    this.test = test;
+    this.parent = parent;
+  }
 }

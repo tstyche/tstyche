@@ -14,6 +14,7 @@ export type RunCallback = (testFiles: Array<TestFile>) => Promise<void>;
 export class WatchService {
   #changedTestFiles = new Map<string, TestFile>();
   #inputService: InputService;
+  #resolvedConfig: ResolvedConfig;
   #runCallback: RunCallback;
   #selectService: SelectService;
   #timer = new Timer();
@@ -21,13 +22,15 @@ export class WatchService {
   #watchedTestFiles: Map<string, TestFile>;
 
   constructor(
-    readonly resolvedConfig: ResolvedConfig,
+    resolvedConfig: ResolvedConfig,
     runCallback: RunCallback,
     selectService: SelectService,
     testFiles: Array<TestFile>,
   ) {
+    this.#resolvedConfig = resolvedConfig;
     this.#runCallback = runCallback;
     this.#selectService = selectService;
+
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
 
     const onInput: InputHandler = (chunk) => {
@@ -109,17 +112,17 @@ export class WatchService {
       this.#watchedTestFiles.delete(filePath);
 
       if (this.#watchedTestFiles.size === 0) {
-        this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.noTestFilesWereLeft(this.resolvedConfig)));
+        this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.noTestFilesWereLeft(this.#resolvedConfig)));
       }
     };
 
-    this.#watchers.push(new Watcher(this.resolvedConfig.rootPath, onChangedFile, onRemovedFile, /* recursive */ true));
+    this.#watchers.push(new Watcher(this.#resolvedConfig.rootPath, onChangedFile, onRemovedFile, /* recursive */ true));
 
     const onChangedConfigFile = () => {
       cancellationToken?.cancel(CancellationReason.ConfigChange);
     };
 
-    this.#watchers.push(new FileWatcher(this.resolvedConfig.configFilePath, onChangedConfigFile));
+    this.#watchers.push(new FileWatcher(this.#resolvedConfig.configFilePath, onChangedConfigFile));
 
     return Promise.all(this.#watchers.map((watcher) => watcher.watch()));
   }

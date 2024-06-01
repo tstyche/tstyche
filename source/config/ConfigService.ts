@@ -32,15 +32,14 @@ export const defaultOptions: Required<ConfigFileOptions> = {
 
 export class ConfigService {
   #commandLineOptions: CommandLineOptions = {};
+  #compiler: typeof ts;
   #configFileOptions: ConfigFileOptions = {};
   #configFilePath = Path.resolve(defaultOptions.rootPath, "./tstyche.config.json");
   #pathMatch: Array<string> = [];
   #storeService: StoreService;
 
-  constructor(
-    public compiler: typeof ts,
-    storeService: StoreService,
-  ) {
+  constructor(compiler: typeof ts, storeService: StoreService) {
+    this.#compiler = compiler;
     this.#storeService = storeService;
   }
 
@@ -82,7 +81,7 @@ export class ConfigService {
     });
 
     const configFileWorker = new ConfigFileOptionsWorker(
-      this.compiler,
+      this.#compiler,
       this.#configFileOptions as Record<string, OptionValue>,
       this.#configFilePath,
       this.#storeService,

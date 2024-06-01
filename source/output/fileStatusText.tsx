@@ -3,8 +3,16 @@ import { Path } from "#path";
 import { type FileResultStatus, ResultStatus } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
+interface FileNameTextProps {
+  filePath: string;
+}
+
 class FileNameText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: { filePath: string }) {}
+  props: FileNameTextProps;
+
+  constructor(props: FileNameTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     const relativePath = Path.relative("", this.props.filePath);

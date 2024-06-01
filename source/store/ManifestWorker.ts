@@ -26,7 +26,7 @@ export class ManifestWorker {
   #registryUrl = new URL("https://registry.npmjs.org");
   #storePath: string;
   #timeout = Environment.timeout * 1000;
-  readonly #version = "1";
+  #version = "1";
 
   constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void) {
     this.#storePath = storePath;

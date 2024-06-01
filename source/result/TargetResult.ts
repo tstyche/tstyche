@@ -8,10 +8,12 @@ export type TargetResultStatus = ResultStatus.Runs | ResultStatus.Passed | Resul
 export class TargetResult {
   results = new Map<string | undefined, ProjectResult>();
   status: TargetResultStatus = ResultStatus.Runs;
+  testFiles: Array<TestFile>;
   timing = new ResultTiming();
+  versionTag: string;
 
-  constructor(
-    public versionTag: string,
-    public testFiles: Array<TestFile>,
-  ) {}
+  constructor(versionTag: string, testFiles: Array<TestFile>) {
+    this.versionTag = versionTag;
+    this.testFiles = testFiles;
+  }
 }

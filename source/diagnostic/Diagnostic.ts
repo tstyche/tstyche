@@ -4,19 +4,23 @@ import { DiagnosticCategory } from "./enums.js";
 export interface DiagnosticOrigin {
   breadcrumbs?: Array<string>;
   end: number;
+  // TODO rename to 'sourceFile', perhaps?
   file: ts.SourceFile;
   start: number;
 }
 
 export class Diagnostic {
-  code?: string;
-  related?: Array<Diagnostic>;
+  category: DiagnosticCategory;
+  code: string | undefined;
+  related: Array<Diagnostic> | undefined;
+  origin: DiagnosticOrigin | undefined;
+  text: string | Array<string>;
 
-  constructor(
-    public text: string | Array<string>,
-    public category: DiagnosticCategory,
-    public origin?: DiagnosticOrigin,
-  ) {}
+  constructor(text: string | Array<string>, category: DiagnosticCategory, origin?: DiagnosticOrigin) {
+    this.text = text;
+    this.category = category;
+    this.origin = origin;
+  }
 
   add(options: { code?: string; origin?: DiagnosticOrigin; related?: Array<Diagnostic> }): this {
     if (options.code != null) {

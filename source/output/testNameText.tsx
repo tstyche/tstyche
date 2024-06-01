@@ -1,7 +1,15 @@
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
+interface StatusTextProps {
+  status: "fail" | "pass" | "skip" | "todo";
+}
+
 class StatusText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: { status: "fail" | "pass" | "skip" | "todo" }) {}
+  props: StatusTextProps;
+
+  constructor(props: StatusTextProps) {
+    this.props = props;
+  }
 
   render() {
     switch (this.props.status) {

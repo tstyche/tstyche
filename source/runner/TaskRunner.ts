@@ -11,14 +11,12 @@ import { TestFileRunner } from "./TestFileRunner.js";
 
 export class TaskRunner {
   #eventEmitter = new EventEmitter();
+  #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
   #storeService: StoreService;
 
-  constructor(
-    readonly resolvedConfig: ResolvedConfig,
-    selectService: SelectService,
-    storeService: StoreService,
-  ) {
+  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, storeService: StoreService) {
+    this.#resolvedConfig = resolvedConfig;
     this.#selectService = selectService;
     this.#storeService = storeService;
 
@@ -32,12 +30,12 @@ export class TaskRunner {
   async run(testFiles: Array<TestFile>, cancellationToken = new CancellationToken()): Promise<void> {
     let cancellationHandler: CancellationHandler | undefined;
 
-    if (this.resolvedConfig.failFast) {
+    if (this.#resolvedConfig.failFast) {
       cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
       this.#eventEmitter.addHandler(cancellationHandler);
     }
 
-    if (this.resolvedConfig.watch === true) {
+    if (this.#resolvedConfig.watch === true) {
       await this.#watch(testFiles, cancellationToken);
     } else {
       await this.#run(testFiles, cancellationToken);
@@ -49,11 +47,11 @@ export class TaskRunner {
   }
 
   async #run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
-    const result = new Result(this.resolvedConfig, testFiles);
+    const result = new Result(this.#resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["run:start", { result }]);
 
-    for (const versionTag of this.resolvedConfig.target) {
+    for (const versionTag of this.#resolvedConfig.target) {
       const targetResult = new TargetResult(versionTag, testFiles);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
@@ -62,7 +60,7 @@ export class TaskRunner {
 
       if (compiler) {
         // TODO For better performance, test file runners (or even test projects) could be cached in the future
-        const testFileRunner = new TestFileRunner(this.resolvedConfig, compiler);
+        const testFileRunner = new TestFileRunner(this.#resolvedConfig, compiler);
 
         for (const testFile of testFiles) {
           testFileRunner.run(testFile, cancellationToken);
@@ -86,7 +84,7 @@ export class TaskRunner {
       await this.#run(testFiles, cancellationToken);
     };
 
-    const watchModeManager = new WatchService(this.resolvedConfig, runCallback, this.#selectService, testFiles);
+    const watchModeManager = new WatchService(this.#resolvedConfig, runCallback, this.#selectService, testFiles);
 
     cancellationToken?.onCancellationRequested((reason) => {
       if (reason !== CancellationReason.FailFast) {

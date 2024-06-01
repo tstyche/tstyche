@@ -5,27 +5,34 @@ import type { TestTree } from "./TestTree.js";
 import { TestMemberBrand, type TestMemberFlags } from "./enums.js";
 
 export class TestMember {
-  compiler: typeof ts;
+  brand: TestMemberBrand;
   diagnostics = new Set<ts.Diagnostic>();
+  flags: TestMemberFlags;
   members: Array<TestMember | Assertion> = [];
   name = "";
+  node: ts.CallExpression;
+  parent: TestTree | TestMember;
 
   constructor(
-    public brand: TestMemberBrand,
-    public node: ts.CallExpression,
-    public parent: TestTree | TestMember,
-    public flags: TestMemberFlags,
+    compiler: typeof ts,
+    brand: TestMemberBrand,
+    node: ts.CallExpression,
+    parent: TestTree | TestMember,
+    flags: TestMemberFlags,
   ) {
-    this.compiler = parent.compiler;
+    this.brand = brand;
+    this.node = node;
+    this.parent = parent;
+    this.flags = flags;
 
-    if (node.arguments[0] != null && this.compiler.isStringLiteralLike(node.arguments[0])) {
+    if (node.arguments[0] != null && compiler.isStringLiteralLike(node.arguments[0])) {
       this.name = node.arguments[0].text;
     }
 
     if (
       node.arguments[1] != null &&
-      parent.compiler.isFunctionLike(node.arguments[1]) &&
-      parent.compiler.isBlock(node.arguments[1].body)
+      compiler.isFunctionLike(node.arguments[1]) &&
+      compiler.isBlock(node.arguments[1].body)
     ) {
       const blockStart = node.arguments[1].body.getStart();
       const blockEnd = node.arguments[1].body.getEnd();

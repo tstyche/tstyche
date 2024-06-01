@@ -12,13 +12,15 @@ import { TestTreeWorker } from "./TestTreeWorker.js";
 import { RunMode } from "./enums.js";
 
 export class TestFileRunner {
+  #compiler: typeof ts;
   #collectService: CollectService;
+  #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
 
-  constructor(
-    readonly resolvedConfig: ResolvedConfig,
-    public compiler: typeof ts,
-  ) {
+  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
+    this.#resolvedConfig = resolvedConfig;
+    this.#compiler = compiler;
+
     this.#collectService = new CollectService(compiler);
     this.#projectService = new ProjectService(compiler);
   }
@@ -28,7 +30,7 @@ export class TestFileRunner {
       return;
     }
 
-    this.#projectService.openFile(testFile.path, /* sourceText */ undefined, this.resolvedConfig.rootPath);
+    this.#projectService.openFile(testFile.path, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
 
     const fileResult = new FileResult(testFile);
 
@@ -54,7 +56,7 @@ export class TestFileRunner {
       EventEmitter.dispatch([
         "file:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler),
           result: fileResult,
         },
       ]);
@@ -82,7 +84,7 @@ export class TestFileRunner {
       EventEmitter.dispatch([
         "file:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler),
           result: fileResult,
         },
       ]);
@@ -92,6 +94,21 @@ export class TestFileRunner {
 
     const typeChecker = program.getTypeChecker();
 
+    // this.compiler.forEachChild(sourceFile, (node) => {
+    //   if (this.compiler.isImportDeclaration(node)) {
+    //     console.log("is import!");
+
+    //     const symbol = typeChecker.getSymbolAtLocation(node.moduleSpecifier);
+
+    //     console.log(symbol);
+
+    //     console.log("fileName", symbol?.valueDeclaration?.getSourceFile().fileName);
+    //     console.log("moduleName", symbol?.valueDeclaration?.getSourceFile().moduleName);
+    //     console.log("getText", symbol?.valueDeclaration?.getSourceFile().getText());
+    //     console.log("--- --- ---");
+    //   }
+    // });
+
     if (!Expect.assertTypeChecker(typeChecker)) {
       const text = "The required 'isTypeRelatedTo()' method is missing in the provided type checker.";
 
@@ -100,9 +117,9 @@ export class TestFileRunner {
       return;
     }
 
-    const expect = new Expect(this.compiler, typeChecker);
+    const expect = new Expect(this.#compiler, typeChecker);
 
-    const testTreeWorker = new TestTreeWorker(this.resolvedConfig, this.compiler, expect, {
+    const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, expect, {
       cancellationToken,
       fileResult,
       hasOnly: testTree.hasOnly,

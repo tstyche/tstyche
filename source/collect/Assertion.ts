@@ -9,19 +9,25 @@ export interface MatcherNode extends ts.CallExpression {
 
 export class Assertion extends TestMember {
   isNot: boolean;
+  matcherNode: MatcherNode;
+  modifierNode: ts.PropertyAccessExpression;
+  notNode: ts.PropertyAccessExpression | undefined;
 
   constructor(
+    compiler: typeof ts,
     brand: TestMemberBrand,
     node: ts.CallExpression,
     parent: TestTree | TestMember,
     flags: TestMemberFlags,
-    public matcherNode: MatcherNode,
-    public modifierNode: ts.PropertyAccessExpression,
-    public notNode: ts.PropertyAccessExpression | undefined,
+    matcherNode: MatcherNode,
+    modifierNode: ts.PropertyAccessExpression,
+    notNode?: ts.PropertyAccessExpression,
   ) {
-    super(brand, node, parent, flags);
+    super(compiler, brand, node, parent, flags);
 
     this.isNot = notNode != null;
+    this.matcherNode = matcherNode;
+    this.modifierNode = modifierNode;
 
     const argStart = this.source[0]?.getStart();
     const argEnd = this.source[0]?.getEnd();

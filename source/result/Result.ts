@@ -7,13 +7,15 @@ import type { TargetResult } from "./TargetResult.js";
 export class Result {
   expectCount = new ResultCount();
   fileCount = new ResultCount();
+  resolvedConfig: ResolvedConfig;
   results: Array<TargetResult> = [];
   targetCount = new ResultCount();
   testCount = new ResultCount();
+  testFiles: Array<TestFile>;
   timing = new ResultTiming();
 
-  constructor(
-    public resolvedConfig: ResolvedConfig,
-    public testFiles: Array<TestFile>,
-  ) {}
+  constructor(resolvedConfig: ResolvedConfig, testFiles: Array<TestFile>) {
+    this.resolvedConfig = resolvedConfig;
+    this.testFiles = testFiles;
+  }
 }

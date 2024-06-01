@@ -15,6 +15,7 @@ import { OptionBrand, OptionGroup } from "./enums.js";
 export type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
 
 export class ConfigFileOptionsWorker {
+  #compiler: typeof ts;
   #configFileOptionDefinitions: Map<string, OptionDefinition>;
   #configFileOptions: Record<string, OptionValue>;
   #configFilePath: string;
@@ -24,12 +25,13 @@ export class ConfigFileOptionsWorker {
   #storeService: StoreService;
 
   constructor(
-    public compiler: typeof ts,
+    compiler: typeof ts,
     configFileOptions: Record<string, OptionValue>,
     configFilePath: string,
     storeService: StoreService,
     onDiagnostic: (diagnostic: Diagnostic) => void,
   ) {
+    this.#compiler = compiler;
     this.#configFileOptions = configFileOptions;
     this.#configFilePath = configFilePath;
     this.#storeService = storeService;
@@ -42,18 +44,18 @@ export class ConfigFileOptionsWorker {
 
   #isDoubleQuotedString(node: ts.Node, sourceFile: ts.SourceFile): boolean {
     return (
-      node.kind === this.compiler.SyntaxKind.StringLiteral &&
+      node.kind === this.#compiler.SyntaxKind.StringLiteral &&
       sourceFile.text.slice(this.#skipTrivia(node.pos, sourceFile), node.end).startsWith('"')
     );
   }
 
   async parse(sourceText: string): Promise<void> {
-    const configSourceFile = this.compiler.parseJsonText(this.#configFilePath, sourceText) as ts.JsonSourceFile & {
+    const configSourceFile = this.#compiler.parseJsonText(this.#configFilePath, sourceText) as ts.JsonSourceFile & {
       parseDiagnostics: Array<ts.Diagnostic>;
     };
 
     if (configSourceFile.parseDiagnostics.length > 0) {
-      for (const diagnostic of Diagnostic.fromDiagnostics(configSourceFile.parseDiagnostics, this.compiler)) {
+      for (const diagnostic of Diagnostic.fromDiagnostics(configSourceFile.parseDiagnostics, this.#compiler)) {
         this.#onDiagnostic(diagnostic);
       }
 
@@ -62,7 +64,7 @@ export class ConfigFileOptionsWorker {
 
     const rootExpression = configSourceFile.statements[0]?.expression;
 
-    if (rootExpression == null || !this.compiler.isObjectLiteralExpression(rootExpression)) {
+    if (rootExpression == null || !this.#compiler.isObjectLiteralExpression(rootExpression)) {
       const origin = { end: 0, file: configSourceFile, start: 0 };
 
       this.#onDiagnostic(Diagnostic.error("The root value of a configuration file must be an object literal.", origin));
@@ -71,7 +73,7 @@ export class ConfigFileOptionsWorker {
     }
 
     for (const property of rootExpression.properties) {
-      if (this.compiler.isPropertyAssignment(property)) {
+      if (this.#compiler.isPropertyAssignment(property)) {
         if (!this.#isDoubleQuotedString(property.name, configSourceFile)) {
           const origin = {
             end: property.end,
@@ -119,21 +121,21 @@ export class ConfigFileOptionsWorker {
     isListItem = false,
   ): Promise<OptionValue> {
     switch (valueExpression.kind) {
-      case this.compiler.SyntaxKind.TrueKeyword: {
+      case this.#compiler.SyntaxKind.TrueKeyword: {
         if (optionDefinition.brand === OptionBrand.Boolean) {
           return true;
         }
         break;
       }
 
-      case this.compiler.SyntaxKind.FalseKeyword: {
+      case this.#compiler.SyntaxKind.FalseKeyword: {
         if (optionDefinition.brand === OptionBrand.Boolean) {
           return false;
         }
         break;
       }
 
-      case this.compiler.SyntaxKind.StringLiteral: {
+      case this.#compiler.SyntaxKind.StringLiteral: {
         if (!this.#isDoubleQuotedString(valueExpression, sourceFile)) {
           const origin = {
             end: valueExpression.end,
@@ -165,7 +167,7 @@ export class ConfigFileOptionsWorker {
         break;
       }
 
-      case this.compiler.SyntaxKind.ArrayLiteralExpression: {
+      case this.#compiler.SyntaxKind.ArrayLiteralExpression: {
         if (optionDefinition.brand === OptionBrand.List) {
           const value: Array<OptionValue> = [];
 

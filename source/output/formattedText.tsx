@@ -1,7 +1,15 @@
 import { Line, type ScribblerJsx } from "#scribbler";
 
+interface JsonTextProps {
+  input: Array<string> | Record<string, unknown>;
+}
+
 export class JsonText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: { input: Array<string> | Record<string, unknown> }) {}
+  props: JsonTextProps;
+
+  constructor(props: JsonTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     return <Line>{JSON.stringify(this.#sortObject(this.props.input), null, 2)}</Line>;

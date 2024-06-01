@@ -15,7 +15,10 @@ export class FileResult {
   results: Array<DescribeResult | TestResult | ExpectResult> = [];
   status: FileResultStatus = ResultStatus.Runs;
   testCount = new ResultCount();
+  testFile: TestFile;
   timing = new ResultTiming();
 
-  constructor(public testFile: TestFile) {}
+  constructor(testFile: TestFile) {
+    this.testFile = testFile;
+  }
 }

@@ -9,7 +9,11 @@ interface LineProps {
 }
 
 export class Line implements ScribblerJsx.ElementClass {
-  constructor(readonly props: LineProps) {}
+  props: LineProps;
+
+  constructor(props: LineProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     return (

@@ -8,7 +8,11 @@ interface TextProps {
 }
 
 export class Text implements ScribblerJsx.ElementClass {
-  constructor(readonly props: TextProps) {}
+  props: TextProps;
+
+  constructor(props: TextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     const ansiEscapes: Array<Color> = [];

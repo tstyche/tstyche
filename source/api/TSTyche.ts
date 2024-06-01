@@ -12,21 +12,23 @@ import { CancellationToken } from "#token";
 export class TSTyche {
   #eventEmitter = new EventEmitter();
   #outputService: OutputService;
+  #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
   #storeService: StoreService;
   #taskRunner: TaskRunner;
-  static readonly version = "__version__";
+  static version = "__version__";
 
   constructor(
-    readonly resolvedConfig: ResolvedConfig,
+    resolvedConfig: ResolvedConfig,
     outputService: OutputService,
     selectService: SelectService,
     storeService: StoreService,
   ) {
+    this.#resolvedConfig = resolvedConfig;
     this.#outputService = outputService;
     this.#selectService = selectService;
     this.#storeService = storeService;
-    this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#selectService, this.#storeService);
+    this.#taskRunner = new TaskRunner(this.#resolvedConfig, this.#selectService, this.#storeService);
   }
 
   close(): void {
@@ -34,9 +36,9 @@ export class TSTyche {
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    this.#eventEmitter.addHandler(new RuntimeReporter(this.resolvedConfig, this.#outputService));
+    this.#eventEmitter.addHandler(new RuntimeReporter(this.#resolvedConfig, this.#outputService));
 
-    if (this.resolvedConfig.watch === true) {
+    if (this.#resolvedConfig.watch === true) {
       this.#eventEmitter.addHandler(new WatchReporter(this.#outputService));
     } else {
       this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));

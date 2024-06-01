@@ -2,8 +2,16 @@ import { type Diagnostic, DiagnosticCategory } from "#diagnostic";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 import { CodeSpanText } from "./CodeSpanText.js";
 
+interface DiagnosticTextProps {
+  diagnostic: Diagnostic;
+}
+
 class DiagnosticText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: { diagnostic: Diagnostic }) {}
+  props: DiagnosticTextProps;
+
+  constructor(props: DiagnosticTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     const code =

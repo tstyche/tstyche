@@ -4,11 +4,10 @@ import type { MatchResult, TypeChecker } from "./types.js";
 
 export class PrimitiveTypeMatcher {
   #targetTypeFlag: ts.TypeFlags;
+  typeChecker: TypeChecker;
 
-  constructor(
-    public typeChecker: TypeChecker,
-    targetTypeFlag: ts.TypeFlags,
-  ) {
+  constructor(typeChecker: TypeChecker, targetTypeFlag: ts.TypeFlags) {
+    this.typeChecker = typeChecker;
     this.#targetTypeFlag = targetTypeFlag;
   }
 

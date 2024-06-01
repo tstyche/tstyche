@@ -13,6 +13,9 @@ import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class Expect {
+  #compiler: typeof ts;
+  #typeChecker: TypeChecker;
+
   toBe: ToBe;
   toBeAny: PrimitiveTypeMatcher;
   toBeAssignable: ToBeAssignableWith;
@@ -34,30 +37,30 @@ export class Expect {
   toMatch: ToMatch;
   toRaiseError: ToRaiseError;
 
-  constructor(
-    public compiler: typeof ts,
-    public typeChecker: TypeChecker,
-  ) {
-    this.toBe = new ToBe(this.typeChecker);
-    this.toBeAny = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Any);
-    this.toBeAssignable = new ToBeAssignableWith(this.typeChecker);
-    this.toBeAssignableTo = new ToBeAssignableTo(this.typeChecker);
-    this.toBeAssignableWith = new ToBeAssignableWith(this.typeChecker);
-    this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt);
-    this.toBeBoolean = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Boolean);
-    this.toBeNever = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Never);
-    this.toBeNull = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Null);
-    this.toBeNumber = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Number);
-    this.toBeString = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.String);
-    this.toBeSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.ESSymbol);
-    this.toBeUndefined = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Undefined);
-    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.UniqueESSymbol);
-    this.toBeUnknown = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Unknown);
-    this.toBeVoid = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Void);
-    this.toEqual = new ToBe(this.typeChecker);
-    this.toHaveProperty = new ToHaveProperty(this.compiler, this.typeChecker);
-    this.toMatch = new ToMatch(this.typeChecker);
-    this.toRaiseError = new ToRaiseError(this.compiler, this.typeChecker);
+  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+    this.#compiler = compiler;
+    this.#typeChecker = typeChecker;
+
+    this.toBe = new ToBe(typeChecker);
+    this.toBeAny = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Any);
+    this.toBeAssignable = new ToBeAssignableWith(typeChecker);
+    this.toBeAssignableTo = new ToBeAssignableTo(typeChecker);
+    this.toBeAssignableWith = new ToBeAssignableWith(typeChecker);
+    this.toBeBigInt = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.BigInt);
+    this.toBeBoolean = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Boolean);
+    this.toBeNever = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Never);
+    this.toBeNull = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Null);
+    this.toBeNumber = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Number);
+    this.toBeString = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.String);
+    this.toBeSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.ESSymbol);
+    this.toBeUndefined = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Undefined);
+    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.UniqueESSymbol);
+    this.toBeUnknown = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Unknown);
+    this.toBeVoid = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Void);
+    this.toEqual = new ToBe(typeChecker);
+    this.toHaveProperty = new ToHaveProperty(compiler, typeChecker);
+    this.toMatch = new ToMatch(typeChecker);
+    this.toRaiseError = new ToRaiseError(compiler, typeChecker);
   }
 
   static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
@@ -65,9 +68,9 @@ export class Expect {
   }
 
   #getType(node: ts.Expression | ts.TypeNode) {
-    return this.compiler.isExpression(node)
-      ? this.typeChecker.getTypeAtLocation(node)
-      : this.typeChecker.getTypeFromTypeNode(node);
+    return this.#compiler.isExpression(node)
+      ? this.#typeChecker.getTypeAtLocation(node)
+      : this.#typeChecker.getTypeFromTypeNode(node);
   }
 
   #getTypes(nodes: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>) {
@@ -81,11 +84,11 @@ export class Expect {
   }
 
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return Boolean(type.flags & this.compiler.TypeFlags.StringOrNumberLiteral);
+    return Boolean(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
   }
 
   #isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
-    return Boolean(type.flags & this.compiler.TypeFlags.UniqueESSymbol);
+    return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
   }
 
   match(assertion: Assertion, expectResult: ExpectResult): MatchResult | undefined {
@@ -149,11 +152,11 @@ export class Expect {
         }
 
         const sourceType = this.#getType(assertion.source[0]);
-        const nonPrimitiveType = { flags: this.compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
+        const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
 
         if (
-          sourceType.flags & (this.compiler.TypeFlags.Any | this.compiler.TypeFlags.Never) ||
-          !this.typeChecker.isTypeRelatedTo(sourceType, nonPrimitiveType, this.typeChecker.relation.assignable)
+          sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
+          !this.#typeChecker.isTypeRelatedTo(sourceType, nonPrimitiveType, this.#typeChecker.relation.assignable)
         ) {
           this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
 
@@ -224,7 +227,7 @@ export class Expect {
   }
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
+    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedTypeText}'.`;
     const origin = {
@@ -270,8 +273,8 @@ export class Expect {
   }
 
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const sourceText = this.compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
-    const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
+    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
+    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
     const origin = {
@@ -329,7 +332,7 @@ export class Expect {
       const receivedType = this.#getType(node);
 
       if (!this.#isStringOrNumberLiteralType(receivedType)) {
-        const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
+        const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
         const origin = {
           end: node.getEnd(),

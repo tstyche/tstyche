@@ -3,7 +3,11 @@ import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
 export class CodeSpanText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: DiagnosticOrigin) {}
+  props: DiagnosticOrigin;
+
+  constructor(props: DiagnosticOrigin) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     const lastLineInFile = this.props.file.getLineAndCharacterOfPosition(this.props.file.text.length).line;

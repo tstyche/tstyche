@@ -14,8 +14,11 @@ interface FileSystemEntryMeta {
 export class SelectService {
   #includeDirectoryRegex: RegExp;
   #includeFileRegex: RegExp;
+  #resolvedConfig: ResolvedConfig;
 
-  constructor(readonly resolvedConfig: ResolvedConfig) {
+  constructor(resolvedConfig: ResolvedConfig) {
+    this.#resolvedConfig = resolvedConfig;
+
     this.#includeDirectoryRegex = GlobPattern.toRegex(resolvedConfig.testFileMatch, "directories");
     this.#includeFileRegex = GlobPattern.toRegex(resolvedConfig.testFileMatch, "files");
   }
@@ -26,8 +29,8 @@ export class SelectService {
 
   #isFileIncluded(filePath: string): boolean {
     if (
-      this.resolvedConfig.pathMatch.length > 0 &&
-      !this.resolvedConfig.pathMatch.some((match) => filePath.toLowerCase().includes(match.toLowerCase()))
+      this.#resolvedConfig.pathMatch.length > 0 &&
+      !this.#resolvedConfig.pathMatch.some((match) => filePath.toLowerCase().includes(match.toLowerCase()))
     ) {
       return false;
     }
@@ -36,7 +39,7 @@ export class SelectService {
   }
 
   isTestFile(filePath: string): boolean {
-    return this.#isFileIncluded(Path.relative(this.resolvedConfig.rootPath, filePath));
+    return this.#isFileIncluded(Path.relative(this.#resolvedConfig.rootPath, filePath));
   }
 
   #onDiagnostic(this: void, diagnostic: Diagnostic) {
@@ -50,7 +53,7 @@ export class SelectService {
     await this.#visitDirectory(currentPath, testFilePaths);
 
     if (testFilePaths.length === 0) {
-      this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.noTestFilesWereSelected(this.resolvedConfig)));
+      this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.noTestFilesWereSelected(this.#resolvedConfig)));
     }
 
     // sorting ensures output remains the same on different systems
@@ -58,7 +61,7 @@ export class SelectService {
   }
 
   async #visitDirectory(currentPath: string, testFilePaths: Array<string>): Promise<void> {
-    const targetPath = Path.join(this.resolvedConfig.rootPath, currentPath);
+    const targetPath = Path.join(this.#resolvedConfig.rootPath, currentPath);
 
     let entries: Array<FileSystemEntryMeta & { name: string }> = [];
 

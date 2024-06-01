@@ -1,8 +1,16 @@
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
+interface ProjectNameTextProps {
+  filePath: string;
+}
+
 class ProjectNameText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: { filePath: string }) {}
+  props: ProjectNameTextProps;
+
+  constructor(props: ProjectNameTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     return (

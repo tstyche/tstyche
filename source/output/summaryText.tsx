@@ -1,8 +1,17 @@
 import type { ResultCount } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
+interface RowTextProps {
+  label: string;
+  text: ScribblerJsx.Element;
+}
+
 class RowText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: { label: string; text: ScribblerJsx.Element }) {}
+  props: RowTextProps;
+
+  constructor(props: RowTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     return (
@@ -14,16 +23,20 @@ class RowText implements ScribblerJsx.ElementClass {
   }
 }
 
+interface CountTextProps {
+  failed: number;
+  passed: number;
+  skipped: number;
+  todo: number;
+  total: number;
+}
+
 class CountText implements ScribblerJsx.ElementClass {
-  constructor(
-    readonly props: {
-      failed: number;
-      passed: number;
-      skipped: number;
-      todo: number;
-      total: number;
-    },
-  ) {}
+  props: CountTextProps;
+
+  constructor(props: CountTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     return (
@@ -61,8 +74,16 @@ class CountText implements ScribblerJsx.ElementClass {
   }
 }
 
+interface DurationTextProps {
+  duration: number;
+}
+
 class DurationText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: { duration: number }) {}
+  props: DurationTextProps;
+
+  constructor(props: DurationTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     const duration = this.props.duration / 1000;
@@ -79,8 +100,16 @@ class DurationText implements ScribblerJsx.ElementClass {
   }
 }
 
+interface MatchTextProps {
+  text: Array<string> | string;
+}
+
 class MatchText implements ScribblerJsx.ElementClass {
-  constructor(readonly props: { text: Array<string> | string }) {}
+  props: MatchTextProps;
+
+  constructor(props: MatchTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     if (typeof this.props.text === "string") {
@@ -106,14 +135,18 @@ class MatchText implements ScribblerJsx.ElementClass {
   }
 }
 
+interface RanFilesTextProps {
+  onlyMatch: string | undefined;
+  pathMatch: Array<string>;
+  skipMatch: string | undefined;
+}
+
 class RanFilesText implements ScribblerJsx.ElementClass {
-  constructor(
-    readonly props: {
-      onlyMatch: string | undefined;
-      pathMatch: Array<string>;
-      skipMatch: string | undefined;
-    },
-  ) {}
+  props: RanFilesTextProps;
+
+  constructor(props: RanFilesTextProps) {
+    this.props = props;
+  }
 
   render(): ScribblerJsx.Element {
     const testNameMatch: Array<ScribblerJsx.Element> = [];

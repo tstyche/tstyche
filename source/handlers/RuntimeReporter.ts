@@ -12,13 +12,12 @@ export class RuntimeReporter implements EventHandler {
   #hasReportedAdds = false;
   #hasReportedError = false;
   #isFileViewExpanded = false;
+  #resolvedConfig: ResolvedConfig;
   #outputService: OutputService;
   #seenDeprecations = new Set<string>();
 
-  constructor(
-    readonly resolvedConfig: ResolvedConfig,
-    outputService: OutputService,
-  ) {
+  constructor(resolvedConfig: ResolvedConfig, outputService: OutputService) {
+    this.#resolvedConfig = resolvedConfig;
     this.#outputService = outputService;
   }
 
@@ -39,7 +38,7 @@ export class RuntimeReporter implements EventHandler {
       }
 
       case "run:start": {
-        this.#isFileViewExpanded = payload.result.testFiles.length === 1 && this.resolvedConfig.watch !== true;
+        this.#isFileViewExpanded = payload.result.testFiles.length === 1 && this.#resolvedConfig.watch !== true;
         break;
       }
 

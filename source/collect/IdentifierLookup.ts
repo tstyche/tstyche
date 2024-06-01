@@ -7,13 +7,13 @@ export interface Identifiers {
 }
 
 export class IdentifierLookup {
+  #compiler: typeof ts;
   #identifiers: Identifiers;
   #moduleSpecifiers = ['"tstyche"', "'tstyche'"];
 
-  constructor(
-    public compiler: typeof ts,
-    identifiers?: Identifiers,
-  ) {
+  constructor(compiler: typeof ts, identifiers?: Identifiers) {
+    this.#compiler = compiler;
+
     this.#identifiers = identifiers ?? {
       namedImports: {
         describe: undefined,
@@ -40,7 +40,7 @@ export class IdentifierLookup {
       node.importClause?.isTypeOnly !== true &&
       node.importClause?.namedBindings != null
     ) {
-      if (this.compiler.isNamedImports(node.importClause.namedBindings)) {
+      if (this.#compiler.isNamedImports(node.importClause.namedBindings)) {
         for (const element of node.importClause.namedBindings.elements) {
           if (element.isTypeOnly) {
             continue;
@@ -60,7 +60,7 @@ export class IdentifierLookup {
         }
       }
 
-      if (this.compiler.isNamespaceImport(node.importClause.namedBindings)) {
+      if (this.#compiler.isNamespaceImport(node.importClause.namedBindings)) {
         this.#identifiers.namespace = node.importClause.namedBindings.name.getText();
       }
     }
@@ -70,7 +70,7 @@ export class IdentifierLookup {
     let flags = TestMemberFlags.None;
     let expression = node.expression;
 
-    while (this.compiler.isPropertyAccessExpression(expression)) {
+    while (this.#compiler.isPropertyAccessExpression(expression)) {
       if (expression.expression.getText() === this.#identifiers.namespace) {
         break;
       }
@@ -100,7 +100,7 @@ export class IdentifierLookup {
     let identifierName: string | undefined;
 
     if (
-      this.compiler.isPropertyAccessExpression(expression) &&
+      this.#compiler.isPropertyAccessExpression(expression) &&
       expression.expression.getText() === this.#identifiers.namespace
     ) {
       identifierName = expression.name.getText();

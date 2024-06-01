@@ -13,10 +13,11 @@ export class Watcher {
   #watcher: AsyncIterable<{ filename?: string | null }> | undefined;
 
   constructor(targetPath: string, onChanged: WatchHandler, onRemoved?: WatchHandler, recursive?: boolean) {
+    this.#targetPath = targetPath;
     this.#onChanged = onChanged;
     this.#onRemoved = onRemoved ?? onChanged;
+    // TODO must be 'options.recursive'
     this.#recursive = recursive;
-    this.#targetPath = targetPath;
   }
 
   close(): void {
