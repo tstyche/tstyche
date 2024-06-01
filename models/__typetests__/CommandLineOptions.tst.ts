@@ -18,6 +18,7 @@ describe("CommandLineOptions", () => {
       target: ["4.9.5" as const, "5.0" as const, "latest" as const],
       update: true,
       version: true,
+      watch: true,
     });
   });
 
@@ -90,6 +91,12 @@ describe("CommandLineOptions", () => {
   test("'version' option", () => {
     expect<tstyche.CommandLineOptions>().type.toMatch<{
       version?: boolean;
+    }>();
+  });
+
+  test("'watch' option", () => {
+    expect<tstyche.CommandLineOptions>().type.toMatch<{
+      watch?: boolean;
     }>();
   });
 });
