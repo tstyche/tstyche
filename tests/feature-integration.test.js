@@ -79,9 +79,10 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(`${testCase} with position is pointing to 'expect'`, async function () {
-        const testFile = new tstyche.TestFile(identifier);
+        const position = isWindows ? 73 : 70;
+        const testFile = new tstyche.TestFile(identifier, position);
 
-        await taskRunner.run([testFile.add({ position: isWindows ? 73 : 70 })]);
+        await taskRunner.run([testFile]);
 
         assert.deepEqual(result?.expectCount, { failed: 0, passed: 1, skipped: 5, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
@@ -91,9 +92,10 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(`${testCase} with position is pointing to 'expect.skip'`, async function () {
-        const testFile = new tstyche.TestFile(identifier);
+        const position = isWindows ? 273 : 261;
+        const testFile = new tstyche.TestFile(identifier, position);
 
-        await taskRunner.run([testFile.add({ position: isWindows ? 273 : 261 })]);
+        await taskRunner.run([testFile]);
 
         assert.deepEqual(result?.expectCount, { failed: 1, passed: 0, skipped: 5, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
@@ -103,9 +105,10 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(`${testCase} with position is pointing to 'test'`, async function () {
-        const testFile = new tstyche.TestFile(identifier);
+        const position = isWindows ? 43 : 41;
+        const testFile = new tstyche.TestFile(identifier, position);
 
-        await taskRunner.run([testFile.add({ position: isWindows ? 43 : 41 })]);
+        await taskRunner.run([testFile]);
 
         assert.deepEqual(result?.expectCount, { failed: 0, passed: 1, skipped: 5, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
@@ -115,9 +118,10 @@ describe("integration", function () {
 
     testCases.forEach(({ testCase, identifier }) => {
       test(`${testCase} with position is pointing to 'test.skip'`, async function () {
-        const testFile = new tstyche.TestFile(identifier);
+        const position = isWindows ? 117 : 111;
+        const testFile = new tstyche.TestFile(identifier, position);
 
-        await taskRunner.run([testFile.add({ position: isWindows ? 117 : 111 })]);
+        await taskRunner.run([testFile]);
 
         assert.deepEqual(result?.expectCount, { failed: 1, passed: 1, skipped: 4, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });

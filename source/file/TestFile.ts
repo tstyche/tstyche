@@ -3,21 +3,14 @@ import { Path } from "#path";
 
 export class TestFile {
   path: string;
-  position?: number;
+  position: number | undefined;
 
-  constructor(identifier: string | URL) {
-    this.path = Path.normalizeSlashes(this.#resolvePath(identifier));
+  constructor(identifier: string | URL, position?: number) {
+    this.path = Path.normalizeSlashes(this.#toPath(identifier));
+    this.position = position;
   }
 
-  add(options: { position?: number }): this {
-    if (options.position != null) {
-      this.position = options.position;
-    }
-
-    return this;
-  }
-
-  #resolvePath(identifier: string | URL) {
+  #toPath(identifier: string | URL) {
     if (typeof identifier === "string" && !identifier.startsWith("file:")) {
       return identifier;
     }
