@@ -4,8 +4,7 @@ import { DiagnosticCategory } from "./enums.js";
 export interface DiagnosticOrigin {
   breadcrumbs?: Array<string>;
   end: number;
-  // TODO rename to 'sourceFile', perhaps?
-  file: ts.SourceFile;
+  sourceFile: ts.SourceFile;
   start: number;
 }
 
@@ -52,7 +51,7 @@ export class Diagnostic {
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
         origin = {
           end: diagnostic.start + diagnostic.length,
-          file: diagnostic.file,
+          sourceFile: diagnostic.file,
           start: diagnostic.start,
         };
       }

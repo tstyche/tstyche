@@ -73,7 +73,7 @@ export class TestMember {
             diagnostics.push(
               Diagnostic.error(getText(member.node), {
                 end: member.node.getEnd(),
-                file: member.node.getSourceFile(),
+                sourceFile: member.node.getSourceFile(),
                 start: member.node.getStart(),
               }),
             );
@@ -89,7 +89,7 @@ export class TestMember {
             diagnostics.push(
               Diagnostic.error(getText(member.node), {
                 end: member.node.getEnd(),
-                file: member.node.getSourceFile(),
+                sourceFile: member.node.getSourceFile(),
                 start: member.node.getStart(),
               }),
             );

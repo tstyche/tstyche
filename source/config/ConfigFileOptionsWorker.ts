@@ -50,22 +50,22 @@ export class ConfigFileOptionsWorker {
   }
 
   async parse(sourceText: string): Promise<void> {
-    const configSourceFile = this.#compiler.parseJsonText(this.#configFilePath, sourceText) as ts.JsonSourceFile & {
+    const sourceFile = this.#compiler.parseJsonText(this.#configFilePath, sourceText) as ts.JsonSourceFile & {
       parseDiagnostics: Array<ts.Diagnostic>;
     };
 
-    if (configSourceFile.parseDiagnostics.length > 0) {
-      for (const diagnostic of Diagnostic.fromDiagnostics(configSourceFile.parseDiagnostics, this.#compiler)) {
+    if (sourceFile.parseDiagnostics.length > 0) {
+      for (const diagnostic of Diagnostic.fromDiagnostics(sourceFile.parseDiagnostics, this.#compiler)) {
         this.#onDiagnostic(diagnostic);
       }
 
       return;
     }
 
-    const rootExpression = configSourceFile.statements[0]?.expression;
+    const rootExpression = sourceFile.statements[0]?.expression;
 
     if (rootExpression == null || !this.#compiler.isObjectLiteralExpression(rootExpression)) {
-      const origin = { end: 0, file: configSourceFile, start: 0 };
+      const origin = { end: 0, sourceFile, start: 0 };
 
       this.#onDiagnostic(Diagnostic.error("The root value of a configuration file must be an object literal.", origin));
 
@@ -74,11 +74,11 @@ export class ConfigFileOptionsWorker {
 
     for (const property of rootExpression.properties) {
       if (this.#compiler.isPropertyAssignment(property)) {
-        if (!this.#isDoubleQuotedString(property.name, configSourceFile)) {
+        if (!this.#isDoubleQuotedString(property.name, sourceFile)) {
           const origin = {
             end: property.end,
-            file: configSourceFile,
-            start: this.#skipTrivia(property.pos, configSourceFile),
+            sourceFile,
+            start: this.#skipTrivia(property.pos, sourceFile),
           };
 
           this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.doubleQuotesExpected(), origin));
@@ -95,15 +95,15 @@ export class ConfigFileOptionsWorker {
 
         if (optionDefinition) {
           this.#configFileOptions[optionDefinition.name] = await this.#parseOptionValue(
-            configSourceFile,
+            sourceFile,
             property.initializer,
             optionDefinition,
           );
         } else {
           const origin = {
             end: property.end,
-            file: configSourceFile,
-            start: this.#skipTrivia(property.pos, configSourceFile),
+            sourceFile,
+            start: this.#skipTrivia(property.pos, sourceFile),
           };
 
           this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.unknownOption(optionName), origin));
@@ -139,7 +139,7 @@ export class ConfigFileOptionsWorker {
         if (!this.#isDoubleQuotedString(valueExpression, sourceFile)) {
           const origin = {
             end: valueExpression.end,
-            file: sourceFile,
+            sourceFile,
             start: this.#skipTrivia(valueExpression.pos, sourceFile),
           };
 
@@ -156,7 +156,7 @@ export class ConfigFileOptionsWorker {
 
           const origin = {
             end: valueExpression.end,
-            file: sourceFile,
+            sourceFile,
             start: this.#skipTrivia(valueExpression.pos, sourceFile),
           };
 
@@ -188,7 +188,7 @@ export class ConfigFileOptionsWorker {
 
     const origin = {
       end: valueExpression.end,
-      file: sourceFile,
+      sourceFile,
       start: this.#skipTrivia(valueExpression.pos, sourceFile),
     };
     const text = isListItem

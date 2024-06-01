@@ -150,7 +150,7 @@ export class TestTreeWorker {
         const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
         const origin = {
           end: assertion.node.getEnd(),
-          file: assertion.node.getSourceFile(),
+          sourceFile: assertion.node.getSourceFile(),
           start: assertion.node.getStart(),
         };
 
@@ -167,7 +167,7 @@ export class TestTreeWorker {
       const origin = {
         breadcrumbs: assertion.ancestorNames,
         end: assertion.matcherName.getEnd(),
-        file: assertion.matcherName.getSourceFile(),
+        sourceFile: assertion.matcherName.getSourceFile(),
         start: assertion.matcherName.getStart(),
       };
 

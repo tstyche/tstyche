@@ -219,7 +219,7 @@ export class Expect {
     ];
     const origin = {
       end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
+      sourceFile: assertion.matcherName.getSourceFile(),
       start: assertion.matcherName.getStart(),
     };
 
@@ -232,7 +232,7 @@ export class Expect {
     const text = `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedTypeText}'.`;
     const origin = {
       end: node.getEnd(),
-      file: node.getSourceFile(),
+      sourceFile: node.getSourceFile(),
       start: node.getStart(),
     };
 
@@ -242,7 +242,7 @@ export class Expect {
   #onKeyArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
     const origin = {
       end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
+      sourceFile: assertion.matcherName.getSourceFile(),
       start: assertion.matcherName.getStart(),
     };
 
@@ -259,7 +259,7 @@ export class Expect {
     const matcherNameText = assertion.matcherName.getText();
     const origin = {
       end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
+      sourceFile: assertion.matcherName.getSourceFile(),
       start: assertion.matcherName.getStart(),
     };
 
@@ -279,7 +279,7 @@ export class Expect {
     const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
     const origin = {
       end: node.getEnd(),
-      file: node.getSourceFile(),
+      sourceFile: node.getSourceFile(),
       start: node.getStart(),
     };
 
@@ -289,7 +289,7 @@ export class Expect {
   #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
     const origin = {
       end: assertion.node.getEnd(),
-      file: assertion.node.getSourceFile(),
+      sourceFile: assertion.node.getSourceFile(),
       start: assertion.node.getStart(),
     };
 
@@ -307,7 +307,7 @@ export class Expect {
   #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
     const origin = {
       end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
+      sourceFile: assertion.matcherName.getSourceFile(),
       start: assertion.matcherName.getStart(),
     };
 
@@ -336,7 +336,7 @@ export class Expect {
 
         const origin = {
           end: node.getEnd(),
-          file: node.getSourceFile(),
+          sourceFile: node.getSourceFile(),
           start: node.getStart(),
         };
 

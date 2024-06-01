@@ -10,9 +10,9 @@ export class CodeSpanText implements ScribblerJsx.ElementClass {
   }
 
   render(): ScribblerJsx.Element {
-    const lastLineInFile = this.props.file.getLineAndCharacterOfPosition(this.props.file.text.length).line;
+    const lastLineInFile = this.props.sourceFile.getLineAndCharacterOfPosition(this.props.sourceFile.text.length).line;
 
-    const { character: markedCharacter, line: markedLine } = this.props.file.getLineAndCharacterOfPosition(
+    const { character: markedCharacter, line: markedLine } = this.props.sourceFile.getLineAndCharacterOfPosition(
       this.props.start,
     );
     const firstLine = Math.max(markedLine - 2, 0);
@@ -22,14 +22,14 @@ export class CodeSpanText implements ScribblerJsx.ElementClass {
     const codeSpan: Array<ScribblerJsx.Element> = [];
 
     for (let index = firstLine; index <= lastLine; index++) {
-      const lineStart = this.props.file.getPositionOfLineAndCharacter(index, 0);
+      const lineStart = this.props.sourceFile.getPositionOfLineAndCharacter(index, 0);
       const lineEnd =
         index === lastLineInFile
-          ? this.props.file.text.length
-          : this.props.file.getPositionOfLineAndCharacter(index + 1, 0);
+          ? this.props.sourceFile.text.length
+          : this.props.sourceFile.getPositionOfLineAndCharacter(index + 1, 0);
 
       const lineNumberText = String(index + 1);
-      const lineText = this.props.file.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
+      const lineText = this.props.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
       if (index === markedLine) {
         codeSpan.push(
@@ -64,7 +64,9 @@ export class CodeSpanText implements ScribblerJsx.ElementClass {
     const location = (
       <Line>
         {" ".repeat(lineNumberMaxWidth + 5)}
-        <Text color={Color.Gray}>at</Text> <Text color={Color.Cyan}>{Path.relative("", this.props.file.fileName)}</Text>
+        <Text color={Color.Gray}>at</Text>
+        <Text> </Text>
+        <Text color={Color.Cyan}>{Path.relative("", this.props.sourceFile.fileName)}</Text>
         <Text color={Color.Gray}>
           :{String(markedLine + 1)}:{String(markedCharacter + 1)}
         </Text>
