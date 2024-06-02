@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import {
@@ -65,7 +65,7 @@ export class ConfigFileOptionsWorker {
     const rootExpression = sourceFile.statements[0]?.expression;
 
     if (rootExpression == null || !this.#compiler.isObjectLiteralExpression(rootExpression)) {
-      const origin = { end: 0, sourceFile, start: 0 };
+      const origin = new DiagnosticOrigin(0, 0, sourceFile);
 
       this.#onDiagnostic(Diagnostic.error("The root value of a configuration file must be an object literal.", origin));
 
@@ -75,11 +75,7 @@ export class ConfigFileOptionsWorker {
     for (const property of rootExpression.properties) {
       if (this.#compiler.isPropertyAssignment(property)) {
         if (!this.#isDoubleQuotedString(property.name, sourceFile)) {
-          const origin = {
-            end: property.end,
-            sourceFile,
-            start: this.#skipTrivia(property.pos, sourceFile),
-          };
+          const origin = DiagnosticOrigin.fromJsonNode(property, sourceFile, this.#skipTrivia);
 
           this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.doubleQuotesExpected(), origin));
           continue;
@@ -100,11 +96,7 @@ export class ConfigFileOptionsWorker {
             optionDefinition,
           );
         } else {
-          const origin = {
-            end: property.end,
-            sourceFile,
-            start: this.#skipTrivia(property.pos, sourceFile),
-          };
+          const origin = DiagnosticOrigin.fromJsonNode(property, sourceFile, this.#skipTrivia);
 
           this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.unknownOption(optionName), origin));
         }
@@ -137,11 +129,7 @@ export class ConfigFileOptionsWorker {
 
       case this.#compiler.SyntaxKind.StringLiteral: {
         if (!this.#isDoubleQuotedString(valueExpression, sourceFile)) {
-          const origin = {
-            end: valueExpression.end,
-            sourceFile,
-            start: this.#skipTrivia(valueExpression.pos, sourceFile),
-          };
+          const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
           this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.doubleQuotesExpected(), origin));
           return;
@@ -154,11 +142,7 @@ export class ConfigFileOptionsWorker {
             value = Path.resolve(Path.dirname(this.#configFilePath), value);
           }
 
-          const origin = {
-            end: valueExpression.end,
-            sourceFile,
-            start: this.#skipTrivia(valueExpression.pos, sourceFile),
-          };
+          const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
           await this.#optionValidator.check(optionDefinition.name, value, optionDefinition.brand, origin);
 
@@ -186,14 +170,10 @@ export class ConfigFileOptionsWorker {
         break;
     }
 
-    const origin = {
-      end: valueExpression.end,
-      sourceFile,
-      start: this.#skipTrivia(valueExpression.pos, sourceFile),
-    };
     const text = isListItem
       ? OptionDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
       : OptionDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
+    const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
     this.#onDiagnostic(Diagnostic.error(text, origin));
 
@@ -208,7 +188,7 @@ export class ConfigFileOptionsWorker {
     return "";
   }
 
-  #skipTrivia(position: number, sourceFile: ts.SourceFile) {
+  #skipTrivia(this: void, position: number, sourceFile: ts.SourceFile) {
     const { text } = sourceFile.getSourceFile();
 
     while (position < text.length) {

@@ -1,12 +1,6 @@
 import type ts from "typescript";
+import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
 import { DiagnosticCategory } from "./enums.js";
-
-export interface DiagnosticOrigin {
-  breadcrumbs?: Array<string>;
-  end: number;
-  sourceFile: ts.SourceFile;
-  start: number;
-}
 
 export class Diagnostic {
   category: DiagnosticCategory;
@@ -49,11 +43,7 @@ export class Diagnostic {
       const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
 
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
-        origin = {
-          end: diagnostic.start + diagnostic.length,
-          sourceFile: diagnostic.file,
-          start: diagnostic.start,
-        };
+        origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
       }
 
       return new Diagnostic(text, category, origin).add({ code });
