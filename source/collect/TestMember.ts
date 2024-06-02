@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import type { Assertion } from "./Assertion.js";
 import type { TestTree } from "./TestTree.js";
 import { TestMemberBrand, type TestMemberFlags } from "./enums.js";
@@ -70,13 +70,7 @@ export class TestMember {
       case TestMemberBrand.Describe: {
         for (const member of this.members) {
           if (member.brand === TestMemberBrand.Expect) {
-            diagnostics.push(
-              Diagnostic.error(getText(member.node), {
-                end: member.node.getEnd(),
-                sourceFile: member.node.getSourceFile(),
-                start: member.node.getStart(),
-              }),
-            );
+            diagnostics.push(Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(member.node)));
           }
         }
         break;
@@ -86,13 +80,7 @@ export class TestMember {
       case TestMemberBrand.Expect: {
         for (const member of this.members) {
           if (member.brand !== TestMemberBrand.Expect) {
-            diagnostics.push(
-              Diagnostic.error(getText(member.node), {
-                end: member.node.getEnd(),
-                sourceFile: member.node.getSourceFile(),
-                start: member.node.getStart(),
-              }),
-            );
+            diagnostics.push(Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(member.node)));
           }
         }
         break;

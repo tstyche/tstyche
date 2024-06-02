@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
@@ -217,11 +217,7 @@ export class Expect {
       `'.${matcherNameText}()' is deprecated and will be removed in TSTyche 3.`,
       "To learn more, visit https://tstyche.org/release-notes/tstyche-2",
     ];
-    const origin = {
-      end: assertion.matcherName.getEnd(),
-      sourceFile: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
   }
@@ -230,21 +226,13 @@ export class Expect {
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedTypeText}'.`;
-    const origin = {
-      end: node.getEnd(),
-      sourceFile: node.getSourceFile(),
-      start: node.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
   #onKeyArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const origin = {
-      end: assertion.matcherName.getEnd(),
-      sourceFile: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     EventEmitter.dispatch([
       "expect:error",
@@ -257,11 +245,7 @@ export class Expect {
 
   #onNotSupportedMatcherName(assertion: Assertion, expectResult: ExpectResult) {
     const matcherNameText = assertion.matcherName.getText();
-    const origin = {
-      end: assertion.matcherName.getEnd(),
-      sourceFile: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     EventEmitter.dispatch([
       "expect:error",
@@ -277,21 +261,13 @@ export class Expect {
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
-    const origin = {
-      end: node.getEnd(),
-      sourceFile: node.getSourceFile(),
-      start: node.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
   #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const origin = {
-      end: assertion.node.getEnd(),
-      sourceFile: assertion.node.getSourceFile(),
-      start: assertion.node.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.node);
 
     EventEmitter.dispatch([
       "expect:error",
@@ -305,11 +281,7 @@ export class Expect {
   }
 
   #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const origin = {
-      end: assertion.matcherName.getEnd(),
-      sourceFile: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     EventEmitter.dispatch([
       "expect:error",
@@ -333,12 +305,7 @@ export class Expect {
 
       if (!this.#isStringOrNumberLiteralType(receivedType)) {
         const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
-
-        const origin = {
-          end: node.getEnd(),
-          sourceFile: node.getSourceFile(),
-          start: node.getStart(),
-        };
+        const origin = DiagnosticOrigin.fromNode(node);
 
         diagnostics.push(
           Diagnostic.error(

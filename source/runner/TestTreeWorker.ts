@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { Expect } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
@@ -148,11 +148,7 @@ export class TestTreeWorker {
     if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
       if (runMode & RunMode.Fail) {
         const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
-        const origin = {
-          end: assertion.node.getEnd(),
-          sourceFile: assertion.node.getSourceFile(),
-          start: assertion.node.getStart(),
-        };
+        const origin = DiagnosticOrigin.fromNode(assertion.node);
 
         EventEmitter.dispatch([
           "expect:error",
@@ -164,22 +160,15 @@ export class TestTreeWorker {
     } else if (runMode & RunMode.Fail) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
-      const origin = {
-        breadcrumbs: assertion.ancestorNames,
-        end: assertion.matcherName.getEnd(),
-        sourceFile: assertion.matcherName.getSourceFile(),
-        start: assertion.matcherName.getStart(),
-      };
+      const origin = DiagnosticOrigin.fromNode(assertion.matcherName, assertion.ancestorNames);
 
-      const diagnostics: Array<Diagnostic> = [];
-
-      for (const diagnostic of matchResult.explain()) {
+      const diagnostics = matchResult.explain().map((diagnostic) => {
         if (diagnostic.origin == null) {
-          diagnostic.add({ origin });
+          return diagnostic.add({ origin });
         }
 
-        diagnostics.push(diagnostic);
-      }
+        return diagnostic;
+      });
 
       EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
     }
