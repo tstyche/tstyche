@@ -149,10 +149,10 @@ class RanFilesText implements ScribblerJsx.ElementClass {
   }
 
   render(): ScribblerJsx.Element {
-    const testNameMatch: Array<ScribblerJsx.Element> = [];
+    const testNameMatchText: Array<ScribblerJsx.Element> = [];
 
     if (this.props.onlyMatch != null) {
-      testNameMatch.push(
+      testNameMatchText.push(
         <Text>
           <Text color={Color.Gray}>{"matching "}</Text>
           <MatchText text={this.props.onlyMatch} />
@@ -161,7 +161,7 @@ class RanFilesText implements ScribblerJsx.ElementClass {
     }
 
     if (this.props.skipMatch != null) {
-      testNameMatch.push(
+      testNameMatchText.push(
         <Text>
           {this.props.onlyMatch == null ? undefined : <Text color={Color.Gray}>{" and "}</Text>}
           <Text color={Color.Gray}>{"not matching "}</Text>
@@ -170,10 +170,10 @@ class RanFilesText implements ScribblerJsx.ElementClass {
       );
     }
 
-    let pathMatch: ScribblerJsx.Element | undefined;
+    let pathMatchText: ScribblerJsx.Element | undefined;
 
     if (this.props.pathMatch.length > 0) {
-      pathMatch = (
+      pathMatchText = (
         <Text>
           <Text color={Color.Gray}>{"test files matching "}</Text>
           <MatchText text={this.props.pathMatch} />
@@ -181,16 +181,16 @@ class RanFilesText implements ScribblerJsx.ElementClass {
         </Text>
       );
     } else {
-      pathMatch = <Text color={Color.Gray}>all test files.</Text>;
+      pathMatchText = <Text color={Color.Gray}>all test files.</Text>;
     }
 
     return (
       <Line>
         <Text color={Color.Gray}>{"Ran "}</Text>
-        {testNameMatch.length > 0 ? <Text color={Color.Gray}>{"tests "}</Text> : undefined}
-        {testNameMatch}
-        {testNameMatch.length > 0 ? <Text color={Color.Gray}>{" in "}</Text> : undefined}
-        {pathMatch}
+        {testNameMatchText.length > 0 ? <Text color={Color.Gray}>{"tests "}</Text> : undefined}
+        {testNameMatchText}
+        {testNameMatchText.length > 0 ? <Text color={Color.Gray}>{" in "}</Text> : undefined}
+        {pathMatchText}
       </Line>
     );
   }
