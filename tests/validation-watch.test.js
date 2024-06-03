@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { afterEach, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
@@ -25,35 +24,6 @@ describe("'--watch' command line option", function () {
       stderr,
       ["Error: The watch mode cannot be enabled in a continuous integration environment.", "", ""].join("\n"),
     );
-
-    assert.equal(exitCode, 1);
-  });
-
-  test("when recursive watch is not available on the system", async function () {
-    let isRecursiveWatchAvailable;
-
-    try {
-      const watcher = fs.watch(process.cwd(), { persistent: false, recursive: true });
-      watcher.close();
-
-      isRecursiveWatchAvailable = true;
-    } catch {
-      isRecursiveWatchAvailable = false;
-    }
-
-    if (isRecursiveWatchAvailable) {
-      this.skip();
-    }
-
-    await writeFixture(fixtureUrl);
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--watch"], {
-      env: { ["CI"]: undefined },
-    });
-
-    assert.equal(stdout, "");
-
-    assert.equal(stderr, ["Error: The watch mode is not available on this system.", "", ""].join("\n"));
 
     assert.equal(exitCode, 1);
   });

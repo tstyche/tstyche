@@ -1,7 +1,6 @@
-import { existsSync, watch } from "node:fs";
+import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import { Environment } from "#environment";
-import { Path } from "#path";
 import type { StoreService } from "#store";
 import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
@@ -63,11 +62,6 @@ export class OptionValidator {
       case "watch": {
         if (Environment.isCi) {
           this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.watchCannotBeEnabledInCiEnvironment(), origin));
-          break;
-        }
-
-        if (!this.#isWatchSupported()) {
-          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.watchIsNotAvailable(), origin));
         }
         break;
       }
@@ -75,20 +69,5 @@ export class OptionValidator {
       default:
         break;
     }
-  }
-
-  #isWatchSupported(): boolean {
-    let isRecursiveWatchAvailable: boolean | undefined;
-
-    try {
-      const watcher = watch(Path.resolve("./"), { persistent: false, recursive: true });
-      watcher.close();
-
-      isRecursiveWatchAvailable = true;
-    } catch {
-      isRecursiveWatchAvailable = false;
-    }
-
-    return isRecursiveWatchAvailable;
   }
 }
