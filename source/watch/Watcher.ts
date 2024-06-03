@@ -4,6 +4,10 @@ import { Path } from "#path";
 
 export type WatchHandler = (filePath: string) => void | Promise<void>;
 
+export interface WatcherOptions {
+  recursive?: boolean;
+}
+
 export class Watcher {
   #abortController = new AbortController();
   #onChanged: WatchHandler;
@@ -12,12 +16,11 @@ export class Watcher {
   #targetPath: string;
   #watcher: AsyncIterable<{ filename?: string | null }> | undefined;
 
-  constructor(targetPath: string, onChanged: WatchHandler, onRemoved?: WatchHandler, recursive?: boolean) {
+  constructor(targetPath: string, onChanged: WatchHandler, onRemoved?: WatchHandler, options?: WatcherOptions) {
     this.#targetPath = targetPath;
     this.#onChanged = onChanged;
     this.#onRemoved = onRemoved ?? onChanged;
-    // TODO must be 'options.recursive'
-    this.#recursive = recursive;
+    this.#recursive = options?.recursive;
   }
 
   close(): void {

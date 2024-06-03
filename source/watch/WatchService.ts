@@ -116,7 +116,7 @@ export class WatchService {
       }
     };
 
-    this.#watchers.push(new Watcher(this.#resolvedConfig.rootPath, onChangedFile, onRemovedFile, /* recursive */ true));
+    this.#watchers.push(new Watcher(this.#resolvedConfig.rootPath, onChangedFile, onRemovedFile, { recursive: true }));
 
     const onChangedConfigFile = () => {
       cancellationToken?.cancel(CancellationReason.ConfigChange);

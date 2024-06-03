@@ -1,3 +1,3 @@
-export { FileWatcher, type FileWatchHandler } from "./FileWatcher.js";
-export { Watcher, type WatchHandler } from "./Watcher.js";
-export { WatchService, type RunCallback } from "./WatchService.js";
+export { type FileWatchHandler, FileWatcher } from "./FileWatcher.js";
+export { type WatchHandler, Watcher, type WatcherOptions } from "./Watcher.js";
+export { type RunCallback, WatchService } from "./WatchService.js";

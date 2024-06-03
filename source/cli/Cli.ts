@@ -171,7 +171,7 @@ export class Cli {
         // do nothing, only added files are important
       };
 
-      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, /* recursive */ true));
+      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, { recursive: true }));
     }
 
     return Promise.all(watchers.map((watcher) => watcher.watch()));
