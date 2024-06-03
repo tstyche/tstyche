@@ -44,6 +44,8 @@ export class TestFileRunner {
   }
 
   #runFile(testFile: TestFile, fileResult: FileResult, cancellationToken?: CancellationToken) {
+    // wrapping around the language service allows querying on per file basis
+    // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
     const languageService = this.#projectService.getLanguageService(testFile.path);
 
     if (!languageService) {
@@ -93,21 +95,6 @@ export class TestFileRunner {
     }
 
     const typeChecker = program.getTypeChecker();
-
-    // this.compiler.forEachChild(sourceFile, (node) => {
-    //   if (this.compiler.isImportDeclaration(node)) {
-    //     console.log("is import!");
-
-    //     const symbol = typeChecker.getSymbolAtLocation(node.moduleSpecifier);
-
-    //     console.log(symbol);
-
-    //     console.log("fileName", symbol?.valueDeclaration?.getSourceFile().fileName);
-    //     console.log("moduleName", symbol?.valueDeclaration?.getSourceFile().moduleName);
-    //     console.log("getText", symbol?.valueDeclaration?.getSourceFile().getText());
-    //     console.log("--- --- ---");
-    //   }
-    // });
 
     if (!Expect.assertTypeChecker(typeChecker)) {
       const text = "The required 'isTypeRelatedTo()' method is missing in the provided type checker.";
