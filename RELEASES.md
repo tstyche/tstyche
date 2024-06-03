@@ -1,5 +1,18 @@
 # Releases
 
+## [2.0.0-rc.0] - 2024-06-03
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
+
+### Changed
+
+- Add the `DiagnosticOrigin` class ([#216](https://github.com/tstyche/tstyche/pull/216))
+- **Breaking!** Use `fetch()` global ([#214](https://github.com/tstyche/tstyche/pull/214))
+
+### Fixed
+
+- Allow `./` in the beginning of the `testFileMatch` patterns ([#215](https://github.com/tstyche/tstyche/pull/215))
+
 ## [2.0.0-beta.1] - 2024-05-27
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
@@ -192,6 +205,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[2.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.0
 [2.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-beta.1
 [2.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-beta.0
 [1.1.0]: https://github.com/tstyche/tstyche/releases/tag/v1.1.0
