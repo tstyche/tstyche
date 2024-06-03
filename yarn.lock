@@ -253,16 +253,16 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-companies@npm:^3.1.0":
-  version: 3.1.1
-  resolution: "@cspell/dict-companies@npm:3.1.1"
-  checksum: daa0004fb843fd96952faa59d3ee9fe2e2936e19f81ce67033a73cde5b7a90eb7c764d5daf3f1c4b261c5d430c18dfde92a7214ca63c07b6bf62014827422143
+  version: 3.1.2
+  resolution: "@cspell/dict-companies@npm:3.1.2"
+  checksum: ffff1e61b1652f1d5cbf2ec9c325ab213a63f3c81d2ef0010fbbc1d302a5b28d51664805ad58a1c705cc4031c0ce2790120563d83ee68e476874abe6342a0089
   languageName: node
   linkType: hard
 
 "@cspell/dict-cpp@npm:^5.1.6":
-  version: 5.1.7
-  resolution: "@cspell/dict-cpp@npm:5.1.7"
-  checksum: ce2055e77707d321bdced8d98daffae4c2b38bc9bfd521966ba9e2283943f921a174586ca6db5dc14232813751817a778f1a08a29df565bb2d7afc7ea28090cc
+  version: 5.1.8
+  resolution: "@cspell/dict-cpp@npm:5.1.8"
+  checksum: ab89daf339672a6bf49eb9f03956cef8fc762be955bae2b819e204bf76d3fbff5dcbb955f49dd25d2a2a3df24c10505c0501c8f9d804776fff8347249179d8f1
   languageName: node
   linkType: hard
 
@@ -442,9 +442,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-k8s@npm:^1.0.3":
-  version: 1.0.4
-  resolution: "@cspell/dict-k8s@npm:1.0.4"
-  checksum: f087b33efd817e555d08a6fa05654c8b431a808d23ca7f2bdb19e767bd285208829246ef064a8ddd0c982579cbbc7047054ea32c18c6b5147bdb7254f3c15cfc
+  version: 1.0.5
+  resolution: "@cspell/dict-k8s@npm:1.0.5"
+  checksum: 2ecd4d9c129bac33b0d15eb2212ac9a75ea3666d99464e9079823ef703bec0b1d48bb2878be3b779befc3ee2b0d2775aa35f03ffd582db94d662c67ab7f743b6
   languageName: node
   linkType: hard
 
@@ -556,9 +556,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^3.3.23":
-  version: 3.3.25
-  resolution: "@cspell/dict-software-terms@npm:3.3.25"
-  checksum: 893f7ea11143e703cbc6c0f306498f8c1da864544c2a48029aa89adb035173bc307fb9bb764afc26a124cd6390d97d5243cb91c715049eda67c7a177f4837c16
+  version: 3.4.0
+  resolution: "@cspell/dict-software-terms@npm:3.4.0"
+  checksum: b94489f4b633e9d20ff303ef50bc0a70d8a717cfc7db7bf1302ab96c9d03635ee58ce0220ac5eb1fd277d25f68b28f285b1be704505b04b1f7a4c4f59d39a853
   languageName: node
   linkType: hard
 
@@ -1432,7 +1432,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:4.3.4, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:^4.3.4":
+  version: 4.3.5
+  resolution: "debug@npm:4.3.5"
+  dependencies:
+    ms: 2.1.2
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 7c002b51e256257f936dda09eb37167df952758c57badf6bf44bdc40b89a4bcb8e5a0a2e4c7b53f97c69e2970dd5272d33a757378a12c8f8e64ea7bf99e8e86e
+  languageName: node
+  linkType: hard
+
+"debug@npm:4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -3166,11 +3178,11 @@ __metadata:
   linkType: hard
 
 "yaml@npm:^2.4.2":
-  version: 2.4.2
-  resolution: "yaml@npm:2.4.2"
+  version: 2.4.3
+  resolution: "yaml@npm:2.4.3"
   bin:
     yaml: bin.mjs
-  checksum: 90dda4485de04367251face9abb5c36927c94e44078f4e958e6468a07e74e7e92f89be20fc49860b6268c51ee5a5fc79ef89197d3f874bf24ef8921cc4ba9013
+  checksum: cf466e40dcd39d816eb8a8fcbb069897a1ff4bff46a4bf7bb4b7940be3dfcc820901720e4ead71eb7db00229a554664161dbe4bbeb87b6ad0c1c78c12897955d
   languageName: node
   linkType: hard
 
