@@ -924,15 +924,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:8.15.0":
-  version: 8.15.0
-  resolution: "ajv@npm:8.15.0"
+"ajv@npm:8.16.0":
+  version: 8.16.0
+  resolution: "ajv@npm:8.16.0"
   dependencies:
     fast-deep-equal: ^3.1.3
-    fast-uri: ^2.3.0
     json-schema-traverse: ^1.0.0
     require-from-string: ^2.0.2
-  checksum: c28db774e7e0d0d9a1645af4bada756f18683e1bf8d563645a5e5b149e40ea9e53cd0c47a6c85da034d4ffea0950c27c8e92fe74af72b8c94b7c0f307fc319e1
+    uri-js: ^4.4.1
+  checksum: bdf3d4c9f1d11e220850051ef4cd89346e951cfb933d6d41be36d45053c1092af1523ee6c62525cce567355caf0a4f4c19a08a93851649c1fa32b4a39b7c4858
   languageName: node
   linkType: hard
 
@@ -1597,13 +1597,6 @@ __metadata:
   version: 2.1.0
   resolution: "fast-json-stable-stringify@npm:2.1.0"
   checksum: b191531e36c607977e5b1c47811158733c34ccb3bfde92c44798929e9b4154884378536d26ad90dfecd32e1ffc09c545d23535ad91b3161a27ddbb8ebe0cbecb
-  languageName: node
-  linkType: hard
-
-"fast-uri@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "fast-uri@npm:2.3.0"
-  checksum: 92c8975a60cf0bb5344197559b1a89b8743b9ff9254aeea217d7df63606d79e8673a0d892eee7b953c4b62bf3b900b95cbfe64f0285dde41e7bd2f111123f48b
   languageName: node
   linkType: hard
 
@@ -2582,6 +2575,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"punycode@npm:^2.1.0":
+  version: 2.3.1
+  resolution: "punycode@npm:2.3.1"
+  checksum: bb0a0ceedca4c3c57a9b981b90601579058903c62be23c5e8e843d2c2d4148a3ecf029d5133486fb0e1822b098ba8bba09e89d6b21742d02fa26bda6441a6fb2
+  languageName: node
+  linkType: hard
+
 "queue-microtask@npm:^1.2.2":
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
@@ -2999,7 +2999,7 @@ __metadata:
     "@rollup/plugin-typescript": 11.1.6
     "@types/mocha": 10.0.6
     "@types/node": 20.14.1
-    ajv: 8.15.0
+    ajv: 8.16.0
     c8: 9.1.0
     cspell: 8.8.4
     magic-string: 0.30.10
@@ -3061,6 +3061,15 @@ __metadata:
   dependencies:
     imurmurhash: ^0.1.4
   checksum: 0884b58365af59f89739e6f71e3feacb5b1b41f2df2d842d0757933620e6de08eff347d27e9d499b43c40476cbaf7988638d3acb2ffbcb9d35fd035591adfd15
+  languageName: node
+  linkType: hard
+
+"uri-js@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "uri-js@npm:4.4.1"
+  dependencies:
+    punycode: ^2.1.0
+  checksum: 7167432de6817fe8e9e0c9684f1d2de2bb688c94388f7569f7dbdb1587c9f4ca2a77962f134ec90be0cc4d004c939ff0d05acc9f34a0db39a3c797dada262633
   languageName: node
   linkType: hard
 
