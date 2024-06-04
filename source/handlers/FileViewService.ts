@@ -23,6 +23,12 @@ export class FileViewService {
     this.#indent++;
   }
 
+  clear(): void {
+    this.#indent = 0;
+    this.#lines = [];
+    this.#messages = [];
+  }
+
   endDescribe(): void {
     this.#indent--;
   }
@@ -33,11 +39,5 @@ export class FileViewService {
 
   getViewText(options?: { appendEmptyLine: boolean }): ScribblerJsx.Element {
     return fileViewText(this.#lines, options?.appendEmptyLine === true || this.hasErrors);
-  }
-
-  reset(): void {
-    this.#indent = 0;
-    this.#lines = [];
-    this.#messages = [];
   }
 }
