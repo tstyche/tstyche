@@ -1,5 +1,13 @@
 # Releases
 
+## [2.0.0-rc.1] - 2024-06-04
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
+
+### Fixed
+
+- Show deprecation warnings for each test file ([#217](https://github.com/tstyche/tstyche/pull/217))
+
 ## [2.0.0-rc.0] - 2024-06-03
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
@@ -205,6 +213,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[2.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.1
 [2.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.0
 [2.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-beta.1
 [2.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-beta.0
