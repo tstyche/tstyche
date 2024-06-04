@@ -125,6 +125,7 @@ export class RuntimeReporter implements EventHandler {
           this.#hasReportedError = true;
         }
 
+        this.#seenDeprecations.clear();
         this.#fileView.reset();
         break;
       }
