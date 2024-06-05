@@ -24,7 +24,7 @@ export namespace ScribblerJsx {
       escapes: Color | Array<Color>;
     };
     newLine: {
-      [key: string]: never;
+      // does not take props
     };
     text: {
       children: Array<ElementChildren>;

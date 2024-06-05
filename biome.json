@@ -28,6 +28,7 @@
       "recommended": true,
 
       "complexity": {
+        "noBannedTypes": "off",
         "noStaticOnlyClass": "off",
         "useLiteralKeys": "off"
       },
