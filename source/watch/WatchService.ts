@@ -38,6 +38,8 @@ export class WatchService {
         case "\u0003" /* Ctrl-C */:
         case "\u0004" /* Ctrl-D */:
         case "\u001B" /* Escape */:
+        case "\u0051" /* Latin capital letter Q */:
+        case "\u0071" /* Latin small letter Q */:
         case "\u0058" /* Latin capital letter X */:
         case "\u0078" /* Latin small letter X */: {
           this.close();

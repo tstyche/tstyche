@@ -92,6 +92,14 @@ describe("watch", function () {
         testCase: "exits watch mode, when 'Escape' is pressed",
       },
       {
+        key: "q",
+        testCase: "exits watch mode, when 'q' is pressed",
+      },
+      {
+        key: "Q",
+        testCase: "exits watch mode, when 'Q' is pressed",
+      },
+      {
         key: "x",
         testCase: "exits watch mode, when 'x' is pressed",
       },
