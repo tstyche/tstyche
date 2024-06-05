@@ -68,7 +68,7 @@ jobs:
           name: build-${{ github.sha }}
           path: build/
       - run: yarn install
-      - run: yarn biome ci .
+      - run: yarn biome ci
 
   test-types:
     needs:
