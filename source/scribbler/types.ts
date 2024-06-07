@@ -1,23 +1,16 @@
 import type { Color } from "./enums.js";
 
-export type ElementChildren = Array<ElementChildren> | ScribblerJsx.Element | string | undefined;
+export type ScribblerNode = Array<ScribblerNode> | ScribblerJsx.Element | string | undefined;
 
-// biome-ignore lint/correctness/noUnusedVariables: TODO might be false positive
-export type ComponentConstructor = new (props: Record<string, unknown>) => ScribblerJsx.ElementClass;
+export type FunctionComponent = (props: Record<string, unknown>) => ScribblerJsx.Element;
 
 export namespace ScribblerJsx {
   export interface Element {
     props: Record<string, unknown>;
-    type: ComponentConstructor | string;
-  }
-  export interface ElementAttributesProperty {
-    props: Record<string, unknown>;
-  }
-  export interface ElementClass {
-    render: () => ScribblerJsx.Element;
+    type: FunctionComponent | string;
   }
   export interface ElementChildrenAttribute {
-    children: ElementChildren;
+    children: ScribblerNode;
   }
   export interface IntrinsicElements {
     ansi: {
@@ -27,7 +20,7 @@ export namespace ScribblerJsx {
       // does not take props
     };
     text: {
-      children: Array<ElementChildren>;
+      children: Array<ScribblerNode>;
       indent: number;
     };
   }

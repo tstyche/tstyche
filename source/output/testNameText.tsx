@@ -4,24 +4,16 @@ interface StatusTextProps {
   status: "fail" | "pass" | "skip" | "todo";
 }
 
-class StatusText implements ScribblerJsx.ElementClass {
-  props: StatusTextProps;
-
-  constructor(props: StatusTextProps) {
-    this.props = props;
-  }
-
-  render() {
-    switch (this.props.status) {
-      case "fail":
-        return <Text color={Color.Red}>×</Text>;
-      case "pass":
-        return <Text color={Color.Green}>+</Text>;
-      case "skip":
-        return <Text color={Color.Yellow}>- skip</Text>;
-      case "todo":
-        return <Text color={Color.Magenta}>- todo</Text>;
-    }
+function StatusText({ status }: StatusTextProps) {
+  switch (status) {
+    case "fail":
+      return <Text color={Color.Red}>×</Text>;
+    case "pass":
+      return <Text color={Color.Green}>+</Text>;
+    case "skip":
+      return <Text color={Color.Yellow}>- skip</Text>;
+    case "todo":
+      return <Text color={Color.Magenta}>- todo</Text>;
   }
 }
 

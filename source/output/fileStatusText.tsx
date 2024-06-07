@@ -7,27 +7,19 @@ interface FileNameTextProps {
   filePath: string;
 }
 
-class FileNameText implements ScribblerJsx.ElementClass {
-  props: FileNameTextProps;
+function FileNameText({ filePath }: FileNameTextProps) {
+  const relativePath = Path.relative("", filePath);
+  const lastPathSeparator = relativePath.lastIndexOf("/");
 
-  constructor(props: FileNameTextProps) {
-    this.props = props;
-  }
+  const directoryNameText = relativePath.slice(0, lastPathSeparator + 1);
+  const fileNameText = relativePath.slice(lastPathSeparator + 1);
 
-  render(): ScribblerJsx.Element {
-    const relativePath = Path.relative("", this.props.filePath);
-    const lastPathSeparator = relativePath.lastIndexOf("/");
-
-    const directoryNameText = relativePath.slice(0, lastPathSeparator + 1);
-    const fileNameText = relativePath.slice(lastPathSeparator + 1);
-
-    return (
-      <Text>
-        <Text color={Color.Gray}>{directoryNameText}</Text>
-        {fileNameText}
-      </Text>
-    );
-  }
+  return (
+    <Text>
+      <Text color={Color.Gray}>{directoryNameText}</Text>
+      {fileNameText}
+    </Text>
+  );
 }
 
 export function fileStatusText(status: FileResultStatus, testFile: TestFile): ScribblerJsx.Element {

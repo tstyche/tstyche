@@ -1,4 +1,4 @@
-import type { ElementChildren, ScribblerJsx } from "./types.js";
+import type { ScribblerJsx, ScribblerNode } from "./types.js";
 
 export interface ScribblerOptions {
   newLine?: string;
@@ -30,9 +30,7 @@ export class Scribbler {
 
   render(element: ScribblerJsx.Element): string {
     if (typeof element.type === "function") {
-      const instance = new element.type({ ...element.props });
-
-      return this.render(instance.render());
+      return this.render(element.type({ ...element.props }));
     }
 
     if (element.type === "ansi" && !this.#noColor) {
@@ -52,7 +50,7 @@ export class Scribbler {
     return "";
   }
 
-  #visitChildren(children: Array<ElementChildren>) {
+  #visitChildren(children: Array<ScribblerNode>) {
     const text: Array<string> = [];
 
     for (const child of children) {

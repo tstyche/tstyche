@@ -8,50 +8,28 @@ const usageExamples: Array<[commandText: string, descriptionText: string]> = [
 ];
 
 interface HintTextProps {
-  children: ScribblerJsx.Element;
+  children: ScribblerJsx.Element | string;
 }
 
-class HintText implements ScribblerJsx.ElementClass {
-  props: HintTextProps;
-
-  constructor(props: HintTextProps) {
-    this.props = props;
-  }
-
-  render(): ScribblerJsx.Element {
-    return (
-      <Text indent={1} color={Color.Gray}>
-        {this.props.children}
-      </Text>
-    );
-  }
+function HintText({ children }: HintTextProps) {
+  return (
+    <Text indent={1} color={Color.Gray}>
+      {children}
+    </Text>
+  );
 }
 
 interface HelpHeaderTextProps {
   tstycheVersion: string;
 }
 
-class HelpHeaderText implements ScribblerJsx.ElementClass {
-  props: HelpHeaderTextProps;
-
-  constructor(props: HelpHeaderTextProps) {
-    this.props = props;
-  }
-
-  render(): ScribblerJsx.Element {
-    const hint = (
-      <HintText>
-        <Text>{this.props.tstycheVersion}</Text>
-      </HintText>
-    );
-
-    return (
-      <Line>
-        <Text>The TSTyche Type Test Runner</Text>
-        {hint}
-      </Line>
-    );
-  }
+function HelpHeaderText({ tstycheVersion }: HelpHeaderTextProps) {
+  return (
+    <Line>
+      The TSTyche Type Test Runner
+      <HintText>{tstycheVersion}</HintText>
+    </Line>
+  );
 }
 
 interface CommandTextProps {
@@ -59,142 +37,98 @@ interface CommandTextProps {
   text: string | ScribblerJsx.Element;
 }
 
-class CommandText implements ScribblerJsx.ElementClass {
-  props: CommandTextProps;
+function CommandText({ hint, text }: CommandTextProps) {
+  let hintText: ScribblerJsx.Element | undefined;
 
-  constructor(props: CommandTextProps) {
-    this.props = props;
+  if (hint != null) {
+    hintText = <HintText>{hint}</HintText>;
   }
 
-  render(): ScribblerJsx.Element {
-    let hint: ScribblerJsx.Element | undefined;
-
-    if (this.props.hint != null) {
-      hint = <HintText>{this.props.hint}</HintText>;
-    }
-
-    return (
-      <Line indent={1}>
-        <Text color={Color.Blue}>{this.props.text}</Text>
-        {hint}
-      </Line>
-    );
-  }
+  return (
+    <Line indent={1}>
+      <Text color={Color.Blue}>{text}</Text>
+      {hintText}
+    </Line>
+  );
 }
 
 interface OptionDescriptionTextProps {
   text: string;
 }
 
-class OptionDescriptionText implements ScribblerJsx.ElementClass {
-  props: OptionDescriptionTextProps;
-
-  constructor(props: OptionDescriptionTextProps) {
-    this.props = props;
-  }
-
-  render(): ScribblerJsx.Element {
-    return <Line indent={1}>{this.props.text}</Line>;
-  }
+function OptionDescriptionText({ text }: OptionDescriptionTextProps) {
+  return <Line indent={1}>{text}</Line>;
 }
 
-class CommandLineUsageText implements ScribblerJsx.ElementClass {
-  render(): ScribblerJsx.Element {
-    const usageText = usageExamples.map(([commandText, descriptionText]) => (
-      <Text>
-        <CommandText text={commandText} />
-        <OptionDescriptionText text={descriptionText} />
-        <Line />
-      </Text>
-    ));
+function CommandLineUsageText() {
+  const usageText = usageExamples.map(([commandText, descriptionText]) => (
+    <Text>
+      <CommandText text={commandText} />
+      <OptionDescriptionText text={descriptionText} />
+      <Line />
+    </Text>
+  ));
 
-    return <Text>{usageText}</Text>;
-  }
+  return <Text>{usageText}</Text>;
 }
 
 interface CommandLineOptionNameTextProps {
   text: string;
 }
 
-class CommandLineOptionNameText implements ScribblerJsx.ElementClass {
-  props: CommandLineOptionNameTextProps;
-
-  constructor(props: CommandLineOptionNameTextProps) {
-    this.props = props;
-  }
-
-  render(): ScribblerJsx.Element {
-    return <Text>--{this.props.text}</Text>;
-  }
+function CommandLineOptionNameText({ text }: CommandLineOptionNameTextProps) {
+  return <Text>--{text}</Text>;
 }
 
 interface CommandLineOptionHintTextProps {
   definition: OptionDefinition;
 }
 
-class CommandLineOptionHintText implements ScribblerJsx.ElementClass {
-  props: CommandLineOptionHintTextProps;
-
-  constructor(props: CommandLineOptionHintTextProps) {
-    this.props = props;
+function CommandLineOptionHintText({ definition }: CommandLineOptionHintTextProps) {
+  if (definition.brand === OptionBrand.List) {
+    return (
+      <Text>
+        {definition.brand} of {definition.items.brand}s
+      </Text>
+    );
   }
 
-  render(): ScribblerJsx.Element {
-    if (this.props.definition.brand === OptionBrand.List) {
-      return (
-        <Text>
-          {this.props.definition.brand} of {this.props.definition.items.brand}s
-        </Text>
-      );
-    }
-
-    return <Text>{this.props.definition.brand}</Text>;
-  }
+  return <Text>{definition.brand}</Text>;
 }
 
 interface CommandLineOptionsTextProps {
   optionDefinitions: Map<string, OptionDefinition>;
 }
 
-class CommandLineOptionsText implements ScribblerJsx.ElementClass {
-  props: CommandLineOptionsTextProps;
+function CommandLineOptionsText({ optionDefinitions }: CommandLineOptionsTextProps) {
+  const definitions = [...optionDefinitions.values()];
+  const optionsText = definitions.map((definition) => {
+    let hint: ScribblerJsx.Element | undefined;
 
-  constructor(props: CommandLineOptionsTextProps) {
-    this.props = props;
-  }
-
-  render(): ScribblerJsx.Element {
-    const definitions = [...this.props.optionDefinitions.values()];
-    const optionsText = definitions.map((definition) => {
-      let hint: ScribblerJsx.Element | undefined;
-
-      if (definition.brand !== OptionBrand.BareTrue) {
-        hint = <CommandLineOptionHintText definition={definition} />;
-      }
-
-      return (
-        <Text>
-          <CommandText text={<CommandLineOptionNameText text={definition.name} />} hint={hint} />
-          <OptionDescriptionText text={definition.description} />
-          <Line />
-        </Text>
-      );
-    });
+    if (definition.brand !== OptionBrand.BareTrue) {
+      hint = <CommandLineOptionHintText definition={definition} />;
+    }
 
     return (
       <Text>
-        <Line>Command Line Options</Line>
+        <CommandText text={<CommandLineOptionNameText text={definition.name} />} hint={hint} />
+        <OptionDescriptionText text={definition.description} />
         <Line />
-        {optionsText}
       </Text>
     );
-  }
+  });
+
+  return (
+    <Text>
+      <Line>Command Line Options</Line>
+      <Line />
+      {optionsText}
+    </Text>
+  );
 }
 
-class HelpFooterText implements ScribblerJsx.ElementClass {
-  render(): ScribblerJsx.Element {
-    return <Line>To learn more, visit https://tstyche.org</Line>;
-  }
+function HelpFooterText() {
+  return <Line>To learn more, visit https://tstyche.org</Line>;
 }
 
 export function helpText(

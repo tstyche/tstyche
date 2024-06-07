@@ -1,32 +1,24 @@
 import { Color } from "./enums.js";
-import type { ScribblerJsx } from "./types.js";
+import type { ScribblerNode } from "./types.js";
 
 interface TextProps {
-  children?: ScribblerJsx.ElementChildrenAttribute["children"];
+  children?: ScribblerNode;
   color?: Color | undefined;
   indent?: number | undefined;
 }
 
-export class Text implements ScribblerJsx.ElementClass {
-  props: TextProps;
+export function Text({ children, color, indent }: TextProps) {
+  const ansiEscapes: Array<Color> = [];
 
-  constructor(props: TextProps) {
-    this.props = props;
+  if (color != null) {
+    ansiEscapes.push(color);
   }
 
-  render(): ScribblerJsx.Element {
-    const ansiEscapes: Array<Color> = [];
-
-    if (this.props.color != null) {
-      ansiEscapes.push(this.props.color);
-    }
-
-    return (
-      <text indent={this.props.indent ?? 0}>
-        {ansiEscapes.length > 0 ? <ansi escapes={ansiEscapes} /> : undefined}
-        {this.props.children}
-        {ansiEscapes.length > 0 ? <ansi escapes={Color.Reset} /> : undefined}
-      </text>
-    );
-  }
+  return (
+    <text indent={indent ?? 0}>
+      {ansiEscapes.length > 0 ? <ansi escapes={ansiEscapes} /> : undefined}
+      {children}
+      {ansiEscapes.length > 0 ? <ansi escapes={Color.Reset} /> : undefined}
+    </text>
+  );
 }
