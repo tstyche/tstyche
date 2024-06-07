@@ -6,51 +6,38 @@ interface DiagnosticTextProps {
   diagnostic: Diagnostic;
 }
 
-class DiagnosticText implements ScribblerJsx.ElementClass {
-  props: DiagnosticTextProps;
+function DiagnosticText({ diagnostic }: DiagnosticTextProps) {
+  const code = typeof diagnostic.code === "string" ? <Text color={Color.Gray}> {diagnostic.code}</Text> : undefined;
 
-  constructor(props: DiagnosticTextProps) {
-    this.props = props;
-  }
+  const text = Array.isArray(diagnostic.text) ? diagnostic.text : [diagnostic.text];
 
-  render(): ScribblerJsx.Element {
-    const code =
-      typeof this.props.diagnostic.code === "string" ? (
-        <Text color={Color.Gray}> {this.props.diagnostic.code}</Text>
-      ) : undefined;
+  const message = text.map((text, index) => (
+    <Text>
+      {index === 1 ? <Line /> : undefined}
+      <Line>
+        {text}
+        {code}
+      </Line>
+    </Text>
+  ));
 
-    const text = Array.isArray(this.props.diagnostic.text) ? this.props.diagnostic.text : [this.props.diagnostic.text];
+  const related = diagnostic.related?.map((relatedDiagnostic) => <DiagnosticText diagnostic={relatedDiagnostic} />);
 
-    const message = text.map((text, index) => (
-      <Text>
-        {index === 1 ? <Line /> : undefined}
-        <Line>
-          {text}
-          {code}
-        </Line>
-      </Text>
-    ));
+  const codeSpan = diagnostic.origin ? (
+    <Text>
+      <Line />
+      <CodeSpanText {...diagnostic.origin} />
+    </Text>
+  ) : undefined;
 
-    const related = this.props.diagnostic.related?.map((relatedDiagnostic) => (
-      <DiagnosticText diagnostic={relatedDiagnostic} />
-    ));
-
-    const codeSpan = this.props.diagnostic.origin ? (
-      <Text>
-        <Line />
-        <CodeSpanText {...this.props.diagnostic.origin} />
-      </Text>
-    ) : undefined;
-
-    return (
-      <Text>
-        {message}
-        {codeSpan}
-        <Line />
-        <Text indent={2}>{related}</Text>
-      </Text>
-    );
-  }
+  return (
+    <Text>
+      {message}
+      {codeSpan}
+      <Line />
+      <Text indent={2}>{related}</Text>
+    </Text>
+  );
 }
 
 export function diagnosticText(diagnostic: Diagnostic): ScribblerJsx.Element {
