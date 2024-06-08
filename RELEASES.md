@@ -1,5 +1,13 @@
 # Releases
 
+## [2.0.0-rc.2] - 2024-06-08
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
+
+### Added
+
+- Exit the watch mode when `q` is pressed ([#218](https://github.com/tstyche/tstyche/pull/218))
+
 ## [2.0.0-rc.1] - 2024-06-04
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
@@ -213,6 +221,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[2.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.2
 [2.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.1
 [2.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.0
 [2.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-beta.1
