@@ -17,7 +17,7 @@ export namespace ScribblerJsx {
       escapes: Color | Array<Color>;
     };
     newLine: {
-      // does not take props
+      // does not accept props
     };
     text: {
       children: Array<ScribblerNode>;
