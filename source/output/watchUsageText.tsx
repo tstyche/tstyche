@@ -1,12 +1,17 @@
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
 export function watchUsageText(): ScribblerJsx.Element {
-  const usageText = Object.entries({ a: "run all tests", x: "exit" }).map(([key, action]) => {
+  const usage: Array<[keyText: string, actionText: string]> = [
+    ["a", "to run all tests."],
+    ["x", "to exit."],
+  ];
+
+  const usageText = usage.map(([keyText, actionText]) => {
     return (
       <Line>
         <Text color={Color.Gray}>{"Press"}</Text>
-        <Text>{` ${key} `}</Text>
-        <Text color={Color.Gray}>{`to ${action}.`}</Text>
+        <Text>{` ${keyText} `}</Text>
+        <Text color={Color.Gray}>{actionText}</Text>
       </Line>
     );
   });

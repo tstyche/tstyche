@@ -1,12 +1,6 @@
 import { OptionBrand, type OptionDefinition } from "#config";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-const usageExamples: Array<[commandText: string, descriptionText: string]> = [
-  ["tstyche", "Run all tests."],
-  ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
-  ["tstyche --target 4.9,5.3.2,current", "Test on all specified versions of TypeScript."],
-];
-
 interface HintTextProps {
   children: ScribblerJsx.Element | string;
 }
@@ -61,12 +55,17 @@ function OptionDescriptionText({ text }: OptionDescriptionTextProps) {
 }
 
 function CommandLineUsageText() {
-  const usageText = usageExamples.map(([commandText, descriptionText]) => (
-    <Text>
+  const usage: Array<[commandText: string, descriptionText: string]> = [
+    ["tstyche", "Run all tests."],
+    ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
+    ["tstyche --target 4.9,5.3.2,current", "Test on all specified versions of TypeScript."],
+  ];
+
+  const usageText = usage.map(([commandText, descriptionText]) => (
+    <Line>
       <CommandText text={commandText} />
       <OptionDescriptionText text={descriptionText} />
-      <Line />
-    </Text>
+    </Line>
   ));
 
   return <Text>{usageText}</Text>;
