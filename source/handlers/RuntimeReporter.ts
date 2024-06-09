@@ -3,8 +3,9 @@ import { Environment } from "#environment";
 import type { Event, EventHandler } from "#events";
 import { type OutputService, addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
 import { FileViewService } from "./FileViewService.js";
+import { Reporter } from "./Reporter.js";
 
-export class RuntimeReporter implements EventHandler {
+export class RuntimeReporter extends Reporter implements EventHandler {
   #currentCompilerVersion: string | undefined;
   #currentProjectConfigFilePath: string | undefined;
   #fileCount = 0;
@@ -13,12 +14,12 @@ export class RuntimeReporter implements EventHandler {
   #hasReportedError = false;
   #isFileViewExpanded = false;
   #resolvedConfig: ResolvedConfig;
-  #outputService: OutputService;
   #seenDeprecations = new Set<string>();
 
   constructor(resolvedConfig: ResolvedConfig, outputService: OutputService) {
+    super(outputService);
+
     this.#resolvedConfig = resolvedConfig;
-    this.#outputService = outputService;
   }
 
   get #isLastFile() {
@@ -43,7 +44,7 @@ export class RuntimeReporter implements EventHandler {
       }
 
       case "store:info": {
-        this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
+        this.outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
 
         this.#hasReportedAdds = true;
         break;
@@ -51,7 +52,7 @@ export class RuntimeReporter implements EventHandler {
 
       case "store:error": {
         for (const diagnostic of payload.diagnostics) {
-          this.#outputService.writeError(diagnosticText(diagnostic));
+          this.outputService.writeError(diagnosticText(diagnostic));
         }
         break;
       }
@@ -72,7 +73,7 @@ export class RuntimeReporter implements EventHandler {
           this.#currentCompilerVersion !== payload.compilerVersion ||
           this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
         ) {
-          this.#outputService.writeMessage(
+          this.outputService.writeMessage(
             usesCompilerStepText(payload.compilerVersion, payload.projectConfigFilePath, {
               prependEmptyLine:
                 this.#currentCompilerVersion != null && !this.#hasReportedAdds && !this.#hasReportedError,
@@ -89,14 +90,14 @@ export class RuntimeReporter implements EventHandler {
 
       case "project:error": {
         for (const diagnostic of payload.diagnostics) {
-          this.#outputService.writeError(diagnosticText(diagnostic));
+          this.outputService.writeError(diagnosticText(diagnostic));
         }
         break;
       }
 
       case "file:start": {
         if (!Environment.noInteractive) {
-          this.#outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
+          this.outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
         }
 
         this.#fileCount--;
@@ -113,15 +114,15 @@ export class RuntimeReporter implements EventHandler {
 
       case "file:end": {
         if (!Environment.noInteractive) {
-          this.#outputService.eraseLastLine();
+          this.outputService.eraseLastLine();
         }
 
-        this.#outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
+        this.outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
 
-        this.#outputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
+        this.outputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
 
         if (this.#fileView.hasErrors) {
-          this.#outputService.writeError(this.#fileView.getMessages());
+          this.outputService.writeError(this.#fileView.getMessages());
           this.#hasReportedError = true;
         }
 

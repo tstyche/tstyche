@@ -1,17 +1,12 @@
 import { DiagnosticCategory } from "#diagnostic";
 import type { Event, EventHandler } from "#events";
-import { type OutputService, addsPackageStepText, diagnosticText } from "#output";
+import { addsPackageStepText, diagnosticText } from "#output";
+import { Reporter } from "./Reporter.js";
 
-export class SetupReporter implements EventHandler {
-  #outputService: OutputService;
-
-  constructor(outputService: OutputService) {
-    this.#outputService = outputService;
-  }
-
+export class SetupReporter extends Reporter implements EventHandler {
   handleEvent([eventName, payload]: Event): void {
     if (eventName === "store:info") {
-      this.#outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
+      this.outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
       return;
     }
 
@@ -19,12 +14,12 @@ export class SetupReporter implements EventHandler {
       for (const diagnostic of payload.diagnostics) {
         switch (diagnostic.category) {
           case DiagnosticCategory.Error: {
-            this.#outputService.writeError(diagnosticText(diagnostic));
+            this.outputService.writeError(diagnosticText(diagnostic));
             break;
           }
 
           case DiagnosticCategory.Warning: {
-            this.#outputService.writeWarning(diagnosticText(diagnostic));
+            this.outputService.writeWarning(diagnosticText(diagnostic));
             break;
           }
         }
