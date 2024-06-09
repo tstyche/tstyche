@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { TestFile } from "#file";
-import { RuntimeReporter, SummaryReporter, WatchReporter } from "#handlers";
+import { RunReporter, SummaryReporter, WatchReporter } from "#handlers";
 import type { OutputService } from "#output";
 import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
@@ -36,7 +36,7 @@ export class TSTyche {
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    this.#eventEmitter.addHandler(new RuntimeReporter(this.#resolvedConfig, this.#outputService));
+    this.#eventEmitter.addHandler(new RunReporter(this.#resolvedConfig, this.#outputService));
 
     if (this.#resolvedConfig.watch === true) {
       this.#eventEmitter.addHandler(new WatchReporter(this.#outputService));
