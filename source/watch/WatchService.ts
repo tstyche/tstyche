@@ -39,8 +39,8 @@ export class WatchService {
         case "\u0004" /* Ctrl-D */:
         // biome-ignore lint/correctness/noStringCaseMismatch: TODO false positive
         case "\u001B" /* Escape */:
-        case "\u0071" /* Latin small letter Q */:
-        case "\u0078" /* Latin small letter X */: {
+        case "q":
+        case "x": {
           this.close();
           break;
         }
@@ -48,7 +48,7 @@ export class WatchService {
         // biome-ignore lint/correctness/noStringCaseMismatch: TODO false positive
         case "\u000D" /* Return */:
         case "\u0020" /* Space */:
-        case "\u0061" /* Latin small letter A */: {
+        case "a": {
           this.#runAll();
           break;
         }
