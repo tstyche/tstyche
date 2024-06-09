@@ -1,9 +1,10 @@
 import fs from "node:fs/promises";
-import { OptionDiagnosticText, type ResolvedConfig } from "#config";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { GlobPattern } from "./GlobPattern.js";
+import { SelectDiagnosticText } from "./SelectDiagnosticText.js";
 
 interface FileSystemEntryMeta {
   isDirectory: () => boolean;
@@ -53,7 +54,7 @@ export class SelectService {
     await this.#visitDirectory(currentPath, testFilePaths);
 
     if (testFilePaths.length === 0) {
-      this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.noTestFilesWereSelected(this.#resolvedConfig)));
+      this.#onDiagnostic(Diagnostic.error(SelectDiagnosticText.noTestFilesWereSelected(this.#resolvedConfig)));
     }
 
     // sorting ensures output remains the same on different systems

@@ -1,9 +1,9 @@
-import { OptionDiagnosticText, type ResolvedConfig } from "#config";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { TestFile } from "#file";
 import { type InputHandler, InputService } from "#input";
-import type { SelectService } from "#select";
+import { SelectDiagnosticText, type SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
 import { FileWatcher } from "./FileWatcher.js";
 import { Timer } from "./Timer.js";
@@ -113,7 +113,7 @@ export class WatchService {
       this.#watchedTestFiles.delete(filePath);
 
       if (this.#watchedTestFiles.size === 0) {
-        this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.noTestFilesWereLeft(this.#resolvedConfig)));
+        this.#onDiagnostic(Diagnostic.error(SelectDiagnosticText.noTestFilesWereLeft(this.#resolvedConfig)));
       }
     };
 
