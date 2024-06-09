@@ -1,8 +1,8 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import type { TestFile } from "#file";
-import { CancellationHandler } from "#handlers";
-import { Result, ResultHandler, TargetResult } from "#result";
+import { CancellationHandler, ResultHandler } from "#handlers";
+import { Result, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";

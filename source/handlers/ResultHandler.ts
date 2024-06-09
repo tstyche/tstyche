@@ -1,15 +1,17 @@
 import { DiagnosticCategory } from "#diagnostic";
-import type { Event } from "#events";
-import type { DescribeResult } from "./DescribeResult.js";
-import type { ExpectResult } from "./ExpectResult.js";
-import type { FileResult } from "./FileResult.js";
-import { ProjectResult } from "./ProjectResult.js";
-import type { Result } from "./Result.js";
-import type { TargetResult } from "./TargetResult.js";
-import type { TestResult } from "./TestResult.js";
-import { ResultStatus } from "./enums.js";
+import type { Event, EventHandler } from "#events";
+import {
+  type DescribeResult,
+  type ExpectResult,
+  type FileResult,
+  ProjectResult,
+  type Result,
+  ResultStatus,
+  type TargetResult,
+  type TestResult,
+} from "#result";
 
-export class ResultHandler {
+export class ResultHandler implements EventHandler {
   #describeResult: DescribeResult | undefined;
   #expectResult: ExpectResult | undefined;
   #fileResult: FileResult | undefined;
