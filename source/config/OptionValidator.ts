@@ -61,7 +61,7 @@ export class OptionValidator {
 
       case "watch": {
         if (Environment.isCi) {
-          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.watchCannotBeEnabledInCiEnvironment(), origin));
+          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.watchCannotBeEnabled(), origin));
         }
         break;
       }

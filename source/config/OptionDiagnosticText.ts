@@ -82,11 +82,7 @@ export class OptionDiagnosticText {
     return `TypeScript version '${value}' is not supported.`;
   }
 
-  static watchCannotBeEnabledInCiEnvironment(): string {
+  static watchCannotBeEnabled(): string {
     return "The watch mode cannot be enabled in a continuous integration environment.";
-  }
-
-  static watchIsNotAvailable(): string {
-    return "The watch mode is not available on this system.";
   }
 }
