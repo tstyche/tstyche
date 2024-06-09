@@ -1,10 +1,11 @@
 import process from "node:process";
 
-export type InputHandler = (chunk: Buffer) => void;
+export type InputHandler = (chunk: string) => void;
 
 export interface ReadStream {
   addListener: (event: "data", handler: InputHandler) => this;
   removeListener: (event: "data", handler: InputHandler) => this;
+  setEncoding: (encoding: "utf8") => this;
   setRawMode?: (mode: boolean) => this;
   unref: () => this;
 }
@@ -22,6 +23,7 @@ export class InputService {
     this.#stdin = options?.stdin ?? process.stdin;
 
     this.#stdin.setRawMode?.(true);
+    this.#stdin.setEncoding("utf8");
     this.#stdin.unref();
 
     this.#stdin.addListener("data", this.#onInput);

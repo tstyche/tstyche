@@ -34,21 +34,20 @@ export class WatchService {
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
 
     const onInput: InputHandler = (chunk) => {
-      switch (chunk.toString()) {
+      switch (chunk.toLowerCase()) {
         case "\u0003" /* Ctrl-C */:
         case "\u0004" /* Ctrl-D */:
+        // biome-ignore lint/correctness/noStringCaseMismatch: TODO false positive
         case "\u001B" /* Escape */:
-        case "\u0051" /* Latin capital letter Q */:
         case "\u0071" /* Latin small letter Q */:
-        case "\u0058" /* Latin capital letter X */:
         case "\u0078" /* Latin small letter X */: {
           this.close();
           break;
         }
 
+        // biome-ignore lint/correctness/noStringCaseMismatch: TODO false positive
         case "\u000D" /* Return */:
         case "\u0020" /* Space */:
-        case "\u0041" /* Latin capital letter A */:
         case "\u0061" /* Latin small letter A */: {
           this.#runAll();
           break;
