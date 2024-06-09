@@ -1,5 +1,5 @@
 import type { StoreService } from "#store";
-import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
+import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { type OptionBrand, OptionGroup } from "./enums.js";
 
 export class OptionUsageText {
@@ -38,7 +38,7 @@ export class OptionUsageText {
       }
 
       default:
-        usageText.push(OptionDiagnosticText.requiresValueType(optionName, optionBrand, this.#optionGroup));
+        usageText.push(ConfigDiagnosticText.requiresValueType(optionName, optionBrand, this.#optionGroup));
     }
 
     return usageText;

@@ -1,8 +1,8 @@
 import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
+import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { type OptionDefinition, OptionDefinitionsMap, type OptionValue } from "./OptionDefinitionsMap.js";
-import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
@@ -39,7 +39,7 @@ export class CommandLineOptionsWorker {
 
   async #onExpectsValue(optionDefinition: OptionDefinition) {
     const text = [
-      OptionDiagnosticText.expectsValue(optionDefinition.name, this.#optionGroup),
+      ConfigDiagnosticText.expectsValue(optionDefinition.name, this.#optionGroup),
       ...(await this.#optionUsageText.get(optionDefinition.name, optionDefinition.brand)),
     ];
 
@@ -60,10 +60,10 @@ export class CommandLineOptionsWorker {
         if (optionDefinition) {
           index = await this.#parseOptionValue(commandLineArgs, index, optionDefinition);
         } else {
-          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.unknownOption(arg)));
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
         }
       } else if (arg.startsWith("-")) {
-        this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.unknownOption(arg)));
+        this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
       } else {
         this.#pathMatch.push(Path.normalizeSlashes(arg));
       }

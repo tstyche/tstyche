@@ -1,6 +1,6 @@
 import { type OptionBrand, OptionGroup } from "./enums.js";
 
-export class OptionDiagnosticText {
+export class ConfigDiagnosticText {
   static doubleQuotesExpected(): string {
     return "String literal with double quotes expected.";
   }
@@ -10,7 +10,7 @@ export class OptionDiagnosticText {
   }
 
   static expectsValue(optionName: string, optionGroup: OptionGroup): string {
-    optionName = OptionDiagnosticText.#optionName(optionName, optionGroup);
+    optionName = ConfigDiagnosticText.#optionName(optionName, optionGroup);
 
     return `Option '${optionName}' expects a value.`;
   }
@@ -37,7 +37,7 @@ export class OptionDiagnosticText {
   }
 
   static requiresValueType(optionName: string, optionBrand: OptionBrand, optionGroup: OptionGroup): string {
-    optionName = OptionDiagnosticText.#optionName(optionName, optionGroup);
+    optionName = ConfigDiagnosticText.#optionName(optionName, optionGroup);
 
     return `Option '${optionName}' requires a value of type ${optionBrand}.`;
   }

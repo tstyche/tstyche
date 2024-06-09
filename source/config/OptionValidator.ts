@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import { Environment } from "#environment";
 import type { StoreService } from "#store";
-import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
+import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import type { OptionBrand, OptionGroup } from "./enums.js";
 
@@ -30,7 +30,7 @@ export class OptionValidator {
       case "config":
       case "rootPath": {
         if (!existsSync(optionValue)) {
-          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.fileDoesNotExist(optionValue), origin));
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
         break;
       }
@@ -40,7 +40,7 @@ export class OptionValidator {
           this.#onDiagnostic(
             Diagnostic.error(
               [
-                OptionDiagnosticText.versionIsNotSupported(optionValue),
+                ConfigDiagnosticText.versionIsNotSupported(optionValue),
                 ...(await this.#optionUsageText.get(optionName, optionBrand)),
               ],
               origin,
@@ -53,7 +53,7 @@ export class OptionValidator {
       case "testFileMatch": {
         for (const segment of ["/", "../"]) {
           if (optionValue.startsWith(segment)) {
-            this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.testFileMatchCannotStartWith(segment), origin));
+            this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.testFileMatchCannotStartWith(segment), origin));
           }
         }
         break;
@@ -61,7 +61,7 @@ export class OptionValidator {
 
       case "watch": {
         if (Environment.isCi) {
-          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.watchCannotBeEnabled(), origin));
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.watchCannotBeEnabled(), origin));
         }
         break;
       }

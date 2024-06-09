@@ -2,13 +2,13 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
+import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import {
   type ItemDefinition,
   type OptionDefinition,
   OptionDefinitionsMap,
   type OptionValue,
 } from "./OptionDefinitionsMap.js";
-import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
 
@@ -77,7 +77,7 @@ export class ConfigFileOptionsWorker {
         if (!this.#isDoubleQuotedString(property.name, sourceFile)) {
           const origin = DiagnosticOrigin.fromJsonNode(property, sourceFile, this.#skipTrivia);
 
-          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.doubleQuotesExpected(), origin));
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
           continue;
         }
 
@@ -98,7 +98,7 @@ export class ConfigFileOptionsWorker {
         } else {
           const origin = DiagnosticOrigin.fromJsonNode(property, sourceFile, this.#skipTrivia);
 
-          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.unknownOption(optionName), origin));
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(optionName), origin));
         }
       }
     }
@@ -131,7 +131,7 @@ export class ConfigFileOptionsWorker {
         if (!this.#isDoubleQuotedString(valueExpression, sourceFile)) {
           const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
-          this.#onDiagnostic(Diagnostic.error(OptionDiagnosticText.doubleQuotesExpected(), origin));
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
           return;
         }
 
@@ -171,8 +171,8 @@ export class ConfigFileOptionsWorker {
     }
 
     const text = isListItem
-      ? OptionDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
-      : OptionDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
+      ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
+      : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
     const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
     this.#onDiagnostic(Diagnostic.error(text, origin));
