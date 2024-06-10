@@ -1,5 +1,33 @@
 # Releases
 
+## [2.0.0] - 2024-06-10
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
+
+### Fixed
+
+- Always allow passing `cancellationToken` as an argument ([#206](https://github.com/tstyche/tstyche/pull/206))
+- **Breaking!** Always set the `configFilePath` property in the resolved config ([#203](https://github.com/tstyche/tstyche/pull/203))
+- **Breaking!** Do not return the `Result` from test runner ([#188](https://github.com/tstyche/tstyche/pull/188))
+- Collect and handle nested `expect()` assertions ([#156](https://github.com/tstyche/tstyche/pull/156))
+
+### Changed
+
+- **Breaking!** Use `fetch()` global ([#214](https://github.com/tstyche/tstyche/pull/214))
+- **Breaking!** Use the `jsx-runtime` transform for output components ([#199](https://github.com/tstyche/tstyche/pull/199), [#219](https://github.com/tstyche/tstyche/pull/219))
+- **Breaking!** Drop support for Node.js 14 ([#198](https://github.com/tstyche/tstyche/pull/198))
+- **Breaking!** Deprecate `.toEqual()` in favour of `.toBe()` ([#151](https://github.com/tstyche/tstyche/pull/151))
+- **Breaking!** Deprecate `.toBeAssignable()` in favour of `.toBeAssignableWith()` ([#142](https://github.com/tstyche/tstyche/pull/142))
+
+### Added
+
+- Add the `DiagnosticOrigin` class ([#216](https://github.com/tstyche/tstyche/pull/216))
+- Add the `TestFile` class ([#189](https://github.com/tstyche/tstyche/pull/189))
+- **New!** Add the watch mode ([#170](https://github.com/tstyche/tstyche/pull/170), [#173](https://github.com/tstyche/tstyche/pull/173), [#204](https://github.com/tstyche/tstyche/pull/204), [#208](https://github.com/tstyche/tstyche/pull/208), [#213](https://github.com/tstyche/tstyche/pull/213), [#218](https://github.com/tstyche/tstyche/pull/218))
+- Add the `SelectService` class ([#165](https://github.com/tstyche/tstyche/pull/165))
+- **New!** Add `.toBe()` matcher ([#151](https://github.com/tstyche/tstyche/pull/151))
+- **New!** Add `.toBeAssignableTo()` and `.toBeAssignableWith()` matchers ([#141](https://github.com/tstyche/tstyche/pull/141))
+
 ## [2.0.0-rc.2] - 2024-06-08
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
@@ -221,6 +249,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[2.0.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0
 [2.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.2
 [2.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.1
 [2.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.0
