@@ -37,7 +37,6 @@ export class WatchService {
       switch (chunk.toLowerCase()) {
         case "\u0003" /* Ctrl-C */:
         case "\u0004" /* Ctrl-D */:
-        // biome-ignore lint/correctness/noStringCaseMismatch: TODO false positive
         case "\u001B" /* Escape */:
         case "q":
         case "x": {
@@ -45,7 +44,6 @@ export class WatchService {
           break;
         }
 
-        // biome-ignore lint/correctness/noStringCaseMismatch: TODO false positive
         case "\u000D" /* Return */:
         case "\u0020" /* Space */:
         case "a": {
