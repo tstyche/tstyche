@@ -7,30 +7,6 @@ import { TestMemberBrand } from "./enums.js";
 
 export class CollectService {
   #compiler: typeof ts;
-  #matcherIdentifiers = [
-    "toBe",
-    "toBeAny",
-    "toBeAssignable",
-    "toBeAssignableTo",
-    "toBeAssignableWith",
-    "toBeBigInt",
-    "toBeBoolean",
-    "toBeNever",
-    "toBeNull",
-    "toBeNumber",
-    "toBeString",
-    "toBeSymbol",
-    "toBeUndefined",
-    "toBeUniqueSymbol",
-    "toBeUnknown",
-    "toBeVoid",
-    "toEqual",
-    "toHaveProperty",
-    "toMatch",
-    "toRaiseError",
-  ];
-  #modifierIdentifiers = ["type"];
-  #notIdentifier = "not";
 
   constructor(compiler: typeof ts) {
     this.#compiler = compiler;
@@ -61,16 +37,15 @@ export class CollectService {
       }
 
       if (meta != null && meta.brand === TestMemberBrand.Expect) {
-        const modifierNode = this.#getMatchingChainNode(node, this.#modifierIdentifiers);
+        const modifierNode = this.#getChainedNode(node, "type");
 
         if (!modifierNode) {
           return;
         }
 
-        const notNode = this.#getMatchingChainNode(modifierNode, [this.#notIdentifier]);
+        const notNode = this.#getChainedNode(modifierNode, "not");
 
-        // TODO no need to check for matcher name, the `Expect` class will handle unimplemented matchers
-        const matcherNode = this.#getMatchingChainNode(notNode ?? modifierNode, this.#matcherIdentifiers)?.parent;
+        const matcherNode = this.#getChainedNode(notNode ?? modifierNode)?.parent;
 
         if (matcherNode == null || !this.#isMatcherNode(matcherNode)) {
           return;
@@ -126,12 +101,16 @@ export class CollectService {
     return testTree;
   }
 
-  #getMatchingChainNode({ parent }: ts.Node, name: Array<string>) {
-    if (this.#compiler.isPropertyAccessExpression(parent) && name.includes(parent.name.getText())) {
-      return parent;
+  #getChainedNode({ parent }: ts.Node, name?: string) {
+    if (!this.#compiler.isPropertyAccessExpression(parent)) {
+      return;
     }
 
-    return;
+    if (name != null && name !== parent.name.getText()) {
+      return;
+    }
+
+    return parent;
   }
 
   #isMatcherNode(node: ts.Node): node is MatcherNode {
