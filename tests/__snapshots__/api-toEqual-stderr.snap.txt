@@ -1,6 +1,6 @@
-Warning: '.toEqual()' is deprecated and will be removed in TSTyche 3.
+Warning: The '.toEqual()' matcher is deprecated and will be removed in TSTyche 3.
 
-To learn more, visit https://tstyche.org/release-notes/tstyche-2
+To learn more, visit https://tstyche.org/releases/tstyche-2
 
   14 | 
   15 | test("edge cases", () => {

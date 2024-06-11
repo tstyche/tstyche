@@ -214,8 +214,8 @@ export class Expect {
     const matcherNameText = assertion.matcherName.getText();
 
     const text = [
-      `'.${matcherNameText}()' is deprecated and will be removed in TSTyche 3.`,
-      "To learn more, visit https://tstyche.org/release-notes/tstyche-2",
+      `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
+      "To learn more, visit https://tstyche.org/releases/tstyche-2",
     ];
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
