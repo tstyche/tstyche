@@ -63,7 +63,7 @@
       },
 
       "suspicious": {
-        "noConsoleLog": "error",
+        "noConsoleLog": "warn",
         "noSkippedTests": "error",
         "useAwait": "error",
 
