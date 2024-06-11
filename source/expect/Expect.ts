@@ -250,7 +250,7 @@ export class Expect {
     EventEmitter.dispatch([
       "expect:error",
       {
-        diagnostics: [Diagnostic.error(`The '${matcherNameText}()' matcher is not supported.`, origin)],
+        diagnostics: [Diagnostic.error(`The '.${matcherNameText}()' matcher is not supported.`, origin)],
         result: expectResult,
       },
     ]);
