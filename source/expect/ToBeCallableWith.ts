@@ -1,20 +1,20 @@
-import type ts from "typescript/lib/tsserverlibrary.js";
+import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToBeCallableWith {
-  compiler: typeof ts;
-  typeChecker: TypeChecker;
+  #compiler: typeof ts;
+  #typeChecker: TypeChecker;
 
   constructor(compiler: typeof ts, typeChecker: TypeChecker) {
-    this.compiler = compiler;
-    this.typeChecker = typeChecker;
+    this.#compiler = compiler;
+    this.#typeChecker = typeChecker;
   }
 
   #countArguments(target: Array<ts.Expression> | ts.TupleType) {
     if (Array.isArray(target)) {
       const count = target.reduce((count, node) => {
-        if (this.compiler.isSpreadElement(node) && this.compiler.isArrayLiteralExpression(node.expression)) {
+        if (this.#compiler.isSpreadElement(node) && this.#compiler.isArrayLiteralExpression(node.expression)) {
           return count + node.expression.elements.length;
         }
 
@@ -33,7 +33,7 @@ export class ToBeCallableWith {
     let min = 0;
 
     for (const parameter of signatureDeclaration.parameters) {
-      if (this.typeChecker.isOptionalParameter(parameter)) {
+      if (this.#typeChecker.isOptionalParameter(parameter)) {
         ++max;
 
         continue;
@@ -59,7 +59,7 @@ export class ToBeCallableWith {
     argumentCount: { max: number; min: number },
     isNot: boolean,
   ) {
-    const sourceText = this.compiler.isTypeNode(source.node) ? "Type expression" : "Expression";
+    const sourceText = this.#compiler.isTypeNode(source.node) ? "Type expression" : "Expression";
 
     const argumentCountText =
       argumentCount.max === 0 ? "without arguments" : `with provided argument${argumentCount.max === 1 ? "" : "s"}`;
