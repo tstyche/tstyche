@@ -4,7 +4,7 @@ import { CoverageReport } from "monocart-coverage-reports";
 const options = {
   all: "./source",
 
-  clean: false,
+  clean: true,
   cleanCache: true,
 
   entryFilter: {
@@ -25,7 +25,7 @@ const options = {
 
   outputDir: "./coverage",
 
-  reports: process.env["CI"] === "true" ? ["lcovonly"] : ["console-details", "lcovonly", "v8"],
+  reports: process.env["CI"] ? ["lcovonly"] : ["console-details", "lcovonly", "v8"],
 };
 
 const coverageReport = new CoverageReport(options);
