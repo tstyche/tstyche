@@ -25,7 +25,7 @@ const options = {
 
   outputDir: "./coverage",
 
-  reports: ["console-details", "lcovonly", "v8"],
+  reports: process.env["CI"] === "true" ? ["lcovonly"] : ["console-details", "lcovonly", "v8"],
 };
 
 const coverageReport = new CoverageReport(options);
