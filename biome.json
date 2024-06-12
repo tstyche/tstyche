@@ -1,0 +1,149 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.1/schema.json",
+
+  "files": {
+    "ignore": [
+      ".cache/**",
+      ".yarn/**",
+      "build/**",
+      "coverage/**",
+      "models/CommandLineOptions.ts",
+      "models/config-schema.json",
+      "models/ConfigFileOptions.ts",
+      "node_modules/**",
+      "package.json"
+    ]
+  },
+
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 120
+  },
+
+  "linter": {
+    "enabled": true,
+
+    "rules": {
+      "recommended": true,
+
+      "complexity": {
+        "noBannedTypes": "off",
+        "noStaticOnlyClass": "off",
+        "useLiteralKeys": "off"
+      },
+
+      "correctness": {
+        "noUndeclaredVariables": "error",
+        "noUnusedImports": "error",
+        "noUnusedPrivateClassMembers": "error",
+        "noUnusedVariables": "error",
+
+        "useJsxKeyInIterable": "off"
+      },
+
+      "style": {
+        "noImplicitBoolean": "error",
+        "noNegationElse": "error",
+        "noParameterProperties": "error",
+        "useBlockStatements": "error",
+        "useCollapsedElseIf": "error",
+        "useConsistentArrayType": {
+          "level": "error",
+          "options": {
+            "syntax": "generic"
+          }
+        },
+        "useNamingConvention": "error",
+        "useForOf": "error",
+        "useShorthandAssign": "error",
+        "useSingleCaseStatement": "error",
+
+        "noParameterAssign": "off"
+      },
+
+      "suspicious": {
+        "noConsoleLog": "warn",
+        "noSkippedTests": "error",
+        "useAwait": "error",
+
+        "noConstEnum": "off"
+      }
+    }
+  },
+
+  "organizeImports": {
+    "enabled": true
+  },
+
+  "overrides": [
+    {
+      "include": ["source/handlers/ResultHandler.ts", "source/version/Version.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["source/types.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["**/*.test.js"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noForEach": "off",
+            "useArrowFunction": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["**/*.tst.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "suspicious": {
+            "noConfusingVoidType": "off",
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["**/__fixtures__/**/*.tst.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noBannedTypes": "off",
+            "useArrowFunction": "off"
+          },
+          "style": {
+            "useEnumInitializers": "off",
+            "noUnusedTemplateLiteral": "off"
+          },
+          "suspicious": {
+            "noFocusedTests": "off",
+            "noSkippedTests": "off"
+          }
+        }
+      }
+    }
+  ]
+}

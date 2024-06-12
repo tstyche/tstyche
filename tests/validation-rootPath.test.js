@@ -7,12 +7,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("'rootPath' configuration file option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
 
-describe("'rootPath' configuration file option", function() {
-  test("when specified path does not exist", async function() {
+  test("when specified path does not exist", async function () {
     const config = {
       rootPath: "../nope",
     };
@@ -33,7 +33,7 @@ describe("'rootPath' configuration file option", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("when specified value is not string", async function() {
+  test("when specified value is not string", async function () {
     const config = {
       rootPath: true,
     };

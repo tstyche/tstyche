@@ -13,12 +13,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("'tstyche.config.json' file", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
 
-describe("'tstyche.config.json' file", function() {
-  test("when does not exist", async function() {
+  test("when does not exist", async function () {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -31,7 +31,7 @@ describe("'tstyche.config.json' file", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when exist in the current directory", async function() {
+  test("when exist in the current directory", async function () {
     const config = {
       failFast: true,
     };
@@ -50,7 +50,7 @@ describe("'tstyche.config.json' file", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("the '$schema' key is allowed", async function() {
+  test("the '$schema' key is allowed", async function () {
     const config = { $schema: "https://tstyche.org/schemas/config.json" };
 
     await writeFixture(fixtureUrl, {
@@ -65,11 +65,11 @@ describe("'tstyche.config.json' file", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("comments are allowed", async function() {
+  test("comments are allowed", async function () {
     const configText = `{
   /* test */
   "failFast": true,
-  /* test */ "target": ["rc"],
+  /* test */ "target": ["current"],
   // test
   "testFileMatch": /* test */ [
     "examples/**/*.test.ts" /* test */,
@@ -86,7 +86,7 @@ describe("'tstyche.config.json' file", function() {
 
     assert.matchObject(stdout, {
       failFast: true,
-      target: ["rc"],
+      target: ["current"],
       testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
     });
 
@@ -95,8 +95,12 @@ describe("'tstyche.config.json' file", function() {
   });
 });
 
-describe("'--config' command line option", function() {
-  test("when specified, reads configuration file from the location", async function() {
+describe("'--config' command line option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
+  test("when specified, reads configuration file from the location", async function () {
     const config = {
       rootPath: "../",
     };
@@ -112,7 +116,7 @@ describe("'--config' command line option", function() {
     ]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      config: "<<cwd>>/tests/__fixtures__/.generated/config-configFile/config/tstyche.json",
+      configFilePath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile/config/tstyche.json",
       rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile",
     });
 

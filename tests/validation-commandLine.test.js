@@ -13,12 +13,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("'tstyche' command", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
 
-describe("'tstyche' command", function() {
-  test("handles unknown command line options", async function() {
+  test("handles unknown command line options", async function () {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--check", "--quick", "-t"]);
@@ -33,7 +33,7 @@ describe("'tstyche' command", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("when no test files are present", async function() {
+  test("when no test files are present", async function () {
     await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: "{}",
     });
@@ -50,7 +50,7 @@ describe("'tstyche' command", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("when search string does not select test files", async function() {
+  test("when search string does not select test files", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.tst.ts"]: isStringTestText,
     });

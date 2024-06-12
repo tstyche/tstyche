@@ -1,96 +1,96 @@
 Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
 
-  27 |     expect<Names>().type.toBe<{ first: string; last?: string }>();
-  28 | 
-> 29 |     expect<Names>().type.toBe<{ first: string; last: string }>();
+  25 |     expect<Names>().type.toBe<{ first: string; last?: string }>();
+  26 | 
+> 27 |     expect<Names>().type.toBe<{ first: string; last: string }>();
      |                          ^
-  30 |   });
-  31 | 
-  32 |   test("is NOT identical to target type", () => {
+  28 |   });
+  29 | 
+  30 |   test("is NOT identical to target type", () => {
 
-       at ./__typetests__/toBe.tst.ts:29:26 ❭ source type ❭ is identical to target type
+       at ./__typetests__/toBe.tst.ts:27:26 ❭ source type ❭ is identical to target type
 
 Error: Type 'Names' is identical to type '{ first: string; last?: string | undefined; }'.
 
-  33 |     expect<Names>().type.not.toBe<{ first: string; last: string }>();
-  34 | 
-> 35 |     expect<Names>().type.not.toBe<{ first: string; last?: string }>();
+  31 |     expect<Names>().type.not.toBe<{ first: string; last: string }>();
+  32 | 
+> 33 |     expect<Names>().type.not.toBe<{ first: string; last?: string }>();
      |                              ^
-  36 |   });
-  37 | 
-  38 |   test("is identical to target expression", () => {
+  34 |   });
+  35 | 
+  36 |   test("is identical to target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:35:30 ❭ source type ❭ is NOT identical to target type
+       at ./__typetests__/toBe.tst.ts:33:30 ❭ source type ❭ is NOT identical to target type
 
 Error: Type '{ first: string; last: string; }' is not identical to type 'Names'.
 
-  40 |     expect<{ first: string; last?: string }>().type.toBe(getNames());
-  41 | 
-> 42 |     expect<{ first: string; last: string }>().type.toBe(getNames());
+  38 |     expect<{ first: string; last?: string }>().type.toBe(getNames());
+  39 | 
+> 40 |     expect<{ first: string; last: string }>().type.toBe(getNames());
      |                                                    ^
-  43 |   });
-  44 | 
-  45 |   test("is NOT identical to target expression", () => {
+  41 |   });
+  42 | 
+  43 |   test("is NOT identical to target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:42:52 ❭ source type ❭ is identical to target expression
+       at ./__typetests__/toBe.tst.ts:40:52 ❭ source type ❭ is identical to target expression
 
 Error: Type '{ first: string; last?: string | undefined; }' is identical to type 'Names'.
 
-  46 |     expect<{ first: string; last: string }>().type.not.toBe(getNames());
-  47 | 
-> 48 |     expect<{ first: string; last?: string }>().type.not.toBe(getNames());
+  44 |     expect<{ first: string; last: string }>().type.not.toBe(getNames());
+  45 | 
+> 46 |     expect<{ first: string; last?: string }>().type.not.toBe(getNames());
      |                                                         ^
-  49 |   });
-  50 | });
-  51 | 
+  47 |   });
+  48 | });
+  49 | 
 
-       at ./__typetests__/toBe.tst.ts:48:57 ❭ source type ❭ is NOT identical to target expression
+       at ./__typetests__/toBe.tst.ts:46:57 ❭ source type ❭ is NOT identical to target expression
 
 Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
 
-  55 |     expect(getNames()).type.toBe<Names>();
-  56 | 
-> 57 |     expect(getNames()).type.toBe<{ first: string; last: string }>();
+  53 |     expect(getNames()).type.toBe<Names>();
+  54 | 
+> 55 |     expect(getNames()).type.toBe<{ first: string; last: string }>();
      |                             ^
-  58 |   });
-  59 | 
-  60 |   test("is NOT identical to target type", () => {
+  56 |   });
+  57 | 
+  58 |   test("is NOT identical to target type", () => {
 
-       at ./__typetests__/toBe.tst.ts:57:29 ❭ source expression ❭ identical to target type
+       at ./__typetests__/toBe.tst.ts:55:29 ❭ source expression ❭ identical to target type
 
 Error: Type 'Names' is identical to type '{ first: string; last?: string | undefined; }'.
 
-  61 |     expect(getNames()).type.not.toBe<{ first: string; last: string }>();
-  62 | 
-> 63 |     expect(getNames()).type.not.toBe<{ first: string; last?: string }>();
+  59 |     expect(getNames()).type.not.toBe<{ first: string; last: string }>();
+  60 | 
+> 61 |     expect(getNames()).type.not.toBe<{ first: string; last?: string }>();
      |                                 ^
-  64 |   });
-  65 | 
-  66 |   test("identical to target expression", () => {
+  62 |   });
+  63 | 
+  64 |   test("identical to target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:63:33 ❭ source expression ❭ is NOT identical to target type
+       at ./__typetests__/toBe.tst.ts:61:33 ❭ source expression ❭ is NOT identical to target type
 
 Error: Type '{ height: number; }' is not identical to type 'Size'.
 
-  67 |     expect({ height: 14, width: 25 }).type.toBe(getSize());
-  68 | 
-> 69 |     expect({ height: 14 }).type.toBe(getSize());
+  65 |     expect({ height: 14, width: 25 }).type.toBe(getSize());
+  66 | 
+> 67 |     expect({ height: 14 }).type.toBe(getSize());
      |                                 ^
-  70 |   });
-  71 | 
-  72 |   test("is NOT identical to target expression", () => {
+  68 |   });
+  69 | 
+  70 |   test("is NOT identical to target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:69:33 ❭ source expression ❭ identical to target expression
+       at ./__typetests__/toBe.tst.ts:67:33 ❭ source expression ❭ identical to target expression
 
 Error: Type '{ height: number; width: number; }' is identical to type 'Size'.
 
-  73 |     expect({ height: 14 }).type.not.toBe(getSize());
-  74 | 
-> 75 |     expect({ height: 14, width: 25 }).type.not.toBe(getSize());
+  71 |     expect({ height: 14 }).type.not.toBe(getSize());
+  72 | 
+> 73 |     expect({ height: 14, width: 25 }).type.not.toBe(getSize());
      |                                                ^
-  76 |   });
-  77 | });
-  78 | 
+  74 |   });
+  75 | });
+  76 | 
 
-       at ./__typetests__/toBe.tst.ts:75:48 ❭ source expression ❭ is NOT identical to target expression
+       at ./__typetests__/toBe.tst.ts:73:48 ❭ source expression ❭ is NOT identical to target expression
 

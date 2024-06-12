@@ -1,174 +1,157 @@
 import type { ResultCount } from "#result";
-import { Color, Line, Scribbler, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-class RowText implements JSX.ElementClass {
-  constructor(readonly props: { label: string; text: JSX.Element }) {}
-
-  render(): JSX.Element {
-    return (
-      <Line>
-        {`${this.props.label}:`.padEnd(12)}
-        {this.props.text}
-      </Line>
-    );
-  }
+interface RowTextProps {
+  label: string;
+  text: ScribblerJsx.Element;
 }
 
-class CountText implements JSX.ElementClass {
-  constructor(
-    readonly props: {
-      failed: number;
-      passed: number;
-      skipped: number;
-      todo: number;
-      total: number;
-    },
-  ) {}
+function RowText({ label, text }: RowTextProps) {
+  return (
+    <Line>
+      {`${label}:`.padEnd(12)}
+      {text}
+    </Line>
+  );
+}
 
-  render(): JSX.Element {
-    return (
-      <Text>
-        {this.props.failed > 0
-          ? (
-            <Text>
-              <Text color={Color.Red}>{String(this.props.failed)} failed</Text>
-              <Text>{", "}</Text>
-            </Text>
-          )
-          : undefined}
-        {this.props.skipped > 0
-          ? (
-            <Text>
-              <Text color={Color.Yellow}>{String(this.props.skipped)} skipped</Text>
-              <Text>{", "}</Text>
-            </Text>
-          )
-          : undefined}
-        {this.props.todo > 0
-          ? (
-            <Text>
-              <Text color={Color.Magenta}>{String(this.props.todo)} todo</Text>
-              <Text>{", "}</Text>
-            </Text>
-          )
-          : undefined}
-        {this.props.passed > 0
-          ? (
-            <Text>
-              <Text color={Color.Green}>{String(this.props.passed)} passed</Text>
-              <Text>{", "}</Text>
-            </Text>
-          )
-          : undefined}
+interface CountTextProps {
+  failed: number;
+  passed: number;
+  skipped: number;
+  todo: number;
+  total: number;
+}
+
+function CountText({ failed, passed, skipped, todo, total }: CountTextProps) {
+  return (
+    <Text>
+      {failed > 0 ? (
         <Text>
-          {String(this.props.total)}
-          <Text>{" total"}</Text>
+          <Text color={Color.Red}>{String(failed)} failed</Text>
+          <Text>{", "}</Text>
         </Text>
-      </Text>
-    );
-  }
-}
-
-class DurationText implements JSX.ElementClass {
-  constructor(readonly props: { duration: number }) {}
-
-  render(): JSX.Element {
-    const duration = this.props.duration / 1000;
-
-    const minutes = Math.floor(duration / 60);
-    const seconds = duration % 60;
-
-    return (
-      <Text>
-        {minutes > 0 ? `${minutes}m ` : undefined}
-        {`${Math.round(seconds * 10) / 10}s`}
-      </Text>
-    );
-  }
-}
-
-class MatchText implements JSX.ElementClass {
-  constructor(readonly props: { text: Array<string> | string }) {}
-
-  render(): JSX.Element {
-    if (typeof this.props.text === "string") {
-      return <Text>'{this.props.text}'</Text>;
-    }
-
-    if (this.props.text.length <= 1) {
-      return <Text>'{...this.props.text}'</Text>;
-    }
-
-    const lastItem = this.props.text.pop();
-
-    return (
-      <Text>
-        {this.props.text.map((match, index, list) => (
-          <Text>
-            '{match}'{index === list.length - 1 ? <Text>{" "}</Text> : <Text color={Color.Gray}>{", "}</Text>}
-          </Text>
-        ))}
-        <Text color={Color.Gray}>or</Text> '{lastItem}'
-      </Text>
-    );
-  }
-}
-
-class RanFilesText implements JSX.ElementClass {
-  constructor(
-    readonly props: {
-      onlyMatch: string | undefined;
-      pathMatch: Array<string>;
-      skipMatch: string | undefined;
-    },
-  ) {}
-
-  render(): JSX.Element {
-    const testNameMatch: Array<JSX.Element> = [];
-
-    if (this.props.onlyMatch != null) {
-      testNameMatch.push(
+      ) : undefined}
+      {skipped > 0 ? (
         <Text>
-          <Text color={Color.Gray}>{"matching "}</Text>
-          <MatchText text={this.props.onlyMatch} />
-        </Text>,
-      );
-    }
-
-    if (this.props.skipMatch != null) {
-      testNameMatch.push(
-        <Text>
-          {this.props.onlyMatch == null ? undefined : <Text color={Color.Gray}>{" and "}</Text>}
-          <Text color={Color.Gray}>{"not matching "}</Text>
-          <MatchText text={this.props.skipMatch} />
-        </Text>,
-      );
-    }
-
-    let pathMatch: JSX.Element | undefined;
-
-    if (this.props.pathMatch.length > 0) {
-      pathMatch = (
-        <Text>
-          <Text color={Color.Gray}>{"test files matching "}</Text>
-          <MatchText text={this.props.pathMatch} />
-          <Text color={Color.Gray}>.</Text>
+          <Text color={Color.Yellow}>{String(skipped)} skipped</Text>
+          <Text>{", "}</Text>
         </Text>
-      );
-    } else {
-      pathMatch = <Text color={Color.Gray}>all test files.</Text>;
-    }
+      ) : undefined}
+      {todo > 0 ? (
+        <Text>
+          <Text color={Color.Magenta}>{String(todo)} todo</Text>
+          <Text>{", "}</Text>
+        </Text>
+      ) : undefined}
+      {passed > 0 ? (
+        <Text>
+          <Text color={Color.Green}>{String(passed)} passed</Text>
+          <Text>{", "}</Text>
+        </Text>
+      ) : undefined}
+      <Text>
+        {String(total)}
+        <Text>{" total"}</Text>
+      </Text>
+    </Text>
+  );
+}
 
-    return (
-      <Line>
-        <Text color={Color.Gray}>{"Ran "}</Text>
-        {testNameMatch.length > 0 ? <Text color={Color.Gray}>{"tests "}</Text> : undefined}
-        {testNameMatch}
-        {testNameMatch.length > 0 ? <Text color={Color.Gray}>{" in "}</Text> : undefined}
-        {pathMatch}
-      </Line>
+interface DurationTextProps {
+  duration: number;
+}
+
+function DurationText({ duration }: DurationTextProps) {
+  const minutes = Math.floor(duration / 60);
+  const seconds = duration % 60;
+
+  return (
+    <Text>
+      {minutes > 0 ? `${String(minutes)}m ` : undefined}
+      {`${String(Math.round(seconds * 10) / 10)}s`}
+    </Text>
+  );
+}
+
+interface MatchTextProps {
+  text: Array<string> | string;
+}
+
+function MatchText({ text }: MatchTextProps) {
+  if (typeof text === "string") {
+    return <Text>'{text}'</Text>;
+  }
+
+  if (text.length <= 1) {
+    return <Text>'{...text}'</Text>;
+  }
+
+  const lastItem = text.pop();
+
+  return (
+    <Text>
+      {text.map((match, index, list) => (
+        <Text>
+          '{match}'{index === list.length - 1 ? <Text> </Text> : <Text color={Color.Gray}>{", "}</Text>}
+        </Text>
+      ))}
+      <Text color={Color.Gray}>or</Text> '{lastItem}'
+    </Text>
+  );
+}
+
+interface RanFilesTextProps {
+  onlyMatch: string | undefined;
+  pathMatch: Array<string>;
+  skipMatch: string | undefined;
+}
+
+function RanFilesText({ onlyMatch, pathMatch, skipMatch }: RanFilesTextProps) {
+  const testNameMatchText: Array<ScribblerJsx.Element> = [];
+
+  if (onlyMatch != null) {
+    testNameMatchText.push(
+      <Text>
+        <Text color={Color.Gray}>{"matching "}</Text>
+        <MatchText text={onlyMatch} />
+      </Text>,
     );
   }
+
+  if (skipMatch != null) {
+    testNameMatchText.push(
+      <Text>
+        {onlyMatch == null ? undefined : <Text color={Color.Gray}>{" and "}</Text>}
+        <Text color={Color.Gray}>{"not matching "}</Text>
+        <MatchText text={skipMatch} />
+      </Text>,
+    );
+  }
+
+  let pathMatchText: ScribblerJsx.Element | undefined;
+
+  if (pathMatch.length > 0) {
+    pathMatchText = (
+      <Text>
+        <Text color={Color.Gray}>{"test files matching "}</Text>
+        <MatchText text={pathMatch} />
+        <Text color={Color.Gray}>.</Text>
+      </Text>
+    );
+  } else {
+    pathMatchText = <Text color={Color.Gray}>all test files.</Text>;
+  }
+
+  return (
+    <Line>
+      <Text color={Color.Gray}>{"Ran "}</Text>
+      {testNameMatchText.length > 0 ? <Text color={Color.Gray}>{"tests "}</Text> : undefined}
+      {testNameMatchText}
+      {testNameMatchText.length > 0 ? <Text color={Color.Gray}>{" in "}</Text> : undefined}
+      {pathMatchText}
+    </Line>
+  );
 }
 
 export function summaryText({
@@ -189,7 +172,7 @@ export function summaryText({
   skipMatch: string | undefined;
   targetCount: ResultCount;
   testCount: ResultCount;
-}): JSX.Element {
+}): ScribblerJsx.Element {
   const targetCountText = (
     <RowText
       label="Targets"
@@ -256,7 +239,7 @@ export function summaryText({
       {fileCountText}
       {testCount.total > 0 ? testCountText : undefined}
       {expectCount.total > 0 ? assertionCountText : undefined}
-      <RowText label="Duration" text={<DurationText duration={duration} />} />
+      <RowText label="Duration" text={<DurationText duration={duration / 1000} />} />
       <Line />
       <RanFilesText onlyMatch={onlyMatch} pathMatch={pathMatch} skipMatch={skipMatch} />
     </Text>

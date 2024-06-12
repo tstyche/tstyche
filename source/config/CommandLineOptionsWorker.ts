@@ -1,11 +1,11 @@
 import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
-import { OptionBrand, OptionGroup } from "./enums.js";
+import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { type OptionDefinition, OptionDefinitionsMap, type OptionValue } from "./OptionDefinitionsMap.js";
-import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
+import { OptionBrand, OptionGroup } from "./enums.js";
 
 export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
 
@@ -13,7 +13,7 @@ export class CommandLineOptionsWorker {
   #commandLineOptionDefinitions: Map<string, OptionDefinition>;
   #commandLineOptions: Record<string, OptionValue>;
   #onDiagnostic: (diagnostic: Diagnostic) => void;
-  #optionDiagnosticText: OptionDiagnosticText;
+  #optionGroup = OptionGroup.CommandLine;
   #optionUsageText: OptionUsageText;
   #optionValidator: OptionValidator;
   #pathMatch: Array<string>;
@@ -30,17 +30,16 @@ export class CommandLineOptionsWorker {
     this.#storeService = storeService;
     this.#onDiagnostic = onDiagnostic;
 
-    this.#commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
+    this.#commandLineOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
-    this.#optionDiagnosticText = new OptionDiagnosticText(OptionGroup.CommandLine);
-    this.#optionUsageText = new OptionUsageText(OptionGroup.CommandLine, this.#storeService);
+    this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
 
-    this.#optionValidator = new OptionValidator(OptionGroup.CommandLine, this.#storeService, this.#onDiagnostic);
+    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostic);
   }
 
   async #onExpectsValue(optionDefinition: OptionDefinition) {
     const text = [
-      this.#optionDiagnosticText.expectsValue(optionDefinition.name),
+      ConfigDiagnosticText.expectsValue(optionDefinition.name, this.#optionGroup),
       ...(await this.#optionUsageText.get(optionDefinition.name, optionDefinition.brand)),
     ];
 
@@ -61,10 +60,10 @@ export class CommandLineOptionsWorker {
         if (optionDefinition) {
           index = await this.#parseOptionValue(commandLineArgs, index, optionDefinition);
         } else {
-          this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownOption(arg)));
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
         }
       } else if (arg.startsWith("-")) {
-        this.#onDiagnostic(Diagnostic.error(this.#optionDiagnosticText.unknownOption(arg)));
+        this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
       } else {
         this.#pathMatch.push(Path.normalizeSlashes(arg));
       }
@@ -77,20 +76,26 @@ export class CommandLineOptionsWorker {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
-      case OptionBrand.True:
+      case OptionBrand.BareTrue: {
+        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+
         this.#commandLineOptions[optionDefinition.name] = true;
         break;
+      }
 
-      case OptionBrand.Boolean:
+      case OptionBrand.Boolean: {
+        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 
         if (optionValue === "false" || optionValue === "true") {
           index++;
         }
         break;
+      }
 
-      case OptionBrand.List:
-        if (optionValue != null) {
+      case OptionBrand.List: {
+        if (optionValue !== "") {
           const optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
@@ -107,9 +112,10 @@ export class CommandLineOptionsWorker {
 
         await this.#onExpectsValue(optionDefinition);
         break;
+      }
 
-      case OptionBrand.String:
-        if (optionValue != null) {
+      case OptionBrand.String: {
+        if (optionValue !== "") {
           if (optionDefinition.name === "config") {
             optionValue = Path.resolve(optionValue);
           }
@@ -124,6 +130,7 @@ export class CommandLineOptionsWorker {
 
         await this.#onExpectsValue(optionDefinition);
         break;
+      }
 
       default:
         break;
@@ -132,11 +139,7 @@ export class CommandLineOptionsWorker {
     return index;
   }
 
-  #resolveOptionValue(optionValue: string | undefined) {
-    if (optionValue == null || optionValue.startsWith("-")) {
-      return;
-    }
-
-    return optionValue;
+  #resolveOptionValue(target = "") {
+    return target.startsWith("-") ? "" : target;
   }
 }

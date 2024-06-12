@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import Ajv from "ajv";
+import { Ajv } from "ajv";
 import { describe, test } from "mocha";
 
 const ajv = new Ajv({ allErrors: true });
@@ -13,7 +13,6 @@ const ajv = new Ajv({ allErrors: true });
 function readJsonFile(filePath) {
   const jsonText = readFileSync(new URL(filePath, import.meta.url), { encoding: "utf8" });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return JSON.parse(jsonText);
 }
 
@@ -28,8 +27,8 @@ function readJsonFixtureFile(fixtureFileName) {
 
 const configSchema = readJsonFile("../config-schema.json");
 
-describe("config-schema.json", function() {
-  describe("valid", function() {
+describe("config-schema.json", function () {
+  describe("valid", function () {
     const testCases = [
       {
         fixtureFileName: "valid-all-options.json",
@@ -54,7 +53,7 @@ describe("config-schema.json", function() {
     ];
 
     testCases.forEach(({ fixtureFileName, testCase }) => {
-      test(testCase, function() {
+      test(testCase, function () {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 
@@ -63,7 +62,7 @@ describe("config-schema.json", function() {
     });
   });
 
-  describe("invalid", function() {
+  describe("invalid", function () {
     const testCases = [
       {
         fixtureFileName: "invalid-failFast.json",
@@ -104,7 +103,7 @@ describe("config-schema.json", function() {
     ];
 
     testCases.forEach(({ fixtureFileName, testCase }) => {
-      test(testCase, function() {
+      test(testCase, function () {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 

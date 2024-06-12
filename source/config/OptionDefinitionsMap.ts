@@ -8,13 +8,7 @@ export interface ItemDefinition {
 
 export type OptionDefinition = PrimitiveTypeOptionDefinition | ListTypeOptionDefinition;
 
-export type OptionValue =
-  | Array<OptionValue>
-  | string
-  | number
-  | boolean
-  | null
-  | undefined;
+export type OptionValue = Array<OptionValue> | string | number | boolean | null | undefined;
 
 interface BaseOptionDefinition {
   brand: OptionBrand;
@@ -24,7 +18,7 @@ interface BaseOptionDefinition {
 }
 
 interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
-  brand: OptionBrand.String | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.True;
+  brand: OptionBrand.String | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.BareTrue;
 }
 
 interface ListTypeOptionDefinition extends BaseOptionDefinition {
@@ -49,21 +43,21 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.True,
+      brand: OptionBrand.BareTrue,
       description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,
       name: "help",
     },
 
     {
-      brand: OptionBrand.True,
+      brand: OptionBrand.BareTrue,
       description: "Install specified versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "install",
     },
 
     {
-      brand: OptionBrand.True,
+      brand: OptionBrand.BareTrue,
       description: "Print the list of the selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",
@@ -77,7 +71,7 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.True,
+      brand: OptionBrand.BareTrue,
       description: "Remove all installed versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "prune",
@@ -91,7 +85,7 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.True,
+      brand: OptionBrand.BareTrue,
       description: "Print the resolved configuration and exit.",
       group: OptionGroup.CommandLine,
       name: "showConfig",
@@ -128,24 +122,31 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.True,
+      brand: OptionBrand.BareTrue,
       description: "Fetch the 'typescript' package metadata from the registry and exit.",
       group: OptionGroup.CommandLine,
       name: "update",
     },
 
     {
-      brand: OptionBrand.True,
+      brand: OptionBrand.BareTrue,
       description: "Print the version number and exit.",
       group: OptionGroup.CommandLine,
       name: "version",
+    },
+
+    {
+      brand: OptionBrand.BareTrue,
+      description: "Watch for changes and rerun related test files.",
+      group: OptionGroup.CommandLine,
+      name: "watch",
     },
   ];
 
   static for(optionGroup: OptionGroup): Map<string, OptionDefinition> {
     const definitionMap = new Map<string, OptionDefinition>();
 
-    for (const definition of this.#definitions) {
+    for (const definition of OptionDefinitionsMap.#definitions) {
       if (definition.group & optionGroup) {
         definitionMap.set(definition.name, definition);
       }

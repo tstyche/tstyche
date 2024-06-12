@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, before, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -18,11 +18,18 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("'--install' command line option", function () {
+  before(function () {
+    if (process.versions.node.startsWith("16")) {
+      // store is not supported on Node.js 16
+      this.skip();
+    }
+  });
 
-describe("'--install' command line option", function() {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
   const testCases = [
     {
       args: ["--install", "--target", "4.9"],
@@ -43,7 +50,7 @@ describe("'--install' command line option", function() {
   ];
 
   testCases.forEach(({ args, testCase }) => {
-    test(testCase, async function() {
+    test(testCase, async function () {
       const config = { target: ["5.0", "latest"] };
 
       await writeFixture(fixtureUrl, {
@@ -56,10 +63,7 @@ describe("'--install' command line option", function() {
 
       assert.equal(
         normalizeOutput(stdout),
-        [
-          "adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/.generated/config-install/.store/4.9.5",
-          "",
-        ].join("\n"),
+        ["adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/.generated/config-install/.store/4.9.5", ""].join("\n"),
       );
 
       assert.equal(stderr, "");
@@ -67,7 +71,7 @@ describe("'--install' command line option", function() {
     });
   });
 
-  test("when 'target' configuration option is specified", async function() {
+  test("when 'target' configuration option is specified", async function () {
     const config = { target: ["4.8", "5.0"] };
 
     await writeFixture(fixtureUrl, {
@@ -91,7 +95,7 @@ describe("'--install' command line option", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' target specified in the configuration file", async function() {
+  test("when 'current' target specified in the configuration file", async function () {
     const config = { target: ["current"] };
 
     await writeFixture(fixtureUrl, {
@@ -107,7 +111,7 @@ describe("'--install' command line option", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' target specified in the command", async function() {
+  test("when 'current' target specified in the command", async function () {
     const config = { target: ["5.0", "latest"] };
 
     await writeFixture(fixtureUrl, {

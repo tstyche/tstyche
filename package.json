@@ -1,6 +1,6 @@
 {
   "name": "tstyche",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "The Essential Type Testing Tool.",
   "keywords": [
     "typescript",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tstyche/tstyche.git"
+    "url": "https://github.com/tstyche/tstyche.git"
   },
   "funding": "https://github.com/tstyche/tstyche?sponsor=1",
   "license": "MIT",
@@ -38,47 +38,41 @@
     "bench": "./benchmarks/tstyche.bench.sh",
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
-    "check": "yarn check:spelling && yarn check:formatting",
-    "check:formatting": "dprint check",
+    "check": "yarn check:spelling && yarn check:types",
     "check:spelling": "cspell --config cspell.config.json --quiet",
     "check:types": "tsc --noEmit --project tsconfig.json",
     "clean": "rm -rf build",
-    "format": "dprint fmt",
+    "format": "biome format --write",
     "generate": "yarn generate:schema && yarn generate:types",
     "generate:schema": "node ./models/__scripts__/generate-schema.js",
     "generate:types": "node ./models/__scripts__/generate-types.js",
-    "lint": "eslint ./ --config eslint.config.json --ext .js,.cts,.ts,.tsx",
-    "prepack": "yarn clean && yarn build",
-    "prepublish": "yarn test",
+    "lint": "biome lint --write",
+    "prepublish": "yarn clean && yarn build && yarn test",
     "test": "yarn test:unit && yarn test:e2e",
     "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
-    "test:e2e": "mocha tests/*.test.* --config mocha.config.json",
+    "test:e2e": "yarn test:e2e:parallel && yarn test:e2e:serial",
+    "test:e2e:parallel": "yarn test:run tests/*.test.* --exclude tests/feature-watch.test.js --parallel --reporter dot",
+    "test:e2e:serial": "yarn test:run tests/feature-watch.test.js --reporter dot",
     "test:examples": "tstyche examples",
+    "test:run": "mocha --config mocha.config.json",
     "test:types": "tstyche typetests",
-    "test:unit": "mocha **/__tests__/*.test.* --config mocha.config.json"
+    "test:unit": "yarn test:run **/__tests__/*.test.* --parallel --reporter dot"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.1",
     "@rollup/plugin-typescript": "11.1.6",
     "@types/mocha": "10.0.6",
-    "@types/node": "20.11.24",
-    "@typescript-eslint/eslint-plugin": "7.1.1",
-    "@typescript-eslint/parser": "7.1.1",
-    "ajv": "8.12.0",
-    "c8": "9.1.0",
-    "cspell": "8.6.0",
-    "dprint": "0.45.0",
-    "eslint": "8.57.0",
-    "eslint-import-resolver-typescript": "3.6.1",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-mocha": "10.4.1",
-    "eslint-plugin-simple-import-sort": "12.0.0",
-    "magic-string": "0.30.8",
-    "mocha": "10.3.0",
+    "@types/node": "20.14.2",
+    "ajv": "8.16.0",
+    "c8": "10.0.0",
+    "cspell": "8.8.4",
+    "magic-string": "0.30.10",
+    "mocha": "10.4.0",
     "pretty-ansi": "2.0.0",
-    "rollup": "4.12.1",
-    "rollup-plugin-dts": "6.1.0",
-    "tslib": "2.6.2",
-    "typescript": "5.4.2"
+    "rollup": "4.18.0",
+    "rollup-plugin-dts": "6.1.1",
+    "tslib": "2.6.3",
+    "typescript": "5.4.5"
   },
   "peerDependencies": {
     "typescript": "4.x || 5.x"
@@ -88,8 +82,8 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.8.1",
+  "packageManager": "yarn@3.8.2",
   "engines": {
-    "node": ">=14.17"
+    "node": ">=16.14"
   }
 }

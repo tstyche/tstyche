@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { afterEach, describe, test } from "mocha";
+import { afterEach, before, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -13,12 +13,19 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("store", function () {
+  before(function () {
+    if (process.versions.node.startsWith("16")) {
+      // store is not supported on Node.js 16
+      this.skip();
+    }
+  });
 
-describe("compiler module", function() {
-  test("when module is not installed", async function() {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
+  test("when compiler module is not installed", async function () {
     const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -36,7 +43,7 @@ describe("compiler module", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when module is already installed", async function() {
+  test("when compiler module is already installed", async function () {
     const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -55,10 +62,8 @@ describe("compiler module", function() {
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
-});
 
-describe("store manifest", function() {
-  test("when target is default, store manifest is not generated", async function() {
+  test("when target is default, store manifest is not generated", async function () {
     const storeUrl = new URL("./.store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -75,7 +80,7 @@ describe("store manifest", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when target is 'current', store manifest is not generated", async function() {
+  test("when target is 'current', store manifest is not generated", async function () {
     const storeUrl = new URL("./.store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -92,7 +97,7 @@ describe("store manifest", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when target is specified, store manifest is generated", async function() {
+  test("when target is specified, store manifest is generated", async function () {
     const storeUrl = new URL("./.store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -109,7 +114,7 @@ describe("store manifest", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when text is unparsable, store manifest is regenerated", async function() {
+  test("when text is unparsable, store manifest is regenerated", async function () {
     const storeManifest = '{"$version":"1","last';
 
     await writeFixture(fixtureUrl, {
@@ -129,7 +134,7 @@ describe("store manifest", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when '$version' is different, store manifest is regenerated", async function() {
+  test("when '$version' is different, store manifest is regenerated", async function () {
     const storeManifest = { $version: "0" };
 
     await writeFixture(fixtureUrl, {
@@ -149,7 +154,7 @@ describe("store manifest", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when is up to date, store manifest is not regenerated", async function() {
+  test("when is up to date, store manifest is not regenerated", async function () {
     const storeManifest = JSON.stringify({
       $version: "1",
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
@@ -174,7 +179,7 @@ describe("store manifest", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when is outdated, store manifest is regenerated", async function() {
+  test("when is outdated, store manifest is regenerated", async function () {
     const storeManifest = JSON.stringify({
       $version: "1",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes

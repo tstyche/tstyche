@@ -8,12 +8,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeBigInt' implementation", function() {
+test("'toBeBigInt' implementation", function () {
   tstyche.expect(BigInt(123)).type.toBeBigInt();
   tstyche.expect(123).type.not.toBeBigInt();
 });
 
-test("toBeBigInt", async function() {
+test("toBeBigInt", async function () {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

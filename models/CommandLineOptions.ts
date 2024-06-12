@@ -52,4 +52,8 @@ export interface CommandLineOptions {
      * Print the version number and exit.
      */
     version?: boolean;
+    /**
+     * Watch for changes and rerun related test files.
+     */
+    watch?: boolean;
 }

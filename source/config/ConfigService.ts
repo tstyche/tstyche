@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
+import type { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
@@ -10,49 +10,42 @@ import { type CommandLineOptions, CommandLineOptionsWorker } from "./CommandLine
 import { type ConfigFileOptions, ConfigFileOptionsWorker } from "./ConfigFileOptionsWorker.js";
 import type { OptionValue } from "./OptionDefinitionsMap.js";
 
-export interface ResolvedConfig extends Omit<CommandLineOptions, keyof ConfigFileOptions>, Required<ConfigFileOptions> {
+export interface ResolvedConfig
+  extends Omit<CommandLineOptions, keyof ConfigFileOptions | "config">,
+    Required<ConfigFileOptions> {
+  /**
+   * The path to a TSTyche configuration file.
+   */
+  configFilePath: string;
   /**
    * Only run test files with matching path.
    */
   pathMatch: Array<string>;
 }
 
+export const defaultOptions: Required<ConfigFileOptions> = {
+  failFast: false,
+  rootPath: "./",
+  target: [Environment.typescriptPath == null ? "latest" : "current"],
+  testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
+};
+
 export class ConfigService {
   #commandLineOptions: CommandLineOptions = {};
+  #compiler: typeof ts;
   #configFileOptions: ConfigFileOptions = {};
-
-  static #defaultOptions: Required<ConfigFileOptions> = {
-    failFast: false,
-    rootPath: Path.resolve("./"),
-    target: [Environment.typescriptPath == null ? "latest" : "current"],
-    testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
-  };
-
+  #configFilePath = Path.resolve(defaultOptions.rootPath, "./tstyche.config.json");
   #pathMatch: Array<string> = [];
   #storeService: StoreService;
 
-  constructor(
-    public compiler: typeof ts,
-    storeService: StoreService,
-  ) {
+  constructor(compiler: typeof ts, storeService: StoreService) {
+    this.#compiler = compiler;
     this.#storeService = storeService;
   }
 
-  get commandLineOptions(): CommandLineOptions {
-    return this.#commandLineOptions;
-  }
-
-  get configFileOptions(): ConfigFileOptions {
-    return this.#configFileOptions;
-  }
-
-  static get defaultOptions(): Required<ConfigFileOptions> {
-    return ConfigService.#defaultOptions;
-  }
-
-  #onDiagnostic = (diagnostic: Diagnostic) => {
+  #onDiagnostic(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostic] }]);
-  };
+  }
 
   async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {
     this.#commandLineOptions = {};
@@ -66,27 +59,31 @@ export class ConfigService {
     );
 
     await commandLineWorker.parse(commandLineArgs);
+
+    if (this.#commandLineOptions.config != null) {
+      this.#configFilePath = this.#commandLineOptions.config;
+
+      delete this.#commandLineOptions.config;
+    }
   }
 
   async readConfigFile(): Promise<void> {
-    const configFilePath = this.#commandLineOptions.config ?? Path.resolve("./tstyche.config.json");
+    this.#configFileOptions = {
+      rootPath: Path.dirname(this.#configFilePath),
+    };
 
-    if (!existsSync(configFilePath)) {
+    if (!existsSync(this.#configFilePath)) {
       return;
     }
 
-    this.#configFileOptions = {
-      rootPath: Path.dirname(configFilePath),
-    };
-
-    const configFileText = await fs.readFile(configFilePath, {
+    const configFileText = await fs.readFile(this.#configFilePath, {
       encoding: "utf8",
     });
 
     const configFileWorker = new ConfigFileOptionsWorker(
-      this.compiler,
+      this.#compiler,
       this.#configFileOptions as Record<string, OptionValue>,
-      configFilePath,
+      this.#configFilePath,
       this.#storeService,
       this.#onDiagnostic,
     );
@@ -95,50 +92,12 @@ export class ConfigService {
   }
 
   resolveConfig(): ResolvedConfig {
-    const mergedOptions = {
-      ...ConfigService.#defaultOptions,
+    return {
+      ...defaultOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
+      configFilePath: this.#configFilePath,
       pathMatch: this.#pathMatch,
     };
-
-    return mergedOptions;
-  }
-
-  selectTestFiles(): Array<string> {
-    const { pathMatch, rootPath, testFileMatch } = this.resolveConfig();
-
-    let testFilePaths = this.compiler.sys.readDirectory(
-      rootPath,
-      /* extensions */ undefined,
-      /* exclude */ undefined,
-      /* include */ testFileMatch,
-    );
-
-    if (pathMatch.length > 0) {
-      testFilePaths = testFilePaths.filter((testFilePath) =>
-        pathMatch.some((match) => {
-          const relativeTestFilePath = Path.relative("", testFilePath);
-
-          return relativeTestFilePath.toLowerCase().includes(match.toLowerCase());
-        })
-      );
-    }
-
-    if (testFilePaths.length === 0) {
-      const text = [
-        "No test files were selected using current configuration.",
-        `Root path:       ${rootPath}`,
-        `Test file match: ${testFileMatch.join(", ")}`,
-      ];
-
-      if (pathMatch.length > 0) {
-        text.push(`Path match:      ${pathMatch.join(", ")}`);
-      }
-
-      this.#onDiagnostic(Diagnostic.error(text));
-    }
-
-    return testFilePaths;
   }
 }

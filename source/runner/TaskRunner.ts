@@ -1,33 +1,57 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
-import { Result, ResultManager, TargetResult } from "#result";
+import type { TestFile } from "#file";
+import { CancellationHandler, ResultHandler } from "#handlers";
+import { Result, TargetResult } from "#result";
+import type { SelectService } from "#select";
 import type { StoreService } from "#store";
-import type { CancellationToken } from "#token";
+import { CancellationReason, CancellationToken } from "#token";
+import { type RunCallback, WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
 
 export class TaskRunner {
-  #resultManager: ResultManager;
+  #eventEmitter = new EventEmitter();
+  #resolvedConfig: ResolvedConfig;
+  #selectService: SelectService;
   #storeService: StoreService;
 
-  // TODO should be `taskConfig`, not `resolvedConfig`
-  constructor(
-    readonly resolvedConfig: ResolvedConfig,
-    storeService: StoreService,
-  ) {
-    this.#resultManager = new ResultManager();
+  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, storeService: StoreService) {
+    this.#resolvedConfig = resolvedConfig;
+    this.#selectService = selectService;
     this.#storeService = storeService;
 
-    EventEmitter.addHandler((event) => {
-      this.#resultManager.handleEvent(event);
-    });
+    this.#eventEmitter.addHandler(new ResultHandler());
   }
 
-  async run(testFiles: Array<URL>, target: Array<string>, cancellationToken?: CancellationToken): Promise<Result> {
-    const result = new Result(this.resolvedConfig, testFiles);
+  close(): void {
+    this.#eventEmitter.removeHandlers();
+  }
 
-    EventEmitter.dispatch(["start", { result }]);
+  async run(testFiles: Array<TestFile>, cancellationToken = new CancellationToken()): Promise<void> {
+    let cancellationHandler: CancellationHandler | undefined;
 
-    for (const versionTag of target) {
+    if (this.#resolvedConfig.failFast) {
+      cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
+      this.#eventEmitter.addHandler(cancellationHandler);
+    }
+
+    if (this.#resolvedConfig.watch === true) {
+      await this.#watch(testFiles, cancellationToken);
+    } else {
+      await this.#run(testFiles, cancellationToken);
+    }
+
+    if (cancellationHandler != null) {
+      this.#eventEmitter.removeHandler(cancellationHandler);
+    }
+  }
+
+  async #run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
+    const result = new Result(this.#resolvedConfig, testFiles);
+
+    EventEmitter.dispatch(["run:start", { result }]);
+
+    for (const versionTag of this.#resolvedConfig.target) {
       const targetResult = new TargetResult(versionTag, testFiles);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
@@ -35,7 +59,8 @@ export class TaskRunner {
       const compiler = await this.#storeService.load(versionTag, cancellationToken);
 
       if (compiler) {
-        const testFileRunner = new TestFileRunner(this.resolvedConfig, compiler);
+        // TODO For better performance, test file runners (or even test projects) could be cached in the future
+        const testFileRunner = new TestFileRunner(this.#resolvedConfig, compiler);
 
         for (const testFile of testFiles) {
           testFileRunner.run(testFile, cancellationToken);
@@ -45,8 +70,28 @@ export class TaskRunner {
       EventEmitter.dispatch(["target:end", { result: targetResult }]);
     }
 
-    EventEmitter.dispatch(["end", { result }]);
+    EventEmitter.dispatch(["run:end", { result }]);
 
-    return result;
+    if (cancellationToken?.reason === CancellationReason.FailFast) {
+      cancellationToken.reset();
+    }
+  }
+
+  async #watch(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
+    await this.#run(testFiles, cancellationToken);
+
+    const runCallback: RunCallback = async (testFiles) => {
+      await this.#run(testFiles, cancellationToken);
+    };
+
+    const watchModeManager = new WatchService(this.#resolvedConfig, runCallback, this.#selectService, testFiles);
+
+    cancellationToken?.onCancellationRequested((reason) => {
+      if (reason !== CancellationReason.FailFast) {
+        watchModeManager.close();
+      }
+    });
+
+    await watchModeManager.watch(cancellationToken);
   }
 }

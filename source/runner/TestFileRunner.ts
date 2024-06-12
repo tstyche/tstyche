@@ -1,68 +1,64 @@
-import { fileURLToPath } from "node:url";
 import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Expect } from "#expect";
+import type { TestFile } from "#file";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
 import type { CancellationToken } from "#token";
-import { RunMode } from "./enums.js";
 import { TestTreeWorker } from "./TestTreeWorker.js";
+import { RunMode } from "./enums.js";
 
 export class TestFileRunner {
+  #compiler: typeof ts;
   #collectService: CollectService;
+  #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
 
-  constructor(
-    readonly resolvedConfig: ResolvedConfig,
-    public compiler: typeof ts,
-  ) {
+  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
+    this.#resolvedConfig = resolvedConfig;
+    this.#compiler = compiler;
+
     this.#collectService = new CollectService(compiler);
     this.#projectService = new ProjectService(compiler);
   }
 
-  run(testFile: URL, cancellationToken?: CancellationToken): void {
+  run(testFile: TestFile, cancellationToken?: CancellationToken): void {
     if (cancellationToken?.isCancellationRequested === true) {
       return;
     }
 
-    const testFilePath = fileURLToPath(testFile);
-    const position = testFile.searchParams.has("position") ? Number(testFile.searchParams.get("position")) : undefined;
-
-    this.#projectService.openFile(testFilePath, /* sourceText */ undefined, this.resolvedConfig.rootPath);
+    this.#projectService.openFile(testFile.path, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
 
     const fileResult = new FileResult(testFile);
 
     EventEmitter.dispatch(["file:start", { result: fileResult }]);
 
-    this.#runFile(testFilePath, fileResult, position, cancellationToken);
+    this.#runFile(testFile, fileResult, cancellationToken);
 
     EventEmitter.dispatch(["file:end", { result: fileResult }]);
 
-    this.#projectService.closeFile(testFilePath);
+    this.#projectService.closeFile(testFile.path);
   }
 
-  #runFile(
-    testFilePath: string,
-    fileResult: FileResult,
-    position: number | undefined,
-    cancellationToken?: CancellationToken,
-  ) {
-    const languageService = this.#projectService.getLanguageService(testFilePath);
+  #runFile(testFile: TestFile, fileResult: FileResult, cancellationToken?: CancellationToken) {
+    // wrapping around the language service allows querying on per file basis
+    // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
+    const languageService = this.#projectService.getLanguageService(testFile.path);
 
     if (!languageService) {
       return;
     }
 
-    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(testFilePath);
+    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(testFile.path);
 
     if (syntacticDiagnostics.length > 0) {
       EventEmitter.dispatch([
         "file:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler),
           result: fileResult,
         },
       ]);
@@ -70,7 +66,7 @@ export class TestFileRunner {
       return;
     }
 
-    const semanticDiagnostics = languageService.getSemanticDiagnostics(testFilePath);
+    const semanticDiagnostics = languageService.getSemanticDiagnostics(testFile.path);
 
     const program = languageService.getProgram();
 
@@ -78,7 +74,7 @@ export class TestFileRunner {
       return;
     }
 
-    const sourceFile = program.getSourceFile(testFilePath);
+    const sourceFile = program.getSourceFile(testFile.path);
 
     if (!sourceFile) {
       return;
@@ -90,7 +86,7 @@ export class TestFileRunner {
       EventEmitter.dispatch([
         "file:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler),
           result: fileResult,
         },
       ]);
@@ -108,13 +104,13 @@ export class TestFileRunner {
       return;
     }
 
-    const expect = new Expect(this.compiler, typeChecker);
+    const expect = new Expect(this.#compiler, typeChecker);
 
-    const testTreeWorker = new TestTreeWorker(this.resolvedConfig, this.compiler, expect, {
+    const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, expect, {
       cancellationToken,
       fileResult,
       hasOnly: testTree.hasOnly,
-      position,
+      position: testFile.position,
     });
 
     testTreeWorker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);

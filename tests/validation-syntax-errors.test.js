@@ -1,4 +1,4 @@
-import { afterEach, test } from "mocha";
+import { afterEach, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -31,27 +31,29 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
-
-test("when syntax errors are encountered", async function() {
-  await writeFixture(fixtureUrl, {
-    ["__typetests__/dummy.test.ts"]: isStringTestText,
-    ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+describe("syntax errors", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
   });
 
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+  test("when syntax errors are encountered", async function () {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
 
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-syntax-errors-stdout`,
-    testFileUrl: import.meta.url,
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-syntax-errors-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-syntax-errors-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
-
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-syntax-errors-stderr`,
-    testFileUrl: import.meta.url,
-  });
-
-  assert.equal(exitCode, 1);
 });

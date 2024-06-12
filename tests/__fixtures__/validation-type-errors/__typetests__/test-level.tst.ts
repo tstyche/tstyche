@@ -5,11 +5,9 @@ test("is string?", () => {
 });
 
 test.skip("skipped type error?", () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- Testing purpose
   expect<string>().toBeString();
 });
 
 test("reported type error?", () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- Testing purpose
   expect<string>().toBeString();
 });

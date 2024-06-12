@@ -1,6 +1,6 @@
 export class ResultTiming {
-  end = Date.now();
-  start = Date.now();
+  end = Number.NaN;
+  start = Number.NaN;
 
   get duration(): number {
     return this.end - this.start;

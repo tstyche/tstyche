@@ -13,14 +13,13 @@
     "tests/**/*",
     "typetests/**/*"
   ],
-  "ignorePaths": [
-    "**/__snapshots__/**/*"
-  ],
+  "ignorePaths": ["**/__snapshots__/**/*"],
   "language": "en-US",
   "useGitignore": true,
   "words": [
+    "biomejs",
     "codacy",
-    "dprint",
+    "jsxs",
     "lcovonly",
     "packagephobia",
     "tsserverlibrary",

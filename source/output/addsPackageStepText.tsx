@@ -1,6 +1,6 @@
-import { Color, Line, Scribbler, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-export function addsPackageStepText(compilerVersion: string, installationPath: string): JSX.Element {
+export function addsPackageStepText(compilerVersion: string, installationPath: string): ScribblerJsx.Element {
   return (
     <Line>
       <Text color={Color.Gray}>{"adds"}</Text>

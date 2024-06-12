@@ -3,10 +3,13 @@ import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToRaiseError {
-  constructor(
-    public compiler: typeof ts,
-    public typeChecker: TypeChecker,
-  ) {}
+  compiler: typeof ts;
+  typeChecker: TypeChecker;
+
+  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+    this.compiler = compiler;
+    this.typeChecker = typeChecker;
+  }
 
   #explain(
     source: { diagnostics: Array<ts.Diagnostic>; node: ts.Expression | ts.TypeNode },
@@ -25,19 +28,21 @@ export class ToRaiseError {
         ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
       ];
       const text = `${sourceText} raised ${
-        source.diagnostics.length === 1 ? "a" : source.diagnostics.length
+        source.diagnostics.length === 1 ? "a" : String(source.diagnostics.length)
       } type error${source.diagnostics.length === 1 ? "" : "s"}.`;
 
       return [Diagnostic.error(text).add({ related })];
     }
 
     if (source.diagnostics.length !== targetTypes.length) {
-      const expectedText = source.diagnostics.length > targetTypes.length
-        ? `only ${targetTypes.length} type error${targetTypes.length === 1 ? "" : "s"}`
-        : `${targetTypes.length} type error${targetTypes.length === 1 ? "" : "s"}`;
-      const foundText = source.diagnostics.length > targetTypes.length
-        ? `${source.diagnostics.length}`
-        : `only ${source.diagnostics.length}`;
+      const expectedText =
+        source.diagnostics.length > targetTypes.length
+          ? `only ${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`
+          : `${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`;
+      const foundText =
+        source.diagnostics.length > targetTypes.length
+          ? String(source.diagnostics.length)
+          : `only ${String(source.diagnostics.length)}`;
 
       const related = [
         Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
@@ -64,7 +69,7 @@ export class ToRaiseError {
       if (!isNot && !isMatch) {
         const expectedText = this.#isStringLiteralType(argument)
           ? `matching substring '${argument.value}'`
-          : `with code ${argument.value}`;
+          : `with code ${String(argument.value)}`;
 
         const related = [
           Diagnostic.error("The raised type error:"),
@@ -78,7 +83,7 @@ export class ToRaiseError {
       if (isNot && isMatch) {
         const expectedText = this.#isStringLiteralType(argument)
           ? `matching substring '${argument.value}'`
-          : `with code ${argument.value}`;
+          : `with code ${String(argument.value)}`;
 
         const related = [
           Diagnostic.error("The raised type error:"),

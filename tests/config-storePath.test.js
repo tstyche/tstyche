@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, before, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -13,12 +13,19 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("'TSTYCHE_STORE_PATH' environment variable", function () {
+  before(function () {
+    if (process.versions.node.startsWith("16")) {
+      // store is not supported on Node.js 16
+      this.skip();
+    }
+  });
 
-describe("'TSTYCHE_STORE_PATH' environment variable", function() {
-  test("has default value", async function() {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
+
+  test("has default value", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -33,7 +40,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when specified, uses the path", async function() {
+  test("when specified, uses the path", async function () {
     const storeUrl = new URL("./dummy-store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {

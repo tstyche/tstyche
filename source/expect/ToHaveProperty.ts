@@ -3,10 +3,13 @@ import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToHaveProperty {
-  constructor(
-    public compiler: typeof ts,
-    public typeChecker: TypeChecker,
-  ) {}
+  compiler: typeof ts;
+  typeChecker: TypeChecker;
+
+  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+    this.compiler = compiler;
+    this.typeChecker = typeChecker;
+  }
 
   #explain(
     sourceType: ts.Type,

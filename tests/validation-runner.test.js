@@ -13,12 +13,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("compiler options", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
 
-describe("compiler options", function() {
-  test("when TSConfig file has errors", async function() {
+  test("when TSConfig file has errors", async function () {
     const tsconfig = {
       compilerOptions: {
         noEmitOnError: true,

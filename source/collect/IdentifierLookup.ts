@@ -7,13 +7,13 @@ export interface Identifiers {
 }
 
 export class IdentifierLookup {
+  #compiler: typeof ts;
   #identifiers: Identifiers;
   #moduleSpecifiers = ['"tstyche"', "'tstyche'"];
 
-  constructor(
-    public compiler: typeof ts,
-    identifiers?: Identifiers,
-  ) {
+  constructor(compiler: typeof ts, identifiers?: Identifiers) {
+    this.#compiler = compiler;
+
     this.#identifiers = identifiers ?? {
       namedImports: {
         describe: undefined,
@@ -36,11 +36,11 @@ export class IdentifierLookup {
 
   handleImportDeclaration(node: ts.ImportDeclaration): void {
     if (
-      this.#moduleSpecifiers.includes(node.moduleSpecifier.getText())
-      && node.importClause?.isTypeOnly !== true
-      && node.importClause?.namedBindings != null
+      this.#moduleSpecifiers.includes(node.moduleSpecifier.getText()) &&
+      node.importClause?.isTypeOnly !== true &&
+      node.importClause?.namedBindings != null
     ) {
-      if (this.compiler.isNamedImports(node.importClause.namedBindings)) {
+      if (this.#compiler.isNamedImports(node.importClause.namedBindings)) {
         for (const element of node.importClause.namedBindings.elements) {
           if (element.isTypeOnly) {
             continue;
@@ -60,7 +60,7 @@ export class IdentifierLookup {
         }
       }
 
-      if (this.compiler.isNamespaceImport(node.importClause.namedBindings)) {
+      if (this.#compiler.isNamespaceImport(node.importClause.namedBindings)) {
         this.#identifiers.namespace = node.importClause.namedBindings.name.getText();
       }
     }
@@ -70,24 +70,28 @@ export class IdentifierLookup {
     let flags = TestMemberFlags.None;
     let expression = node.expression;
 
-    while (this.compiler.isPropertyAccessExpression(expression)) {
+    while (this.#compiler.isPropertyAccessExpression(expression)) {
       if (expression.expression.getText() === this.#identifiers.namespace) {
         break;
       }
 
       switch (expression.name.getText()) {
-        case "fail":
+        case "fail": {
           flags |= TestMemberFlags.Fail;
           break;
-        case "only":
+        }
+        case "only": {
           flags |= TestMemberFlags.Only;
           break;
-        case "skip":
+        }
+        case "skip": {
           flags |= TestMemberFlags.Skip;
           break;
-        case "todo":
+        }
+        case "todo": {
           flags |= TestMemberFlags.Todo;
           break;
+        }
       }
 
       expression = expression.expression;
@@ -96,8 +100,8 @@ export class IdentifierLookup {
     let identifierName: string | undefined;
 
     if (
-      this.compiler.isPropertyAccessExpression(expression)
-      && expression.expression.getText() === this.#identifiers.namespace
+      this.#compiler.isPropertyAccessExpression(expression) &&
+      expression.expression.getText() === this.#identifiers.namespace
     ) {
       identifierName = expression.name.getText();
     } else {

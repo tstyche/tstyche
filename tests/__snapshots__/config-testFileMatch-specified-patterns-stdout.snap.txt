@@ -2,11 +2,13 @@ uses TypeScript <<version>>
 
 pass ./type-tests/isNumber.tst.ts
 pass ./type-tests/isString.tst.ts
+pass ./typetests/isNumber.test.ts
+pass ./typetests/isString.test.ts
 
 Targets:    1 passed, 1 total
-Test files: 2 passed, 2 total
-Tests:      2 passed, 2 total
-Assertions: 2 passed, 2 total
+Test files: 4 passed, 4 total
+Tests:      4 passed, 4 total
+Assertions: 4 passed, 4 total
 Duration:   <<timestamp>>
 
 Ran all test files.

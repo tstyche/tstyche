@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-indexed-object-style */
-
 import { expect, test } from "tstyche";
 
 type JsonValue = string | number | boolean | Array<JsonValue> | JsonObject;

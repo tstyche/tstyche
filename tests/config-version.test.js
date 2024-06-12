@@ -5,21 +5,20 @@ import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const packageConfigText = await fs.readFile(new URL("../package.json", import.meta.url), { encoding: "utf8" });
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-before(async function() {
-  await writeFixture(fixtureUrl);
-});
+describe("'--version' command line option", function () {
+  before(async function () {
+    await writeFixture(fixtureUrl);
+  });
 
-after(async function() {
-  await clearFixture(fixtureUrl);
-});
+  after(async function () {
+    await clearFixture(fixtureUrl);
+  });
 
-describe("'--version' command line option", function() {
   const testCases = [
     {
       args: ["--version"],
@@ -40,7 +39,7 @@ describe("'--version' command line option", function() {
   ];
 
   testCases.forEach(({ args, testCase }) => {
-    test(testCase, async function() {
+    test(testCase, async function () {
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
       assert.equal(stdout, `${version}\n`);

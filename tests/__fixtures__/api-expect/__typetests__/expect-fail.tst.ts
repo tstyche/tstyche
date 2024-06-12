@@ -5,9 +5,11 @@ expect.fail<string>().type.toBeString();
 
 expect.fail<never>().type.toBeString();
 
-expect.fail(() => {
-  expect<number>().type.toBeNumber();
-}).type.toBe<void>();
+expect
+  .fail(() => {
+    expect<number>().type.toBeNumber();
+  })
+  .type.toBe<void>();
 
 describe("is describe?", () => {
   test("is string?", () => {

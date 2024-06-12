@@ -1,6 +1,6 @@
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
+Warning: The '.toBeAssignable()' matcher is deprecated and will be removed in TSTyche 3.
 
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
+To learn more, visit https://tstyche.org/releases/tstyche-2
 
    8 | describe("received type", () => {
    9 |   test("is assignable expected value?", () => {
@@ -11,48 +11,6 @@ Please update the test. '.toBeAssignable()' is deprecated and will be removed in
   13 | 
 
        at ./__typetests__/toBeAssignable.tst.ts:10:26
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-   9 |   test("is assignable expected value?", () => {
-  10 |     expect<Names>().type.toBeAssignable({ first: "Rose" });
-> 11 |     expect<Names>().type.toBeAssignable({ first: "Rose", last: "Smith" });
-     |                          ^
-  12 |     expect<Names>().type.toBeAssignable({ first: "Rose", last: undefined });
-  13 | 
-  14 |     expect<Names>().type.toBeAssignable({ middle: "O." });
-
-       at ./__typetests__/toBeAssignable.tst.ts:11:26
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  10 |     expect<Names>().type.toBeAssignable({ first: "Rose" });
-  11 |     expect<Names>().type.toBeAssignable({ first: "Rose", last: "Smith" });
-> 12 |     expect<Names>().type.toBeAssignable({ first: "Rose", last: undefined });
-     |                          ^
-  13 | 
-  14 |     expect<Names>().type.toBeAssignable({ middle: "O." });
-  15 |   });
-
-       at ./__typetests__/toBeAssignable.tst.ts:12:26
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  12 |     expect<Names>().type.toBeAssignable({ first: "Rose", last: undefined });
-  13 | 
-> 14 |     expect<Names>().type.toBeAssignable({ middle: "O." });
-     |                          ^
-  15 |   });
-  16 | 
-  17 |   test("is NOT assignable expected value?", () => {
-
-       at ./__typetests__/toBeAssignable.tst.ts:14:26
 
 Error: Type 'Names' is not assignable with type '{ middle: string; }'.
 
@@ -66,34 +24,6 @@ Error: Type 'Names' is not assignable with type '{ middle: string; }'.
 
        at ./__typetests__/toBeAssignable.tst.ts:14:26 ❭ received type ❭ is assignable expected value?
 
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  16 | 
-  17 |   test("is NOT assignable expected value?", () => {
-> 18 |     expect<Names>().type.not.toBeAssignable({ middle: "O." });
-     |                              ^
-  19 | 
-  20 |     expect<Names>().type.not.toBeAssignable({ first: "Rose" });
-  21 |   });
-
-       at ./__typetests__/toBeAssignable.tst.ts:18:30
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  18 |     expect<Names>().type.not.toBeAssignable({ middle: "O." });
-  19 | 
-> 20 |     expect<Names>().type.not.toBeAssignable({ first: "Rose" });
-     |                              ^
-  21 |   });
-  22 | 
-  23 |   test("is assignable expected type?", () => {
-
-       at ./__typetests__/toBeAssignable.tst.ts:20:30
-
 Error: Type 'Names' is assignable with type '{ first: string; }'.
 
   18 |     expect<Names>().type.not.toBeAssignable({ middle: "O." });
@@ -105,76 +35,6 @@ Error: Type 'Names' is assignable with type '{ first: string; }'.
   23 |   test("is assignable expected type?", () => {
 
        at ./__typetests__/toBeAssignable.tst.ts:20:30 ❭ received type ❭ is NOT assignable expected value?
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  22 | 
-  23 |   test("is assignable expected type?", () => {
-> 24 |     expect<Names>().type.toBeAssignable<{ first: string }>();
-     |                          ^
-  25 |     expect<Names>().type.toBeAssignable<{ first: string; last: string }>();
-  26 |     expect<Names>().type.toBeAssignable<{ first: string; last: undefined }>();
-  27 |     expect<Names>().type.toBeAssignable<{ first: string; last?: string }>();
-
-       at ./__typetests__/toBeAssignable.tst.ts:24:26
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  23 |   test("is assignable expected type?", () => {
-  24 |     expect<Names>().type.toBeAssignable<{ first: string }>();
-> 25 |     expect<Names>().type.toBeAssignable<{ first: string; last: string }>();
-     |                          ^
-  26 |     expect<Names>().type.toBeAssignable<{ first: string; last: undefined }>();
-  27 |     expect<Names>().type.toBeAssignable<{ first: string; last?: string }>();
-  28 | 
-
-       at ./__typetests__/toBeAssignable.tst.ts:25:26
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  24 |     expect<Names>().type.toBeAssignable<{ first: string }>();
-  25 |     expect<Names>().type.toBeAssignable<{ first: string; last: string }>();
-> 26 |     expect<Names>().type.toBeAssignable<{ first: string; last: undefined }>();
-     |                          ^
-  27 |     expect<Names>().type.toBeAssignable<{ first: string; last?: string }>();
-  28 | 
-  29 |     expect<Names>().type.toBeAssignable<{ middle: string }>();
-
-       at ./__typetests__/toBeAssignable.tst.ts:26:26
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  25 |     expect<Names>().type.toBeAssignable<{ first: string; last: string }>();
-  26 |     expect<Names>().type.toBeAssignable<{ first: string; last: undefined }>();
-> 27 |     expect<Names>().type.toBeAssignable<{ first: string; last?: string }>();
-     |                          ^
-  28 | 
-  29 |     expect<Names>().type.toBeAssignable<{ middle: string }>();
-  30 |   });
-
-       at ./__typetests__/toBeAssignable.tst.ts:27:26
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  27 |     expect<Names>().type.toBeAssignable<{ first: string; last?: string }>();
-  28 | 
-> 29 |     expect<Names>().type.toBeAssignable<{ middle: string }>();
-     |                          ^
-  30 |   });
-  31 | 
-  32 |   test("is NOT assignable expected type?", () => {
-
-       at ./__typetests__/toBeAssignable.tst.ts:29:26
 
 Error: Type 'Names' is not assignable with type '{ middle: string; }'.
 
@@ -188,34 +48,6 @@ Error: Type 'Names' is not assignable with type '{ middle: string; }'.
 
        at ./__typetests__/toBeAssignable.tst.ts:29:26 ❭ received type ❭ is assignable expected type?
 
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  31 | 
-  32 |   test("is NOT assignable expected type?", () => {
-> 33 |     expect<Names>().type.not.toBeAssignable<{ middle: string }>();
-     |                              ^
-  34 | 
-  35 |     expect<Names>().type.not.toBeAssignable<{ first: string }>();
-  36 |   });
-
-       at ./__typetests__/toBeAssignable.tst.ts:33:30
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  33 |     expect<Names>().type.not.toBeAssignable<{ middle: string }>();
-  34 | 
-> 35 |     expect<Names>().type.not.toBeAssignable<{ first: string }>();
-     |                              ^
-  36 |   });
-  37 | });
-  38 | 
-
-       at ./__typetests__/toBeAssignable.tst.ts:35:30
-
 Error: Type 'Names' is assignable with type '{ first: string; }'.
 
   33 |     expect<Names>().type.not.toBeAssignable<{ middle: string }>();
@@ -227,34 +59,6 @@ Error: Type 'Names' is assignable with type '{ first: string; }'.
   38 | 
 
        at ./__typetests__/toBeAssignable.tst.ts:35:30 ❭ received type ❭ is NOT assignable expected type?
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  39 | describe("received value", () => {
-  40 |   test("is assignable expected value?", () => {
-> 41 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignable({
-     |                                                  ^
-  42 |       first: "Rose",
-  43 |       last: "Smith",
-  44 |     });
-
-       at ./__typetests__/toBeAssignable.tst.ts:41:50
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  44 |     });
-  45 | 
-> 46 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignable({
-     |                                                  ^
-  47 |       middle: "O.",
-  48 |     });
-  49 |   });
-
-       at ./__typetests__/toBeAssignable.tst.ts:46:50
 
 Error: Type '{ first: string; last: string; }' is not assignable with type '{ middle: string; }'.
 
@@ -268,34 +72,6 @@ Error: Type '{ first: string; last: string; }' is not assignable with type '{ mi
 
        at ./__typetests__/toBeAssignable.tst.ts:46:50 ❭ received value ❭ is assignable expected value?
 
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  50 | 
-  51 |   test("is NOT assignable expected value?", () => {
-> 52 |     expect({ first: "Jane", last: "Swan" }).type.not.toBeAssignable({
-     |                                                      ^
-  53 |       middle: "O.",
-  54 |     });
-  55 | 
-
-       at ./__typetests__/toBeAssignable.tst.ts:52:54
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  54 |     });
-  55 | 
-> 56 |     expect({ first: "Jane" }).type.not.toBeAssignable({ first: "Rose" });
-     |                                        ^
-  57 |   });
-  58 | 
-  59 |   test("is assignable expected type?", () => {
-
-       at ./__typetests__/toBeAssignable.tst.ts:56:40
-
 Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
 
   54 |     });
@@ -308,34 +84,6 @@ Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
 
        at ./__typetests__/toBeAssignable.tst.ts:56:40 ❭ received value ❭ is NOT assignable expected value?
 
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  58 | 
-  59 |   test("is assignable expected type?", () => {
-> 60 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignable<{
-     |                                                  ^
-  61 |       first: string;
-  62 |       last: string;
-  63 |     }>();
-
-       at ./__typetests__/toBeAssignable.tst.ts:60:50
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  63 |     }>();
-  64 | 
-> 65 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignable<{
-     |                                                  ^
-  66 |       middle: string;
-  67 |     }>();
-  68 |   });
-
-       at ./__typetests__/toBeAssignable.tst.ts:65:50
-
 Error: Type '{ first: string; last: string; }' is not assignable with type '{ middle: string; }'.
 
   63 |     }>();
@@ -347,34 +95,6 @@ Error: Type '{ first: string; last: string; }' is not assignable with type '{ mi
   68 |   });
 
        at ./__typetests__/toBeAssignable.tst.ts:65:50 ❭ received value ❭ is assignable expected type?
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  69 | 
-  70 |   test("is NOT assignable type?", () => {
-> 71 |     expect({ first: "Jane", last: "Swan" }).type.not.toBeAssignable<{
-     |                                                      ^
-  72 |       middle: string;
-  73 |     }>();
-  74 | 
-
-       at ./__typetests__/toBeAssignable.tst.ts:71:54
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-  73 |     }>();
-  74 | 
-> 75 |     expect({ first: "Jane" }).type.not.toBeAssignable<{ first: string }>();
-     |                                        ^
-  76 |   });
-  77 | });
-  78 | 
-
-       at ./__typetests__/toBeAssignable.tst.ts:75:40
 
 Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
 

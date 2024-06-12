@@ -1,6 +1,6 @@
-import { Line, Scribbler, Text } from "#scribbler";
+import { Line, type ScribblerJsx, Text } from "#scribbler";
 
-export function fileViewText(lines: Array<JSX.Element>, addEmptyFinalLine: boolean): JSX.Element {
+export function fileViewText(lines: Array<ScribblerJsx.Element>, addEmptyFinalLine: boolean): ScribblerJsx.Element {
   return (
     <Text>
       {[...lines]}

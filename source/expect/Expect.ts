@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
@@ -14,6 +14,9 @@ import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class Expect {
+  #compiler: typeof ts;
+  #typeChecker: TypeChecker;
+
   toBe: ToBe;
   toBeAny: PrimitiveTypeMatcher;
   toBeAssignable: ToBeAssignableWith;
@@ -36,41 +39,41 @@ export class Expect {
   toMatch: ToMatch;
   toRaiseError: ToRaiseError;
 
-  constructor(
-    public compiler: typeof ts,
-    public typeChecker: TypeChecker,
-  ) {
-    this.toBe = new ToBe(this.typeChecker);
-    this.toBeAny = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Any);
-    this.toBeAssignable = new ToBeAssignableWith(this.typeChecker);
-    this.toBeAssignableTo = new ToBeAssignableTo(this.typeChecker);
-    this.toBeAssignableWith = new ToBeAssignableWith(this.typeChecker);
-    this.toBeBigInt = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.BigInt);
-    this.toBeBoolean = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Boolean);
-    this.toBeCallableWith = new ToBeCallableWith(this.compiler, this.typeChecker);
-    this.toBeNever = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Never);
-    this.toBeNull = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Null);
-    this.toBeNumber = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Number);
-    this.toBeString = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.String);
-    this.toBeSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.ESSymbol);
-    this.toBeUndefined = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Undefined);
-    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.UniqueESSymbol);
-    this.toBeUnknown = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Unknown);
-    this.toBeVoid = new PrimitiveTypeMatcher(this.typeChecker, this.compiler.TypeFlags.Void);
-    this.toEqual = new ToBe(this.typeChecker);
-    this.toHaveProperty = new ToHaveProperty(this.compiler, this.typeChecker);
-    this.toMatch = new ToMatch(this.typeChecker);
-    this.toRaiseError = new ToRaiseError(this.compiler, this.typeChecker);
+  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+    this.#compiler = compiler;
+    this.#typeChecker = typeChecker;
+
+    this.toBe = new ToBe(typeChecker);
+    this.toBeAny = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Any);
+    this.toBeAssignable = new ToBeAssignableWith(typeChecker);
+    this.toBeAssignableTo = new ToBeAssignableTo(typeChecker);
+    this.toBeAssignableWith = new ToBeAssignableWith(typeChecker);
+    this.toBeBigInt = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.BigInt);
+    this.toBeBoolean = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Boolean);
+    this.toBeCallableWith = new ToBeCallableWith(compiler, typeChecker);
+    this.toBeNever = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Never);
+    this.toBeNull = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Null);
+    this.toBeNumber = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Number);
+    this.toBeString = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.String);
+    this.toBeSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.ESSymbol);
+    this.toBeUndefined = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Undefined);
+    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.UniqueESSymbol);
+    this.toBeUnknown = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Unknown);
+    this.toBeVoid = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Void);
+    this.toEqual = new ToBe(typeChecker);
+    this.toHaveProperty = new ToHaveProperty(compiler, typeChecker);
+    this.toMatch = new ToMatch(typeChecker);
+    this.toRaiseError = new ToRaiseError(compiler, typeChecker);
   }
 
   static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
-    return ("isTypeRelatedTo" in typeChecker && "relation" in typeChecker);
+    return "isTypeRelatedTo" in typeChecker && "relation" in typeChecker;
   }
 
   #getType(node: ts.Expression | ts.TypeNode) {
-    return this.compiler.isExpression(node)
-      ? this.typeChecker.getTypeAtLocation(node)
-      : this.typeChecker.getTypeFromTypeNode(node);
+    return this.#compiler.isExpression(node)
+      ? this.#typeChecker.getTypeAtLocation(node)
+      : this.#typeChecker.getTypeFromTypeNode(node);
   }
 
   #getTypes(nodes: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>) {
@@ -84,30 +87,26 @@ export class Expect {
   }
 
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return Boolean(type.flags & this.compiler.TypeFlags.StringOrNumberLiteral);
+    return Boolean(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
   }
 
   #isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
-    return Boolean(type.flags & this.compiler.TypeFlags.UniqueESSymbol);
+    return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
   }
 
   match(assertion: Assertion, expectResult: ExpectResult): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
     switch (matcherNameText) {
-      case "toBe":
       case "toBeAssignable":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: break is omitted intentionally
+      case "toEqual":
+        this.#onDeprecatedMatcher(assertion);
+
+      case "toBe":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
-      case "toEqual":
-      case "toMatch":
-        if (matcherNameText === "toBeAssignable") {
-          this.#onDeprecatedMatcher(assertion, expectResult, "toBeAssignableWith");
-        }
-        if (matcherNameText === "toEqual") {
-          this.#onDeprecatedMatcher(assertion, expectResult, "toBe");
-        }
-
+      case "toMatch": {
         if (assertion.source[0] == null) {
           this.#onSourceArgumentMustBeProvided(assertion, expectResult);
 
@@ -125,6 +124,7 @@ export class Expect {
           this.#getType(assertion.target[0]),
           assertion.isNot,
         );
+      }
 
       case "toBeAny":
       case "toBeBigInt":
@@ -137,7 +137,7 @@ export class Expect {
       case "toBeUndefined":
       case "toBeUniqueSymbol":
       case "toBeUnknown":
-      case "toBeVoid":
+      case "toBeVoid": {
         if (assertion.source[0] == null) {
           this.#onSourceArgumentMustBeProvided(assertion, expectResult);
 
@@ -145,6 +145,7 @@ export class Expect {
         }
 
         return this[matcherNameText].match(this.#getType(assertion.source[0]));
+      }
 
       case "toBeCallableWith": {
         if (assertion.source[0] == null) {
@@ -165,13 +166,13 @@ export class Expect {
         let target: Array<ts.Expression> | ts.TupleType = [];
 
         if (assertion.target[0] != null) {
-          if (this.compiler.isExpression(assertion.target[0])) {
+          if (this.#compiler.isExpression(assertion.target[0])) {
             target = [...(assertion.target as ts.NodeArray<ts.Expression>)];
           }
 
-          if (this.compiler.isTypeNode(assertion.target[0])) {
-            if (this.compiler.isTupleTypeNode(assertion.target[0])) {
-              target = (this.typeChecker.getTypeFromTypeNode(assertion.target[0]) as ts.TupleTypeReference).target;
+          if (this.#compiler.isTypeNode(assertion.target[0])) {
+            if (this.#compiler.isTupleTypeNode(assertion.target[0])) {
+              target = (this.#typeChecker.getTypeFromTypeNode(assertion.target[0]) as ts.TupleTypeReference).target;
             } else {
               this.#onTargetArgumentsMustBeTupleType(assertion.target[0], expectResult);
 
@@ -191,11 +192,11 @@ export class Expect {
         }
 
         const sourceType = this.#getType(assertion.source[0]);
-        const nonPrimitiveType = { flags: this.compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
+        const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
 
         if (
-          sourceType.flags & (this.compiler.TypeFlags.Any | this.compiler.TypeFlags.Never)
-          || !this.typeChecker.isTypeRelatedTo(sourceType, nonPrimitiveType, this.typeChecker.relation.assignable)
+          sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
+          !this.#typeChecker.isTypeRelatedTo(sourceType, nonPrimitiveType, this.#typeChecker.relation.assignable)
         ) {
           this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
 
@@ -241,51 +242,37 @@ export class Expect {
         );
       }
 
-      default:
+      default: {
         this.#onNotSupportedMatcherName(assertion, expectResult);
 
         return;
+      }
     }
   }
 
-  #onDeprecatedMatcher(assertion: Assertion, expectResult: ExpectResult, newNameText: string) {
-    const oldNameText = assertion.matcherName.getText();
+  #onDeprecatedMatcher(assertion: Assertion) {
+    const matcherNameText = assertion.matcherName.getText();
 
     const text = [
-      `'.${oldNameText}()' has been renamed to '.${newNameText}()'.`,
-      `Please update the test. '.${oldNameText}()' is deprecated and will be removed in TSTyche 3.`,
+      `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
+      "To learn more, visit https://tstyche.org/releases/tstyche-2",
     ];
-    const origin = {
-      end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    EventEmitter.dispatch([
-      "expect:error",
-      { diagnostics: [Diagnostic.warning(text, origin)], result: expectResult },
-    ]);
+    EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
   }
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
+    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedTypeText}'.`;
-    const origin = {
-      end: node.getEnd(),
-      file: node.getSourceFile(),
-      start: node.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
   #onKeyArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const origin = {
-      end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     EventEmitter.dispatch([
       "expect:error",
@@ -298,55 +285,39 @@ export class Expect {
 
   #onNotSupportedMatcherName(assertion: Assertion, expectResult: ExpectResult) {
     const matcherNameText = assertion.matcherName.getText();
-    const origin = {
-      end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     EventEmitter.dispatch([
       "expect:error",
       {
-        diagnostics: [Diagnostic.error(`The '${matcherNameText}()' matcher is not supported.`, origin)],
+        diagnostics: [Diagnostic.error(`The '.${matcherNameText}()' matcher is not supported.`, origin)],
         result: expectResult,
       },
     ]);
   }
 
   #onSourceArgumentIsNotCallable(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const sourceText = this.compiler.isTypeNode(node) ? "type expression" : "expression";
-    const sourceTypeText = this.typeChecker.typeToString(this.#getType(node));
+    const sourceText = this.#compiler.isTypeNode(node) ? "type expression" : "expression";
+    const sourceTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = `This ${sourceText} is not callable. Type '${sourceTypeText}' has no call signatures.`;
-    const origin = {
-      end: node.getEnd(),
-      file: node.getSourceFile(),
-      start: node.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const sourceText = this.compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
-    const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
+    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
+    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
-    const origin = {
-      end: node.getEnd(),
-      file: node.getSourceFile(),
-      start: node.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
   #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const origin = {
-      end: assertion.node.getEnd(),
-      file: assertion.node.getSourceFile(),
-      start: assertion.node.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.node);
 
     EventEmitter.dispatch([
       "expect:error",
@@ -360,11 +331,7 @@ export class Expect {
   }
 
   #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const origin = {
-      end: assertion.matcherName.getEnd(),
-      file: assertion.matcherName.getSourceFile(),
-      start: assertion.matcherName.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     EventEmitter.dispatch([
       "expect:error",
@@ -387,13 +354,8 @@ export class Expect {
       const receivedType = this.#getType(node);
 
       if (!this.#isStringOrNumberLiteralType(receivedType)) {
-        const receivedTypeText = this.typeChecker.typeToString(this.#getType(node));
-
-        const origin = {
-          end: node.getEnd(),
-          file: node.getSourceFile(),
-          start: node.getStart(),
-        };
+        const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
+        const origin = DiagnosticOrigin.fromNode(node);
 
         diagnostics.push(
           Diagnostic.error(
@@ -408,11 +370,7 @@ export class Expect {
   }
 
   #onTargetArgumentsMustBeTupleType(node: ts.TypeNode, expectResult: ExpectResult) {
-    const origin = {
-      end: node.getEnd(),
-      file: node.getSourceFile(),
-      start: node.getStart(),
-    };
+    const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch([
       "expect:error",

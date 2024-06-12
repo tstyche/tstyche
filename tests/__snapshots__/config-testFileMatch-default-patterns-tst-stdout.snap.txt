@@ -1,13 +1,13 @@
 uses TypeScript <<version>>
 
-pass ./isNumber.tst.ts
-pass ./isString.tst.ts
 pass ./__tests__/isNumber.tst.ts
 pass ./__tests__/isString.tst.ts
 pass ./feature/__tests__/isNumber.tst.ts
 pass ./feature/__tests__/isString.tst.ts
 pass ./feature/tests/isNumber.tst.ts
 pass ./feature/tests/isString.tst.ts
+pass ./isNumber.tst.ts
+pass ./isString.tst.ts
 pass ./tests/isNumber.tst.ts
 pass ./tests/isString.tst.ts
 

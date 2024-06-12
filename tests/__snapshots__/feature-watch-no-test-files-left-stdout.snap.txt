@@ -1,0 +1,9 @@
+<clearTerminal>
+uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
+
+pass ./a-feature/__typetests__/isNumber.test.ts
+
+Press a to run all tests.
+Press x to exit.
+<clearTerminal>
+Waiting for file changes.

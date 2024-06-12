@@ -1,57 +1,35 @@
 import type ts from "typescript";
 import { Assertion, type MatcherNode } from "./Assertion.js";
-import { TestMemberBrand } from "./enums.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestMember } from "./TestMember.js";
 import { TestTree } from "./TestTree.js";
+import { TestMemberBrand } from "./enums.js";
 
 export class CollectService {
-  readonly matcherIdentifiers = [
-    "toBe",
-    "toBeAny",
-    "toBeAssignable",
-    "toBeAssignableTo",
-    "toBeAssignableWith",
-    "toBeBigInt",
-    "toBeBoolean",
-    "toBeCallableWith",
-    "toBeNever",
-    "toBeNull",
-    "toBeNumber",
-    "toBeString",
-    "toBeSymbol",
-    "toBeUndefined",
-    "toBeUniqueSymbol",
-    "toBeUnknown",
-    "toBeVoid",
-    "toEqual",
-    "toHaveProperty",
-    "toMatch",
-    "toRaiseError",
-  ];
-  readonly modifierIdentifiers = ["type"];
-  readonly notIdentifier = "not";
+  #compiler: typeof ts;
 
-  constructor(public compiler: typeof ts) {}
+  constructor(compiler: typeof ts) {
+    this.#compiler = compiler;
+  }
 
   #collectTestMembers(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestMember) {
-    if (this.compiler.isBlock(node)) {
-      this.compiler.forEachChild(node, (node) => {
-        this.#collectTestMembers(node, new IdentifierLookup(this.compiler, identifiers.clone()), parent);
+    if (this.#compiler.isBlock(node)) {
+      this.#compiler.forEachChild(node, (node) => {
+        this.#collectTestMembers(node, new IdentifierLookup(this.#compiler, identifiers.clone()), parent);
       });
 
       return;
     }
 
-    if (this.compiler.isCallExpression(node)) {
+    if (this.#compiler.isCallExpression(node)) {
       const meta = identifiers.resolveTestMemberMeta(node);
 
       if (meta != null && (meta.brand === TestMemberBrand.Describe || meta.brand === TestMemberBrand.Test)) {
-        const testMember = new TestMember(meta.brand, node, parent, meta.flags);
+        const testMember = new TestMember(this.#compiler, meta.brand, node, parent, meta.flags);
 
         parent.members.push(testMember);
 
-        this.compiler.forEachChild(node, (node) => {
+        this.#compiler.forEachChild(node, (node) => {
           this.#collectTestMembers(node, identifiers, testMember);
         });
 
@@ -59,26 +37,34 @@ export class CollectService {
       }
 
       if (meta != null && meta.brand === TestMemberBrand.Expect) {
-        const modifierNode = this.#getMatchingChainNode(node, this.modifierIdentifiers);
+        const modifierNode = this.#getChainedNode(node, "type");
 
         if (!modifierNode) {
           return;
         }
 
-        const notNode = this.#getMatchingChainNode(modifierNode, [this.notIdentifier]);
+        const notNode = this.#getChainedNode(modifierNode, "not");
 
-        // TODO no need to check for matcher name, the `Expect` class will handle unimplemented matchers
-        const matcherNode = this.#getMatchingChainNode(notNode ?? modifierNode, this.matcherIdentifiers)?.parent;
+        const matcherNode = this.#getChainedNode(notNode ?? modifierNode)?.parent;
 
         if (matcherNode == null || !this.#isMatcherNode(matcherNode)) {
           return;
         }
 
-        const assertion = new Assertion(meta.brand, node, parent, meta.flags, matcherNode, modifierNode, notNode);
+        const assertion = new Assertion(
+          this.#compiler,
+          meta.brand,
+          node,
+          parent,
+          meta.flags,
+          matcherNode,
+          modifierNode,
+          notNode,
+        );
 
         parent.members.push(assertion);
 
-        this.compiler.forEachChild(node, (node) => {
+        this.#compiler.forEachChild(node, (node) => {
           this.#collectTestMembers(node, identifiers, assertion);
         });
 
@@ -86,44 +72,48 @@ export class CollectService {
       }
     }
 
-    if (this.compiler.isImportDeclaration(node)) {
+    if (this.#compiler.isImportDeclaration(node)) {
       identifiers.handleImportDeclaration(node);
 
       return;
     }
 
     // TODO let a;
-    if (this.compiler.isVariableDeclaration(node)) {
+    if (this.#compiler.isVariableDeclaration(node)) {
       // identifiers.handleVariableDeclaration(node);
     }
 
     // TODO a = 'b';
-    if (this.compiler.isBinaryExpression(node)) {
+    if (this.#compiler.isBinaryExpression(node)) {
       // identifiers.handleVariableDeclaration(node);
     }
 
-    this.compiler.forEachChild(node, (node) => {
+    this.#compiler.forEachChild(node, (node) => {
       this.#collectTestMembers(node, identifiers, parent);
     });
   }
 
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
-    const testTree = new TestTree(this.compiler, new Set(semanticDiagnostics), sourceFile);
+    const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
-    this.#collectTestMembers(sourceFile, new IdentifierLookup(this.compiler), testTree);
+    this.#collectTestMembers(sourceFile, new IdentifierLookup(this.#compiler), testTree);
 
     return testTree;
   }
 
-  #getMatchingChainNode({ parent }: ts.Node, name: Array<string>) {
-    if (this.compiler.isPropertyAccessExpression(parent) && name.includes(parent.name.getText())) {
-      return parent;
+  #getChainedNode({ parent }: ts.Node, name?: string) {
+    if (!this.#compiler.isPropertyAccessExpression(parent)) {
+      return;
     }
 
-    return;
+    if (name != null && name !== parent.name.getText()) {
+      return;
+    }
+
+    return parent;
   }
 
   #isMatcherNode(node: ts.Node): node is MatcherNode {
-    return this.compiler.isCallExpression(node) && this.compiler.isPropertyAccessExpression(node.expression);
+    return this.#compiler.isCallExpression(node) && this.#compiler.isPropertyAccessExpression(node.expression);
   }
 }

@@ -3,9 +3,11 @@ import { describe, expect, test } from "tstyche";
 expect<string>().type.toBeString();
 expect.skip<never>().type.toBeString();
 
-expect.skip(() => {
-  expect<number>().type.toBeNumber();
-}).type.toBe<void>();
+expect
+  .skip(() => {
+    expect<number>().type.toBeNumber();
+  })
+  .type.toBe<void>();
 
 describe("is describe?", () => {
   test("is string?", () => {

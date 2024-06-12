@@ -1,31 +1,38 @@
 import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import type { Assertion } from "./Assertion.js";
-import { TestMemberBrand, type TestMemberFlags } from "./enums.js";
 import type { TestTree } from "./TestTree.js";
+import { TestMemberBrand, type TestMemberFlags } from "./enums.js";
 
 export class TestMember {
-  compiler: typeof ts;
+  brand: TestMemberBrand;
   diagnostics = new Set<ts.Diagnostic>();
+  flags: TestMemberFlags;
   members: Array<TestMember | Assertion> = [];
   name = "";
+  node: ts.CallExpression;
+  parent: TestTree | TestMember;
 
   constructor(
-    public brand: TestMemberBrand,
-    public node: ts.CallExpression,
-    public parent: TestTree | TestMember,
-    public flags: TestMemberFlags,
+    compiler: typeof ts,
+    brand: TestMemberBrand,
+    node: ts.CallExpression,
+    parent: TestTree | TestMember,
+    flags: TestMemberFlags,
   ) {
-    this.compiler = parent.compiler;
+    this.brand = brand;
+    this.node = node;
+    this.parent = parent;
+    this.flags = flags;
 
-    if (node.arguments[0] != null && this.compiler.isStringLiteralLike(node.arguments[0])) {
+    if (node.arguments[0] != null && compiler.isStringLiteralLike(node.arguments[0])) {
       this.name = node.arguments[0].text;
     }
 
     if (
-      node.arguments[1] != null
-      && parent.compiler.isFunctionLike(node.arguments[1])
-      && parent.compiler.isBlock(node.arguments[1].body)
+      node.arguments[1] != null &&
+      compiler.isFunctionLike(node.arguments[1]) &&
+      compiler.isBlock(node.arguments[1].body)
     ) {
       const blockStart = node.arguments[1].body.getStart();
       const blockEnd = node.arguments[1].body.getEnd();
@@ -60,34 +67,24 @@ export class TestMember {
       `'${node.expression.getText()}()' cannot be nested within '${this.node.expression.getText()}()'.`;
 
     switch (this.brand) {
-      case TestMemberBrand.Describe:
+      case TestMemberBrand.Describe: {
         for (const member of this.members) {
           if (member.brand === TestMemberBrand.Expect) {
-            diagnostics.push(
-              Diagnostic.error(getText(member.node), {
-                end: member.node.getEnd(),
-                file: member.node.getSourceFile(),
-                start: member.node.getStart(),
-              }),
-            );
+            diagnostics.push(Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(member.node)));
           }
         }
         break;
+      }
 
       case TestMemberBrand.Test:
-      case TestMemberBrand.Expect:
+      case TestMemberBrand.Expect: {
         for (const member of this.members) {
           if (member.brand !== TestMemberBrand.Expect) {
-            diagnostics.push(
-              Diagnostic.error(getText(member.node), {
-                end: member.node.getEnd(),
-                file: member.node.getSourceFile(),
-                start: member.node.getStart(),
-              }),
-            );
+            diagnostics.push(Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(member.node)));
           }
         }
         break;
+      }
     }
 
     return diagnostics;

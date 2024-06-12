@@ -1,22 +1,19 @@
 import type ts from "typescript";
+import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
 import { DiagnosticCategory } from "./enums.js";
 
-export interface DiagnosticOrigin {
-  breadcrumbs?: Array<string>;
-  end: number;
-  file: ts.SourceFile;
-  start: number;
-}
-
 export class Diagnostic {
-  code?: string;
-  related?: Array<Diagnostic>;
+  category: DiagnosticCategory;
+  code: string | undefined;
+  related: Array<Diagnostic> | undefined;
+  origin: DiagnosticOrigin | undefined;
+  text: string | Array<string>;
 
-  constructor(
-    public text: string | Array<string>,
-    public category: DiagnosticCategory,
-    public origin?: DiagnosticOrigin,
-  ) {}
+  constructor(text: string | Array<string>, category: DiagnosticCategory, origin?: DiagnosticOrigin) {
+    this.text = text;
+    this.category = category;
+    this.origin = origin;
+  }
 
   add(options: { code?: string; origin?: DiagnosticOrigin; related?: Array<Diagnostic> }): this {
     if (options.code != null) {
@@ -41,16 +38,12 @@ export class Diagnostic {
   static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const category = DiagnosticCategory.Error;
-      const code = `ts(${diagnostic.code})`;
+      const code = `ts(${String(diagnostic.code)})`;
       let origin: DiagnosticOrigin | undefined;
       const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
 
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
-        origin = {
-          end: diagnostic.start + diagnostic.length,
-          file: diagnostic.file,
-          start: diagnostic.start,
-        };
+        origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
       }
 
       return new Diagnostic(text, category, origin).add({ code });
@@ -65,9 +58,7 @@ export class Diagnostic {
         messageText.push("");
       }
 
-      const stackLines = error.stack
-        .split("\n")
-        .map((line) => line.trimStart());
+      const stackLines = error.stack.split("\n").map((line) => line.trimStart());
 
       messageText.push(...stackLines);
     }

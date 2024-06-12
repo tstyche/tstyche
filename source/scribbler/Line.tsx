@@ -1,24 +1,18 @@
-import type { Color } from "./enums.js";
-import { Scribbler } from "./Scribbler.js";
 import { Text } from "./Text.js";
+import type { Color } from "./enums.js";
+import type { ScribblerNode } from "./types.js";
 
 interface LineProps {
-  children?: JSX.ElementChildrenAttribute["children"];
+  children?: ScribblerNode;
   color?: Color;
   indent?: number;
 }
 
-export class Line implements JSX.ElementClass {
-  constructor(readonly props: LineProps) {}
-
-  render(): JSX.Element {
-    return (
-      <text>
-        <Text color={this.props.color} indent={this.props.indent}>
-          {this.props.children}
-        </Text>
-        <newLine />
-      </text>
-    );
-  }
+export function Line({ children, color, indent }: LineProps) {
+  return (
+    <Text color={color} indent={indent}>
+      {children}
+      <newLine />
+    </Text>
+  );
 }

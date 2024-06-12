@@ -1,6 +1,6 @@
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
+Warning: The '.toBeAssignable()' matcher is deprecated and will be removed in TSTyche 3.
 
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
+To learn more, visit https://tstyche.org/releases/tstyche-2
 
   3 | describe("argument for 'source'", () => {
   4 |   test("must be provided", () => {
@@ -23,20 +23,6 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
   8 | 
 
       at ./__typetests__/toBeAssignable.tst.ts:5:5
-
-Warning: '.toBeAssignable()' has been renamed to '.toBeAssignableWith()'.
-
-Please update the test. '.toBeAssignable()' is deprecated and will be removed in TSTyche 3.
-
-   9 | describe("argument for 'target'", () => {
-  10 |   test("must be provided", () => {
-> 11 |     expect<{ test: void }>().type.toBeAssignable();
-     |                                   ^
-  12 |   });
-  13 | });
-  14 | 
-
-       at ./__typetests__/toBeAssignable.tst.ts:11:35
 
 Error: An argument for 'target' or type argument for 'Target' must be provided.
 

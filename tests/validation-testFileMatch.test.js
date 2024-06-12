@@ -12,12 +12,43 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("'testFileMatch' configuration file option", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
 
-describe("'testFileMatch' configuration file option", function() {
-  test("when option value is not a list", async function() {
+  const testCases = [
+    {
+      segment: "/",
+      testCase: "when a pattern starts with '/'",
+    },
+    {
+      segment: "../",
+      testCase: "when a pattern starts with '../'",
+    },
+  ];
+
+  testCases.forEach(({ segment, testCase }, index) => {
+    test(testCase, async function () {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+        ["tstyche.config.json"]: JSON.stringify({ testFileMatch: [`${segment}feature`] }, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-cannot-start-with-${index}`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
+    });
+  });
+
+  test("when option value is not a list", async function () {
     const config = {
       testFileMatch: "feature",
     };
@@ -39,7 +70,7 @@ describe("'testFileMatch' configuration file option", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("when item of the list is not a string", async function() {
+  test("when item of the list is not a string", async function () {
     const config = {
       testFileMatch: ["examples/*", false],
     };

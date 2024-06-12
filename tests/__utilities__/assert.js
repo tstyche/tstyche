@@ -24,7 +24,6 @@ export function fileDoesNotExists(source) {
  */
 export function matchObject(source, target) {
   if (typeof source === "string") {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     source = /** @type {{ version: string }} */ (JSON.parse(source));
   }
 
@@ -44,10 +43,7 @@ export async function matchSnapshot(source, snapshot) {
   if (existsSync(snapshotFileUrl) && !process.argv.includes("--update")) {
     const target = await fs.readFile(snapshotFileUrl, { encoding: "utf8" });
 
-    assert.equal(
-      source.replace(/\r\n/g, "\n"),
-      target.replace(/\r\n/g, "\n"),
-    );
+    assert.equal(source.replace(/\r\n/g, "\n"), target.replace(/\r\n/g, "\n"));
   } else {
     if (process.env["CI"] != null) {
       throw new Error("Snapshots cannot be created in CI environment.");

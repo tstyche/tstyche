@@ -1,151 +1,139 @@
 import { OptionBrand, type OptionDefinition } from "#config";
-import { Color, Line, Scribbler, Text } from "#scribbler";
+import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-const usageExamples: Array<[commandText: string, descriptionText: string]> = [
-  ["tstyche", "Run all tests."],
-  ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
-  ["tstyche --target 4.9,5.3.2,current", "Test on all specified versions of TypeScript."],
-];
+interface HintTextProps {
+  children: ScribblerJsx.Element | string;
+}
 
-class HintText implements JSX.ElementClass {
-  constructor(readonly props: { children: JSX.Element }) {}
+function HintText({ children }: HintTextProps) {
+  return (
+    <Text indent={1} color={Color.Gray}>
+      {children}
+    </Text>
+  );
+}
 
-  render(): JSX.Element {
+interface HelpHeaderTextProps {
+  tstycheVersion: string;
+}
+
+function HelpHeaderText({ tstycheVersion }: HelpHeaderTextProps) {
+  return (
+    <Line>
+      The TSTyche Type Test Runner
+      <HintText>{tstycheVersion}</HintText>
+    </Line>
+  );
+}
+
+interface CommandTextProps {
+  hint?: ScribblerJsx.Element | undefined;
+  text: string | ScribblerJsx.Element;
+}
+
+function CommandText({ hint, text }: CommandTextProps) {
+  let hintText: ScribblerJsx.Element | undefined;
+
+  if (hint != null) {
+    hintText = <HintText>{hint}</HintText>;
+  }
+
+  return (
+    <Line indent={1}>
+      <Text color={Color.Blue}>{text}</Text>
+      {hintText}
+    </Line>
+  );
+}
+
+interface OptionDescriptionTextProps {
+  text: string;
+}
+
+function OptionDescriptionText({ text }: OptionDescriptionTextProps) {
+  return <Line indent={1}>{text}</Line>;
+}
+
+function CommandLineUsageText() {
+  const usage: Array<[commandText: string, descriptionText: string]> = [
+    ["tstyche", "Run all tests."],
+    ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
+    ["tstyche --target 4.9,5.3.2,current", "Test on all specified versions of TypeScript."],
+  ];
+
+  const usageText = usage.map(([commandText, descriptionText]) => (
+    <Line>
+      <CommandText text={commandText} />
+      <OptionDescriptionText text={descriptionText} />
+    </Line>
+  ));
+
+  return <Text>{usageText}</Text>;
+}
+
+interface CommandLineOptionNameTextProps {
+  text: string;
+}
+
+function CommandLineOptionNameText({ text }: CommandLineOptionNameTextProps) {
+  return <Text>--{text}</Text>;
+}
+
+interface CommandLineOptionHintTextProps {
+  definition: OptionDefinition;
+}
+
+function CommandLineOptionHintText({ definition }: CommandLineOptionHintTextProps) {
+  if (definition.brand === OptionBrand.List) {
     return (
-      <Text indent={1} color={Color.Gray}>
-        {this.props.children}
+      <Text>
+        {definition.brand} of {definition.items.brand}s
       </Text>
     );
   }
+
+  return <Text>{definition.brand}</Text>;
 }
 
-class HelpHeaderText implements JSX.ElementClass {
-  constructor(readonly props: { tstycheVersion: string }) {}
-
-  render(): JSX.Element {
-    const hint = (
-      <HintText>
-        <Text>{this.props.tstycheVersion}</Text>
-      </HintText>
-    );
-
-    return (
-      <Line>
-        <Text>The TSTyche Type Test Runner</Text>
-        {hint}
-      </Line>
-    );
-  }
+interface CommandLineOptionsTextProps {
+  optionDefinitions: Map<string, OptionDefinition>;
 }
 
-class CommandText implements JSX.ElementClass {
-  constructor(
-    readonly props: {
-      hint?: JSX.Element | undefined;
-      text: string | JSX.Element;
-    },
-  ) {}
+function CommandLineOptionsText({ optionDefinitions }: CommandLineOptionsTextProps) {
+  const definitions = [...optionDefinitions.values()];
+  const optionsText = definitions.map((definition) => {
+    let hint: ScribblerJsx.Element | undefined;
 
-  render(): JSX.Element {
-    let hint: JSX.Element | undefined;
-
-    if (this.props.hint != null) {
-      hint = <HintText>{this.props.hint}</HintText>;
+    if (definition.brand !== OptionBrand.BareTrue) {
+      hint = <CommandLineOptionHintText definition={definition} />;
     }
 
     return (
-      <Line indent={1}>
-        <Text color={Color.Blue}>{this.props.text}</Text>
-        {hint}
-      </Line>
-    );
-  }
-}
-
-class OptionDescriptionText implements JSX.ElementClass {
-  constructor(readonly props: { text: string }) {}
-
-  render(): JSX.Element {
-    return <Line indent={1}>{this.props.text}</Line>;
-  }
-}
-
-class CommandLineUsageText implements JSX.ElementClass {
-  render(): JSX.Element {
-    const usageText = usageExamples.map(([commandText, descriptionText]) => (
       <Text>
-        <CommandText text={commandText} />
-        <OptionDescriptionText text={descriptionText} />
+        <CommandText text={<CommandLineOptionNameText text={definition.name} />} hint={hint} />
+        <OptionDescriptionText text={definition.description} />
         <Line />
       </Text>
-    ));
-
-    return <Text>{usageText}</Text>;
-  }
-}
-
-class CommandLineOptionNameText implements JSX.ElementClass {
-  constructor(readonly props: { text: string }) {}
-
-  render(): JSX.Element {
-    return <Text>--{this.props.text}</Text>;
-  }
-}
-
-class CommandLineOptionHintText implements JSX.ElementClass {
-  constructor(readonly props: { definition: OptionDefinition }) {}
-
-  render(): JSX.Element | null {
-    if (this.props.definition.brand === OptionBrand.List) {
-      return (
-        <Text>
-          {this.props.definition.brand} of {this.props.definition.items.brand}s
-        </Text>
-      );
-    }
-
-    return <Text>{this.props.definition.brand}</Text>;
-  }
-}
-
-class CommandLineOptionsText implements JSX.ElementClass {
-  constructor(readonly props: { optionDefinitions: Map<string, OptionDefinition> }) {}
-
-  render(): JSX.Element {
-    const definitions = [...this.props.optionDefinitions.values()];
-    const optionsText = definitions.map((definition) => {
-      let hint: JSX.Element | undefined;
-
-      if (definition.brand !== OptionBrand.True) {
-        hint = <CommandLineOptionHintText definition={definition} />;
-      }
-
-      return (
-        <Text>
-          <CommandText text={<CommandLineOptionNameText text={definition.name} />} hint={hint} />
-          <OptionDescriptionText text={definition.description} />
-          <Line />
-        </Text>
-      );
-    });
-
-    return (
-      <Text>
-        <Line>Command Line Options</Line>
-        <Line />
-        {optionsText}
-      </Text>
     );
-  }
+  });
+
+  return (
+    <Text>
+      <Line>Command Line Options</Line>
+      <Line />
+      {optionsText}
+    </Text>
+  );
 }
 
-class HelpFooterText implements JSX.ElementClass {
-  render(): JSX.Element {
-    return <Line>To learn more, visit https://tstyche.org</Line>;
-  }
+function HelpFooterText() {
+  return <Line>To learn more, visit https://tstyche.org</Line>;
 }
 
-export function helpText(optionDefinitions: Map<string, OptionDefinition>, tstycheVersion: string): JSX.Element {
+export function helpText(
+  optionDefinitions: Map<string, OptionDefinition>,
+  tstycheVersion: string,
+): ScribblerJsx.Element {
   return (
     <Text>
       <HelpHeaderText tstycheVersion={tstycheVersion} />

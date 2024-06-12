@@ -1,72 +1,54 @@
-import process from "node:process";
-import { pathToFileURL } from "node:url";
 import type { ResolvedConfig } from "#config";
-import { DiagnosticCategory } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { SummaryReporter, ThoroughReporter } from "#reporters";
+import { TestFile } from "#file";
+import { RunReporter, SummaryReporter, WatchReporter } from "#handlers";
+import type { OutputService } from "#output";
 import { TaskRunner } from "#runner";
+import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationToken } from "#token";
 
+// biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
-  #cancellationToken = new CancellationToken();
+  #eventEmitter = new EventEmitter();
+  #outputService: OutputService;
+  #resolvedConfig: ResolvedConfig;
+  #selectService: SelectService;
   #storeService: StoreService;
   #taskRunner: TaskRunner;
-  static readonly version = "__version__";
+  static version = "__version__";
 
   constructor(
-    readonly resolvedConfig: ResolvedConfig,
+    resolvedConfig: ResolvedConfig,
+    outputService: OutputService,
+    selectService: SelectService,
     storeService: StoreService,
   ) {
+    this.#resolvedConfig = resolvedConfig;
+    this.#outputService = outputService;
+    this.#selectService = selectService;
     this.#storeService = storeService;
-    this.#taskRunner = new TaskRunner(this.resolvedConfig, this.#storeService);
-    this.#addEventHandlers();
+    this.#taskRunner = new TaskRunner(this.#resolvedConfig, this.#selectService, this.#storeService);
   }
 
-  #addEventHandlers(): void {
-    EventEmitter.addHandler(([eventName, payload]) => {
-      if (eventName.includes("error") || eventName.includes("fail")) {
-        if (
-          "diagnostics" in payload
-          && payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)
-        ) {
-          process.exitCode = 1;
+  close(): void {
+    this.#taskRunner.close();
+  }
 
-          if (this.resolvedConfig.failFast) {
-            this.#cancellationToken.cancel();
-          }
-        }
-      }
-    });
+  async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
+    this.#eventEmitter.addHandler(new RunReporter(this.#resolvedConfig, this.#outputService));
 
-    const outputHandlers = [new ThoroughReporter(this.resolvedConfig), new SummaryReporter(this.resolvedConfig)];
-
-    for (const outputHandler of outputHandlers) {
-      EventEmitter.addHandler((event) => {
-        outputHandler.handleEvent(event);
-      });
+    if (this.#resolvedConfig.watch === true) {
+      this.#eventEmitter.addHandler(new WatchReporter(this.#outputService));
+    } else {
+      this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));
     }
-  }
 
-  #normalizePaths(testFiles: Array<string | URL>) {
-    return testFiles.map((filePath) => {
-      if (typeof filePath !== "string") {
-        return filePath;
-      }
-
-      if (filePath.startsWith("file:")) {
-        return new URL(filePath);
-      }
-
-      return pathToFileURL(filePath);
-    });
-  }
-
-  async run(testFiles: Array<string | URL>): Promise<void> {
     await this.#taskRunner.run(
-      this.#normalizePaths(testFiles),
-      this.resolvedConfig.target,
-      this.#cancellationToken,
+      testFiles.map((testFile) => new TestFile(testFile)),
+      cancellationToken,
     );
+
+    this.#eventEmitter.removeHandlers();
   }
 }

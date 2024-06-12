@@ -19,12 +19,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("'tstyche' command", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
 
-describe("'tstyche' command", function() {
-  test("when called without arguments, selects all matching files", async function() {
+  test("when called without arguments, selects all matching files", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -43,7 +43,7 @@ describe("'tstyche' command", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when single search string is provided, selects matching files", async function() {
+  test("when single search string is provided, selects matching files", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -62,7 +62,7 @@ describe("'tstyche' command", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when multiple search strings are provided, selects matching files", async function() {
+  test("when multiple search strings are provided, selects matching files", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -81,7 +81,7 @@ describe("'tstyche' command", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when relative search string is provided, selects matching files", async function() {
+  test("when relative search string is provided, selects matching files", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -100,7 +100,7 @@ describe("'tstyche' command", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("only the files matched by the 'testFileMatch' patterns are selected", async function() {
+  test("only the files matched by the 'testFileMatch' patterns are selected", async function () {
     const config = {
       testFileMatch: ["**/feature/__tests__/**.*"],
     };

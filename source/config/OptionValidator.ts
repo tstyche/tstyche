@@ -1,13 +1,13 @@
 import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
+import { Environment } from "#environment";
 import type { StoreService } from "#store";
-import type { OptionBrand, OptionGroup } from "./enums.js";
-import { OptionDiagnosticText } from "./OptionDiagnosticText.js";
+import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
+import type { OptionBrand, OptionGroup } from "./enums.js";
 
 export class OptionValidator {
   #onDiagnostic: (diagnostic: Diagnostic) => void;
-  #optionDiagnosticText: OptionDiagnosticText;
   #optionGroup: OptionGroup;
   #optionUsageText: OptionUsageText;
   #storeService: StoreService;
@@ -17,7 +17,6 @@ export class OptionValidator {
     this.#storeService = storeService;
     this.#onDiagnostic = onDiagnostic;
 
-    this.#optionDiagnosticText = new OptionDiagnosticText(this.#optionGroup);
     this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
   }
 
@@ -29,20 +28,19 @@ export class OptionValidator {
   ): Promise<void> {
     switch (optionName) {
       case "config":
-      case "rootPath":
+      case "rootPath": {
         if (!existsSync(optionValue)) {
-          const text = [this.#optionDiagnosticText.fileDoesNotExist(optionValue)];
-
-          this.#onDiagnostic(Diagnostic.error(text, origin));
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
         break;
+      }
 
-      case "target":
-        if (await this.#storeService.validateTag(optionValue) === false) {
+      case "target": {
+        if ((await this.#storeService.validateTag(optionValue)) === false) {
           this.#onDiagnostic(
             Diagnostic.error(
               [
-                this.#optionDiagnosticText.versionIsNotSupported(optionValue),
+                ConfigDiagnosticText.versionIsNotSupported(optionValue),
                 ...(await this.#optionUsageText.get(optionName, optionBrand)),
               ],
               origin,
@@ -50,6 +48,23 @@ export class OptionValidator {
           );
         }
         break;
+      }
+
+      case "testFileMatch": {
+        for (const segment of ["/", "../"]) {
+          if (optionValue.startsWith(segment)) {
+            this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.testFileMatchCannotStartWith(segment), origin));
+          }
+        }
+        break;
+      }
+
+      case "watch": {
+        if (Environment.isCi) {
+          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.watchCannotBeEnabled(), origin));
+        }
+        break;
+      }
 
       default:
         break;

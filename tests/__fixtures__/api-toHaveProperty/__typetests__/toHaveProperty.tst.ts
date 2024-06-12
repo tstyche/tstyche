@@ -20,13 +20,10 @@ const enum E2 {
 }
 
 interface Sample {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   123: number;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   789?: string | undefined;
   [E1.A]: string;
   [E2.B]: string;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   __check: boolean;
   isBusy?: boolean | undefined;
   [kOne]: () => void;
@@ -37,11 +34,9 @@ interface Sample {
 }
 
 const sample = {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   123: 3,
   [E1.A]: true,
   [E2.B]: null,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   __check: true,
   [kOne]: "one",
   [kTwo]: "two",

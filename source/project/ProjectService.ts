@@ -4,9 +4,12 @@ import { EventEmitter } from "#events";
 import { Version } from "#version";
 
 export class ProjectService {
+  #compiler: typeof ts;
   #service: ts.server.ProjectService;
 
-  constructor(public compiler: typeof ts) {
+  constructor(compiler: typeof ts) {
+    this.#compiler = compiler;
+
     function doNothing() {
       // does nothing
     }
@@ -34,7 +37,7 @@ export class ProjectService {
     };
 
     const host: ts.server.ServerHost = {
-      ...this.compiler.sys,
+      ...this.#compiler.sys,
       clearImmediate,
       clearTimeout,
       setImmediate,
@@ -43,9 +46,9 @@ export class ProjectService {
       watchFile: () => noopWatcher,
     };
 
-    this.#service = new this.compiler.server.ProjectService({
+    this.#service = new this.#compiler.server.ProjectService({
       allowLocalPluginLoads: true,
-      cancellationToken: this.compiler.server.nullCancellationToken,
+      cancellationToken: this.#compiler.server.nullCancellationToken,
       host,
       logger: noopLogger,
       session: undefined,
@@ -74,11 +77,11 @@ export class ProjectService {
       target: "esnext" as ts.server.protocol.ScriptTarget,
     };
 
-    if (Version.isSatisfiedWith(this.compiler.version, "5.4")) {
+    if (Version.isSatisfiedWith(this.#compiler.version, "5.4")) {
       defaultCompilerOptions.module = "preserve" as ts.server.protocol.ModuleKind;
     }
 
-    if (Version.isSatisfiedWith(this.compiler.version, "5.0")) {
+    if (Version.isSatisfiedWith(this.#compiler.version, "5.0")) {
       defaultCompilerOptions["allowImportingTsExtensions"] = true;
       defaultCompilerOptions.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
     }
@@ -88,7 +91,7 @@ export class ProjectService {
 
   getDefaultProject(filePath: string): ts.server.Project | undefined {
     return this.#service.getDefaultProjectForFile(
-      this.compiler.server.toNormalizedPath(filePath),
+      this.#compiler.server.toNormalizedPath(filePath),
       /* ensureProject */ true,
     );
   }
@@ -113,13 +116,13 @@ export class ProjectService {
 
     EventEmitter.dispatch([
       "project:info",
-      { compilerVersion: this.compiler.version, projectConfigFilePath: configFileName },
+      { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
     ]);
 
     if (configFileErrors && configFileErrors.length > 0) {
       EventEmitter.dispatch([
         "project:error",
-        { diagnostics: Diagnostic.fromDiagnostics(configFileErrors, this.compiler) },
+        { diagnostics: Diagnostic.fromDiagnostics(configFileErrors, this.#compiler) },
       ]);
     }
   }

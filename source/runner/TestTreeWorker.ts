@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { Expect } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
@@ -16,20 +16,20 @@ interface TestFileWorkerOptions {
 }
 
 export class TestTreeWorker {
+  #compiler: typeof ts;
   #cancellationToken: CancellationToken | undefined;
   #expect: Expect;
   #fileResult: FileResult;
   #hasOnly: boolean;
   #position: number | undefined;
+  #resolvedConfig: ResolvedConfig;
 
-  constructor(
-    readonly resolvedConfig: ResolvedConfig,
-    public compiler: typeof ts,
-    expect: Expect,
-    options: TestFileWorkerOptions,
-  ) {
-    this.#cancellationToken = options.cancellationToken;
+  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts, expect: Expect, options: TestFileWorkerOptions) {
+    this.#resolvedConfig = resolvedConfig;
+    this.#compiler = compiler;
     this.#expect = expect;
+
+    this.#cancellationToken = options.cancellationToken;
     this.#fileResult = options.fileResult;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
@@ -41,24 +41,27 @@ export class TestTreeWorker {
     }
 
     if (
-      member.flags & TestMemberFlags.Only
-      || (this.resolvedConfig.only != null
-        && member.name.toLowerCase().includes(this.resolvedConfig.only.toLowerCase()))
-      || (this.#position != null && member.node.getStart() === this.#position) // TODO position must override '.skip'
+      member.flags & TestMemberFlags.Only ||
+      (this.#resolvedConfig.only != null && member.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
     ) {
       mode |= RunMode.Only;
     }
 
     if (
-      member.flags & TestMemberFlags.Skip
-      || (this.resolvedConfig.skip != null
-        && member.name.toLowerCase().includes(this.resolvedConfig.skip.toLowerCase()))
+      member.flags & TestMemberFlags.Skip ||
+      (this.#resolvedConfig.skip != null && member.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
     ) {
       mode |= RunMode.Skip;
     }
 
     if (member.flags & TestMemberFlags.Todo) {
       mode |= RunMode.Todo;
+    }
+
+    if (this.#position != null && member.node.getStart() === this.#position) {
+      mode |= RunMode.Only;
+      // skip mode is overridden, when 'position' is specified
+      mode &= ~RunMode.Skip;
     }
 
     return mode;
@@ -89,17 +92,20 @@ export class TestTreeWorker {
       }
 
       switch (member.brand) {
-        case TestMemberBrand.Describe:
+        case TestMemberBrand.Describe: {
           this.#visitDescribe(member, runMode, parentResult as DescribeResult | undefined);
           break;
+        }
 
-        case TestMemberBrand.Test:
+        case TestMemberBrand.Test: {
           this.#visitTest(member, runMode, parentResult as DescribeResult | undefined);
           break;
+        }
 
-        case TestMemberBrand.Expect:
+        case TestMemberBrand.Expect: {
           this.#visitAssertion(member as Assertion, runMode, parentResult as TestResult | undefined);
           break;
+        }
       }
     }
   }
@@ -123,7 +129,7 @@ export class TestTreeWorker {
       EventEmitter.dispatch([
         "expect:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...assertion.diagnostics], this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...assertion.diagnostics], this.#compiler),
           result: expectResult,
         },
       ]);
@@ -142,11 +148,7 @@ export class TestTreeWorker {
     if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
       if (runMode & RunMode.Fail) {
         const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
-        const origin = {
-          end: assertion.node.getEnd(),
-          file: assertion.node.getSourceFile(),
-          start: assertion.node.getStart(),
-        };
+        const origin = DiagnosticOrigin.fromNode(assertion.node);
 
         EventEmitter.dispatch([
           "expect:error",
@@ -155,29 +157,20 @@ export class TestTreeWorker {
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       }
+    } else if (runMode & RunMode.Fail) {
+      EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
-      if (runMode & RunMode.Fail) {
-        EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
-      } else {
-        const origin = {
-          breadcrumbs: assertion.ancestorNames,
-          end: assertion.matcherName.getEnd(),
-          file: assertion.matcherName.getSourceFile(),
-          start: assertion.matcherName.getStart(),
-        };
+      const origin = DiagnosticOrigin.fromNode(assertion.matcherName, assertion.ancestorNames);
 
-        const diagnostics: Array<Diagnostic> = [];
-
-        for (const diagnostic of matchResult.explain()) {
-          if (diagnostic.origin == null) {
-            diagnostic.add({ origin });
-          }
-
-          diagnostics.push(diagnostic);
+      const diagnostics = matchResult.explain().map((diagnostic) => {
+        if (diagnostic.origin == null) {
+          return diagnostic.add({ origin });
         }
 
-        EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
-      }
+        return diagnostic;
+      });
+
+      EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
     }
   }
 
@@ -189,13 +182,13 @@ export class TestTreeWorker {
     runMode = this.#resolveRunMode(runMode, describe);
 
     if (
-      !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo)
-      && describe.diagnostics.size > 0
+      !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
+      describe.diagnostics.size > 0
     ) {
       EventEmitter.dispatch([
         "file:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics], this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics], this.#compiler),
           result: this.#fileResult,
         },
       ]);
@@ -223,7 +216,7 @@ export class TestTreeWorker {
       EventEmitter.dispatch([
         "test:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...test.diagnostics], this.compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...test.diagnostics], this.#compiler),
           result: testResult,
         },
       ]);

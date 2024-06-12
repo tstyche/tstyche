@@ -14,12 +14,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-afterEach(async function() {
-  await clearFixture(fixtureUrl);
-});
+describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function () {
+  afterEach(async function () {
+    await clearFixture(fixtureUrl);
+  });
 
-describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
-  test("has default value", async function() {
+  test("has default value", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -34,7 +34,7 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when truthy, interactive elements are disabled", async function() {
+  test("when truthy, interactive elements are disabled", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -54,7 +54,7 @@ describe("'TSTYCHE_NO_INTERACTIVE' environment variable", function() {
     assert.equal(exitCode, 0);
   });
 
-  test("when falsy, interactive elements are enabled", async function() {
+  test("when falsy, interactive elements are enabled", async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
