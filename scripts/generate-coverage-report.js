@@ -15,12 +15,9 @@ const options = {
   },
 
   sourceFilter: {
-    "**/enums.ts": false,
-    "**/index.ts": false,
-    "**/tstyche.ts": false,
-    "**/types.ts": false,
-
-    "**/source/**": true,
+    "**/source/*.ts": true,
+    "**/source/*/*.ts": true,
+    "**/source/*/*.tsx": true,
   },
 
   outputDir: "./coverage",
