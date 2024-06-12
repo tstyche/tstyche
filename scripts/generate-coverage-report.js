@@ -2,28 +2,24 @@ import { CoverageReport } from "monocart-coverage-reports";
 
 /** @type {import("monocart-coverage-reports").CoverageReportOptions} */
 const options = {
-  all: {
-    dir: "./source",
-    filter: {
-      "**/enums.ts": false,
-      "**/index.ts": false,
-      "**/main.ts": false,
-      "**/tstyche.ts": false,
-      "**/types.ts": false,
-
-      "**/*": true,
-    },
-  },
+  all: "./source",
 
   clean: false,
   cleanCache: true,
 
   entryFilter: {
     "**/node_modules/**": false,
-    "**/build/**": true,
+
+    "**/build/bin.js": true,
+    "**/build/tstyche.js": true,
   },
+
   sourceFilter: {
-    "**/node_modules/**": false,
+    "**/enums.ts": false,
+    "**/index.ts": false,
+    "**/tstyche.ts": false,
+    "**/types.ts": false,
+
     "**/source/**": true,
   },
 
