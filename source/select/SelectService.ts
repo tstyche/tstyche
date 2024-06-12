@@ -64,7 +64,7 @@ export class SelectService {
   async #visitDirectory(currentPath: string, testFilePaths: Array<string>): Promise<void> {
     const targetPath = Path.join(this.#resolvedConfig.rootPath, currentPath);
 
-    let entries: Array<FileSystemEntryMeta & { name: string }> = [];
+    let entries: Array<FileSystemEntryMeta & { name: string }> | undefined;
 
     try {
       entries = await fs.readdir(targetPath, { withFileTypes: true });
@@ -72,17 +72,25 @@ export class SelectService {
       // continue regardless of error
     }
 
+    if (entries == null) {
+      return;
+    }
+
     for (const entry of entries) {
-      let entryMeta: FileSystemEntryMeta;
+      let entryMeta: FileSystemEntryMeta | undefined;
 
       if (entry.isSymbolicLink()) {
         try {
           entryMeta = await fs.stat([targetPath, entry.name].join("/"));
         } catch {
-          continue; // regardless of error
+          // continue regardless of error
         }
       } else {
         entryMeta = entry;
+      }
+
+      if (entryMeta == null) {
+        continue;
       }
 
       const entryPath = [currentPath, entry.name].join("/");
