@@ -8,13 +8,13 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-describe("toBeCallableWith", function() {
-  test("implementation", function() {
+describe("toBeCallableWith", function () {
+  test("implementation", function () {
     tstyche.expect(() => null).type.toBeCallableWith();
     tstyche.expect(() => null).type.not.toBeCallableWith("two");
   });
 
-  test("parameter arity", async function() {
+  test("parameter arity", async function () {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["parameter-arity"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -30,7 +30,7 @@ describe("toBeCallableWith", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("optional parameters", async function() {
+  test("optional parameters", async function () {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["optional-parameters"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -46,7 +46,7 @@ describe("toBeCallableWith", function() {
     assert.equal(exitCode, 1);
   });
 
-  test("default parameters", async function() {
+  test("default parameters", async function () {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["default-parameters"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {

@@ -3,10 +3,13 @@ import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToBeCallableWith {
-  constructor(
-    public compiler: typeof ts,
-    public typeChecker: TypeChecker,
-  ) {}
+  compiler: typeof ts;
+  typeChecker: TypeChecker;
+
+  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+    this.compiler = compiler;
+    this.typeChecker = typeChecker;
+  }
 
   #countArguments(target: Array<ts.Expression> | ts.TupleType) {
     if (Array.isArray(target)) {
@@ -58,13 +61,13 @@ export class ToBeCallableWith {
   ) {
     const sourceText = this.compiler.isTypeNode(source.node) ? "Type expression" : "Expression";
 
-    const argumentCountText = argumentCount.max === 0
-      ? "without arguments"
-      : `with provided argument${argumentCount.max === 1 ? "" : "s"}`;
+    const argumentCountText =
+      argumentCount.max === 0 ? "without arguments" : `with provided argument${argumentCount.max === 1 ? "" : "s"}`;
 
-    const parameterCount = source.signatures.length === 1 && source.signatures[0] != null
-      ? this.#countParameters(source.signatures[0].getDeclaration())
-      : { max: 0, min: 0 }; // TODO handle overloads
+    const parameterCount =
+      source.signatures.length === 1 && source.signatures[0] != null
+        ? this.#countParameters(source.signatures[0].getDeclaration())
+        : { max: 0, min: 0 }; // TODO handle overloads
 
     let parameterCountText: string;
 
