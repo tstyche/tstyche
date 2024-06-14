@@ -16,6 +16,7 @@ concurrency:
 jobs:
   build:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -33,6 +34,7 @@ jobs:
 
   check:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
     name: Check
     needs:
       - build
@@ -53,6 +55,7 @@ jobs:
 
   quality:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
     name: Code Quality
     needs:
       - build
@@ -71,10 +74,11 @@ jobs:
       - run: yarn biome ci --error-on-warnings
 
   test-types:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
+    name: Test Types
     needs:
       - build
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
-    name: Test Types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -93,6 +97,7 @@ jobs:
 
   test-node:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
     name: Test Build on Node.js v${{ matrix.node-version }}
     needs:
       - build
@@ -120,6 +125,7 @@ jobs:
 
   test-os:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
     name: Test Build on ${{ matrix.os }}
     needs:
       - build
@@ -146,7 +152,36 @@ jobs:
 
   test-coverage:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
+    name: Collect Test Coverage on ${{ matrix.os }}
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          check-latest: true
+          node-version: lts/*
+      - run: yarn install
+      - run: yarn test:coverage
+        env:
+          FORCE_COLOR: true
+      - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+
+  test-coverage-final:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
     name: Collect Test Coverage
+    needs:
+      - test-coverage
     runs-on: ubuntu-latest
 
     steps:
@@ -159,7 +194,6 @@ jobs:
       - run: yarn test:coverage
         env:
           FORCE_COLOR: true
-      - uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ./coverage/lcov.info
+      - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) final
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
