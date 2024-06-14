@@ -193,10 +193,6 @@ jobs:
           node-version: lts/*
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         with:
-          name: build-${{ github.sha }}
-          path: build/
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
-        with:
           pattern: coverage-*
       - uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
