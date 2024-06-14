@@ -170,7 +170,7 @@ jobs:
           node-version: lts/*
       - run: yarn install
       - run: yarn build --sourcemap
-      - run: yarn test:run tests/config-storePath.test.js
+      - run: yarn test:e2e
         env:
           FORCE_COLOR: true
           NODE_V8_COVERAGE: coverage/${{ matrix.os }}-raw
@@ -200,20 +200,7 @@ jobs:
           merge-multiple: true
           path: coverage
           pattern: coverage-*
-
-      - name: Display structure of downloaded files
-        run: ls -R coverage
-
-      - name: Generate
-        run: node ./scripts/generate-coverage-report.js
-
-      - name: Display structure of generated files
-        run: ls -R coverage
-
-      - name: Display coverage report
-        run: cat coverage/lcov.info
-
-      # - run: node ./scripts/generate-coverage-report.js
+      - run: node ./scripts/generate-coverage-report.js
       - uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1
         with:
           coverage-reports: coverage/lcov.info
