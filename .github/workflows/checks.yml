@@ -200,9 +200,6 @@ jobs:
           pattern: coverage-*
       - uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
-          coverage-reports: >
-            coverage-macOS-latest-${{ github.sha }}/lcov.info,
-            coverage-ubuntu-latest-${{ github.sha }}/lcov.info,
-            coverage-windows-latest-${{ github.sha }}/lcov.info
+          coverage-reports: coverage-macOS-latest-${{ github.sha }}/lcov.info, coverage-ubuntu-latest-${{ github.sha }}/lcov.info, coverage-windows-latest-${{ github.sha }}/lcov.info
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
