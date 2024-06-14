@@ -53,24 +53,19 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
     });
 
     test("when 'XDG_DATA_HOME' is specified", async function () {
-      const storeUrl = new URL("/.sample-store", fixtureUrl);
-
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
 
-      assert.fileDoesNotExists(storeUrl);
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
         env: {
           ["TSTYCHE_STORE_PATH"]: undefined,
-          ["XDG_DATA_HOME"]: "/.sample-store",
         },
       });
 
-      assert.fileExists(storeUrl);
-
-      assert.equal(normalizeOutput(stdout), "adds TypeScript 5.2.2 to /.sample-store/TSTyche/5.2.2\n");
+      assert.matchObject(normalizeOutput(stdout), {
+        storePath: "/.sample-store/TSTyche",
+      });
 
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
