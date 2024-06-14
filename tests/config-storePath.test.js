@@ -100,6 +100,33 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
     });
   });
 
+  describe("on Windows", function () {
+    before(function () {
+      if (process.platform !== "win32") {
+        this.skip();
+      }
+    });
+
+    test("has default value", async function () {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
+        env: {
+          ["TSTYCHE_STORE_PATH"]: undefined,
+        },
+      });
+
+      assert.matchObject(normalizeOutput(stdout), {
+        storePath: `${process.env["LocalAppData"]}\\TSTyche`.replace(/\\/g, "/"),
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+  });
+
   test("when specified, uses the path", async function () {
     const storeUrl = new URL("./dummy-store", fixtureUrl);
 
