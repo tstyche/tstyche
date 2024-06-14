@@ -200,7 +200,6 @@ jobs:
         with:
           path: coverage
           pattern: coverage-*
-          merge-multiple: true
       - run: ls -R coverage
 
       # - name: Final Coverage
