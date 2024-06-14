@@ -59,6 +59,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
         env: {
+          ["XDG_DATA_HOME"]: "/.sample-store",
           ["TSTYCHE_STORE_PATH"]: undefined,
         },
       });
