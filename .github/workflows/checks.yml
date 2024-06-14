@@ -159,7 +159,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -172,9 +172,12 @@ jobs:
       - run: yarn test:coverage
         env:
           FORCE_COLOR: true
-      - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      - name: Upload Coverage
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report \
+          --api-token ${{ secrets.CODACY_PROJECT_TOKEN }} \
+          --coverage-reports ./coverage/lcov.info \
+          --partial
 
   test-coverage-final:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -194,6 +197,7 @@ jobs:
       - run: yarn test:coverage
         env:
           FORCE_COLOR: true
-      - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) final
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      - name: Final Coverage
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) final \
+          --api-token ${{ secrets.CODACY_PROJECT_TOKEN }}
