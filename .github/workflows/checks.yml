@@ -201,6 +201,13 @@ jobs:
 
       - name: Display structure of downloaded files
         run: ls -R coverage
+
+      - name: Generate
+        run: node ./scripts/generate-coverage-report.js
+
+      - name: Display structure of generated files
+        run: ls -R coverage
+
       # - uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
       #   with:
       #     coverage-reports: coverage-*/lcov.info

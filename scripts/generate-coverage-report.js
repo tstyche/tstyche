@@ -1,3 +1,4 @@
+import process from "node:process";
 import { CoverageReport } from "monocart-coverage-reports";
 
 /** @type {import("monocart-coverage-reports").CoverageReportOptions} */
@@ -27,5 +28,12 @@ const options = {
 
 const coverageReport = new CoverageReport(options);
 
-await coverageReport.addFromDir("./coverage/raw");
+if (process.env["CI"]) {
+  for (const platform of ["ubuntu-latest", "macOS-latest", "windows-latest"]) {
+    await coverageReport.addFromDir(`./coverage/${platform}-raw`);
+  }
+} else {
+  await coverageReport.addFromDir("./coverage/raw");
+}
+
 await coverageReport.generate();
