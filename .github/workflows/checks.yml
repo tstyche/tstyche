@@ -175,9 +175,10 @@ jobs:
       - name: Upload Coverage
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report \
-          --api-token ${{ secrets.CODACY_PROJECT_TOKEN }} \
           --coverage-reports ./coverage/lcov.info \
           --partial
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
   test-coverage-final:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -198,6 +199,6 @@ jobs:
         env:
           FORCE_COLOR: true
       - name: Final Coverage
-        run: |
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) final \
-          --api-token ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) final
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
