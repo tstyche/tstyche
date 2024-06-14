@@ -153,7 +153,7 @@ jobs:
   coverage-collect:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Collect Test Coverage on ${{ matrix.os }}
+    name: Collect Coverage on ${{ matrix.os }}
     needs:
       - build
     strategy:
@@ -180,7 +180,7 @@ jobs:
   coverage-upload:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Upload Test Coverage
+    name: Upload Coverage
     needs:
       - coverage-collect
     runs-on: ubuntu-latest
@@ -200,7 +200,7 @@ jobs:
           pattern: coverage-*
       - uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
-          coverage-reports: |
+          coverage-reports: >
             coverage-macOS-latest-${{ github.sha }}/lcov.info,
             coverage-ubuntu-latest-${{ github.sha }}/lcov.info,
             coverage-windows-latest-${{ github.sha }}/lcov.info
