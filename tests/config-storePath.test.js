@@ -63,6 +63,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
         env: {
+          ["TSTYCHE_STORE_PATH"]: undefined,
           ["XDG_DATA_HOME"]: "./dummy-store",
         },
       });
