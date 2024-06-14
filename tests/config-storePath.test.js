@@ -51,6 +51,32 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
+
+    test("when 'XDG_DATA_HOME' is specified", async function () {
+      const storeUrl = new URL("./dummy-store", fixtureUrl);
+
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      assert.fileDoesNotExists(storeUrl);
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
+        env: {
+          ["XDG_DATA_HOME"]: "./dummy-store",
+        },
+      });
+
+      assert.fileExists(storeUrl);
+
+      assert.equal(
+        normalizeOutput(stdout),
+        "adds TypeScript 5.2.2 to <<cwd>>/tests/__fixtures__/.generated/config-storePath/dummy-store/5.2.2\n",
+      );
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
   });
 
   describe("on macOS", function () {
