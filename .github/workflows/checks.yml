@@ -26,7 +26,7 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - run: yarn build
+      - run: yarn build --sourcemap
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
           name: build-${{ github.sha }}
@@ -45,11 +45,11 @@ jobs:
         with:
           check-latest: true
           node-version: lts/*
+      - run: yarn install
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: yarn install
       - run: yarn check:spelling
       - run: yarn check:types
 
@@ -66,11 +66,11 @@ jobs:
         with:
           check-latest: true
           node-version: lts/*
+      - run: yarn install
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: yarn install
       - run: yarn biome ci --error-on-warnings
 
   test-types:
@@ -86,11 +86,11 @@ jobs:
         with:
           check-latest: true
           node-version: lts/*
+      - run: yarn install
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: yarn install
       - run: yarn test:types --target 4.7,5.0,current
       - run: yarn test:examples --target 4.7,5.0,current
       - run: yarn tstyche tests/*.js --target current
@@ -114,11 +114,11 @@ jobs:
         with:
           check-latest: true
           node-version: ${{ matrix.node-version }}
+      - run: yarn install
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: yarn install
       - run: yarn test
         env:
           FORCE_COLOR: true
@@ -141,11 +141,11 @@ jobs:
         with:
           check-latest: true
           node-version: lts/*
+      - run: yarn install
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         with:
           name: build-${{ github.sha }}
           path: build/
-      - run: yarn install
       - run: yarn test
         env:
           FORCE_COLOR: true
@@ -169,14 +169,15 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - run: yarn build --sourcemap
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
       - run: yarn test:e2e
         env:
           FORCE_COLOR: true
           NODE_V8_COVERAGE: coverage/v8-data
       - run: node ./scripts/generate-coverage-report.js
-        env:
-          FORCE_COLOR: true
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
           name: coverage-report-${{ matrix.os }}-${{ github.sha }}
@@ -187,6 +188,7 @@ jobs:
 
     name: Upload Coverage
     needs:
+      - build
       - coverage-collect
     runs-on: ubuntu-latest
 
@@ -197,15 +199,21 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - run: yarn build --sourcemap
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+        with:
+          name: build-${{ github.sha }}
+          path: build/
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         with:
           merge-multiple: true
           path: coverage
           pattern: coverage-report-*
       - run: node ./scripts/merge-coverage-reports.js
+        env:
+          FORCE_COLOR: true
       - run: node ./scripts/upload-coverage-report.js
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
           COMMIT_SHA: ${{ github.sha }}
           COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          FORCE_COLOR: true
