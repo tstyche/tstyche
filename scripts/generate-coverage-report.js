@@ -17,12 +17,9 @@ const coverageReport = new CoverageReport({
   },
 
   sourceFilter: {
-    "**/source/environment/Environment.ts": true,
-    "**/source/path/Path.ts": true,
-
-    // "**/source/*.ts": true,
-    // "**/source/*/*.ts": true,
-    // "**/source/*/*.tsx": true,
+    "**/source/*.ts": true,
+    "**/source/*/*.ts": true,
+    "**/source/*/*.tsx": true,
   },
 
   outputDir: "./coverage",
