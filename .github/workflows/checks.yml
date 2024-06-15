@@ -180,7 +180,7 @@ jobs:
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
           name: coverage-report-${{ matrix.os }}-${{ github.sha }}
-          path: coverage/codacy-coverage-report-*
+          path: coverage/raw-coverage-report-*
 
   coverage-upload:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -203,7 +203,8 @@ jobs:
           merge-multiple: true
           path: coverage
           pattern: coverage-report-*
-      - run: node ./scripts/upload-coverage-reports.js
+      - run: node ./scripts/merge-coverage-reports.js
+      - run: node ./scripts/upload-coverage-report.js
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
           COMMIT_SHA: ${{ github.sha }}

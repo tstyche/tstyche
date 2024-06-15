@@ -33,7 +33,7 @@ const projectToken = resolveProjectToken();
  * @param {string} reportFilePath
  */
 async function uploadCodacyCoverageReport(reportFilePath) {
-  const endpoint = `https://api.codacy.com/2.0/gh/tstyche/tstyche/commit/${commitUuid}/coverage/typescript?partial=true`;
+  const endpoint = `https://api.codacy.com/2.0/gh/tstyche/tstyche/commit/${commitUuid}/coverage/typescript`;
 
   console.info("Uploading coverage report:", reportFilePath);
 
@@ -57,31 +57,31 @@ async function uploadCodacyCoverageReport(reportFilePath) {
   }
 }
 
-async function sendCoverageFinalNotification() {
-  const endpoint = `https://api.codacy.com/2.0/gh/tstyche/tstyche/commit/${commitUuid}/coverageFinal`;
+// async function sendCoverageFinalNotification() {
+//   const endpoint = `https://api.codacy.com/2.0/gh/tstyche/tstyche/commit/${commitUuid}/coverageFinal`;
 
-  try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        ["Accept"]: "application/json",
-        ["project-token"]: projectToken,
-      },
-    });
+//   try {
+//     const response = await fetch(endpoint, {
+//       method: "POST",
+//       headers: {
+//         ["Accept"]: "application/json",
+//         ["project-token"]: projectToken,
+//       },
+//     });
 
-    const result = await response.json();
-    console.info("Success:", result);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
+//     const result = await response.json();
+//     console.info("Success:", result);
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// }
 
 if (isCi) {
-  for (const target of ["linux", "macos", "windows"]) {
-    const reportFilePath = path.resolve(outputDir, `codacy-coverage-report-${target}.json`);
+  // for (const target of ["linux", "macos", "windows"]) {
+  const reportFilePath = path.resolve(outputDir, "codacy-coverage-report.json");
 
-    await uploadCodacyCoverageReport(reportFilePath);
-  }
+  await uploadCodacyCoverageReport(reportFilePath);
+  // }
 
-  await sendCoverageFinalNotification();
+  // await sendCoverageFinalNotification();
 }
