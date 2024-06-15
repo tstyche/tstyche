@@ -1,3 +1,4 @@
+import os from "node:os";
 import { afterEach, before, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
@@ -25,19 +26,105 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
     await clearFixture(fixtureUrl);
   });
 
-  test("has default value", async function () {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
+  describe("on linux", function () {
+    before(function () {
+      if (process.platform !== "linux") {
+        this.skip();
+      }
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+    test("has default value", async function () {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
 
-    assert.matchObject(normalizeOutput(stdout), {
-      storePath: "<<cwd>>/tests/__fixtures__/.generated/config-storePath/.store",
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
+        env: {
+          ["TSTYCHE_STORE_PATH"]: undefined,
+        },
+      });
+
+      assert.matchObject(normalizeOutput(stdout), {
+        storePath: `${os.homedir()}/.local/share/TSTyche`,
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
     });
 
-    assert.equal(stderr, "");
-    assert.equal(exitCode, 0);
+    test("when 'XDG_DATA_HOME' is specified", async function () {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
+        env: {
+          ["XDG_DATA_HOME"]: "/.sample-store",
+          ["TSTYCHE_STORE_PATH"]: undefined,
+        },
+      });
+
+      assert.matchObject(normalizeOutput(stdout), {
+        storePath: "/.sample-store/TSTyche",
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+  });
+
+  describe("on macOS", function () {
+    before(function () {
+      if (process.platform !== "darwin") {
+        this.skip();
+      }
+    });
+
+    test("has default value", async function () {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
+        env: {
+          ["TSTYCHE_STORE_PATH"]: undefined,
+        },
+      });
+
+      assert.matchObject(normalizeOutput(stdout), {
+        storePath: `${os.homedir()}/Library/TSTyche`,
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+  });
+
+  describe("on Windows", function () {
+    before(function () {
+      if (process.platform !== "win32") {
+        this.skip();
+      }
+    });
+
+    test("has default value", async function () {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
+        env: {
+          ["TSTYCHE_STORE_PATH"]: undefined,
+        },
+      });
+
+      assert.matchObject(normalizeOutput(stdout), {
+        storePath: `${process.env["LocalAppData"]}\\TSTyche`.replace(/\\/g, "/"),
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
   });
 
   test("when specified, uses the path", async function () {
