@@ -153,11 +153,11 @@ for (const [identifierText, description, optionDefinitions] of filesToGenerate) 
     resultFile,
   );
 
-  const declarationFileUrl = new URL(`../${identifierText}.ts`, import.meta.url);
+  const declarationFileUrl = new URL(`../models/${identifierText}.ts`, import.meta.url);
 
   await fs.writeFile(
     declarationFileUrl,
-    ["// This is a generated file. See: ./__scripts__/generate-types.js\n", `${declarationFileText}\n`].join("\n"),
+    ["// This is a generated file. See: ../scripts/generate-types.js\n", `${declarationFileText}\n`].join("\n"),
   );
 
   process.stdout.write(`Declaration was written to: '${declarationFileUrl.toString()}'\n`);
