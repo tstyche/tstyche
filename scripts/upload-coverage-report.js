@@ -5,11 +5,11 @@ import process from "node:process";
 const isCi = Boolean(process.env["CI"]);
 
 function resolveCommitSha() {
-  if (process.env["COMMIT_HEAD_SHA"] != null) {
+  if (process.env["COMMIT_HEAD_SHA"]) {
     return process.env["COMMIT_HEAD_SHA"];
   }
 
-  if (process.env["COMMIT_SHA"] != null) {
+  if (process.env["COMMIT_SHA"]) {
     return process.env["COMMIT_SHA"];
   }
 
@@ -17,7 +17,7 @@ function resolveCommitSha() {
 }
 
 function resolveProjectToken() {
-  if (process.env["CODACY_PROJECT_TOKEN"] != null) {
+  if (process.env["CODACY_PROJECT_TOKEN"]) {
     return process.env["CODACY_PROJECT_TOKEN"];
   }
 
