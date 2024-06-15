@@ -2283,16 +2283,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-code-viewer@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "monocart-code-viewer@npm:1.1.3"
-  checksum: 4527f99ea1ad746e457f8d29fafec031663adfbce5d0effdde9c59cb2f78366de0e7f3534356955be9b5855b99462799d96c358c3c2fc4e242ee2677f44a89ef
+"monocart-code-viewer@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "monocart-code-viewer@npm:1.1.4"
+  checksum: 8f4e74244b0f114dbdcd7d5eef1c5b751909e136dbc899b4950f745316a6956fd8e2b8c7f69c62b0e0e4888513f33352821fd578357773c57e0a5b574cf698eb
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.8.3":
-  version: 2.8.3
-  resolution: "monocart-coverage-reports@npm:2.8.3"
+"monocart-coverage-reports@npm:2.8.4":
+  version: 2.8.4
+  resolution: "monocart-coverage-reports@npm:2.8.4"
   dependencies:
     console-grid: ^2.2.2
     eight-colors: ^1.3.0
@@ -2300,13 +2300,13 @@ __metadata:
     istanbul-lib-report: ^3.0.1
     istanbul-reports: ^3.1.7
     lz-utils: ^2.0.2
-    monocart-code-viewer: ^1.1.3
+    monocart-code-viewer: ^1.1.4
     monocart-formatter: ^3.0.0
     monocart-locator: ^1.0.0
-    turbogrid: ^3.0.13
+    turbogrid: ^3.1.0
   bin:
     mcr: lib/cli.js
-  checksum: c907e3405736721fa6b4dae6f77c4afdcc9567628aae2f0d4d1e971093d0df79ad2df14f44382bb4f891ab8298a8f8d50612ce0cf0d612a3d3a2ffdaa7b89577
+  checksum: 946a4a1880e69d7a29adf178a2b11797b1473831e5e0b07ce860ee7f08fa66678a13eea6e46f20544fb16736c84917a1d9f5d4e86ad62527974c3a36621b2c9e
   languageName: node
   linkType: hard
 
@@ -2930,7 +2930,7 @@ __metadata:
     cspell: 8.8.4
     magic-string: 0.30.10
     mocha: 10.4.0
-    monocart-coverage-reports: 2.8.3
+    monocart-coverage-reports: 2.8.4
     pretty-ansi: 2.0.0
     rollup: 4.18.0
     rollup-plugin-dts: 6.1.1
@@ -2946,7 +2946,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"turbogrid@npm:^3.0.13":
+"turbogrid@npm:^3.1.0":
   version: 3.1.0
   resolution: "turbogrid@npm:3.1.0"
   checksum: b35c034f288c84fe145199b8e96b4597d324118df3d32ec67f9655ae590079391b4ea8d7be5c7777a363850d231f02ae5ce5eed73eb465d39460215eaa2de04a
