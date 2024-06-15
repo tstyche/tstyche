@@ -176,7 +176,7 @@ jobs:
       - run: yarn test:e2e
         env:
           FORCE_COLOR: true
-          NODE_V8_COVERAGE: coverage/v8-data
+          NODE_V8_COVERAGE: coverage/v8-coverage-report
       - run: node ./scripts/generate-coverage-report.js
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
