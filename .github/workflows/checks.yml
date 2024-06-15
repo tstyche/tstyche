@@ -180,7 +180,7 @@ jobs:
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
           name: coverage-report-${{ matrix.os }}-${{ github.sha }}
-          path: coverage/codacy-coverage-report-${{ matrix.os }}.json
+          path: coverage/codacy-coverage-report-*
 
   coverage-upload:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
