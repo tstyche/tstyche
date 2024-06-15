@@ -203,8 +203,8 @@ jobs:
           merge-multiple: true
           path: coverage
           pattern: coverage-report-*
-      # - run: node ./scripts/upload-coverage-report.js
-      #   env:
-      #     CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      #     COMMIT_SHA: ${{ github.sha }}
-      #     COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      - run: node ./scripts/upload-coverage-reports.js
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
