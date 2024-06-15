@@ -4,7 +4,7 @@ import { CoverageReport } from "monocart-coverage-reports";
 const isCi = Boolean(process.env["CI"]);
 
 function resolveTarget() {
-  if (process.env["RUNNER_OS"] != null) {
+  if (process.env["RUNNER_OS"]) {
     return process.env["RUNNER_OS"].toLowerCase();
   }
 
