@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macOS-latest, windows-latest]
+        os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -159,7 +159,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -173,11 +173,14 @@ jobs:
       - run: yarn test:run tests/config-storePath.test.js
         env:
           FORCE_COLOR: true
-          NODE_V8_COVERAGE: coverage/${{ matrix.os }}-raw
+          NODE_V8_COVERAGE: coverage/v8-data
+      - run: node ./scripts/generate-coverage-report.js
+        env:
+          FORCE_COLOR: true
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
-          name: coverage-${{ matrix.os }}-${{ github.sha }}
-          path: coverage
+          name: coverage-report-${{ matrix.os }}-${{ github.sha }}
+          path: coverage/codacy-coverage-report-${{ matrix.os }}.json
 
   coverage-upload:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -199,10 +202,9 @@ jobs:
         with:
           merge-multiple: true
           path: coverage
-          pattern: coverage-*
-      - run: node ./scripts/generate-coverage-report.js
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          COMMIT_SHA: ${{ github.sha }}
-          COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          FORCE_COLOR: true
+          pattern: coverage-report-*
+      # - run: node ./scripts/upload-coverage-report.js
+      #   env:
+      #     CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      #     COMMIT_SHA: ${{ github.sha }}
+      #     COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
