@@ -205,3 +205,4 @@ jobs:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
           COMMIT_SHA: ${{ github.sha }}
           COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          FORCE_COLOR: true

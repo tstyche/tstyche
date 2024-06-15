@@ -73,6 +73,9 @@ function getCodacyCoverageReport(coverageResults) {
       continue;
     }
 
+    console.log("file.sourcePath:", file.sourcePath);
+    console.log("file.data:", file.data);
+
     for (const [key, value] of Object.entries(file.data.lines)) {
       if (typeof value === "number") {
         coverage[key] = value;
