@@ -140,10 +140,6 @@ export class StoreService {
   }
 
   async resolveTag(tag: string): Promise<string | undefined> {
-    if (tag === "current") {
-      return tag;
-    }
-
     await this.open();
 
     if (!this.#manifest) {
