@@ -41,12 +41,28 @@ if (isCi) {
 const coverageResults = await coverageReport.generate();
 
 if (isCi) {
+  if (coverageResults == null) {
+    throw new Error("The coverage results are required.");
+  }
+
   const coverageReport = getCodacyCoverageReport(coverageResults);
   await uploadCodacyCoverageReport(coverageReport);
 }
 
+function resolveCommitSha() {
+  if (process.env["COMMIT_HEAD_SHA"] != null) {
+    return process.env["COMMIT_HEAD_SHA"];
+  }
+
+  if (process.env["COMMIT_SHA"] != null) {
+    return process.env["COMMIT_SHA"];
+  }
+
+  throw new Error("The commit SHA is required.");
+}
+
 /**
- * @param {import("monocart-coverage-reports").CoverageResults} coverageResults
+ * @param {NonNullable<import("monocart-coverage-reports").CoverageResults>} coverageResults
  */
 function getCodacyCoverageReport(coverageResults) {
   /** @type {Array<{ filename: string, coverage: Record<string, number> }>} */
@@ -78,14 +94,11 @@ function getCodacyCoverageReport(coverageResults) {
  * @param {Record<string, unknown>} codacyReport
  */
 async function uploadCodacyCoverageReport(codacyReport) {
-  const commitUuid = process.env["GITHUB_SHA"];
+  const commitUuid = resolveCommitSha();
   const projectToken = process.env["CODACY_PROJECT_TOKEN"];
 
-  if (commitUuid == null) {
-    throw new Error("Commit sha is required.");
-  }
   if (projectToken == null) {
-    throw new Error("Project token is required.");
+    throw new Error("The Codacy project token is required.");
   }
 
   const endpoint = `https://api.codacy.com/2.0/gh/tstyche/tstyche/commit/${commitUuid}/coverage/typescript`;
