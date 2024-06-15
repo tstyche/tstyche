@@ -3,8 +3,6 @@ import { CoverageReport } from "monocart-coverage-reports";
 
 const isCi = Boolean(process.env["CI"]);
 
-const outputDir = "./coverage";
-
 function resolveTarget() {
   if (process.env["RUNNER_OS"] != null) {
     return process.env["RUNNER_OS"].toLowerCase();
@@ -32,7 +30,7 @@ const coverageReport = new CoverageReport({
     "**/source/*/*.tsx": true,
   },
 
-  outputDir,
+  outputDir: "./coverage",
 
   reports: isCi ? [["raw", { outputDir: `raw-coverage-report-${resolveTarget()}` }]] : ["console-details", "v8"],
 });

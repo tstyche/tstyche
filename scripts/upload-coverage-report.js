@@ -4,8 +4,6 @@ import process from "node:process";
 
 const isCi = Boolean(process.env["CI"]);
 
-const outputDir = "./coverage";
-
 function resolveCommitSha() {
   if (process.env["COMMIT_HEAD_SHA"] != null) {
     return process.env["COMMIT_HEAD_SHA"];
@@ -57,31 +55,8 @@ async function uploadCodacyCoverageReport(reportFilePath) {
   }
 }
 
-// async function sendCoverageFinalNotification() {
-//   const endpoint = `https://api.codacy.com/2.0/gh/tstyche/tstyche/commit/${commitUuid}/coverageFinal`;
-
-//   try {
-//     const response = await fetch(endpoint, {
-//       method: "POST",
-//       headers: {
-//         ["Accept"]: "application/json",
-//         ["project-token"]: projectToken,
-//       },
-//     });
-
-//     const result = await response.json();
-//     console.info("Success:", result);
-//   } catch (error) {
-//     console.error("Error:", error);
-//   }
-// }
-
 if (isCi) {
-  // for (const target of ["linux", "macos", "windows"]) {
-  const reportFilePath = path.resolve(outputDir, "codacy-coverage-report.json");
+  const reportFilePath = path.resolve("./coverage/codacy-coverage-report.json");
 
   await uploadCodacyCoverageReport(reportFilePath);
-  // }
-
-  // await sendCoverageFinalNotification();
 }
