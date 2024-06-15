@@ -1,11 +1,12 @@
 import process from "node:process";
 import { CoverageReport } from "monocart-coverage-reports";
 
-/** @type {import("monocart-coverage-reports").CoverageReportOptions} */
-const options = {
+const isCi = Boolean(process.env["CI"]);
+
+const coverageReport = new CoverageReport({
   all: "./source",
 
-  clean: true,
+  clean: false,
   cleanCache: true,
 
   entryFilter: {
@@ -16,19 +17,20 @@ const options = {
   },
 
   sourceFilter: {
-    "**/source/*.ts": true,
-    "**/source/*/*.ts": true,
-    "**/source/*/*.tsx": true,
+    "**/source/environment/Environment.ts": true,
+    "**/source/path/Path.ts": true,
+
+    // "**/source/*.ts": true,
+    // "**/source/*/*.ts": true,
+    // "**/source/*/*.tsx": true,
   },
 
   outputDir: "./coverage",
 
-  reports: process.env["CI"] ? ["lcovonly"] : ["console-details", "lcovonly", "v8"],
-};
+  reports: isCi ? ["console-summary"] : ["console-details", "v8"],
+});
 
-const coverageReport = new CoverageReport(options);
-
-if (process.env["CI"]) {
+if (isCi) {
   for (const platform of ["ubuntu-latest", "macOS-latest", "windows-latest"]) {
     await coverageReport.addFromDir(`./coverage/${platform}-raw`);
   }
@@ -36,4 +38,72 @@ if (process.env["CI"]) {
   await coverageReport.addFromDir("./coverage/raw");
 }
 
-await coverageReport.generate();
+const coverageResults = await coverageReport.generate();
+
+if (isCi) {
+  const coverageReport = getCodacyCoverageReport(coverageResults);
+  await uploadCodacyCoverageReport(coverageReport);
+}
+
+/**
+ * @param {import("monocart-coverage-reports").CoverageResults} coverageResults
+ */
+function getCodacyCoverageReport(coverageResults) {
+  /** @type {Array<{ filename: string, coverage: Record<string, number> }>} */
+  const fileReports = [];
+
+  for (const file of coverageResults.files) {
+    /** @type {Record<string, number>} */
+    const coverage = {};
+
+    if (file.data == null) {
+      continue;
+    }
+
+    for (const [key, value] of Object.entries(file.data.lines)) {
+      if (typeof value === "number") {
+        coverage[key] = value;
+      } else {
+        coverage[key] = 0;
+      }
+    }
+
+    fileReports.push({ filename: file.sourcePath, coverage });
+  }
+
+  return { fileReports };
+}
+
+/**
+ * @param {Record<string, unknown>} codacyReport
+ */
+async function uploadCodacyCoverageReport(codacyReport) {
+  const commitUuid = process.env["GITHUB_SHA"];
+  const projectToken = process.env["CODACY_PROJECT_TOKEN"];
+
+  if (commitUuid == null) {
+    throw new Error("Commit sha is required.");
+  }
+  if (projectToken == null) {
+    throw new Error("Project token is required.");
+  }
+
+  const endpoint = `https://api.codacy.com/2.0/gh/tstyche/tstyche/commit/${commitUuid}/coverage/typescript`;
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        ["Content-Type"]: "application/json",
+        ["Accept"]: "application/json",
+        ["project-token"]: projectToken,
+      },
+      body: JSON.stringify(codacyReport),
+    });
+
+    const result = await response.json();
+    console.info("Success:", result);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
