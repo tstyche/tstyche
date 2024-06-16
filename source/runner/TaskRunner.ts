@@ -6,7 +6,7 @@ import { Result, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
-import { type RunCallback, WatchService } from "#watch";
+import { WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
 
 export class TaskRunner {
@@ -78,13 +78,7 @@ export class TaskRunner {
   }
 
   async #watch(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
-    await this.#run(testFiles, cancellationToken);
-
-    const runCallback: RunCallback = async (testFiles) => {
-      await this.#run(testFiles, cancellationToken);
-    };
-
-    const watchService = new WatchService(this.#resolvedConfig, runCallback, this.#selectService, testFiles);
+    const watchService = new WatchService(this.#resolvedConfig, this.#selectService, testFiles);
 
     cancellationToken?.onCancellationRequested((reason) => {
       if (reason !== CancellationReason.FailFast) {
@@ -92,6 +86,8 @@ export class TaskRunner {
       }
     });
 
-    await watchService.watch(cancellationToken);
+    for await (const testFiles of watchService.watch(cancellationToken)) {
+      await this.#run(testFiles, cancellationToken);
+    }
   }
 }
