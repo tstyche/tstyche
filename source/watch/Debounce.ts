@@ -12,7 +12,6 @@ export class Debounce {
   }
 
   resolve(): void {
-    this.clear();
     this.#resolve?.();
   }
 
