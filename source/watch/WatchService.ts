@@ -11,7 +11,7 @@ import { type WatchHandler, Watcher } from "./Watcher.js";
 
 export class WatchService {
   #debounce = new Debounce(100);
-  #inputService: InputService;
+  #inputService: InputService | undefined;
   #queueTestFiles = new Map<string, TestFile>();
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
@@ -24,6 +24,26 @@ export class WatchService {
 
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
     this.#queueTestFiles = new Map(this.#watchedTestFiles);
+  }
+
+  #onDiagnostic(this: void, diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["watch:error", { diagnostics: [diagnostic] }]);
+  }
+
+  async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<TestFile>> {
+    const onClose = (reason: CancellationReason) => {
+      this.#debounce.clear();
+
+      this.#inputService?.close();
+
+      for (const watcher of this.#watchers) {
+        watcher.close();
+      }
+
+      cancellationToken.cancel(reason);
+
+      this.#debounce.resolve();
+    };
 
     const onInput: InputHandler = (chunk) => {
       switch (chunk.toLowerCase()) {
@@ -32,7 +52,7 @@ export class WatchService {
         case "\u001B" /* Escape */:
         case "q":
         case "x": {
-          this.close();
+          onClose(CancellationReason.WatchClose);
           break;
         }
 
@@ -52,22 +72,7 @@ export class WatchService {
     };
 
     this.#inputService = new InputService(onInput);
-  }
 
-  close(): void {
-    this.#inputService.close();
-    this.#debounce.resolve();
-
-    for (const watcher of this.#watchers) {
-      watcher.close();
-    }
-  }
-
-  #onDiagnostic(this: void, diagnostic: Diagnostic) {
-    EventEmitter.dispatch(["watch:error", { diagnostics: [diagnostic] }]);
-  }
-
-  async *watch(cancellationToken?: CancellationToken): AsyncIterable<Array<TestFile>> {
     const onChangedFile: WatchHandler = (filePath) => {
       this.#debounce.refresh();
 
@@ -95,11 +100,7 @@ export class WatchService {
     this.#watchers.push(new Watcher(this.#resolvedConfig.rootPath, onChangedFile, onRemovedFile, { recursive: true }));
 
     const onChangedConfigFile = () => {
-      this.#debounce.clear();
-
-      cancellationToken?.cancel(CancellationReason.ConfigChange);
-
-      this.#debounce.resolve();
+      onClose(CancellationReason.ConfigChange);
     };
 
     this.#watchers.push(new FileWatcher(this.#resolvedConfig.configFilePath, onChangedConfigFile));
@@ -108,7 +109,7 @@ export class WatchService {
       watcher.watch();
     }
 
-    while (cancellationToken != null && !cancellationToken.isCancellationRequested) {
+    while (!cancellationToken.isCancellationRequested) {
       if (this.#queueTestFiles.size !== 0) {
         const testFiles = [...this.#queueTestFiles.values()];
         this.#queueTestFiles.clear();

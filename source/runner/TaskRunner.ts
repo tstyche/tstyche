@@ -46,7 +46,7 @@ export class TaskRunner {
     }
   }
 
-  async #run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
+  async #run(testFiles: Array<TestFile>, cancellationToken: CancellationToken): Promise<void> {
     const result = new Result(this.#resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["run:start", { result }]);
@@ -72,19 +72,13 @@ export class TaskRunner {
 
     EventEmitter.dispatch(["run:end", { result }]);
 
-    if (cancellationToken?.reason === CancellationReason.FailFast) {
+    if (cancellationToken.reason === CancellationReason.FailFast) {
       cancellationToken.reset();
     }
   }
 
-  async #watch(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
+  async #watch(testFiles: Array<TestFile>, cancellationToken: CancellationToken): Promise<void> {
     const watchService = new WatchService(this.#resolvedConfig, this.#selectService, testFiles);
-
-    cancellationToken?.onCancellationRequested((reason) => {
-      if (reason !== CancellationReason.FailFast) {
-        watchService.close();
-      }
-    });
 
     for await (const testFiles of watchService.watch(cancellationToken)) {
       await this.#run(testFiles, cancellationToken);
