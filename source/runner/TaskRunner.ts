@@ -84,14 +84,14 @@ export class TaskRunner {
       await this.#run(testFiles, cancellationToken);
     };
 
-    const watchModeManager = new WatchService(this.#resolvedConfig, runCallback, this.#selectService, testFiles);
+    const watchService = new WatchService(this.#resolvedConfig, runCallback, this.#selectService, testFiles);
 
     cancellationToken?.onCancellationRequested((reason) => {
       if (reason !== CancellationReason.FailFast) {
-        watchModeManager.close();
+        watchService.close();
       }
     });
 
-    await watchModeManager.watch(cancellationToken);
+    await watchService.watch(cancellationToken);
   }
 }
