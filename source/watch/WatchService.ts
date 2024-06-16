@@ -30,8 +30,6 @@ export class WatchService {
   }
 
   async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<TestFile>> {
-    yield [...this.#watchedTestFiles.values()];
-
     const onClose = (reason: CancellationReason) => {
       this.#debounce.clear();
 

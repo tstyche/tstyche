@@ -36,6 +36,7 @@ export class TaskRunner {
     }
 
     if (this.#resolvedConfig.watch === true) {
+      await this.#run(testFiles, cancellationToken);
       await this.#watch(testFiles, cancellationToken);
     } else {
       await this.#run(testFiles, cancellationToken);
