@@ -13,14 +13,6 @@ export class CollectService {
   }
 
   #collectTestMembers(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestMember) {
-    if (this.#compiler.isBlock(node)) {
-      this.#compiler.forEachChild(node, (node) => {
-        this.#collectTestMembers(node, new IdentifierLookup(this.#compiler, identifiers.clone()), parent);
-      });
-
-      return;
-    }
-
     if (this.#compiler.isCallExpression(node)) {
       const meta = identifiers.resolveTestMemberMeta(node);
 
@@ -76,16 +68,6 @@ export class CollectService {
       identifiers.handleImportDeclaration(node);
 
       return;
-    }
-
-    // TODO let a;
-    if (this.#compiler.isVariableDeclaration(node)) {
-      // identifiers.handleVariableDeclaration(node);
-    }
-
-    // TODO a = 'b';
-    if (this.#compiler.isBinaryExpression(node)) {
-      // identifiers.handleVariableDeclaration(node);
     }
 
     this.#compiler.forEachChild(node, (node) => {
