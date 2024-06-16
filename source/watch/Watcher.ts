@@ -25,7 +25,7 @@ export class Watcher {
     this.#watcher?.close();
   }
 
-  watch(): Promise<void> {
+  watch(): void {
     this.#watcher = watch(this.#targetPath, { recursive: this.#recursive }, (_eventType, fileName) => {
       if (fileName != null) {
         const filePath = Path.resolve(this.#targetPath, fileName);
@@ -36,12 +36,6 @@ export class Watcher {
           this.#onRemoved(filePath);
         }
       }
-    });
-
-    return new Promise((resolve) => {
-      this.#watcher?.on("close", () => {
-        resolve();
-      });
     });
   }
 }

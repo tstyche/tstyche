@@ -144,36 +144,42 @@ export class Cli {
     selectService: SelectService | undefined,
     cancellationToken: CancellationToken,
   ) {
-    const watchers: Array<Watcher> = [];
+    return new Promise<void>((resolve) => {
+      const watchers: Array<Watcher> = [];
 
-    cancellationToken.reset();
+      cancellationToken.reset();
 
-    this.#outputService.writeMessage(waitingForFileChangesText());
+      this.#outputService.writeMessage(waitingForFileChangesText());
 
-    const onChanged = () => {
-      cancellationToken.cancel(CancellationReason.ConfigChange);
+      const onChanged = () => {
+        cancellationToken.cancel(CancellationReason.ConfigChange);
+
+        for (const watcher of watchers) {
+          watcher.close();
+        }
+
+        resolve();
+      };
+
+      watchers.push(new FileWatcher(resolvedConfig.configFilePath, onChanged));
+
+      if (selectService != null) {
+        const onChangedTestFile: WatchHandler = (filePath) => {
+          if (selectService.isTestFile(filePath)) {
+            onChanged();
+          }
+        };
+
+        const onRemoved: WatchHandler = () => {
+          // do nothing, only added files are important
+        };
+
+        watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, { recursive: true }));
+      }
 
       for (const watcher of watchers) {
-        watcher.close();
+        watcher.watch();
       }
-    };
-
-    watchers.push(new FileWatcher(resolvedConfig.configFilePath, onChanged));
-
-    if (selectService != null) {
-      const onChangedTestFile: WatchHandler = (filePath) => {
-        if (selectService.isTestFile(filePath)) {
-          onChanged();
-        }
-      };
-
-      const onRemoved: WatchHandler = () => {
-        // do nothing, only added files are important
-      };
-
-      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, { recursive: true }));
-    }
-
-    return Promise.all(watchers.map((watcher) => watcher.watch()));
+    });
   }
 }
