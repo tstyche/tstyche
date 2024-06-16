@@ -11,8 +11,8 @@ import { type WatchHandler, Watcher } from "./Watcher.js";
 
 export class WatchService {
   #debounce = new Debounce(100);
+  #enqueuedTestFiles = new Map<string, TestFile>();
   #inputService: InputService | undefined;
-  #queueTestFiles = new Map<string, TestFile>();
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
   #watchers: Array<Watcher> = [];
@@ -23,7 +23,6 @@ export class WatchService {
     this.#selectService = selectService;
 
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
-    this.#queueTestFiles = new Map(this.#watchedTestFiles);
   }
 
   #onDiagnostic(this: void, diagnostic: Diagnostic) {
@@ -31,6 +30,8 @@ export class WatchService {
   }
 
   async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<TestFile>> {
+    yield [...this.#watchedTestFiles.values()];
+
     const onClose = (reason: CancellationReason) => {
       this.#debounce.clear();
 
@@ -62,7 +63,7 @@ export class WatchService {
           this.#debounce.clear();
 
           if (this.#watchedTestFiles.size !== 0) {
-            this.#queueTestFiles = new Map(this.#watchedTestFiles);
+            this.#enqueuedTestFiles = new Map(this.#watchedTestFiles);
             this.#debounce.resolve();
           }
 
@@ -79,17 +80,17 @@ export class WatchService {
       let testFile = this.#watchedTestFiles.get(filePath);
 
       if (testFile != null) {
-        this.#queueTestFiles.set(filePath, testFile);
+        this.#enqueuedTestFiles.set(filePath, testFile);
       } else if (this.#selectService.isTestFile(filePath)) {
         testFile = new TestFile(filePath);
 
-        this.#queueTestFiles.set(filePath, testFile);
+        this.#enqueuedTestFiles.set(filePath, testFile);
         this.#watchedTestFiles.set(filePath, testFile);
       }
     };
 
     const onRemovedFile: WatchHandler = (filePath) => {
-      this.#queueTestFiles.delete(filePath);
+      this.#enqueuedTestFiles.delete(filePath);
       this.#watchedTestFiles.delete(filePath);
 
       if (this.#watchedTestFiles.size === 0) {
@@ -110,9 +111,9 @@ export class WatchService {
     }
 
     while (!cancellationToken.isCancellationRequested) {
-      if (this.#queueTestFiles.size !== 0) {
-        const testFiles = [...this.#queueTestFiles.values()];
-        this.#queueTestFiles.clear();
+      if (this.#enqueuedTestFiles.size !== 0) {
+        const testFiles = [...this.#enqueuedTestFiles.values()];
+        this.#enqueuedTestFiles.clear();
 
         yield testFiles;
       }
