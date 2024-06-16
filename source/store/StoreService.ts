@@ -40,7 +40,7 @@ export class StoreService {
       return;
     }
 
-    const version = await this.resolveTag(tag);
+    const version = await this.#resolveTag(tag);
 
     if (version == null) {
       this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
@@ -63,7 +63,7 @@ export class StoreService {
     if (tag === "current" && Environment.typescriptPath != null) {
       modulePath = Environment.typescriptPath;
     } else {
-      const version = await this.resolveTag(tag);
+      const version = await this.#resolveTag(tag);
 
       if (version == null) {
         this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
@@ -139,7 +139,7 @@ export class StoreService {
     this.#manifest = await this.#manifestWorker.open();
   }
 
-  async resolveTag(tag: string): Promise<string | undefined> {
+  async #resolveTag(tag: string): Promise<string | undefined> {
     await this.open();
 
     if (!this.#manifest) {
