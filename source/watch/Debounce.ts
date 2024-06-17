@@ -27,7 +27,7 @@ export class Debounce<T> {
     this.#resolve?.(value);
   }
 
-  set(): Promise<T> {
+  setup(): Promise<T> {
     return new Promise<T>((resolve) => {
       this.#resolve = resolve;
     });

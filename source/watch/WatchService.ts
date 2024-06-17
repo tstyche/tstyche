@@ -118,7 +118,7 @@ export class WatchService {
     }
 
     while (!cancellationToken.isCancellationRequested) {
-      const testFiles = await debounce.set();
+      const testFiles = await debounce.setup();
 
       if (testFiles.length > 0) {
         yield testFiles;
