@@ -535,9 +535,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-rust@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "@cspell/dict-rust@npm:4.0.3"
-  checksum: c31379be3ed190405b4ac8d71653f1fb599f40e75338c3f1bb2b3c643769cd99f35eb90c8da0767021df2f56e21297909bc9c62c4f5d122c156693f6edd069a6
+  version: 4.0.4
+  resolution: "@cspell/dict-rust@npm:4.0.4"
+  checksum: 7ff86c4f172bf039ff1264f4736d9638d0792ab39ff5fc48812831241d622040f6591a3d9f630325537b0a4913e242bea14005ec3d2e3c167f933fe1416e0caa
   languageName: node
   linkType: hard
 
@@ -549,9 +549,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^3.4.1":
-  version: 3.4.3
-  resolution: "@cspell/dict-software-terms@npm:3.4.3"
-  checksum: 8aa3e91f28b23ad1661a99ff5ef167b2c60e3d7e212baf447182203f360645907b9df329e2d4128fe2e10743bbe85a1bbcf53ed2ef5131c7187c30ddd6c747dd
+  version: 3.4.6
+  resolution: "@cspell/dict-software-terms@npm:3.4.6"
+  checksum: 4c4e564b165a6269fa85ef53c7741d1bbe58e8381e57cee1e7bf980195604f30a06422305c405d310c74c206acce201ca530b6253eeac4215ce172cbde6dd400
   languageName: node
   linkType: hard
 
@@ -1591,12 +1591,12 @@ __metadata:
   linkType: hard
 
 "foreground-child@npm:^3.1.0":
-  version: 3.1.1
-  resolution: "foreground-child@npm:3.1.1"
+  version: 3.2.1
+  resolution: "foreground-child@npm:3.2.1"
   dependencies:
     cross-spawn: ^7.0.0
     signal-exit: ^4.0.1
-  checksum: 139d270bc82dc9e6f8bc045fe2aae4001dc2472157044fdfad376d0a3457f77857fa883c1c8b21b491c6caade9a926a4bed3d3d2e8d3c9202b151a4cbbd0bcd5
+  checksum: 3e2e844d6003c96d70affe8ae98d7eaaba269a868c14d997620c088340a8775cd5d2d9043e6ceebae1928d8d9a874911c4d664b9a267e8995945df20337aebc0
   languageName: node
   linkType: hard
 
