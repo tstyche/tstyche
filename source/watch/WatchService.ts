@@ -5,13 +5,12 @@ import { TestFile } from "#file";
 import { type InputHandler, InputService } from "#input";
 import { SelectDiagnosticText, type SelectService } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
-import { Debounce } from "./Debounce.js";
+import { Debounce, type ResolveHandler } from "./Debounce.js";
 import { FileWatcher } from "./FileWatcher.js";
 import { type WatchHandler, Watcher } from "./Watcher.js";
 
 export class WatchService {
-  #debounce = new Debounce(100);
-  #enqueuedTestFiles = new Map<string, TestFile>();
+  #changedTestFiles = new Map<string, TestFile>();
   #inputService: InputService | undefined;
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
@@ -30,8 +29,17 @@ export class WatchService {
   }
 
   async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<TestFile>> {
+    const onResolve: ResolveHandler<Array<TestFile>> = () => {
+      const testFiles = [...this.#changedTestFiles.values()];
+      this.#changedTestFiles.clear();
+
+      return testFiles;
+    };
+
+    const debounce = new Debounce<Array<TestFile>>(100, onResolve);
+
     const onClose = (reason: CancellationReason) => {
-      this.#debounce.clear();
+      debounce.clearTimeout();
 
       this.#inputService?.close();
 
@@ -41,7 +49,7 @@ export class WatchService {
 
       cancellationToken.cancel(reason);
 
-      this.#debounce.resolve();
+      debounce.resolveWith([]);
     };
 
     const onInput: InputHandler = (chunk) => {
@@ -58,11 +66,10 @@ export class WatchService {
         case "\u000D" /* Return */:
         case "\u0020" /* Space */:
         case "a": {
-          this.#debounce.clear();
+          debounce.clearTimeout();
 
           if (this.#watchedTestFiles.size !== 0) {
-            this.#enqueuedTestFiles = new Map(this.#watchedTestFiles);
-            this.#debounce.resolve();
+            debounce.resolveWith([...this.#watchedTestFiles.values()]);
           }
 
           break;
@@ -73,25 +80,27 @@ export class WatchService {
     this.#inputService = new InputService(onInput);
 
     const onChangedFile: WatchHandler = (filePath) => {
-      this.#debounce.refresh();
+      debounce.refreshTimeout();
 
       let testFile = this.#watchedTestFiles.get(filePath);
 
       if (testFile != null) {
-        this.#enqueuedTestFiles.set(filePath, testFile);
+        this.#changedTestFiles.set(filePath, testFile);
       } else if (this.#selectService.isTestFile(filePath)) {
         testFile = new TestFile(filePath);
 
-        this.#enqueuedTestFiles.set(filePath, testFile);
+        this.#changedTestFiles.set(filePath, testFile);
         this.#watchedTestFiles.set(filePath, testFile);
       }
     };
 
     const onRemovedFile: WatchHandler = (filePath) => {
-      this.#enqueuedTestFiles.delete(filePath);
+      this.#changedTestFiles.delete(filePath);
       this.#watchedTestFiles.delete(filePath);
 
       if (this.#watchedTestFiles.size === 0) {
+        debounce.clearTimeout();
+
         this.#onDiagnostic(Diagnostic.error(SelectDiagnosticText.noTestFilesWereLeft(this.#resolvedConfig)));
       }
     };
@@ -109,14 +118,11 @@ export class WatchService {
     }
 
     while (!cancellationToken.isCancellationRequested) {
-      if (this.#enqueuedTestFiles.size !== 0) {
-        const testFiles = [...this.#enqueuedTestFiles.values()];
-        this.#enqueuedTestFiles.clear();
+      const testFiles = await debounce.set();
 
+      if (testFiles.length > 0) {
         yield testFiles;
       }
-
-      await this.#debounce.wait();
     }
   }
 }

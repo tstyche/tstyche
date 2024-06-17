@@ -1,30 +1,34 @@
-export class Debounce {
+export type ResolveHandler<T> = () => T;
+
+export class Debounce<T> {
   #delay: number;
-  #resolve: (() => void) | undefined;
+  #onResolve: ResolveHandler<T>;
+  #resolve: ((value: T) => void) | undefined;
   #timeout: ReturnType<typeof setTimeout> | undefined;
 
-  constructor(delay: number) {
+  constructor(delay: number, onResolve: ResolveHandler<T>) {
     this.#delay = delay;
+    this.#onResolve = onResolve;
   }
 
-  clear(): void {
+  clearTimeout(): void {
     clearTimeout(this.#timeout);
   }
 
-  resolve(): void {
-    this.#resolve?.();
-  }
-
-  refresh(): void {
-    this.clear();
+  refreshTimeout(): void {
+    this.clearTimeout();
 
     this.#timeout = setTimeout(() => {
-      this.#resolve?.();
+      this.#resolve?.(this.#onResolve?.());
     }, this.#delay);
   }
 
-  wait(): Promise<void> {
-    return new Promise<void>((resolve) => {
+  resolveWith(value: T): void {
+    this.#resolve?.(value);
+  }
+
+  set(): Promise<T> {
+    return new Promise<T>((resolve) => {
       this.#resolve = resolve;
     });
   }
