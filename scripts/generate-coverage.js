@@ -15,7 +15,7 @@ function resolveReportTarget() {
 const reports = ["console-details"];
 
 if (isCi) {
-  reports.push(["raw", { outputDir: `raw-coverage-report-${resolveReportTarget()}` }]);
+  reports.push(["raw", { outputDir: `raw-coverage-${resolveReportTarget()}` }]);
 } else {
   reports.push("v8");
 }
@@ -44,6 +44,6 @@ const coverageReport = new CoverageReport({
   reports,
 });
 
-await coverageReport.addFromDir("./coverage/v8-coverage-report");
+await coverageReport.addFromDir("./coverage/v8-coverage");
 
 await coverageReport.generate();
