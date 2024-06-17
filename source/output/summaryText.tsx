@@ -59,19 +59,11 @@ function CountText({ failed, passed, skipped, todo, total }: CountTextProps) {
 }
 
 interface DurationTextProps {
-  duration: number;
+  seconds: number;
 }
 
-function DurationText({ duration }: DurationTextProps) {
-  const minutes = Math.floor(duration / 60);
-  const seconds = duration % 60;
-
-  return (
-    <Text>
-      {minutes > 0 ? `${String(minutes)}m ` : undefined}
-      {`${String(Math.round(seconds * 10) / 10)}s`}
-    </Text>
-  );
+function DurationText({ seconds }: DurationTextProps) {
+  return <Text>{`${String(Math.round(seconds * 10) / 10)}s`}</Text>;
 }
 
 interface MatchTextProps {
@@ -239,7 +231,7 @@ export function summaryText({
       {fileCountText}
       {testCount.total > 0 ? testCountText : undefined}
       {expectCount.total > 0 ? assertionCountText : undefined}
-      <RowText label="Duration" text={<DurationText duration={duration / 1000} />} />
+      <RowText label="Duration" text={<DurationText seconds={duration / 1000} />} />
       <Line />
       <RanFilesText onlyMatch={onlyMatch} pathMatch={pathMatch} skipMatch={skipMatch} />
     </Text>
