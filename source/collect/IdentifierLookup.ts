@@ -26,14 +26,6 @@ export class IdentifierLookup {
     };
   }
 
-  clone(): Identifiers {
-    // TODO use 'structuredClone()' after dropping support for Node.js 16
-    return {
-      namedImports: { ...this.#identifiers.namedImports },
-      namespace: this.#identifiers.namespace,
-    };
-  }
-
   handleImportDeclaration(node: ts.ImportDeclaration): void {
     if (
       this.#moduleSpecifiers.includes(node.moduleSpecifier.getText()) &&

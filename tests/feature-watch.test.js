@@ -403,7 +403,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when the '--failFast' command line option is set", async function () {
+    test("when the '--failFast' command line option is specified", async function () {
       const process = new Process(fixtureUrl, ["--failFast", "--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();

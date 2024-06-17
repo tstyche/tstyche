@@ -3,12 +3,21 @@ import { CoverageReport } from "monocart-coverage-reports";
 
 const isCi = Boolean(process.env["CI"]);
 
-function resolveTarget() {
+function resolveReportTarget() {
   if (process.env["RUNNER_OS"]) {
     return process.env["RUNNER_OS"].toLowerCase();
   }
 
   return "local";
+}
+
+/** @type {import("monocart-coverage-reports").CoverageReportOptions['reports']} */
+const reports = ["console-details"];
+
+if (isCi) {
+  reports.push(["raw", { outputDir: `raw-coverage-${resolveReportTarget()}` }]);
+} else {
+  reports.push("v8");
 }
 
 const coverageReport = new CoverageReport({
@@ -32,9 +41,9 @@ const coverageReport = new CoverageReport({
 
   outputDir: "./coverage",
 
-  reports: isCi ? [["raw", { outputDir: `raw-coverage-report-${resolveTarget()}` }]] : ["console-details", "v8"],
+  reports,
 });
 
-await coverageReport.addFromDir("./coverage/v8-data");
+await coverageReport.addFromDir("./coverage/v8-coverage");
 
 await coverageReport.generate();

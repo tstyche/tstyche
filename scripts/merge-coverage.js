@@ -30,21 +30,15 @@ async function writeCodacyCoverageReport(coverageResults) {
     fileReports.push({ filename: file.sourcePath, coverage });
   }
 
-  const outputFilePath = path.resolve(outputDir, "codacy-coverage-report.json");
+  const outputFilePath = path.resolve(outputDir, "codacy-coverage.json");
 
   await fs.writeFile(outputFilePath, JSON.stringify({ fileReports }, null, 2));
 
   console.info("Coverage report was written to:", outputFilePath);
 }
 
-const inputDir = [
-  "./coverage/raw-coverage-report-linux",
-  "./coverage/raw-coverage-report-macos",
-  "./coverage/raw-coverage-report-windows",
-];
-
 const coverageReport = new CoverageReport({
-  inputDir,
+  inputDir: ["./coverage/raw-coverage-linux", "./coverage/raw-coverage-macos", "./coverage/raw-coverage-windows"],
   outputDir,
 
   all: "./source",

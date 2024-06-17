@@ -1,13 +1,13 @@
 import { Path } from "#path";
 import { type WatchHandler, Watcher } from "./Watcher.js";
 
-export type FileWatchHandler = () => void | Promise<void>;
+export type FileWatchHandler = () => void;
 
 export class FileWatcher extends Watcher {
   constructor(targetPath: string, onChanged: FileWatchHandler) {
-    const onChangedFile: WatchHandler = async (filePath) => {
+    const onChangedFile: WatchHandler = (filePath) => {
       if (filePath === targetPath) {
-        await onChanged();
+        onChanged();
       }
     };
 

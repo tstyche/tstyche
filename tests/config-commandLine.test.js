@@ -66,11 +66,15 @@ describe("'tstyche' command", function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
-      ["feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
-      ["feature/__tests__/isString.tst.ts"]: isStringTestText,
+      ["a-feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
+      ["a-feature/__tests__/isString.tst.ts"]: isStringTestText,
+      ["b-feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
+      ["b-feature/__tests__/isString.tst.ts"]: isStringTestText,
+      ["c-feature/__tests__/isNumber.tst.ts"]: isNumberTestText,
+      ["c-feature/__tests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["string", "feature"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["string", "a-feature", "b-feature"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-multiple-search-stdout`,

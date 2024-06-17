@@ -176,12 +176,14 @@ jobs:
       - run: yarn test:e2e
         env:
           FORCE_COLOR: true
-          NODE_V8_COVERAGE: coverage/v8-data
-      - run: node ./scripts/generate-coverage-report.js
+          NODE_V8_COVERAGE: coverage/v8-coverage
+      - run: node ./scripts/generate-coverage.js
+        env:
+          FORCE_COLOR: true
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
-          name: coverage-report-${{ matrix.os }}-${{ github.sha }}
-          path: coverage/raw-coverage-report-*
+          name: coverage-${{ matrix.os }}-${{ github.sha }}
+          path: coverage/raw-coverage-*
 
   coverage-upload:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -207,11 +209,11 @@ jobs:
         with:
           merge-multiple: true
           path: coverage
-          pattern: coverage-report-*
-      - run: node ./scripts/merge-coverage-reports.js
+          pattern: coverage-*
+      - run: node ./scripts/merge-coverage.js
         env:
           FORCE_COLOR: true
-      - run: node ./scripts/upload-coverage-report.js
+      - run: node ./scripts/upload-coverage.js
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
           COMMIT_SHA: ${{ github.sha }}

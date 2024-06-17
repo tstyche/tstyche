@@ -6,7 +6,7 @@ import { Result, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
-import { type RunCallback, WatchService } from "#watch";
+import { WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
 
 export class TaskRunner {
@@ -36,6 +36,7 @@ export class TaskRunner {
     }
 
     if (this.#resolvedConfig.watch === true) {
+      await this.#run(testFiles, cancellationToken);
       await this.#watch(testFiles, cancellationToken);
     } else {
       await this.#run(testFiles, cancellationToken);
@@ -46,7 +47,7 @@ export class TaskRunner {
     }
   }
 
-  async #run(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
+  async #run(testFiles: Array<TestFile>, cancellationToken: CancellationToken): Promise<void> {
     const result = new Result(this.#resolvedConfig, testFiles);
 
     EventEmitter.dispatch(["run:start", { result }]);
@@ -72,26 +73,16 @@ export class TaskRunner {
 
     EventEmitter.dispatch(["run:end", { result }]);
 
-    if (cancellationToken?.reason === CancellationReason.FailFast) {
+    if (cancellationToken.reason === CancellationReason.FailFast) {
       cancellationToken.reset();
     }
   }
 
-  async #watch(testFiles: Array<TestFile>, cancellationToken?: CancellationToken): Promise<void> {
-    await this.#run(testFiles, cancellationToken);
+  async #watch(testFiles: Array<TestFile>, cancellationToken: CancellationToken): Promise<void> {
+    const watchService = new WatchService(this.#resolvedConfig, this.#selectService, testFiles);
 
-    const runCallback: RunCallback = async (testFiles) => {
+    for await (const testFiles of watchService.watch(cancellationToken)) {
       await this.#run(testFiles, cancellationToken);
-    };
-
-    const watchModeManager = new WatchService(this.#resolvedConfig, runCallback, this.#selectService, testFiles);
-
-    cancellationToken?.onCancellationRequested((reason) => {
-      if (reason !== CancellationReason.FailFast) {
-        watchModeManager.close();
-      }
-    });
-
-    await watchModeManager.watch(cancellationToken);
+    }
   }
 }
