@@ -167,7 +167,7 @@ export class TestTreeWorker {
           return diagnostic.add({ origin });
         }
 
-        return diagnostic;
+        return diagnostic.add({ origin: { ...diagnostic.origin, breadcrumbs: assertion.ancestorNames } });
       });
 
       EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);

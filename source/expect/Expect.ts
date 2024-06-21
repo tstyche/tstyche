@@ -4,6 +4,7 @@ import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
+import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
@@ -16,6 +17,7 @@ export class Expect {
   #compiler: typeof ts;
   #typeChecker: TypeChecker;
 
+  toAcceptProps: ToAcceptProps;
   toBe: ToBe;
   toBeAny: PrimitiveTypeMatcher;
   toBeAssignable: ToBeAssignableWith;
@@ -41,6 +43,7 @@ export class Expect {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
 
+    this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe(typeChecker);
     this.toBeAny = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Any);
     this.toBeAssignable = new ToBeAssignableWith(typeChecker);
@@ -95,6 +98,26 @@ export class Expect {
     const matcherNameText = assertion.matcherName.getText();
 
     switch (matcherNameText) {
+      case "toAcceptProps": {
+        if (assertion.source[0] == null) {
+          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const sourceType = this.#getType(assertion.source[0]);
+
+        const signatures = sourceType.getCallSignatures();
+
+        // TODO make sure the return type is 'JSX.Element'
+        // const returnType = signatures[0]?.getReturnType();
+
+        return this.toAcceptProps.match(
+          { signatures: [...signatures], node: assertion.source[0] },
+          assertion.target[0] && { node: assertion.target[0], type: this.#getType(assertion.target[0]) },
+        );
+      }
+
       case "toBeAssignable":
       // biome-ignore lint/suspicious/noFallthroughSwitchClause: break is omitted intentionally
       case "toEqual":

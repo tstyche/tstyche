@@ -1,0 +1,126 @@
+Error: Type 'boolean' is not assignable to type 'string'.
+
+  13 |   test("accepts props", () => {
+  14 |     expect(Button).type.toAcceptProps({ text: "Send" });
+> 15 |     expect(Button).type.toAcceptProps({ text: true }); // fail
+     |                                         ^
+  16 | 
+  17 |     expect(Button).type.toAcceptProps({ text: "Clear", type: "reset" as const });
+  18 |     expect(Button).type.toAcceptProps({ text: "Send", type: "submit" as const });
+
+       at ./__typetests__/function-components.tst.tsx:15:41 ❭ when target is a function component ❭ accepts props
+
+Error: Type '"button"' is not assignable to type '"reset" | "submit" | undefined'.
+
+  17 |     expect(Button).type.toAcceptProps({ text: "Clear", type: "reset" as const });
+  18 |     expect(Button).type.toAcceptProps({ text: "Send", type: "submit" as const });
+> 19 |     expect(Button).type.toAcceptProps({ text: "Send", type: "button" as const }); // fail
+     |                                                       ^
+  20 |   });
+  21 | 
+  22 |   test("requires props", () => {
+
+       at ./__typetests__/function-components.tst.tsx:19:55 ❭ when target is a function component ❭ accepts props
+
+Error: Property 'text' is required in type 'ButtonProps'.
+
+  22 |   test("requires props", () => {
+  23 |     expect(Button).type.not.toAcceptProps();
+> 24 |     expect(Button).type.toAcceptProps(); // fail
+     |                         ^
+  25 | 
+  26 |     expect(Button).type.not.toAcceptProps({});
+  27 |     expect(Button).type.toAcceptProps({}); // fail
+
+       at ./__typetests__/function-components.tst.tsx:24:25 ❭ when target is a function component ❭ requires props
+
+Error: Property 'text' is required in type 'ButtonProps'.
+
+  25 | 
+  26 |     expect(Button).type.not.toAcceptProps({});
+> 27 |     expect(Button).type.toAcceptProps({}); // fail
+     |                         ^
+  28 |   });
+  29 | 
+  30 |   test("does not accept excess props", () => {
+
+       at ./__typetests__/function-components.tst.tsx:27:25 ❭ when target is a function component ❭ requires props
+
+Error: Property 'disabled' does not exist in type 'ButtonProps'.
+
+  30 |   test("does not accept excess props", () => {
+  31 |     expect(Button).type.not.toAcceptProps({ text: "Reset", disabled: true });
+> 32 |     expect(Button).type.toAcceptProps({ text: "Reset", disabled: true }); // fail
+     |                                                        ^
+  33 | 
+  34 |     expect(Button).type.not.toAcceptProps({ text: "Download", type: "button" as const });
+  35 |     expect(Button).type.toAcceptProps({ text: "Send", type: "button" as const }); // fail
+
+       at ./__typetests__/function-components.tst.tsx:32:56 ❭ when target is a function component ❭ does not accept excess props
+
+Error: Type '"button"' is not assignable to type '"reset" | "submit" | undefined'.
+
+  33 | 
+  34 |     expect(Button).type.not.toAcceptProps({ text: "Download", type: "button" as const });
+> 35 |     expect(Button).type.toAcceptProps({ text: "Send", type: "button" as const }); // fail
+     |                                                       ^
+  36 |   });
+  37 | 
+  38 |   test("when a reference is passed", () => {
+
+       at ./__typetests__/function-components.tst.tsx:35:55 ❭ when target is a function component ❭ does not accept excess props
+
+Error: Property 'disabled' does not exist in type 'ButtonProps'.
+
+  38 |   test("when a reference is passed", () => {
+  39 |     const skip = "all";
+> 40 |     expect(Button).type.toAcceptProps({ text: "Reset", disabled: true, skip }); // fail
+     |                                                        ^
+  41 | 
+  42 |     const sampleProps = { text: "Reset", disabled: true, skip: "all" };
+  43 |     expect(Button).type.toAcceptProps(sampleProps); // fail
+
+       at ./__typetests__/function-components.tst.tsx:40:56 ❭ when target is a function component ❭ when a reference is passed
+
+Error: Property 'skip' does not exist in type 'ButtonProps'.
+
+  38 |   test("when a reference is passed", () => {
+  39 |     const skip = "all";
+> 40 |     expect(Button).type.toAcceptProps({ text: "Reset", disabled: true, skip }); // fail
+     |                                                                        ^
+  41 | 
+  42 |     const sampleProps = { text: "Reset", disabled: true, skip: "all" };
+  43 |     expect(Button).type.toAcceptProps(sampleProps); // fail
+
+       at ./__typetests__/function-components.tst.tsx:40:72 ❭ when target is a function component ❭ when a reference is passed
+
+Error: Type '{ text: string; disabled: boolean; skip: string; }' is not compatible with type 'ButtonProps'.
+
+Only known properties can be specified.
+Property 'disabled' does not exist in type 'ButtonProps'.
+
+  41 | 
+  42 |     const sampleProps = { text: "Reset", disabled: true, skip: "all" };
+> 43 |     expect(Button).type.toAcceptProps(sampleProps); // fail
+     |                                       ^
+  44 |   });
+  45 | });
+  46 | 
+
+       at ./__typetests__/function-components.tst.tsx:43:39 ❭ when target is a function component ❭ when a reference is passed
+
+Error: Type '{ text: string; disabled: boolean; skip: string; }' is not compatible with type 'ButtonProps'.
+
+Only known properties can be specified.
+Property 'skip' does not exist in type 'ButtonProps'.
+
+  41 | 
+  42 |     const sampleProps = { text: "Reset", disabled: true, skip: "all" };
+> 43 |     expect(Button).type.toAcceptProps(sampleProps); // fail
+     |                                       ^
+  44 |   });
+  45 | });
+  46 | 
+
+       at ./__typetests__/function-components.tst.tsx:43:39 ❭ when target is a function component ❭ when a reference is passed
+
