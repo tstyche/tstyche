@@ -61,13 +61,13 @@
     "test:unit": "yarn test:run **/__tests__/*.test.* --parallel --reporter dot"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.1",
+    "@biomejs/biome": "1.8.2",
     "@rollup/plugin-typescript": "11.1.6",
     "@types/mocha": "10.0.6",
-    "@types/node": "20.14.4",
+    "@types/node": "20.14.7",
     "@types/react": "18.3.3",
     "ajv": "8.16.0",
-    "cspell": "8.8.4",
+    "cspell": "8.9.1",
     "magic-string": "0.30.10",
     "mocha": "10.4.0",
     "monocart-coverage-reports": "2.8.4",
@@ -75,7 +75,7 @@
     "rollup": "4.18.0",
     "rollup-plugin-dts": "6.1.1",
     "tslib": "2.6.3",
-    "typescript": "5.4.5"
+    "typescript": "5.5.2"
   },
   "peerDependencies": {
     "typescript": "4.x || 5.x"
