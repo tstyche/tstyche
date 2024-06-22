@@ -3,11 +3,16 @@ uses TypeScript <<version>> with ./tsconfig.json
 fail ./__typetests__/function-components.tst.tsx
   when target is a function component
     × accepts props of the given type
+    × property is required in props type
+    - todo property does not exist in props type
+    - todo property type is not assignable to prop type
+    - todo all kinds of problems
+  when target is a type
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      1 failed, 1 total
-Assertions: 10 failed, 10 passed, 20 total
+Tests:      2 failed, 3 todo, 5 total
+Assertions: 14 failed, 14 passed, 28 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'function-components'.

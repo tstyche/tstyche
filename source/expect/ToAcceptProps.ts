@@ -49,23 +49,25 @@ export class ToAcceptProps {
 
     const targetTypeText = target && this.#typeChecker.typeToString(target.type);
 
-    if (!target || target.type.getProperties().length === 0) {
+    if (propsParameterType != null) {
       let origin: DiagnosticOrigin | undefined;
       const text = [`${sourceText} does not accept props of the given type.`];
 
-      if (propsParameterType != null) {
-        for (const sourceProp of propsParameterType.getProperties()) {
-          if (!this.#isOptionalProperty(sourceProp) && !sourcePropsAreOptional) {
-            if (target != null) {
-              origin = DiagnosticOrigin.fromNode(target.node);
+      for (const sourceProp of propsParameterType.getProperties()) {
+        const sourcePropName = sourceProp.getName();
 
-              text.push(`Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`);
-            }
+        const targetProp = target?.type.getProperty(sourcePropName);
 
-            text.push(`Property '${sourceProp.getName()}' is required in type '${propsParameterTypeText}'.`);
+        if (!targetProp && !this.#isOptionalProperty(sourceProp) && !sourcePropsAreOptional) {
+          if (target != null) {
+            origin = DiagnosticOrigin.fromNode(target.node);
 
-            result.push({ origin, text });
+            text.push(`Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`);
           }
+
+          text.push(`Property '${sourcePropName}' is required in type '${propsParameterTypeText}'.`);
+
+          result.push({ origin, text });
         }
       }
     }

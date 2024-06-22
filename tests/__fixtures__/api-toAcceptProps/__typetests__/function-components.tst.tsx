@@ -17,8 +17,8 @@ interface SecondProps {
   two?: boolean;
 }
 
-function Second({ one, two }: SecondProps) {
-  return <>{`${one} ${two}`}</>;
+function Second(props: SecondProps) {
+  return <>{`${props}`}</>;
 }
 
 describe("when target is a function component", () => {
@@ -39,9 +39,6 @@ describe("when target is a function component", () => {
     expect(First).type.toAcceptProps({});
     expect(First).type.not.toAcceptProps({}); // fail
 
-    expect(Second).type.not.toAcceptProps({});
-    expect(Second).type.toAcceptProps({}); // fail
-
     expect(Second).type.toAcceptProps({ one: "sample" });
     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
 
@@ -52,41 +49,49 @@ describe("when target is a function component", () => {
     expect(Second).type.toAcceptProps({ one: "sample", two: true });
     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
 
-    const secondProps2 = { one: "sample", two: true };
-    expect(Second).type.toAcceptProps(secondProps2);
-    expect(Second).type.not.toAcceptProps(secondProps2); // fail
+    const two = true;
+    expect(Second).type.toAcceptProps({ one: "sample", two });
+    expect(Second).type.not.toAcceptProps({ one: "sample", two }); // fail
+
+    // TODO initializers
+    // TODO overloads
   });
 
-  // test("requires props", () => {
-  //   expect(Second).type.not.toAcceptProps();
-  //   expect(Second).type.toAcceptProps(); // fail
+  test("property is required in props type", () => {
+    expect(Second).type.not.toAcceptProps();
+    expect(Second).type.toAcceptProps(); // fail
 
-  //   expect(Second).type.not.toAcceptProps({});
-  //   expect(Second).type.toAcceptProps({}); // fail
+    expect(Second).type.not.toAcceptProps({});
+    expect(Second).type.toAcceptProps({}); // fail
 
-  // expect(Second).type.toAcceptProps({ one: "sample", two: true });
-  // expect(Second).type.not.toAcceptProps({ two: true });
-  // expect(Second).type.toAcceptProps({ two: true }); // fail
+    const noneProps = {};
+    expect(Second).type.not.toAcceptProps(noneProps);
+    expect(Second).type.toAcceptProps(noneProps); // fail
 
-  // });
+    expect(Second).type.not.toAcceptProps({ two: true });
+    expect(Second).type.toAcceptProps({ two: true }); // fail
 
-  // test("does not accept excess props", () => {
-  //   expect(Second).type.not.toAcceptProps({ text: "Reset", disabled: true });
-  //   expect(Second).type.toAcceptProps({ text: "Reset", disabled: true }); // fail
+    const two = true;
+    expect(Second).type.not.toAcceptProps({ two });
+    expect(Second).type.toAcceptProps({ two }); // fail
 
-  //   expect(Second).type.not.toAcceptProps({ text: "Download", type: "button" as const });
-  //   expect(Second).type.toAcceptProps({ text: "Send", type: "button" as const }); // fail
-  // });
+    // TODO initializers
+    // TODO overloads
+  });
 
-  // test("when a reference is passed", () => {
-  //   const skip = "all";
-  //   expect(Second).type.toAcceptProps({ text: "Reset", disabled: true, skip }); // fail
+  test.todo("property does not exist in props type", () => {
+    //
+  });
 
-  //   const sampleProps = { text: "Reset", disabled: true, skip: "all" };
-  //   expect(Second).type.toAcceptProps(sampleProps); // fail
-  // });
+  test.todo("property type is not assignable to prop type", () => {
+    //
+  });
+
+  test.todo("all kinds of problems", () => {
+    // TODO combinations of several kinds of problems
+  });
 });
 
-// describe("when target is a type", () => {
-//   //
-// });
+describe.todo("when target is a type", () => {
+  //
+});
