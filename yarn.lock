@@ -2323,9 +2323,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.8.4":
-  version: 2.8.4
-  resolution: "monocart-coverage-reports@npm:2.8.4"
+"monocart-coverage-reports@npm:2.8.5":
+  version: 2.8.5
+  resolution: "monocart-coverage-reports@npm:2.8.5"
   dependencies:
     console-grid: ^2.2.2
     eight-colors: ^1.3.0
@@ -2336,10 +2336,10 @@ __metadata:
     monocart-code-viewer: ^1.1.4
     monocart-formatter: ^3.0.0
     monocart-locator: ^1.0.0
-    turbogrid: ^3.1.0
+    turbogrid: ^3.2.0
   bin:
     mcr: lib/cli.js
-  checksum: 946a4a1880e69d7a29adf178a2b11797b1473831e5e0b07ce860ee7f08fa66678a13eea6e46f20544fb16736c84917a1d9f5d4e86ad62527974c3a36621b2c9e
+  checksum: b4a7917b670dc14499980d595f7cfc2821974398e9f13cd4d9e461fcc4df29c28cc0001a66bfea81a462e9d26a065b496cc75f97c060b120e1f1c9ee9b379e59
   languageName: node
   linkType: hard
 
@@ -2964,7 +2964,7 @@ __metadata:
     cspell: 8.9.1
     magic-string: 0.30.10
     mocha: 10.4.0
-    monocart-coverage-reports: 2.8.4
+    monocart-coverage-reports: 2.8.5
     pretty-ansi: 2.0.0
     rollup: 4.18.0
     rollup-plugin-dts: 6.1.1
@@ -2980,10 +2980,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"turbogrid@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "turbogrid@npm:3.1.0"
-  checksum: b35c034f288c84fe145199b8e96b4597d324118df3d32ec67f9655ae590079391b4ea8d7be5c7777a363850d231f02ae5ce5eed73eb465d39460215eaa2de04a
+"turbogrid@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "turbogrid@npm:3.2.0"
+  checksum: f98432d3051f36610dc86fbd7a831f3e90845efaa577bb554322506137ef56975c4bd30b5e186d580062f01c4fd29a997fdcf427f66e810f99ed08ce8642af05
   languageName: node
   linkType: hard
 
@@ -2999,11 +2999,11 @@ __metadata:
 
 "typescript@patch:typescript@5.5.2#~builtin<compat/typescript>":
   version: 5.5.2
-  resolution: "typescript@patch:typescript@npm%3A5.5.2#~builtin<compat/typescript>::version=5.5.2&hash=b45daf"
+  resolution: "typescript@patch:typescript@npm%3A5.5.2#~builtin<compat/typescript>::version=5.5.2&hash=379a07"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 9d89bac0de650e15d6846485f238d1e65f1013f2c260d9e53e86a1da6ecf8109d9fad9402575c5c36a6592dc5d4370db090e12971c8630ae84453654baabb6b4
+  checksum: d8c8af1adb92ef36998cc9293ad8607dda68564ecc2f315a7298d6d40edae1906e0ed88e0b2b02da686adc61d638cbecb82b4c694d5bccc621b8baf6e6274f7c
   languageName: node
   linkType: hard
 

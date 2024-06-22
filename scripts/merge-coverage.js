@@ -5,7 +5,7 @@ import { CoverageReport } from "monocart-coverage-reports";
 const outputDir = "./coverage";
 
 /**
- * @param {NonNullable<import("monocart-coverage-reports").CoverageResults>} coverageResults
+ * @param {import("monocart-coverage-reports").CoverageResults} coverageResults
  */
 async function writeCodacyCoverageReport(coverageResults) {
   /** @type {Array<{ filename: string, coverage: Record<string, number> }>} */
