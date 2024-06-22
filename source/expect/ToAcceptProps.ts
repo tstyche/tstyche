@@ -101,14 +101,13 @@ export class ToAcceptProps {
             origin = DiagnosticOrigin.fromNode(targetProp.valueDeclaration.name);
           } else {
             origin = DiagnosticOrigin.fromNode(target.node);
-
-            text.push(
-              `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
-              `Types of property '${targetPropName}' are incompatible.`,
-            );
           }
 
-          text.push(`Type '${targetPropTypeText}' is not assignable to type '${sourcePropTypeText}'.`);
+          text.push(
+            `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
+            `Types of property '${targetPropName}' are incompatible.`,
+            `Type '${targetPropTypeText}' is not assignable to type '${sourcePropTypeText}'.`,
+          );
 
           result.push({ origin, text });
         }

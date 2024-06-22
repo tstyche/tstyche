@@ -297,6 +297,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
+Type '{ two: string; three: number; }' is not assignable to type 'SecondProps'.
+Types of property 'two' are incompatible.
 Type 'string' is not assignable to type 'boolean | undefined'.
 
    99 | 
@@ -356,6 +358,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
+Type '{ one: string; two: string; three: number; }' is not assignable to type 'SecondProps'.
+Types of property 'two' are incompatible.
 Type 'string' is not assignable to type 'boolean | undefined'.
 
   106 | 
@@ -385,6 +389,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
+Type '{ one: string; two: string; three: number; }' is not assignable to type 'SecondProps'.
+Types of property 'two' are incompatible.
 Type 'string' is not assignable to type 'boolean | undefined'.
 
   109 | 
