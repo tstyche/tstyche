@@ -570,9 +570,9 @@ Type 'number' is not assignable to type 'string'.
   142 |     expect(Second).type.not.toAcceptProps({ one: 1, two });
 > 143 |     expect(Second).type.toAcceptProps({ one: 1, two }); // fail
       |                                         ^
-  144 |   });
-  145 | });
-  146 | 
+  144 | 
+  145 |     // TODO initializers
+  146 |     // TODO overloads
 
         at ./__typetests__/function-components.tst.tsx:143:41 ❭ when target is a function component ❭ property type is not assignable to prop type
 
@@ -586,9 +586,9 @@ Type 'number' is not assignable to type 'boolean | undefined'.
   142 |     expect(Second).type.not.toAcceptProps({ one: 1, two });
 > 143 |     expect(Second).type.toAcceptProps({ one: 1, two }); // fail
       |                                                 ^
-  144 |   });
-  145 | });
-  146 | 
+  144 | 
+  145 |     // TODO initializers
+  146 |     // TODO overloads
 
         at ./__typetests__/function-components.tst.tsx:143:49 ❭ when target is a function component ❭ property type is not assignable to prop type
 
