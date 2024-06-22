@@ -80,6 +80,9 @@ describe("when target is a function component", () => {
   });
 
   test("property does not exist in props type", () => {
+    expect(First).type.not.toAcceptProps({ two: false });
+    expect(First).type.toAcceptProps({ two: false }); // fail
+
     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
     expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail
 
@@ -94,9 +97,21 @@ describe("when target is a function component", () => {
     expect(Second).type.not.toAcceptProps(secondProps);
     expect(Second).type.toAcceptProps(secondProps); // fail
 
+    expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
+    expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
+
     const three = 123;
-    expect(Second).type.not.toAcceptProps({ one: "sample", two: three });
-    expect(Second).type.toAcceptProps({ one: "sample", two: three }); // fail
+    expect(Second).type.not.toAcceptProps({ one: "sample", three });
+    expect(Second).type.toAcceptProps({ one: "sample", three }); // fail
+
+    expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
+    expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
+
+    expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three });
+    expect(Second).type.toAcceptProps({ one: "sample", two: "no", three }); // fail
+
+    expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
+    expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
 
     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three });
     expect(Second).type.toAcceptProps({ one: "sample", two: true, three }); // fail
