@@ -49,29 +49,6 @@ export class ToAcceptProps {
 
     const targetTypeText = target && this.#typeChecker.typeToString(target.type);
 
-    if (propsParameterType != null) {
-      let origin: DiagnosticOrigin | undefined;
-      const text = [`${sourceText} does not accept props of the given type.`];
-
-      for (const sourceProp of propsParameterType.getProperties()) {
-        const sourcePropName = sourceProp.getName();
-
-        const targetProp = target?.type.getProperty(sourcePropName);
-
-        if (!targetProp && !this.#isOptionalProperty(sourceProp) && !sourcePropsAreOptional) {
-          if (target != null) {
-            origin = DiagnosticOrigin.fromNode(target.node);
-
-            text.push(`Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`);
-          }
-
-          text.push(`Property '${sourcePropName}' is required in type '${propsParameterTypeText}'.`);
-
-          result.push({ origin, text });
-        }
-      }
-    }
-
     if (target != null) {
       for (const targetProp of target.type.getProperties()) {
         const targetPropName = targetProp.getName();
@@ -92,14 +69,12 @@ export class ToAcceptProps {
             origin = DiagnosticOrigin.fromNode(targetProp.valueDeclaration.name);
           } else {
             origin = DiagnosticOrigin.fromNode(target.node);
-
-            text.push(
-              `Type '${targetTypeText}' is not compatible with type '${propsParameterTypeText}'.`,
-              "Only known properties can be specified.",
-            );
           }
 
-          text.push(`Property '${targetPropName}' does not exist in type '${propsParameterTypeText}'.`);
+          text.push(
+            `Type '${targetTypeText}' is not compatible with type '${propsParameterTypeText}'.`,
+            `Property '${targetPropName}' does not exist in type '${propsParameterTypeText}'.`,
+          );
 
           result.push({ origin, text });
 
@@ -134,6 +109,29 @@ export class ToAcceptProps {
           }
 
           text.push(`Type '${targetPropTypeText}' is not assignable to type '${sourcePropTypeText}'.`);
+
+          result.push({ origin, text });
+        }
+      }
+    }
+
+    if (propsParameterType != null) {
+      let origin: DiagnosticOrigin | undefined;
+      const text = [`${sourceText} does not accept props of the given type.`];
+
+      for (const sourceProp of propsParameterType.getProperties()) {
+        const sourcePropName = sourceProp.getName();
+
+        const targetProp = target?.type.getProperty(sourcePropName);
+
+        if (!targetProp && !this.#isOptionalProperty(sourceProp) && !sourcePropsAreOptional) {
+          if (target != null) {
+            origin = DiagnosticOrigin.fromNode(target.node);
+
+            text.push(`Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`);
+          }
+
+          text.push(`Property '${sourcePropName}' is required in type '${propsParameterTypeText}'.`);
 
           result.push({ origin, text });
         }

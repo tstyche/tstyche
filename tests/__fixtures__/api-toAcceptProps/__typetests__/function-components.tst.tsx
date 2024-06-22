@@ -5,7 +5,7 @@ function None() {
 }
 
 interface FirstProps {
-  one?: number;
+  one?: string;
 }
 
 function First({ one }: FirstProps) {
@@ -42,9 +42,9 @@ describe("when target is a function component", () => {
     expect(Second).type.toAcceptProps({ one: "sample" });
     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
 
-    const secondProps1 = { one: "sample" };
-    expect(Second).type.toAcceptProps(secondProps1);
-    expect(Second).type.not.toAcceptProps(secondProps1); // fail
+    const secondProps = { one: "sample" };
+    expect(Second).type.toAcceptProps(secondProps);
+    expect(Second).type.not.toAcceptProps(secondProps); // fail
 
     expect(Second).type.toAcceptProps({ one: "sample", two: true });
     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
@@ -64,12 +64,12 @@ describe("when target is a function component", () => {
     expect(Second).type.not.toAcceptProps({});
     expect(Second).type.toAcceptProps({}); // fail
 
-    const noneProps = {};
-    expect(Second).type.not.toAcceptProps(noneProps);
-    expect(Second).type.toAcceptProps(noneProps); // fail
-
     expect(Second).type.not.toAcceptProps({ two: true });
     expect(Second).type.toAcceptProps({ two: true }); // fail
+
+    const secondProps = { two: true };
+    expect(Second).type.not.toAcceptProps(secondProps);
+    expect(Second).type.toAcceptProps(secondProps); // fail
 
     const two = true;
     expect(Second).type.not.toAcceptProps({ two });
@@ -79,16 +79,34 @@ describe("when target is a function component", () => {
     // TODO overloads
   });
 
-  test.todo("property does not exist in props type", () => {
-    //
+  test("property does not exist in props type", () => {
+    expect(First).type.not.toAcceptProps({ one: "sample", two: false });
+    expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail
+
+    const firstProps = { one: "sample", two: false };
+    expect(First).type.not.toAcceptProps(firstProps);
+    expect(First).type.toAcceptProps(firstProps); // fail
+
+    expect(Second).type.not.toAcceptProps({ three: 123 });
+    expect(Second).type.toAcceptProps({ three: 123 }); // fail
+
+    const secondProps = { three: 123 };
+    expect(Second).type.not.toAcceptProps(secondProps);
+    expect(Second).type.toAcceptProps(secondProps); // fail
+
+    const three = 123;
+    expect(Second).type.not.toAcceptProps({ one: "sample", two: three });
+    expect(Second).type.toAcceptProps({ one: "sample", two: three }); // fail
+
+    expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three });
+    expect(Second).type.toAcceptProps({ one: "sample", two: true, three }); // fail
+
+    // TODO initializers
+    // TODO overloads
   });
 
   test.todo("property type is not assignable to prop type", () => {
     //
-  });
-
-  test.todo("all kinds of problems", () => {
-    // TODO combinations of several kinds of problems
   });
 });
 
