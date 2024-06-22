@@ -100,7 +100,7 @@
     },
 
     {
-      "include": ["**/*.test.js"],
+      "include": ["**/*.test.*"],
       "linter": {
         "rules": {
           "complexity": {
