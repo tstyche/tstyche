@@ -106,11 +106,7 @@ export class Expect {
         }
 
         const sourceType = this.#getType(assertion.source[0]);
-
         const signatures = sourceType.getCallSignatures();
-
-        // TODO make sure the return type is 'JSX.Element'
-        // const returnType = signatures[0]?.getReturnType();
 
         return this.toAcceptProps.match(
           { signatures: [...signatures], node: assertion.source[0] },
