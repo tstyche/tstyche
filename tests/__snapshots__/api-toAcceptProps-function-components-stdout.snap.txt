@@ -5,13 +5,13 @@ fail ./__typetests__/function-components.tst.tsx
     × accepts props of the given type
     × property is required in props type
     × property does not exist in props type
-    - todo property type is not assignable to prop type
+    × property type is not assignable to prop type
   when target is a type
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      3 failed, 1 todo, 4 total
-Assertions: 25 failed, 25 passed, 50 total
+Tests:      4 failed, 4 total
+Assertions: 31 failed, 31 passed, 62 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'function-components'.

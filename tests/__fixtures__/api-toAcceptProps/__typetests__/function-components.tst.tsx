@@ -120,8 +120,30 @@ describe("when target is a function component", () => {
     // TODO overloads
   });
 
-  test.todo("property type is not assignable to prop type", () => {
-    //
+  test("property type is not assignable to prop type", () => {
+    expect(First).type.not.toAcceptProps({ one: 1 });
+    expect(First).type.toAcceptProps({ one: 1 }); // fail
+
+    const firstProps = { one: 1 };
+    expect(First).type.not.toAcceptProps(firstProps);
+    expect(First).type.toAcceptProps(firstProps); // fail
+
+    expect(Second).type.not.toAcceptProps({ one: 1 });
+    expect(Second).type.toAcceptProps({ one: 1 }); // fail
+
+    expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
+    expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
+
+    const secondProps = { one: 1, two: 2 };
+    expect(Second).type.not.toAcceptProps(secondProps);
+    expect(Second).type.toAcceptProps(secondProps); // fail
+
+    const two = 2;
+    expect(Second).type.not.toAcceptProps({ one: 1, two });
+    expect(Second).type.toAcceptProps({ one: 1, two }); // fail
+
+    // TODO initializers
+    // TODO overloads
   });
 });
 

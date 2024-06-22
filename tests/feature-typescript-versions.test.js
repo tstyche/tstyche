@@ -5,6 +5,8 @@ import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
+// TODO add '.toAcceptProps()' example here
+
 const toBeAssignableToTestText = `import { expect, test } from "tstyche";
 
 test("is assignable to?", () => {
