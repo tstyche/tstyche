@@ -12,7 +12,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
  * @param {{ name: string; quantity: string; }} props
  */
 function Item(props) {
-  return <li>{`${props.name}: ${props.quantity}`}</li>;
+  return `${props.name}: ${props.quantity}`;
 }
 
 describe("toAcceptProps", function () {
