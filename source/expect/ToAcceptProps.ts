@@ -224,7 +224,7 @@ export class ToAcceptProps {
     // ((nodeSymbol?.valueDeclaration as ts.FunctionDeclaration).parameters[0]?.name as ts.ObjectBindingPattern)
     //   .elements[0]?.initializer;
 
-    const isMatch = source.signatures.every((signature) => this.#matchSignature(signature, target?.type));
+    const isMatch = source.signatures.some((signature) => this.#matchSignature(signature, target?.type));
 
     return {
       explain: () => this.#explain(source, target),
