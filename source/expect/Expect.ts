@@ -77,6 +77,20 @@ export class Expect {
     return nodes.map((node) => this.#getType(node));
   }
 
+  #handleDeprecated(matcherNameText: string, assertion: Assertion) {
+    switch (matcherNameText) {
+      case "toBeAssignable":
+      case "toEqual": {
+        this.#onDeprecatedMatcher(matcherNameText, assertion);
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+  }
+
   #isArrayOfStringOrNumberLiteralTypes(
     types: Array<ts.Type>,
   ): types is Array<ts.StringLiteralType | ts.NumberLiteralType> {
@@ -94,15 +108,16 @@ export class Expect {
   match(assertion: Assertion, expectResult: ExpectResult): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
-    switch (matcherNameText) {
-      case "toBeAssignable":
-      // biome-ignore lint/suspicious/noFallthroughSwitchClause: break is omitted intentionally
-      case "toEqual":
-        this.#onDeprecatedMatcher(assertion);
+    this.#handleDeprecated(matcherNameText, assertion);
 
+    switch (matcherNameText) {
       case "toBe":
+      // TODO '.toBeAssignable()' is deprecated and must be removed in TSTyche 3
+      case "toBeAssignable":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
+      // TODO '.toEqual()' is deprecated and must be removed in TSTyche 3
+      case "toEqual":
       case "toMatch": {
         if (assertion.source[0] == null) {
           this.#onSourceArgumentMustBeProvided(assertion, expectResult);
@@ -210,9 +225,7 @@ export class Expect {
     }
   }
 
-  #onDeprecatedMatcher(assertion: Assertion) {
-    const matcherNameText = assertion.matcherName.getText();
-
+  #onDeprecatedMatcher(matcherNameText: string, assertion: Assertion) {
     const text = [
       `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
       "To learn more, visit https://tstyche.org/releases/tstyche-2",
