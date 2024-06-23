@@ -16,16 +16,14 @@ export class ToAcceptProps {
     target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
   ) {
     return source.signatures.flatMap((signature, index, signatures) => {
-      const signatureTypeText = this.#typeChecker.typeToString(
-        this.#typeChecker.getTypeAtLocation(signature.getDeclaration()),
-      );
+      const signatureText = this.#typeChecker.signatureToString(signature);
 
       return this.#explainSignature({ node: source.node, signature }, target).map(({ origin, text }) => {
         text = Array.isArray(text) ? text : [text];
 
         return signatures.length > 1
           ? Diagnostic.error(
-              [`Overload ${index} of ${signatures.length}, '${signatureTypeText}', gave the following error.`, ...text],
+              [`Overload ${index} of ${signatures.length}, '${signatureText}', gave the following error.`, ...text],
               origin,
             )
           : Diagnostic.error(text, origin);
