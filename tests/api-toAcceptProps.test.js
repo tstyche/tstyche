@@ -9,7 +9,7 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 /**
- * @param {{ name: string; quantity: string; }} props
+ * @param {{ name: string; quantity: string }} props
  */
 function Item(props) {
   return `${props.name}: ${props.quantity}`;

@@ -93,7 +93,7 @@ jobs:
           path: build/
       - run: yarn test:types --target 4.7,5.0,current
       - run: yarn test:examples --target 4.7,5.0,current
-      - run: yarn tstyche tests/*.* --target current
+      - run: yarn tstyche tests/*.js --target current
 
   test-node:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
