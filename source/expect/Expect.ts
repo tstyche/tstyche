@@ -108,6 +108,12 @@ export class Expect {
         const sourceType = this.#getType(assertion.source[0]);
         const signatures = sourceType.getCallSignatures();
 
+        if (signatures.length === 0) {
+          this.#onSourceArgumentMustBeJsxComponent(assertion.source[0], expectResult);
+
+          return;
+        }
+
         return this.toAcceptProps.match(
           { signatures: [...signatures], node: assertion.source[0] },
           assertion.target[0] && { node: assertion.target[0], type: this.#getType(assertion.target[0]) },
@@ -273,6 +279,16 @@ export class Expect {
         result: expectResult,
       },
     ]);
+  }
+
+  #onSourceArgumentMustBeJsxComponent(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
+    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
+
+    const text = `${sourceText} must be of a function or class type, received: '${receivedTypeText}'.`;
+    const origin = DiagnosticOrigin.fromNode(node);
+
+    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {

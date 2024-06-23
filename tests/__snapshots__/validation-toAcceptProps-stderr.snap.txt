@@ -5,8 +5,32 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 > 5 |     expect().type.toAcceptProps<{ test: void }>();
     |     ^
   6 |   });
-  7 | });
-  8 | 
+  7 | 
+  8 |   test("must be of a function or class type", () => {
 
       at ./__typetests__/toAcceptProps.tst.ts:5:5
+
+Error: An argument for 'source' must be of a function or class type, received: '{ a: string; }'.
+
+   7 | 
+   8 |   test("must be of a function or class type", () => {
+>  9 |     expect({ a: "sample" }).type.toAcceptProps({ test: false });
+     |            ^
+  10 |   });
+  11 | });
+  12 | 
+
+       at ./__typetests__/toAcceptProps.tst.ts:9:12
+
+Error: A type argument for 'Source' must be of a function or class type, received: '{ a: string; }'.
+
+  13 | describe("type argument for 'Source'", () => {
+  14 |   test("must be of a function or class type", () => {
+> 15 |     expect<{ a: string }>().type.not.toAcceptProps();
+     |            ^
+  16 |   });
+  17 | });
+  18 | 
+
+       at ./__typetests__/toAcceptProps.tst.ts:15:12
 

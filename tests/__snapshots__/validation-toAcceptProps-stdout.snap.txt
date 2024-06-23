@@ -3,11 +3,14 @@ uses TypeScript <<version>> with ./tsconfig.json
 fail ./__typetests__/toAcceptProps.tst.ts
   argument for 'source'
     × must be provided
+    × must be of a function or class type
+  type argument for 'Source'
+    × must be of a function or class type
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      1 failed, 1 total
-Assertions: 1 failed, 1 total
+Tests:      3 failed, 3 total
+Assertions: 3 failed, 3 total
 Duration:   <<timestamp>>
 
 Ran all test files.
