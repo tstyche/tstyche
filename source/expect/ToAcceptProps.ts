@@ -178,10 +178,13 @@ export class ToAcceptProps {
           return false;
         }
 
-        // TODO
-        // if (this.#isOptionalProperty(targetProp) && !this.#isOptionalProperty(sourceProp) && !sourcePropsAreOptional) {
-        //   return false;
-        // }
+        if (
+          this.#isOptionalProperty(targetProp) &&
+          !this.#isOptionalProperty(sourceProp) &&
+          !propsParameterIsOptional
+        ) {
+          return false;
+        }
 
         const targetPropType = this.#typeChecker.getTypeOfSymbol(targetProp);
         const sourcePropType = this.#typeChecker.getTypeOfSymbol(sourceProp);

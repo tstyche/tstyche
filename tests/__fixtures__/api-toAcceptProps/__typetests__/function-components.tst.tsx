@@ -6,7 +6,7 @@ interface FirstProps {
 }
 
 interface SecondProps {
-  one: string;
+  one: string | undefined;
   two?: boolean;
 }
 
