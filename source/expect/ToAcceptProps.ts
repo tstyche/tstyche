@@ -22,19 +22,15 @@ export class ToAcceptProps {
         ? `${sourceText} accepts props of the given type.`
         : `${sourceText} does not accept props of the given type.`;
 
-      const signatureText = this.#typeChecker.signatureToString(signature, source.node);
-
       return this.#explainSignature({ node: source.node, signature }, target, isNot).map(({ origin, text }) => {
-        return signatures.length > 1
-          ? Diagnostic.error(
-              [
-                introText,
-                `Overload ${index + 1} of ${signatures.length}, '${signatureText}', gave the following error.`,
-                ...text,
-              ],
-              origin,
-            )
-          : Diagnostic.error([introText, ...text], origin);
+        if (signatures.length > 1) {
+          const signatureText = this.#typeChecker.signatureToString(signature, source.node);
+          const overloadText = `Overload ${index + 1} of ${signatures.length}, '${signatureText}', gave the following error.`;
+
+          return Diagnostic.error([introText, overloadText, ...text], origin);
+        }
+
+        return Diagnostic.error([introText, ...text], origin);
       });
     });
   }
