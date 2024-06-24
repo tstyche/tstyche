@@ -1,15 +1,8 @@
+import type React from "react";
 import { describe, expect, test } from "tstyche";
-
-function None() {
-  return <>{"none"}</>;
-}
 
 interface FirstProps {
   one?: string;
-}
-
-function First({ one }: FirstProps) {
-  return <>{`${one}`}</>;
 }
 
 interface SecondProps {
@@ -17,11 +10,19 @@ interface SecondProps {
   two?: boolean;
 }
 
-function Second(props: SecondProps) {
-  return <>{`${props}`}</>;
-}
-
 describe("when target is a function component", () => {
+  function None() {
+    return <>{"none"}</>;
+  }
+
+  function First({ one }: FirstProps) {
+    return <>{`${one}`}</>;
+  }
+
+  function Second(props: SecondProps) {
+    return <>{`${props}`}</>;
+  }
+
   test("accepts props of the given type", () => {
     expect(None).type.toAcceptProps();
     expect(None).type.not.toAcceptProps(); // fail
@@ -33,11 +34,17 @@ describe("when target is a function component", () => {
     expect(None).type.toAcceptProps(noneProps);
     expect(None).type.not.toAcceptProps(noneProps); // fail
 
+    expect(None).type.not.toAcceptProps({ one: "sample" });
+    expect(None).type.toAcceptProps({ one: "sample" }); // fail
+
     expect(First).type.toAcceptProps();
     expect(First).type.not.toAcceptProps(); // fail
 
     expect(First).type.toAcceptProps({});
     expect(First).type.not.toAcceptProps({}); // fail
+
+    expect(First).type.toAcceptProps({ one: "sample" });
+    expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
 
     expect(Second).type.toAcceptProps({ one: "sample" });
     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
@@ -54,7 +61,6 @@ describe("when target is a function component", () => {
     expect(Second).type.not.toAcceptProps({ one: "sample", two }); // fail
 
     // TODO initializers
-    // TODO overloads
   });
 
   test("property is required in props type", () => {
@@ -76,7 +82,6 @@ describe("when target is a function component", () => {
     expect(Second).type.toAcceptProps({ two }); // fail
 
     // TODO initializers
-    // TODO overloads
   });
 
   test("property does not exist in props type", () => {
@@ -117,7 +122,6 @@ describe("when target is a function component", () => {
     expect(Second).type.toAcceptProps({ one: "sample", two: true, three }); // fail
 
     // TODO initializers
-    // TODO overloads
   });
 
   test("property type is not assignable to prop type", () => {
@@ -143,10 +147,151 @@ describe("when target is a function component", () => {
     expect(Second).type.toAcceptProps({ one: 1, two }); // fail
 
     // TODO initializers
-    // TODO overloads
   });
 });
 
-describe.todo("when target is a type", () => {
-  //
+describe("when target is a type", () => {
+  type None = () => React.JSX.Element;
+
+  type First = ({ one }: FirstProps) => React.JSX.Element;
+
+  type Second = (props: SecondProps) => React.JSX.Element;
+
+  test("accepts props of the given type", () => {
+    expect<None>().type.toAcceptProps();
+    expect<None>().type.not.toAcceptProps(); // fail
+
+    expect<None>().type.toAcceptProps<{}>();
+    expect<None>().type.not.toAcceptProps<{}>(); // fail
+
+    type NonePropsSample = {};
+    expect<None>().type.toAcceptProps<NonePropsSample>();
+    expect<None>().type.not.toAcceptProps<NonePropsSample>(); // fail
+
+    expect<None>().type.not.toAcceptProps<{ one?: string }>();
+    expect<None>().type.toAcceptProps<{ one?: string }>(); // fail
+
+    expect<None>().type.not.toAcceptProps<{ one: string }>();
+    expect<None>().type.toAcceptProps<{ one: string }>(); // fail
+
+    expect<First>().type.toAcceptProps();
+    expect<First>().type.not.toAcceptProps(); // fail
+
+    expect<First>().type.toAcceptProps<{}>();
+    expect<First>().type.not.toAcceptProps<{}>(); // fail
+
+    expect<First>().type.toAcceptProps<{ one?: string }>();
+    expect<First>().type.not.toAcceptProps<{ one?: string }>(); // fail
+
+    expect<First>().type.toAcceptProps<{ one: string }>();
+    expect<First>().type.not.toAcceptProps<{ one: string }>(); // fail
+
+    expect<Second>().type.toAcceptProps<{ one: string }>();
+    expect<Second>().type.not.toAcceptProps<{ one: string }>(); // fail
+
+    type SecondPropsSample = { one: string };
+    expect<Second>().type.toAcceptProps<SecondPropsSample>();
+    expect<Second>().type.not.toAcceptProps<SecondPropsSample>(); // fail
+
+    expect<Second>().type.toAcceptProps<{ one: string; two?: boolean }>();
+    expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean }>(); // fail
+
+    expect<Second>().type.toAcceptProps<{ one: string; two: boolean }>();
+    expect<Second>().type.not.toAcceptProps<{ one: string; two: boolean }>(); // fail
+  });
+
+  test("property is required in props type", () => {
+    expect<Second>().type.not.toAcceptProps();
+    expect<Second>().type.toAcceptProps(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{}>();
+    expect<Second>().type.toAcceptProps<{}>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one?: string }>();
+    expect<Second>().type.toAcceptProps<{ one?: string }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ two?: boolean }>();
+    expect<Second>().type.toAcceptProps<{ two?: boolean }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ two: boolean }>();
+    expect<Second>().type.toAcceptProps<{ two: boolean }>(); // fail
+
+    type SecondPropsSample = { two: boolean };
+    expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
+    expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one?: string; two?: boolean }>();
+    expect<Second>().type.toAcceptProps<{ one?: string; two?: boolean }>(); // fail
+  });
+
+  test("property does not exist in props type", () => {
+    expect<First>().type.not.toAcceptProps<{ two?: boolean }>();
+    expect<First>().type.toAcceptProps<{ two?: boolean }>(); // fail
+
+    expect<First>().type.not.toAcceptProps<{ two: boolean }>();
+    expect<First>().type.toAcceptProps<{ two: boolean }>(); // fail
+
+    expect<First>().type.not.toAcceptProps<{ one: string; two?: boolean }>();
+    expect<First>().type.toAcceptProps<{ one: string; two?: boolean }>(); // fail
+
+    expect<First>().type.not.toAcceptProps<{ one: string; two: boolean }>();
+    expect<First>().type.toAcceptProps<{ one: string; two: boolean }>(); // fail
+
+    type FirstPropsSample = { one: string; two: boolean };
+    expect<First>().type.not.toAcceptProps<FirstPropsSample>();
+    expect<First>().type.toAcceptProps<FirstPropsSample>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ three?: number }>();
+    expect<Second>().type.toAcceptProps<{ three?: number }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ three: number }>();
+    expect<Second>().type.toAcceptProps<{ three: number }>(); // fail
+
+    type SecondPropsSample = { three: number };
+    expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
+    expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
+    expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
+    expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three?: number }>();
+    expect<Second>().type.toAcceptProps<{ one: string; two: string; three?: number }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three: number }>();
+    expect<Second>().type.toAcceptProps<{ one: string; two: string; three: number }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean; three?: number }>();
+    expect<Second>().type.toAcceptProps<{ one: string; two?: boolean; three?: number }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one: string; two: boolean; three: number }>();
+    expect<Second>().type.toAcceptProps<{ one: string; two: boolean; three: number }>(); // fail
+  });
+
+  test("property type is not assignable to prop type", () => {
+    expect<First>().type.not.toAcceptProps<{ one?: number }>();
+    expect<First>().type.toAcceptProps<{ one?: number }>(); // fail
+
+    expect<First>().type.not.toAcceptProps<{ one: number }>();
+    expect<First>().type.toAcceptProps<{ one: number }>(); // fail
+
+    type FirstPropsSample = { one: number };
+    expect<First>().type.not.toAcceptProps<FirstPropsSample>();
+    expect<First>().type.toAcceptProps<FirstPropsSample>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one: number }>();
+    expect<Second>().type.toAcceptProps<{ one: number }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one: number; two?: number }>();
+    expect<Second>().type.toAcceptProps<{ one: number; two?: number }>(); // fail
+
+    expect<Second>().type.not.toAcceptProps<{ one: number; two: number }>();
+    expect<Second>().type.toAcceptProps<{ one: number; two: number }>(); // fail
+
+    type SecondPropsSample = { one: number; two: number };
+    expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
+    expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
+  });
 });

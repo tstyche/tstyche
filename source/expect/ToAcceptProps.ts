@@ -14,11 +14,12 @@ export class ToAcceptProps {
   #explain(
     source: { node: ts.Expression | ts.TypeNode; signatures: Array<ts.Signature> },
     target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    isNot: boolean,
   ) {
     return source.signatures.flatMap((signature, index, signatures) => {
       const signatureText = this.#typeChecker.signatureToString(signature);
 
-      return this.#explainSignature({ node: source.node, signature }, target).map(({ origin, text }) => {
+      return this.#explainSignature({ node: source.node, signature }, target, isNot).map(({ origin, text }) => {
         text = Array.isArray(text) ? text : [text];
 
         return signatures.length > 1
@@ -34,6 +35,7 @@ export class ToAcceptProps {
   #explainSignature(
     source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature },
     target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    isNot: boolean,
   ) {
     const result: Array<{ origin?: DiagnosticOrigin | undefined; text: string | Array<string> }> = [];
 
@@ -47,6 +49,34 @@ export class ToAcceptProps {
 
     const targetTypeText = target && this.#typeChecker.typeToString(target.type);
 
+    if (isNot) {
+      let origin: DiagnosticOrigin | undefined;
+      const text = [`${sourceText} accepts props of the given type.`];
+
+      if (target != null) {
+        origin = DiagnosticOrigin.fromNode(target.node);
+
+        if (propsParameterType != null) {
+          text.push(`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`);
+        }
+      }
+
+      return [{ origin, text }];
+    }
+
+    const introText = `${sourceText} does not accept props of the given type.`;
+
+    if (!propsParameterType) {
+      let origin: DiagnosticOrigin | undefined;
+      const text = [introText];
+
+      if (target != null) {
+        origin = DiagnosticOrigin.fromNode(target.node);
+      }
+
+      return [{ origin, text }];
+    }
+
     if (target != null) {
       for (const targetProp of target.type.getProperties()) {
         const targetPropName = targetProp.getName();
@@ -54,25 +84,25 @@ export class ToAcceptProps {
         const sourceProp = propsParameterType?.getProperty(targetPropName);
 
         if (!sourceProp) {
-          let origin: DiagnosticOrigin | undefined;
-          const text = [`${sourceText} does not accept props of the given type.`];
-
-          if (
-            targetProp.valueDeclaration != null &&
-            (this.#compiler.isPropertyAssignment(targetProp.valueDeclaration) ||
-              this.#compiler.isShorthandPropertyAssignment(targetProp.valueDeclaration)) &&
-            targetProp.valueDeclaration.getStart() >= target.node.getStart() &&
-            targetProp.valueDeclaration.getEnd() <= target.node.getEnd()
-          ) {
-            origin = DiagnosticOrigin.fromNode(targetProp.valueDeclaration.name);
-          } else {
-            origin = DiagnosticOrigin.fromNode(target.node);
-          }
-
-          text.push(
+          const origin = this.#resolveOrigin(targetProp, target.node);
+          const text = [
+            introText,
             `Type '${targetTypeText}' is not compatible with type '${propsParameterTypeText}'.`,
             `Property '${targetPropName}' does not exist in type '${propsParameterTypeText}'.`,
-          );
+          ];
+
+          result.push({ origin, text });
+
+          continue;
+        }
+
+        if (this.#isOptionalProperty(targetProp) && !this.#isOptionalProperty(sourceProp) && !sourcePropsAreOptional) {
+          const origin = this.#resolveOrigin(targetProp, target.node);
+          const text = [
+            introText,
+            `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
+            `Property '${targetPropName}' is required in type '${propsParameterTypeText}'.`,
+          ];
 
           result.push({ origin, text });
 
@@ -83,29 +113,16 @@ export class ToAcceptProps {
         const sourcePropType = this.#typeChecker.getTypeOfSymbol(sourceProp);
 
         if (!this.#typeChecker.isTypeAssignableTo(targetPropType, sourcePropType)) {
-          let origin: DiagnosticOrigin | undefined;
-          const text = [`${sourceText} does not accept props of the given type.`];
-
           const targetPropTypeText = this.#typeChecker.typeToString(targetPropType);
           const sourcePropTypeText = this.#typeChecker.typeToString(sourcePropType);
 
-          if (
-            targetProp.valueDeclaration != null &&
-            (this.#compiler.isPropertyAssignment(targetProp.valueDeclaration) ||
-              this.#compiler.isShorthandPropertyAssignment(targetProp.valueDeclaration)) &&
-            targetProp.valueDeclaration.getStart() >= target.node.getStart() &&
-            targetProp.valueDeclaration.getEnd() <= target.node.getEnd()
-          ) {
-            origin = DiagnosticOrigin.fromNode(targetProp.valueDeclaration.name);
-          } else {
-            origin = DiagnosticOrigin.fromNode(target.node);
-          }
-
-          text.push(
+          const origin = this.#resolveOrigin(targetProp, target.node);
+          const text = [
+            introText,
             `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
             `Types of property '${targetPropName}' are incompatible.`,
             `Type '${targetPropTypeText}' is not assignable to type '${sourcePropTypeText}'.`,
-          );
+          ];
 
           result.push({ origin, text });
         }
@@ -114,7 +131,7 @@ export class ToAcceptProps {
 
     if (propsParameterType != null) {
       let origin: DiagnosticOrigin | undefined;
-      const text = [`${sourceText} does not accept props of the given type.`];
+      const text = [introText];
 
       for (const sourceProp of propsParameterType.getProperties()) {
         const sourcePropName = sourceProp.getName();
@@ -133,21 +150,6 @@ export class ToAcceptProps {
           result.push({ origin, text });
         }
       }
-    }
-
-    if (result.length === 0) {
-      let origin: DiagnosticOrigin | undefined;
-      const text = [`${sourceText} accepts props of the given type.`];
-
-      if (target != null) {
-        origin = DiagnosticOrigin.fromNode(target.node);
-
-        if (propsParameterType != null) {
-          text.push(`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`);
-        }
-      }
-
-      result.push({ origin, text });
     }
 
     return result;
@@ -212,6 +214,7 @@ export class ToAcceptProps {
   match(
     source: { node: ts.Expression | ts.TypeNode; signatures: Array<ts.Signature> },
     target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    isNot: boolean,
   ): MatchResult {
     // const nodeSymbol = this.#typeChecker.getSymbolAtLocation(source.node);
 
@@ -227,8 +230,23 @@ export class ToAcceptProps {
     const isMatch = source.signatures.some((signature) => this.#matchSignature(signature, target?.type));
 
     return {
-      explain: () => this.#explain(source, target),
+      explain: () => this.#explain(source, target, isNot),
       isMatch,
     };
+  }
+
+  #resolveOrigin(targetSymbol: ts.Symbol, targetNode: ts.Node) {
+    if (
+      targetSymbol.valueDeclaration != null &&
+      (this.#compiler.isPropertySignature(targetSymbol.valueDeclaration) ||
+        this.#compiler.isPropertyAssignment(targetSymbol.valueDeclaration) ||
+        this.#compiler.isShorthandPropertyAssignment(targetSymbol.valueDeclaration)) &&
+      targetSymbol.valueDeclaration.getStart() >= targetNode.getStart() &&
+      targetSymbol.valueDeclaration.getEnd() <= targetNode.getEnd()
+    ) {
+      return DiagnosticOrigin.fromNode(targetSymbol.valueDeclaration.name);
+    }
+
+    return DiagnosticOrigin.fromNode(targetNode);
   }
 }

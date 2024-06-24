@@ -133,6 +133,7 @@ export class Expect {
         return this.toAcceptProps.match(
           { signatures: [...signatures], node: assertion.source[0] },
           assertion.target[0] && { node: assertion.target[0], type: this.#getType(assertion.target[0]) },
+          assertion.isNot,
         );
       }
 
