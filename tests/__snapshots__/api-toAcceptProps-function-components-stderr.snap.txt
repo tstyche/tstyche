@@ -1,5 +1,7 @@
 Error: Component accepts props of the given type.
 
+Type '{}' is assignable to type '{}'.
+
   26 |   test("accepts props of the given type", () => {
   27 |     expect(None).type.toAcceptProps();
 > 28 |     expect(None).type.not.toAcceptProps(); // fail
@@ -11,6 +13,8 @@ Error: Component accepts props of the given type.
        at ./__typetests__/function-components.tst.tsx:28:27 ❭ when target is a function component ❭ accepts props of the given type
 
 Error: Component accepts props of the given type.
+
+Type '{}' is assignable to type '{}'.
 
   29 | 
   30 |     expect(None).type.toAcceptProps({});
@@ -24,6 +28,8 @@ Error: Component accepts props of the given type.
 
 Error: Component accepts props of the given type.
 
+Type '{}' is assignable to type '{}'.
+
   33 |     const noneProps = {};
   34 |     expect(None).type.toAcceptProps(noneProps);
 > 35 |     expect(None).type.not.toAcceptProps(noneProps); // fail
@@ -36,17 +42,22 @@ Error: Component accepts props of the given type.
 
 Error: Component does not accept props of the given type.
 
+Type '{ one: string; }' is not compatible with type '{}'.
+Property 'one' does not exist in type '{}'.
+
   36 | 
   37 |     expect(None).type.not.toAcceptProps({ one: "sample" });
 > 38 |     expect(None).type.toAcceptProps({ one: "sample" }); // fail
-     |                                     ^
+     |                                       ^
   39 | 
   40 |     expect(First).type.toAcceptProps();
   41 |     expect(First).type.not.toAcceptProps(); // fail
 
-       at ./__typetests__/function-components.tst.tsx:38:37 ❭ when target is a function component ❭ accepts props of the given type
+       at ./__typetests__/function-components.tst.tsx:38:39 ❭ when target is a function component ❭ accepts props of the given type
 
 Error: Component accepts props of the given type.
+
+Type '{}' is assignable to type 'FirstProps'.
 
   39 | 
   40 |     expect(First).type.toAcceptProps();
@@ -144,6 +155,7 @@ Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
+Type '{}' is not assignable to type 'SecondProps'.
 Property 'one' is required in type 'SecondProps'.
 
   66 |   test("property is required in props type", () => {
@@ -620,6 +632,8 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
 Error: Component type accepts props of the given type.
 
+Type '{}' is assignable to type '{}'.
+
   160 |   test("accepts props of the given type", () => {
   161 |     expect<None>().type.toAcceptProps();
 > 162 |     expect<None>().type.not.toAcceptProps(); // fail
@@ -631,6 +645,8 @@ Error: Component type accepts props of the given type.
         at ./__typetests__/function-components.tst.tsx:162:29 ❭ when target is a type ❭ accepts props of the given type
 
 Error: Component type accepts props of the given type.
+
+Type '{}' is assignable to type '{}'.
 
   163 | 
   164 |     expect<None>().type.toAcceptProps<{}>();
@@ -644,6 +660,8 @@ Error: Component type accepts props of the given type.
 
 Error: Component type accepts props of the given type.
 
+Type 'NonePropsSample' is assignable to type '{}'.
+
   167 |     type NonePropsSample = {};
   168 |     expect<None>().type.toAcceptProps<NonePropsSample>();
 > 169 |     expect<None>().type.not.toAcceptProps<NonePropsSample>(); // fail
@@ -656,29 +674,37 @@ Error: Component type accepts props of the given type.
 
 Error: Component type does not accept props of the given type.
 
+Type '{ one?: string | undefined; }' is not compatible with type '{}'.
+Property 'one' does not exist in type '{}'.
+
   170 | 
   171 |     expect<None>().type.not.toAcceptProps<{ one?: string }>();
 > 172 |     expect<None>().type.toAcceptProps<{ one?: string }>(); // fail
-      |                                       ^
+      |                                         ^
   173 | 
   174 |     expect<None>().type.not.toAcceptProps<{ one: string }>();
   175 |     expect<None>().type.toAcceptProps<{ one: string }>(); // fail
 
-        at ./__typetests__/function-components.tst.tsx:172:39 ❭ when target is a type ❭ accepts props of the given type
+        at ./__typetests__/function-components.tst.tsx:172:41 ❭ when target is a type ❭ accepts props of the given type
 
 Error: Component type does not accept props of the given type.
+
+Type '{ one: string; }' is not compatible with type '{}'.
+Property 'one' does not exist in type '{}'.
 
   173 | 
   174 |     expect<None>().type.not.toAcceptProps<{ one: string }>();
 > 175 |     expect<None>().type.toAcceptProps<{ one: string }>(); // fail
-      |                                       ^
+      |                                         ^
   176 | 
   177 |     expect<First>().type.toAcceptProps();
   178 |     expect<First>().type.not.toAcceptProps(); // fail
 
-        at ./__typetests__/function-components.tst.tsx:175:39 ❭ when target is a type ❭ accepts props of the given type
+        at ./__typetests__/function-components.tst.tsx:175:41 ❭ when target is a type ❭ accepts props of the given type
 
 Error: Component type accepts props of the given type.
+
+Type '{}' is assignable to type 'FirstProps'.
 
   176 | 
   177 |     expect<First>().type.toAcceptProps();
@@ -790,6 +816,7 @@ Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
+Type '{}' is not assignable to type 'SecondProps'.
 Property 'one' is required in type 'SecondProps'.
 
   203 |   test("property is required in props type", () => {
