@@ -323,9 +323,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-en-common-misspellings@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@cspell/dict-en-common-misspellings@npm:2.0.2"
-  checksum: ff6bbbddf2468dc3266a7d78a8d1e8e6ef1aeeeb65687137a4ec607078bb1a66077cef2322b40dd0ac3b1f8fd66d01b3f3876dceba2effc3608ee3612f82b11a
+  version: 2.0.3
+  resolution: "@cspell/dict-en-common-misspellings@npm:2.0.3"
+  checksum: 5c182d68030a10821d01466d736873f90e960ffe27f0da1ad1910af4b9325796e6a70cb415d003a8b86f8899399f953f36c7bad34265353ea8e3afcedc50903d
   languageName: node
   linkType: hard
 
@@ -337,9 +337,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-en_us@npm:^4.3.22":
-  version: 4.3.22
-  resolution: "@cspell/dict-en_us@npm:4.3.22"
-  checksum: 293b4219dc760a5d143294e66ec3d1bbde6ad55e9f6abb9da7e94ca5ae8ce976a255da5ef5b5cb79cb9475ea7cd80d0ce4d9086cb3258b88bdf53eccc6277af8
+  version: 4.3.23
+  resolution: "@cspell/dict-en_us@npm:4.3.23"
+  checksum: 3c5fbbcfe45b6915376f837cee3c2e66ff2a104fc13a0822eba7e79252ab928033dd86b415bcf713a46843e4f91d514ae288828230b4a00b8ec722cdd2526200
   languageName: node
   linkType: hard
 
@@ -549,9 +549,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^3.4.6":
-  version: 3.4.6
-  resolution: "@cspell/dict-software-terms@npm:3.4.6"
-  checksum: 4c4e564b165a6269fa85ef53c7741d1bbe58e8381e57cee1e7bf980195604f30a06422305c405d310c74c206acce201ca530b6253eeac4215ce172cbde6dd400
+  version: 3.4.8
+  resolution: "@cspell/dict-software-terms@npm:3.4.8"
+  checksum: f95ea29e06832ac583e4462f42a893649531c4a9f59bf5b09ffef836d2f4a9ad5d0cce7f1e2fbe0597aa3323384307c57c92930eb31608e233eabbc5c4f4fbb2
   languageName: node
   linkType: hard
 
@@ -1704,17 +1704,18 @@ __metadata:
   linkType: hard
 
 "glob@npm:^10.2.2, glob@npm:^10.3.10":
-  version: 10.4.1
-  resolution: "glob@npm:10.4.1"
+  version: 10.4.2
+  resolution: "glob@npm:10.4.2"
   dependencies:
     foreground-child: ^3.1.0
     jackspeak: ^3.1.2
     minimatch: ^9.0.4
     minipass: ^7.1.2
+    package-json-from-dist: ^1.0.0
     path-scurry: ^1.11.1
   bin:
     glob: dist/esm/bin.mjs
-  checksum: 5d33c686c80bf6877f4284adf99a8c3cbb2a6eccbc92342943fe5d4b42c01d78c1881f2223d950c92a938d0f857e12e37b86a8e5483ab2141822e053b67d0dde
+  checksum: bd7c0e30701136e936f414e5f6f82c7f04503f01df77408f177aa584927412f0bde0338e6ec541618cd21eacc57dde33e7b3c6c0a779cc1c6e6a0e14f3d15d9b
   languageName: node
   linkType: hard
 
@@ -1755,7 +1756,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hasown@npm:^2.0.0":
+"hasown@npm:^2.0.2":
   version: 2.0.2
   resolution: "hasown@npm:2.0.2"
   dependencies:
@@ -1891,11 +1892,11 @@ __metadata:
   linkType: hard
 
 "is-core-module@npm:^2.13.0":
-  version: 2.13.1
-  resolution: "is-core-module@npm:2.13.1"
+  version: 2.14.0
+  resolution: "is-core-module@npm:2.14.0"
   dependencies:
-    hasown: ^2.0.0
-  checksum: 256559ee8a9488af90e4bad16f5583c6d59e92f0742e9e8bb4331e758521ee86b810b93bae44f390766ffbc518a0488b18d9dab7da9a5ff997d499efc9403f7c
+    hasown: ^2.0.2
+  checksum: 6bba6c8dc99d88d6f3b2746709d82caddcd9565cafd5870e28ab320720e27e6d9d2bb953ba0839ed4d2ee264bfdd14a9fa1bbc242a916f7dacc8aa95f0322256
   languageName: node
   linkType: hard
 
@@ -2425,6 +2426,13 @@ __metadata:
   dependencies:
     aggregate-error: ^3.0.0
   checksum: cb0ab21ec0f32ddffd31dfc250e3afa61e103ef43d957cc45497afe37513634589316de4eb88abdfd969fe6410c22c0b93ab24328833b8eb1ccc087fc0442a1c
+  languageName: node
+  linkType: hard
+
+"package-json-from-dist@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "package-json-from-dist@npm:1.0.0"
+  checksum: ac706ec856a5a03f5261e4e48fa974f24feb044d51f84f8332e2af0af04fbdbdd5bbbfb9cbbe354190409bc8307c83a9e38c6672c3c8855f709afb0006a009ea
   languageName: node
   linkType: hard
 
