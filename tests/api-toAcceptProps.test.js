@@ -52,4 +52,20 @@ describe("toAcceptProps", function () {
 
     assert.equal(exitCode, 1);
   });
+
+  test("special cases", async function () {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["special-cases"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-special-cases-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-special-cases-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });

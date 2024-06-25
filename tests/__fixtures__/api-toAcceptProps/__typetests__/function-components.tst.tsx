@@ -59,8 +59,6 @@ describe("when target is a function component", () => {
     const two = true;
     expect(Second).type.toAcceptProps({ one: "sample", two });
     expect(Second).type.not.toAcceptProps({ one: "sample", two }); // fail
-
-    // TODO initializers
   });
 
   test("property is required in props type", () => {
@@ -80,8 +78,6 @@ describe("when target is a function component", () => {
     const two = true;
     expect(Second).type.not.toAcceptProps({ two });
     expect(Second).type.toAcceptProps({ two }); // fail
-
-    // TODO initializers
   });
 
   test("property does not exist in props type", () => {
@@ -120,8 +116,6 @@ describe("when target is a function component", () => {
 
     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three });
     expect(Second).type.toAcceptProps({ one: "sample", two: true, three }); // fail
-
-    // TODO initializers
   });
 
   test("property type is not assignable to prop type", () => {
@@ -145,8 +139,6 @@ describe("when target is a function component", () => {
     const two = 2;
     expect(Second).type.not.toAcceptProps({ one: 1, two });
     expect(Second).type.toAcceptProps({ one: 1, two }); // fail
-
-    // TODO initializers
   });
 });
 

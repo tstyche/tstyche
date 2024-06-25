@@ -56,11 +56,7 @@ export class ToAcceptProps {
 
   #isOptionalProperty(symbol: ts.Symbol) {
     return symbol.declarations?.every(
-      (declaration) =>
-        this.#compiler.isPropertySignature(declaration) &&
-        // TODO figure this out
-        // symbol.valueDeclaration.initializer != null ||
-        declaration.questionToken != null,
+      (declaration) => this.#compiler.isPropertySignature(declaration) && declaration.questionToken != null,
     );
   }
 
@@ -82,11 +78,28 @@ export class ToAcceptProps {
     let isMatch: boolean | undefined;
 
     const propsParameter = source.signature.getDeclaration().parameters[0];
+    const propsParameterIsOptional = propsParameter && this.#typeChecker.isOptionalParameter(propsParameter);
     const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
     const propsParameterTypeText =
       explanations && (propsParameterType != null ? this.#typeChecker.typeToString(propsParameterType) : "{}");
 
     const targetTypeText = explanations && (target != null ? this.#typeChecker.typeToString(target.type) : "{}");
+
+    if (!target) {
+      if (!propsParameter || propsParameterIsOptional === true || propsParameterType?.getProperties().length === 0) {
+        isMatch = true;
+
+        if (options?.explain !== true) {
+          return isMatch;
+        }
+
+        const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
+
+        explanations.push({ text });
+
+        return { explanations, isMatch };
+      }
+    }
 
     if (target != null) {
       for (const targetProp of target.type.getProperties()) {
@@ -200,17 +213,6 @@ export class ToAcceptProps {
     target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
     isNot: boolean,
   ): MatchResult {
-    // const nodeSymbol = this.#typeChecker.getSymbolAtLocation(source.node);
-
-    // TODO would be possible to call forEachChild on Parameter.name which is 'Identifier | BindingPattern'
-    // and BindingPattern is 'ObjectBindingPattern | ArrayBindingPattern'
-    // so if it is ObjectBindingPattern its '.elements' are of type BindingElement that has 'propertyName' and 'initializer'
-    // and that would iterate through each ObjectBindingPattern
-    // ((nodeSymbol?.valueDeclaration as ts.FunctionDeclaration).parameters[0]?.name as ts.ObjectBindingPattern)
-    //   .elements[0]?.propertyName;
-    // ((nodeSymbol?.valueDeclaration as ts.FunctionDeclaration).parameters[0]?.name as ts.ObjectBindingPattern)
-    //   .elements[0]?.initializer;
-
     const isMatch = source.signatures.some((signature) => this.#matchSignature({ ...source, signature }, target));
 
     return {
