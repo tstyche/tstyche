@@ -2,6 +2,11 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
+interface Explanation {
+  origin?: DiagnosticOrigin | undefined;
+  text: Array<string>;
+}
+
 export class ToAcceptProps {
   #compiler: typeof ts;
   #typeChecker: TypeChecker;
@@ -16,45 +21,88 @@ export class ToAcceptProps {
     target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
     isNot: boolean,
   ) {
-    return source.signatures.flatMap((signature, index, signatures) => {
+    const diagnostics: Array<Diagnostic> = [];
+    let signatureIndex = 0;
+
+    for (const signature of source.signatures) {
       const sourceText = this.#compiler.isTypeNode(source.node) ? "Component type" : "Component";
       const introText = isNot
         ? `${sourceText} accepts props of the given type.`
         : `${sourceText} does not accept props of the given type.`;
 
-      return this.#explainSignature({ node: source.node, signature }, target, isNot).map(({ origin, text }) => {
-        if (signatures.length > 1) {
+      const { explanations, isMatch } = this.#matchSignature({ ...source, signature }, target, { explain: true });
+
+      if (isNot ? !isMatch : isMatch) {
+        signatureIndex++;
+        continue;
+      }
+
+      for (const { origin, text } of explanations) {
+        if (source.signatures.length > 1) {
           const signatureText = this.#typeChecker.signatureToString(signature, source.node);
-          const overloadText = `Overload ${index + 1} of ${signatures.length}, '${signatureText}', gave the following error.`;
+          const overloadText = `Overload ${signatureIndex + 1} of ${source.signatures.length}, '${signatureText}', gave the following error.`;
 
-          return Diagnostic.error([introText, overloadText, ...text], origin);
+          diagnostics.push(Diagnostic.error([introText, overloadText, ...text], origin));
+        } else {
+          diagnostics.push(Diagnostic.error([introText, ...text], origin));
         }
+      }
 
-        return Diagnostic.error([introText, ...text], origin);
-      });
-    });
+      signatureIndex++;
+    }
+
+    return diagnostics;
   }
 
-  #explainSignature(
+  #isOptionalProperty(symbol: ts.Symbol) {
+    return symbol.declarations?.every(
+      (declaration) =>
+        this.#compiler.isPropertySignature(declaration) &&
+        // TODO figure this out
+        // symbol.valueDeclaration.initializer != null ||
+        declaration.questionToken != null,
+    );
+  }
+
+  #matchSignature(
     source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature },
     target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
-    isNot: boolean,
-  ) {
-    const result: Array<{ origin?: DiagnosticOrigin | undefined; text: Array<string> }> = [];
+  ): boolean;
+  #matchSignature(
+    source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature },
+    target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    options: { explain: true },
+  ): { explanations: Array<Explanation>; isMatch: boolean };
+  #matchSignature(
+    source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature },
+    target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    options?: { explain?: boolean },
+  ): boolean | { explanations: Array<Explanation>; isMatch: boolean } {
+    const explanations: Array<Explanation> = [];
+    let isMatch: boolean | undefined;
 
     const propsParameter = source.signature.getDeclaration().parameters[0];
     const propsParameterIsOptional = propsParameter && this.#typeChecker.isOptionalParameter(propsParameter);
     const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
     const propsParameterTypeText =
-      propsParameterType != null ? this.#typeChecker.typeToString(propsParameterType) : "{}";
+      explanations && (propsParameterType != null ? this.#typeChecker.typeToString(propsParameterType) : "{}");
 
-    const targetTypeText = target != null ? this.#typeChecker.typeToString(target.type) : "{}";
+    const targetTypeText = explanations && (target != null ? this.#typeChecker.typeToString(target.type) : "{}");
 
-    if (isNot) {
-      const origin = target && DiagnosticOrigin.fromNode(target.node);
-      const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
+    if (!target) {
+      if (!propsParameter || propsParameterIsOptional === true || propsParameterType?.getProperties().length === 0) {
+        isMatch = true;
 
-      return [{ origin, text }];
+        if (options?.explain !== true) {
+          return isMatch;
+        }
+
+        const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
+
+        explanations.push({ text });
+
+        return { explanations, isMatch };
+      }
     }
 
     if (target != null) {
@@ -64,29 +112,37 @@ export class ToAcceptProps {
         const sourceProp = propsParameterType?.getProperty(targetPropName);
 
         if (!sourceProp) {
+          isMatch = false;
+
+          if (options?.explain !== true) {
+            return isMatch;
+          }
+
           const origin = this.#resolveOrigin(targetProp, target.node);
           const text = [
             `Type '${targetTypeText}' is not compatible with type '${propsParameterTypeText}'.`,
             `Property '${targetPropName}' does not exist in type '${propsParameterTypeText}'.`,
           ];
 
-          result.push({ origin, text });
+          explanations.push({ origin, text });
 
           continue;
         }
 
-        if (
-          this.#isOptionalProperty(targetProp) &&
-          !this.#isOptionalProperty(sourceProp) &&
-          !propsParameterIsOptional
-        ) {
+        if (this.#isOptionalProperty(targetProp) && !this.#isOptionalProperty(sourceProp)) {
+          isMatch = false;
+
+          if (options?.explain !== true) {
+            return isMatch;
+          }
+
           const origin = this.#resolveOrigin(targetProp, target.node);
           const text = [
             `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
             `Property '${targetPropName}' is required in type '${propsParameterTypeText}'.`,
           ];
 
-          result.push({ origin, text });
+          explanations.push({ origin, text });
 
           continue;
         }
@@ -95,6 +151,12 @@ export class ToAcceptProps {
         const sourcePropType = this.#typeChecker.getTypeOfSymbol(sourceProp);
 
         if (!this.#typeChecker.isTypeAssignableTo(targetPropType, sourcePropType)) {
+          isMatch = false;
+
+          if (options?.explain !== true) {
+            return isMatch;
+          }
+
           const targetPropTypeText = this.#typeChecker.typeToString(targetPropType);
           const sourcePropTypeText = this.#typeChecker.typeToString(sourcePropType);
 
@@ -105,7 +167,7 @@ export class ToAcceptProps {
             `Type '${targetPropTypeText}' is not assignable to type '${sourcePropTypeText}'.`,
           ];
 
-          result.push({ origin, text });
+          explanations.push({ origin, text });
         }
       }
     }
@@ -116,82 +178,38 @@ export class ToAcceptProps {
 
         const targetProp = target?.type.getProperty(sourcePropName);
 
-        if (!targetProp && !this.#isOptionalProperty(sourceProp) && !propsParameterIsOptional) {
+        if (!targetProp && !this.#isOptionalProperty(sourceProp)) {
+          isMatch = false;
+
+          if (options?.explain !== true) {
+            return isMatch;
+          }
+
           const origin = target && DiagnosticOrigin.fromNode(target.node);
           const text = [
             `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
             `Property '${sourcePropName}' is required in type '${propsParameterTypeText}'.`,
           ];
 
-          result.push({ origin, text });
+          explanations.push({ origin, text });
         }
       }
     }
 
-    return result;
-  }
+    isMatch ??= true;
 
-  #isOptionalProperty(symbol: ts.Symbol) {
-    return (
-      symbol.valueDeclaration != null &&
-      this.#compiler.isPropertySignature(symbol.valueDeclaration) &&
-      // TODO figure this out
-      // symbol.valueDeclaration.initializer != null ||
-      symbol.valueDeclaration.questionToken != null
-    );
-  }
-
-  #matchSignature(signature: ts.Signature, targetType: ts.Type | undefined) {
-    const propsParameter = signature.getDeclaration().parameters[0];
-    const propsParameterIsOptional = propsParameter && this.#typeChecker.isOptionalParameter(propsParameter);
-    const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
-
-    if (!targetType) {
-      if (!propsParameter || propsParameterIsOptional === true || propsParameterType?.getProperties().length === 0) {
-        return true;
-      }
+    if (options?.explain !== true) {
+      return isMatch;
     }
 
-    if (propsParameterType != null) {
-      for (const sourceProp of propsParameterType.getProperties()) {
-        const sourcePropName = sourceProp.getName();
+    if (explanations.length === 0) {
+      const origin = target && DiagnosticOrigin.fromNode(target.node);
+      const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
 
-        const targetProp = targetType?.getProperty(sourcePropName);
-
-        if (!targetProp && !(this.#isOptionalProperty(sourceProp) || propsParameterIsOptional)) {
-          return false;
-        }
-      }
+      explanations.push({ origin, text });
     }
 
-    if (targetType != null) {
-      for (const targetProp of targetType.getProperties()) {
-        const targetPropName = targetProp.getName();
-
-        const sourceProp = propsParameterType?.getProperty(targetPropName);
-
-        if (!sourceProp) {
-          return false;
-        }
-
-        if (
-          this.#isOptionalProperty(targetProp) &&
-          !this.#isOptionalProperty(sourceProp) &&
-          !propsParameterIsOptional
-        ) {
-          return false;
-        }
-
-        const targetPropType = this.#typeChecker.getTypeOfSymbol(targetProp);
-        const sourcePropType = this.#typeChecker.getTypeOfSymbol(sourceProp);
-
-        if (!this.#typeChecker.isTypeAssignableTo(targetPropType, sourcePropType)) {
-          return false;
-        }
-      }
-    }
-
-    return true;
+    return { explanations, isMatch };
   }
 
   match(
@@ -210,7 +228,7 @@ export class ToAcceptProps {
     // ((nodeSymbol?.valueDeclaration as ts.FunctionDeclaration).parameters[0]?.name as ts.ObjectBindingPattern)
     //   .elements[0]?.initializer;
 
-    const isMatch = source.signatures.some((signature) => this.#matchSignature(signature, target?.type));
+    const isMatch = source.signatures.some((signature) => this.#matchSignature({ ...source, signature }, target));
 
     return {
       explain: () => this.#explain(source, target, isNot),

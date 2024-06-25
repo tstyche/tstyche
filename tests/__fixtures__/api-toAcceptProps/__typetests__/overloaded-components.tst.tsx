@@ -34,8 +34,8 @@ describe("when target is a function component", () => {
     expect(Button).type.toAcceptProps({});
     expect(Button).type.not.toAcceptProps({}); // fail
 
-    // expect(Button).type.toAcceptProps({ href: "sample" });
-    // expect(Button).type.not.toAcceptProps({ href: "sample" }); // fail
+    expect(Button).type.toAcceptProps({ href: "sample" });
+    expect(Button).type.not.toAcceptProps({ href: "sample" }); // fail
   });
 
   test.todo("property is required in props type", () => {
@@ -60,8 +60,8 @@ describe("when target is a type", () => {
     expect<Overload>().type.toAcceptProps<{}>();
     expect<Overload>().type.not.toAcceptProps<{}>(); // fail
 
-    // expect<Overload>().type.toAcceptProps({ href: "sample" });
-    // expect<Overload>().type.not.toAcceptProps({ href: "sample" });
+    expect<Overload>().type.toAcceptProps({ href: "sample" });
+    expect<Overload>().type.not.toAcceptProps({ href: "sample" });
   });
 
   test.todo("property is required in props type", () => {
