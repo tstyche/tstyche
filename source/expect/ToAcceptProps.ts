@@ -82,28 +82,11 @@ export class ToAcceptProps {
     let isMatch: boolean | undefined;
 
     const propsParameter = source.signature.getDeclaration().parameters[0];
-    const propsParameterIsOptional = propsParameter && this.#typeChecker.isOptionalParameter(propsParameter);
     const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
     const propsParameterTypeText =
       explanations && (propsParameterType != null ? this.#typeChecker.typeToString(propsParameterType) : "{}");
 
     const targetTypeText = explanations && (target != null ? this.#typeChecker.typeToString(target.type) : "{}");
-
-    if (!target) {
-      if (!propsParameter || propsParameterIsOptional === true || propsParameterType?.getProperties().length === 0) {
-        isMatch = true;
-
-        if (options?.explain !== true) {
-          return isMatch;
-        }
-
-        const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
-
-        explanations.push({ text });
-
-        return { explanations, isMatch };
-      }
-    }
 
     if (target != null) {
       for (const targetProp of target.type.getProperties()) {
