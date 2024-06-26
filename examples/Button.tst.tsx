@@ -14,5 +14,5 @@ test("accepts props?", () => {
   expect(Button).type.toAcceptProps({ text: "Clear", type: "reset" as const });
 
   expect(Button).type.not.toAcceptProps({ text: "Download", type: "button" as const });
-  expect(Button).type.not.toAcceptProps();
+  expect(Button).type.not.toAcceptProps({});
 });

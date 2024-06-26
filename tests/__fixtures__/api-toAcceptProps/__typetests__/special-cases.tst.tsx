@@ -6,7 +6,6 @@ describe("special cases", () => {
       return <>{`${props}`}</>;
     }
 
-    expect(Optional).type.toAcceptProps();
     expect(Optional).type.toAcceptProps({}); // TODO Property 'one' is missing
     expect(Optional).type.toAcceptProps({ one: "sample" }); // TODO
 
@@ -19,7 +18,6 @@ describe("special cases", () => {
       return <>{`${props}`}</>;
     }
 
-    expect(Default).type.toAcceptProps();
     expect(Default).type.toAcceptProps({ one: "sample" });
 
     expect(Default).type.toAcceptProps({}); // fail
@@ -42,7 +40,7 @@ describe("special cases", () => {
     expect(OneOrTheOther).type.toAcceptProps({ foo: "Send" });
     expect(OneOrTheOther).type.toAcceptProps({ bar: "Send" });
 
-    expect(OneOrTheOther).type.not.toAcceptProps({ foo: "Download", bar: "button" });
-    expect(OneOrTheOther).type.not.toAcceptProps();
+    expect(OneOrTheOther).type.toAcceptProps({ foo: "Download", bar: "button" }); // fail
+    expect(OneOrTheOther).type.toAcceptProps({}); // fail
   });
 });

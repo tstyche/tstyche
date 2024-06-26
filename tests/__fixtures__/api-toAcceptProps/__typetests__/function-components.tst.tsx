@@ -24,9 +24,6 @@ describe("when target is a function component", () => {
   }
 
   test("accepts props of the given type", () => {
-    expect(None).type.toAcceptProps();
-    expect(None).type.not.toAcceptProps(); // fail
-
     expect(None).type.toAcceptProps({});
     expect(None).type.not.toAcceptProps({}); // fail
 
@@ -36,9 +33,6 @@ describe("when target is a function component", () => {
 
     expect(None).type.not.toAcceptProps({ one: "sample" });
     expect(None).type.toAcceptProps({ one: "sample" }); // fail
-
-    expect(First).type.toAcceptProps();
-    expect(First).type.not.toAcceptProps(); // fail
 
     expect(First).type.toAcceptProps({});
     expect(First).type.not.toAcceptProps({}); // fail
@@ -62,9 +56,6 @@ describe("when target is a function component", () => {
   });
 
   test("property is required in props type", () => {
-    expect(Second).type.not.toAcceptProps();
-    expect(Second).type.toAcceptProps(); // fail
-
     expect(Second).type.not.toAcceptProps({});
     expect(Second).type.toAcceptProps({}); // fail
 
@@ -150,9 +141,6 @@ describe("when target is a type", () => {
   type Second = (props: SecondProps) => React.JSX.Element;
 
   test("accepts props of the given type", () => {
-    expect<None>().type.toAcceptProps();
-    expect<None>().type.not.toAcceptProps(); // fail
-
     expect<None>().type.toAcceptProps<{}>();
     expect<None>().type.not.toAcceptProps<{}>(); // fail
 
@@ -165,9 +153,6 @@ describe("when target is a type", () => {
 
     expect<None>().type.not.toAcceptProps<{ one: string }>();
     expect<None>().type.toAcceptProps<{ one: string }>(); // fail
-
-    expect<First>().type.toAcceptProps();
-    expect<First>().type.not.toAcceptProps(); // fail
 
     expect<First>().type.toAcceptProps<{}>();
     expect<First>().type.not.toAcceptProps<{}>(); // fail
@@ -193,9 +178,6 @@ describe("when target is a type", () => {
   });
 
   test("property is required in props type", () => {
-    expect<Second>().type.not.toAcceptProps();
-    expect<Second>().type.toAcceptProps(); // fail
-
     expect<Second>().type.not.toAcceptProps<{}>();
     expect<Second>().type.toAcceptProps<{}>(); // fail
 

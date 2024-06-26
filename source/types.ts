@@ -72,7 +72,7 @@ interface Matchers {
     /**
      * Checks if the JSX component accepts the given props.
      */
-    (target?: unknown): void;
+    (target: unknown): void;
   };
   /**
    * Checks if the source type is identical to the target type.

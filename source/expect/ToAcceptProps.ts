@@ -18,7 +18,7 @@ export class ToAcceptProps {
 
   #explain(
     source: { node: ts.Expression | ts.TypeNode; signatures: Array<ts.Signature> },
-    target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    target: { node: ts.Expression | ts.TypeNode; type: ts.Type },
     isNot: boolean,
   ) {
     const diagnostics: Array<Diagnostic> = [];
@@ -62,109 +62,109 @@ export class ToAcceptProps {
 
   #matchSignature(
     source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature },
-    target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    target: { node: ts.Expression | ts.TypeNode; type: ts.Type },
   ): boolean;
   #matchSignature(
     source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature },
-    target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    target: { node: ts.Expression | ts.TypeNode; type: ts.Type },
     options: { explain: true },
   ): { explanations: Array<Explanation>; isMatch: boolean };
   #matchSignature(
     source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature },
-    target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    target: { node: ts.Expression | ts.TypeNode; type: ts.Type },
     options?: { explain?: boolean },
   ): boolean | { explanations: Array<Explanation>; isMatch: boolean } {
     const explanations: Array<Explanation> = [];
     let isMatch: boolean | undefined;
 
     const propsParameter = source.signature.getDeclaration().parameters[0];
-    const propsParameterIsOptional = propsParameter && this.#typeChecker.isOptionalParameter(propsParameter);
+    // const propsParameterIsOptional = propsParameter && this.#typeChecker.isOptionalParameter(propsParameter);
     const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
     const propsParameterTypeText =
-      explanations && (propsParameterType != null ? this.#typeChecker.typeToString(propsParameterType) : "{}");
+      options?.explain === true &&
+      (propsParameterType != null ? this.#typeChecker.typeToString(propsParameterType) : "{}");
 
-    const targetTypeText = explanations && (target != null ? this.#typeChecker.typeToString(target.type) : "{}");
+    const targetTypeText = options?.explain && this.#typeChecker.typeToString(target.type);
 
-    if (!target) {
-      if (!propsParameter || propsParameterIsOptional === true || propsParameterType?.getProperties().length === 0) {
-        isMatch = true;
+    // TODO
+    // if (target.type.getProperties().length === 0) {
+    //   if (!propsParameter || propsParameterIsOptional === true || propsParameterType?.getProperties().length === 0) {
+    //     isMatch = true;
+
+    //     if (options?.explain !== true) {
+    //       return isMatch;
+    //     }
+
+    //     const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
+
+    //     explanations.push({ text });
+
+    //     return { explanations, isMatch };
+    //   }
+    // }
+
+    for (const targetProp of target.type.getProperties()) {
+      const targetPropName = targetProp.getName();
+
+      const sourceProp = propsParameterType?.getProperty(targetPropName);
+
+      if (!sourceProp) {
+        isMatch = false;
 
         if (options?.explain !== true) {
           return isMatch;
         }
 
-        const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
+        const origin = this.#resolveOrigin(targetProp, target.node);
+        const text = [
+          `Type '${targetTypeText}' is not compatible with type '${propsParameterTypeText}'.`,
+          `Property '${targetPropName}' does not exist in type '${propsParameterTypeText}'.`,
+        ];
 
-        explanations.push({ text });
+        explanations.push({ origin, text });
 
-        return { explanations, isMatch };
+        continue;
       }
-    }
 
-    if (target != null) {
-      for (const targetProp of target.type.getProperties()) {
-        const targetPropName = targetProp.getName();
+      if (this.#isOptionalProperty(targetProp) && !this.#isOptionalProperty(sourceProp)) {
+        isMatch = false;
 
-        const sourceProp = propsParameterType?.getProperty(targetPropName);
-
-        if (!sourceProp) {
-          isMatch = false;
-
-          if (options?.explain !== true) {
-            return isMatch;
-          }
-
-          const origin = this.#resolveOrigin(targetProp, target.node);
-          const text = [
-            `Type '${targetTypeText}' is not compatible with type '${propsParameterTypeText}'.`,
-            `Property '${targetPropName}' does not exist in type '${propsParameterTypeText}'.`,
-          ];
-
-          explanations.push({ origin, text });
-
-          continue;
+        if (options?.explain !== true) {
+          return isMatch;
         }
 
-        if (this.#isOptionalProperty(targetProp) && !this.#isOptionalProperty(sourceProp)) {
-          isMatch = false;
+        const origin = this.#resolveOrigin(targetProp, target.node);
+        const text = [
+          `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
+          `Property '${targetPropName}' is required in type '${propsParameterTypeText}'.`,
+        ];
 
-          if (options?.explain !== true) {
-            return isMatch;
-          }
+        explanations.push({ origin, text });
 
-          const origin = this.#resolveOrigin(targetProp, target.node);
-          const text = [
-            `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
-            `Property '${targetPropName}' is required in type '${propsParameterTypeText}'.`,
-          ];
+        continue;
+      }
 
-          explanations.push({ origin, text });
+      const targetPropType = this.#typeChecker.getTypeOfSymbol(targetProp);
+      const sourcePropType = this.#typeChecker.getTypeOfSymbol(sourceProp);
 
-          continue;
+      if (!this.#typeChecker.isTypeAssignableTo(targetPropType, sourcePropType)) {
+        isMatch = false;
+
+        if (options?.explain !== true) {
+          return isMatch;
         }
 
-        const targetPropType = this.#typeChecker.getTypeOfSymbol(targetProp);
-        const sourcePropType = this.#typeChecker.getTypeOfSymbol(sourceProp);
+        const targetPropTypeText = this.#typeChecker.typeToString(targetPropType);
+        const sourcePropTypeText = this.#typeChecker.typeToString(sourcePropType);
 
-        if (!this.#typeChecker.isTypeAssignableTo(targetPropType, sourcePropType)) {
-          isMatch = false;
+        const origin = this.#resolveOrigin(targetProp, target.node);
+        const text = [
+          `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
+          `Types of property '${targetPropName}' are incompatible.`,
+          `Type '${targetPropTypeText}' is not assignable to type '${sourcePropTypeText}'.`,
+        ];
 
-          if (options?.explain !== true) {
-            return isMatch;
-          }
-
-          const targetPropTypeText = this.#typeChecker.typeToString(targetPropType);
-          const sourcePropTypeText = this.#typeChecker.typeToString(sourcePropType);
-
-          const origin = this.#resolveOrigin(targetProp, target.node);
-          const text = [
-            `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
-            `Types of property '${targetPropName}' are incompatible.`,
-            `Type '${targetPropTypeText}' is not assignable to type '${sourcePropTypeText}'.`,
-          ];
-
-          explanations.push({ origin, text });
-        }
+        explanations.push({ origin, text });
       }
     }
 
@@ -172,7 +172,7 @@ export class ToAcceptProps {
       for (const sourceProp of propsParameterType.getProperties()) {
         const sourcePropName = sourceProp.getName();
 
-        const targetProp = target?.type.getProperty(sourcePropName);
+        const targetProp = target.type.getProperty(sourcePropName);
 
         if (!targetProp && !this.#isOptionalProperty(sourceProp)) {
           isMatch = false;
@@ -181,7 +181,7 @@ export class ToAcceptProps {
             return isMatch;
           }
 
-          const origin = target && DiagnosticOrigin.fromNode(target.node);
+          const origin = DiagnosticOrigin.fromNode(target.node);
           const text = [
             `Type '${targetTypeText}' is not assignable to type '${propsParameterTypeText}'.`,
             `Property '${sourcePropName}' is required in type '${propsParameterTypeText}'.`,
@@ -199,7 +199,7 @@ export class ToAcceptProps {
     }
 
     if (explanations.length === 0) {
-      const origin = target && DiagnosticOrigin.fromNode(target.node);
+      const origin = DiagnosticOrigin.fromNode(target.node);
       const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
 
       explanations.push({ origin, text });
@@ -210,7 +210,7 @@ export class ToAcceptProps {
 
   match(
     source: { node: ts.Expression | ts.TypeNode; signatures: Array<ts.Signature> },
-    target: { node: ts.Expression | ts.TypeNode; type: ts.Type } | undefined,
+    target: { node: ts.Expression | ts.TypeNode; type: ts.Type },
     isNot: boolean,
   ): MatchResult {
     const isMatch = source.signatures.some((signature) => this.#matchSignature({ ...source, signature }, target));

@@ -3,45 +3,45 @@ Error: Component does not accept props of the given type.
 Type '{}' is not assignable to type '{ one: string; }'.
 Property 'one' is required in type '{ one: string; }'.
 
-  23 |     expect(Default).type.toAcceptProps({ one: "sample" });
-  24 | 
-> 25 |     expect(Default).type.toAcceptProps({}); // fail
+  21 |     expect(Default).type.toAcceptProps({ one: "sample" });
+  22 | 
+> 23 |     expect(Default).type.toAcceptProps({}); // fail
      |                                        ^
-  26 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-  27 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-  28 |   });
+  24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
+  25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
+  26 |   });
 
-       at ./__typetests__/special-cases.tst.tsx:25:40 ❭ special cases ❭ when the 'props' argument has a default value
+       at ./__typetests__/special-cases.tst.tsx:23:40 ❭ special cases ❭ when the 'props' argument has a default value
 
 Error: Component does not accept props of the given type.
 
 Type '{ two: boolean; }' is not compatible with type '{ one: string; }'.
 Property 'two' does not exist in type '{ one: string; }'.
 
-  24 | 
-  25 |     expect(Default).type.toAcceptProps({}); // fail
-> 26 |     expect(Default).type.toAcceptProps({ two: false }); // fail
+  22 | 
+  23 |     expect(Default).type.toAcceptProps({}); // fail
+> 24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
      |                                          ^
-  27 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-  28 |   });
-  29 | 
+  25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
+  26 |   });
+  27 | 
 
-       at ./__typetests__/special-cases.tst.tsx:26:42 ❭ special cases ❭ when the 'props' argument has a default value
+       at ./__typetests__/special-cases.tst.tsx:24:42 ❭ special cases ❭ when the 'props' argument has a default value
 
 Error: Component does not accept props of the given type.
 
 Type '{ two: boolean; }' is not assignable to type '{ one: string; }'.
 Property 'one' is required in type '{ one: string; }'.
 
-  24 | 
-  25 |     expect(Default).type.toAcceptProps({}); // fail
-> 26 |     expect(Default).type.toAcceptProps({ two: false }); // fail
+  22 | 
+  23 |     expect(Default).type.toAcceptProps({}); // fail
+> 24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
      |                                        ^
-  27 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-  28 |   });
-  29 | 
+  25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
+  26 |   });
+  27 | 
 
-       at ./__typetests__/special-cases.tst.tsx:26:40 ❭ special cases ❭ when the 'props' argument has a default value
+       at ./__typetests__/special-cases.tst.tsx:24:40 ❭ special cases ❭ when the 'props' argument has a default value
 
 Error: Component does not accept props of the given type.
 
@@ -49,13 +49,13 @@ Type '{ one: boolean; }' is not assignable to type '{ one: string; }'.
 Types of property 'one' are incompatible.
 Type 'boolean' is not assignable to type 'string'.
 
-  25 |     expect(Default).type.toAcceptProps({}); // fail
-  26 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-> 27 |     expect(Default).type.toAcceptProps({ one: false }); // fail
+  23 |     expect(Default).type.toAcceptProps({}); // fail
+  24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
+> 25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
      |                                          ^
-  28 |   });
-  29 | 
-  30 |   test.todo("when the 'props' is a union", () => {
+  26 |   });
+  27 | 
+  28 |   test.todo("when the 'props' is a union", () => {
 
-       at ./__typetests__/special-cases.tst.tsx:27:42 ❭ special cases ❭ when the 'props' argument has a default value
+       at ./__typetests__/special-cases.tst.tsx:25:42 ❭ special cases ❭ when the 'props' argument has a default value
 

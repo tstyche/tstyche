@@ -15,7 +15,7 @@ fail ./__typetests__/function-components.tst.tsx
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      8 failed, 8 total
-Assertions: 74 failed, 74 passed, 148 total
+Assertions: 68 failed, 68 passed, 136 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'function-components'.

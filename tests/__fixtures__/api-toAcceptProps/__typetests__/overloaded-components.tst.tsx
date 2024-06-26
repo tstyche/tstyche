@@ -29,9 +29,6 @@ function First(props: BbProps | AaProps): React.JSX.Element {
 
 describe("when target is a function component", () => {
   test("accepts props of the given type", () => {
-    expect(First).type.toAcceptProps();
-    expect(First).type.not.toAcceptProps(); // fail
-
     expect(First).type.toAcceptProps({});
     expect(First).type.not.toAcceptProps({}); // fail
 
@@ -52,9 +49,6 @@ describe("when target is a function component", () => {
 
 describe("when target is a type", () => {
   test("accepts props of the given type", () => {
-    expect<FirstOverload>().type.toAcceptProps();
-    expect<FirstOverload>().type.not.toAcceptProps(); // fail
-
     expect<FirstOverload>().type.toAcceptProps<{}>();
     expect<FirstOverload>().type.not.toAcceptProps<{}>(); // fail
 

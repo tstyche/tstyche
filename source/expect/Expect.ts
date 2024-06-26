@@ -130,9 +130,27 @@ export class Expect {
           return;
         }
 
+        if (assertion.target[0] == null) {
+          this.#onTargetArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const targetType = this.#getType(assertion.target[0]);
+        const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
+
+        if (
+          targetType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
+          !this.#typeChecker.isTypeRelatedTo(targetType, nonPrimitiveType, this.#typeChecker.relation.assignable)
+        ) {
+          this.#onTargetArgumentMustBeObjectType(assertion.target[0], expectResult);
+
+          return;
+        }
+
         return this.toAcceptProps.match(
           { signatures: [...signatures], node: assertion.source[0] },
-          assertion.target[0] && { node: assertion.target[0], type: this.#getType(assertion.target[0]) },
+          { node: assertion.target[0], type: targetType },
           assertion.isNot,
         );
       }
@@ -327,6 +345,16 @@ export class Expect {
         result: expectResult,
       },
     ]);
+  }
+
+  #onTargetArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Target'" : "An argument for 'target'";
+    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
+
+    const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
+    const origin = DiagnosticOrigin.fromNode(node);
+
+    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
   #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
