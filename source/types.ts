@@ -63,14 +63,26 @@ interface Test {
 interface Matchers {
   /**
    * Checks if the JSX component accepts props of the given type.
+   *
+   * @remarks
+   *
+   * This is a preview feature. Generic components are not yet supported.
    */
   toAcceptProps: {
     /**
      * Checks if the JSX component accepts props of the given type.
+     *
+     * @remarks
+     *
+     * This is a preview feature. Generic components are not yet supported.
      */
     <Target>(): void;
     /**
      * Checks if the JSX component accepts the given props.
+     *
+     * @remarks
+     *
+     * This is a preview feature. Generic components are not yet supported.
      */
     (target: unknown): void;
   };
