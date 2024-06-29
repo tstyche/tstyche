@@ -4,8 +4,8 @@ To learn more, visit https://tstyche.org/releases/tstyche-2
 
   14 | 
   15 | test("edge cases", () => {
-> 16 |   expect<any>().type.not.toEqual<never>();
-     |                          ^
+  16 |   expect<any>().type.not.toEqual<never>();
+     |                          ~~~~~~~
   17 |   expect<any>().type.not.toEqual<unknown>();
   18 | 
   19 |   expect(Date).type.toEqual<typeof Date>();
@@ -16,8 +16,8 @@ Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
 
   25 |     expect<Names>().type.toEqual<{ first: string; last?: string }>();
   26 | 
-> 27 |     expect<Names>().type.toEqual<{ first: string; last: string }>();
-     |                          ^
+  27 |     expect<Names>().type.toEqual<{ first: string; last: string }>();
+     |                          ~~~~~~~
   28 |   });
   29 | 
   30 |   test("does NOT equal expected type", () => {
@@ -28,8 +28,8 @@ Error: Type 'Names' is identical to type '{ first: string; last?: string | undef
 
   31 |     expect<Names>().type.not.toEqual<{ first: string; last: string }>();
   32 | 
-> 33 |     expect<Names>().type.not.toEqual<{ first: string; last?: string }>();
-     |                              ^
+  33 |     expect<Names>().type.not.toEqual<{ first: string; last?: string }>();
+     |                              ~~~~~~~
   34 |   });
   35 | 
   36 |   test("equals expected value", () => {
@@ -40,8 +40,8 @@ Error: Type '{ first: string; last: string; }' is not identical to type 'Names'.
 
   38 |     expect<{ first: string; last?: string }>().type.toEqual(getNames());
   39 | 
-> 40 |     expect<{ first: string; last: string }>().type.toEqual(getNames());
-     |                                                    ^
+  40 |     expect<{ first: string; last: string }>().type.toEqual(getNames());
+     |                                                    ~~~~~~~
   41 |   });
   42 | 
   43 |   test("does NOT equal expected value", () => {
@@ -52,8 +52,8 @@ Error: Type '{ first: string; last?: string | undefined; }' is identical to type
 
   44 |     expect<{ first: string; last: string }>().type.not.toEqual(getNames());
   45 | 
-> 46 |     expect<{ first: string; last?: string }>().type.not.toEqual(getNames());
-     |                                                         ^
+  46 |     expect<{ first: string; last?: string }>().type.not.toEqual(getNames());
+     |                                                         ~~~~~~~
   47 |   });
   48 | });
   49 | 
@@ -64,8 +64,8 @@ Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
 
   53 |     expect(getNames()).type.toEqual<Names>();
   54 | 
-> 55 |     expect(getNames()).type.toEqual<{ first: string; last: string }>();
-     |                             ^
+  55 |     expect(getNames()).type.toEqual<{ first: string; last: string }>();
+     |                             ~~~~~~~
   56 |   });
   57 | 
   58 |   test("does NOT equal expected type", () => {
@@ -76,8 +76,8 @@ Error: Type 'Names' is identical to type '{ first: string; last?: string | undef
 
   59 |     expect(getNames()).type.not.toEqual<{ first: string; last: string }>();
   60 | 
-> 61 |     expect(getNames()).type.not.toEqual<{ first: string; last?: string }>();
-     |                                 ^
+  61 |     expect(getNames()).type.not.toEqual<{ first: string; last?: string }>();
+     |                                 ~~~~~~~
   62 |   });
   63 | 
   64 |   test("equals expected value", () => {
@@ -88,8 +88,8 @@ Error: Type '{ height: number; }' is not identical to type 'Size'.
 
   65 |     expect({ height: 14, width: 25 }).type.toEqual(getSize());
   66 | 
-> 67 |     expect({ height: 14 }).type.toEqual(getSize());
-     |                                 ^
+  67 |     expect({ height: 14 }).type.toEqual(getSize());
+     |                                 ~~~~~~~
   68 |   });
   69 | 
   70 |   test("does NOT equal expected value", () => {
@@ -100,8 +100,8 @@ Error: Type '{ height: number; width: number; }' is identical to type 'Size'.
 
   71 |     expect({ height: 14 }).type.not.toEqual(getSize());
   72 | 
-> 73 |     expect({ height: 14, width: 25 }).type.not.toEqual(getSize());
-     |                                                ^
+  73 |     expect({ height: 14, width: 25 }).type.not.toEqual(getSize());
+     |                                                ~~~~~~~
   74 |   });
   75 | });
   76 | 

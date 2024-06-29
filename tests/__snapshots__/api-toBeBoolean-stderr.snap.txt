@@ -2,8 +2,8 @@ Error: The source type is 'string'.
 
    7 |   expect(returnsBoolean()).type.toBeBoolean();
    8 | 
->  9 |   expect(returnsString()).type.toBeBoolean();
-     |                                ^
+   9 |   expect(returnsString()).type.toBeBoolean();
+     |                                ~~~~~~~~~~~
   10 | });
   11 | 
   12 | test("is NOT boolean?", () => {
@@ -14,8 +14,8 @@ Error: The source type is 'boolean'.
 
   13 |   expect(returnsString()).type.not.toBeBoolean();
   14 | 
-> 15 |   expect(returnsBoolean()).type.not.toBeBoolean();
-     |                                     ^
+  15 |   expect(returnsBoolean()).type.not.toBeBoolean();
+     |                                     ~~~~~~~~~~~
   16 | });
   17 | 
 

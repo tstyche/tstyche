@@ -2,8 +2,8 @@ Error: The source type is 'string'.
 
    7 |   expect(returnsAny()).type.toBeAny();
    8 | 
->  9 |   expect(returnsString()).type.toBeAny();
-     |                                ^
+   9 |   expect(returnsString()).type.toBeAny();
+     |                                ~~~~~~~
   10 | });
   11 | 
   12 | test("is NOT any?", () => {
@@ -14,8 +14,8 @@ Error: The source type is 'any'.
 
   13 |   expect(returnsString()).type.not.toBeAny();
   14 | 
-> 15 |   expect(returnsAny()).type.not.toBeAny();
-     |                                 ^
+  15 |   expect(returnsAny()).type.not.toBeAny();
+     |                                 ~~~~~~~
   16 | });
   17 | 
 

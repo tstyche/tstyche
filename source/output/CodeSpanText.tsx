@@ -29,17 +29,16 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
     if (index === markedLine) {
       codeSpan.push(
         <Line>
-          <Text color={Color.Red}>{">"}</Text>
-          <Text> </Text>
-          {lineNumberText.padStart(lineNumberMaxWidth)}
-          <Text> </Text>
-          <Text color={Color.Gray}>|</Text> {lineText}
+          {" ".repeat(2)}
+          <Text color={Color.Red}>{lineNumberText.padStart(lineNumberMaxWidth)}</Text>
+          <Text color={Color.Gray}> | </Text>
+          {lineText}
         </Line>,
         <Line>
-          {" ".repeat(lineNumberMaxWidth + 3)}
-          <Text color={Color.Gray}>|</Text>
-          {" ".repeat(markedCharacter + 1)}
-          <Text color={Color.Red}>{"^"}</Text>
+          {" ".repeat(lineNumberMaxWidth + 2)}
+          <Text color={Color.Gray}> | </Text>
+          {" ".repeat(markedCharacter)}
+          <Text color={Color.Red}>{"~".repeat(diagnosticOrigin.end - diagnosticOrigin.start)}</Text>
         </Line>,
       );
     } else {

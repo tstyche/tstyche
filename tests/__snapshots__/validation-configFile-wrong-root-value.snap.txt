@@ -1,7 +1,7 @@
 Error: The root value of a configuration file must be an object literal.
 
-> 1 | [
-    | ^
+  1 | [
+    | 
   2 |   {
   3 |     "failFast": true
   4 |   }

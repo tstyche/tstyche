@@ -1,8 +1,8 @@
 Error: String literal with double quotes expected.
 
   1 | {
-> 2 |   "target": ['4.8']
-    |              ^
+  2 |   "target": ['4.8']
+    |              ~~~~~
   3 | }
 
       at ./tstyche.config.json:2:14

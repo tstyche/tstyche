@@ -2,8 +2,8 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
   3 | describe("argument for 'source'", () => {
   4 |   test("must be provided", () => {
-> 5 |     expect().type.toBeUndefined();
-    |     ^
+  5 |     expect().type.toBeUndefined();
+    |     ~~~~~~
   6 |   });
   7 | });
   8 | 

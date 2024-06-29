@@ -1,8 +1,8 @@
 Error: Option 'failFast' requires a value of type boolean.
 
   1 | {
-> 2 |   "failFast": "never"
-    |               ^
+  2 |   "failFast": "never"
+    |               ~~~~~~~
   3 | }
 
       at ./tstyche.config.json:2:15

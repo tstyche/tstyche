@@ -4,8 +4,8 @@ Consider removing the '.fail' flag.
 
   2 | 
   3 | expect.skip.fail<string>().type.toBeString();
-> 4 | expect.fail<string>().type.toBeString();
-    | ^
+  4 | expect.fail<string>().type.toBeString();
+    | ~~~~~~~~~~~~~~~~~~~~~
   5 | 
   6 | expect.skip
   7 |   .fail(() => {
@@ -18,8 +18,8 @@ Consider removing the '.fail' flag.
 
   13 |   test("is string?", () => {
   14 |     expect.skip.fail<string>().type.toBeString();
-> 15 |     expect.fail<string>().type.toBeString();
-     |     ^
+  15 |     expect.fail<string>().type.toBeString();
+     |     ~~~~~~~~~~~~~~~~~~~~~
   16 |   });
   17 | });
   18 | 
@@ -32,8 +32,8 @@ Consider removing the '.fail' flag.
 
   19 | test("is number?", () => {
   20 |   expect.skip.fail<number>().type.toBeNumber();
-> 21 |   expect.fail<number>().type.toBeNumber();
-     |   ^
+  21 |   expect.fail<number>().type.toBeNumber();
+     |   ~~~~~~~~~~~~~~~~~~~~~
   22 | });
   23 | 
 

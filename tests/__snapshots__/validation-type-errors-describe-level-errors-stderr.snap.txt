@@ -2,8 +2,8 @@ Error: Expected 2 arguments, but got 1. ts(2554)
 
   12 | 
   13 | describe("reported type error?", () => {
-> 14 |   test("with type error");
-     |   ^
+  14 |   test("with type error");
+     |   ~~~~
   15 | 
   16 |   test("looks at this test?", () => {
   17 |     expect<number>().type.toBeNumber();
