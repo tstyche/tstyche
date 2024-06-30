@@ -334,7 +334,7 @@ export class Expect {
   }
 
   #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const origin = DiagnosticOrigin.fromNode(assertion.node);
+    const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
     EventEmitter.dispatch([
       "expect:error",

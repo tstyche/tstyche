@@ -2,8 +2,8 @@ Error: Property 'runTest' exists on type 'Worker<Sample>'.
 
   48 |     expect<Worker<Sample>>().type.toHaveProperty("runTest");
   49 | 
-> 50 |     expect<Worker<Sample>>().type.not.toHaveProperty("runTest");
-     |                                       ^
+  50 |     expect<Worker<Sample>>().type.not.toHaveProperty("runTest");
+     |                                       ~~~~~~~~~~~~~~
   51 |   });
   52 | 
   53 |   test("has expected optional string property key", () => {
@@ -14,8 +14,8 @@ Error: Property 'isBusy' exists on type 'Worker<Sample>'.
 
   54 |     expect<Worker<Sample>>().type.toHaveProperty("isBusy");
   55 | 
-> 56 |     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
-     |                                       ^
+  56 |     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
+     |                                       ~~~~~~~~~~~~~~
   57 |   });
   58 | 
   59 |   test("has expected escaped string property key", () => {
@@ -26,8 +26,8 @@ Error: Property '__check' exists on type 'Worker<Sample>'.
 
   60 |     expect<Worker<Sample>>().type.toHaveProperty("__check");
   61 | 
-> 62 |     expect<Worker<Sample>>().type.not.toHaveProperty("__check");
-     |                                       ^
+  62 |     expect<Worker<Sample>>().type.not.toHaveProperty("__check");
+     |                                       ~~~~~~~~~~~~~~
   63 |   });
   64 | 
   65 |   test("does NOT have expected string property key", () => {
@@ -38,8 +38,8 @@ Error: Property 'endTest' does not exist on type 'Worker<Sample>'.
 
   66 |     expect<Worker<Sample>>().type.not.toHaveProperty("endTest");
   67 | 
-> 68 |     expect<Worker<Sample>>().type.toHaveProperty("endTest");
-     |                                   ^
+  68 |     expect<Worker<Sample>>().type.toHaveProperty("endTest");
+     |                                   ~~~~~~~~~~~~~~
   69 |   });
   70 | 
   71 |   test("has expected number property key", () => {
@@ -50,8 +50,8 @@ Error: Property '123' exists on type 'Worker<Sample>'.
 
   72 |     expect<Worker<Sample>>().type.toHaveProperty(123);
   73 | 
-> 74 |     expect<Worker<Sample>>().type.not.toHaveProperty(123);
-     |                                       ^
+  74 |     expect<Worker<Sample>>().type.not.toHaveProperty(123);
+     |                                       ~~~~~~~~~~~~~~
   75 |   });
   76 | 
   77 |   test("has expected optional number property key", () => {
@@ -62,8 +62,8 @@ Error: Property '789' exists on type 'Worker<Sample>'.
 
   78 |     expect<Worker<Sample>>().type.toHaveProperty(789);
   79 | 
-> 80 |     expect<Worker<Sample>>().type.not.toHaveProperty(789);
-     |                                       ^
+  80 |     expect<Worker<Sample>>().type.not.toHaveProperty(789);
+     |                                       ~~~~~~~~~~~~~~
   81 |   });
   82 | 
   83 |   test("does NOT have expected number property key", () => {
@@ -74,8 +74,8 @@ Error: Property '456' does not exist on type 'Worker<Sample>'.
 
   84 |     expect<Worker<Sample>>().type.not.toHaveProperty(456);
   85 | 
-> 86 |     expect<Worker<Sample>>().type.toHaveProperty(456);
-     |                                   ^
+  86 |     expect<Worker<Sample>>().type.toHaveProperty(456);
+     |                                   ~~~~~~~~~~~~~~
   87 |   });
   88 | 
   89 |   test("has expected symbol property key", () => {
@@ -86,8 +86,8 @@ Error: Property '[kOne]' exists on type 'Worker<Sample>'.
 
   90 |     expect<Worker<Sample>>().type.toHaveProperty(kOne);
   91 | 
-> 92 |     expect<Worker<Sample>>().type.not.toHaveProperty(kOne);
-     |                                       ^
+  92 |     expect<Worker<Sample>>().type.not.toHaveProperty(kOne);
+     |                                       ~~~~~~~~~~~~~~
   93 |   });
   94 | 
   95 |   test("has expected global symbol property key", () => {
@@ -98,8 +98,8 @@ Error: Property '[kTwo]' exists on type 'Worker<Sample>'.
 
    96 |     expect<Worker<Sample>>().type.toHaveProperty(kTwo);
    97 | 
->  98 |     expect<Worker<Sample>>().type.not.toHaveProperty(kTwo);
-      |                                       ^
+   98 |     expect<Worker<Sample>>().type.not.toHaveProperty(kTwo);
+      |                                       ~~~~~~~~~~~~~~
    99 |   });
   100 | 
   101 |   test("does NOT have expected symbol property key", () => {
@@ -110,8 +110,8 @@ Error: Property '[kFour]' does not exist on type 'Worker<Sample>'.
 
   102 |     expect<Worker<Sample>>().type.not.toHaveProperty(kFour);
   103 | 
-> 104 |     expect<Worker<Sample>>().type.toHaveProperty(kFour);
-      |                                   ^
+  104 |     expect<Worker<Sample>>().type.toHaveProperty(kFour);
+      |                                   ~~~~~~~~~~~~~~
   105 |   });
   106 | 
   107 |   test("has expected numeric enum property key", () => {
@@ -122,8 +122,8 @@ Error: Property '0' exists on type 'Worker<Sample>'.
 
   108 |     expect<Worker<Sample>>().type.toHaveProperty(E1.A);
   109 | 
-> 110 |     expect<Worker<Sample>>().type.not.toHaveProperty(E1.A);
-      |                                       ^
+  110 |     expect<Worker<Sample>>().type.not.toHaveProperty(E1.A);
+      |                                       ~~~~~~~~~~~~~~
   111 |   });
   112 | 
   113 |   test("does NOT have expected numeric enum property key", () => {
@@ -134,8 +134,8 @@ Error: Property '1' does not exist on type 'Worker<Sample>'.
 
   114 |     expect<Worker<Sample>>().type.not.toHaveProperty(E1.B);
   115 | 
-> 116 |     expect<Worker<Sample>>().type.toHaveProperty(E1.B);
-      |                                   ^
+  116 |     expect<Worker<Sample>>().type.toHaveProperty(E1.B);
+      |                                   ~~~~~~~~~~~~~~
   117 |   });
   118 | 
   119 |   test("has expected string enum property key", () => {
@@ -146,8 +146,8 @@ Error: Property 'B' exists on type 'Worker<Sample>'.
 
   120 |     expect<Worker<Sample>>().type.toHaveProperty(E2.B);
   121 | 
-> 122 |     expect<Worker<Sample>>().type.not.toHaveProperty(E2.B);
-      |                                       ^
+  122 |     expect<Worker<Sample>>().type.not.toHaveProperty(E2.B);
+      |                                       ~~~~~~~~~~~~~~
   123 |   });
   124 | 
   125 |   test("does NOT have expected string enum property key", () => {
@@ -158,8 +158,8 @@ Error: Property 'A' does not exist on type 'Worker<Sample>'.
 
   126 |     expect<Worker<Sample>>().type.not.toHaveProperty(E2.A);
   127 | 
-> 128 |     expect<Worker<Sample>>().type.toHaveProperty(E2.A);
-      |                                   ^
+  128 |     expect<Worker<Sample>>().type.toHaveProperty(E2.A);
+      |                                   ~~~~~~~~~~~~~~
   129 |   });
   130 | });
   131 | 
@@ -170,8 +170,8 @@ Error: Property 'A' exists on type 'typeof E1'.
 
   134 |     expect<typeof E1>().type.toHaveProperty("A");
   135 | 
-> 136 |     expect<typeof E1>().type.not.toHaveProperty("A");
-      |                                  ^
+  136 |     expect<typeof E1>().type.not.toHaveProperty("A");
+      |                                  ~~~~~~~~~~~~~~
   137 |   });
   138 | 
   139 |   test("does NOT have expected property key", () => {
@@ -182,8 +182,8 @@ Error: Property 'F' does not exist on type 'typeof E1'.
 
   140 |     expect<typeof E1>().type.not.toHaveProperty("F");
   141 | 
-> 142 |     expect<typeof E1>().type.toHaveProperty("F");
-      |                              ^
+  142 |     expect<typeof E1>().type.toHaveProperty("F");
+      |                              ~~~~~~~~~~~~~~
   143 |   });
   144 | });
   145 | 
@@ -194,8 +194,8 @@ Error: Property 'radius' exists on type 'ColorfulCircle'.
 
   158 |     expect<ColorfulCircle>().type.toHaveProperty("radius");
   159 | 
-> 160 |     expect<ColorfulCircle>().type.not.toHaveProperty("radius");
-      |                                       ^
+  160 |     expect<ColorfulCircle>().type.not.toHaveProperty("radius");
+      |                                       ~~~~~~~~~~~~~~
   161 |   });
   162 | 
   163 |   test("does NOT have expected property key", () => {
@@ -206,8 +206,8 @@ Error: Property 'shade' does not exist on type 'ColorfulCircle'.
 
   164 |     expect<ColorfulCircle>().type.not.toHaveProperty("shade");
   165 | 
-> 166 |     expect<ColorfulCircle>().type.toHaveProperty("shade");
-      |                                   ^
+  166 |     expect<ColorfulCircle>().type.toHaveProperty("shade");
+      |                                   ~~~~~~~~~~~~~~
   167 |   });
   168 | });
   169 | 
@@ -218,8 +218,8 @@ Error: Property 'runTest' exists on type '{ 123: number; 0: boolean; B: null; __
 
   172 |     expect(sample).type.toHaveProperty("runTest");
   173 | 
-> 174 |     expect(sample).type.not.toHaveProperty("runTest");
-      |                             ^
+  174 |     expect(sample).type.not.toHaveProperty("runTest");
+      |                             ~~~~~~~~~~~~~~
   175 |   });
   176 | 
   177 |   test("has expected escaped string property key", () => {
@@ -230,8 +230,8 @@ Error: Property '__check' exists on type '{ 123: number; 0: boolean; B: null; __
 
   178 |     expect(sample).type.toHaveProperty("__check");
   179 | 
-> 180 |     expect(sample).type.not.toHaveProperty("__check");
-      |                             ^
+  180 |     expect(sample).type.not.toHaveProperty("__check");
+      |                             ~~~~~~~~~~~~~~
   181 |   });
   182 | 
   183 |   test("does NOT have expected string property key", () => {
@@ -242,8 +242,8 @@ Error: Property 'endTest' does not exist on type '{ 123: number; 0: boolean; B: 
 
   184 |     expect(sample).type.not.toHaveProperty("endTest");
   185 | 
-> 186 |     expect(sample).type.toHaveProperty("endTest");
-      |                         ^
+  186 |     expect(sample).type.toHaveProperty("endTest");
+      |                         ~~~~~~~~~~~~~~
   187 |   });
   188 | 
   189 |   test("has expected number property key", () => {
@@ -254,8 +254,8 @@ Error: Property '123' exists on type '{ 123: number; 0: boolean; B: null; __chec
 
   190 |     expect(sample).type.toHaveProperty(123);
   191 | 
-> 192 |     expect(sample).type.not.toHaveProperty(123);
-      |                             ^
+  192 |     expect(sample).type.not.toHaveProperty(123);
+      |                             ~~~~~~~~~~~~~~
   193 |   });
   194 | 
   195 |   test("does NOT have expected number property key", () => {
@@ -266,8 +266,8 @@ Error: Property '456' does not exist on type '{ 123: number; 0: boolean; B: null
 
   196 |     expect(sample).type.not.toHaveProperty(456);
   197 | 
-> 198 |     expect(sample).type.toHaveProperty(456);
-      |                         ^
+  198 |     expect(sample).type.toHaveProperty(456);
+      |                         ~~~~~~~~~~~~~~
   199 |   });
   200 | 
   201 |   test("has expected symbol property key", () => {
@@ -278,8 +278,8 @@ Error: Property '[kOne]' exists on type '{ 123: number; 0: boolean; B: null; __c
 
   202 |     expect(sample).type.toHaveProperty(kOne);
   203 | 
-> 204 |     expect(sample).type.not.toHaveProperty(kOne);
-      |                             ^
+  204 |     expect(sample).type.not.toHaveProperty(kOne);
+      |                             ~~~~~~~~~~~~~~
   205 |   });
   206 | 
   207 |   test("has expected global symbol property key", () => {
@@ -290,8 +290,8 @@ Error: Property '[kTwo]' exists on type '{ 123: number; 0: boolean; B: null; __c
 
   208 |     expect(sample).type.toHaveProperty(kTwo);
   209 | 
-> 210 |     expect(sample).type.not.toHaveProperty(kTwo);
-      |                             ^
+  210 |     expect(sample).type.not.toHaveProperty(kTwo);
+      |                             ~~~~~~~~~~~~~~
   211 |   });
   212 | 
   213 |   test("does NOT have expected symbol property key", () => {
@@ -302,8 +302,8 @@ Error: Property '[kFour]' does not exist on type '{ 123: number; 0: boolean; B: 
 
   214 |     expect(sample).type.not.toHaveProperty(kFour);
   215 | 
-> 216 |     expect(sample).type.toHaveProperty(kFour);
-      |                         ^
+  216 |     expect(sample).type.toHaveProperty(kFour);
+      |                         ~~~~~~~~~~~~~~
   217 |   });
   218 | 
   219 |   test("has expected numeric enum property key", () => {
@@ -314,8 +314,8 @@ Error: Property '0' exists on type '{ 123: number; 0: boolean; B: null; __check:
 
   220 |     expect(sample).type.toHaveProperty(E1.A);
   221 | 
-> 222 |     expect(sample).type.not.toHaveProperty(E1.A);
-      |                             ^
+  222 |     expect(sample).type.not.toHaveProperty(E1.A);
+      |                             ~~~~~~~~~~~~~~
   223 |   });
   224 | 
   225 |   test("does NOT have expected numeric enum property key", () => {
@@ -326,8 +326,8 @@ Error: Property '1' does not exist on type '{ 123: number; 0: boolean; B: null; 
 
   226 |     expect(sample).type.not.toHaveProperty(E1.B);
   227 | 
-> 228 |     expect(sample).type.toHaveProperty(E1.B);
-      |                         ^
+  228 |     expect(sample).type.toHaveProperty(E1.B);
+      |                         ~~~~~~~~~~~~~~
   229 |   });
   230 | 
   231 |   test("has expected string enum property key", () => {
@@ -338,8 +338,8 @@ Error: Property 'B' exists on type '{ 123: number; 0: boolean; B: null; __check:
 
   232 |     expect(sample).type.toHaveProperty(E2.B);
   233 | 
-> 234 |     expect(sample).type.not.toHaveProperty(E2.B);
-      |                             ^
+  234 |     expect(sample).type.not.toHaveProperty(E2.B);
+      |                             ~~~~~~~~~~~~~~
   235 |   });
   236 | 
   237 |   test("does NOT have expected string enum property key", () => {
@@ -350,8 +350,8 @@ Error: Property 'A' does not exist on type '{ 123: number; 0: boolean; B: null; 
 
   238 |     expect(sample).type.not.toHaveProperty(E2.A);
   239 | 
-> 240 |     expect(sample).type.toHaveProperty(E2.A);
-      |                         ^
+  240 |     expect(sample).type.toHaveProperty(E2.A);
+      |                         ~~~~~~~~~~~~~~
   241 |   });
   242 | });
   243 | 

@@ -2,8 +2,8 @@ Error: Item of the 'testFileMatch' list must be of type string.
 
   2 |   "testFileMatch": [
   3 |     "examples/*",
-> 4 |     false
-    |     ^
+  4 |     false
+    |     ~~~~~
   5 |   ]
   6 | }
 

@@ -1,8 +1,8 @@
 Error: Option 'failFast' requires a value of type boolean.
 
   1 | {
-> 2 |   "failFast": "no",
-    |               ^
+  2 |   "failFast": "no",
+    |               ~~~~
   3 |   "testFileMatch": [
   4 |     "**/isNumber.*"
   5 |   ]
@@ -13,8 +13,8 @@ Error: Option 'failFast' requires a value of type boolean.
 Error: Option 'failFast' requires a value of type boolean.
 
   1 | {
-> 2 |   "failFast": "yes",
-    |               ^
+  2 |   "failFast": "yes",
+    |               ~~~~~
   3 |   "testFileMatch": [
   4 |     "**/isString.*"
   5 |   ]
@@ -25,8 +25,8 @@ Error: Option 'failFast' requires a value of type boolean.
 Error: Option 'failFast' requires a value of type boolean.
 
   1 | {
-> 2 |   "failFast": "ok",
-    |               ^
+  2 |   "failFast": "ok",
+    |               ~~~~
   3 |   "testFileMatch": [
   4 |     "**/isString.*"
   5 |   ]

@@ -26,7 +26,7 @@ function DiagnosticText({ diagnostic }: DiagnosticTextProps) {
   const codeSpan = diagnostic.origin ? (
     <Text>
       <Line />
-      <CodeSpanText {...diagnostic.origin} />
+      <CodeSpanText diagnosticOrigin={diagnostic.origin} />
     </Text>
   ) : undefined;
 

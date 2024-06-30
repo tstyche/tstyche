@@ -2,8 +2,8 @@ Error: The source type is 'void'.
 
    7 |   expect(returnsString()).type.toBeString();
    8 | 
->  9 |   expect(returnsVoid()).type.toBeString();
-     |                              ^
+   9 |   expect(returnsVoid()).type.toBeString();
+     |                              ~~~~~~~~~~
   10 | });
   11 | 
   12 | test("is NOT string?", () => {
@@ -14,8 +14,8 @@ Error: The source type is 'string'.
 
   13 |   expect(returnsVoid()).type.not.toBeString();
   14 | 
-> 15 |   expect(returnsString()).type.not.toBeString();
-     |                                    ^
+  15 |   expect(returnsString()).type.not.toBeString();
+     |                                    ~~~~~~~~~~
   16 | });
   17 | 
 

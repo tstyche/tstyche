@@ -2,8 +2,8 @@ Error: Property 'toBeString' does not exist on type 'Modifier'. ts(2339)
 
   10 | 
   11 | test("reported type error?", () => {
-> 12 |   expect<string>().toBeString();
-     |                    ^
+  12 |   expect<string>().toBeString();
+     |                    ~~~~~~~~~~
   13 | });
   14 | 
 

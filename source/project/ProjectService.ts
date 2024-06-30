@@ -82,7 +82,7 @@ export class ProjectService {
     }
 
     if (Version.isSatisfiedWith(this.#compiler.version, "5.0")) {
-      defaultCompilerOptions["allowImportingTsExtensions"] = true;
+      defaultCompilerOptions.allowImportingTsExtensions = true;
       defaultCompilerOptions.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
     }
 

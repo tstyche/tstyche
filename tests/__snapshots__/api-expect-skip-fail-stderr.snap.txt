@@ -4,13 +4,13 @@ Consider removing the '.fail' flag.
 
   2 | 
   3 | expect.skip.fail<string>().type.toBeString();
-> 4 | expect.fail<string>().type.toBeString();
-    | ^
+  4 | expect.fail<string>().type.toBeString();
+    |        ~~~~
   5 | 
   6 | expect.skip
   7 |   .fail(() => {
 
-      at ./__typetests__/expect-skip-fail.tst.ts:4:1
+      at ./__typetests__/expect-skip-fail.tst.ts:4:8
 
 Error: The assertion was supposed to fail, but it passed.
 
@@ -18,13 +18,13 @@ Consider removing the '.fail' flag.
 
   13 |   test("is string?", () => {
   14 |     expect.skip.fail<string>().type.toBeString();
-> 15 |     expect.fail<string>().type.toBeString();
-     |     ^
+  15 |     expect.fail<string>().type.toBeString();
+     |            ~~~~
   16 |   });
   17 | });
   18 | 
 
-       at ./__typetests__/expect-skip-fail.tst.ts:15:5
+       at ./__typetests__/expect-skip-fail.tst.ts:15:12
 
 Error: The assertion was supposed to fail, but it passed.
 
@@ -32,10 +32,10 @@ Consider removing the '.fail' flag.
 
   19 | test("is number?", () => {
   20 |   expect.skip.fail<number>().type.toBeNumber();
-> 21 |   expect.fail<number>().type.toBeNumber();
-     |   ^
+  21 |   expect.fail<number>().type.toBeNumber();
+     |          ~~~~
   22 | });
   23 | 
 
-       at ./__typetests__/expect-skip-fail.tst.ts:21:3
+       at ./__typetests__/expect-skip-fail.tst.ts:21:10
 

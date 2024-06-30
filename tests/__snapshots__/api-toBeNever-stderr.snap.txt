@@ -2,8 +2,8 @@ Error: The source type is 'string'.
 
    7 |   expect(returnsNever()).type.toBeNever();
    8 | 
->  9 |   expect(returnsString()).type.toBeNever();
-     |                                ^
+   9 |   expect(returnsString()).type.toBeNever();
+     |                                ~~~~~~~~~
   10 | });
   11 | 
   12 | test("is NOT never?", () => {
@@ -14,8 +14,8 @@ Error: The source type is 'never'.
 
   13 |   expect(returnsString()).type.not.toBeNever();
   14 | 
-> 15 |   expect(returnsNever()).type.not.toBeNever();
-     |                                   ^
+  15 |   expect(returnsNever()).type.not.toBeNever();
+     |                                   ~~~~~~~~~
   16 | });
   17 | 
 

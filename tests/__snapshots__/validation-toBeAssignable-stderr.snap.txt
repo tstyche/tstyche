@@ -4,8 +4,8 @@ To learn more, visit https://tstyche.org/releases/tstyche-2
 
   3 | describe("argument for 'source'", () => {
   4 |   test("must be provided", () => {
-> 5 |     expect().type.toBeAssignable<{ test: void }>();
-    |                   ^
+  5 |     expect().type.toBeAssignable<{ test: void }>();
+    |                   ~~~~~~~~~~~~~~
   6 |   });
   7 | });
   8 | 
@@ -16,8 +16,8 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
   3 | describe("argument for 'source'", () => {
   4 |   test("must be provided", () => {
-> 5 |     expect().type.toBeAssignable<{ test: void }>();
-    |     ^
+  5 |     expect().type.toBeAssignable<{ test: void }>();
+    |     ~~~~~~
   6 |   });
   7 | });
   8 | 
@@ -28,8 +28,8 @@ Error: An argument for 'target' or type argument for 'Target' must be provided.
 
    9 | describe("argument for 'target'", () => {
   10 |   test("must be provided", () => {
-> 11 |     expect<{ test: void }>().type.toBeAssignable();
-     |                                   ^
+  11 |     expect<{ test: void }>().type.toBeAssignable();
+     |                                   ~~~~~~~~~~~~~~
   12 |   });
   13 | });
   14 | 
