@@ -5,8 +5,8 @@ Property 'one' is required in type '{ one: string; }'.
 
   21 |     expect(Default).type.toAcceptProps({ one: "sample" });
   22 | 
-> 23 |     expect(Default).type.toAcceptProps({}); // fail
-     |                                        ^
+  23 |     expect(Default).type.toAcceptProps({}); // fail
+     |                                        ~~
   24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
   25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
   26 |   });
@@ -20,8 +20,8 @@ Property 'two' does not exist in type '{ one: string; }'.
 
   22 | 
   23 |     expect(Default).type.toAcceptProps({}); // fail
-> 24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-     |                                          ^
+  24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
+     |                                          ~~~
   25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
   26 |   });
   27 | 
@@ -35,8 +35,8 @@ Property 'one' is required in type '{ one: string; }'.
 
   22 | 
   23 |     expect(Default).type.toAcceptProps({}); // fail
-> 24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-     |                                        ^
+  24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
+     |                                        ~~~~~~~~~~~~~~
   25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
   26 |   });
   27 | 
@@ -51,8 +51,8 @@ Type 'boolean' is not assignable to type 'string'.
 
   23 |     expect(Default).type.toAcceptProps({}); // fail
   24 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-> 25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-     |                                          ^
+  25 |     expect(Default).type.toAcceptProps({ one: false }); // fail
+     |                                          ~~~
   26 |   });
   27 | 
   28 |   test.todo("when the 'props' is a union", () => {

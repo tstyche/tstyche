@@ -5,8 +5,8 @@ Type '{}' is assignable to type 'BbProps'.
 
   31 |   test("accepts props of the given type", () => {
   32 |     expect(First).type.toAcceptProps({});
-> 33 |     expect(First).type.not.toAcceptProps({}); // fail
-     |                                          ^
+  33 |     expect(First).type.not.toAcceptProps({}); // fail
+     |                                          ~~
   34 | 
   35 |     expect(First).type.toAcceptProps({ one: "sample" });
   36 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
@@ -22,8 +22,8 @@ Type 'string' is not assignable to type 'undefined'.
 
   33 |     expect(First).type.not.toAcceptProps({}); // fail
   34 | 
-> 35 |     expect(First).type.toAcceptProps({ one: "sample" });
-     |                                        ^
+  35 |     expect(First).type.toAcceptProps({ one: "sample" });
+     |                                        ~~~
   36 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
   37 |   });
   38 | 
@@ -38,8 +38,8 @@ Property 'two' is required in type 'AaProps'.
 
   33 |     expect(First).type.not.toAcceptProps({}); // fail
   34 | 
-> 35 |     expect(First).type.toAcceptProps({ one: "sample" });
-     |                                      ^
+  35 |     expect(First).type.toAcceptProps({ one: "sample" });
+     |                                      ~~~~~~~~~~~~~~~~~
   36 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
   37 |   });
   38 | 
@@ -54,8 +54,8 @@ Property 'enable' does not exist in type 'BbProps'.
 
   39 |   test("property does not exist in props type", () => {
   40 |     expect(First).type.not.toAcceptProps({ enable: true });
-> 41 |     expect(First).type.toAcceptProps({ enable: true }); // fail
-     |                                        ^
+  41 |     expect(First).type.toAcceptProps({ enable: true }); // fail
+     |                                        ~~~~~~
   42 |   });
   43 | 
   44 |   test("property type is not assignable to prop type", () => {
@@ -70,8 +70,8 @@ Property 'enable' does not exist in type 'AaProps'.
 
   39 |   test("property does not exist in props type", () => {
   40 |     expect(First).type.not.toAcceptProps({ enable: true });
-> 41 |     expect(First).type.toAcceptProps({ enable: true }); // fail
-     |                                        ^
+  41 |     expect(First).type.toAcceptProps({ enable: true }); // fail
+     |                                        ~~~~~~
   42 |   });
   43 | 
   44 |   test("property type is not assignable to prop type", () => {
@@ -86,8 +86,8 @@ Property 'one' is required in type 'AaProps'.
 
   39 |   test("property does not exist in props type", () => {
   40 |     expect(First).type.not.toAcceptProps({ enable: true });
-> 41 |     expect(First).type.toAcceptProps({ enable: true }); // fail
-     |                                      ^
+  41 |     expect(First).type.toAcceptProps({ enable: true }); // fail
+     |                                      ~~~~~~~~~~~~~~~~
   42 |   });
   43 | 
   44 |   test("property type is not assignable to prop type", () => {
@@ -102,8 +102,8 @@ Property 'two' is required in type 'AaProps'.
 
   39 |   test("property does not exist in props type", () => {
   40 |     expect(First).type.not.toAcceptProps({ enable: true });
-> 41 |     expect(First).type.toAcceptProps({ enable: true }); // fail
-     |                                      ^
+  41 |     expect(First).type.toAcceptProps({ enable: true }); // fail
+     |                                      ~~~~~~~~~~~~~~~~
   42 |   });
   43 | 
   44 |   test("property type is not assignable to prop type", () => {
@@ -119,8 +119,8 @@ Type 'boolean' is not assignable to type 'undefined'.
 
   44 |   test("property type is not assignable to prop type", () => {
   45 |     expect(First).type.not.toAcceptProps({ one: true });
-> 46 |     expect(First).type.toAcceptProps({ one: true }); // fail
-     |                                        ^
+  46 |     expect(First).type.toAcceptProps({ one: true }); // fail
+     |                                        ~~~
   47 |   });
   48 | });
   49 | 
@@ -136,8 +136,8 @@ Type 'boolean' is not assignable to type 'string'.
 
   44 |   test("property type is not assignable to prop type", () => {
   45 |     expect(First).type.not.toAcceptProps({ one: true });
-> 46 |     expect(First).type.toAcceptProps({ one: true }); // fail
-     |                                        ^
+  46 |     expect(First).type.toAcceptProps({ one: true }); // fail
+     |                                        ~~~
   47 |   });
   48 | });
   49 | 
@@ -152,8 +152,8 @@ Property 'two' is required in type 'AaProps'.
 
   44 |   test("property type is not assignable to prop type", () => {
   45 |     expect(First).type.not.toAcceptProps({ one: true });
-> 46 |     expect(First).type.toAcceptProps({ one: true }); // fail
-     |                                      ^
+  46 |     expect(First).type.toAcceptProps({ one: true }); // fail
+     |                                      ~~~~~~~~~~~~~
   47 |   });
   48 | });
   49 | 
@@ -167,8 +167,8 @@ Type '{}' is assignable to type 'BbProps'.
 
   51 |   test("accepts props of the given type", () => {
   52 |     expect<FirstOverload>().type.toAcceptProps<{}>();
-> 53 |     expect<FirstOverload>().type.not.toAcceptProps<{}>(); // fail
-     |                                                    ^
+  53 |     expect<FirstOverload>().type.not.toAcceptProps<{}>(); // fail
+     |                                                    ~~
   54 | 
   55 |     expect<FirstOverload>().type.toAcceptProps<{ one: string }>();
   56 |     expect<FirstOverload>().type.not.toAcceptProps<{ one: string }>(); // fail
@@ -184,8 +184,8 @@ Type 'string' is not assignable to type 'undefined'.
 
   53 |     expect<FirstOverload>().type.not.toAcceptProps<{}>(); // fail
   54 | 
-> 55 |     expect<FirstOverload>().type.toAcceptProps<{ one: string }>();
-     |                                                  ^
+  55 |     expect<FirstOverload>().type.toAcceptProps<{ one: string }>();
+     |                                                  ~~~
   56 |     expect<FirstOverload>().type.not.toAcceptProps<{ one: string }>(); // fail
   57 |   });
   58 | 
@@ -200,8 +200,8 @@ Property 'two' is required in type 'AaProps'.
 
   53 |     expect<FirstOverload>().type.not.toAcceptProps<{}>(); // fail
   54 | 
-> 55 |     expect<FirstOverload>().type.toAcceptProps<{ one: string }>();
-     |                                                ^
+  55 |     expect<FirstOverload>().type.toAcceptProps<{ one: string }>();
+     |                                                ~~~~~~~~~~~~~~~
   56 |     expect<FirstOverload>().type.not.toAcceptProps<{ one: string }>(); // fail
   57 |   });
   58 | 
@@ -216,8 +216,8 @@ Property 'two' does not exist in type 'BbProps'.
 
   59 |   test("property is required in props type", () => {
   60 |     expect<FirstOverload>().type.not.toAcceptProps<{ two?: boolean }>();
-> 61 |     expect<FirstOverload>().type.toAcceptProps<{ two?: boolean }>(); // fail
-     |                                                  ^
+  61 |     expect<FirstOverload>().type.toAcceptProps<{ two?: boolean }>(); // fail
+     |                                                  ~~~
   62 |   });
   63 | 
   64 |   test("property does not exist in props type", () => {
@@ -232,8 +232,8 @@ Property 'two' is required in type 'AaProps'.
 
   59 |   test("property is required in props type", () => {
   60 |     expect<FirstOverload>().type.not.toAcceptProps<{ two?: boolean }>();
-> 61 |     expect<FirstOverload>().type.toAcceptProps<{ two?: boolean }>(); // fail
-     |                                                  ^
+  61 |     expect<FirstOverload>().type.toAcceptProps<{ two?: boolean }>(); // fail
+     |                                                  ~~~
   62 |   });
   63 | 
   64 |   test("property does not exist in props type", () => {
@@ -248,8 +248,8 @@ Property 'one' is required in type 'AaProps'.
 
   59 |   test("property is required in props type", () => {
   60 |     expect<FirstOverload>().type.not.toAcceptProps<{ two?: boolean }>();
-> 61 |     expect<FirstOverload>().type.toAcceptProps<{ two?: boolean }>(); // fail
-     |                                                ^
+  61 |     expect<FirstOverload>().type.toAcceptProps<{ two?: boolean }>(); // fail
+     |                                                ~~~~~~~~~~~~~~~~~
   62 |   });
   63 | 
   64 |   test("property does not exist in props type", () => {
@@ -264,8 +264,8 @@ Property 'enable' does not exist in type 'BbProps'.
 
   64 |   test("property does not exist in props type", () => {
   65 |     expect<FirstOverload>().type.not.toAcceptProps<{ enable: boolean }>();
-> 66 |     expect<FirstOverload>().type.toAcceptProps<{ enable: boolean }>(); // fail
-     |                                                  ^
+  66 |     expect<FirstOverload>().type.toAcceptProps<{ enable: boolean }>(); // fail
+     |                                                  ~~~~~~
   67 |   });
   68 | 
   69 |   test("property type is not assignable to prop type", () => {
@@ -280,8 +280,8 @@ Property 'enable' does not exist in type 'AaProps'.
 
   64 |   test("property does not exist in props type", () => {
   65 |     expect<FirstOverload>().type.not.toAcceptProps<{ enable: boolean }>();
-> 66 |     expect<FirstOverload>().type.toAcceptProps<{ enable: boolean }>(); // fail
-     |                                                  ^
+  66 |     expect<FirstOverload>().type.toAcceptProps<{ enable: boolean }>(); // fail
+     |                                                  ~~~~~~
   67 |   });
   68 | 
   69 |   test("property type is not assignable to prop type", () => {
@@ -296,8 +296,8 @@ Property 'one' is required in type 'AaProps'.
 
   64 |   test("property does not exist in props type", () => {
   65 |     expect<FirstOverload>().type.not.toAcceptProps<{ enable: boolean }>();
-> 66 |     expect<FirstOverload>().type.toAcceptProps<{ enable: boolean }>(); // fail
-     |                                                ^
+  66 |     expect<FirstOverload>().type.toAcceptProps<{ enable: boolean }>(); // fail
+     |                                                ~~~~~~~~~~~~~~~~~~~
   67 |   });
   68 | 
   69 |   test("property type is not assignable to prop type", () => {
@@ -312,8 +312,8 @@ Property 'two' is required in type 'AaProps'.
 
   64 |   test("property does not exist in props type", () => {
   65 |     expect<FirstOverload>().type.not.toAcceptProps<{ enable: boolean }>();
-> 66 |     expect<FirstOverload>().type.toAcceptProps<{ enable: boolean }>(); // fail
-     |                                                ^
+  66 |     expect<FirstOverload>().type.toAcceptProps<{ enable: boolean }>(); // fail
+     |                                                ~~~~~~~~~~~~~~~~~~~
   67 |   });
   68 | 
   69 |   test("property type is not assignable to prop type", () => {
@@ -329,8 +329,8 @@ Type 'boolean' is not assignable to type 'undefined'.
 
   69 |   test("property type is not assignable to prop type", () => {
   70 |     expect<FirstOverload>().type.not.toAcceptProps<{ one: boolean }>();
-> 71 |     expect<FirstOverload>().type.toAcceptProps<{ one: boolean }>(); // fail
-     |                                                  ^
+  71 |     expect<FirstOverload>().type.toAcceptProps<{ one: boolean }>(); // fail
+     |                                                  ~~~
   72 |   });
   73 | });
   74 | 
@@ -346,8 +346,8 @@ Type 'boolean' is not assignable to type 'string'.
 
   69 |   test("property type is not assignable to prop type", () => {
   70 |     expect<FirstOverload>().type.not.toAcceptProps<{ one: boolean }>();
-> 71 |     expect<FirstOverload>().type.toAcceptProps<{ one: boolean }>(); // fail
-     |                                                  ^
+  71 |     expect<FirstOverload>().type.toAcceptProps<{ one: boolean }>(); // fail
+     |                                                  ~~~
   72 |   });
   73 | });
   74 | 
@@ -362,8 +362,8 @@ Property 'two' is required in type 'AaProps'.
 
   69 |   test("property type is not assignable to prop type", () => {
   70 |     expect<FirstOverload>().type.not.toAcceptProps<{ one: boolean }>();
-> 71 |     expect<FirstOverload>().type.toAcceptProps<{ one: boolean }>(); // fail
-     |                                                ^
+  71 |     expect<FirstOverload>().type.toAcceptProps<{ one: boolean }>(); // fail
+     |                                                ~~~~~~~~~~~~~~~~
   72 |   });
   73 | });
   74 | 

@@ -4,8 +4,8 @@ Type '{}' is assignable to type '{}'.
 
   26 |   test("accepts props of the given type", () => {
   27 |     expect(None).type.toAcceptProps({});
-> 28 |     expect(None).type.not.toAcceptProps({}); // fail
-     |                                         ^
+  28 |     expect(None).type.not.toAcceptProps({}); // fail
+     |                                         ~~
   29 | 
   30 |     const noneProps = {};
   31 |     expect(None).type.toAcceptProps(noneProps);
@@ -18,8 +18,8 @@ Type '{}' is assignable to type '{}'.
 
   30 |     const noneProps = {};
   31 |     expect(None).type.toAcceptProps(noneProps);
-> 32 |     expect(None).type.not.toAcceptProps(noneProps); // fail
-     |                                         ^
+  32 |     expect(None).type.not.toAcceptProps(noneProps); // fail
+     |                                         ~~~~~~~~~
   33 | 
   34 |     expect(None).type.not.toAcceptProps({ one: "sample" });
   35 |     expect(None).type.toAcceptProps({ one: "sample" }); // fail
@@ -33,8 +33,8 @@ Property 'one' does not exist in type '{}'.
 
   33 | 
   34 |     expect(None).type.not.toAcceptProps({ one: "sample" });
-> 35 |     expect(None).type.toAcceptProps({ one: "sample" }); // fail
-     |                                       ^
+  35 |     expect(None).type.toAcceptProps({ one: "sample" }); // fail
+     |                                       ~~~
   36 | 
   37 |     expect(First).type.toAcceptProps({});
   38 |     expect(First).type.not.toAcceptProps({}); // fail
@@ -47,8 +47,8 @@ Type '{}' is assignable to type 'FirstProps'.
 
   36 | 
   37 |     expect(First).type.toAcceptProps({});
-> 38 |     expect(First).type.not.toAcceptProps({}); // fail
-     |                                          ^
+  38 |     expect(First).type.not.toAcceptProps({}); // fail
+     |                                          ~~
   39 | 
   40 |     expect(First).type.toAcceptProps({ one: "sample" });
   41 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
@@ -61,8 +61,8 @@ Type '{ one: string; }' is assignable to type 'FirstProps'.
 
   39 | 
   40 |     expect(First).type.toAcceptProps({ one: "sample" });
-> 41 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
-     |                                          ^
+  41 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
+     |                                          ~~~~~~~~~~~~~~~~~
   42 | 
   43 |     expect(Second).type.toAcceptProps({ one: "sample" });
   44 |     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
@@ -75,8 +75,8 @@ Type '{ one: string; }' is assignable to type 'SecondProps'.
 
   42 | 
   43 |     expect(Second).type.toAcceptProps({ one: "sample" });
-> 44 |     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
-     |                                           ^
+  44 |     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
+     |                                           ~~~~~~~~~~~~~~~~~
   45 | 
   46 |     const secondProps = { one: "sample" };
   47 |     expect(Second).type.toAcceptProps(secondProps);
@@ -89,8 +89,8 @@ Type '{ one: string; }' is assignable to type 'SecondProps'.
 
   46 |     const secondProps = { one: "sample" };
   47 |     expect(Second).type.toAcceptProps(secondProps);
-> 48 |     expect(Second).type.not.toAcceptProps(secondProps); // fail
-     |                                           ^
+  48 |     expect(Second).type.not.toAcceptProps(secondProps); // fail
+     |                                           ~~~~~~~~~~~
   49 | 
   50 |     expect(Second).type.toAcceptProps({ one: "sample", two: true });
   51 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
@@ -103,8 +103,8 @@ Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
 
   49 | 
   50 |     expect(Second).type.toAcceptProps({ one: "sample", two: true });
-> 51 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
-     |                                           ^
+  51 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
+     |                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   52 | 
   53 |     const two = true;
   54 |     expect(Second).type.toAcceptProps({ one: "sample", two });
@@ -117,8 +117,8 @@ Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
 
   53 |     const two = true;
   54 |     expect(Second).type.toAcceptProps({ one: "sample", two });
-> 55 |     expect(Second).type.not.toAcceptProps({ one: "sample", two }); // fail
-     |                                           ^
+  55 |     expect(Second).type.not.toAcceptProps({ one: "sample", two }); // fail
+     |                                           ~~~~~~~~~~~~~~~~~~~~~~
   56 |   });
   57 | 
   58 |   test("property is required in props type", () => {
@@ -132,8 +132,8 @@ Property 'one' is required in type 'SecondProps'.
 
   58 |   test("property is required in props type", () => {
   59 |     expect(Second).type.not.toAcceptProps({});
-> 60 |     expect(Second).type.toAcceptProps({}); // fail
-     |                                       ^
+  60 |     expect(Second).type.toAcceptProps({}); // fail
+     |                                       ~~
   61 | 
   62 |     expect(Second).type.not.toAcceptProps({ two: true });
   63 |     expect(Second).type.toAcceptProps({ two: true }); // fail
@@ -147,8 +147,8 @@ Property 'one' is required in type 'SecondProps'.
 
   61 | 
   62 |     expect(Second).type.not.toAcceptProps({ two: true });
-> 63 |     expect(Second).type.toAcceptProps({ two: true }); // fail
-     |                                       ^
+  63 |     expect(Second).type.toAcceptProps({ two: true }); // fail
+     |                                       ~~~~~~~~~~~~~
   64 | 
   65 |     const secondProps = { two: true };
   66 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -162,8 +162,8 @@ Property 'one' is required in type 'SecondProps'.
 
   65 |     const secondProps = { two: true };
   66 |     expect(Second).type.not.toAcceptProps(secondProps);
-> 67 |     expect(Second).type.toAcceptProps(secondProps); // fail
-     |                                       ^
+  67 |     expect(Second).type.toAcceptProps(secondProps); // fail
+     |                                       ~~~~~~~~~~~
   68 | 
   69 |     const two = true;
   70 |     expect(Second).type.not.toAcceptProps({ two });
@@ -177,8 +177,8 @@ Property 'one' is required in type 'SecondProps'.
 
   69 |     const two = true;
   70 |     expect(Second).type.not.toAcceptProps({ two });
-> 71 |     expect(Second).type.toAcceptProps({ two }); // fail
-     |                                       ^
+  71 |     expect(Second).type.toAcceptProps({ two }); // fail
+     |                                       ~~~~~~~
   72 |   });
   73 | 
   74 |   test("property does not exist in props type", () => {
@@ -192,8 +192,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
   74 |   test("property does not exist in props type", () => {
   75 |     expect(First).type.not.toAcceptProps({ two: false });
-> 76 |     expect(First).type.toAcceptProps({ two: false }); // fail
-     |                                        ^
+  76 |     expect(First).type.toAcceptProps({ two: false }); // fail
+     |                                        ~~~
   77 | 
   78 |     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
   79 |     expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail
@@ -207,8 +207,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
   77 | 
   78 |     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
-> 79 |     expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail
-     |                                                       ^
+  79 |     expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail
+     |                                                       ~~~
   80 | 
   81 |     const firstProps = { one: "sample", two: false };
   82 |     expect(First).type.not.toAcceptProps(firstProps);
@@ -222,8 +222,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
   81 |     const firstProps = { one: "sample", two: false };
   82 |     expect(First).type.not.toAcceptProps(firstProps);
-> 83 |     expect(First).type.toAcceptProps(firstProps); // fail
-     |                                      ^
+  83 |     expect(First).type.toAcceptProps(firstProps); // fail
+     |                                      ~~~~~~~~~~
   84 | 
   85 |     expect(Second).type.not.toAcceptProps({ three: 123 });
   86 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail
@@ -237,8 +237,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   84 | 
   85 |     expect(Second).type.not.toAcceptProps({ three: 123 });
-> 86 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail
-     |                                         ^
+  86 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail
+     |                                         ~~~~~
   87 | 
   88 |     const secondProps = { three: 123 };
   89 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -252,8 +252,8 @@ Property 'one' is required in type 'SecondProps'.
 
   84 | 
   85 |     expect(Second).type.not.toAcceptProps({ three: 123 });
-> 86 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail
-     |                                       ^
+  86 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail
+     |                                       ~~~~~~~~~~~~~~
   87 | 
   88 |     const secondProps = { three: 123 };
   89 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -267,8 +267,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   88 |     const secondProps = { three: 123 };
   89 |     expect(Second).type.not.toAcceptProps(secondProps);
-> 90 |     expect(Second).type.toAcceptProps(secondProps); // fail
-     |                                       ^
+  90 |     expect(Second).type.toAcceptProps(secondProps); // fail
+     |                                       ~~~~~~~~~~~
   91 | 
   92 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
   93 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
@@ -282,8 +282,8 @@ Property 'one' is required in type 'SecondProps'.
 
   88 |     const secondProps = { three: 123 };
   89 |     expect(Second).type.not.toAcceptProps(secondProps);
-> 90 |     expect(Second).type.toAcceptProps(secondProps); // fail
-     |                                       ^
+  90 |     expect(Second).type.toAcceptProps(secondProps); // fail
+     |                                       ~~~~~~~~~~~
   91 | 
   92 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
   93 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
@@ -298,8 +298,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
   91 | 
   92 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
-> 93 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
-     |                                         ^
+  93 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
+     |                                         ~~~
   94 | 
   95 |     const three = 123;
   96 |     expect(Second).type.not.toAcceptProps({ one: "sample", three });
@@ -313,8 +313,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   91 | 
   92 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
-> 93 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
-     |                                                    ^
+  93 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
+     |                                                    ~~~~~
   94 | 
   95 |     const three = 123;
   96 |     expect(Second).type.not.toAcceptProps({ one: "sample", three });
@@ -328,8 +328,8 @@ Property 'one' is required in type 'SecondProps'.
 
   91 | 
   92 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
-> 93 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
-     |                                       ^
+  93 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
+     |                                       ~~~~~~~~~~~~~~~~~~~~~~~~~
   94 | 
   95 |     const three = 123;
   96 |     expect(Second).type.not.toAcceptProps({ one: "sample", three });
@@ -343,8 +343,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
    95 |     const three = 123;
    96 |     expect(Second).type.not.toAcceptProps({ one: "sample", three });
->  97 |     expect(Second).type.toAcceptProps({ one: "sample", three }); // fail
-      |                                                        ^
+   97 |     expect(Second).type.toAcceptProps({ one: "sample", three }); // fail
+      |                                                        ~~~~~
    98 | 
    99 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
   100 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
@@ -359,8 +359,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
    98 | 
    99 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
-> 100 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
-      |                                                        ^
+  100 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
+      |                                                        ~~~
   101 | 
   102 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three });
   103 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three }); // fail
@@ -374,8 +374,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
    98 | 
    99 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
-> 100 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
-      |                                                                   ^
+  100 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
+      |                                                                   ~~~~~
   101 | 
   102 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three });
   103 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three }); // fail
@@ -390,8 +390,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
   101 | 
   102 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three });
-> 103 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three }); // fail
-      |                                                        ^
+  103 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three }); // fail
+      |                                                        ~~~
   104 | 
   105 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
   106 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
@@ -405,8 +405,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   101 | 
   102 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three });
-> 103 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three }); // fail
-      |                                                                   ^
+  103 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three }); // fail
+      |                                                                   ~~~~~
   104 | 
   105 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
   106 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
@@ -420,8 +420,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   104 | 
   105 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
-> 106 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
-      |                                                                   ^
+  106 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
+      |                                                                   ~~~~~
   107 | 
   108 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three });
   109 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three }); // fail
@@ -435,8 +435,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   107 | 
   108 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three });
-> 109 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three }); // fail
-      |                                                                   ^
+  109 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three }); // fail
+      |                                                                   ~~~~~
   110 |   });
   111 | 
   112 |   test("property type is not assignable to prop type", () => {
@@ -451,8 +451,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   112 |   test("property type is not assignable to prop type", () => {
   113 |     expect(First).type.not.toAcceptProps({ one: 1 });
-> 114 |     expect(First).type.toAcceptProps({ one: 1 }); // fail
-      |                                        ^
+  114 |     expect(First).type.toAcceptProps({ one: 1 }); // fail
+      |                                        ~~~
   115 | 
   116 |     const firstProps = { one: 1 };
   117 |     expect(First).type.not.toAcceptProps(firstProps);
@@ -467,8 +467,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   116 |     const firstProps = { one: 1 };
   117 |     expect(First).type.not.toAcceptProps(firstProps);
-> 118 |     expect(First).type.toAcceptProps(firstProps); // fail
-      |                                      ^
+  118 |     expect(First).type.toAcceptProps(firstProps); // fail
+      |                                      ~~~~~~~~~~
   119 | 
   120 |     expect(Second).type.not.toAcceptProps({ one: 1 });
   121 |     expect(Second).type.toAcceptProps({ one: 1 }); // fail
@@ -483,8 +483,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   119 | 
   120 |     expect(Second).type.not.toAcceptProps({ one: 1 });
-> 121 |     expect(Second).type.toAcceptProps({ one: 1 }); // fail
-      |                                         ^
+  121 |     expect(Second).type.toAcceptProps({ one: 1 }); // fail
+      |                                         ~~~
   122 | 
   123 |     expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
   124 |     expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
@@ -499,8 +499,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   122 | 
   123 |     expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
-> 124 |     expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
-      |                                         ^
+  124 |     expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
+      |                                         ~~~
   125 | 
   126 |     const secondProps = { one: 1, two: 2 };
   127 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -515,8 +515,8 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
   122 | 
   123 |     expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
-> 124 |     expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
-      |                                                 ^
+  124 |     expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
+      |                                                 ~~~
   125 | 
   126 |     const secondProps = { one: 1, two: 2 };
   127 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -531,8 +531,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   126 |     const secondProps = { one: 1, two: 2 };
   127 |     expect(Second).type.not.toAcceptProps(secondProps);
-> 128 |     expect(Second).type.toAcceptProps(secondProps); // fail
-      |                                       ^
+  128 |     expect(Second).type.toAcceptProps(secondProps); // fail
+      |                                       ~~~~~~~~~~~
   129 | 
   130 |     const two = 2;
   131 |     expect(Second).type.not.toAcceptProps({ one: 1, two });
@@ -547,8 +547,8 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
   126 |     const secondProps = { one: 1, two: 2 };
   127 |     expect(Second).type.not.toAcceptProps(secondProps);
-> 128 |     expect(Second).type.toAcceptProps(secondProps); // fail
-      |                                       ^
+  128 |     expect(Second).type.toAcceptProps(secondProps); // fail
+      |                                       ~~~~~~~~~~~
   129 | 
   130 |     const two = 2;
   131 |     expect(Second).type.not.toAcceptProps({ one: 1, two });
@@ -563,8 +563,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   130 |     const two = 2;
   131 |     expect(Second).type.not.toAcceptProps({ one: 1, two });
-> 132 |     expect(Second).type.toAcceptProps({ one: 1, two }); // fail
-      |                                         ^
+  132 |     expect(Second).type.toAcceptProps({ one: 1, two }); // fail
+      |                                         ~~~
   133 |   });
   134 | });
   135 | 
@@ -579,8 +579,8 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
   130 |     const two = 2;
   131 |     expect(Second).type.not.toAcceptProps({ one: 1, two });
-> 132 |     expect(Second).type.toAcceptProps({ one: 1, two }); // fail
-      |                                                 ^
+  132 |     expect(Second).type.toAcceptProps({ one: 1, two }); // fail
+      |                                                 ~~~
   133 |   });
   134 | });
   135 | 
@@ -593,8 +593,8 @@ Type '{}' is assignable to type '{}'.
 
   143 |   test("accepts props of the given type", () => {
   144 |     expect<None>().type.toAcceptProps<{}>();
-> 145 |     expect<None>().type.not.toAcceptProps<{}>(); // fail
-      |                                           ^
+  145 |     expect<None>().type.not.toAcceptProps<{}>(); // fail
+      |                                           ~~
   146 | 
   147 |     type NonePropsSample = {};
   148 |     expect<None>().type.toAcceptProps<NonePropsSample>();
@@ -607,8 +607,8 @@ Type 'NonePropsSample' is assignable to type '{}'.
 
   147 |     type NonePropsSample = {};
   148 |     expect<None>().type.toAcceptProps<NonePropsSample>();
-> 149 |     expect<None>().type.not.toAcceptProps<NonePropsSample>(); // fail
-      |                                           ^
+  149 |     expect<None>().type.not.toAcceptProps<NonePropsSample>(); // fail
+      |                                           ~~~~~~~~~~~~~~~
   150 | 
   151 |     expect<None>().type.not.toAcceptProps<{ one?: string }>();
   152 |     expect<None>().type.toAcceptProps<{ one?: string }>(); // fail
@@ -622,8 +622,8 @@ Property 'one' does not exist in type '{}'.
 
   150 | 
   151 |     expect<None>().type.not.toAcceptProps<{ one?: string }>();
-> 152 |     expect<None>().type.toAcceptProps<{ one?: string }>(); // fail
-      |                                         ^
+  152 |     expect<None>().type.toAcceptProps<{ one?: string }>(); // fail
+      |                                         ~~~
   153 | 
   154 |     expect<None>().type.not.toAcceptProps<{ one: string }>();
   155 |     expect<None>().type.toAcceptProps<{ one: string }>(); // fail
@@ -637,8 +637,8 @@ Property 'one' does not exist in type '{}'.
 
   153 | 
   154 |     expect<None>().type.not.toAcceptProps<{ one: string }>();
-> 155 |     expect<None>().type.toAcceptProps<{ one: string }>(); // fail
-      |                                         ^
+  155 |     expect<None>().type.toAcceptProps<{ one: string }>(); // fail
+      |                                         ~~~
   156 | 
   157 |     expect<First>().type.toAcceptProps<{}>();
   158 |     expect<First>().type.not.toAcceptProps<{}>(); // fail
@@ -651,8 +651,8 @@ Type '{}' is assignable to type 'FirstProps'.
 
   156 | 
   157 |     expect<First>().type.toAcceptProps<{}>();
-> 158 |     expect<First>().type.not.toAcceptProps<{}>(); // fail
-      |                                            ^
+  158 |     expect<First>().type.not.toAcceptProps<{}>(); // fail
+      |                                            ~~
   159 | 
   160 |     expect<First>().type.toAcceptProps<{ one?: string }>();
   161 |     expect<First>().type.not.toAcceptProps<{ one?: string }>(); // fail
@@ -665,8 +665,8 @@ Type '{ one?: string | undefined; }' is assignable to type 'FirstProps'.
 
   159 | 
   160 |     expect<First>().type.toAcceptProps<{ one?: string }>();
-> 161 |     expect<First>().type.not.toAcceptProps<{ one?: string }>(); // fail
-      |                                            ^
+  161 |     expect<First>().type.not.toAcceptProps<{ one?: string }>(); // fail
+      |                                            ~~~~~~~~~~~~~~~~
   162 | 
   163 |     expect<First>().type.toAcceptProps<{ one: string }>();
   164 |     expect<First>().type.not.toAcceptProps<{ one: string }>(); // fail
@@ -679,8 +679,8 @@ Type '{ one: string; }' is assignable to type 'FirstProps'.
 
   162 | 
   163 |     expect<First>().type.toAcceptProps<{ one: string }>();
-> 164 |     expect<First>().type.not.toAcceptProps<{ one: string }>(); // fail
-      |                                            ^
+  164 |     expect<First>().type.not.toAcceptProps<{ one: string }>(); // fail
+      |                                            ~~~~~~~~~~~~~~~
   165 | 
   166 |     expect<Second>().type.toAcceptProps<{ one: string }>();
   167 |     expect<Second>().type.not.toAcceptProps<{ one: string }>(); // fail
@@ -693,8 +693,8 @@ Type '{ one: string; }' is assignable to type 'SecondProps'.
 
   165 | 
   166 |     expect<Second>().type.toAcceptProps<{ one: string }>();
-> 167 |     expect<Second>().type.not.toAcceptProps<{ one: string }>(); // fail
-      |                                             ^
+  167 |     expect<Second>().type.not.toAcceptProps<{ one: string }>(); // fail
+      |                                             ~~~~~~~~~~~~~~~
   168 | 
   169 |     type SecondPropsSample = { one: string };
   170 |     expect<Second>().type.toAcceptProps<SecondPropsSample>();
@@ -707,8 +707,8 @@ Type 'SecondPropsSample' is assignable to type 'SecondProps'.
 
   169 |     type SecondPropsSample = { one: string };
   170 |     expect<Second>().type.toAcceptProps<SecondPropsSample>();
-> 171 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>(); // fail
-      |                                             ^
+  171 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>(); // fail
+      |                                             ~~~~~~~~~~~~~~~~~
   172 | 
   173 |     expect<Second>().type.toAcceptProps<{ one: string; two?: boolean }>();
   174 |     expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean }>(); // fail
@@ -721,8 +721,8 @@ Type '{ one: string; two?: boolean | undefined; }' is assignable to type 'Second
 
   172 | 
   173 |     expect<Second>().type.toAcceptProps<{ one: string; two?: boolean }>();
-> 174 |     expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean }>(); // fail
-      |                                             ^
+  174 |     expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean }>(); // fail
+      |                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   175 | 
   176 |     expect<Second>().type.toAcceptProps<{ one: string; two: boolean }>();
   177 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: boolean }>(); // fail
@@ -735,8 +735,8 @@ Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
 
   175 | 
   176 |     expect<Second>().type.toAcceptProps<{ one: string; two: boolean }>();
-> 177 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: boolean }>(); // fail
-      |                                             ^
+  177 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: boolean }>(); // fail
+      |                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   178 |   });
   179 | 
   180 |   test("property is required in props type", () => {
@@ -750,8 +750,8 @@ Property 'one' is required in type 'SecondProps'.
 
   180 |   test("property is required in props type", () => {
   181 |     expect<Second>().type.not.toAcceptProps<{}>();
-> 182 |     expect<Second>().type.toAcceptProps<{}>(); // fail
-      |                                         ^
+  182 |     expect<Second>().type.toAcceptProps<{}>(); // fail
+      |                                         ~~
   183 | 
   184 |     expect<Second>().type.not.toAcceptProps<{ one?: string }>();
   185 |     expect<Second>().type.toAcceptProps<{ one?: string }>(); // fail
@@ -765,8 +765,8 @@ Property 'one' is required in type 'SecondProps'.
 
   183 | 
   184 |     expect<Second>().type.not.toAcceptProps<{ one?: string }>();
-> 185 |     expect<Second>().type.toAcceptProps<{ one?: string }>(); // fail
-      |                                           ^
+  185 |     expect<Second>().type.toAcceptProps<{ one?: string }>(); // fail
+      |                                           ~~~
   186 | 
   187 |     expect<Second>().type.not.toAcceptProps<{ two?: boolean }>();
   188 |     expect<Second>().type.toAcceptProps<{ two?: boolean }>(); // fail
@@ -780,8 +780,8 @@ Property 'one' is required in type 'SecondProps'.
 
   186 | 
   187 |     expect<Second>().type.not.toAcceptProps<{ two?: boolean }>();
-> 188 |     expect<Second>().type.toAcceptProps<{ two?: boolean }>(); // fail
-      |                                         ^
+  188 |     expect<Second>().type.toAcceptProps<{ two?: boolean }>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~
   189 | 
   190 |     expect<Second>().type.not.toAcceptProps<{ two: boolean }>();
   191 |     expect<Second>().type.toAcceptProps<{ two: boolean }>(); // fail
@@ -795,8 +795,8 @@ Property 'one' is required in type 'SecondProps'.
 
   189 | 
   190 |     expect<Second>().type.not.toAcceptProps<{ two: boolean }>();
-> 191 |     expect<Second>().type.toAcceptProps<{ two: boolean }>(); // fail
-      |                                         ^
+  191 |     expect<Second>().type.toAcceptProps<{ two: boolean }>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~
   192 | 
   193 |     type SecondPropsSample = { two: boolean };
   194 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -810,8 +810,8 @@ Property 'one' is required in type 'SecondProps'.
 
   193 |     type SecondPropsSample = { two: boolean };
   194 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
-> 195 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
-      |                                         ^
+  195 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~
   196 | 
   197 |     expect<Second>().type.not.toAcceptProps<{ one?: string; two?: boolean }>();
   198 |     expect<Second>().type.toAcceptProps<{ one?: string; two?: boolean }>(); // fail
@@ -825,8 +825,8 @@ Property 'one' is required in type 'SecondProps'.
 
   196 | 
   197 |     expect<Second>().type.not.toAcceptProps<{ one?: string; two?: boolean }>();
-> 198 |     expect<Second>().type.toAcceptProps<{ one?: string; two?: boolean }>(); // fail
-      |                                           ^
+  198 |     expect<Second>().type.toAcceptProps<{ one?: string; two?: boolean }>(); // fail
+      |                                           ~~~
   199 |   });
   200 | 
   201 |   test("property does not exist in props type", () => {
@@ -840,8 +840,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
   201 |   test("property does not exist in props type", () => {
   202 |     expect<First>().type.not.toAcceptProps<{ two?: boolean }>();
-> 203 |     expect<First>().type.toAcceptProps<{ two?: boolean }>(); // fail
-      |                                          ^
+  203 |     expect<First>().type.toAcceptProps<{ two?: boolean }>(); // fail
+      |                                          ~~~
   204 | 
   205 |     expect<First>().type.not.toAcceptProps<{ two: boolean }>();
   206 |     expect<First>().type.toAcceptProps<{ two: boolean }>(); // fail
@@ -855,8 +855,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
   204 | 
   205 |     expect<First>().type.not.toAcceptProps<{ two: boolean }>();
-> 206 |     expect<First>().type.toAcceptProps<{ two: boolean }>(); // fail
-      |                                          ^
+  206 |     expect<First>().type.toAcceptProps<{ two: boolean }>(); // fail
+      |                                          ~~~
   207 | 
   208 |     expect<First>().type.not.toAcceptProps<{ one: string; two?: boolean }>();
   209 |     expect<First>().type.toAcceptProps<{ one: string; two?: boolean }>(); // fail
@@ -870,8 +870,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
   207 | 
   208 |     expect<First>().type.not.toAcceptProps<{ one: string; two?: boolean }>();
-> 209 |     expect<First>().type.toAcceptProps<{ one: string; two?: boolean }>(); // fail
-      |                                                       ^
+  209 |     expect<First>().type.toAcceptProps<{ one: string; two?: boolean }>(); // fail
+      |                                                       ~~~
   210 | 
   211 |     expect<First>().type.not.toAcceptProps<{ one: string; two: boolean }>();
   212 |     expect<First>().type.toAcceptProps<{ one: string; two: boolean }>(); // fail
@@ -885,8 +885,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
   210 | 
   211 |     expect<First>().type.not.toAcceptProps<{ one: string; two: boolean }>();
-> 212 |     expect<First>().type.toAcceptProps<{ one: string; two: boolean }>(); // fail
-      |                                                       ^
+  212 |     expect<First>().type.toAcceptProps<{ one: string; two: boolean }>(); // fail
+      |                                                       ~~~
   213 | 
   214 |     type FirstPropsSample = { one: string; two: boolean };
   215 |     expect<First>().type.not.toAcceptProps<FirstPropsSample>();
@@ -900,8 +900,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
   214 |     type FirstPropsSample = { one: string; two: boolean };
   215 |     expect<First>().type.not.toAcceptProps<FirstPropsSample>();
-> 216 |     expect<First>().type.toAcceptProps<FirstPropsSample>(); // fail
-      |                                        ^
+  216 |     expect<First>().type.toAcceptProps<FirstPropsSample>(); // fail
+      |                                        ~~~~~~~~~~~~~~~~
   217 | 
   218 |     expect<Second>().type.not.toAcceptProps<{ three?: number }>();
   219 |     expect<Second>().type.toAcceptProps<{ three?: number }>(); // fail
@@ -915,8 +915,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   217 | 
   218 |     expect<Second>().type.not.toAcceptProps<{ three?: number }>();
-> 219 |     expect<Second>().type.toAcceptProps<{ three?: number }>(); // fail
-      |                                           ^
+  219 |     expect<Second>().type.toAcceptProps<{ three?: number }>(); // fail
+      |                                           ~~~~~
   220 | 
   221 |     expect<Second>().type.not.toAcceptProps<{ three: number }>();
   222 |     expect<Second>().type.toAcceptProps<{ three: number }>(); // fail
@@ -930,8 +930,8 @@ Property 'one' is required in type 'SecondProps'.
 
   217 | 
   218 |     expect<Second>().type.not.toAcceptProps<{ three?: number }>();
-> 219 |     expect<Second>().type.toAcceptProps<{ three?: number }>(); // fail
-      |                                         ^
+  219 |     expect<Second>().type.toAcceptProps<{ three?: number }>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~~
   220 | 
   221 |     expect<Second>().type.not.toAcceptProps<{ three: number }>();
   222 |     expect<Second>().type.toAcceptProps<{ three: number }>(); // fail
@@ -945,8 +945,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   220 | 
   221 |     expect<Second>().type.not.toAcceptProps<{ three: number }>();
-> 222 |     expect<Second>().type.toAcceptProps<{ three: number }>(); // fail
-      |                                           ^
+  222 |     expect<Second>().type.toAcceptProps<{ three: number }>(); // fail
+      |                                           ~~~~~
   223 | 
   224 |     type SecondPropsSample = { three: number };
   225 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -960,8 +960,8 @@ Property 'one' is required in type 'SecondProps'.
 
   220 | 
   221 |     expect<Second>().type.not.toAcceptProps<{ three: number }>();
-> 222 |     expect<Second>().type.toAcceptProps<{ three: number }>(); // fail
-      |                                         ^
+  222 |     expect<Second>().type.toAcceptProps<{ three: number }>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~
   223 | 
   224 |     type SecondPropsSample = { three: number };
   225 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -975,8 +975,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   224 |     type SecondPropsSample = { three: number };
   225 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
-> 226 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
-      |                                         ^
+  226 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~
   227 | 
   228 |     expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
   229 |     expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
@@ -990,8 +990,8 @@ Property 'one' is required in type 'SecondProps'.
 
   224 |     type SecondPropsSample = { three: number };
   225 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
-> 226 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
-      |                                         ^
+  226 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~
   227 | 
   228 |     expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
   229 |     expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
@@ -1006,8 +1006,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
   227 | 
   228 |     expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
-> 229 |     expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
-      |                                           ^
+  229 |     expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
+      |                                           ~~~
   230 | 
   231 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
   232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
@@ -1021,8 +1021,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   227 | 
   228 |     expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
-> 229 |     expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
-      |                                                        ^
+  229 |     expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
+      |                                                        ~~~~~
   230 | 
   231 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
   232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
@@ -1036,8 +1036,8 @@ Property 'one' is required in type 'SecondProps'.
 
   227 | 
   228 |     expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
-> 229 |     expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
-      |                                         ^
+  229 |     expect<Second>().type.toAcceptProps<{ two: string; three?: number }>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   230 | 
   231 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
   232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
@@ -1052,8 +1052,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
   230 | 
   231 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
-> 232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
-      |                                           ^
+  232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
+      |                                           ~~~
   233 | 
   234 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three?: number }>();
   235 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three?: number }>(); // fail
@@ -1067,8 +1067,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   230 | 
   231 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
-> 232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
-      |                                                        ^
+  232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
+      |                                                        ~~~~~
   233 | 
   234 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three?: number }>();
   235 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three?: number }>(); // fail
@@ -1082,8 +1082,8 @@ Property 'one' is required in type 'SecondProps'.
 
   230 | 
   231 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
-> 232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
-      |                                         ^
+  232 |     expect<Second>().type.toAcceptProps<{ two: string; three: number }>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   233 | 
   234 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three?: number }>();
   235 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three?: number }>(); // fail
@@ -1098,8 +1098,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
   233 | 
   234 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three?: number }>();
-> 235 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three?: number }>(); // fail
-      |                                                        ^
+  235 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three?: number }>(); // fail
+      |                                                        ~~~
   236 | 
   237 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three: number }>();
   238 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three: number }>(); // fail
@@ -1113,8 +1113,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   233 | 
   234 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three?: number }>();
-> 235 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three?: number }>(); // fail
-      |                                                                     ^
+  235 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three?: number }>(); // fail
+      |                                                                     ~~~~~
   236 | 
   237 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three: number }>();
   238 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three: number }>(); // fail
@@ -1129,8 +1129,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
   236 | 
   237 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three: number }>();
-> 238 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three: number }>(); // fail
-      |                                                        ^
+  238 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three: number }>(); // fail
+      |                                                        ~~~
   239 | 
   240 |     expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean; three?: number }>();
   241 |     expect<Second>().type.toAcceptProps<{ one: string; two?: boolean; three?: number }>(); // fail
@@ -1144,8 +1144,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   236 | 
   237 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three: number }>();
-> 238 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three: number }>(); // fail
-      |                                                                     ^
+  238 |     expect<Second>().type.toAcceptProps<{ one: string; two: string; three: number }>(); // fail
+      |                                                                     ~~~~~
   239 | 
   240 |     expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean; three?: number }>();
   241 |     expect<Second>().type.toAcceptProps<{ one: string; two?: boolean; three?: number }>(); // fail
@@ -1159,8 +1159,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   239 | 
   240 |     expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean; three?: number }>();
-> 241 |     expect<Second>().type.toAcceptProps<{ one: string; two?: boolean; three?: number }>(); // fail
-      |                                                                       ^
+  241 |     expect<Second>().type.toAcceptProps<{ one: string; two?: boolean; three?: number }>(); // fail
+      |                                                                       ~~~~~
   242 | 
   243 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: boolean; three: number }>();
   244 |     expect<Second>().type.toAcceptProps<{ one: string; two: boolean; three: number }>(); // fail
@@ -1174,8 +1174,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
   242 | 
   243 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: boolean; three: number }>();
-> 244 |     expect<Second>().type.toAcceptProps<{ one: string; two: boolean; three: number }>(); // fail
-      |                                                                      ^
+  244 |     expect<Second>().type.toAcceptProps<{ one: string; two: boolean; three: number }>(); // fail
+      |                                                                      ~~~~~
   245 |   });
   246 | 
   247 |   test("property type is not assignable to prop type", () => {
@@ -1190,8 +1190,8 @@ Type 'number | undefined' is not assignable to type 'string | undefined'.
 
   247 |   test("property type is not assignable to prop type", () => {
   248 |     expect<First>().type.not.toAcceptProps<{ one?: number }>();
-> 249 |     expect<First>().type.toAcceptProps<{ one?: number }>(); // fail
-      |                                          ^
+  249 |     expect<First>().type.toAcceptProps<{ one?: number }>(); // fail
+      |                                          ~~~
   250 | 
   251 |     expect<First>().type.not.toAcceptProps<{ one: number }>();
   252 |     expect<First>().type.toAcceptProps<{ one: number }>(); // fail
@@ -1206,8 +1206,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   250 | 
   251 |     expect<First>().type.not.toAcceptProps<{ one: number }>();
-> 252 |     expect<First>().type.toAcceptProps<{ one: number }>(); // fail
-      |                                          ^
+  252 |     expect<First>().type.toAcceptProps<{ one: number }>(); // fail
+      |                                          ~~~
   253 | 
   254 |     type FirstPropsSample = { one: number };
   255 |     expect<First>().type.not.toAcceptProps<FirstPropsSample>();
@@ -1222,8 +1222,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   254 |     type FirstPropsSample = { one: number };
   255 |     expect<First>().type.not.toAcceptProps<FirstPropsSample>();
-> 256 |     expect<First>().type.toAcceptProps<FirstPropsSample>(); // fail
-      |                                        ^
+  256 |     expect<First>().type.toAcceptProps<FirstPropsSample>(); // fail
+      |                                        ~~~~~~~~~~~~~~~~
   257 | 
   258 |     expect<Second>().type.not.toAcceptProps<{ one: number }>();
   259 |     expect<Second>().type.toAcceptProps<{ one: number }>(); // fail
@@ -1238,8 +1238,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   257 | 
   258 |     expect<Second>().type.not.toAcceptProps<{ one: number }>();
-> 259 |     expect<Second>().type.toAcceptProps<{ one: number }>(); // fail
-      |                                           ^
+  259 |     expect<Second>().type.toAcceptProps<{ one: number }>(); // fail
+      |                                           ~~~
   260 | 
   261 |     expect<Second>().type.not.toAcceptProps<{ one: number; two?: number }>();
   262 |     expect<Second>().type.toAcceptProps<{ one: number; two?: number }>(); // fail
@@ -1254,8 +1254,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   260 | 
   261 |     expect<Second>().type.not.toAcceptProps<{ one: number; two?: number }>();
-> 262 |     expect<Second>().type.toAcceptProps<{ one: number; two?: number }>(); // fail
-      |                                           ^
+  262 |     expect<Second>().type.toAcceptProps<{ one: number; two?: number }>(); // fail
+      |                                           ~~~
   263 | 
   264 |     expect<Second>().type.not.toAcceptProps<{ one: number; two: number }>();
   265 |     expect<Second>().type.toAcceptProps<{ one: number; two: number }>(); // fail
@@ -1270,8 +1270,8 @@ Type 'number | undefined' is not assignable to type 'boolean | undefined'.
 
   260 | 
   261 |     expect<Second>().type.not.toAcceptProps<{ one: number; two?: number }>();
-> 262 |     expect<Second>().type.toAcceptProps<{ one: number; two?: number }>(); // fail
-      |                                                        ^
+  262 |     expect<Second>().type.toAcceptProps<{ one: number; two?: number }>(); // fail
+      |                                                        ~~~
   263 | 
   264 |     expect<Second>().type.not.toAcceptProps<{ one: number; two: number }>();
   265 |     expect<Second>().type.toAcceptProps<{ one: number; two: number }>(); // fail
@@ -1286,8 +1286,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   263 | 
   264 |     expect<Second>().type.not.toAcceptProps<{ one: number; two: number }>();
-> 265 |     expect<Second>().type.toAcceptProps<{ one: number; two: number }>(); // fail
-      |                                           ^
+  265 |     expect<Second>().type.toAcceptProps<{ one: number; two: number }>(); // fail
+      |                                           ~~~
   266 | 
   267 |     type SecondPropsSample = { one: number; two: number };
   268 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -1302,8 +1302,8 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
   263 | 
   264 |     expect<Second>().type.not.toAcceptProps<{ one: number; two: number }>();
-> 265 |     expect<Second>().type.toAcceptProps<{ one: number; two: number }>(); // fail
-      |                                                        ^
+  265 |     expect<Second>().type.toAcceptProps<{ one: number; two: number }>(); // fail
+      |                                                        ~~~
   266 | 
   267 |     type SecondPropsSample = { one: number; two: number };
   268 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -1318,8 +1318,8 @@ Type 'number' is not assignable to type 'string | undefined'.
 
   267 |     type SecondPropsSample = { one: number; two: number };
   268 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
-> 269 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
-      |                                         ^
+  269 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~
   270 |   });
   271 | });
   272 | 
@@ -1334,8 +1334,8 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
   267 |     type SecondPropsSample = { one: number; two: number };
   268 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
-> 269 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
-      |                                         ^
+  269 |     expect<Second>().type.toAcceptProps<SecondPropsSample>(); // fail
+      |                                         ~~~~~~~~~~~~~~~~~
   270 |   });
   271 | });
   272 | 
