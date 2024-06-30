@@ -85,7 +85,7 @@ export class ConfigFileOptionsWorker {
           continue;
         }
 
-        const optionName = this.#resolvePropertyName(property);
+        const optionName = (property.name as ts.StringLiteral).text;
 
         if (optionName === "$schema") {
           continue;
@@ -182,14 +182,6 @@ export class ConfigFileOptionsWorker {
     this.#onDiagnostic(Diagnostic.error(text, origin));
 
     return;
-  }
-
-  #resolvePropertyName({ name }: ts.PropertyAssignment) {
-    if ("text" in name) {
-      return name.text;
-    }
-
-    return "";
   }
 
   #skipTrivia(this: void, position: number, sourceFile: ts.SourceFile) {
