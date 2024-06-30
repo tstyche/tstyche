@@ -180,8 +180,7 @@ jobs:
       - run: node ./scripts/generate-coverage.js
         env:
           FORCE_COLOR: true
-          MCR_LOG_TIME: true
-          NODE_OPTIONS: --max-old-space-size=8192
+          NODE_OPTIONS: --max-old-space-size=4096
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
           name: coverage-${{ matrix.os }}-${{ github.sha }}
