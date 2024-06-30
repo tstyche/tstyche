@@ -27,7 +27,7 @@ Error: ')' expected. ts(1005)
   16 | 
   17 | test("is broken?"
   18 | 
-     | 
+     | ~
 
        at ./__typetests__/dummy.test.ts:18:1
 

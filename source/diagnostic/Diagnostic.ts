@@ -43,7 +43,10 @@ export class Diagnostic {
       const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
 
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
-        origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
+        // syntax diagnostics may have zero length
+        const diagnosticEnd = diagnostic.start + (diagnostic.length === 0 ? 1 : diagnostic.length);
+
+        origin = new DiagnosticOrigin(diagnostic.start, diagnosticEnd, diagnostic.file);
       }
 
       return new Diagnostic(text, category, origin).add({ code });
