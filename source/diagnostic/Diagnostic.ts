@@ -43,7 +43,8 @@ export class Diagnostic {
       const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
 
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
-        // syntax diagnostics may have zero length
+        // TODO consider swapping 'end' with 'length' in the 'DiagnosticOrigin' class
+        // that should help handling cases like syntax diagnostics with zero length
         const diagnosticEnd = diagnostic.start + (diagnostic.length === 0 ? 1 : diagnostic.length);
 
         origin = new DiagnosticOrigin(diagnostic.start, diagnosticEnd, diagnostic.file);
