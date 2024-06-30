@@ -7,10 +7,12 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
     diagnosticOrigin.sourceFile.text.length,
   ).line;
 
-  const { character: markedCharacter, line: markedLine } = diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(
-    diagnosticOrigin.start,
-  );
-  const firstLine = Math.max(markedLine - 2, 0);
+  const { character: firstMarkedLineCharacter, line: firstMarkedLine } =
+    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
+  const { character: lastMarkedLineCharacter, line: lastMarkedLine } =
+    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
+
+  const firstLine = Math.max(firstMarkedLine - 2, 0);
   const lastLine = Math.min(firstLine + 5, lastLineInFile);
   const lineNumberMaxWidth = String(lastLine + 1).length;
 
@@ -26,7 +28,7 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
     const lineNumberText = String(index + 1);
     const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
-    if (index === markedLine) {
+    if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeSpan.push(
         <Line>
           {" ".repeat(2)}
@@ -34,13 +36,40 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
           <Text color={Color.Gray}> | </Text>
           {lineText}
         </Line>,
-        <Line>
-          {" ".repeat(lineNumberMaxWidth + 2)}
-          <Text color={Color.Gray}> | </Text>
-          {" ".repeat(markedCharacter)}
-          <Text color={Color.Red}>{"~".repeat(diagnosticOrigin.end - diagnosticOrigin.start)}</Text>
-        </Line>,
       );
+
+      if (index === firstMarkedLine) {
+        codeSpan.push(
+          <Line>
+            {" ".repeat(lineNumberMaxWidth + 2)}
+            <Text color={Color.Gray}> | </Text>
+            {" ".repeat(firstMarkedLineCharacter)}
+            <Text color={Color.Red}>
+              {"~".repeat(
+                index === lastMarkedLine
+                  ? lastMarkedLineCharacter - firstMarkedLineCharacter
+                  : lineText.length - firstMarkedLineCharacter,
+              )}
+            </Text>
+          </Line>,
+        );
+      } else if (index === lastMarkedLine) {
+        codeSpan.push(
+          <Line>
+            {" ".repeat(lineNumberMaxWidth + 2)}
+            <Text color={Color.Gray}> | </Text>
+            <Text color={Color.Red}>{"~".repeat(lastMarkedLineCharacter)}</Text>
+          </Line>,
+        );
+      } else {
+        codeSpan.push(
+          <Line>
+            {" ".repeat(lineNumberMaxWidth + 2)}
+            <Text color={Color.Gray}> | </Text>
+            <Text color={Color.Red}>{"~".repeat(lineText.length)}</Text>
+          </Line>,
+        );
+      }
     } else {
       codeSpan.push(
         <Line>
@@ -65,7 +94,7 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
       <Text> </Text>
       <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
       <Text color={Color.Gray}>
-        :{String(markedLine + 1)}:{String(markedCharacter + 1)}
+        :{String(firstMarkedLine + 1)}:{String(firstMarkedLineCharacter + 1)}
       </Text>
       {breadcrumbs}
     </Line>
