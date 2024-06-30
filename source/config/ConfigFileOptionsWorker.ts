@@ -64,8 +64,12 @@ export class ConfigFileOptionsWorker {
 
     const rootExpression = sourceFile.statements[0]?.expression;
 
-    if (rootExpression == null || !this.#compiler.isObjectLiteralExpression(rootExpression)) {
-      const origin = new DiagnosticOrigin(0, 0, sourceFile);
+    if (!rootExpression) {
+      return;
+    }
+
+    if (!this.#compiler.isObjectLiteralExpression(rootExpression)) {
+      const origin = DiagnosticOrigin.fromJsonNode(rootExpression, sourceFile, this.#skipTrivia);
 
       this.#onDiagnostic(Diagnostic.error("The root value of a configuration file must be an object literal.", origin));
 
