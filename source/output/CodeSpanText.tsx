@@ -3,18 +3,18 @@ import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
 interface CodeLineTextProps {
-  children: string;
+  lineText: string;
   gutterWidth: number;
   lineNumberColor?: Color;
   lineNumberText: string;
 }
 
-function CodeLineText({ children, gutterWidth, lineNumberColor = Color.Gray, lineNumberText }: CodeLineTextProps) {
+function CodeLineText({ lineText, gutterWidth, lineNumberColor = Color.Gray, lineNumberText }: CodeLineTextProps) {
   return (
     <Line>
       <Text color={lineNumberColor}>{lineNumberText.padStart(gutterWidth)}</Text>
       <Text color={Color.Gray}>{" | "}</Text>
-      {children}
+      {lineText}
     </Line>
   );
 }
@@ -64,9 +64,12 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
 
     if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeSpan.push(
-        <CodeLineText gutterWidth={gutterWidth} lineNumberColor={Color.Red} lineNumberText={lineNumberText}>
-          {lineText}
-        </CodeLineText>,
+        <CodeLineText
+          gutterWidth={gutterWidth}
+          lineNumberColor={Color.Red}
+          lineNumberText={lineNumberText}
+          lineText={lineText}
+        />,
       );
 
       if (index === firstMarkedLine) {
@@ -88,11 +91,7 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
         codeSpan.push(<SquiggleLineText gutterWidth={gutterWidth} squiggleWidth={lineText.length} />);
       }
     } else {
-      codeSpan.push(
-        <CodeLineText gutterWidth={gutterWidth} lineNumberText={lineNumberText}>
-          {lineText}
-        </CodeLineText>,
-      );
+      codeSpan.push(<CodeLineText gutterWidth={gutterWidth} lineNumberText={lineNumberText} lineText={lineText} />);
     }
   }
 
