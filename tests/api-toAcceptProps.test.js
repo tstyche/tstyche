@@ -18,7 +18,7 @@ function Item(props) {
 describe("toAcceptProps", function () {
   test("implementation", function () {
     tstyche.expect(Item).type.toAcceptProps({ name: "one", quantity: "2" });
-    tstyche.expect(Item).type.not.toAcceptProps();
+    tstyche.expect(Item).type.not.toAcceptProps({});
   });
 
   test("function components", async function () {
