@@ -31,12 +31,16 @@ function SquiggleLineText({ gutterWidth, indentWidth = 0, squiggleWidth }: Squig
       {" ".repeat(gutterWidth)}
       <Text color={Color.Gray}>{" | "}</Text>
       {" ".repeat(indentWidth)}
-      <Text color={Color.Red}>{"~".repeat(squiggleWidth)}</Text>
+      <Text color={Color.Red}>{"~".repeat(squiggleWidth === 0 ? 1 : squiggleWidth)}</Text>
     </Line>
   );
 }
 
-export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
+interface CodeSpanTextProps {
+  diagnosticOrigin: DiagnosticOrigin;
+}
+
+export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
   const lastLineInFile = diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(
     diagnosticOrigin.sourceFile.text.length,
   ).line;
