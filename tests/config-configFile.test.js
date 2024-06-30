@@ -4,12 +4,6 @@ import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
-const isStringTestText = `import { expect, test } from "tstyche";
-test("is string?", () => {
-  expect<string>().type.toBeString();
-});
-`;
-
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
@@ -54,13 +48,33 @@ describe("'tstyche.config.json' file", function () {
     const config = { $schema: "https://tstyche.org/schemas/config.json" };
 
     await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     assert.doesNotMatch(stdout, /schema/);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  test("empty config file is allowed", async function () {
+    const configText = `// {
+//   "failFast": true,
+//   "testFileMatch": ["**/*.tst.*"]
+// }
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(stdout, {
+      failFast: false,
+    });
+
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
