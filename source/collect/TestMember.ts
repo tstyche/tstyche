@@ -6,6 +6,7 @@ import { TestMemberBrand, type TestMemberFlags } from "./enums.js";
 
 export class TestMember {
   brand: TestMemberBrand;
+  #compiler: typeof ts;
   diagnostics = new Set<ts.Diagnostic>();
   flags: TestMemberFlags;
   members: Array<TestMember | Assertion> = [];
@@ -21,6 +22,7 @@ export class TestMember {
     flags: TestMemberFlags,
   ) {
     this.brand = brand;
+    this.#compiler = compiler;
     this.node = node;
     this.parent = parent;
     this.flags = flags;
@@ -66,11 +68,21 @@ export class TestMember {
     const getText = (node: ts.CallExpression) =>
       `'${node.expression.getText()}()' cannot be nested within '${this.node.expression.getText()}()'.`;
 
+    const getParentCallExpression = (node: ts.Node) => {
+      while (!this.#compiler.isCallExpression(node.parent)) {
+        node = node.parent;
+      }
+
+      return node.parent;
+    };
+
     switch (this.brand) {
       case TestMemberBrand.Describe: {
         for (const member of this.members) {
           if (member.brand === TestMemberBrand.Expect) {
-            diagnostics.push(Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(member.node)));
+            diagnostics.push(
+              Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(getParentCallExpression(member.node))),
+            );
           }
         }
         break;
