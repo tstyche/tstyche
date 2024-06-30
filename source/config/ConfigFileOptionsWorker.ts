@@ -96,7 +96,7 @@ export class ConfigFileOptionsWorker {
             optionDefinition,
           );
         } else {
-          const origin = DiagnosticOrigin.fromJsonNode(property, sourceFile, this.#skipTrivia);
+          const origin = DiagnosticOrigin.fromJsonNode(property.name, sourceFile, this.#skipTrivia);
 
           this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(optionName), origin));
         }

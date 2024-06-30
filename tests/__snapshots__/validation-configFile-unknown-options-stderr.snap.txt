@@ -2,7 +2,7 @@ Error: Unknown option 'cache'.
 
   1 | {
   2 |   "cache": "all",
-    |   ~~~~~~~~~~~~~~
+    |   ~~~~~~~
   3 |   "silent": true,
   4 |   "testFileMatch": [
   5 |     "**/packages/*/__typetests__/*.test.ts"
@@ -15,7 +15,7 @@ Error: Unknown option 'silent'.
   1 | {
   2 |   "cache": "all",
   3 |   "silent": true,
-    |   ~~~~~~~~~~~~~~
+    |   ~~~~~~~~
   4 |   "testFileMatch": [
   5 |     "**/packages/*/__typetests__/*.test.ts"
   6 |   ]
