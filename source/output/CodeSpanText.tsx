@@ -13,7 +13,7 @@ function CodeLineText({ children, gutterWidth, lineNumberColor = Color.Gray, lin
   return (
     <Line>
       <Text color={lineNumberColor}>{lineNumberText.padStart(gutterWidth)}</Text>
-      <Text color={Color.Gray}> | </Text>
+      <Text color={Color.Gray}>{" | "}</Text>
       {children}
     </Line>
   );
@@ -29,7 +29,7 @@ function SquiggleLineText({ gutterWidth, indentWidth = 0, squiggleWidth }: Squig
   return (
     <Line>
       {" ".repeat(gutterWidth)}
-      <Text color={Color.Gray}> | </Text>
+      <Text color={Color.Gray}>{" | "}</Text>
       {" ".repeat(indentWidth)}
       <Text color={Color.Red}>{"~".repeat(squiggleWidth)}</Text>
     </Line>
@@ -104,7 +104,7 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
   const location = (
     <Line>
       {" ".repeat(gutterWidth + 2)}
-      <Text color={Color.Gray}> at </Text>
+      <Text color={Color.Gray}>{" at "}</Text>
       <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
       <Text color={Color.Gray}>
         :{String(firstMarkedLine + 1)}:{String(firstMarkedLineCharacter + 1)}
