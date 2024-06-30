@@ -2300,9 +2300,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.8.5":
-  version: 2.8.5
-  resolution: "monocart-coverage-reports@npm:2.8.5"
+"monocart-coverage-reports@npm:2.8.6":
+  version: 2.8.6
+  resolution: "monocart-coverage-reports@npm:2.8.6"
   dependencies:
     console-grid: ^2.2.2
     eight-colors: ^1.3.0
@@ -2316,7 +2316,7 @@ __metadata:
     turbogrid: ^3.2.0
   bin:
     mcr: lib/cli.js
-  checksum: b4a7917b670dc14499980d595f7cfc2821974398e9f13cd4d9e461fcc4df29c28cc0001a66bfea81a462e9d26a065b496cc75f97c060b120e1f1c9ee9b379e59
+  checksum: b90c85966c72e5a6d554cd14628eebd6da39fe7bc31b94f5e812b117b04ee1b9ef055898df300eac0f4aa47d99cb6beae1345d88382a1ea5ad911f371d792b84
   languageName: node
   linkType: hard
 
@@ -2947,7 +2947,7 @@ __metadata:
     cspell: 8.9.1
     magic-string: 0.30.10
     mocha: 10.5.2
-    monocart-coverage-reports: 2.8.5
+    monocart-coverage-reports: 2.8.6
     pretty-ansi: 2.0.0
     rollup: 4.18.0
     rollup-plugin-dts: 6.1.1
