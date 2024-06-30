@@ -69,7 +69,7 @@ export class ConfigFileOptionsWorker {
     }
 
     if (!this.#compiler.isObjectLiteralExpression(rootExpression)) {
-      const origin = new DiagnosticOrigin(0, 0, sourceFile);
+      const origin = DiagnosticOrigin.fromJsonNode(rootExpression, sourceFile, this.#skipTrivia);
 
       this.#onDiagnostic(Diagnostic.error("The root value of a configuration file must be an object literal.", origin));
 
@@ -79,7 +79,7 @@ export class ConfigFileOptionsWorker {
     for (const property of rootExpression.properties) {
       if (this.#compiler.isPropertyAssignment(property)) {
         if (!this.#isDoubleQuotedString(property.name, sourceFile)) {
-          const origin = DiagnosticOrigin.fromJsonNode(property, sourceFile, this.#skipTrivia);
+          const origin = DiagnosticOrigin.fromJsonNode(property.name, sourceFile, this.#skipTrivia);
 
           this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
           continue;
@@ -100,7 +100,7 @@ export class ConfigFileOptionsWorker {
             optionDefinition,
           );
         } else {
-          const origin = DiagnosticOrigin.fromJsonNode(property, sourceFile, this.#skipTrivia);
+          const origin = DiagnosticOrigin.fromJsonNode(property.name, sourceFile, this.#skipTrivia);
 
           this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(optionName), origin));
         }

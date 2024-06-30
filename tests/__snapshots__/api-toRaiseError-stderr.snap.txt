@@ -2,8 +2,8 @@ Error: Expression raised a type error.
 
    6 | test("expression raises a type error", () => {
    7 |   expect(one("pass")).type.toRaiseError();
->  8 |   expect(one("fail")).type.not.toRaiseError();
-     |                                ^
+   8 |   expect(one("fail")).type.not.toRaiseError();
+     |                                ~~~~~~~~~~~~
    9 | });
   10 | 
   11 | test("expression does not raise a type error", () => {
@@ -16,8 +16,8 @@ Error: Expression raised a type error.
 
        6 | test("expression raises a type error", () => {
        7 |   expect(one("pass")).type.toRaiseError();
-    >  8 |   expect(one("fail")).type.not.toRaiseError();
-         |              ^
+       8 |   expect(one("fail")).type.not.toRaiseError();
+         |              ~~~~~~
        9 | });
       10 | 
       11 | test("expression does not raise a type error", () => {
@@ -28,8 +28,8 @@ Error: Expression did not raise a type error.
 
   11 | test("expression does not raise a type error", () => {
   12 |   expect(one()).type.not.toRaiseError();
-> 13 |   expect(one()).type.toRaiseError();
-     |                      ^
+  13 |   expect(one()).type.toRaiseError();
+     |                      ~~~~~~~~~~~~
   14 | });
   15 | 
   16 | test("type expression raises a type error", () => {
@@ -40,8 +40,8 @@ Error: Type expression raised a type error.
 
   16 | test("type expression raises a type error", () => {
   17 |   expect<One>().type.toRaiseError();
-> 18 |   expect<One>().type.not.toRaiseError();
-     |                          ^
+  18 |   expect<One>().type.not.toRaiseError();
+     |                          ~~~~~~~~~~~~
   19 | });
   20 | 
   21 | test("type expression does not raise a type error", () => {
@@ -54,8 +54,8 @@ Error: Type expression raised a type error.
 
       16 | test("type expression raises a type error", () => {
       17 |   expect<One>().type.toRaiseError();
-    > 18 |   expect<One>().type.not.toRaiseError();
-         |          ^
+      18 |   expect<One>().type.not.toRaiseError();
+         |          ~~~
       19 | });
       20 | 
       21 | test("type expression does not raise a type error", () => {
@@ -66,8 +66,8 @@ Error: Type expression did not raise a type error.
 
   21 | test("type expression does not raise a type error", () => {
   22 |   expect<One<string>>().type.not.toRaiseError();
-> 23 |   expect<One<string>>().type.toRaiseError();
-     |                              ^
+  23 |   expect<One<string>>().type.toRaiseError();
+     |                              ~~~~~~~~~~~~
   24 | });
   25 | 
   26 | test("expression raises multiple type errors", () => {
@@ -78,8 +78,8 @@ Error: Expression raised 3 type errors.
 
   34 |     one("2");
   35 |     one("3");
-> 36 |   }).type.not.toRaiseError();
-     |               ^
+  36 |   }).type.not.toRaiseError();
+     |               ~~~~~~~~~~~~
   37 | });
   38 | 
   39 | test("expression raises a type error with matching message", () => {
@@ -92,8 +92,8 @@ Error: Expression raised 3 type errors.
 
       31 |   }).type.toRaiseError();
       32 |   expect(() => {
-    > 33 |     one("1");
-         |         ^
+      33 |     one("1");
+         |         ~~~
       34 |     one("2");
       35 |     one("3");
       36 |   }).type.not.toRaiseError();
@@ -104,8 +104,8 @@ Error: Expression raised 3 type errors.
 
       32 |   expect(() => {
       33 |     one("1");
-    > 34 |     one("2");
-         |         ^
+      34 |     one("2");
+         |         ~~~
       35 |     one("3");
       36 |   }).type.not.toRaiseError();
       37 | });
@@ -116,8 +116,8 @@ Error: Expression raised 3 type errors.
 
       33 |     one("1");
       34 |     one("2");
-    > 35 |     one("3");
-         |         ^
+      35 |     one("3");
+         |         ~~~
       36 |   }).type.not.toRaiseError();
       37 | });
       38 | 
@@ -128,8 +128,8 @@ Error: Expression raised a type error matching substring 'Expected 0 arguments'.
 
   39 | test("expression raises a type error with matching message", () => {
   40 |   expect(one("pass")).type.toRaiseError("Expected 0 arguments");
-> 41 |   expect(one("fail")).type.not.toRaiseError("Expected 0 arguments");
-     |                                ^
+  41 |   expect(one("fail")).type.not.toRaiseError("Expected 0 arguments");
+     |                                ~~~~~~~~~~~~
   42 | });
   43 | 
   44 | test("expression raises a type error with matching message passed as a template literal", () => {
@@ -142,8 +142,8 @@ Error: Expression raised a type error matching substring 'Expected 0 arguments'.
 
       39 | test("expression raises a type error with matching message", () => {
       40 |   expect(one("pass")).type.toRaiseError("Expected 0 arguments");
-    > 41 |   expect(one("fail")).type.not.toRaiseError("Expected 0 arguments");
-         |              ^
+      41 |   expect(one("fail")).type.not.toRaiseError("Expected 0 arguments");
+         |              ~~~~~~
       42 | });
       43 | 
       44 | test("expression raises a type error with matching message passed as a template literal", () => {
@@ -154,8 +154,8 @@ Error: Expression raised a type error matching substring 'Expected 0 arguments'.
 
   44 | test("expression raises a type error with matching message passed as a template literal", () => {
   45 |   expect(one("pass")).type.toRaiseError(`Expected 0 arguments`);
-> 46 |   expect(one("fail")).type.not.toRaiseError(`Expected 0 arguments`);
-     |                                ^
+  46 |   expect(one("fail")).type.not.toRaiseError(`Expected 0 arguments`);
+     |                                ~~~~~~~~~~~~
   47 | });
   48 | 
   49 | test("expression raises type error with not matching message", () => {
@@ -168,8 +168,8 @@ Error: Expression raised a type error matching substring 'Expected 0 arguments'.
 
       44 | test("expression raises a type error with matching message passed as a template literal", () => {
       45 |   expect(one("pass")).type.toRaiseError(`Expected 0 arguments`);
-    > 46 |   expect(one("fail")).type.not.toRaiseError(`Expected 0 arguments`);
-         |              ^
+      46 |   expect(one("fail")).type.not.toRaiseError(`Expected 0 arguments`);
+         |              ~~~~~~
       47 | });
       48 | 
       49 | test("expression raises type error with not matching message", () => {
@@ -180,8 +180,8 @@ Error: Expression did not raise a type error matching substring 'Expected 2 argu
 
   49 | test("expression raises type error with not matching message", () => {
   50 |   expect(one("pass")).type.not.toRaiseError("Expected 2 arguments");
-> 51 |   expect(one("fail")).type.toRaiseError("Expected 2 arguments");
-     |                            ^
+  51 |   expect(one("fail")).type.toRaiseError("Expected 2 arguments");
+     |                            ~~~~~~~~~~~~
   52 | });
   53 | 
   54 | test("type expression raises a type error with matching message", () => {
@@ -194,8 +194,8 @@ Error: Expression did not raise a type error matching substring 'Expected 2 argu
 
       49 | test("expression raises type error with not matching message", () => {
       50 |   expect(one("pass")).type.not.toRaiseError("Expected 2 arguments");
-    > 51 |   expect(one("fail")).type.toRaiseError("Expected 2 arguments");
-         |              ^
+      51 |   expect(one("fail")).type.toRaiseError("Expected 2 arguments");
+         |              ~~~~~~
       52 | });
       53 | 
       54 | test("type expression raises a type error with matching message", () => {
@@ -206,8 +206,8 @@ Error: Type expression raised a type error matching substring 'requires 1 type a
 
   54 | test("type expression raises a type error with matching message", () => {
   55 |   expect<One>().type.toRaiseError("requires 1 type argument");
-> 56 |   expect<One>().type.not.toRaiseError("requires 1 type argument");
-     |                          ^
+  56 |   expect<One>().type.not.toRaiseError("requires 1 type argument");
+     |                          ~~~~~~~~~~~~
   57 | });
   58 | 
   59 | test("type expression raises a type error with matching message passed as a template literal", () => {
@@ -220,8 +220,8 @@ Error: Type expression raised a type error matching substring 'requires 1 type a
 
       54 | test("type expression raises a type error with matching message", () => {
       55 |   expect<One>().type.toRaiseError("requires 1 type argument");
-    > 56 |   expect<One>().type.not.toRaiseError("requires 1 type argument");
-         |          ^
+      56 |   expect<One>().type.not.toRaiseError("requires 1 type argument");
+         |          ~~~
       57 | });
       58 | 
       59 | test("type expression raises a type error with matching message passed as a template literal", () => {
@@ -232,8 +232,8 @@ Error: Type expression raised a type error matching substring 'requires 1 type a
 
   59 | test("type expression raises a type error with matching message passed as a template literal", () => {
   60 |   expect<One>().type.toRaiseError(`requires 1 type argument`);
-> 61 |   expect<One>().type.not.toRaiseError(`requires 1 type argument`);
-     |                          ^
+  61 |   expect<One>().type.not.toRaiseError(`requires 1 type argument`);
+     |                          ~~~~~~~~~~~~
   62 | });
   63 | 
   64 | test("type expression raises a type error with not matching message", () => {
@@ -246,8 +246,8 @@ Error: Type expression raised a type error matching substring 'requires 1 type a
 
       59 | test("type expression raises a type error with matching message passed as a template literal", () => {
       60 |   expect<One>().type.toRaiseError(`requires 1 type argument`);
-    > 61 |   expect<One>().type.not.toRaiseError(`requires 1 type argument`);
-         |          ^
+      61 |   expect<One>().type.not.toRaiseError(`requires 1 type argument`);
+         |          ~~~
       62 | });
       63 | 
       64 | test("type expression raises a type error with not matching message", () => {
@@ -258,8 +258,8 @@ Error: Type expression did not raise a type error matching substring 'requires t
 
   64 | test("type expression raises a type error with not matching message", () => {
   65 |   expect<One>().type.not.toRaiseError("requires type argument");
-> 66 |   expect<One>().type.toRaiseError("requires type argument");
-     |                      ^
+  66 |   expect<One>().type.toRaiseError("requires type argument");
+     |                      ~~~~~~~~~~~~
   67 | });
   68 | 
   69 | test("expression raises a type error with expected code", () => {
@@ -272,8 +272,8 @@ Error: Type expression did not raise a type error matching substring 'requires t
 
       64 | test("type expression raises a type error with not matching message", () => {
       65 |   expect<One>().type.not.toRaiseError("requires type argument");
-    > 66 |   expect<One>().type.toRaiseError("requires type argument");
-         |          ^
+      66 |   expect<One>().type.toRaiseError("requires type argument");
+         |          ~~~
       67 | });
       68 | 
       69 | test("expression raises a type error with expected code", () => {
@@ -284,8 +284,8 @@ Error: Expression raised a type error with code 2554.
 
   69 | test("expression raises a type error with expected code", () => {
   70 |   expect(one("pass")).type.toRaiseError(2554);
-> 71 |   expect(one("fail")).type.not.toRaiseError(2554);
-     |                                ^
+  71 |   expect(one("fail")).type.not.toRaiseError(2554);
+     |                                ~~~~~~~~~~~~
   72 | });
   73 | 
   74 | test("expression raises a type error with not expected code", () => {
@@ -298,8 +298,8 @@ Error: Expression raised a type error with code 2554.
 
       69 | test("expression raises a type error with expected code", () => {
       70 |   expect(one("pass")).type.toRaiseError(2554);
-    > 71 |   expect(one("fail")).type.not.toRaiseError(2554);
-         |              ^
+      71 |   expect(one("fail")).type.not.toRaiseError(2554);
+         |              ~~~~~~
       72 | });
       73 | 
       74 | test("expression raises a type error with not expected code", () => {
@@ -310,8 +310,8 @@ Error: Expression did not raise a type error with code 2544.
 
   74 | test("expression raises a type error with not expected code", () => {
   75 |   expect(one("pass")).type.not.toRaiseError(2544);
-> 76 |   expect(one("fail")).type.toRaiseError(2544);
-     |                            ^
+  76 |   expect(one("fail")).type.toRaiseError(2544);
+     |                            ~~~~~~~~~~~~
   77 | });
   78 | 
   79 | declare function two<T>(): void;
@@ -324,8 +324,8 @@ Error: Expression did not raise a type error with code 2544.
 
       74 | test("expression raises a type error with not expected code", () => {
       75 |   expect(one("pass")).type.not.toRaiseError(2544);
-    > 76 |   expect(one("fail")).type.toRaiseError(2544);
-         |              ^
+      76 |   expect(one("fail")).type.toRaiseError(2544);
+         |              ~~~~~~
       77 | });
       78 | 
       79 | declare function two<T>(): void;
@@ -336,8 +336,8 @@ Error: Expression raised a type error matching substring 'Argument of type 'numb
 
   92 |     two(1000);
   93 |     two<string>("fail");
-> 94 |   }).type.not.toRaiseError(
-     |               ^
+  94 |   }).type.not.toRaiseError(
+     |               ~~~~~~~~~~~~
   95 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
   96 |     "Expected 0 arguments",
   97 |   );
@@ -350,8 +350,8 @@ Error: Expression raised a type error matching substring 'Argument of type 'numb
 
       90 | 
       91 |   expect(() => {
-    > 92 |     two(1000);
-         |         ^
+      92 |     two(1000);
+         |         ~~~~
       93 |     two<string>("fail");
       94 |   }).type.not.toRaiseError(
       95 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
@@ -362,8 +362,8 @@ Error: Expression raised a type error matching substring 'Expected 0 arguments'.
 
   92 |     two(1000);
   93 |     two<string>("fail");
-> 94 |   }).type.not.toRaiseError(
-     |               ^
+  94 |   }).type.not.toRaiseError(
+     |               ~~~~~~~~~~~~
   95 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
   96 |     "Expected 0 arguments",
   97 |   );
@@ -376,8 +376,8 @@ Error: Expression raised a type error matching substring 'Expected 0 arguments'.
 
       91 |   expect(() => {
       92 |     two(1000);
-    > 93 |     two<string>("fail");
-         |                 ^
+      93 |     two<string>("fail");
+         |                 ~~~~~~
       94 |   }).type.not.toRaiseError(
       95 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
       96 |     "Expected 0 arguments",
@@ -388,8 +388,8 @@ Error: Expression did not raise a type error matching substring 'Expected 0 argu
 
   110 |     two(1000);
   111 |     two<string>("fail");
-> 112 |   }).type.toRaiseError(
-      |           ^
+  112 |   }).type.toRaiseError(
+      |           ~~~~~~~~~~~~
   113 |     "Expected 0 arguments",
   114 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
   115 |   );
@@ -402,8 +402,8 @@ Error: Expression did not raise a type error matching substring 'Expected 0 argu
 
       108 | 
       109 |   expect(() => {
-    > 110 |     two(1000);
-          |         ^
+      110 |     two(1000);
+          |         ~~~~
       111 |     two<string>("fail");
       112 |   }).type.toRaiseError(
       113 |     "Expected 0 arguments",
@@ -414,8 +414,8 @@ Error: Expression did not raise a type error matching substring 'Argument of typ
 
   110 |     two(1000);
   111 |     two<string>("fail");
-> 112 |   }).type.toRaiseError(
-      |           ^
+  112 |   }).type.toRaiseError(
+      |           ~~~~~~~~~~~~
   113 |     "Expected 0 arguments",
   114 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
   115 |   );
@@ -428,8 +428,8 @@ Error: Expression did not raise a type error matching substring 'Argument of typ
 
       109 |   expect(() => {
       110 |     two(1000);
-    > 111 |     two<string>("fail");
-          |                 ^
+      111 |     two<string>("fail");
+          |                 ~~~~~~
       112 |   }).type.toRaiseError(
       113 |     "Expected 0 arguments",
       114 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
@@ -440,8 +440,8 @@ Error: Expression raised a type error with code 2345.
 
   125 |     two(1000);
   126 |     two<string>("fail");
-> 127 |   }).type.not.toRaiseError(2345, 2554);
-      |               ^
+  127 |   }).type.not.toRaiseError(2345, 2554);
+      |               ~~~~~~~~~~~~
   128 | });
   129 | 
   130 | test("expression raises multiple type errors with not expected codes", () => {
@@ -454,8 +454,8 @@ Error: Expression raised a type error with code 2345.
 
       123 | 
       124 |   expect(() => {
-    > 125 |     two(1000);
-          |         ^
+      125 |     two(1000);
+          |         ~~~~
       126 |     two<string>("fail");
       127 |   }).type.not.toRaiseError(2345, 2554);
       128 | });
@@ -466,8 +466,8 @@ Error: Expression raised a type error with code 2554.
 
   125 |     two(1000);
   126 |     two<string>("fail");
-> 127 |   }).type.not.toRaiseError(2345, 2554);
-      |               ^
+  127 |   }).type.not.toRaiseError(2345, 2554);
+      |               ~~~~~~~~~~~~
   128 | });
   129 | 
   130 | test("expression raises multiple type errors with not expected codes", () => {
@@ -480,8 +480,8 @@ Error: Expression raised a type error with code 2554.
 
       124 |   expect(() => {
       125 |     two(1000);
-    > 126 |     two<string>("fail");
-          |                 ^
+      126 |     two<string>("fail");
+          |                 ~~~~~~
       127 |   }).type.not.toRaiseError(2345, 2554);
       128 | });
       129 | 
@@ -492,8 +492,8 @@ Error: Expression did not raise a type error with code 2554.
 
   132 |     two(1111);
   133 |     two<string>("pass");
-> 134 |   }).type.toRaiseError(2554, 2345);
-      |           ^
+  134 |   }).type.toRaiseError(2554, 2345);
+      |           ~~~~~~~~~~~~
   135 | 
   136 |   expect(() => {
   137 |     two(1000);
@@ -506,8 +506,8 @@ Error: Expression did not raise a type error with code 2554.
 
       130 | test("expression raises multiple type errors with not expected codes", () => {
       131 |   expect(() => {
-    > 132 |     two(1111);
-          |         ^
+      132 |     two(1111);
+          |         ~~~~
       133 |     two<string>("pass");
       134 |   }).type.toRaiseError(2554, 2345);
       135 | 
@@ -518,8 +518,8 @@ Error: Expression did not raise a type error with code 2345.
 
   132 |     two(1111);
   133 |     two<string>("pass");
-> 134 |   }).type.toRaiseError(2554, 2345);
-      |           ^
+  134 |   }).type.toRaiseError(2554, 2345);
+      |           ~~~~~~~~~~~~
   135 | 
   136 |   expect(() => {
   137 |     two(1000);
@@ -532,8 +532,8 @@ Error: Expression did not raise a type error with code 2345.
 
       131 |   expect(() => {
       132 |     two(1111);
-    > 133 |     two<string>("pass");
-          |                 ^
+      133 |     two<string>("pass");
+          |                 ~~~~~~
       134 |   }).type.toRaiseError(2554, 2345);
       135 | 
       136 |   expect(() => {
@@ -544,8 +544,8 @@ Error: Expression raised a type error matching substring 'Argument of type 'numb
 
   149 |     two(1000);
   150 |     two<string>("fail");
-> 151 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
-      |               ^
+  151 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
+      |               ~~~~~~~~~~~~
   152 | });
   153 | 
   154 | test("expression raises multiple type errors with not matching messages and not expected codes", () => {
@@ -558,8 +558,8 @@ Error: Expression raised a type error matching substring 'Argument of type 'numb
 
       147 | 
       148 |   expect(() => {
-    > 149 |     two(1000);
-          |         ^
+      149 |     two(1000);
+          |         ~~~~
       150 |     two<string>("fail");
       151 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
       152 | });
@@ -570,8 +570,8 @@ Error: Expression raised a type error with code 2554.
 
   149 |     two(1000);
   150 |     two<string>("fail");
-> 151 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
-      |               ^
+  151 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
+      |               ~~~~~~~~~~~~
   152 | });
   153 | 
   154 | test("expression raises multiple type errors with not matching messages and not expected codes", () => {
@@ -584,8 +584,8 @@ Error: Expression raised a type error with code 2554.
 
       148 |   expect(() => {
       149 |     two(1000);
-    > 150 |     two<string>("fail");
-          |                 ^
+      150 |     two<string>("fail");
+          |                 ~~~~~~
       151 |   }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
       152 | });
       153 | 
@@ -596,8 +596,8 @@ Error: Expression did not raise a type error with code 2554.
 
   156 |     two(1111);
   157 |     two<string>("pass");
-> 158 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
-      |           ^
+  158 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
+      |           ~~~~~~~~~~~~
   159 | 
   160 |   expect(() => {
   161 |     two(1000);
@@ -610,8 +610,8 @@ Error: Expression did not raise a type error with code 2554.
 
       154 | test("expression raises multiple type errors with not matching messages and not expected codes", () => {
       155 |   expect(() => {
-    > 156 |     two(1111);
-          |         ^
+      156 |     two(1111);
+          |         ~~~~
       157 |     two<string>("pass");
       158 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
       159 | 
@@ -622,8 +622,8 @@ Error: Expression did not raise a type error matching substring 'Argument of typ
 
   156 |     two(1111);
   157 |     two<string>("pass");
-> 158 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
-      |           ^
+  158 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
+      |           ~~~~~~~~~~~~
   159 | 
   160 |   expect(() => {
   161 |     two(1000);
@@ -636,8 +636,8 @@ Error: Expression did not raise a type error matching substring 'Argument of typ
 
       155 |   expect(() => {
       156 |     two(1111);
-    > 157 |     two<string>("pass");
-          |                 ^
+      157 |     two<string>("pass");
+          |                 ~~~~~~
       158 |   }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
       159 | 
       160 |   expect(() => {
@@ -648,8 +648,8 @@ Error: Expected only 1 type error, but 2 were raised.
 
   168 |     two(1111);
   169 |     two<string>("pass");
-> 170 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
-      |           ^
+  170 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
+      |           ~~~~~~~~~~~~
   171 | });
   172 | 
   173 | test("expression raises more type errors than expected codes", () => {
@@ -662,8 +662,8 @@ Error: Expected only 1 type error, but 2 were raised.
 
       166 | test("expression raises more type errors than expected messages", () => {
       167 |   expect(() => {
-    > 168 |     two(1111);
-          |         ^
+      168 |     two(1111);
+          |         ~~~~
       169 |     two<string>("pass");
       170 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
       171 | });
@@ -674,8 +674,8 @@ Error: Expected only 1 type error, but 2 were raised.
 
       167 |   expect(() => {
       168 |     two(1111);
-    > 169 |     two<string>("pass");
-          |                 ^
+      169 |     two<string>("pass");
+          |                 ~~~~~~
       170 |   }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
       171 | });
       172 | 
@@ -686,8 +686,8 @@ Error: Expected only 1 type error, but 2 were raised.
 
   175 |     two(1111);
   176 |     two<string>("pass");
-> 177 |   }).type.toRaiseError(2345);
-      |           ^
+  177 |   }).type.toRaiseError(2345);
+      |           ~~~~~~~~~~~~
   178 | });
   179 | 
   180 | test("expression raises only one type error, but several messages are expected", () => {
@@ -700,8 +700,8 @@ Error: Expected only 1 type error, but 2 were raised.
 
       173 | test("expression raises more type errors than expected codes", () => {
       174 |   expect(() => {
-    > 175 |     two(1111);
-          |         ^
+      175 |     two(1111);
+          |         ~~~~
       176 |     two<string>("pass");
       177 |   }).type.toRaiseError(2345);
       178 | });
@@ -712,8 +712,8 @@ Error: Expected only 1 type error, but 2 were raised.
 
       174 |   expect(() => {
       175 |     two(1111);
-    > 176 |     two<string>("pass");
-          |                 ^
+      176 |     two<string>("pass");
+          |                 ~~~~~~
       177 |   }).type.toRaiseError(2345);
       178 | });
       179 | 
@@ -724,8 +724,8 @@ Error: Expected 3 type errors, but only 1 was raised.
 
   181 |   expect(() => {
   182 |     two(1111);
-> 183 |   }).type.toRaiseError(
-      |           ^
+  183 |   }).type.toRaiseError(
+      |           ~~~~~~~~~~~~
   184 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
   185 |     "Expected 0 arguments",
   186 |     "Expected 2 arguments",
@@ -738,8 +738,8 @@ Error: Expected 3 type errors, but only 1 was raised.
 
       180 | test("expression raises only one type error, but several messages are expected", () => {
       181 |   expect(() => {
-    > 182 |     two(1111);
-          |         ^
+      182 |     two(1111);
+          |         ~~~~
       183 |   }).type.toRaiseError(
       184 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
       185 |     "Expected 0 arguments",
@@ -750,8 +750,8 @@ Error: Expected 3 type errors, but only 2 were raised.
 
   192 |     two(1111);
   193 |     two<string>("pass");
-> 194 |   }).type.toRaiseError(
-      |           ^
+  194 |   }).type.toRaiseError(
+      |           ~~~~~~~~~~~~
   195 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
   196 |     "Expected 0 arguments",
   197 |     "Expected 2 arguments",
@@ -764,8 +764,8 @@ Error: Expected 3 type errors, but only 2 were raised.
 
       190 | test("expression raises less type errors than expected messages", () => {
       191 |   expect(() => {
-    > 192 |     two(1111);
-          |         ^
+      192 |     two(1111);
+          |         ~~~~
       193 |     two<string>("pass");
       194 |   }).type.toRaiseError(
       195 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
@@ -776,8 +776,8 @@ Error: Expected 3 type errors, but only 2 were raised.
 
       191 |   expect(() => {
       192 |     two(1111);
-    > 193 |     two<string>("pass");
-          |                 ^
+      193 |     two<string>("pass");
+          |                 ~~~~~~
       194 |   }).type.toRaiseError(
       195 |     "Argument of type 'number' is not assignable to parameter of type 'string'",
       196 |     "Expected 0 arguments",
@@ -788,8 +788,8 @@ Error: Expected 3 type errors, but only 1 was raised.
 
   202 |   expect(() => {
   203 |     two<string>("pass");
-> 204 |   }).type.toRaiseError(2345, 2554, 2554);
-      |           ^
+  204 |   }).type.toRaiseError(2345, 2554, 2554);
+      |           ~~~~~~~~~~~~
   205 | });
   206 | 
   207 | test("expression raises less type errors than expected codes", () => {
@@ -802,8 +802,8 @@ Error: Expected 3 type errors, but only 1 was raised.
 
       201 | test("expression raises only one type error, but several codes are expected", () => {
       202 |   expect(() => {
-    > 203 |     two<string>("pass");
-          |                 ^
+      203 |     two<string>("pass");
+          |                 ~~~~~~
       204 |   }).type.toRaiseError(2345, 2554, 2554);
       205 | });
       206 | 
@@ -814,8 +814,8 @@ Error: Expected 3 type errors, but only 2 were raised.
 
   209 |     two(1111);
   210 |     two<string>("pass");
-> 211 |   }).type.toRaiseError(2345, 2554, 2554);
-      |           ^
+  211 |   }).type.toRaiseError(2345, 2554, 2554);
+      |           ~~~~~~~~~~~~
   212 | });
   213 | 
 
@@ -827,8 +827,8 @@ Error: Expected 3 type errors, but only 2 were raised.
 
       207 | test("expression raises less type errors than expected codes", () => {
       208 |   expect(() => {
-    > 209 |     two(1111);
-          |         ^
+      209 |     two(1111);
+          |         ~~~~
       210 |     two<string>("pass");
       211 |   }).type.toRaiseError(2345, 2554, 2554);
       212 | });
@@ -839,8 +839,8 @@ Error: Expected 3 type errors, but only 2 were raised.
 
       208 |   expect(() => {
       209 |     two(1111);
-    > 210 |     two<string>("pass");
-          |                 ^
+      210 |     two<string>("pass");
+          |                 ~~~~~~
       211 |   }).type.toRaiseError(2345, 2554, 2554);
       212 | });
       213 | 

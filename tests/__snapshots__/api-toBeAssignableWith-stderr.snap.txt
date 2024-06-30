@@ -2,8 +2,8 @@ Error: Type 'Names' is not assignable with type '{ middle: string; }'.
 
   12 |     expect<Names>().type.toBeAssignableWith({ first: "Rose", last: undefined });
   13 | 
-> 14 |     expect<Names>().type.toBeAssignableWith({ middle: "O." });
-     |                          ^
+  14 |     expect<Names>().type.toBeAssignableWith({ middle: "O." });
+     |                          ~~~~~~~~~~~~~~~~~~
   15 |   });
   16 | 
   17 |   test("is NOT assignable target expression?", () => {
@@ -14,8 +14,8 @@ Error: Type 'Names' is assignable with type '{ first: string; }'.
 
   18 |     expect<Names>().type.not.toBeAssignableWith({ middle: "O." });
   19 | 
-> 20 |     expect<Names>().type.not.toBeAssignableWith({ first: "Rose" });
-     |                              ^
+  20 |     expect<Names>().type.not.toBeAssignableWith({ first: "Rose" });
+     |                              ~~~~~~~~~~~~~~~~~~
   21 |   });
   22 | 
   23 |   test("is assignable target type?", () => {
@@ -26,8 +26,8 @@ Error: Type 'Names' is not assignable with type '{ middle: string; }'.
 
   27 |     expect<Names>().type.toBeAssignableWith<{ first: string; last?: string }>();
   28 | 
-> 29 |     expect<Names>().type.toBeAssignableWith<{ middle: string }>();
-     |                          ^
+  29 |     expect<Names>().type.toBeAssignableWith<{ middle: string }>();
+     |                          ~~~~~~~~~~~~~~~~~~
   30 |   });
   31 | 
   32 |   test("is NOT assignable target type?", () => {
@@ -38,8 +38,8 @@ Error: Type 'Names' is assignable with type '{ first: string; }'.
 
   33 |     expect<Names>().type.not.toBeAssignableWith<{ middle: string }>();
   34 | 
-> 35 |     expect<Names>().type.not.toBeAssignableWith<{ first: string }>();
-     |                              ^
+  35 |     expect<Names>().type.not.toBeAssignableWith<{ first: string }>();
+     |                              ~~~~~~~~~~~~~~~~~~
   36 |   });
   37 | });
   38 | 
@@ -50,8 +50,8 @@ Error: Type '{ first: string; last: string; }' is not assignable with type '{ mi
 
   41 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith({ first: "Rose", last: "Smith" });
   42 | 
-> 43 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith({ middle: "O." });
-     |                                                  ^
+  43 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith({ middle: "O." });
+     |                                                  ~~~~~~~~~~~~~~~~~~
   44 |   });
   45 | 
   46 |   test("is NOT assignable target expression?", () => {
@@ -62,8 +62,8 @@ Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
 
   47 |     expect({ first: "Jane", last: "Swan" }).type.not.toBeAssignableWith({ middle: "O." });
   48 | 
-> 49 |     expect({ first: "Jane" }).type.not.toBeAssignableWith({ first: "Rose" });
-     |                                        ^
+  49 |     expect({ first: "Jane" }).type.not.toBeAssignableWith({ first: "Rose" });
+     |                                        ~~~~~~~~~~~~~~~~~~
   50 |   });
   51 | 
   52 |   test("is assignable target type?", () => {
@@ -74,8 +74,8 @@ Error: Type '{ first: string; last: string; }' is not assignable with type '{ mi
 
   53 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith<{ first: string; last: string }>();
   54 | 
-> 55 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith<{ middle: string }>();
-     |                                                  ^
+  55 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith<{ middle: string }>();
+     |                                                  ~~~~~~~~~~~~~~~~~~
   56 |   });
   57 | 
   58 |   test("is NOT assignable type?", () => {
@@ -86,8 +86,8 @@ Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
 
   59 |     expect({ first: "Jane", last: "Swan" }).type.not.toBeAssignableWith<{ middle: string }>();
   60 | 
-> 61 |     expect({ first: "Jane" }).type.not.toBeAssignableWith<{ first: string }>();
-     |                                        ^
+  61 |     expect({ first: "Jane" }).type.not.toBeAssignableWith<{ first: string }>();
+     |                                        ~~~~~~~~~~~~~~~~~~
   62 |   });
   63 | });
   64 | 

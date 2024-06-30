@@ -2,8 +2,8 @@ Error: The source type is 'string'.
 
    7 |   expect(returnsUndefined()).type.toBeUndefined();
    8 | 
->  9 |   expect(returnsString()).type.toBeUndefined();
-     |                                ^
+   9 |   expect(returnsString()).type.toBeUndefined();
+     |                                ~~~~~~~~~~~~~
   10 | });
   11 | 
   12 | test("is NOT undefined?", () => {
@@ -14,8 +14,8 @@ Error: The source type is 'undefined'.
 
   13 |   expect(returnsString()).type.not.toBeUndefined();
   14 | 
-> 15 |   expect(returnsUndefined()).type.not.toBeUndefined();
-     |                                       ^
+  15 |   expect(returnsUndefined()).type.not.toBeUndefined();
+     |                                       ~~~~~~~~~~~~~
   16 | });
   17 | 
 

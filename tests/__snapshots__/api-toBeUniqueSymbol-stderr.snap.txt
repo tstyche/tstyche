@@ -2,8 +2,8 @@ Error: The source type is 'void'.
 
    9 |   expect(returnsUniqueSymbol()).type.toBeUniqueSymbol();
   10 | 
-> 11 |   expect(returnsVoid()).type.toBeUniqueSymbol();
-     |                              ^
+  11 |   expect(returnsVoid()).type.toBeUniqueSymbol();
+     |                              ~~~~~~~~~~~~~~~~
   12 | });
   13 | 
   14 | test("is NOT unique symbol?", () => {
@@ -14,8 +14,8 @@ Error: The source type is 'unique symbol'.
 
   15 |   expect(returnsVoid()).type.not.toBeUniqueSymbol();
   16 | 
-> 17 |   expect(returnsUniqueSymbol()).type.not.toBeUniqueSymbol();
-     |                                          ^
+  17 |   expect(returnsUniqueSymbol()).type.not.toBeUniqueSymbol();
+     |                                          ~~~~~~~~~~~~~~~~
   18 | });
   19 | 
 

@@ -2,8 +2,8 @@ Error: The source type is 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {
-> 3 |   expect<string>().type.not.toBeString();
-    |                             ^
+  3 |   expect<string>().type.not.toBeString();
+    |                             ~~~~~~~~~~
   4 |   expect<string>().type.not.toBeString();
   5 | });
   6 | 

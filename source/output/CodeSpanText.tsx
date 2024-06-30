@@ -2,17 +2,57 @@ import type { DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
+interface CodeLineTextProps {
+  lineText: string;
+  gutterWidth: number;
+  lineNumberColor?: Color;
+  lineNumberText: string;
+}
+
+function CodeLineText({ lineText, gutterWidth, lineNumberColor = Color.Gray, lineNumberText }: CodeLineTextProps) {
+  return (
+    <Line>
+      <Text color={lineNumberColor}>{lineNumberText.padStart(gutterWidth)}</Text>
+      <Text color={Color.Gray}>{" | "}</Text>
+      {lineText}
+    </Line>
+  );
+}
+
+interface SquiggleLineTextProps {
+  gutterWidth: number;
+  indentWidth?: number;
+  squiggleWidth: number;
+}
+
+function SquiggleLineText({ gutterWidth, indentWidth = 0, squiggleWidth }: SquiggleLineTextProps) {
+  return (
+    <Line>
+      {" ".repeat(gutterWidth)}
+      <Text color={Color.Gray}>{" | "}</Text>
+      {" ".repeat(indentWidth)}
+      <Text color={Color.Red}>{"~".repeat(squiggleWidth === 0 ? 1 : squiggleWidth)}</Text>
+    </Line>
+  );
+}
+
+interface CodeSpanTextProps {
+  diagnosticOrigin: DiagnosticOrigin;
+}
+
+export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
   const lastLineInFile = diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(
     diagnosticOrigin.sourceFile.text.length,
   ).line;
 
-  const { character: markedCharacter, line: markedLine } = diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(
-    diagnosticOrigin.start,
-  );
-  const firstLine = Math.max(markedLine - 2, 0);
+  const { character: firstMarkedLineCharacter, line: firstMarkedLine } =
+    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
+  const { character: lastMarkedLineCharacter, line: lastMarkedLine } =
+    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
+
+  const firstLine = Math.max(firstMarkedLine - 2, 0);
   const lastLine = Math.min(firstLine + 5, lastLineInFile);
-  const lineNumberMaxWidth = String(lastLine + 1).length;
+  const gutterWidth = String(lastLine + 1).length + 2;
 
   const codeSpan: Array<ScribblerJsx.Element> = [];
 
@@ -26,47 +66,51 @@ export function CodeSpanText(diagnosticOrigin: DiagnosticOrigin) {
     const lineNumberText = String(index + 1);
     const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
-    if (index === markedLine) {
+    if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeSpan.push(
-        <Line>
-          <Text color={Color.Red}>{">"}</Text>
-          <Text> </Text>
-          {lineNumberText.padStart(lineNumberMaxWidth)}
-          <Text> </Text>
-          <Text color={Color.Gray}>|</Text> {lineText}
-        </Line>,
-        <Line>
-          {" ".repeat(lineNumberMaxWidth + 3)}
-          <Text color={Color.Gray}>|</Text>
-          {" ".repeat(markedCharacter + 1)}
-          <Text color={Color.Red}>{"^"}</Text>
-        </Line>,
+        <CodeLineText
+          gutterWidth={gutterWidth}
+          lineNumberColor={Color.Red}
+          lineNumberText={lineNumberText}
+          lineText={lineText}
+        />,
       );
+
+      if (index === firstMarkedLine) {
+        const squiggleLength =
+          index === lastMarkedLine
+            ? lastMarkedLineCharacter - firstMarkedLineCharacter
+            : lineText.length - firstMarkedLineCharacter;
+
+        codeSpan.push(
+          <SquiggleLineText
+            gutterWidth={gutterWidth}
+            indentWidth={firstMarkedLineCharacter}
+            squiggleWidth={squiggleLength}
+          />,
+        );
+      } else if (index === lastMarkedLine) {
+        codeSpan.push(<SquiggleLineText gutterWidth={gutterWidth} squiggleWidth={lastMarkedLineCharacter} />);
+      } else {
+        codeSpan.push(<SquiggleLineText gutterWidth={gutterWidth} squiggleWidth={lineText.length} />);
+      }
     } else {
-      codeSpan.push(
-        <Line>
-          {" ".repeat(2)}
-          <Text color={Color.Gray}>
-            {lineNumberText.padStart(lineNumberMaxWidth)} | {lineText || ""}
-          </Text>
-        </Line>,
-      );
+      codeSpan.push(<CodeLineText gutterWidth={gutterWidth} lineNumberText={lineNumberText} lineText={lineText} />);
     }
   }
 
-  const breadcrumbs = diagnosticOrigin.breadcrumbs?.flatMap((ancestor) => [
+  const breadcrumbs = diagnosticOrigin.breadcrumbs?.map((ancestor) => [
     <Text color={Color.Gray}>{" ❭ "}</Text>,
     <Text>{ancestor}</Text>,
   ]);
 
   const location = (
     <Line>
-      {" ".repeat(lineNumberMaxWidth + 5)}
-      <Text color={Color.Gray}>at</Text>
-      <Text> </Text>
+      {" ".repeat(gutterWidth + 2)}
+      <Text color={Color.Gray}>{" at "}</Text>
       <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
       <Text color={Color.Gray}>
-        :{String(markedLine + 1)}:{String(markedCharacter + 1)}
+        :{String(firstMarkedLine + 1)}:{String(firstMarkedLineCharacter + 1)}
       </Text>
       {breadcrumbs}
     </Line>

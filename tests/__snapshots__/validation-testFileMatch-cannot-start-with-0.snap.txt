@@ -4,8 +4,8 @@ The test files are only collected within the 'rootPath' directory.
 
   1 | {
   2 |   "testFileMatch": [
-> 3 |     "/feature"
-    |     ^
+  3 |     "/feature"
+    |     ~~~~~~~~~~
   4 |   ]
   5 | }
 

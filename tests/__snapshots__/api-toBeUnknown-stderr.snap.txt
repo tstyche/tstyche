@@ -2,8 +2,8 @@ Error: The source type is 'string'.
 
    7 |   expect(returnsUnknown()).type.toBeUnknown();
    8 | 
->  9 |   expect(returnsString()).type.toBeUnknown();
-     |                                ^
+   9 |   expect(returnsString()).type.toBeUnknown();
+     |                                ~~~~~~~~~~~
   10 | });
   11 | 
   12 | test("is NOT unknown?", () => {
@@ -14,8 +14,8 @@ Error: The source type is 'unknown'.
 
   13 |   expect(returnsString()).type.not.toBeUnknown();
   14 | 
-> 15 |   expect(returnsUnknown()).type.not.toBeUnknown();
-     |                                     ^
+  15 |   expect(returnsUnknown()).type.not.toBeUnknown();
+     |                                     ~~~~~~~~~~~
   16 | });
   17 | 
 

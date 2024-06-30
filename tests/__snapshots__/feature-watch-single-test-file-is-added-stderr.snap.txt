@@ -2,8 +2,8 @@ Error: The source type is 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {
-> 3 |   expect<number>().type.toBeString();
-    |                         ^
+  3 |   expect<number>().type.toBeString();
+    |                         ~~~~~~~~~~
   4 | });
   5 | 
 
