@@ -148,6 +148,7 @@ export class TestTreeWorker {
     if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
       if (runMode & RunMode.Fail) {
         const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
+        // TODO consider adding '.failNode' property to 'assertion'
         const origin = DiagnosticOrigin.fromNode((assertion.node.expression as ts.PropertyAccessExpression).name);
 
         EventEmitter.dispatch([

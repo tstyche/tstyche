@@ -2,7 +2,7 @@ Error: String literal with double quotes expected.
 
   1 | {
   2 |   'failFast': true
-    |   ~~~~~~~~~~~~~~~~
+    |   ~~~~~~~~~~
   3 | }
 
       at ./tstyche.config.json:2:3

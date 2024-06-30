@@ -75,7 +75,7 @@ export class ConfigFileOptionsWorker {
     for (const property of rootExpression.properties) {
       if (this.#compiler.isPropertyAssignment(property)) {
         if (!this.#isDoubleQuotedString(property.name, sourceFile)) {
-          const origin = DiagnosticOrigin.fromJsonNode(property, sourceFile, this.#skipTrivia);
+          const origin = DiagnosticOrigin.fromJsonNode(property.name, sourceFile, this.#skipTrivia);
 
           this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
           continue;
