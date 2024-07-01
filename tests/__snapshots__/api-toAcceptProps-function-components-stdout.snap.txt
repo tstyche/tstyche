@@ -1,0 +1,21 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/function-components.tst.tsx
+  when target is a function component
+    × accepts props of the given type
+    × property is required in props type
+    × property does not exist in props type
+    × property type is not assignable to prop type
+  when target is a type
+    × accepts props of the given type
+    × property is required in props type
+    × property does not exist in props type
+    × property type is not assignable to prop type
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 68 failed, 68 passed, 136 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'function-components'.
