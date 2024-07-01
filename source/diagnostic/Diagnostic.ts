@@ -5,8 +5,8 @@ import { DiagnosticCategory } from "./enums.js";
 export class Diagnostic {
   category: DiagnosticCategory;
   code: string | undefined;
-  related: Array<Diagnostic> | undefined;
   origin: DiagnosticOrigin | undefined;
+  related: Array<Diagnostic> | undefined;
   text: string | Array<string>;
 
   constructor(text: string | Array<string>, category: DiagnosticCategory, origin?: DiagnosticOrigin) {
@@ -15,7 +15,11 @@ export class Diagnostic {
     this.origin = origin;
   }
 
-  add(options: { code?: string; origin?: DiagnosticOrigin; related?: Array<Diagnostic> }): this {
+  add(options: {
+    code?: string | undefined;
+    origin?: DiagnosticOrigin | undefined;
+    related?: Array<Diagnostic> | undefined;
+  }): this {
     if (options.code != null) {
       this.code = options.code;
     }
@@ -46,7 +50,13 @@ export class Diagnostic {
         origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
       }
 
-      return new Diagnostic(text, category, origin).add({ code });
+      let related: Array<Diagnostic> | undefined;
+
+      if (diagnostic.relatedInformation != null) {
+        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation, compiler);
+      }
+
+      return new Diagnostic(text, category, origin).add({ code, related });
     });
   }
 
