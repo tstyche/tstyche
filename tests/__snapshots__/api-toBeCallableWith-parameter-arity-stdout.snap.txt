@@ -1,0 +1,33 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/parameter-arity.test.ts
+  when target is a value
+    × expression can be called without arguments
+    × expression does not take arguments
+    × expression can be called with provided argument
+    × expression requires 1 argument
+    × expression takes only 1 argument
+    × type expression can be called without arguments
+    × type expression does not take arguments
+    × type expression can be called with provided argument
+    × type expression requires 1 argument
+    × type expression takes only 1 argument
+  when target is a type
+    × expression can be called without arguments
+    × expression does not take arguments
+    × expression can be called with provided argument
+    × expression requires 1 argument
+    × expression takes only 1 argument
+    × type expression can be called without arguments
+    × type expression does not take arguments
+    × type expression can be called with provided argument
+    × type expression requires 1 argument
+    × type expression takes only 1 argument
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      20 failed, 20 total
+Assertions: 20 failed, 20 passed, 40 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'parameter-arity'.

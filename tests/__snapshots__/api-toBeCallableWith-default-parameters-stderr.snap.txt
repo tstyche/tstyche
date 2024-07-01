@@ -1,0 +1,912 @@
+Error: Expression can be called without arguments.
+
+  12 |   test("expression can be called without arguments", () => {
+  13 |     expect(first).type.toBeCallableWith();
+> 14 |     expect(first).type.not.toBeCallableWith();
+     |                            ^
+  15 |   });
+  16 | 
+  17 |   test("expression requires at least 1 argument", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:14:28 ❭ when target is a value ❭ expression can be called without arguments
+
+Error: Expression requires at least 1 argument.
+
+  17 |   test("expression requires at least 1 argument", () => {
+  18 |     expect(second).type.not.toBeCallableWith();
+> 19 |     expect(second).type.toBeCallableWith();
+     |                         ^
+  20 |   });
+  21 | 
+  22 |   test("expression can be called with provided argument", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:19:25 ❭ when target is a value ❭ expression requires at least 1 argument
+
+Error: Expression can be called with provided argument.
+
+  22 |   test("expression can be called with provided argument", () => {
+  23 |     expect(first).type.toBeCallableWith(undefined);
+> 24 |     expect(first).type.not.toBeCallableWith(undefined);
+     |                            ^
+  25 | 
+  26 |     expect(first).type.toBeCallableWith("one");
+  27 |     expect(first).type.not.toBeCallableWith("one");
+
+       at ./__typetests__/default-parameters.tst.ts:24:28 ❭ when target is a value ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided argument.
+
+  25 | 
+  26 |     expect(first).type.toBeCallableWith("one");
+> 27 |     expect(first).type.not.toBeCallableWith("one");
+     |                            ^
+  28 | 
+  29 |     expect(second).type.toBeCallableWith("one");
+  30 |     expect(second).type.not.toBeCallableWith("one");
+
+       at ./__typetests__/default-parameters.tst.ts:27:28 ❭ when target is a value ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided argument.
+
+  28 | 
+  29 |     expect(second).type.toBeCallableWith("one");
+> 30 |     expect(second).type.not.toBeCallableWith("one");
+     |                             ^
+  31 |   });
+  32 | 
+  33 |   test("expression can be called with provided arguments", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:30:29 ❭ when target is a value ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided arguments.
+
+  33 |   test("expression can be called with provided arguments", () => {
+  34 |     expect(second).type.toBeCallableWith("one", undefined);
+> 35 |     expect(second).type.not.toBeCallableWith("one", undefined);
+     |                             ^
+  36 | 
+  37 |     expect(second).type.toBeCallableWith("one", 123);
+  38 |     expect(second).type.not.toBeCallableWith("one", 123);
+
+       at ./__typetests__/default-parameters.tst.ts:35:29 ❭ when target is a value ❭ expression can be called with provided arguments
+
+Error: Expression can be called with provided arguments.
+
+  36 | 
+  37 |     expect(second).type.toBeCallableWith("one", 123);
+> 38 |     expect(second).type.not.toBeCallableWith("one", 123);
+     |                             ^
+  39 |   });
+  40 | 
+  41 |   test("expression takes at most 1 argument", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:38:29 ❭ when target is a value ❭ expression can be called with provided arguments
+
+Error: Expression takes at most 1 argument.
+
+  41 |   test("expression takes at most 1 argument", () => {
+  42 |     expect(first).type.not.toBeCallableWith("one", "two");
+> 43 |     expect(first).type.toBeCallableWith("one", "two");
+     |                        ^
+  44 |   });
+  45 | 
+  46 |   test("expression takes at most 2 arguments", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:43:24 ❭ when target is a value ❭ expression takes at most 1 argument
+
+Error: Expression takes at most 2 arguments.
+
+  46 |   test("expression takes at most 2 arguments", () => {
+  47 |     expect(second).type.not.toBeCallableWith("one", 123, true);
+> 48 |     expect(second).type.toBeCallableWith("one", 123, true);
+     |                         ^
+  49 |   });
+  50 | 
+  51 |   test("type expression can be called without arguments", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:48:25 ❭ when target is a value ❭ expression takes at most 2 arguments
+
+Error: Type expression can be called without arguments.
+
+  51 |   test("type expression can be called without arguments", () => {
+  52 |     expect<(a?: string) => void>().type.toBeCallableWith();
+> 53 |     expect<(a?: string) => void>().type.not.toBeCallableWith();
+     |                                             ^
+  54 |   });
+  55 | 
+  56 |   test("type expression requires at least 1 argument", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:53:45 ❭ when target is a value ❭ type expression can be called without arguments
+
+Error: Type expression requires at least 1 argument.
+
+  56 |   test("type expression requires at least 1 argument", () => {
+  57 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith();
+> 58 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith();
+     |                                                    ^
+  59 |   });
+  60 | 
+  61 |   test("type expression can be called with provided argument", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:58:52 ❭ when target is a value ❭ type expression requires at least 1 argument
+
+Error: Type expression can be called with provided argument.
+
+  61 |   test("type expression can be called with provided argument", () => {
+  62 |     expect<(a?: string) => void>().type.toBeCallableWith(undefined);
+> 63 |     expect<(a?: string) => void>().type.not.toBeCallableWith(undefined);
+     |                                             ^
+  64 | 
+  65 |     expect<(a?: string) => void>().type.toBeCallableWith("one");
+  66 |     expect<(a?: string) => void>().type.not.toBeCallableWith("one");
+
+       at ./__typetests__/default-parameters.tst.ts:63:45 ❭ when target is a value ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided argument.
+
+  64 | 
+  65 |     expect<(a?: string) => void>().type.toBeCallableWith("one");
+> 66 |     expect<(a?: string) => void>().type.not.toBeCallableWith("one");
+     |                                             ^
+  67 | 
+  68 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith("one");
+  69 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith("one");
+
+       at ./__typetests__/default-parameters.tst.ts:66:45 ❭ when target is a value ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided argument.
+
+  67 | 
+  68 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith("one");
+> 69 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith("one");
+     |                                                        ^
+  70 |   });
+  71 | 
+  72 |   test("expression can be called with provided arguments", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:69:56 ❭ when target is a value ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided arguments.
+
+  72 |   test("expression can be called with provided arguments", () => {
+  73 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith("one", undefined);
+> 74 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith("one", undefined);
+     |                                                        ^
+  75 | 
+  76 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith("one", 123);
+  77 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith("one", 123);
+
+       at ./__typetests__/default-parameters.tst.ts:74:56 ❭ when target is a value ❭ expression can be called with provided arguments
+
+Error: Type expression can be called with provided arguments.
+
+  75 | 
+  76 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith("one", 123);
+> 77 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith("one", 123);
+     |                                                        ^
+  78 |   });
+  79 | 
+  80 |   test("type expression takes at most 1 argument", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:77:56 ❭ when target is a value ❭ expression can be called with provided arguments
+
+Error: Type expression takes at most 1 argument.
+
+  80 |   test("type expression takes at most 1 argument", () => {
+  81 |     expect<(a?: string) => void>().type.not.toBeCallableWith("one", "two");
+> 82 |     expect<(a?: string) => void>().type.toBeCallableWith("one", "two");
+     |                                         ^
+  83 |   });
+  84 | 
+  85 |   test("expression takes at most 2 arguments", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:82:41 ❭ when target is a value ❭ type expression takes at most 1 argument
+
+Error: Type expression takes at most 2 arguments.
+
+  85 |   test("expression takes at most 2 arguments", () => {
+  86 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith("one", 123, true);
+> 87 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith("one", 123, true);
+     |                                                    ^
+  88 |   });
+  89 | });
+  90 | 
+
+       at ./__typetests__/default-parameters.tst.ts:87:52 ❭ when target is a value ❭ expression takes at most 2 arguments
+
+Error: Expression can be called without arguments.
+
+  92 |   test("expression can be called without arguments", () => {
+  93 |     expect(first).type.toBeCallableWith<[]>();
+> 94 |     expect(first).type.not.toBeCallableWith<[]>();
+     |                            ^
+  95 |   });
+  96 | 
+  97 |   test("expression requires at least 1 argument", () => {
+
+       at ./__typetests__/default-parameters.tst.ts:94:28 ❭ when target is a type ❭ expression can be called without arguments
+
+Error: Expression requires at least 1 argument.
+
+   97 |   test("expression requires at least 1 argument", () => {
+   98 |     expect(second).type.not.toBeCallableWith<[]>();
+>  99 |     expect(second).type.toBeCallableWith<[]>();
+      |                         ^
+  100 | 
+  101 |     expect(second).type.not.toBeCallableWith<[a?: "one"]>();
+  102 |     expect(second).type.toBeCallableWith<[a?: "one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:99:25 ❭ when target is a type ❭ expression requires at least 1 argument
+
+Error: Expression requires at least 1 argument.
+
+  100 | 
+  101 |     expect(second).type.not.toBeCallableWith<[a?: "one"]>();
+> 102 |     expect(second).type.toBeCallableWith<[a?: "one"]>();
+      |                         ^
+  103 | 
+  104 |     expect(second).type.not.toBeCallableWith<[a?: "one", b?: 123]>();
+  105 |     expect(second).type.toBeCallableWith<[a?: "one", b?: 123]>();
+
+        at ./__typetests__/default-parameters.tst.ts:102:25 ❭ when target is a type ❭ expression requires at least 1 argument
+
+Error: Expression requires at least 1 argument.
+
+  103 | 
+  104 |     expect(second).type.not.toBeCallableWith<[a?: "one", b?: 123]>();
+> 105 |     expect(second).type.toBeCallableWith<[a?: "one", b?: 123]>();
+      |                         ^
+  106 |   });
+  107 | 
+  108 |   test("expression can be called with provided argument", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:105:25 ❭ when target is a type ❭ expression requires at least 1 argument
+
+Error: Expression can be called with provided argument.
+
+  108 |   test("expression can be called with provided argument", () => {
+  109 |     expect(first).type.toBeCallableWith<[undefined]>();
+> 110 |     expect(first).type.not.toBeCallableWith<[undefined]>();
+      |                            ^
+  111 | 
+  112 |     expect(first).type.toBeCallableWith<["one"]>();
+  113 |     expect(first).type.not.toBeCallableWith<["one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:110:28 ❭ when target is a type ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided argument.
+
+  111 | 
+  112 |     expect(first).type.toBeCallableWith<["one"]>();
+> 113 |     expect(first).type.not.toBeCallableWith<["one"]>();
+      |                            ^
+  114 | 
+  115 |     expect(first).type.toBeCallableWith<[a: undefined]>();
+  116 |     expect(first).type.not.toBeCallableWith<[a: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:113:28 ❭ when target is a type ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided argument.
+
+  114 | 
+  115 |     expect(first).type.toBeCallableWith<[a: undefined]>();
+> 116 |     expect(first).type.not.toBeCallableWith<[a: undefined]>();
+      |                            ^
+  117 | 
+  118 |     expect(first).type.toBeCallableWith<[a?: "one"]>();
+  119 |     expect(first).type.not.toBeCallableWith<[a?: "one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:116:28 ❭ when target is a type ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided argument.
+
+  117 | 
+  118 |     expect(first).type.toBeCallableWith<[a?: "one"]>();
+> 119 |     expect(first).type.not.toBeCallableWith<[a?: "one"]>();
+      |                            ^
+  120 | 
+  121 |     expect(first).type.toBeCallableWith<[a: "one"]>();
+  122 |     expect(first).type.not.toBeCallableWith<[a: "one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:119:28 ❭ when target is a type ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided argument.
+
+  120 | 
+  121 |     expect(first).type.toBeCallableWith<[a: "one"]>();
+> 122 |     expect(first).type.not.toBeCallableWith<[a: "one"]>();
+      |                            ^
+  123 | 
+  124 |     expect(second).type.toBeCallableWith<["one"]>();
+  125 |     expect(second).type.not.toBeCallableWith<["one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:122:28 ❭ when target is a type ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided argument.
+
+  123 | 
+  124 |     expect(second).type.toBeCallableWith<["one"]>();
+> 125 |     expect(second).type.not.toBeCallableWith<["one"]>();
+      |                             ^
+  126 | 
+  127 |     expect(second).type.toBeCallableWith<[a: "one"]>();
+  128 |     expect(second).type.not.toBeCallableWith<[a: "one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:125:29 ❭ when target is a type ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided argument.
+
+  126 | 
+  127 |     expect(second).type.toBeCallableWith<[a: "one"]>();
+> 128 |     expect(second).type.not.toBeCallableWith<[a: "one"]>();
+      |                             ^
+  129 |   });
+  130 | 
+  131 |   test("expression can be called with provided arguments", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:128:29 ❭ when target is a type ❭ expression can be called with provided argument
+
+Error: Expression can be called with provided arguments.
+
+  131 |   test("expression can be called with provided arguments", () => {
+  132 |     expect(second).type.toBeCallableWith<["one", undefined]>();
+> 133 |     expect(second).type.not.toBeCallableWith<["one", undefined]>();
+      |                             ^
+  134 | 
+  135 |     expect(second).type.toBeCallableWith<["one", 123]>();
+  136 |     expect(second).type.not.toBeCallableWith<["one", 123]>();
+
+        at ./__typetests__/default-parameters.tst.ts:133:29 ❭ when target is a type ❭ expression can be called with provided arguments
+
+Error: Expression can be called with provided arguments.
+
+  134 | 
+  135 |     expect(second).type.toBeCallableWith<["one", 123]>();
+> 136 |     expect(second).type.not.toBeCallableWith<["one", 123]>();
+      |                             ^
+  137 | 
+  138 |     expect(second).type.toBeCallableWith<[a: "one", b: undefined]>();
+  139 |     expect(second).type.not.toBeCallableWith<[a: "one", b: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:136:29 ❭ when target is a type ❭ expression can be called with provided arguments
+
+Error: Expression can be called with provided arguments.
+
+  137 | 
+  138 |     expect(second).type.toBeCallableWith<[a: "one", b: undefined]>();
+> 139 |     expect(second).type.not.toBeCallableWith<[a: "one", b: undefined]>();
+      |                             ^
+  140 | 
+  141 |     expect(second).type.toBeCallableWith<[a: "one", b?: 123]>();
+  142 |     expect(second).type.not.toBeCallableWith<[a: "one", b?: 123]>();
+
+        at ./__typetests__/default-parameters.tst.ts:139:29 ❭ when target is a type ❭ expression can be called with provided arguments
+
+Error: Expression can be called with provided arguments.
+
+  140 | 
+  141 |     expect(second).type.toBeCallableWith<[a: "one", b?: 123]>();
+> 142 |     expect(second).type.not.toBeCallableWith<[a: "one", b?: 123]>();
+      |                             ^
+  143 | 
+  144 |     expect(second).type.toBeCallableWith<[a: "one", b: 123]>();
+  145 |     expect(second).type.not.toBeCallableWith<[a: "one", b: 123]>();
+
+        at ./__typetests__/default-parameters.tst.ts:142:29 ❭ when target is a type ❭ expression can be called with provided arguments
+
+Error: Expression can be called with provided arguments.
+
+  143 | 
+  144 |     expect(second).type.toBeCallableWith<[a: "one", b: 123]>();
+> 145 |     expect(second).type.not.toBeCallableWith<[a: "one", b: 123]>();
+      |                             ^
+  146 |   });
+  147 | 
+  148 |   test("expression takes at most 1 argument", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:145:29 ❭ when target is a type ❭ expression can be called with provided arguments
+
+Error: Expression takes at most 1 argument.
+
+  148 |   test("expression takes at most 1 argument", () => {
+  149 |     expect(first).type.not.toBeCallableWith<["one", undefined]>();
+> 150 |     expect(first).type.toBeCallableWith<["one", undefined]>();
+      |                        ^
+  151 | 
+  152 |     expect(first).type.not.toBeCallableWith<["one", "two"]>();
+  153 |     expect(first).type.toBeCallableWith<["one", "two"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:150:24 ❭ when target is a type ❭ expression takes at most 1 argument
+
+Error: Expression takes at most 1 argument.
+
+  151 | 
+  152 |     expect(first).type.not.toBeCallableWith<["one", "two"]>();
+> 153 |     expect(first).type.toBeCallableWith<["one", "two"]>();
+      |                        ^
+  154 | 
+  155 |     expect(first).type.not.toBeCallableWith<[a: "one", b: "two"]>();
+  156 |     expect(first).type.toBeCallableWith<[a: "one", b: "two"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:153:24 ❭ when target is a type ❭ expression takes at most 1 argument
+
+Error: Expression takes at most 1 argument.
+
+  154 | 
+  155 |     expect(first).type.not.toBeCallableWith<[a: "one", b: "two"]>();
+> 156 |     expect(first).type.toBeCallableWith<[a: "one", b: "two"]>();
+      |                        ^
+  157 | 
+  158 |     expect(first).type.not.toBeCallableWith<[a: "one", b: undefined]>();
+  159 |     expect(first).type.toBeCallableWith<[a: "one", b: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:156:24 ❭ when target is a type ❭ expression takes at most 1 argument
+
+Error: Expression takes at most 1 argument.
+
+  157 | 
+  158 |     expect(first).type.not.toBeCallableWith<[a: "one", b: undefined]>();
+> 159 |     expect(first).type.toBeCallableWith<[a: "one", b: undefined]>();
+      |                        ^
+  160 | 
+  161 |     expect(first).type.not.toBeCallableWith<[a: "one", b?: "two"]>();
+  162 |     expect(first).type.toBeCallableWith<[a: "one", b?: "two"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:159:24 ❭ when target is a type ❭ expression takes at most 1 argument
+
+Error: Expression takes at most 1 argument.
+
+  160 | 
+  161 |     expect(first).type.not.toBeCallableWith<[a: "one", b?: "two"]>();
+> 162 |     expect(first).type.toBeCallableWith<[a: "one", b?: "two"]>();
+      |                        ^
+  163 |   });
+  164 | 
+  165 |   test("expression takes at most 2 arguments", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:162:24 ❭ when target is a type ❭ expression takes at most 1 argument
+
+Error: Expression takes at most 2 arguments.
+
+  165 |   test("expression takes at most 2 arguments", () => {
+  166 |     expect(second).type.not.toBeCallableWith<["one", 123, true]>();
+> 167 |     expect(second).type.toBeCallableWith<["one", 123, true]>();
+      |                         ^
+  168 | 
+  169 |     expect(second).type.not.toBeCallableWith<[a: "one", b: 123, c: true]>();
+  170 |     expect(second).type.toBeCallableWith<[a: "one", b: 123, c: true]>();
+
+        at ./__typetests__/default-parameters.tst.ts:167:25 ❭ when target is a type ❭ expression takes at most 2 arguments
+
+Error: Expression takes at most 2 arguments.
+
+  168 | 
+  169 |     expect(second).type.not.toBeCallableWith<[a: "one", b: 123, c: true]>();
+> 170 |     expect(second).type.toBeCallableWith<[a: "one", b: 123, c: true]>();
+      |                         ^
+  171 | 
+  172 |     expect(second).type.not.toBeCallableWith<[a: "one", b: 123, c: undefined]>();
+  173 |     expect(second).type.toBeCallableWith<[a: "one", b: 123, c: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:170:25 ❭ when target is a type ❭ expression takes at most 2 arguments
+
+Error: Expression takes at most 2 arguments.
+
+  171 | 
+  172 |     expect(second).type.not.toBeCallableWith<[a: "one", b: 123, c: undefined]>();
+> 173 |     expect(second).type.toBeCallableWith<[a: "one", b: 123, c: undefined]>();
+      |                         ^
+  174 | 
+  175 |     expect(second).type.not.toBeCallableWith<[a: "one", b: 123, c?: true]>();
+  176 |     expect(second).type.toBeCallableWith<[a: "one", b: 123, c?: true]>();
+
+        at ./__typetests__/default-parameters.tst.ts:173:25 ❭ when target is a type ❭ expression takes at most 2 arguments
+
+Error: Expression takes at most 2 arguments.
+
+  174 | 
+  175 |     expect(second).type.not.toBeCallableWith<[a: "one", b: 123, c?: true]>();
+> 176 |     expect(second).type.toBeCallableWith<[a: "one", b: 123, c?: true]>();
+      |                         ^
+  177 | 
+  178 |     expect(second).type.not.toBeCallableWith<[a: "one", b: undefined, c: undefined]>();
+  179 |     expect(second).type.toBeCallableWith<[a: "one", b: undefined, c: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:176:25 ❭ when target is a type ❭ expression takes at most 2 arguments
+
+Error: Expression takes at most 2 arguments.
+
+  177 | 
+  178 |     expect(second).type.not.toBeCallableWith<[a: "one", b: undefined, c: undefined]>();
+> 179 |     expect(second).type.toBeCallableWith<[a: "one", b: undefined, c: undefined]>();
+      |                         ^
+  180 | 
+  181 |     expect(second).type.not.toBeCallableWith<[a: "one", b?: 123, c?: true]>();
+  182 |     expect(second).type.toBeCallableWith<[a: "one", b?: 123, c?: true]>();
+
+        at ./__typetests__/default-parameters.tst.ts:179:25 ❭ when target is a type ❭ expression takes at most 2 arguments
+
+Error: Expression takes at most 2 arguments.
+
+  180 | 
+  181 |     expect(second).type.not.toBeCallableWith<[a: "one", b?: 123, c?: true]>();
+> 182 |     expect(second).type.toBeCallableWith<[a: "one", b?: 123, c?: true]>();
+      |                         ^
+  183 | 
+  184 |     expect(second).type.not.toBeCallableWith<[a: undefined, b: undefined, c: undefined]>();
+  185 |     expect(second).type.toBeCallableWith<[a: undefined, b: undefined, c: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:182:25 ❭ when target is a type ❭ expression takes at most 2 arguments
+
+Error: Expression takes at most 2 arguments.
+
+  183 | 
+  184 |     expect(second).type.not.toBeCallableWith<[a: undefined, b: undefined, c: undefined]>();
+> 185 |     expect(second).type.toBeCallableWith<[a: undefined, b: undefined, c: undefined]>();
+      |                         ^
+  186 | 
+  187 |     expect(second).type.not.toBeCallableWith<[a?: "one", b?: 123, c?: true]>();
+  188 |     expect(second).type.toBeCallableWith<[a?: "one", b?: 123, c?: true]>();
+
+        at ./__typetests__/default-parameters.tst.ts:185:25 ❭ when target is a type ❭ expression takes at most 2 arguments
+
+Error: Expression takes at most 2 arguments.
+
+  186 | 
+  187 |     expect(second).type.not.toBeCallableWith<[a?: "one", b?: 123, c?: true]>();
+> 188 |     expect(second).type.toBeCallableWith<[a?: "one", b?: 123, c?: true]>();
+      |                         ^
+  189 |   });
+  190 | 
+  191 |   test("type expression can be called without arguments", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:188:25 ❭ when target is a type ❭ expression takes at most 2 arguments
+
+Error: Type expression can be called without arguments.
+
+  191 |   test("type expression can be called without arguments", () => {
+  192 |     expect<(a?: string) => void>().type.toBeCallableWith<[]>();
+> 193 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[]>();
+      |                                             ^
+  194 |   });
+  195 | 
+  196 |   test("type expression requires at least 1 argument", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:193:45 ❭ when target is a type ❭ type expression can be called without arguments
+
+Error: Type expression requires at least 1 argument.
+
+  196 |   test("type expression requires at least 1 argument", () => {
+  197 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[]>();
+> 198 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[]>();
+      |                                                    ^
+  199 | 
+  200 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a?: "one"]>();
+  201 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a?: "one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:198:52 ❭ when target is a type ❭ type expression requires at least 1 argument
+
+Error: Type expression requires at least 1 argument.
+
+  199 | 
+  200 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a?: "one"]>();
+> 201 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a?: "one"]>();
+      |                                                    ^
+  202 | 
+  203 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a?: "one", b?: 123]>();
+  204 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a?: "one", b?: 123]>();
+
+        at ./__typetests__/default-parameters.tst.ts:201:52 ❭ when target is a type ❭ type expression requires at least 1 argument
+
+Error: Type expression requires at least 1 argument.
+
+  202 | 
+  203 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a?: "one", b?: 123]>();
+> 204 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a?: "one", b?: 123]>();
+      |                                                    ^
+  205 |   });
+  206 | 
+  207 |   test("type expression can be called with provided argument", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:204:52 ❭ when target is a type ❭ type expression requires at least 1 argument
+
+Error: Type expression can be called with provided argument.
+
+  207 |   test("type expression can be called with provided argument", () => {
+  208 |     expect<(a?: string) => void>().type.toBeCallableWith<[undefined]>();
+> 209 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[undefined]>();
+      |                                             ^
+  210 | 
+  211 |     expect<(a?: string) => void>().type.toBeCallableWith<["one"]>();
+  212 |     expect<(a?: string) => void>().type.not.toBeCallableWith<["one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:209:45 ❭ when target is a type ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided argument.
+
+  210 | 
+  211 |     expect<(a?: string) => void>().type.toBeCallableWith<["one"]>();
+> 212 |     expect<(a?: string) => void>().type.not.toBeCallableWith<["one"]>();
+      |                                             ^
+  213 | 
+  214 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: undefined]>();
+  215 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:212:45 ❭ when target is a type ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided argument.
+
+  213 | 
+  214 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: undefined]>();
+> 215 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: undefined]>();
+      |                                             ^
+  216 | 
+  217 |     expect<(a?: string) => void>().type.toBeCallableWith<[a?: "one"]>();
+  218 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a?: "one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:215:45 ❭ when target is a type ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided argument.
+
+  216 | 
+  217 |     expect<(a?: string) => void>().type.toBeCallableWith<[a?: "one"]>();
+> 218 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a?: "one"]>();
+      |                                             ^
+  219 | 
+  220 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: "one"]>();
+  221 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: "one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:218:45 ❭ when target is a type ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided argument.
+
+  219 | 
+  220 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: "one"]>();
+> 221 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: "one"]>();
+      |                                             ^
+  222 | 
+  223 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<["one"]>();
+  224 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<["one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:221:45 ❭ when target is a type ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided argument.
+
+  222 | 
+  223 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<["one"]>();
+> 224 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<["one"]>();
+      |                                                        ^
+  225 | 
+  226 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one"]>();
+  227 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:224:56 ❭ when target is a type ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided argument.
+
+  225 | 
+  226 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one"]>();
+> 227 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one"]>();
+      |                                                        ^
+  228 |   });
+  229 | 
+  230 |   test("type expression can be called with provided arguments", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:227:56 ❭ when target is a type ❭ type expression can be called with provided argument
+
+Error: Type expression can be called with provided arguments.
+
+  230 |   test("type expression can be called with provided arguments", () => {
+  231 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<["one", undefined]>();
+> 232 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<["one", undefined]>();
+      |                                                        ^
+  233 | 
+  234 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<["one", 123]>();
+  235 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<["one", 123]>();
+
+        at ./__typetests__/default-parameters.tst.ts:232:56 ❭ when target is a type ❭ type expression can be called with provided arguments
+
+Error: Type expression can be called with provided arguments.
+
+  233 | 
+  234 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<["one", 123]>();
+> 235 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<["one", 123]>();
+      |                                                        ^
+  236 | 
+  237 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: undefined]>();
+  238 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:235:56 ❭ when target is a type ❭ type expression can be called with provided arguments
+
+Error: Type expression can be called with provided arguments.
+
+  236 | 
+  237 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: undefined]>();
+> 238 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: undefined]>();
+      |                                                        ^
+  239 | 
+  240 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b?: 123]>();
+  241 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b?: 123]>();
+
+        at ./__typetests__/default-parameters.tst.ts:238:56 ❭ when target is a type ❭ type expression can be called with provided arguments
+
+Error: Type expression can be called with provided arguments.
+
+  239 | 
+  240 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b?: 123]>();
+> 241 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b?: 123]>();
+      |                                                        ^
+  242 | 
+  243 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: 123]>();
+  244 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: 123]>();
+
+        at ./__typetests__/default-parameters.tst.ts:241:56 ❭ when target is a type ❭ type expression can be called with provided arguments
+
+Error: Type expression can be called with provided arguments.
+
+  242 | 
+  243 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: 123]>();
+> 244 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: 123]>();
+      |                                                        ^
+  245 |   });
+  246 | 
+  247 |   test("type expression takes at most 1 argument", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:244:56 ❭ when target is a type ❭ type expression can be called with provided arguments
+
+Error: Type expression takes at most 1 argument.
+
+  247 |   test("type expression takes at most 1 argument", () => {
+  248 |     expect<(a?: string) => void>().type.not.toBeCallableWith<["one", undefined]>();
+> 249 |     expect<(a?: string) => void>().type.toBeCallableWith<["one", undefined]>();
+      |                                         ^
+  250 | 
+  251 |     expect<(a?: string) => void>().type.not.toBeCallableWith<["one", "two"]>();
+  252 |     expect<(a?: string) => void>().type.toBeCallableWith<["one", "two"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:249:41 ❭ when target is a type ❭ type expression takes at most 1 argument
+
+Error: Type expression takes at most 1 argument.
+
+  250 | 
+  251 |     expect<(a?: string) => void>().type.not.toBeCallableWith<["one", "two"]>();
+> 252 |     expect<(a?: string) => void>().type.toBeCallableWith<["one", "two"]>();
+      |                                         ^
+  253 | 
+  254 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: "one", b: "two"]>();
+  255 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: "one", b: "two"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:252:41 ❭ when target is a type ❭ type expression takes at most 1 argument
+
+Error: Type expression takes at most 1 argument.
+
+  253 | 
+  254 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: "one", b: "two"]>();
+> 255 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: "one", b: "two"]>();
+      |                                         ^
+  256 | 
+  257 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: "one", b: undefined]>();
+  258 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: "one", b: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:255:41 ❭ when target is a type ❭ type expression takes at most 1 argument
+
+Error: Type expression takes at most 1 argument.
+
+  256 | 
+  257 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: "one", b: undefined]>();
+> 258 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: "one", b: undefined]>();
+      |                                         ^
+  259 | 
+  260 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: "one", b?: "two"]>();
+  261 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: "one", b?: "two"]>();
+
+        at ./__typetests__/default-parameters.tst.ts:258:41 ❭ when target is a type ❭ type expression takes at most 1 argument
+
+Error: Type expression takes at most 1 argument.
+
+  259 | 
+  260 |     expect<(a?: string) => void>().type.not.toBeCallableWith<[a: "one", b?: "two"]>();
+> 261 |     expect<(a?: string) => void>().type.toBeCallableWith<[a: "one", b?: "two"]>();
+      |                                         ^
+  262 |   });
+  263 | 
+  264 |   test("type expression takes at most 2 arguments", () => {
+
+        at ./__typetests__/default-parameters.tst.ts:261:41 ❭ when target is a type ❭ type expression takes at most 1 argument
+
+Error: Type expression takes at most 2 arguments.
+
+  264 |   test("type expression takes at most 2 arguments", () => {
+  265 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<["one", 123, true]>();
+> 266 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<["one", 123, true]>();
+      |                                                    ^
+  267 | 
+  268 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: 123, c: true]>();
+  269 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: 123, c: true]>();
+
+        at ./__typetests__/default-parameters.tst.ts:266:52 ❭ when target is a type ❭ type expression takes at most 2 arguments
+
+Error: Type expression takes at most 2 arguments.
+
+  267 | 
+  268 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: 123, c: true]>();
+> 269 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: 123, c: true]>();
+      |                                                    ^
+  270 | 
+  271 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: 123, c: undefined]>();
+  272 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: 123, c: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:269:52 ❭ when target is a type ❭ type expression takes at most 2 arguments
+
+Error: Type expression takes at most 2 arguments.
+
+  270 | 
+  271 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: 123, c: undefined]>();
+> 272 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: 123, c: undefined]>();
+      |                                                    ^
+  273 | 
+  274 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: 123, c?: true]>();
+  275 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: 123, c?: true]>();
+
+        at ./__typetests__/default-parameters.tst.ts:272:52 ❭ when target is a type ❭ type expression takes at most 2 arguments
+
+Error: Type expression takes at most 2 arguments.
+
+  273 | 
+  274 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: 123, c?: true]>();
+> 275 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: 123, c?: true]>();
+      |                                                    ^
+  276 | 
+  277 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: undefined, c: undefined]>();
+  278 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: undefined, c: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:275:52 ❭ when target is a type ❭ type expression takes at most 2 arguments
+
+Error: Type expression takes at most 2 arguments.
+
+  276 | 
+  277 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b: undefined, c: undefined]>();
+> 278 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b: undefined, c: undefined]>();
+      |                                                    ^
+  279 | 
+  280 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b?: 123, c?: true]>();
+  281 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b?: 123, c?: true]>();
+
+        at ./__typetests__/default-parameters.tst.ts:278:52 ❭ when target is a type ❭ type expression takes at most 2 arguments
+
+Error: Type expression takes at most 2 arguments.
+
+  279 | 
+  280 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: "one", b?: 123, c?: true]>();
+> 281 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: "one", b?: 123, c?: true]>();
+      |                                                    ^
+  282 | 
+  283 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: undefined, b: undefined, c: undefined]>();
+  284 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: undefined, b: undefined, c: undefined]>();
+
+        at ./__typetests__/default-parameters.tst.ts:281:52 ❭ when target is a type ❭ type expression takes at most 2 arguments
+
+Error: Type expression takes at most 2 arguments.
+
+  282 | 
+  283 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a: undefined, b: undefined, c: undefined]>();
+> 284 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a: undefined, b: undefined, c: undefined]>();
+      |                                                    ^
+  285 | 
+  286 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a?: "one", b?: 123, c?: true]>();
+  287 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a?: "one", b?: 123, c?: true]>();
+
+        at ./__typetests__/default-parameters.tst.ts:284:52 ❭ when target is a type ❭ type expression takes at most 2 arguments
+
+Error: Type expression takes at most 2 arguments.
+
+  285 | 
+  286 |     expect<(a: string, b?: number) => void>().type.not.toBeCallableWith<[a?: "one", b?: 123, c?: true]>();
+> 287 |     expect<(a: string, b?: number) => void>().type.toBeCallableWith<[a?: "one", b?: 123, c?: true]>();
+      |                                                    ^
+  288 |   });
+  289 | });
+  290 | 
+
+        at ./__typetests__/default-parameters.tst.ts:287:52 ❭ when target is a type ❭ type expression takes at most 2 arguments
+
