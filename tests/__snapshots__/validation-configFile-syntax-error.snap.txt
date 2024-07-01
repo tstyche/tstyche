@@ -7,3 +7,12 @@ Error: '}' expected. ts(1005)
 
       at ./tstyche.config.json:3:1
 
+    The parser expected to find a '}' to match the '{' token here. ts(1007)
+
+      1 | {
+        | ~
+      2 |   'failFast': true
+      3 | 
+
+          at ./tstyche.config.json:1:1
+
