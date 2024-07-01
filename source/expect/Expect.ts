@@ -81,7 +81,14 @@ export class Expect {
     switch (matcherNameText) {
       case "toBeAssignable":
       case "toEqual": {
-        this.#onDeprecatedMatcher(matcherNameText, assertion);
+        const text = [
+          `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
+          "To learn more, visit https://tstyche.org/releases/tstyche-2",
+        ];
+        const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+
+        EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
+
         break;
       }
 
@@ -218,21 +225,20 @@ export class Expect {
       }
 
       default: {
-        this.#onNotSupportedMatcherName(assertion, expectResult);
+        const text = `The '.${matcherNameText}()' matcher is not supported.`;
+        const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-        return;
+        this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
       }
     }
+
+    return;
   }
 
-  #onDeprecatedMatcher(matcherNameText: string, assertion: Assertion) {
-    const text = [
-      `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
-      "To learn more, visit https://tstyche.org/releases/tstyche-2",
-    ];
-    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+  #onDiagnostic(this: void, diagnostic: Diagnostic | Array<Diagnostic>, expectResult: ExpectResult) {
+    const diagnostics = Array.isArray(diagnostic) ? diagnostic : [diagnostic];
 
-    EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
+    EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
   }
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
@@ -241,32 +247,14 @@ export class Expect {
     const text = `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedTypeText}'.`;
     const origin = DiagnosticOrigin.fromNode(node);
 
-    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onKeyArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
+    const text = "An argument for 'key' must be provided.";
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    EventEmitter.dispatch([
-      "expect:error",
-      {
-        diagnostics: [Diagnostic.error("An argument for 'key' must be provided.", origin)],
-        result: expectResult,
-      },
-    ]);
-  }
-
-  #onNotSupportedMatcherName(assertion: Assertion, expectResult: ExpectResult) {
-    const matcherNameText = assertion.matcherName.getText();
-    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
-
-    EventEmitter.dispatch([
-      "expect:error",
-      {
-        diagnostics: [Diagnostic.error(`The '.${matcherNameText}()' matcher is not supported.`, origin)],
-        result: expectResult,
-      },
-    ]);
+    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
@@ -276,35 +264,21 @@ export class Expect {
     const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
     const origin = DiagnosticOrigin.fromNode(node);
 
-    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
+    const text = "An argument for 'source' or type argument for 'Source' must be provided.";
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
-    EventEmitter.dispatch([
-      "expect:error",
-      {
-        diagnostics: [
-          Diagnostic.error("An argument for 'source' or type argument for 'Source' must be provided.", origin),
-        ],
-        result: expectResult,
-      },
-    ]);
+    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
+    const text = "An argument for 'target' or type argument for 'Target' must be provided.";
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    EventEmitter.dispatch([
-      "expect:error",
-      {
-        diagnostics: [
-          Diagnostic.error("An argument for 'target' or type argument for 'Target' must be provided.", origin),
-        ],
-        result: expectResult,
-      },
-    ]);
+    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onTargetArgumentsMustBeStringOrNumberLiteralTypes(
@@ -329,6 +303,6 @@ export class Expect {
       }
     }
 
-    EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
+    this.#onDiagnostic(diagnostics, expectResult);
   }
 }
