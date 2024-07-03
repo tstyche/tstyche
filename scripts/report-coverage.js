@@ -34,10 +34,6 @@ const config = {
   outputDir: "./coverage",
 };
 
-config.reports = isCi
-  ? ["console-details", ["raw", { outputDir: `raw-coverage-${resolveReportTarget()}` }]]
-  : ["console-details", "v8"];
-
 if (process.argv.includes("--merge")) {
   config.inputDir = [
     "./coverage/raw-coverage-linux",
@@ -45,12 +41,14 @@ if (process.argv.includes("--merge")) {
     "./coverage/raw-coverage-windows",
   ];
   config.reports = [["codacy", { outputFile: "codacy-coverage.json" }], "console-summary"];
+} else {
+  config.dataDir = "./coverage/v8-coverage";
+
+  config.reports = isCi
+    ? ["console-details", ["raw", { outputDir: `./raw-coverage-${resolveReportTarget()}` }]]
+    : ["console-details", "v8"];
 }
 
 const coverageReport = new CoverageReport(config);
-
-if (!process.argv.includes("--merge")) {
-  await coverageReport.addFromDir("./coverage/v8-coverage");
-}
 
 await coverageReport.generate();

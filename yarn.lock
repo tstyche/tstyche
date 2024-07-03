@@ -2282,9 +2282,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.8.7":
-  version: 2.8.7
-  resolution: "monocart-coverage-reports@npm:2.8.7"
+"monocart-coverage-reports@npm:2.9.0":
+  version: 2.9.0
+  resolution: "monocart-coverage-reports@npm:2.9.0"
   dependencies:
     console-grid: ^2.2.2
     eight-colors: ^1.3.0
@@ -2294,11 +2294,11 @@ __metadata:
     lz-utils: ^2.0.2
     monocart-code-viewer: ^1.1.4
     monocart-formatter: ^3.0.0
-    monocart-locator: ^1.0.1
+    monocart-locator: ^1.0.2
     turbogrid: ^3.2.0
   bin:
     mcr: lib/cli.js
-  checksum: bf63d2223039536c447ecca29c1abb02db398123098fae3614579ade38b47f66a8ed413b250bc31a2f5987818434ddacf2d054d05d32dcc547291bd61b73691c
+  checksum: 583c39794d8a8f543477958f46e19bfab8c06562816d17f756c4c26f4a77ccf1edca17684260839c70ac6a95cda5b6b1a4d3d3535336e8a5c9dfd8c6cc5cf1d6
   languageName: node
   linkType: hard
 
@@ -2309,10 +2309,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-locator@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "monocart-locator@npm:1.0.1"
-  checksum: 765a145da7ad8bcf2b49851d2b2691d90a2e6cbebd4eb2f847477545f9fcbabc2a74d15cfbe9579b6e14c9eafcb3f3af8ea90ef0ac8b9e50fe280b59c380aadf
+"monocart-locator@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "monocart-locator@npm:1.0.2"
+  checksum: dd8cc926d4394ed901a1901a229b38827507b8d868ce1116941ceb3e28b007ce0f312151c60eabb28e9a2f8fcb8f6c1fdc0d6e69d0f63d6decc15463db73b343
   languageName: node
   linkType: hard
 
@@ -2929,7 +2929,7 @@ __metadata:
     cspell: 8.10.0
     magic-string: 0.30.10
     mocha: 10.6.0
-    monocart-coverage-reports: 2.8.7
+    monocart-coverage-reports: 2.9.0
     pretty-ansi: 2.0.0
     rollup: 4.18.0
     rollup-plugin-dts: 6.1.1
