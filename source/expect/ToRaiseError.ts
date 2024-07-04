@@ -55,47 +55,31 @@ export class ToRaiseError {
       return [Diagnostic.error(text).add({ related })];
     }
 
-    const diagnostics: Array<Diagnostic> = [];
-
-    targetTypes.forEach((argument, index) => {
+    return targetTypes.reduce<Array<Diagnostic>>((diagnostics, argument, index) => {
       const diagnostic = source.diagnostics[index];
 
-      if (!diagnostic) {
-        return;
+      if (diagnostic != null) {
+        const isMatch = this.#matchExpectedError(diagnostic, argument);
+
+        if (isNot ? isMatch : !isMatch) {
+          const expectedText = this.#isStringLiteralType(argument)
+            ? `matching substring '${argument.value}'`
+            : `with code ${String(argument.value)}`;
+
+          const related = [
+            Diagnostic.error("The raised type error:"),
+            ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
+          ];
+          const text = isNot
+            ? `${sourceText} raised a type error ${expectedText}.`
+            : `${sourceText} did not raise a type error ${expectedText}.`;
+
+          diagnostics.push(Diagnostic.error(text).add({ related }));
+        }
       }
 
-      const isMatch = this.#matchExpectedError(diagnostic, argument);
-
-      if (!isNot && !isMatch) {
-        const expectedText = this.#isStringLiteralType(argument)
-          ? `matching substring '${argument.value}'`
-          : `with code ${String(argument.value)}`;
-
-        const related = [
-          Diagnostic.error("The raised type error:"),
-          ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
-        ];
-        const text = `${sourceText} did not raise a type error ${expectedText}.`;
-
-        diagnostics.push(Diagnostic.error(text).add({ related }));
-      }
-
-      if (isNot && isMatch) {
-        const expectedText = this.#isStringLiteralType(argument)
-          ? `matching substring '${argument.value}'`
-          : `with code ${String(argument.value)}`;
-
-        const related = [
-          Diagnostic.error("The raised type error:"),
-          ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
-        ];
-        const text = `${sourceText} raised a type error ${expectedText}.`;
-
-        diagnostics.push(Diagnostic.error(text).add({ related }));
-      }
-    });
-
-    return diagnostics;
+      return diagnostics;
+    }, []);
   }
 
   #isStringLiteralType(type: ts.Type): type is ts.StringLiteralType {
