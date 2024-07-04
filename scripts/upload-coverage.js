@@ -37,7 +37,7 @@ const response = await fetch(endpoint, {
   headers: {
     ["Content-Type"]: "application/json",
     ["Accept"]: "application/json",
-    ["project-token"]: projectToken,
+    ["Project-Token"]: projectToken,
   },
   body: coverageReportText,
 });

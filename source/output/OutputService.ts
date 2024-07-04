@@ -3,7 +3,7 @@ import { Environment } from "#environment";
 import { Scribbler, type ScribblerJsx } from "#scribbler";
 
 export interface WriteStream {
-  write: (log: string) => void;
+  write: (chunk: string) => void;
 }
 
 export interface OutputServiceOptions {
@@ -41,8 +41,8 @@ export class OutputService {
     this.#stdout.write("\u001B[1A\u001B[0K");
   }
 
-  #write(stream: WriteStream, body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
-    const elements = Array.isArray(body) ? body : [body];
+  #writeTo(stream: WriteStream, element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
+    const elements = Array.isArray(element) ? element : [element];
 
     for (const element of elements) {
       stream.write(this.#scribbler.render(element));
@@ -51,15 +51,15 @@ export class OutputService {
     this.#isClear = false;
   }
 
-  writeError(body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
-    this.#write(this.#stderr, body);
+  writeError(element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
+    this.#writeTo(this.#stderr, element);
   }
 
-  writeMessage(body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
-    this.#write(this.#stdout, body);
+  writeMessage(element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
+    this.#writeTo(this.#stdout, element);
   }
 
-  writeWarning(body: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
-    this.#write(this.#stderr, body);
+  writeWarning(element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
+    this.#writeTo(this.#stderr, element);
   }
 }

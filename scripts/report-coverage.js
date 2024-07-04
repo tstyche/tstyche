@@ -11,16 +11,8 @@ function resolveReportTarget() {
   return "local";
 }
 
-/** @type {import("monocart-coverage-reports").CoverageReportOptions['reports']} */
-const reports = ["console-details"];
-
-if (isCi) {
-  reports.push(["raw", { outputDir: `raw-coverage-${resolveReportTarget()}` }]);
-} else {
-  reports.push("v8");
-}
-
-const coverageReport = new CoverageReport({
+/** @type {import("monocart-coverage-reports").CoverageReportOptions} */
+const config = {
   all: "./source",
 
   clean: true,
@@ -40,10 +32,23 @@ const coverageReport = new CoverageReport({
   },
 
   outputDir: "./coverage",
+};
 
-  reports,
-});
+if (process.argv.includes("--merge")) {
+  config.inputDir = [
+    "./coverage/raw-coverage-linux",
+    "./coverage/raw-coverage-macos",
+    "./coverage/raw-coverage-windows",
+  ];
+  config.reports = [["codacy", { outputFile: "codacy-coverage.json" }], "console-summary"];
+} else {
+  config.dataDir = "./coverage/v8-coverage";
 
-await coverageReport.addFromDir("./coverage/v8-coverage");
+  config.reports = isCi
+    ? ["console-details", ["raw", { outputDir: `./raw-coverage-${resolveReportTarget()}` }]]
+    : ["console-details", "v8"];
+}
+
+const coverageReport = new CoverageReport(config);
 
 await coverageReport.generate();

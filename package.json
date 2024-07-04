@@ -51,7 +51,7 @@
     "test": "yarn test:unit && yarn test:e2e",
     "test:coverage": "yarn test:coverage:collect && yarn test:coverage:report",
     "test:coverage:collect": "yarn build --sourcemap && NODE_V8_COVERAGE='./coverage/v8-coverage' yarn test:e2e",
-    "test:coverage:report": "node ./scripts/generate-coverage.js",
+    "test:coverage:report": "node ./scripts/report-coverage.js",
     "test:e2e": "yarn test:e2e:parallel && yarn test:e2e:serial",
     "test:e2e:parallel": "yarn test:run tests/*.test.* --exclude tests/feature-watch.test.js --parallel --reporter dot",
     "test:e2e:serial": "yarn test:run tests/feature-watch.test.js --reporter dot",
@@ -67,15 +67,15 @@
     "@types/node": "20.14.9",
     "@types/react": "18.3.3",
     "ajv": "8.16.0",
-    "cspell": "8.9.1",
+    "cspell": "8.10.0",
     "magic-string": "0.30.10",
-    "mocha": "10.5.2",
-    "monocart-coverage-reports": "2.8.7",
+    "mocha": "10.6.0",
+    "monocart-coverage-reports": "2.9.0",
     "pretty-ansi": "2.0.0",
     "rollup": "4.18.0",
     "rollup-plugin-dts": "6.1.1",
     "tslib": "2.6.3",
-    "typescript": "5.5.2"
+    "typescript": "5.5.3"
   },
   "peerDependencies": {
     "typescript": "4.x || 5.x"
