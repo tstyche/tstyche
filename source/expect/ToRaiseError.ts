@@ -22,35 +22,18 @@ export class ToRaiseError {
       return [Diagnostic.error(`${sourceText} did not raise a type error.`)];
     }
 
-    if (isNot && targetTypes.length === 0) {
-      const related = [
-        Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
-        ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
-      ];
-      const text = `${sourceText} raised ${
-        source.diagnostics.length === 1 ? "a" : String(source.diagnostics.length)
-      } type error${source.diagnostics.length === 1 ? "" : "s"}.`;
-
-      return [Diagnostic.error(text).add({ related })];
-    }
-
     if (source.diagnostics.length !== targetTypes.length) {
-      const expectedText =
-        source.diagnostics.length > targetTypes.length
-          ? `only ${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`
-          : `${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`;
       const foundText =
         source.diagnostics.length > targetTypes.length
           ? String(source.diagnostics.length)
           : `only ${String(source.diagnostics.length)}`;
 
+      const text = `${sourceText} raised ${foundText} type error${source.diagnostics.length === 1 ? "" : "s"}.`;
+
       const related = [
         Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
         ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
       ];
-      const text = `Expected ${expectedText}, but ${foundText} ${
-        source.diagnostics.length === 1 ? "was" : "were"
-      } raised.`;
 
       return [Diagnostic.error(text).add({ related })];
     }
@@ -66,13 +49,14 @@ export class ToRaiseError {
             ? `matching substring '${argument.value}'`
             : `with code ${String(argument.value)}`;
 
+          const text = isNot
+            ? `${sourceText} raised a type error ${expectedText}.`
+            : `${sourceText} did not raise a type error ${expectedText}.`;
+
           const related = [
             Diagnostic.error("The raised type error:"),
             ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
           ];
-          const text = isNot
-            ? `${sourceText} raised a type error ${expectedText}.`
-            : `${sourceText} did not raise a type error ${expectedText}.`;
 
           diagnostics.push(Diagnostic.error(text).add({ related }));
         }
