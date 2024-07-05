@@ -66,7 +66,7 @@ interface Matchers {
    *
    * @remarks
    *
-   * This is a preview feature. Generic components are not yet supported.
+   * This is a work in progress feature. Generic components are not yet supported.
    */
   toAcceptProps: {
     /**
@@ -74,7 +74,7 @@ interface Matchers {
      *
      * @remarks
      *
-     * This is a preview feature. Generic components are not yet supported.
+     * This is a work in progress feature. Generic components are not yet supported.
      */
     <Target>(): void;
     /**
@@ -82,7 +82,7 @@ interface Matchers {
      *
      * @remarks
      *
-     * This is a preview feature. Generic components are not yet supported.
+     * This is a work in progress feature. Generic components are not yet supported.
      */
     (target: unknown): void;
   };
