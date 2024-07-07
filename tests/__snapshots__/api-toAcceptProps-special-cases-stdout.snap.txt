@@ -4,12 +4,12 @@ fail ./__typetests__/special-cases.tst.tsx
   special cases
     - todo when the 'props' argument is optional
     × when the 'props' argument has a default value
-    - todo when the 'props' is a union
+    × when the 'props' is a union
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      1 failed, 2 todo, 3 total
-Assertions: 3 failed, 1 passed, 4 total
+Tests:      2 failed, 1 todo, 3 total
+Assertions: 8 failed, 6 passed, 14 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'special-cases'.

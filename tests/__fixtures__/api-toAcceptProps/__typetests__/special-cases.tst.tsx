@@ -25,22 +25,31 @@ describe("special cases", () => {
     expect(Default).type.toAcceptProps({ one: false }); // fail
   });
 
-  test.todo("when the 'props' is a union", () => {
-    type Props1 = { foo: string; bar?: never };
-    type Props2 = { bar: string; foo?: never };
+  test("when the 'props' is a union", () => {
+    type One = { one: string; two?: never };
+    type Other = { two: string; one?: never };
 
-    const OneOrTheOther = (props: Props1 | Props2) => {
-      if ("foo" in props && typeof props.foo === "string") {
-        return <>{props.foo}</>;
+    function OneOrTheOther(props: One | Other) {
+      if ("one" in props && typeof props.one === "string") {
+        return <>{props.one}</>;
       }
 
-      return <>{props.bar}</>;
-    };
+      return <>{props.two}</>;
+    }
 
-    expect(OneOrTheOther).type.toAcceptProps({ foo: "Send" });
-    expect(OneOrTheOther).type.toAcceptProps({ bar: "Send" });
+    expect(OneOrTheOther).type.toAcceptProps({ one: "Pass" });
+    expect(OneOrTheOther).type.not.toAcceptProps({ one: "Pass" }); // fail
 
-    expect(OneOrTheOther).type.toAcceptProps({ foo: "Download", bar: "button" }); // fail
+    expect(OneOrTheOther).type.toAcceptProps({ two: "Pass" });
+    expect(OneOrTheOther).type.not.toAcceptProps({ two: "Pass" }); // fail
+
+    expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
+    expect(OneOrTheOther).type.toAcceptProps({ one: "Fail", two: "Fail" }); // fail
+
+    expect(OneOrTheOther).type.not.toAcceptProps({});
     expect(OneOrTheOther).type.toAcceptProps({}); // fail
+
+    expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
+    expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
   });
 });
