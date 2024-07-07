@@ -7,6 +7,16 @@ interface Explanation {
   text: Array<string>;
 }
 
+export interface ToAcceptPropsSource {
+  node: ts.Expression | ts.TypeNode;
+  signatures: Array<ts.Signature>;
+}
+
+export interface ToAcceptPropsTarget {
+  node: ts.Expression | ts.TypeNode;
+  type: ts.Type;
+}
+
 export class ToAcceptProps {
   #compiler: typeof ts;
   #typeChecker: TypeChecker;
@@ -16,11 +26,7 @@ export class ToAcceptProps {
     this.#typeChecker = typeChecker;
   }
 
-  #explain(
-    source: { node: ts.Expression | ts.TypeNode; signatures: Array<ts.Signature> },
-    target: { node: ts.Expression | ts.TypeNode; type: ts.Type },
-    isNot: boolean,
-  ) {
+  #explain(source: ToAcceptPropsSource, target: ToAcceptPropsTarget, isNot: boolean) {
     const diagnostics: Array<Diagnostic> = [];
     let signatureIndex = 0;
 
@@ -64,10 +70,7 @@ export class ToAcceptProps {
     return Boolean(targetType.flags & this.#compiler.TypeFlags.Union);
   }
 
-  #matchSignature(
-    source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature },
-    target: { node: ts.Expression | ts.TypeNode; type: ts.Type },
-  ) {
+  #matchSignature(source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature }, target: ToAcceptPropsTarget) {
     const explanations: Array<Explanation> = [];
 
     const propsParameter = source.signature.getDeclaration().parameters[0];
@@ -91,7 +94,7 @@ export class ToAcceptProps {
     return { explanations, isMatch };
   }
 
-  #checkProps(source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature }, target: { type: ts.Type }) {
+  #checkProps(source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature }, target: ToAcceptPropsTarget) {
     const propsParameter = source.signature.getDeclaration().parameters[0];
     const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
 
@@ -139,7 +142,7 @@ export class ToAcceptProps {
     return check(target.type, propsParameterType);
   }
 
-  #explainProps(target: { node: ts.Expression | ts.TypeNode; type: ts.Type }, sourceType?: ts.Type) {
+  #explainProps(target: ToAcceptPropsTarget, sourceType?: ts.Type) {
     const targetTypeText = this.#typeChecker.typeToString(target.type);
     const sourceTypeText = sourceType != null ? this.#typeChecker.typeToString(sourceType) : "{}";
 
@@ -258,11 +261,7 @@ export class ToAcceptProps {
     return explain(target.type, sourceType);
   }
 
-  match(
-    source: { node: ts.Expression | ts.TypeNode; signatures: Array<ts.Signature> },
-    target: { node: ts.Expression | ts.TypeNode; type: ts.Type },
-    isNot: boolean,
-  ): MatchResult {
+  match(source: ToAcceptPropsSource, target: ToAcceptPropsTarget, isNot: boolean): MatchResult {
     const isMatch = source.signatures.some((signature) => this.#checkProps({ node: source.node, signature }, target));
 
     return {
