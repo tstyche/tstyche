@@ -1,24 +1,6 @@
 import { describe, expect, test } from "tstyche";
 
 describe("special cases", () => {
-  test.todo("when the 'props' argument is optional", () => {
-    function Optional(props?: { one: string }) {
-      return <>{`${props}`}</>;
-    }
-
-    expect(Optional).type.toAcceptProps({ one: "sample" });
-    expect(Optional).type.not.toAcceptProps({ one: "sample" }); // fail
-
-    expect(Optional).type.not.toAcceptProps({});
-    expect(Optional).type.toAcceptProps({}); // fail
-
-    expect(Optional).type.not.toAcceptProps({ two: false });
-    expect(Optional).type.toAcceptProps({ two: false }); // fail
-
-    expect(Optional).type.not.toAcceptProps({ one: false });
-    expect(Optional).type.toAcceptProps({ one: false }); // fail
-  });
-
   test("when the 'props' argument has a default value", () => {
     function Default(props = { one: "sample" }) {
       return <>{`${props}`}</>;

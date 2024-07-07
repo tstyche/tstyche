@@ -71,29 +71,11 @@ export class ToAcceptProps {
     const explanations: Array<Explanation> = [];
 
     const propsParameter = source.signature.getDeclaration().parameters[0];
-    // const propsParameterIsOptional = propsParameter && this.#typeChecker.isOptionalParameter(propsParameter);
     const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
     const propsParameterTypeText =
       propsParameterType != null ? this.#typeChecker.typeToString(propsParameterType) : "{}";
 
     const targetTypeText = this.#typeChecker.typeToString(target.type);
-
-    // TODO
-    // if (target.type.getProperties().length === 0) {
-    //   if (!propsParameter || propsParameterIsOptional === true || propsParameterType?.getProperties().length === 0) {
-    //     isMatch = true;
-
-    //     if (options?.explain !== true) {
-    //       return isMatch;
-    //     }
-
-    //     const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
-
-    //     explanations.push({ text });
-
-    //     return { explanations, isMatch };
-    //   }
-    // }
 
     const explainedProps = this.#explainProps(target, propsParameterType);
     explanations.push(...explainedProps.explanations);
