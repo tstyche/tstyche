@@ -69,15 +69,15 @@ export class ToAcceptProps {
     );
   }
 
-  #isUnionType(targetType: ts.Type): targetType is ts.UnionType {
-    return Boolean(targetType.flags & this.#compiler.TypeFlags.Union);
+  #isUnionType(type: ts.Type): type is ts.UnionType {
+    return Boolean(type.flags & this.#compiler.TypeFlags.Union);
   }
 
   #checkProperties(signature: ts.Signature, target: ToAcceptPropsTarget) {
     const sourceParameter = signature.getDeclaration().parameters[0];
     const sourceParameterType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
 
-    const check = (targetType: ts.Type, sourceType?: ts.Type) => {
+    const check = (sourceType: ts.Type | undefined, targetType: ts.Type) => {
       for (const targetProperty of targetType.getProperties()) {
         const targetPropertyName = targetProperty.getName();
 
@@ -115,20 +115,20 @@ export class ToAcceptProps {
     };
 
     if (sourceParameterType != null && this.#isUnionType(sourceParameterType)) {
-      return sourceParameterType.types.some((sourceType) => check(target.type, sourceType));
+      return sourceParameterType.types.some((sourceType) => check(sourceType, target.type));
     }
 
-    return check(target.type, sourceParameterType);
+    return check(sourceParameterType, target.type);
   }
 
   #explainProperties(signature: ts.Signature, target: ToAcceptPropsTarget, isNot: boolean) {
     const sourceParameter = signature.getDeclaration().parameters[0];
-    const sourceType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
+    const sourceParameterType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
 
     const targetTypeText = this.#typeChecker.typeToString(target.type);
-    const sourceTypeText = sourceType != null ? this.#typeChecker.typeToString(sourceType) : "{}";
+    const sourceTypeText = sourceParameterType != null ? this.#typeChecker.typeToString(sourceParameterType) : "{}";
 
-    const explain = (targetType: ts.Type, sourceType?: ts.Type, text: Array<string> = []) => {
+    const explain = (sourceType: ts.Type | undefined, targetType: ts.Type, text: Array<string> = []) => {
       const sourceTypeText = sourceType != null ? this.#typeChecker.typeToString(sourceType) : "{}";
 
       const explanations: Array<Explanation> = [];
@@ -229,11 +229,11 @@ export class ToAcceptProps {
     //   - optionally origin could be set as well
     //   - and return new Diagnostic, i.e. does not alter the existing one
 
-    if (sourceType != null && this.#isUnionType(sourceType)) {
+    if (sourceParameterType != null && this.#isUnionType(sourceParameterType)) {
       let accumulator: { explanations: Array<Explanation>; isMatch: boolean } = { explanations: [], isMatch: true };
 
-      for (const type of sourceType.types) {
-        const { explanations, isMatch } = explain(target.type, type, [
+      for (const sourceType of sourceParameterType.types) {
+        const { explanations, isMatch } = explain(sourceType, target.type, [
           isNot
             ? `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.`
             : `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`,
@@ -251,7 +251,7 @@ export class ToAcceptProps {
       return accumulator;
     }
 
-    return explain(target.type, sourceType);
+    return explain(sourceParameterType, target.type);
   }
 
   match(source: ToAcceptPropsSource, target: ToAcceptPropsTarget, isNot: boolean): MatchResult {
