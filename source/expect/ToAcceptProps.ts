@@ -7,17 +7,15 @@ interface Explanation {
   text: Array<string>;
 }
 
-export interface ToAcceptPropsSource {
+// TODO push Diagnostic around, not 'node'
+// that should eliminate 'Explanation' as well
+
+interface ToAcceptPropsSource {
   node: ts.Expression | ts.TypeNode;
   signatures: Array<ts.Signature>;
 }
 
-export interface ToAcceptPropsSignatureSource {
-  node: ts.Expression | ts.TypeNode;
-  signature: ts.Signature;
-}
-
-export interface ToAcceptPropsTarget {
+interface ToAcceptPropsTarget {
   node: ts.Expression | ts.TypeNode;
   type: ts.Type;
 }
@@ -41,7 +39,7 @@ export class ToAcceptProps {
         ? `${sourceText} accepts props of the given type.`
         : `${sourceText} does not accept props of the given type.`;
 
-      const { explanations, isMatch } = this.#explainProps({ node: source.node, signature }, target, isNot);
+      const { explanations, isMatch } = this.#explainProperties(signature, target, isNot);
 
       if (isNot ? !isMatch : isMatch) {
         signatureIndex++;
@@ -75,9 +73,9 @@ export class ToAcceptProps {
     return Boolean(targetType.flags & this.#compiler.TypeFlags.Union);
   }
 
-  #checkProps(source: ToAcceptPropsSignatureSource, target: ToAcceptPropsTarget) {
-    const propsParameter = source.signature.getDeclaration().parameters[0];
-    const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
+  #checkProperties(signature: ts.Signature, target: ToAcceptPropsTarget) {
+    const sourceParameter = signature.getDeclaration().parameters[0];
+    const sourceParameterType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
 
     const check = (targetType: ts.Type, sourceType?: ts.Type) => {
       for (const targetProperty of targetType.getProperties()) {
@@ -116,15 +114,15 @@ export class ToAcceptProps {
       return true;
     };
 
-    if (propsParameterType != null && this.#isUnionType(propsParameterType)) {
-      return propsParameterType.types.some((sourceType) => check(target.type, sourceType));
+    if (sourceParameterType != null && this.#isUnionType(sourceParameterType)) {
+      return sourceParameterType.types.some((sourceType) => check(target.type, sourceType));
     }
 
-    return check(target.type, propsParameterType);
+    return check(target.type, sourceParameterType);
   }
 
-  #explainProps(source: ToAcceptPropsSignatureSource, target: ToAcceptPropsTarget, isNot: boolean) {
-    const sourceParameter = source.signature.getDeclaration().parameters[0];
+  #explainProperties(signature: ts.Signature, target: ToAcceptPropsTarget, isNot: boolean) {
+    const sourceParameter = signature.getDeclaration().parameters[0];
     const sourceType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
 
     const targetTypeText = this.#typeChecker.typeToString(target.type);
@@ -257,7 +255,7 @@ export class ToAcceptProps {
   }
 
   match(source: ToAcceptPropsSource, target: ToAcceptPropsTarget, isNot: boolean): MatchResult {
-    const isMatch = source.signatures.some((signature) => this.#checkProps({ node: source.node, signature }, target));
+    const isMatch = source.signatures.some((signature) => this.#checkProperties(signature, target));
 
     return {
       explain: () => this.#explain(source, target, isNot),
@@ -265,18 +263,18 @@ export class ToAcceptProps {
     };
   }
 
-  #resolveOrigin(targetSymbol: ts.Symbol, targetNode: ts.Node) {
+  #resolveOrigin(symbol: ts.Symbol, node: ts.Node) {
     if (
-      targetSymbol.valueDeclaration != null &&
-      (this.#compiler.isPropertySignature(targetSymbol.valueDeclaration) ||
-        this.#compiler.isPropertyAssignment(targetSymbol.valueDeclaration) ||
-        this.#compiler.isShorthandPropertyAssignment(targetSymbol.valueDeclaration)) &&
-      targetSymbol.valueDeclaration.getStart() >= targetNode.getStart() &&
-      targetSymbol.valueDeclaration.getEnd() <= targetNode.getEnd()
+      symbol.valueDeclaration != null &&
+      (this.#compiler.isPropertySignature(symbol.valueDeclaration) ||
+        this.#compiler.isPropertyAssignment(symbol.valueDeclaration) ||
+        this.#compiler.isShorthandPropertyAssignment(symbol.valueDeclaration)) &&
+      symbol.valueDeclaration.getStart() >= node.getStart() &&
+      symbol.valueDeclaration.getEnd() <= node.getEnd()
     ) {
-      return DiagnosticOrigin.fromNode(targetSymbol.valueDeclaration.name);
+      return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name);
     }
 
-    return DiagnosticOrigin.fromNode(targetNode);
+    return DiagnosticOrigin.fromNode(node);
   }
 }

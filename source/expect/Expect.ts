@@ -108,6 +108,13 @@ export class Expect {
     return types.every((type) => this.#isStringOrNumberLiteralType(type));
   }
 
+  #isObjectType(type: ts.Type): type is ts.ObjectType {
+    return this.#typeChecker.isTypeAssignableTo(
+      type,
+      { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type, // the intrinsic 'object' type
+    );
+  }
+
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
     return Boolean(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
   }
@@ -133,7 +140,7 @@ export class Expect {
         const signatures = sourceType.getCallSignatures();
 
         if (signatures.length === 0) {
-          this.#onSourceArgumentMustBeJsxComponent(assertion.source[0], expectResult);
+          this.#onSourceArgumentMustBeFunctionOrClassType(assertion.source[0], expectResult);
 
           return;
         }
@@ -145,11 +152,10 @@ export class Expect {
         }
 
         const targetType = this.#getType(assertion.target[0]);
-        const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
 
         if (
           targetType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
-          !this.#typeChecker.isTypeRelatedTo(targetType, nonPrimitiveType, this.#typeChecker.relation.assignable)
+          !this.#isObjectType(sourceType)
         ) {
           this.#onTargetArgumentMustBeObjectType(assertion.target[0], expectResult);
 
@@ -157,7 +163,7 @@ export class Expect {
         }
 
         return this.toAcceptProps.match(
-          { signatures: [...signatures], node: assertion.source[0] },
+          { node: assertion.source[0], signatures: [...signatures] },
           { node: assertion.target[0], type: targetType },
           assertion.isNot,
         );
@@ -219,11 +225,9 @@ export class Expect {
         }
 
         const sourceType = this.#getType(assertion.source[0]);
-        const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
-
         if (
           sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
-          !this.#typeChecker.isTypeAssignableTo(sourceType, nonPrimitiveType)
+          !this.#isObjectType(sourceType)
         ) {
           this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
 
@@ -303,7 +307,7 @@ export class Expect {
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
-  #onSourceArgumentMustBeJsxComponent(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+  #onSourceArgumentMustBeFunctionOrClassType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const expectedText = "a function or class type";
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
