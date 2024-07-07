@@ -4,7 +4,7 @@ export class ExpectDiagnosticText {
   }
 
   static argumentMustBeOf(argumentNameText: string, expectedText: string, receivedTypeText: string): string {
-    return `An argument for '${argumentNameText}' must be ${expectedText}, received: '${receivedTypeText}'.`;
+    return `An argument for '${argumentNameText}' must be of ${expectedText}, received: '${receivedTypeText}'.`;
   }
 
   static argumentMustBeProvided(argumentNameText: string): string {
@@ -15,7 +15,7 @@ export class ExpectDiagnosticText {
     return `The '.${matcherNameText}()' matcher is not supported.`;
   }
 
-  static typeArgumentMustBe(argumentNameText: string, expectedText: string, receivedTypeText: string): string {
-    return `A type argument for '${argumentNameText}' must be ${expectedText}, received: '${receivedTypeText}'.`;
+  static typeArgumentMustBeOf(argumentNameText: string, expectedText: string, receivedTypeText: string): string {
+    return `A type argument for '${argumentNameText}' must be of ${expectedText}, received: '${receivedTypeText}'.`;
   }
 }

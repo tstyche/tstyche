@@ -264,7 +264,7 @@ export class Expect {
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText, receivedTypeText)
+      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText, receivedTypeText)
       : ExpectDiagnosticText.argumentMustBeOf("source", expectedText, receivedTypeText);
 
     const origin = DiagnosticOrigin.fromNode(node);
