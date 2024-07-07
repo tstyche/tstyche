@@ -7,8 +7,13 @@ interface Explanation {
   text: Array<string>;
 }
 
-// TODO push Diagnostic around, not 'node'
+// TODO push 'Diagnostic' around, not 'node'
 // that should eliminate 'Explanation' as well
+
+// 'Diagnostic' could get new '.extendWith()' method which:
+//   - pushes in additional message text into existing array
+//   - optionally origin could be set as well
+//   - and return new 'Diagnostic', i.e. does not alter the existing one
 
 interface ToAcceptPropsSource {
   node: ts.Expression | ts.TypeNode;
@@ -222,12 +227,6 @@ export class ToAcceptProps {
 
       return { explanations, isMatch: false };
     };
-
-    // TODO perhaps instead Explanation, it could be possible to reuse Diagnostic?
-    // Diagnostic could get new '.extendWith()' method which:
-    //   - pushes in additional message text into existing array
-    //   - optionally origin could be set as well
-    //   - and return new Diagnostic, i.e. does not alter the existing one
 
     if (sourceParameterType != null && this.#isUnionType(sourceParameterType)) {
       let accumulator: { explanations: Array<Explanation>; isMatch: boolean } = { explanations: [], isMatch: true };
