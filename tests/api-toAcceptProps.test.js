@@ -37,6 +37,22 @@ describe("toAcceptProps", function () {
     assert.equal(exitCode, 1);
   });
 
+  test("class components", async function () {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["class-components"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-class-components-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-class-components-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   test("overloaded components", async function () {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overloaded-components"]);
 

@@ -137,7 +137,11 @@ export class Expect {
         }
 
         const sourceType = this.#getType(assertion.source[0]);
-        const signatures = sourceType.getCallSignatures();
+        let signatures = sourceType.getCallSignatures();
+
+        if (signatures.length === 0) {
+          signatures = sourceType.getConstructSignatures();
+        }
 
         if (signatures.length === 0) {
           this.#onSourceArgumentMustBeFunctionOrClassType(assertion.source[0], expectResult);
