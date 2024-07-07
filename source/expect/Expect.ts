@@ -3,6 +3,7 @@ import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToBe } from "./ToBe.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
@@ -178,7 +179,7 @@ export class Expect {
 
         if (
           sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
-          !this.#typeChecker.isTypeRelatedTo(sourceType, nonPrimitiveType, this.#typeChecker.relation.assignable)
+          !this.#typeChecker.isTypeAssignableTo(sourceType, nonPrimitiveType)
         ) {
           this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
 
@@ -225,7 +226,7 @@ export class Expect {
       }
 
       default: {
-        const text = `The '.${matcherNameText}()' matcher is not supported.`;
+        const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
         const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
         this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
@@ -242,40 +243,44 @@ export class Expect {
   }
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const expectedText = "type 'string | number | symbol'";
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
-    const text = `An argument for 'key' must be of type 'string | number | symbol', received: '${receivedTypeText}'.`;
+    const text = ExpectDiagnosticText.argumentMustBeOf("key", expectedText, receivedTypeText);
     const origin = DiagnosticOrigin.fromNode(node);
 
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onKeyArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const text = "An argument for 'key' must be provided.";
+    const text = ExpectDiagnosticText.argumentMustBeProvided("key");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
+    const expectedText = "an object type";
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
-    const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
+    const text = this.#compiler.isTypeNode(node)
+      ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText, receivedTypeText)
+      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText, receivedTypeText);
+
     const origin = DiagnosticOrigin.fromNode(node);
 
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const text = "An argument for 'source' or type argument for 'Source' must be provided.";
+    const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
   #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const text = "An argument for 'target' or type argument for 'Target' must be provided.";
+    const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
@@ -291,15 +296,13 @@ export class Expect {
       const receivedType = this.#getType(node);
 
       if (!this.#isStringOrNumberLiteralType(receivedType)) {
-        const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
+        const expectedText = "type 'string | number'";
+        const receivedTypeText = this.#typeChecker.typeToString(receivedType);
+
+        const text = ExpectDiagnosticText.argumentMustBeOf("target", expectedText, receivedTypeText);
         const origin = DiagnosticOrigin.fromNode(node);
 
-        diagnostics.push(
-          Diagnostic.error(
-            `An argument for 'target' must be of type 'string | number', received: '${receivedTypeText}'.`,
-            origin,
-          ),
-        );
+        diagnostics.push(Diagnostic.error(text, origin));
       }
     }
 
