@@ -155,7 +155,7 @@ export class Expect {
 
         if (
           targetType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
-          !this.#isObjectType(sourceType)
+          !this.#isObjectType(targetType)
         ) {
           this.#onTargetArgumentMustBeObjectType(assertion.target[0], expectResult);
 
