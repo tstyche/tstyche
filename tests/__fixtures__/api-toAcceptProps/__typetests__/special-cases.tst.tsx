@@ -6,11 +6,17 @@ describe("special cases", () => {
       return <>{`${props}`}</>;
     }
 
-    expect(Optional).type.toAcceptProps({}); // TODO Property 'one' is missing
-    expect(Optional).type.toAcceptProps({ one: "sample" }); // TODO
+    expect(Optional).type.toAcceptProps({ one: "sample" });
+    expect(Optional).type.not.toAcceptProps({ one: "sample" }); // fail
 
+    expect(Optional).type.not.toAcceptProps({});
+    expect(Optional).type.toAcceptProps({}); // fail
+
+    expect(Optional).type.not.toAcceptProps({ two: false });
     expect(Optional).type.toAcceptProps({ two: false }); // fail
-    expect(Optional).type.toAcceptProps({ one: false }); // fail TODO
+
+    expect(Optional).type.not.toAcceptProps({ one: false });
+    expect(Optional).type.toAcceptProps({ one: false }); // fail
   });
 
   test("when the 'props' argument has a default value", () => {
@@ -19,9 +25,15 @@ describe("special cases", () => {
     }
 
     expect(Default).type.toAcceptProps({ one: "sample" });
+    expect(Default).type.not.toAcceptProps({ one: "sample" }); // fail
 
+    expect(Default).type.not.toAcceptProps({});
     expect(Default).type.toAcceptProps({}); // fail
+
+    expect(Default).type.not.toAcceptProps({ two: false });
     expect(Default).type.toAcceptProps({ two: false }); // fail
+
+    expect(Default).type.not.toAcceptProps({ one: false });
     expect(Default).type.toAcceptProps({ one: false }); // fail
   });
 
