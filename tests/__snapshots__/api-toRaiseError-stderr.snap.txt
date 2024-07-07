@@ -1,4 +1,4 @@
-Error: Expression raised a type error.
+Error: Expression raised 1 type error.
 
    6 | test("expression raises a type error", () => {
    7 |   expect(one("pass")).type.toRaiseError();
@@ -36,7 +36,7 @@ Error: Expression did not raise a type error.
 
        at ./__typetests__/toRaiseError.tst.ts:13:22 ❭ expression does not raise a type error
 
-Error: Type expression raised a type error.
+Error: Type expression raised 1 type error.
 
   16 | test("type expression raises a type error", () => {
   17 |   expect<One>().type.toRaiseError();
@@ -644,7 +644,7 @@ Error: Expression did not raise a type error matching substring 'Argument of typ
 
             at ./__typetests__/toRaiseError.tst.ts:157:17
 
-Error: Expected only 1 type error, but 2 were raised.
+Error: Expression raised 2 type errors.
 
   168 |     two(1111);
   169 |     two<string>("pass");
@@ -682,7 +682,7 @@ Error: Expected only 1 type error, but 2 were raised.
 
             at ./__typetests__/toRaiseError.tst.ts:169:17
 
-Error: Expected only 1 type error, but 2 were raised.
+Error: Expression raised 2 type errors.
 
   175 |     two(1111);
   176 |     two<string>("pass");
@@ -720,7 +720,7 @@ Error: Expected only 1 type error, but 2 were raised.
 
             at ./__typetests__/toRaiseError.tst.ts:176:17
 
-Error: Expected 3 type errors, but only 1 was raised.
+Error: Expression raised only 1 type error.
 
   181 |   expect(() => {
   182 |     two(1111);
@@ -746,7 +746,7 @@ Error: Expected 3 type errors, but only 1 was raised.
 
             at ./__typetests__/toRaiseError.tst.ts:182:9
 
-Error: Expected 3 type errors, but only 2 were raised.
+Error: Expression raised only 2 type errors.
 
   192 |     two(1111);
   193 |     two<string>("pass");
@@ -784,7 +784,7 @@ Error: Expected 3 type errors, but only 2 were raised.
 
             at ./__typetests__/toRaiseError.tst.ts:193:17
 
-Error: Expected 3 type errors, but only 1 was raised.
+Error: Expression raised only 1 type error.
 
   202 |   expect(() => {
   203 |     two<string>("pass");
@@ -810,7 +810,7 @@ Error: Expected 3 type errors, but only 1 was raised.
 
             at ./__typetests__/toRaiseError.tst.ts:203:17
 
-Error: Expected 3 type errors, but only 2 were raised.
+Error: Expression raised only 2 type errors.
 
   209 |     two(1111);
   210 |     two<string>("pass");

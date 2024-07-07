@@ -2,6 +2,11 @@ import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
+export interface ToRaiseErrorSource {
+  diagnostics: Array<ts.Diagnostic>;
+  node: ts.Expression | ts.TypeNode;
+}
+
 export class ToRaiseError {
   compiler: typeof ts;
   typeChecker: TypeChecker;
@@ -12,7 +17,7 @@ export class ToRaiseError {
   }
 
   #explain(
-    source: { diagnostics: Array<ts.Diagnostic>; node: ts.Expression | ts.TypeNode },
+    source: ToRaiseErrorSource,
     targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ) {
@@ -22,80 +27,48 @@ export class ToRaiseError {
       return [Diagnostic.error(`${sourceText} did not raise a type error.`)];
     }
 
-    if (isNot && targetTypes.length === 0) {
-      const related = [
-        Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
-        ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
-      ];
-      const text = `${sourceText} raised ${
-        source.diagnostics.length === 1 ? "a" : String(source.diagnostics.length)
-      } type error${source.diagnostics.length === 1 ? "" : "s"}.`;
-
-      return [Diagnostic.error(text).add({ related })];
-    }
-
     if (source.diagnostics.length !== targetTypes.length) {
-      const expectedText =
-        source.diagnostics.length > targetTypes.length
-          ? `only ${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`
-          : `${String(targetTypes.length)} type error${targetTypes.length === 1 ? "" : "s"}`;
       const foundText =
         source.diagnostics.length > targetTypes.length
           ? String(source.diagnostics.length)
           : `only ${String(source.diagnostics.length)}`;
 
+      const text = `${sourceText} raised ${foundText} type error${source.diagnostics.length === 1 ? "" : "s"}.`;
+
       const related = [
         Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
         ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
       ];
-      const text = `Expected ${expectedText}, but ${foundText} ${
-        source.diagnostics.length === 1 ? "was" : "were"
-      } raised.`;
 
       return [Diagnostic.error(text).add({ related })];
     }
 
-    const diagnostics: Array<Diagnostic> = [];
-
-    targetTypes.forEach((argument, index) => {
+    return targetTypes.reduce<Array<Diagnostic>>((diagnostics, argument, index) => {
       const diagnostic = source.diagnostics[index];
 
-      if (!diagnostic) {
-        return;
+      if (diagnostic != null) {
+        const isMatch = this.#matchExpectedError(diagnostic, argument);
+
+        if (isNot ? isMatch : !isMatch) {
+          const expectedText = this.#isStringLiteralType(argument)
+            ? `matching substring '${argument.value}'`
+            : `with code ${String(argument.value)}`;
+
+          const text = isNot
+            ? `${sourceText} raised a type error ${expectedText}.`
+            : `${sourceText} did not raise a type error ${expectedText}.`;
+
+          const related = [
+            Diagnostic.error("The raised type error:"),
+            ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
+          ];
+
+          diagnostics.push(Diagnostic.error(text).add({ related }));
+        }
       }
 
-      const isMatch = this.#matchExpectedError(diagnostic, argument);
-
-      if (!isNot && !isMatch) {
-        const expectedText = this.#isStringLiteralType(argument)
-          ? `matching substring '${argument.value}'`
-          : `with code ${String(argument.value)}`;
-
-        const related = [
-          Diagnostic.error("The raised type error:"),
-          ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
-        ];
-        const text = `${sourceText} did not raise a type error ${expectedText}.`;
-
-        diagnostics.push(Diagnostic.error(text).add({ related }));
-      }
-
-      if (isNot && isMatch) {
-        const expectedText = this.#isStringLiteralType(argument)
-          ? `matching substring '${argument.value}'`
-          : `with code ${String(argument.value)}`;
-
-        const related = [
-          Diagnostic.error("The raised type error:"),
-          ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
-        ];
-        const text = `${sourceText} raised a type error ${expectedText}.`;
-
-        diagnostics.push(Diagnostic.error(text).add({ related }));
-      }
-    });
-
-    return diagnostics;
+      return diagnostics;
+    }, []);
   }
 
   #isStringLiteralType(type: ts.Type): type is ts.StringLiteralType {
@@ -103,7 +76,7 @@ export class ToRaiseError {
   }
 
   match(
-    source: { diagnostics: Array<ts.Diagnostic>; node: ts.Expression | ts.TypeNode },
+    source: ToRaiseErrorSource,
     targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ): MatchResult {

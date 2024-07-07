@@ -27,7 +27,7 @@ jobs:
           node-version: lts/*
       - run: yarn install
       - run: yarn build --sourcemap
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+      - uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
         with:
           name: build-${{ github.sha }}
           path: build/
@@ -46,7 +46,7 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
           path: build/
@@ -67,7 +67,7 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
           path: build/
@@ -87,7 +87,7 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
           path: build/
@@ -115,7 +115,7 @@ jobs:
           check-latest: true
           node-version: ${{ matrix.node-version }}
       - run: yarn install
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
           path: build/
@@ -142,7 +142,7 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
           path: build/
@@ -169,7 +169,7 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
           path: build/
@@ -180,7 +180,7 @@ jobs:
       - run: node ./scripts/report-coverage.js
         env:
           FORCE_COLOR: true
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+      - uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
         with:
           name: coverage-${{ matrix.os }}-${{ github.sha }}
           path: coverage/raw-coverage-*
@@ -201,11 +201,11 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: yarn install
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
           path: build/
-      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           merge-multiple: true
           path: coverage
