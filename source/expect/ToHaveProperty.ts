@@ -2,6 +2,11 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
+export interface ToHavePropertyTarget {
+  node: ts.Expression | ts.TypeNode;
+  type: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType;
+}
+
 export class ToHaveProperty {
   compiler: typeof ts;
   typeChecker: TypeChecker;
@@ -11,14 +16,7 @@ export class ToHaveProperty {
     this.typeChecker = typeChecker;
   }
 
-  #explain(
-    sourceType: ts.Type,
-    target: {
-      node: ts.Expression | ts.TypeNode;
-      type: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType;
-    },
-    isNot: boolean,
-  ) {
+  #explain(sourceType: ts.Type, target: ToHavePropertyTarget, isNot: boolean) {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
     let targetArgumentText: string;
 
@@ -39,14 +37,7 @@ export class ToHaveProperty {
     return Boolean(type.flags & this.compiler.TypeFlags.StringOrNumberLiteral);
   }
 
-  match(
-    sourceType: ts.Type,
-    target: {
-      node: ts.Expression | ts.TypeNode;
-      type: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType;
-    },
-    isNot: boolean,
-  ): MatchResult {
+  match(sourceType: ts.Type, target: ToHavePropertyTarget, isNot: boolean): MatchResult {
     let targetArgumentText: string;
 
     if (this.#isStringOrNumberLiteralType(target.type)) {

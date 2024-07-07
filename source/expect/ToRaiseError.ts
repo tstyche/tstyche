@@ -2,6 +2,11 @@ import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
+export interface ToRaiseErrorSource {
+  diagnostics: Array<ts.Diagnostic>;
+  node: ts.Expression | ts.TypeNode;
+}
+
 export class ToRaiseError {
   compiler: typeof ts;
   typeChecker: TypeChecker;
@@ -12,7 +17,7 @@ export class ToRaiseError {
   }
 
   #explain(
-    source: { diagnostics: Array<ts.Diagnostic>; node: ts.Expression | ts.TypeNode },
+    source: ToRaiseErrorSource,
     targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ) {
@@ -71,7 +76,7 @@ export class ToRaiseError {
   }
 
   match(
-    source: { diagnostics: Array<ts.Diagnostic>; node: ts.Expression | ts.TypeNode },
+    source: ToRaiseErrorSource,
     targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ): MatchResult {
