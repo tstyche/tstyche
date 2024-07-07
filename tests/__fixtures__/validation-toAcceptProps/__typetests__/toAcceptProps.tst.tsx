@@ -28,6 +28,9 @@ describe("argument for 'target'", () => {
 
 describe("type argument for 'Target'", () => {
   test("must be of object type", () => {
+    expect(() => <>{"test"}</>).type.toAcceptProps<any>();
     expect(() => <>{"test"}</>).type.toAcceptProps<never>();
+
+    expect(() => <>{"test"}</>).type.toAcceptProps<string>();
   });
 });
