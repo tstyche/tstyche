@@ -12,6 +12,11 @@ export interface ToAcceptPropsSource {
   signatures: Array<ts.Signature>;
 }
 
+export interface ToAcceptPropsSignatureSource {
+  node: ts.Expression | ts.TypeNode;
+  signature: ts.Signature;
+}
+
 export interface ToAcceptPropsTarget {
   node: ts.Expression | ts.TypeNode;
   type: ts.Type;
@@ -36,7 +41,7 @@ export class ToAcceptProps {
         ? `${sourceText} accepts props of the given type.`
         : `${sourceText} does not accept props of the given type.`;
 
-      const { explanations, isMatch } = this.#matchSignature({ node: source.node, signature }, target);
+      const { explanations, isMatch } = this.#explainProps({ node: source.node, signature }, target, isNot);
 
       if (isNot ? !isMatch : isMatch) {
         signatureIndex++;
@@ -70,31 +75,7 @@ export class ToAcceptProps {
     return Boolean(targetType.flags & this.#compiler.TypeFlags.Union);
   }
 
-  #matchSignature(source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature }, target: ToAcceptPropsTarget) {
-    const explanations: Array<Explanation> = [];
-
-    const propsParameter = source.signature.getDeclaration().parameters[0];
-    const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
-    const propsParameterTypeText =
-      propsParameterType != null ? this.#typeChecker.typeToString(propsParameterType) : "{}";
-
-    const targetTypeText = this.#typeChecker.typeToString(target.type);
-
-    const explainedProps = this.#explainProps(target, propsParameterType);
-    explanations.push(...explainedProps.explanations);
-    const isMatch = explainedProps.isMatch;
-
-    if (explanations.length === 0) {
-      const origin = DiagnosticOrigin.fromNode(target.node);
-      const text = [`Type '${targetTypeText}' is assignable to type '${propsParameterTypeText}'.`];
-
-      explanations.push({ origin, text });
-    }
-
-    return { explanations, isMatch };
-  }
-
-  #checkProps(source: { node: ts.Expression | ts.TypeNode; signature: ts.Signature }, target: ToAcceptPropsTarget) {
+  #checkProps(source: ToAcceptPropsSignatureSource, target: ToAcceptPropsTarget) {
     const propsParameter = source.signature.getDeclaration().parameters[0];
     const propsParameterType = propsParameter && this.#typeChecker.getTypeAtLocation(propsParameter);
 
@@ -142,7 +123,10 @@ export class ToAcceptProps {
     return check(target.type, propsParameterType);
   }
 
-  #explainProps(target: ToAcceptPropsTarget, sourceType?: ts.Type) {
+  #explainProps(source: ToAcceptPropsSignatureSource, target: ToAcceptPropsTarget, isNot: boolean) {
+    const sourceParameter = source.signature.getDeclaration().parameters[0];
+    const sourceType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
+
     const targetTypeText = this.#typeChecker.typeToString(target.type);
     const sourceTypeText = sourceType != null ? this.#typeChecker.typeToString(sourceType) : "{}";
 
@@ -227,9 +211,18 @@ export class ToAcceptProps {
         }
       }
 
-      // TODO finally return true
+      if (explanations.length === 0) {
+        const origin = DiagnosticOrigin.fromNode(target.node);
 
-      return explanations.length !== 0 ? { explanations, isMatch: false } : { explanations, isMatch: true };
+        explanations.push({
+          origin,
+          text: [...text, `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.`],
+        });
+
+        return { explanations, isMatch: true };
+      }
+
+      return { explanations, isMatch: false };
     };
 
     // TODO perhaps instead Explanation, it could be possible to reuse Diagnostic?
@@ -243,7 +236,9 @@ export class ToAcceptProps {
 
       for (const type of sourceType.types) {
         const { explanations, isMatch } = explain(target.type, type, [
-          `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`,
+          isNot
+            ? `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.`
+            : `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`,
         ]);
 
         if (isMatch === true) {

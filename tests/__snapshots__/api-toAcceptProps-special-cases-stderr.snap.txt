@@ -76,6 +76,7 @@ Type 'boolean' is not assignable to type 'string'.
 Error: Component accepts props of the given type.
 
 Type '{ one: string; }' is assignable to type 'One | Other'.
+Type '{ one: string; }' is assignable to type 'One'.
 
   33 | 
   34 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Pass" });
@@ -90,6 +91,7 @@ Type '{ one: string; }' is assignable to type 'One | Other'.
 Error: Component accepts props of the given type.
 
 Type '{ two: string; }' is assignable to type 'One | Other'.
+Type '{ two: string; }' is assignable to type 'Other'.
 
   36 | 
   37 |     expect(OneOrTheOther).type.toAcceptProps({ two: "Pass" });
