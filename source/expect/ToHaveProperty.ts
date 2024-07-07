@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToHaveProperty {
@@ -13,21 +13,26 @@ export class ToHaveProperty {
 
   #explain(
     sourceType: ts.Type,
-    targetType: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType,
+    target: {
+      node: ts.Expression | ts.TypeNode;
+      type: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType;
+    },
     isNot: boolean,
   ) {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
     let targetArgumentText: string;
 
-    if (this.#isStringOrNumberLiteralType(targetType)) {
-      targetArgumentText = String(targetType.value);
+    if (this.#isStringOrNumberLiteralType(target.type)) {
+      targetArgumentText = String(target.type.value);
     } else {
-      targetArgumentText = `[${this.compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
+      targetArgumentText = `[${this.compiler.unescapeLeadingUnderscores(target.type.symbol.escapedName)}]`;
     }
 
+    const origin = DiagnosticOrigin.fromNode(target.node);
+
     return isNot
-      ? [Diagnostic.error(`Property '${targetArgumentText}' exists on type '${sourceTypeText}'.`)]
-      : [Diagnostic.error(`Property '${targetArgumentText}' does not exist on type '${sourceTypeText}'.`)];
+      ? [Diagnostic.error(`Type '${sourceTypeText}' has property '${targetArgumentText}'.`, origin)]
+      : [Diagnostic.error(`Type '${sourceTypeText}' does not have property '${targetArgumentText}'.`, origin)];
   }
 
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
@@ -36,15 +41,18 @@ export class ToHaveProperty {
 
   match(
     sourceType: ts.Type,
-    targetType: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType,
+    target: {
+      node: ts.Expression | ts.TypeNode;
+      type: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType;
+    },
     isNot: boolean,
   ): MatchResult {
     let targetArgumentText: string;
 
-    if (this.#isStringOrNumberLiteralType(targetType)) {
-      targetArgumentText = String(targetType.value);
+    if (this.#isStringOrNumberLiteralType(target.type)) {
+      targetArgumentText = String(target.type.value);
     } else {
-      targetArgumentText = this.compiler.unescapeLeadingUnderscores(targetType.escapedName);
+      targetArgumentText = this.compiler.unescapeLeadingUnderscores(target.type.escapedName);
     }
 
     const isMatch = sourceType.getProperties().some((property) => {
@@ -52,7 +60,7 @@ export class ToHaveProperty {
     });
 
     return {
-      explain: () => this.#explain(sourceType, targetType, isNot),
+      explain: () => this.#explain(sourceType, target, isNot),
       isMatch,
     };
   }
