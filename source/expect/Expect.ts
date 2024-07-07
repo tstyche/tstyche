@@ -199,7 +199,7 @@ export class Expect {
           return;
         }
 
-        return this.toHaveProperty.match(sourceType, targetType, assertion.isNot);
+        return this.toHaveProperty.match(sourceType, { node: assertion.target[0], type: targetType }, assertion.isNot);
       }
 
       case "toRaiseError": {
