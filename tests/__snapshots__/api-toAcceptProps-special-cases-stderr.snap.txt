@@ -1,6 +1,6 @@
 Error: Component accepts props of the given type.
 
-Type '{ one: string; }' is assignable to type '{ one: string; }'.
+Type '{ one: string; }' is assignable with type '{ one: string; }'.
 
    8 | 
    9 |     expect(Default).type.toAcceptProps({ one: "sample" });
@@ -14,8 +14,8 @@ Type '{ one: string; }' is assignable to type '{ one: string; }'.
 
 Error: Component does not accept props of the given type.
 
-Type '{}' is not assignable to type '{ one: string; }'.
-Property 'one' is required in type '{ one: string; }'.
+Type '{ one: string; }' is not assignable with type '{}'.
+Type '{ one: string; }' requires property 'one' .
 
   11 | 
   12 |     expect(Default).type.not.toAcceptProps({});
@@ -29,8 +29,8 @@ Property 'one' is required in type '{ one: string; }'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: boolean; }' is not compatible with type '{ one: string; }'.
-Property 'two' does not exist in type '{ one: string; }'.
+Type '{ one: string; }' is not compatible with type '{ two: boolean; }'.
+Type '{ one: string; }' does not have property 'two'.
 
   14 | 
   15 |     expect(Default).type.not.toAcceptProps({ two: false });
@@ -44,8 +44,8 @@ Property 'two' does not exist in type '{ one: string; }'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: boolean; }' is not assignable to type '{ one: string; }'.
-Property 'one' is required in type '{ one: string; }'.
+Type '{ one: string; }' is not assignable with type '{ two: boolean; }'.
+Type '{ one: string; }' requires property 'one' .
 
   14 | 
   15 |     expect(Default).type.not.toAcceptProps({ two: false });
@@ -59,9 +59,9 @@ Property 'one' is required in type '{ one: string; }'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: boolean; }' is not assignable to type '{ one: string; }'.
+Type '{ one: string; }' is not assignable with type '{ one: boolean; }'.
 Types of property 'one' are incompatible.
-Type 'boolean' is not assignable to type 'string'.
+Type 'string' is not assignable with type 'boolean'.
 
   17 | 
   18 |     expect(Default).type.not.toAcceptProps({ one: false });
@@ -75,8 +75,8 @@ Type 'boolean' is not assignable to type 'string'.
 
 Error: Component accepts props of the given type.
 
-Type '{ one: string; }' is assignable to type 'One | Other'.
-Type '{ one: string; }' is assignable to type 'One'.
+Type 'One | Other' is assignable with type '{ one: string; }'.
+Type 'One' is assignable with type '{ one: string; }'.
 
   33 | 
   34 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Pass" });
@@ -90,8 +90,8 @@ Type '{ one: string; }' is assignable to type 'One'.
 
 Error: Component accepts props of the given type.
 
-Type '{ two: string; }' is assignable to type 'One | Other'.
-Type '{ two: string; }' is assignable to type 'Other'.
+Type 'One | Other' is assignable with type '{ two: string; }'.
+Type 'Other' is assignable with type '{ two: string; }'.
 
   36 | 
   37 |     expect(OneOrTheOther).type.toAcceptProps({ two: "Pass" });
@@ -105,10 +105,10 @@ Type '{ two: string; }' is assignable to type 'Other'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: string; }' is not assignable to type 'One | Other'.
-Type '{ one: string; two: string; }' is not assignable to type 'One'.
+Type 'One | Other' is not assignable with type '{ one: string; two: string; }'.
+Type 'One' is not assignable with type '{ one: string; two: string; }'.
 Types of property 'two' are incompatible.
-Type 'string' is not assignable to type 'undefined'.
+Type 'undefined' is not assignable with type 'string'.
 
   39 | 
   40 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
@@ -122,10 +122,10 @@ Type 'string' is not assignable to type 'undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: string; }' is not assignable to type 'One | Other'.
-Type '{ one: string; two: string; }' is not assignable to type 'Other'.
+Type 'One | Other' is not assignable with type '{ one: string; two: string; }'.
+Type 'Other' is not assignable with type '{ one: string; two: string; }'.
 Types of property 'one' are incompatible.
-Type 'string' is not assignable to type 'undefined'.
+Type 'undefined' is not assignable with type 'string'.
 
   39 | 
   40 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
@@ -139,9 +139,9 @@ Type 'string' is not assignable to type 'undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{}' is not assignable to type 'One | Other'.
-Type '{}' is not assignable to type 'One'.
-Property 'one' is required in type 'One'.
+Type 'One | Other' is not assignable with type '{}'.
+Type 'One' is not assignable with type '{}'.
+Type 'One' requires property 'one' .
 
   42 | 
   43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
@@ -155,9 +155,9 @@ Property 'one' is required in type 'One'.
 
 Error: Component does not accept props of the given type.
 
-Type '{}' is not assignable to type 'One | Other'.
-Type '{}' is not assignable to type 'Other'.
-Property 'two' is required in type 'Other'.
+Type 'One | Other' is not assignable with type '{}'.
+Type 'Other' is not assignable with type '{}'.
+Type 'Other' requires property 'two' .
 
   42 | 
   43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
@@ -171,9 +171,9 @@ Property 'two' is required in type 'Other'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ three: boolean; }' is not assignable to type 'One | Other'.
-Type '{ three: boolean; }' is not compatible with type 'One'.
-Property 'three' does not exist in type 'One'.
+Type 'One | Other' is not assignable with type '{ three: boolean; }'.
+Type 'One' is not compatible with type '{ three: boolean; }'.
+Type 'One' does not have property 'three'.
 
   45 | 
   46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
@@ -187,9 +187,9 @@ Property 'three' does not exist in type 'One'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ three: boolean; }' is not assignable to type 'One | Other'.
-Type '{ three: boolean; }' is not assignable to type 'One'.
-Property 'one' is required in type 'One'.
+Type 'One | Other' is not assignable with type '{ three: boolean; }'.
+Type 'One' is not assignable with type '{ three: boolean; }'.
+Type 'One' requires property 'one' .
 
   45 | 
   46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
@@ -203,9 +203,9 @@ Property 'one' is required in type 'One'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ three: boolean; }' is not assignable to type 'One | Other'.
-Type '{ three: boolean; }' is not compatible with type 'Other'.
-Property 'three' does not exist in type 'Other'.
+Type 'One | Other' is not assignable with type '{ three: boolean; }'.
+Type 'Other' is not compatible with type '{ three: boolean; }'.
+Type 'Other' does not have property 'three'.
 
   45 | 
   46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
@@ -219,9 +219,9 @@ Property 'three' does not exist in type 'Other'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ three: boolean; }' is not assignable to type 'One | Other'.
-Type '{ three: boolean; }' is not assignable to type 'Other'.
-Property 'two' is required in type 'Other'.
+Type 'One | Other' is not assignable with type '{ three: boolean; }'.
+Type 'Other' is not assignable with type '{ three: boolean; }'.
+Type 'Other' requires property 'two' .
 
   45 | 
   46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });

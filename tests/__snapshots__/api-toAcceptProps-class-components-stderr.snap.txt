@@ -1,6 +1,6 @@
 Error: Component accepts props of the given type.
 
-Type '{}' is assignable to type '{}'.
+Type '{}' is assignable with type '{}'.
 
   47 |   test("accepts props of the given type", () => {
   48 |     expect(None).type.toAcceptProps({});
@@ -14,7 +14,7 @@ Type '{}' is assignable to type '{}'.
 
 Error: Component accepts props of the given type.
 
-Type '{}' is assignable to type '{}'.
+Type '{}' is assignable with type '{}'.
 
   51 |     const noneProps = {};
   52 |     expect(None).type.toAcceptProps(noneProps);
@@ -28,8 +28,8 @@ Type '{}' is assignable to type '{}'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; }' is not compatible with type '{}'.
-Property 'one' does not exist in type '{}'.
+Type '{}' is not compatible with type '{ one: string; }'.
+Type '{}' does not have property 'one'.
 
   54 | 
   55 |     expect(None).type.not.toAcceptProps({ one: "sample" });
@@ -43,7 +43,7 @@ Property 'one' does not exist in type '{}'.
 
 Error: Component accepts props of the given type.
 
-Type '{}' is assignable to type 'FirstProps'.
+Type 'FirstProps' is assignable with type '{}'.
 
   57 | 
   58 |     expect(First).type.toAcceptProps({});
@@ -57,7 +57,7 @@ Type '{}' is assignable to type 'FirstProps'.
 
 Error: Component accepts props of the given type.
 
-Type '{ one: string; }' is assignable to type 'FirstProps'.
+Type 'FirstProps' is assignable with type '{ one: string; }'.
 
   60 | 
   61 |     expect(First).type.toAcceptProps({ one: "sample" });
@@ -71,7 +71,7 @@ Type '{ one: string; }' is assignable to type 'FirstProps'.
 
 Error: Component accepts props of the given type.
 
-Type '{ one: string; }' is assignable to type 'SecondProps'.
+Type 'SecondProps' is assignable with type '{ one: string; }'.
 
   63 | 
   64 |     expect(Second).type.toAcceptProps({ one: "sample" });
@@ -85,7 +85,7 @@ Type '{ one: string; }' is assignable to type 'SecondProps'.
 
 Error: Component accepts props of the given type.
 
-Type '{ one: string; }' is assignable to type 'SecondProps'.
+Type 'SecondProps' is assignable with type '{ one: string; }'.
 
   67 |     const secondProps = { one: "sample" };
   68 |     expect(Second).type.toAcceptProps(secondProps);
@@ -99,7 +99,7 @@ Type '{ one: string; }' is assignable to type 'SecondProps'.
 
 Error: Component accepts props of the given type.
 
-Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
+Type 'SecondProps' is assignable with type '{ one: string; two: boolean; }'.
 
   70 | 
   71 |     expect(Second).type.toAcceptProps({ one: "sample", two: true });
@@ -113,7 +113,7 @@ Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
 
 Error: Component accepts props of the given type.
 
-Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
+Type 'SecondProps' is assignable with type '{ one: string; two: boolean; }'.
 
   74 |     const two = true;
   75 |     expect(Second).type.toAcceptProps({ one: "sample", two });
@@ -127,8 +127,8 @@ Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{}' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{}'.
+Type 'SecondProps' requires property 'one' .
 
   79 |   test("property is required in props type", () => {
   80 |     expect(Second).type.not.toAcceptProps({});
@@ -142,8 +142,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: boolean; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: boolean; }'.
+Type 'SecondProps' requires property 'one' .
 
   82 | 
   83 |     expect(Second).type.not.toAcceptProps({ two: true });
@@ -157,8 +157,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: boolean; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: boolean; }'.
+Type 'SecondProps' requires property 'one' .
 
   86 |     const secondProps = { two: true };
   87 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -172,8 +172,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: boolean; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: boolean; }'.
+Type 'SecondProps' requires property 'one' .
 
   90 |     const two = true;
   91 |     expect(Second).type.not.toAcceptProps({ two });
@@ -187,8 +187,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: boolean; }' is not compatible with type 'FirstProps'.
-Property 'two' does not exist in type 'FirstProps'.
+Type 'FirstProps' is not compatible with type '{ two: boolean; }'.
+Type 'FirstProps' does not have property 'two'.
 
    95 |   test("property does not exist in props type", () => {
    96 |     expect(First).type.not.toAcceptProps({ two: false });
@@ -202,8 +202,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: boolean; }' is not compatible with type 'FirstProps'.
-Property 'two' does not exist in type 'FirstProps'.
+Type 'FirstProps' is not compatible with type '{ one: string; two: boolean; }'.
+Type 'FirstProps' does not have property 'two'.
 
    98 | 
    99 |     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
@@ -217,8 +217,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: boolean; }' is not compatible with type 'FirstProps'.
-Property 'two' does not exist in type 'FirstProps'.
+Type 'FirstProps' is not compatible with type '{ one: string; two: boolean; }'.
+Type 'FirstProps' does not have property 'two'.
 
   102 |     const firstProps = { one: "sample", two: false };
   103 |     expect(First).type.not.toAcceptProps(firstProps);
@@ -232,8 +232,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   105 | 
   106 |     expect(Second).type.not.toAcceptProps({ three: 123 });
@@ -247,8 +247,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ three: number; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ three: number; }'.
+Type 'SecondProps' requires property 'one' .
 
   105 | 
   106 |     expect(Second).type.not.toAcceptProps({ three: 123 });
@@ -262,8 +262,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   109 |     const secondProps = { three: 123 };
   110 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -277,8 +277,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ three: number; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ three: number; }'.
+Type 'SecondProps' requires property 'one' .
 
   109 |     const secondProps = { three: 123 };
   110 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -292,9 +292,9 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: string; three: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: string; three: number; }'.
 Types of property 'two' are incompatible.
-Type 'string' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'string'.
 
   112 | 
   113 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
@@ -308,8 +308,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: string; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ two: string; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   112 | 
   113 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
@@ -323,8 +323,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: string; three: number; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: string; three: number; }'.
+Type 'SecondProps' requires property 'one' .
 
   112 | 
   113 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
@@ -338,8 +338,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   116 |     const three = 123;
   117 |     expect(Second).type.not.toAcceptProps({ one: "sample", three });
@@ -353,9 +353,9 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: string; three: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: string; two: string; three: number; }'.
 Types of property 'two' are incompatible.
-Type 'string' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'string'.
 
   119 | 
   120 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
@@ -369,8 +369,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: string; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; two: string; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   119 | 
   120 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
@@ -384,9 +384,9 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: string; three: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: string; two: string; three: number; }'.
 Types of property 'two' are incompatible.
-Type 'string' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'string'.
 
   122 | 
   123 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three });
@@ -400,8 +400,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: string; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; two: string; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   122 | 
   123 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three });
@@ -415,8 +415,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: boolean; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; two: boolean; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   125 | 
   126 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
@@ -430,8 +430,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; two: boolean; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; two: boolean; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   128 | 
   129 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three });
@@ -445,9 +445,9 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; }' is not assignable to type 'FirstProps'.
+Type 'FirstProps' is not assignable with type '{ one: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   133 |   test("property type is not assignable to prop type", () => {
   134 |     expect(First).type.not.toAcceptProps({ one: 1 });
@@ -461,9 +461,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; }' is not assignable to type 'FirstProps'.
+Type 'FirstProps' is not assignable with type '{ one: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   137 |     const firstProps = { one: 1 };
   138 |     expect(First).type.not.toAcceptProps(firstProps);
@@ -477,9 +477,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   140 | 
   141 |     expect(Second).type.not.toAcceptProps({ one: 1 });
@@ -493,9 +493,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; two: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   143 | 
   144 |     expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
@@ -509,9 +509,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; two: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
 Types of property 'two' are incompatible.
-Type 'number' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'number'.
 
   143 | 
   144 |     expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
@@ -525,9 +525,9 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; two: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   147 |     const secondProps = { one: 1, two: 2 };
   148 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -541,9 +541,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; two: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
 Types of property 'two' are incompatible.
-Type 'number' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'number'.
 
   147 |     const secondProps = { one: 1, two: 2 };
   148 |     expect(Second).type.not.toAcceptProps(secondProps);
@@ -557,9 +557,9 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; two: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   151 |     const two = 2;
   152 |     expect(Second).type.not.toAcceptProps({ one: 1, two });
@@ -573,9 +573,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: number; two: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
 Types of property 'two' are incompatible.
-Type 'number' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'number'.
 
   151 |     const two = 2;
   152 |     expect(Second).type.not.toAcceptProps({ one: 1, two });
@@ -589,7 +589,7 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
 Error: Component type accepts props of the given type.
 
-Type '{}' is assignable to type '{}'.
+Type '{}' is assignable with type '{}'.
 
   164 |   test("accepts props of the given type", () => {
   165 |     expect<None>().type.toAcceptProps<{}>();
@@ -603,7 +603,7 @@ Type '{}' is assignable to type '{}'.
 
 Error: Component type accepts props of the given type.
 
-Type 'NonePropsSample' is assignable to type '{}'.
+Type '{}' is assignable with type 'NonePropsSample'.
 
   168 |     type NonePropsSample = {};
   169 |     expect<None>().type.toAcceptProps<NonePropsSample>();
@@ -617,8 +617,8 @@ Type 'NonePropsSample' is assignable to type '{}'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one?: string | undefined; }' is not compatible with type '{}'.
-Property 'one' does not exist in type '{}'.
+Type '{}' is not compatible with type '{ one?: string | undefined; }'.
+Type '{}' does not have property 'one'.
 
   171 | 
   172 |     expect<None>().type.not.toAcceptProps<{ one?: string }>();
@@ -632,8 +632,8 @@ Property 'one' does not exist in type '{}'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; }' is not compatible with type '{}'.
-Property 'one' does not exist in type '{}'.
+Type '{}' is not compatible with type '{ one: string; }'.
+Type '{}' does not have property 'one'.
 
   174 | 
   175 |     expect<None>().type.not.toAcceptProps<{ one: string }>();
@@ -647,7 +647,7 @@ Property 'one' does not exist in type '{}'.
 
 Error: Component type accepts props of the given type.
 
-Type '{}' is assignable to type 'FirstProps'.
+Type 'FirstProps' is assignable with type '{}'.
 
   177 | 
   178 |     expect<First>().type.toAcceptProps<{}>();
@@ -661,7 +661,7 @@ Type '{}' is assignable to type 'FirstProps'.
 
 Error: Component type accepts props of the given type.
 
-Type '{ one?: string | undefined; }' is assignable to type 'FirstProps'.
+Type 'FirstProps' is assignable with type '{ one?: string | undefined; }'.
 
   180 | 
   181 |     expect<First>().type.toAcceptProps<{ one?: string }>();
@@ -675,7 +675,7 @@ Type '{ one?: string | undefined; }' is assignable to type 'FirstProps'.
 
 Error: Component type accepts props of the given type.
 
-Type '{ one: string; }' is assignable to type 'FirstProps'.
+Type 'FirstProps' is assignable with type '{ one: string; }'.
 
   183 | 
   184 |     expect<First>().type.toAcceptProps<{ one: string }>();
@@ -689,7 +689,7 @@ Type '{ one: string; }' is assignable to type 'FirstProps'.
 
 Error: Component type accepts props of the given type.
 
-Type '{ one: string; }' is assignable to type 'SecondProps'.
+Type 'SecondProps' is assignable with type '{ one: string; }'.
 
   186 | 
   187 |     expect<Second>().type.toAcceptProps<{ one: string }>();
@@ -703,7 +703,7 @@ Type '{ one: string; }' is assignable to type 'SecondProps'.
 
 Error: Component type accepts props of the given type.
 
-Type 'SecondPropsSample' is assignable to type 'SecondProps'.
+Type 'SecondProps' is assignable with type 'SecondPropsSample'.
 
   190 |     type SecondPropsSample = { one: string };
   191 |     expect<Second>().type.toAcceptProps<SecondPropsSample>();
@@ -717,7 +717,7 @@ Type 'SecondPropsSample' is assignable to type 'SecondProps'.
 
 Error: Component type accepts props of the given type.
 
-Type '{ one: string; two?: boolean | undefined; }' is assignable to type 'SecondProps'.
+Type 'SecondProps' is assignable with type '{ one: string; two?: boolean | undefined; }'.
 
   193 | 
   194 |     expect<Second>().type.toAcceptProps<{ one: string; two?: boolean }>();
@@ -731,7 +731,7 @@ Type '{ one: string; two?: boolean | undefined; }' is assignable to type 'Second
 
 Error: Component type accepts props of the given type.
 
-Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
+Type 'SecondProps' is assignable with type '{ one: string; two: boolean; }'.
 
   196 | 
   197 |     expect<Second>().type.toAcceptProps<{ one: string; two: boolean }>();
@@ -745,8 +745,8 @@ Type '{ one: string; two: boolean; }' is assignable to type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{}' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{}'.
+Type 'SecondProps' requires property 'one' .
 
   201 |   test("property is required in props type", () => {
   202 |     expect<Second>().type.not.toAcceptProps<{}>();
@@ -760,8 +760,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one?: string | undefined; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one?: string | undefined; }'.
+Type 'SecondProps' requires property 'one' .
 
   204 | 
   205 |     expect<Second>().type.not.toAcceptProps<{ one?: string }>();
@@ -775,8 +775,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two?: boolean | undefined; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two?: boolean | undefined; }'.
+Type 'SecondProps' requires property 'one' .
 
   207 | 
   208 |     expect<Second>().type.not.toAcceptProps<{ two?: boolean }>();
@@ -790,8 +790,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two: boolean; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: boolean; }'.
+Type 'SecondProps' requires property 'one' .
 
   210 | 
   211 |     expect<Second>().type.not.toAcceptProps<{ two: boolean }>();
@@ -805,8 +805,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type 'SecondPropsSample' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type 'SecondPropsSample'.
+Type 'SecondProps' requires property 'one' .
 
   214 |     type SecondPropsSample = { two: boolean };
   215 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -820,8 +820,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one?: string | undefined; two?: boolean | undefined; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one?: string | undefined; two?: boolean | undefined; }'.
+Type 'SecondProps' requires property 'one' .
 
   217 | 
   218 |     expect<Second>().type.not.toAcceptProps<{ one?: string; two?: boolean }>();
@@ -835,8 +835,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two?: boolean | undefined; }' is not compatible with type 'FirstProps'.
-Property 'two' does not exist in type 'FirstProps'.
+Type 'FirstProps' is not compatible with type '{ two?: boolean | undefined; }'.
+Type 'FirstProps' does not have property 'two'.
 
   222 |   test("property does not exist in props type", () => {
   223 |     expect<First>().type.not.toAcceptProps<{ two?: boolean }>();
@@ -850,8 +850,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two: boolean; }' is not compatible with type 'FirstProps'.
-Property 'two' does not exist in type 'FirstProps'.
+Type 'FirstProps' is not compatible with type '{ two: boolean; }'.
+Type 'FirstProps' does not have property 'two'.
 
   225 | 
   226 |     expect<First>().type.not.toAcceptProps<{ two: boolean }>();
@@ -865,8 +865,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; two?: boolean | undefined; }' is not compatible with type 'FirstProps'.
-Property 'two' does not exist in type 'FirstProps'.
+Type 'FirstProps' is not compatible with type '{ one: string; two?: boolean | undefined; }'.
+Type 'FirstProps' does not have property 'two'.
 
   228 | 
   229 |     expect<First>().type.not.toAcceptProps<{ one: string; two?: boolean }>();
@@ -880,8 +880,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; two: boolean; }' is not compatible with type 'FirstProps'.
-Property 'two' does not exist in type 'FirstProps'.
+Type 'FirstProps' is not compatible with type '{ one: string; two: boolean; }'.
+Type 'FirstProps' does not have property 'two'.
 
   231 | 
   232 |     expect<First>().type.not.toAcceptProps<{ one: string; two: boolean }>();
@@ -895,8 +895,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type 'FirstPropsSample' is not compatible with type 'FirstProps'.
-Property 'two' does not exist in type 'FirstProps'.
+Type 'FirstProps' is not compatible with type 'FirstPropsSample'.
+Type 'FirstProps' does not have property 'two'.
 
   235 |     type FirstPropsSample = { one: string; two: boolean };
   236 |     expect<First>().type.not.toAcceptProps<FirstPropsSample>();
@@ -910,8 +910,8 @@ Property 'two' does not exist in type 'FirstProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ three?: number | undefined; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ three?: number | undefined; }'.
+Type 'SecondProps' does not have property 'three'.
 
   238 | 
   239 |     expect<Second>().type.not.toAcceptProps<{ three?: number }>();
@@ -925,8 +925,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ three?: number | undefined; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ three?: number | undefined; }'.
+Type 'SecondProps' requires property 'one' .
 
   238 | 
   239 |     expect<Second>().type.not.toAcceptProps<{ three?: number }>();
@@ -940,8 +940,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   241 | 
   242 |     expect<Second>().type.not.toAcceptProps<{ three: number }>();
@@ -955,8 +955,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ three: number; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ three: number; }'.
+Type 'SecondProps' requires property 'one' .
 
   241 | 
   242 |     expect<Second>().type.not.toAcceptProps<{ three: number }>();
@@ -970,8 +970,8 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type 'SecondPropsSample' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type 'SecondPropsSample'.
+Type 'SecondProps' does not have property 'three'.
 
   245 |     type SecondPropsSample = { three: number };
   246 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -985,8 +985,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type 'SecondPropsSample' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type 'SecondPropsSample'.
+Type 'SecondProps' requires property 'one' .
 
   245 |     type SecondPropsSample = { three: number };
   246 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -1000,9 +1000,9 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two: string; three?: number | undefined; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: string; three?: number | undefined; }'.
 Types of property 'two' are incompatible.
-Type 'string' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'string'.
 
   248 | 
   249 |     expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
@@ -1016,8 +1016,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two: string; three?: number | undefined; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ two: string; three?: number | undefined; }'.
+Type 'SecondProps' does not have property 'three'.
 
   248 | 
   249 |     expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
@@ -1031,8 +1031,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two: string; three?: number | undefined; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: string; three?: number | undefined; }'.
+Type 'SecondProps' requires property 'one' .
 
   248 | 
   249 |     expect<Second>().type.not.toAcceptProps<{ two: string; three?: number }>();
@@ -1046,9 +1046,9 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two: string; three: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: string; three: number; }'.
 Types of property 'two' are incompatible.
-Type 'string' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'string'.
 
   251 | 
   252 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
@@ -1062,8 +1062,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two: string; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ two: string; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   251 | 
   252 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
@@ -1077,8 +1077,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ two: string; three: number; }' is not assignable to type 'SecondProps'.
-Property 'one' is required in type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ two: string; three: number; }'.
+Type 'SecondProps' requires property 'one' .
 
   251 | 
   252 |     expect<Second>().type.not.toAcceptProps<{ two: string; three: number }>();
@@ -1092,9 +1092,9 @@ Property 'one' is required in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; two: string; three?: number | undefined; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: string; two: string; three?: number | undefined; }'.
 Types of property 'two' are incompatible.
-Type 'string' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'string'.
 
   254 | 
   255 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three?: number }>();
@@ -1108,8 +1108,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; two: string; three?: number | undefined; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; two: string; three?: number | undefined; }'.
+Type 'SecondProps' does not have property 'three'.
 
   254 | 
   255 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three?: number }>();
@@ -1123,9 +1123,9 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; two: string; three: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: string; two: string; three: number; }'.
 Types of property 'two' are incompatible.
-Type 'string' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'string'.
 
   257 | 
   258 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three: number }>();
@@ -1139,8 +1139,8 @@ Type 'string' is not assignable to type 'boolean | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; two: string; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; two: string; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   257 | 
   258 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: string; three: number }>();
@@ -1154,8 +1154,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; two?: boolean | undefined; three?: number | undefined; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; two?: boolean | undefined; three?: number | undefined; }'.
+Type 'SecondProps' does not have property 'three'.
 
   260 | 
   261 |     expect<Second>().type.not.toAcceptProps<{ one: string; two?: boolean; three?: number }>();
@@ -1169,8 +1169,8 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: string; two: boolean; three: number; }' is not compatible with type 'SecondProps'.
-Property 'three' does not exist in type 'SecondProps'.
+Type 'SecondProps' is not compatible with type '{ one: string; two: boolean; three: number; }'.
+Type 'SecondProps' does not have property 'three'.
 
   263 | 
   264 |     expect<Second>().type.not.toAcceptProps<{ one: string; two: boolean; three: number }>();
@@ -1184,9 +1184,9 @@ Property 'three' does not exist in type 'SecondProps'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one?: number | undefined; }' is not assignable to type 'FirstProps'.
+Type 'FirstProps' is not assignable with type '{ one?: number | undefined; }'.
 Types of property 'one' are incompatible.
-Type 'number | undefined' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number | undefined'.
 
   268 |   test("property type is not assignable to prop type", () => {
   269 |     expect<First>().type.not.toAcceptProps<{ one?: number }>();
@@ -1200,9 +1200,9 @@ Type 'number | undefined' is not assignable to type 'string | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: number; }' is not assignable to type 'FirstProps'.
+Type 'FirstProps' is not assignable with type '{ one: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   271 | 
   272 |     expect<First>().type.not.toAcceptProps<{ one: number }>();
@@ -1216,9 +1216,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type 'FirstPropsSample' is not assignable to type 'FirstProps'.
+Type 'FirstProps' is not assignable with type 'FirstPropsSample'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   275 |     type FirstPropsSample = { one: number };
   276 |     expect<First>().type.not.toAcceptProps<FirstPropsSample>();
@@ -1232,9 +1232,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   278 | 
   279 |     expect<Second>().type.not.toAcceptProps<{ one: number }>();
@@ -1248,9 +1248,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: number; two?: number | undefined; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two?: number | undefined; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   281 | 
   282 |     expect<Second>().type.not.toAcceptProps<{ one: number; two?: number }>();
@@ -1264,9 +1264,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: number; two?: number | undefined; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two?: number | undefined; }'.
 Types of property 'two' are incompatible.
-Type 'number | undefined' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'number | undefined'.
 
   281 | 
   282 |     expect<Second>().type.not.toAcceptProps<{ one: number; two?: number }>();
@@ -1280,9 +1280,9 @@ Type 'number | undefined' is not assignable to type 'boolean | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: number; two: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   284 | 
   285 |     expect<Second>().type.not.toAcceptProps<{ one: number; two: number }>();
@@ -1296,9 +1296,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type '{ one: number; two: number; }' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
 Types of property 'two' are incompatible.
-Type 'number' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'number'.
 
   284 | 
   285 |     expect<Second>().type.not.toAcceptProps<{ one: number; two: number }>();
@@ -1312,9 +1312,9 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type 'SecondPropsSample' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type 'SecondPropsSample'.
 Types of property 'one' are incompatible.
-Type 'number' is not assignable to type 'string | undefined'.
+Type 'string | undefined' is not assignable with type 'number'.
 
   288 |     type SecondPropsSample = { one: number; two: number };
   289 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();
@@ -1328,9 +1328,9 @@ Type 'number' is not assignable to type 'string | undefined'.
 
 Error: Component type does not accept props of the given type.
 
-Type 'SecondPropsSample' is not assignable to type 'SecondProps'.
+Type 'SecondProps' is not assignable with type 'SecondPropsSample'.
 Types of property 'two' are incompatible.
-Type 'number' is not assignable to type 'boolean | undefined'.
+Type 'boolean | undefined' is not assignable with type 'number'.
 
   288 |     type SecondPropsSample = { one: number; two: number };
   289 |     expect<Second>().type.not.toAcceptProps<SecondPropsSample>();

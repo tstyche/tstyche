@@ -150,8 +150,8 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${targetTypeText}' is not compatible with type '${sourceTypeText}'.`,
-              `Property '${targetPropertyName}' does not exist in type '${sourceTypeText}'.`,
+              `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`,
+              `Type '${sourceTypeText}' does not have property '${targetPropertyName}'.`,
             ],
           });
           continue;
@@ -164,8 +164,8 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`,
-              `Property '${targetPropertyName}' is required in type '${sourceTypeText}'.`,
+              `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
+              `Type '${sourceTypeText}' requires property '${targetPropertyName}' .`,
             ],
           });
 
@@ -185,9 +185,9 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`,
+              `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
               `Types of property '${targetPropertyName}' are incompatible.`,
-              `Type '${targetPropertyTypeText}' is not assignable to type '${sourcePropertyTypeText}'.`,
+              `Type '${sourcePropertyTypeText}' is not assignable with type '${targetPropertyTypeText}'.`,
             ],
           });
         }
@@ -195,9 +195,9 @@ export class ToAcceptProps {
 
       if (sourceType != null) {
         for (const sourceProperty of sourceType.getProperties()) {
-          const sourcePropName = sourceProperty.getName();
+          const sourcePropertyName = sourceProperty.getName();
 
-          const targetProperty = targetType.getProperty(sourcePropName);
+          const targetProperty = targetType.getProperty(sourcePropertyName);
 
           if (!targetProperty && !this.#isOptionalProperty(sourceProperty)) {
             const origin = DiagnosticOrigin.fromNode(target.node);
@@ -206,8 +206,8 @@ export class ToAcceptProps {
               origin,
               text: [
                 ...text,
-                `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`,
-                `Property '${sourcePropName}' is required in type '${sourceTypeText}'.`,
+                `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
+                `Type '${sourceTypeText}' requires property '${sourcePropertyName}' .`,
               ],
             });
           }
@@ -219,7 +219,7 @@ export class ToAcceptProps {
 
         explanations.push({
           origin,
-          text: [...text, `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.`],
+          text: [...text, `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`],
         });
 
         return { explanations, isMatch: true };
@@ -234,8 +234,8 @@ export class ToAcceptProps {
       for (const sourceType of sourceParameterType.types) {
         const { explanations, isMatch } = explain(sourceType, target.type, [
           isNot
-            ? `Type '${targetTypeText}' is assignable to type '${sourceTypeText}'.`
-            : `Type '${targetTypeText}' is not assignable to type '${sourceTypeText}'.`,
+            ? `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`
+            : `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
         ]);
 
         if (isMatch === true) {
