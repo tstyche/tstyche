@@ -304,10 +304,13 @@ export class Expect {
   }
 
   #onSourceArgumentMustBeJsxComponent(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Source'" : "An argument for 'source'";
+    const expectedText = "a function or class type";
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
-    const text = `${sourceText} must be of a function or class type, received: '${receivedTypeText}'.`;
+    const text = this.#compiler.isTypeNode(node)
+      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText, receivedTypeText)
+      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText, receivedTypeText);
+
     const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
