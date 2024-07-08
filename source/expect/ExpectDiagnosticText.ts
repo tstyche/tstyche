@@ -50,6 +50,54 @@ export class ExpectDiagnosticText {
     return `${isTypeNode ? "Type" : "Expression type"} did not raise a matching type error.`;
   }
 
+  static typeDoesNotHaveProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
+  }
+
+  static typeDoesMatch(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' does match type '${targetTypeText}'.`;
+  }
+
+  static typeDoesNotMatch(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' does not match type '${targetTypeText}'.`;
+  }
+
+  static typeHasProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' has property '${propertyNameText}'.`;
+  }
+
+  static typeIs(typeText: string): string {
+    return `Type is '${typeText}'.`;
+  }
+
+  static typeIsAssignableTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is assignable to type '${targetTypeText}'.`;
+  }
+
+  static typeIsAssignableWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`;
+  }
+
+  static typeIsIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is identical to type '${targetTypeText}'.`;
+  }
+
+  static typeIsNotAssignableTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not assignable to type '${targetTypeText}'.`;
+  }
+
+  static typeIsNotAssignableWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`;
+  }
+
+  static typeIsNotCompatibleWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`;
+  }
+
+  static typeIsNotIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not identical to type '${targetTypeText}'.`;
+  }
+
   static typeRaisedError(
     isTypeNode: boolean,
     options?: { count?: number; expectedText?: string; targetCount?: number },
@@ -68,56 +116,8 @@ export class ExpectDiagnosticText {
     return `${isTypeNode ? "Type" : "Expression type"} raised a matching type error.`;
   }
 
-  static typeDoesNotHaveProperty(typeText: string, propertyNameText: string): string {
-    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
-  }
-
-  static typeHasProperty(typeText: string, propertyNameText: string): string {
-    return `Type '${typeText}' has property '${propertyNameText}'.`;
-  }
-
   static typeRequiresProperty(typeText: string, propertyNameText: string): string {
     return `Type '${typeText}' requires property '${propertyNameText}'.`;
-  }
-
-  static typeDoesMatch(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' does match type '${targetTypeText}'.`;
-  }
-
-  static typeDoesNotMatch(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' does not match type '${targetTypeText}'.`;
-  }
-
-  static typeIs(typeText: string): string {
-    return `Type is '${typeText}'.`;
-  }
-
-  static typeIsAssignableTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is assignable to type '${targetTypeText}'.`;
-  }
-
-  static typeIsNotAssignableTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not assignable to type '${targetTypeText}'.`;
-  }
-
-  static typeIsAssignableWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`;
-  }
-
-  static typeIsIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is identical to type '${targetTypeText}'.`;
-  }
-
-  static typeIsNotIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not identical to type '${targetTypeText}'.`;
-  }
-
-  static typeIsNotAssignableWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`;
-  }
-
-  static typeIsNotCompatibleWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`;
   }
 
   static typesOfPropertyAreNotCompatible(propertyNameText: string): string {
