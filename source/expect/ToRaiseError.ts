@@ -22,24 +22,22 @@ export class ToRaiseError {
     targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ) {
-    const sourceText = this.compiler.isTypeNode(source.node) ? "Type" : "Expression type";
+    const isTypeNode = this.compiler.isTypeNode(source.node);
 
     if (source.diagnostics.length === 0) {
-      const text = ExpectDiagnosticText.typeDidNotRaiseError(this.compiler.isTypeNode(source.node));
+      const text = ExpectDiagnosticText.typeDidNotRaiseError(isTypeNode);
 
       return [Diagnostic.error(text)];
     }
 
     if (source.diagnostics.length !== targetTypes.length) {
-      const countText =
-        source.diagnostics.length > targetTypes.length
-          ? String(source.diagnostics.length)
-          : `only ${String(source.diagnostics.length)}`;
+      const count = source.diagnostics.length;
+      const targetCount = targetTypes.length;
 
-      const text = `${sourceText} raised ${countText} type error${source.diagnostics.length === 1 ? "" : "s"}.`;
+      const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, { count, targetCount });
 
       const related = [
-        Diagnostic.error(ExpectDiagnosticText.raisedTypeError(source.diagnostics.length)),
+        Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
         ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
       ];
 
@@ -53,19 +51,16 @@ export class ToRaiseError {
         const isMatch = this.#matchExpectedError(diagnostic, argument);
 
         if (isNot ? isMatch : !isMatch) {
-          const expectedText = this.#isStringLiteralType(argument)
-            ? `matching substring '${argument.value}'`
-            : `with code ${String(argument.value)}`;
-
           const text = isNot
-            ? ExpectDiagnosticText.typeRaisedError(this.compiler.isTypeNode(source.node), { expectedText })
-            : ExpectDiagnosticText.typeDidNotRaiseError(this.compiler.isTypeNode(source.node), { expectedText });
+            ? ExpectDiagnosticText.typeRaisedMatchingError(isTypeNode)
+            : ExpectDiagnosticText.typeDidNotRaiseMatchingError(isTypeNode);
 
           const related = [
             Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
             ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
           ];
 
+          // TODO add the 'origin' and make sure it makes the message understandable
           diagnostics.push(Diagnostic.error(text).add({ related }));
         }
       }

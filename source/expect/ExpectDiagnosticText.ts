@@ -42,28 +42,30 @@ export class ExpectDiagnosticText {
     return `A type argument for '${argumentNameText}' must be of ${expectedText}.`;
   }
 
-  static typeDidNotRaiseError(isTypeNode: boolean, options?: { expectedText?: string }): string {
-    const text = [`${isTypeNode ? "Type" : "Expression type"} did not raise a type error`];
-
-    if (options?.expectedText != null) {
-      text.push(" ", options.expectedText);
-    }
-
-    text.push(".");
-
-    return text.join("");
+  static typeDidNotRaiseError(isTypeNode: boolean): string {
+    return `${isTypeNode ? "Type" : "Expression type"} did not raise a type error.`;
   }
 
-  static typeRaisedError(isTypeNode: boolean, options?: { expectedText?: string }): string {
-    const text = [`${isTypeNode ? "Type" : "Expression type"} raised a type error`];
+  static typeDidNotRaiseMatchingError(isTypeNode: boolean): string {
+    return `${isTypeNode ? "Type" : "Expression type"} did not raise a matching type error.`;
+  }
 
-    if (options?.expectedText != null) {
-      text.push(" ", options.expectedText);
+  static typeRaisedError(
+    isTypeNode: boolean,
+    options?: { count?: number; expectedText?: string; targetCount?: number },
+  ): string {
+    const count = options?.count ?? 1;
+    let countText = "a";
+
+    if (options?.targetCount != null && (count > 1 || options.targetCount > 1)) {
+      countText = count > options.targetCount ? String(count) : `only ${String(count)}`;
     }
 
-    text.push(".");
+    return `${isTypeNode ? "Type" : "Expression type"} raised ${countText} type error${count === 1 ? "" : "s"}.`;
+  }
 
-    return text.join("");
+  static typeRaisedMatchingError(isTypeNode: boolean): string {
+    return `${isTypeNode ? "Type" : "Expression type"} raised a matching type error.`;
   }
 
   static typeDoesNotHaveProperty(typeText: string, propertyNameText: string): string {

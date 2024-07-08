@@ -1,4 +1,4 @@
-Error: Expression type raised 1 type error.
+Error: Expression type raised a type error.
 
    6 | test("expression raises a type error", () => {
    7 |   expect(one("pass")).type.toRaiseError();
@@ -36,7 +36,7 @@ Error: Expression type did not raise a type error.
 
        at ./__typetests__/toRaiseError.tst.ts:13:22 ❭ expression does not raise a type error
 
-Error: Type raised 1 type error.
+Error: Type raised a type error.
 
   16 | test("type expression raises a type error", () => {
   17 |   expect<One>().type.toRaiseError();
@@ -124,7 +124,7 @@ Error: Expression type raised 3 type errors.
 
            at ./__typetests__/toRaiseError.tst.ts:35:9
 
-Error: Expression type raised a type error matching substring 'Expected 0 arguments'.
+Error: Expression type raised a matching type error.
 
   39 | test("expression raises a type error with matching message", () => {
   40 |   expect(one("pass")).type.toRaiseError("Expected 0 arguments");
@@ -150,7 +150,7 @@ Error: Expression type raised a type error matching substring 'Expected 0 argume
 
            at ./__typetests__/toRaiseError.tst.ts:41:14
 
-Error: Expression type raised a type error matching substring 'Expected 0 arguments'.
+Error: Expression type raised a matching type error.
 
   44 | test("expression raises a type error with matching message passed as a template literal", () => {
   45 |   expect(one("pass")).type.toRaiseError(`Expected 0 arguments`);
@@ -176,7 +176,7 @@ Error: Expression type raised a type error matching substring 'Expected 0 argume
 
            at ./__typetests__/toRaiseError.tst.ts:46:14
 
-Error: Expression type did not raise a type error matching substring 'Expected 2 arguments'.
+Error: Expression type did not raise a matching type error.
 
   49 | test("expression raises type error with not matching message", () => {
   50 |   expect(one("pass")).type.not.toRaiseError("Expected 2 arguments");
@@ -202,7 +202,7 @@ Error: Expression type did not raise a type error matching substring 'Expected 2
 
            at ./__typetests__/toRaiseError.tst.ts:51:14
 
-Error: Type raised a type error matching substring 'requires 1 type argument'.
+Error: Type raised a matching type error.
 
   54 | test("type expression raises a type error with matching message", () => {
   55 |   expect<One>().type.toRaiseError("requires 1 type argument");
@@ -228,7 +228,7 @@ Error: Type raised a type error matching substring 'requires 1 type argument'.
 
            at ./__typetests__/toRaiseError.tst.ts:56:10
 
-Error: Type raised a type error matching substring 'requires 1 type argument'.
+Error: Type raised a matching type error.
 
   59 | test("type expression raises a type error with matching message passed as a template literal", () => {
   60 |   expect<One>().type.toRaiseError(`requires 1 type argument`);
@@ -254,7 +254,7 @@ Error: Type raised a type error matching substring 'requires 1 type argument'.
 
            at ./__typetests__/toRaiseError.tst.ts:61:10
 
-Error: Type did not raise a type error matching substring 'requires type argument'.
+Error: Type did not raise a matching type error.
 
   64 | test("type expression raises a type error with not matching message", () => {
   65 |   expect<One>().type.not.toRaiseError("requires type argument");
@@ -280,7 +280,7 @@ Error: Type did not raise a type error matching substring 'requires type argumen
 
            at ./__typetests__/toRaiseError.tst.ts:66:10
 
-Error: Expression type raised a type error with code 2554.
+Error: Expression type raised a matching type error.
 
   69 | test("expression raises a type error with expected code", () => {
   70 |   expect(one("pass")).type.toRaiseError(2554);
@@ -306,7 +306,7 @@ Error: Expression type raised a type error with code 2554.
 
            at ./__typetests__/toRaiseError.tst.ts:71:14
 
-Error: Expression type did not raise a type error with code 2544.
+Error: Expression type did not raise a matching type error.
 
   74 | test("expression raises a type error with not expected code", () => {
   75 |   expect(one("pass")).type.not.toRaiseError(2544);
@@ -332,7 +332,7 @@ Error: Expression type did not raise a type error with code 2544.
 
            at ./__typetests__/toRaiseError.tst.ts:76:14
 
-Error: Expression type raised a type error matching substring 'Argument of type 'number' is not assignable to parameter of type 'string''.
+Error: Expression type raised a matching type error.
 
   92 |     two(1000);
   93 |     two<string>("fail");
@@ -358,7 +358,7 @@ Error: Expression type raised a type error matching substring 'Argument of type 
 
            at ./__typetests__/toRaiseError.tst.ts:92:9
 
-Error: Expression type raised a type error matching substring 'Expected 0 arguments'.
+Error: Expression type raised a matching type error.
 
   92 |     two(1000);
   93 |     two<string>("fail");
@@ -384,7 +384,7 @@ Error: Expression type raised a type error matching substring 'Expected 0 argume
 
            at ./__typetests__/toRaiseError.tst.ts:93:17
 
-Error: Expression type did not raise a type error matching substring 'Expected 0 arguments'.
+Error: Expression type did not raise a matching type error.
 
   110 |     two(1000);
   111 |     two<string>("fail");
@@ -410,7 +410,7 @@ Error: Expression type did not raise a type error matching substring 'Expected 0
 
             at ./__typetests__/toRaiseError.tst.ts:110:9
 
-Error: Expression type did not raise a type error matching substring 'Argument of type 'number' is not assignable to parameter of type 'string''.
+Error: Expression type did not raise a matching type error.
 
   110 |     two(1000);
   111 |     two<string>("fail");
@@ -436,7 +436,7 @@ Error: Expression type did not raise a type error matching substring 'Argument o
 
             at ./__typetests__/toRaiseError.tst.ts:111:17
 
-Error: Expression type raised a type error with code 2345.
+Error: Expression type raised a matching type error.
 
   125 |     two(1000);
   126 |     two<string>("fail");
@@ -462,7 +462,7 @@ Error: Expression type raised a type error with code 2345.
 
             at ./__typetests__/toRaiseError.tst.ts:125:9
 
-Error: Expression type raised a type error with code 2554.
+Error: Expression type raised a matching type error.
 
   125 |     two(1000);
   126 |     two<string>("fail");
@@ -488,7 +488,7 @@ Error: Expression type raised a type error with code 2554.
 
             at ./__typetests__/toRaiseError.tst.ts:126:17
 
-Error: Expression type did not raise a type error with code 2554.
+Error: Expression type did not raise a matching type error.
 
   132 |     two(1111);
   133 |     two<string>("pass");
@@ -514,7 +514,7 @@ Error: Expression type did not raise a type error with code 2554.
 
             at ./__typetests__/toRaiseError.tst.ts:132:9
 
-Error: Expression type did not raise a type error with code 2345.
+Error: Expression type did not raise a matching type error.
 
   132 |     two(1111);
   133 |     two<string>("pass");
@@ -540,7 +540,7 @@ Error: Expression type did not raise a type error with code 2345.
 
             at ./__typetests__/toRaiseError.tst.ts:133:17
 
-Error: Expression type raised a type error matching substring 'Argument of type 'number' is not assignable to parameter of type 'string''.
+Error: Expression type raised a matching type error.
 
   149 |     two(1000);
   150 |     two<string>("fail");
@@ -566,7 +566,7 @@ Error: Expression type raised a type error matching substring 'Argument of type 
 
             at ./__typetests__/toRaiseError.tst.ts:149:9
 
-Error: Expression type raised a type error with code 2554.
+Error: Expression type raised a matching type error.
 
   149 |     two(1000);
   150 |     two<string>("fail");
@@ -592,7 +592,7 @@ Error: Expression type raised a type error with code 2554.
 
             at ./__typetests__/toRaiseError.tst.ts:150:17
 
-Error: Expression type did not raise a type error with code 2554.
+Error: Expression type did not raise a matching type error.
 
   156 |     two(1111);
   157 |     two<string>("pass");
@@ -618,7 +618,7 @@ Error: Expression type did not raise a type error with code 2554.
 
             at ./__typetests__/toRaiseError.tst.ts:156:9
 
-Error: Expression type did not raise a type error matching substring 'Argument of type 'number' is not assignable to parameter of type 'string''.
+Error: Expression type did not raise a matching type error.
 
   156 |     two(1111);
   157 |     two<string>("pass");
