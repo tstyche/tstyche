@@ -12,8 +12,6 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
 Error: An argument for 'source' must be of a function or class type.
 
-Received type '{ a: string; }'.
-
    7 | 
    8 |   test("must be of a function or class type", () => {
    9 |     expect({ a: "sample" }).type.toAcceptProps({ test: false });
@@ -25,8 +23,6 @@ Received type '{ a: string; }'.
        at ./__typetests__/toAcceptProps.tst.tsx:9:12
 
 Error: A type argument for 'Source' must be of a function or class type.
-
-Received type '{ a: string; }'.
 
   13 | describe("type argument for 'Source'", () => {
   14 |   test("must be of a function or class type", () => {
@@ -52,8 +48,6 @@ Error: An argument for 'target' or type argument for 'Target' must be provided.
 
 Error: An argument for 'target' must be of an object type.
 
-Received type '"nope"'.
-
   23 | 
   24 |   test("must be of object type", () => {
   25 |     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
@@ -65,8 +59,6 @@ Received type '"nope"'.
        at ./__typetests__/toAcceptProps.tst.tsx:25:52
 
 Error: A type argument for 'Target' must be of an object type.
-
-Received type 'any'.
 
   29 | describe("type argument for 'Target'", () => {
   30 |   test("must be of object type", () => {
@@ -80,8 +72,6 @@ Received type 'any'.
 
 Error: A type argument for 'Target' must be of an object type.
 
-Received type 'never'.
-
   30 |   test("must be of object type", () => {
   31 |     expect(() => <>{"test"}</>).type.toAcceptProps<any>();
   32 |     expect(() => <>{"test"}</>).type.toAcceptProps<never>();
@@ -94,8 +84,6 @@ Received type 'never'.
 
 Error: A type argument for 'Target' must be of an object type.
 
-Received type 'string'.
-
   32 |     expect(() => <>{"test"}</>).type.toAcceptProps<never>();
   33 | 
   34 |     expect(() => <>{"test"}</>).type.toAcceptProps<string>();
@@ -107,8 +95,6 @@ Received type 'string'.
        at ./__typetests__/toAcceptProps.tst.tsx:34:52
 
 Error: A type argument for 'Target' must be of an object type.
-
-Received type '{ test: string; } | { test: number; }'.
 
   34 |     expect(() => <>{"test"}</>).type.toAcceptProps<string>();
   35 | 

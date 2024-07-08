@@ -3,11 +3,8 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' or type argument for '${typeArgumentNameText}' must be provided.`;
   }
 
-  static argumentMustBeOf(argumentNameText: string, expectedText: string, receivedTypeText: string): Array<string> {
-    return [
-      `An argument for '${argumentNameText}' must be of ${expectedText}.`,
-      `Received type '${receivedTypeText}'.`,
-    ];
+  static argumentMustBeOf(argumentNameText: string, expectedText: string): string {
+    return `An argument for '${argumentNameText}' must be of ${expectedText}.`;
   }
 
   static argumentMustBeProvided(argumentNameText: string): string {
@@ -29,11 +26,8 @@ export class ExpectDiagnosticText {
     return `Overload ${indexText} of ${countText}, '${signatureText}', gave the following error.`;
   }
 
-  static typeArgumentMustBeOf(argumentNameText: string, expectedText: string, receivedTypeText: string): Array<string> {
-    return [
-      `A type argument for '${argumentNameText}' must be of ${expectedText}.`,
-      `Received type '${receivedTypeText}'.`,
-    ];
+  static typeArgumentMustBeOf(argumentNameText: string, expectedText: string): string {
+    return `A type argument for '${argumentNameText}' must be of ${expectedText}.`;
   }
 
   static typeDoesNotHaveProperty(typeText: string, propertyNameText: string): string {

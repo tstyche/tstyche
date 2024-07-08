@@ -12,8 +12,6 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
 Error: An argument for 'target' must be of type 'string | number'.
 
-Received type 'true'.
-
   14 |   test("must be of type 'string | number'", () => {
   15 |     // @ts-expect-error testing purpose
   16 |     expect(check(123)).type.toRaiseError(true, [2345]);
@@ -25,8 +23,6 @@ Received type 'true'.
        at ./__typetests__/toRaiseError.tst.ts:16:42
 
 Error: An argument for 'target' must be of type 'string | number'.
-
-Received type 'number[]'.
 
   14 |   test("must be of type 'string | number'", () => {
   15 |     // @ts-expect-error testing purpose
