@@ -55,7 +55,11 @@ export class ToAcceptProps {
       for (const { origin, text } of explanations) {
         if (source.signatures.length > 1) {
           const signatureText = this.#typeChecker.signatureToString(signature, source.node);
-          const overloadText = `Overload ${signatureIndex + 1} of ${source.signatures.length}, '${signatureText}', gave the following error.`;
+          const overloadText = ExpectDiagnosticText.overloadGaveTheFollowingError(
+            String(signatureIndex + 1),
+            String(source.signatures.length),
+            signatureText,
+          );
 
           diagnostics.push(Diagnostic.error([introText, overloadText, ...text], origin));
         } else {

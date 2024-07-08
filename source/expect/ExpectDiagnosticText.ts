@@ -22,6 +22,10 @@ export class ExpectDiagnosticText {
     return `The '.${matcherNameText}()' matcher is not supported.`;
   }
 
+  static overloadGaveTheFollowingError(indexText: string, countText: string, signatureText: string): string {
+    return `Overload ${indexText} of ${countText}, '${signatureText}', gave the following error.`;
+  }
+
   static typeArgumentMustBeOf(argumentNameText: string, expectedText: string, receivedTypeText: string): string {
     return `A type argument for '${argumentNameText}' must be of ${expectedText}, received: '${receivedTypeText}'.`;
   }
