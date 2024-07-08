@@ -26,6 +26,14 @@ export class ExpectDiagnosticText {
     return `A type argument for '${argumentNameText}' must be of ${expectedText}, received: '${receivedTypeText}'.`;
   }
 
+  static typeDoesNotHaveProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
+  }
+
+  static typeHasProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' has property '${propertyNameText}'.`;
+  }
+
   static typeIs(typeText: string): string {
     return `The type is '${typeText}'.`;
   }

@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 interface Explanation {
@@ -151,7 +152,7 @@ export class ToAcceptProps {
             text: [
               ...text,
               `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`,
-              `Type '${sourceTypeText}' does not have property '${targetPropertyName}'.`,
+              ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
             ],
           });
           continue;
