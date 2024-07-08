@@ -1,4 +1,4 @@
-Error: The type is 'void'.
+Error: Type is 'void'.
 
    9 |   expect(returnsUniqueSymbol()).type.toBeUniqueSymbol();
   10 | 
@@ -10,7 +10,7 @@ Error: The type is 'void'.
 
        at ./__typetests__/toBeUniqueSymbol.tst.ts:11:30 ❭ is unique symbol?
 
-Error: The type is 'unique symbol'.
+Error: Type is 'unique symbol'.
 
   15 |   expect(returnsVoid()).type.not.toBeUniqueSymbol();
   16 | 

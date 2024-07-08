@@ -1,4 +1,4 @@
-Error: The type is 'string'.
+Error: Type is 'string'.
 
    7 |   expect(returnsUndefined()).type.toBeUndefined();
    8 | 
@@ -10,7 +10,7 @@ Error: The type is 'string'.
 
        at ./__typetests__/toBeUndefined.tst.ts:9:32 ❭ is undefined?
 
-Error: The type is 'undefined'.
+Error: Type is 'undefined'.
 
   13 |   expect(returnsString()).type.not.toBeUndefined();
   14 | 

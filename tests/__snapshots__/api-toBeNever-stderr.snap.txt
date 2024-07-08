@@ -1,4 +1,4 @@
-Error: The type is 'string'.
+Error: Type is 'string'.
 
    7 |   expect(returnsNever()).type.toBeNever();
    8 | 
@@ -10,7 +10,7 @@ Error: The type is 'string'.
 
        at ./__typetests__/toBeNever.tst.ts:9:32 ❭ is never?
 
-Error: The type is 'never'.
+Error: Type is 'never'.
 
   13 |   expect(returnsString()).type.not.toBeNever();
   14 | 

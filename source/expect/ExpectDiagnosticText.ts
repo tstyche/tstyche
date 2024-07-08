@@ -47,7 +47,7 @@ export class ExpectDiagnosticText {
   }
 
   static typeIs(typeText: string): string {
-    return `The type is '${typeText}'.`;
+    return `Type is '${typeText}'.`;
   }
 
   static typeIsAssignableTo(sourceTypeText: string, targetTypeText: string): string {
