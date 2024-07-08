@@ -15,7 +15,7 @@ fail ./__typetests__/toAcceptProps.tst.tsx
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      6 failed, 6 total
-Assertions: 8 failed, 8 total
+Assertions: 9 failed, 9 total
 Duration:   <<timestamp>>
 
 Ran all test files.

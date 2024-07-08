@@ -78,7 +78,7 @@ Error: A type argument for 'Target' must be of an object type, received: 'never'
      |                                                    ~~~~~
   33 | 
   34 |     expect(() => <>{"test"}</>).type.toAcceptProps<string>();
-  35 |   });
+  35 | 
 
        at ./__typetests__/toAcceptProps.tst.tsx:32:52
 
@@ -88,9 +88,21 @@ Error: A type argument for 'Target' must be of an object type, received: 'string
   33 | 
   34 |     expect(() => <>{"test"}</>).type.toAcceptProps<string>();
      |                                                    ~~~~~~
-  35 |   });
-  36 | });
-  37 | 
+  35 | 
+  36 |     expect(() => <>{"test"}</>).type.toAcceptProps<{ test: string } | { test: number }>();
+  37 |   });
 
        at ./__typetests__/toAcceptProps.tst.tsx:34:52
+
+Error: A type argument for 'Target' must be of an object type, received: '{ test: string; } | { test: number; }'.
+
+  34 |     expect(() => <>{"test"}</>).type.toAcceptProps<string>();
+  35 | 
+  36 |     expect(() => <>{"test"}</>).type.toAcceptProps<{ test: string } | { test: number }>();
+     |                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  37 |   });
+  38 | });
+  39 | 
+
+       at ./__typetests__/toAcceptProps.tst.tsx:36:52
 

@@ -159,7 +159,7 @@ export class Expect {
 
         const targetType = this.#getType(assertion.target[0]);
 
-        if (!this.#isObjectType(targetType)) {
+        if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
           this.#onTargetArgumentMustBeObjectType(assertion.target[0], expectResult);
 
           return;
