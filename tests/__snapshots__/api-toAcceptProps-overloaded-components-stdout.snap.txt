@@ -1,0 +1,20 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/overloaded-components.tst.tsx
+  when target is a function component
+    × accepts props of the given type
+    × property does not exist in props type
+    × property type is not assignable to prop type
+  when target is a type
+    × accepts props of the given type
+    × property is required in props type
+    × property does not exist in props type
+    × property type is not assignable to prop type
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      7 failed, 7 total
+Assertions: 9 failed, 9 passed, 18 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'overloaded-components'.

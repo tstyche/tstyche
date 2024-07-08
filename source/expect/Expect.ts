@@ -5,6 +5,7 @@ import { EventEmitter } from "#events";
 import type { ExpectResult } from "#result";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
+import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
@@ -17,6 +18,7 @@ export class Expect {
   #compiler: typeof ts;
   #typeChecker: TypeChecker;
 
+  toAcceptProps: ToAcceptProps;
   toBe: ToBe;
   toBeAny: PrimitiveTypeMatcher;
   toBeAssignable: ToBeAssignableWith;
@@ -42,6 +44,7 @@ export class Expect {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
 
+    this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe(typeChecker);
     this.toBeAny = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Any);
     this.toBeAssignable = new ToBeAssignableWith(typeChecker);
@@ -105,6 +108,15 @@ export class Expect {
     return types.every((type) => this.#isStringOrNumberLiteralType(type));
   }
 
+  #isObjectType(type: ts.Type): type is ts.ObjectType {
+    const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
+
+    return (
+      !(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never)) &&
+      this.#typeChecker.isTypeAssignableTo(type, nonPrimitiveType)
+    );
+  }
+
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
     return Boolean(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
   }
@@ -119,6 +131,47 @@ export class Expect {
     this.#handleDeprecated(matcherNameText, assertion);
 
     switch (matcherNameText) {
+      case "toAcceptProps": {
+        if (assertion.source[0] == null) {
+          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const sourceType = this.#getType(assertion.source[0]);
+        let signatures = sourceType.getCallSignatures();
+
+        if (signatures.length === 0) {
+          signatures = sourceType.getConstructSignatures();
+        }
+
+        if (signatures.length === 0) {
+          this.#onSourceArgumentMustBeFunctionOrClassType(assertion.source[0], expectResult);
+
+          return;
+        }
+
+        if (assertion.target[0] == null) {
+          this.#onTargetArgumentMustBeProvided(assertion, expectResult);
+
+          return;
+        }
+
+        const targetType = this.#getType(assertion.target[0]);
+
+        if (!this.#isObjectType(targetType)) {
+          this.#onTargetArgumentMustBeObjectType(assertion.target[0], expectResult);
+
+          return;
+        }
+
+        return this.toAcceptProps.match(
+          { node: assertion.source[0], signatures: [...signatures] },
+          { node: assertion.target[0], type: targetType },
+          assertion.isNot,
+        );
+      }
+
       case "toBe":
       // TODO '.toBeAssignable()' is deprecated and must be removed in TSTyche 3
       case "toBeAssignable":
@@ -175,12 +228,7 @@ export class Expect {
         }
 
         const sourceType = this.#getType(assertion.source[0]);
-        const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
-
-        if (
-          sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
-          !this.#typeChecker.isTypeAssignableTo(sourceType, nonPrimitiveType)
-        ) {
+        if (!this.#isObjectType(sourceType)) {
           this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
 
           return;
@@ -259,6 +307,19 @@ export class Expect {
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
+  #onSourceArgumentMustBeFunctionOrClassType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const expectedText = "a function or class type";
+    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
+
+    const text = this.#compiler.isTypeNode(node)
+      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText, receivedTypeText)
+      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText, receivedTypeText);
+
+    const origin = DiagnosticOrigin.fromNode(node);
+
+    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+  }
+
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const expectedText = "an object type";
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
@@ -277,6 +338,16 @@ export class Expect {
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
+  }
+
+  #onTargetArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
+    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Target'" : "An argument for 'target'";
+    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
+
+    const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
+    const origin = DiagnosticOrigin.fromNode(node);
+
+    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
   #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
