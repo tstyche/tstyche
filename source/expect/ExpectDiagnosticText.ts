@@ -11,6 +11,14 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' must be provided.`;
   }
 
+  static componentAcceptsProps(isTypeNode: boolean): string {
+    return `${isTypeNode ? "Component type" : "Component"} accepts props of the given type.`;
+  }
+
+  static componentDoesNotAcceptProps(isTypeNode: boolean): string {
+    return `${isTypeNode ? "Component type" : "Component"} does not accept props of the given type.`;
+  }
+
   static matcherIsDeprecated(matcherNameText: string): Array<string> {
     return [
       `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,

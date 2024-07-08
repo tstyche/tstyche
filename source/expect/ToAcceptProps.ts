@@ -40,10 +40,9 @@ export class ToAcceptProps {
     let signatureIndex = 0;
 
     for (const signature of source.signatures) {
-      const sourceText = this.#compiler.isTypeNode(source.node) ? "Component type" : "Component";
       const introText = isNot
-        ? `${sourceText} accepts props of the given type.`
-        : `${sourceText} does not accept props of the given type.`;
+        ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(source.node))
+        : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(source.node));
 
       const { explanations, isMatch } = this.#explainProperties(signature, target, isNot);
 
