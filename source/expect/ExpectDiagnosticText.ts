@@ -34,15 +34,19 @@ export class ExpectDiagnosticText {
     return `Overload ${indexText} of ${countText}, '${signatureText}', gave the following error.`;
   }
 
+  static raisedTypeError(count = 1): string {
+    return `The raised type error${count === 1 ? "" : "s"}:`;
+  }
+
   static typeArgumentMustBeOf(argumentNameText: string, expectedText: string): string {
     return `A type argument for '${argumentNameText}' must be of ${expectedText}.`;
   }
 
-  static typeDidNotRaiseError(isTypeNode: boolean, expectedText?: string): string {
+  static typeDidNotRaiseError(isTypeNode: boolean, options?: { expectedText?: string }): string {
     const text = [`${isTypeNode ? "Type" : "Expression type"} did not raise a type error`];
 
-    if (expectedText != null) {
-      text.push(" ", expectedText);
+    if (options?.expectedText != null) {
+      text.push(" ", options.expectedText);
     }
 
     text.push(".");
@@ -50,11 +54,11 @@ export class ExpectDiagnosticText {
     return text.join("");
   }
 
-  static typeRaisedError(isTypeNode: boolean, expectedText?: string): string {
+  static typeRaisedError(isTypeNode: boolean, options?: { expectedText?: string }): string {
     const text = [`${isTypeNode ? "Type" : "Expression type"} raised a type error`];
 
-    if (expectedText != null) {
-      text.push(" ", expectedText);
+    if (options?.expectedText != null) {
+      text.push(" ", options.expectedText);
     }
 
     text.push(".");

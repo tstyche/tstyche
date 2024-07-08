@@ -39,7 +39,7 @@ export class ToRaiseError {
       const text = `${sourceText} raised ${countText} type error${source.diagnostics.length === 1 ? "" : "s"}.`;
 
       const related = [
-        Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
+        Diagnostic.error(ExpectDiagnosticText.raisedTypeError(source.diagnostics.length)),
         ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
       ];
 
@@ -58,11 +58,11 @@ export class ToRaiseError {
             : `with code ${String(argument.value)}`;
 
           const text = isNot
-            ? ExpectDiagnosticText.typeRaisedError(this.compiler.isTypeNode(source.node), expectedText)
-            : ExpectDiagnosticText.typeDidNotRaiseError(this.compiler.isTypeNode(source.node), expectedText);
+            ? ExpectDiagnosticText.typeRaisedError(this.compiler.isTypeNode(source.node), { expectedText })
+            : ExpectDiagnosticText.typeDidNotRaiseError(this.compiler.isTypeNode(source.node), { expectedText });
 
           const related = [
-            Diagnostic.error("The raised type error:"),
+            Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
             ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
           ];
 
