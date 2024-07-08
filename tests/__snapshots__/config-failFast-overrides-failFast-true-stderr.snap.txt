@@ -1,4 +1,4 @@
-Error: The source type is 'number'.
+Error: Type is 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {
@@ -10,7 +10,7 @@ Error: The source type is 'number'.
 
       at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
 
-Error: The source type is 'number'.
+Error: Type is 'number'.
 
   2 | test("is number?", () => {
   3 |   expect<number>().type.not.toBeNumber();
@@ -21,7 +21,7 @@ Error: The source type is 'number'.
 
       at ./__typetests__/isNumber.tst.ts:4:29 ❭ is number?
 
-Error: The source type is 'string'.
+Error: Type is 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {
@@ -33,7 +33,7 @@ Error: The source type is 'string'.
 
       at ./__typetests__/isString.tst.ts:3:29 ❭ is string?
 
-Error: The source type is 'string'.
+Error: Type is 'string'.
 
   2 | test("is string?", () => {
   3 |   expect<string>().type.not.toBeString();

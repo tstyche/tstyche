@@ -1,4 +1,4 @@
-Error: The source type is 'string'.
+Error: Type is 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {

@@ -1,4 +1,4 @@
-Error: The source type is 'number'.
+Error: Type is 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {
