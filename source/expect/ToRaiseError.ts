@@ -32,9 +32,8 @@ export class ToRaiseError {
 
     if (source.diagnostics.length !== targetTypes.length) {
       const count = source.diagnostics.length;
-      const targetCount = targetTypes.length;
 
-      const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, { count, targetCount });
+      const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, count, targetTypes.length);
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),

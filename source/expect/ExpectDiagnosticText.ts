@@ -98,15 +98,11 @@ export class ExpectDiagnosticText {
     return `Type '${sourceTypeText}' is not identical to type '${targetTypeText}'.`;
   }
 
-  static typeRaisedError(
-    isTypeNode: boolean,
-    options?: { count?: number; expectedText?: string; targetCount?: number },
-  ): string {
-    const count = options?.count ?? 1;
+  static typeRaisedError(isTypeNode: boolean, count: number, targetCount: number): string {
     let countText = "a";
 
-    if (options?.targetCount != null && (count > 1 || options.targetCount > 1)) {
-      countText = count > options.targetCount ? String(count) : `only ${String(count)}`;
+    if (count > 1 || targetCount > 1) {
+      countText = count > targetCount ? String(count) : `only ${String(count)}`;
     }
 
     return `${isTypeNode ? "Type" : "Expression type"} raised ${countText} type error${count === 1 ? "" : "s"}.`;
