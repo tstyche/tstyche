@@ -166,7 +166,7 @@ export class ToAcceptProps {
             text: [
               ...text,
               `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
-              `Type '${sourceTypeText}' requires property '${targetPropertyName}' .`,
+              ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
             ],
           });
 
@@ -208,7 +208,7 @@ export class ToAcceptProps {
               text: [
                 ...text,
                 `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
-                `Type '${sourceTypeText}' requires property '${sourcePropertyName}' .`,
+                ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, sourcePropertyName),
               ],
             });
           }

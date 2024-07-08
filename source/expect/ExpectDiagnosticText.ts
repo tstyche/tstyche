@@ -34,6 +34,10 @@ export class ExpectDiagnosticText {
     return `Type '${typeText}' has property '${propertyNameText}'.`;
   }
 
+  static typeRequiresProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' requires property '${propertyNameText}'.`;
+  }
+
   static typeIs(typeText: string): string {
     return `The type is '${typeText}'.`;
   }

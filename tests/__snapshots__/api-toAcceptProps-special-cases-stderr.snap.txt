@@ -15,7 +15,7 @@ Type '{ one: string; }' is assignable with type '{ one: string; }'.
 Error: Component does not accept props of the given type.
 
 Type '{ one: string; }' is not assignable with type '{}'.
-Type '{ one: string; }' requires property 'one' .
+Type '{ one: string; }' requires property 'one'.
 
   11 | 
   12 |     expect(Default).type.not.toAcceptProps({});
@@ -45,7 +45,7 @@ Type '{ one: string; }' does not have property 'two'.
 Error: Component does not accept props of the given type.
 
 Type '{ one: string; }' is not assignable with type '{ two: boolean; }'.
-Type '{ one: string; }' requires property 'one' .
+Type '{ one: string; }' requires property 'one'.
 
   14 | 
   15 |     expect(Default).type.not.toAcceptProps({ two: false });
@@ -141,7 +141,7 @@ Error: Component does not accept props of the given type.
 
 Type 'One | Other' is not assignable with type '{}'.
 Type 'One' is not assignable with type '{}'.
-Type 'One' requires property 'one' .
+Type 'One' requires property 'one'.
 
   42 | 
   43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
@@ -157,7 +157,7 @@ Error: Component does not accept props of the given type.
 
 Type 'One | Other' is not assignable with type '{}'.
 Type 'Other' is not assignable with type '{}'.
-Type 'Other' requires property 'two' .
+Type 'Other' requires property 'two'.
 
   42 | 
   43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
@@ -189,7 +189,7 @@ Error: Component does not accept props of the given type.
 
 Type 'One | Other' is not assignable with type '{ three: boolean; }'.
 Type 'One' is not assignable with type '{ three: boolean; }'.
-Type 'One' requires property 'one' .
+Type 'One' requires property 'one'.
 
   45 | 
   46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
@@ -221,7 +221,7 @@ Error: Component does not accept props of the given type.
 
 Type 'One | Other' is not assignable with type '{ three: boolean; }'.
 Type 'Other' is not assignable with type '{ three: boolean; }'.
-Type 'Other' requires property 'two' .
+Type 'Other' requires property 'two'.
 
   45 | 
   46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
