@@ -25,4 +25,8 @@ export class ExpectDiagnosticText {
   static typeArgumentMustBeOf(argumentNameText: string, expectedText: string, receivedTypeText: string): string {
     return `A type argument for '${argumentNameText}' must be of ${expectedText}, received: '${receivedTypeText}'.`;
   }
+
+  static typeIs(typeText: string): string {
+    return `The type is '${typeText}'.`;
+  }
 }

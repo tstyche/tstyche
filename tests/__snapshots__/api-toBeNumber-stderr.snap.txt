@@ -1,4 +1,4 @@
-Error: The source type is 'void'.
+Error: The type is 'void'.
 
    7 |   expect(returnsNumber()).type.toBeNumber();
    8 | 
@@ -10,7 +10,7 @@ Error: The source type is 'void'.
 
        at ./__typetests__/toBeNumber.tst.ts:9:30 ❭ is number?
 
-Error: The source type is 'number'.
+Error: The type is 'number'.
 
   13 |   expect(returnsVoid()).type.not.toBeNumber();
   14 | 

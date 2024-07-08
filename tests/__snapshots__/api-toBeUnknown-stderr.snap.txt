@@ -1,4 +1,4 @@
-Error: The source type is 'string'.
+Error: The type is 'string'.
 
    7 |   expect(returnsUnknown()).type.toBeUnknown();
    8 | 
@@ -10,7 +10,7 @@ Error: The source type is 'string'.
 
        at ./__typetests__/toBeUnknown.tst.ts:9:32 ❭ is unknown?
 
-Error: The source type is 'unknown'.
+Error: The type is 'unknown'.
 
   13 |   expect(returnsString()).type.not.toBeUnknown();
   14 | 

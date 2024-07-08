@@ -1,4 +1,4 @@
-Error: The source type is 'string'.
+Error: The type is 'string'.
 
    7 |   expect(returnsBoolean()).type.toBeBoolean();
    8 | 
@@ -10,7 +10,7 @@ Error: The source type is 'string'.
 
        at ./__typetests__/toBeBoolean.tst.ts:9:32 ❭ is boolean?
 
-Error: The source type is 'boolean'.
+Error: The type is 'boolean'.
 
   13 |   expect(returnsString()).type.not.toBeBoolean();
   14 | 

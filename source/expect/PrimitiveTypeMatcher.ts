@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class PrimitiveTypeMatcher {
@@ -14,7 +15,7 @@ export class PrimitiveTypeMatcher {
   #explain(sourceType: ts.Type) {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
 
-    return [Diagnostic.error(`The source type is '${sourceTypeText}'.`)];
+    return [Diagnostic.error(ExpectDiagnosticText.typeIs(sourceTypeText))];
   }
 
   match(sourceType: ts.Type): MatchResult {
