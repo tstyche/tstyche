@@ -41,4 +41,20 @@ export class ExpectDiagnosticText {
   static typeIs(typeText: string): string {
     return `The type is '${typeText}'.`;
   }
+
+  static typeIsAssignableWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`;
+  }
+
+  static typeIsNotAssignableWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`;
+  }
+
+  static typeIsNotCompatibleWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`;
+  }
+
+  static typesOfPropertyAreNotCompatible(propertyNameText: string): string {
+    return `Types of property '${propertyNameText}' are not compatible.`;
+  }
 }

@@ -293,7 +293,7 @@ Type 'SecondProps' requires property 'one'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ two: string; three: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'string'.
 
   91 | 
@@ -354,7 +354,7 @@ Type 'SecondProps' does not have property 'three'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: string; two: string; three: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'string'.
 
    98 | 
@@ -385,7 +385,7 @@ Type 'SecondProps' does not have property 'three'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: string; two: string; three: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'string'.
 
   101 | 
@@ -446,7 +446,7 @@ Type 'SecondProps' does not have property 'three'.
 Error: Component does not accept props of the given type.
 
 Type 'FirstProps' is not assignable with type '{ one: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   112 |   test("property type is not assignable to prop type", () => {
@@ -462,7 +462,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component does not accept props of the given type.
 
 Type 'FirstProps' is not assignable with type '{ one: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   116 |     const firstProps = { one: 1 };
@@ -478,7 +478,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   119 | 
@@ -494,7 +494,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   122 | 
@@ -510,7 +510,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'number'.
 
   122 | 
@@ -526,7 +526,7 @@ Type 'boolean | undefined' is not assignable with type 'number'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   126 |     const secondProps = { one: 1, two: 2 };
@@ -542,7 +542,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'number'.
 
   126 |     const secondProps = { one: 1, two: 2 };
@@ -558,7 +558,7 @@ Type 'boolean | undefined' is not assignable with type 'number'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   130 |     const two = 2;
@@ -574,7 +574,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'number'.
 
   130 |     const two = 2;
@@ -1001,7 +1001,7 @@ Type 'SecondProps' requires property 'one'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ two: string; three?: number | undefined; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'string'.
 
   227 | 
@@ -1047,7 +1047,7 @@ Type 'SecondProps' requires property 'one'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ two: string; three: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'string'.
 
   230 | 
@@ -1093,7 +1093,7 @@ Type 'SecondProps' requires property 'one'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: string; two: string; three?: number | undefined; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'string'.
 
   233 | 
@@ -1124,7 +1124,7 @@ Type 'SecondProps' does not have property 'three'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: string; two: string; three: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'string'.
 
   236 | 
@@ -1185,7 +1185,7 @@ Type 'SecondProps' does not have property 'three'.
 Error: Component type does not accept props of the given type.
 
 Type 'FirstProps' is not assignable with type '{ one?: number | undefined; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number | undefined'.
 
   247 |   test("property type is not assignable to prop type", () => {
@@ -1201,7 +1201,7 @@ Type 'string | undefined' is not assignable with type 'number | undefined'.
 Error: Component type does not accept props of the given type.
 
 Type 'FirstProps' is not assignable with type '{ one: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   250 | 
@@ -1217,7 +1217,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component type does not accept props of the given type.
 
 Type 'FirstProps' is not assignable with type 'FirstPropsSample'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   254 |     type FirstPropsSample = { one: number };
@@ -1233,7 +1233,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   257 | 
@@ -1249,7 +1249,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two?: number | undefined; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   260 | 
@@ -1265,7 +1265,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two?: number | undefined; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'number | undefined'.
 
   260 | 
@@ -1281,7 +1281,7 @@ Type 'boolean | undefined' is not assignable with type 'number | undefined'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   263 | 
@@ -1297,7 +1297,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type '{ one: number; two: number; }'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'number'.
 
   263 | 
@@ -1313,7 +1313,7 @@ Type 'boolean | undefined' is not assignable with type 'number'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type 'SecondPropsSample'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string | undefined' is not assignable with type 'number'.
 
   267 |     type SecondPropsSample = { one: number; two: number };
@@ -1329,7 +1329,7 @@ Type 'string | undefined' is not assignable with type 'number'.
 Error: Component type does not accept props of the given type.
 
 Type 'SecondProps' is not assignable with type 'SecondPropsSample'.
-Types of property 'two' are incompatible.
+Types of property 'two' are not compatible.
 Type 'boolean | undefined' is not assignable with type 'number'.
 
   267 |     type SecondPropsSample = { one: number; two: number };

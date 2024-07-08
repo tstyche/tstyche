@@ -96,7 +96,7 @@ Error: Component does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
 Type 'FirstProps' is not assignable with type '{ one: boolean; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string' is not assignable with type 'boolean'.
 
   45 |   test("property type is not assignable to prop type", () => {
@@ -129,7 +129,7 @@ Error: Component does not accept props of the given type.
 
 Overload 2 of 2, '(props: SecondProps): React.JSX.Element', gave the following error.
 Type 'SecondProps' is not assignable with type '{ one: boolean; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'undefined' is not assignable with type 'boolean'.
 
   45 |   test("property type is not assignable to prop type", () => {
@@ -288,7 +288,7 @@ Error: Component type does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
 Type 'FirstProps' is not assignable with type '{ one: boolean; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'string' is not assignable with type 'boolean'.
 
   70 |   test("property type is not assignable to prop type", () => {
@@ -321,7 +321,7 @@ Error: Component type does not accept props of the given type.
 
 Overload 2 of 2, '(props: SecondProps): React.JSX.Element', gave the following error.
 Type 'SecondProps' is not assignable with type '{ one: boolean; }'.
-Types of property 'one' are incompatible.
+Types of property 'one' are not compatible.
 Type 'undefined' is not assignable with type 'boolean'.
 
   70 |   test("property type is not assignable to prop type", () => {

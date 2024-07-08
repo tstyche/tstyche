@@ -151,7 +151,7 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`,
+              ExpectDiagnosticText.typeIsNotCompatibleWith(sourceTypeText, targetTypeText),
               ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
             ],
           });
@@ -165,7 +165,7 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
+              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
               ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
             ],
           });
@@ -186,9 +186,9 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
-              `Types of property '${targetPropertyName}' are incompatible.`,
-              `Type '${sourcePropertyTypeText}' is not assignable with type '${targetPropertyTypeText}'.`,
+              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+              ExpectDiagnosticText.typesOfPropertyAreNotCompatible(targetPropertyName),
+              ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
             ],
           });
         }
@@ -207,7 +207,7 @@ export class ToAcceptProps {
               origin,
               text: [
                 ...text,
-                `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
+                ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
                 ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, sourcePropertyName),
               ],
             });
@@ -220,7 +220,7 @@ export class ToAcceptProps {
 
         explanations.push({
           origin,
-          text: [...text, `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`],
+          text: [...text, ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)],
         });
 
         return { explanations, isMatch: true };
@@ -235,8 +235,8 @@ export class ToAcceptProps {
       for (const sourceType of sourceParameterType.types) {
         const { explanations, isMatch } = explain(sourceType, target.type, [
           isNot
-            ? `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`
-            : `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
+            ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
+            : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
         ]);
 
         if (isMatch === true) {
