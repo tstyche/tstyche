@@ -34,8 +34,12 @@ export class ExpectDiagnosticText {
     return `Overload ${indexText} of ${countText}, '${signatureText}', gave the following error.`;
   }
 
+  static #pluralize(text: string, count: number) {
+    return `${text}${count === 1 ? "" : "s"}`;
+  }
+
   static raisedTypeError(count = 1): string {
-    return `The raised type error${count === 1 ? "" : "s"}:`;
+    return `The raised type ${ExpectDiagnosticText.#pluralize("error", count)}:`;
   }
 
   static typeArgumentMustBeOf(argumentNameText: string, expectedText: string): string {
@@ -105,7 +109,7 @@ export class ExpectDiagnosticText {
       countText = count > targetCount ? String(count) : `only ${String(count)}`;
     }
 
-    return `${isTypeNode ? "Type" : "Expression type"} raised ${countText} type error${count === 1 ? "" : "s"}.`;
+    return `${isTypeNode ? "Type" : "Expression type"} raised ${countText} type ${ExpectDiagnosticText.#pluralize("error", count)}.`;
   }
 
   static typeRaisedMatchingError(isTypeNode: boolean): string {
