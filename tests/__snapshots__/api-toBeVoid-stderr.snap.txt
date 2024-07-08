@@ -1,4 +1,4 @@
-Error: The source type is 'string'.
+Error: Type is 'string'.
 
    7 |   expect(returnsVoid()).type.toBeVoid();
    8 | 
@@ -10,7 +10,7 @@ Error: The source type is 'string'.
 
        at ./__typetests__/toBeVoid.tst.ts:9:32 ❭ is void?
 
-Error: The source type is 'void'.
+Error: Type is 'void'.
 
   13 |   expect(returnsString()).type.not.toBeVoid();
   14 | 

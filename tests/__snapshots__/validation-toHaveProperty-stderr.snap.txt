@@ -10,7 +10,7 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
       at ./__typetests__/toHaveProperty.tst.ts:5:5
 
-Error: An argument for 'source' must be of an object type, received: '"sample"'.
+Error: An argument for 'source' must be of an object type.
 
    7 | 
    8 |   test("must be of an object type", () => {
@@ -22,7 +22,7 @@ Error: An argument for 'source' must be of an object type, received: '"sample"'.
 
        at ./__typetests__/toHaveProperty.tst.ts:9:12
 
-Error: A type argument for 'Source' must be of an object type, received: 'any'.
+Error: A type argument for 'Source' must be of an object type.
 
   15 |     expect<{}>().type.not.toHaveProperty("abc");
   16 | 
@@ -34,7 +34,7 @@ Error: A type argument for 'Source' must be of an object type, received: 'any'.
 
        at ./__typetests__/toHaveProperty.tst.ts:17:12
 
-Error: A type argument for 'Source' must be of an object type, received: 'never'.
+Error: A type argument for 'Source' must be of an object type.
 
   16 | 
   17 |     expect<any>().type.toHaveProperty("runTest");
@@ -46,7 +46,7 @@ Error: A type argument for 'Source' must be of an object type, received: 'never'
 
        at ./__typetests__/toHaveProperty.tst.ts:18:12
 
-Error: An argument for 'source' must be of an object type, received: 'null'.
+Error: An argument for 'source' must be of an object type.
 
   17 |     expect<any>().type.toHaveProperty("runTest");
   18 |     expect<never>().type.toHaveProperty("runTest");
@@ -58,7 +58,7 @@ Error: An argument for 'source' must be of an object type, received: 'null'.
 
        at ./__typetests__/toHaveProperty.tst.ts:19:12
 
-Error: A type argument for 'Source' must be of an object type, received: '"one" | "two"'.
+Error: A type argument for 'Source' must be of an object type.
 
   18 |     expect<never>().type.toHaveProperty("runTest");
   19 |     expect(null).type.toHaveProperty("runTest");
@@ -82,7 +82,7 @@ Error: An argument for 'key' must be provided.
 
        at ./__typetests__/toHaveProperty.tst.ts:27:41
 
-Error: An argument for 'key' must be of type 'string | number | symbol', received: 'string[]'.
+Error: An argument for 'key' must be of type 'string | number | symbol'.
 
   30 |   test("must be of type 'string | number | symbol'", () => {
   31 |     // @ts-expect-error testing purpose

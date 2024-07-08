@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export interface ToRaiseErrorSource {
@@ -21,22 +22,21 @@ export class ToRaiseError {
     targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ) {
-    const sourceText = this.compiler.isTypeNode(source.node) ? "Type expression" : "Expression";
+    const isTypeNode = this.compiler.isTypeNode(source.node);
 
     if (source.diagnostics.length === 0) {
-      return [Diagnostic.error(`${sourceText} did not raise a type error.`)];
+      const text = ExpectDiagnosticText.typeDidNotRaiseError(isTypeNode);
+
+      return [Diagnostic.error(text)];
     }
 
     if (source.diagnostics.length !== targetTypes.length) {
-      const foundText =
-        source.diagnostics.length > targetTypes.length
-          ? String(source.diagnostics.length)
-          : `only ${String(source.diagnostics.length)}`;
+      const count = source.diagnostics.length;
 
-      const text = `${sourceText} raised ${foundText} type error${source.diagnostics.length === 1 ? "" : "s"}.`;
+      const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, count, targetTypes.length);
 
       const related = [
-        Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
+        Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
         ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
       ];
 
@@ -50,19 +50,16 @@ export class ToRaiseError {
         const isMatch = this.#matchExpectedError(diagnostic, argument);
 
         if (isNot ? isMatch : !isMatch) {
-          const expectedText = this.#isStringLiteralType(argument)
-            ? `matching substring '${argument.value}'`
-            : `with code ${String(argument.value)}`;
-
           const text = isNot
-            ? `${sourceText} raised a type error ${expectedText}.`
-            : `${sourceText} did not raise a type error ${expectedText}.`;
+            ? ExpectDiagnosticText.typeRaisedMatchingError(isTypeNode)
+            : ExpectDiagnosticText.typeDidNotRaiseMatchingError(isTypeNode);
 
           const related = [
-            Diagnostic.error("The raised type error:"),
+            Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
             ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
           ];
 
+          // TODO add the 'origin' and make sure it makes the message understandable
           diagnostics.push(Diagnostic.error(text).add({ related }));
         }
       }

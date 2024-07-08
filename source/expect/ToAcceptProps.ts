@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 interface Explanation {
@@ -39,10 +40,9 @@ export class ToAcceptProps {
     let signatureIndex = 0;
 
     for (const signature of source.signatures) {
-      const sourceText = this.#compiler.isTypeNode(source.node) ? "Component type" : "Component";
       const introText = isNot
-        ? `${sourceText} accepts props of the given type.`
-        : `${sourceText} does not accept props of the given type.`;
+        ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(source.node))
+        : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(source.node));
 
       const { explanations, isMatch } = this.#explainProperties(signature, target, isNot);
 
@@ -54,7 +54,11 @@ export class ToAcceptProps {
       for (const { origin, text } of explanations) {
         if (source.signatures.length > 1) {
           const signatureText = this.#typeChecker.signatureToString(signature, source.node);
-          const overloadText = `Overload ${signatureIndex + 1} of ${source.signatures.length}, '${signatureText}', gave the following error.`;
+          const overloadText = ExpectDiagnosticText.overloadGaveTheFollowingError(
+            String(signatureIndex + 1),
+            String(source.signatures.length),
+            signatureText,
+          );
 
           diagnostics.push(Diagnostic.error([introText, overloadText, ...text], origin));
         } else {
@@ -150,8 +154,8 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`,
-              `Type '${sourceTypeText}' does not have property '${targetPropertyName}'.`,
+              ExpectDiagnosticText.typeIsNotCompatibleWith(sourceTypeText, targetTypeText),
+              ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
             ],
           });
           continue;
@@ -164,8 +168,8 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
-              `Type '${sourceTypeText}' requires property '${targetPropertyName}' .`,
+              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+              ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
             ],
           });
 
@@ -185,9 +189,9 @@ export class ToAcceptProps {
             origin,
             text: [
               ...text,
-              `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
-              `Types of property '${targetPropertyName}' are incompatible.`,
-              `Type '${sourcePropertyTypeText}' is not assignable with type '${targetPropertyTypeText}'.`,
+              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+              ExpectDiagnosticText.typesOfPropertyAreNotCompatible(targetPropertyName),
+              ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
             ],
           });
         }
@@ -206,8 +210,8 @@ export class ToAcceptProps {
               origin,
               text: [
                 ...text,
-                `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
-                `Type '${sourceTypeText}' requires property '${sourcePropertyName}' .`,
+                ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+                ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, sourcePropertyName),
               ],
             });
           }
@@ -219,7 +223,7 @@ export class ToAcceptProps {
 
         explanations.push({
           origin,
-          text: [...text, `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`],
+          text: [...text, ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)],
         });
 
         return { explanations, isMatch: true };
@@ -234,8 +238,8 @@ export class ToAcceptProps {
       for (const sourceType of sourceParameterType.types) {
         const { explanations, isMatch } = explain(sourceType, target.type, [
           isNot
-            ? `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`
-            : `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`,
+            ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
+            : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
         ]);
 
         if (isMatch === true) {

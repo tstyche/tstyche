@@ -85,10 +85,7 @@ export class Expect {
     switch (matcherNameText) {
       case "toBeAssignable":
       case "toEqual": {
-        const text = [
-          `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
-          "To learn more, visit https://tstyche.org/releases/tstyche-2",
-        ];
+        const text = ExpectDiagnosticText.matcherIsDeprecated(matcherNameText);
         const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
         EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
@@ -292,9 +289,8 @@ export class Expect {
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const expectedText = "type 'string | number | symbol'";
-    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
-    const text = ExpectDiagnosticText.argumentMustBeOf("key", expectedText, receivedTypeText);
+    const text = ExpectDiagnosticText.argumentMustBeOf("key", expectedText);
     const origin = DiagnosticOrigin.fromNode(node);
 
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
@@ -309,11 +305,10 @@ export class Expect {
 
   #onSourceArgumentMustBeFunctionOrClassType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const expectedText = "a function or class type";
-    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText, receivedTypeText)
-      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText, receivedTypeText);
+      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText)
+      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText);
 
     const origin = DiagnosticOrigin.fromNode(node);
 
@@ -322,11 +317,10 @@ export class Expect {
 
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const expectedText = "an object type";
-    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
     const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText, receivedTypeText)
-      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText, receivedTypeText);
+      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText)
+      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText);
 
     const origin = DiagnosticOrigin.fromNode(node);
 
@@ -341,10 +335,12 @@ export class Expect {
   }
 
   #onTargetArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Target'" : "An argument for 'target'";
-    const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
+    const expectedText = "an object type";
 
-    const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
+    const text = this.#compiler.isTypeNode(node)
+      ? ExpectDiagnosticText.typeArgumentMustBeOf("Target", expectedText)
+      : ExpectDiagnosticText.argumentMustBeOf("target", expectedText);
+
     const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
@@ -368,9 +364,8 @@ export class Expect {
 
       if (!this.#isStringOrNumberLiteralType(receivedType)) {
         const expectedText = "type 'string | number'";
-        const receivedTypeText = this.#typeChecker.typeToString(receivedType);
 
-        const text = ExpectDiagnosticText.argumentMustBeOf("target", expectedText, receivedTypeText);
+        const text = ExpectDiagnosticText.argumentMustBeOf("target", expectedText);
         const origin = DiagnosticOrigin.fromNode(node);
 
         diagnostics.push(Diagnostic.error(text, origin));

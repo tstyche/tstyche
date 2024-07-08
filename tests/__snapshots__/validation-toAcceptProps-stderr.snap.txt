@@ -10,7 +10,7 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
       at ./__typetests__/toAcceptProps.tst.tsx:5:5
 
-Error: An argument for 'source' must be of a function or class type, received: '{ a: string; }'.
+Error: An argument for 'source' must be of a function or class type.
 
    7 | 
    8 |   test("must be of a function or class type", () => {
@@ -22,7 +22,7 @@ Error: An argument for 'source' must be of a function or class type, received: '
 
        at ./__typetests__/toAcceptProps.tst.tsx:9:12
 
-Error: A type argument for 'Source' must be of a function or class type, received: '{ a: string; }'.
+Error: A type argument for 'Source' must be of a function or class type.
 
   13 | describe("type argument for 'Source'", () => {
   14 |   test("must be of a function or class type", () => {
@@ -46,7 +46,7 @@ Error: An argument for 'target' or type argument for 'Target' must be provided.
 
        at ./__typetests__/toAcceptProps.tst.tsx:21:38
 
-Error: An argument for 'target' must be of an object type, received: '"nope"'.
+Error: An argument for 'target' must be of an object type.
 
   23 | 
   24 |   test("must be of object type", () => {
@@ -58,7 +58,7 @@ Error: An argument for 'target' must be of an object type, received: '"nope"'.
 
        at ./__typetests__/toAcceptProps.tst.tsx:25:52
 
-Error: A type argument for 'Target' must be of an object type, received: 'any'.
+Error: A type argument for 'Target' must be of an object type.
 
   29 | describe("type argument for 'Target'", () => {
   30 |   test("must be of object type", () => {
@@ -70,7 +70,7 @@ Error: A type argument for 'Target' must be of an object type, received: 'any'.
 
        at ./__typetests__/toAcceptProps.tst.tsx:31:52
 
-Error: A type argument for 'Target' must be of an object type, received: 'never'.
+Error: A type argument for 'Target' must be of an object type.
 
   30 |   test("must be of object type", () => {
   31 |     expect(() => <>{"test"}</>).type.toAcceptProps<any>();
@@ -82,7 +82,7 @@ Error: A type argument for 'Target' must be of an object type, received: 'never'
 
        at ./__typetests__/toAcceptProps.tst.tsx:32:52
 
-Error: A type argument for 'Target' must be of an object type, received: 'string'.
+Error: A type argument for 'Target' must be of an object type.
 
   32 |     expect(() => <>{"test"}</>).type.toAcceptProps<never>();
   33 | 
@@ -94,7 +94,7 @@ Error: A type argument for 'Target' must be of an object type, received: 'string
 
        at ./__typetests__/toAcceptProps.tst.tsx:34:52
 
-Error: A type argument for 'Target' must be of an object type, received: '{ test: string; } | { test: number; }'.
+Error: A type argument for 'Target' must be of an object type.
 
   34 |     expect(() => <>{"test"}</>).type.toAcceptProps<string>();
   35 | 

@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export interface ToHavePropertyTarget {
@@ -18,19 +19,19 @@ export class ToHaveProperty {
 
   #explain(sourceType: ts.Type, target: ToHavePropertyTarget, isNot: boolean) {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
-    let targetArgumentText: string;
+    let propertyNameText: string;
 
     if (this.#isStringOrNumberLiteralType(target.type)) {
-      targetArgumentText = String(target.type.value);
+      propertyNameText = String(target.type.value);
     } else {
-      targetArgumentText = `[${this.compiler.unescapeLeadingUnderscores(target.type.symbol.escapedName)}]`;
+      propertyNameText = `[${this.compiler.unescapeLeadingUnderscores(target.type.symbol.escapedName)}]`;
     }
 
     const origin = DiagnosticOrigin.fromNode(target.node);
 
     return isNot
-      ? [Diagnostic.error(`Type '${sourceTypeText}' has property '${targetArgumentText}'.`, origin)]
-      : [Diagnostic.error(`Type '${sourceTypeText}' does not have property '${targetArgumentText}'.`, origin)];
+      ? [Diagnostic.error(ExpectDiagnosticText.typeHasProperty(sourceTypeText, propertyNameText), origin)]
+      : [Diagnostic.error(ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
   }
 
   #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
