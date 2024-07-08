@@ -85,10 +85,7 @@ export class Expect {
     switch (matcherNameText) {
       case "toBeAssignable":
       case "toEqual": {
-        const text = [
-          `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
-          "To learn more, visit https://tstyche.org/releases/tstyche-2",
-        ];
+        const text = ExpectDiagnosticText.matcherIsDeprecated(matcherNameText);
         const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
         EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
@@ -341,10 +338,13 @@ export class Expect {
   }
 
   #onTargetArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const sourceText = this.#compiler.isTypeNode(node) ? "A type argument for 'Target'" : "An argument for 'target'";
+    const expectedText = "an object type";
     const receivedTypeText = this.#typeChecker.typeToString(this.#getType(node));
 
-    const text = `${sourceText} must be of an object type, received: '${receivedTypeText}'.`;
+    const text = this.#compiler.isTypeNode(node)
+      ? ExpectDiagnosticText.typeArgumentMustBeOf("Target", expectedText, receivedTypeText)
+      : ExpectDiagnosticText.argumentMustBeOf("target", expectedText, receivedTypeText);
+
     const origin = DiagnosticOrigin.fromNode(node);
 
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
