@@ -38,6 +38,30 @@ export class ExpectDiagnosticText {
     return `A type argument for '${argumentNameText}' must be of ${expectedText}.`;
   }
 
+  static typeDidNotRaiseError(isTypeNode: boolean, expectedText?: string): string {
+    const text = [`${isTypeNode ? "Type" : "Expression type"} did not raise a type error`];
+
+    if (expectedText != null) {
+      text.push(" ", expectedText);
+    }
+
+    text.push(".");
+
+    return text.join("");
+  }
+
+  static typeRaisedError(isTypeNode: boolean, expectedText?: string): string {
+    const text = [`${isTypeNode ? "Type" : "Expression type"} raised a type error`];
+
+    if (expectedText != null) {
+      text.push(" ", expectedText);
+    }
+
+    text.push(".");
+
+    return text.join("");
+  }
+
   static typeDoesNotHaveProperty(typeText: string, propertyNameText: string): string {
     return `Type '${typeText}' does not have property '${propertyNameText}'.`;
   }

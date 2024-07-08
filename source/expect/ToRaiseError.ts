@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export interface ToRaiseErrorSource {
@@ -21,19 +22,21 @@ export class ToRaiseError {
     targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
     isNot: boolean,
   ) {
-    const sourceText = this.compiler.isTypeNode(source.node) ? "Type expression" : "Expression";
+    const sourceText = this.compiler.isTypeNode(source.node) ? "Type" : "Expression type";
 
     if (source.diagnostics.length === 0) {
-      return [Diagnostic.error(`${sourceText} did not raise a type error.`)];
+      const text = ExpectDiagnosticText.typeDidNotRaiseError(this.compiler.isTypeNode(source.node));
+
+      return [Diagnostic.error(text)];
     }
 
     if (source.diagnostics.length !== targetTypes.length) {
-      const foundText =
+      const countText =
         source.diagnostics.length > targetTypes.length
           ? String(source.diagnostics.length)
           : `only ${String(source.diagnostics.length)}`;
 
-      const text = `${sourceText} raised ${foundText} type error${source.diagnostics.length === 1 ? "" : "s"}.`;
+      const text = `${sourceText} raised ${countText} type error${source.diagnostics.length === 1 ? "" : "s"}.`;
 
       const related = [
         Diagnostic.error(`The raised type error${source.diagnostics.length === 1 ? "" : "s"}:`),
@@ -55,8 +58,8 @@ export class ToRaiseError {
             : `with code ${String(argument.value)}`;
 
           const text = isNot
-            ? `${sourceText} raised a type error ${expectedText}.`
-            : `${sourceText} did not raise a type error ${expectedText}.`;
+            ? ExpectDiagnosticText.typeRaisedError(this.compiler.isTypeNode(source.node), expectedText)
+            : ExpectDiagnosticText.typeDidNotRaiseError(this.compiler.isTypeNode(source.node), expectedText);
 
           const related = [
             Diagnostic.error("The raised type error:"),
