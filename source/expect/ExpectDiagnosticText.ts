@@ -38,12 +38,36 @@ export class ExpectDiagnosticText {
     return `Type '${typeText}' requires property '${propertyNameText}'.`;
   }
 
+  static typeDoesMatch(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' does match type '${targetTypeText}'.`;
+  }
+
+  static typeDoesNotMatch(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' does not match type '${targetTypeText}'.`;
+  }
+
   static typeIs(typeText: string): string {
     return `The type is '${typeText}'.`;
   }
 
+  static typeIsAssignableTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is assignable to type '${targetTypeText}'.`;
+  }
+
+  static typeIsNotAssignableTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not assignable to type '${targetTypeText}'.`;
+  }
+
   static typeIsAssignableWith(sourceTypeText: string, targetTypeText: string): string {
     return `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`;
+  }
+
+  static typeIsIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is identical to type '${targetTypeText}'.`;
+  }
+
+  static typeIsNotIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not identical to type '${targetTypeText}'.`;
   }
 
   static typeIsNotAssignableWith(sourceTypeText: string, targetTypeText: string): string {
