@@ -137,7 +137,7 @@ export class Expect {
         }
 
         if (signatures.length === 0) {
-          this.#onSourceArgumentMustBeFunctionOrClassType(assertion.source[0], expectResult);
+          this.#onSourceArgumentMustBe("of a function or class type", assertion.source[0], expectResult);
 
           return;
         }
@@ -151,7 +151,7 @@ export class Expect {
         const targetType = this.#getType(assertion.target[0]);
 
         if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
-          this.#onTargetArgumentMustBeObjectType(assertion.target[0], expectResult);
+          this.#onTargetArgumentMustBe("of an object type", assertion.target[0], expectResult);
 
           return;
         }
@@ -220,7 +220,7 @@ export class Expect {
 
         const sourceType = this.#getType(assertion.source[0]);
         if (!this.#isObjectType(sourceType)) {
-          this.#onSourceArgumentMustBeObjectType(assertion.source[0], expectResult);
+          this.#onSourceArgumentMustBe("of an object type", assertion.source[0], expectResult);
 
           return;
         }
@@ -291,9 +291,7 @@ export class Expect {
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
-  #onSourceArgumentMustBeFunctionOrClassType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const expectedText = "of a function or class type";
-
+  #onSourceArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const text = this.#compiler.isTypeNode(node)
       ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
       : ExpectDiagnosticText.argumentMustBe("source", expectedText);
@@ -303,18 +301,6 @@ export class Expect {
     EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
   }
 
-  #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const expectedText = "of an object type";
-
-    const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
-      : ExpectDiagnosticText.argumentMustBe("source", expectedText);
-
-    const origin = DiagnosticOrigin.fromNode(node);
-
-    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
-  }
-
   #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
@@ -322,9 +308,7 @@ export class Expect {
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
-  #onTargetArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const expectedText = "of an object type";
-
+  #onTargetArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
     const text = this.#compiler.isTypeNode(node)
       ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
       : ExpectDiagnosticText.argumentMustBe("target", expectedText);
