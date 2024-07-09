@@ -41,10 +41,8 @@ export class Diagnostic {
 
   static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
-      const category = DiagnosticCategory.Error;
       const code = `ts(${String(diagnostic.code)})`;
       let origin: DiagnosticOrigin | undefined;
-      const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
 
       if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
         origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
@@ -56,7 +54,9 @@ export class Diagnostic {
         related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation, compiler);
       }
 
-      return new Diagnostic(text, category, origin).add({ code, related });
+      const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+
+      return new Diagnostic(text, DiagnosticCategory.Error, origin).add({ code, related });
     });
   }
 
