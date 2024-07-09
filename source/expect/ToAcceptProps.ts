@@ -257,11 +257,11 @@ export class ToAcceptProps {
     return explain(sourceParameterType, target.type);
   }
 
-  match(source: ToAcceptPropsSource, target: ToAcceptPropsTarget, isNot: boolean): MatchResult {
+  match(source: ToAcceptPropsSource, target: ToAcceptPropsTarget): MatchResult {
     const isMatch = source.signatures.some((signature) => this.#checkProperties(signature, target));
 
     return {
-      explain: () => this.#explain(source, target, isNot),
+      explain: (isNot) => this.#explain(source, target, isNot),
       isMatch,
     };
   }

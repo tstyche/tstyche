@@ -17,11 +17,11 @@ export class ToBeAssignableWith extends RelationMatcherBase {
       : [Diagnostic.error(ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText))];
   }
 
-  override match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {
+  override match(sourceType: ts.Type, targetType: ts.Type): MatchResult {
     const isMatch = this.typeChecker.isTypeRelatedTo(targetType, sourceType, this.relation);
 
     return {
-      explain: () => this.explain(sourceType, targetType, isNot),
+      explain: (isNot) => this.explain(sourceType, targetType, isNot),
       isMatch,
     };
   }

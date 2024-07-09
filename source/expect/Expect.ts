@@ -159,7 +159,6 @@ export class Expect {
         return this.toAcceptProps.match(
           { node: assertion.source[0], signatures: [...signatures] },
           { node: assertion.target[0], type: targetType },
-          assertion.isNot,
         );
       }
 
@@ -183,11 +182,7 @@ export class Expect {
           return;
         }
 
-        return this[matcherNameText].match(
-          this.#getType(assertion.source[0]),
-          this.#getType(assertion.target[0]),
-          assertion.isNot,
-        );
+        return this[matcherNameText].match(this.#getType(assertion.source[0]), this.#getType(assertion.target[0]));
       }
 
       case "toBeAny":
@@ -239,7 +234,7 @@ export class Expect {
           return;
         }
 
-        return this.toHaveProperty.match(sourceType, { node: assertion.target[0], type: targetType }, assertion.isNot);
+        return this.toHaveProperty.match(sourceType, { node: assertion.target[0], type: targetType });
       }
 
       case "toRaiseError": {

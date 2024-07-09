@@ -12,11 +12,11 @@ export abstract class RelationMatcherBase {
 
   abstract explain(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): Array<Diagnostic>;
 
-  match(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): MatchResult {
+  match(sourceType: ts.Type, targetType: ts.Type): MatchResult {
     const isMatch = this.typeChecker.isTypeRelatedTo(sourceType, targetType, this.relation);
 
     return {
-      explain: () => this.explain(sourceType, targetType, isNot),
+      explain: (isNot) => this.explain(sourceType, targetType, isNot),
       isMatch,
     };
   }

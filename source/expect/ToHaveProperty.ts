@@ -38,7 +38,7 @@ export class ToHaveProperty {
     return Boolean(type.flags & this.compiler.TypeFlags.StringOrNumberLiteral);
   }
 
-  match(sourceType: ts.Type, target: ToHavePropertyTarget, isNot: boolean): MatchResult {
+  match(sourceType: ts.Type, target: ToHavePropertyTarget): MatchResult {
     let targetArgumentText: string;
 
     if (this.#isStringOrNumberLiteralType(target.type)) {
@@ -52,7 +52,7 @@ export class ToHaveProperty {
     });
 
     return {
-      explain: () => this.#explain(sourceType, target, isNot),
+      explain: (isNot) => this.#explain(sourceType, target, isNot),
       isMatch,
     };
   }
