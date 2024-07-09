@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { ExplainHandler, MatchResult, TypeChecker } from "./types.js";
+import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ToRaiseError {
   compiler: typeof ts;
@@ -68,31 +68,21 @@ export class ToRaiseError {
     diagnostics: Array<ts.Diagnostic>,
     targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
   ): MatchResult {
-    const explain: ExplainHandler = (isNot) => this.#explain(sourceNode, diagnostics, targetNodes, isNot);
-
-    if (targetNodes.length === 0) {
-      return {
-        explain,
-        isMatch: diagnostics.length > 0,
-      };
-    }
-
-    if (diagnostics.length !== targetNodes.length) {
-      return {
-        explain,
-        isMatch: false,
-      };
-    }
+    const isMatch =
+      targetNodes.length === 0
+        ? diagnostics.length > 0
+        : diagnostics.length === targetNodes.length &&
+          targetNodes.every((node, index) => this.#matchExpectedError(diagnostics[index], node));
 
     return {
-      explain,
-      isMatch: targetNodes.every((node, index) => this.#matchExpectedError(diagnostics[index], node)),
+      explain: (isNot) => this.#explain(sourceNode, diagnostics, targetNodes, isNot),
+      isMatch,
     };
   }
 
   #matchExpectedError(diagnostic: ts.Diagnostic | undefined, node: ts.StringLiteralLike | ts.NumericLiteral) {
     if (this.compiler.isStringLiteralLike(node)) {
-      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(node.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
+      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(node.text);
     }
 
     return Number(node.text) === diagnostic?.code;

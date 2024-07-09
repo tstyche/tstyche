@@ -1,10 +1,8 @@
 import type ts from "typescript";
 import type { Diagnostic } from "#diagnostic";
 
-export type ExplainHandler = (isNot: boolean) => Array<Diagnostic>;
-
 export interface MatchResult {
-  explain: ExplainHandler;
+  explain: (isNot: boolean) => Array<Diagnostic>;
   isMatch: boolean;
 }
 
