@@ -163,7 +163,7 @@ export class TestTreeWorker {
     } else {
       const origin = DiagnosticOrigin.fromNode(assertion.matcherName, assertion.ancestorNames);
 
-      const diagnostics = matchResult.explain().map((diagnostic) => {
+      const diagnostics = matchResult.explain(assertion.isNot).map((diagnostic) => {
         if (diagnostic.origin == null) {
           return diagnostic.add({ origin });
         }

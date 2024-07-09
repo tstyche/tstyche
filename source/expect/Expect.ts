@@ -77,10 +77,6 @@ export class Expect {
       : this.#typeChecker.getTypeFromTypeNode(node);
   }
 
-  #getTypes(nodes: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>) {
-    return nodes.map((node) => this.#getType(node));
-  }
-
   #handleDeprecated(matcherNameText: string, assertion: Assertion) {
     switch (matcherNameText) {
       case "toBeAssignable":
@@ -99,10 +95,8 @@ export class Expect {
     }
   }
 
-  #isArrayOfStringOrNumberLiteralTypes(
-    types: Array<ts.Type>,
-  ): types is Array<ts.StringLiteralType | ts.NumberLiteralType> {
-    return types.every((type) => this.#isStringOrNumberLiteralType(type));
+  #isStringOrNumericLiteralNode(node: ts.Node): node is ts.StringLiteralLike | ts.NumericLiteral {
+    return this.#compiler.isStringLiteralLike(node) || this.#compiler.isNumericLiteral(node);
   }
 
   #isObjectType(type: ts.Type): type is ts.ObjectType {
@@ -255,19 +249,13 @@ export class Expect {
           return;
         }
 
-        const targetTypes = this.#getTypes(assertion.target);
-
-        if (!this.#isArrayOfStringOrNumberLiteralTypes(targetTypes)) {
+        if (!assertion.target.every((node) => this.#isStringOrNumericLiteralNode(node))) {
           this.#onTargetArgumentsMustBeStringOrNumberLiteralTypes(assertion.target, expectResult);
 
           return;
         }
 
-        return this.toRaiseError.match(
-          { diagnostics: [...assertion.diagnostics], node: assertion.source[0] },
-          targetTypes,
-          assertion.isNot,
-        );
+        return this.toRaiseError.match(assertion.source[0], [...assertion.diagnostics], [...assertion.target]);
       }
 
       default: {
@@ -288,9 +276,9 @@ export class Expect {
   }
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const expectedText = "type 'string | number | symbol'";
+    const expectedText = "of type 'string | number | symbol'";
 
-    const text = ExpectDiagnosticText.argumentMustBeOf("key", expectedText);
+    const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
     const origin = DiagnosticOrigin.fromNode(node);
 
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
@@ -304,11 +292,11 @@ export class Expect {
   }
 
   #onSourceArgumentMustBeFunctionOrClassType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const expectedText = "a function or class type";
+    const expectedText = "of a function or class type";
 
     const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText)
-      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText);
+      ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
+      : ExpectDiagnosticText.argumentMustBe("source", expectedText);
 
     const origin = DiagnosticOrigin.fromNode(node);
 
@@ -316,11 +304,11 @@ export class Expect {
   }
 
   #onSourceArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const expectedText = "an object type";
+    const expectedText = "of an object type";
 
     const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBeOf("Source", expectedText)
-      : ExpectDiagnosticText.argumentMustBeOf("source", expectedText);
+      ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
+      : ExpectDiagnosticText.argumentMustBe("source", expectedText);
 
     const origin = DiagnosticOrigin.fromNode(node);
 
@@ -335,11 +323,11 @@ export class Expect {
   }
 
   #onTargetArgumentMustBeObjectType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const expectedText = "an object type";
+    const expectedText = "of an object type";
 
     const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBeOf("Target", expectedText)
-      : ExpectDiagnosticText.argumentMustBeOf("target", expectedText);
+      ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
+      : ExpectDiagnosticText.argumentMustBe("target", expectedText);
 
     const origin = DiagnosticOrigin.fromNode(node);
 
@@ -353,19 +341,14 @@ export class Expect {
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
-  #onTargetArgumentsMustBeStringOrNumberLiteralTypes(
-    nodes: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>,
-    expectResult: ExpectResult,
-  ) {
+  #onTargetArgumentsMustBeStringOrNumberLiteralTypes(nodes: ts.NodeArray<ts.Node>, expectResult: ExpectResult) {
     const diagnostics: Array<Diagnostic> = [];
 
     for (const node of nodes) {
-      const receivedType = this.#getType(node);
+      if (!this.#isStringOrNumericLiteralNode(node)) {
+        const expectedText = "a string or number literal";
 
-      if (!this.#isStringOrNumberLiteralType(receivedType)) {
-        const expectedText = "type 'string | number'";
-
-        const text = ExpectDiagnosticText.argumentMustBeOf("target", expectedText);
+        const text = ExpectDiagnosticText.argumentMustBe("target", expectedText);
         const origin = DiagnosticOrigin.fromNode(node);
 
         diagnostics.push(Diagnostic.error(text, origin));

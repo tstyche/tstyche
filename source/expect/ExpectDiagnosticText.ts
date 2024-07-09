@@ -3,8 +3,8 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' or type argument for '${typeArgumentNameText}' must be provided.`;
   }
 
-  static argumentMustBeOf(argumentNameText: string, expectedText: string): string {
-    return `An argument for '${argumentNameText}' must be of ${expectedText}.`;
+  static argumentMustBe(argumentNameText: string, expectedText: string): string {
+    return `An argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
   static argumentMustBeProvided(argumentNameText: string): string {
@@ -38,8 +38,8 @@ export class ExpectDiagnosticText {
     return `The raised type error${count === 1 ? "" : "s"}:`;
   }
 
-  static typeArgumentMustBeOf(argumentNameText: string, expectedText: string): string {
-    return `A type argument for '${argumentNameText}' must be of ${expectedText}.`;
+  static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
+    return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
   static typeDidNotRaiseError(isTypeNode: boolean): string {

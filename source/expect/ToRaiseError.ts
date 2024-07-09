@@ -1,12 +1,7 @@
 import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchResult, TypeChecker } from "./types.js";
-
-export interface ToRaiseErrorSource {
-  diagnostics: Array<ts.Diagnostic>;
-  node: ts.Expression | ts.TypeNode;
-}
+import type { ExplainHandler, MatchResult, TypeChecker } from "./types.js";
 
 export class ToRaiseError {
   compiler: typeof ts;
@@ -18,75 +13,71 @@ export class ToRaiseError {
   }
 
   #explain(
-    source: ToRaiseErrorSource,
-    targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
+    sourceNode: ts.Expression | ts.TypeNode,
+    diagnostics: Array<ts.Diagnostic>,
+    targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
     isNot: boolean,
   ) {
-    const isTypeNode = this.compiler.isTypeNode(source.node);
+    const isTypeNode = this.compiler.isTypeNode(sourceNode);
 
-    if (source.diagnostics.length === 0) {
+    if (diagnostics.length === 0) {
       const text = ExpectDiagnosticText.typeDidNotRaiseError(isTypeNode);
 
       return [Diagnostic.error(text)];
     }
 
-    if (source.diagnostics.length !== targetTypes.length) {
-      const count = source.diagnostics.length;
+    if (diagnostics.length !== targetNodes.length) {
+      const count = diagnostics.length;
 
-      const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, count, targetTypes.length);
+      const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, count, targetNodes.length);
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
-        ...Diagnostic.fromDiagnostics(source.diagnostics, this.compiler),
+        ...Diagnostic.fromDiagnostics(diagnostics, this.compiler),
       ];
 
       return [Diagnostic.error(text).add({ related })];
     }
 
-    return targetTypes.reduce<Array<Diagnostic>>((diagnostics, argument, index) => {
-      const diagnostic = source.diagnostics[index];
+    return targetNodes.reduce<Array<Diagnostic>>((accumulator, node, index) => {
+      const diagnostic = diagnostics[index];
 
-      if (diagnostic != null) {
-        const isMatch = this.#matchExpectedError(diagnostic, argument);
+      const isMatch = this.#matchExpectedError(diagnostic, node);
 
-        if (isNot ? isMatch : !isMatch) {
-          const text = isNot
-            ? ExpectDiagnosticText.typeRaisedMatchingError(isTypeNode)
-            : ExpectDiagnosticText.typeDidNotRaiseMatchingError(isTypeNode);
+      if (isNot ? isMatch : !isMatch) {
+        const text = isNot
+          ? ExpectDiagnosticText.typeRaisedMatchingError(isTypeNode)
+          : ExpectDiagnosticText.typeDidNotRaiseMatchingError(isTypeNode);
 
-          const related = [
-            Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
-            ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
-          ];
+        const origin = DiagnosticOrigin.fromNode(node);
 
-          // TODO add the 'origin' and make sure it makes the message understandable
-          diagnostics.push(Diagnostic.error(text).add({ related }));
-        }
+        const related = diagnostic && [
+          Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
+          ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
+        ];
+
+        accumulator.push(Diagnostic.error(text, origin).add({ related }));
       }
 
-      return diagnostics;
+      return accumulator;
     }, []);
   }
 
-  #isStringLiteralType(type: ts.Type): type is ts.StringLiteralType {
-    return Boolean(type.flags & this.compiler.TypeFlags.StringLiteral);
-  }
-
   match(
-    source: ToRaiseErrorSource,
-    targetTypes: Array<ts.StringLiteralType | ts.NumberLiteralType>,
-    isNot: boolean,
+    sourceNode: ts.Expression | ts.TypeNode,
+    diagnostics: Array<ts.Diagnostic>,
+    targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
   ): MatchResult {
-    const explain = () => this.#explain(source, targetTypes, isNot);
+    const explain: ExplainHandler = (isNot) => this.#explain(sourceNode, diagnostics, targetNodes, isNot);
 
-    if (targetTypes.length === 0) {
+    if (targetNodes.length === 0) {
       return {
         explain,
-        isMatch: source.diagnostics.length > 0,
+        isMatch: diagnostics.length > 0,
       };
     }
 
-    if (source.diagnostics.length !== targetTypes.length) {
+    if (diagnostics.length !== targetNodes.length) {
       return {
         explain,
         isMatch: false,
@@ -95,15 +86,15 @@ export class ToRaiseError {
 
     return {
       explain,
-      isMatch: targetTypes.every((type, index) => this.#matchExpectedError(source.diagnostics[index], type)),
+      isMatch: targetNodes.every((node, index) => this.#matchExpectedError(diagnostics[index], node)),
     };
   }
 
-  #matchExpectedError(diagnostic: ts.Diagnostic | undefined, type: ts.StringLiteralType | ts.NumberLiteralType) {
-    if (this.#isStringLiteralType(type)) {
-      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(type.value); // TODO consider removing '\r\n', '\n' and leading/trailing spaces from 'type.value'
+  #matchExpectedError(diagnostic: ts.Diagnostic | undefined, node: ts.StringLiteralLike | ts.NumericLiteral) {
+    if (this.compiler.isStringLiteralLike(node)) {
+      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(node.text); // TODO sanitize 'text' by removing '\r\n', '\n', and leading/trailing spaces
     }
 
-    return type.value === diagnostic?.code;
+    return Number(node.text) === diagnostic?.code;
   }
 }

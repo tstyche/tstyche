@@ -1,2 +1,2 @@
 export { Expect } from "./Expect.js";
-export type { MatchResult, TypeChecker } from "./types.js";
+export type { ExplainHandler, MatchResult, TypeChecker } from "./types.js";
