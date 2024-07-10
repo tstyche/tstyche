@@ -1,2 +1,2 @@
 export { ExpectService } from "./ExpectService.js";
-export type { MatchResult, TypeChecker } from "./types.js";
+export type { DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";

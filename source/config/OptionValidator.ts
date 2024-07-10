@@ -5,17 +5,18 @@ import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import type { OptionBrand, OptionGroup } from "./enums.js";
+import type { DiagnosticsHandler } from "./types.js";
 
 export class OptionValidator {
-  #onDiagnostic: (diagnostic: Diagnostic) => void;
+  #onDiagnostics: DiagnosticsHandler;
   #optionGroup: OptionGroup;
   #optionUsageText: OptionUsageText;
   #storeService: StoreService;
 
-  constructor(optionGroup: OptionGroup, storeService: StoreService, onDiagnostic: (diagnostic: Diagnostic) => void) {
+  constructor(optionGroup: OptionGroup, storeService: StoreService, onDiagnostics: DiagnosticsHandler) {
     this.#optionGroup = optionGroup;
     this.#storeService = storeService;
-    this.#onDiagnostic = onDiagnostic;
+    this.#onDiagnostics = onDiagnostics;
 
     this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
   }
@@ -30,14 +31,14 @@ export class OptionValidator {
       case "config":
       case "rootPath": {
         if (!existsSync(optionValue)) {
-          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
+          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
         break;
       }
 
       case "target": {
         if ((await this.#storeService.validateTag(optionValue)) === false) {
-          this.#onDiagnostic(
+          this.#onDiagnostics(
             Diagnostic.error(
               [
                 ConfigDiagnosticText.versionIsNotSupported(optionValue),
@@ -53,7 +54,7 @@ export class OptionValidator {
       case "testFileMatch": {
         for (const segment of ["/", "../"]) {
           if (optionValue.startsWith(segment)) {
-            this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.testFileMatchCannotStartWith(segment), origin));
+            this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.testFileMatchCannotStartWith(segment), origin));
           }
         }
         break;
@@ -61,7 +62,7 @@ export class OptionValidator {
 
       case "watch": {
         if (Environment.isCi) {
-          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.watchCannotBeEnabled(), origin));
+          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.watchCannotBeEnabled(), origin));
         }
         break;
       }

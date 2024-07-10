@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
@@ -12,7 +12,7 @@ import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
-import type { MatchResult, TypeChecker } from "./types.js";
+import type { DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
@@ -243,7 +243,7 @@ export class ExpectService {
         const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
         const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-        onDiagnostics([Diagnostic.error(text, origin)]);
+        onDiagnostics(Diagnostic.error(text, origin));
       }
     }
 
@@ -256,7 +256,7 @@ export class ExpectService {
     const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
     const origin = DiagnosticOrigin.fromNode(node);
 
-    onDiagnostic([Diagnostic.error(text, origin)]);
+    onDiagnostic(Diagnostic.error(text, origin));
   }
 
   #onSourceArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, onDiagnostic: DiagnosticsHandler) {
@@ -266,41 +266,41 @@ export class ExpectService {
 
     const origin = DiagnosticOrigin.fromNode(node);
 
-    onDiagnostic([Diagnostic.error(text, origin)]);
+    onDiagnostic(Diagnostic.error(text, origin));
   }
 
-  #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostic: DiagnosticsHandler) {
+  #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
-    onDiagnostic([Diagnostic.error(text, origin)]);
+    onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, onDiagnostic: DiagnosticsHandler) {
+  #onTargetArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, onDiagnostics: DiagnosticsHandler) {
     const text = this.#compiler.isTypeNode(node)
       ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
       : ExpectDiagnosticText.argumentMustBe("target", expectedText);
 
     const origin = DiagnosticOrigin.fromNode(node);
 
-    onDiagnostic([Diagnostic.error(text, origin)]);
+    onDiagnostics([Diagnostic.error(text, origin)]);
   }
 
-  #onTargetArgumentMustBeProvided(argumentNameText: string, assertion: Assertion, onDiagnostic: DiagnosticsHandler) {
+  #onTargetArgumentMustBeProvided(argumentNameText: string, assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentMustBeProvided(argumentNameText);
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    onDiagnostic([Diagnostic.error(text, origin)]);
+    onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostic: DiagnosticsHandler) {
+  #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    onDiagnostic([Diagnostic.error(text, origin)]);
+    onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentsMustBeStringOrNumberLiteralNodes(nodes: ts.NodeArray<ts.Node>, onDiagnostic: DiagnosticsHandler) {
+  #onTargetArgumentsMustBeStringOrNumberLiteralNodes(nodes: ts.NodeArray<ts.Node>, onDiagnostics: DiagnosticsHandler) {
     const diagnostics: Array<Diagnostic> = [];
 
     for (const node of nodes) {
@@ -314,6 +314,6 @@ export class ExpectService {
       }
     }
 
-    onDiagnostic(diagnostics);
+    onDiagnostics(diagnostics);
   }
 }

@@ -1,9 +1,9 @@
 import type ts from "typescript";
 import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { ExpectService, type TypeChecker } from "#expect";
+import { type DiagnosticsHandler, ExpectService, type TypeChecker } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { RunMode } from "./enums.js";
@@ -125,23 +125,20 @@ export class TestTreeWorker {
       return;
     }
 
-    if (assertion.diagnostics.size > 0 && assertion.matcherName.getText() !== "toRaiseError") {
+    const onExpectDiagnostics: DiagnosticsHandler = (diagnostics) => {
       EventEmitter.dispatch([
         "expect:error",
-        {
-          diagnostics: Diagnostic.fromDiagnostics([...assertion.diagnostics], this.#compiler),
-          result: expectResult,
-        },
+        { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics], result: expectResult },
       ]);
+    };
+
+    if (assertion.diagnostics.size > 0 && assertion.matcherName.getText() !== "toRaiseError") {
+      onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertion.diagnostics], this.#compiler));
 
       return;
     }
 
-    const onDiagnostics: DiagnosticsHandler = (diagnostics) => {
-      EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
-    };
-
-    const matchResult = this.#expectService.match(assertion, onDiagnostics);
+    const matchResult = this.#expectService.match(assertion, onExpectDiagnostics);
 
     if (!matchResult) {
       return;
@@ -153,10 +150,7 @@ export class TestTreeWorker {
         // TODO consider adding '.failNode' property to 'assertion'
         const origin = DiagnosticOrigin.fromNode((assertion.node.expression as ts.PropertyAccessExpression).name);
 
-        EventEmitter.dispatch([
-          "expect:error",
-          { diagnostics: [Diagnostic.error(text, origin)], result: expectResult },
-        ]);
+        onExpectDiagnostics(Diagnostic.error(text, origin));
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       }

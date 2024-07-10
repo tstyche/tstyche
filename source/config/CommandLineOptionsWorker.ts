@@ -6,13 +6,14 @@ import { type OptionDefinition, OptionDefinitionsMap, type OptionValue } from ".
 import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
+import type { DiagnosticsHandler } from "./types.js";
 
 export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
 
 export class CommandLineOptionsWorker {
   #commandLineOptionDefinitions: Map<string, OptionDefinition>;
   #commandLineOptions: Record<string, OptionValue>;
-  #onDiagnostic: (diagnostic: Diagnostic) => void;
+  #onDiagnostics: DiagnosticsHandler;
   #optionGroup = OptionGroup.CommandLine;
   #optionUsageText: OptionUsageText;
   #optionValidator: OptionValidator;
@@ -23,18 +24,18 @@ export class CommandLineOptionsWorker {
     commandLineOptions: Record<string, OptionValue>,
     pathMatch: Array<string>,
     storeService: StoreService,
-    onDiagnostic: (diagnostic: Diagnostic) => void,
+    onDiagnostics: DiagnosticsHandler,
   ) {
     this.#commandLineOptions = commandLineOptions;
     this.#pathMatch = pathMatch;
     this.#storeService = storeService;
-    this.#onDiagnostic = onDiagnostic;
+    this.#onDiagnostics = onDiagnostics;
 
     this.#commandLineOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
     this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
 
-    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostic);
+    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
   }
 
   async #onExpectsValue(optionDefinition: OptionDefinition) {
@@ -43,7 +44,7 @@ export class CommandLineOptionsWorker {
       ...(await this.#optionUsageText.get(optionDefinition.name, optionDefinition.brand)),
     ];
 
-    this.#onDiagnostic(Diagnostic.error(text));
+    this.#onDiagnostics(Diagnostic.error(text));
   }
 
   async parse(commandLineArgs: Array<string>): Promise<void> {
@@ -60,10 +61,10 @@ export class CommandLineOptionsWorker {
         if (optionDefinition) {
           index = await this.#parseOptionValue(commandLineArgs, index, optionDefinition);
         } else {
-          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
+          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
         }
       } else if (arg.startsWith("-")) {
-        this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
+        this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
       } else {
         this.#pathMatch.push(Path.normalizeSlashes(arg));
       }

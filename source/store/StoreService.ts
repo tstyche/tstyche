@@ -21,8 +21,8 @@ export class StoreService {
   constructor() {
     this.#storePath = Environment.storePath;
 
-    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#onDiagnostic);
-    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostic);
+    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#onDiagnostics);
+    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostics);
   }
 
   async getSupportedTags(): Promise<Array<string>> {
@@ -43,7 +43,7 @@ export class StoreService {
     const version = await this.#resolveTag(tag);
 
     if (version == null) {
-      this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
+      this.#onDiagnostics(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
 
       return;
     }
@@ -66,7 +66,7 @@ export class StoreService {
       const version = await this.#resolveTag(tag);
 
       if (version == null) {
-        this.#onDiagnostic(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
+        this.#onDiagnostics(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
 
         return;
       }
@@ -127,7 +127,7 @@ export class StoreService {
     return module.exports as typeof ts;
   }
 
-  #onDiagnostic(this: void, diagnostic: Diagnostic) {
+  #onDiagnostics(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
   }
 
@@ -174,7 +174,7 @@ export class StoreService {
         (this.#manifest.resolutions["latest"] != null &&
           Version.isGreaterThan(tag, this.#manifest.resolutions["latest"])))
     ) {
-      this.#onDiagnostic(
+      this.#onDiagnostics(
         Diagnostic.warning([
           "Failed to update metadata of the 'typescript' package from the registry.",
           `The resolution of the '${tag}' tag may be outdated.`,
