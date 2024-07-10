@@ -64,7 +64,7 @@ export class ExpectService {
     this.toEqual = new ToBe();
     this.toHaveProperty = new ToHaveProperty(compiler, typeChecker);
     this.toMatch = new ToMatch();
-    this.toRaiseError = new ToRaiseError(compiler, typeChecker);
+    this.toRaiseError = new ToRaiseError(compiler);
   }
 
   static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {

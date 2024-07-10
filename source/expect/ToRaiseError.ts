@@ -2,15 +2,13 @@ import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchResult, TypeChecker } from "./types.js";
+import type { MatchResult } from "./types.js";
 
 export class ToRaiseError {
-  compiler: typeof ts;
-  typeChecker: TypeChecker;
+  #compiler: typeof ts;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
-    this.compiler = compiler;
-    this.typeChecker = typeChecker;
+  constructor(compiler: typeof ts) {
+    this.#compiler = compiler;
   }
 
   #explain(
@@ -18,7 +16,7 @@ export class ToRaiseError {
     sourceNode: ts.Expression | ts.TypeNode,
     targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
   ) {
-    const isTypeNode = this.compiler.isTypeNode(sourceNode);
+    const isTypeNode = this.#compiler.isTypeNode(sourceNode);
 
     const origin = DiagnosticOrigin.fromAssertion(assertion);
 
@@ -35,7 +33,7 @@ export class ToRaiseError {
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
-        ...Diagnostic.fromDiagnostics([...assertion.diagnostics], this.compiler),
+        ...Diagnostic.fromDiagnostics([...assertion.diagnostics], this.#compiler),
       ];
 
       return [Diagnostic.error(text, origin).add({ related })];
@@ -55,7 +53,7 @@ export class ToRaiseError {
 
         const related = diagnostic && [
           Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
-          ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
+          ...Diagnostic.fromDiagnostics([diagnostic], this.#compiler),
         ];
 
         accumulator.push(Diagnostic.error(text, origin).add({ related }));
@@ -85,8 +83,8 @@ export class ToRaiseError {
   }
 
   #matchExpectedError(diagnostic: ts.Diagnostic, node: ts.StringLiteralLike | ts.NumericLiteral) {
-    if (this.compiler.isStringLiteralLike(node)) {
-      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(node.text);
+    if (this.#compiler.isStringLiteralLike(node)) {
+      return this.#compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(node.text);
     }
 
     return Number(node.text) === diagnostic?.code;
