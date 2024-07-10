@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
@@ -137,14 +137,13 @@ export class TestTreeWorker {
       return;
     }
 
-    const onDiagnostic = (diagnostics: Array<Diagnostic>) => {
+    const onDiagnostics: DiagnosticsHandler = (diagnostics) => {
       EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
     };
 
-    const matchResult = this.#expectService.match(assertion, onDiagnostic);
+    const matchResult = this.#expectService.match(assertion, onDiagnostics);
 
-    if (matchResult == null) {
-      // an error was encountered and the "expect:error" event is already emitted
+    if (!matchResult) {
       return;
     }
 

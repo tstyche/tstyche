@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
@@ -116,13 +116,13 @@ export class ExpectService {
     return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
   }
 
-  match(assertion: Assertion, onDiagnostic: (diagnostic: Array<Diagnostic>) => void): MatchResult | undefined {
+  match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
     this.#handleDeprecated(matcherNameText, assertion);
 
     if (assertion.source[0] == null) {
-      this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
+      this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
       return;
     }
@@ -146,13 +146,13 @@ export class ExpectService {
         }
 
         if (signatures.length === 0) {
-          this.#onSourceArgumentMustBe("of a function or class type", assertion.source[0], onDiagnostic);
+          this.#onSourceArgumentMustBe("of a function or class type", assertion.source[0], onDiagnostics);
 
           return;
         }
 
         if (assertion.target[0] == null) {
-          this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
+          this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
           return;
         }
@@ -160,7 +160,7 @@ export class ExpectService {
         const targetType = this.#getType(assertion.target[0]);
 
         if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
-          this.#onTargetArgumentMustBe("of an object type", assertion.target[0], onDiagnostic);
+          this.#onTargetArgumentMustBe("of an object type", assertion.target[0], onDiagnostics);
 
           return;
         }
@@ -181,7 +181,7 @@ export class ExpectService {
       case "toEqual":
       case "toMatch": {
         if (assertion.target[0] == null) {
-          this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
+          this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
           return;
         }
@@ -207,13 +207,13 @@ export class ExpectService {
       case "toHaveProperty": {
         const sourceType = this.#getType(assertion.source[0]);
         if (!this.#isObjectType(sourceType)) {
-          this.#onSourceArgumentMustBe("of an object type", assertion.source[0], onDiagnostic);
+          this.#onSourceArgumentMustBe("of an object type", assertion.source[0], onDiagnostics);
 
           return;
         }
 
         if (assertion.target[0] == null) {
-          this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostic);
+          this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostics);
 
           return;
         }
@@ -221,7 +221,7 @@ export class ExpectService {
         const targetType = this.#getType(assertion.target[0]);
 
         if (!(this.#isStringOrNumberLiteralType(targetType) || this.#isUniqueSymbolType(targetType))) {
-          this.#onKeyArgumentMustBeOfType(assertion.target[0], onDiagnostic);
+          this.#onKeyArgumentMustBeOfType(assertion.target[0], onDiagnostics);
 
           return;
         }
@@ -231,7 +231,7 @@ export class ExpectService {
 
       case "toRaiseError": {
         if (!assertion.target.every((node) => this.#isStringOrNumericLiteralNode(node))) {
-          this.#onTargetArgumentsMustBeStringOrNumberLiteralNodes(assertion.target, onDiagnostic);
+          this.#onTargetArgumentsMustBeStringOrNumberLiteralNodes(assertion.target, onDiagnostics);
 
           return;
         }
@@ -243,14 +243,14 @@ export class ExpectService {
         const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
         const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-        onDiagnostic([Diagnostic.error(text, origin)]);
+        onDiagnostics([Diagnostic.error(text, origin)]);
       }
     }
 
     return;
   }
 
-  #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, onDiagnostic: (diagnostic: Array<Diagnostic>) => void) {
+  #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, onDiagnostic: DiagnosticsHandler) {
     const expectedText = "of type 'string | number | symbol'";
 
     const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
@@ -259,11 +259,7 @@ export class ExpectService {
     onDiagnostic([Diagnostic.error(text, origin)]);
   }
 
-  #onSourceArgumentMustBe(
-    expectedText: string,
-    node: ts.Expression | ts.TypeNode,
-    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
-  ) {
+  #onSourceArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, onDiagnostic: DiagnosticsHandler) {
     const text = this.#compiler.isTypeNode(node)
       ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
       : ExpectDiagnosticText.argumentMustBe("source", expectedText);
@@ -273,21 +269,14 @@ export class ExpectService {
     onDiagnostic([Diagnostic.error(text, origin)]);
   }
 
-  #onSourceArgumentOrTypeArgumentMustBeProvided(
-    assertion: Assertion,
-    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
-  ) {
+  #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostic: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
     onDiagnostic([Diagnostic.error(text, origin)]);
   }
 
-  #onTargetArgumentMustBe(
-    expectedText: string,
-    node: ts.Expression | ts.TypeNode,
-    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
-  ) {
+  #onTargetArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, onDiagnostic: DiagnosticsHandler) {
     const text = this.#compiler.isTypeNode(node)
       ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
       : ExpectDiagnosticText.argumentMustBe("target", expectedText);
@@ -297,31 +286,21 @@ export class ExpectService {
     onDiagnostic([Diagnostic.error(text, origin)]);
   }
 
-  #onTargetArgumentMustBeProvided(
-    argumentNameText: string,
-    assertion: Assertion,
-    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
-  ) {
+  #onTargetArgumentMustBeProvided(argumentNameText: string, assertion: Assertion, onDiagnostic: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentMustBeProvided(argumentNameText);
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostic([Diagnostic.error(text, origin)]);
   }
 
-  #onTargetArgumentOrTypeArgumentMustBeProvided(
-    assertion: Assertion,
-    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
-  ) {
+  #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostic: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostic([Diagnostic.error(text, origin)]);
   }
 
-  #onTargetArgumentsMustBeStringOrNumberLiteralNodes(
-    nodes: ts.NodeArray<ts.Node>,
-    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
-  ) {
+  #onTargetArgumentsMustBeStringOrNumberLiteralNodes(nodes: ts.NodeArray<ts.Node>, onDiagnostic: DiagnosticsHandler) {
     const diagnostics: Array<Diagnostic> = [];
 
     for (const node of nodes) {
