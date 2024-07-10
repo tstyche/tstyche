@@ -18,32 +18,31 @@ export class ToRaiseError {
     sourceNode: ts.Expression | ts.TypeNode,
     targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
   ) {
-    const diagnostics = [...assertion.diagnostics];
     const isTypeNode = this.compiler.isTypeNode(sourceNode);
 
     const origin = DiagnosticOrigin.fromAssertion(assertion);
 
-    if (diagnostics.length === 0) {
+    if (assertion.diagnostics.size === 0) {
       const text = ExpectDiagnosticText.typeDidNotRaiseError(isTypeNode);
 
       return [Diagnostic.error(text, origin)];
     }
 
-    if (diagnostics.length !== targetNodes.length) {
-      const count = diagnostics.length;
+    if (assertion.diagnostics.size !== targetNodes.length) {
+      const count = assertion.diagnostics.size;
 
       const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, count, targetNodes.length);
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
-        ...Diagnostic.fromDiagnostics(diagnostics, this.compiler),
+        ...Diagnostic.fromDiagnostics([...assertion.diagnostics], this.compiler),
       ];
 
       return [Diagnostic.error(text, origin).add({ related })];
     }
 
-    return targetNodes.reduce<Array<Diagnostic>>((accumulator, node, index) => {
-      const diagnostic = diagnostics[index];
+    return [...assertion.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
+      const node = targetNodes[index]!;
 
       const isMatch = this.#matchExpectedError(diagnostic, node);
 
@@ -71,13 +70,13 @@ export class ToRaiseError {
     sourceNode: ts.Expression | ts.TypeNode,
     targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
   ): MatchResult {
-    const diagnostics = [...assertion.diagnostics];
-
     const isMatch =
       targetNodes.length === 0
-        ? diagnostics.length > 0
-        : targetNodes.length === diagnostics.length &&
-          targetNodes.every((node, index) => this.#matchExpectedError(diagnostics[index], node));
+        ? assertion.diagnostics.size > 0
+        : targetNodes.length === assertion.diagnostics.size &&
+          [...assertion.diagnostics].every((diagnostic, index) =>
+            this.#matchExpectedError(diagnostic, targetNodes[index]!),
+          );
 
     return {
       explain: () => this.#explain(assertion, sourceNode, targetNodes),
@@ -85,7 +84,7 @@ export class ToRaiseError {
     };
   }
 
-  #matchExpectedError(diagnostic: ts.Diagnostic | undefined, node: ts.StringLiteralLike | ts.NumericLiteral) {
+  #matchExpectedError(diagnostic: ts.Diagnostic, node: ts.StringLiteralLike | ts.NumericLiteral) {
     if (this.compiler.isStringLiteralLike(node)) {
       return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(node.text);
     }
