@@ -3,7 +3,7 @@ import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } fro
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
-import type { Expect } from "#expect";
+import { ExpectService, type TypeChecker } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { RunMode } from "./enums.js";
@@ -18,21 +18,27 @@ interface TestFileWorkerOptions {
 export class TestTreeWorker {
   #compiler: typeof ts;
   #cancellationToken: CancellationToken | undefined;
-  #expect: Expect;
+  #expectService: ExpectService;
   #fileResult: FileResult;
   #hasOnly: boolean;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
 
-  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts, expect: Expect, options: TestFileWorkerOptions) {
+  constructor(
+    resolvedConfig: ResolvedConfig,
+    compiler: typeof ts,
+    typeChecker: TypeChecker,
+    options: TestFileWorkerOptions,
+  ) {
     this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
-    this.#expect = expect;
 
     this.#cancellationToken = options.cancellationToken;
     this.#fileResult = options.fileResult;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
+
+    this.#expectService = new ExpectService(compiler, typeChecker);
   }
 
   #resolveRunMode(mode: RunMode, member: TestMember): RunMode {
@@ -80,13 +86,7 @@ export class TestTreeWorker {
       const validationError = member.validate();
 
       if (validationError.length > 0) {
-        EventEmitter.dispatch([
-          "file:error",
-          {
-            diagnostics: validationError,
-            result: this.#fileResult,
-          },
-        ]);
+        EventEmitter.dispatch(["file:error", { diagnostics: validationError, result: this.#fileResult }]);
 
         break;
       }
@@ -137,11 +137,14 @@ export class TestTreeWorker {
       return;
     }
 
-    const matchResult = this.#expect.match(assertion, expectResult);
+    const onDiagnostic = (diagnostics: Array<Diagnostic>) => {
+      EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
+    };
+
+    const matchResult = this.#expectService.match(assertion, onDiagnostic);
 
     if (matchResult == null) {
       // an error was encountered and the "expect:error" event is already emitted
-
       return;
     }
 
