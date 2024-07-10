@@ -55,9 +55,7 @@ export class ConfigFileOptionsWorker {
     };
 
     if (sourceFile.parseDiagnostics.length > 0) {
-      for (const diagnostic of Diagnostic.fromDiagnostics(sourceFile.parseDiagnostics, this.#compiler)) {
-        this.#onDiagnostics(diagnostic);
-      }
+      this.#onDiagnostics(Diagnostic.fromDiagnostics(sourceFile.parseDiagnostics, this.#compiler));
 
       return;
     }
