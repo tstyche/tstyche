@@ -121,14 +121,23 @@ export class ExpectService {
 
     this.#handleDeprecated(matcherNameText, assertion);
 
+    if (assertion.source[0] == null) {
+      this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
+
+      return;
+    }
+
+    const matchWorker = new MatchWorker(
+      this.#compiler,
+      this.#typeChecker,
+      assertion,
+      assertion.source[0],
+      // @ts-expect-error TODO must be optional somehow
+      assertion.target[0],
+    );
+
     switch (matcherNameText) {
       case "toAcceptProps": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
-
-          return;
-        }
-
         const sourceType = this.#getType(assertion.source[0]);
         let signatures = sourceType.getCallSignatures();
 
@@ -171,25 +180,11 @@ export class ExpectService {
       // TODO '.toEqual()' is deprecated and must be removed in TSTyche 3
       case "toEqual":
       case "toMatch": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
-
-          return;
-        }
-
         if (assertion.target[0] == null) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
 
           return;
         }
-
-        const matchWorker = new MatchWorker(
-          this.#compiler,
-          this.#typeChecker,
-          assertion,
-          assertion.source[0],
-          assertion.target[0],
-        );
 
         return this[matcherNameText].match(matchWorker);
       }
@@ -206,31 +201,10 @@ export class ExpectService {
       case "toBeUniqueSymbol":
       case "toBeUnknown":
       case "toBeVoid": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
-
-          return;
-        }
-
-        const matchWorker = new MatchWorker(
-          this.#compiler,
-          this.#typeChecker,
-          assertion,
-          assertion.source[0],
-          // @ts-expect-error TODO must be optional somehow
-          assertion.target[0],
-        );
-
         return this[matcherNameText].match(matchWorker);
       }
 
       case "toHaveProperty": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
-
-          return;
-        }
-
         const sourceType = this.#getType(assertion.source[0]);
         if (!this.#isObjectType(sourceType)) {
           this.#onSourceArgumentMustBe("of an object type", assertion.source[0], onDiagnostic);
@@ -256,12 +230,6 @@ export class ExpectService {
       }
 
       case "toRaiseError": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
-
-          return;
-        }
-
         if (!assertion.target.every((node) => this.#isStringOrNumericLiteralNode(node))) {
           this.#onTargetArgumentsMustBeStringOrNumberLiteralNodes(assertion.target, onDiagnostic);
 
