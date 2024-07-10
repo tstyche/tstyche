@@ -31,6 +31,7 @@ export class PackageInstaller {
     if (
       await Lock.isLocked(installationPath, {
         cancellationToken,
+        // TODO 'Diagnostic.extendWith()' could be used here too
         onDiagnostics: (text) => {
           this.#onDiagnostics(Diagnostic.error([`Failed to install 'typescript@${compilerVersion}'.`, text]));
         },
