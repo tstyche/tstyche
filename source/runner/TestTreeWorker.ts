@@ -161,17 +161,7 @@ export class TestTreeWorker {
     } else if (runMode & RunMode.Fail) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
-      const origin = DiagnosticOrigin.fromNode(assertion.matcherName, assertion.ancestorNames);
-
-      const diagnostics = matchResult.explain(assertion.isNot).map((diagnostic) => {
-        if (diagnostic.origin == null) {
-          return diagnostic.add({ origin });
-        }
-
-        return diagnostic.add({ origin: { ...diagnostic.origin, breadcrumbs: assertion.ancestorNames } });
-      });
-
-      EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
+      EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);
     }
   }
 

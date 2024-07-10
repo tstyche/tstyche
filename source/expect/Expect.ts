@@ -157,6 +157,7 @@ export class Expect {
         }
 
         return this.toAcceptProps.match(
+          assertion,
           { node: assertion.source[0], signatures: [...signatures] },
           { node: assertion.target[0], type: targetType },
         );
@@ -182,7 +183,11 @@ export class Expect {
           return;
         }
 
-        return this[matcherNameText].match(this.#getType(assertion.source[0]), this.#getType(assertion.target[0]));
+        return this[matcherNameText].match(
+          assertion,
+          this.#getType(assertion.source[0]),
+          this.#getType(assertion.target[0]),
+        );
       }
 
       case "toBeAny":
@@ -203,7 +208,7 @@ export class Expect {
           return;
         }
 
-        return this[matcherNameText].match(this.#getType(assertion.source[0]));
+        return this[matcherNameText].match(assertion, this.#getType(assertion.source[0]));
       }
 
       case "toHaveProperty": {
@@ -234,7 +239,7 @@ export class Expect {
           return;
         }
 
-        return this.toHaveProperty.match(sourceType, { node: assertion.target[0], type: targetType });
+        return this.toHaveProperty.match(assertion, sourceType, assertion.target[0], targetType);
       }
 
       case "toRaiseError": {
@@ -245,12 +250,12 @@ export class Expect {
         }
 
         if (!assertion.target.every((node) => this.#isStringOrNumericLiteralNode(node))) {
-          this.#onTargetArgumentsMustBeStringOrNumberLiteralTypes(assertion.target, expectResult);
+          this.#onTargetArgumentsMustBeStringOrNumberLiteralNodes(assertion.target, expectResult);
 
           return;
         }
 
-        return this.toRaiseError.match(assertion.source[0], [...assertion.diagnostics], [...assertion.target]);
+        return this.toRaiseError.match(assertion, assertion.source[0], [...assertion.target]);
       }
 
       default: {
@@ -320,7 +325,7 @@ export class Expect {
     this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
   }
 
-  #onTargetArgumentsMustBeStringOrNumberLiteralTypes(nodes: ts.NodeArray<ts.Node>, expectResult: ExpectResult) {
+  #onTargetArgumentsMustBeStringOrNumberLiteralNodes(nodes: ts.NodeArray<ts.Node>, expectResult: ExpectResult) {
     const diagnostics: Array<Diagnostic> = [];
 
     for (const node of nodes) {

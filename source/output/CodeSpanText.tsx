@@ -99,7 +99,7 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
     }
   }
 
-  const breadcrumbs = diagnosticOrigin.breadcrumbs?.map((ancestor) => [
+  const breadcrumbs = diagnosticOrigin.assertion?.ancestorNames.map((ancestor) => [
     <Text color={Color.Gray}>{" ❭ "}</Text>,
     <Text>{ancestor}</Text>,
   ]);

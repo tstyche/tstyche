@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import type { Assertion } from "#collect";
 import type { Diagnostic } from "#diagnostic";
 import type { MatchResult, Relation, TypeChecker } from "./types.js";
 
@@ -10,13 +11,13 @@ export abstract class RelationMatcherBase {
     this.typeChecker = typeChecker;
   }
 
-  abstract explain(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): Array<Diagnostic>;
+  abstract explain(assertion: Assertion, sourceType: ts.Type, targetType: ts.Type): Array<Diagnostic>;
 
-  match(sourceType: ts.Type, targetType: ts.Type): MatchResult {
+  match(assertion: Assertion, sourceType: ts.Type, targetType: ts.Type): MatchResult {
     const isMatch = this.typeChecker.isTypeRelatedTo(sourceType, targetType, this.relation);
 
     return {
-      explain: (isNot) => this.explain(sourceType, targetType, isNot),
+      explain: () => this.explain(assertion, sourceType, targetType),
       isMatch,
     };
   }

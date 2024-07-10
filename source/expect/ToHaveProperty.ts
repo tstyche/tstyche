@@ -1,12 +1,8 @@
 import type ts from "typescript";
+import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
-
-export interface ToHavePropertyTarget {
-  node: ts.Expression | ts.TypeNode;
-  type: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType;
-}
 
 export class ToHaveProperty {
   compiler: typeof ts;
@@ -17,19 +13,24 @@ export class ToHaveProperty {
     this.typeChecker = typeChecker;
   }
 
-  #explain(sourceType: ts.Type, target: ToHavePropertyTarget, isNot: boolean) {
+  #explain(
+    assertion: Assertion,
+    sourceType: ts.Type,
+    targetNode: ts.Expression | ts.TypeNode,
+    targetType: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType,
+  ) {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
     let propertyNameText: string;
 
-    if (this.#isStringOrNumberLiteralType(target.type)) {
-      propertyNameText = String(target.type.value);
+    if (this.#isStringOrNumberLiteralType(targetType)) {
+      propertyNameText = String(targetType.value);
     } else {
-      propertyNameText = `[${this.compiler.unescapeLeadingUnderscores(target.type.symbol.escapedName)}]`;
+      propertyNameText = `[${this.compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
     }
 
-    const origin = DiagnosticOrigin.fromNode(target.node);
+    const origin = DiagnosticOrigin.fromNode(targetNode, assertion);
 
-    return isNot
+    return assertion.isNot
       ? [Diagnostic.error(ExpectDiagnosticText.typeHasProperty(sourceTypeText, propertyNameText), origin)]
       : [Diagnostic.error(ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
   }
@@ -38,13 +39,18 @@ export class ToHaveProperty {
     return Boolean(type.flags & this.compiler.TypeFlags.StringOrNumberLiteral);
   }
 
-  match(sourceType: ts.Type, target: ToHavePropertyTarget): MatchResult {
+  match(
+    assertion: Assertion,
+    sourceType: ts.Type,
+    targetNode: ts.Expression | ts.TypeNode,
+    targetType: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType,
+  ): MatchResult {
     let targetArgumentText: string;
 
-    if (this.#isStringOrNumberLiteralType(target.type)) {
-      targetArgumentText = String(target.type.value);
+    if (this.#isStringOrNumberLiteralType(targetType)) {
+      targetArgumentText = String(targetType.value);
     } else {
-      targetArgumentText = this.compiler.unescapeLeadingUnderscores(target.type.escapedName);
+      targetArgumentText = this.compiler.unescapeLeadingUnderscores(targetType.escapedName);
     }
 
     const isMatch = sourceType.getProperties().some((property) => {
@@ -52,7 +58,7 @@ export class ToHaveProperty {
     });
 
     return {
-      explain: (isNot) => this.#explain(sourceType, target, isNot),
+      explain: () => this.#explain(assertion, sourceType, targetNode, targetType),
       isMatch,
     };
   }

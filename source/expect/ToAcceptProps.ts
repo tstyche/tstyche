@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
@@ -35,18 +36,18 @@ export class ToAcceptProps {
     this.#typeChecker = typeChecker;
   }
 
-  #explain(source: ToAcceptPropsSource, target: ToAcceptPropsTarget, isNot: boolean) {
+  #explain(assertion: Assertion, source: ToAcceptPropsSource, target: ToAcceptPropsTarget) {
     const diagnostics: Array<Diagnostic> = [];
     let signatureIndex = 0;
 
     for (const signature of source.signatures) {
-      const introText = isNot
+      const introText = assertion.isNot
         ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(source.node))
         : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(source.node));
 
-      const { explanations, isMatch } = this.#explainProperties(signature, target, isNot);
+      const { explanations, isMatch } = this.#explainProperties(assertion, signature, target);
 
-      if (isNot ? !isMatch : isMatch) {
+      if (assertion.isNot ? !isMatch : isMatch) {
         signatureIndex++;
         continue;
       }
@@ -130,7 +131,7 @@ export class ToAcceptProps {
     return check(sourceParameterType, target.type);
   }
 
-  #explainProperties(signature: ts.Signature, target: ToAcceptPropsTarget, isNot: boolean) {
+  #explainProperties(assertion: Assertion, signature: ts.Signature, target: ToAcceptPropsTarget) {
     const sourceParameter = signature.getDeclaration().parameters[0];
     const sourceParameterType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
 
@@ -148,7 +149,7 @@ export class ToAcceptProps {
         const sourceProperty = sourceType?.getProperty(targetPropertyName);
 
         if (!sourceProperty) {
-          const origin = this.#resolveOrigin(targetProperty, target.node);
+          const origin = this.#resolveOrigin(targetProperty, target.node, assertion);
 
           explanations.push({
             origin,
@@ -162,7 +163,7 @@ export class ToAcceptProps {
         }
 
         if (this.#isOptionalProperty(targetProperty) && !this.#isOptionalProperty(sourceProperty)) {
-          const origin = this.#resolveOrigin(targetProperty, target.node);
+          const origin = this.#resolveOrigin(targetProperty, target.node, assertion);
 
           explanations.push({
             origin,
@@ -183,7 +184,7 @@ export class ToAcceptProps {
           const targetPropertyTypeText = this.#typeChecker.typeToString(targetPropertyType);
           const sourcePropertyTypeText = this.#typeChecker.typeToString(sourcePropertyType);
 
-          const origin = this.#resolveOrigin(targetProperty, target.node);
+          const origin = this.#resolveOrigin(targetProperty, target.node, assertion);
 
           explanations.push({
             origin,
@@ -204,7 +205,7 @@ export class ToAcceptProps {
           const targetProperty = targetType.getProperty(sourcePropertyName);
 
           if (!targetProperty && !this.#isOptionalProperty(sourceProperty)) {
-            const origin = DiagnosticOrigin.fromNode(target.node);
+            const origin = DiagnosticOrigin.fromNode(target.node, assertion);
 
             explanations.push({
               origin,
@@ -219,7 +220,7 @@ export class ToAcceptProps {
       }
 
       if (explanations.length === 0) {
-        const origin = DiagnosticOrigin.fromNode(target.node);
+        const origin = DiagnosticOrigin.fromNode(target.node, assertion);
 
         explanations.push({
           origin,
@@ -237,7 +238,7 @@ export class ToAcceptProps {
 
       for (const sourceType of sourceParameterType.types) {
         const { explanations, isMatch } = explain(sourceType, target.type, [
-          isNot
+          assertion.isNot
             ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
             : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
         ]);
@@ -257,16 +258,16 @@ export class ToAcceptProps {
     return explain(sourceParameterType, target.type);
   }
 
-  match(source: ToAcceptPropsSource, target: ToAcceptPropsTarget): MatchResult {
+  match(assertion: Assertion, source: ToAcceptPropsSource, target: ToAcceptPropsTarget): MatchResult {
     const isMatch = source.signatures.some((signature) => this.#checkProperties(signature, target));
 
     return {
-      explain: (isNot) => this.#explain(source, target, isNot),
+      explain: () => this.#explain(assertion, source, target),
       isMatch,
     };
   }
 
-  #resolveOrigin(symbol: ts.Symbol, node: ts.Node) {
+  #resolveOrigin(symbol: ts.Symbol, node: ts.Node, assertion: Assertion) {
     if (
       symbol.valueDeclaration != null &&
       (this.#compiler.isPropertySignature(symbol.valueDeclaration) ||
@@ -275,9 +276,9 @@ export class ToAcceptProps {
       symbol.valueDeclaration.getStart() >= node.getStart() &&
       symbol.valueDeclaration.getEnd() <= node.getEnd()
     ) {
-      return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name);
+      return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name, assertion);
     }
 
-    return DiagnosticOrigin.fromNode(node);
+    return DiagnosticOrigin.fromNode(node, assertion);
   }
 }

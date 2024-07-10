@@ -1,16 +1,23 @@
 import type ts from "typescript";
+import type { Assertion } from "#collect";
 
 export class DiagnosticOrigin {
-  breadcrumbs: Array<string> | undefined;
+  assertion?: Assertion | undefined;
   end: number;
   sourceFile: ts.SourceFile;
   start: number;
 
-  constructor(start: number, end: number, sourceFile: ts.SourceFile, breadcrumbs?: Array<string>) {
+  constructor(start: number, end: number, sourceFile: ts.SourceFile, assertion?: Assertion) {
     this.start = start;
     this.end = end;
     this.sourceFile = sourceFile;
-    this.breadcrumbs = breadcrumbs;
+    this.assertion = assertion;
+  }
+
+  static fromAssertion(assertion: Assertion): DiagnosticOrigin {
+    const node = assertion.matcherName;
+
+    return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), assertion);
   }
 
   static fromJsonNode(
@@ -22,7 +29,7 @@ export class DiagnosticOrigin {
     return new DiagnosticOrigin(skipTrivia(node.pos, sourceFile), node.end, sourceFile);
   }
 
-  static fromNode(node: ts.Node, breadcrumbs?: Array<string>): DiagnosticOrigin {
-    return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), breadcrumbs);
+  static fromNode(node: ts.Node, assertion?: Assertion): DiagnosticOrigin {
+    return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), assertion);
   }
 }

@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
@@ -13,17 +14,19 @@ export class ToRaiseError {
   }
 
   #explain(
+    assertion: Assertion,
     sourceNode: ts.Expression | ts.TypeNode,
-    diagnostics: Array<ts.Diagnostic>,
     targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
-    isNot: boolean,
   ) {
+    const diagnostics = [...assertion.diagnostics];
     const isTypeNode = this.compiler.isTypeNode(sourceNode);
+
+    const origin = DiagnosticOrigin.fromAssertion(assertion);
 
     if (diagnostics.length === 0) {
       const text = ExpectDiagnosticText.typeDidNotRaiseError(isTypeNode);
 
-      return [Diagnostic.error(text)];
+      return [Diagnostic.error(text, origin)];
     }
 
     if (diagnostics.length !== targetNodes.length) {
@@ -36,7 +39,7 @@ export class ToRaiseError {
         ...Diagnostic.fromDiagnostics(diagnostics, this.compiler),
       ];
 
-      return [Diagnostic.error(text).add({ related })];
+      return [Diagnostic.error(text, origin).add({ related })];
     }
 
     return targetNodes.reduce<Array<Diagnostic>>((accumulator, node, index) => {
@@ -44,12 +47,12 @@ export class ToRaiseError {
 
       const isMatch = this.#matchExpectedError(diagnostic, node);
 
-      if (isNot ? isMatch : !isMatch) {
-        const text = isNot
+      if (assertion.isNot ? isMatch : !isMatch) {
+        const text = assertion.isNot
           ? ExpectDiagnosticText.typeRaisedMatchingError(isTypeNode)
           : ExpectDiagnosticText.typeDidNotRaiseMatchingError(isTypeNode);
 
-        const origin = DiagnosticOrigin.fromNode(node);
+        const origin = DiagnosticOrigin.fromNode(node, assertion);
 
         const related = diagnostic && [
           Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
@@ -64,18 +67,20 @@ export class ToRaiseError {
   }
 
   match(
+    assertion: Assertion,
     sourceNode: ts.Expression | ts.TypeNode,
-    diagnostics: Array<ts.Diagnostic>,
     targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
   ): MatchResult {
+    const diagnostics = [...assertion.diagnostics];
+
     const isMatch =
       targetNodes.length === 0
         ? diagnostics.length > 0
-        : diagnostics.length === targetNodes.length &&
+        : targetNodes.length === diagnostics.length &&
           targetNodes.every((node, index) => this.#matchExpectedError(diagnostics[index], node));
 
     return {
-      explain: (isNot) => this.#explain(sourceNode, diagnostics, targetNodes, isNot),
+      explain: () => this.#explain(assertion, sourceNode, targetNodes),
       isMatch,
     };
   }

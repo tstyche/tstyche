@@ -17,15 +17,10 @@ export class Diagnostic {
 
   add(options: {
     code?: string | undefined;
-    origin?: DiagnosticOrigin | undefined;
     related?: Array<Diagnostic> | undefined;
   }): this {
     if (options.code != null) {
       this.code = options.code;
-    }
-
-    if (options.origin != null) {
-      this.origin = options.origin;
     }
 
     if (options.related != null) {
@@ -44,7 +39,7 @@ export class Diagnostic {
       const code = `ts(${String(diagnostic.code)})`;
       let origin: DiagnosticOrigin | undefined;
 
-      if (Diagnostic.isTsDiagnosticWithLocation(diagnostic)) {
+      if (Diagnostic.#isTsDiagnosticWithLocation(diagnostic)) {
         origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
       }
 
@@ -76,7 +71,7 @@ export class Diagnostic {
     return Diagnostic.error(messageText);
   }
 
-  static isTsDiagnosticWithLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticWithLocation {
+  static #isTsDiagnosticWithLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticWithLocation {
     return diagnostic.file != null && diagnostic.start != null && diagnostic.length != null;
   }
 

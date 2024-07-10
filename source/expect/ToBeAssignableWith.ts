@@ -1,5 +1,6 @@
 import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
+import type { Assertion } from "#collect";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { RelationMatcherBase } from "./RelationMatcherBase.js";
 import type { MatchResult } from "./types.js";
@@ -8,20 +9,22 @@ export class ToBeAssignableWith extends RelationMatcherBase {
   relation = this.typeChecker.relation.assignable;
   relationExplanationText = "assignable with";
 
-  override explain(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): Array<Diagnostic> {
+  override explain(assertion: Assertion, sourceType: ts.Type, targetType: ts.Type): Array<Diagnostic> {
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
     const targetTypeText = this.typeChecker.typeToString(targetType);
 
-    return isNot
-      ? [Diagnostic.error(ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText))]
-      : [Diagnostic.error(ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText))];
+    const origin = DiagnosticOrigin.fromAssertion(assertion);
+
+    return assertion.isNot
+      ? [Diagnostic.error(ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText), origin)]
+      : [Diagnostic.error(ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText), origin)];
   }
 
-  override match(sourceType: ts.Type, targetType: ts.Type): MatchResult {
+  override match(assertion: Assertion, sourceType: ts.Type, targetType: ts.Type): MatchResult {
     const isMatch = this.typeChecker.isTypeRelatedTo(targetType, sourceType, this.relation);
 
     return {
-      explain: (isNot) => this.explain(sourceType, targetType, isNot),
+      explain: () => this.explain(assertion, sourceType, targetType),
       isMatch,
     };
   }
