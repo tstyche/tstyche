@@ -257,14 +257,14 @@ export class Expect {
         const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
         const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-        this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
+        this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
       }
     }
 
     return;
   }
 
-  #onDiagnostic(this: void, diagnostic: Diagnostic | Array<Diagnostic>, expectResult: ExpectResult) {
+  #onDiagnostics(this: void, diagnostic: Diagnostic | Array<Diagnostic>, expectResult: ExpectResult) {
     const diagnostics = Array.isArray(diagnostic) ? diagnostic : [diagnostic];
 
     EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
@@ -276,14 +276,14 @@ export class Expect {
     const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
     const origin = DiagnosticOrigin.fromNode(node);
 
-    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
+    this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
   }
 
   #onKeyArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
     const text = ExpectDiagnosticText.argumentMustBeProvided("key");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
+    this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
   }
 
   #onSourceArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
@@ -300,7 +300,7 @@ export class Expect {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
-    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
+    this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
   }
 
   #onTargetArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
@@ -317,7 +317,7 @@ export class Expect {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    this.#onDiagnostic(Diagnostic.error(text, origin), expectResult);
+    this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
   }
 
   #onTargetArgumentsMustBeStringOrNumberLiteralTypes(nodes: ts.NodeArray<ts.Node>, expectResult: ExpectResult) {
@@ -334,6 +334,6 @@ export class Expect {
       }
     }
 
-    this.#onDiagnostic(diagnostics, expectResult);
+    this.#onDiagnostics(diagnostics, expectResult);
   }
 }

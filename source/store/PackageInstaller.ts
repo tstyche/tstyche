@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
@@ -9,14 +9,14 @@ import type { CancellationToken } from "#token";
 import { Lock } from "./Lock.js";
 
 export class PackageInstaller {
-  #onDiagnostic: (diagnostic: Diagnostic) => void;
+  #onDiagnostics: DiagnosticsHandler;
   #readyFileName = "__ready__";
   #storePath: string;
   #timeout = Environment.timeout * 1000;
 
-  constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void) {
+  constructor(storePath: string, onDiagnostics: DiagnosticsHandler) {
     this.#storePath = storePath;
-    this.#onDiagnostic = onDiagnostic;
+    this.#onDiagnostics = onDiagnostics;
   }
 
   async ensure(compilerVersion: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
@@ -31,8 +31,8 @@ export class PackageInstaller {
     if (
       await Lock.isLocked(installationPath, {
         cancellationToken,
-        onDiagnostic: (text) => {
-          this.#onDiagnostic(Diagnostic.error([`Failed to install 'typescript@${compilerVersion}'.`, text]));
+        onDiagnostics: (text) => {
+          this.#onDiagnostics(Diagnostic.error([`Failed to install 'typescript@${compilerVersion}'.`, text]));
         },
         timeout: this.#timeout,
       })
@@ -65,7 +65,7 @@ export class PackageInstaller {
 
       return modulePath;
     } catch (error) {
-      this.#onDiagnostic(Diagnostic.fromError(`Failed to install 'typescript@${compilerVersion}'.`, error));
+      this.#onDiagnostics(Diagnostic.fromError(`Failed to install 'typescript@${compilerVersion}'.`, error));
     } finally {
       lock.release();
     }

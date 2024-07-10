@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
@@ -19,7 +19,7 @@ export class ConfigFileOptionsWorker {
   #configFileOptionDefinitions: Map<string, OptionDefinition>;
   #configFileOptions: Record<string, OptionValue>;
   #configFilePath: string;
-  #onDiagnostic: (diagnostic: Diagnostic) => void;
+  #onDiagnostics: DiagnosticsHandler;
   #optionGroup = OptionGroup.ConfigFile;
   #optionValidator: OptionValidator;
   #storeService: StoreService;
@@ -29,17 +29,17 @@ export class ConfigFileOptionsWorker {
     configFileOptions: Record<string, OptionValue>,
     configFilePath: string,
     storeService: StoreService,
-    onDiagnostic: (diagnostic: Diagnostic) => void,
+    onDiagnostics: DiagnosticsHandler,
   ) {
     this.#compiler = compiler;
     this.#configFileOptions = configFileOptions;
     this.#configFilePath = configFilePath;
     this.#storeService = storeService;
-    this.#onDiagnostic = onDiagnostic;
+    this.#onDiagnostics = onDiagnostics;
 
     this.#configFileOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
-    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostic);
+    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
   }
 
   #isDoubleQuotedString(node: ts.Node, sourceFile: ts.SourceFile): boolean {
@@ -56,7 +56,7 @@ export class ConfigFileOptionsWorker {
 
     if (sourceFile.parseDiagnostics.length > 0) {
       for (const diagnostic of Diagnostic.fromDiagnostics(sourceFile.parseDiagnostics, this.#compiler)) {
-        this.#onDiagnostic(diagnostic);
+        this.#onDiagnostics(diagnostic);
       }
 
       return;
@@ -71,7 +71,9 @@ export class ConfigFileOptionsWorker {
     if (!this.#compiler.isObjectLiteralExpression(rootExpression)) {
       const origin = DiagnosticOrigin.fromJsonNode(rootExpression, sourceFile, this.#skipTrivia);
 
-      this.#onDiagnostic(Diagnostic.error("The root value of a configuration file must be an object literal.", origin));
+      this.#onDiagnostics(
+        Diagnostic.error("The root value of a configuration file must be an object literal.", origin),
+      );
 
       return;
     }
@@ -81,7 +83,7 @@ export class ConfigFileOptionsWorker {
         if (!this.#isDoubleQuotedString(property.name, sourceFile)) {
           const origin = DiagnosticOrigin.fromJsonNode(property.name, sourceFile, this.#skipTrivia);
 
-          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
+          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
           continue;
         }
 
@@ -102,7 +104,7 @@ export class ConfigFileOptionsWorker {
         } else {
           const origin = DiagnosticOrigin.fromJsonNode(property.name, sourceFile, this.#skipTrivia);
 
-          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.unknownOption(optionName), origin));
+          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.unknownOption(optionName), origin));
         }
       }
     }
@@ -135,7 +137,7 @@ export class ConfigFileOptionsWorker {
         if (!this.#isDoubleQuotedString(valueExpression, sourceFile)) {
           const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
-          this.#onDiagnostic(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
+          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
           return;
         }
 
@@ -179,7 +181,7 @@ export class ConfigFileOptionsWorker {
       : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
     const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
-    this.#onDiagnostic(Diagnostic.error(text, origin));
+    this.#onDiagnostics(Diagnostic.error(text, origin));
 
     return;
   }

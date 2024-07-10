@@ -43,8 +43,10 @@ export class SelectService {
     return this.#isFileIncluded(Path.relative(this.#resolvedConfig.rootPath, filePath));
   }
 
-  #onDiagnostic(this: void, diagnostic: Diagnostic) {
-    EventEmitter.dispatch(["select:error", { diagnostics: [diagnostic] }]);
+  #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
+    diagnostics = Array.isArray(diagnostics) ? diagnostics : [diagnostics];
+
+    EventEmitter.dispatch(["select:error", { diagnostics }]);
   }
 
   async selectFiles(): Promise<Array<string>> {
@@ -54,7 +56,7 @@ export class SelectService {
     await this.#visitDirectory(currentPath, testFilePaths);
 
     if (testFilePaths.length === 0) {
-      this.#onDiagnostic(Diagnostic.error(SelectDiagnosticText.noTestFilesWereSelected(this.#resolvedConfig)));
+      this.#onDiagnostics(Diagnostic.error(SelectDiagnosticText.noTestFilesWereSelected(this.#resolvedConfig)));
     }
 
     // sorting ensures output remains the same on different systems

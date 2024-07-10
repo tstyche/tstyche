@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { Environment } from "#environment";
 import { Path } from "#path";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
@@ -22,15 +22,15 @@ export interface Manifest {
 export class ManifestWorker {
   #manifestFileName = "store-manifest.json";
   #manifestFilePath: string;
-  #onDiagnostic: (diagnostic: Diagnostic) => void;
+  #onDiagnostics: DiagnosticsHandler;
   #registryUrl = new URL("https://registry.npmjs.org");
   #storePath: string;
   #timeout = Environment.timeout * 1000;
   #version = "1";
 
-  constructor(storePath: string, onDiagnostic: (diagnostic: Diagnostic) => void) {
+  constructor(storePath: string, onDiagnostics: DiagnosticsHandler) {
     this.#storePath = storePath;
-    this.#onDiagnostic = onDiagnostic;
+    this.#onDiagnostics = onDiagnostics;
     this.#manifestFilePath = Path.join(storePath, this.#manifestFileName);
   }
 
@@ -70,7 +70,7 @@ export class ManifestWorker {
       });
 
       if (!response.ok) {
-        this.#onDiagnostic(
+        this.#onDiagnostics(
           Diagnostic.error([
             StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
             StoreDiagnosticText.failedWithStatusCode(response.status),
@@ -87,14 +87,14 @@ export class ManifestWorker {
       }
 
       if (error instanceof Error && error.name === "TimeoutError") {
-        this.#onDiagnostic(
+        this.#onDiagnostics(
           Diagnostic.error([
             StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
             StoreDiagnosticText.setupTimeoutExceeded(this.#timeout),
           ]),
         );
       } else {
-        this.#onDiagnostic(
+        this.#onDiagnostics(
           Diagnostic.error([
             StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
             StoreDiagnosticText.maybeNetworkConnectionIssue(),
@@ -143,7 +143,7 @@ export class ManifestWorker {
     try {
       manifestText = await fs.readFile(this.#manifestFilePath, { encoding: "utf8" });
     } catch (error) {
-      this.#onDiagnostic(Diagnostic.fromError("Failed to open store manifest.", error));
+      this.#onDiagnostics(Diagnostic.fromError("Failed to open store manifest.", error));
     }
 
     if (manifestText == null) {
