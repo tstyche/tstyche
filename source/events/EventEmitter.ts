@@ -1,4 +1,3 @@
-import type { Diagnostic } from "#diagnostic";
 import type { Event } from "./types.js";
 
 export interface EventHandler {
@@ -18,15 +17,6 @@ export class EventEmitter {
     for (const handler of EventEmitter.#handlers) {
       handler.handleEvent(event);
     }
-  }
-
-  static dispatchDiagnostics(
-    eventName: "config:error" | "select:error" | "store:error" | "watch:error",
-    diagnostics: Diagnostic | Array<Diagnostic>,
-  ) {
-    diagnostics = Array.isArray(diagnostics) ? diagnostics : [diagnostics];
-
-    EventEmitter.dispatch([eventName, { diagnostics }]);
   }
 
   removeHandler(handler: EventHandler): void {

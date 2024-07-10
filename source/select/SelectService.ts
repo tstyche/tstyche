@@ -43,8 +43,8 @@ export class SelectService {
     return this.#isFileIncluded(Path.relative(this.#resolvedConfig.rootPath, filePath));
   }
 
-  #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    EventEmitter.dispatchDiagnostics("select:error", diagnostics);
+  #onDiagnostics(this: void, diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["select:error", { diagnostics: [diagnostic] }]);
   }
 
   async selectFiles(): Promise<Array<string>> {

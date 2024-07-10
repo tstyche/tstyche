@@ -128,7 +128,7 @@ export class StoreService {
   }
 
   #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    EventEmitter.dispatchDiagnostics("store:error", diagnostics);
+    EventEmitter.dispatch(["store:error", { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics] }]);
   }
 
   async open(): Promise<void> {

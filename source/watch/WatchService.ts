@@ -24,8 +24,8 @@ export class WatchService {
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
   }
 
-  #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    EventEmitter.dispatchDiagnostics("watch:error", diagnostics);
+  #onDiagnostics(this: void, diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["watch:error", { diagnostics: [diagnostic] }]);
   }
 
   async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<TestFile>> {
