@@ -43,8 +43,8 @@ export class ConfigService {
     this.#storeService = storeService;
   }
 
-  #onDiagnostic(this: void, diagnostic: Diagnostic) {
-    EventEmitter.dispatch(["config:error", { diagnostics: [diagnostic] }]);
+  #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
+    EventEmitter.dispatch(["config:error", { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics] }]);
   }
 
   async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {
@@ -55,7 +55,7 @@ export class ConfigService {
       this.#commandLineOptions as Record<string, OptionValue>,
       this.#pathMatch,
       this.#storeService,
-      this.#onDiagnostic,
+      this.#onDiagnostics,
     );
 
     await commandLineWorker.parse(commandLineArgs);
@@ -85,7 +85,7 @@ export class ConfigService {
       this.#configFileOptions as Record<string, OptionValue>,
       this.#configFilePath,
       this.#storeService,
-      this.#onDiagnostic,
+      this.#onDiagnostics,
     );
 
     await configFileWorker.parse(configFileText);

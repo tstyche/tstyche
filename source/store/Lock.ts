@@ -4,7 +4,7 @@ import type { CancellationToken } from "#token";
 
 export interface IsLockedOptions {
   cancellationToken?: CancellationToken | undefined;
-  onDiagnostic?: (diagnostic: string) => void;
+  onDiagnostics?: (diagnostic: string) => void;
   timeout?: number;
 }
 
@@ -45,7 +45,7 @@ export class Lock {
       }
 
       if (Date.now() - waitStartTime > options.timeout) {
-        options.onDiagnostic?.(`Lock wait timeout of ${String(options.timeout / 1000)}s was exceeded.`);
+        options.onDiagnostics?.(`Lock wait timeout of ${String(options.timeout / 1000)}s was exceeded.`);
 
         break;
       }

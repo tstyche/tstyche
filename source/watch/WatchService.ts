@@ -24,7 +24,7 @@ export class WatchService {
     this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
   }
 
-  #onDiagnostic(this: void, diagnostic: Diagnostic) {
+  #onDiagnostics(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["watch:error", { diagnostics: [diagnostic] }]);
   }
 
@@ -101,7 +101,7 @@ export class WatchService {
       if (this.#watchedTestFiles.size === 0) {
         debounce.clearTimeout();
 
-        this.#onDiagnostic(Diagnostic.error(SelectDiagnosticText.noTestFilesWereLeft(this.#resolvedConfig)));
+        this.#onDiagnostics(Diagnostic.error(SelectDiagnosticText.noTestFilesWereLeft(this.#resolvedConfig)));
       }
     };
 
