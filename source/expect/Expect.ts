@@ -45,11 +45,11 @@ export class Expect {
     this.#typeChecker = typeChecker;
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
-    this.toBe = new ToBe(typeChecker);
+    this.toBe = new ToBe(compiler, typeChecker);
     this.toBeAny = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Any);
-    this.toBeAssignable = new ToBeAssignableWith(typeChecker);
-    this.toBeAssignableTo = new ToBeAssignableTo(typeChecker);
-    this.toBeAssignableWith = new ToBeAssignableWith(typeChecker);
+    this.toBeAssignable = new ToBeAssignableWith(compiler, typeChecker);
+    this.toBeAssignableTo = new ToBeAssignableTo(compiler, typeChecker);
+    this.toBeAssignableWith = new ToBeAssignableWith(compiler, typeChecker);
     this.toBeBigInt = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.BigInt);
     this.toBeBoolean = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Boolean);
     this.toBeNever = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Never);
@@ -61,9 +61,9 @@ export class Expect {
     this.toBeUniqueSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.UniqueESSymbol);
     this.toBeUnknown = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Unknown);
     this.toBeVoid = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Void);
-    this.toEqual = new ToBe(typeChecker);
+    this.toEqual = new ToBe(compiler, typeChecker);
     this.toHaveProperty = new ToHaveProperty(compiler, typeChecker);
-    this.toMatch = new ToMatch(typeChecker);
+    this.toMatch = new ToMatch(compiler, typeChecker);
     this.toRaiseError = new ToRaiseError(compiler, typeChecker);
   }
 
@@ -183,11 +183,7 @@ export class Expect {
           return;
         }
 
-        return this[matcherNameText].match(
-          assertion,
-          this.#getType(assertion.source[0]),
-          this.#getType(assertion.target[0]),
-        );
+        return this[matcherNameText].match(assertion, assertion.source[0], assertion.target[0]);
       }
 
       case "toBeAny":

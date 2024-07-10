@@ -3,94 +3,94 @@ Error: Type '{ a: string; b?: number | undefined; }' does not match type '{ b: n
   47 |     expect<{ a: string; b?: number }>().type.toMatch<{ b?: number }>();
   48 | 
   49 |     expect<{ a: string; b?: number }>().type.toMatch<{ b: number }>();
-     |                                              ~~~~~~~
+     |                                                      ~~~~~~~~~~~~~
   50 |   });
   51 | 
   52 |   test("does NOT match expected type", () => {
 
-       at ./__typetests__/toMatch.tst.ts:49:46 ❭ received type ❭ matches expected type
+       at ./__typetests__/toMatch.tst.ts:49:54 ❭ received type ❭ matches expected type
 
 Error: Type '{ a: string; }' does not match type '{ a: string; b?: number | undefined; }'.
 
   56 |     expect<{ a: string }>().type.not.toMatch<{ a: string; b?: number }>();
   57 | 
   58 |     expect<{ a: string }>().type.toMatch<{ a: string; b?: number }>();
-     |                                  ~~~~~~~
+     |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~
   59 |   });
   60 | 
   61 |   test("matches expected value", () => {
 
-       at ./__typetests__/toMatch.tst.ts:58:34 ❭ received type ❭ does NOT match expected type
+       at ./__typetests__/toMatch.tst.ts:58:42 ❭ received type ❭ does NOT match expected type
 
 Error: Type '{ first: string; }' does not match type 'Names'.
 
   63 |     expect<{ first: string; last?: string }>().type.toMatch(getNames());
   64 | 
   65 |     expect<{ first: string }>().type.toMatch(getNames());
-     |                                      ~~~~~~~
+     |                                              ~~~~~~~~~~
   66 |   });
   67 | 
   68 |   test("does NOT match expected value", () => {
 
-       at ./__typetests__/toMatch.tst.ts:65:38 ❭ received type ❭ matches expected value
+       at ./__typetests__/toMatch.tst.ts:65:46 ❭ received type ❭ matches expected value
 
 Error: Type '{ first?: string | undefined; }' does not match type 'Names'.
 
   69 |     expect<{ first?: string }>().type.not.toMatch(getNames());
   70 | 
   71 |     expect<{ first?: string }>().type.toMatch(getNames());
-     |                                       ~~~~~~~
+     |                                               ~~~~~~~~~~
   72 |   });
   73 | });
   74 | 
 
-       at ./__typetests__/toMatch.tst.ts:71:39 ❭ received type ❭ does NOT match expected value
+       at ./__typetests__/toMatch.tst.ts:71:47 ❭ received type ❭ does NOT match expected value
 
 Error: Type 'Names' does not match type '{ last: string; }'.
 
   82 |     expect(getNames()).type.toMatch<{ last?: string }>();
   83 | 
   84 |     expect(getNames()).type.toMatch<{ last: string }>();
-     |                             ~~~~~~~
+     |                                     ~~~~~~~~~~~~~~~~
   85 |   });
   86 | 
   87 |   test("does NOT match expected type", () => {
 
-       at ./__typetests__/toMatch.tst.ts:84:29 ❭ received value ❭ matches expected type
+       at ./__typetests__/toMatch.tst.ts:84:37 ❭ received value ❭ matches expected type
 
 Error: Type 'Names' does not match type '{ last: string; }'.
 
   89 | 
   90 |     expect(getNames()).type.not.toMatch<{ last: string }>();
   91 |     expect(getNames()).type.toMatch<{ last: string }>();
-     |                             ~~~~~~~
+     |                                     ~~~~~~~~~~~~~~~~
   92 |   });
   93 | 
   94 |   test("matches expected value", () => {
 
-       at ./__typetests__/toMatch.tst.ts:91:29 ❭ received value ❭ does NOT match expected type
+       at ./__typetests__/toMatch.tst.ts:91:37 ❭ received value ❭ does NOT match expected type
 
 Error: Type '{ last: string; }' does not match type 'Names'.
 
    98 |     expect({ first: "One", last: "Two" }).type.toMatch(getNames());
    99 | 
   100 |     expect({ last: "Two" }).type.toMatch(getNames());
-      |                                  ~~~~~~~
+      |                                          ~~~~~~~~~~
   101 |   });
   102 | 
   103 |   test("does NOT match expected value", () => {
 
-        at ./__typetests__/toMatch.tst.ts:100:34 ❭ received value ❭ matches expected value
+        at ./__typetests__/toMatch.tst.ts:100:42 ❭ received value ❭ matches expected value
 
 Error: Type '{ first: string; }' does match type 'Names'.
 
   104 |     expect({ last: "Two" }).type.not.toMatch(getNames());
   105 | 
   106 |     expect({ first: "One" }).type.not.toMatch(getNames());
-      |                                       ~~~~~~~
+      |                                               ~~~~~~~~~~
   107 |   });
   108 | });
   109 | 
 
-        at ./__typetests__/toMatch.tst.ts:106:39 ❭ received value ❭ does NOT match expected value
+        at ./__typetests__/toMatch.tst.ts:106:47 ❭ received value ❭ does NOT match expected value
 

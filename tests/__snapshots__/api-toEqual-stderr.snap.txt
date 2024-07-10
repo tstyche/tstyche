@@ -17,94 +17,94 @@ Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
   25 |     expect<Names>().type.toEqual<{ first: string; last?: string }>();
   26 | 
   27 |     expect<Names>().type.toEqual<{ first: string; last: string }>();
-     |                          ~~~~~~~
+     |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   28 |   });
   29 | 
   30 |   test("does NOT equal expected type", () => {
 
-       at ./__typetests__/toEqual.tst.ts:27:26 ❭ received type ❭ equals expected type
+       at ./__typetests__/toEqual.tst.ts:27:34 ❭ received type ❭ equals expected type
 
 Error: Type 'Names' is identical to type '{ first: string; last?: string | undefined; }'.
 
   31 |     expect<Names>().type.not.toEqual<{ first: string; last: string }>();
   32 | 
   33 |     expect<Names>().type.not.toEqual<{ first: string; last?: string }>();
-     |                              ~~~~~~~
+     |                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   34 |   });
   35 | 
   36 |   test("equals expected value", () => {
 
-       at ./__typetests__/toEqual.tst.ts:33:30 ❭ received type ❭ does NOT equal expected type
+       at ./__typetests__/toEqual.tst.ts:33:38 ❭ received type ❭ does NOT equal expected type
 
 Error: Type '{ first: string; last: string; }' is not identical to type 'Names'.
 
   38 |     expect<{ first: string; last?: string }>().type.toEqual(getNames());
   39 | 
   40 |     expect<{ first: string; last: string }>().type.toEqual(getNames());
-     |                                                    ~~~~~~~
+     |                                                            ~~~~~~~~~~
   41 |   });
   42 | 
   43 |   test("does NOT equal expected value", () => {
 
-       at ./__typetests__/toEqual.tst.ts:40:52 ❭ received type ❭ equals expected value
+       at ./__typetests__/toEqual.tst.ts:40:60 ❭ received type ❭ equals expected value
 
 Error: Type '{ first: string; last?: string | undefined; }' is identical to type 'Names'.
 
   44 |     expect<{ first: string; last: string }>().type.not.toEqual(getNames());
   45 | 
   46 |     expect<{ first: string; last?: string }>().type.not.toEqual(getNames());
-     |                                                         ~~~~~~~
+     |                                                                 ~~~~~~~~~~
   47 |   });
   48 | });
   49 | 
 
-       at ./__typetests__/toEqual.tst.ts:46:57 ❭ received type ❭ does NOT equal expected value
+       at ./__typetests__/toEqual.tst.ts:46:65 ❭ received type ❭ does NOT equal expected value
 
 Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
 
   53 |     expect(getNames()).type.toEqual<Names>();
   54 | 
   55 |     expect(getNames()).type.toEqual<{ first: string; last: string }>();
-     |                             ~~~~~~~
+     |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   56 |   });
   57 | 
   58 |   test("does NOT equal expected type", () => {
 
-       at ./__typetests__/toEqual.tst.ts:55:29 ❭ received value ❭ equals expected type
+       at ./__typetests__/toEqual.tst.ts:55:37 ❭ received value ❭ equals expected type
 
 Error: Type 'Names' is identical to type '{ first: string; last?: string | undefined; }'.
 
   59 |     expect(getNames()).type.not.toEqual<{ first: string; last: string }>();
   60 | 
   61 |     expect(getNames()).type.not.toEqual<{ first: string; last?: string }>();
-     |                                 ~~~~~~~
+     |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   62 |   });
   63 | 
   64 |   test("equals expected value", () => {
 
-       at ./__typetests__/toEqual.tst.ts:61:33 ❭ received value ❭ does NOT equal expected type
+       at ./__typetests__/toEqual.tst.ts:61:41 ❭ received value ❭ does NOT equal expected type
 
 Error: Type '{ height: number; }' is not identical to type 'Size'.
 
   65 |     expect({ height: 14, width: 25 }).type.toEqual(getSize());
   66 | 
   67 |     expect({ height: 14 }).type.toEqual(getSize());
-     |                                 ~~~~~~~
+     |                                         ~~~~~~~~~
   68 |   });
   69 | 
   70 |   test("does NOT equal expected value", () => {
 
-       at ./__typetests__/toEqual.tst.ts:67:33 ❭ received value ❭ equals expected value
+       at ./__typetests__/toEqual.tst.ts:67:41 ❭ received value ❭ equals expected value
 
 Error: Type '{ height: number; width: number; }' is identical to type 'Size'.
 
   71 |     expect({ height: 14 }).type.not.toEqual(getSize());
   72 | 
   73 |     expect({ height: 14, width: 25 }).type.not.toEqual(getSize());
-     |                                                ~~~~~~~
+     |                                                        ~~~~~~~~~
   74 |   });
   75 | });
   76 | 
 
-       at ./__typetests__/toEqual.tst.ts:73:48 ❭ received value ❭ does NOT equal expected value
+       at ./__typetests__/toEqual.tst.ts:73:56 ❭ received value ❭ does NOT equal expected value
 
