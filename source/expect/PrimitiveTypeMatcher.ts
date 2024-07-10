@@ -1,31 +1,27 @@
 import type ts from "typescript";
-import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchResult, TypeChecker } from "./types.js";
+import type { MatchWorker } from "./MatchWorker.js";
+import type { MatchResult } from "./types.js";
 
 export class PrimitiveTypeMatcher {
   #targetTypeFlag: ts.TypeFlags;
-  typeChecker: TypeChecker;
 
-  constructor(typeChecker: TypeChecker, targetTypeFlag: ts.TypeFlags) {
-    this.typeChecker = typeChecker;
+  constructor(targetTypeFlag: ts.TypeFlags) {
     this.#targetTypeFlag = targetTypeFlag;
   }
 
-  #explain(assertion: Assertion, sourceType: ts.Type) {
-    const sourceTypeText = this.typeChecker.typeToString(sourceType);
+  #explain(matchWorker: MatchWorker) {
+    const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-    const origin = DiagnosticOrigin.fromAssertion(assertion);
-
-    return [Diagnostic.error(ExpectDiagnosticText.typeIs(sourceTypeText), origin)];
+    return [Diagnostic.error(ExpectDiagnosticText.typeIs(matchWorker.sourceTypeText), origin)];
   }
 
-  match(assertion: Assertion, sourceType: ts.Type): MatchResult {
-    const isMatch = Boolean(sourceType.flags & this.#targetTypeFlag);
+  match(matchWorker: MatchWorker): MatchResult {
+    const isMatch = Boolean(matchWorker.sourceType.flags & this.#targetTypeFlag);
 
     return {
-      explain: () => this.#explain(assertion, sourceType),
+      explain: () => this.#explain(matchWorker),
       isMatch,
     };
   }

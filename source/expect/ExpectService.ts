@@ -46,21 +46,21 @@ export class ExpectService {
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe();
-    this.toBeAny = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Any);
+    this.toBeAny = new PrimitiveTypeMatcher(compiler.TypeFlags.Any);
     this.toBeAssignable = new ToBeAssignableWith();
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeAssignableWith = new ToBeAssignableWith();
-    this.toBeBigInt = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.BigInt);
-    this.toBeBoolean = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Boolean);
-    this.toBeNever = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Never);
-    this.toBeNull = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Null);
-    this.toBeNumber = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Number);
-    this.toBeString = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.String);
-    this.toBeSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.ESSymbol);
-    this.toBeUndefined = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Undefined);
-    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.UniqueESSymbol);
-    this.toBeUnknown = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Unknown);
-    this.toBeVoid = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Void);
+    this.toBeBigInt = new PrimitiveTypeMatcher(compiler.TypeFlags.BigInt);
+    this.toBeBoolean = new PrimitiveTypeMatcher(compiler.TypeFlags.Boolean);
+    this.toBeNever = new PrimitiveTypeMatcher(compiler.TypeFlags.Never);
+    this.toBeNull = new PrimitiveTypeMatcher(compiler.TypeFlags.Null);
+    this.toBeNumber = new PrimitiveTypeMatcher(compiler.TypeFlags.Number);
+    this.toBeString = new PrimitiveTypeMatcher(compiler.TypeFlags.String);
+    this.toBeSymbol = new PrimitiveTypeMatcher(compiler.TypeFlags.ESSymbol);
+    this.toBeUndefined = new PrimitiveTypeMatcher(compiler.TypeFlags.Undefined);
+    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(compiler.TypeFlags.UniqueESSymbol);
+    this.toBeUnknown = new PrimitiveTypeMatcher(compiler.TypeFlags.Unknown);
+    this.toBeVoid = new PrimitiveTypeMatcher(compiler.TypeFlags.Void);
     this.toEqual = new ToBe();
     this.toHaveProperty = new ToHaveProperty(compiler, typeChecker);
     this.toMatch = new ToMatch();
@@ -212,7 +212,16 @@ export class ExpectService {
           return;
         }
 
-        return this[matcherNameText].match(assertion, this.#getType(assertion.source[0]));
+        const matchWorker = new MatchWorker(
+          this.#compiler,
+          this.#typeChecker,
+          assertion,
+          assertion.source[0],
+          // @ts-expect-error TODO must be optional somehow
+          assertion.target[0],
+        );
+
+        return this[matcherNameText].match(matchWorker);
       }
 
       case "toHaveProperty": {
