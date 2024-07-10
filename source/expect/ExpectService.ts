@@ -124,7 +124,7 @@ export class ExpectService {
     switch (matcherNameText) {
       case "toAcceptProps": {
         if (assertion.source[0] == null) {
-          this.#onArgumentOrTypeArgumentMustBeProvided("source", "Source", assertion, onDiagnostic);
+          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
 
           return;
         }
@@ -143,7 +143,7 @@ export class ExpectService {
         }
 
         if (assertion.target[0] == null) {
-          this.#onArgumentOrTypeArgumentMustBeProvided("target", "Target", assertion, onDiagnostic);
+          this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
 
           return;
         }
@@ -172,13 +172,13 @@ export class ExpectService {
       case "toEqual":
       case "toMatch": {
         if (assertion.source[0] == null) {
-          this.#onArgumentOrTypeArgumentMustBeProvided("source", "Source", assertion, onDiagnostic);
+          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
 
           return;
         }
 
         if (assertion.target[0] == null) {
-          this.#onArgumentOrTypeArgumentMustBeProvided("target", "Target", assertion, onDiagnostic);
+          this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
 
           return;
         }
@@ -207,7 +207,7 @@ export class ExpectService {
       case "toBeUnknown":
       case "toBeVoid": {
         if (assertion.source[0] == null) {
-          this.#onArgumentOrTypeArgumentMustBeProvided("source", "Source", assertion, onDiagnostic);
+          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
 
           return;
         }
@@ -217,7 +217,7 @@ export class ExpectService {
 
       case "toHaveProperty": {
         if (assertion.source[0] == null) {
-          this.#onArgumentOrTypeArgumentMustBeProvided("source", "Source", assertion, onDiagnostic);
+          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
 
           return;
         }
@@ -230,7 +230,7 @@ export class ExpectService {
         }
 
         if (assertion.target[0] == null) {
-          this.#onArgumentMustBeProvided("key", assertion, onDiagnostic);
+          this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostic);
 
           return;
         }
@@ -248,7 +248,7 @@ export class ExpectService {
 
       case "toRaiseError": {
         if (assertion.source[0] == null) {
-          this.#onArgumentOrTypeArgumentMustBeProvided("source", "Source", assertion, onDiagnostic);
+          this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostic);
 
           return;
         }
@@ -271,29 +271,6 @@ export class ExpectService {
     }
 
     return;
-  }
-
-  #onArgumentMustBeProvided(
-    argumentNameText: string,
-    assertion: Assertion,
-    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
-  ) {
-    const text = ExpectDiagnosticText.argumentMustBeProvided(argumentNameText);
-    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
-
-    onDiagnostic([Diagnostic.error(text, origin)]);
-  }
-
-  #onArgumentOrTypeArgumentMustBeProvided(
-    argumentNameText: string,
-    typeArgumentNameText: string,
-    assertion: Assertion,
-    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
-  ) {
-    const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided(argumentNameText, typeArgumentNameText);
-    const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
-
-    onDiagnostic([Diagnostic.error(text, origin)]);
   }
 
   #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, onDiagnostic: (diagnostic: Array<Diagnostic>) => void) {
@@ -319,6 +296,16 @@ export class ExpectService {
     onDiagnostic([Diagnostic.error(text, origin)]);
   }
 
+  #onSourceArgumentOrTypeArgumentMustBeProvided(
+    assertion: Assertion,
+    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
+  ) {
+    const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
+    const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
+
+    onDiagnostic([Diagnostic.error(text, origin)]);
+  }
+
   #onTargetArgumentMustBe(
     expectedText: string,
     node: ts.Expression | ts.TypeNode,
@@ -329,6 +316,27 @@ export class ExpectService {
       : ExpectDiagnosticText.argumentMustBe("target", expectedText);
 
     const origin = DiagnosticOrigin.fromNode(node);
+
+    onDiagnostic([Diagnostic.error(text, origin)]);
+  }
+
+  #onTargetArgumentMustBeProvided(
+    argumentNameText: string,
+    assertion: Assertion,
+    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
+  ) {
+    const text = ExpectDiagnosticText.argumentMustBeProvided(argumentNameText);
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+
+    onDiagnostic([Diagnostic.error(text, origin)]);
+  }
+
+  #onTargetArgumentOrTypeArgumentMustBeProvided(
+    assertion: Assertion,
+    onDiagnostic: (diagnostic: Array<Diagnostic>) => void,
+  ) {
+    const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostic([Diagnostic.error(text, origin)]);
   }
