@@ -44,9 +44,7 @@ export class SelectService {
   }
 
   #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    diagnostics = Array.isArray(diagnostics) ? diagnostics : [diagnostics];
-
-    EventEmitter.dispatch(["select:error", { diagnostics }]);
+    EventEmitter.dispatchDiagnostics("select:error", diagnostics);
   }
 
   async selectFiles(): Promise<Array<string>> {

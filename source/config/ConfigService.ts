@@ -44,9 +44,7 @@ export class ConfigService {
   }
 
   #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    diagnostics = Array.isArray(diagnostics) ? diagnostics : [diagnostics];
-
-    EventEmitter.dispatch(["config:error", { diagnostics }]);
+    EventEmitter.dispatchDiagnostics("config:error", diagnostics);
   }
 
   async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {

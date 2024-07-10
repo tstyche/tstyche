@@ -25,9 +25,7 @@ export class WatchService {
   }
 
   #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    diagnostics = Array.isArray(diagnostics) ? diagnostics : [diagnostics];
-
-    EventEmitter.dispatch(["watch:error", { diagnostics }]);
+    EventEmitter.dispatchDiagnostics("watch:error", diagnostics);
   }
 
   async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<TestFile>> {
