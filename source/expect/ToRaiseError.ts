@@ -73,7 +73,7 @@ export class ToRaiseError {
     const isMatch =
       targetNodes.length === 0
         ? assertion.diagnostics.size > 0
-        : targetNodes.length === assertion.diagnostics.size &&
+        : assertion.diagnostics.size === targetNodes.length &&
           [...assertion.diagnostics].every((diagnostic, index) =>
             this.#matchExpectedError(diagnostic, targetNodes[index]!),
           );
