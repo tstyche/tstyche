@@ -127,8 +127,8 @@ export class StoreService {
     return module.exports as typeof ts;
   }
 
-  #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    EventEmitter.dispatch(["store:error", { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics] }]);
+  #onDiagnostics(this: void, diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
   }
 
   async open(): Promise<void> {

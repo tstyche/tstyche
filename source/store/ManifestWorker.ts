@@ -1,9 +1,10 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { Path } from "#path";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
+import type { DiagnosticsHandler } from "./types.js";
 
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;

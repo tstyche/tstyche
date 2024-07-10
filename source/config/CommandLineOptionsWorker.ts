@@ -1,4 +1,4 @@
-import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
@@ -6,6 +6,7 @@ import { type OptionDefinition, OptionDefinitionsMap, type OptionValue } from ".
 import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
+import type { DiagnosticsHandler } from "./types.js";
 
 export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
 

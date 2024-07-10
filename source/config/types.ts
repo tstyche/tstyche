@@ -1,3 +1,3 @@
-import type { Diagnostic } from "./Diagnostic.js";
+import type { Diagnostic } from "#diagnostic";
 
 export type DiagnosticsHandler = (diagnostics: Diagnostic | Array<Diagnostic>) => void;

@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
@@ -11,6 +11,7 @@ import {
 } from "./OptionDefinitionsMap.js";
 import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
+import type { DiagnosticsHandler } from "./types.js";
 
 export type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
 
