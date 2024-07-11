@@ -3,7 +3,7 @@ import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } fro
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
-import type { Expect } from "#expect";
+import type { ExpectService } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { RunMode } from "./enums.js";
@@ -18,16 +18,21 @@ interface TestFileWorkerOptions {
 export class TestTreeWorker {
   #compiler: typeof ts;
   #cancellationToken: CancellationToken | undefined;
-  #expect: Expect;
+  #expectService: ExpectService;
   #fileResult: FileResult;
   #hasOnly: boolean;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
 
-  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts, expect: Expect, options: TestFileWorkerOptions) {
+  constructor(
+    resolvedConfig: ResolvedConfig,
+    compiler: typeof ts,
+    expectService: ExpectService,
+    options: TestFileWorkerOptions,
+  ) {
     this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
-    this.#expect = expect;
+    this.#expectService = expectService;
 
     this.#cancellationToken = options.cancellationToken;
     this.#fileResult = options.fileResult;
@@ -137,7 +142,7 @@ export class TestTreeWorker {
       return;
     }
 
-    const matchResult = this.#expect.match(assertion, expectResult);
+    const matchResult = this.#expectService.match(assertion, expectResult);
 
     if (matchResult == null) {
       // an error was encountered and the "expect:error" event is already emitted

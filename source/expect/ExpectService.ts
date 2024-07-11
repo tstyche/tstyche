@@ -14,7 +14,7 @@ import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
-export class Expect {
+export class ExpectService {
   #compiler: typeof ts;
   #typeChecker: TypeChecker;
 
