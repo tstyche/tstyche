@@ -11,17 +11,19 @@ export class PrimitiveTypeMatcher {
     this.#targetTypeFlag = targetTypeFlag;
   }
 
-  #explain(matchWorker: MatchWorker) {
+  #explain(matchWorker: MatchWorker, sourceNode: ts.Expression | ts.TypeNode) {
+    const sourceTypeText = matchWorker.getTypeText(sourceNode);
     const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-    return [Diagnostic.error(ExpectDiagnosticText.typeIs(matchWorker.sourceTypeText), origin)];
+    return [Diagnostic.error(ExpectDiagnosticText.typeIs(sourceTypeText), origin)];
   }
 
-  match(matchWorker: MatchWorker): MatchResult {
-    const isMatch = Boolean(matchWorker.sourceType.flags & this.#targetTypeFlag);
+  match(matchWorker: MatchWorker, sourceNode: ts.Expression | ts.TypeNode): MatchResult {
+    const sourceType = matchWorker.getType(sourceNode);
+    const isMatch = Boolean(sourceType.flags & this.#targetTypeFlag);
 
     return {
-      explain: () => this.#explain(matchWorker),
+      explain: () => this.#explain(matchWorker, sourceNode),
       isMatch,
     };
   }

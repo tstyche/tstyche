@@ -1,11 +1,21 @@
+import type ts from "typescript";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
+import { RelationMatcherBase } from "./RelationMatcherBase.js";
 import type { MatchResult } from "./types.js";
 
-export class ToMatch {
-  match(matchWorker: MatchWorker): MatchResult {
+export class ToMatch extends RelationMatcherBase {
+  explainText = ExpectDiagnosticText.typeDoesMatch;
+  explainNotText = ExpectDiagnosticText.typeDoesNotMatch;
+
+  match(
+    matchWorker: MatchWorker,
+    sourceNode: ts.Expression | ts.TypeNode,
+    targetNode: ts.Expression | ts.TypeNode,
+  ): MatchResult {
     return {
-      explain: () => matchWorker.explainDoesMatch(),
-      isMatch: matchWorker.checkDoesMatch(),
+      explain: () => this.explain(matchWorker, sourceNode, targetNode),
+      isMatch: matchWorker.checkDoesMatch(sourceNode, targetNode),
     };
   }
 }

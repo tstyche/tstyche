@@ -1,118 +1,71 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
-import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { Relation, TypeChecker } from "./types.js";
 
 export class MatchWorker {
   assertion: Assertion;
   #compiler: typeof ts;
-  sourceNode: ts.Expression | ts.TypeNode;
-  #sourceType: ts.Type | undefined;
-  #targetType: ts.Type | undefined;
-  targetNode: ts.Expression | ts.TypeNode;
+  #typeCache = new Map<ts.Expression | ts.TypeNode, ts.Type>();
   #typeChecker: TypeChecker;
 
-  constructor(
-    compiler: typeof ts,
-    typeChecker: TypeChecker,
-    assertion: Assertion,
-    sourceNode: ts.Expression | ts.TypeNode,
-    targetNode: ts.Expression | ts.TypeNode,
-  ) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: Assertion) {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
-
     this.assertion = assertion;
-    this.sourceNode = sourceNode;
-    this.targetNode = targetNode;
   }
 
-  get targetNodeOrigin(): DiagnosticOrigin {
-    return DiagnosticOrigin.fromNode(this.targetNode, this.assertion);
+  getTypeText(node: ts.Expression | ts.TypeNode): string {
+    const type = this.getType(node);
+
+    return this.#typeChecker.typeToString(type);
   }
 
-  get sourceType(): ts.Type {
-    if (!this.#sourceType) {
-      this.#sourceType = this.#getType(this.sourceNode);
+  getType(node: ts.Expression | ts.TypeNode): ts.Type {
+    let type = this.#typeCache.get(node);
+
+    if (!type) {
+      type = this.#compiler.isExpression(node)
+        ? this.#typeChecker.getTypeAtLocation(node)
+        : this.#typeChecker.getTypeFromTypeNode(node);
+
+      this.#typeCache.set(node, type);
     }
 
-    return this.#sourceType;
+    return type;
   }
 
-  get sourceTypeText(): string {
-    return this.#typeChecker.typeToString(this.sourceType);
+  checkDoesMatch(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+    const relation = this.#typeChecker.relation.subtype;
+
+    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  get targetType(): ts.Type {
-    if (!this.#targetType) {
-      this.#targetType = this.#getType(this.targetNode);
-    }
+  checkIsIdenticalTo(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+    const relation = this.#typeChecker.relation.identity;
 
-    return this.#targetType;
+    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  get targetTypeText(): string {
-    return this.#typeChecker.typeToString(this.targetType);
-  }
-
-  #getType(node: ts.Expression | ts.TypeNode) {
-    return this.#compiler.isExpression(node)
-      ? this.#typeChecker.getTypeAtLocation(node)
-      : this.#typeChecker.getTypeFromTypeNode(node);
-  }
-
-  checkDoesMatch(): boolean {
-    return this.#checkIsRelatedTo(this.#typeChecker.relation.subtype);
-  }
-
-  checkIsIdenticalTo(): boolean {
-    return this.#checkIsRelatedTo(this.#typeChecker.relation.identity);
-  }
-
-  checkIsAssignableTo(): boolean {
-    return this.#checkIsRelatedTo(this.#typeChecker.relation.assignable);
-  }
-
-  checkIsAssignableWith(): boolean {
+  checkIsAssignableTo(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
-    return this.#typeChecker.isTypeRelatedTo(this.targetType, this.sourceType, relation);
+    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  #checkIsRelatedTo(relation: Relation) {
-    return this.#typeChecker.isTypeRelatedTo(this.sourceType, this.targetType, relation);
+  checkIsAssignableWith(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+    const relation = this.#typeChecker.relation.assignable;
+
+    return this.#checkIsRelatedTo(targetNode, sourceNode, relation);
   }
 
-  explainDoesMatch(): Array<Diagnostic> {
-    const text = this.assertion.isNot
-      ? ExpectDiagnosticText.typeDoesMatch(this.sourceTypeText, this.targetTypeText)
-      : ExpectDiagnosticText.typeDoesNotMatch(this.sourceTypeText, this.targetTypeText);
+  #checkIsRelatedTo(
+    sourceNode: ts.Expression | ts.TypeNode,
+    targetNode: ts.Expression | ts.TypeNode,
+    relation: Relation,
+  ) {
+    const sourceType = this.getType(sourceNode);
+    const targetType = this.getType(targetNode);
 
-    return [Diagnostic.error(text, this.targetNodeOrigin)];
-  }
-
-  explainIsIdenticalTo(): Array<Diagnostic> {
-    const text = this.assertion.isNot
-      ? ExpectDiagnosticText.typeIsIdenticalTo(this.sourceTypeText, this.targetTypeText)
-      : ExpectDiagnosticText.typeIsNotIdenticalTo(this.sourceTypeText, this.targetTypeText);
-
-    return [Diagnostic.error(text, this.targetNodeOrigin)];
-  }
-
-  explainIsAssignableTo(): Array<Diagnostic> {
-    const text = this.assertion.isNot
-      ? ExpectDiagnosticText.typeIsAssignableTo(this.sourceTypeText, this.targetTypeText)
-      : ExpectDiagnosticText.typeIsNotAssignableTo(this.sourceTypeText, this.targetTypeText);
-
-    return [Diagnostic.error(text, this.targetNodeOrigin)];
-  }
-
-  explainIsAssignableWith(): Array<Diagnostic> {
-    const text = this.assertion.isNot
-      ? ExpectDiagnosticText.typeIsAssignableWith(this.sourceTypeText, this.targetTypeText)
-      : ExpectDiagnosticText.typeIsNotAssignableWith(this.sourceTypeText, this.targetTypeText);
-
-    return [Diagnostic.error(text, this.targetNodeOrigin)];
+    return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
   }
 }

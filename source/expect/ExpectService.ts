@@ -127,14 +127,7 @@ export class ExpectService {
       return;
     }
 
-    const matchWorker = new MatchWorker(
-      this.#compiler,
-      this.#typeChecker,
-      assertion,
-      assertion.source[0],
-      // @ts-expect-error TODO must be optional somehow
-      assertion.target[0],
-    );
+    const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
 
     switch (matcherNameText) {
       case "toAcceptProps": {
@@ -186,7 +179,7 @@ export class ExpectService {
           return;
         }
 
-        return this[matcherNameText].match(matchWorker);
+        return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0]);
       }
 
       case "toBeAny":
@@ -201,7 +194,7 @@ export class ExpectService {
       case "toBeUniqueSymbol":
       case "toBeUnknown":
       case "toBeVoid": {
-        return this[matcherNameText].match(matchWorker);
+        return this[matcherNameText].match(matchWorker, assertion.source[0]);
       }
 
       case "toHaveProperty": {
