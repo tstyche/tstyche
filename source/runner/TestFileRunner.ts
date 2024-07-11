@@ -104,9 +104,7 @@ export class TestFileRunner {
       return;
     }
 
-    const expectService = new ExpectService(this.#compiler, typeChecker);
-
-    const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, expectService, {
+    const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, typeChecker, {
       cancellationToken,
       fileResult,
       hasOnly: testTree.hasOnly,

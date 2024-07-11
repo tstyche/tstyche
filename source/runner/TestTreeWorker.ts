@@ -3,7 +3,7 @@ import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } fro
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
-import type { ExpectService } from "#expect";
+import { ExpectService, type TypeChecker } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { RunMode } from "./enums.js";
@@ -27,17 +27,18 @@ export class TestTreeWorker {
   constructor(
     resolvedConfig: ResolvedConfig,
     compiler: typeof ts,
-    expectService: ExpectService,
+    typeChecker: TypeChecker,
     options: TestFileWorkerOptions,
   ) {
     this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
-    this.#expectService = expectService;
 
     this.#cancellationToken = options.cancellationToken;
     this.#fileResult = options.fileResult;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
+
+    this.#expectService = new ExpectService(compiler, typeChecker);
   }
 
   #resolveRunMode(mode: RunMode, member: TestMember): RunMode {
