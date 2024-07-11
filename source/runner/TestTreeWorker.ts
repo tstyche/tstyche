@@ -3,7 +3,7 @@ import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } fro
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { type DiagnosticsHandler, ExpectService, type TypeChecker } from "#expect";
+import { ExpectService, type TypeChecker } from "#expect";
 import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { RunMode } from "./enums.js";
@@ -125,7 +125,7 @@ export class TestTreeWorker {
       return;
     }
 
-    const onExpectDiagnostics: DiagnosticsHandler = (diagnostics) => {
+    const onExpectDiagnostics = (diagnostics: Diagnostic | Array<Diagnostic>) => {
       EventEmitter.dispatch([
         "expect:error",
         { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics], result: expectResult },
