@@ -39,6 +39,10 @@ export class Diagnostic {
     return new Diagnostic(text, DiagnosticCategory.Error, origin);
   }
 
+  extendWith(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {
+    return new Diagnostic([this.text, text].flat(), this.category, origin ?? this.origin);
+  }
+
   static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const code = `ts(${String(diagnostic.code)})`;

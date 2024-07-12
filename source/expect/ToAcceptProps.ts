@@ -3,19 +3,6 @@ import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
-interface Explanation {
-  origin?: DiagnosticOrigin | undefined;
-  text: Array<string>;
-}
-
-// TODO push 'Diagnostic' around, not 'node'
-// that should eliminate 'Explanation' as well
-
-// 'Diagnostic' could get new '.extendWith()' method which:
-//   - pushes in additional message text into existing array
-//   - optionally origin could be set as well
-//   - and return new 'Diagnostic', i.e. does not alter the existing one
-
 interface ToAcceptPropsSource {
   node: ts.Expression | ts.TypeNode;
   signatures: Array<ts.Signature>;
@@ -36,40 +23,36 @@ export class ToAcceptProps {
   }
 
   #explain(source: ToAcceptPropsSource, target: ToAcceptPropsTarget, isNot: boolean) {
-    const diagnostics: Array<Diagnostic> = [];
-    let signatureIndex = 0;
+    return source.signatures.reduce<Array<Diagnostic>>((accumulator, signature, index) => {
+      let diagnostic: Diagnostic | undefined;
 
-    for (const signature of source.signatures) {
       const introText = isNot
         ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(source.node))
         : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(source.node));
 
-      const { explanations, isMatch } = this.#explainProperties(signature, target, isNot);
+      const origin = DiagnosticOrigin.fromNode(target.node);
 
-      if (isNot ? !isMatch : isMatch) {
-        signatureIndex++;
-        continue;
+      if (source.signatures.length > 1) {
+        const signatureText = this.#typeChecker.signatureToString(signature, source.node);
+        const overloadText = ExpectDiagnosticText.overloadGaveTheFollowingError(
+          String(index + 1),
+          String(source.signatures.length),
+          signatureText,
+        );
+
+        diagnostic = Diagnostic.error([introText, overloadText], origin);
+      } else {
+        diagnostic = Diagnostic.error([introText], origin);
       }
 
-      for (const { origin, text } of explanations) {
-        if (source.signatures.length > 1) {
-          const signatureText = this.#typeChecker.signatureToString(signature, source.node);
-          const overloadText = ExpectDiagnosticText.overloadGaveTheFollowingError(
-            String(signatureIndex + 1),
-            String(source.signatures.length),
-            signatureText,
-          );
+      const { diagnostics, isMatch } = this.#explainProperties(signature, target, isNot, diagnostic);
 
-          diagnostics.push(Diagnostic.error([introText, overloadText, ...text], origin));
-        } else {
-          diagnostics.push(Diagnostic.error([introText, ...text], origin));
-        }
+      if (isNot ? isMatch : !isMatch) {
+        accumulator.push(...diagnostics);
       }
 
-      signatureIndex++;
-    }
-
-    return diagnostics;
+      return accumulator;
+    }, []);
   }
 
   #isOptionalProperty(symbol: ts.Symbol) {
@@ -130,17 +113,17 @@ export class ToAcceptProps {
     return check(sourceParameterType, target.type);
   }
 
-  #explainProperties(signature: ts.Signature, target: ToAcceptPropsTarget, isNot: boolean) {
+  #explainProperties(signature: ts.Signature, target: ToAcceptPropsTarget, isNot: boolean, diagnostic: Diagnostic) {
     const sourceParameter = signature.getDeclaration().parameters[0];
     const sourceParameterType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
 
     const targetTypeText = this.#typeChecker.typeToString(target.type);
     const sourceTypeText = sourceParameterType != null ? this.#typeChecker.typeToString(sourceParameterType) : "{}";
 
-    const explain = (sourceType: ts.Type | undefined, targetType: ts.Type, text: Array<string> = []) => {
+    const explain = (sourceType: ts.Type | undefined, targetType: ts.Type, diagnostic: Diagnostic) => {
       const sourceTypeText = sourceType != null ? this.#typeChecker.typeToString(sourceType) : "{}";
 
-      const explanations: Array<Explanation> = [];
+      const diagnostics: Array<Diagnostic> = [];
 
       for (const targetProperty of targetType.getProperties()) {
         const targetPropertyName = targetProperty.getName();
@@ -148,30 +131,27 @@ export class ToAcceptProps {
         const sourceProperty = sourceType?.getProperty(targetPropertyName);
 
         if (!sourceProperty) {
+          const text = [
+            ExpectDiagnosticText.typeIsNotCompatibleWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
+          ];
+
           const origin = this.#resolveOrigin(targetProperty, target.node);
 
-          explanations.push({
-            origin,
-            text: [
-              ...text,
-              ExpectDiagnosticText.typeIsNotCompatibleWith(sourceTypeText, targetTypeText),
-              ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
-            ],
-          });
+          diagnostics.push(diagnostic.extendWith(text, origin));
+
           continue;
         }
 
         if (this.#isOptionalProperty(targetProperty) && !this.#isOptionalProperty(sourceProperty)) {
+          const text = [
+            ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
+          ];
+
           const origin = this.#resolveOrigin(targetProperty, target.node);
 
-          explanations.push({
-            origin,
-            text: [
-              ...text,
-              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
-              ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
-            ],
-          });
+          diagnostics.push(diagnostic.extendWith(text, origin));
 
           continue;
         }
@@ -183,17 +163,15 @@ export class ToAcceptProps {
           const targetPropertyTypeText = this.#typeChecker.typeToString(targetPropertyType);
           const sourcePropertyTypeText = this.#typeChecker.typeToString(sourcePropertyType);
 
+          const text = [
+            ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.typesOfPropertyAreNotCompatible(targetPropertyName),
+            ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
+          ];
+
           const origin = this.#resolveOrigin(targetProperty, target.node);
 
-          explanations.push({
-            origin,
-            text: [
-              ...text,
-              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
-              ExpectDiagnosticText.typesOfPropertyAreNotCompatible(targetPropertyName),
-              ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
-            ],
-          });
+          diagnostics.push(diagnostic.extendWith(text, origin));
         }
       }
 
@@ -204,57 +182,50 @@ export class ToAcceptProps {
           const targetProperty = targetType.getProperty(sourcePropertyName);
 
           if (!targetProperty && !this.#isOptionalProperty(sourceProperty)) {
-            const origin = DiagnosticOrigin.fromNode(target.node);
+            const text = [
+              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+              ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, sourcePropertyName),
+            ];
 
-            explanations.push({
-              origin,
-              text: [
-                ...text,
-                ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
-                ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, sourcePropertyName),
-              ],
-            });
+            diagnostics.push(diagnostic.extendWith(text));
           }
         }
       }
 
-      if (explanations.length === 0) {
-        const origin = DiagnosticOrigin.fromNode(target.node);
+      if (diagnostics.length === 0) {
+        const text = ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText);
 
-        explanations.push({
-          origin,
-          text: [...text, ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)],
-        });
+        diagnostics.push(diagnostic.extendWith(text));
 
-        return { explanations, isMatch: true };
+        return { diagnostics, isMatch: true };
       }
 
-      return { explanations, isMatch: false };
+      return { diagnostics, isMatch: false };
     };
 
     if (sourceParameterType != null && this.#isUnionType(sourceParameterType)) {
-      let accumulator: { explanations: Array<Explanation>; isMatch: boolean } = { explanations: [], isMatch: true };
+      let accumulator: Array<Diagnostic> = [];
 
-      for (const sourceType of sourceParameterType.types) {
-        const { explanations, isMatch } = explain(sourceType, target.type, [
-          isNot
-            ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
-            : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
-        ]);
+      const isMatch = sourceParameterType.types.some((sourceType) => {
+        const text = isNot
+          ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
+          : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText);
 
-        if (isMatch === true) {
-          accumulator = { explanations, isMatch };
-          break;
+        const { diagnostics, isMatch } = explain(sourceType, target.type, diagnostic.extendWith(text));
+
+        if (isMatch) {
+          accumulator = diagnostics;
+        } else {
+          accumulator.push(...diagnostics);
         }
 
-        accumulator.explanations.push(...explanations);
-        accumulator.isMatch = isMatch;
-      }
+        return isMatch;
+      });
 
-      return accumulator;
+      return { diagnostics: accumulator, isMatch };
     }
 
-    return explain(sourceParameterType, target.type);
+    return explain(sourceParameterType, target.type, diagnostic);
   }
 
   match(source: ToAcceptPropsSource, target: ToAcceptPropsTarget): MatchResult {
