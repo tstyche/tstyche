@@ -204,25 +204,25 @@ export class ToAcceptProps {
     };
 
     if (sourceParameterType != null && this.#isUnionType(sourceParameterType)) {
-      let accumulator: { diagnostics: Array<Diagnostic>; isMatch: boolean } = { diagnostics: [], isMatch: true };
+      let accumulator: Array<Diagnostic> = [];
 
-      for (const sourceType of sourceParameterType.types) {
+      const isMatch = sourceParameterType.types.some((sourceType) => {
         const text = isNot
           ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
           : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText);
 
         const { diagnostics, isMatch } = explain(sourceType, target.type, diagnostic.extendWith(text));
 
-        if (isMatch === true) {
-          accumulator = { diagnostics, isMatch };
-          break;
+        if (isMatch) {
+          accumulator = diagnostics;
+        } else {
+          accumulator.push(...diagnostics);
         }
 
-        accumulator.diagnostics.push(...diagnostics);
-        accumulator.isMatch = isMatch;
-      }
+        return isMatch;
+      });
 
-      return accumulator;
+      return { diagnostics: accumulator, isMatch };
     }
 
     return explain(sourceParameterType, target.type, diagnostic);
