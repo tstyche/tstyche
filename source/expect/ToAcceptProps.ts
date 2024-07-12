@@ -131,25 +131,27 @@ export class ToAcceptProps {
         const sourceProperty = sourceType?.getProperty(targetPropertyName);
 
         if (!sourceProperty) {
-          const origin = this.#resolveOrigin(targetProperty, target.node);
           const text = [
             ExpectDiagnosticText.typeIsNotCompatibleWith(sourceTypeText, targetTypeText),
             ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
           ];
 
-          diagnostics.push(diagnostic.extendWith({ origin, text }));
+          const origin = this.#resolveOrigin(targetProperty, target.node);
+
+          diagnostics.push(diagnostic.extendWith(text, origin));
 
           continue;
         }
 
         if (this.#isOptionalProperty(targetProperty) && !this.#isOptionalProperty(sourceProperty)) {
-          const origin = this.#resolveOrigin(targetProperty, target.node);
           const text = [
             ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
             ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
           ];
 
-          diagnostics.push(diagnostic.extendWith({ origin, text }));
+          const origin = this.#resolveOrigin(targetProperty, target.node);
+
+          diagnostics.push(diagnostic.extendWith(text, origin));
 
           continue;
         }
@@ -161,14 +163,15 @@ export class ToAcceptProps {
           const targetPropertyTypeText = this.#typeChecker.typeToString(targetPropertyType);
           const sourcePropertyTypeText = this.#typeChecker.typeToString(sourcePropertyType);
 
-          const origin = this.#resolveOrigin(targetProperty, target.node);
           const text = [
             ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
             ExpectDiagnosticText.typesOfPropertyAreNotCompatible(targetPropertyName),
             ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
           ];
 
-          diagnostics.push(diagnostic.extendWith({ origin, text }));
+          const origin = this.#resolveOrigin(targetProperty, target.node);
+
+          diagnostics.push(diagnostic.extendWith(text, origin));
         }
       }
 
@@ -184,7 +187,7 @@ export class ToAcceptProps {
               ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, sourcePropertyName),
             ];
 
-            diagnostics.push(diagnostic.extendWith({ text }));
+            diagnostics.push(diagnostic.extendWith(text));
           }
         }
       }
@@ -192,7 +195,7 @@ export class ToAcceptProps {
       if (diagnostics.length === 0) {
         const text = ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText);
 
-        diagnostics.push(diagnostic.extendWith({ text }));
+        diagnostics.push(diagnostic.extendWith(text));
 
         return { diagnostics, isMatch: true };
       }
@@ -208,7 +211,7 @@ export class ToAcceptProps {
           ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
           : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText);
 
-        const { diagnostics, isMatch } = explain(sourceType, target.type, diagnostic.extendWith({ text }));
+        const { diagnostics, isMatch } = explain(sourceType, target.type, diagnostic.extendWith(text));
 
         if (isMatch === true) {
           accumulator = { diagnostics, isMatch };
