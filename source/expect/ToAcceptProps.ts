@@ -54,11 +54,7 @@ export class ToAcceptProps {
     );
   }
 
-  #isUnionType(type: ts.Type): type is ts.UnionType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.Union);
-  }
-
-  #checkProperties(sourceType: ts.Type | undefined, targetType: ts.Type) {
+  #checkProperties(matchWorker: MatchWorker, sourceType: ts.Type | undefined, targetType: ts.Type) {
     const check = (sourceType: ts.Type | undefined, targetType: ts.Type) => {
       for (const targetProperty of targetType.getProperties()) {
         const targetPropertyName = targetProperty.getName();
@@ -96,7 +92,7 @@ export class ToAcceptProps {
       return true;
     };
 
-    if (sourceType != null && this.#isUnionType(sourceType)) {
+    if (sourceType != null && matchWorker.isUnionType(sourceType)) {
       return sourceType.types.some((sourceType) => check(sourceType, targetType));
     }
 
@@ -198,7 +194,7 @@ export class ToAcceptProps {
       return { diagnostics, isMatch: false };
     };
 
-    if (sourceType != null && this.#isUnionType(sourceType)) {
+    if (sourceType != null && matchWorker.isUnionType(sourceType)) {
       let accumulator: Array<Diagnostic> = [];
 
       const isMatch = sourceType.types.some((sourceType) => {
@@ -247,7 +243,7 @@ export class ToAcceptProps {
 
     const targetType = matchWorker.getType(targetNode);
 
-    if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
+    if (!matchWorker.isObjectType(targetType)) {
       const expectedText = "of an object type";
 
       const text = this.#compiler.isTypeNode(targetNode)
@@ -268,7 +264,7 @@ export class ToAcceptProps {
     const isMatch = signatures.some((signature) => {
       const sourceType = matchWorker.getParameterType(signature, 0);
 
-      return this.#checkProperties(sourceType, targetType);
+      return this.#checkProperties(matchWorker, sourceType, targetType);
     });
 
     return {

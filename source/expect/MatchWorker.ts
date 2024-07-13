@@ -51,7 +51,7 @@ export class MatchWorker {
     return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
   }
 
-  extendsObjectType(type: ts.Type): type is ts.ObjectType {
+  extendsObjectType(type: ts.Type): boolean {
     const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
 
     return this.#typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
@@ -119,6 +119,14 @@ export class MatchWorker {
 
   isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
     return Boolean(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
+  }
+
+  isObjectType(type: ts.Type): type is ts.ObjectType {
+    return Boolean(type.flags & this.#compiler.TypeFlags.Object);
+  }
+
+  isUnionType(type: ts.Type): type is ts.UnionType {
+    return Boolean(type.flags & this.#compiler.TypeFlags.Union);
   }
 
   isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
