@@ -114,38 +114,13 @@ export class ExpectService {
 
     switch (matcherNameText) {
       case "toAcceptProps": {
-        const sourceType = this.#getType(assertion.source[0]);
-        let signatures = sourceType.getCallSignatures();
-
-        if (signatures.length === 0) {
-          signatures = sourceType.getConstructSignatures();
-        }
-
-        if (signatures.length === 0) {
-          this.#onSourceArgumentMustBe("of a function or class type", assertion.source[0], onDiagnostics);
-
-          return;
-        }
-
         if (assertion.target[0] == null) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
           return;
         }
 
-        const targetType = this.#getType(assertion.target[0]);
-
-        if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
-          this.#onTargetArgumentMustBe("of an object type", assertion.target[0], onDiagnostics);
-
-          return;
-        }
-
-        return this.toAcceptProps.match(
-          assertion,
-          { node: assertion.source[0], signatures: [...signatures] },
-          { node: assertion.target[0], type: targetType },
-        );
+        return this.toAcceptProps.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
       }
 
       case "toBe":
@@ -211,31 +186,11 @@ export class ExpectService {
     return;
   }
 
-  #onSourceArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, onDiagnostic: DiagnosticsHandler) {
-    const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
-      : ExpectDiagnosticText.argumentMustBe("source", expectedText);
-
-    const origin = DiagnosticOrigin.fromNode(node);
-
-    onDiagnostic(Diagnostic.error(text, origin));
-  }
-
   #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
     onDiagnostics(Diagnostic.error(text, origin));
-  }
-
-  #onTargetArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, onDiagnostics: DiagnosticsHandler) {
-    const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
-      : ExpectDiagnosticText.argumentMustBe("target", expectedText);
-
-    const origin = DiagnosticOrigin.fromNode(node);
-
-    onDiagnostics([Diagnostic.error(text, origin)]);
   }
 
   #onTargetArgumentMustBeProvided(argumentNameText: string, assertion: Assertion, onDiagnostics: DiagnosticsHandler) {

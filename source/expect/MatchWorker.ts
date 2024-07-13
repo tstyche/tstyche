@@ -1,11 +1,13 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
+import { DiagnosticOrigin } from "#diagnostic";
 import type { Relation, TypeChecker } from "./types.js";
 
 export class MatchWorker {
   assertion: Assertion;
   #compiler: typeof ts;
-  #typeCache = new Map<ts.Expression | ts.TypeNode, ts.Type>();
+  #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
+  #typeCache = new Map<ts.Node, ts.Type>();
   #typeChecker: TypeChecker;
 
   constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: Assertion) {
@@ -55,6 +57,32 @@ export class MatchWorker {
     return this.#typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
   }
 
+  getParameterType(signature: ts.Signature, index: number): ts.Type | undefined {
+    const parameter = signature.getDeclaration().parameters[index];
+
+    if (!parameter) {
+      return;
+    }
+
+    return this.#getTypeAtLocation(parameter);
+  }
+
+  getSignatures(node: ts.Expression | ts.TypeNode): Array<ts.Signature> {
+    let signatures = this.#signatureCache.get(node);
+
+    if (!signatures) {
+      const type = this.getType(node);
+
+      signatures = type.getCallSignatures() as Array<ts.Signature>;
+
+      if (signatures.length === 0) {
+        signatures = type.getConstructSignatures() as Array<ts.Signature>;
+      }
+    }
+
+    return signatures;
+  }
+
   getTypeText(node: ts.Expression | ts.TypeNode): string {
     const type = this.getType(node);
 
@@ -62,14 +90,24 @@ export class MatchWorker {
   }
 
   getType(node: ts.Expression | ts.TypeNode): ts.Type {
+    return this.#compiler.isExpression(node) ? this.#getTypeAtLocation(node) : this.#getTypeFromTypeNode(node);
+  }
+
+  #getTypeAtLocation(node: ts.Node) {
     let type = this.#typeCache.get(node);
 
     if (!type) {
-      type = this.#compiler.isExpression(node)
-        ? this.#typeChecker.getTypeAtLocation(node)
-        : this.#typeChecker.getTypeFromTypeNode(node);
+      type = this.#typeChecker.getTypeAtLocation(node);
+    }
 
-      this.#typeCache.set(node, type);
+    return type;
+  }
+
+  #getTypeFromTypeNode(node: ts.TypeNode) {
+    let type = this.#typeCache.get(node);
+
+    if (!type) {
+      type = this.#typeChecker.getTypeFromTypeNode(node);
     }
 
     return type;
@@ -85,5 +123,20 @@ export class MatchWorker {
 
   isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
     return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
+  }
+
+  resolveOrigin(symbol: ts.Symbol, node: ts.Node) {
+    if (
+      symbol.valueDeclaration != null &&
+      (this.#compiler.isPropertySignature(symbol.valueDeclaration) ||
+        this.#compiler.isPropertyAssignment(symbol.valueDeclaration) ||
+        this.#compiler.isShorthandPropertyAssignment(symbol.valueDeclaration)) &&
+      symbol.valueDeclaration.getStart() >= node.getStart() &&
+      symbol.valueDeclaration.getEnd() <= node.getEnd()
+    ) {
+      return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name, this.assertion);
+    }
+
+    return DiagnosticOrigin.fromNode(node, this.assertion);
   }
 }

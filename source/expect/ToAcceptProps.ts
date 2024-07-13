@@ -1,18 +1,8 @@
 import type ts from "typescript";
-import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchResult, TypeChecker } from "./types.js";
-
-interface ToAcceptPropsSource {
-  node: ts.Expression | ts.TypeNode;
-  signatures: Array<ts.Signature>;
-}
-
-interface ToAcceptPropsTarget {
-  node: ts.Expression | ts.TypeNode;
-  type: ts.Type;
-}
+import type { MatchWorker } from "./MatchWorker.js";
+import type { DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
 
 export class ToAcceptProps {
   #compiler: typeof ts;
@@ -23,21 +13,23 @@ export class ToAcceptProps {
     this.#typeChecker = typeChecker;
   }
 
-  #explain(assertion: Assertion, source: ToAcceptPropsSource, target: ToAcceptPropsTarget) {
-    return source.signatures.reduce<Array<Diagnostic>>((accumulator, signature, index) => {
+  #explain(matchWorker: MatchWorker, sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode) {
+    const signatures = matchWorker.getSignatures(sourceNode);
+
+    return signatures.reduce<Array<Diagnostic>>((accumulator, signature, index) => {
       let diagnostic: Diagnostic | undefined;
 
-      const introText = assertion.isNot
-        ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(source.node))
-        : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(source.node));
+      const introText = matchWorker.assertion.isNot
+        ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(sourceNode))
+        : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(sourceNode));
 
-      const origin = DiagnosticOrigin.fromNode(target.node, assertion);
+      const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
-      if (source.signatures.length > 1) {
-        const signatureText = this.#typeChecker.signatureToString(signature, source.node);
+      if (signatures.length > 1) {
+        const signatureText = this.#typeChecker.signatureToString(signature, sourceNode);
         const overloadText = ExpectDiagnosticText.overloadGaveTheFollowingError(
           String(index + 1),
-          String(source.signatures.length),
+          String(signatures.length),
           signatureText,
         );
 
@@ -46,9 +38,9 @@ export class ToAcceptProps {
         diagnostic = Diagnostic.error([introText], origin);
       }
 
-      const { diagnostics, isMatch } = this.#explainProperties(assertion, signature, target, diagnostic);
+      const { diagnostics, isMatch } = this.#explainProperties(matchWorker, signature, targetNode, diagnostic);
 
-      if (assertion.isNot ? isMatch : !isMatch) {
+      if (matchWorker.assertion.isNot ? isMatch : !isMatch) {
         accumulator.push(...diagnostics);
       }
 
@@ -66,10 +58,7 @@ export class ToAcceptProps {
     return Boolean(type.flags & this.#compiler.TypeFlags.Union);
   }
 
-  #checkProperties(signature: ts.Signature, target: ToAcceptPropsTarget) {
-    const sourceParameter = signature.getDeclaration().parameters[0];
-    const sourceParameterType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
-
+  #checkProperties(sourceType: ts.Type | undefined, targetType: ts.Type) {
     const check = (sourceType: ts.Type | undefined, targetType: ts.Type) => {
       for (const targetProperty of targetType.getProperties()) {
         const targetPropertyName = targetProperty.getName();
@@ -107,24 +96,24 @@ export class ToAcceptProps {
       return true;
     };
 
-    if (sourceParameterType != null && this.#isUnionType(sourceParameterType)) {
-      return sourceParameterType.types.some((sourceType) => check(sourceType, target.type));
+    if (sourceType != null && this.#isUnionType(sourceType)) {
+      return sourceType.types.some((sourceType) => check(sourceType, targetType));
     }
 
-    return check(sourceParameterType, target.type);
+    return check(sourceType, targetType);
   }
 
   #explainProperties(
-    assertion: Assertion,
+    matchWorker: MatchWorker,
     signature: ts.Signature,
-    target: ToAcceptPropsTarget,
+    targetNode: ts.Expression | ts.TypeNode,
     diagnostic: Diagnostic,
   ) {
-    const sourceParameter = signature.getDeclaration().parameters[0];
-    const sourceParameterType = sourceParameter && this.#typeChecker.getTypeAtLocation(sourceParameter);
+    const sourceType = matchWorker.getParameterType(signature, 0);
+    const sourceTypeText = sourceType != null ? this.#typeChecker.typeToString(sourceType) : "{}";
 
-    const targetTypeText = this.#typeChecker.typeToString(target.type);
-    const sourceTypeText = sourceParameterType != null ? this.#typeChecker.typeToString(sourceParameterType) : "{}";
+    const targetType = matchWorker.getType(targetNode);
+    const targetTypeText = this.#typeChecker.typeToString(targetType);
 
     const explain = (sourceType: ts.Type | undefined, targetType: ts.Type, diagnostic: Diagnostic) => {
       const sourceTypeText = sourceType != null ? this.#typeChecker.typeToString(sourceType) : "{}";
@@ -142,7 +131,7 @@ export class ToAcceptProps {
             ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
           ];
 
-          const origin = this.#resolveOrigin(targetProperty, target.node, assertion);
+          const origin = matchWorker.resolveOrigin(targetProperty, targetNode);
 
           diagnostics.push(diagnostic.extendWith(text, origin));
 
@@ -155,7 +144,7 @@ export class ToAcceptProps {
             ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
           ];
 
-          const origin = this.#resolveOrigin(targetProperty, target.node, assertion);
+          const origin = matchWorker.resolveOrigin(targetProperty, targetNode);
 
           diagnostics.push(diagnostic.extendWith(text, origin));
 
@@ -175,7 +164,7 @@ export class ToAcceptProps {
             ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
           ];
 
-          const origin = this.#resolveOrigin(targetProperty, target.node, assertion);
+          const origin = matchWorker.resolveOrigin(targetProperty, targetNode);
 
           diagnostics.push(diagnostic.extendWith(text, origin));
         }
@@ -209,15 +198,15 @@ export class ToAcceptProps {
       return { diagnostics, isMatch: false };
     };
 
-    if (sourceParameterType != null && this.#isUnionType(sourceParameterType)) {
+    if (sourceType != null && this.#isUnionType(sourceType)) {
       let accumulator: Array<Diagnostic> = [];
 
-      const isMatch = sourceParameterType.types.some((sourceType) => {
-        const text = assertion.isNot
+      const isMatch = sourceType.types.some((sourceType) => {
+        const text = matchWorker.assertion.isNot
           ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
           : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText);
 
-        const { diagnostics, isMatch } = explain(sourceType, target.type, diagnostic.extendWith(text));
+        const { diagnostics, isMatch } = explain(sourceType, targetType, diagnostic.extendWith(text));
 
         if (isMatch) {
           accumulator = diagnostics;
@@ -231,30 +220,60 @@ export class ToAcceptProps {
       return { diagnostics: accumulator, isMatch };
     }
 
-    return explain(sourceParameterType, target.type, diagnostic);
+    return explain(sourceType, targetType, diagnostic);
   }
 
-  match(assertion: Assertion, source: ToAcceptPropsSource, target: ToAcceptPropsTarget): MatchResult {
-    const isMatch = source.signatures.some((signature) => this.#checkProperties(signature, target));
+  match(
+    matchWorker: MatchWorker,
+    sourceNode: ts.Expression | ts.TypeNode,
+    targetNode: ts.Expression | ts.TypeNode,
+    onDiagnostic: DiagnosticsHandler,
+  ): MatchResult | undefined {
+    const diagnostics: Array<Diagnostic> = [];
 
-    return {
-      explain: () => this.#explain(assertion, source, target),
-      isMatch,
-    };
-  }
+    const signatures = matchWorker.getSignatures(sourceNode);
 
-  #resolveOrigin(symbol: ts.Symbol, node: ts.Node, assertion: Assertion) {
-    if (
-      symbol.valueDeclaration != null &&
-      (this.#compiler.isPropertySignature(symbol.valueDeclaration) ||
-        this.#compiler.isPropertyAssignment(symbol.valueDeclaration) ||
-        this.#compiler.isShorthandPropertyAssignment(symbol.valueDeclaration)) &&
-      symbol.valueDeclaration.getStart() >= node.getStart() &&
-      symbol.valueDeclaration.getEnd() <= node.getEnd()
-    ) {
-      return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name, assertion);
+    if (signatures.length === 0) {
+      const expectedText = "of a function or class type";
+
+      const text = this.#compiler.isTypeNode(sourceNode)
+        ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
+        : ExpectDiagnosticText.argumentMustBe("source", expectedText);
+
+      const origin = DiagnosticOrigin.fromNode(sourceNode);
+
+      diagnostics.push(Diagnostic.error(text, origin));
     }
 
-    return DiagnosticOrigin.fromNode(node, assertion);
+    const targetType = matchWorker.getType(targetNode);
+
+    if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
+      const expectedText = "of an object type";
+
+      const text = this.#compiler.isTypeNode(targetNode)
+        ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
+        : ExpectDiagnosticText.argumentMustBe("target", expectedText);
+
+      const origin = DiagnosticOrigin.fromNode(targetNode);
+
+      diagnostics.push(Diagnostic.error(text, origin));
+    }
+
+    if (diagnostics.length > 0) {
+      onDiagnostic(diagnostics);
+
+      return;
+    }
+
+    const isMatch = signatures.some((signature) => {
+      const sourceType = matchWorker.getParameterType(signature, 0);
+
+      return this.#checkProperties(sourceType, targetType);
+    });
+
+    return {
+      explain: () => this.#explain(matchWorker, sourceNode, targetNode),
+      isMatch,
+    };
   }
 }
