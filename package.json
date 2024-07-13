@@ -70,7 +70,7 @@
     "cspell": "8.10.4",
     "magic-string": "0.30.10",
     "mocha": "10.6.0",
-    "monocart-coverage-reports": "2.9.1",
+    "monocart-coverage-reports": "2.9.2",
     "pretty-ansi": "2.0.0",
     "rollup": "4.18.1",
     "rollup-plugin-dts": "6.1.1",
