@@ -1,8 +1,8 @@
 import type ts from "typescript";
-import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchResult, TypeChecker } from "./types.js";
+import type { MatchWorker } from "./MatchWorker.js";
+import type { DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
 
 export class ToHaveProperty {
   compiler: typeof ts;
@@ -13,13 +13,11 @@ export class ToHaveProperty {
     this.typeChecker = typeChecker;
   }
 
-  #explain(
-    assertion: Assertion,
-    sourceType: ts.Type,
-    targetNode: ts.Expression | ts.TypeNode,
-    targetType: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType,
-  ) {
+  #explain(matchWorker: MatchWorker, sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode) {
+    const sourceType = matchWorker.getType(sourceNode);
     const sourceTypeText = this.typeChecker.typeToString(sourceType);
+
+    const targetType = matchWorker.getType(targetNode);
     let propertyNameText: string;
 
     if (this.#isStringOrNumberLiteralType(targetType)) {
@@ -28,9 +26,9 @@ export class ToHaveProperty {
       propertyNameText = `[${this.compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
     }
 
-    const origin = DiagnosticOrigin.fromNode(targetNode, assertion);
+    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
-    return assertion.isNot
+    return matchWorker.assertion.isNot
       ? [Diagnostic.error(ExpectDiagnosticText.typeHasProperty(sourceTypeText, propertyNameText), origin)]
       : [Diagnostic.error(ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
   }
@@ -40,25 +38,38 @@ export class ToHaveProperty {
   }
 
   match(
-    assertion: Assertion,
-    sourceType: ts.Type,
+    matchWorker: MatchWorker,
+    sourceNode: ts.Expression | ts.TypeNode,
     targetNode: ts.Expression | ts.TypeNode,
-    targetType: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType,
-  ): MatchResult {
-    let targetArgumentText: string;
+    onDiagnostic: DiagnosticsHandler,
+  ): MatchResult | undefined {
+    const targetType = matchWorker.getType(targetNode);
 
-    if (this.#isStringOrNumberLiteralType(targetType)) {
-      targetArgumentText = String(targetType.value);
+    let propertyNameText: string;
+
+    if (matchWorker.isStringOrNumberLiteralType(targetType)) {
+      propertyNameText = String(targetType.value);
+    } else if (matchWorker.isUniqueSymbolType(targetType)) {
+      propertyNameText = this.compiler.unescapeLeadingUnderscores(targetType.escapedName);
     } else {
-      targetArgumentText = this.compiler.unescapeLeadingUnderscores(targetType.escapedName);
+      const expectedText = "of type 'string | number | symbol'";
+
+      const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
+      const origin = DiagnosticOrigin.fromNode(targetNode);
+
+      onDiagnostic(Diagnostic.error(text, origin));
+
+      return;
     }
 
+    const sourceType = matchWorker.getType(sourceNode);
+
     const isMatch = sourceType.getProperties().some((property) => {
-      return this.compiler.unescapeLeadingUnderscores(property.escapedName) === targetArgumentText;
+      return this.compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText;
     });
 
     return {
-      explain: () => this.#explain(assertion, sourceType, targetNode, targetType),
+      explain: () => this.#explain(matchWorker, sourceNode, targetNode),
       isMatch,
     };
   }

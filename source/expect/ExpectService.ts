@@ -108,14 +108,6 @@ export class ExpectService {
     );
   }
 
-  #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
-  }
-
-  #isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
-  }
-
   match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
@@ -211,15 +203,7 @@ export class ExpectService {
           return;
         }
 
-        const targetType = this.#getType(assertion.target[0]);
-
-        if (!(this.#isStringOrNumberLiteralType(targetType) || this.#isUniqueSymbolType(targetType))) {
-          this.#onKeyArgumentMustBeOfType(assertion.target[0], onDiagnostics);
-
-          return;
-        }
-
-        return this.toHaveProperty.match(assertion, sourceType, assertion.target[0], targetType);
+        return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
       }
 
       case "toRaiseError": {
@@ -241,15 +225,6 @@ export class ExpectService {
     }
 
     return;
-  }
-
-  #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, onDiagnostic: DiagnosticsHandler) {
-    const expectedText = "of type 'string | number | symbol'";
-
-    const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
-    const origin = DiagnosticOrigin.fromNode(node);
-
-    onDiagnostic(Diagnostic.error(text, origin));
   }
 
   #onSourceArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, onDiagnostic: DiagnosticsHandler) {
