@@ -133,18 +133,18 @@ export class MatchWorker {
     return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
   }
 
-  resolveOrigin(symbol: ts.Symbol, node: ts.Node) {
+  resolveOrigin(symbol: ts.Symbol, enclosingNode: ts.Node) {
     if (
       symbol.valueDeclaration != null &&
       (this.#compiler.isPropertySignature(symbol.valueDeclaration) ||
         this.#compiler.isPropertyAssignment(symbol.valueDeclaration) ||
         this.#compiler.isShorthandPropertyAssignment(symbol.valueDeclaration)) &&
-      symbol.valueDeclaration.getStart() >= node.getStart() &&
-      symbol.valueDeclaration.getEnd() <= node.getEnd()
+      symbol.valueDeclaration.getStart() >= enclosingNode.getStart() &&
+      symbol.valueDeclaration.getEnd() <= enclosingNode.getEnd()
     ) {
       return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name, this.assertion);
     }
 
-    return DiagnosticOrigin.fromNode(node, this.assertion);
+    return DiagnosticOrigin.fromNode(enclosingNode, this.assertion);
   }
 }
