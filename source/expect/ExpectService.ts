@@ -62,7 +62,7 @@ export class ExpectService {
     this.toBeUnknown = new PrimitiveTypeMatcher(compiler.TypeFlags.Unknown);
     this.toBeVoid = new PrimitiveTypeMatcher(compiler.TypeFlags.Void);
     this.toEqual = new ToBe();
-    this.toHaveProperty = new ToHaveProperty(compiler, typeChecker);
+    this.toHaveProperty = new ToHaveProperty(compiler);
     this.toMatch = new ToMatch();
     this.toRaiseError = new ToRaiseError(compiler);
   }
@@ -97,15 +97,6 @@ export class ExpectService {
 
   #isStringOrNumericLiteralNode(node: ts.Node): node is ts.StringLiteralLike | ts.NumericLiteral {
     return this.#compiler.isStringLiteralLike(node) || this.#compiler.isNumericLiteral(node);
-  }
-
-  #isObjectType(type: ts.Type): type is ts.ObjectType {
-    const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
-
-    return (
-      !(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never)) &&
-      this.#typeChecker.isTypeAssignableTo(type, nonPrimitiveType)
-    );
   }
 
   match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
@@ -190,13 +181,6 @@ export class ExpectService {
       }
 
       case "toHaveProperty": {
-        const sourceType = this.#getType(assertion.source[0]);
-        if (!this.#isObjectType(sourceType)) {
-          this.#onSourceArgumentMustBe("of an object type", assertion.source[0], onDiagnostics);
-
-          return;
-        }
-
         if (assertion.target[0] == null) {
           this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostics);
 

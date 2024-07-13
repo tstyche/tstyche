@@ -14,18 +14,6 @@ export class MatchWorker {
     this.assertion = assertion;
   }
 
-  checkDoesMatch(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
-    const relation = this.#typeChecker.relation.subtype;
-
-    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
-  }
-
-  checkIsIdenticalTo(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
-    const relation = this.#typeChecker.relation.identity;
-
-    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
-  }
-
   checkIsAssignableTo(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
@@ -38,6 +26,18 @@ export class MatchWorker {
     return this.#checkIsRelatedTo(targetNode, sourceNode, relation);
   }
 
+  checkIsIdenticalTo(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+    const relation = this.#typeChecker.relation.identity;
+
+    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
+  }
+
+  checkIsSubtype(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+    const relation = this.#typeChecker.relation.subtype;
+
+    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
+  }
+
   #checkIsRelatedTo(
     sourceNode: ts.Expression | ts.TypeNode,
     targetNode: ts.Expression | ts.TypeNode,
@@ -47,6 +47,12 @@ export class MatchWorker {
     const targetType = this.getType(targetNode);
 
     return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
+  }
+
+  extendsObjectType(type: ts.Type): type is ts.ObjectType {
+    const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
+
+    return this.#typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
   }
 
   getTypeText(node: ts.Expression | ts.TypeNode): string {
@@ -67,6 +73,10 @@ export class MatchWorker {
     }
 
     return type;
+  }
+
+  isAnyOrNeverType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
+    return Boolean(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never));
   }
 
   isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {

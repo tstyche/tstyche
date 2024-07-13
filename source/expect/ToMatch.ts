@@ -15,7 +15,7 @@ export class ToMatch extends RelationMatcherBase {
   ): MatchResult {
     return {
       explain: () => this.explain(matchWorker, sourceNode, targetNode),
-      isMatch: matchWorker.checkDoesMatch(sourceNode, targetNode),
+      isMatch: matchWorker.checkIsSubtype(sourceNode, targetNode),
     };
   }
 }
