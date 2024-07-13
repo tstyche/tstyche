@@ -113,16 +113,7 @@ export class ExpectService {
     const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
 
     switch (matcherNameText) {
-      case "toAcceptProps": {
-        if (assertion.target[0] == null) {
-          this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
-
-          return;
-        }
-
-        return this.toAcceptProps.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
-      }
-
+      case "toAcceptProps":
       case "toBe":
       // TODO '.toBeAssignable()' is deprecated and must be removed in TSTyche 3
       case "toBeAssignable":
@@ -137,7 +128,7 @@ export class ExpectService {
           return;
         }
 
-        return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0]);
+        return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
       }
 
       case "toBeAny":
