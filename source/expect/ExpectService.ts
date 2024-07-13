@@ -71,12 +71,6 @@ export class ExpectService {
     return "isTypeRelatedTo" in typeChecker && "relation" in typeChecker;
   }
 
-  #getType(node: ts.Expression | ts.TypeNode) {
-    return this.#compiler.isExpression(node)
-      ? this.#typeChecker.getTypeAtLocation(node)
-      : this.#typeChecker.getTypeFromTypeNode(node);
-  }
-
   #handleDeprecated(matcherNameText: string, assertion: Assertion) {
     switch (matcherNameText) {
       case "toBeAssignable":
