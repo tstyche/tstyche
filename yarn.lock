@@ -648,6 +648,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jridgewell/sourcemap-codec@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@jridgewell/sourcemap-codec@npm:1.5.0"
+  checksum: 05df4f2538b3b0f998ea4c1cd34574d0feba216fa5d4ccaef0187d12abf82eafe6021cec8b49f9bb4d90f2ba4582ccc581e72986a5fcf4176ae0cfeb04cf52ec
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -2205,6 +2212,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "minimatch@npm:10.0.1"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: f5b63c2f30606091a057c5f679b067f84a2cd0ffbd2dbc9143bda850afd353c7be81949ff11ae0c86988f07390eeca64efd7143ee05a0dab37f6c6b38a2ebb6c
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^5.0.1, minimatch@npm:^5.1.6":
   version: 5.1.6
   resolution: "minimatch@npm:5.1.6"
@@ -2214,7 +2230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.4, minimatch@npm:^9.0.5":
+"minimatch@npm:^9.0.4":
   version: 9.0.5
   resolution: "minimatch@npm:9.0.5"
   dependencies:
@@ -2354,12 +2370,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.9.1":
-  version: 2.9.1
-  resolution: "monocart-coverage-reports@npm:2.9.1"
+"monocart-coverage-reports@npm:2.9.2":
+  version: 2.9.2
+  resolution: "monocart-coverage-reports@npm:2.9.2"
   dependencies:
     "@bcoe/v8-coverage": ^0.2.3
-    "@jridgewell/sourcemap-codec": ^1.4.15
+    "@jridgewell/sourcemap-codec": ^1.5.0
     acorn: ^8.12.1
     acorn-loose: ^8.4.0
     acorn-walk: ^8.3.3
@@ -2372,14 +2388,14 @@ __metadata:
     istanbul-lib-report: ^3.0.1
     istanbul-reports: ^3.1.7
     lz-utils: ^2.0.2
-    minimatch: ^9.0.5
+    minimatch: ^10.0.1
     monocart-code-viewer: ^1.1.4
     monocart-formatter: ^3.0.0
     monocart-locator: ^1.0.2
     turbogrid: ^3.2.0
   bin:
     mcr: lib/cli.js
-  checksum: b1b8dfd2b725af9ad79cd237110a9bf3bf54758cec201ee3780db2e88c08fa78e622dd1add789764cbe0bed56c67ac0b35fb3568c5b1039fb3789bc0bdbe1b9e
+  checksum: aba77dd781e7e3ec50b88bbb8d828fc14e91f6952450a63704ee1b886dd5c53fce3a3219e36553db004f1482c45c0550712764fea14b95f17d1dfbc88cc98a36
   languageName: node
   linkType: hard
 
@@ -3004,7 +3020,7 @@ __metadata:
     cspell: 8.10.4
     magic-string: 0.30.10
     mocha: 10.6.0
-    monocart-coverage-reports: 2.9.1
+    monocart-coverage-reports: 2.9.2
     pretty-ansi: 2.0.0
     rollup: 4.18.1
     rollup-plugin-dts: 6.1.1
