@@ -31,7 +31,7 @@ export class ToAcceptProps {
         ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(source.node))
         : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(source.node));
 
-      const origin = DiagnosticOrigin.fromNode(target.node);
+      const origin = DiagnosticOrigin.fromNode(target.node, assertion);
 
       if (source.signatures.length > 1) {
         const signatureText = this.#typeChecker.signatureToString(signature, source.node);
