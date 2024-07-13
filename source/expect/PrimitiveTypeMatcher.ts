@@ -2,7 +2,7 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
-import type { MatchResult } from "./types.js";
+import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class PrimitiveTypeMatcher {
   #targetTypeFlag: ts.TypeFlags;
@@ -11,14 +11,14 @@ export class PrimitiveTypeMatcher {
     this.#targetTypeFlag = targetTypeFlag;
   }
 
-  #explain(matchWorker: MatchWorker, sourceNode: ts.Expression | ts.TypeNode) {
+  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode) {
     const sourceTypeText = matchWorker.getTypeText(sourceNode);
     const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
     return [Diagnostic.error(ExpectDiagnosticText.typeIs(sourceTypeText), origin)];
   }
 
-  match(matchWorker: MatchWorker, sourceNode: ts.Expression | ts.TypeNode): MatchResult {
+  match(matchWorker: MatchWorker, sourceNode: ArgumentNode): MatchResult {
     const sourceType = matchWorker.getType(sourceNode);
     const isMatch = Boolean(sourceType.flags & this.#targetTypeFlag);
 

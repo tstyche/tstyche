@@ -2,7 +2,7 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
-import type { DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
+import type { ArgumentNode, DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
 
 export class ToAcceptProps {
   #compiler: typeof ts;
@@ -13,7 +13,7 @@ export class ToAcceptProps {
     this.#typeChecker = typeChecker;
   }
 
-  #explain(matchWorker: MatchWorker, sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode) {
+  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
     const signatures = matchWorker.getSignatures(sourceNode);
 
     return signatures.reduce<Array<Diagnostic>>((accumulator, signature, index) => {
@@ -102,7 +102,7 @@ export class ToAcceptProps {
   #explainProperties(
     matchWorker: MatchWorker,
     signature: ts.Signature,
-    targetNode: ts.Expression | ts.TypeNode,
+    targetNode: ArgumentNode,
     diagnostic: Diagnostic,
   ) {
     const sourceType = matchWorker.getParameterType(signature, 0);
@@ -221,8 +221,8 @@ export class ToAcceptProps {
 
   match(
     matchWorker: MatchWorker,
-    sourceNode: ts.Expression | ts.TypeNode,
-    targetNode: ts.Expression | ts.TypeNode,
+    sourceNode: ArgumentNode,
+    targetNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];

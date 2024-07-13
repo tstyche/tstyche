@@ -1,17 +1,12 @@
-import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import type { MatchWorker } from "./MatchWorker.js";
-import type { MatchResult } from "./types.js";
+import type { ArgumentNode, MatchResult } from "./types.js";
 
 export abstract class RelationMatcherBase {
   abstract explainText(sourceTypeText: string, targetTypeText: string): string;
   abstract explainNotText(sourceTypeText: string, targetTypeText: string): string;
 
-  protected explain(
-    matchWorker: MatchWorker,
-    sourceNode: ts.Expression | ts.TypeNode,
-    targetNode: ts.Expression | ts.TypeNode,
-  ) {
+  protected explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
     const sourceTypeText = matchWorker.getTypeText(sourceNode);
     const targetTypeText = matchWorker.getTypeText(targetNode);
 
@@ -24,9 +19,5 @@ export abstract class RelationMatcherBase {
     return [Diagnostic.error(text, origin)];
   }
 
-  abstract match(
-    matchWorker: MatchWorker,
-    sourceNode: ts.Expression | ts.TypeNode,
-    targetNode: ts.Expression | ts.TypeNode,
-  ): MatchResult;
+  abstract match(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode): MatchResult;
 }

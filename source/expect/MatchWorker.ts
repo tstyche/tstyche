@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
-import type { Relation, TypeChecker } from "./types.js";
+import type { ArgumentNode, Relation, TypeChecker } from "./types.js";
 
 export class MatchWorker {
   assertion: Assertion;
@@ -16,35 +16,31 @@ export class MatchWorker {
     this.assertion = assertion;
   }
 
-  checkIsAssignableTo(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+  checkIsAssignableTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
     return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  checkIsAssignableWith(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+  checkIsAssignableWith(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
     return this.#checkIsRelatedTo(targetNode, sourceNode, relation);
   }
 
-  checkIsIdenticalTo(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+  checkIsIdenticalTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
     const relation = this.#typeChecker.relation.identity;
 
     return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  checkIsSubtype(sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode): boolean {
+  checkIsSubtype(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
     const relation = this.#typeChecker.relation.subtype;
 
     return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  #checkIsRelatedTo(
-    sourceNode: ts.Expression | ts.TypeNode,
-    targetNode: ts.Expression | ts.TypeNode,
-    relation: Relation,
-  ) {
+  #checkIsRelatedTo(sourceNode: ArgumentNode, targetNode: ArgumentNode, relation: Relation) {
     const sourceType = this.getType(sourceNode);
     const targetType = this.getType(targetNode);
 
@@ -64,10 +60,10 @@ export class MatchWorker {
       return;
     }
 
-    return this.#getTypeAtLocation(parameter);
+    return this.#getTypeOfNode(parameter);
   }
 
-  getSignatures(node: ts.Expression | ts.TypeNode): Array<ts.Signature> {
+  getSignatures(node: ArgumentNode): Array<ts.Signature> {
     let signatures = this.#signatureCache.get(node);
 
     if (!signatures) {
@@ -83,17 +79,17 @@ export class MatchWorker {
     return signatures;
   }
 
-  getTypeText(node: ts.Expression | ts.TypeNode): string {
+  getTypeText(node: ArgumentNode): string {
     const type = this.getType(node);
 
     return this.#typeChecker.typeToString(type);
   }
 
-  getType(node: ts.Expression | ts.TypeNode): ts.Type {
-    return this.#compiler.isExpression(node) ? this.#getTypeAtLocation(node) : this.#getTypeFromTypeNode(node);
+  getType(node: ArgumentNode): ts.Type {
+    return this.#compiler.isExpression(node) ? this.#getTypeOfNode(node) : this.#getTypeOfTypeNode(node);
   }
 
-  #getTypeAtLocation(node: ts.Node) {
+  #getTypeOfNode(node: ts.Node) {
     let type = this.#typeCache.get(node);
 
     if (!type) {
@@ -103,7 +99,7 @@ export class MatchWorker {
     return type;
   }
 
-  #getTypeFromTypeNode(node: ts.TypeNode) {
+  #getTypeOfTypeNode(node: ts.TypeNode) {
     let type = this.#typeCache.get(node);
 
     if (!type) {

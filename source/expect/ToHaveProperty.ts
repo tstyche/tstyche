@@ -2,7 +2,7 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
-import type { DiagnosticsHandler, MatchResult } from "./types.js";
+import type { ArgumentNode, DiagnosticsHandler, MatchResult } from "./types.js";
 
 export class ToHaveProperty {
   #compiler: typeof ts;
@@ -11,7 +11,7 @@ export class ToHaveProperty {
     this.#compiler = compiler;
   }
 
-  #explain(matchWorker: MatchWorker, sourceNode: ts.Expression | ts.TypeNode, targetNode: ts.Expression | ts.TypeNode) {
+  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
     const sourceTypeText = matchWorker.getTypeText(sourceNode);
 
     const targetType = matchWorker.getType(targetNode);
@@ -32,8 +32,8 @@ export class ToHaveProperty {
 
   match(
     matchWorker: MatchWorker,
-    sourceNode: ts.Expression | ts.TypeNode,
-    targetNode: ts.Expression | ts.TypeNode,
+    sourceNode: ArgumentNode,
+    targetNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];

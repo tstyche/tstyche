@@ -2,7 +2,7 @@ import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchResult } from "./types.js";
+import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToRaiseError {
   #compiler: typeof ts;
@@ -13,7 +13,8 @@ export class ToRaiseError {
 
   #explain(
     assertion: Assertion,
-    sourceNode: ts.Expression | ts.TypeNode,
+    sourceNode: ArgumentNode,
+    // TODO must be 'targetNodes: Array<ArgumentNode>'
     targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
   ) {
     const isTypeNode = this.#compiler.isTypeNode(sourceNode);
@@ -65,7 +66,8 @@ export class ToRaiseError {
 
   match(
     assertion: Assertion,
-    sourceNode: ts.Expression | ts.TypeNode,
+    sourceNode: ArgumentNode,
+    // TODO must be 'targetNodes: Array<ArgumentNode>'
     targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
   ): MatchResult {
     const isMatch =
