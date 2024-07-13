@@ -34,7 +34,7 @@ export class ToHaveProperty {
     matchWorker: MatchWorker,
     sourceNode: ts.Expression | ts.TypeNode,
     targetNode: ts.Expression | ts.TypeNode,
-    onDiagnostic: DiagnosticsHandler,
+    onDiagnostics: DiagnosticsHandler,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];
 
@@ -70,7 +70,7 @@ export class ToHaveProperty {
     }
 
     if (diagnostics.length > 0) {
-      onDiagnostic(diagnostics);
+      onDiagnostics(diagnostics);
 
       return;
     }
