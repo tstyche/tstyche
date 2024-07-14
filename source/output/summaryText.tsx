@@ -114,7 +114,7 @@ function RanFilesText({ onlyMatch, pathMatch, skipMatch }: RanFilesTextProps) {
   if (skipMatch != null) {
     testNameMatchText.push(
       <Text>
-        {onlyMatch == null ? undefined : <Text color={Color.Gray}>{" and "}</Text>}
+        {onlyMatch != null ? <Text color={Color.Gray}>{" and "}</Text> : undefined}
         <Text color={Color.Gray}>{"not matching "}</Text>
         <MatchText text={skipMatch} />
       </Text>,

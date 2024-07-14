@@ -26,7 +26,7 @@ export interface ResolvedConfig
 export const defaultOptions: Required<ConfigFileOptions> = {
   failFast: false,
   rootPath: "./",
-  target: [Environment.typescriptPath == null ? "latest" : "current"],
+  target: [Environment.typescriptPath != null ? "current" : "latest"],
   testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
 };
 

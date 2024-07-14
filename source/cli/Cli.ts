@@ -51,7 +51,7 @@ export class Cli {
       return;
     }
 
-    const compiler = await this.#storeService.load(Environment.typescriptPath == null ? "latest" : "current");
+    const compiler = await this.#storeService.load(Environment.typescriptPath != null ? "current" : "latest");
 
     if (!compiler) {
       return;

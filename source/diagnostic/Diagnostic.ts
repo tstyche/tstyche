@@ -38,7 +38,7 @@ export class Diagnostic {
     return new Diagnostic([this.text, text].flat(), this.category, origin ?? this.origin);
   }
 
-  static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
+  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const code = `ts(${String(diagnostic.code)})`;
       let origin: DiagnosticOrigin | undefined;

@@ -47,7 +47,7 @@ export class ToRaiseError {
 
         const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
-        const related = diagnostic && [
+        const related = [
           Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
           ...Diagnostic.fromDiagnostics([diagnostic], this.#compiler),
         ];

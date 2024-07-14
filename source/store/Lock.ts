@@ -33,7 +33,7 @@ export class Lock {
       return isLocked;
     }
 
-    if (options?.timeout == null) {
+    if (!options?.timeout) {
       return isLocked;
     }
 

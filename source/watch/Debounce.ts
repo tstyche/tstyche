@@ -19,7 +19,7 @@ export class Debounce<T> {
     this.clearTimeout();
 
     this.#timeout = setTimeout(() => {
-      this.#resolve?.(this.#onResolve?.());
+      this.#resolve?.(this.#onResolve());
     }, this.#delay);
   }
 

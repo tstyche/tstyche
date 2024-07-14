@@ -39,7 +39,7 @@ export class CollectService {
 
         const matcherNode = this.#getChainedNode(notNode ?? modifierNode)?.parent;
 
-        if (matcherNode == null || !this.#isMatcherNode(matcherNode)) {
+        if (!matcherNode || !this.#isMatcherNode(matcherNode)) {
           return;
         }
 

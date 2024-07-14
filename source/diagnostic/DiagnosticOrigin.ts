@@ -2,7 +2,7 @@ import type ts from "typescript";
 import type { Assertion } from "#collect";
 
 export class DiagnosticOrigin {
-  assertion?: Assertion | undefined;
+  assertion: Assertion | undefined;
   end: number;
   sourceFile: ts.SourceFile;
   start: number;

@@ -94,7 +94,7 @@ export class ExpectService {
 
     this.#handleDeprecated(matcherNameText, assertion);
 
-    if (assertion.source[0] == null) {
+    if (!assertion.source[0]) {
       this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
       return;
@@ -112,7 +112,7 @@ export class ExpectService {
       // TODO '.toEqual()' is deprecated and must be removed in TSTyche 3
       case "toEqual":
       case "toMatch": {
-        if (assertion.target[0] == null) {
+        if (!assertion.target[0]) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
           return;
@@ -137,7 +137,7 @@ export class ExpectService {
       }
 
       case "toHaveProperty": {
-        if (assertion.target[0] == null) {
+        if (!assertion.target[0]) {
           this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostics);
 
           return;

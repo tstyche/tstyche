@@ -102,7 +102,7 @@ export class IdentifierLookup {
       );
     }
 
-    if (identifierName == null) {
+    if (!identifierName) {
       return;
     }
 

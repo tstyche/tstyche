@@ -51,7 +51,7 @@ export class TestMember {
   get ancestorNames(): Array<string> {
     const ancestorNames: Array<string> = [];
 
-    let ancestor: TestTree | TestMember | undefined = this.parent;
+    let ancestor: TestTree | TestMember = this.parent;
 
     while ("name" in ancestor) {
       ancestorNames.unshift(ancestor.name);

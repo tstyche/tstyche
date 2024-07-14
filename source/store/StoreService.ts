@@ -42,7 +42,7 @@ export class StoreService {
 
     const version = await this.#resolveTag(tag);
 
-    if (version == null) {
+    if (!version) {
       this.#onDiagnostics(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
 
       return;
@@ -65,7 +65,7 @@ export class StoreService {
     } else {
       const version = await this.#resolveTag(tag);
 
-      if (version == null) {
+      if (!version) {
         this.#onDiagnostics(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
 
         return;

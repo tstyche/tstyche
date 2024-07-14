@@ -72,7 +72,7 @@ export class SelectService {
       // continue regardless of error
     }
 
-    if (entries == null) {
+    if (!entries) {
       return;
     }
 
@@ -89,7 +89,7 @@ export class SelectService {
         entryMeta = entry;
       }
 
-      if (entryMeta == null) {
+      if (!entryMeta) {
         continue;
       }
 

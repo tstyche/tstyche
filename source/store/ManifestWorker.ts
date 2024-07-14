@@ -147,7 +147,7 @@ export class ManifestWorker {
       this.#onDiagnostics(Diagnostic.fromError("Failed to open store manifest.", error));
     }
 
-    if (manifestText == null) {
+    if (!manifestText) {
       return;
     }
 
@@ -157,7 +157,7 @@ export class ManifestWorker {
       // the manifest will be removed and recreated
     }
 
-    if (manifest == null || manifest.$version !== this.#version) {
+    if (!manifest || manifest.$version !== this.#version) {
       await fs.rm(this.#storePath, { force: true, recursive: true });
 
       return this.#create();
