@@ -29,17 +29,8 @@ export class Assertion extends TestMember {
     this.matcherNode = matcherNode;
     this.modifierNode = modifierNode;
 
-    const argStart = this.source[0]?.getStart();
-    const argEnd = this.source[0]?.getEnd();
-
     for (const diagnostic of parent.diagnostics) {
-      if (
-        diagnostic.start != null &&
-        argStart != null &&
-        argEnd != null &&
-        diagnostic.start >= argStart &&
-        diagnostic.start <= argEnd
-      ) {
+      if (diagnostic.start != null && diagnostic.start >= this.source.pos && diagnostic.start <= this.source.end) {
         this.diagnostics.add(diagnostic);
         parent.diagnostics.delete(diagnostic);
       }
@@ -51,18 +42,10 @@ export class Assertion extends TestMember {
   }
 
   get source(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
-    if (this.node.typeArguments != null) {
-      return this.node.typeArguments;
-    }
-
-    return this.node.arguments;
+    return this.node.typeArguments ?? this.node.arguments;
   }
 
   get target(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
-    if (this.matcherNode.typeArguments != null) {
-      return this.matcherNode.typeArguments;
-    }
-
-    return this.matcherNode.arguments;
+    return this.matcherNode.typeArguments ?? this.matcherNode.arguments;
   }
 }
