@@ -84,13 +84,17 @@ export class ToRaiseError {
       return;
     }
 
-    const isMatch =
-      targetNodes.length === 0
-        ? matchWorker.assertion.diagnostics.size > 0
-        : matchWorker.assertion.diagnostics.size === targetNodes.length &&
-          [...matchWorker.assertion.diagnostics].every((diagnostic, index) =>
-            this.#matchExpectedError(diagnostic, targetNodes[index]!),
-          );
+    let isMatch: boolean | undefined;
+
+    if (targetNodes.length === 0) {
+      isMatch = matchWorker.assertion.diagnostics.size > 0;
+    } else {
+      isMatch =
+        matchWorker.assertion.diagnostics.size === targetNodes.length &&
+        [...matchWorker.assertion.diagnostics].every((diagnostic, index) =>
+          this.#matchExpectedError(diagnostic, targetNodes[index]!),
+        );
+    }
 
     return {
       explain: () => this.#explain(matchWorker, sourceNode, targetNodes),
@@ -103,10 +107,6 @@ export class ToRaiseError {
       return this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(targetNode.text);
     }
 
-    if (this.#compiler.isNumericLiteral(targetNode)) {
-      return Number(targetNode.text) === diagnostic.code;
-    }
-
-    return;
+    return Number((targetNode as ts.NumericLiteral).text) === diagnostic.code;
   }
 }
