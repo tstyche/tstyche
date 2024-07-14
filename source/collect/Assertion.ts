@@ -46,20 +46,6 @@ export class Assertion extends TestMember {
     }
   }
 
-  override get ancestorNames(): Array<string> {
-    const ancestorNames: Array<string> = [];
-
-    if ("ancestorNames" in this.parent) {
-      ancestorNames.push(...this.parent.ancestorNames);
-    }
-
-    if ("name" in this.parent) {
-      ancestorNames.push(this.parent.name);
-    }
-
-    return ancestorNames;
-  }
-
   get matcherName(): ts.MemberName {
     return this.matcherNode.expression.name;
   }

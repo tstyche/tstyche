@@ -1,6 +1,22 @@
+import type { TestMember, TestTree } from "#collect";
 import type { DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
+
+interface BreadcrumbsTextProps {
+  ancestor: TestMember | TestTree;
+}
+
+function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
+  const breadcrumbsText: Array<string> = [];
+
+  while ("name" in ancestor) {
+    breadcrumbsText.unshift(` ❭ ${ancestor.name}`);
+    ancestor = ancestor.parent;
+  }
+
+  return <Text color={Color.Gray}>{breadcrumbsText.join("")}</Text>;
+}
 
 interface CodeLineTextProps {
   lineText: string;
@@ -99,11 +115,6 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
     }
   }
 
-  const breadcrumbs = diagnosticOrigin.assertion?.ancestorNames.map((ancestor) => [
-    <Text color={Color.Gray}>{" ❭ "}</Text>,
-    <Text>{ancestor}</Text>,
-  ]);
-
   const location = (
     <Line>
       {" ".repeat(gutterWidth + 2)}
@@ -112,7 +123,7 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
       <Text color={Color.Gray}>
         :{String(firstMarkedLine + 1)}:{String(firstMarkedLineCharacter + 1)}
       </Text>
-      {breadcrumbs}
+      {diagnosticOrigin.assertion && <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parent} />}
     </Line>
   );
 

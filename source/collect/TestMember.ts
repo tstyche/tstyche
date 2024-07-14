@@ -48,19 +48,6 @@ export class TestMember {
     }
   }
 
-  get ancestorNames(): Array<string> {
-    const ancestorNames: Array<string> = [];
-
-    let ancestor: TestTree | TestMember = this.parent;
-
-    while ("name" in ancestor) {
-      ancestorNames.unshift(ancestor.name);
-      ancestor = ancestor.parent;
-    }
-
-    return ancestorNames;
-  }
-
   // TODO consider moving validation logic to the collector and passing 'onDiagnostics()' around
   validate(): Array<Diagnostic> {
     const diagnostics: Array<Diagnostic> = [];
