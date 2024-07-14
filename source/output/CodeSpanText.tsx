@@ -11,7 +11,7 @@ function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
   const breadcrumbsText: Array<string> = [];
 
   while ("name" in ancestor) {
-    breadcrumbsText.unshift(` ❭ ${ancestor.name}`);
+    breadcrumbsText.unshift(" ❭ ", ancestor.name);
     ancestor = ancestor.parent;
   }
 
