@@ -89,10 +89,6 @@ export class ExpectService {
     }
   }
 
-  #isStringOrNumericLiteralNode(node: ts.Node): node is ts.StringLiteralLike | ts.NumericLiteral {
-    return this.#compiler.isStringLiteralLike(node) || this.#compiler.isNumericLiteral(node);
-  }
-
   match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
@@ -151,13 +147,8 @@ export class ExpectService {
       }
 
       case "toRaiseError": {
-        if (!assertion.target.every((node) => this.#isStringOrNumericLiteralNode(node))) {
-          this.#onTargetArgumentsMustBeStringOrNumberLiteralNodes(assertion.target, onDiagnostics);
-
-          return;
-        }
-
-        return this.toRaiseError.match(assertion, assertion.source[0], [...assertion.target]);
+        // TODO perhaps in the future the target argument could be: 'target?: string | number | Array<string | number>'
+        return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target], onDiagnostics);
       }
 
       default: {
@@ -190,22 +181,5 @@ export class ExpectService {
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostics(Diagnostic.error(text, origin));
-  }
-
-  #onTargetArgumentsMustBeStringOrNumberLiteralNodes(nodes: ts.NodeArray<ts.Node>, onDiagnostics: DiagnosticsHandler) {
-    const diagnostics: Array<Diagnostic> = [];
-
-    for (const node of nodes) {
-      if (!this.#isStringOrNumericLiteralNode(node)) {
-        const expectedText = "a string or number literal";
-
-        const text = ExpectDiagnosticText.argumentMustBe("target", expectedText);
-        const origin = DiagnosticOrigin.fromNode(node);
-
-        diagnostics.push(Diagnostic.error(text, origin));
-      }
-    }
-
-    onDiagnostics(diagnostics);
   }
 }
