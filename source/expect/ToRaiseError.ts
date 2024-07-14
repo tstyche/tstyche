@@ -1,59 +1,55 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchResult, TypeChecker } from "./types.js";
+import type { MatchWorker } from "./MatchWorker.js";
+import type { ArgumentNode, DiagnosticsHandler, MatchResult } from "./types.js";
 
 export class ToRaiseError {
-  compiler: typeof ts;
-  typeChecker: TypeChecker;
+  #compiler: typeof ts;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
-    this.compiler = compiler;
-    this.typeChecker = typeChecker;
+  constructor(compiler: typeof ts) {
+    this.#compiler = compiler;
   }
 
-  #explain(
-    sourceNode: ts.Expression | ts.TypeNode,
-    diagnostics: Array<ts.Diagnostic>,
-    targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
-    isNot: boolean,
-  ) {
-    const isTypeNode = this.compiler.isTypeNode(sourceNode);
+  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: Array<ArgumentNode>) {
+    const isTypeNode = this.#compiler.isTypeNode(sourceNode);
 
-    if (diagnostics.length === 0) {
+    const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+
+    if (matchWorker.assertion.diagnostics.size === 0) {
       const text = ExpectDiagnosticText.typeDidNotRaiseError(isTypeNode);
 
-      return [Diagnostic.error(text)];
+      return [Diagnostic.error(text, origin)];
     }
 
-    if (diagnostics.length !== targetNodes.length) {
-      const count = diagnostics.length;
+    if (matchWorker.assertion.diagnostics.size !== targetNodes.length) {
+      const count = matchWorker.assertion.diagnostics.size;
 
       const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, count, targetNodes.length);
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
-        ...Diagnostic.fromDiagnostics(diagnostics, this.compiler),
+        ...Diagnostic.fromDiagnostics([...matchWorker.assertion.diagnostics], this.#compiler),
       ];
 
-      return [Diagnostic.error(text).add({ related })];
+      return [Diagnostic.error(text, origin).add({ related })];
     }
 
-    return targetNodes.reduce<Array<Diagnostic>>((accumulator, node, index) => {
-      const diagnostic = diagnostics[index];
+    return [...matchWorker.assertion.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
+      const targetNode = targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral;
 
-      const isMatch = this.#matchExpectedError(diagnostic, node);
+      const isMatch = this.#matchExpectedError(diagnostic, targetNode);
 
-      if (isNot ? isMatch : !isMatch) {
-        const text = isNot
+      if (matchWorker.assertion.isNot ? isMatch : !isMatch) {
+        const text = matchWorker.assertion.isNot
           ? ExpectDiagnosticText.typeRaisedMatchingError(isTypeNode)
           : ExpectDiagnosticText.typeDidNotRaiseMatchingError(isTypeNode);
 
-        const origin = DiagnosticOrigin.fromNode(node);
+        const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
         const related = diagnostic && [
           Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
-          ...Diagnostic.fromDiagnostics([diagnostic], this.compiler),
+          ...Diagnostic.fromDiagnostics([diagnostic], this.#compiler),
         ];
 
         accumulator.push(Diagnostic.error(text, origin).add({ related }));
@@ -64,27 +60,53 @@ export class ToRaiseError {
   }
 
   match(
-    sourceNode: ts.Expression | ts.TypeNode,
-    diagnostics: Array<ts.Diagnostic>,
-    targetNodes: Array<ts.StringLiteralLike | ts.NumericLiteral>,
-  ): MatchResult {
-    const isMatch =
-      targetNodes.length === 0
-        ? diagnostics.length > 0
-        : diagnostics.length === targetNodes.length &&
-          targetNodes.every((node, index) => this.#matchExpectedError(diagnostics[index], node));
+    matchWorker: MatchWorker,
+    sourceNode: ArgumentNode,
+    targetNodes: Array<ArgumentNode>,
+    onDiagnostics: DiagnosticsHandler,
+  ): MatchResult | undefined {
+    const diagnostics: Array<Diagnostic> = [];
+
+    for (const targetNode of targetNodes) {
+      if (!(this.#compiler.isStringLiteralLike(targetNode) || this.#compiler.isNumericLiteral(targetNode))) {
+        const expectedText = "a string or number literal";
+
+        const text = ExpectDiagnosticText.argumentMustBe("target", expectedText);
+        const origin = DiagnosticOrigin.fromNode(targetNode);
+
+        diagnostics.push(Diagnostic.error(text, origin));
+      }
+    }
+
+    if (diagnostics.length > 0) {
+      onDiagnostics(diagnostics);
+
+      return;
+    }
+
+    let isMatch: boolean | undefined;
+
+    if (targetNodes.length === 0) {
+      isMatch = matchWorker.assertion.diagnostics.size > 0;
+    } else {
+      isMatch =
+        matchWorker.assertion.diagnostics.size === targetNodes.length &&
+        [...matchWorker.assertion.diagnostics].every((diagnostic, index) =>
+          this.#matchExpectedError(diagnostic, targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral),
+        );
+    }
 
     return {
-      explain: (isNot) => this.#explain(sourceNode, diagnostics, targetNodes, isNot),
+      explain: () => this.#explain(matchWorker, sourceNode, targetNodes),
       isMatch,
     };
   }
 
-  #matchExpectedError(diagnostic: ts.Diagnostic | undefined, node: ts.StringLiteralLike | ts.NumericLiteral) {
-    if (this.compiler.isStringLiteralLike(node)) {
-      return this.compiler.flattenDiagnosticMessageText(diagnostic?.messageText, " ", 0).includes(node.text);
+  #matchExpectedError(diagnostic: ts.Diagnostic, targetNode: ts.StringLiteralLike | ts.NumericLiteral) {
+    if (this.#compiler.isStringLiteralLike(targetNode)) {
+      return this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(targetNode.text);
     }
 
-    return Number(node.text) === diagnostic?.code;
+    return Number(targetNode.text) === diagnostic.code;
   }
 }

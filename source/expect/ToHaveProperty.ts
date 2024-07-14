@@ -1,58 +1,86 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchResult, TypeChecker } from "./types.js";
-
-export interface ToHavePropertyTarget {
-  node: ts.Expression | ts.TypeNode;
-  type: ts.StringLiteralType | ts.NumberLiteralType | ts.UniqueESSymbolType;
-}
+import type { MatchWorker } from "./MatchWorker.js";
+import type { ArgumentNode, DiagnosticsHandler, MatchResult } from "./types.js";
 
 export class ToHaveProperty {
-  compiler: typeof ts;
-  typeChecker: TypeChecker;
+  #compiler: typeof ts;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
-    this.compiler = compiler;
-    this.typeChecker = typeChecker;
+  constructor(compiler: typeof ts) {
+    this.#compiler = compiler;
   }
 
-  #explain(sourceType: ts.Type, target: ToHavePropertyTarget, isNot: boolean) {
-    const sourceTypeText = this.typeChecker.typeToString(sourceType);
+  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
+    const sourceTypeText = matchWorker.getTypeText(sourceNode);
+
+    const targetType = matchWorker.getType(targetNode);
     let propertyNameText: string;
 
-    if (this.#isStringOrNumberLiteralType(target.type)) {
-      propertyNameText = String(target.type.value);
+    if (matchWorker.isStringOrNumberLiteralType(targetType)) {
+      propertyNameText = String(targetType.value);
     } else {
-      propertyNameText = `[${this.compiler.unescapeLeadingUnderscores(target.type.symbol.escapedName)}]`;
+      propertyNameText = `[${this.#compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
     }
 
-    const origin = DiagnosticOrigin.fromNode(target.node);
+    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
-    return isNot
+    return matchWorker.assertion.isNot
       ? [Diagnostic.error(ExpectDiagnosticText.typeHasProperty(sourceTypeText, propertyNameText), origin)]
       : [Diagnostic.error(ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
   }
 
-  #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return Boolean(type.flags & this.compiler.TypeFlags.StringOrNumberLiteral);
-  }
+  match(
+    matchWorker: MatchWorker,
+    sourceNode: ArgumentNode,
+    targetNode: ArgumentNode,
+    onDiagnostics: DiagnosticsHandler,
+  ): MatchResult | undefined {
+    const diagnostics: Array<Diagnostic> = [];
 
-  match(sourceType: ts.Type, target: ToHavePropertyTarget): MatchResult {
-    let targetArgumentText: string;
+    const sourceType = matchWorker.getType(sourceNode);
 
-    if (this.#isStringOrNumberLiteralType(target.type)) {
-      targetArgumentText = String(target.type.value);
+    if (matchWorker.isAnyOrNeverType(sourceType) || !matchWorker.extendsObjectType(sourceType)) {
+      const expectedText = "of an object type";
+
+      const text = this.#compiler.isTypeNode(sourceNode)
+        ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
+        : ExpectDiagnosticText.argumentMustBe("source", expectedText);
+
+      const origin = DiagnosticOrigin.fromNode(sourceNode);
+
+      diagnostics.push(Diagnostic.error(text, origin));
+    }
+
+    const targetType = matchWorker.getType(targetNode);
+
+    let propertyNameText: string;
+
+    if (matchWorker.isStringOrNumberLiteralType(targetType)) {
+      propertyNameText = String(targetType.value);
+    } else if (matchWorker.isUniqueSymbolType(targetType)) {
+      propertyNameText = this.#compiler.unescapeLeadingUnderscores(targetType.escapedName);
     } else {
-      targetArgumentText = this.compiler.unescapeLeadingUnderscores(target.type.escapedName);
+      const expectedText = "of type 'string | number | symbol'";
+
+      const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
+      const origin = DiagnosticOrigin.fromNode(targetNode);
+
+      diagnostics.push(Diagnostic.error(text, origin));
+    }
+
+    if (diagnostics.length > 0) {
+      onDiagnostics(diagnostics);
+
+      return;
     }
 
     const isMatch = sourceType.getProperties().some((property) => {
-      return this.compiler.unescapeLeadingUnderscores(property.escapedName) === targetArgumentText;
+      return this.#compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText;
     });
 
     return {
-      explain: (isNot) => this.#explain(sourceType, target, isNot),
+      explain: () => this.#explain(matchWorker, sourceNode, targetNode),
       isMatch,
     };
   }

@@ -1,8 +1,12 @@
 import type ts from "typescript";
 import type { Diagnostic } from "#diagnostic";
 
+export type ArgumentNode = ts.Expression | ts.TypeNode;
+
+export type DiagnosticsHandler = (diagnostics: Diagnostic | Array<Diagnostic>) => void;
+
 export interface MatchResult {
-  explain: (isNot: boolean) => Array<Diagnostic>;
+  explain: () => Array<Diagnostic>;
   isMatch: boolean;
 }
 

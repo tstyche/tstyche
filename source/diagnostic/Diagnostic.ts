@@ -17,15 +17,10 @@ export class Diagnostic {
 
   add(options: {
     code?: string | undefined;
-    origin?: DiagnosticOrigin | undefined;
     related?: Array<Diagnostic> | undefined;
   }): this {
     if (options.code != null) {
       this.code = options.code;
-    }
-
-    if (options.origin != null) {
-      this.origin = options.origin;
     }
 
     if (options.related != null) {

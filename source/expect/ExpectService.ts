@@ -2,8 +2,8 @@ import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
-import type { ExpectResult } from "#result";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
+import { MatchWorker } from "./MatchWorker.js";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
@@ -12,7 +12,7 @@ import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
-import type { MatchResult, TypeChecker } from "./types.js";
+import type { DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
@@ -45,36 +45,30 @@ export class ExpectService {
     this.#typeChecker = typeChecker;
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
-    this.toBe = new ToBe(typeChecker);
-    this.toBeAny = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Any);
-    this.toBeAssignable = new ToBeAssignableWith(typeChecker);
-    this.toBeAssignableTo = new ToBeAssignableTo(typeChecker);
-    this.toBeAssignableWith = new ToBeAssignableWith(typeChecker);
-    this.toBeBigInt = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.BigInt);
-    this.toBeBoolean = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Boolean);
-    this.toBeNever = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Never);
-    this.toBeNull = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Null);
-    this.toBeNumber = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Number);
-    this.toBeString = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.String);
-    this.toBeSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.ESSymbol);
-    this.toBeUndefined = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Undefined);
-    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.UniqueESSymbol);
-    this.toBeUnknown = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Unknown);
-    this.toBeVoid = new PrimitiveTypeMatcher(typeChecker, compiler.TypeFlags.Void);
-    this.toEqual = new ToBe(typeChecker);
-    this.toHaveProperty = new ToHaveProperty(compiler, typeChecker);
-    this.toMatch = new ToMatch(typeChecker);
-    this.toRaiseError = new ToRaiseError(compiler, typeChecker);
+    this.toBe = new ToBe();
+    this.toBeAny = new PrimitiveTypeMatcher(compiler.TypeFlags.Any);
+    this.toBeAssignable = new ToBeAssignableWith();
+    this.toBeAssignableTo = new ToBeAssignableTo();
+    this.toBeAssignableWith = new ToBeAssignableWith();
+    this.toBeBigInt = new PrimitiveTypeMatcher(compiler.TypeFlags.BigInt);
+    this.toBeBoolean = new PrimitiveTypeMatcher(compiler.TypeFlags.Boolean);
+    this.toBeNever = new PrimitiveTypeMatcher(compiler.TypeFlags.Never);
+    this.toBeNull = new PrimitiveTypeMatcher(compiler.TypeFlags.Null);
+    this.toBeNumber = new PrimitiveTypeMatcher(compiler.TypeFlags.Number);
+    this.toBeString = new PrimitiveTypeMatcher(compiler.TypeFlags.String);
+    this.toBeSymbol = new PrimitiveTypeMatcher(compiler.TypeFlags.ESSymbol);
+    this.toBeUndefined = new PrimitiveTypeMatcher(compiler.TypeFlags.Undefined);
+    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(compiler.TypeFlags.UniqueESSymbol);
+    this.toBeUnknown = new PrimitiveTypeMatcher(compiler.TypeFlags.Unknown);
+    this.toBeVoid = new PrimitiveTypeMatcher(compiler.TypeFlags.Void);
+    this.toEqual = new ToBe();
+    this.toHaveProperty = new ToHaveProperty(compiler);
+    this.toMatch = new ToMatch();
+    this.toRaiseError = new ToRaiseError(compiler);
   }
 
   static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
     return "isTypeRelatedTo" in typeChecker && "relation" in typeChecker;
-  }
-
-  #getType(node: ts.Expression | ts.TypeNode) {
-    return this.#compiler.isExpression(node)
-      ? this.#typeChecker.getTypeAtLocation(node)
-      : this.#typeChecker.getTypeFromTypeNode(node);
   }
 
   #handleDeprecated(matcherNameText: string, assertion: Assertion) {
@@ -95,73 +89,21 @@ export class ExpectService {
     }
   }
 
-  #isStringOrNumericLiteralNode(node: ts.Node): node is ts.StringLiteralLike | ts.NumericLiteral {
-    return this.#compiler.isStringLiteralLike(node) || this.#compiler.isNumericLiteral(node);
-  }
-
-  #isObjectType(type: ts.Type): type is ts.ObjectType {
-    const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
-
-    return (
-      !(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never)) &&
-      this.#typeChecker.isTypeAssignableTo(type, nonPrimitiveType)
-    );
-  }
-
-  #isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
-  }
-
-  #isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
-  }
-
-  match(assertion: Assertion, expectResult: ExpectResult): MatchResult | undefined {
+  match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
     this.#handleDeprecated(matcherNameText, assertion);
 
+    if (assertion.source[0] == null) {
+      this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
+
+      return;
+    }
+
+    const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
+
     switch (matcherNameText) {
-      case "toAcceptProps": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
-
-          return;
-        }
-
-        const sourceType = this.#getType(assertion.source[0]);
-        let signatures = sourceType.getCallSignatures();
-
-        if (signatures.length === 0) {
-          signatures = sourceType.getConstructSignatures();
-        }
-
-        if (signatures.length === 0) {
-          this.#onSourceArgumentMustBe("of a function or class type", assertion.source[0], expectResult);
-
-          return;
-        }
-
-        if (assertion.target[0] == null) {
-          this.#onTargetArgumentMustBeProvided(assertion, expectResult);
-
-          return;
-        }
-
-        const targetType = this.#getType(assertion.target[0]);
-
-        if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
-          this.#onTargetArgumentMustBe("of an object type", assertion.target[0], expectResult);
-
-          return;
-        }
-
-        return this.toAcceptProps.match(
-          { node: assertion.source[0], signatures: [...signatures] },
-          { node: assertion.target[0], type: targetType },
-        );
-      }
-
+      case "toAcceptProps":
       case "toBe":
       // TODO '.toBeAssignable()' is deprecated and must be removed in TSTyche 3
       case "toBeAssignable":
@@ -170,19 +112,13 @@ export class ExpectService {
       // TODO '.toEqual()' is deprecated and must be removed in TSTyche 3
       case "toEqual":
       case "toMatch": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
-
-          return;
-        }
-
         if (assertion.target[0] == null) {
-          this.#onTargetArgumentMustBeProvided(assertion, expectResult);
+          this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
           return;
         }
 
-        return this[matcherNameText].match(this.#getType(assertion.source[0]), this.#getType(assertion.target[0]));
+        return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
       }
 
       case "toBeAny":
@@ -197,143 +133,53 @@ export class ExpectService {
       case "toBeUniqueSymbol":
       case "toBeUnknown":
       case "toBeVoid": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
-
-          return;
-        }
-
-        return this[matcherNameText].match(this.#getType(assertion.source[0]));
+        return this[matcherNameText].match(matchWorker, assertion.source[0]);
       }
 
       case "toHaveProperty": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
-
-          return;
-        }
-
-        const sourceType = this.#getType(assertion.source[0]);
-        if (!this.#isObjectType(sourceType)) {
-          this.#onSourceArgumentMustBe("of an object type", assertion.source[0], expectResult);
-
-          return;
-        }
-
         if (assertion.target[0] == null) {
-          this.#onKeyArgumentMustBeProvided(assertion, expectResult);
+          this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostics);
 
           return;
         }
 
-        const targetType = this.#getType(assertion.target[0]);
-
-        if (!(this.#isStringOrNumberLiteralType(targetType) || this.#isUniqueSymbolType(targetType))) {
-          this.#onKeyArgumentMustBeOfType(assertion.target[0], expectResult);
-
-          return;
-        }
-
-        return this.toHaveProperty.match(sourceType, { node: assertion.target[0], type: targetType });
+        return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
       }
 
       case "toRaiseError": {
-        if (assertion.source[0] == null) {
-          this.#onSourceArgumentMustBeProvided(assertion, expectResult);
-
-          return;
-        }
-
-        if (!assertion.target.every((node) => this.#isStringOrNumericLiteralNode(node))) {
-          this.#onTargetArgumentsMustBeStringOrNumberLiteralTypes(assertion.target, expectResult);
-
-          return;
-        }
-
-        return this.toRaiseError.match(assertion.source[0], [...assertion.diagnostics], [...assertion.target]);
+        // TODO perhaps in the future the target argument could be: 'target?: string | number | Array<string | number>'
+        return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target], onDiagnostics);
       }
 
       default: {
         const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
         const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-        this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
+        onDiagnostics(Diagnostic.error(text, origin));
       }
     }
 
     return;
   }
 
-  #onDiagnostics(this: void, diagnostic: Diagnostic | Array<Diagnostic>, expectResult: ExpectResult) {
-    const diagnostics = Array.isArray(diagnostic) ? diagnostic : [diagnostic];
-
-    EventEmitter.dispatch(["expect:error", { diagnostics, result: expectResult }]);
-  }
-
-  #onKeyArgumentMustBeOfType(node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const expectedText = "of type 'string | number | symbol'";
-
-    const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
-    const origin = DiagnosticOrigin.fromNode(node);
-
-    this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
-  }
-
-  #onKeyArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
-    const text = ExpectDiagnosticText.argumentMustBeProvided("key");
-    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
-
-    this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
-  }
-
-  #onSourceArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
-      : ExpectDiagnosticText.argumentMustBe("source", expectedText);
-
-    const origin = DiagnosticOrigin.fromNode(node);
-
-    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
-  }
-
-  #onSourceArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
+  #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
-    this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
+    onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentMustBe(expectedText: string, node: ts.Expression | ts.TypeNode, expectResult: ExpectResult) {
-    const text = this.#compiler.isTypeNode(node)
-      ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
-      : ExpectDiagnosticText.argumentMustBe("target", expectedText);
+  #onTargetArgumentMustBeProvided(argumentNameText: string, assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+    const text = ExpectDiagnosticText.argumentMustBeProvided(argumentNameText);
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    const origin = DiagnosticOrigin.fromNode(node);
-
-    EventEmitter.dispatch(["expect:error", { diagnostics: [Diagnostic.error(text, origin)], result: expectResult }]);
+    onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentMustBeProvided(assertion: Assertion, expectResult: ExpectResult) {
+  #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
-    this.#onDiagnostics(Diagnostic.error(text, origin), expectResult);
-  }
-
-  #onTargetArgumentsMustBeStringOrNumberLiteralTypes(nodes: ts.NodeArray<ts.Node>, expectResult: ExpectResult) {
-    const diagnostics: Array<Diagnostic> = [];
-
-    for (const node of nodes) {
-      if (!this.#isStringOrNumericLiteralNode(node)) {
-        const expectedText = "a string or number literal";
-
-        const text = ExpectDiagnosticText.argumentMustBe("target", expectedText);
-        const origin = DiagnosticOrigin.fromNode(node);
-
-        diagnostics.push(Diagnostic.error(text, origin));
-      }
-    }
-
-    this.#onDiagnostics(diagnostics, expectResult);
+    onDiagnostics(Diagnostic.error(text, origin));
   }
 }

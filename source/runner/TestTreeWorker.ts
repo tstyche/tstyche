@@ -86,13 +86,7 @@ export class TestTreeWorker {
       const validationError = member.validate();
 
       if (validationError.length > 0) {
-        EventEmitter.dispatch([
-          "file:error",
-          {
-            diagnostics: validationError,
-            result: this.#fileResult,
-          },
-        ]);
+        EventEmitter.dispatch(["file:error", { diagnostics: validationError, result: this.#fileResult }]);
 
         break;
       }
@@ -131,23 +125,22 @@ export class TestTreeWorker {
       return;
     }
 
-    if (assertion.diagnostics.size > 0 && assertion.matcherName.getText() !== "toRaiseError") {
+    const onExpectDiagnostics = (diagnostics: Diagnostic | Array<Diagnostic>) => {
       EventEmitter.dispatch([
         "expect:error",
-        {
-          diagnostics: Diagnostic.fromDiagnostics([...assertion.diagnostics], this.#compiler),
-          result: expectResult,
-        },
+        { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics], result: expectResult },
       ]);
+    };
+
+    if (assertion.diagnostics.size > 0 && assertion.matcherName.getText() !== "toRaiseError") {
+      onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertion.diagnostics], this.#compiler));
 
       return;
     }
 
-    const matchResult = this.#expectService.match(assertion, expectResult);
+    const matchResult = this.#expectService.match(assertion, onExpectDiagnostics);
 
-    if (matchResult == null) {
-      // an error was encountered and the "expect:error" event is already emitted
-
+    if (!matchResult) {
       return;
     }
 
@@ -157,27 +150,14 @@ export class TestTreeWorker {
         // TODO consider adding '.failNode' property to 'assertion'
         const origin = DiagnosticOrigin.fromNode((assertion.node.expression as ts.PropertyAccessExpression).name);
 
-        EventEmitter.dispatch([
-          "expect:error",
-          { diagnostics: [Diagnostic.error(text, origin)], result: expectResult },
-        ]);
+        onExpectDiagnostics(Diagnostic.error(text, origin));
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       }
     } else if (runMode & RunMode.Fail) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
-      const origin = DiagnosticOrigin.fromNode(assertion.matcherName, assertion.ancestorNames);
-
-      const diagnostics = matchResult.explain(assertion.isNot).map((diagnostic) => {
-        if (diagnostic.origin == null) {
-          return diagnostic.add({ origin });
-        }
-
-        return diagnostic.add({ origin: { ...diagnostic.origin, breadcrumbs: assertion.ancestorNames } });
-      });
-
-      EventEmitter.dispatch(["expect:fail", { diagnostics, result: expectResult }]);
+      EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);
     }
   }
 

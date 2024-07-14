@@ -1,17 +1,16 @@
-import type ts from "typescript";
-import { Diagnostic } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
+import type { MatchWorker } from "./MatchWorker.js";
 import { RelationMatcherBase } from "./RelationMatcherBase.js";
+import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToBe extends RelationMatcherBase {
-  relation = this.typeChecker.relation.identity;
+  explainText = ExpectDiagnosticText.typeIsIdenticalTo;
+  explainNotText = ExpectDiagnosticText.typeIsNotIdenticalTo;
 
-  override explain(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): Array<Diagnostic> {
-    const sourceTypeText = this.typeChecker.typeToString(sourceType);
-    const targetTypeText = this.typeChecker.typeToString(targetType);
-
-    return isNot
-      ? [Diagnostic.error(ExpectDiagnosticText.typeIsIdenticalTo(sourceTypeText, targetTypeText))]
-      : [Diagnostic.error(ExpectDiagnosticText.typeIsNotIdenticalTo(sourceTypeText, targetTypeText))];
+  match(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode): MatchResult {
+    return {
+      explain: () => this.explain(matchWorker, sourceNode, targetNode),
+      isMatch: matchWorker.checkIsIdenticalTo(sourceNode, targetNode),
+    };
   }
 }

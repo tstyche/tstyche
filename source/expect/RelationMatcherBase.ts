@@ -1,23 +1,23 @@
-import type ts from "typescript";
-import type { Diagnostic } from "#diagnostic";
-import type { MatchResult, Relation, TypeChecker } from "./types.js";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import type { MatchWorker } from "./MatchWorker.js";
+import type { ArgumentNode, MatchResult } from "./types.js";
 
 export abstract class RelationMatcherBase {
-  protected abstract relation: Relation;
-  protected typeChecker: TypeChecker;
+  abstract explainText(sourceTypeText: string, targetTypeText: string): string;
+  abstract explainNotText(sourceTypeText: string, targetTypeText: string): string;
 
-  constructor(typeChecker: TypeChecker) {
-    this.typeChecker = typeChecker;
+  protected explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
+    const sourceTypeText = matchWorker.getTypeText(sourceNode);
+    const targetTypeText = matchWorker.getTypeText(targetNode);
+
+    const text = matchWorker.assertion.isNot
+      ? this.explainText(sourceTypeText, targetTypeText)
+      : this.explainNotText(sourceTypeText, targetTypeText);
+
+    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
+
+    return [Diagnostic.error(text, origin)];
   }
 
-  abstract explain(sourceType: ts.Type, targetType: ts.Type, isNot: boolean): Array<Diagnostic>;
-
-  match(sourceType: ts.Type, targetType: ts.Type): MatchResult {
-    const isMatch = this.typeChecker.isTypeRelatedTo(sourceType, targetType, this.relation);
-
-    return {
-      explain: (isNot) => this.explain(sourceType, targetType, isNot),
-      isMatch,
-    };
-  }
+  abstract match(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode): MatchResult;
 }
