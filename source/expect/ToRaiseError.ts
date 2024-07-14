@@ -36,7 +36,7 @@ export class ToRaiseError {
     }
 
     return [...matchWorker.assertion.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
-      const targetNode = targetNodes[index]!;
+      const targetNode = targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral;
 
       const isMatch = this.#matchExpectedError(diagnostic, targetNode);
 
@@ -92,7 +92,7 @@ export class ToRaiseError {
       isMatch =
         matchWorker.assertion.diagnostics.size === targetNodes.length &&
         [...matchWorker.assertion.diagnostics].every((diagnostic, index) =>
-          this.#matchExpectedError(diagnostic, targetNodes[index]!),
+          this.#matchExpectedError(diagnostic, targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral),
         );
     }
 
@@ -102,11 +102,11 @@ export class ToRaiseError {
     };
   }
 
-  #matchExpectedError(diagnostic: ts.Diagnostic, targetNode: ArgumentNode) {
+  #matchExpectedError(diagnostic: ts.Diagnostic, targetNode: ts.StringLiteralLike | ts.NumericLiteral) {
     if (this.#compiler.isStringLiteralLike(targetNode)) {
       return this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(targetNode.text);
     }
 
-    return Number((targetNode as ts.NumericLiteral).text) === diagnostic.code;
+    return Number(targetNode.text) === diagnostic.code;
   }
 }

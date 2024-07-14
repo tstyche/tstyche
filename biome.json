@@ -78,7 +78,7 @@
 
   "overrides": [
     {
-      "include": ["source/handlers/ResultHandler.ts", "source/expect/ToRaiseError.ts", "source/version/Version.ts"],
+      "include": ["source/handlers/ResultHandler.ts", "source/version/Version.ts"],
       "linter": {
         "rules": {
           "style": {
