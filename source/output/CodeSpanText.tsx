@@ -8,14 +8,14 @@ interface BreadcrumbsTextProps {
 }
 
 function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
-  const breadcrumbsText: Array<string> = [];
+  const text: Array<string> = [];
 
   while ("name" in ancestor) {
-    breadcrumbsText.unshift(" ❭ ", ancestor.name);
+    text.unshift(" ❭ ", ancestor.name);
     ancestor = ancestor.parent;
   }
 
-  return <Text color={Color.Gray}>{breadcrumbsText.join("")}</Text>;
+  return <Text color={Color.Gray}>{text.join("")}</Text>;
 }
 
 interface CodeLineTextProps {
