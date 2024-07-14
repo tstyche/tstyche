@@ -127,7 +127,7 @@ export class ToAcceptProps {
             ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
           ];
 
-          const origin = matchWorker.resolveOrigin(targetProperty, targetNode);
+          const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
 
           diagnostics.push(diagnostic.extendWith(text, origin));
 
@@ -140,7 +140,7 @@ export class ToAcceptProps {
             ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
           ];
 
-          const origin = matchWorker.resolveOrigin(targetProperty, targetNode);
+          const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
 
           diagnostics.push(diagnostic.extendWith(text, origin));
 
@@ -160,7 +160,7 @@ export class ToAcceptProps {
             ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
           ];
 
-          const origin = matchWorker.resolveOrigin(targetProperty, targetNode);
+          const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
 
           diagnostics.push(diagnostic.extendWith(text, origin));
         }

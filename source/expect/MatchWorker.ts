@@ -129,7 +129,7 @@ export class MatchWorker {
     return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
   }
 
-  resolveOrigin(symbol: ts.Symbol, enclosingNode: ts.Node) {
+  resolveDiagnosticOrigin(symbol: ts.Symbol, enclosingNode: ts.Node) {
     if (
       symbol.valueDeclaration != null &&
       (this.#compiler.isPropertySignature(symbol.valueDeclaration) ||
