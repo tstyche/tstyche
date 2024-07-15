@@ -4,7 +4,7 @@ export class StoreDiagnosticText {
   }
 
   static failedWithStatusCode(code: number): string {
-    return `Request failed with status code ${String(code)}.`;
+    return `Request failed with status code ${code}.`;
   }
 
   static maybeNetworkConnectionIssue(): string {
@@ -12,6 +12,6 @@ export class StoreDiagnosticText {
   }
 
   static setupTimeoutExceeded(timeout: number): string {
-    return `Setup timeout of ${String(timeout / 1000)}s was exceeded.`;
+    return `Setup timeout of ${timeout / 1000}s was exceeded.`;
   }
 }

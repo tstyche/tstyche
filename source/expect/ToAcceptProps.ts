@@ -28,8 +28,8 @@ export class ToAcceptProps {
       if (signatures.length > 1) {
         const signatureText = this.#typeChecker.signatureToString(signature, sourceNode);
         const overloadText = ExpectDiagnosticText.overloadGaveTheFollowingError(
-          String(index + 1),
-          String(signatures.length),
+          index + 1,
+          signatures.length,
           signatureText,
         );
 

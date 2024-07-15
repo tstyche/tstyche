@@ -45,7 +45,7 @@ export class Lock {
       }
 
       if (Date.now() - waitStartTime > options.timeout) {
-        options.onDiagnostics?.(`Lock wait timeout of ${String(options.timeout / 1000)}s was exceeded.`);
+        options.onDiagnostics?.(`Lock wait timeout of ${options.timeout / 1000}s was exceeded.`);
 
         break;
       }

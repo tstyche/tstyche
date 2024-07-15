@@ -40,7 +40,7 @@ export class Diagnostic {
 
   static fromDiagnostics(diagnostics: Array<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
-      const code = `ts(${String(diagnostic.code)})`;
+      const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
       if (Diagnostic.#isTsDiagnosticWithLocation(diagnostic)) {

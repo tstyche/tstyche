@@ -19,16 +19,16 @@ function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
 }
 
 interface CodeLineTextProps {
-  lineText: string;
   gutterWidth: number;
+  lineNumber: number;
   lineNumberColor?: Color;
-  lineNumberText: string;
+  lineText: string;
 }
 
-function CodeLineText({ lineText, gutterWidth, lineNumberColor = Color.Gray, lineNumberText }: CodeLineTextProps) {
+function CodeLineText({ gutterWidth, lineNumber, lineNumberColor = Color.Gray, lineText }: CodeLineTextProps) {
   return (
     <Line>
-      <Text color={lineNumberColor}>{lineNumberText.padStart(gutterWidth)}</Text>
+      <Text color={lineNumberColor}>{lineNumber.toString().padStart(gutterWidth)}</Text>
       <Text color={Color.Gray}>{" | "}</Text>
       {lineText}
     </Line>
@@ -68,7 +68,7 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
 
   const firstLine = Math.max(firstMarkedLine - 2, 0);
   const lastLine = Math.min(firstLine + 5, lastLineInFile);
-  const gutterWidth = String(lastLine + 1).length + 2;
+  const gutterWidth = (lastLine + 1).toString().length + 2;
 
   const codeSpan: Array<ScribblerJsx.Element> = [];
 
@@ -79,15 +79,14 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
         ? diagnosticOrigin.sourceFile.text.length
         : diagnosticOrigin.sourceFile.getPositionOfLineAndCharacter(index + 1, 0);
 
-    const lineNumberText = String(index + 1);
     const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
     if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeSpan.push(
         <CodeLineText
           gutterWidth={gutterWidth}
+          lineNumber={index + 1}
           lineNumberColor={Color.Red}
-          lineNumberText={lineNumberText}
           lineText={lineText}
         />,
       );
@@ -111,7 +110,7 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
         codeSpan.push(<SquiggleLineText gutterWidth={gutterWidth} squiggleWidth={lineText.length} />);
       }
     } else {
-      codeSpan.push(<CodeLineText gutterWidth={gutterWidth} lineNumberText={lineNumberText} lineText={lineText} />);
+      codeSpan.push(<CodeLineText gutterWidth={gutterWidth} lineNumber={index + 1} lineText={lineText} />);
     }
   }
 
@@ -120,9 +119,7 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
       {" ".repeat(gutterWidth + 2)}
       <Text color={Color.Gray}>{" at "}</Text>
       <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
-      <Text color={Color.Gray}>
-        :{String(firstMarkedLine + 1)}:{String(firstMarkedLineCharacter + 1)}
-      </Text>
+      <Text color={Color.Gray}>{`:${firstMarkedLine + 1}:${firstMarkedLineCharacter + 1}`}</Text>
       {diagnosticOrigin.assertion && <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parent} />}
     </Line>
   );

@@ -30,8 +30,8 @@ export class ExpectDiagnosticText {
     return `The '.${matcherNameText}()' matcher is not supported.`;
   }
 
-  static overloadGaveTheFollowingError(indexText: string, countText: string, signatureText: string): string {
-    return `Overload ${indexText} of ${countText}, '${signatureText}', gave the following error.`;
+  static overloadGaveTheFollowingError(index: number, count: number, signatureText: string): string {
+    return `Overload ${index} of ${count}, '${signatureText}', gave the following error.`;
   }
 
   static raisedTypeError(count = 1): string {
@@ -102,7 +102,7 @@ export class ExpectDiagnosticText {
     let countText = "a";
 
     if (count > 1 || targetCount > 1) {
-      countText = count > targetCount ? String(count) : `only ${String(count)}`;
+      countText = count > targetCount ? `${count}` : `only ${count}`;
     }
 
     return `${isTypeNode ? "Type" : "Expression type"} raised ${countText} type error${count === 1 ? "" : "s"}.`;
