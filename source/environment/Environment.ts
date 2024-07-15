@@ -103,7 +103,7 @@ export class Environment {
 
   static #resolveTimeout() {
     if (process.env["TSTYCHE_TIMEOUT"] != null) {
-      return Number(process.env["TSTYCHE_TIMEOUT"]);
+      return Number.parseFloat(process.env["TSTYCHE_TIMEOUT"]);
     }
 
     return 30;
