@@ -110,23 +110,23 @@ export class MatchWorker {
   }
 
   isAnyOrNeverType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return Boolean(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never));
+    return !!(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never));
   }
 
   isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
+    return !!(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
   }
 
   isObjectType(type: ts.Type): type is ts.ObjectType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.Object);
+    return !!(type.flags & this.#compiler.TypeFlags.Object);
   }
 
   isUnionType(type: ts.Type): type is ts.UnionType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.Union);
+    return !!(type.flags & this.#compiler.TypeFlags.Union);
   }
 
   isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
-    return Boolean(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
+    return !!(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
   }
 
   resolveDiagnosticOrigin(symbol: ts.Symbol, enclosingNode: ts.Node) {

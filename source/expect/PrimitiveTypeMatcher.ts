@@ -20,7 +20,7 @@ export class PrimitiveTypeMatcher {
 
   match(matchWorker: MatchWorker, sourceNode: ArgumentNode): MatchResult {
     const sourceType = matchWorker.getType(sourceNode);
-    const isMatch = Boolean(sourceType.flags & this.#targetTypeFlag);
+    const isMatch = !!(sourceType.flags & this.#targetTypeFlag);
 
     return {
       explain: () => this.#explain(matchWorker, sourceNode),
