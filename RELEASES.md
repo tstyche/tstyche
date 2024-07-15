@@ -1,5 +1,22 @@
 # Releases
 
+## [2.1.0] - 2024-07-15
+
+### Fixed
+
+- Allow empty config file ([#239](https://github.com/tstyche/tstyche/pull/239))
+- Handle not supported matchers ([#227](https://github.com/tstyche/tstyche/pull/227))
+
+### Changed
+
+- Show related diagnostics, when provided by TypeScript ([#242](https://github.com/tstyche/tstyche/pull/242))
+- Mark the entire locations in diagnostic messages ([#238](https://github.com/tstyche/tstyche/pull/238), [#247](https://github.com/tstyche/tstyche/pull/247), [#251](https://github.com/tstyche/tstyche/pull/251), [#253](https://github.com/tstyche/tstyche/pull/253), [#255](https://github.com/tstyche/tstyche/pull/255))
+- In watch mode, return the list of test files as an async iterable ([#233](https://github.com/tstyche/tstyche/pull/233), [#232](https://github.com/tstyche/tstyche/pull/232))
+
+### Added
+
+- **New!** Add the `.toAcceptProps()` matcher ([#237](https://github.com/tstyche/tstyche/pull/237))
+
 ## [2.0.0] - 2024-06-10
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
@@ -249,6 +266,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[2.1.0]: https://github.com/tstyche/tstyche/releases/tag/v2.1.0
 [2.0.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0
 [2.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.2
 [2.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.1
