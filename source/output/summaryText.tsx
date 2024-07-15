@@ -28,32 +28,29 @@ function CountText({ failed, passed, skipped, todo, total }: CountTextProps) {
     <Text>
       {failed > 0 ? (
         <Text>
-          <Text color={Color.Red}>{String(failed)} failed</Text>
+          <Text color={Color.Red}>{failed} failed</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
       {skipped > 0 ? (
         <Text>
-          <Text color={Color.Yellow}>{String(skipped)} skipped</Text>
+          <Text color={Color.Yellow}>{skipped} skipped</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
       {todo > 0 ? (
         <Text>
-          <Text color={Color.Magenta}>{String(todo)} todo</Text>
+          <Text color={Color.Magenta}>{todo} todo</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
       {passed > 0 ? (
         <Text>
-          <Text color={Color.Green}>{String(passed)} passed</Text>
+          <Text color={Color.Green}>{passed} passed</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      <Text>
-        {String(total)}
-        <Text>{" total"}</Text>
-      </Text>
+      <Text>{total} total</Text>
     </Text>
   );
 }
@@ -63,7 +60,7 @@ interface DurationTextProps {
 }
 
 function DurationText({ seconds }: DurationTextProps) {
-  return <Text>{`${String(Math.round(seconds * 10) / 10)}s`}</Text>;
+  return <Text>{`${Math.round(seconds * 10) / 10}s`}</Text>;
 }
 
 interface MatchTextProps {

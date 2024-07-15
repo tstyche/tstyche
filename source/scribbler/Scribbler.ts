@@ -51,10 +51,10 @@ export class Scribbler {
   }
 
   #visitChildren(children: Array<ScribblerNode>) {
-    const text: Array<string> = [];
+    const text: Array<string | number> = [];
 
     for (const child of children) {
-      if (typeof child === "string") {
+      if (typeof child === "string" || typeof child === "number") {
         text.push(child);
         continue;
       }
