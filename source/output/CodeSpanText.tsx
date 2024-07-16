@@ -11,11 +11,13 @@ function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
   const text: Array<string> = [];
 
   while ("name" in ancestor) {
-    text.unshift(" ❭ ", ancestor.name);
+    text.push(ancestor.name);
     ancestor = ancestor.parent;
   }
 
-  return <Text color={Color.Gray}>{text.join("")}</Text>;
+  text.push("");
+
+  return <Text color={Color.Gray}>{text.reverse().join(" ❭ ")}</Text>;
 }
 
 interface CodeLineTextProps {

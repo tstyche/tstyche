@@ -72,7 +72,7 @@ function MatchText({ text }: MatchTextProps) {
     return <Text>'{text}'</Text>;
   }
 
-  if (text.length <= 1) {
+  if (text.length === 1) {
     return <Text>'{...text}'</Text>;
   }
 
@@ -111,7 +111,7 @@ function RanFilesText({ onlyMatch, pathMatch, skipMatch }: RanFilesTextProps) {
   if (skipMatch != null) {
     testNameMatchText.push(
       <Text>
-        {onlyMatch != null ? <Text color={Color.Gray}>{" and "}</Text> : undefined}
+        {onlyMatch && <Text color={Color.Gray}>{" and "}</Text>}
         <Text color={Color.Gray}>{"not matching "}</Text>
         <MatchText text={skipMatch} />
       </Text>,
@@ -129,7 +129,7 @@ function RanFilesText({ onlyMatch, pathMatch, skipMatch }: RanFilesTextProps) {
       </Text>
     );
   } else {
-    pathMatchText = <Text color={Color.Gray}>all test files.</Text>;
+    pathMatchText = <Text color={Color.Gray}>{"all test files."}</Text>;
   }
 
   return (

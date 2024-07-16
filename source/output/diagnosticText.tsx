@@ -7,7 +7,7 @@ interface DiagnosticTextProps {
 }
 
 function DiagnosticText({ diagnostic }: DiagnosticTextProps) {
-  const code = typeof diagnostic.code === "string" ? <Text color={Color.Gray}> {diagnostic.code}</Text> : undefined;
+  const code = diagnostic.code ? <Text color={Color.Gray}> {diagnostic.code}</Text> : undefined;
 
   const text = Array.isArray(diagnostic.text) ? diagnostic.text : [diagnostic.text];
 

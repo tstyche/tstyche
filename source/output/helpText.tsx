@@ -20,7 +20,7 @@ interface HelpHeaderTextProps {
 function HelpHeaderText({ tstycheVersion }: HelpHeaderTextProps) {
   return (
     <Line>
-      The TSTyche Type Test Runner
+      {"The TSTyche Type Test Runner"}
       <HintText>{tstycheVersion}</HintText>
     </Line>
   );
@@ -32,16 +32,10 @@ interface CommandTextProps {
 }
 
 function CommandText({ hint, text }: CommandTextProps) {
-  let hintText: ScribblerJsx.Element | undefined;
-
-  if (hint != null) {
-    hintText = <HintText>{hint}</HintText>;
-  }
-
   return (
     <Line indent={1}>
       <Text color={Color.Blue}>{text}</Text>
-      {hintText}
+      {hint && <HintText>{hint}</HintText>}
     </Line>
   );
 }
@@ -76,7 +70,7 @@ interface CommandLineOptionNameTextProps {
 }
 
 function CommandLineOptionNameText({ text }: CommandLineOptionNameTextProps) {
-  return <Text>--{text}</Text>;
+  return <Text>{`--${text}`}</Text>;
 }
 
 interface CommandLineOptionHintTextProps {
@@ -85,11 +79,7 @@ interface CommandLineOptionHintTextProps {
 
 function CommandLineOptionHintText({ definition }: CommandLineOptionHintTextProps) {
   if (definition.brand === OptionBrand.List) {
-    return (
-      <Text>
-        {definition.brand} of {definition.items.brand}s
-      </Text>
-    );
+    return <Text>{`${definition.brand} of ${definition.items.brand}s`}</Text>;
   }
 
   return <Text>{definition.brand}</Text>;
@@ -119,7 +109,7 @@ function CommandLineOptionsText({ optionDefinitions }: CommandLineOptionsTextPro
 
   return (
     <Text>
-      <Line>Command Line Options</Line>
+      <Line>{"Command Line Options"}</Line>
       <Line />
       {optionsText}
     </Text>
@@ -127,7 +117,7 @@ function CommandLineOptionsText({ optionDefinitions }: CommandLineOptionsTextPro
 }
 
 function HelpFooterText() {
-  return <Line>To learn more, visit https://tstyche.org</Line>;
+  return <Line>{"To learn more, visit https://tstyche.org"}</Line>;
 }
 
 export function helpText(
