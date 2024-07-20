@@ -72,7 +72,7 @@
     "mocha": "10.6.0",
     "monocart-coverage-reports": "2.9.3",
     "pretty-ansi": "2.0.0",
-    "rollup": "4.18.1",
+    "rollup": "4.19.0",
     "rollup-plugin-dts": "6.1.1",
     "tslib": "2.6.3",
     "typescript": "5.5.3"
