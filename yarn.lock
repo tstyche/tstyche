@@ -2562,6 +2562,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"poku@npm:2.1.0":
+  version: 2.1.0
+  resolution: "poku@npm:2.1.0"
+  bin:
+    poku: lib/bin/index.js
+  checksum: f21287c2e19a23c04eed4d474cddccc12ff647cec9b1c1b0565dc7d614e647663b7deb32d7c778f54acde6ec032edc74a83cd8f529c8c9409f942ffb477d87d6
+  languageName: node
+  linkType: hard
+
 "pretty-ansi@npm:2.0.0":
   version: 2.0.0
   resolution: "pretty-ansi@npm:2.0.0"
@@ -2998,6 +3007,7 @@ __metadata:
     magic-string: 0.30.10
     mocha: 10.7.0
     monocart-coverage-reports: 2.9.3
+    poku: 2.1.0
     pretty-ansi: 2.0.0
     rollup: 4.19.0
     rollup-plugin-dts: 6.1.1

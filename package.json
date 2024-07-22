@@ -58,7 +58,7 @@
     "test:examples": "tstyche examples",
     "test:run": "mocha --config mocha.config.json",
     "test:types": "tstyche typetests",
-    "test:unit": "yarn test:run **/__tests__/*.test.* --parallel --reporter dot"
+    "test:unit": "yarn poku **/__tests__/*.test.* --parallel"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
@@ -71,6 +71,7 @@
     "magic-string": "0.30.10",
     "mocha": "10.7.0",
     "monocart-coverage-reports": "2.9.3",
+    "poku": "2.1.0",
     "pretty-ansi": "2.0.0",
     "rollup": "4.19.0",
     "rollup-plugin-dts": "6.1.1",

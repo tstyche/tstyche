@@ -1,10 +1,9 @@
-import { strict as assert } from "node:assert";
-import { describe, test } from "mocha";
+import { assert, describe, test } from "poku";
 import { Version } from "tstyche/tstyche";
 
-describe("Version", function () {
-  describe("'isVersionTag' method", function () {
-    const cases = [
+describe("Version", () => {
+  describe("'isVersionTag' method", () => {
+    const testCases = [
       {
         expected: true,
         target: "6",
@@ -53,17 +52,17 @@ describe("Version", function () {
       },
     ];
 
-    cases.forEach(({ expected, target, testCase }) => {
-      test(testCase, function () {
+    for (const { expected, target, testCase } of testCases) {
+      test(testCase, () => {
         const result = Version.isVersionTag(target);
 
-        assert.equal(result, expected);
+        assert.strictEqual(result, expected);
       });
-    });
+    }
   });
 
-  describe("'isGreaterThan' method", function () {
-    const cases = [
+  describe("'isGreaterThan' method", () => {
+    const testCases = [
       {
         expected: true,
         source: "5.3",
@@ -164,17 +163,17 @@ describe("Version", function () {
       },
     ];
 
-    cases.forEach(({ expected, source, target, testCase }) => {
-      test(testCase, function () {
+    for (const { expected, source, target, testCase } of testCases) {
+      test(testCase, () => {
         const result = Version.isGreaterThan(source, target);
 
-        assert.equal(result, expected);
+        assert.strictEqual(result, expected);
       });
-    });
+    }
   });
 
-  describe("'isSatisfiedWith' method", function () {
-    const cases = [
+  describe("'isSatisfiedWith' method", () => {
+    const testCases = [
       {
         expected: true,
         source: "5.3.2",
@@ -275,12 +274,12 @@ describe("Version", function () {
       },
     ];
 
-    cases.forEach(({ expected, source, target, testCase }) => {
-      test(testCase, function () {
+    for (const { expected, source, target, testCase } of testCases) {
+      test(testCase, () => {
         const result = Version.isSatisfiedWith(source, target);
 
-        assert.equal(result, expected);
+        assert.strictEqual(result, expected);
       });
-    });
+    }
   });
 });

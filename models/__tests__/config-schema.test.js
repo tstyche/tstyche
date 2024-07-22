@@ -1,8 +1,7 @@
-import { strict as assert } from "node:assert";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { Ajv } from "ajv";
-import { describe, test } from "mocha";
+import { assert, describe, test } from "poku";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -27,8 +26,8 @@ function readJsonFixtureFile(fixtureFileName) {
 
 const configSchema = readJsonFile("../config-schema.json");
 
-describe("config-schema.json", function () {
-  describe("valid", function () {
+describe("config-schema.json", () => {
+  describe("valid", () => {
     const testCases = [
       {
         fixtureFileName: "valid-all-options.json",
@@ -52,17 +51,17 @@ describe("config-schema.json", function () {
       },
     ];
 
-    testCases.forEach(({ fixtureFileName, testCase }) => {
-      test(testCase, function () {
+    for (const { fixtureFileName, testCase } of testCases) {
+      test(testCase, () => {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 
-        assert.equal(validate(fixture), true);
+        assert.strictEqual(validate(fixture), true);
       });
-    });
+    }
   });
 
-  describe("invalid", function () {
+  describe("invalid", () => {
     const testCases = [
       {
         fixtureFileName: "invalid-failFast.json",
@@ -102,13 +101,13 @@ describe("config-schema.json", function () {
       },
     ];
 
-    testCases.forEach(({ fixtureFileName, testCase }) => {
-      test(testCase, function () {
+    for (const { fixtureFileName, testCase } of testCases) {
+      test(testCase, () => {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 
-        assert.equal(validate(fixture), false);
+        assert.strictEqual(validate(fixture), false);
       });
-    });
+    }
   });
 });
