@@ -1,5 +1,4 @@
-import { strict as assert } from "node:assert";
-import { describe, test } from "mocha";
+import { assert, describe, test } from "poku";
 import prettyAnsi from "pretty-ansi";
 import { OptionBrand, Scribbler, helpText } from "tstyche/tstyche";
 
@@ -66,11 +65,11 @@ const sampleVersion = "1.2.3";
 
 const scribbler = new Scribbler();
 
-describe("helpText", function () {
-  test("formats help text", function () {
+describe("helpText", () => {
+  test("formats help text", () => {
     const text = scribbler.render(helpText(sampleCommandLineOptionDefinitions, sampleVersion));
 
-    assert.equal(
+    assert.strictEqual(
       prettyAnsi(text),
       [
         "The TSTyche Type Test Runner  <gray>1.2.3</>",
