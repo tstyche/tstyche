@@ -104,6 +104,7 @@ export class StoreService {
       }
 
       const toExpose = [
+        "getTypeOfSymbol", // TODO remove after dropping support for TypeScript 4.5
         "isTypeRelatedTo",
         "relation: { assignable: assignableRelation, identity: identityRelation, subtype: strictSubtypeRelation }",
       ];
