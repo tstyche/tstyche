@@ -1,4 +1,4 @@
-import fs from "node:fs/promises";
+import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import { after, before, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
@@ -109,15 +109,14 @@ await writeFixture(fixtureUrl);
 await spawnTyche(fixtureUrl, ["--update"]);
 
 const storeUrl = new URL("./.store/", fixtureUrl);
-const manifestText = await fs.readFile(new URL("./store-manifest.json", storeUrl), { encoding: "utf8" });
 
 describe("TypeScript 4.x", function () {
-  before(async function () {
-    if (process.versions.node.startsWith("16")) {
-      // store is not supported on Node.js 16
-      this.skip();
-    }
+  if (process.versions.node.startsWith("16")) {
+    // store is not supported on Node.js 16
+    return;
+  }
 
+  before(async function () {
     await writeFixture(fixtureUrl, {
       // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
       ["__typetests__/toAcceptProps.test.tsx"]: `// @ts-expect-error\n${toAcceptPropsTestText}`,
@@ -154,12 +153,12 @@ describe("TypeScript 4.x", function () {
 });
 
 describe("TypeScript 5.x", function () {
-  before(async function () {
-    if (process.versions.node.startsWith("16")) {
-      // store is not supported on Node.js 16
-      this.skip();
-    }
+  if (process.versions.node.startsWith("16")) {
+    // store is not supported on Node.js 16
+    return;
+  }
 
+  before(async function () {
     await writeFixture(fixtureUrl, {
       ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
       ["__typetests__/toBe.test.ts"]: toBeTestText,
@@ -174,6 +173,8 @@ describe("TypeScript 5.x", function () {
   after(async function () {
     await clearFixture(fixtureUrl);
   });
+
+  const manifestText = fs.readFileSync(new URL("./store-manifest.json", storeUrl), { encoding: "utf8" });
 
   const { resolutions } = /** @type {{ resolutions: Record<string, string> }} */ (JSON.parse(manifestText));
 
