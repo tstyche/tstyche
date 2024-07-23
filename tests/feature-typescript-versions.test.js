@@ -5,7 +5,25 @@ import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
-// TODO add '.toAcceptProps()' example here
+const toAcceptPropsTestText = `import { expect, test } from "tstyche";
+
+interface ButtonProps {
+  text: string;
+  type?: "reset" | "submit";
+}
+
+function Button({ text, type }: ButtonProps) {
+  return <button type={type}>{text}</button>;
+}
+
+test("accepts props?", () => {
+  expect(Button).type.toAcceptProps({ text: "Send" });
+  expect(Button).type.toAcceptProps({ text: "Clear", type: "reset" as const });
+
+  expect(Button).type.not.toAcceptProps({ text: "Download", type: "button" as const });
+  expect(Button).type.not.toAcceptProps({});
+});
+`;
 
 const toBeAssignableToTestText = `import { expect, test } from "tstyche";
 
@@ -91,12 +109,9 @@ await writeFixture(fixtureUrl);
 await spawnTyche(fixtureUrl, ["--update"]);
 
 const storeUrl = new URL("./.store/", fixtureUrl);
+const manifestText = await fs.readFile(new URL("./store-manifest.json", storeUrl), { encoding: "utf8" });
 
 describe("TypeScript 4.x", function () {
-  after(async function () {
-    await clearFixture(fixtureUrl);
-  });
-
   before(async function () {
     if (process.versions.node.startsWith("16")) {
       // store is not supported on Node.js 16
@@ -105,6 +120,7 @@ describe("TypeScript 4.x", function () {
 
     await writeFixture(fixtureUrl, {
       // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
+      ["__typetests__/toAcceptProps.test.tsx"]: `// @ts-expect-error\n${toAcceptPropsTestText}`,
       ["__typetests__/toBe.test.ts"]: `// @ts-expect-error\n${toBeTestText}`,
       ["__typetests__/toBeAssignableTo.test.ts"]: `// @ts-expect-error\n${toBeAssignableToTestText}`,
       ["__typetests__/toBeAssignableWith.test.ts"]: `// @ts-expect-error\n${toBeAssignableWithTestText}`,
@@ -112,6 +128,10 @@ describe("TypeScript 4.x", function () {
       ["__typetests__/toMatch.test.ts"]: `// @ts-expect-error\n${toMatchTestText}`,
       ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error\n${toRaiseErrorTestText}`,
     });
+  });
+
+  after(async function () {
+    await clearFixture(fixtureUrl);
   });
 
   const testCases = ["4.0.2", "4.0.8", "4.1.6", "4.2.4", "4.3.5", "4.4.4", "4.5.5", "4.6.4", "4.7.4", "4.8.4", "4.9.5"];
@@ -133,7 +153,7 @@ describe("TypeScript 4.x", function () {
   });
 });
 
-describe("TypeScript 5.x", async function () {
+describe("TypeScript 5.x", function () {
   before(async function () {
     if (process.versions.node.startsWith("16")) {
       // store is not supported on Node.js 16
@@ -141,6 +161,7 @@ describe("TypeScript 5.x", async function () {
     }
 
     await writeFixture(fixtureUrl, {
+      ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
       ["__typetests__/toBe.test.ts"]: toBeTestText,
       ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
       ["__typetests__/toBeAssignableWith.test.ts"]: toBeAssignableWithTestText,
@@ -154,7 +175,6 @@ describe("TypeScript 5.x", async function () {
     await clearFixture(fixtureUrl);
   });
 
-  const manifestText = await fs.readFile(new URL("./store-manifest.json", storeUrl), { encoding: "utf8" });
   const { resolutions } = /** @type {{ resolutions: Record<string, string> }} */ (JSON.parse(manifestText));
 
   const versionTags = Object.entries(resolutions)
