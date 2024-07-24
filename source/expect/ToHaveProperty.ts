@@ -18,7 +18,7 @@ export class ToHaveProperty {
     let propertyNameText: string;
 
     if (matchWorker.isStringOrNumberLiteralType(targetType)) {
-      propertyNameText = String(targetType.value);
+      propertyNameText = targetType.value.toString();
     } else {
       propertyNameText = `[${this.#compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
     }
@@ -57,7 +57,7 @@ export class ToHaveProperty {
     let propertyNameText: string;
 
     if (matchWorker.isStringOrNumberLiteralType(targetType)) {
-      propertyNameText = String(targetType.value);
+      propertyNameText = targetType.value.toString();
     } else if (matchWorker.isUniqueSymbolType(targetType)) {
       propertyNameText = this.#compiler.unescapeLeadingUnderscores(targetType.escapedName);
     } else {
