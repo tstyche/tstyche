@@ -1,5 +1,5 @@
 import type { TestMember, TestTree } from "#collect";
-import type { DiagnosticOrigin } from "#diagnostic";
+import { DiagnosticCategory, type DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
@@ -40,25 +40,27 @@ function CodeLineText({ gutterWidth, lineNumber, lineNumberColor = Color.Gray, l
 interface SquiggleLineTextProps {
   gutterWidth: number;
   indentWidth?: number;
+  squiggleColor: Color;
   squiggleWidth: number;
 }
 
-function SquiggleLineText({ gutterWidth, indentWidth = 0, squiggleWidth }: SquiggleLineTextProps) {
+function SquiggleLineText({ gutterWidth, indentWidth = 0, squiggleColor, squiggleWidth }: SquiggleLineTextProps) {
   return (
     <Line>
       {" ".repeat(gutterWidth)}
       <Text color={Color.Gray}>{" | "}</Text>
       {" ".repeat(indentWidth)}
-      <Text color={Color.Red}>{"~".repeat(squiggleWidth === 0 ? 1 : squiggleWidth)}</Text>
+      <Text color={squiggleColor}>{"~".repeat(squiggleWidth === 0 ? 1 : squiggleWidth)}</Text>
     </Line>
   );
 }
 
 interface CodeSpanTextProps {
+  diagnosticCategory: DiagnosticCategory;
   diagnosticOrigin: DiagnosticOrigin;
 }
 
-export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
+export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanTextProps) {
   const lastLineInFile = diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(
     diagnosticOrigin.sourceFile.text.length,
   ).line;
@@ -71,6 +73,20 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
   const firstLine = Math.max(firstMarkedLine - 2, 0);
   const lastLine = Math.min(firstLine + 5, lastLineInFile);
   const gutterWidth = (lastLine + 1).toString().length + 2;
+
+  let highlightColor: Color;
+
+  switch (diagnosticCategory) {
+    case DiagnosticCategory.Error: {
+      highlightColor = Color.Red;
+      break;
+    }
+
+    case DiagnosticCategory.Warning: {
+      highlightColor = Color.Yellow;
+      break;
+    }
+  }
 
   const codeSpan: Array<ScribblerJsx.Element> = [];
 
@@ -88,7 +104,7 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
         <CodeLineText
           gutterWidth={gutterWidth}
           lineNumber={index + 1}
-          lineNumberColor={Color.Red}
+          lineNumberColor={highlightColor}
           lineText={lineText}
         />,
       );
@@ -103,13 +119,22 @@ export function CodeSpanText({ diagnosticOrigin }: CodeSpanTextProps) {
           <SquiggleLineText
             gutterWidth={gutterWidth}
             indentWidth={firstMarkedLineCharacter}
+            squiggleColor={highlightColor}
             squiggleWidth={squiggleLength}
           />,
         );
       } else if (index === lastMarkedLine) {
-        codeSpan.push(<SquiggleLineText gutterWidth={gutterWidth} squiggleWidth={lastMarkedLineCharacter} />);
+        codeSpan.push(
+          <SquiggleLineText
+            gutterWidth={gutterWidth}
+            squiggleColor={highlightColor}
+            squiggleWidth={lastMarkedLineCharacter}
+          />,
+        );
       } else {
-        codeSpan.push(<SquiggleLineText gutterWidth={gutterWidth} squiggleWidth={lineText.length} />);
+        codeSpan.push(
+          <SquiggleLineText gutterWidth={gutterWidth} squiggleColor={highlightColor} squiggleWidth={lineText.length} />,
+        );
       }
     } else {
       codeSpan.push(<CodeLineText gutterWidth={gutterWidth} lineNumber={index + 1} lineText={lineText} />);
