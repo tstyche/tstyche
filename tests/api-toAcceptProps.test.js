@@ -15,13 +15,13 @@ function Item(props) {
   return `${props.name}: ${props.quantity}`;
 }
 
-describe("toAcceptProps", function () {
-  test("implementation", function () {
+describe("toAcceptProps", () => {
+  test("implementation", () => {
     tstyche.expect(Item).type.toAcceptProps({ name: "one", quantity: "2" });
     tstyche.expect(Item).type.not.toAcceptProps({});
   });
 
-  test("function components", async function () {
+  test("function components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["function-components"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -37,7 +37,7 @@ describe("toAcceptProps", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("class components", async function () {
+  test("class components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["class-components"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -53,7 +53,7 @@ describe("toAcceptProps", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("overloaded components", async function () {
+  test("overloaded components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overloaded-components"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -69,7 +69,7 @@ describe("toAcceptProps", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("special cases", async function () {
+  test("special cases", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["special-cases"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {

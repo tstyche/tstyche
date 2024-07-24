@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("handles nested 'describe()' or 'test()'", async function () {
+test("handles nested 'describe()' or 'test()'", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-nested"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -23,7 +23,7 @@ test("handles nested 'describe()' or 'test()'", async function () {
   assert.equal(exitCode, 1);
 });
 
-test("handles not supported matcher", async function () {
+test("handles not supported matcher", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["matcher-not-supported"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

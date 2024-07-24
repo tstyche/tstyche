@@ -7,12 +7,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'tstyche.config.json' file", function () {
-  afterEach(async function () {
+describe("'tstyche.config.json' file", () => {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when does not exist", async function () {
+  test("when does not exist", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -25,7 +25,7 @@ describe("'tstyche.config.json' file", function () {
     assert.equal(exitCode, 0);
   });
 
-  test("when exist in the current directory", async function () {
+  test("when exist in the current directory", async () => {
     const config = {
       failFast: true,
     };
@@ -44,7 +44,7 @@ describe("'tstyche.config.json' file", function () {
     assert.equal(exitCode, 0);
   });
 
-  test("the '$schema' key is allowed", async function () {
+  test("the '$schema' key is allowed", async () => {
     const config = { $schema: "https://tstyche.org/schemas/config.json" };
 
     await writeFixture(fixtureUrl, {
@@ -58,7 +58,7 @@ describe("'tstyche.config.json' file", function () {
     assert.equal(exitCode, 0);
   });
 
-  test("empty config file is allowed", async function () {
+  test("empty config file is allowed", async () => {
     const configText = `// {
 //   "failFast": true,
 //   "testFileMatch": ["**/*.tst.*"]
@@ -79,7 +79,7 @@ describe("'tstyche.config.json' file", function () {
     assert.equal(exitCode, 0);
   });
 
-  test("comments are allowed", async function () {
+  test("comments are allowed", async () => {
     const configText = `{
   /* test */
   "failFast": true,
@@ -109,12 +109,12 @@ describe("'tstyche.config.json' file", function () {
   });
 });
 
-describe("'--config' command line option", function () {
-  afterEach(async function () {
+describe("'--config' command line option", () => {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when specified, reads configuration file from the location", async function () {
+  test("when specified, reads configuration file from the location", async () => {
     const config = {
       rootPath: "../",
     };

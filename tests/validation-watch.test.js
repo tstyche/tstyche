@@ -6,12 +6,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--watch' command line option", function () {
-  afterEach(async function () {
+describe("'--watch' command line option", () => {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when enabled in a continuous integration environment", async function () {
+  test("when enabled in a continuous integration environment", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--watch"], {

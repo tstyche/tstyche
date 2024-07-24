@@ -8,12 +8,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeBoolean' implementation", function () {
+test("'toBeBoolean' implementation", () => {
   tstyche.expect(/** @type {boolean} */ (true)).type.toBeBoolean();
   tstyche.expect(123).type.not.toBeBoolean();
 });
 
-test("toBeBoolean", async function () {
+test("toBeBoolean", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

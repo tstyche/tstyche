@@ -6,12 +6,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'failFast' configuration file option", function () {
-  afterEach(async function () {
+describe("'failFast' configuration file option", () => {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when specified value is not boolean", async function () {
+  test("when specified value is not boolean", async () => {
     const config = {
       failFast: "never",
     };

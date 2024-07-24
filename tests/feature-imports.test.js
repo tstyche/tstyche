@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("named imports", async function () {
+test("named imports", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["named"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -19,7 +19,7 @@ test("named imports", async function () {
   assert.equal(exitCode, 0);
 });
 
-test("aliased imports", async function () {
+test("aliased imports", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["aliased"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -31,7 +31,7 @@ test("aliased imports", async function () {
   assert.equal(exitCode, 0);
 });
 
-test("namespace imports", async function () {
+test("namespace imports", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["namespace"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

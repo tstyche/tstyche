@@ -6,12 +6,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--skip' command line option", function () {
-  afterEach(async function () {
+describe("'--skip' command line option", () => {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when option value is missing", async function () {
+  test("when option value is missing", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--skip"]);

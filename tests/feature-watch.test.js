@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { afterEach, before, beforeEach, describe, test } from "mocha";
+import { afterEach, beforeEach, describe, test } from "mocha";
 import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
@@ -44,30 +44,28 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("watch", function () {
-  before(function () {
-    let isRecursiveWatchAvailable;
+describe("watch", () => {
+  let isRecursiveWatchAvailable;
 
-    try {
-      const watcher = fs.watch(process.cwd(), { persistent: false, recursive: true });
-      watcher.close();
+  try {
+    const watcher = fs.watch(process.cwd(), { persistent: false, recursive: true });
+    watcher.close();
 
-      isRecursiveWatchAvailable = true;
-    } catch {
-      isRecursiveWatchAvailable = false;
-    }
+    isRecursiveWatchAvailable = true;
+  } catch {
+    isRecursiveWatchAvailable = false;
+  }
 
-    if (!isRecursiveWatchAvailable) {
-      this.skip();
-    }
-  });
+  if (!isRecursiveWatchAvailable) {
+    return;
+  }
 
-  afterEach(async function () {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  describe("interactive input", function () {
-    beforeEach(async function () {
+  describe("interactive input", () => {
+    beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
         ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
@@ -110,7 +108,7 @@ describe("watch", function () {
     ];
 
     exitTestCases.forEach(({ key, testCase }) => {
-      test(testCase, async function () {
+      test(testCase, async () => {
         const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
         await process.waitForIdle();
@@ -148,7 +146,7 @@ describe("watch", function () {
     ];
 
     runAllTestCases.forEach(({ key, testCase }) => {
-      test(testCase, async function () {
+      test(testCase, async () => {
         const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
         await process.waitForIdle();
@@ -170,8 +168,8 @@ describe("watch", function () {
     });
   });
 
-  describe("test file changes", function () {
-    beforeEach(async function () {
+  describe("test file changes", () => {
+    beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
         ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
@@ -182,7 +180,7 @@ describe("watch", function () {
       });
     });
 
-    test("when single test file is added", async function () {
+    test("when single test file is added", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -209,7 +207,7 @@ describe("watch", function () {
       assert.equal(exitCode, 1);
     });
 
-    test("when multiple test files are added", async function () {
+    test("when multiple test files are added", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -237,7 +235,7 @@ describe("watch", function () {
       assert.equal(exitCode, 1);
     });
 
-    test("when single test file is changed", async function () {
+    test("when single test file is changed", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -264,7 +262,7 @@ describe("watch", function () {
       assert.equal(exitCode, 1);
     });
 
-    test("when multiple test files are changed", async function () {
+    test("when multiple test files are changed", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -292,7 +290,7 @@ describe("watch", function () {
       assert.equal(exitCode, 1);
     });
 
-    test("when single test file is renamed", async function () {
+    test("when single test file is renamed", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -320,7 +318,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when multiple test files are renamed", async function () {
+    test("when multiple test files are renamed", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -352,7 +350,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when single test file is removed", async function () {
+    test("when single test file is removed", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -377,7 +375,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when multiple test files are removed", async function () {
+    test("when multiple test files are removed", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -403,7 +401,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when the '--failFast' command line option is specified", async function () {
+    test("when the '--failFast' command line option is specified", async () => {
       const process = new Process(fixtureUrl, ["--failFast", "--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -436,7 +434,7 @@ describe("watch", function () {
   });
 
   describe("config file changes", () => {
-    beforeEach(async function () {
+    beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
         ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
@@ -444,7 +442,7 @@ describe("watch", function () {
       });
     });
 
-    test("when config file is added", async function () {
+    test("when config file is added", async () => {
       const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -470,7 +468,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when config file is changed", async function () {
+    test("when config file is changed", async () => {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
@@ -501,7 +499,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when config file has an error", async function () {
+    test("when config file has an error", async () => {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
         JSON.stringify({ failFast: "no", testFileMatch: ["**/isNumber.*"] }, null, 2),
@@ -556,7 +554,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when no test files are selected", async function () {
+    test("when no test files are selected", async () => {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isVoid.*"] }, null, 2),
@@ -606,7 +604,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when no test files are left to run", async function () {
+    test("when no test files are left to run", async () => {
       const process = new Process(fixtureUrl, ["isNumber", "--watch"], { env: { ["CI"]: undefined } });
 
       await process.waitForIdle();
@@ -637,7 +635,7 @@ describe("watch", function () {
       assert.equal(exitCode, 1);
     });
 
-    test("when config file is removed", async function () {
+    test("when config file is removed", async () => {
       fs.writeFileSync(
         new URL("tstyche.config.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
@@ -665,7 +663,7 @@ describe("watch", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when the '--config' command line option is set", async function () {
+    test("when the '--config' command line option is set", async () => {
       fs.mkdirSync(new URL("config", fixtureUrl));
       fs.writeFileSync(
         new URL("config/tstyche.json", fixtureUrl),

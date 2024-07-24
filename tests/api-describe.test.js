@@ -8,7 +8,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("includes nested", async function () {
+test("includes nested", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["nested"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -20,19 +20,19 @@ test("includes nested", async function () {
   assert.equal(exitCode, 0);
 });
 
-test("'describe()' implementation'", function () {
+test("'describe()' implementation'", () => {
   tstyche.describe("sample", () => {
     //
   });
 });
 
-test("'describe.only' implementation'", function () {
+test("'describe.only' implementation'", () => {
   tstyche.describe.only("sample", () => {
     //
   });
 });
 
-test("describe.only", async function () {
+test("describe.only", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -44,13 +44,13 @@ test("describe.only", async function () {
   assert.equal(exitCode, 0);
 });
 
-test("'describe.skip' implementation'", function () {
+test("'describe.skip' implementation'", () => {
   tstyche.describe.skip("sample", () => {
     //
   });
 });
 
-test("describe.skip", async function () {
+test("describe.skip", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -62,14 +62,14 @@ test("describe.skip", async function () {
   assert.equal(exitCode, 0);
 });
 
-test("'describe.todo' implementation'", function () {
+test("'describe.todo' implementation'", () => {
   tstyche.describe.todo("sample");
   tstyche.describe.todo("sample", () => {
     //
   });
 });
 
-test("describe.todo", async function () {
+test("describe.todo", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

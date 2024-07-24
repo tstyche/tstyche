@@ -21,12 +21,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--failFast' command line option", function () {
-  afterEach(async function () {
+describe("'--failFast' command line option", () => {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("stops running tests after the first failure", async function () {
+  test("stops running tests after the first failure", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -48,7 +48,7 @@ describe("'--failFast' command line option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'true' is specified as a value", async function () {
+  test("when 'true' is specified as a value", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -70,7 +70,7 @@ describe("'--failFast' command line option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'false' is specified as a value", async function () {
+  test("when 'false' is specified as a value", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -92,7 +92,7 @@ describe("'--failFast' command line option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("when the option is specified several times", async function () {
+  test("when the option is specified several times", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -114,7 +114,7 @@ describe("'--failFast' command line option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("when search string is specified before the option", async function () {
+  test("when search string is specified before the option", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -136,7 +136,7 @@ describe("'--failFast' command line option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("when search string is specified after the option", async function () {
+  test("when search string is specified after the option", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -158,7 +158,7 @@ describe("'--failFast' command line option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("overrides configuration file option, when it is set to 'true'", async function () {
+  test("overrides configuration file option, when it is set to 'true'", async () => {
     const config = {
       failFast: true,
     };
@@ -184,7 +184,7 @@ describe("'--failFast' command line option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("overrides configuration file option, when it is set to 'false'", async function () {
+  test("overrides configuration file option, when it is set to 'false'", async () => {
     const config = {
       failFast: false,
     };
@@ -211,12 +211,12 @@ describe("'--failFast' command line option", function () {
   });
 });
 
-describe("'failFast' configuration file option", function () {
-  afterEach(async function () {
+describe("'failFast' configuration file option", () => {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("stops running tests after the first failure", async function () {
+  test("stops running tests after the first failure", async () => {
     const config = {
       failFast: true,
     };
@@ -242,7 +242,7 @@ describe("'failFast' configuration file option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("does not stop running tests after the first failure", async function () {
+  test("does not stop running tests after the first failure", async () => {
     const config = {
       failFast: false,
     };

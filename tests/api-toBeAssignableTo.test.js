@@ -8,12 +8,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeAssignableTo' implementation", function () {
+test("'toBeAssignableTo' implementation", () => {
   tstyche.expect({ a: "sample" }).type.toBeAssignableTo({ a: "sample" });
   tstyche.expect({ a: "sample" }).type.not.toBeAssignableTo({ b: "sample" });
 });
 
-test("toBeAssignableTo", async function () {
+test("toBeAssignableTo", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

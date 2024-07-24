@@ -1,5 +1,5 @@
 import os from "node:os";
-import { afterEach, before, describe, test } from "mocha";
+import { afterEach, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -14,26 +14,22 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'TSTYCHE_STORE_PATH' environment variable", function () {
-  before(function () {
-    if (process.versions.node.startsWith("16")) {
-      // store is not supported on Node.js 16
-      this.skip();
-    }
-  });
+describe("'TSTYCHE_STORE_PATH' environment variable", () => {
+  if (process.versions.node.startsWith("16")) {
+    // store is not supported on Node.js 16
+    return;
+  }
 
-  afterEach(async function () {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  describe("on linux", function () {
-    before(function () {
-      if (process.platform !== "linux") {
-        this.skip();
-      }
-    });
+  describe("on Linux", () => {
+    if (process.platform !== "linux") {
+      return;
+    }
 
-    test("has default value", async function () {
+    test("has default value", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
@@ -52,7 +48,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
       assert.equal(exitCode, 0);
     });
 
-    test("when 'XDG_DATA_HOME' is specified", async function () {
+    test("when 'XDG_DATA_HOME' is specified", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
@@ -73,14 +69,12 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
     });
   });
 
-  describe("on macOS", function () {
-    before(function () {
-      if (process.platform !== "darwin") {
-        this.skip();
-      }
-    });
+  describe("on macOS", () => {
+    if (process.platform !== "darwin") {
+      return;
+    }
 
-    test("has default value", async function () {
+    test("has default value", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
@@ -100,14 +94,12 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
     });
   });
 
-  describe("on Windows", function () {
-    before(function () {
-      if (process.platform !== "win32") {
-        this.skip();
-      }
-    });
+  describe("on Windows", () => {
+    if (process.platform !== "win32") {
+      return;
+    }
 
-    test("has default value", async function () {
+    test("has default value", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
@@ -127,7 +119,7 @@ describe("'TSTYCHE_STORE_PATH' environment variable", function () {
     });
   });
 
-  test("when specified, uses the path", async function () {
+  test("when specified, uses the path", async () => {
     const storeUrl = new URL("./dummy-store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {

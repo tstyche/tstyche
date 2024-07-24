@@ -1,4 +1,4 @@
-import { afterEach, before, describe, test } from "mocha";
+import { afterEach, describe, test } from "mocha";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -12,19 +12,17 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("store", function () {
-  before(function () {
-    if (process.versions.node.startsWith("16")) {
-      // store is not supported on Node.js 16
-      this.skip();
-    }
-  });
+describe("store", () => {
+  if (process.versions.node.startsWith("16")) {
+    // store is not supported on Node.js 16
+    return;
+  }
 
-  afterEach(async function () {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when fetching of metadata from the registry times out", async function () {
+  test("when fetching of metadata from the registry times out", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -45,7 +43,7 @@ describe("store", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("when installing 'typescript' times out", async function () {
+  test("when installing 'typescript' times out", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -68,7 +66,7 @@ describe("store", function () {
     assert.equal(exitCode, 1);
   });
 
-  describe("warns if resolution of a tag may be outdated", function () {
+  describe("warns if resolution of a tag may be outdated", () => {
     const testCases = [
       {
         target: "5.3.4",
@@ -106,7 +104,7 @@ describe("store", function () {
     ];
 
     testCases.forEach(({ target, testCase }) => {
-      test(testCase, async function () {
+      test(testCase, async () => {
         const storeManifest = {
           $version: "1",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
@@ -143,7 +141,7 @@ describe("store", function () {
     });
   });
 
-  describe("does not warn if resolution of a tag may be outdated", function () {
+  describe("does not warn if resolution of a tag may be outdated", () => {
     const testCases = [
       {
         target: "5.3.3",
@@ -160,7 +158,7 @@ describe("store", function () {
     ];
 
     testCases.forEach(({ target, testCase }) => {
-      test(testCase, async function () {
+      test(testCase, async () => {
         const storeManifest = {
           $version: "1",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes

@@ -37,15 +37,15 @@ class TestResultHandler {
   }
 }
 
-describe("integration", function () {
-  describe("test file object", function () {
+describe("integration", () => {
+  describe("test file object", () => {
     const taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
 
-    before(function () {
+    before(() => {
       eventEmitter.addHandler(new TestResultHandler());
     });
 
-    after(function () {
+    after(() => {
       eventEmitter.removeHandlers();
       taskRunner.close();
     });
@@ -66,7 +66,7 @@ describe("integration", function () {
     ];
 
     testCases.forEach(({ testCase, identifier }) => {
-      test(testCase, async function () {
+      test(testCase, async () => {
         const testFile = new tstyche.TestFile(identifier);
 
         await taskRunner.run([testFile]);
@@ -78,7 +78,7 @@ describe("integration", function () {
     });
 
     testCases.forEach(({ testCase, identifier }) => {
-      test(`${testCase} with position is pointing to 'expect'`, async function () {
+      test(`${testCase} with position is pointing to 'expect'`, async () => {
         const position = isWindows ? 73 : 70;
         const testFile = new tstyche.TestFile(identifier, position);
 
@@ -91,7 +91,7 @@ describe("integration", function () {
     });
 
     testCases.forEach(({ testCase, identifier }) => {
-      test(`${testCase} with position is pointing to 'expect.skip'`, async function () {
+      test(`${testCase} with position is pointing to 'expect.skip'`, async () => {
         const position = isWindows ? 273 : 261;
         const testFile = new tstyche.TestFile(identifier, position);
 
@@ -104,7 +104,7 @@ describe("integration", function () {
     });
 
     testCases.forEach(({ testCase, identifier }) => {
-      test(`${testCase} with position is pointing to 'test'`, async function () {
+      test(`${testCase} with position is pointing to 'test'`, async () => {
         const position = isWindows ? 43 : 41;
         const testFile = new tstyche.TestFile(identifier, position);
 
@@ -117,7 +117,7 @@ describe("integration", function () {
     });
 
     testCases.forEach(({ testCase, identifier }) => {
-      test(`${testCase} with position is pointing to 'test.skip'`, async function () {
+      test(`${testCase} with position is pointing to 'test.skip'`, async () => {
         const position = isWindows ? 117 : 111;
         const testFile = new tstyche.TestFile(identifier, position);
 
@@ -130,22 +130,22 @@ describe("integration", function () {
     });
   });
 
-  describe("configuration options", function () {
+  describe("configuration options", () => {
     /**
      * @type {import("tstyche/tstyche").TaskRunner | undefined}
      */
     let taskRunner;
 
-    beforeEach(function () {
+    beforeEach(() => {
       eventEmitter.addHandler(new TestResultHandler());
     });
 
-    afterEach(function () {
+    afterEach(() => {
       eventEmitter.removeHandlers();
       taskRunner?.close();
     });
 
-    test("when the 'failFast: true'  is set", async function () {
+    test("when the 'failFast: true'  is set", async () => {
       taskRunner = new tstyche.TaskRunner({ ...resolvedConfig, failFast: true }, selectService, storeService);
       const testFile = new tstyche.TestFile(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
 

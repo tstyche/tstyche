@@ -12,8 +12,8 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'testFileMatch' configuration file option", function () {
-  afterEach(async function () {
+describe("'testFileMatch' configuration file option", () => {
+  afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
@@ -29,7 +29,7 @@ describe("'testFileMatch' configuration file option", function () {
   ];
 
   testCases.forEach(({ segment, testCase }, index) => {
-    test(testCase, async function () {
+    test(testCase, async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
         ["tstyche.config.json"]: JSON.stringify({ testFileMatch: [`${segment}feature`] }, null, 2),
@@ -48,7 +48,7 @@ describe("'testFileMatch' configuration file option", function () {
     });
   });
 
-  test("when option value is not a list", async function () {
+  test("when option value is not a list", async () => {
     const config = {
       testFileMatch: "feature",
     };
@@ -70,7 +70,7 @@ describe("'testFileMatch' configuration file option", function () {
     assert.equal(exitCode, 1);
   });
 
-  test("when item of the list is not a string", async function () {
+  test("when item of the list is not a string", async () => {
     const config = {
       testFileMatch: ["examples/*", false],
     };

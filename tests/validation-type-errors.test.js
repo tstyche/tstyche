@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("handles top level type errors", async function () {
+test("handles top level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["top-level"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -23,7 +23,7 @@ test("handles top level type errors", async function () {
   assert.equal(exitCode, 1);
 });
 
-test("handles describe level type errors", async function () {
+test("handles describe level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["describe-level"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -39,7 +39,7 @@ test("handles describe level type errors", async function () {
   assert.equal(exitCode, 1);
 });
 
-test("handles test level type errors", async function () {
+test("handles test level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-level"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -55,7 +55,7 @@ test("handles test level type errors", async function () {
   assert.equal(exitCode, 1);
 });
 
-test("handles matcher level type errors", async function () {
+test("handles matcher level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["matcher-level"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
