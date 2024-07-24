@@ -100,17 +100,6 @@
     },
 
     {
-      "include": ["tests/*.test.js"],
-      "linter": {
-        "rules": {
-          "complexity": {
-            "noForEach": "off"
-          }
-        }
-      }
-    },
-
-    {
       "include": ["**/*.tst.ts", "**/*.tst.tsx"],
       "linter": {
         "rules": {

@@ -38,7 +38,7 @@ describe("'--version' command line option", () => {
     },
   ];
 
-  testCases.forEach(({ args, testCase }) => {
+  for (const { args, testCase } of testCases) {
     test(testCase, async () => {
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
@@ -46,5 +46,5 @@ describe("'--version' command line option", () => {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
-  });
+  }
 });

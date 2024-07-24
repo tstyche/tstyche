@@ -38,7 +38,7 @@ describe("'--help' command line option", () => {
     },
   ];
 
-  testCases.forEach(({ args, testCase }) => {
+  for (const { args, testCase } of testCases) {
     test(testCase, async () => {
       await writeFixture(fixtureUrl);
 
@@ -52,5 +52,5 @@ describe("'--help' command line option", () => {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
-  });
+  }
 });

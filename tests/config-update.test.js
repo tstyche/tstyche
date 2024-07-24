@@ -36,7 +36,7 @@ describe("'--update' command line option", () => {
     },
   ];
 
-  testCases.forEach(({ args, testCase }) => {
+  for (const { args, testCase } of testCases) {
     test(testCase, async () => {
       const storeUrl = new URL("./.store", fixtureUrl);
 
@@ -52,7 +52,7 @@ describe("'--update' command line option", () => {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
-  });
+  }
 
   test("updates existing store manifest", async () => {
     const oldStoreManifest = JSON.stringify({

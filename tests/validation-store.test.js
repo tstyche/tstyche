@@ -103,7 +103,7 @@ describe("store", () => {
       },
     ];
 
-    testCases.forEach(({ target, testCase }) => {
+    for (const { target, testCase } of testCases) {
       test(testCase, async () => {
         const storeManifest = {
           $version: "1",
@@ -138,7 +138,7 @@ describe("store", () => {
 
         assert.match(stderr, new RegExp(`^${expected}`));
       });
-    });
+    }
   });
 
   describe("does not warn if resolution of a tag may be outdated", () => {
@@ -157,7 +157,7 @@ describe("store", () => {
       },
     ];
 
-    testCases.forEach(({ target, testCase }) => {
+    for (const { target, testCase } of testCases) {
       test(testCase, async () => {
         const storeManifest = {
           $version: "1",
@@ -187,6 +187,6 @@ describe("store", () => {
         assert.equal(stderr, "");
         assert.equal(exitCode, 0);
       });
-    });
+    }
   });
 });

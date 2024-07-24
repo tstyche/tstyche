@@ -36,7 +36,7 @@ describe("'--prune' command line option", () => {
     },
   ];
 
-  testCases.forEach(({ args, testCase }) => {
+  for (const { args, testCase } of testCases) {
     test(testCase, async () => {
       const storeManifest = { $version: "0" };
       const storeUrl = new URL("./.store", fixtureUrl);
@@ -56,7 +56,7 @@ describe("'--prune' command line option", () => {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
-  });
+  }
 
   test("does nothing, if directory does not exist", async () => {
     await writeFixture(fixtureUrl, {

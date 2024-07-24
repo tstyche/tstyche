@@ -65,7 +65,7 @@ describe("integration", () => {
       },
     ];
 
-    testCases.forEach(({ testCase, identifier }) => {
+    for (const { testCase, identifier } of testCases) {
       test(testCase, async () => {
         const testFile = new tstyche.TestFile(identifier);
 
@@ -75,9 +75,9 @@ describe("integration", () => {
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
         assert.deepEqual(result?.testCount, { failed: 1, passed: 1, skipped: 1, todo: 1 });
       });
-    });
+    }
 
-    testCases.forEach(({ testCase, identifier }) => {
+    for (const { testCase, identifier } of testCases) {
       test(`${testCase} with position is pointing to 'expect'`, async () => {
         const position = isWindows ? 73 : 70;
         const testFile = new tstyche.TestFile(identifier, position);
@@ -88,9 +88,9 @@ describe("integration", () => {
         assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
         assert.deepEqual(result?.testCount, { failed: 0, passed: 0, skipped: 3, todo: 1 });
       });
-    });
+    }
 
-    testCases.forEach(({ testCase, identifier }) => {
+    for (const { testCase, identifier } of testCases) {
       test(`${testCase} with position is pointing to 'expect.skip'`, async () => {
         const position = isWindows ? 273 : 261;
         const testFile = new tstyche.TestFile(identifier, position);
@@ -101,9 +101,9 @@ describe("integration", () => {
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
         assert.deepEqual(result?.testCount, { failed: 0, passed: 0, skipped: 3, todo: 1 });
       });
-    });
+    }
 
-    testCases.forEach(({ testCase, identifier }) => {
+    for (const { testCase, identifier } of testCases) {
       test(`${testCase} with position is pointing to 'test'`, async () => {
         const position = isWindows ? 43 : 41;
         const testFile = new tstyche.TestFile(identifier, position);
@@ -114,9 +114,9 @@ describe("integration", () => {
         assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
         assert.deepEqual(result?.testCount, { failed: 0, passed: 1, skipped: 2, todo: 1 });
       });
-    });
+    }
 
-    testCases.forEach(({ testCase, identifier }) => {
+    for (const { testCase, identifier } of testCases) {
       test(`${testCase} with position is pointing to 'test.skip'`, async () => {
         const position = isWindows ? 117 : 111;
         const testFile = new tstyche.TestFile(identifier, position);
@@ -127,7 +127,7 @@ describe("integration", () => {
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
         assert.deepEqual(result?.testCount, { failed: 1, passed: 0, skipped: 2, todo: 1 });
       });
-    });
+    }
   });
 
   describe("configuration options", () => {

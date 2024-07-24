@@ -17,35 +17,40 @@ describe("'testFileMatch' configuration file option", () => {
     await clearFixture(fixtureUrl);
   });
 
-  const testCases = [
-    {
-      segment: "/",
-      testCase: "when a pattern starts with '/'",
-    },
-    {
-      segment: "../",
-      testCase: "when a pattern starts with '../'",
-    },
-  ];
-
-  testCases.forEach(({ segment, testCase }, index) => {
-    test(testCase, async () => {
-      await writeFixture(fixtureUrl, {
-        ["__typetests__/dummy.test.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify({ testFileMatch: [`${segment}feature`] }, null, 2),
-      });
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-      assert.equal(stdout, "");
-
-      await assert.matchSnapshot(stderr, {
-        fileName: `${testFileName}-cannot-start-with-${index}`,
-        testFileUrl: import.meta.url,
-      });
-
-      assert.equal(exitCode, 1);
+  test("when a pattern starts with '/'", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify({ testFileMatch: ["/feature"] }, null, 2),
     });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stdout, "");
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-cannot-start-with-slash`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  test("when a pattern starts with '../'", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify({ testFileMatch: ["../feature"] }, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stdout, "");
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-cannot-start-with-dot-dot-slash`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
   test("when option value is not a list", async () => {

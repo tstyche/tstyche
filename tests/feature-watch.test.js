@@ -107,7 +107,7 @@ describe("watch", () => {
       },
     ];
 
-    exitTestCases.forEach(({ key, testCase }) => {
+    for (const { key, testCase } of exitTestCases) {
       test(testCase, async () => {
         const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
@@ -124,7 +124,7 @@ describe("watch", () => {
         assert.equal(stderr, "");
         assert.equal(exitCode, 0);
       });
-    });
+    }
 
     const runAllTestCases = [
       {
@@ -145,7 +145,7 @@ describe("watch", () => {
       },
     ];
 
-    runAllTestCases.forEach(({ key, testCase }) => {
+    for (const { key, testCase } of runAllTestCases) {
       test(testCase, async () => {
         const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
 
@@ -165,7 +165,7 @@ describe("watch", () => {
         assert.equal(stderr, "");
         assert.equal(exitCode, 0);
       });
-    });
+    }
   });
 
   describe("test file changes", () => {

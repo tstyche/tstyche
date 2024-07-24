@@ -135,7 +135,7 @@ describe("TypeScript 4.x", () => {
 
   const testCases = ["4.0.2", "4.0.8", "4.1.6", "4.2.4", "4.3.5", "4.4.4", "4.5.5", "4.6.4", "4.7.4", "4.8.4", "4.9.5"];
 
-  testCases.forEach((version) => {
+  for (const version of testCases) {
     test(`uses TypeScript ${version} as current target`, async () => {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
@@ -149,7 +149,7 @@ describe("TypeScript 4.x", () => {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
-  });
+  }
 });
 
 describe("TypeScript 5.x", () => {
@@ -184,7 +184,7 @@ describe("TypeScript 5.x", () => {
 
   const testCases = ["5.0.2", ...versionTags];
 
-  testCases.forEach((version) => {
+  for (const version of testCases) {
     test(`uses TypeScript ${version} as current target`, async () => {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
@@ -198,5 +198,5 @@ describe("TypeScript 5.x", () => {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
-  });
+  }
 });

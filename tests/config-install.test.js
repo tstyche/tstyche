@@ -47,7 +47,7 @@ describe("'--install' command line option", () => {
     },
   ];
 
-  testCases.forEach(({ args, testCase }) => {
+  for (const { args, testCase } of testCases) {
     test(testCase, async () => {
       const config = { target: ["5.0", "latest"] };
 
@@ -67,7 +67,7 @@ describe("'--install' command line option", () => {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
-  });
+  }
 
   test("when 'target' configuration option is specified", async () => {
     const config = { target: ["4.8", "5.0"] };
