@@ -9,8 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeNever' implementation", () => {
-  tstyche.expect(/** @type {never} */(null)).type.toBeNever();
-  tstyche.expect(/** @type {any} */(null)).type.not.toBeNever();
+  tstyche.expect(/** @type {never} */ (null)).type.toBeNever();
+  tstyche.expect(/** @type {any} */ (null)).type.not.toBeNever();
 });
 
 await test("toBeNever", async () => {

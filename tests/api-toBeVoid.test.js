@@ -9,7 +9,7 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeVoid' implementation", () => {
-  tstyche.expect(/** @type {void} */(void 0)).type.toBeVoid();
+  tstyche.expect(/** @type {void} */ (void 0)).type.toBeVoid();
   tstyche.expect(null).type.not.toBeVoid();
 });
 

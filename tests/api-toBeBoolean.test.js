@@ -9,7 +9,7 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeBoolean' implementation", () => {
-  tstyche.expect(/** @type {boolean} */(true)).type.toBeBoolean();
+  tstyche.expect(/** @type {boolean} */ (true)).type.toBeBoolean();
   tstyche.expect(123).type.not.toBeBoolean();
 });
 

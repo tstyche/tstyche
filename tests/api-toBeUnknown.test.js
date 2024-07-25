@@ -9,8 +9,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeUnknown' implementation", () => {
-  tstyche.expect(/** @type {unknown} */(null)).type.toBeUnknown();
-  tstyche.expect(/** @type {never} */(null)).type.not.toBeUnknown();
+  tstyche.expect(/** @type {unknown} */ (null)).type.toBeUnknown();
+  tstyche.expect(/** @type {never} */ (null)).type.not.toBeUnknown();
 });
 
 await test("toBeUnknown", async () => {

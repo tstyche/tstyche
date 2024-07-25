@@ -9,7 +9,7 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeNumber' implementation", () => {
-  tstyche.expect(/** @type {number} */(123)).type.toBeNumber();
+  tstyche.expect(/** @type {number} */ (123)).type.toBeNumber();
   tstyche.expect("123").type.not.toBeNumber();
 });
 
