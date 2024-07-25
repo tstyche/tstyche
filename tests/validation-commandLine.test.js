@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -13,12 +13,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'tstyche' command", () => {
+await describe("'tstyche' command", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("handles unknown command line options", async () => {
+  await test("handles unknown command line options", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--check", "--quick", "-t"]);
@@ -33,7 +33,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when no test files are present", async () => {
+  await test("when no test files are present", async () => {
     await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: "{}",
     });
@@ -50,7 +50,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when search string does not select test files", async () => {
+  await test("when search string does not select test files", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.tst.ts"]: isStringTestText,
     });

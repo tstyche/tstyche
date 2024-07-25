@@ -1,4 +1,4 @@
-import { test } from "mocha";
+import { test } from "poku";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -9,11 +9,11 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeAny' implementation", () => {
-  tstyche.expect(/** @type {any} */ (null)).type.toBeAny();
-  tstyche.expect(/** @type {never} */ (null)).type.not.toBeAny();
+  tstyche.expect(/** @type {any} */(null)).type.toBeAny();
+  tstyche.expect(/** @type {never} */(null)).type.not.toBeAny();
 });
 
-test("toBeAny", async () => {
+await test("toBeAny", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

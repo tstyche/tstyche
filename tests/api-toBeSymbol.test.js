@@ -1,4 +1,4 @@
-import { test } from "mocha";
+import { test } from "poku";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -13,7 +13,7 @@ test("'toBeSymbol' implementation", () => {
   tstyche.expect(true).type.not.toBeSymbol();
 });
 
-test("toBeSymbol", async () => {
+await test("toBeSymbol", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

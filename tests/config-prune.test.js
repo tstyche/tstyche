@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -12,7 +12,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--prune' command line option", () => {
+await describe("'--prune' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -37,7 +37,7 @@ describe("'--prune' command line option", () => {
   ];
 
   for (const { args, testCase } of testCases) {
-    test(testCase, async () => {
+    await test(testCase, async () => {
       const storeManifest = { $version: "0" };
       const storeUrl = new URL("./.store", fixtureUrl);
 
@@ -58,7 +58,7 @@ describe("'--prune' command line option", () => {
     });
   }
 
-  test("does nothing, if directory does not exist", async () => {
+  await test("does nothing, if directory does not exist", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });

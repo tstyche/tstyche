@@ -1,4 +1,4 @@
-import { test } from "mocha";
+import { test } from "poku";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -9,11 +9,11 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeString' implementation", () => {
-  tstyche.expect(/** @type {string} */ ("sample")).type.toBeString();
+  tstyche.expect(/** @type {string} */("sample")).type.toBeString();
   tstyche.expect(true).type.not.toBeString();
 });
 
-test("toBeString", async () => {
+await test("toBeString", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

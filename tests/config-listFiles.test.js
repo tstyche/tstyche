@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -19,12 +19,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--listFiles' command line option", () => {
+await describe("'--listFiles' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("lists test files", async () => {
+  await test("lists test files", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -42,7 +42,7 @@ describe("'--listFiles' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified before the option", async () => {
+  await test("when search string is specified before the option", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -60,7 +60,7 @@ describe("'--listFiles' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified after the option", async () => {
+  await test("when search string is specified after the option", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -78,7 +78,7 @@ describe("'--listFiles' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'testFileMatch' is specified as an empty list", async () => {
+  await test("when 'testFileMatch' is specified as an empty list", async () => {
     const config = {
       testFileMatch: [],
     };

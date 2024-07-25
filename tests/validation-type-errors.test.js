@@ -1,4 +1,4 @@
-import { test } from "mocha";
+import { test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("handles top level type errors", async () => {
+await test("handles top level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["top-level"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -23,7 +23,7 @@ test("handles top level type errors", async () => {
   assert.equal(exitCode, 1);
 });
 
-test("handles describe level type errors", async () => {
+await test("handles describe level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["describe-level"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -39,7 +39,7 @@ test("handles describe level type errors", async () => {
   assert.equal(exitCode, 1);
 });
 
-test("handles test level type errors", async () => {
+await test("handles test level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-level"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -55,7 +55,7 @@ test("handles test level type errors", async () => {
   assert.equal(exitCode, 1);
 });
 
-test("handles matcher level type errors", async () => {
+await test("handles matcher level type errors", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["matcher-level"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

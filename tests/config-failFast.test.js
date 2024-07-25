@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -21,12 +21,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--failFast' command line option", () => {
+await describe("'--failFast' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("stops running tests after the first failure", async () => {
+  await test("stops running tests after the first failure", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -48,7 +48,7 @@ describe("'--failFast' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'true' is specified as a value", async () => {
+  await test("when 'true' is specified as a value", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -70,7 +70,7 @@ describe("'--failFast' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'false' is specified as a value", async () => {
+  await test("when 'false' is specified as a value", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -92,7 +92,7 @@ describe("'--failFast' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when the option is specified several times", async () => {
+  await test("when the option is specified several times", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -114,7 +114,7 @@ describe("'--failFast' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when search string is specified before the option", async () => {
+  await test("when search string is specified before the option", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -136,7 +136,7 @@ describe("'--failFast' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when search string is specified after the option", async () => {
+  await test("when search string is specified after the option", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -158,7 +158,7 @@ describe("'--failFast' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("overrides configuration file option, when it is set to 'true'", async () => {
+  await test("overrides configuration file option, when it is set to 'true'", async () => {
     const config = {
       failFast: true,
     };
@@ -184,7 +184,7 @@ describe("'--failFast' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("overrides configuration file option, when it is set to 'false'", async () => {
+  await test("overrides configuration file option, when it is set to 'false'", async () => {
     const config = {
       failFast: false,
     };
@@ -211,12 +211,12 @@ describe("'--failFast' command line option", () => {
   });
 });
 
-describe("'failFast' configuration file option", () => {
+await describe("'failFast' configuration file option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("stops running tests after the first failure", async () => {
+  await test("stops running tests after the first failure", async () => {
     const config = {
       failFast: true,
     };
@@ -242,7 +242,7 @@ describe("'failFast' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("does not stop running tests after the first failure", async () => {
+  await test("does not stop running tests after the first failure", async () => {
     const config = {
       failFast: false,
     };

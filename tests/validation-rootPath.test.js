@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -7,12 +7,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'rootPath' configuration file option", () => {
+await describe("'rootPath' configuration file option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when specified path does not exist", async () => {
+  await test("when specified path does not exist", async () => {
     const config = {
       rootPath: "../nope",
     };
@@ -33,7 +33,7 @@ describe("'rootPath' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when specified value is not string", async () => {
+  await test("when specified value is not string", async () => {
     const config = {
       rootPath: true,
     };

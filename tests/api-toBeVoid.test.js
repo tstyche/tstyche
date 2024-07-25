@@ -1,4 +1,4 @@
-import { test } from "mocha";
+import { test } from "poku";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -9,11 +9,11 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("'toBeVoid' implementation", () => {
-  tstyche.expect(/** @type {void} */ (void 0)).type.toBeVoid();
+  tstyche.expect(/** @type {void} */(void 0)).type.toBeVoid();
   tstyche.expect(null).type.not.toBeVoid();
 });
 
-test("toBeVoid", async () => {
+await test("toBeVoid", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

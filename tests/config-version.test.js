@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { after, before, describe, test } from "mocha";
+import { describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -10,14 +10,8 @@ const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfig
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--version' command line option", () => {
-  before(async () => {
-    await writeFixture(fixtureUrl);
-  });
-
-  after(async () => {
-    await clearFixture(fixtureUrl);
-  });
+await describe("'--version' command line option", async () => {
+  await writeFixture(fixtureUrl);
 
   const testCases = [
     {
@@ -39,7 +33,7 @@ describe("'--version' command line option", () => {
   ];
 
   for (const { args, testCase } of testCases) {
-    test(testCase, async () => {
+    await test(testCase, async () => {
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
       assert.equal(stdout, `${version}\n`);
@@ -47,4 +41,6 @@ describe("'--version' command line option", () => {
       assert.equal(exitCode, 0);
     });
   }
+
+  await clearFixture(fixtureUrl);
 });

@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -12,7 +12,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("store", () => {
+await describe("store", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -22,7 +22,7 @@ describe("store", () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when fetching of metadata from the registry times out", async () => {
+  await test("when fetching of metadata from the registry times out", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -43,7 +43,7 @@ describe("store", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when installing 'typescript' times out", async () => {
+  await test("when installing 'typescript' times out", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -66,7 +66,7 @@ describe("store", () => {
     assert.equal(exitCode, 1);
   });
 
-  describe("warns if resolution of a tag may be outdated", () => {
+  await describe("warns if resolution of a tag may be outdated", async () => {
     const testCases = [
       {
         target: "5.3.4",
@@ -104,7 +104,7 @@ describe("store", () => {
     ];
 
     for (const { target, testCase } of testCases) {
-      test(testCase, async () => {
+      await test(testCase, async () => {
         const storeManifest = {
           $version: "1",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
@@ -141,7 +141,7 @@ describe("store", () => {
     }
   });
 
-  describe("does not warn if resolution of a tag may be outdated", () => {
+  await describe("does not warn if resolution of a tag may be outdated", async () => {
     const testCases = [
       {
         target: "5.3.3",
@@ -158,7 +158,7 @@ describe("store", () => {
     ];
 
     for (const { target, testCase } of testCases) {
-      test(testCase, async () => {
+      await test(testCase, async () => {
         const storeManifest = {
           $version: "1",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
