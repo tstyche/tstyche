@@ -30,7 +30,7 @@ jobs:
       - uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
         with:
           name: build-${{ github.sha }}
-          path: build/
+          path: build
 
   check:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -49,7 +49,7 @@ jobs:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
-          path: build/
+          path: build
       - run: yarn check:spelling
       - run: yarn check:types
 
@@ -70,7 +70,7 @@ jobs:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
-          path: build/
+          path: build
       - run: yarn biome ci --error-on-warnings
 
   test-types:
@@ -90,7 +90,7 @@ jobs:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
-          path: build/
+          path: build
       - run: yarn test:types --target 4.7,5.0,current
       - run: yarn test:examples --target 4.7,5.0,current
       - run: yarn tstyche tests/*.js --target current
@@ -118,7 +118,7 @@ jobs:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
-          path: build/
+          path: build
       - run: yarn test
 
   test-os:
@@ -143,7 +143,7 @@ jobs:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
-          path: build/
+          path: build
       - run: yarn test
 
   coverage-collect:
@@ -168,7 +168,7 @@ jobs:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
-          path: build/
+          path: build
       - run: yarn test:e2e
         env:
           NODE_V8_COVERAGE: coverage/v8-coverage
@@ -199,7 +199,7 @@ jobs:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: build-${{ github.sha }}
-          path: build/
+          path: build
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           merge-multiple: true
@@ -213,3 +213,4 @@ jobs:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
           COMMIT_SHA: ${{ github.sha }}
           COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          FORCE_COLOR: true
