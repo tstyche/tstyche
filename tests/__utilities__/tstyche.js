@@ -14,7 +14,6 @@ export async function spawnTyche(fixtureUrl, args, options) {
         ...process.env,
         ["TSTYCHE_NO_COLOR"]: "true",
         ["TSTYCHE_STORE_PATH"]: "./.store",
-        ["TSTYCHE_TIMEOUT"]: process.env["CI"] === "true" ? "60" : undefined,
         ...options?.env,
       },
       shell: true,
