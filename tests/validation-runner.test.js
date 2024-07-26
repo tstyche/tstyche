@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -13,12 +13,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("compiler options", () => {
+await describe("compiler options", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when TSConfig file has errors", async () => {
+  await test("when TSConfig file has errors", async () => {
     const tsconfig = {
       compilerOptions: {
         noEmitOnError: true,

@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -14,7 +14,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
+await describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -24,7 +24,7 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("has default value", async () => {
+  await test("has default value", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -37,7 +37,7 @@ describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("uses provided path", async () => {
+  await test("uses provided path", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });

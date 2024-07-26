@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -12,12 +12,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'testFileMatch' configuration file option", () => {
+await describe("'testFileMatch' configuration file option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when a pattern starts with '/'", async () => {
+  await test("when a pattern starts with '/'", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tstyche.config.json"]: JSON.stringify({ testFileMatch: ["/feature"] }, null, 2),
@@ -35,7 +35,7 @@ describe("'testFileMatch' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when a pattern starts with '../'", async () => {
+  await test("when a pattern starts with '../'", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tstyche.config.json"]: JSON.stringify({ testFileMatch: ["../feature"] }, null, 2),
@@ -53,7 +53,7 @@ describe("'testFileMatch' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when option value is not a list", async () => {
+  await test("when option value is not a list", async () => {
     const config = {
       testFileMatch: "feature",
     };
@@ -75,7 +75,7 @@ describe("'testFileMatch' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when item of the list is not a string", async () => {
+  await test("when item of the list is not a string", async () => {
     const config = {
       testFileMatch: ["examples/*", false],
     };

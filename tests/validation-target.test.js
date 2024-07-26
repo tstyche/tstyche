@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -12,7 +12,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--target' command line option", () => {
+await describe("'--target' command line option", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -22,7 +22,7 @@ describe("'--target' command line option", () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when option value is missing", async () => {
+  await test("when option value is missing", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -42,7 +42,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when not supported version is specified", async () => {
+  await test("when not supported version is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -62,7 +62,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'current' is specified, but TypeScript is not installed", async () => {
+  await test("when 'current' is specified, but TypeScript is not installed", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -85,7 +85,7 @@ describe("'--target' command line option", () => {
   });
 });
 
-describe("'target' configuration file option", () => {
+await describe("'target' configuration file option", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -95,7 +95,7 @@ describe("'target' configuration file option", () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when option value is not a list", async () => {
+  await test("when option value is not a list", async () => {
     const config = {
       target: "current",
     };
@@ -117,7 +117,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when item of the list is not a string", async () => {
+  await test("when item of the list is not a string", async () => {
     const config = {
       target: ["4.8", 5],
     };
@@ -139,7 +139,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when not supported version is specified", async () => {
+  await test("when not supported version is specified", async () => {
     const config = {
       target: ["new"],
     };
@@ -164,7 +164,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("when 'current' is specified, but TypeScript is not installed", async () => {
+  await test("when 'current' is specified, but TypeScript is not installed", async () => {
     const config = {
       target: ["current"],
     };

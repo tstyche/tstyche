@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -19,12 +19,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'tstyche' command", () => {
+await describe("'tstyche' command", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when called without arguments, selects all matching files", async () => {
+  await test("when called without arguments, selects all matching files", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -43,7 +43,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when single search string is provided, selects matching files", async () => {
+  await test("when single search string is provided, selects matching files", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -62,7 +62,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when multiple search strings are provided, selects matching files", async () => {
+  await test("when multiple search strings are provided, selects matching files", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -85,7 +85,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when relative search string is provided, selects matching files", async () => {
+  await test("when relative search string is provided, selects matching files", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -104,7 +104,7 @@ describe("'tstyche' command", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("only the files matched by the 'testFileMatch' patterns are selected", async () => {
+  await test("only the files matched by the 'testFileMatch' patterns are selected", async () => {
     const config = {
       testFileMatch: ["**/feature/__tests__/**.*"],
     };

@@ -7,7 +7,6 @@
   "editor.rulers": [80, 120],
   "files.associations": {
     "cspell.config.json": "jsonc",
-    "mocha.config.json": "jsonc",
     "tstyche.config.json": "jsonc"
   },
   "typescript.preferences.importModuleSpecifierEnding": "js",

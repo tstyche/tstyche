@@ -1,4 +1,4 @@
-import { describe, test } from "mocha";
+import { describe, test } from "poku";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -15,13 +15,13 @@ function Item(props) {
   return `${props.name}: ${props.quantity}`;
 }
 
-describe("toAcceptProps", () => {
+await describe("toAcceptProps", async () => {
   test("implementation", () => {
     tstyche.expect(Item).type.toAcceptProps({ name: "one", quantity: "2" });
     tstyche.expect(Item).type.not.toAcceptProps({});
   });
 
-  test("function components", async () => {
+  await test("function components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["function-components"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -37,7 +37,7 @@ describe("toAcceptProps", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("class components", async () => {
+  await test("class components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["class-components"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -53,7 +53,7 @@ describe("toAcceptProps", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("overloaded components", async () => {
+  await test("overloaded components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overloaded-components"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -69,7 +69,7 @@ describe("toAcceptProps", () => {
     assert.equal(exitCode, 1);
   });
 
-  test("special cases", async () => {
+  await test("special cases", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["special-cases"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {

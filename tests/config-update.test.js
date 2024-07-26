@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--update' command line option", () => {
+await describe("'--update' command line option", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -37,7 +37,7 @@ describe("'--update' command line option", () => {
   ];
 
   for (const { args, testCase } of testCases) {
-    test(testCase, async () => {
+    await test(testCase, async () => {
       const storeUrl = new URL("./.store", fixtureUrl);
 
       await writeFixture(fixtureUrl);
@@ -54,7 +54,7 @@ describe("'--update' command line option", () => {
     });
   }
 
-  test("updates existing store manifest", async () => {
+  await test("updates existing store manifest", async () => {
     const oldStoreManifest = JSON.stringify({
       $version: "1",
       lastUpdated: Date.now(), // this is considered fresh during regular test run

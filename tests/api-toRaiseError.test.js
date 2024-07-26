@@ -1,4 +1,4 @@
-import { test } from "mocha";
+import { test } from "poku";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -17,7 +17,7 @@ test("'toRaiseError' implementation", () => {
   tstyche.expect(check()).type.not.toRaiseError();
 });
 
-test("toRaiseError", async () => {
+await test("toRaiseError", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

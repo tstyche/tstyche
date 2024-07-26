@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -18,7 +18,7 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--install' command line option", () => {
+await describe("'--install' command line option", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -48,7 +48,7 @@ describe("'--install' command line option", () => {
   ];
 
   for (const { args, testCase } of testCases) {
-    test(testCase, async () => {
+    await test(testCase, async () => {
       const config = { target: ["5.0", "latest"] };
 
       await writeFixture(fixtureUrl, {
@@ -69,7 +69,7 @@ describe("'--install' command line option", () => {
     });
   }
 
-  test("when 'target' configuration option is specified", async () => {
+  await test("when 'target' configuration option is specified", async () => {
     const config = { target: ["4.8", "5.0"] };
 
     await writeFixture(fixtureUrl, {
@@ -93,7 +93,7 @@ describe("'--install' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' target specified in the configuration file", async () => {
+  await test("when 'current' target specified in the configuration file", async () => {
     const config = { target: ["current"] };
 
     await writeFixture(fixtureUrl, {
@@ -109,7 +109,7 @@ describe("'--install' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' target specified in the command", async () => {
+  await test("when 'current' target specified in the command", async () => {
     const config = { target: ["5.0", "latest"] };
 
     await writeFixture(fixtureUrl, {

@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -24,7 +24,7 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--target' command line option", () => {
+await describe("'--target' command line option", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -34,7 +34,7 @@ describe("'--target' command line option", () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when single target is specified", async () => {
+  await test("when single target is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -52,7 +52,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when multiple targets are specified", async () => {
+  await test("when multiple targets are specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -70,7 +70,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' tag is specified", async () => {
+  await test("when 'current' tag is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -88,7 +88,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'target' configuration file option is specified", async () => {
+  await test("when 'target' configuration file option is specified", async () => {
     const config = {
       target: ["4.8", "current"],
     };
@@ -110,7 +110,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified before the option", async () => {
+  await test("when search string is specified before the option", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -128,7 +128,7 @@ describe("'--target' command line option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when search string is specified after the option", async () => {
+  await test("when search string is specified after the option", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -147,7 +147,7 @@ describe("'--target' command line option", () => {
   });
 });
 
-describe("'target' configuration file option", () => {
+await describe("'target' configuration file option", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -157,7 +157,7 @@ describe("'target' configuration file option", () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when single target is specified", async () => {
+  await test("when single target is specified", async () => {
     const config = {
       target: ["4.8"],
     };
@@ -179,7 +179,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when multiple targets are specified", async () => {
+  await test("when multiple targets are specified", async () => {
     const config = {
       target: ["4.8", "5.3.2", "current"],
     };
@@ -201,7 +201,7 @@ describe("'target' configuration file option", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when 'current' tag is specified", async () => {
+  await test("when 'current' tag is specified", async () => {
     const config = {
       target: ["current"],
     };

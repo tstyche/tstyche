@@ -1,4 +1,4 @@
-import { test } from "mocha";
+import { test } from "poku";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -13,7 +13,7 @@ test("'toMatch' implementation", () => {
   tstyche.expect({ one: true }).type.not.toMatch({ two: false });
 });
 
-test("toMatch", async () => {
+await test("toMatch", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

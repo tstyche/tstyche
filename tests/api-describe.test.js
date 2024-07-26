@@ -1,4 +1,4 @@
-import { test } from "mocha";
+import { test } from "poku";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -32,7 +32,7 @@ test("'describe.only' implementation'", () => {
   });
 });
 
-test("describe.only", async () => {
+await test("describe.only", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -50,7 +50,7 @@ test("'describe.skip' implementation'", () => {
   });
 });
 
-test("describe.skip", async () => {
+await test("describe.skip", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -69,7 +69,7 @@ test("'describe.todo' implementation'", () => {
   });
 });
 
-test("describe.todo", async () => {
+await test("describe.todo", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {

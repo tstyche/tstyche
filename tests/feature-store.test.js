@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { afterEach, describe, test } from "mocha";
+import { afterEach, describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -13,7 +13,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("store", () => {
+await describe("store", async () => {
   if (process.versions.node.startsWith("16")) {
     // store is not supported on Node.js 16
     return;
@@ -23,7 +23,7 @@ describe("store", () => {
     await clearFixture(fixtureUrl);
   });
 
-  test("when compiler module is not installed", async () => {
+  await test("when compiler module is not installed", async () => {
     const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -41,7 +41,7 @@ describe("store", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when compiler module is already installed", async () => {
+  await test("when compiler module is already installed", async () => {
     const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -61,7 +61,7 @@ describe("store", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when target is default, store manifest is not generated", async () => {
+  await test("when target is default, store manifest is not generated", async () => {
     const storeUrl = new URL("./.store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -78,7 +78,7 @@ describe("store", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when target is 'current', store manifest is not generated", async () => {
+  await test("when target is 'current', store manifest is not generated", async () => {
     const storeUrl = new URL("./.store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -95,7 +95,7 @@ describe("store", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when target is specified, store manifest is generated", async () => {
+  await test("when target is specified, store manifest is generated", async () => {
     const storeUrl = new URL("./.store", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -112,7 +112,7 @@ describe("store", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when text is unparsable, store manifest is regenerated", async () => {
+  await test("when text is unparsable, store manifest is regenerated", async () => {
     const storeManifest = '{"$version":"1","last';
 
     await writeFixture(fixtureUrl, {
@@ -132,7 +132,7 @@ describe("store", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when '$version' is different, store manifest is regenerated", async () => {
+  await test("when '$version' is different, store manifest is regenerated", async () => {
     const storeManifest = { $version: "0" };
 
     await writeFixture(fixtureUrl, {
@@ -152,7 +152,7 @@ describe("store", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when is up to date, store manifest is not regenerated", async () => {
+  await test("when is up to date, store manifest is not regenerated", async () => {
     const storeManifest = JSON.stringify({
       $version: "1",
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
@@ -177,7 +177,7 @@ describe("store", () => {
     assert.equal(exitCode, 0);
   });
 
-  test("when is outdated, store manifest is regenerated", async () => {
+  await test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = JSON.stringify({
       $version: "1",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
