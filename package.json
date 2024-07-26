@@ -71,7 +71,7 @@
     "magic-string": "0.30.10",
     "mocha": "10.7.0",
     "monocart-coverage-reports": "2.9.3",
-    "poku": "2.2.2",
+    "poku": "2.2.3",
     "pretty-ansi": "2.0.0",
     "rollup": "4.19.0",
     "rollup-plugin-dts": "6.1.1",
