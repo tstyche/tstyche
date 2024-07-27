@@ -1335,13 +1335,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diff-sequences@npm:^29.6.3":
-  version: 29.6.3
-  resolution: "diff-sequences@npm:29.6.3"
-  checksum: f4914158e1f2276343d98ff5b31fc004e7304f5470bf0f1adb2ac6955d85a531a6458d33e87667f98f6ae52ebd3891bb47d420bb48a5bd8b7a27ee25b20e33aa
-  languageName: node
-  linkType: hard
-
 "eastasianwidth@npm:^0.2.0":
   version: 0.2.0
   resolution: "eastasianwidth@npm:0.2.0"
@@ -1898,10 +1891,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lz-utils@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "lz-utils@npm:2.0.2"
-  checksum: 7fead41441b45089be5259c34f824a278a90489a4fd2a45bd2e55324f44aa03794f275c72e795e531913c037f30ea29a5994b80fb750a56ce1a98a5ab7e50e6e
+"lz-utils@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "lz-utils@npm:2.1.0"
+  checksum: e9b2a5a7506d7ccf8ab8694dd10474df0502e6c1f9d37a7f599b6c516b079c7256c7323be9539b935d92b29430964c37173ef03190fa1c0e8ddb575478cfad2e
   languageName: node
   linkType: hard
 
@@ -1960,7 +1953,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:9.0.5, minimatch@npm:^9.0.4":
+"minimatch@npm:^9.0.4":
   version: 9.0.5
   resolution: "minimatch@npm:9.0.5"
   dependencies:
@@ -2062,16 +2055,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-code-viewer@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "monocart-code-viewer@npm:1.1.4"
-  checksum: 8f4e74244b0f114dbdcd7d5eef1c5b751909e136dbc899b4950f745316a6956fd8e2b8c7f69c62b0e0e4888513f33352821fd578357773c57e0a5b574cf698eb
-  languageName: node
-  linkType: hard
-
-"monocart-coverage-reports@npm:2.9.3":
-  version: 2.9.3
-  resolution: "monocart-coverage-reports@npm:2.9.3"
+"monocart-coverage-reports@npm:2.10.0":
+  version: 2.10.0
+  resolution: "monocart-coverage-reports@npm:2.10.0"
   dependencies:
     "@bcoe/v8-coverage": ^0.2.3
     "@jridgewell/sourcemap-codec": ^1.5.0
@@ -2080,28 +2066,16 @@ __metadata:
     acorn-walk: ^8.3.3
     commander: ^12.1.0
     console-grid: ^2.2.2
-    diff-sequences: ^29.6.3
     eight-colors: ^1.3.0
     foreground-child: ^3.2.1
     istanbul-lib-coverage: ^3.2.2
     istanbul-lib-report: ^3.0.1
     istanbul-reports: ^3.1.7
-    lz-utils: ^2.0.2
-    minimatch: 9.0.5
-    monocart-code-viewer: ^1.1.4
-    monocart-formatter: ^3.0.0
+    lz-utils: ^2.1.0
     monocart-locator: ^1.0.2
-    turbogrid: ^3.2.0
   bin:
     mcr: lib/cli.js
-  checksum: 180124d6172607db1aebe8852271aa2ce2589d814f96a6d72c64a43396cfc882bbd271a8890ed3af095f064d1311f23f4cef9843bc677014d68244c705c22751
-  languageName: node
-  linkType: hard
-
-"monocart-formatter@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "monocart-formatter@npm:3.0.0"
-  checksum: e5c82cfac39fc5150f059b67c999f96bda5d26ff7de35476f88e5ea83a60875f542fdbe00fd0c9816b2e1cbe6ec0edf0328979329111a85325cbd4afd1c51802
+  checksum: 742bb8424d380887bd74d3b07de3793625a7db503c96ef4d23aa37a69c0d1067d46e096bc40f37d0a77223bee42a37be4a88d00b9db795e2fde0d83ecd9f4ceb
   languageName: node
   linkType: hard
 
@@ -2614,7 +2588,7 @@ __metadata:
     ajv: 8.17.1
     cspell: 8.12.1
     magic-string: 0.30.10
-    monocart-coverage-reports: 2.9.3
+    monocart-coverage-reports: 2.10.0
     poku: 2.2.3
     pretty-ansi: 2.0.0
     rollup: 4.19.1
@@ -2630,13 +2604,6 @@ __metadata:
     tstyche: ./build/bin.js
   languageName: unknown
   linkType: soft
-
-"turbogrid@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "turbogrid@npm:3.2.0"
-  checksum: f98432d3051f36610dc86fbd7a831f3e90845efaa577bb554322506137ef56975c4bd30b5e186d580062f01c4fd29a997fdcf427f66e810f99ed08ce8642af05
-  languageName: node
-  linkType: hard
 
 "typescript@npm:5.5.4":
   version: 5.5.4
