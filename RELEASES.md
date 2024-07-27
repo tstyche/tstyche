@@ -1,5 +1,12 @@
 # Releases
 
+## [2.1.1] - 2024-07-27
+
+### Fixed
+
+- Mark warning locations in yellow ([#262](https://github.com/tstyche/tstyche/pull/262))
+- Support `toAcceptProps()` on TypeScript 4.5 and below ([#261](https://github.com/tstyche/tstyche/pull/261))
+
 ## [2.1.0] - 2024-07-15
 
 ### Fixed
@@ -266,6 +273,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[2.1.1]: https://github.com/tstyche/tstyche/releases/tag/v2.1.1
 [2.1.0]: https://github.com/tstyche/tstyche/releases/tag/v2.1.0
 [2.0.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0
 [2.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0-rc.2
