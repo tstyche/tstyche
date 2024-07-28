@@ -60,7 +60,7 @@ export class TaskRunner {
       const compiler = await this.#storeService.load(versionTag, cancellationToken);
 
       if (compiler) {
-        // TODO For better performance, test file runners (or even test projects) could be cached in the future
+        // TODO to improve performance, test file runners (or even test projects) could be cached in the future
         const testFileRunner = new TestFileRunner(this.#resolvedConfig, compiler);
 
         for (const testFile of testFiles) {
