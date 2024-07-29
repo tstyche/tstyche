@@ -8,14 +8,14 @@ export { doesNotMatch, strictEqual as equal, match, notStrictEqual as notEqual }
  * @param {string | URL} source
  */
 export function fileExists(source) {
-  assert.equal(existsSync(source), true, `File ${source.toString()} does not exist.`);
+  assert.equal(existsSync(source), true, `File ${source.toString()} exists.`);
 }
 
 /**
  * @param {string | URL} source
  */
-export function fileDoesNotExists(source) {
-  assert.equal(existsSync(source), false, `File ${source.toString()} exists.`);
+export function fileDoesNotExist(source) {
+  assert.equal(existsSync(source), false, `File ${source.toString()} does not exist.`);
 }
 
 /**
@@ -28,8 +28,8 @@ export function matchObject(source, target) {
   }
 
   for (const targetKey of Object.keys(target)) {
-    assert.equal(targetKey in source, true, `The '${targetKey}' property does not exist.`);
-    assert.deepEqual(source[targetKey], target[targetKey], `Values of the '${targetKey}' properties do not match.`);
+    assert.equal(targetKey in source, true, `Target has the '${targetKey}' property.`);
+    assert.deepEqual(source[targetKey], target[targetKey], `Values of the '${targetKey}' properties match.`);
   }
 }
 

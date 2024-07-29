@@ -126,7 +126,7 @@ await describe("'TSTYCHE_STORE_PATH' environment variable", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExist(storeUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
       env: {
