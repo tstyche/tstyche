@@ -10,19 +10,21 @@ import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
 import { PackageInstaller } from "./PackageInstaller.js";
+import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
   #packageInstaller: PackageInstaller;
+  #registry = "https://registry.npmjs.org";
   #storePath: string;
 
   constructor() {
     this.#storePath = Environment.storePath;
 
     this.#packageInstaller = new PackageInstaller(this.#storePath, this.#onDiagnostics);
-    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#onDiagnostics);
+    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#registry, this.#onDiagnostics);
   }
 
   async getSupportedTags(): Promise<Array<string>> {
@@ -43,7 +45,7 @@ export class StoreService {
     const version = await this.#resolveTag(tag);
 
     if (!version) {
-      this.#onDiagnostics(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
+      this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
 
       return;
     }
@@ -66,7 +68,7 @@ export class StoreService {
       const version = await this.#resolveTag(tag);
 
       if (!version) {
-        this.#onDiagnostics(Diagnostic.error(`Cannot add the 'typescript' package for the '${tag}' tag.`));
+        this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
 
         return;
       }
@@ -177,8 +179,8 @@ export class StoreService {
     ) {
       this.#onDiagnostics(
         Diagnostic.warning([
-          "Failed to update metadata of the 'typescript' package from the registry.",
-          `The resolution of the '${tag}' tag may be outdated.`,
+          StoreDiagnosticText.failedToUpdateMetadata(this.#registry),
+          StoreDiagnosticText.maybeOutdatedResolution(tag),
         ]),
       );
     }

@@ -23,13 +23,14 @@ export interface Manifest {
 export class ManifestWorker {
   #manifestFilePath: string;
   #onDiagnostics: DiagnosticsHandler;
-  #registryUrl = new URL("https://registry.npmjs.org");
+  #registry: string;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
   #version = "1";
 
-  constructor(storePath: string, onDiagnostics: DiagnosticsHandler) {
+  constructor(storePath: string, registry: string, onDiagnostics: DiagnosticsHandler) {
     this.#storePath = storePath;
+    this.#registry = registry;
     this.#onDiagnostics = onDiagnostics;
     this.#manifestFilePath = Path.join(storePath, "store-manifest.json");
   }
@@ -63,7 +64,7 @@ export class ManifestWorker {
     let packageMetadata: PackageMetadata | undefined;
 
     try {
-      const response = await fetch(new URL("typescript", this.#registryUrl), {
+      const response = await fetch(new URL("typescript", this.#registry), {
         // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
         headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
         signal: AbortSignal.timeout(this.#timeout),
@@ -72,7 +73,7 @@ export class ManifestWorker {
       if (!response.ok) {
         this.#onDiagnostics(
           Diagnostic.error([
-            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.failedToFetchMetadata(this.#registry),
             StoreDiagnosticText.failedWithStatusCode(response.status),
           ]),
         );
@@ -89,14 +90,14 @@ export class ManifestWorker {
       if (error instanceof Error && error.name === "TimeoutError") {
         this.#onDiagnostics(
           Diagnostic.error([
-            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.failedToFetchMetadata(this.#registry),
             StoreDiagnosticText.setupTimeoutExceeded(this.#timeout),
           ]),
         );
       } else {
         this.#onDiagnostics(
           Diagnostic.error([
-            StoreDiagnosticText.failedToFetchMetadata(this.#registryUrl),
+            StoreDiagnosticText.failedToFetchMetadata(this.#registry),
             StoreDiagnosticText.maybeNetworkConnectionIssue(),
           ]),
         );

@@ -34,7 +34,7 @@ await describe("store", async () => {
     });
 
     const expected = [
-      "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org/'.",
+      "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org'.",
       "",
       "Setup timeout of 0.001s was exceeded.",
     ].join("\n");
@@ -131,7 +131,7 @@ await describe("store", async () => {
         });
 
         const expected = [
-          "Warning: Failed to update metadata of the 'typescript' package from the registry.",
+          "Warning: Failed to update metadata of the 'typescript' package from 'https://registry.npmjs.org'.",
           "",
           `The resolution of the '${target}' tag may be outdated.`,
         ].join("\n");
