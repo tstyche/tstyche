@@ -37,13 +37,13 @@ await describe("'TSTYCHE_NPM_REGISTRY' environment variable", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.5.2"], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.4"], {
       env: {
         ["TSTYCHE_NPM_REGISTRY"]: "https://registry.yarnpkg.com",
       },
     });
 
-    assert.match(stdout, /^adds TypeScript 5.5.2/);
+    assert.match(stdout, /^adds TypeScript 5.4.5/);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
