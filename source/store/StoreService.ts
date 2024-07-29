@@ -17,14 +17,14 @@ export class StoreService {
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
   #packageInstaller: PackageInstaller;
-  #registry = "https://registry.npmjs.org";
+  #npmRegistry = Environment.npmRegistry;
   #storePath: string;
 
   constructor() {
     this.#storePath = Environment.storePath;
 
-    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#onDiagnostics);
-    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#registry, this.#onDiagnostics);
+    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#npmRegistry, this.#onDiagnostics);
+    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#npmRegistry, this.#onDiagnostics);
   }
 
   async getSupportedTags(): Promise<Array<string>> {
@@ -179,7 +179,7 @@ export class StoreService {
     ) {
       this.#onDiagnostics(
         Diagnostic.warning([
-          StoreDiagnosticText.failedToUpdateMetadata(this.#registry),
+          StoreDiagnosticText.failedToUpdateMetadata(this.#npmRegistry),
           StoreDiagnosticText.maybeOutdatedResolution(tag),
         ]),
       );

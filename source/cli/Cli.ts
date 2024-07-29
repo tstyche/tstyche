@@ -92,6 +92,7 @@ export class Cli {
           formattedText({
             noColor: Environment.noColor,
             noInteractive: Environment.noInteractive,
+            npmRegistry: Environment.npmRegistry,
             storePath: Environment.storePath,
             timeout: Environment.timeout,
             typescriptPath: Environment.typescriptPath,
