@@ -10,7 +10,6 @@ export interface IsLockedOptions {
 
 export class Lock {
   #lockFilePath: string;
-  static #lockSuffix = "__lock__";
 
   constructor(targetPath: string) {
     this.#lockFilePath = Lock.#getLockFilePath(targetPath);
@@ -23,11 +22,13 @@ export class Lock {
   }
 
   static #getLockFilePath(targetPath: string): string {
-    return `${targetPath}${Lock.#lockSuffix}`;
+    return `${targetPath}__lock__`;
   }
 
   static async isLocked(targetPath: string, options?: IsLockedOptions): Promise<boolean> {
-    let isLocked = existsSync(Lock.#getLockFilePath(targetPath));
+    const lockFilePath = Lock.#getLockFilePath(targetPath);
+
+    let isLocked = existsSync(lockFilePath);
 
     if (!isLocked) {
       return isLocked;
@@ -52,7 +53,7 @@ export class Lock {
 
       await Lock.#sleep(1000);
 
-      isLocked = existsSync(Lock.#getLockFilePath(targetPath));
+      isLocked = existsSync(lockFilePath);
     }
 
     return isLocked;

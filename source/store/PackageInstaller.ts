@@ -11,7 +11,6 @@ import type { DiagnosticsHandler } from "./types.js";
 
 export class PackageInstaller {
   #onDiagnostics: DiagnosticsHandler;
-  #readyFileName = "__ready__";
   #storePath: string;
   #timeout = Environment.timeout * 1000;
 
@@ -22,7 +21,7 @@ export class PackageInstaller {
 
   async ensure(compilerVersion: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
     const installationPath = Path.join(this.#storePath, compilerVersion);
-    const readyFilePath = Path.join(installationPath, this.#readyFileName);
+    const readyFilePath = Path.join(installationPath, "__ready__");
     const modulePath = Path.join(installationPath, "node_modules", "typescript", "lib", "typescript.js");
 
     if (existsSync(readyFilePath)) {

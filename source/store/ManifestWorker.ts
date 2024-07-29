@@ -21,7 +21,6 @@ export interface Manifest {
 }
 
 export class ManifestWorker {
-  #manifestFileName = "store-manifest.json";
   #manifestFilePath: string;
   #onDiagnostics: DiagnosticsHandler;
   #registryUrl = new URL("https://registry.npmjs.org");
@@ -32,7 +31,7 @@ export class ManifestWorker {
   constructor(storePath: string, onDiagnostics: DiagnosticsHandler) {
     this.#storePath = storePath;
     this.#onDiagnostics = onDiagnostics;
-    this.#manifestFilePath = Path.join(storePath, this.#manifestFileName);
+    this.#manifestFilePath = Path.join(storePath, "store-manifest.json");
   }
 
   async #create() {
@@ -139,17 +138,7 @@ export class ManifestWorker {
       return this.#create();
     }
 
-    let manifestText: string | undefined;
-
-    try {
-      manifestText = await fs.readFile(this.#manifestFilePath, { encoding: "utf8" });
-    } catch (error) {
-      this.#onDiagnostics(Diagnostic.fromError("Failed to open store manifest.", error));
-    }
-
-    if (!manifestText) {
-      return;
-    }
+    const manifestText = await fs.readFile(this.#manifestFilePath, { encoding: "utf8" });
 
     try {
       manifest = JSON.parse(manifestText) as Manifest;
