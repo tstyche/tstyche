@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
  * @param {URL} fixtureUrl
  */
 export async function clearFixture(fixtureUrl) {
-  await fs.rm(fixtureUrl, { force: true, recursive: true });
+  await fs.rm(fixtureUrl, { force: true, recursive: true, maxRetries: 4 });
 }
 
 /**
