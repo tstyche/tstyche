@@ -13,6 +13,11 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await describe("'--prune' command line option", async () => {
+  if (process.versions.node.startsWith("16")) {
+    // store is not supported on Node.js 16
+    return;
+  }
+
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -50,7 +55,7 @@ await describe("'--prune' command line option", async () => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-      assert.fileDoesNotExists(storeUrl);
+      assert.fileDoesNotExist(storeUrl);
 
       assert.equal(stdout, "");
       assert.equal(stderr, "");

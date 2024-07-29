@@ -37,7 +37,7 @@ await describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("uses provided path", async () => {
+  await test("when path is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
