@@ -30,7 +30,7 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.fileDoesNotExists(compilerModuleUrl);
+    assert.fileDoesNotExist(compilerModuleUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
@@ -48,7 +48,7 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.fileDoesNotExists(compilerModuleUrl);
+    assert.fileDoesNotExist(compilerModuleUrl);
 
     await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
@@ -68,11 +68,11 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExist(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
-    assert.fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExist(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -85,11 +85,11 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExist(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "current"]);
 
-    assert.fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExist(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -102,7 +102,7 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.fileDoesNotExists(storeUrl);
+    assert.fileDoesNotExist(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
