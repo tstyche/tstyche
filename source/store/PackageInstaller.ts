@@ -12,11 +12,13 @@ import type { DiagnosticsHandler } from "./types.js";
 
 export class PackageInstaller {
   #onDiagnostics: DiagnosticsHandler;
+  #npmRegistry: string;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
 
-  constructor(storePath: string, onDiagnostics: DiagnosticsHandler) {
+  constructor(storePath: string, npmRegistry: string, onDiagnostics: DiagnosticsHandler) {
     this.#storePath = storePath;
+    this.#npmRegistry = npmRegistry;
     this.#onDiagnostics = onDiagnostics;
   }
 
@@ -76,7 +78,14 @@ export class PackageInstaller {
   }
 
   async #install(cwd: string) {
-    const args = ["install", "--ignore-scripts", "--no-bin-links", "--no-package-lock"];
+    const args = [
+      "install",
+      "--ignore-scripts",
+      "--registry",
+      this.#npmRegistry,
+      "--no-bin-links",
+      "--no-package-lock",
+    ];
 
     return new Promise<void>((resolve, reject) => {
       const spawnedNpm = spawn("npm", args, {

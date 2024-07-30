@@ -7,6 +7,7 @@ export class Environment {
   static #isCi = Environment.#resolveIsCi();
   static #noColor = Environment.#resolveNoColor();
   static #noInteractive = Environment.#resolveNoInteractive();
+  static #npmRegistry = Environment.#resolveNpmRegistry();
   static #storePath = Environment.#resolveStorePath();
   static #timeout = Environment.#resolveTimeout();
   static #typescriptPath = Environment.#resolveTypeScriptPath();
@@ -30,6 +31,13 @@ export class Environment {
    */
   static get noInteractive(): boolean {
     return Environment.#noInteractive;
+  }
+
+  /**
+   * The base URL of the 'npm' registry to use.
+   */
+  static get npmRegistry(): string {
+    return Environment.#npmRegistry;
   }
 
   /**
@@ -79,6 +87,14 @@ export class Environment {
     }
 
     return !process.stdout.isTTY;
+  }
+
+  static #resolveNpmRegistry() {
+    if (process.env["TSTYCHE_NPM_REGISTRY"] != null) {
+      return process.env["TSTYCHE_NPM_REGISTRY"];
+    }
+
+    return "https://registry.npmjs.org";
   }
 
   static #resolveStorePath() {
