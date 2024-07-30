@@ -1,5 +1,5 @@
-import assert from "node:assert";
 import { fileURLToPath } from "node:url";
+import { assert } from "poku";
 import { afterEach, beforeEach, describe, test } from "poku";
 import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";

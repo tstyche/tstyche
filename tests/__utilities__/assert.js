@@ -2,20 +2,20 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { strict as assert } from "poku";
 
-export { doesNotMatch, strictEqual as equal, match, notStrictEqual as notEqual } from "node:assert";
+export const { doesNotMatch, equal, match, notEqual } = assert;
 
 /**
  * @param {string | URL} source
  */
 export function fileExists(source) {
-  assert.equal(existsSync(source), true, `File ${source.toString()} exists.`);
+  assert(existsSync(source), `File ${source.toString()} exists.`);
 }
 
 /**
  * @param {string | URL} source
  */
 export function fileDoesNotExist(source) {
-  assert.equal(existsSync(source), false, `File ${source.toString()} does not exist.`);
+  assert(!existsSync(source), `File ${source.toString()} does not exist.`);
 }
 
 /**
