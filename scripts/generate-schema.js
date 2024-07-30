@@ -1,16 +1,14 @@
 import fs from "node:fs/promises";
+import process from "node:process";
 import * as tstyche from "tstyche/tstyche";
 
 /**
  * @typedef {object} JsonSchemaDefinition
- * @property {string} [$ref]
  * @property {boolean} [additionalProperties]
  * @property {unknown} [default]
  * @property {string} [description]
  * @property {JsonSchemaDefinition} [items]
  * @property {string} [pattern]
- * @property {Record<string, JsonSchemaDefinition>} [properties]
- * @property {Array<string>} [required]
  * @property {string | Array<string>} type
  * @property {boolean} [uniqueItems]
  */
@@ -18,7 +16,6 @@ import * as tstyche from "tstyche/tstyche";
 /**
  * @typedef {object} JsonSchema
  * @property {string} $schema
- * @property {Record<string, JsonSchemaDefinition>} definitions
  * @property {Record<string, JsonSchemaDefinition>} properties
  * @property {string} type
  */
@@ -26,7 +23,6 @@ import * as tstyche from "tstyche/tstyche";
 /** @type {JsonSchema} */
 const jsonSchema = {
   $schema: "http://json-schema.org/draft-07/schema#",
-  definitions: {},
   properties: {},
   type: "object",
 };
@@ -52,56 +48,28 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
   }
 
   switch (optionDefinition.brand) {
-    case tstyche.OptionBrand.Boolean:
-      jsonSchemaDefinition.type = optionDefinition.nullable === true ? ["boolean", "null"] : "boolean";
+    case tstyche.OptionBrand.Boolean: {
+      jsonSchemaDefinition.type = "boolean";
       break;
+    }
 
-    case tstyche.OptionBrand.List:
+    case tstyche.OptionBrand.List: {
       jsonSchemaDefinition.items = createJsonSchemaDefinition(optionDefinition.items);
 
       jsonSchemaDefinition.type = "array";
       jsonSchemaDefinition.uniqueItems = true;
       break;
+    }
 
-    case tstyche.OptionBrand.Number:
-      jsonSchemaDefinition.type = optionDefinition.nullable === true ? ["number", "null"] : "number";
+    case tstyche.OptionBrand.Number: {
+      jsonSchemaDefinition.type = "number";
       break;
+    }
 
-    case tstyche.OptionBrand.Object:
-      {
-        if (!optionDefinition.properties) {
-          break;
-        }
-
-        const definitionKey = `${optionDefinition.name}Options`;
-        jsonSchemaDefinition.$ref = `#/definitions/${definitionKey}`;
-
-        /** @type {Record<string, JsonSchemaDefinition>} */
-        const propertyDefinitions = {};
-
-        /** @type {Array<string>} */
-        const required = [];
-
-        for (const property of optionDefinition.properties) {
-          propertyDefinitions[property.name] = createJsonSchemaDefinition(property);
-
-          if (property.required === true) {
-            required.push(property.name);
-          }
-        }
-
-        jsonSchema.definitions[definitionKey] = {
-          additionalProperties: false,
-          properties: propertyDefinitions,
-          required,
-          type: "object",
-        };
-      }
+    case tstyche.OptionBrand.String: {
+      jsonSchemaDefinition.type = "string";
       break;
-
-    case tstyche.OptionBrand.String:
-      jsonSchemaDefinition.type = optionDefinition.nullable === true ? ["string", "null"] : "string";
-      break;
+    }
 
     default:
       break;
@@ -116,11 +84,11 @@ for (const [key, optionDefinition] of configFileOptionDefinitions) {
   jsonSchema.properties[key] = createJsonSchemaDefinition(
     optionDefinition,
     // @ts-expect-error index signature
-    tstyche.ConfigService.defaultOptions[key],
+    tstyche.defaultOptions[key],
   );
 }
 
-const schemaFileUrl = new URL("../lib/schema.json", import.meta.url);
+const schemaFileUrl = new URL("../models/config-schema.json", import.meta.url);
 
 await fs.writeFile(schemaFileUrl, `${JSON.stringify(jsonSchema, null, 2)}\n`);
 

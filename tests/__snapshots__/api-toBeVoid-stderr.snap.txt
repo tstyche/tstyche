@@ -1,0 +1,23 @@
+Error: Type is 'string'.
+
+   7 |   expect(returnsVoid()).type.toBeVoid();
+   8 | 
+   9 |   expect(returnsString()).type.toBeVoid();
+     |                                ~~~~~~~~
+  10 | });
+  11 | 
+  12 | test("is NOT void?", () => {
+
+       at ./__typetests__/toBeVoid.tst.ts:9:32 ❭ is void?
+
+Error: Type is 'void'.
+
+  13 |   expect(returnsString()).type.not.toBeVoid();
+  14 | 
+  15 |   expect(returnsVoid()).type.not.toBeVoid();
+     |                                  ~~~~~~~~
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeVoid.tst.ts:15:34 ❭ is NOT void?
+

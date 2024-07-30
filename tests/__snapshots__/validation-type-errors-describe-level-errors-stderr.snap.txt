@@ -1,0 +1,24 @@
+Error: Expected 2 arguments, but got 1. ts(2554)
+
+  12 | 
+  13 | describe("reported type error?", () => {
+  14 |   test("with type error");
+     |   ~~~~
+  15 | 
+  16 |   test("looks at this test?", () => {
+  17 |     expect<number>().type.toBeNumber();
+
+       at ./__typetests__/describe-level.tst.ts:14:3
+
+    An argument for 'callback' was not provided. ts(6210)
+
+      36 |      * @param callback - The function with a code snippet and assertions.
+      37 |      */
+      38 |     (name: string, callback: () => void | Promise<void>): void;
+         |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      39 |     /**
+      40 |      * Marks a test as focused.
+      41 |      *
+
+           at ./../../../build/index.d.ts:38:20
+

@@ -21,4 +21,4 @@ hyperfine \
   --prepare 'tstyche --prune && npm cache clean --force' \
   'tstyche examples --target 4.9' \
   --command-name 'cold cache: tstyche examples --target 4.9' \
-  --prepare 'tstyche --prune && npm cache clean --force' \
+  --prepare 'tstyche --prune && npm cache clean --force'

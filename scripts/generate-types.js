@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import process from "node:process";
 import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";
 
@@ -25,16 +26,18 @@ function formatCommentText(commentText) {
  */
 function createArrayPropertySignature(identifierText, itemDefinition, commentText) {
   /** @type {Array<ts.TypeNode>} */
-  let typeArguments = [];
+  const typeArguments = [];
 
   switch (itemDefinition.brand) {
-    case tstyche.OptionBrand.String:
+    case tstyche.OptionBrand.String: {
       typeArguments.push(ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword));
       break;
+    }
 
-    default:
+    default: {
       typeArguments.push(ts.factory.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword));
       break;
+    }
   }
 
   const propertySignature = ts.factory.createPropertySignature(
@@ -58,16 +61,9 @@ function createArrayPropertySignature(identifierText, itemDefinition, commentTex
  * @param {string} identifierText
  * @param {ts.KeywordTypeSyntaxKind} syntaxKind
  * @param {string} commentText
- * @param {boolean} isNullable
  */
-function createPrimitivePropertySignature(identifierText, syntaxKind, commentText, isNullable = false) {
-  const typeNode = isNullable
-    ? ts.factory.createUnionTypeNode([
-        ts.factory.createKeywordTypeNode(syntaxKind),
-        ts.factory.createLiteralTypeNode(ts.factory.createNull()),
-        ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
-      ])
-    : ts.factory.createKeywordTypeNode(syntaxKind);
+function createPrimitivePropertySignature(identifierText, syntaxKind, commentText) {
+  const typeNode = ts.factory.createKeywordTypeNode(syntaxKind);
 
   const propertySignature = ts.factory.createPropertySignature(
     /* modifiers */ undefined,
@@ -98,42 +94,25 @@ function createInterfaceDeclaration(identifierText, commentText, optionDefinitio
   for (const [key, optionDefinition] of optionDefinitions) {
     switch (optionDefinition.brand) {
       case tstyche.OptionBrand.Boolean:
-      case tstyche.OptionBrand.True:
-        members.push(
-          createPrimitivePropertySignature(
-            key,
-            ts.SyntaxKind.BooleanKeyword,
-            optionDefinition.description,
-            optionDefinition.nullable,
-          ),
-        );
+      case tstyche.OptionBrand.BareTrue: {
+        members.push(createPrimitivePropertySignature(key, ts.SyntaxKind.BooleanKeyword, optionDefinition.description));
         break;
+      }
 
-      case tstyche.OptionBrand.List:
+      case tstyche.OptionBrand.List: {
         members.push(createArrayPropertySignature(key, optionDefinition.items, optionDefinition.description));
         break;
+      }
 
-      case tstyche.OptionBrand.Number:
-        members.push(
-          createPrimitivePropertySignature(
-            key,
-            ts.SyntaxKind.NumberKeyword,
-            optionDefinition.description,
-            optionDefinition.nullable,
-          ),
-        );
+      case tstyche.OptionBrand.Number: {
+        members.push(createPrimitivePropertySignature(key, ts.SyntaxKind.NumberKeyword, optionDefinition.description));
         break;
+      }
 
-      case tstyche.OptionBrand.String:
-        members.push(
-          createPrimitivePropertySignature(
-            key,
-            ts.SyntaxKind.StringKeyword,
-            optionDefinition.description,
-            optionDefinition.nullable,
-          ),
-        );
+      case tstyche.OptionBrand.String: {
+        members.push(createPrimitivePropertySignature(key, ts.SyntaxKind.StringKeyword, optionDefinition.description));
         break;
+      }
 
       default:
         break;
@@ -174,7 +153,7 @@ for (const [identifierText, description, optionDefinitions] of filesToGenerate) 
     resultFile,
   );
 
-  const declarationFileUrl = new URL(`../lib/${identifierText}.ts`, import.meta.url);
+  const declarationFileUrl = new URL(`../models/${identifierText}.ts`, import.meta.url);
 
   await fs.writeFile(
     declarationFileUrl,

@@ -12,13 +12,7 @@ describe("argument for 'target'", () => {
   }
 
   test("must be of type 'string | number'", () => {
-    expect(
-      () => {
-        check(123);
-        check(123);
-      },
-
-      // @ts-expect-error test
-    ).type.toRaiseError(true, [2345]);
+    // @ts-expect-error testing purpose
+    expect(check(123)).type.toRaiseError(true, [2345]);
   });
 });

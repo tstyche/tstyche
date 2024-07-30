@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "node16",
+    "moduleResolution": "node16",
+    "paths": {
+      "#scribbler/jsx-runtime": ["./scribbler/jsx-runtime.js"],
+      "#*": ["./*/index.js"]
+    },
+
+    "jsx": "react-jsx",
+    "jsxImportSource": "#scribbler",
+
+    "skipLibCheck": false
+  },
+  "include": ["**/*"],
+  "exclude": ["**/__tests__/**/*"]
+}

@@ -1,0 +1,23 @@
+Error: Type is 'string'.
+
+   7 |   expect(returnsAny()).type.toBeAny();
+   8 | 
+   9 |   expect(returnsString()).type.toBeAny();
+     |                                ~~~~~~~
+  10 | });
+  11 | 
+  12 | test("is NOT any?", () => {
+
+       at ./__typetests__/toBeAny.tst.ts:9:32 ❭ is any?
+
+Error: Type is 'any'.
+
+  13 |   expect(returnsString()).type.not.toBeAny();
+  14 | 
+  15 |   expect(returnsAny()).type.not.toBeAny();
+     |                                 ~~~~~~~
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeAny.tst.ts:15:33 ❭ is NOT any?
+

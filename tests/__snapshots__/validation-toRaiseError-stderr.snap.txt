@@ -1,0 +1,36 @@
+Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+  5 |     expect().type.toRaiseError("one");
+    |     ~~~~~~
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/toRaiseError.tst.ts:5:5
+
+Error: An argument for 'target' must be a string or number literal.
+
+  14 |   test("must be of type 'string | number'", () => {
+  15 |     // @ts-expect-error testing purpose
+  16 |     expect(check(123)).type.toRaiseError(true, [2345]);
+     |                                          ~~~~
+  17 |   });
+  18 | });
+  19 | 
+
+       at ./__typetests__/toRaiseError.tst.ts:16:42
+
+Error: An argument for 'target' must be a string or number literal.
+
+  14 |   test("must be of type 'string | number'", () => {
+  15 |     // @ts-expect-error testing purpose
+  16 |     expect(check(123)).type.toRaiseError(true, [2345]);
+     |                                                ~~~~~~
+  17 |   });
+  18 | });
+  19 | 
+
+       at ./__typetests__/toRaiseError.tst.ts:16:48
+

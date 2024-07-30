@@ -1,0 +1,12 @@
+Error: Type is 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+  3 |   expect<number>().type.not.toBeNumber();
+    |                             ~~~~~~~~~~
+  4 |   expect<number>().type.not.toBeNumber();
+  5 | });
+  6 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+

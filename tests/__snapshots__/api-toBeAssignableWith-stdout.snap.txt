@@ -1,0 +1,21 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeAssignableWith.tst.ts
+  source type
+    × is assignable target expression?
+    × is NOT assignable target expression?
+    × is assignable target type?
+    × is NOT assignable target type?
+  source expression
+    × is assignable target expression?
+    × is NOT assignable target expression?
+    × is assignable target type?
+    × is NOT assignable type?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 8 failed, 13 passed, 21 total
+Duration:   <<timestamp>>
+
+Ran all test files.

@@ -1,0 +1,12 @@
+Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+  5 |     expect().type.toBeBoolean();
+    |     ~~~~~~
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/toBeBoolean.tst.ts:5:5
+

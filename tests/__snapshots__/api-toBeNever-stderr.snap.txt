@@ -1,0 +1,23 @@
+Error: Type is 'string'.
+
+   7 |   expect(returnsNever()).type.toBeNever();
+   8 | 
+   9 |   expect(returnsString()).type.toBeNever();
+     |                                ~~~~~~~~~
+  10 | });
+  11 | 
+  12 | test("is NOT never?", () => {
+
+       at ./__typetests__/toBeNever.tst.ts:9:32 ❭ is never?
+
+Error: Type is 'never'.
+
+  13 |   expect(returnsString()).type.not.toBeNever();
+  14 | 
+  15 |   expect(returnsNever()).type.not.toBeNever();
+     |                                   ~~~~~~~~~
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeNever.tst.ts:15:35 ❭ is NOT never?
+

@@ -1,17 +1,31 @@
 {
+  "cache": {
+    "cacheLocation": "./.cache/cspell",
+    "useCache": true
+  },
   "files": [
     "**/*.js",
     "**/*.json",
     "**/*.md",
     "examples/**/*",
-    "lib/**/*",
-    "scripts/**/*",
-    "src/**/*",
+    "models/**/*",
+    "source/**/*",
     "tests/**/*",
     "typetests/**/*"
   ],
   "ignorePaths": ["**/__snapshots__/**/*"],
   "language": "en-US",
   "useGitignore": true,
-  "words": ["packagephobia", "tsdoc", "tsserverlibrary", "tstyche", "typecheck", "typetests"]
+  "words": [
+    "biomejs",
+    "codacy",
+    "jsxs",
+    "monocart",
+    "packagephobia",
+    "poku",
+    "tsserverlibrary",
+    "tstyche",
+    "typecheck",
+    "typetests"
+  ]
 }

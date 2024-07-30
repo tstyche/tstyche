@@ -1,0 +1,96 @@
+Error: Type 'Names' is not assignable with type '{ middle: string; }'.
+
+  12 |     expect<Names>().type.toBeAssignableWith({ first: "Rose", last: undefined });
+  13 | 
+  14 |     expect<Names>().type.toBeAssignableWith({ middle: "O." });
+     |                                             ~~~~~~~~~~~~~~~~
+  15 |   });
+  16 | 
+  17 |   test("is NOT assignable target expression?", () => {
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:14:45 ❭ source type ❭ is assignable target expression?
+
+Error: Type 'Names' is assignable with type '{ first: string; }'.
+
+  18 |     expect<Names>().type.not.toBeAssignableWith({ middle: "O." });
+  19 | 
+  20 |     expect<Names>().type.not.toBeAssignableWith({ first: "Rose" });
+     |                                                 ~~~~~~~~~~~~~~~~~
+  21 |   });
+  22 | 
+  23 |   test("is assignable target type?", () => {
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:20:49 ❭ source type ❭ is NOT assignable target expression?
+
+Error: Type 'Names' is not assignable with type '{ middle: string; }'.
+
+  27 |     expect<Names>().type.toBeAssignableWith<{ first: string; last?: string }>();
+  28 | 
+  29 |     expect<Names>().type.toBeAssignableWith<{ middle: string }>();
+     |                                             ~~~~~~~~~~~~~~~~~~
+  30 |   });
+  31 | 
+  32 |   test("is NOT assignable target type?", () => {
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:29:45 ❭ source type ❭ is assignable target type?
+
+Error: Type 'Names' is assignable with type '{ first: string; }'.
+
+  33 |     expect<Names>().type.not.toBeAssignableWith<{ middle: string }>();
+  34 | 
+  35 |     expect<Names>().type.not.toBeAssignableWith<{ first: string }>();
+     |                                                 ~~~~~~~~~~~~~~~~~
+  36 |   });
+  37 | });
+  38 | 
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:35:49 ❭ source type ❭ is NOT assignable target type?
+
+Error: Type '{ first: string; last: string; }' is not assignable with type '{ middle: string; }'.
+
+  41 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith({ first: "Rose", last: "Smith" });
+  42 | 
+  43 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith({ middle: "O." });
+     |                                                                     ~~~~~~~~~~~~~~~~
+  44 |   });
+  45 | 
+  46 |   test("is NOT assignable target expression?", () => {
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:43:69 ❭ source expression ❭ is assignable target expression?
+
+Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
+
+  47 |     expect({ first: "Jane", last: "Swan" }).type.not.toBeAssignableWith({ middle: "O." });
+  48 | 
+  49 |     expect({ first: "Jane" }).type.not.toBeAssignableWith({ first: "Rose" });
+     |                                                           ~~~~~~~~~~~~~~~~~
+  50 |   });
+  51 | 
+  52 |   test("is assignable target type?", () => {
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:49:59 ❭ source expression ❭ is NOT assignable target expression?
+
+Error: Type '{ first: string; last: string; }' is not assignable with type '{ middle: string; }'.
+
+  53 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith<{ first: string; last: string }>();
+  54 | 
+  55 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableWith<{ middle: string }>();
+     |                                                                     ~~~~~~~~~~~~~~~~~~
+  56 |   });
+  57 | 
+  58 |   test("is NOT assignable type?", () => {
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:55:69 ❭ source expression ❭ is assignable target type?
+
+Error: Type '{ first: string; }' is assignable with type '{ first: string; }'.
+
+  59 |     expect({ first: "Jane", last: "Swan" }).type.not.toBeAssignableWith<{ middle: string }>();
+  60 | 
+  61 |     expect({ first: "Jane" }).type.not.toBeAssignableWith<{ first: string }>();
+     |                                                           ~~~~~~~~~~~~~~~~~
+  62 |   });
+  63 | });
+  64 | 
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:61:59 ❭ source expression ❭ is NOT assignable type?
+

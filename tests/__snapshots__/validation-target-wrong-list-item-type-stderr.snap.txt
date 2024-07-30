@@ -1,0 +1,11 @@
+Error: Item of the 'target' list must be of type string.
+
+  2 |   "target": [
+  3 |     "4.8",
+  4 |     5
+    |     ~
+  5 |   ]
+  6 | }
+
+      at ./tstyche.config.json:4:5
+

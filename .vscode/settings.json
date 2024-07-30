@@ -1,15 +1,14 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
+    "source.fixAll": "explicit",
+    "source.organizeImports.biome": "explicit"
   },
   "editor.formatOnSave": true,
   "editor.rulers": [80, 120],
-  "eslint.options": { "overrideConfigFile": "./eslint.config.json" },
   "files.associations": {
     "cspell.config.json": "jsonc",
-    "eslint.config.json": "jsonc",
     "tstyche.config.json": "jsonc"
   },
   "typescript.preferences.importModuleSpecifierEnding": "js",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "./node_modules/typescript/lib"
 }

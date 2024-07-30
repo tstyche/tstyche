@@ -1,0 +1,15 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBe.tst.ts
+  argument for 'source'
+    × must be provided
+  argument for 'target'
+    × must be provided
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 2 failed, 2 total
+Duration:   <<timestamp>>
+
+Ran all test files.

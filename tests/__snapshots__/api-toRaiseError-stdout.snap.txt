@@ -1,0 +1,36 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toRaiseError.tst.ts
+  × expression raises a type error
+  × expression does not raise a type error
+  × type expression raises a type error
+  × type expression does not raise a type error
+  × expression raises multiple type errors
+  × expression raises a type error with matching message
+  × expression raises a type error with matching message passed as a template literal
+  × expression raises type error with not matching message
+  × type expression raises a type error with matching message
+  × type expression raises a type error with matching message passed as a template literal
+  × type expression raises a type error with not matching message
+  × expression raises a type error with expected code
+  × expression raises a type error with not expected code
+  × expression raises multiple type errors with matching messages
+  × expression raises multiple type errors with not matching messages
+  × expression raises multiple type errors with expected codes
+  × expression raises multiple type errors with not expected codes
+  × expression raises multiple type errors with matching messages and expected codes
+  × expression raises multiple type errors with not matching messages and not expected codes
+  × expression raises more type errors than expected messages
+  × expression raises more type errors than expected codes
+  × expression raises only one type error, but several messages are expected
+  × expression raises less type errors than expected messages
+  × expression raises only one type error, but several codes are expected
+  × expression raises less type errors than expected codes
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      25 failed, 25 total
+Assertions: 25 failed, 19 passed, 44 total
+Duration:   <<timestamp>>
+
+Ran all test files.

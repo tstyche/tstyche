@@ -1,0 +1,28 @@
+Error: 'describe()' cannot be nested within 'it()'.
+
+  2 | 
+  3 | it("is string?", () => {
+  4 |   describe("nested describe is handled?", () => {
+    |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  5 |     expect<number>().type.toBeNumber();
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  6 |   });
+    | ~~~~
+  7 | 
+
+      at ./__typetests__/handles-nested.tst.ts:4:3
+
+Error: 'it()' cannot be nested within 'it()'.
+
+   6 |   });
+   7 | 
+   8 |   it("nested it is handled?", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   9 |     expect<never>().type.toBeNever();
+     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  10 |   });
+     | ~~~~
+  11 | 
+
+       at ./__typetests__/handles-nested.tst.ts:8:3
+

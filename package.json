@@ -1,6 +1,6 @@
 {
   "name": "tstyche",
-  "version": "1.0.0-beta.9",
+  "version": "2.1.1",
   "description": "The Essential Type Testing Tool.",
   "keywords": [
     "typescript",
@@ -15,8 +15,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tstyche/tstyche.git"
+    "url": "https://github.com/tstyche/tstyche.git"
   },
+  "funding": "https://github.com/tstyche/tstyche?sponsor=1",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -37,49 +38,42 @@
     "bench": "./benchmarks/tstyche.bench.sh",
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
-    "clean": "rm -rf .cache build",
+    "check": "yarn check:spelling && yarn check:types",
+    "check:spelling": "cspell --config cspell.config.json --quiet",
+    "check:types": "tsc --noEmit --project tsconfig.json",
+    "clean": "rm -rf build",
+    "format": "biome format --write",
     "generate": "yarn generate:schema && yarn generate:types",
-    "generate:schema": "node scripts/generate-schema.js",
-    "generate:types": "node scripts/generate-types.js",
-    "lint": "yarn lint:cspell && yarn lint:eslint && yarn lint:prettier",
-    "lint:cspell": "cspell --cache --cache-location ./.cache/cspell --config cspell.config.json --quiet",
-    "lint:eslint": "eslint ./ --cache --cache-location ./.cache/eslint --config eslint.config.json --ext .js,.cts,.ts,.tsx",
-    "lint:prettier": "prettier ./ --cache --cache-location ./.cache/prettier --check",
-    "prepack": "yarn clean && yarn build",
-    "prepublish": "yarn test",
-    "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --config jest.config.js",
-    "test:coverage": "yarn build --sourcemap && c8 --config c8.config.json yarn test:e2e",
-    "test:e2e": "yarn test --testMatch '**/tests/*.test.ts'",
+    "generate:schema": "node ./scripts/generate-schema.js",
+    "generate:types": "node ./scripts/generate-types.js",
+    "lint": "biome lint --write",
+    "prepublish": "yarn clean && yarn build && yarn test",
+    "test": "yarn test:unit && yarn test:e2e",
+    "test:coverage": "yarn test:coverage:collect && yarn test:coverage:report",
+    "test:coverage:collect": "yarn build --sourcemap && NODE_V8_COVERAGE='./coverage/v8-coverage' yarn test:e2e",
+    "test:coverage:report": "node ./scripts/report-coverage.js",
+    "test:e2e": "yarn test:e2e:parallel && yarn test:e2e:serial",
+    "test:e2e:parallel": "yarn poku tests/*.test.* --exclude='install|npmRegistry|store|target|typescript|update|watch' --parallel",
+    "test:e2e:serial": "yarn poku tests/*-{install,npmRegistry,store,target,typescript*,update,watch}.test.*",
     "test:examples": "tstyche examples",
-    "test:types": "tstyche tests",
-    "test:unit": "yarn test --testMatch '**/src/**/__tests__/*.test.ts?(x)'",
-    "typecheck": "tsc --noEmit --project tsconfig.json"
+    "test:types": "tstyche typetests",
+    "test:unit": "yarn poku **/__tests__/*.test.* --parallel"
   },
   "devDependencies": {
-    "@jest/globals": "29.7.0",
+    "@biomejs/biome": "1.8.3",
     "@rollup/plugin-typescript": "11.1.6",
-    "@types/node": "20.11.3",
-    "@typescript-eslint/eslint-plugin": "6.18.1",
-    "@typescript-eslint/parser": "6.18.1",
-    "ajv": "8.12.0",
-    "c8": "9.1.0",
-    "cspell": "8.3.2",
-    "eslint": "8.56.0",
-    "eslint-import-resolver-typescript": "3.6.1",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jest": "27.6.3",
-    "eslint-plugin-jest-formatting": "3.1.0",
-    "eslint-plugin-simple-import-sort": "10.0.0",
-    "eslint-plugin-tsdoc": "0.2.17",
-    "jest": "29.7.0",
-    "jest-serializer-ansi-escapes": "2.0.1",
-    "magic-string": "0.30.5",
-    "prettier": "3.2.2",
-    "rollup": "4.9.5",
-    "rollup-plugin-dts": "6.1.0",
-    "ts-node": "10.9.2",
-    "tslib": "2.6.2",
-    "typescript": "5.3.3"
+    "@types/node": "20.14.13",
+    "@types/react": "18.3.3",
+    "ajv": "8.17.1",
+    "cspell": "8.12.1",
+    "magic-string": "0.30.11",
+    "monocart-coverage-reports": "2.10.0",
+    "poku": "2.2.4",
+    "pretty-ansi": "2.0.0",
+    "rollup": "4.19.1",
+    "rollup-plugin-dts": "6.1.1",
+    "tslib": "2.6.3",
+    "typescript": "5.5.4"
   },
   "peerDependencies": {
     "typescript": "4.x || 5.x"
@@ -89,8 +83,8 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.7.0",
+  "packageManager": "yarn@3.8.3",
   "engines": {
-    "node": "^16.14 || 18.x || >=20.x"
+    "node": ">=16.14"
   }
 }

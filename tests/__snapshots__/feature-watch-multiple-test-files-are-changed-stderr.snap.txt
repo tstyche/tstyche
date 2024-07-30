@@ -1,0 +1,22 @@
+Error: Type is 'string'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+  3 |   expect<string>().type.toBeNumber();
+    |                         ~~~~~~~~~~
+  4 | });
+  5 | 
+
+      at ./a-feature/__typetests__/isNumber.test.ts:3:25 ❭ is number?
+
+Error: Type is 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is string?", () => {
+  3 |   expect<number>().type.toBeString();
+    |                         ~~~~~~~~~~
+  4 | });
+  5 | 
+
+      at ./b-feature/__typetests__/isString.test.ts:3:25 ❭ is string?
+

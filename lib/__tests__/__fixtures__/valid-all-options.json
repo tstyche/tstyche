@@ -1,8 +1,0 @@
-{
-  "$schema": "../../schema.json",
-  "allowNoTestFiles": true,
-  "failFast": true,
-  "rootPath": "../",
-  "target": ["4.9", "5.0.4", "beta", "latest", "next", "rc"],
-  "testFileMatch": ["examples/*.test.ts", "**/__typetests__/*.test.ts"]
-}

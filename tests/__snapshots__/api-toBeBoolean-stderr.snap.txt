@@ -1,0 +1,23 @@
+Error: Type is 'string'.
+
+   7 |   expect(returnsBoolean()).type.toBeBoolean();
+   8 | 
+   9 |   expect(returnsString()).type.toBeBoolean();
+     |                                ~~~~~~~~~~~
+  10 | });
+  11 | 
+  12 | test("is NOT boolean?", () => {
+
+       at ./__typetests__/toBeBoolean.tst.ts:9:32 ❭ is boolean?
+
+Error: Type is 'boolean'.
+
+  13 |   expect(returnsString()).type.not.toBeBoolean();
+  14 | 
+  15 |   expect(returnsBoolean()).type.not.toBeBoolean();
+     |                                     ~~~~~~~~~~~
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeBoolean.tst.ts:15:37 ❭ is NOT boolean?
+

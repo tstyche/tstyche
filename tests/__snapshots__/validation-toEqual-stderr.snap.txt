@@ -1,0 +1,38 @@
+Warning: The '.toEqual()' matcher is deprecated and will be removed in TSTyche 3.
+
+To learn more, visit https://tstyche.org/releases/tstyche-2
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+  5 |     expect().type.toEqual<{ test: void }>();
+    |                   ~~~~~~~
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/toEqual.tst.ts:5:19
+
+Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+  5 |     expect().type.toEqual<{ test: void }>();
+    |     ~~~~~~
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/toEqual.tst.ts:5:5
+
+Error: An argument for 'target' or type argument for 'Target' must be provided.
+
+   9 | describe("argument for 'target'", () => {
+  10 |   test("must be provided", () => {
+  11 |     expect<{ test: void }>().type.toEqual();
+     |                                   ~~~~~~~
+  12 |   });
+  13 | });
+  14 | 
+
+       at ./__typetests__/toEqual.tst.ts:11:35
+

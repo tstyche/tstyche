@@ -1,0 +1,12 @@
+uses TypeScript <<version>>
+
+fail ./__typetests__/isNumber.tst.ts
+  × is number?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 2 failed, 2 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'isNumber'.
