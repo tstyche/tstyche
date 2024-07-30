@@ -47,11 +47,26 @@ export class SelectService {
     EventEmitter.dispatch(["select:error", { diagnostics: [diagnostic] }]);
   }
 
+  async #resolveEntryMeta(entry: FileSystemEntryMeta & { name: string }, targetPath: string) {
+    if (!entry.isSymbolicLink()) {
+      return entry;
+    }
+
+    let entryMeta: FileSystemEntryMeta | undefined;
+
+    try {
+      entryMeta = await fs.stat([targetPath, entry.name].join("/"));
+    } catch {
+      // continue regardless of error
+    }
+
+    return entryMeta;
+  }
+
   async selectFiles(): Promise<Array<string>> {
-    const currentPath = ".";
     const testFilePaths: Array<string> = [];
 
-    await this.#visitDirectory(currentPath, testFilePaths);
+    await this.#visitDirectory(".", testFilePaths);
 
     if (testFilePaths.length === 0) {
       this.#onDiagnostics(Diagnostic.error(SelectDiagnosticText.noTestFilesWereSelected(this.#resolvedConfig)));
@@ -64,46 +79,22 @@ export class SelectService {
   async #visitDirectory(currentPath: string, testFilePaths: Array<string>): Promise<void> {
     const targetPath = Path.join(this.#resolvedConfig.rootPath, currentPath);
 
-    let entries: Array<FileSystemEntryMeta & { name: string }> | undefined;
-
     try {
-      entries = await fs.readdir(targetPath, { withFileTypes: true });
+      const entries = await fs.readdir(targetPath, { withFileTypes: true });
+
+      for (const entry of entries) {
+        const entryMeta = await this.#resolveEntryMeta(entry, targetPath);
+
+        const entryPath = [currentPath, entry.name].join("/");
+
+        if (entryMeta?.isDirectory() && this.#isDirectoryIncluded(entryPath)) {
+          await this.#visitDirectory(entryPath, testFilePaths);
+        } else if (entryMeta?.isFile() && this.#isFileIncluded(entryPath)) {
+          testFilePaths.push([targetPath, entry.name].join("/"));
+        }
+      }
     } catch {
       // continue regardless of error
-    }
-
-    if (!entries) {
-      return;
-    }
-
-    for (const entry of entries) {
-      let entryMeta: FileSystemEntryMeta | undefined;
-
-      if (entry.isSymbolicLink()) {
-        try {
-          entryMeta = await fs.stat([targetPath, entry.name].join("/"));
-        } catch {
-          // continue regardless of error
-        }
-      } else {
-        entryMeta = entry;
-      }
-
-      if (!entryMeta) {
-        continue;
-      }
-
-      const entryPath = [currentPath, entry.name].join("/");
-
-      if (entryMeta.isDirectory() && this.#isDirectoryIncluded(entryPath)) {
-        await this.#visitDirectory(entryPath, testFilePaths);
-
-        continue;
-      }
-
-      if (entryMeta.isFile() && this.#isFileIncluded(entryPath)) {
-        testFilePaths.push([targetPath, entry.name].join("/"));
-      }
     }
   }
 }
