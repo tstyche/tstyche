@@ -3,7 +3,7 @@ import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { ExpectService } from "#expect";
+import type { TypeChecker } from "#expect";
 import type { TestFile } from "#file";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
@@ -94,15 +94,7 @@ export class TestFileRunner {
       return;
     }
 
-    const typeChecker = program.getTypeChecker();
-
-    if (!ExpectService.assertTypeChecker(typeChecker)) {
-      const text = "The required 'isTypeRelatedTo()' method is missing in the provided type checker.";
-
-      EventEmitter.dispatch(["file:error", { diagnostics: [Diagnostic.error(text)], result: fileResult }]);
-
-      return;
-    }
+    const typeChecker = program.getTypeChecker() as TypeChecker;
 
     const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, typeChecker, {
       cancellationToken,

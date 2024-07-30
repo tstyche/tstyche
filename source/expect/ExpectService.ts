@@ -67,10 +67,6 @@ export class ExpectService {
     this.toRaiseError = new ToRaiseError(compiler);
   }
 
-  static assertTypeChecker(typeChecker: ts.TypeChecker): typeChecker is TypeChecker {
-    return "isTypeRelatedTo" in typeChecker && "relation" in typeChecker;
-  }
-
   #handleDeprecated(matcherNameText: string, assertion: Assertion) {
     switch (matcherNameText) {
       case "toBeAssignable":
