@@ -22,12 +22,33 @@ await describe("store", async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when fetching of metadata from the registry times out", async () => {
+  await test("when fetch request of metadata fails with 404", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+      env: {
+        ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org",
+      },
+    });
+
+    const expected = [
+      "Error: Failed to fetch metadata of the 'typescript' package from 'https://tstyche.org'.",
+      "",
+      "Request failed with status code 404.",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+    assert.equal(exitCode, 1);
+  });
+
+  await test("when fetch request of metadata times out", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
       env: {
         ["TSTYCHE_TIMEOUT"]: "0.001",
       },
@@ -37,6 +58,27 @@ await describe("store", async () => {
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org'.",
       "",
       "Setup timeout of 0.001s was exceeded.",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+    assert.equal(exitCode, 1);
+  });
+
+  await test("when fetch request of metadata fails", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+      env: {
+        ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
+      },
+    });
+
+    const expected = [
+      "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
+      "",
+      "Might be there is an issue with the registry or the network connection.",
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
