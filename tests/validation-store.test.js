@@ -148,7 +148,7 @@ await describe("store", async () => {
     for (const { target, testCase } of testCases) {
       await test(testCase, async () => {
         const storeManifest = {
-          $version: "1",
+          $version: "2",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
           resolutions: {
             ["5.2"]: "5.2.2",
@@ -202,7 +202,7 @@ await describe("store", async () => {
     for (const { target, testCase } of testCases) {
       await test(testCase, async () => {
         const storeManifest = {
-          $version: "1",
+          $version: "2",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
           resolutions: {
             ["5.2"]: "5.2.2",

@@ -19,7 +19,7 @@ await describe("'--update' command line option", async () => {
 
   await test("failed to fetch metadata of the 'typescript' package", async () => {
     const storeManifest = {
-      $version: "1",
+      $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };

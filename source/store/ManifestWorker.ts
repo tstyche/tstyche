@@ -4,20 +4,18 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { Path } from "#path";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-import type { DiagnosticsHandler } from "./types.js";
+import type { DiagnosticsHandler, Manifest } from "./types.js";
+
+interface VersionMetadata {
+  dist: { integrity: string; tarball: string };
+  version: string;
+}
 
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
   modified: string;
   name: string;
-  versions: Record<string, unknown>;
-}
-
-export interface Manifest {
-  $version: string;
-  lastUpdated: number;
-  resolutions: Record<string, string>;
-  versions: Array<string>;
+  versions: Record<string, VersionMetadata>;
 }
 
 export class ManifestWorker {
@@ -26,7 +24,7 @@ export class ManifestWorker {
   #onDiagnostics: DiagnosticsHandler;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
-  #version = "1";
+  #version = "2";
 
   constructor(storePath: string, npmRegistry: string, onDiagnostics: DiagnosticsHandler) {
     this.#storePath = storePath;
@@ -57,7 +55,9 @@ export class ManifestWorker {
     const manifest: Manifest = {
       $version: this.#version,
       lastUpdated: Date.now(),
+      npmRegistry: this.#npmRegistry,
       resolutions: {},
+      sources: {},
       versions: [],
     };
 
@@ -121,11 +121,19 @@ export class ManifestWorker {
       }
     }
 
-    for (const tagKey of ["beta", "latest", "next", "rc"]) {
-      const distributionTagValue = packageMetadata["dist-tags"][tagKey];
+    for (const tag of ["beta", "latest", "next", "rc"]) {
+      const distributionTagValue = packageMetadata["dist-tags"][tag];
 
       if (distributionTagValue != null) {
-        manifest.resolutions[tagKey] = distributionTagValue;
+        manifest.resolutions[tag] = distributionTagValue;
+      }
+    }
+
+    for (const tag of Object.values(manifest.resolutions)) {
+      if (packageMetadata.versions[tag]?.dist != null) {
+        const { integrity, tarball } = packageMetadata.versions[tag].dist;
+
+        manifest.sources[tag] = { integrity, tarball };
       }
     }
 

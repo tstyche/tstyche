@@ -146,7 +146,7 @@ await describe("store", async () => {
       encoding: "utf8",
     });
 
-    assert.matchObject(result, { $version: "1" });
+    assert.matchObject(result, { $version: "2" });
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -154,7 +154,7 @@ await describe("store", async () => {
 
   await test("when is up to date, store manifest is not regenerated", async () => {
     const storeManifest = JSON.stringify({
-      $version: "1",
+      $version: "2",
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
       resolutions: {},
       versions: ["5.0.2", "5.0.3", "5.0.4"],
@@ -179,7 +179,7 @@ await describe("store", async () => {
 
   await test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = JSON.stringify({
-      $version: "1",
+      $version: "2",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
       resolutions: {},
       versions: ["5.0.2", "5.0.3", "5.0.4"],
