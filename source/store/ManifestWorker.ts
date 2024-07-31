@@ -14,7 +14,7 @@ interface PackageMetadata {
 }
 
 export interface Manifest {
-  $version?: string | undefined;
+  $version: string;
   lastUpdated: number;
   resolutions: Record<string, string>;
   versions: Array<string>;
