@@ -86,7 +86,7 @@ export class PackageInstaller {
       const decompressedData = await new Blob(chunks).arrayBuffer();
 
       for (const file of TarReader.extract(decompressedData)) {
-        // TODO remove after dropping support for TypeScript 4
+        // TODO remove after dropping support for TypeScript 4.8
         if (!file.name.startsWith("package/")) {
           continue;
         }
