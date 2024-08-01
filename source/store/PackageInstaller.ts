@@ -11,7 +11,6 @@ import { TarReader } from "./TarReader.js";
 import type { DiagnosticsHandler, Manifest } from "./types.js";
 
 export class PackageInstaller {
-  #decompressionStream = new DecompressionStream("gzip");
   #onDiagnostics: DiagnosticsHandler;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
@@ -74,7 +73,7 @@ export class PackageInstaller {
 
     // TODO handle 'else' branch
     if (response.ok && response.body != null) {
-      const decompressedStream = response.body.pipeThrough<Uint8Array>(this.#decompressionStream);
+      const decompressedStream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
 
       // TODO better consume the stream directly
       const chunks: Array<Uint8Array> = [];
