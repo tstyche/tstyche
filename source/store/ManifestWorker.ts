@@ -106,9 +106,13 @@ export class ManifestWorker {
       return;
     }
 
-    manifest.versions = Object.keys(packageMetadata.versions)
-      .filter((version) => /^(4|5)\.\d\.\d$/.test(version))
-      .sort();
+    for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
+      if (/^(4|5)\.\d\.\d$/.test(tag)) {
+        manifest.versions.push(tag);
+
+        manifest.sources[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
+      }
+    }
 
     const minorVersions = [...new Set(manifest.versions.map((version) => version.slice(0, -2)))];
 
@@ -122,18 +126,16 @@ export class ManifestWorker {
     }
 
     for (const tag of ["beta", "latest", "next", "rc"]) {
-      const distributionTagValue = packageMetadata["dist-tags"][tag];
+      const version = packageMetadata["dist-tags"][tag];
 
-      if (distributionTagValue != null) {
-        manifest.resolutions[tag] = distributionTagValue;
-      }
-    }
+      if (version != null) {
+        manifest.resolutions[tag] = version;
 
-    for (const tag of Object.values(manifest.resolutions)) {
-      if (packageMetadata.versions[tag]?.dist != null) {
-        const { integrity, tarball } = packageMetadata.versions[tag].dist;
+        const meta = packageMetadata.versions[version];
 
-        manifest.sources[tag] = { integrity, tarball };
+        if (meta != null) {
+          manifest.sources[version] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
+        }
       }
     }
 
