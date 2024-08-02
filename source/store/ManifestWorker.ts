@@ -74,7 +74,7 @@ export class ManifestWorker {
         this.#onDiagnostics(
           Diagnostic.error([
             StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry),
-            StoreDiagnosticText.failedWithStatusCode(response.status),
+            StoreDiagnosticText.requestFailedWithStatusCode(response.status),
           ]),
         );
 
@@ -91,7 +91,7 @@ export class ManifestWorker {
         this.#onDiagnostics(
           Diagnostic.error([
             StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry),
-            StoreDiagnosticText.setupTimeoutExceeded(this.#timeout),
+            StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout),
           ]),
         );
       } else {
