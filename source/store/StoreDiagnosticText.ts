@@ -15,10 +15,6 @@ export class StoreDiagnosticText {
     return `Failed to update metadata of the 'typescript' package from '${registry}'.`;
   }
 
-  static failedWithStatusCode(code: number): string {
-    return `Request failed with status code ${code}.`;
-  }
-
   static maybeNetworkConnectionIssue(): string {
     return "Might be there is an issue with the registry or the network connection.";
   }
@@ -27,7 +23,11 @@ export class StoreDiagnosticText {
     return `The resolution of the '${tag}' tag may be outdated.`;
   }
 
-  static setupTimeoutExceeded(timeout: number): string {
-    return `Setup timeout of ${timeout / 1000}s was exceeded.`;
+  static requestFailedWithStatusCode(code: number): string {
+    return `The request failed with status code ${code}.`;
+  }
+
+  static requestTimeoutWasExceeded(timeout: number): string {
+    return `The request timeout of ${timeout / 1000}s was exceeded.`;
   }
 }

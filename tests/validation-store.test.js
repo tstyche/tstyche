@@ -36,7 +36,7 @@ await describe("store", async () => {
     const expected = [
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://tstyche.org'.",
       "",
-      "Request failed with status code 404.",
+      "The request failed with status code 404.",
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
@@ -57,7 +57,7 @@ await describe("store", async () => {
     const expected = [
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org'.",
       "",
-      "Setup timeout of 0.001s was exceeded.",
+      "The request timeout of 0.001s was exceeded.",
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
