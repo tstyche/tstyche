@@ -13,7 +13,7 @@ export class Fetcher {
     request: Request,
     timeout: number,
     diagnostic: Diagnostic,
-    options?: { quite?: boolean },
+    options?: { quite?: boolean | undefined },
   ): Promise<Response | undefined> {
     try {
       const response = await fetch(request, { signal: AbortSignal.timeout(timeout) });
