@@ -3,8 +3,9 @@ import fs from "node:fs/promises";
 import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { Path } from "#path";
+import type { Fetcher } from "./Fetcher.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-import type { DiagnosticsHandler, Manifest } from "./types.js";
+import type { Manifest } from "./types.js";
 
 interface VersionMetadata {
   dist: { integrity: string; tarball: string };
@@ -19,17 +20,18 @@ interface PackageMetadata {
 }
 
 export class ManifestWorker {
+  #fetcher: Fetcher;
   #manifestFilePath: string;
   #npmRegistry: string;
-  #onDiagnostics: DiagnosticsHandler;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
   #version = "2";
 
-  constructor(storePath: string, npmRegistry: string, onDiagnostics: DiagnosticsHandler) {
+  constructor(storePath: string, npmRegistry: string, fetcher: Fetcher) {
     this.#storePath = storePath;
     this.#npmRegistry = npmRegistry;
-    this.#onDiagnostics = onDiagnostics;
+    this.#fetcher = fetcher;
+
     this.#manifestFilePath = Path.join(storePath, "store-manifest.json");
   }
 
@@ -52,6 +54,19 @@ export class ManifestWorker {
   }
 
   async #load(options?: { quite?: boolean }) {
+    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry));
+
+    const request = new Request(new URL("typescript", this.#npmRegistry), {
+      // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
+      headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
+    });
+
+    const response = await this.#fetcher.get(request, this.#timeout, diagnostic, { quite: options?.quite });
+
+    if (!response) {
+      return;
+    }
+
     const manifest: Manifest = {
       $version: this.#version,
       lastUpdated: Date.now(),
@@ -61,50 +76,7 @@ export class ManifestWorker {
       versions: [],
     };
 
-    let packageMetadata: PackageMetadata | undefined;
-
-    try {
-      const response = await fetch(new URL("typescript", this.#npmRegistry), {
-        // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
-        headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
-        signal: AbortSignal.timeout(this.#timeout),
-      });
-
-      if (!response.ok) {
-        this.#onDiagnostics(
-          Diagnostic.error([
-            StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry),
-            StoreDiagnosticText.requestFailedWithStatusCode(response.status),
-          ]),
-        );
-
-        return;
-      }
-
-      packageMetadata = (await response.json()) as PackageMetadata;
-    } catch (error) {
-      if (options?.quite === true) {
-        return;
-      }
-
-      if (error instanceof Error && error.name === "TimeoutError") {
-        this.#onDiagnostics(
-          Diagnostic.error([
-            StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry),
-            StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout),
-          ]),
-        );
-      } else {
-        this.#onDiagnostics(
-          Diagnostic.error([
-            StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry),
-            StoreDiagnosticText.maybeNetworkConnectionIssue(),
-          ]),
-        );
-      }
-
-      return;
-    }
+    const packageMetadata = (await response.json()) as PackageMetadata;
 
     for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
       if (/^(4|5)\.\d\.\d$/.test(tag)) {
