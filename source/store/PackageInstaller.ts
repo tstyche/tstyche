@@ -5,12 +5,14 @@ import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { CancellationToken } from "#token";
+import { Fetcher } from "./Fetcher.js";
 import { Lock } from "./Lock.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import { TarReader } from "./TarReader.js";
 import type { DiagnosticsHandler, Manifest } from "./types.js";
 
 export class PackageInstaller {
+  #fetcher: Fetcher;
   #onDiagnostics: DiagnosticsHandler;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
@@ -18,6 +20,8 @@ export class PackageInstaller {
   constructor(storePath: string, onDiagnostics: DiagnosticsHandler) {
     this.#storePath = storePath;
     this.#onDiagnostics = onDiagnostics;
+
+    this.#fetcher = new Fetcher(onDiagnostics);
   }
 
   async ensure(
@@ -33,10 +37,12 @@ export class PackageInstaller {
       return modulePath;
     }
 
+    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(version));
+
     if (
       await Lock.isLocked(installationPath, {
         cancellationToken,
-        // TODO 'Diagnostic.extendWith()' could be used here too
+        // TODO 'diagnostic.extendWith()' could be used here too
         onDiagnostics: (text) => {
           this.#onDiagnostics(Diagnostic.error([StoreDiagnosticText.failedToInstalTypeScript(version), text]));
         },
@@ -48,13 +54,13 @@ export class PackageInstaller {
 
     EventEmitter.dispatch(["store:info", { compilerVersion: version, installationPath }]);
 
-    const source = manifest.packages[version];
+    const resource = manifest.packages[version];
 
-    if (source != null) {
+    if (resource != null) {
       const lock = new Lock(installationPath);
 
       try {
-        await this.#install(installationPath, source.tarball, source.integrity);
+        await this.#install(installationPath, resource, diagnostic);
 
         await fs.writeFile(readyFilePath, "");
       } finally {
@@ -67,12 +73,13 @@ export class PackageInstaller {
     return;
   }
 
-  async #install(targetPath: string, resource: string, integrity: string) {
-    // TODO handle 'timeout'
-    const response = await fetch(resource, { integrity });
+  async #install(targetPath: string, resource: { integrity: string; tarball: string }, diagnostic: Diagnostic) {
+    const request = new Request(resource.tarball, { integrity: resource.integrity });
+
+    const response = await this.#fetcher.get(request, this.#timeout, diagnostic);
 
     // TODO handle 'else' branch
-    if (response.ok && response.body != null) {
+    if (response && response.body != null) {
       const decompressedStream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
 
       // TODO better consume the stream directly
