@@ -90,7 +90,7 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    await spawnTyche(fixtureUrl, ["--update"])
+    await spawnTyche(fixtureUrl, ["--update"]);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
       env: {
