@@ -90,7 +90,7 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    await spawnTyche(fixtureUrl, ["--update"])
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
       env: {
@@ -101,7 +101,7 @@ await describe("store", async () => {
     const expected = [
       "Error: Failed to install 'typescript@5.1.6'.",
       "",
-      "Error: setup timeout of 0.001s was exceeded",
+      "The request timeout of 0.001s was exceeded.",
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
