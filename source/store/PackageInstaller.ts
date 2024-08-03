@@ -78,7 +78,7 @@ export class PackageInstaller {
 
     const response = await this.#fetcher.get(request, this.#timeout, diagnostic);
 
-    if (response && response.body != null) {
+    if (response?.body != null) {
       const decompressedStream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
 
       // TODO better consume the stream directly
