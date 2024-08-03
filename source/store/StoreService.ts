@@ -27,7 +27,7 @@ export class StoreService {
     this.#storePath = Environment.storePath;
 
     this.#fetcher = new Fetcher(this.#onDiagnostics);
-    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#onDiagnostics);
+    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#fetcher, this.#onDiagnostics);
     this.#manifestWorker = new ManifestWorker(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 

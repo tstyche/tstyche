@@ -5,7 +5,7 @@ import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { CancellationToken } from "#token";
-import { Fetcher } from "./Fetcher.js";
+import type { Fetcher } from "./Fetcher.js";
 import { Lock } from "./Lock.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import { TarReader } from "./TarReader.js";
@@ -17,11 +17,10 @@ export class PackageInstaller {
   #storePath: string;
   #timeout = Environment.timeout * 1000;
 
-  constructor(storePath: string, onDiagnostics: DiagnosticsHandler) {
+  constructor(storePath: string, fetcher: Fetcher, onDiagnostics: DiagnosticsHandler) {
     this.#storePath = storePath;
+    this.#fetcher = fetcher;
     this.#onDiagnostics = onDiagnostics;
-
-    this.#fetcher = new Fetcher(onDiagnostics);
   }
 
   async ensure(
