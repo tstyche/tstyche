@@ -66,7 +66,9 @@ export class ManifestWorker {
     try {
       const response = await fetch(new URL("typescript", this.#npmRegistry), {
         // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
-        headers: { accept: "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*" },
+        headers: {
+          ["Accept"]: "application/vnd.npm.install-v1+json;q=1.0, application/json;q=0.8, */*",
+        },
         signal: AbortSignal.timeout(this.#timeout),
       });
 
