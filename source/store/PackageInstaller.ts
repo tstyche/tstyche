@@ -48,7 +48,7 @@ export class PackageInstaller {
 
     EventEmitter.dispatch(["store:info", { compilerVersion: version, installationPath }]);
 
-    const source = manifest.sources[version];
+    const source = manifest.packages[version];
 
     if (source != null) {
       const lock = new Lock(installationPath);

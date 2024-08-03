@@ -57,7 +57,7 @@ export class ManifestWorker {
       lastUpdated: Date.now(),
       npmRegistry: this.#npmRegistry,
       resolutions: {},
-      sources: {},
+      packages: {},
       versions: [],
     };
 
@@ -110,7 +110,7 @@ export class ManifestWorker {
       if (/^(4|5)\.\d\.\d$/.test(tag)) {
         manifest.versions.push(tag);
 
-        manifest.sources[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
+        manifest.packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
       }
     }
 
@@ -134,7 +134,7 @@ export class ManifestWorker {
         const meta = packageMetadata.versions[version];
 
         if (meta != null) {
-          manifest.sources[version] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
+          manifest.packages[version] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
         }
       }
     }

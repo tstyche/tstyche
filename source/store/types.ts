@@ -6,7 +6,7 @@ export interface Manifest {
   $version: string;
   lastUpdated: number;
   npmRegistry: string;
+  packages: Record<string, { integrity: string; tarball: string }>;
   resolutions: Record<string, string>;
-  sources: Record<string, { integrity: string; tarball: string }>;
   versions: Array<string>;
 }
