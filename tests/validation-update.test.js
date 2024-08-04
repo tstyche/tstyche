@@ -51,7 +51,6 @@ await describe("'--update' command line option", async () => {
     assert.equal(exitCode, 1);
   });
 
-
   await test("when fetch request of metadata times out", async () => {
     const storeManifest = {
       $version: "1",
