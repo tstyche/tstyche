@@ -127,9 +127,8 @@ export class ManifestWorker {
     }
 
     if (this.isOutdated(manifest) || options?.refresh === true) {
-      const quiet = options?.refresh !== true;
-
-      const freshManifest = await this.#load({ quiet });
+      // errors are logged only when manifest refresh was requested explicitly (e.g. via the '--update' option)
+      const freshManifest = await this.#load({ quiet: !options?.refresh });
 
       if (freshManifest != null) {
         await this.persist(freshManifest);
