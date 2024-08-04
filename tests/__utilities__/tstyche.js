@@ -36,7 +36,7 @@ export async function spawnTyche(fixtureUrl, args, options) {
     });
 
     tstyche.on("close", (exitCode) => {
-      resolve({ exitCode, stderr: stderrOutput.toString(), stdout: stdoutOutput.toString() });
+      resolve({ exitCode, stderr: stderrOutput, stdout: stdoutOutput });
     });
   });
 }
