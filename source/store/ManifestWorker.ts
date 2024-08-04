@@ -54,7 +54,7 @@ export class ManifestWorker {
     return false;
   }
 
-  async #load(options?: { quite?: boolean }) {
+  async #load(options?: { quiet?: boolean }) {
     const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry));
 
     const request = new Request(new URL("typescript", this.#npmRegistry), {
@@ -64,7 +64,7 @@ export class ManifestWorker {
       },
     });
 
-    const response = await this.#fetcher.get(request, this.#timeout, diagnostic, { quite: options?.quite });
+    const response = await this.#fetcher.get(request, this.#timeout, diagnostic, { quiet: options?.quiet });
 
     if (!response) {
       return;
@@ -127,9 +127,9 @@ export class ManifestWorker {
     }
 
     if (this.isOutdated(manifest) || options?.refresh === true) {
-      const quite = options?.refresh !== true;
+      const quiet = options?.refresh !== true;
 
-      const freshManifest = await this.#load({ quite });
+      const freshManifest = await this.#load({ quiet });
 
       if (freshManifest != null) {
         await this.persist(freshManifest);
