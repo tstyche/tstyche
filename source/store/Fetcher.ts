@@ -13,13 +13,13 @@ export class Fetcher {
     request: Request,
     timeout: number,
     diagnostic: Diagnostic,
-    options?: { quiet?: boolean | undefined },
+    options?: { suppressErrors?: boolean | undefined },
   ): Promise<Response | undefined> {
     try {
       const response = await fetch(request, { signal: AbortSignal.timeout(timeout) });
 
       if (!response.ok) {
-        !options?.quiet &&
+        !options?.suppressErrors &&
           this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.requestFailedWithStatusCode(response.status)));
 
         return;
@@ -28,10 +28,10 @@ export class Fetcher {
       return response;
     } catch (error) {
       if (error instanceof Error && error.name === "TimeoutError") {
-        !options?.quiet &&
+        !options?.suppressErrors &&
           this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(timeout)));
       } else {
-        !options?.quiet &&
+        !options?.suppressErrors &&
           this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.maybeNetworkConnectionIssue()));
       }
     }
