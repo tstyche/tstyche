@@ -232,7 +232,7 @@ await describe("store", async () => {
     }
   });
 
-  await describe("does not error if resolution of a tag may be outdated", async () => {
+  await describe("suppresses fetch errors if resolution of a tag may be outdated", async () => {
     await test("when fetch request of metadata fails with 404", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -337,5 +337,5 @@ await describe("store", async () => {
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
-  })
+  });
 });
