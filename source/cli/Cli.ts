@@ -21,6 +21,8 @@ export class Cli {
       process.exit();
     }, 200);
 
+    idleTimeout.unref();
+
     process.stdout.on("data", () => {
       idleTimeout.refresh();
     });
