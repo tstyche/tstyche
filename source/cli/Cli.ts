@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import process from "node:process";
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
 import { Environment } from "#environment";
@@ -14,6 +15,20 @@ export class Cli {
   #eventEmitter = new EventEmitter();
   #outputService = new OutputService();
   #storeService = new StoreService();
+
+  #forceExit() {
+    const idleTimeout = setTimeout(() => {
+      process.exit();
+    }, 200);
+
+    process.stdout.on("data", () => {
+      idleTimeout.refresh();
+    });
+
+    process.stderr.on("data", () => {
+      idleTimeout.refresh();
+    });
+  }
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
     const exitCodeHandler = new ExitCodeHandler();
@@ -138,6 +153,10 @@ export class Cli {
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();
+
+    if (commandLineArguments.includes("--forceExit")) {
+      this.#forceExit();
+    }
   }
 
   #waitForChangedFiles(
