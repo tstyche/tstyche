@@ -241,15 +241,21 @@ await describe("store", async () => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "1",
+        $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        packages: {
+          "5.2.2": {
+            integrity: "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
+          },
+          "5.3.3": {
+            integrity: "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
+          }
+        },
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
-          beta: "5.3.0-beta",
-          latest: "5.3.3",
-          next: "5.4.0-dev.20240112",
-          rc: "5.3.1-rc",
         },
         versions: ["5.2.2", "5.3.2", "5.3.3"],
       };
@@ -276,15 +282,21 @@ await describe("store", async () => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "1",
+        $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        packages: {
+          "5.2.2": {
+            integrity: "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
+          },
+          "5.3.3": {
+            integrity: "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
+          }
+        },
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
-          beta: "5.3.0-beta",
-          latest: "5.3.3",
-          next: "5.4.0-dev.20240112",
-          rc: "5.3.1-rc",
         },
         versions: ["5.2.2", "5.3.2", "5.3.3"],
       };
@@ -311,15 +323,21 @@ await describe("store", async () => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "1",
+        $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        packages: {
+          "5.2.2": {
+            integrity: "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
+          },
+          "5.3.3": {
+            integrity: "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
+          }
+        },
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
-          beta: "5.3.0-beta",
-          latest: "5.3.3",
-          next: "5.4.0-dev.20240112",
-          rc: "5.3.1-rc",
         },
         versions: ["5.2.2", "5.3.2", "5.3.3"],
       };
