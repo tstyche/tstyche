@@ -245,13 +245,15 @@ await describe("store", async () => {
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         packages: {
           "5.2.2": {
-            integrity: "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
+            integrity:
+              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
           },
           "5.3.3": {
-            integrity: "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
-          }
+            integrity:
+              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+          },
         },
         resolutions: {
           ["5.2"]: "5.2.2",
@@ -286,13 +288,15 @@ await describe("store", async () => {
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         packages: {
           "5.2.2": {
-            integrity: "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
+            integrity:
+              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
           },
           "5.3.3": {
-            integrity: "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
-          }
+            integrity:
+              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+          },
         },
         resolutions: {
           ["5.2"]: "5.2.2",
@@ -327,13 +331,15 @@ await describe("store", async () => {
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         packages: {
           "5.2.2": {
-            integrity: "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
+            integrity:
+              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
           },
           "5.3.3": {
-            integrity: "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
-          }
+            integrity:
+              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+          },
         },
         resolutions: {
           ["5.2"]: "5.2.2",
