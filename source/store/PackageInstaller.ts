@@ -6,20 +6,19 @@ import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { CancellationToken } from "#token";
-import { Lock } from "./Lock.js";
+import type { LockService } from "./LockService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-import type { DiagnosticsHandler } from "./types.js";
 
 export class PackageInstaller {
-  #onDiagnostics: DiagnosticsHandler;
+  #lockService: LockService;
   #npmRegistry: string;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
 
-  constructor(storePath: string, npmRegistry: string, onDiagnostics: DiagnosticsHandler) {
+  constructor(storePath: string, npmRegistry: string, lockService: LockService) {
     this.#storePath = storePath;
     this.#npmRegistry = npmRegistry;
-    this.#onDiagnostics = onDiagnostics;
+    this.#lockService = lockService;
   }
 
   async ensure(version: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
@@ -31,20 +30,13 @@ export class PackageInstaller {
       return modulePath;
     }
 
-    if (
-      await Lock.isLocked(installationPath, {
-        cancellationToken,
-        // TODO 'Diagnostic.extendWith()' could be used here too
-        onDiagnostics: (text) => {
-          this.#onDiagnostics(Diagnostic.error([StoreDiagnosticText.failedToInstalTypeScript(version), text]));
-        },
-        timeout: this.#timeout,
-      })
-    ) {
+    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(version));
+
+    if (await this.#lockService.isLocked(installationPath, this.#timeout, diagnostic, cancellationToken)) {
       return;
     }
 
-    const lock = new Lock(installationPath);
+    const lock = this.#lockService.getLock(installationPath);
 
     EventEmitter.dispatch(["store:info", { compilerVersion: version, installationPath }]);
 
@@ -68,8 +60,8 @@ export class PackageInstaller {
       await fs.writeFile(readyFilePath, "");
 
       return modulePath;
-    } catch (error) {
-      this.#onDiagnostics(Diagnostic.fromError(StoreDiagnosticText.failedToInstalTypeScript(version), error));
+    } catch {
+      // this.#onDiagnostics(Diagnostic.fromError(StoreDiagnosticText.failedToInstalTypeScript(version), error));
     } finally {
       lock.release();
     }
