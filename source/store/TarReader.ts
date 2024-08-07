@@ -9,7 +9,7 @@ export class TarReader {
   static #textDecoder = new TextDecoder();
 
   static async *extract(stream: ReadableStream): AsyncIterable<ExtractedFile> {
-    // TODO consider consuming a stream directly instead of converting it into buffer here
+    // TODO consider consuming a stream directly instead of converting it into a buffer
     const buffer = await streamConsumers.arrayBuffer(stream);
 
     let offset = 0;
