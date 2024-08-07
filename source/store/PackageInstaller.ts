@@ -80,17 +80,8 @@ export class PackageInstaller {
     if (response?.body != null) {
       const decompressedStream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
 
-      // TODO better consume the stream directly
-      const chunks: Array<Uint8Array> = [];
-
-      for await (const chunk of decompressedStream) {
-        chunks.push(chunk);
-      }
-
-      const decompressedData = await new Blob(chunks).arrayBuffer();
-
-      for (const file of TarReader.extract(decompressedData)) {
-        // TODO remove after dropping support for TypeScript 4.8
+      for await (const file of TarReader.extract(decompressedStream)) {
+        // TODO remove this check after dropping support for TypeScript 4.8
         if (!file.name.startsWith("package/")) {
           continue;
         }

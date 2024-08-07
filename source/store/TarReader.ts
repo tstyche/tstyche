@@ -1,3 +1,5 @@
+import streamConsumers from "node:stream/consumers";
+
 export type ExtractedFile = {
   contents: Uint8Array;
   name: string;
@@ -6,7 +8,10 @@ export type ExtractedFile = {
 export class TarReader {
   static #textDecoder = new TextDecoder();
 
-  static *extract(buffer: ArrayBuffer): Iterable<ExtractedFile> {
+  static async *extract(stream: ReadableStream): AsyncIterable<ExtractedFile> {
+    // TODO consider consuming a stream directly instead of converting it into buffer here
+    const buffer = await streamConsumers.arrayBuffer(stream);
+
     let offset = 0;
 
     while (offset < buffer.byteLength - 512) {
