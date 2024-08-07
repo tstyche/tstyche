@@ -2203,12 +2203,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"poku@npm:2.4.0":
-  version: 2.4.0
-  resolution: "poku@npm:2.4.0"
+"poku@npm:2.4.1":
+  version: 2.4.1
+  resolution: "poku@npm:2.4.1"
   bin:
     poku: lib/bin/index.js
-  checksum: f256a584d1748038b60c79123c50abd28337d7c36ab7df99910ef46b0ac82450a63009eb386b5d4c8d3332ee2562d62ec6e3cc5ff37ecfd89b42ea3ad2823249
+  checksum: c45f05e26f76153f124a9f647b837309c251fda5d6786830c4fed6287d87a2ace3746d6ecc3f9a99f59defcb454a1bb7740ba38e068cee6602347dcc40c56e0f
   languageName: node
   linkType: hard
 
@@ -2589,7 +2589,7 @@ __metadata:
     cspell: 8.13.1
     magic-string: 0.30.11
     monocart-coverage-reports: 2.10.1
-    poku: 2.4.0
+    poku: 2.4.1
     pretty-ansi: 2.0.0
     rollup: 4.20.0
     rollup-plugin-dts: 6.1.1
