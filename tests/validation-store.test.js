@@ -231,4 +231,111 @@ await describe("store", async () => {
       });
     }
   });
+
+  await describe("suppresses fetch errors if resolution of a tag may be outdated", async () => {
+    await test("when fetch request of metadata fails with 404", async () => {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+
+      const storeManifest = {
+        $version: "1",
+        lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        resolutions: {
+          ["5.2"]: "5.2.2",
+          ["5.3"]: "5.3.3",
+          beta: "5.3.0-beta",
+          latest: "5.3.3",
+          next: "5.4.0-dev.20240112",
+          rc: "5.3.1-rc",
+        },
+        versions: ["5.2.2", "5.3.2", "5.3.3"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+      });
+
+      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+        env: {
+          ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org",
+        },
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+
+    await test("when fetch request of metadata times out", async () => {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+
+      const storeManifest = {
+        $version: "1",
+        lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        resolutions: {
+          ["5.2"]: "5.2.2",
+          ["5.3"]: "5.3.3",
+          beta: "5.3.0-beta",
+          latest: "5.3.3",
+          next: "5.4.0-dev.20240112",
+          rc: "5.3.1-rc",
+        },
+        versions: ["5.2.2", "5.3.2", "5.3.3"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+      });
+
+      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+        env: {
+          ["TSTYCHE_TIMEOUT"]: "0.001",
+        },
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+
+    await test("when fetch request of metadata fails", async () => {
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/dummy.test.ts"]: isStringTestText,
+      });
+
+      await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+
+      const storeManifest = {
+        $version: "1",
+        lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        resolutions: {
+          ["5.2"]: "5.2.2",
+          ["5.3"]: "5.3.3",
+          beta: "5.3.0-beta",
+          latest: "5.3.3",
+          next: "5.4.0-dev.20240112",
+          rc: "5.3.1-rc",
+        },
+        versions: ["5.2.2", "5.3.2", "5.3.3"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+      });
+
+      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+        env: {
+          ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
+        },
+      });
+
+      assert.equal(stderr, "");
+      assert.equal(exitCode, 0);
+    });
+  });
 });

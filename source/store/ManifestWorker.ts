@@ -53,7 +53,7 @@ export class ManifestWorker {
     return false;
   }
 
-  async #load(options?: { quite?: boolean }) {
+  async #load(options?: { suppressErrors?: boolean }) {
     const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry));
 
     const request = new Request(new URL("typescript", this.#npmRegistry), {
@@ -63,7 +63,9 @@ export class ManifestWorker {
       },
     });
 
-    const response = await this.#fetcher.get(request, this.#timeout, diagnostic, { quite: options?.quite });
+    const response = await this.#fetcher.get(request, this.#timeout, diagnostic, {
+      suppressErrors: options?.suppressErrors,
+    });
 
     if (!response) {
       return;
@@ -138,9 +140,8 @@ export class ManifestWorker {
     }
 
     if (this.isOutdated(manifest) || options?.refresh === true) {
-      const quite = options?.refresh !== true;
-
-      const freshManifest = await this.#load({ quite });
+      // error events are dispatched only when manifest refresh is requested explicitly (e.g. via the '--update' option)
+      const freshManifest = await this.#load({ suppressErrors: !options?.refresh });
 
       if (freshManifest != null) {
         await this.persist(freshManifest);

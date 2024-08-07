@@ -54,7 +54,7 @@
     "test:coverage:report": "node ./scripts/report-coverage.js",
     "test:e2e": "yarn test:e2e:parallel && yarn test:e2e:serial",
     "test:e2e:parallel": "yarn poku tests/*.test.* --exclude='install|npmRegistry|store|target|typescript|update|watch' --parallel",
-    "test:e2e:serial": "yarn poku tests/*-{install,npmRegistry,store,target,typescript*,update,watch}.test.*",
+    "test:e2e:serial": "yarn poku tests/*-{install,npmRegistry,store*,target,typescript*,update,watch}.test.*",
     "test:examples": "tstyche examples",
     "test:types": "tstyche typetests",
     "test:unit": "yarn poku **/__tests__/*.test.* --parallel"
@@ -67,7 +67,7 @@
     "ajv": "8.17.1",
     "cspell": "8.13.1",
     "magic-string": "0.30.11",
-    "monocart-coverage-reports": "2.10.0",
+    "monocart-coverage-reports": "2.10.1",
     "poku": "2.4.0",
     "pretty-ansi": "2.0.0",
     "rollup": "4.20.0",
@@ -83,7 +83,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@3.8.3",
+  "packageManager": "yarn@3.8.4",
   "engines": {
     "node": ">=16.14"
   }
