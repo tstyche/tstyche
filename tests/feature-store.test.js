@@ -154,7 +154,8 @@ await describe("store", async () => {
 
   await test("when 'npmRegistry' is different, store manifest is regenerated", async () => {
     const storeManifest = {
-      $version: "2", npmRegistry: "https://registry.npmjs.org",
+      $version: "2",
+      npmRegistry: "https://registry.npmjs.org",
     };
 
     await writeFixture(fixtureUrl, {
