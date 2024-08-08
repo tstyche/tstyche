@@ -24,7 +24,7 @@ await describe("'--update' command line option", async () => {
 
   await test("when fetch request of metadata fails with 404", async () => {
     const storeManifest = {
-      $version: "1",
+      $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };

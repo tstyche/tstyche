@@ -5,19 +5,18 @@ import { Environment } from "#environment";
 import { Path } from "#path";
 import type { Fetcher } from "./Fetcher.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
+import type { Manifest } from "./types.js";
+
+interface VersionMetadata {
+  dist: { integrity: string; tarball: string };
+  version: string;
+}
 
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
   modified: string;
   name: string;
-  versions: Record<string, unknown>;
-}
-
-export interface Manifest {
-  $version: string;
-  lastUpdated: number;
-  resolutions: Record<string, string>;
-  versions: Array<string>;
+  versions: Record<string, VersionMetadata>;
 }
 
 export class ManifestWorker {
@@ -26,7 +25,7 @@ export class ManifestWorker {
   #npmRegistry: string;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
-  #version = "1";
+  #version = "2";
 
   constructor(storePath: string, npmRegistry: string, fetcher: Fetcher) {
     this.#storePath = storePath;
@@ -75,15 +74,21 @@ export class ManifestWorker {
     const manifest: Manifest = {
       $version: this.#version,
       lastUpdated: Date.now(),
+      npmRegistry: this.#npmRegistry,
       resolutions: {},
+      packages: {},
       versions: [],
     };
 
     const packageMetadata = (await response.json()) as PackageMetadata;
 
-    manifest.versions = Object.keys(packageMetadata.versions)
-      .filter((version) => /^(4|5)\.\d\.\d$/.test(version))
-      .sort();
+    for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
+      if (/^(4|5)\.\d\.\d$/.test(tag)) {
+        manifest.versions.push(tag);
+
+        manifest.packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
+      }
+    }
 
     const minorVersions = [...new Set(manifest.versions.map((version) => version.slice(0, -2)))];
 
@@ -96,11 +101,17 @@ export class ManifestWorker {
       }
     }
 
-    for (const tagKey of ["beta", "latest", "next", "rc"]) {
-      const distributionTagValue = packageMetadata["dist-tags"][tagKey];
+    for (const tag of ["beta", "latest", "next", "rc"]) {
+      const version = packageMetadata["dist-tags"][tag];
 
-      if (distributionTagValue != null) {
-        manifest.resolutions[tagKey] = distributionTagValue;
+      if (version != null) {
+        manifest.resolutions[tag] = version;
+
+        const meta = packageMetadata.versions[version];
+
+        if (meta != null) {
+          manifest.packages[version] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
+        }
       }
     }
 

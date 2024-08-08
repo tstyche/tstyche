@@ -146,7 +146,7 @@ await describe("store", async () => {
       encoding: "utf8",
     });
 
-    assert.matchObject(result, { $version: "1" });
+    assert.matchObject(result, { $version: "2" });
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -154,8 +154,18 @@ await describe("store", async () => {
 
   await test("when is up to date, store manifest is not regenerated", async () => {
     const storeManifest = JSON.stringify({
-      $version: "1",
+      $version: "2",
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
+      packages: {
+        "5.0.3": {
+          integrity: "sha512-xv8mOEDnigb/tN9PSMTwSEqAnUvkoXMQlicOb0IUVDBSQCgBSaAAROUZYy2IcUy5qU6XajK5jjjO7TMWqBTKZA==",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.0.3.tgz",
+        },
+        "5.0.4": {
+          integrity: "sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.0.4.tgz",
+        },
+      },
       resolutions: {},
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     });
@@ -179,8 +189,18 @@ await describe("store", async () => {
 
   await test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = JSON.stringify({
-      $version: "1",
+      $version: "2",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+      packages: {
+        "5.0.3": {
+          integrity: "sha512-xv8mOEDnigb/tN9PSMTwSEqAnUvkoXMQlicOb0IUVDBSQCgBSaAAROUZYy2IcUy5qU6XajK5jjjO7TMWqBTKZA==",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.0.3.tgz",
+        },
+        "5.0.4": {
+          integrity: "sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.0.4.tgz",
+        },
+      },
       resolutions: {},
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     });
