@@ -9,9 +9,10 @@ import { Path } from "#path";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
-import { type Manifest, ManifestWorker } from "./ManifestWorker.js";
+import { ManifestWorker } from "./ManifestWorker.js";
 import { PackageInstaller } from "./PackageInstaller.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
+import type { Manifest } from "./types.js";
 
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();

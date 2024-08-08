@@ -148,8 +148,9 @@ await describe("store", async () => {
     for (const { target, testCase } of testCases) {
       await test(testCase, async () => {
         const storeManifest = {
-          $version: "1",
+          $version: "2",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+          npmRegistry: "https://registry.npmjs.org",
           resolutions: {
             ["5.2"]: "5.2.2",
             ["5.3"]: "5.3.3",
@@ -202,15 +203,12 @@ await describe("store", async () => {
     for (const { target, testCase } of testCases) {
       await test(testCase, async () => {
         const storeManifest = {
-          $version: "1",
+          $version: "2",
+          npmRegistry: "https://registry.npmjs.org",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
           resolutions: {
             ["5.2"]: "5.2.2",
             ["5.3"]: "5.3.3",
-            beta: "5.3.0-beta",
-            latest: "5.3.3",
-            next: "5.4.0-dev.20240112",
-            rc: "5.3.1-rc",
           },
           versions: ["5.2.2", "5.3.2", "5.3.3"],
         };
@@ -241,15 +239,12 @@ await describe("store", async () => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "1",
+        $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        npmRegistry: "https://tstyche.org",
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
-          beta: "5.3.0-beta",
-          latest: "5.3.3",
-          next: "5.4.0-dev.20240112",
-          rc: "5.3.1-rc",
         },
         versions: ["5.2.2", "5.3.2", "5.3.3"],
       };
@@ -276,15 +271,12 @@ await describe("store", async () => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "1",
+        $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        npmRegistry: "https://registry.npmjs.org",
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
-          beta: "5.3.0-beta",
-          latest: "5.3.3",
-          next: "5.4.0-dev.20240112",
-          rc: "5.3.1-rc",
         },
         versions: ["5.2.2", "5.3.2", "5.3.3"],
       };
@@ -311,15 +303,12 @@ await describe("store", async () => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "1",
+        $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        npmRegistry: "https://nothing.tstyche.org",
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
-          beta: "5.3.0-beta",
-          latest: "5.3.3",
-          next: "5.4.0-dev.20240112",
-          rc: "5.3.1-rc",
         },
         versions: ["5.2.2", "5.3.2", "5.3.3"],
       };
