@@ -21,11 +21,15 @@ export async function spawnTyche(fixtureUrl, args, options) {
 
     let stdoutOutput = "";
 
+    tstyche.stdout.setEncoding("utf8");
+
     tstyche.stdout.on("data", (data) => {
       stdoutOutput += data;
     });
 
     let stderrOutput = "";
+
+    tstyche.stderr.setEncoding("utf8");
 
     tstyche.stderr.on("data", (data) => {
       stderrOutput += data;
