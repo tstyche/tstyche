@@ -10,10 +10,8 @@ class Deferred {
 }
 
 class Output {
-  constructor() {
-    this.stderr = "";
-    this.stdout = "";
-  }
+  stderr = "";
+  stdout = "";
 }
 
 export class Process {
@@ -44,11 +42,15 @@ export class Process {
       shell: true,
     });
 
+    this.#subprocess.stdout.setEncoding("utf8");
+
     this.#subprocess.stdout.on("data", (data) => {
       this.#output.stdout += data;
 
       this.#idleTimeout?.refresh();
     });
+
+    this.#subprocess.stderr.setEncoding("utf8");
 
     this.#subprocess.stderr.on("data", (data) => {
       this.#output.stderr += data;

@@ -24,8 +24,9 @@ await describe("'--update' command line option", async () => {
 
   await test("when fetch request of metadata fails with 404", async () => {
     const storeManifest = {
-      $version: "1",
+      $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
+      npmRegistry: "https://tstyche.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
@@ -53,8 +54,9 @@ await describe("'--update' command line option", async () => {
 
   await test("when fetch request of metadata times out", async () => {
     const storeManifest = {
-      $version: "1",
+      $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
+      npmRegistry: "https://nothing.tstyche.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
@@ -81,6 +83,18 @@ await describe("'--update' command line option", async () => {
   });
 
   await test("when fetch request of metadata fails", async () => {
+    const storeManifest = {
+      $version: "2",
+      lastUpdated: Date.now(), // this is considered fresh during regular test run
+      npmRegistry: "https://nothing.tstyche.org",
+      versions: ["5.0.2", "5.0.3", "5.0.4"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
+
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
