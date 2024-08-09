@@ -9,6 +9,7 @@ import { Path } from "#path";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
+import { LockService } from "./LockService.js";
 import { ManifestWorker } from "./ManifestWorker.js";
 import { PackageInstaller } from "./PackageInstaller.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
@@ -17,6 +18,7 @@ import type { Manifest } from "./types.js";
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();
   #fetcher: Fetcher;
+  #lockService: LockService;
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
   #packageInstaller: PackageInstaller;
@@ -27,7 +29,8 @@ export class StoreService {
     this.#storePath = Environment.storePath;
 
     this.#fetcher = new Fetcher(this.#onDiagnostics);
-    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#npmRegistry, this.#onDiagnostics);
+    this.#lockService = new LockService(this.#onDiagnostics);
+    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#npmRegistry, this.#lockService);
     this.#manifestWorker = new ManifestWorker(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 

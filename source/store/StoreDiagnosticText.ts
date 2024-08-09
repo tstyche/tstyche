@@ -30,4 +30,8 @@ export class StoreDiagnosticText {
   static requestTimeoutWasExceeded(timeout: number): string {
     return `The request timeout of ${timeout / 1000}s was exceeded.`;
   }
+
+  static lockWaitTimeoutWasExceeded(timeout: number): string {
+    return `Lock wait timeout of ${timeout / 1000}s was exceeded.`;
+  }
 }
