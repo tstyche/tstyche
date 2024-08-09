@@ -31,6 +31,7 @@ export class StoreService {
     this.#manifestWorker = new ManifestWorker(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 
+  // TODO this could be '.getSupportedTags()' method on 'Manifest' class
   async getSupportedTags(): Promise<Array<string>> {
     await this.open();
 
