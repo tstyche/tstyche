@@ -13,6 +13,10 @@ export interface CommandLineOptions {
      */
     failFast?: boolean;
     /**
+     * Force exit a stale process.
+     */
+    forceExit?: boolean;
+    /**
      * Print the list of command line options with brief descriptions and exit.
      */
     help?: boolean;
