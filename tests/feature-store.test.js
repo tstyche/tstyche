@@ -24,7 +24,7 @@ await describe("store", async () => {
   });
 
   await test("when compiler module is not installed", async () => {
-    const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
+    const compilerModuleUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -42,7 +42,7 @@ await describe("store", async () => {
   });
 
   await test("when compiler module is already installed", async () => {
-    const compilerModuleUrl = new URL("./.store/5.2.2", fixtureUrl);
+    const compilerModuleUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,

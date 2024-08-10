@@ -138,7 +138,7 @@ await describe("'TSTYCHE_STORE_PATH' environment variable", async () => {
 
     assert.equal(
       normalizeOutput(stdout),
-      "adds TypeScript 5.2.2 to <<cwd>>/tests/__fixtures__/.generated/config-storePath/dummy-store/5.2.2\n",
+      "adds TypeScript 5.2.2 to <<cwd>>/tests/__fixtures__/.generated/config-storePath/dummy-store/typescript@5.2.2\n",
     );
 
     assert.equal(stderr, "");
