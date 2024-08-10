@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 hyperfine \
   --export-json 'tstyche.bench.json' \
