@@ -58,7 +58,7 @@ await describe("'--update' command line option", async () => {
     const oldStoreManifest = JSON.stringify({
       $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
-      versions: ["5.0.2", "5.0.3", "5.0.4"],
+      npmRegistry: "https://registry.npmjs.org",
     });
 
     await writeFixture(fixtureUrl, {

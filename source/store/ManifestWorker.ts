@@ -7,16 +7,11 @@ import type { Fetcher } from "./Fetcher.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import type { Manifest } from "./types.js";
 
-interface VersionMetadata {
-  dist: { integrity: string; tarball: string };
-  version: string;
-}
-
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
   modified: string;
   name: string;
-  versions: Record<string, VersionMetadata>;
+  versions: Record<string, { dist: { integrity: string; tarball: string } }>;
 }
 
 export class ManifestWorker {
@@ -133,7 +128,7 @@ export class ManifestWorker {
       // the manifest will be removed and recreated
     }
 
-    if (!manifest || manifest.$version !== this.#version) {
+    if (!manifest || manifest.$version !== this.#version || manifest.npmRegistry !== this.#npmRegistry) {
       await fs.rm(this.#storePath, { force: true, recursive: true });
 
       return this.#create();
