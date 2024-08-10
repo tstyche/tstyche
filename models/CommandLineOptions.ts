@@ -9,6 +9,10 @@ export interface CommandLineOptions {
      */
     config?: string;
     /**
+     * Stop running tests after the first failed assertion.
+     */
+    failFast?: boolean;
+    /**
      * Force exit a stale process.
      */
     forceExit?: boolean;
