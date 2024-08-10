@@ -36,13 +36,6 @@ export class OptionDefinitionsMap {
     },
 
     {
-      brand: OptionBrand.Boolean,
-      description: "Stop running tests after the first failed assertion.",
-      group: OptionGroup.ConfigFile | OptionGroup.CommandLine,
-      name: "failFast",
-    },
-
-    {
       brand: OptionBrand.BareTrue,
       description: "Force exit a stale process.",
       group: OptionGroup.CommandLine,

@@ -156,9 +156,7 @@ export class Cli {
 
     this.#eventEmitter.removeHandlers();
 
-    if (commandLineArguments.includes("--forceExit")) {
-      this.#forceExit();
-    }
+    this.#forceExit();
   }
 
   #waitForChangedFiles(

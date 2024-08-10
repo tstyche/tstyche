@@ -5,10 +5,6 @@
  */
 export interface ConfigFileOptions {
     /**
-     * Stop running tests after the first failed assertion.
-     */
-    failFast?: boolean;
-    /**
      * The path to a directory containing files of a test project.
      */
     rootPath?: string;

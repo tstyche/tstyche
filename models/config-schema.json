@@ -1,11 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "failFast": {
-      "default": false,
-      "description": "Stop running tests after the first failed assertion.",
-      "type": "boolean"
-    },
     "rootPath": {
       "default": "./",
       "description": "The path to a directory containing files of a test project.",
