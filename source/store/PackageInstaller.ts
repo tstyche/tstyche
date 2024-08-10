@@ -87,8 +87,12 @@ export class PackageInstaller {
         }
 
         const filePath = Path.join(targetPath, file.name.replace("package/", ""));
+        const directoryPath = Path.dirname(filePath);
 
-        await fs.mkdir(Path.dirname(filePath), { recursive: true });
+        if (!existsSync(directoryPath)) {
+          await fs.mkdir(directoryPath, { recursive: true });
+        }
+
         await fs.writeFile(filePath, file.contents);
       }
     }
