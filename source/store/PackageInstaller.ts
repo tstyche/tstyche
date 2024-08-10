@@ -90,6 +90,8 @@ export class PackageInstaller {
     return new Promise<void>((resolve, reject) => {
       const spawnedNpm = spawn("npm", args, {
         cwd,
+        // there is no need to propagate 'NODE_V8_COVERAGE'
+        env: { ...process.env, ["NODE_V8_COVERAGE"]: undefined },
         shell: true,
         stdio: "ignore",
         timeout: this.#timeout,
