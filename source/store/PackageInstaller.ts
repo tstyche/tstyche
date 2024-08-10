@@ -28,7 +28,7 @@ export class PackageInstaller {
     manifest: Manifest,
     cancellationToken?: CancellationToken,
   ): Promise<string | undefined> {
-    const installationPath = Path.join(this.#storePath, version);
+    const installationPath = Path.join(this.#storePath, `typescript@${version}`);
     const readyFilePath = Path.join(installationPath, "__ready__");
     const modulePath = Path.join(installationPath, "lib", "typescript.js");
 

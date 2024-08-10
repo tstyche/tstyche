@@ -128,7 +128,7 @@ await describe("TypeScript 4.x", async () => {
     await test(`uses TypeScript ${version} as current target`, async () => {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
-      const typescriptPath = fileURLToPath(new URL(`./${version}/lib/typescript.js`, storeUrl));
+      const typescriptPath = fileURLToPath(new URL(`./typescript@${version}/lib/typescript.js`, storeUrl));
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
         env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
@@ -175,7 +175,7 @@ await describe("TypeScript 5.x", async () => {
     await test(`uses TypeScript ${version} as current target`, async () => {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
-      const typescriptPath = fileURLToPath(new URL(`./${version}/lib/typescript.js`, storeUrl));
+      const typescriptPath = fileURLToPath(new URL(`./typescript@${version}/lib/typescript.js`, storeUrl));
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
         env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
