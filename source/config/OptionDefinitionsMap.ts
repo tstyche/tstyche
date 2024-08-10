@@ -44,13 +44,6 @@ export class OptionDefinitionsMap {
 
     {
       brand: OptionBrand.BareTrue,
-      description: "Force exit a stale process.",
-      group: OptionGroup.CommandLine,
-      name: "forceExit",
-    },
-
-    {
-      brand: OptionBrand.BareTrue,
       description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,
       name: "help",

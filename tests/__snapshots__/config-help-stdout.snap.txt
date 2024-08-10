@@ -18,9 +18,6 @@ Command Line Options
   --failFast  boolean
   Stop running tests after the first failed assertion.
 
-  --forceExit
-  Force exit a stale process.
-
   --help
   Print the list of command line options with brief descriptions and exit.
 
