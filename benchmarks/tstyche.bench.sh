@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 hyperfine \
   --export-json 'tstyche.bench.json' \
@@ -15,10 +15,10 @@ hyperfine \
   --prepare '' \
   'tstyche examples' \
   --command-name 'cold cache: tstyche examples' \
-  --prepare 'tstyche --prune && npm cache clean --force' \
+  --prepare 'tstyche --prune' \
   'tstyche examples --target 5.2' \
   --command-name 'cold cache: tstyche examples --target 5.2' \
-  --prepare 'tstyche --prune && npm cache clean --force' \
+  --prepare 'tstyche --prune' \
   'tstyche examples --target 4.9' \
   --command-name 'cold cache: tstyche examples --target 4.9' \
-  --prepare 'tstyche --prune && npm cache clean --force'
+  --prepare 'tstyche --prune'

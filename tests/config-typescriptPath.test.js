@@ -44,9 +44,7 @@ await describe("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async () => {
 
     await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"]);
 
-    const typescriptPath = fileURLToPath(
-      new URL("./.store/5.2.2/node_modules/typescript/lib/typescript.js", fixtureUrl),
-    );
+    const typescriptPath = fileURLToPath(new URL("./.store/typescript@5.2.2/lib/typescript.js", fixtureUrl));
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {
