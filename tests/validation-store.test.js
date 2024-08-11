@@ -90,7 +90,7 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    await spawnTyche(fixtureUrl, ["--update"]);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
       env: {
@@ -101,7 +101,7 @@ await describe("store", async () => {
     const expected = [
       "Error: Failed to install 'typescript@5.1.6'.",
       "",
-      "Error: setup timeout of 0.001s was exceeded",
+      "The request timeout of 0.001s was exceeded.",
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
@@ -242,6 +242,18 @@ await describe("store", async () => {
         $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         npmRegistry: "https://tstyche.org",
+        packages: {
+          "5.2.2": {
+            integrity:
+              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
+          },
+          "5.3.3": {
+            integrity:
+              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+          },
+        },
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
@@ -274,6 +286,18 @@ await describe("store", async () => {
         $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         npmRegistry: "https://registry.npmjs.org",
+        packages: {
+          "5.2.2": {
+            integrity:
+              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
+          },
+          "5.3.3": {
+            integrity:
+              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+          },
+        },
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
@@ -306,6 +330,18 @@ await describe("store", async () => {
         $version: "2",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         npmRegistry: "https://nothing.tstyche.org",
+        packages: {
+          "5.2.2": {
+            integrity:
+              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
+          },
+          "5.3.3": {
+            integrity:
+              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+          },
+        },
         resolutions: {
           ["5.2"]: "5.2.2",
           ["5.3"]: "5.3.3",
