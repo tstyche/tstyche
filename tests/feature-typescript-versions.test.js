@@ -106,11 +106,6 @@ const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 const storeUrl = new URL("./.store/", fixtureUrl);
 
 await describe("TypeScript 4.x", async () => {
-  if (process.versions.node.startsWith("16")) {
-    // store is not supported on Node.js 16
-    return;
-  }
-
   await writeFixture(fixtureUrl, {
     // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
     ["__typetests__/toAcceptProps.test.tsx"]: `// @ts-expect-error\n${toAcceptPropsTestText}`,
@@ -144,11 +139,6 @@ await describe("TypeScript 4.x", async () => {
 });
 
 await describe("TypeScript 5.x", async () => {
-  if (process.versions.node.startsWith("16")) {
-    // store is not supported on Node.js 16
-    return;
-  }
-
   await writeFixture(fixtureUrl, {
     ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
     ["__typetests__/toBe.test.ts"]: toBeTestText,

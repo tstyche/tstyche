@@ -13,11 +13,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await describe("'--update' command line option", async () => {
-  if (process.versions.node.startsWith("16")) {
-    // store is not supported on Node.js 16
-    return;
-  }
-
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
