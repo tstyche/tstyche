@@ -22,7 +22,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
-    "target": "es2023"
+    "target": "es2022"
   },
   "exclude": [
     "build/**/*",

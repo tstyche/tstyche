@@ -10,6 +10,7 @@
 
     "jsx": "react-jsx",
     "jsxImportSource": "#scribbler",
+    "target": "es2023",
 
     "skipLibCheck": false
   },
