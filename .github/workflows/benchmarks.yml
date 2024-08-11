@@ -21,6 +21,7 @@ jobs:
         with:
           check-latest: true
           node-version: lts/*
+      - run: corepack enable
       - run: yarn install
       - run: yarn build
       - run: yarn bench

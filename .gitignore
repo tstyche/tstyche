@@ -1,7 +1,5 @@
 .cache
-.generated
-.yarn/*
-!.yarn/releases
+.yarn
 build
 coverage
 node_modules
