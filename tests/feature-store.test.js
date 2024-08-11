@@ -25,11 +25,11 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(compilerModuleUrl);
+    await assert.pathDoesNotExist(compilerModuleUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.pathExists(compilerModuleUrl);
+    await assert.pathExists(compilerModuleUrl);
 
     assert.match(stdout, /^adds TypeScript 5.2.2/);
     assert.equal(stderr, "");
@@ -43,13 +43,13 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(compilerModuleUrl);
+    await assert.pathDoesNotExist(compilerModuleUrl);
 
     await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.pathExists(compilerModuleUrl);
+    await assert.pathExists(compilerModuleUrl);
 
     assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(stderr, "");
@@ -63,11 +63,11 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(storeUrl);
+    await assert.pathDoesNotExist(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
-    assert.pathDoesNotExist(storeUrl);
+    await assert.pathDoesNotExist(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -80,11 +80,11 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(storeUrl);
+    await assert.pathDoesNotExist(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "current"]);
 
-    assert.pathDoesNotExist(storeUrl);
+    await assert.pathDoesNotExist(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -97,11 +97,11 @@ await describe("store", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(storeUrl);
+    await assert.pathDoesNotExist(storeUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.pathExists(storeUrl);
+    await assert.pathExists(storeUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);

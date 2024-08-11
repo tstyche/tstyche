@@ -43,13 +43,28 @@ export async function matchSnapshot(source, snapshot) {
 /**
  * @param {string | URL} source
  */
-export function pathExists(source) {
-  assert(existsSync(source), `Path ${source.toString()} exists.`);
+async function isPathAccessible(source) {
+  try {
+    await fs.access(source);
+
+    return true;
+  } catch {
+    // continue regardless of error
+  }
+
+  return false;
 }
 
 /**
  * @param {string | URL} source
  */
-export function pathDoesNotExist(source) {
-  assert(!existsSync(source), `Path ${source.toString()} does not exist.`);
+export async function pathExists(source) {
+  assert(await isPathAccessible(source), `Path ${source.toString()} exists.`);
+}
+
+/**
+ * @param {string | URL} source
+ */
+export async function pathDoesNotExist(source) {
+  assert(!(await isPathAccessible(source)), `Path ${source.toString()} does not exist.`);
 }

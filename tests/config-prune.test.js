@@ -46,11 +46,11 @@ await describe("'--prune' command line option", async () => {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
 
-      assert.pathExists(storeUrl);
+      await assert.pathExists(storeUrl);
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-      assert.pathDoesNotExist(storeUrl);
+      await assert.pathDoesNotExist(storeUrl);
 
       assert.equal(stdout, "");
       assert.equal(stderr, "");

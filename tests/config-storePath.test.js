@@ -121,7 +121,7 @@ await describe("'TSTYCHE_STORE_PATH' environment variable", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(storeUrl);
+    await assert.pathDoesNotExist(storeUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
       env: {
@@ -129,7 +129,7 @@ await describe("'TSTYCHE_STORE_PATH' environment variable", async () => {
       },
     });
 
-    assert.pathExists(storeUrl);
+    await assert.pathExists(storeUrl);
 
     assert.equal(
       normalizeOutput(stdout),
