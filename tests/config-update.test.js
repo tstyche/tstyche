@@ -37,11 +37,11 @@ await describe("'--update' command line option", async () => {
 
       await writeFixture(fixtureUrl);
 
-      assert.fileDoesNotExist(storeUrl);
+      assert.pathDoesNotExist(storeUrl);
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-      assert.fileExists(storeUrl);
+      assert.pathExists(storeUrl);
 
       assert.equal(stdout, "");
       assert.equal(stderr, "");
