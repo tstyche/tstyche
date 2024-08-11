@@ -20,7 +20,6 @@ export class ExpectService {
   toAcceptProps: ToAcceptProps;
   toBe: ToBe;
   toBeAny: PrimitiveTypeMatcher;
-  toBeAssignable: ToBeAssignableWith;
   toBeAssignableTo: ToBeAssignableTo;
   toBeAssignableWith: ToBeAssignableWith;
   toBeBigInt: PrimitiveTypeMatcher;
@@ -34,7 +33,6 @@ export class ExpectService {
   toBeUniqueSymbol: PrimitiveTypeMatcher;
   toBeUnknown: PrimitiveTypeMatcher;
   toBeVoid: PrimitiveTypeMatcher;
-  toEqual: ToBe;
   toHaveProperty: ToHaveProperty;
   toMatch: ToMatch;
   toRaiseError: ToRaiseError;
@@ -46,7 +44,6 @@ export class ExpectService {
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe();
     this.toBeAny = new PrimitiveTypeMatcher(compiler.TypeFlags.Any);
-    this.toBeAssignable = new ToBeAssignableWith();
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeAssignableWith = new ToBeAssignableWith();
     this.toBeBigInt = new PrimitiveTypeMatcher(compiler.TypeFlags.BigInt);
@@ -60,7 +57,6 @@ export class ExpectService {
     this.toBeUniqueSymbol = new PrimitiveTypeMatcher(compiler.TypeFlags.UniqueESSymbol);
     this.toBeUnknown = new PrimitiveTypeMatcher(compiler.TypeFlags.Unknown);
     this.toBeVoid = new PrimitiveTypeMatcher(compiler.TypeFlags.Void);
-    this.toEqual = new ToBe();
     this.toHaveProperty = new ToHaveProperty(compiler);
     this.toMatch = new ToMatch();
     this.toRaiseError = new ToRaiseError(compiler);
