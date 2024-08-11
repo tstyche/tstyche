@@ -59,22 +59,6 @@ export class Diagnostic {
     });
   }
 
-  static fromError(text: string | Array<string>, error: unknown): Diagnostic {
-    const messageText = Array.isArray(text) ? text : [text];
-
-    if (error instanceof Error && error.stack != null) {
-      if (messageText.length > 1) {
-        messageText.push("");
-      }
-
-      const stackLines = error.stack.split("\n").map((line) => line.trimStart());
-
-      messageText.push(...stackLines);
-    }
-
-    return Diagnostic.error(messageText);
-  }
-
   static #isTsDiagnosticWithLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticWithLocation {
     return diagnostic.file != null && diagnostic.start != null && diagnostic.length != null;
   }

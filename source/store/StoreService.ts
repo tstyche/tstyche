@@ -30,10 +30,12 @@ export class StoreService {
 
     this.#fetcher = new Fetcher(this.#onDiagnostics);
     this.#lockService = new LockService(this.#onDiagnostics);
-    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#npmRegistry, this.#lockService);
+
+    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#fetcher, this.#lockService);
     this.#manifestWorker = new ManifestWorker(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 
+  // TODO this could be '.getSupportedTags()' method on 'Manifest' class
   async getSupportedTags(): Promise<Array<string>> {
     await this.open();
 
@@ -49,7 +51,13 @@ export class StoreService {
       return;
     }
 
-    const version = await this.#resolveTag(tag);
+    await this.open();
+
+    if (!this.#manifest) {
+      return;
+    }
+
+    const version = this.#resolveTag(tag, this.#manifest);
 
     if (!version) {
       this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
@@ -57,7 +65,7 @@ export class StoreService {
       return;
     }
 
-    return this.#packageInstaller.ensure(version, cancellationToken);
+    return this.#packageInstaller.ensure(version, this.#manifest, cancellationToken);
   }
 
   async load(tag: string, cancellationToken?: CancellationToken): Promise<typeof ts | undefined> {
@@ -72,7 +80,13 @@ export class StoreService {
     if (tag === "current" && Environment.typescriptPath != null) {
       modulePath = Environment.typescriptPath;
     } else {
-      const version = await this.#resolveTag(tag);
+      await this.open();
+
+      if (!this.#manifest) {
+        return;
+      }
+
+      const version = this.#resolveTag(tag, this.#manifest);
 
       if (!version) {
         this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
@@ -86,7 +100,7 @@ export class StoreService {
         return compilerInstance;
       }
 
-      modulePath = await this.#packageInstaller.ensure(version, cancellationToken);
+      modulePath = await this.#packageInstaller.ensure(version, this.#manifest, cancellationToken);
     }
 
     if (modulePath != null) {
@@ -149,24 +163,20 @@ export class StoreService {
     this.#manifest = await this.#manifestWorker.open();
   }
 
-  async #resolveTag(tag: string): Promise<string | undefined> {
-    await this.open();
-
-    if (!this.#manifest) {
-      return;
-    }
-
-    if (this.#manifest.versions.includes(tag)) {
+  // TODO this could be '.resolve()' method on 'Manifest' class
+  #resolveTag(tag: string, manifest: Manifest): string | undefined {
+    if (manifest.versions.includes(tag)) {
       return tag;
     }
 
-    return this.#manifest.resolutions[tag];
+    return manifest.resolutions[tag];
   }
 
   async update(): Promise<void> {
     await this.#manifestWorker.open({ refresh: true });
   }
 
+  // TODO this could be '.validate()' method on 'Manifest' class
   async validateTag(tag: string): Promise<boolean | undefined> {
     if (tag === "current") {
       return Environment.typescriptPath != null;
