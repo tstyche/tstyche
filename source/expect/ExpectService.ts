@@ -1,7 +1,6 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
-import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
@@ -21,7 +20,6 @@ export class ExpectService {
   toAcceptProps: ToAcceptProps;
   toBe: ToBe;
   toBeAny: PrimitiveTypeMatcher;
-  toBeAssignable: ToBeAssignableWith;
   toBeAssignableTo: ToBeAssignableTo;
   toBeAssignableWith: ToBeAssignableWith;
   toBeBigInt: PrimitiveTypeMatcher;
@@ -35,7 +33,6 @@ export class ExpectService {
   toBeUniqueSymbol: PrimitiveTypeMatcher;
   toBeUnknown: PrimitiveTypeMatcher;
   toBeVoid: PrimitiveTypeMatcher;
-  toEqual: ToBe;
   toHaveProperty: ToHaveProperty;
   toMatch: ToMatch;
   toRaiseError: ToRaiseError;
@@ -47,7 +44,6 @@ export class ExpectService {
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe();
     this.toBeAny = new PrimitiveTypeMatcher(compiler.TypeFlags.Any);
-    this.toBeAssignable = new ToBeAssignableWith();
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeAssignableWith = new ToBeAssignableWith();
     this.toBeBigInt = new PrimitiveTypeMatcher(compiler.TypeFlags.BigInt);
@@ -61,34 +57,13 @@ export class ExpectService {
     this.toBeUniqueSymbol = new PrimitiveTypeMatcher(compiler.TypeFlags.UniqueESSymbol);
     this.toBeUnknown = new PrimitiveTypeMatcher(compiler.TypeFlags.Unknown);
     this.toBeVoid = new PrimitiveTypeMatcher(compiler.TypeFlags.Void);
-    this.toEqual = new ToBe();
     this.toHaveProperty = new ToHaveProperty(compiler);
     this.toMatch = new ToMatch();
     this.toRaiseError = new ToRaiseError(compiler);
   }
 
-  #handleDeprecated(matcherNameText: string, assertion: Assertion) {
-    switch (matcherNameText) {
-      case "toBeAssignable":
-      case "toEqual": {
-        const text = ExpectDiagnosticText.matcherIsDeprecated(matcherNameText);
-        const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
-
-        EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
-
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-  }
-
   match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
-
-    this.#handleDeprecated(matcherNameText, assertion);
 
     if (!assertion.source[0]) {
       this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
@@ -101,12 +76,8 @@ export class ExpectService {
     switch (matcherNameText) {
       case "toAcceptProps":
       case "toBe":
-      // TODO '.toBeAssignable()' is deprecated and must be removed in TSTyche 3
-      case "toBeAssignable":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
-      // TODO '.toEqual()' is deprecated and must be removed in TSTyche 3
-      case "toEqual":
       case "toMatch": {
         if (!assertion.target[0]) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
