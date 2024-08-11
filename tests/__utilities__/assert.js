@@ -5,20 +5,6 @@ import { strict as assert } from "poku";
 export const { doesNotMatch, equal, match, notEqual } = assert;
 
 /**
- * @param {string | URL} source
- */
-export function fileExists(source) {
-  assert(existsSync(source), `File ${source.toString()} exists.`);
-}
-
-/**
- * @param {string | URL} source
- */
-export function fileDoesNotExist(source) {
-  assert(!existsSync(source), `File ${source.toString()} does not exist.`);
-}
-
-/**
  * @param {Record<string, unknown> | string} source
  * @param {Record<string, unknown>} target
  */
@@ -52,4 +38,18 @@ export async function matchSnapshot(source, snapshot) {
     await fs.mkdir(new URL("__snapshots__", snapshot.testFileUrl), { recursive: true });
     await fs.writeFile(snapshotFileUrl, source);
   }
+}
+
+/**
+ * @param {string | URL} source
+ */
+export function pathExists(source) {
+  assert(existsSync(source), `Path ${source.toString()} exists.`);
+}
+
+/**
+ * @param {string | URL} source
+ */
+export function pathDoesNotExist(source) {
+  assert(!existsSync(source), `Path ${source.toString()} does not exist.`);
 }
