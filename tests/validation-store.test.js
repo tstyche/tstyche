@@ -103,6 +103,28 @@ await describe("store", async () => {
     assert.equal(exitCode, 1);
   });
 
+  await test("when lock wait times out", async () => {
+    await writeFixture(fixtureUrl, {
+      [".store/typescript@5.4.5__lock__"]: "",
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.4"], {
+      env: {
+        ["TSTYCHE_TIMEOUT"]: "1.5",
+      },
+    });
+
+    const expected = [
+      "Error: Failed to install 'typescript@5.4.5'.",
+      "",
+      "Lock wait timeout of 1.5s was exceeded.",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+    assert.equal(exitCode, 1);
+  });
+
   await describe("warns if resolution of a tag may be outdated", async () => {
     const testCases = [
       {

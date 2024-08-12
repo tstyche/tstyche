@@ -4,30 +4,25 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import type { CancellationToken } from "#token";
 import type { Fetcher } from "./Fetcher.js";
-import { Lock } from "./Lock.js";
+import type { LockService } from "./LockService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import { TarReader } from "./TarReader.js";
-import type { DiagnosticsHandler, Manifest } from "./types.js";
+import type { Manifest } from "./types.js";
 
 export class PackageService {
   #fetcher: Fetcher;
-  #onDiagnostics: DiagnosticsHandler;
+  #lockService: LockService;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
 
-  constructor(storePath: string, fetcher: Fetcher, onDiagnostics: DiagnosticsHandler) {
+  constructor(storePath: string, fetcher: Fetcher, lockService: LockService) {
     this.#storePath = storePath;
     this.#fetcher = fetcher;
-    this.#onDiagnostics = onDiagnostics;
+    this.#lockService = lockService;
   }
 
-  async ensure(
-    packageVersion: string,
-    manifest: Manifest,
-    cancellationToken?: CancellationToken,
-  ): Promise<string | undefined> {
+  async ensure(packageVersion: string, manifest: Manifest): Promise<string | undefined> {
     const packagePath = Path.join(this.#storePath, `typescript@${packageVersion}`);
     const readyFilePath = Path.join(packagePath, "__ready__");
     // TODO at some point return 'packagePath' instead of 'modulePath'
@@ -39,16 +34,7 @@ export class PackageService {
 
     const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(packageVersion));
 
-    if (
-      await Lock.isLocked(packagePath, {
-        cancellationToken,
-        // TODO 'diagnostic.extendWith()' could be used here too
-        onDiagnostics: (text) => {
-          this.#onDiagnostics(Diagnostic.error([StoreDiagnosticText.failedToInstalTypeScript(packageVersion), text]));
-        },
-        timeout: this.#timeout,
-      })
-    ) {
+    if (await this.#lockService.isLocked(packagePath, this.#timeout, diagnostic)) {
       return;
     }
 
@@ -57,7 +43,7 @@ export class PackageService {
     const resource = manifest.packages[packageVersion];
 
     if (resource != null) {
-      const lock = new Lock(packagePath);
+      const lock = this.#lockService.getLock(packagePath);
 
       try {
         await this.#add(packagePath, resource, diagnostic);
