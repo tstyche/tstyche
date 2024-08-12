@@ -15,11 +15,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await describe("'TSTYCHE_STORE_PATH' environment variable", async () => {
-  if (process.versions.node.startsWith("16")) {
-    // store is not supported on Node.js 16
-    return;
-  }
-
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -126,7 +121,7 @@ await describe("'TSTYCHE_STORE_PATH' environment variable", async () => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.fileDoesNotExist(storeUrl);
+    assert.pathDoesNotExist(storeUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
       env: {
@@ -134,7 +129,7 @@ await describe("'TSTYCHE_STORE_PATH' environment variable", async () => {
       },
     });
 
-    assert.fileExists(storeUrl);
+    assert.pathExists(storeUrl);
 
     assert.equal(
       normalizeOutput(stdout),

@@ -88,8 +88,7 @@ export class ManifestWorker {
     const minorVersions = [...new Set(manifest.versions.map((version) => version.slice(0, -2)))];
 
     for (const tag of minorVersions) {
-      // TODO use 'findLast()' after dropping support for Node.js 16
-      const resolvedVersion = manifest.versions.filter((version) => version.startsWith(tag)).pop();
+      const resolvedVersion = manifest.versions.findLast((version) => version.startsWith(tag));
 
       if (resolvedVersion != null) {
         manifest.resolutions[tag] = resolvedVersion;

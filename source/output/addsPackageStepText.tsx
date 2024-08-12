@@ -1,14 +1,14 @@
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-export function addsPackageStepText(compilerVersion: string, installationPath: string): ScribblerJsx.Element {
+export function addsPackageStepText(packageVersion: string, packagePath: string): ScribblerJsx.Element {
   return (
     <Line>
       <Text color={Color.Gray}>{"adds"}</Text>
       {" TypeScript "}
-      {compilerVersion}
+      {packageVersion}
       <Text color={Color.Gray}>
         {" to "}
-        {installationPath}
+        {packagePath}
       </Text>
     </Line>
   );
