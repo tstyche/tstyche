@@ -44,7 +44,7 @@ export class RunReporter extends Reporter implements EventHandler {
       }
 
       case "store:info": {
-        this.outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
+        this.outputService.writeMessage(addsPackageStepText(payload.packageVersion, payload.packagePath));
 
         this.#hasReportedAdds = true;
         break;

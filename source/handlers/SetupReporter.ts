@@ -6,7 +6,7 @@ import { Reporter } from "./Reporter.js";
 export class SetupReporter extends Reporter implements EventHandler {
   handleEvent([eventName, payload]: Event): void {
     if (eventName === "store:info") {
-      this.outputService.writeMessage(addsPackageStepText(payload.compilerVersion, payload.installationPath));
+      this.outputService.writeMessage(addsPackageStepText(payload.packageVersion, payload.packagePath));
       return;
     }
 
