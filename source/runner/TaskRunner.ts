@@ -57,7 +57,7 @@ export class TaskRunner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await this.#storeService.load(versionTag, cancellationToken);
+      const compiler = await this.#storeService.load(versionTag);
 
       if (compiler) {
         // TODO to improve performance, test file runners (or even test projects) could be cached in the future

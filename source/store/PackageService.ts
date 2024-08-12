@@ -4,7 +4,6 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import type { CancellationToken } from "#token";
 import type { Fetcher } from "./Fetcher.js";
 import type { LockService } from "./LockService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
@@ -23,11 +22,7 @@ export class PackageService {
     this.#lockService = lockService;
   }
 
-  async ensure(
-    packageVersion: string,
-    manifest: Manifest,
-    cancellationToken?: CancellationToken,
-  ): Promise<string | undefined> {
+  async ensure(packageVersion: string, manifest: Manifest): Promise<string | undefined> {
     const packagePath = Path.join(this.#storePath, `typescript@${packageVersion}`);
     const readyFilePath = Path.join(packagePath, "__ready__");
     // TODO at some point return 'packagePath' instead of 'modulePath'
@@ -39,7 +34,7 @@ export class PackageService {
 
     const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(packageVersion));
 
-    if (await this.#lockService.isLocked(packagePath, this.#timeout, diagnostic, cancellationToken)) {
+    if (await this.#lockService.isLocked(packagePath, this.#timeout, diagnostic)) {
       return;
     }
 

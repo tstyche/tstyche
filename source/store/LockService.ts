@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import type { Diagnostic } from "#diagnostic";
-import type { CancellationToken } from "#token";
 import { Lock } from "./Lock.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import type { DiagnosticsHandler } from "./types.js";
@@ -22,12 +21,7 @@ export class LockService {
     return new Lock(lockFilePath);
   }
 
-  async isLocked(
-    targetPath: string,
-    timeout: number,
-    diagnostic: Diagnostic,
-    cancellationToken?: CancellationToken,
-  ): Promise<boolean> {
+  async isLocked(targetPath: string, timeout: number, diagnostic: Diagnostic): Promise<boolean> {
     const lockFilePath = this.#getLockFilePath(targetPath);
 
     let isLocked = existsSync(lockFilePath);
@@ -39,10 +33,6 @@ export class LockService {
     const waitStartTime = Date.now();
 
     while (isLocked) {
-      if (cancellationToken?.isCancellationRequested === true) {
-        break;
-      }
-
       if (Date.now() - waitStartTime > timeout) {
         this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.lockWaitTimeoutWasExceeded(timeout)));
 
@@ -57,7 +47,7 @@ export class LockService {
     return isLocked;
   }
 
-  async #sleep(time: number) {
-    return new Promise((resolve) => setTimeout(resolve, time));
+  async #sleep(delay: number) {
+    return new Promise((resolve) => setTimeout(resolve, delay));
   }
 }

@@ -6,7 +6,6 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
@@ -46,7 +45,7 @@ export class StoreService {
     return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
   }
 
-  async install(tag: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
+  async install(tag: string): Promise<string | undefined> {
     if (tag === "current") {
       return;
     }
@@ -65,10 +64,10 @@ export class StoreService {
       return;
     }
 
-    return this.#packageService.ensure(version, this.#manifest, cancellationToken);
+    return this.#packageService.ensure(version, this.#manifest);
   }
 
-  async load(tag: string, cancellationToken?: CancellationToken): Promise<typeof ts | undefined> {
+  async load(tag: string): Promise<typeof ts | undefined> {
     let compilerInstance = this.#compilerInstanceCache.get(tag);
 
     if (compilerInstance != null) {
@@ -100,7 +99,7 @@ export class StoreService {
         return compilerInstance;
       }
 
-      modulePath = await this.#packageService.ensure(version, this.#manifest, cancellationToken);
+      modulePath = await this.#packageService.ensure(version, this.#manifest);
     }
 
     if (modulePath != null) {
