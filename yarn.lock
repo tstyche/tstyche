@@ -556,9 +556,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "@cspell/dict-software-terms@npm:4.0.5"
-  checksum: 10c0/b556fe1d3c9cadfbf04bf39081dd33acca606511cbc7f3218444da3f95a5e8a58705fea341d4f350cba1bcd2e9714cbcd5e40665b1c00e07f5bedbaab7afb977
+  version: 4.0.6
+  resolution: "@cspell/dict-software-terms@npm:4.0.6"
+  checksum: 10c0/8e02e024f1304eae4d247e01370f4ef469660d131eba92a9c0bace1046ef4f0ddaa558f8df2622774a860ddf01d1ec523d7ade857aed50de2fac4163542ec406
   languageName: node
   linkType: hard
 
@@ -1138,15 +1138,15 @@ __metadata:
   linkType: hard
 
 "comment-json@npm:^4.2.4":
-  version: 4.2.4
-  resolution: "comment-json@npm:4.2.4"
+  version: 4.2.5
+  resolution: "comment-json@npm:4.2.5"
   dependencies:
     array-timsort: "npm:^1.0.3"
     core-util-is: "npm:^1.0.3"
     esprima: "npm:^4.0.1"
     has-own-prop: "npm:^2.0.0"
     repeat-string: "npm:^1.6.1"
-  checksum: 10c0/a30cfea0dbac85f1894ac2add0e21add7d7f0f0a577285e464246704043d83f1b94f8eda868a59079a97538cf0c65be70e2a2c1c4d8afae7bd8329dc75a6f7de
+  checksum: 10c0/e22f13f18fcc484ac33c8bc02a3d69c3f9467ae5063fdfb3df7735f83a8d9a2cab6a32b7d4a0c53123413a9577de8e17c8cc88369c433326799558febb34ef9c
   languageName: node
   linkType: hard
 
@@ -1517,12 +1517,12 @@ __metadata:
   linkType: hard
 
 "foreground-child@npm:^3.1.0, foreground-child@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "foreground-child@npm:3.2.1"
+  version: 3.3.0
+  resolution: "foreground-child@npm:3.3.0"
   dependencies:
     cross-spawn: "npm:^7.0.0"
     signal-exit: "npm:^4.0.1"
-  checksum: 10c0/9a53a33dbd87090e9576bef65fb4a71de60f6863a8062a7b11bc1cbe3cc86d428677d7c0b9ef61cdac11007ac580006f78bd5638618d564cfd5e6fd713d6878f
+  checksum: 10c0/028f1d41000553fcfa6c4bb5c372963bf3d9bf0b1f25a87d1a6253014343fb69dfb1b42d9625d7cf44c8ba429940f3d0ff718b62105d4d4a4f6ef8ca0a53faa2
   languageName: node
   linkType: hard
 
