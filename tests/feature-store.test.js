@@ -18,38 +18,38 @@ await describe("store", async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when compiler module is not installed", async () => {
-    const compilerModuleUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
+  await test("when 'typescript' package is not installed", async () => {
+    const packageUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(compilerModuleUrl);
+    assert.pathDoesNotExist(packageUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.pathExists(compilerModuleUrl);
+    assert.pathExists(packageUrl);
 
     assert.match(stdout, /^adds TypeScript 5.2.2/);
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
-  await test("when compiler module is already installed", async () => {
-    const compilerModuleUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
+  await test("when 'typescript' package is already installed", async () => {
+    const packageUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(compilerModuleUrl);
+    assert.pathDoesNotExist(packageUrl);
 
     await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.pathExists(compilerModuleUrl);
+    assert.pathExists(packageUrl);
 
     assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(stderr, "");
@@ -57,51 +57,51 @@ await describe("store", async () => {
   });
 
   await test("when target is default, store manifest is not generated", async () => {
-    const storeUrl = new URL("./.store", fixtureUrl);
+    const storeManifestUrl = new URL("./.store/store-manifest.json", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(storeUrl);
+    assert.pathDoesNotExist(storeManifestUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
-    assert.pathDoesNotExist(storeUrl);
+    assert.pathDoesNotExist(storeManifestUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
   await test("when target is 'current', store manifest is not generated", async () => {
-    const storeUrl = new URL("./.store", fixtureUrl);
+    const storeManifestUrl = new URL("./.store/store-manifest.json", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(storeUrl);
+    assert.pathDoesNotExist(storeManifestUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "current"]);
 
-    assert.pathDoesNotExist(storeUrl);
+    assert.pathDoesNotExist(storeManifestUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
   await test("when target is specified, store manifest is generated", async () => {
-    const storeUrl = new URL("./.store", fixtureUrl);
+    const storeManifestUrl = new URL("./.store/store-manifest.json", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    assert.pathDoesNotExist(storeUrl);
+    assert.pathDoesNotExist(storeManifestUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
-    assert.pathExists(storeUrl);
+    assert.pathExists(storeManifestUrl);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
