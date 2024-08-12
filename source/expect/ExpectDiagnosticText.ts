@@ -19,13 +19,6 @@ export class ExpectDiagnosticText {
     return `${isTypeNode ? "Component type" : "Component"} does not accept props of the given type.`;
   }
 
-  static matcherIsDeprecated(matcherNameText: string): Array<string> {
-    return [
-      `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
-      "To learn more, visit https://tstyche.org/releases/tstyche-2",
-    ];
-  }
-
   static matcherIsNotSupported(matcherNameText: string): string {
     return `The '.${matcherNameText}()' matcher is not supported.`;
   }

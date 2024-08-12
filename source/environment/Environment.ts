@@ -135,7 +135,7 @@ export class Environment {
     let resolvedPath: string | undefined;
 
     try {
-      // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
+      // TODO use 'import.meta.resolve()' after dropping support for Node.js 18.19
       resolvedPath = Path.normalizeSlashes(createRequire(import.meta.url).resolve(moduleId));
     } catch {
       // the path cannot be resolved

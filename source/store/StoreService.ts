@@ -11,7 +11,7 @@ import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
 import { ManifestWorker } from "./ManifestWorker.js";
-import { PackageInstaller } from "./PackageInstaller.js";
+import { PackageService } from "./PackageService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import type { Manifest } from "./types.js";
 
@@ -21,7 +21,7 @@ export class StoreService {
   #lockService: LockService;
   #manifest: Manifest | undefined;
   #manifestWorker: ManifestWorker;
-  #packageInstaller: PackageInstaller;
+  #packageService: PackageService;
   #npmRegistry = Environment.npmRegistry;
   #storePath: string;
 
@@ -31,7 +31,7 @@ export class StoreService {
     this.#fetcher = new Fetcher(this.#onDiagnostics);
     this.#lockService = new LockService(this.#onDiagnostics);
 
-    this.#packageInstaller = new PackageInstaller(this.#storePath, this.#fetcher, this.#lockService);
+    this.#packageService = new PackageService(this.#storePath, this.#fetcher, this.#lockService);
     this.#manifestWorker = new ManifestWorker(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 
@@ -65,7 +65,7 @@ export class StoreService {
       return;
     }
 
-    return this.#packageInstaller.ensure(version, this.#manifest, cancellationToken);
+    return this.#packageService.ensure(version, this.#manifest, cancellationToken);
   }
 
   async load(tag: string, cancellationToken?: CancellationToken): Promise<typeof ts | undefined> {
@@ -100,7 +100,7 @@ export class StoreService {
         return compilerInstance;
       }
 
-      modulePath = await this.#packageInstaller.ensure(version, this.#manifest, cancellationToken);
+      modulePath = await this.#packageService.ensure(version, this.#manifest, cancellationToken);
     }
 
     if (modulePath != null) {

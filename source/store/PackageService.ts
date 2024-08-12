@@ -11,7 +11,7 @@ import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import { TarReader } from "./TarReader.js";
 import type { Manifest } from "./types.js";
 
-export class PackageInstaller {
+export class PackageService {
   #fetcher: Fetcher;
   #lockService: LockService;
   #storePath: string;
@@ -24,33 +24,34 @@ export class PackageInstaller {
   }
 
   async ensure(
-    version: string,
+    packageVersion: string,
     manifest: Manifest,
     cancellationToken?: CancellationToken,
   ): Promise<string | undefined> {
-    const installationPath = Path.join(this.#storePath, `typescript@${version}`);
-    const readyFilePath = Path.join(installationPath, "__ready__");
-    const modulePath = Path.join(installationPath, "lib", "typescript.js");
+    const packagePath = Path.join(this.#storePath, `typescript@${packageVersion}`);
+    const readyFilePath = Path.join(packagePath, "__ready__");
+    // TODO at some point return 'packagePath' instead of 'modulePath'
+    const modulePath = Path.join(packagePath, "lib", "typescript.js");
 
     if (existsSync(readyFilePath)) {
       return modulePath;
     }
 
-    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(version));
+    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(packageVersion));
 
-    if (await this.#lockService.isLocked(installationPath, this.#timeout, diagnostic, cancellationToken)) {
+    if (await this.#lockService.isLocked(packagePath, this.#timeout, diagnostic, cancellationToken)) {
       return;
     }
 
-    EventEmitter.dispatch(["store:info", { compilerVersion: version, installationPath }]);
+    EventEmitter.dispatch(["store:info", { packagePath, packageVersion }]);
 
-    const resource = manifest.packages[version];
+    const resource = manifest.packages[packageVersion];
 
     if (resource != null) {
-      const lock = this.#lockService.getLock(installationPath);
+      const lock = this.#lockService.getLock(packagePath);
 
       try {
-        await this.#install(installationPath, resource, diagnostic);
+        await this.#add(packagePath, resource, diagnostic);
 
         await fs.writeFile(readyFilePath, "");
       } finally {
@@ -63,7 +64,7 @@ export class PackageInstaller {
     return;
   }
 
-  async #install(targetPath: string, resource: { integrity: string; tarball: string }, diagnostic: Diagnostic) {
+  async #add(targetPath: string, resource: { integrity: string; tarball: string }, diagnostic: Diagnostic) {
     const request = new Request(resource.tarball, { integrity: resource.integrity });
 
     const response = await this.#fetcher.get(request, this.#timeout, diagnostic);
