@@ -115,7 +115,7 @@ export class ProjectService {
     );
 
     EventEmitter.dispatch([
-      "project:info",
+      "project:uses",
       { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
     ]);
 

@@ -38,7 +38,7 @@ export class PackageService {
       return;
     }
 
-    EventEmitter.dispatch(["store:info", { packagePath, packageVersion }]);
+    EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
 
     const resource = manifest?.packages[packageVersion];
 
