@@ -9,17 +9,17 @@ import { Path } from "#path";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
-import { ManifestWorker } from "./ManifestWorker.js";
+import type { Manifest } from "./Manifest.js";
+import { ManifestService } from "./ManifestService.js";
 import { PackageService } from "./PackageService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-import type { Manifest } from "./types.js";
 
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();
   #fetcher: Fetcher;
   #lockService: LockService;
   #manifest: Manifest | undefined;
-  #manifestWorker: ManifestWorker;
+  #manifestWorker: ManifestService;
   #packageService: PackageService;
   #npmRegistry = Environment.npmRegistry;
   #storePath: string;
@@ -31,32 +31,23 @@ export class StoreService {
     this.#lockService = new LockService(this.#onDiagnostics);
 
     this.#packageService = new PackageService(this.#storePath, this.#fetcher, this.#lockService);
-    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#npmRegistry, this.#fetcher);
+    this.#manifestWorker = new ManifestService(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 
-  // TODO this could be '.getSupportedTags()' method on 'Manifest' class
   async getSupportedTags(): Promise<Array<string>> {
     await this.open();
 
-    if (!this.#manifest) {
-      return [];
-    }
-
-    return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
+    return this.#manifest?.getSupportedTags() ?? [];
   }
 
-  async install(tag: string): Promise<string | undefined> {
+  async install(tag: string): Promise<void> {
     if (tag === "current") {
       return;
     }
 
     await this.open();
 
-    if (!this.#manifest) {
-      return;
-    }
-
-    const version = this.#resolveTag(tag, this.#manifest);
+    const version = this.#manifest?.resolve(tag);
 
     if (!version) {
       this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
@@ -64,7 +55,7 @@ export class StoreService {
       return;
     }
 
-    return this.#packageService.ensure(version, this.#manifest);
+    await this.#packageService.ensure(version, this.#manifest);
   }
 
   async load(tag: string): Promise<typeof ts | undefined> {
@@ -81,11 +72,7 @@ export class StoreService {
     } else {
       await this.open();
 
-      if (!this.#manifest) {
-        return;
-      }
-
-      const version = this.#resolveTag(tag, this.#manifest);
+      const version = this.#manifest?.resolve(tag);
 
       if (!version) {
         this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
@@ -163,20 +150,10 @@ export class StoreService {
     this.#manifest = await this.#manifestWorker.open();
   }
 
-  // TODO this could be '.resolve()' method on 'Manifest' class
-  #resolveTag(tag: string, manifest: Manifest): string | undefined {
-    if (manifest.versions.includes(tag)) {
-      return tag;
-    }
-
-    return manifest.resolutions[tag];
-  }
-
   async update(): Promise<void> {
     await this.#manifestWorker.open({ refresh: true });
   }
 
-  // TODO this could be '.validate()' method on 'Manifest' class
   async validateTag(tag: string): Promise<boolean | undefined> {
     if (tag === "current") {
       return Environment.typescriptPath != null;
@@ -184,12 +161,8 @@ export class StoreService {
 
     await this.open();
 
-    if (!this.#manifest) {
-      return undefined;
-    }
-
     if (
-      this.#manifestWorker.isOutdated(this.#manifest, /* ageTolerance */ 60 /* one minute */) &&
+      this.#manifest?.isOutdated({ ageTolerance: 60 /* one minute */ }) &&
       (!Version.isVersionTag(tag) ||
         (this.#manifest.resolutions["latest"] != null &&
           Version.isGreaterThan(tag, this.#manifest.resolutions["latest"])))
@@ -202,6 +175,6 @@ export class StoreService {
       );
     }
 
-    return tag in this.#manifest.resolutions || this.#manifest.versions.includes(tag);
+    return this.#manifest?.validate(tag);
   }
 }

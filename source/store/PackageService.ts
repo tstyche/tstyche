@@ -6,9 +6,9 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { Fetcher } from "./Fetcher.js";
 import type { LockService } from "./LockService.js";
+import type { Manifest } from "./Manifest.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import { TarReader } from "./TarReader.js";
-import type { Manifest } from "./types.js";
 
 export class PackageService {
   #fetcher: Fetcher;
@@ -22,7 +22,7 @@ export class PackageService {
     this.#lockService = lockService;
   }
 
-  async ensure(packageVersion: string, manifest: Manifest): Promise<string | undefined> {
+  async ensure(packageVersion: string, manifest?: Manifest): Promise<string | undefined> {
     const packagePath = Path.join(this.#storePath, `typescript@${packageVersion}`);
     const readyFilePath = Path.join(packagePath, "__ready__");
     // TODO at some point return 'packagePath' instead of 'modulePath'
@@ -40,7 +40,7 @@ export class PackageService {
 
     EventEmitter.dispatch(["store:info", { packagePath, packageVersion }]);
 
-    const resource = manifest.packages[packageVersion];
+    const resource = manifest?.packages[packageVersion];
 
     if (resource != null) {
       const lock = this.#lockService.getLock(packagePath);
