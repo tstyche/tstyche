@@ -62,17 +62,15 @@ export class ResultHandler implements EventHandler {
         break;
       }
 
-      case "project:info": {
-        {
-          let projectResult = this.#targetResult!.results.get(payload.projectConfigFilePath);
+      case "project:uses": {
+        let projectResult = this.#targetResult!.results.get(payload.projectConfigFilePath);
 
-          if (!projectResult) {
-            projectResult = new ProjectResult(payload.compilerVersion, payload.projectConfigFilePath);
-            this.#targetResult!.results.set(payload.projectConfigFilePath, projectResult);
-          }
-
-          this.#projectResult = projectResult;
+        if (!projectResult) {
+          projectResult = new ProjectResult(payload.compilerVersion, payload.projectConfigFilePath);
+          this.#targetResult!.results.set(payload.projectConfigFilePath, projectResult);
         }
+
+        this.#projectResult = projectResult;
         break;
       }
 
