@@ -34,10 +34,10 @@ export class StoreService {
     this.#manifestWorker = new ManifestService(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 
-  async getSupportedTags(): Promise<Array<string>> {
+  async getSupportedTags(): Promise<Array<string> | undefined> {
     await this.open();
 
-    return this.#manifest?.getSupportedTags() ?? [];
+    return this.#manifest?.getSupportedTags();
   }
 
   async install(tag: string): Promise<void> {
