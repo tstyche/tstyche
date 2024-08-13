@@ -116,6 +116,7 @@ export class StoreService {
     const exports = {};
     const module = { exports };
 
+    // TODO there is no need to handle 'tsserverlibrary.js' after dropping support for TypeScript 5.2
     const candidatePaths = [Path.join(Path.dirname(modulePath), "tsserverlibrary.js"), modulePath];
 
     for (const candidatePath of candidatePaths) {
