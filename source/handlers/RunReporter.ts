@@ -14,7 +14,6 @@ export class RunReporter extends Reporter implements EventHandler {
   #hasReportedError = false;
   #isFileViewExpanded = false;
   #resolvedConfig: ResolvedConfig;
-  #seenDeprecations = new Set<string>();
 
   constructor(resolvedConfig: ResolvedConfig, outputService: OutputService) {
     super(outputService);
@@ -28,16 +27,6 @@ export class RunReporter extends Reporter implements EventHandler {
 
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
-      case "deprecation:info": {
-        for (const diagnostic of payload.diagnostics) {
-          if (!this.#seenDeprecations.has(diagnostic.text.toString())) {
-            this.#fileView.addMessage(diagnosticText(diagnostic));
-            this.#seenDeprecations.add(diagnostic.text.toString());
-          }
-        }
-        break;
-      }
-
       case "run:start": {
         this.#isFileViewExpanded = payload.result.testFiles.length === 1 && this.#resolvedConfig.watch !== true;
         break;
@@ -127,7 +116,6 @@ export class RunReporter extends Reporter implements EventHandler {
         }
 
         this.#fileView.clear();
-        this.#seenDeprecations.clear();
         break;
       }
 
