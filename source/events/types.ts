@@ -6,7 +6,7 @@ export type Event =
   | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
-  | ["store:info", { packagePath: string; packageVersion: string }]
+  | ["store:adds", { packagePath: string; packageVersion: string }]
   | ["store:error", { diagnostics: Array<Diagnostic> }]
   | ["target:start", { result: TargetResult }]
   | ["target:end", { result: TargetResult }]
