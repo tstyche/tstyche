@@ -4,8 +4,8 @@ import { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { Path } from "#path";
 import type { Fetcher } from "./Fetcher.js";
+import { Manifest } from "./Manifest.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-import type { Manifest } from "./types.js";
 
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
@@ -14,13 +14,12 @@ interface PackageMetadata {
   versions: Record<string, { dist: { integrity: string; tarball: string } }>;
 }
 
-export class ManifestWorker {
+export class ManifestService {
   #fetcher: Fetcher;
   #manifestFilePath: string;
   #npmRegistry: string;
   #storePath: string;
   #timeout = Environment.timeout * 1000;
-  #version = "2";
 
   constructor(storePath: string, npmRegistry: string, fetcher: Fetcher) {
     this.#storePath = storePath;
@@ -34,18 +33,10 @@ export class ManifestWorker {
     const manifest = await this.#load();
 
     if (manifest != null) {
-      await this.persist(manifest);
+      await this.#persist(manifest);
     }
 
     return manifest;
-  }
-
-  isOutdated(manifest: Manifest, ageTolerance = 0): boolean {
-    if (Date.now() - manifest.lastUpdated > 2 * 60 * 60 * 1000 /* 2 hours */ + ageTolerance * 1000) {
-      return true;
-    }
-
-    return false;
   }
 
   async #load(options?: { suppressErrors?: boolean }) {
@@ -66,32 +57,27 @@ export class ManifestWorker {
       return;
     }
 
-    const manifest: Manifest = {
-      $version: this.#version,
-      lastUpdated: Date.now(),
-      npmRegistry: this.#npmRegistry,
-      resolutions: {},
-      packages: {},
-      versions: [],
-    };
+    const resolutions: Manifest["resolutions"] = {};
+    const packages: Manifest["packages"] = {};
+    const versions: Manifest["versions"] = [];
 
     const packageMetadata = (await response.json()) as PackageMetadata;
 
     for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
       if (/^(4|5)\.\d\.\d$/.test(tag)) {
-        manifest.versions.push(tag);
+        versions.push(tag);
 
-        manifest.packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
+        packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
       }
     }
 
-    const minorVersions = [...new Set(manifest.versions.map((version) => version.slice(0, -2)))];
+    const minorVersions = [...new Set(versions.map((version) => version.slice(0, -2)))];
 
     for (const tag of minorVersions) {
-      const resolvedVersion = manifest.versions.findLast((version) => version.startsWith(tag));
+      const resolvedVersion = versions.findLast((version) => version.startsWith(tag));
 
       if (resolvedVersion != null) {
-        manifest.resolutions[tag] = resolvedVersion;
+        resolutions[tag] = resolvedVersion;
       }
     }
 
@@ -99,46 +85,39 @@ export class ManifestWorker {
       const version = packageMetadata["dist-tags"][tag];
 
       if (version != null) {
-        manifest.resolutions[tag] = version;
+        resolutions[tag] = version;
 
         const meta = packageMetadata.versions[version];
 
         if (meta != null) {
-          manifest.packages[version] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
+          packages[version] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
         }
       }
     }
 
-    return manifest;
+    return new Manifest({ npmRegistry: this.#npmRegistry, packages, resolutions, versions });
   }
 
   async open(options?: { refresh?: boolean }): Promise<Manifest | undefined> {
-    let manifest: Manifest | undefined;
-
     if (!existsSync(this.#manifestFilePath)) {
       return this.#create();
     }
 
     const manifestText = await fs.readFile(this.#manifestFilePath, { encoding: "utf8" });
+    const manifest = Manifest.parse(manifestText);
 
-    try {
-      manifest = JSON.parse(manifestText) as Manifest;
-    } catch {
-      // the manifest will be removed and recreated
-    }
-
-    if (!manifest || manifest.$version !== this.#version || manifest.npmRegistry !== this.#npmRegistry) {
+    if (!manifest || manifest.npmRegistry !== this.#npmRegistry) {
       await fs.rm(this.#storePath, { force: true, recursive: true });
 
       return this.#create();
     }
 
-    if (this.isOutdated(manifest) || options?.refresh === true) {
+    if (manifest.isOutdated() || options?.refresh === true) {
       // error events are dispatched only when manifest refresh is requested explicitly (e.g. via the '--update' option)
       const freshManifest = await this.#load({ suppressErrors: !options?.refresh });
 
       if (freshManifest != null) {
-        await this.persist(freshManifest);
+        await this.#persist(freshManifest);
 
         return freshManifest;
       }
@@ -147,11 +126,11 @@ export class ManifestWorker {
     return manifest;
   }
 
-  async persist(manifest: Manifest): Promise<void> {
+  async #persist(manifest: Manifest): Promise<void> {
     if (!existsSync(this.#storePath)) {
       await fs.mkdir(this.#storePath, { recursive: true });
     }
 
-    await fs.writeFile(this.#manifestFilePath, JSON.stringify(manifest));
+    await fs.writeFile(this.#manifestFilePath, manifest.stringify());
   }
 }
