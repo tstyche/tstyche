@@ -173,6 +173,6 @@ export class StoreService {
       );
     }
 
-    return this.#manifest?.validate(tag);
+    return this.#manifest?.isSupported(tag);
   }
 }

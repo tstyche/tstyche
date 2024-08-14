@@ -38,6 +38,10 @@ export class Manifest {
     return false;
   }
 
+  isSupported(tag: string): boolean | undefined {
+    return tag in this.resolutions || this.versions.includes(tag);
+  }
+
   static parse(text: string): Manifest | undefined {
     let manifestData: ManifestData | undefined;
 
@@ -73,9 +77,5 @@ export class Manifest {
     };
 
     return JSON.stringify(manifestData);
-  }
-
-  validate(tag: string): boolean | undefined {
-    return tag in this.resolutions || this.versions.includes(tag);
   }
 }
