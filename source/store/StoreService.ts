@@ -143,11 +143,9 @@ export class StoreService {
   }
 
   async open(): Promise<void> {
-    if (this.#manifest) {
-      return;
+    if (!this.#manifest) {
+      this.#manifest = await this.#manifestWorker.open();
     }
-
-    this.#manifest = await this.#manifestWorker.open();
   }
 
   async update(): Promise<void> {
