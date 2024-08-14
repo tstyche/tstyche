@@ -8,7 +8,7 @@ export interface ManifestData {
 }
 
 export class Manifest {
-  static version = "2";
+  static #version = "2";
 
   $version: string;
   lastUpdated: number;
@@ -18,7 +18,7 @@ export class Manifest {
   versions: Array<string>;
 
   constructor(data: ManifestData) {
-    this.$version = data.$version ?? Manifest.version;
+    this.$version = data.$version ?? Manifest.#version;
     this.lastUpdated = data.lastUpdated ?? Date.now();
     this.npmRegistry = data.npmRegistry;
     this.packages = data.packages;
@@ -46,12 +46,12 @@ export class Manifest {
     let manifestData: ManifestData | undefined;
 
     try {
-      manifestData = JSON.parse(text) as ManifestData;
+      manifestData = JSON.parse(text);
     } catch {
       // the manifest will be removed and recreated by the service logic
     }
 
-    if (manifestData != null) {
+    if (manifestData != null && manifestData.$version === Manifest.#version) {
       return new Manifest(manifestData);
     }
 

@@ -106,7 +106,7 @@ export class ManifestService {
     const manifestText = await fs.readFile(this.#manifestFilePath, { encoding: "utf8" });
     const manifest = Manifest.parse(manifestText);
 
-    if (!manifest || manifest.$version !== Manifest.version || manifest.npmRegistry !== this.#npmRegistry) {
+    if (!manifest || manifest.npmRegistry !== this.#npmRegistry) {
       await fs.rm(this.#storePath, { force: true, recursive: true });
 
       return this.#create();
