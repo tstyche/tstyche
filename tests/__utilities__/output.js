@@ -1,3 +1,4 @@
+import process from "node:process";
 import ts from "typescript";
 
 const rootPath = process.cwd().replace(/\\/g, "/");
