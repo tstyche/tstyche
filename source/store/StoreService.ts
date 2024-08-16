@@ -16,22 +16,17 @@ import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();
-  #fetcher: Fetcher;
-  #lockService: LockService;
+  #fetcher = new Fetcher(this.#onDiagnostics);
+  #lockService = new LockService(this.#onDiagnostics);
   #manifest: Manifest | undefined;
-  #manifestWorker: ManifestService;
+  #manifestService: ManifestService;
   #packageService: PackageService;
   #npmRegistry = Environment.npmRegistry;
-  #storePath: string;
+  #storePath = Environment.storePath;
 
   constructor() {
-    this.#storePath = Environment.storePath;
-
-    this.#fetcher = new Fetcher(this.#onDiagnostics);
-    this.#lockService = new LockService(this.#onDiagnostics);
-
     this.#packageService = new PackageService(this.#storePath, this.#fetcher, this.#lockService);
-    this.#manifestWorker = new ManifestService(this.#storePath, this.#npmRegistry, this.#fetcher);
+    this.#manifestService = new ManifestService(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 
   async getSupportedTags(): Promise<Array<string> | undefined> {
@@ -144,12 +139,12 @@ export class StoreService {
 
   async open(): Promise<void> {
     if (!this.#manifest) {
-      this.#manifest = await this.#manifestWorker.open();
+      this.#manifest = await this.#manifestService.open();
     }
   }
 
   async update(): Promise<void> {
-    await this.#manifestWorker.open({ refresh: true });
+    await this.#manifestService.open({ refresh: true });
   }
 
   async validateTag(tag: string): Promise<boolean | undefined> {
