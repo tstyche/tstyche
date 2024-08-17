@@ -2,6 +2,8 @@
 
 ## [3.0.0-beta.0] - 2024-08-12
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
 ### Fixed
 
 - When requested, always suppress fetch errors ([#275](https://github.com/tstyche/tstyche/pull/275))
