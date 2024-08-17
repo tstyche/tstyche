@@ -16,15 +16,19 @@ import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();
-  #fetcher = new Fetcher(this.#onDiagnostics);
-  #lockService = new LockService(this.#onDiagnostics);
+  #fetcher: Fetcher;
+  #lockService: LockService;
   #manifest: Manifest | undefined;
   #manifestService: ManifestService;
   #packageService: PackageService;
   #npmRegistry = Environment.npmRegistry;
   #storePath = Environment.storePath;
+  #timeout = Environment.timeout * 1000;
 
   constructor() {
+    this.#fetcher = new Fetcher(this.#onDiagnostics, this.#timeout);
+    this.#lockService = new LockService(this.#onDiagnostics, this.#timeout);
+
     this.#packageService = new PackageService(this.#storePath, this.#fetcher, this.#lockService);
     this.#manifestService = new ManifestService(this.#storePath, this.#npmRegistry, this.#fetcher);
   }

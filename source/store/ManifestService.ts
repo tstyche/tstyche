@@ -1,7 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { Diagnostic } from "#diagnostic";
-import { Environment } from "#environment";
 import { Path } from "#path";
 import type { Fetcher } from "./Fetcher.js";
 import { Manifest } from "./Manifest.js";
@@ -19,7 +18,6 @@ export class ManifestService {
   #manifestFilePath: string;
   #npmRegistry: string;
   #storePath: string;
-  #timeout = Environment.timeout * 1000;
 
   constructor(storePath: string, npmRegistry: string, fetcher: Fetcher) {
     this.#storePath = storePath;
@@ -49,9 +47,7 @@ export class ManifestService {
       },
     });
 
-    const response = await this.#fetcher.get(request, this.#timeout, diagnostic, {
-      suppressErrors: options?.suppressErrors,
-    });
+    const response = await this.#fetcher.get(request, diagnostic, { suppressErrors: options?.suppressErrors });
 
     if (!response) {
       return;

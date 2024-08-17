@@ -1,7 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { Diagnostic } from "#diagnostic";
-import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { Fetcher } from "./Fetcher.js";
@@ -14,7 +13,6 @@ export class PackageService {
   #fetcher: Fetcher;
   #lockService: LockService;
   #storePath: string;
-  #timeout = Environment.timeout * 1000;
 
   constructor(storePath: string, fetcher: Fetcher, lockService: LockService) {
     this.#storePath = storePath;
@@ -25,7 +23,7 @@ export class PackageService {
   async #add(targetPath: string, resource: { integrity: string; tarball: string }, diagnostic: Diagnostic) {
     const request = new Request(resource.tarball, { integrity: resource.integrity });
 
-    const response = await this.#fetcher.get(request, this.#timeout, diagnostic);
+    const response = await this.#fetcher.get(request, diagnostic);
 
     if (response?.body != null) {
       const decompressedStream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
@@ -63,7 +61,7 @@ export class PackageService {
     const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(packageVersion));
     const resource = manifest?.packages[packageVersion];
 
-    if (await this.#lockService.isLocked(packagePath, this.#timeout, diagnostic)) {
+    if (await this.#lockService.isLocked(packagePath, diagnostic)) {
       return;
     }
 
