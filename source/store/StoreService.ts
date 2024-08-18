@@ -85,7 +85,11 @@ export class StoreService {
         return compilerInstance;
       }
 
-      modulePath = await this.#packageService.ensure(version, this.#manifest);
+      const packagePath = await this.#packageService.ensure(version, this.#manifest);
+
+      if (packagePath != null) {
+        modulePath = Path.join(packagePath, "lib", "typescript.js");
+      }
     }
 
     if (modulePath != null) {

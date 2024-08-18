@@ -20,15 +20,15 @@ export class PackageService {
     this.#lockService = lockService;
   }
 
-  async #add(targetPath: string, resource: { integrity: string; tarball: string }, diagnostic: Diagnostic) {
+  async #add(packagePath: string, resource: { integrity: string; tarball: string }, diagnostic: Diagnostic) {
     const request = new Request(resource.tarball, { integrity: resource.integrity });
 
     const response = await this.#fetcher.get(request, diagnostic);
 
     if (response?.body != null) {
-      const decompressedStream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
+      const targetPath = `${packagePath}-${Math.random().toString(32).slice(2)}`;
 
-      for await (const file of TarReader.extract(decompressedStream)) {
+      for await (const file of TarReader.extract(response.body)) {
         // TODO remove this check after dropping support for TypeScript 4.8
         if (!file.name.startsWith("package/")) {
           continue;
@@ -43,42 +43,42 @@ export class PackageService {
 
         await fs.writeFile(filePath, file.contents);
       }
+
+      await fs.rename(targetPath, packagePath);
+
+      return packagePath;
     }
+
+    return;
   }
 
   async ensure(packageVersion: string, manifest?: Manifest): Promise<string | undefined> {
-    const packagePath = Path.join(this.#storePath, `typescript@${packageVersion}`);
-    const readyFilePath = Path.join(packagePath, "__ready__");
-    // TODO at some point return 'packagePath' instead of 'modulePath'
-    const modulePath = Path.join(packagePath, "lib", "typescript.js");
-
-    if (existsSync(readyFilePath)) {
-      return modulePath;
-    }
-
-    EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
+    let packagePath: string | undefined = Path.join(this.#storePath, `typescript@${packageVersion}`);
 
     const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(packageVersion));
-    const resource = manifest?.packages[packageVersion];
 
     if (await this.#lockService.isLocked(packagePath, diagnostic)) {
       return;
     }
 
+    if (existsSync(packagePath)) {
+      return packagePath;
+    }
+
+    EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
+
+    const resource = manifest?.packages[packageVersion];
+
     if (resource != null) {
       const lock = this.#lockService.getLock(packagePath);
 
       try {
-        await this.#add(packagePath, resource, diagnostic);
-
-        // TODO if package was not added, do not mark it 'ready'
-        await fs.writeFile(readyFilePath, "");
+        packagePath = await this.#add(packagePath, resource, diagnostic);
       } finally {
         lock.release();
       }
 
-      // TODO if package was not added, do not return 'modulePath'
-      return modulePath;
+      return packagePath;
     }
 
     return;
