@@ -97,9 +97,11 @@ await describe("store", async () => {
       "Error: Failed to install 'typescript@5.1.6'.",
       "",
       "The request timeout of 0.001s was exceeded.",
+      "",
+      "",
     ].join("\n");
 
-    assert.match(stderr, new RegExp(`^${expected}`));
+    assert.equal(stderr, expected);
     assert.equal(exitCode, 1);
   });
 
@@ -119,9 +121,11 @@ await describe("store", async () => {
       "Error: Failed to install 'typescript@5.4.5'.",
       "",
       "Lock wait timeout of 1.5s was exceeded.",
+      "",
+      "",
     ].join("\n");
 
-    assert.match(stderr, new RegExp(`^${expected}`));
+    assert.equal(stderr, expected);
     assert.equal(exitCode, 1);
   });
 
