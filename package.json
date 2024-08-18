@@ -70,7 +70,7 @@
     "monocart-coverage-reports": "2.10.3",
     "poku": "2.4.4",
     "pretty-ansi": "2.0.0",
-    "rollup": "4.20.0",
+    "rollup": "4.21.0",
     "rollup-plugin-dts": "6.1.1",
     "tslib": "2.6.3",
     "typescript": "5.5.4"
