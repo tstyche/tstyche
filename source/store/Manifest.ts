@@ -26,20 +26,12 @@ export class Manifest {
     this.versions = data.versions;
   }
 
-  getSupportedTags(): Array<string> {
-    return [...Object.keys(this.resolutions), ...this.versions, "current"].sort();
-  }
-
   isOutdated(options?: { ageTolerance?: number }): boolean {
     if (Date.now() - this.lastUpdated > 2 * 60 * 60 * 1000 /* 2 hours */ + (options?.ageTolerance ?? 0) * 1000) {
       return true;
     }
 
     return false;
-  }
-
-  isSupported(tag: string): boolean | undefined {
-    return tag in this.resolutions || this.versions.includes(tag);
   }
 
   static parse(text: string): Manifest | undefined {

@@ -23,6 +23,7 @@ export class StoreService {
   #packageService: PackageService;
   #npmRegistry = Environment.npmRegistry;
   #storePath = Environment.storePath;
+  #supportedTags: Array<string> | undefined;
   #timeout = Environment.timeout * 1000;
 
   constructor() {
@@ -36,7 +37,7 @@ export class StoreService {
   async getSupportedTags(): Promise<Array<string> | undefined> {
     await this.open();
 
-    return this.#manifest?.getSupportedTags();
+    return this.#supportedTags;
   }
 
   async install(tag: string): Promise<void> {
@@ -146,8 +147,13 @@ export class StoreService {
   }
 
   async open(): Promise<void> {
-    if (!this.#manifest) {
-      this.#manifest = await this.#manifestService.open();
+    // ensure '.open()' can only be called once
+    this.open = () => Promise.resolve();
+
+    this.#manifest = await this.#manifestService.open();
+
+    if (this.#manifest != null) {
+      this.#supportedTags = [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
     }
   }
 
@@ -176,6 +182,6 @@ export class StoreService {
       );
     }
 
-    return this.#manifest?.isSupported(tag);
+    return this.#supportedTags?.includes(tag);
   }
 }
