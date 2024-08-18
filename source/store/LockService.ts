@@ -6,9 +6,11 @@ import type { DiagnosticsHandler } from "./types.js";
 
 export class LockService {
   #onDiagnostics: DiagnosticsHandler;
+  #timeout: number;
 
-  constructor(onDiagnostics: DiagnosticsHandler) {
+  constructor(onDiagnostics: DiagnosticsHandler, timeout: number) {
     this.#onDiagnostics = onDiagnostics;
+    this.#timeout = timeout;
   }
 
   #getLockFilePath(targetPath: string) {
@@ -21,7 +23,7 @@ export class LockService {
     return new Lock(lockFilePath);
   }
 
-  async isLocked(targetPath: string, timeout: number, diagnostic: Diagnostic): Promise<boolean> {
+  async isLocked(targetPath: string, diagnostic: Diagnostic): Promise<boolean> {
     const lockFilePath = this.#getLockFilePath(targetPath);
 
     let isLocked = existsSync(lockFilePath);
@@ -33,8 +35,8 @@ export class LockService {
     const waitStartTime = Date.now();
 
     while (isLocked) {
-      if (Date.now() - waitStartTime > timeout) {
-        this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.lockWaitTimeoutWasExceeded(timeout)));
+      if (Date.now() - waitStartTime > this.#timeout) {
+        this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.lockWaitTimeoutWasExceeded(this.#timeout)));
 
         break;
       }

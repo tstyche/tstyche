@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
 import { Environment } from "#environment";
 import type { Event, EventHandler } from "#events";
-import { type OutputService, addsPackageStepText, diagnosticText, fileStatusText, usesCompilerStepText } from "#output";
+import { type OutputService, addsPackageText, diagnosticText, fileStatusText, usesCompilerText } from "#output";
 import { FileViewService } from "./FileViewService.js";
 import { Reporter } from "./Reporter.js";
 
@@ -14,7 +14,6 @@ export class RunReporter extends Reporter implements EventHandler {
   #hasReportedError = false;
   #isFileViewExpanded = false;
   #resolvedConfig: ResolvedConfig;
-  #seenDeprecations = new Set<string>();
 
   constructor(resolvedConfig: ResolvedConfig, outputService: OutputService) {
     super(outputService);
@@ -28,23 +27,13 @@ export class RunReporter extends Reporter implements EventHandler {
 
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
-      case "deprecation:info": {
-        for (const diagnostic of payload.diagnostics) {
-          if (!this.#seenDeprecations.has(diagnostic.text.toString())) {
-            this.#fileView.addMessage(diagnosticText(diagnostic));
-            this.#seenDeprecations.add(diagnostic.text.toString());
-          }
-        }
-        break;
-      }
-
       case "run:start": {
         this.#isFileViewExpanded = payload.result.testFiles.length === 1 && this.#resolvedConfig.watch !== true;
         break;
       }
 
-      case "store:info": {
-        this.outputService.writeMessage(addsPackageStepText(payload.packageVersion, payload.packagePath));
+      case "store:adds": {
+        this.outputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
 
         this.#hasReportedAdds = true;
         break;
@@ -68,13 +57,13 @@ export class RunReporter extends Reporter implements EventHandler {
         break;
       }
 
-      case "project:info": {
+      case "project:uses": {
         if (
           this.#currentCompilerVersion !== payload.compilerVersion ||
           this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
         ) {
           this.outputService.writeMessage(
-            usesCompilerStepText(payload.compilerVersion, payload.projectConfigFilePath, {
+            usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, {
               prependEmptyLine:
                 this.#currentCompilerVersion != null && !this.#hasReportedAdds && !this.#hasReportedError,
             }),
@@ -127,7 +116,6 @@ export class RunReporter extends Reporter implements EventHandler {
         }
 
         this.#fileView.clear();
-        this.#seenDeprecations.clear();
         break;
       }
 

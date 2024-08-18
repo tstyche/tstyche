@@ -9,54 +9,45 @@ import { Path } from "#path";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
-import { ManifestWorker } from "./ManifestWorker.js";
+import type { Manifest } from "./Manifest.js";
+import { ManifestService } from "./ManifestService.js";
 import { PackageService } from "./PackageService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-import type { Manifest } from "./types.js";
 
 export class StoreService {
   #compilerInstanceCache = new Map<string, typeof ts>();
   #fetcher: Fetcher;
   #lockService: LockService;
   #manifest: Manifest | undefined;
-  #manifestWorker: ManifestWorker;
+  #manifestService: ManifestService;
   #packageService: PackageService;
   #npmRegistry = Environment.npmRegistry;
-  #storePath: string;
+  #storePath = Environment.storePath;
+  #supportedTags: Array<string> | undefined;
+  #timeout = Environment.timeout * 1000;
 
   constructor() {
-    this.#storePath = Environment.storePath;
-
-    this.#fetcher = new Fetcher(this.#onDiagnostics);
-    this.#lockService = new LockService(this.#onDiagnostics);
+    this.#fetcher = new Fetcher(this.#onDiagnostics, this.#timeout);
+    this.#lockService = new LockService(this.#onDiagnostics, this.#timeout);
 
     this.#packageService = new PackageService(this.#storePath, this.#fetcher, this.#lockService);
-    this.#manifestWorker = new ManifestWorker(this.#storePath, this.#npmRegistry, this.#fetcher);
+    this.#manifestService = new ManifestService(this.#storePath, this.#npmRegistry, this.#fetcher);
   }
 
-  // TODO this could be '.getSupportedTags()' method on 'Manifest' class
-  async getSupportedTags(): Promise<Array<string>> {
+  async getSupportedTags(): Promise<Array<string> | undefined> {
     await this.open();
 
-    if (!this.#manifest) {
-      return [];
-    }
-
-    return [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
+    return this.#supportedTags;
   }
 
-  async install(tag: string): Promise<string | undefined> {
+  async install(tag: string): Promise<void> {
     if (tag === "current") {
       return;
     }
 
     await this.open();
 
-    if (!this.#manifest) {
-      return;
-    }
-
-    const version = this.#resolveTag(tag, this.#manifest);
+    const version = this.#manifest?.resolve(tag);
 
     if (!version) {
       this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
@@ -64,7 +55,7 @@ export class StoreService {
       return;
     }
 
-    return this.#packageService.ensure(version, this.#manifest);
+    await this.#packageService.ensure(version, this.#manifest);
   }
 
   async load(tag: string): Promise<typeof ts | undefined> {
@@ -81,11 +72,7 @@ export class StoreService {
     } else {
       await this.open();
 
-      if (!this.#manifest) {
-        return;
-      }
-
-      const version = this.#resolveTag(tag, this.#manifest);
+      const version = this.#manifest?.resolve(tag);
 
       if (!version) {
         this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
@@ -99,7 +86,11 @@ export class StoreService {
         return compilerInstance;
       }
 
-      modulePath = await this.#packageService.ensure(version, this.#manifest);
+      const packagePath = await this.#packageService.ensure(version, this.#manifest);
+
+      if (packagePath != null) {
+        modulePath = Path.join(packagePath, "lib", "typescript.js");
+      }
     }
 
     if (modulePath != null) {
@@ -116,6 +107,7 @@ export class StoreService {
     const exports = {};
     const module = { exports };
 
+    // TODO there is no need to handle 'tsserverlibrary.js' after dropping support for TypeScript 5.2
     const candidatePaths = [Path.join(Path.dirname(modulePath), "tsserverlibrary.js"), modulePath];
 
     for (const candidatePath of candidatePaths) {
@@ -155,27 +147,20 @@ export class StoreService {
   }
 
   async open(): Promise<void> {
-    if (this.#manifest) {
-      return;
+    // ensure '.open()' can only be called once
+    this.open = () => Promise.resolve();
+
+    this.#manifest = await this.#manifestService.open();
+
+    if (this.#manifest != null) {
+      this.#supportedTags = [...Object.keys(this.#manifest.resolutions), ...this.#manifest.versions, "current"].sort();
     }
-
-    this.#manifest = await this.#manifestWorker.open();
-  }
-
-  // TODO this could be '.resolve()' method on 'Manifest' class
-  #resolveTag(tag: string, manifest: Manifest): string | undefined {
-    if (manifest.versions.includes(tag)) {
-      return tag;
-    }
-
-    return manifest.resolutions[tag];
   }
 
   async update(): Promise<void> {
-    await this.#manifestWorker.open({ refresh: true });
+    await this.#manifestService.open({ refresh: true });
   }
 
-  // TODO this could be '.validate()' method on 'Manifest' class
   async validateTag(tag: string): Promise<boolean | undefined> {
     if (tag === "current") {
       return Environment.typescriptPath != null;
@@ -183,12 +168,8 @@ export class StoreService {
 
     await this.open();
 
-    if (!this.#manifest) {
-      return undefined;
-    }
-
     if (
-      this.#manifestWorker.isOutdated(this.#manifest, /* ageTolerance */ 60 /* one minute */) &&
+      this.#manifest?.isOutdated({ ageTolerance: 60 /* one minute */ }) &&
       (!Version.isVersionTag(tag) ||
         (this.#manifest.resolutions["latest"] != null &&
           Version.isGreaterThan(tag, this.#manifest.resolutions["latest"])))
@@ -201,6 +182,6 @@ export class StoreService {
       );
     }
 
-    return tag in this.#manifest.resolutions || this.#manifest.versions.includes(tag);
+    return this.#supportedTags?.includes(tag);
   }
 }

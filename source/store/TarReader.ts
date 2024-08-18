@@ -9,8 +9,10 @@ export class TarReader {
   static #textDecoder = new TextDecoder();
 
   static async *extract(stream: ReadableStream): AsyncIterable<ExtractedFile> {
+    const decompressedStream = stream.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
+
     // TODO consider consuming a stream directly instead of converting it into a buffer
-    const buffer = await streamConsumers.arrayBuffer(stream);
+    const buffer = await streamConsumers.arrayBuffer(decompressedStream);
 
     let offset = 0;
 

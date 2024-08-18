@@ -4,19 +4,20 @@ import type { DiagnosticsHandler } from "./types.js";
 
 export class Fetcher {
   #onDiagnostics: DiagnosticsHandler;
+  #timeout: number;
 
-  constructor(onDiagnostics: DiagnosticsHandler) {
+  constructor(onDiagnostics: DiagnosticsHandler, timeout: number) {
     this.#onDiagnostics = onDiagnostics;
+    this.#timeout = timeout;
   }
 
   async get(
     request: Request,
-    timeout: number,
     diagnostic: Diagnostic,
     options?: { suppressErrors?: boolean | undefined },
   ): Promise<Response | undefined> {
     try {
-      const response = await fetch(request, { signal: AbortSignal.timeout(timeout) });
+      const response = await fetch(request, { signal: AbortSignal.timeout(this.#timeout) });
 
       if (!response.ok) {
         !options?.suppressErrors &&
@@ -29,7 +30,7 @@ export class Fetcher {
     } catch (error) {
       if (error instanceof Error && error.name === "TimeoutError") {
         !options?.suppressErrors &&
-          this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(timeout)));
+          this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout)));
       } else {
         !options?.suppressErrors &&
           this.#onDiagnostics(diagnostic.extendWith(StoreDiagnosticText.maybeNetworkConnectionIssue()));

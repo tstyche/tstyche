@@ -1,11 +1,31 @@
 # Releases
 
+## [3.0.0-beta.0] - 2024-08-12
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Fixed
+
+- When requested, always suppress fetch errors ([#275](https://github.com/tstyche/tstyche/pull/275))
+
+### Changed
+
+- **Breaking!** Remove the deprecated `.toBeAssignable()` and `.toEqual()` matchers ([#286](https://github.com/tstyche/tstyche/pull/286))
+- **Breaking!** Drop support for Node.js 16 ([#285](https://github.com/tstyche/tstyche/pull/285))
+- **Breaking!** Directly fetch and extract tarballs of `typescript` packages ([#269](https://github.com/tstyche/tstyche/pull/269))
+
+### Added
+
+- Add the `LockService` class ([#281](https://github.com/tstyche/tstyche/pull/281))
+- Add the `Fetcher` class ([#274](https://github.com/tstyche/tstyche/pull/274))
+- **New!** Add the `TSTYCHE_NPM_REGISTRY` environment variable ([#266](https://github.com/tstyche/tstyche/pull/266), [#282](https://github.com/tstyche/tstyche/pull/282))
+
 ## [2.1.1] - 2024-07-27
 
 ### Fixed
 
 - Mark warning locations in yellow ([#262](https://github.com/tstyche/tstyche/pull/262))
-- Support `toAcceptProps()` on TypeScript 4.5 and below ([#261](https://github.com/tstyche/tstyche/pull/261))
+- Support `.toAcceptProps()` on TypeScript 4.5 and below ([#261](https://github.com/tstyche/tstyche/pull/261))
 
 ## [2.1.0] - 2024-07-15
 
@@ -273,6 +293,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.0
 [2.1.1]: https://github.com/tstyche/tstyche/releases/tag/v2.1.1
 [2.1.0]: https://github.com/tstyche/tstyche/releases/tag/v2.1.0
 [2.0.0]: https://github.com/tstyche/tstyche/releases/tag/v2.0.0

@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
+import process from "node:process";
 import { strict as assert } from "poku";
 
 export const { doesNotMatch, equal, match, notEqual } = assert;

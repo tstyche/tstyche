@@ -7,6 +7,9 @@ hyperfine \
   'tstyche examples' \
   --command-name 'warm cache: tstyche examples' \
   --prepare '' \
+  'tstyche examples --target next' \
+  --command-name 'warm cache: tstyche examples --target next' \
+  --prepare '' \
   'tstyche examples --target 5.2' \
   --command-name 'warm cache: tstyche examples --target 5.2' \
   --prepare '' \
@@ -15,6 +18,9 @@ hyperfine \
   --prepare '' \
   'tstyche examples' \
   --command-name 'cold cache: tstyche examples' \
+  --prepare 'tstyche --prune' \
+  'tstyche examples --target next' \
+  --command-name 'cold cache: tstyche examples --target next' \
   --prepare 'tstyche --prune' \
   'tstyche examples --target 5.2' \
   --command-name 'cold cache: tstyche examples --target 5.2' \

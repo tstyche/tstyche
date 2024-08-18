@@ -1,18 +1,18 @@
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-export function usesCompilerStepText(
+export function usesCompilerText(
   compilerVersion: string,
-  tsconfigFilePath: string | undefined,
+  projectConfigFilePath: string | undefined,
   options?: { prependEmptyLine: boolean },
 ): ScribblerJsx.Element {
-  let projectPathText: ScribblerJsx.Element | undefined;
+  let projectConfigPathText: ScribblerJsx.Element | undefined;
 
-  if (tsconfigFilePath != null) {
-    projectPathText = (
+  if (projectConfigFilePath != null) {
+    projectConfigPathText = (
       <Text color={Color.Gray}>
         {" with "}
-        {Path.relative("", tsconfigFilePath)}
+        {Path.relative("", projectConfigFilePath)}
       </Text>
     );
   }
@@ -24,7 +24,7 @@ export function usesCompilerStepText(
         <Text color={Color.Blue}>{"uses"}</Text>
         {" TypeScript "}
         {compilerVersion}
-        {projectPathText}
+        {projectConfigPathText}
       </Line>
       <Line />
     </Text>
