@@ -32,9 +32,11 @@ await describe("store", async () => {
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://tstyche.org'.",
       "",
       "The request failed with status code 404.",
+      "",
+      "",
     ].join("\n");
 
-    assert.match(stderr, new RegExp(`^${expected}`));
+    assert.equal(stderr, expected);
     assert.equal(exitCode, 1);
   });
 
@@ -53,9 +55,11 @@ await describe("store", async () => {
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org'.",
       "",
       "The request timeout of 0.001s was exceeded.",
+      "",
+      "",
     ].join("\n");
 
-    assert.match(stderr, new RegExp(`^${expected}`));
+    assert.equal(stderr, expected);
     assert.equal(exitCode, 1);
   });
 
@@ -74,9 +78,11 @@ await describe("store", async () => {
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
       "",
       "Might be there is an issue with the registry or the network connection.",
+      "",
+      "",
     ].join("\n");
 
-    assert.match(stderr, new RegExp(`^${expected}`));
+    assert.equal(stderr, expected);
     assert.equal(exitCode, 1);
   });
 
