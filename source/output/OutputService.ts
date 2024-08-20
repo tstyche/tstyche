@@ -1,29 +1,16 @@
 import process from "node:process";
+import type { WriteStream } from "node:tty";
 import { Environment } from "#environment";
 import { Scribbler, type ScribblerJsx } from "#scribbler";
 
-export interface WriteStream {
-  write: (chunk: string) => void;
-}
-
-export interface OutputServiceOptions {
-  noColor?: boolean;
-  stderr?: WriteStream;
-  stdout?: WriteStream;
-}
-
 export class OutputService {
   #isClear = false;
-  #noColor: boolean;
+  #noColor = Environment.noColor;
   #scribbler: Scribbler;
-  #stderr: WriteStream;
-  #stdout: WriteStream;
+  #stderr = process.stderr;
+  #stdout = process.stdout;
 
-  constructor(options?: OutputServiceOptions) {
-    this.#noColor = options?.noColor ?? Environment.noColor;
-    this.#stderr = options?.stderr ?? process.stderr;
-    this.#stdout = options?.stdout ?? process.stdout;
-
+  constructor() {
     this.#scribbler = new Scribbler({ noColor: this.#noColor });
   }
 
