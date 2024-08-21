@@ -4,9 +4,9 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
-import type { TestFile } from "#file";
 import { ProjectService } from "#project";
-import { FileResult } from "#result";
+import { TaskResult } from "#result";
+import type { TestTask } from "#task";
 import type { CancellationToken } from "#token";
 import { TestTreeWorker } from "./TestTreeWorker.js";
 import { RunMode } from "./enums.js";
@@ -25,38 +25,38 @@ export class TestFileRunner {
     this.#projectService = new ProjectService(compiler);
   }
 
-  run(testFile: TestFile, cancellationToken?: CancellationToken): void {
+  run(task: TestTask, cancellationToken?: CancellationToken): void {
     if (cancellationToken?.isCancellationRequested === true) {
       return;
     }
 
-    this.#projectService.openFile(testFile.path, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
+    this.#projectService.openFile(task.filePath, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
 
-    const fileResult = new FileResult(testFile);
+    const taskResult = new TaskResult(task);
 
-    EventEmitter.dispatch(["file:start", { result: fileResult }]);
+    EventEmitter.dispatch(["task:start", { result: taskResult }]);
 
-    this.#runFile(testFile, fileResult, cancellationToken);
+    this.#runTask(task, taskResult, cancellationToken);
 
-    EventEmitter.dispatch(["file:end", { result: fileResult }]);
+    EventEmitter.dispatch(["task:end", { result: taskResult }]);
 
-    this.#projectService.closeFile(testFile.path);
+    this.#projectService.closeFile(task.filePath);
   }
 
-  #runFile(testFile: TestFile, fileResult: FileResult, cancellationToken?: CancellationToken) {
+  #runTask(task: TestTask, fileResult: TaskResult, cancellationToken?: CancellationToken) {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
-    const languageService = this.#projectService.getLanguageService(testFile.path);
+    const languageService = this.#projectService.getLanguageService(task.filePath);
 
     if (!languageService) {
       return;
     }
 
-    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(testFile.path);
+    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(task.filePath);
 
     if (syntacticDiagnostics.length > 0) {
       EventEmitter.dispatch([
-        "file:error",
+        "task:error",
         {
           diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler),
           result: fileResult,
@@ -66,7 +66,7 @@ export class TestFileRunner {
       return;
     }
 
-    const semanticDiagnostics = languageService.getSemanticDiagnostics(testFile.path);
+    const semanticDiagnostics = languageService.getSemanticDiagnostics(task.filePath);
 
     const program = languageService.getProgram();
 
@@ -74,7 +74,7 @@ export class TestFileRunner {
       return;
     }
 
-    const sourceFile = program.getSourceFile(testFile.path);
+    const sourceFile = program.getSourceFile(task.filePath);
 
     if (!sourceFile) {
       return;
@@ -84,7 +84,7 @@ export class TestFileRunner {
 
     if (testTree.diagnostics.size > 0) {
       EventEmitter.dispatch([
-        "file:error",
+        "task:error",
         {
           diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler),
           result: fileResult,
@@ -98,9 +98,9 @@ export class TestFileRunner {
 
     const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, typeChecker, {
       cancellationToken,
-      fileResult,
+      taskResult: fileResult,
       hasOnly: testTree.hasOnly,
-      position: testFile.position,
+      position: task.position,
     });
 
     testTreeWorker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);

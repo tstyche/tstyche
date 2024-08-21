@@ -1,10 +1,10 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
-import type { TestFile } from "#file";
 import { CancellationHandler, ResultHandler } from "#handlers";
 import { Result, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
+import type { TestTask } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
@@ -27,7 +27,7 @@ export class TaskRunner {
     this.#eventEmitter.removeHandlers();
   }
 
-  async run(testFiles: Array<TestFile>, cancellationToken = new CancellationToken()): Promise<void> {
+  async run(tasks: Array<TestTask>, cancellationToken = new CancellationToken()): Promise<void> {
     let cancellationHandler: CancellationHandler | undefined;
 
     if (this.#resolvedConfig.failFast) {
@@ -36,10 +36,10 @@ export class TaskRunner {
     }
 
     if (this.#resolvedConfig.watch === true) {
-      await this.#run(testFiles, cancellationToken);
-      await this.#watch(testFiles, cancellationToken);
+      await this.#run(tasks, cancellationToken);
+      await this.#watch(tasks, cancellationToken);
     } else {
-      await this.#run(testFiles, cancellationToken);
+      await this.#run(tasks, cancellationToken);
     }
 
     if (cancellationHandler != null) {
@@ -47,13 +47,13 @@ export class TaskRunner {
     }
   }
 
-  async #run(testFiles: Array<TestFile>, cancellationToken: CancellationToken): Promise<void> {
-    const result = new Result(this.#resolvedConfig, testFiles);
+  async #run(tasks: Array<TestTask>, cancellationToken: CancellationToken): Promise<void> {
+    const result = new Result(this.#resolvedConfig, tasks);
 
     EventEmitter.dispatch(["run:start", { result }]);
 
     for (const versionTag of this.#resolvedConfig.target) {
-      const targetResult = new TargetResult(versionTag, testFiles);
+      const targetResult = new TargetResult(versionTag, tasks);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
@@ -63,8 +63,8 @@ export class TaskRunner {
         // TODO to improve performance, test file runners (or even test projects) could be cached in the future
         const testFileRunner = new TestFileRunner(this.#resolvedConfig, compiler);
 
-        for (const testFile of testFiles) {
-          testFileRunner.run(testFile, cancellationToken);
+        for (const task of tasks) {
+          testFileRunner.run(task, cancellationToken);
         }
       }
 
@@ -78,7 +78,7 @@ export class TaskRunner {
     }
   }
 
-  async #watch(testFiles: Array<TestFile>, cancellationToken: CancellationToken): Promise<void> {
+  async #watch(testFiles: Array<TestTask>, cancellationToken: CancellationToken): Promise<void> {
     const watchService = new WatchService(this.#resolvedConfig, this.#selectService, testFiles);
 
     for await (const testFiles of watchService.watch(cancellationToken)) {
