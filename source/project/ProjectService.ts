@@ -10,30 +10,22 @@ export class ProjectService {
   constructor(compiler: typeof ts) {
     this.#compiler = compiler;
 
-    function doNothing() {
-      // does nothing
-    }
-
-    function returnFalse() {
-      return false;
-    }
-
-    function returnUndefined() {
-      return undefined;
-    }
-
-    const noopWatcher = { close: doNothing };
+    const noop = () => undefined;
 
     const noopLogger: ts.server.Logger = {
-      close: doNothing,
-      endGroup: doNothing,
-      getLogFileName: returnUndefined,
-      hasLevel: returnFalse,
-      info: doNothing,
-      loggingEnabled: returnFalse,
-      msg: doNothing,
-      perftrc: doNothing,
-      startGroup: doNothing,
+      close: noop,
+      endGroup: noop,
+      getLogFileName: noop,
+      hasLevel: () => false,
+      info: noop,
+      loggingEnabled: () => false,
+      msg: noop,
+      perftrc: noop,
+      startGroup: noop,
+    };
+
+    const noopWatcher = {
+      close: noop,
     };
 
     const host: ts.server.ServerHost = {
@@ -99,11 +91,7 @@ export class ProjectService {
   getLanguageService(filePath: string): ts.LanguageService | undefined {
     const project = this.getDefaultProject(filePath);
 
-    if (!project) {
-      return;
-    }
-
-    return project.getLanguageService(/* ensureSynchronized */ true);
+    return project?.getLanguageService(/* ensureSynchronized */ true);
   }
 
   openFile(filePath: string, sourceText?: string | undefined, projectRootPath?: string | undefined): void {
