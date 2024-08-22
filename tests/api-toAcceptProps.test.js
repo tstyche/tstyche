@@ -15,7 +15,7 @@ function Item(props) {
   return `${props.name}: ${props.quantity}`;
 }
 
-describe("toAcceptProps", async () => {
+await describe("toAcceptProps", async () => {
   test("implementation", () => {
     tstyche.expect(Item).type.toAcceptProps({ name: "one", quantity: "2" });
     tstyche.expect(Item).type.not.toAcceptProps({});

@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("test files", async () => {
+await describe("test files", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -183,7 +183,7 @@ expect<number>().type.toBeNumber();
   });
 });
 
-describe("compiler options", async () => {
+await describe("compiler options", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

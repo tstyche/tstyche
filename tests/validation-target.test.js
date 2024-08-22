@@ -12,7 +12,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--target' command line option", async () => {
+await describe("'--target' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -80,7 +80,7 @@ describe("'--target' command line option", async () => {
   });
 });
 
-describe("'target' configuration file option", async () => {
+await describe("'target' configuration file option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

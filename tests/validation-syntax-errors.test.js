@@ -31,7 +31,7 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("syntax errors", async () => {
+await describe("syntax errors", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

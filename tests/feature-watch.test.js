@@ -44,7 +44,7 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("watch", () => {
+await describe("watch", { concurrency: false }, async () => {
   let isRecursiveWatchAvailable;
 
   try {
@@ -64,7 +64,7 @@ describe("watch", () => {
     await clearFixture(fixtureUrl);
   });
 
-  describe("interactive input", async () => {
+  await describe("interactive input", async () => {
     beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
@@ -168,7 +168,7 @@ describe("watch", () => {
     }
   });
 
-  describe("test file changes", async () => {
+  await describe("test file changes", async () => {
     beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
@@ -433,7 +433,7 @@ describe("watch", () => {
     });
   });
 
-  describe("config file changes", async () => {
+  await describe("config file changes", async () => {
     beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,

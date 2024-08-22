@@ -105,7 +105,7 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 const storeUrl = new URL("./.store/", fixtureUrl);
 
-describe("TypeScript 4.x", async () => {
+await describe("TypeScript 4.x", async () => {
   after(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -140,7 +140,7 @@ describe("TypeScript 4.x", async () => {
   }
 });
 
-describe("TypeScript 5.x", async () => {
+await describe("TypeScript 5.x", async () => {
   after(async () => {
     await clearFixture(fixtureUrl);
   });

@@ -19,7 +19,7 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--listFiles' command line option", async () => {
+await describe("'--listFiles' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

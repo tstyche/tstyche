@@ -14,7 +14,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
+await describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

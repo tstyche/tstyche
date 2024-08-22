@@ -37,8 +37,8 @@ class TestResultHandler {
   }
 }
 
-describe("integration", () => {
-  describe("test file object", async () => {
+await describe("integration", async () => {
+  await describe("test file object", async () => {
     after(() => {
       eventEmitter.removeHandlers();
       taskRunner.close();
@@ -128,7 +128,7 @@ describe("integration", () => {
     }
   });
 
-  describe("configuration options", async () => {
+  await describe("configuration options", async () => {
     /**
      * @type {import("tstyche/tstyche").TaskRunner | undefined}
      */

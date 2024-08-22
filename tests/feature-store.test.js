@@ -13,7 +13,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("store", async () => {
+await describe("store", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

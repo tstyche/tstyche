@@ -12,7 +12,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'TSTYCHE_NPM_REGISTRY' environment variable", async () => {
+await describe("'TSTYCHE_NPM_REGISTRY' environment variable", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

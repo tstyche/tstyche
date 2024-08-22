@@ -12,7 +12,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'testFileMatch' configuration file option", async () => {
+await describe("'testFileMatch' configuration file option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

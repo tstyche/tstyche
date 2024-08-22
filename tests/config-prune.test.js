@@ -12,7 +12,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--prune' command line option", async () => {
+await describe("'--prune' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

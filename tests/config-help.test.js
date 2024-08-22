@@ -10,7 +10,7 @@ const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfig
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-describe("'--help' command line option", async () => {
+await describe("'--help' command line option", async () => {
   after(async () => {
     await clearFixture(fixtureUrl);
   });
