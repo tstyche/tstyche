@@ -1,5 +1,6 @@
+import assert from "node:assert";
 import path from "node:path";
-import { assert, describe, test } from "poku";
+import { describe, test } from "node:test";
 import prettyAnsi from "pretty-ansi";
 import { Scribbler, usesCompilerText } from "tstyche/tstyche";
 

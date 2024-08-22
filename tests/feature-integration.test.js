@@ -1,6 +1,6 @@
+import assert from "node:assert";
+import { after, afterEach, beforeEach, describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { assert } from "poku";
-import { afterEach, beforeEach, describe, test } from "poku";
 import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -39,6 +39,11 @@ class TestResultHandler {
 
 await describe("integration", async () => {
   await describe("test file object", async () => {
+    after(() => {
+      eventEmitter.removeHandlers();
+      taskRunner.close();
+    })
+
     const taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
 
     eventEmitter.addHandler(new TestResultHandler());
@@ -121,9 +126,6 @@ await describe("integration", async () => {
         assert.deepEqual(result?.testCount, { failed: 1, passed: 0, skipped: 2, todo: 1 });
       });
     }
-
-    eventEmitter.removeHandlers();
-    taskRunner.close();
   });
 
   await describe("configuration options", async () => {
@@ -141,7 +143,7 @@ await describe("integration", async () => {
       taskRunner?.close();
     });
 
-    await test("when the 'failFast: true'  is set", async () => {
+    await test("when the 'failFast: true' is set", async () => {
       taskRunner = new tstyche.TaskRunner({ ...resolvedConfig, failFast: true }, selectService, storeService);
       const testFile = new tstyche.TestFile(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
 

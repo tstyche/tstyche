@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
+import { after, describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { describe, test } from "poku";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -106,6 +106,10 @@ const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 const storeUrl = new URL("./.store/", fixtureUrl);
 
 await describe("TypeScript 4.x", async () => {
+  after(async () => {
+    await clearFixture(fixtureUrl);
+  });
+
   await writeFixture(fixtureUrl, {
     // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
     ["__typetests__/toAcceptProps.test.tsx"]: `// @ts-expect-error\n${toAcceptPropsTestText}`,
@@ -134,11 +138,13 @@ await describe("TypeScript 4.x", async () => {
       assert.equal(exitCode, 0);
     });
   }
-
-  await clearFixture(fixtureUrl);
 });
 
 await describe("TypeScript 5.x", async () => {
+  after(async () => {
+    await clearFixture(fixtureUrl);
+  });
+
   await writeFixture(fixtureUrl, {
     ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
     ["__typetests__/toBe.test.ts"]: toBeTestText,
@@ -176,6 +182,4 @@ await describe("TypeScript 5.x", async () => {
       assert.equal(exitCode, 0);
     });
   }
-
-  await clearFixture(fixtureUrl);
 });

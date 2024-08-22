@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "poku";
+import { afterEach, describe, test } from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import {
   clearFixture,

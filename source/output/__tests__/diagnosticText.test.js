@@ -1,4 +1,5 @@
-import { assert, describe, test } from "poku";
+import assert from "node:assert";
+import { describe, test } from "node:test";
 import prettyAnsi from "pretty-ansi";
 import { Diagnostic, Scribbler, diagnosticText } from "tstyche/tstyche";
 

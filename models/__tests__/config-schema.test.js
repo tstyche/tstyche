@@ -1,7 +1,8 @@
+import assert from "node:assert";
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import { describe, test } from "node:test";
 import { Ajv } from "ajv";
-import { assert, describe, test } from "poku";
 
 const ajv = new Ajv({ allErrors: true });
 

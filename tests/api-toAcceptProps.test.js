@@ -1,4 +1,4 @@
-import { describe, test } from "poku";
+import { describe, test } from "node:test";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";

@@ -1,4 +1,5 @@
-import { assert, describe, test } from "poku";
+import assert from "node:assert";
+import { describe, test } from "node:test";
 import { Scribbler, describeNameText } from "tstyche/tstyche";
 
 const scribbler = new Scribbler();

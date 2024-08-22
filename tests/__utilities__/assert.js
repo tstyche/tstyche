@@ -1,9 +1,9 @@
+import { strict as assert } from "node:assert/strict";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import process from "node:process";
-import { strict as assert } from "poku";
 
-export const { doesNotMatch, equal, match, notEqual } = assert;
+export { doesNotMatch, equal, match, notEqual } from "node:assert/strict";
 
 /**
  * @param {Record<string, unknown> | string} source
