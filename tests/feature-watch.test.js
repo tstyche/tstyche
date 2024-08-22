@@ -44,7 +44,7 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("watch", async () => {
+await describe("watch", { concurrency: false }, async () => {
   let isRecursiveWatchAvailable;
 
   try {
