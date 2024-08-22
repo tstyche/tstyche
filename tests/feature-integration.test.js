@@ -42,7 +42,7 @@ await describe("integration", async () => {
     after(() => {
       eventEmitter.removeHandlers();
       taskRunner.close();
-    })
+    });
 
     const taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
 
