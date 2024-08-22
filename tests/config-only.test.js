@@ -18,7 +18,7 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'--only' command line option", async () => {
+describe("'--only' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

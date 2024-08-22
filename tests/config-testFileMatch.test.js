@@ -25,12 +25,12 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'testFileMatch' configuration file option", async () => {
+describe("'testFileMatch' configuration file option", () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await describe("default patterns", async () => {
+  describe("default patterns", async () => {
     await test("select files with '.test.*' suffix in 'typetests' directories", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/isNumber.test.ts"]: isNumberTestText,
@@ -80,7 +80,7 @@ await describe("'testFileMatch' configuration file option", async () => {
     });
   });
 
-  await describe("specified pattern", async () => {
+  describe("specified pattern", async () => {
     await test("select only matching files", async () => {
       const config = {
         testFileMatch: ["**/type-tests/*.tst.*", "**/typetests/*.test.*"],
@@ -251,7 +251,7 @@ await describe("'testFileMatch' configuration file option", async () => {
     });
   });
 
-  await describe("the '?' wildcard", async () => {
+  describe("the '?' wildcard", async () => {
     await test("matches any single character", async () => {
       const config = {
         testFileMatch: ["__typetests__/?at.tst.ts", "tests/ca??.tst.ts"],
@@ -346,7 +346,7 @@ await describe("'testFileMatch' configuration file option", async () => {
     });
   });
 
-  await describe("the '*' wildcard", async () => {
+  describe("the '*' wildcard", async () => {
     await test("matches zero or more characters", async () => {
       const config = {
         testFileMatch: ["*.tst.ts", "packages/*/__typetests__/*.t*st.ts"],
@@ -442,7 +442,7 @@ await describe("'testFileMatch' configuration file option", async () => {
     });
   });
 
-  await describe("the '**' wildcard", async () => {
+  describe("the '**' wildcard", async () => {
     await test("matches zero or more characters including path separators", async () => {
       const config = {
         testFileMatch: [

@@ -19,7 +19,7 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'tstyche' command", async () => {
+describe("'tstyche' command", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

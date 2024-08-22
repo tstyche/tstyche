@@ -12,7 +12,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("store", async () => {
+describe("store", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -135,7 +135,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await describe("warns if resolution of a tag may be outdated", async () => {
+  describe("warns if resolution of a tag may be outdated", async () => {
     const testCases = [
       {
         target: "5.3.4",
@@ -211,7 +211,7 @@ await describe("store", async () => {
     }
   });
 
-  await describe("does not warn if resolution of a tag may be outdated", async () => {
+  describe("does not warn if resolution of a tag may be outdated", async () => {
     const testCases = [
       {
         target: "5.3.3",
@@ -257,7 +257,7 @@ await describe("store", async () => {
     }
   });
 
-  await describe("suppresses fetch errors if resolution of a tag may be outdated", async () => {
+  describe("suppresses fetch errors if resolution of a tag may be outdated", async () => {
     await test("when fetch request of metadata fails with 404", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,

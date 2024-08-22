@@ -21,7 +21,7 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'--failFast' command line option", async () => {
+describe("'--failFast' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -211,7 +211,7 @@ await describe("'--failFast' command line option", async () => {
   });
 });
 
-await describe("'failFast' configuration file option", async () => {
+describe("'failFast' configuration file option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'--update' command line option", async () => {
+describe("'--update' command line option", async () => {
   afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
