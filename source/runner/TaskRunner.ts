@@ -11,7 +11,7 @@ import type { CancellationToken } from "#token";
 import { TestTreeWorker } from "./TestTreeWorker.js";
 import { RunMode } from "./enums.js";
 
-export class TestFileRunner {
+export class TaskRunner {
   #compiler: typeof ts;
   #collectService: CollectService;
   #resolvedConfig: ResolvedConfig;

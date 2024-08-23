@@ -7,7 +7,7 @@ import type { StoreService } from "#store";
 import type { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
-import { TestFileRunner } from "./TestFileRunner.js";
+import { TaskRunner } from "./TaskRunner.js";
 
 export class Runner {
   #eventEmitter = new EventEmitter();
@@ -60,11 +60,11 @@ export class Runner {
       const compiler = await this.#storeService.load(versionTag);
 
       if (compiler) {
-        // TODO to improve performance, test file runners (or even test projects) could be cached in the future
-        const testFileRunner = new TestFileRunner(this.#resolvedConfig, compiler);
+        // TODO to improve performance, task runners (or even test projects) could be cached in the future
+        const taskRunner = new TaskRunner(this.#resolvedConfig, compiler);
 
         for (const task of tasks) {
-          testFileRunner.run(task, cancellationToken);
+          taskRunner.run(task, cancellationToken);
         }
       }
 
