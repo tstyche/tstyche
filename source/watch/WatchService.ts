@@ -10,18 +10,18 @@ import { FileWatcher } from "./FileWatcher.js";
 import { type WatchHandler, Watcher } from "./Watcher.js";
 
 export class WatchService {
-  #changed = new Map<string, Task>();
+  #changedTestFiles = new Map<string, Task>();
   #inputService: InputService | undefined;
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
-  #watched: Map<string, Task>;
+  #watchedTestFiles: Map<string, Task>;
   #watchers: Array<Watcher> = [];
 
   constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, tasks: Array<Task>) {
     this.#resolvedConfig = resolvedConfig;
     this.#selectService = selectService;
 
-    this.#watched = new Map(tasks.map((task) => [task.filePath, task]));
+    this.#watchedTestFiles = new Map(tasks.map((task) => [task.filePath, task]));
   }
 
   #onDiagnostics(this: void, diagnostic: Diagnostic) {
@@ -30,8 +30,8 @@ export class WatchService {
 
   async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<Task>> {
     const onResolve: ResolveHandler<Array<Task>> = () => {
-      const testFiles = [...this.#changed.values()];
-      this.#changed.clear();
+      const testFiles = [...this.#changedTestFiles.values()];
+      this.#changedTestFiles.clear();
 
       return testFiles;
     };
@@ -68,8 +68,8 @@ export class WatchService {
         case "a": {
           debounce.clearTimeout();
 
-          if (this.#watched.size !== 0) {
-            debounce.resolveWith([...this.#watched.values()]);
+          if (this.#watchedTestFiles.size !== 0) {
+            debounce.resolveWith([...this.#watchedTestFiles.values()]);
           }
 
           break;
@@ -82,23 +82,23 @@ export class WatchService {
     const onChangedFile: WatchHandler = (filePath) => {
       debounce.refreshTimeout();
 
-      let task = this.#watched.get(filePath);
+      let task = this.#watchedTestFiles.get(filePath);
 
       if (task != null) {
-        this.#changed.set(filePath, task);
+        this.#changedTestFiles.set(filePath, task);
       } else if (this.#selectService.isTestFile(filePath)) {
         task = new Task(filePath);
 
-        this.#changed.set(filePath, task);
-        this.#watched.set(filePath, task);
+        this.#changedTestFiles.set(filePath, task);
+        this.#watchedTestFiles.set(filePath, task);
       }
     };
 
     const onRemovedFile: WatchHandler = (filePath) => {
-      this.#changed.delete(filePath);
-      this.#watched.delete(filePath);
+      this.#changedTestFiles.delete(filePath);
+      this.#watchedTestFiles.delete(filePath);
 
-      if (this.#watched.size === 0) {
+      if (this.#watchedTestFiles.size === 0) {
         debounce.clearTimeout();
 
         this.#onDiagnostics(Diagnostic.error(SelectDiagnosticText.noTestFilesWereLeft(this.#resolvedConfig)));
