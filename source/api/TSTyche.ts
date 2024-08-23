@@ -2,7 +2,7 @@ import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { RunReporter, SummaryReporter, WatchReporter } from "#handlers";
 import type { OutputService } from "#output";
-import { TaskRunner } from "#runner";
+import { Runner } from "#runner";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
 import { Task } from "#task";
@@ -13,9 +13,9 @@ export class TSTyche {
   #eventEmitter = new EventEmitter();
   #outputService: OutputService;
   #resolvedConfig: ResolvedConfig;
+  #runner: Runner;
   #selectService: SelectService;
   #storeService: StoreService;
-  #taskRunner: TaskRunner;
   static version = "__version__";
 
   constructor(
@@ -28,11 +28,11 @@ export class TSTyche {
     this.#outputService = outputService;
     this.#selectService = selectService;
     this.#storeService = storeService;
-    this.#taskRunner = new TaskRunner(this.#resolvedConfig, this.#selectService, this.#storeService);
+    this.#runner = new Runner(this.#resolvedConfig, this.#selectService, this.#storeService);
   }
 
   close(): void {
-    this.#taskRunner.close();
+    this.#runner.close();
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
@@ -44,7 +44,7 @@ export class TSTyche {
       this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));
     }
 
-    await this.#taskRunner.run(
+    await this.#runner.run(
       testFiles.map((testFile) => new Task(testFile)),
       cancellationToken,
     );

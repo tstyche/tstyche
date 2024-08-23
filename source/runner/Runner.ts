@@ -9,7 +9,7 @@ import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
 
-export class TaskRunner {
+export class Runner {
   #eventEmitter = new EventEmitter();
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
