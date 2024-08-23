@@ -72,7 +72,7 @@
     "pretty-ansi": "2.0.0",
     "rollup": "4.21.0",
     "rollup-plugin-dts": "6.1.1",
-    "tslib": "2.6.3",
+    "tslib": "2.7.0",
     "typescript": "5.5.4"
   },
   "peerDependencies": {
