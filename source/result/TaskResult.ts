@@ -1,5 +1,5 @@
 import type { Diagnostic } from "#diagnostic";
-import type { TestTask } from "#task";
+import type { Task } from "#task";
 import type { DescribeResult } from "./DescribeResult.js";
 import type { ExpectResult } from "./ExpectResult.js";
 import { ResultCount } from "./ResultCount.js";
@@ -14,11 +14,11 @@ export class TaskResult {
   expectCount = new ResultCount();
   results: Array<DescribeResult | TestResult | ExpectResult> = [];
   status: TaskResultStatus = ResultStatus.Runs;
-  task: TestTask;
+  task: Task;
   testCount = new ResultCount();
   timing = new ResultTiming();
 
-  constructor(task: TestTask) {
+  constructor(task: Task) {
     this.task = task;
   }
 }

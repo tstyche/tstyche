@@ -1,5 +1,5 @@
 import type { ResolvedConfig } from "#config";
-import type { TestTask } from "#task";
+import type { Task } from "#task";
 import { ResultCount } from "./ResultCount.js";
 import { ResultTiming } from "./ResultTiming.js";
 import type { TargetResult } from "./TargetResult.js";
@@ -10,11 +10,11 @@ export class Result {
   resolvedConfig: ResolvedConfig;
   results: Array<TargetResult> = [];
   targetCount = new ResultCount();
-  tasks: Array<TestTask>;
+  tasks: Array<Task>;
   testCount = new ResultCount();
   timing = new ResultTiming();
 
-  constructor(resolvedConfig: ResolvedConfig, tasks: Array<TestTask>) {
+  constructor(resolvedConfig: ResolvedConfig, tasks: Array<Task>) {
     this.resolvedConfig = resolvedConfig;
     this.tasks = tasks;
   }

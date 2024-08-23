@@ -4,7 +4,7 @@ import { CancellationHandler, ResultHandler } from "#handlers";
 import { Result, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
-import type { TestTask } from "#task";
+import type { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
 import { TestFileRunner } from "./TestFileRunner.js";
@@ -27,7 +27,7 @@ export class TaskRunner {
     this.#eventEmitter.removeHandlers();
   }
 
-  async run(tasks: Array<TestTask>, cancellationToken = new CancellationToken()): Promise<void> {
+  async run(tasks: Array<Task>, cancellationToken = new CancellationToken()): Promise<void> {
     let cancellationHandler: CancellationHandler | undefined;
 
     if (this.#resolvedConfig.failFast) {
@@ -47,7 +47,7 @@ export class TaskRunner {
     }
   }
 
-  async #run(tasks: Array<TestTask>, cancellationToken: CancellationToken): Promise<void> {
+  async #run(tasks: Array<Task>, cancellationToken: CancellationToken): Promise<void> {
     const result = new Result(this.#resolvedConfig, tasks);
 
     EventEmitter.dispatch(["run:start", { result }]);
@@ -78,7 +78,7 @@ export class TaskRunner {
     }
   }
 
-  async #watch(testFiles: Array<TestTask>, cancellationToken: CancellationToken): Promise<void> {
+  async #watch(testFiles: Array<Task>, cancellationToken: CancellationToken): Promise<void> {
     const watchService = new WatchService(this.#resolvedConfig, this.#selectService, testFiles);
 
     for await (const testFiles of watchService.watch(cancellationToken)) {

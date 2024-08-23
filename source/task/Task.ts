@@ -1,7 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { Path } from "#path";
 
-export class TestTask {
+export class Task {
   filePath: string;
   position: number | undefined;
 

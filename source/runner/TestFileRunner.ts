@@ -6,7 +6,7 @@ import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
-import type { TestTask } from "#task";
+import type { Task } from "#task";
 import type { CancellationToken } from "#token";
 import { TestTreeWorker } from "./TestTreeWorker.js";
 import { RunMode } from "./enums.js";
@@ -25,7 +25,7 @@ export class TestFileRunner {
     this.#projectService = new ProjectService(compiler);
   }
 
-  run(task: TestTask, cancellationToken?: CancellationToken): void {
+  run(task: Task, cancellationToken?: CancellationToken): void {
     if (cancellationToken?.isCancellationRequested === true) {
       return;
     }
@@ -36,14 +36,14 @@ export class TestFileRunner {
 
     EventEmitter.dispatch(["task:start", { result: taskResult }]);
 
-    this.#runTask(task, taskResult, cancellationToken);
+    this.#run(task, taskResult, cancellationToken);
 
     EventEmitter.dispatch(["task:end", { result: taskResult }]);
 
     this.#projectService.closeFile(task.filePath);
   }
 
-  #runTask(task: TestTask, fileResult: TaskResult, cancellationToken?: CancellationToken) {
+  #run(task: Task, result: TaskResult, cancellationToken?: CancellationToken) {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
     const languageService = this.#projectService.getLanguageService(task.filePath);
@@ -57,10 +57,7 @@ export class TestFileRunner {
     if (syntacticDiagnostics.length > 0) {
       EventEmitter.dispatch([
         "task:error",
-        {
-          diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler),
-          result: fileResult,
-        },
+        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler), result },
       ]);
 
       return;
@@ -85,10 +82,7 @@ export class TestFileRunner {
     if (testTree.diagnostics.size > 0) {
       EventEmitter.dispatch([
         "task:error",
-        {
-          diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler),
-          result: fileResult,
-        },
+        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler), result },
       ]);
 
       return;
@@ -98,7 +92,7 @@ export class TestFileRunner {
 
     const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, typeChecker, {
       cancellationToken,
-      taskResult: fileResult,
+      taskResult: result,
       hasOnly: testTree.hasOnly,
       position: task.position,
     });

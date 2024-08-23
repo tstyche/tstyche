@@ -60,7 +60,7 @@ await describe("integration", async () => {
 
     for (const { testCase, identifier } of testCases) {
       await test(testCase, async () => {
-        const task = new tstyche.TestTask(identifier);
+        const task = new tstyche.Task(identifier);
 
         await taskRunner.run([task]);
 
@@ -73,7 +73,7 @@ await describe("integration", async () => {
     for (const { testCase, identifier } of testCases) {
       await test(`${testCase} with position is pointing to 'expect'`, async () => {
         const position = isWindows ? 73 : 70;
-        const task = new tstyche.TestTask(identifier, position);
+        const task = new tstyche.Task(identifier, position);
 
         await taskRunner.run([task]);
 
@@ -86,7 +86,7 @@ await describe("integration", async () => {
     for (const { testCase, identifier } of testCases) {
       await test(`${testCase} with position is pointing to 'expect.skip'`, async () => {
         const position = isWindows ? 273 : 261;
-        const task = new tstyche.TestTask(identifier, position);
+        const task = new tstyche.Task(identifier, position);
 
         await taskRunner.run([task]);
 
@@ -99,7 +99,7 @@ await describe("integration", async () => {
     for (const { testCase, identifier } of testCases) {
       await test(`${testCase} with position is pointing to 'test'`, async () => {
         const position = isWindows ? 43 : 41;
-        const task = new tstyche.TestTask(identifier, position);
+        const task = new tstyche.Task(identifier, position);
 
         await taskRunner.run([task]);
 
@@ -112,7 +112,7 @@ await describe("integration", async () => {
     for (const { testCase, identifier } of testCases) {
       await test(`${testCase} with position is pointing to 'test.skip'`, async () => {
         const position = isWindows ? 117 : 111;
-        const task = new tstyche.TestTask(identifier, position);
+        const task = new tstyche.Task(identifier, position);
 
         await taskRunner.run([task]);
 
@@ -143,7 +143,7 @@ await describe("integration", async () => {
 
     await test("when the 'failFast: true'  is set", async () => {
       taskRunner = new tstyche.TaskRunner({ ...resolvedConfig, failFast: true }, selectService, storeService);
-      const task = new tstyche.TestTask(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
+      const task = new tstyche.Task(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
 
       await taskRunner.run([task]);
 

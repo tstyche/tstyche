@@ -5,7 +5,7 @@ import type { OutputService } from "#output";
 import { TaskRunner } from "#runner";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
-import { TestTask } from "#task";
+import { Task } from "#task";
 import { CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
@@ -45,7 +45,7 @@ export class TSTyche {
     }
 
     await this.#taskRunner.run(
-      testFiles.map((testFile) => new TestTask(testFile)),
+      testFiles.map((testFile) => new Task(testFile)),
       cancellationToken,
     );
 

@@ -1,7 +1,7 @@
 import { Path } from "#path";
 import { ResultStatus, type TaskResultStatus } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
-import type { TestTask } from "#task";
+import type { Task } from "#task";
 
 interface FileNameTextProps {
   filePath: string;
@@ -22,7 +22,7 @@ function FileNameText({ filePath }: FileNameTextProps) {
   );
 }
 
-export function taskStatusText(status: TaskResultStatus, task: TestTask): ScribblerJsx.Element {
+export function taskStatusText(status: TaskResultStatus, task: Task): ScribblerJsx.Element {
   let statusColor: Color;
   let statusText: string;
 

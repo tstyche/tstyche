@@ -1,9 +1,9 @@
 import { assert, describe, test } from "poku";
 import prettyAnsi from "pretty-ansi";
-import { ResultStatus, Scribbler, TestTask, taskStatusText } from "tstyche/tstyche";
+import { ResultStatus, Scribbler, Task, taskStatusText } from "tstyche/tstyche";
 
 const sampleTestFileUrl = new URL("../../../path/to/sample.test.ts", import.meta.url);
-const sampleTask = new TestTask(sampleTestFileUrl);
+const sampleTask = new Task(sampleTestFileUrl);
 
 const scribbler = new Scribbler();
 
