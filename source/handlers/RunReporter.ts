@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
 import { Environment } from "#environment";
 import type { Event, EventHandler } from "#events";
-import { type OutputService, addsPackageText, diagnosticText, fileStatusText, usesCompilerText } from "#output";
+import { type OutputService, addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
 import { FileViewService } from "./FileViewService.js";
 import { Reporter } from "./Reporter.js";
 
@@ -28,7 +28,7 @@ export class RunReporter extends Reporter implements EventHandler {
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
       case "run:start": {
-        this.#isFileViewExpanded = payload.result.testFiles.length === 1 && this.#resolvedConfig.watch !== true;
+        this.#isFileViewExpanded = payload.result.tasks.length === 1 && this.#resolvedConfig.watch !== true;
         break;
       }
 
@@ -47,7 +47,7 @@ export class RunReporter extends Reporter implements EventHandler {
       }
 
       case "target:start": {
-        this.#fileCount = payload.result.testFiles.length;
+        this.#fileCount = payload.result.tasks.length;
         break;
       }
 
@@ -84,9 +84,9 @@ export class RunReporter extends Reporter implements EventHandler {
         break;
       }
 
-      case "file:start": {
+      case "task:start": {
         if (!Environment.noInteractive) {
-          this.outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
+          this.outputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
         }
 
         this.#fileCount--;
@@ -94,19 +94,19 @@ export class RunReporter extends Reporter implements EventHandler {
         break;
       }
 
-      case "file:error": {
+      case "task:error": {
         for (const diagnostic of payload.diagnostics) {
           this.#fileView.addMessage(diagnosticText(diagnostic));
         }
         break;
       }
 
-      case "file:end": {
+      case "task:end": {
         if (!Environment.noInteractive) {
           this.outputService.eraseLastLine();
         }
 
-        this.outputService.writeMessage(fileStatusText(payload.result.status, payload.result.testFile));
+        this.outputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
 
         this.outputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
 

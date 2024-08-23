@@ -1,42 +1,42 @@
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { TestFile } from "#file";
 import { type InputHandler, InputService } from "#input";
 import { SelectDiagnosticText, type SelectService } from "#select";
+import { Task } from "#task";
 import { CancellationReason, type CancellationToken } from "#token";
 import { Debounce, type ResolveHandler } from "./Debounce.js";
 import { FileWatcher } from "./FileWatcher.js";
 import { type WatchHandler, Watcher } from "./Watcher.js";
 
 export class WatchService {
-  #changedTestFiles = new Map<string, TestFile>();
+  #changedTestFiles = new Map<string, Task>();
   #inputService: InputService | undefined;
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
+  #watchedTestFiles: Map<string, Task>;
   #watchers: Array<Watcher> = [];
-  #watchedTestFiles: Map<string, TestFile>;
 
-  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, testFiles: Array<TestFile>) {
+  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, tasks: Array<Task>) {
     this.#resolvedConfig = resolvedConfig;
     this.#selectService = selectService;
 
-    this.#watchedTestFiles = new Map(testFiles.map((testFile) => [testFile.path, testFile]));
+    this.#watchedTestFiles = new Map(tasks.map((task) => [task.filePath, task]));
   }
 
   #onDiagnostics(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["watch:error", { diagnostics: [diagnostic] }]);
   }
 
-  async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<TestFile>> {
-    const onResolve: ResolveHandler<Array<TestFile>> = () => {
+  async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<Task>> {
+    const onResolve: ResolveHandler<Array<Task>> = () => {
       const testFiles = [...this.#changedTestFiles.values()];
       this.#changedTestFiles.clear();
 
       return testFiles;
     };
 
-    const debounce = new Debounce<Array<TestFile>>(100, onResolve);
+    const debounce = new Debounce<Array<Task>>(100, onResolve);
 
     const onClose = (reason: CancellationReason) => {
       debounce.clearTimeout();
@@ -82,15 +82,15 @@ export class WatchService {
     const onChangedFile: WatchHandler = (filePath) => {
       debounce.refreshTimeout();
 
-      let testFile = this.#watchedTestFiles.get(filePath);
+      let task = this.#watchedTestFiles.get(filePath);
 
-      if (testFile != null) {
-        this.#changedTestFiles.set(filePath, testFile);
+      if (task != null) {
+        this.#changedTestFiles.set(filePath, task);
       } else if (this.#selectService.isTestFile(filePath)) {
-        testFile = new TestFile(filePath);
+        task = new Task(filePath);
 
-        this.#changedTestFiles.set(filePath, testFile);
-        this.#watchedTestFiles.set(filePath, testFile);
+        this.#changedTestFiles.set(filePath, task);
+        this.#watchedTestFiles.set(filePath, task);
       }
     };
 

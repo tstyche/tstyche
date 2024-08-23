@@ -1,12 +1,12 @@
 import { fileURLToPath } from "node:url";
 import { Path } from "#path";
 
-export class TestFile {
-  path: string;
+export class Task {
+  filePath: string;
   position: number | undefined;
 
   constructor(identifier: string | URL, position?: number) {
-    this.path = Path.normalizeSlashes(this.#toPath(identifier));
+    this.filePath = Path.normalizeSlashes(this.#toPath(identifier));
     this.position = position;
   }
 

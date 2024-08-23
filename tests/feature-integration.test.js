@@ -39,7 +39,7 @@ class TestResultHandler {
 
 await describe("integration", async () => {
   await describe("test file object", async () => {
-    const taskRunner = new tstyche.TaskRunner(resolvedConfig, selectService, storeService);
+    const runner = new tstyche.Runner(resolvedConfig, selectService, storeService);
 
     eventEmitter.addHandler(new TestResultHandler());
 
@@ -60,9 +60,9 @@ await describe("integration", async () => {
 
     for (const { testCase, identifier } of testCases) {
       await test(testCase, async () => {
-        const testFile = new tstyche.TestFile(identifier);
+        const task = new tstyche.Task(identifier);
 
-        await taskRunner.run([testFile]);
+        await runner.run([task]);
 
         assert.deepEqual(result?.expectCount, { failed: 1, passed: 2, skipped: 3, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
@@ -73,9 +73,9 @@ await describe("integration", async () => {
     for (const { testCase, identifier } of testCases) {
       await test(`${testCase} with position is pointing to 'expect'`, async () => {
         const position = isWindows ? 73 : 70;
-        const testFile = new tstyche.TestFile(identifier, position);
+        const task = new tstyche.Task(identifier, position);
 
-        await taskRunner.run([testFile]);
+        await runner.run([task]);
 
         assert.deepEqual(result?.expectCount, { failed: 0, passed: 1, skipped: 5, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
@@ -86,9 +86,9 @@ await describe("integration", async () => {
     for (const { testCase, identifier } of testCases) {
       await test(`${testCase} with position is pointing to 'expect.skip'`, async () => {
         const position = isWindows ? 273 : 261;
-        const testFile = new tstyche.TestFile(identifier, position);
+        const task = new tstyche.Task(identifier, position);
 
-        await taskRunner.run([testFile]);
+        await runner.run([task]);
 
         assert.deepEqual(result?.expectCount, { failed: 1, passed: 0, skipped: 5, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
@@ -99,9 +99,9 @@ await describe("integration", async () => {
     for (const { testCase, identifier } of testCases) {
       await test(`${testCase} with position is pointing to 'test'`, async () => {
         const position = isWindows ? 43 : 41;
-        const testFile = new tstyche.TestFile(identifier, position);
+        const task = new tstyche.Task(identifier, position);
 
-        await taskRunner.run([testFile]);
+        await runner.run([task]);
 
         assert.deepEqual(result?.expectCount, { failed: 0, passed: 1, skipped: 5, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
@@ -112,9 +112,9 @@ await describe("integration", async () => {
     for (const { testCase, identifier } of testCases) {
       await test(`${testCase} with position is pointing to 'test.skip'`, async () => {
         const position = isWindows ? 117 : 111;
-        const testFile = new tstyche.TestFile(identifier, position);
+        const task = new tstyche.Task(identifier, position);
 
-        await taskRunner.run([testFile]);
+        await runner.run([task]);
 
         assert.deepEqual(result?.expectCount, { failed: 1, passed: 1, skipped: 4, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
@@ -123,14 +123,14 @@ await describe("integration", async () => {
     }
 
     eventEmitter.removeHandlers();
-    taskRunner.close();
+    runner.close();
   });
 
   await describe("configuration options", async () => {
     /**
-     * @type {import("tstyche/tstyche").TaskRunner | undefined}
+     * @type {import("tstyche/tstyche").Runner | undefined}
      */
-    let taskRunner;
+    let runner;
 
     beforeEach(() => {
       eventEmitter.addHandler(new TestResultHandler());
@@ -138,14 +138,14 @@ await describe("integration", async () => {
 
     afterEach(() => {
       eventEmitter.removeHandlers();
-      taskRunner?.close();
+      runner?.close();
     });
 
     await test("when the 'failFast: true'  is set", async () => {
-      taskRunner = new tstyche.TaskRunner({ ...resolvedConfig, failFast: true }, selectService, storeService);
-      const testFile = new tstyche.TestFile(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
+      runner = new tstyche.Runner({ ...resolvedConfig, failFast: true }, selectService, storeService);
+      const task = new tstyche.Task(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
 
-      await taskRunner.run([testFile]);
+      await runner.run([task]);
 
       assert.deepEqual(result?.expectCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
       assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });

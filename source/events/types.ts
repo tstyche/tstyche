@@ -1,5 +1,5 @@
 import type { Diagnostic } from "#diagnostic";
-import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, TestResult } from "#result";
+import type { DescribeResult, ExpectResult, Result, TargetResult, TaskResult, TestResult } from "#result";
 
 export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
@@ -12,9 +12,9 @@ export type Event =
   | ["target:end", { result: TargetResult }]
   | ["project:uses", { compilerVersion: string; projectConfigFilePath: string | undefined }]
   | ["project:error", { diagnostics: Array<Diagnostic> }]
-  | ["file:start", { result: FileResult }]
-  | ["file:error", { diagnostics: Array<Diagnostic>; result: FileResult }]
-  | ["file:end", { result: FileResult }]
+  | ["task:start", { result: TaskResult }]
+  | ["task:error", { diagnostics: Array<Diagnostic>; result: TaskResult }]
+  | ["task:end", { result: TaskResult }]
   | ["describe:start", { result: DescribeResult }]
   | ["describe:end", { result: DescribeResult }]
   | ["test:start", { result: TestResult }]

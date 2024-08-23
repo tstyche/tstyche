@@ -1,88 +1,102 @@
+import type ts from "typescript";
+import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
+import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
-import type { TestFile } from "#file";
-import { CancellationHandler, ResultHandler } from "#handlers";
-import { Result, TargetResult } from "#result";
-import type { SelectService } from "#select";
-import type { StoreService } from "#store";
-import { CancellationReason, CancellationToken } from "#token";
-import { WatchService } from "#watch";
-import { TestFileRunner } from "./TestFileRunner.js";
+import type { TypeChecker } from "#expect";
+import { ProjectService } from "#project";
+import { TaskResult } from "#result";
+import type { Task } from "#task";
+import type { CancellationToken } from "#token";
+import { TestTreeWorker } from "./TestTreeWorker.js";
+import { RunMode } from "./enums.js";
 
 export class TaskRunner {
-  #eventEmitter = new EventEmitter();
+  #compiler: typeof ts;
+  #collectService: CollectService;
   #resolvedConfig: ResolvedConfig;
-  #selectService: SelectService;
-  #storeService: StoreService;
+  #projectService: ProjectService;
 
-  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, storeService: StoreService) {
+  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
     this.#resolvedConfig = resolvedConfig;
-    this.#selectService = selectService;
-    this.#storeService = storeService;
+    this.#compiler = compiler;
 
-    this.#eventEmitter.addHandler(new ResultHandler());
+    this.#collectService = new CollectService(compiler);
+    this.#projectService = new ProjectService(compiler);
   }
 
-  close(): void {
-    this.#eventEmitter.removeHandlers();
+  run(task: Task, cancellationToken?: CancellationToken): void {
+    if (cancellationToken?.isCancellationRequested === true) {
+      return;
+    }
+
+    this.#projectService.openFile(task.filePath, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
+
+    const taskResult = new TaskResult(task);
+
+    EventEmitter.dispatch(["task:start", { result: taskResult }]);
+
+    this.#run(task, taskResult, cancellationToken);
+
+    EventEmitter.dispatch(["task:end", { result: taskResult }]);
+
+    this.#projectService.closeFile(task.filePath);
   }
 
-  async run(testFiles: Array<TestFile>, cancellationToken = new CancellationToken()): Promise<void> {
-    let cancellationHandler: CancellationHandler | undefined;
+  #run(task: Task, taskResult: TaskResult, cancellationToken?: CancellationToken) {
+    // wrapping around the language service allows querying on per file basis
+    // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
+    const languageService = this.#projectService.getLanguageService(task.filePath);
 
-    if (this.#resolvedConfig.failFast) {
-      cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
-      this.#eventEmitter.addHandler(cancellationHandler);
+    if (!languageService) {
+      return;
     }
 
-    if (this.#resolvedConfig.watch === true) {
-      await this.#run(testFiles, cancellationToken);
-      await this.#watch(testFiles, cancellationToken);
-    } else {
-      await this.#run(testFiles, cancellationToken);
+    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(task.filePath);
+
+    if (syntacticDiagnostics.length > 0) {
+      EventEmitter.dispatch([
+        "task:error",
+        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler), result: taskResult },
+      ]);
+
+      return;
     }
 
-    if (cancellationHandler != null) {
-      this.#eventEmitter.removeHandler(cancellationHandler);
-    }
-  }
+    const semanticDiagnostics = languageService.getSemanticDiagnostics(task.filePath);
 
-  async #run(testFiles: Array<TestFile>, cancellationToken: CancellationToken): Promise<void> {
-    const result = new Result(this.#resolvedConfig, testFiles);
+    const program = languageService.getProgram();
 
-    EventEmitter.dispatch(["run:start", { result }]);
-
-    for (const versionTag of this.#resolvedConfig.target) {
-      const targetResult = new TargetResult(versionTag, testFiles);
-
-      EventEmitter.dispatch(["target:start", { result: targetResult }]);
-
-      const compiler = await this.#storeService.load(versionTag);
-
-      if (compiler) {
-        // TODO to improve performance, test file runners (or even test projects) could be cached in the future
-        const testFileRunner = new TestFileRunner(this.#resolvedConfig, compiler);
-
-        for (const testFile of testFiles) {
-          testFileRunner.run(testFile, cancellationToken);
-        }
-      }
-
-      EventEmitter.dispatch(["target:end", { result: targetResult }]);
+    if (!program) {
+      return;
     }
 
-    EventEmitter.dispatch(["run:end", { result }]);
+    const sourceFile = program.getSourceFile(task.filePath);
 
-    if (cancellationToken.reason === CancellationReason.FailFast) {
-      cancellationToken.reset();
+    if (!sourceFile) {
+      return;
     }
-  }
 
-  async #watch(testFiles: Array<TestFile>, cancellationToken: CancellationToken): Promise<void> {
-    const watchService = new WatchService(this.#resolvedConfig, this.#selectService, testFiles);
+    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    for await (const testFiles of watchService.watch(cancellationToken)) {
-      await this.#run(testFiles, cancellationToken);
+    if (testTree.diagnostics.size > 0) {
+      EventEmitter.dispatch([
+        "task:error",
+        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler), result: taskResult },
+      ]);
+
+      return;
     }
+
+    const typeChecker = program.getTypeChecker() as TypeChecker;
+
+    const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, typeChecker, {
+      cancellationToken,
+      taskResult,
+      hasOnly: testTree.hasOnly,
+      position: task.position,
+    });
+
+    testTreeWorker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);
   }
 }
