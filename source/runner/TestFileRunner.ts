@@ -43,7 +43,7 @@ export class TestFileRunner {
     this.#projectService.closeFile(task.filePath);
   }
 
-  #run(task: Task, result: TaskResult, cancellationToken?: CancellationToken) {
+  #run(task: Task, taskResult: TaskResult, cancellationToken?: CancellationToken) {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
     const languageService = this.#projectService.getLanguageService(task.filePath);
@@ -57,7 +57,7 @@ export class TestFileRunner {
     if (syntacticDiagnostics.length > 0) {
       EventEmitter.dispatch([
         "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler), result },
+        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler), result: taskResult },
       ]);
 
       return;
@@ -82,7 +82,7 @@ export class TestFileRunner {
     if (testTree.diagnostics.size > 0) {
       EventEmitter.dispatch([
         "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler), result },
+        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler), result: taskResult },
       ]);
 
       return;
@@ -92,7 +92,7 @@ export class TestFileRunner {
 
     const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, typeChecker, {
       cancellationToken,
-      taskResult: result,
+      taskResult,
       hasOnly: testTree.hasOnly,
       position: task.position,
     });
