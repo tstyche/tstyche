@@ -126,17 +126,17 @@ export class Environment {
   }
 
   static #resolveTypeScriptPath() {
-    let moduleId = "typescript";
+    let specifier = "typescript";
 
     if (process.env["TSTYCHE_TYPESCRIPT_PATH"] != null) {
-      moduleId = process.env["TSTYCHE_TYPESCRIPT_PATH"];
+      specifier = process.env["TSTYCHE_TYPESCRIPT_PATH"];
     }
 
     let resolvedPath: string | undefined;
 
     try {
-      // TODO use 'import.meta.resolve()' after dropping support for Node.js 18.19
-      resolvedPath = Path.normalizeSlashes(createRequire(import.meta.url).resolve(moduleId));
+      // TODO use 'import.meta.resolve()' after dropping support for Node.js 18.18
+      resolvedPath = Path.normalizeSlashes(createRequire(import.meta.url).resolve(specifier));
     } catch {
       // the path cannot be resolved
     }

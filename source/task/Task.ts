@@ -5,16 +5,16 @@ export class Task {
   filePath: string;
   position: number | undefined;
 
-  constructor(identifier: string | URL, position?: number) {
-    this.filePath = Path.normalizeSlashes(this.#toPath(identifier));
+  constructor(filePath: string | URL, position?: number) {
+    this.filePath = Path.normalizeSlashes(this.#toPath(filePath));
     this.position = position;
   }
 
-  #toPath(identifier: string | URL) {
-    if (typeof identifier === "string" && !identifier.startsWith("file:")) {
-      return identifier;
+  #toPath(filePath: string | URL) {
+    if (typeof filePath === "string" && !filePath.startsWith("file:")) {
+      return filePath;
     }
 
-    return fileURLToPath(identifier);
+    return fileURLToPath(filePath);
   }
 }

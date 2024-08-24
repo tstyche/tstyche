@@ -15,7 +15,6 @@ export class Cli {
   #outputService = new OutputService();
   #storeService = new StoreService();
 
-  // TODO consider taking `environmentOptions` as second argument and passing it to `ConfigService`, `OutputService`, `StoreService`, etc
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
     const exitCodeHandler = new ExitCodeHandler();
     this.#eventEmitter.addHandler(exitCodeHandler);
