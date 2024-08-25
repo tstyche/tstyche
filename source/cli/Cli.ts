@@ -1,4 +1,3 @@
-import fs from "node:fs/promises";
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
 import { Environment } from "#environment";
@@ -41,8 +40,7 @@ export class Cli {
     const storeService = new StoreService();
 
     if (commandLineArguments.includes("--prune")) {
-      // TODO should be 'storeService.prune()'
-      await fs.rm(Environment.storePath, { force: true, recursive: true });
+      await storeService.prune();
 
       return;
     }

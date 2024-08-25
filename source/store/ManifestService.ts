@@ -103,7 +103,7 @@ export class ManifestService {
     const manifest = Manifest.parse(manifestText);
 
     if (!manifest || manifest.npmRegistry !== this.#npmRegistry) {
-      await fs.rm(this.#storePath, { force: true, recursive: true });
+      await this.prune();
 
       return this.#create();
     }
@@ -128,5 +128,9 @@ export class ManifestService {
     }
 
     await fs.writeFile(this.#manifestFilePath, manifest.stringify());
+  }
+
+  async prune(): Promise<void> {
+    await fs.rm(this.#storePath, { force: true, recursive: true });
   }
 }
