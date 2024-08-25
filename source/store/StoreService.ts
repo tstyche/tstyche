@@ -157,6 +157,10 @@ export class StoreService {
     }
   }
 
+  async prune(): Promise<void> {
+    await this.#manifestService.prune();
+  }
+
   async update(): Promise<void> {
     await this.#manifestService.open({ refresh: true });
   }
