@@ -1,5 +1,27 @@
 # Releases
 
+## [3.0.0-beta.1] - 2024-08-25
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Fixed
+
+- Write `typescript` packages atomically ([#291](https://github.com/tstyche/tstyche/pull/291))
+
+### Changed
+
+- **Breaking!** Remove `ConfigService` constructor arguments ([#297](https://github.com/tstyche/tstyche/pull/297))
+- **Breaking!** Rename `Task`, `TaskResult`, `Runner` classes and `task:*` events ([#296](https://github.com/tstyche/tstyche/pull/296))
+- **Breaking!** Remove `InputService` constructor options ([#294](https://github.com/tstyche/tstyche/pull/294))
+- **Breaking!** Remove `OutputService` constructor options ([#293](https://github.com/tstyche/tstyche/pull/293))
+- **Breaking!** Rename the `project:uses` event ([#290](https://github.com/tstyche/tstyche/pull/290))
+- **Breaking!** Rename the `store:adds` event ([#289](https://github.com/tstyche/tstyche/pull/289))
+
+### Added
+
+- Add environment options to `ResolvedConfig` ([#299](https://github.com/tstyche/tstyche/pull/299))
+- Add `prune()` method to `StoreService` class ([#298](https://github.com/tstyche/tstyche/pull/298))
+
 ## [3.0.0-beta.0] - 2024-08-12
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
@@ -293,6 +315,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.1
 [3.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.0
 [2.1.1]: https://github.com/tstyche/tstyche/releases/tag/v2.1.1
 [2.1.0]: https://github.com/tstyche/tstyche/releases/tag/v2.1.0
