@@ -1,16 +1,19 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type { Diagnostic } from "#diagnostic";
-import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { StoreService } from "#store";
-import { type CommandLineOptions, CommandLineOptionsWorker } from "./CommandLineOptionsWorker.js";
-import { type ConfigFileOptions, ConfigFileOptionsWorker } from "./ConfigFileOptionsWorker.js";
+import { CommandLineOptionsWorker } from "./CommandLineOptionsWorker.js";
+import { ConfigFileOptionsWorker } from "./ConfigFileOptionsWorker.js";
 import type { OptionValue } from "./OptionDefinitionsMap.js";
+import { defaultOptions } from "./defaultOptions.js";
+import { environmentOptions } from "./environmentOptions.js";
+import type { CommandLineOptions, ConfigFileOptions, EnvironmentOptions } from "./types.js";
 
 export interface ResolvedConfig
-  extends Omit<CommandLineOptions, keyof ConfigFileOptions | "config">,
+  extends EnvironmentOptions,
+    Omit<CommandLineOptions, keyof ConfigFileOptions | "config">,
     Required<ConfigFileOptions> {
   /**
    * The path to a TSTyche configuration file.
@@ -21,13 +24,6 @@ export interface ResolvedConfig
    */
   pathMatch: Array<string>;
 }
-
-export const defaultOptions: Required<ConfigFileOptions> = {
-  failFast: false,
-  rootPath: Path.resolve("./"),
-  target: Environment.typescriptPath != null ? ["current"] : ["latest"],
-  testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
-};
 
 export class ConfigService {
   #commandLineOptions: CommandLineOptions = {};
@@ -72,7 +68,7 @@ export class ConfigService {
       encoding: "utf8",
     });
 
-    const compiler = await storeService.load(Environment.typescriptPath != null ? "current" : "latest");
+    const compiler = await storeService.load(environmentOptions.typescriptPath != null ? "current" : "latest");
 
     if (!compiler) {
       return;
@@ -92,6 +88,7 @@ export class ConfigService {
   resolveConfig(): ResolvedConfig {
     return {
       ...defaultOptions,
+      ...environmentOptions,
       ...this.#configFileOptions,
       ...this.#commandLineOptions,
       configFilePath: this.#configFilePath,

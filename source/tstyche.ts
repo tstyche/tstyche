@@ -3,7 +3,6 @@ export * from "#cli";
 export * from "#collect";
 export * from "#config";
 export * from "#diagnostic";
-export * from "#environment";
 export * from "#events";
 export * from "#expect";
 export * from "#handlers";

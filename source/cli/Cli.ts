@@ -1,6 +1,5 @@
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
-import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler, SetupReporter } from "#handlers";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
@@ -82,17 +81,7 @@ export class Cli {
       }
 
       if (commandLineArguments.includes("--showConfig")) {
-        this.#outputService.writeMessage(
-          formattedText({
-            noColor: Environment.noColor,
-            noInteractive: Environment.noInteractive,
-            npmRegistry: Environment.npmRegistry,
-            storePath: Environment.storePath,
-            timeout: Environment.timeout,
-            typescriptPath: Environment.typescriptPath,
-            ...resolvedConfig,
-          }),
-        );
+        this.#outputService.writeMessage(formattedText({ ...resolvedConfig }));
         continue;
       }
 

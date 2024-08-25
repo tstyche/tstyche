@@ -8,8 +8,6 @@ import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
 import type { DiagnosticsHandler } from "./types.js";
 
-export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
-
 export class CommandLineOptionsWorker {
   #commandLineOptionDefinitions: Map<string, OptionDefinition>;
   #commandLineOptions: Record<string, OptionValue>;

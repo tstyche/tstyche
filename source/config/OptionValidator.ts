@@ -1,10 +1,10 @@
 import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
-import { Environment } from "#environment";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import type { OptionBrand, OptionGroup } from "./enums.js";
+import { environmentOptions } from "./environmentOptions.js";
 import type { DiagnosticsHandler } from "./types.js";
 
 export class OptionValidator {
@@ -61,7 +61,7 @@ export class OptionValidator {
       }
 
       case "watch": {
-        if (Environment.isCi) {
+        if (environmentOptions.isCi) {
           this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.watchCannotBeEnabled(), origin));
         }
         break;
