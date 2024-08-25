@@ -13,8 +13,6 @@ import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
 import type { DiagnosticsHandler } from "./types.js";
 
-export type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
-
 export class ConfigFileOptionsWorker {
   #compiler: typeof ts;
   #configFileOptionDefinitions: Map<string, OptionDefinition>;

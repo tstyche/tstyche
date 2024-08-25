@@ -1,5 +1,4 @@
 import type { ResolvedConfig } from "#config";
-import { Environment } from "#environment";
 import type { Event, EventHandler } from "#events";
 import { type OutputService, addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
 import { FileViewService } from "./FileViewService.js";
@@ -85,7 +84,7 @@ export class RunReporter extends Reporter implements EventHandler {
       }
 
       case "task:start": {
-        if (!Environment.noInteractive) {
+        if (!this.#resolvedConfig.noInteractive) {
           this.outputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
         }
 
@@ -102,7 +101,7 @@ export class RunReporter extends Reporter implements EventHandler {
       }
 
       case "task:end": {
-        if (!Environment.noInteractive) {
+        if (!this.#resolvedConfig.noInteractive) {
           this.outputService.eraseLastLine();
         }
 

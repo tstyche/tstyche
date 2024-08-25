@@ -2,63 +2,19 @@ import { createRequire } from "node:module";
 import os from "node:os";
 import process from "node:process";
 import { Path } from "#path";
+import type { EnvironmentOptions } from "./types.js";
 
-export class Environment {
-  static #isCi = Environment.#resolveIsCi();
-  static #noColor = Environment.#resolveNoColor();
-  static #noInteractive = Environment.#resolveNoInteractive();
-  static #npmRegistry = Environment.#resolveNpmRegistry();
-  static #storePath = Environment.#resolveStorePath();
-  static #timeout = Environment.#resolveTimeout();
-  static #typescriptPath = Environment.#resolveTypeScriptPath();
-
-  /**
-   * Is `true` if the process is running in a continuous integration environment.
-   */
-  static get isCi(): boolean {
-    return Environment.#isCi;
-  }
-
-  /**
-   * Specifies whether color should be disabled in the output.
-   */
-  static get noColor(): boolean {
-    return Environment.#noColor;
-  }
-
-  /**
-   * Specifies whether interactive elements should be disabled in the output.
-   */
-  static get noInteractive(): boolean {
-    return Environment.#noInteractive;
-  }
-
-  /**
-   * The base URL of the 'npm' registry to use.
-   */
-  static get npmRegistry(): string {
-    return Environment.#npmRegistry;
-  }
-
-  /**
-   * The directory where to store the 'typescript' packages.
-   */
-  static get storePath(): string {
-    return Environment.#storePath;
-  }
-
-  /**
-   * The number of seconds to wait before giving up stale operations.
-   */
-  static get timeout(): number {
-    return Environment.#timeout;
-  }
-
-  /**
-   * The path to the currently installed TypeScript module.
-   */
-  static get typescriptPath(): string | undefined {
-    return Environment.#typescriptPath;
+export class EnvironmentService {
+  static resolve(): EnvironmentOptions {
+    return {
+      isCi: EnvironmentService.#resolveIsCi(),
+      noColor: EnvironmentService.#resolveNoColor(),
+      noInteractive: EnvironmentService.#resolveNoInteractive(),
+      npmRegistry: EnvironmentService.#resolveNpmRegistry(),
+      storePath: EnvironmentService.#resolveStorePath(),
+      timeout: EnvironmentService.#resolveTimeout(),
+      typescriptPath: EnvironmentService.#resolveTypeScriptPath(),
+    };
   }
 
   static #resolveIsCi() {
