@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import type ts from "typescript";
 import type { Diagnostic } from "#diagnostic";
 import { Environment } from "#environment";
 import { EventEmitter } from "#events";
@@ -25,36 +24,29 @@ export interface ResolvedConfig
 
 export const defaultOptions: Required<ConfigFileOptions> = {
   failFast: false,
-  rootPath: "./",
-  target: [Environment.typescriptPath != null ? "current" : "latest"],
+  rootPath: Path.resolve("./"),
+  target: Environment.typescriptPath != null ? ["current"] : ["latest"],
   testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
 };
 
 export class ConfigService {
   #commandLineOptions: CommandLineOptions = {};
-  #compiler: typeof ts;
   #configFileOptions: ConfigFileOptions = {};
   #configFilePath = Path.resolve(defaultOptions.rootPath, "./tstyche.config.json");
   #pathMatch: Array<string> = [];
-  #storeService: StoreService;
-
-  constructor(compiler: typeof ts, storeService: StoreService) {
-    this.#compiler = compiler;
-    this.#storeService = storeService;
-  }
 
   #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
     EventEmitter.dispatch(["config:error", { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics] }]);
   }
 
-  async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {
+  async parseCommandLine(commandLineArgs: Array<string>, storeService: StoreService): Promise<void> {
     this.#commandLineOptions = {};
     this.#pathMatch = [];
 
     const commandLineWorker = new CommandLineOptionsWorker(
       this.#commandLineOptions as Record<string, OptionValue>,
       this.#pathMatch,
-      this.#storeService,
+      storeService,
       this.#onDiagnostics,
     );
 
@@ -67,7 +59,7 @@ export class ConfigService {
     }
   }
 
-  async readConfigFile(): Promise<void> {
+  async readConfigFile(storeService: StoreService): Promise<void> {
     this.#configFileOptions = {
       rootPath: Path.dirname(this.#configFilePath),
     };
@@ -80,11 +72,17 @@ export class ConfigService {
       encoding: "utf8",
     });
 
+    const compiler = await storeService.load(Environment.typescriptPath != null ? "current" : "latest");
+
+    if (!compiler) {
+      return;
+    }
+
     const configFileWorker = new ConfigFileOptionsWorker(
-      this.#compiler,
+      compiler,
       this.#configFileOptions as Record<string, OptionValue>,
       this.#configFilePath,
-      this.#storeService,
+      storeService,
       this.#onDiagnostics,
     );
 
