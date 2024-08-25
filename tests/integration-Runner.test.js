@@ -2,7 +2,6 @@ import { fileURLToPath } from "node:url";
 import { assert } from "poku";
 import { afterEach, beforeEach, describe, test } from "poku";
 import * as tstyche from "tstyche/tstyche";
-import ts from "typescript";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
 
 const isWindows = process.platform === "win32";
@@ -10,10 +9,10 @@ const isWindows = process.platform === "win32";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-const storeService = new tstyche.StoreService();
-const configService = new tstyche.ConfigService(ts, storeService);
-
+const configService = new tstyche.ConfigService();
 const resolvedConfig = configService.resolveConfig();
+
+const storeService = new tstyche.StoreService();
 const selectService = new tstyche.SelectService(resolvedConfig);
 
 const eventEmitter = new tstyche.EventEmitter();
@@ -37,30 +36,30 @@ class TestResultHandler {
   }
 }
 
-await describe("integration", async () => {
-  await describe("test file object", async () => {
+await describe("tstyche.Runner", async () => {
+  await describe("tasks", async () => {
     const runner = new tstyche.Runner(resolvedConfig, selectService, storeService);
 
     eventEmitter.addHandler(new TestResultHandler());
 
     const testCases = [
       {
-        identifier: fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),
-        testCase: "when file identifier is a string",
+        filePath: fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),
+        testCase: "when file path is string",
       },
       {
-        identifier: new URL("./__typetests__/toBeString.tst.ts", fixtureUrl),
-        testCase: "when file identifier is URL object",
+        filePath: new URL("./__typetests__/toBeString.tst.ts", fixtureUrl),
+        testCase: "when file path is URL object",
       },
       {
-        identifier: new URL("./__typetests__/toBeString.tst.ts", fixtureUrl).toString(),
-        testCase: "when file identifier is URL string",
+        filePath: new URL("./__typetests__/toBeString.tst.ts", fixtureUrl).toString(),
+        testCase: "when file path is URL string",
       },
     ];
 
-    for (const { testCase, identifier } of testCases) {
+    for (const { testCase, filePath } of testCases) {
       await test(testCase, async () => {
-        const task = new tstyche.Task(identifier);
+        const task = new tstyche.Task(filePath);
 
         await runner.run([task]);
 
@@ -70,10 +69,10 @@ await describe("integration", async () => {
       });
     }
 
-    for (const { testCase, identifier } of testCases) {
-      await test(`${testCase} with position is pointing to 'expect'`, async () => {
+    for (const { testCase, filePath } of testCases) {
+      await test(`${testCase} with position pointing to 'expect'`, async () => {
         const position = isWindows ? 73 : 70;
-        const task = new tstyche.Task(identifier, position);
+        const task = new tstyche.Task(filePath, position);
 
         await runner.run([task]);
 
@@ -83,10 +82,10 @@ await describe("integration", async () => {
       });
     }
 
-    for (const { testCase, identifier } of testCases) {
-      await test(`${testCase} with position is pointing to 'expect.skip'`, async () => {
+    for (const { testCase, filePath } of testCases) {
+      await test(`${testCase} with position pointing to 'expect.skip'`, async () => {
         const position = isWindows ? 273 : 261;
-        const task = new tstyche.Task(identifier, position);
+        const task = new tstyche.Task(filePath, position);
 
         await runner.run([task]);
 
@@ -96,10 +95,10 @@ await describe("integration", async () => {
       });
     }
 
-    for (const { testCase, identifier } of testCases) {
-      await test(`${testCase} with position is pointing to 'test'`, async () => {
+    for (const { testCase, filePath } of testCases) {
+      await test(`${testCase} with position pointing to 'test'`, async () => {
         const position = isWindows ? 43 : 41;
-        const task = new tstyche.Task(identifier, position);
+        const task = new tstyche.Task(filePath, position);
 
         await runner.run([task]);
 
@@ -109,10 +108,10 @@ await describe("integration", async () => {
       });
     }
 
-    for (const { testCase, identifier } of testCases) {
-      await test(`${testCase} with position is pointing to 'test.skip'`, async () => {
+    for (const { testCase, filePath } of testCases) {
+      await test(`${testCase} with position pointing to 'test.skip'`, async () => {
         const position = isWindows ? 117 : 111;
-        const task = new tstyche.Task(identifier, position);
+        const task = new tstyche.Task(filePath, position);
 
         await runner.run([task]);
 
@@ -141,7 +140,7 @@ await describe("integration", async () => {
       runner?.close();
     });
 
-    await test("when the 'failFast: true'  is set", async () => {
+    await test("when 'failFast: true' is specified", async () => {
       runner = new tstyche.Runner({ ...resolvedConfig, failFast: true }, selectService, storeService);
       const task = new tstyche.Task(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
 
