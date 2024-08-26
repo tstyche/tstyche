@@ -260,9 +260,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-cpp@npm:^5.1.12":
-  version: 5.1.12
-  resolution: "@cspell/dict-cpp@npm:5.1.12"
-  checksum: 10c0/e1c43a1808138024868489f29e5aaa4cfec98dea098b074a88715a26a9ed7ed01655d9d0436704c5a36c3753b84f686cecde8aa6293bfd2ed2118490256e63b6
+  version: 5.1.15
+  resolution: "@cspell/dict-cpp@npm:5.1.15"
+  checksum: 10c0/e7b88b71ac354ab5d8d11c4a6d3c594a32b1177701a46441da8b5cbb3639e0693c0acca02e1173f5716272f6c55b6342fbab7c3b8dc341286d5d8a63da0d88c2
   languageName: node
   linkType: hard
 
@@ -316,9 +316,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-dotnet@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "@cspell/dict-dotnet@npm:5.0.2"
-  checksum: 10c0/c5a1a7cbef0b8d0f917e783ff0e7880d2516be72adaa05664e0f9bfa0cfd622812e23146150b4fff0257784e48db1b9d72126f1a4518ae0c4a8c4a97e803a65a
+  version: 5.0.3
+  resolution: "@cspell/dict-dotnet@npm:5.0.3"
+  checksum: 10c0/8e6e9cfa6239c062a2b7cda3400235fab60a4dd13db509719e60b442b7f33d7a4a4470069d612ea16d24be4129191e21c72958349793be04e5e0f025fd4c7334
   languageName: node
   linkType: hard
 
@@ -393,9 +393,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-golang@npm:^6.0.9":
-  version: 6.0.9
-  resolution: "@cspell/dict-golang@npm:6.0.9"
-  checksum: 10c0/31af38194a2ea09a8d352681dda7277d86536211bbe72b9709b098321098909a783642fdd8e44426e9c041e6e4d6312970689899f4bced0a166364e7fe57b875
+  version: 6.0.11
+  resolution: "@cspell/dict-golang@npm:6.0.11"
+  checksum: 10c0/486b5fcfc26629e40313f409d8621fb4db42629f3a2e13bdd0604b4b0714c44e35896c95fe2e7a0850f775a7eac8af1adb597522f1872505b9feec2ec9348ec8
   languageName: node
   linkType: hard
 
@@ -512,9 +512,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-public-licenses@npm:^2.0.7":
-  version: 2.0.7
-  resolution: "@cspell/dict-public-licenses@npm:2.0.7"
-  checksum: 10c0/fab600fca77e239ca174cb5b7c5fcf52fb3578f9f4d876d5ff0068fc00674ff64bd70fe860284df0250cde1526ae12f3e2503e2715722fd6ec68131276e5a49e
+  version: 2.0.8
+  resolution: "@cspell/dict-public-licenses@npm:2.0.8"
+  checksum: 10c0/a49f874ded85146cd6b8d668c76f06a81ce6578c0ed4a4cfc8e4218a56887d4c7f63566f7a79ccf1c2e59fdac6f7b6bdfafb8ee5260462e618f11476aaa43145
   languageName: node
   linkType: hard
 
@@ -556,9 +556,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^4.0.6":
-  version: 4.0.6
-  resolution: "@cspell/dict-software-terms@npm:4.0.6"
-  checksum: 10c0/8e02e024f1304eae4d247e01370f4ef469660d131eba92a9c0bace1046ef4f0ddaa558f8df2622774a860ddf01d1ec523d7ade857aed50de2fac4163542ec406
+  version: 4.0.10
+  resolution: "@cspell/dict-software-terms@npm:4.0.10"
+  checksum: 10c0/1338fa555228a4b35bb2edfc59916ee9ac88fd44f7ed75f0b32f66ec189f153d9142067a54d6b79d75a15ea809ac3f921b4a916ee5200c0cb063bd44cae9e94c
   languageName: node
   linkType: hard
 
@@ -1755,11 +1755,11 @@ __metadata:
   linkType: hard
 
 "is-core-module@npm:^2.13.0":
-  version: 2.15.0
-  resolution: "is-core-module@npm:2.15.0"
+  version: 2.15.1
+  resolution: "is-core-module@npm:2.15.1"
   dependencies:
     hasown: "npm:^2.0.2"
-  checksum: 10c0/da161f3d9906f459486da65609b2f1a2dfdc60887c689c234d04e88a062cb7920fa5be5fb7ab08dc43b732929653c4135ef05bf77888ae2a9040ce76815eb7b1
+  checksum: 10c0/53432f10c69c40bfd2fa8914133a68709ff9498c86c3bf5fca3cdf3145a56fd2168cbf4a43b29843a6202a120a5f9c5ffba0a4322e1e3441739bc0b641682612
   languageName: node
   linkType: hard
 
@@ -1952,12 +1952,12 @@ __metadata:
   linkType: hard
 
 "micromatch@npm:^4.0.4, micromatch@npm:^4.0.7":
-  version: 4.0.7
-  resolution: "micromatch@npm:4.0.7"
+  version: 4.0.8
+  resolution: "micromatch@npm:4.0.8"
   dependencies:
     braces: "npm:^3.0.3"
     picomatch: "npm:^2.3.1"
-  checksum: 10c0/58fa99bc5265edec206e9163a1d2cec5fabc46a5b473c45f4a700adce88c2520456ae35f2b301e4410fb3afb27e9521fb2813f6fc96be0a48a89430e0916a772
+  checksum: 10c0/166fa6eb926b9553f32ef81f5f531d27b4ce7da60e5baf8c021d043b27a388fb95e46a8038d5045877881e673f8134122b59624d5cecbd16eb50a42e7a6b5ca8
   languageName: node
   linkType: hard
 
@@ -2634,9 +2634,9 @@ __metadata:
   linkType: hard
 
 "undici-types@npm:~6.19.2":
-  version: 6.19.6
-  resolution: "undici-types@npm:6.19.6"
-  checksum: 10c0/9b2264c5700e7169c6c62c643aac56cd8984c5fd7e18ed31ff11780260e137f6340dee8317a2e6e0ae3c49f5e5ef6fa577ea07193cbaa535265cba76a267cae9
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: 10c0/078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
   languageName: node
   linkType: hard
 
