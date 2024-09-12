@@ -60,7 +60,7 @@
     "test:unit": "yarn poku **/__tests__/*.test.* --parallel"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
+    "@biomejs/biome": "1.9.0",
     "@rollup/plugin-typescript": "11.1.6",
     "@types/node": "20.16.5",
     "@types/react": "18.3.5",
