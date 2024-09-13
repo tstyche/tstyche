@@ -68,7 +68,7 @@ export class WatchService {
         case "a": {
           debounce.clearTimeout();
 
-          if (this.#watchedTestFiles.size !== 0) {
+          if (this.#watchedTestFiles.size > 0) {
             debounce.resolveWith([...this.#watchedTestFiles.values()]);
           }
 
