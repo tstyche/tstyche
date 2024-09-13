@@ -66,14 +66,18 @@
         "useNamingConvention": "error",
         "useForOf": "error",
         "useShorthandAssign": "error",
-        "useSingleCaseStatement": "error",
         "useThrowNewError": "error",
 
         "noParameterAssign": "off"
       },
 
       "suspicious": {
-        "noConsoleLog": "warn",
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["info"]
+          }
+        },
         "noEvolvingTypes": "error",
         "noMisplacedAssertion": "error",
         "noSkippedTests": "error",
