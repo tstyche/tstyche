@@ -13,15 +13,13 @@ export class SetupReporter extends Reporter implements EventHandler {
     if ("diagnostics" in payload) {
       for (const diagnostic of payload.diagnostics) {
         switch (diagnostic.category) {
-          case DiagnosticCategory.Error: {
+          case DiagnosticCategory.Error:
             this.outputService.writeError(diagnosticText(diagnostic));
             break;
-          }
 
-          case DiagnosticCategory.Warning: {
+          case DiagnosticCategory.Warning:
             this.outputService.writeWarning(diagnosticText(diagnostic));
             break;
-          }
         }
       }
     }
