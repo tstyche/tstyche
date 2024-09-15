@@ -57,6 +57,7 @@ export class ResultHandler implements EventHandler {
         }
         break;
 
+      // TODO consider moving 'new ProjectResult' to the runner
       case "project:uses": {
         let projectResult = this.#targetResult!.results.get(payload.projectConfigFilePath);
 
