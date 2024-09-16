@@ -40,14 +40,17 @@ const config = {
 
   sourcePath: (filePath) => {
 
+    console.log(filePath);
+
     // remove prefix of file path for untested file
-    const prefix = "tstyche/";
+    const prefix = "tstyche/tstyche/";
     const pos = filePath.indexOf(prefix);
     if (pos !== -1) {
-      filePath = filePath.slice(pos + prefix.length)
+      filePath = filePath.slice(pos + prefix.length);
+      console.log(filePath);
     }
 
-    return filePath
+    return filePath;
   },
 
   outputDir: "./coverage",
