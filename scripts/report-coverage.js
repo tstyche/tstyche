@@ -13,9 +13,6 @@ function resolveReportTarget() {
 
 /** @type {import("monocart-coverage-reports").CoverageReportOptions} */
 const config = {
-
-  all: process.argv.includes("--merge") ? "" : "./source",
-
   clean: true,
   cleanCache: true,
 
@@ -46,8 +43,11 @@ if (process.argv.includes("--merge")) {
     "./coverage/raw-coverage-macos",
     "./coverage/raw-coverage-windows",
   ];
+
   config.reports = [["codacy", { outputFile: "codacy-coverage.json" }], "console-summary"];
 } else {
+  config.all = "./source";
+
   config.dataDir = "./coverage/v8-coverage";
 
   config.reports = isCi
