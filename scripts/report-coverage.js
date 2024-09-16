@@ -42,7 +42,7 @@ const config = {
 
     // remove prefix of file path for untested file
     const prefix = "tstyche/";
-    var pos = filePath.indexOf(prefix);
+    const pos = filePath.indexOf(prefix);
     if (pos !== -1) {
       filePath = filePath.slice(pos + prefix.length)
     }
