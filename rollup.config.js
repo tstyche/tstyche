@@ -104,7 +104,7 @@ const config = [
     external: [/^node:/, "./tstyche.js"],
     input: {
       bin: "./source/bin.ts",
-      index: "./source/main.ts",
+      index: "./source/index.ts",
       tstyche: "./source/tstyche.ts",
     },
     output,
@@ -116,7 +116,7 @@ const config = [
   },
 
   {
-    input: "./source/main.ts",
+    input: "./source/index.ts",
     output: {
       file: "./build/index.cjs",
       format: "cjs",
