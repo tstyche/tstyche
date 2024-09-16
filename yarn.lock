@@ -2063,9 +2063,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@github:cenfun/monocart-coverage-reports#tstyche":
-  version: 2.10.7
-  resolution: "monocart-coverage-reports@https://github.com/cenfun/monocart-coverage-reports.git#commit=2d199daaec33d748a65c0f83119366bf04f83b27"
+"monocart-coverage-reports@npm:beta":
+  version: 2.10.8-beta.0
+  resolution: "monocart-coverage-reports@npm:2.10.8-beta.0"
   dependencies:
     "@bcoe/v8-coverage": "npm:^0.2.3"
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
@@ -2082,8 +2082,8 @@ __metadata:
     lz-utils: "npm:^2.1.0"
     monocart-locator: "npm:^1.0.2"
   bin:
-    mcr: ./lib/cli.js
-  checksum: 10c0/1147e12c731945e6d8f3efb45dbcab42bf1ee84ae9699789582d126912c9e4b8fb5e3f47a550e118137ec1539f72ddb685ffdf987bb4483703f9a6ac7c3e9998
+    mcr: lib/cli.js
+  checksum: 10c0/c4175ecbc80b307504be53498f3887e092a47540edfc9da003dec8555dc96889e001fcd99901c56d3b53bb3a847bc4452de04b90a46ad8617543ca7aa29a7226
   languageName: node
   linkType: hard
 
@@ -2596,7 +2596,7 @@ __metadata:
     ajv: "npm:8.17.1"
     cspell: "npm:8.14.2"
     magic-string: "npm:0.30.11"
-    monocart-coverage-reports: "github:cenfun/monocart-coverage-reports#tstyche"
+    monocart-coverage-reports: "npm:beta"
     poku: "npm:2.6.2"
     pretty-ansi: "npm:2.0.0"
     rollup: "npm:4.21.3"
