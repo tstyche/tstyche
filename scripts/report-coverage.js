@@ -26,6 +26,13 @@ const config = {
   },
 
   sourceFilter: {
+    "**/source/main.ts": false,
+    "**/source/tstyche.ts": false,
+    "**/source/types.ts": false,
+    "**/source/*/enums.ts": false,
+    "**/source/*/index.ts": false,
+    "**/source/*/types.ts": false,
+
     "**/source/*.ts": true,
     "**/source/*/*.ts": true,
     "**/source/*/*.tsx": true,
