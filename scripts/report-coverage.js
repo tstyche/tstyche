@@ -31,6 +31,18 @@ const config = {
     "**/source/*/*.tsx": true,
   },
 
+  sourcePath: (filePath) => {
+
+    // remove prefix of file path for untested file
+    const prefix = "tstyche/";
+    var pos = filePath.indexOf(prefix);
+    if (pos !== -1) {
+      filePath = filePath.slice(pos + prefix.length)
+    }
+
+    return filePath
+  },
+
   outputDir: "./coverage",
 };
 
