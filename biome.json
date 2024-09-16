@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
 
   "files": {
     "ignore": [
@@ -27,6 +27,10 @@
       "recommended": true,
 
       "complexity": {
+        "noUselessStringConcat": "error",
+        "noUselessUndefinedInitialization": "error",
+        "useDateNow": "error",
+
         "noBannedTypes": "off",
         "noStaticOnlyClass": "off",
         "useLiteralKeys": "off"
@@ -34,9 +38,11 @@
 
       "correctness": {
         "noUndeclaredVariables": "error",
+        "noUnusedFunctionParameters": "error",
         "noUnusedImports": "error",
         "noUnusedPrivateClassMembers": "error",
         "noUnusedVariables": "error",
+        "useImportExtensions": "error",
 
         "useJsxKeyInIterable": "off"
       },
@@ -45,6 +51,7 @@
         "noImplicitBoolean": "error",
         "noNegationElse": "error",
         "noParameterProperties": "error",
+        "noYodaExpression": "error",
         "useBlockStatements": "error",
         "useCollapsedElseIf": "error",
         "useConsistentArrayType": {
@@ -53,18 +60,29 @@
             "syntax": "generic"
           }
         },
+        "useConsistentBuiltinInstantiation": "error",
+        "useExplicitLengthCheck": "error",
         "useNamingConvention": "error",
         "useForOf": "error",
         "useShorthandAssign": "error",
-        "useSingleCaseStatement": "error",
+        "useThrowNewError": "error",
 
         "noParameterAssign": "off"
       },
 
       "suspicious": {
-        "noConsoleLog": "warn",
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["info"]
+          }
+        },
+        "noEvolvingTypes": "error",
+        "noMisplacedAssertion": "error",
         "noSkippedTests": "error",
         "useAwait": "error",
+        "useErrorMessage": "error",
+        "useNumberToFixedDigitsArgument": "error",
 
         "noConstEnum": "off"
       }

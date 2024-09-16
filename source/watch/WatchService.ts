@@ -58,22 +58,19 @@ export class WatchService {
         case "\u0004" /* Ctrl-D */:
         case "\u001B" /* Escape */:
         case "q":
-        case "x": {
+        case "x":
           onClose(CancellationReason.WatchClose);
           break;
-        }
 
         case "\u000D" /* Return */:
         case "\u0020" /* Space */:
-        case "a": {
+        case "a":
           debounce.clearTimeout();
 
-          if (this.#watchedTestFiles.size !== 0) {
+          if (this.#watchedTestFiles.size > 0) {
             debounce.resolveWith([...this.#watchedTestFiles.values()]);
           }
-
           break;
-        }
       }
     };
 

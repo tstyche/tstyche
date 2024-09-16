@@ -41,18 +41,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/biome@npm:1.9.0"
+"@biomejs/biome@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/biome@npm:1.9.1"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:1.9.0"
-    "@biomejs/cli-darwin-x64": "npm:1.9.0"
-    "@biomejs/cli-linux-arm64": "npm:1.9.0"
-    "@biomejs/cli-linux-arm64-musl": "npm:1.9.0"
-    "@biomejs/cli-linux-x64": "npm:1.9.0"
-    "@biomejs/cli-linux-x64-musl": "npm:1.9.0"
-    "@biomejs/cli-win32-arm64": "npm:1.9.0"
-    "@biomejs/cli-win32-x64": "npm:1.9.0"
+    "@biomejs/cli-darwin-arm64": "npm:1.9.1"
+    "@biomejs/cli-darwin-x64": "npm:1.9.1"
+    "@biomejs/cli-linux-arm64": "npm:1.9.1"
+    "@biomejs/cli-linux-arm64-musl": "npm:1.9.1"
+    "@biomejs/cli-linux-x64": "npm:1.9.1"
+    "@biomejs/cli-linux-x64-musl": "npm:1.9.1"
+    "@biomejs/cli-win32-arm64": "npm:1.9.1"
+    "@biomejs/cli-win32-x64": "npm:1.9.1"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -72,62 +72,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10c0/b07ad2c8dc3d52c0a4eea37f98d36399b33a13759903aa65f9678db916810b773fe94937c304899158479bccd8c3c90f0f30af22b34d6dc5963774f1acc5e245
+  checksum: 10c0/ed51a98794b4942840593143ef3e2c4614f8f3bd1ad86c044f276310571dd34549177aeffa8bd7f006adf2b9c4c590dc887d9df374d18cb29187b7cdff32fc2d
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/cli-darwin-arm64@npm:1.9.0"
+"@biomejs/cli-darwin-arm64@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/cli-darwin-arm64@npm:1.9.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/cli-darwin-x64@npm:1.9.0"
+"@biomejs/cli-darwin-x64@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/cli-darwin-x64@npm:1.9.1"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.9.0"
+"@biomejs/cli-linux-arm64-musl@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.9.1"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/cli-linux-arm64@npm:1.9.0"
+"@biomejs/cli-linux-arm64@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/cli-linux-arm64@npm:1.9.1"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/cli-linux-x64-musl@npm:1.9.0"
+"@biomejs/cli-linux-x64-musl@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/cli-linux-x64-musl@npm:1.9.1"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/cli-linux-x64@npm:1.9.0"
+"@biomejs/cli-linux-x64@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/cli-linux-x64@npm:1.9.1"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/cli-win32-arm64@npm:1.9.0"
+"@biomejs/cli-win32-arm64@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/cli-win32-arm64@npm:1.9.1"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@biomejs/cli-win32-x64@npm:1.9.0"
+"@biomejs/cli-win32-x64@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@biomejs/cli-win32-x64@npm:1.9.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -964,9 +964,9 @@ __metadata:
   linkType: hard
 
 "ansi-regex@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "ansi-regex@npm:6.0.1"
-  checksum: 10c0/cbe16dbd2c6b2735d1df7976a7070dd277326434f0212f43abf6d87674095d247968209babdaad31bb00882fa68807256ba9be340eec2f1004de14ca75f52a08
+  version: 6.1.0
+  resolution: "ansi-regex@npm:6.1.0"
+  checksum: 10c0/a91daeddd54746338478eef88af3439a7edf30f8e23196e2d6ed182da9add559c601266dbef01c2efa46a958ad6f1f8b176799657616c702b5b02e799e7fd8dc
   languageName: node
   linkType: hard
 
@@ -2063,9 +2063,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.10.4":
-  version: 2.10.4
-  resolution: "monocart-coverage-reports@npm:2.10.4"
+"monocart-coverage-reports@npm:2.10.5":
+  version: 2.10.5
+  resolution: "monocart-coverage-reports@npm:2.10.5"
   dependencies:
     "@bcoe/v8-coverage": "npm:^0.2.3"
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
@@ -2083,7 +2083,7 @@ __metadata:
     monocart-locator: "npm:^1.0.2"
   bin:
     mcr: lib/cli.js
-  checksum: 10c0/539d6779bb91e32704d0afed922877215177353c9a720df8c50f8b55d93265a20518ae13c163b1a5f015147d82655256e5e45aed794ea92cf2d78c920242aa59
+  checksum: 10c0/2f5cf595667520c7aeec6218633ccf4effa99c435d0daa5b67bb370a7cbef62b4f8b4eb3635c09b247d2a3d2f5e95b8a99898ccf684481f7dfcb8e28efbcc6d9
   languageName: node
   linkType: hard
 
@@ -2589,14 +2589,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tstyche@workspace:."
   dependencies:
-    "@biomejs/biome": "npm:1.9.0"
+    "@biomejs/biome": "npm:1.9.1"
     "@rollup/plugin-typescript": "npm:11.1.6"
     "@types/node": "npm:20.16.5"
     "@types/react": "npm:18.3.5"
     ajv: "npm:8.17.1"
     cspell: "npm:8.14.2"
     magic-string: "npm:0.30.11"
-    monocart-coverage-reports: "npm:2.10.4"
+    monocart-coverage-reports: "npm:2.10.5"
     poku: "npm:2.6.2"
     pretty-ansi: "npm:2.0.0"
     rollup: "npm:4.21.3"

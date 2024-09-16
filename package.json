@@ -60,14 +60,14 @@
     "test:unit": "yarn poku **/__tests__/*.test.* --parallel"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.0",
+    "@biomejs/biome": "1.9.1",
     "@rollup/plugin-typescript": "11.1.6",
     "@types/node": "20.16.5",
     "@types/react": "18.3.5",
     "ajv": "8.17.1",
     "cspell": "8.14.2",
     "magic-string": "0.30.11",
-    "monocart-coverage-reports": "2.10.4",
+    "monocart-coverage-reports": "2.10.5",
     "poku": "2.6.2",
     "pretty-ansi": "2.0.0",
     "rollup": "4.21.3",
@@ -83,7 +83,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@4.4.1",
+  "packageManager": "yarn@4.5.0",
   "engines": {
     "node": ">=18.14"
   }

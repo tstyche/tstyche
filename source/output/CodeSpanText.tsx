@@ -77,15 +77,13 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
   let highlightColor: Color;
 
   switch (diagnosticCategory) {
-    case DiagnosticCategory.Error: {
+    case DiagnosticCategory.Error:
       highlightColor = Color.Red;
       break;
-    }
 
-    case DiagnosticCategory.Warning: {
+    case DiagnosticCategory.Warning:
       highlightColor = Color.Yellow;
       break;
-    }
   }
 
   const codeSpan: Array<ScribblerJsx.Element> = [];

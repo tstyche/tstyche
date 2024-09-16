@@ -95,7 +95,7 @@ export class Cli {
       const selectService = new SelectService(resolvedConfig);
       let testFiles: Array<string> = [];
 
-      if (resolvedConfig.testFileMatch.length !== 0) {
+      if (resolvedConfig.testFileMatch.length > 0) {
         testFiles = await selectService.selectFiles();
 
         if (testFiles.length === 0) {

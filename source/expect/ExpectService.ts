@@ -78,7 +78,7 @@ export class ExpectService {
       case "toBe":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
-      case "toMatch": {
+      case "toMatch":
         if (!assertion.target[0]) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
@@ -86,7 +86,6 @@ export class ExpectService {
         }
 
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
-      }
 
       case "toBeAny":
       case "toBeBigInt":
@@ -99,11 +98,10 @@ export class ExpectService {
       case "toBeUndefined":
       case "toBeUniqueSymbol":
       case "toBeUnknown":
-      case "toBeVoid": {
+      case "toBeVoid":
         return this[matcherNameText].match(matchWorker, assertion.source[0]);
-      }
 
-      case "toHaveProperty": {
+      case "toHaveProperty":
         if (!assertion.target[0]) {
           this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostics);
 
@@ -111,22 +109,23 @@ export class ExpectService {
         }
 
         return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
-      }
 
-      case "toRaiseError": {
+      case "toRaiseError":
         // TODO perhaps in the future the target argument could be: 'target?: string | number | Array<string | number>'
         return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target], onDiagnostics);
-      }
 
-      default: {
-        const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
-        const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
-
-        onDiagnostics(Diagnostic.error(text, origin));
-      }
+      default:
+        this.#onMatcherIsNotSupported(matcherNameText, assertion, onDiagnostics);
     }
 
     return;
+  }
+
+  #onMatcherIsNotSupported(matcherNameText: string, assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+    const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+
+    onDiagnostics(Diagnostic.error(text, origin));
   }
 
   #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {

@@ -29,15 +29,12 @@ function createArrayPropertySignature(identifierText, itemDefinition, commentTex
   const typeArguments = [];
 
   switch (itemDefinition.brand) {
-    case tstyche.OptionBrand.String: {
+    case tstyche.OptionBrand.String:
       typeArguments.push(ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword));
       break;
-    }
 
-    default: {
+    default:
       typeArguments.push(ts.factory.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword));
-      break;
-    }
   }
 
   const propertySignature = ts.factory.createPropertySignature(
@@ -94,27 +91,20 @@ function createInterfaceDeclaration(identifierText, commentText, optionDefinitio
   for (const [key, optionDefinition] of optionDefinitions) {
     switch (optionDefinition.brand) {
       case tstyche.OptionBrand.Boolean:
-      case tstyche.OptionBrand.BareTrue: {
+      case tstyche.OptionBrand.BareTrue:
         members.push(createPrimitivePropertySignature(key, ts.SyntaxKind.BooleanKeyword, optionDefinition.description));
         break;
-      }
 
-      case tstyche.OptionBrand.List: {
+      case tstyche.OptionBrand.List:
         members.push(createArrayPropertySignature(key, optionDefinition.items, optionDefinition.description));
         break;
-      }
 
-      case tstyche.OptionBrand.Number: {
+      case tstyche.OptionBrand.Number:
         members.push(createPrimitivePropertySignature(key, ts.SyntaxKind.NumberKeyword, optionDefinition.description));
         break;
-      }
 
-      case tstyche.OptionBrand.String: {
+      case tstyche.OptionBrand.String:
         members.push(createPrimitivePropertySignature(key, ts.SyntaxKind.StringKeyword, optionDefinition.description));
-        break;
-      }
-
-      default:
         break;
     }
   }

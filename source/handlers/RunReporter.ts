@@ -26,37 +26,32 @@ export class RunReporter extends Reporter implements EventHandler {
 
   handleEvent([eventName, payload]: Event): void {
     switch (eventName) {
-      case "run:start": {
+      case "run:start":
         this.#isFileViewExpanded = payload.result.tasks.length === 1 && this.#resolvedConfig.watch !== true;
         break;
-      }
 
-      case "store:adds": {
+      case "store:adds":
         this.outputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
 
         this.#hasReportedAdds = true;
         break;
-      }
 
-      case "store:error": {
+      case "store:error":
         for (const diagnostic of payload.diagnostics) {
           this.outputService.writeError(diagnosticText(diagnostic));
         }
         break;
-      }
 
-      case "target:start": {
+      case "target:start":
         this.#fileCount = payload.result.tasks.length;
         break;
-      }
 
-      case "target:end": {
+      case "target:end":
         this.#currentCompilerVersion = undefined;
         this.#currentProjectConfigFilePath = undefined;
         break;
-      }
 
-      case "project:uses": {
+      case "project:uses":
         if (
           this.#currentCompilerVersion !== payload.compilerVersion ||
           this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
@@ -74,16 +69,14 @@ export class RunReporter extends Reporter implements EventHandler {
           this.#currentProjectConfigFilePath = payload.projectConfigFilePath;
         }
         break;
-      }
 
-      case "project:error": {
+      case "project:error":
         for (const diagnostic of payload.diagnostics) {
           this.outputService.writeError(diagnosticText(diagnostic));
         }
         break;
-      }
 
-      case "task:start": {
+      case "task:start":
         if (!this.#resolvedConfig.noInteractive) {
           this.outputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
         }
@@ -91,16 +84,14 @@ export class RunReporter extends Reporter implements EventHandler {
         this.#fileCount--;
         this.#hasReportedError = false;
         break;
-      }
 
-      case "task:error": {
+      case "task:error":
         for (const diagnostic of payload.diagnostics) {
           this.#fileView.addMessage(diagnosticText(diagnostic));
         }
         break;
-      }
 
-      case "task:end": {
+      case "task:end":
         if (!this.#resolvedConfig.noInteractive) {
           this.outputService.eraseLastLine();
         }
@@ -116,37 +107,32 @@ export class RunReporter extends Reporter implements EventHandler {
 
         this.#fileView.clear();
         break;
-      }
 
-      case "describe:start": {
+      case "describe:start":
         if (this.#isFileViewExpanded) {
           this.#fileView.beginDescribe(payload.result.describe.name);
         }
         break;
-      }
 
-      case "describe:end": {
+      case "describe:end":
         if (this.#isFileViewExpanded) {
           this.#fileView.endDescribe();
         }
         break;
-      }
 
-      case "test:skip": {
+      case "test:skip":
         if (this.#isFileViewExpanded) {
           this.#fileView.addTest("skip", payload.result.test.name);
         }
         break;
-      }
 
-      case "test:todo": {
+      case "test:todo":
         if (this.#isFileViewExpanded) {
           this.#fileView.addTest("todo", payload.result.test.name);
         }
         break;
-      }
 
-      case "test:error": {
+      case "test:error":
         if (this.#isFileViewExpanded) {
           this.#fileView.addTest("fail", payload.result.test.name);
         }
@@ -155,31 +141,24 @@ export class RunReporter extends Reporter implements EventHandler {
           this.#fileView.addMessage(diagnosticText(diagnostic));
         }
         break;
-      }
 
-      case "test:fail": {
+      case "test:fail":
         if (this.#isFileViewExpanded) {
           this.#fileView.addTest("fail", payload.result.test.name);
         }
         break;
-      }
 
-      case "test:pass": {
+      case "test:pass":
         if (this.#isFileViewExpanded) {
           this.#fileView.addTest("pass", payload.result.test.name);
         }
         break;
-      }
 
       case "expect:error":
-      case "expect:fail": {
+      case "expect:fail":
         for (const diagnostic of payload.diagnostics) {
           this.#fileView.addMessage(diagnosticText(diagnostic));
         }
-        break;
-      }
-
-      default:
         break;
     }
   }

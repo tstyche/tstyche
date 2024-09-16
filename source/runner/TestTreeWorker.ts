@@ -92,20 +92,17 @@ export class TestTreeWorker {
       }
 
       switch (member.brand) {
-        case TestMemberBrand.Describe: {
+        case TestMemberBrand.Describe:
           this.#visitDescribe(member, runMode, parentResult as DescribeResult | undefined);
           break;
-        }
 
-        case TestMemberBrand.Test: {
+        case TestMemberBrand.Test:
           this.#visitTest(member, runMode, parentResult as DescribeResult | undefined);
           break;
-        }
 
-        case TestMemberBrand.Expect: {
+        case TestMemberBrand.Expect:
           this.#visitAssertion(member as Assertion, runMode, parentResult as TestResult | undefined);
           break;
-        }
       }
     }
   }

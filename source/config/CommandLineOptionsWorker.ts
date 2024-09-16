@@ -75,14 +75,13 @@ export class CommandLineOptionsWorker {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
-      case OptionBrand.BareTrue: {
+      case OptionBrand.BareTrue:
         await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
 
         this.#commandLineOptions[optionDefinition.name] = true;
         break;
-      }
 
-      case OptionBrand.Boolean: {
+      case OptionBrand.Boolean:
         await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
 
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
@@ -91,9 +90,8 @@ export class CommandLineOptionsWorker {
           index++;
         }
         break;
-      }
 
-      case OptionBrand.List: {
+      case OptionBrand.List:
         if (optionValue !== "") {
           const optionValues = optionValue
             .split(",")
@@ -111,9 +109,8 @@ export class CommandLineOptionsWorker {
 
         await this.#onExpectsValue(optionDefinition);
         break;
-      }
 
-      case OptionBrand.String: {
+      case OptionBrand.String:
         if (optionValue !== "") {
           if (optionDefinition.name === "config") {
             optionValue = Path.resolve(optionValue);
@@ -128,10 +125,6 @@ export class CommandLineOptionsWorker {
         }
 
         await this.#onExpectsValue(optionDefinition);
-        break;
-      }
-
-      default:
         break;
     }
 

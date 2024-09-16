@@ -129,7 +129,7 @@ await describe("TypeScript 4.x", async () => {
         env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
       });
 
-      assert.match(stdout, RegExp(`^uses TypeScript ${version}\n`));
+      assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
@@ -171,7 +171,7 @@ await describe("TypeScript 5.x", async () => {
         env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
       });
 
-      assert.match(stdout, RegExp(`^uses TypeScript ${version}\n`));
+      assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
