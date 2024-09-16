@@ -13,7 +13,8 @@ function resolveReportTarget() {
 
 /** @type {import("monocart-coverage-reports").CoverageReportOptions} */
 const config = {
-  all: "./source",
+
+  all: process.argv.includes("--merge") ? "" : "./source",
 
   clean: true,
   cleanCache: true,
