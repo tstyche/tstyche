@@ -125,6 +125,8 @@ jobs:
           name: build-${{ github.sha }}
           path: build
       - run: yarn test
+        env:
+          FORCE_COLOR: true
 
   test-os:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -151,6 +153,8 @@ jobs:
           name: build-${{ github.sha }}
           path: build
       - run: yarn test
+        env:
+          FORCE_COLOR: true
 
   coverage-collect:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -179,6 +183,7 @@ jobs:
       - run: yarn test:e2e
         env:
           NODE_V8_COVERAGE: coverage/v8-coverage
+          FORCE_COLOR: true
       - run: node ./scripts/report-coverage.js
         env:
           FORCE_COLOR: true
