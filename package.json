@@ -54,6 +54,7 @@
     "test:coverage:report": "node ./scripts/report-coverage.js",
     "test:e2e": "yarn node ./tests/__utilities__/harness.js tests/*.test.js",
     "test:examples": "tstyche examples",
+    "test:run": "yarn node ./tests/__utilities__/harness.js",
     "test:types": "tstyche typetests",
     "test:unit": "yarn node ./tests/__utilities__/harness.js **/__tests__/*.test.js"
   },
