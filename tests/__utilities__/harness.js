@@ -2,7 +2,7 @@ import process from "node:process";
 import { run } from "node:test";
 import reporters from "node:test/reporters";
 
-const commandLineArguments = process.argv.slice(2)
+const commandLineArguments = process.argv.slice(2);
 
 const files = commandLineArguments.filter((arg) => !arg.startsWith("--"));
 const only = commandLineArguments.includes("--only");
