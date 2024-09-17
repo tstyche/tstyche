@@ -39,8 +39,8 @@ To organize, debug and plan tests TSTyche has:
 The assertions can be used to write type tests (like in the above example) or mixed in your functional tests:
 
 ```ts
-import assert from "node:assert/strict";
-import { test } from "node:test";
+import assert from "node:assert";
+import test from "node:test";
 import * as tstyche from "tstyche";
 
 function secondItem<T>(target: Array<T>): T | undefined {
