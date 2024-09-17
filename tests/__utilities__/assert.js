@@ -15,8 +15,8 @@ export function matchObject(source, target) {
   }
 
   for (const targetKey of Object.keys(target)) {
-    assert.equal(targetKey in source, true, `Target has the '${targetKey}' property.`);
-    assert.deepEqual(source[targetKey], target[targetKey], `Values of the '${targetKey}' properties match.`);
+    assert.equal(targetKey in source, true, `Target does not have the '${targetKey}' property.`);
+    assert.deepEqual(source[targetKey], target[targetKey], `Values of the '${targetKey}' properties do not match.`);
   }
 }
 
@@ -45,12 +45,12 @@ export async function matchSnapshot(source, snapshot) {
  * @param {string | URL} source
  */
 export function pathExists(source) {
-  assert(existsSync(source), `Path ${source.toString()} exists.`);
+  assert(existsSync(source), `Path '${source.toString()}' does not exist.`);
 }
 
 /**
  * @param {string | URL} source
  */
 export function pathDoesNotExist(source) {
-  assert(!existsSync(source), `Path ${source.toString()} does not exist.`);
+  assert(!existsSync(source), `Path '${source.toString()}' exists.`);
 }
