@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { test } from "node:test";
+import test from "node:test";
 import prettyAnsi from "pretty-ansi";
 import { Scribbler, testNameText } from "tstyche/tstyche";
 

@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { test } from "node:test";
+import test from "node:test";
 import { fileURLToPath } from "node:url";
 import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";

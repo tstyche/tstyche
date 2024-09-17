@@ -1,4 +1,4 @@
-import { test } from "node:test";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import {
   clearFixture,

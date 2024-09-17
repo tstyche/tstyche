@@ -1,5 +1,5 @@
 import os from "node:os";
-import { test } from "node:test";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";

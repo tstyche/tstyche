@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { test } from "node:test";
+import test from "node:test";
 import { Scribbler, describeNameText } from "tstyche/tstyche";
 
 const scribbler = new Scribbler();
