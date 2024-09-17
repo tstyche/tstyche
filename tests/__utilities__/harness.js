@@ -31,10 +31,10 @@ for (const arg of process.argv.slice(2)) {
     flags.push(arg);
   }
 
-  if (arg.startsWith("feature-")) {
-    parallelFiles.push(arg);
-  } else {
+  if (arg.includes("feature-")) {
     serialFiles.push(arg);
+  } else {
+    parallelFiles.push(arg);
   }
 }
 
