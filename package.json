@@ -85,6 +85,6 @@
   },
   "packageManager": "yarn@4.5.0",
   "engines": {
-    "node": ">=18.14"
+    "node": ">=18.17"
   }
 }
