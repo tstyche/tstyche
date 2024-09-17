@@ -1,9 +1,12 @@
 import process from "node:process";
-import test from "node:test";
+import { run } from "node:test";
 import reporters from "node:test/reporters";
 import { parseArgs } from "node:util";
 
-let { positionals: files, values: { debug, exclude, include, only, parallel } } = parseArgs({
+let {
+  positionals: files,
+  values: { debug, exclude, include, only, parallel },
+} = parseArgs({
   allowPositionals: true,
   options: {
     debug: { type: "boolean" },
@@ -15,11 +18,11 @@ let { positionals: files, values: { debug, exclude, include, only, parallel } } 
 });
 
 if (exclude != null) {
-  files = files.filter(file => !file.includes(exclude))
+  files = files.filter((file) => !file.includes(exclude));
 }
 
 if (include != null) {
-  files = files.filter(file => file.includes(include))
+  files = files.filter((file) => file.includes(include));
 }
 
 if (debug === true) {
@@ -27,7 +30,7 @@ if (debug === true) {
   process.exit();
 }
 
-test.run({ concurrency: parallel, files, only })
+run({ concurrency: parallel, files, only })
   .on("test:fail", () => {
     process.exitCode = 1;
   })
