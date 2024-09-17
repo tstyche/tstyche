@@ -52,10 +52,10 @@
     "test:coverage": "yarn test:coverage:collect && yarn test:coverage:report",
     "test:coverage:collect": "yarn build --sourcemap && NODE_V8_COVERAGE='./coverage/v8-coverage' yarn test:e2e",
     "test:coverage:report": "node ./scripts/report-coverage.js",
-    "test:e2e": "yarn node --test tests/*.test.js",
+    "test:e2e": "yarn node ./tests/__utilities__/harness.js tests/*.test.js",
     "test:examples": "tstyche examples",
     "test:types": "tstyche typetests",
-    "test:unit": "yarn node --test **/__tests__/*.test.js"
+    "test:unit": "yarn node ./tests/__utilities__/harness.js **/__tests__/*.test.js"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.1",
