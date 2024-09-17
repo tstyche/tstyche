@@ -62,11 +62,11 @@ await test("watch", async (t) => {
     return;
   }
 
-  t.afterEach(async () => {
-    await clearFixture(fixtureUrl);
-  });
-
   await t.test("interactive input", async (t) => {
+    t.afterEach(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
     t.beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
@@ -171,6 +171,10 @@ await test("watch", async (t) => {
   });
 
   await t.test("test file changes", async (t) => {
+    t.afterEach(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
     t.beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
@@ -436,6 +440,10 @@ await test("watch", async (t) => {
   });
 
   await t.test("config file changes", async (t) => {
+    t.afterEach(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
     t.beforeEach(async () => {
       await writeFixture(fixtureUrl, {
         ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
