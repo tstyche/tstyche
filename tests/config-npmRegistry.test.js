@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "poku";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -12,12 +12,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'TSTYCHE_NPM_REGISTRY' environment variable", async () => {
-  afterEach(async () => {
+await test("'TSTYCHE_NPM_REGISTRY' environment variable", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("has default value", async () => {
+  await t.test("has default value", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -32,7 +32,7 @@ await describe("'TSTYCHE_NPM_REGISTRY' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when registry is specified", async () => {
+  await t.test("when registry is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });

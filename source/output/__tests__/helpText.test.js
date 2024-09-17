@@ -1,4 +1,5 @@
-import { assert, describe, test } from "poku";
+import assert from "node:assert";
+import test from "node:test";
 import prettyAnsi from "pretty-ansi";
 import { OptionBrand, Scribbler, helpText } from "tstyche/tstyche";
 
@@ -65,8 +66,8 @@ const sampleVersion = "1.2.3";
 
 const scribbler = new Scribbler();
 
-describe("helpText", () => {
-  test("formats help text", () => {
+test("helpText", async (t) => {
+  await t.test("formats help text", () => {
     const text = scribbler.render(helpText(sampleCommandLineOptionDefinitions, sampleVersion));
 
     assert.strictEqual(

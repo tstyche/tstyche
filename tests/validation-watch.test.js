@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "poku";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -6,12 +6,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'--watch' command line option", async () => {
-  afterEach(async () => {
+await test("'--watch' command line option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when enabled in a continuous integration environment", async () => {
+  await t.test("when enabled in a continuous integration environment", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--watch"], {

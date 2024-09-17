@@ -17,7 +17,8 @@
 
   "formatter": {
     "enabled": true,
-    "useEditorconfig": true
+    "indentStyle": "space",
+    "lineWidth": 120
   },
 
   "linter": {
@@ -112,6 +113,17 @@
         "rules": {
           "correctness": {
             "noUnusedVariables": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["tests/__utilities__/assert.js"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noMisplacedAssertion": "off"
           }
         }
       }

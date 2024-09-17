@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "poku";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -12,12 +12,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("store", async () => {
-  afterEach(async () => {
+await test("store", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when fetch request of metadata fails with 404", async () => {
+  await t.test("when fetch request of metadata fails with 404", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -40,7 +40,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("when fetch request of metadata times out", async () => {
+  await t.test("when fetch request of metadata times out", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -63,7 +63,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("when fetch request of metadata fails", async () => {
+  await t.test("when fetch request of metadata fails", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -86,7 +86,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("when installing 'typescript' times out", async () => {
+  await t.test("when installing 'typescript' times out", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -111,7 +111,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("when lock wait times out", async () => {
+  await t.test("when lock wait times out", async () => {
     await writeFixture(fixtureUrl, {
       [".store/typescript@5.4.5__lock__"]: "",
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -135,7 +135,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await describe("warns if resolution of a tag may be outdated", async () => {
+  await t.test("warns if resolution of a tag may be outdated", async (t) => {
     const testCases = [
       {
         target: "5.3.4",
@@ -173,7 +173,7 @@ await describe("store", async () => {
     ];
 
     for (const { target, testCase } of testCases) {
-      await test(testCase, async () => {
+      await t.test(testCase, async () => {
         const storeManifest = {
           $version: "2",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
@@ -211,7 +211,7 @@ await describe("store", async () => {
     }
   });
 
-  await describe("does not warn if resolution of a tag may be outdated", async () => {
+  await t.test("does not warn if resolution of a tag may be outdated", async (t) => {
     const testCases = [
       {
         target: "5.3.3",
@@ -228,7 +228,7 @@ await describe("store", async () => {
     ];
 
     for (const { target, testCase } of testCases) {
-      await test(testCase, async () => {
+      await t.test(testCase, async () => {
         const storeManifest = {
           $version: "2",
           npmRegistry: "https://registry.npmjs.org",
@@ -257,8 +257,8 @@ await describe("store", async () => {
     }
   });
 
-  await describe("suppresses fetch errors if resolution of a tag may be outdated", async () => {
-    await test("when fetch request of metadata fails with 404", async () => {
+  await t.test("suppresses fetch errors if resolution of a tag may be outdated", async (t) => {
+    await t.test("when fetch request of metadata fails with 404", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
@@ -302,7 +302,7 @@ await describe("store", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("when fetch request of metadata times out", async () => {
+    await t.test("when fetch request of metadata times out", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
@@ -346,7 +346,7 @@ await describe("store", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("when fetch request of metadata fails", async () => {
+    await t.test("when fetch request of metadata fails", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });

@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { afterEach, describe, test } from "poku";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -7,8 +7,8 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'--update' command line option", async () => {
-  afterEach(async () => {
+await test("'--update' command line option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
@@ -32,7 +32,7 @@ await describe("'--update' command line option", async () => {
   ];
 
   for (const { args, testCase } of testCases) {
-    await test(testCase, async () => {
+    await t.test(testCase, async () => {
       const storeUrl = new URL("./.store", fixtureUrl);
 
       await writeFixture(fixtureUrl);
@@ -49,7 +49,7 @@ await describe("'--update' command line option", async () => {
     });
   }
 
-  await test("updates existing store manifest", async () => {
+  await t.test("updates existing store manifest", async () => {
     const oldStoreManifest = JSON.stringify({
       $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
