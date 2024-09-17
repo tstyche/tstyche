@@ -68,7 +68,7 @@
     "cspell": "8.14.2",
     "magic-string": "0.30.11",
     "monocart-coverage-reports": "2.10.9",
-    "poku": "2.6.2",
+    "poku": "2.7.0",
     "pretty-ansi": "2.0.0",
     "rollup": "4.21.3",
     "rollup-plugin-dts": "6.1.1",
