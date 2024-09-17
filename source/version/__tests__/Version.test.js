@@ -1,9 +1,9 @@
 import assert from "node:assert";
-import { describe, test } from "node:test";
+import { test } from "node:test";
 import { Version } from "tstyche/tstyche";
 
-describe("Version", () => {
-  describe("'isVersionTag' method", () => {
+test("Version", async (t) => {
+  await t.test("'isVersionTag' method", async (t) => {
     const testCases = [
       {
         expected: true,
@@ -54,7 +54,7 @@ describe("Version", () => {
     ];
 
     for (const { expected, target, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const result = Version.isVersionTag(target);
 
         assert.strictEqual(result, expected);
@@ -62,7 +62,7 @@ describe("Version", () => {
     }
   });
 
-  describe("'isGreaterThan' method", () => {
+  await t.test("'isGreaterThan' method", async (t) => {
     const testCases = [
       {
         expected: true,
@@ -165,7 +165,7 @@ describe("Version", () => {
     ];
 
     for (const { expected, source, target, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const result = Version.isGreaterThan(source, target);
 
         assert.strictEqual(result, expected);
@@ -173,7 +173,7 @@ describe("Version", () => {
     }
   });
 
-  describe("'isSatisfiedWith' method", () => {
+  await t.test("'isSatisfiedWith' method", async (t) => {
     const testCases = [
       {
         expected: true,
@@ -276,7 +276,7 @@ describe("Version", () => {
     ];
 
     for (const { expected, source, target, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const result = Version.isSatisfiedWith(source, target);
 
         assert.strictEqual(result, expected);

@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "node:test";
+import { test } from "node:test";
 import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
@@ -14,12 +14,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
-  afterEach(async () => {
+await test("'TSTYCHE_NO_COLOR' environment variable", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("has default value", async () => {
+  await t.test("has default value", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
@@ -34,7 +34,7 @@ await describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when truthy, colors are disabled", async () => {
+  await t.test("when truthy, colors are disabled", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -52,7 +52,7 @@ await describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when falsy, colors are enabled", async () => {
+  await t.test("when falsy, colors are enabled", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -70,7 +70,7 @@ await describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when 'NO_COLOR' is truthy, colors are disabled", async () => {
+  await t.test("when 'NO_COLOR' is truthy, colors are disabled", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -91,7 +91,7 @@ await describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when 'NO_COLOR' is falsy, colors are enabled", async () => {
+  await t.test("when 'NO_COLOR' is falsy, colors are enabled", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -112,7 +112,7 @@ await describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("overrides 'NO_COLOR' and enables colors", async () => {
+  await t.test("overrides 'NO_COLOR' and enables colors", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -133,7 +133,7 @@ await describe("'TSTYCHE_NO_COLOR' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("overrides 'NO_COLOR' and disables colors", async () => {
+  await t.test("overrides 'NO_COLOR' and disables colors", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });

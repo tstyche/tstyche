@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "node:test";
+import { test } from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import {
   clearFixture,
@@ -25,13 +25,13 @@ test("is number?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'testFileMatch' configuration file option", async () => {
-  afterEach(async () => {
+await test("'testFileMatch' configuration file option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await describe("default patterns", async () => {
-    await test("select files with '.test.*' suffix in 'typetests' directories", async () => {
+  await t.test("default patterns", async (t) => {
+    await t.test("select files with '.test.*' suffix in 'typetests' directories", async () => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/isNumber.test.ts"]: isNumberTestText,
         ["__typetests__/isString.test.ts"]: isStringTestText,
@@ -54,7 +54,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("select files with '.tst.*' suffix", async () => {
+    await t.test("select files with '.tst.*' suffix", async () => {
       await writeFixture(fixtureUrl, {
         ["__tests__/isNumber.tst.ts"]: isNumberTestText,
         ["__tests__/isString.tst.ts"]: isStringTestText,
@@ -80,8 +80,8 @@ await describe("'testFileMatch' configuration file option", async () => {
     });
   });
 
-  await describe("specified pattern", async () => {
-    await test("select only matching files", async () => {
+  await t.test("specified pattern", async (t) => {
+    await t.test("select only matching files", async () => {
       const config = {
         testFileMatch: ["**/type-tests/*.tst.*", "**/typetests/*.test.*"],
       };
@@ -107,7 +107,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("select files with all extensions", async () => {
+    await t.test("select files with all extensions", async () => {
       const config = {
         testFileMatch: ["**/__typetests__/*"],
       };
@@ -135,7 +135,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("can start with './'", async () => {
+    await t.test("can start with './'", async () => {
       const config = {
         testFileMatch: ["./tests/*.ts"],
       };
@@ -156,7 +156,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("can select the '.' paths", async () => {
+    await t.test("can select the '.' paths", async () => {
       const config = {
         testFileMatch: ["**/.generated/*.tst.*"],
       };
@@ -181,7 +181,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("can select the 'node_modules' directories", async () => {
+    await t.test("can select the 'node_modules' directories", async () => {
       const config = {
         testFileMatch: ["**/node_modules/**/*.tst.*"],
       };
@@ -205,7 +205,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("can select symbolic links", async () => {
+    await t.test("can select symbolic links", async () => {
       const config = {
         testFileMatch: ["**/*.tst.*"],
       };
@@ -228,7 +228,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("when empty list, does not select files", async () => {
+    await t.test("when empty list, does not select files", async () => {
       const config = {
         testFileMatch: [],
       };
@@ -251,8 +251,8 @@ await describe("'testFileMatch' configuration file option", async () => {
     });
   });
 
-  await describe("the '?' wildcard", async () => {
-    await test("matches any single character", async () => {
+  await t.test("the '?' wildcard", async (t) => {
+    await t.test("matches any single character", async () => {
       const config = {
         testFileMatch: ["__typetests__/?at.tst.ts", "tests/ca??.tst.ts"],
       };
@@ -278,7 +278,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("does not match path separators", async () => {
+    await t.test("does not match path separators", async () => {
       const config = {
         testFileMatch: ["__typetests__?cat.tst.ts", "tests/call.tst.?s"],
       };
@@ -300,7 +300,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("does not select the '.' paths", async () => {
+    await t.test("does not select the '.' paths", async () => {
       const config = {
         testFileMatch: ["?generated/?isNumber.tst.*"],
       };
@@ -323,7 +323,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("does not select files within the 'node_modules' directories", async () => {
+    await t.test("does not select files within the 'node_modules' directories", async () => {
       const config = {
         testFileMatch: ["?ode_modules/*.tst.*"],
       };
@@ -346,8 +346,8 @@ await describe("'testFileMatch' configuration file option", async () => {
     });
   });
 
-  await describe("the '*' wildcard", async () => {
-    await test("matches zero or more characters", async () => {
+  await t.test("the '*' wildcard", async (t) => {
+    await t.test("matches zero or more characters", async () => {
       const config = {
         testFileMatch: ["*.tst.ts", "packages/*/__typetests__/*.t*st.ts"],
       };
@@ -373,7 +373,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("does not match path separators", async () => {
+    await t.test("does not match path separators", async () => {
       const config = {
         testFileMatch: ["packages/*/*.test.ts"],
       };
@@ -396,7 +396,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("does not select the '.' paths", async () => {
+    await t.test("does not select the '.' paths", async () => {
       const config = {
         testFileMatch: ["*/*.tst.*"],
       };
@@ -419,7 +419,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("does not select files within the 'node_modules' directories", async () => {
+    await t.test("does not select files within the 'node_modules' directories", async () => {
       const config = {
         testFileMatch: ["*/*.tst.*"],
       };
@@ -442,8 +442,8 @@ await describe("'testFileMatch' configuration file option", async () => {
     });
   });
 
-  await describe("the '**' wildcard", async () => {
-    await test("matches zero or more characters including path separators", async () => {
+  await t.test("the '**' wildcard", async (t) => {
+    await t.test("matches zero or more characters including path separators", async () => {
       const config = {
         testFileMatch: [
           "packages/**/typetests/*.test.ts",
@@ -474,7 +474,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("does not select the '.' paths", async () => {
+    await t.test("does not select the '.' paths", async () => {
       const config = {
         testFileMatch: ["**/*.tst.*"],
       };
@@ -498,7 +498,7 @@ await describe("'testFileMatch' configuration file option", async () => {
       assert.equal(exitCode, 0);
     });
 
-    await test("does not select files within the 'node_modules' directories", async () => {
+    await t.test("does not select files within the 'node_modules' directories", async () => {
       const config = {
         testFileMatch: ["**/*.tst.*"],
       };

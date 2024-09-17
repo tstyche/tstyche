@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { after, describe, test } from "node:test";
+import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
@@ -105,8 +105,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 const storeUrl = new URL("./.store/", fixtureUrl);
 
-await describe("TypeScript 4.x", async () => {
-  after(async () => {
+await test("TypeScript 4.x", async (t) => {
+  t.after(async () => {
     await clearFixture(fixtureUrl);
   });
 
@@ -124,7 +124,7 @@ await describe("TypeScript 4.x", async () => {
   const testCases = ["4.0.2", "4.0.8", "4.1.6", "4.2.4", "4.3.5", "4.4.4", "4.5.5", "4.6.4", "4.7.4", "4.8.4", "4.9.5"];
 
   for (const version of testCases) {
-    await test(`uses TypeScript ${version} as current target`, async () => {
+    await t.test(`uses TypeScript ${version} as current target`, async () => {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
       const typescriptPath = fileURLToPath(new URL(`./typescript@${version}/lib/typescript.js`, storeUrl));
@@ -140,8 +140,8 @@ await describe("TypeScript 4.x", async () => {
   }
 });
 
-await describe("TypeScript 5.x", async () => {
-  after(async () => {
+await test("TypeScript 5.x", async (t) => {
+  t.after(async () => {
     await clearFixture(fixtureUrl);
   });
 
@@ -168,7 +168,7 @@ await describe("TypeScript 5.x", async () => {
   const testCases = ["5.0.2", ...versionTags];
 
   for (const version of testCases) {
-    await test(`uses TypeScript ${version} as current target`, async () => {
+    await t.test(`uses TypeScript ${version} as current target`, async () => {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
       const typescriptPath = fileURLToPath(new URL(`./typescript@${version}/lib/typescript.js`, storeUrl));

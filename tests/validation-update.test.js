@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "node:test";
+import { test } from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -12,12 +12,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'--update' command line option", async () => {
-  afterEach(async () => {
+await test("'--update' command line option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when fetch request of metadata fails with 404", async () => {
+  await t.test("when fetch request of metadata fails with 404", async () => {
     const storeManifest = {
       $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
@@ -49,7 +49,7 @@ await describe("'--update' command line option", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("when fetch request of metadata times out", async () => {
+  await t.test("when fetch request of metadata times out", async () => {
     const storeManifest = {
       $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
@@ -81,7 +81,7 @@ await describe("'--update' command line option", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("when fetch request of metadata fails", async () => {
+  await t.test("when fetch request of metadata fails", async () => {
     const storeManifest = {
       $version: "2",
       lastUpdated: Date.now(), // this is considered fresh during regular test run

@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "node:test";
+import { test } from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -6,12 +6,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'tstyche.config.json' file", async () => {
-  afterEach(async () => {
+await test("'tstyche.config.json' file", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("handles unknown options", async () => {
+  await t.test("handles unknown options", async () => {
     const config = {
       cache: "all",
       silent: true,
@@ -34,7 +34,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles option values of wrong type", async () => {
+  await t.test("handles option values of wrong type", async () => {
     const config = {
       failFast: "always",
       rootPath: true,
@@ -56,7 +56,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("when tabs are used for indentation, handles option values of wrong type", async () => {
+  await t.test("when tabs are used for indentation, handles option values of wrong type", async () => {
     const configText = `{
 \t"failFast": "always",
 \t"rootPath": true
@@ -79,7 +79,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles wrong root value", async () => {
+  await t.test("handles wrong root value", async () => {
     const config = [{ failFast: true }];
 
     await writeFixture(fixtureUrl, {
@@ -98,7 +98,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles syntax error", async () => {
+  await t.test("handles syntax error", async () => {
     const configText = `{
   'failFast': true
 `;
@@ -119,7 +119,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles single quoted option names", async () => {
+  await t.test("handles single quoted option names", async () => {
     const configText = `{
   'failFast': true
 }`;
@@ -140,7 +140,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles single quoted option values", async () => {
+  await t.test("handles single quoted option values", async () => {
     const configText = `{
   "rootPath": '../'
 }`;
@@ -161,7 +161,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles single quoted list values", async () => {
+  await t.test("handles single quoted list values", async () => {
     const configText = `{
   "target": ['4.8']
 }`;
@@ -183,12 +183,12 @@ await describe("'tstyche.config.json' file", async () => {
   });
 });
 
-await describe("'--config' command line option", async () => {
-  afterEach(async () => {
+await test("'--config' command line option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when option value is missing", async () => {
+  await t.test("when option value is missing", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config"]);

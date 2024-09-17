@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { afterEach, describe, test } from "node:test";
+import { test } from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -13,12 +13,12 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("store", async () => {
-  afterEach(async () => {
+await test("store", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when 'typescript' package is not installed", async () => {
+  await t.test("when 'typescript' package is not installed", async () => {
     const packageUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -36,7 +36,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when 'typescript' package is already installed", async () => {
+  await t.test("when 'typescript' package is already installed", async () => {
     const packageUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -56,7 +56,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when target is default, store manifest is not generated", async () => {
+  await t.test("when target is default, store manifest is not generated", async () => {
     const storeManifestUrl = new URL("./.store/store-manifest.json", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -73,7 +73,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when target is 'current', store manifest is not generated", async () => {
+  await t.test("when target is 'current', store manifest is not generated", async () => {
     const storeManifestUrl = new URL("./.store/store-manifest.json", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -90,7 +90,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when target is specified, store manifest is generated", async () => {
+  await t.test("when target is specified, store manifest is generated", async () => {
     const storeManifestUrl = new URL("./.store/store-manifest.json", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -107,7 +107,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when text is unparsable, store manifest is regenerated", async () => {
+  await t.test("when text is unparsable, store manifest is regenerated", async () => {
     const storeManifest = '{"$version":"2","last';
 
     await writeFixture(fixtureUrl, {
@@ -127,7 +127,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when '$version' is different, store manifest is regenerated", async () => {
+  await t.test("when '$version' is different, store manifest is regenerated", async () => {
     const storeManifest = { $version: "1" };
 
     await writeFixture(fixtureUrl, {
@@ -147,7 +147,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when 'npmRegistry' is different, store manifest is regenerated", async () => {
+  await t.test("when 'npmRegistry' is different, store manifest is regenerated", async () => {
     const storeManifest = {
       $version: "2",
       npmRegistry: "https://registry.npmjs.org",
@@ -174,7 +174,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when is up to date, store manifest is not regenerated", async () => {
+  await t.test("when is up to date, store manifest is not regenerated", async () => {
     const storeManifest = JSON.stringify({
       $version: "2",
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
@@ -210,7 +210,7 @@ await describe("store", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when is outdated, store manifest is regenerated", async () => {
+  await t.test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = JSON.stringify({
       $version: "2",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes

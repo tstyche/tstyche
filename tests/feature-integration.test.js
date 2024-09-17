@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { after, afterEach, beforeEach, describe, test } from "node:test";
+import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";
@@ -37,9 +37,9 @@ class TestResultHandler {
   }
 }
 
-await describe("integration", async () => {
-  await describe("test file object", async () => {
-    after(() => {
+await test("integration", async (t) => {
+  await t.test("test file object", async (t) => {
+    t.after(() => {
       eventEmitter.removeHandlers();
       taskRunner.close();
     });
@@ -64,7 +64,7 @@ await describe("integration", async () => {
     ];
 
     for (const { testCase, identifier } of testCases) {
-      await test(testCase, async () => {
+      await t.test(testCase, async () => {
         const testFile = new tstyche.TestFile(identifier);
 
         await taskRunner.run([testFile]);
@@ -76,7 +76,7 @@ await describe("integration", async () => {
     }
 
     for (const { testCase, identifier } of testCases) {
-      await test(`${testCase} with position is pointing to 'expect'`, async () => {
+      await t.test(`${testCase} with position is pointing to 'expect'`, async () => {
         const position = isWindows ? 73 : 70;
         const testFile = new tstyche.TestFile(identifier, position);
 
@@ -89,7 +89,7 @@ await describe("integration", async () => {
     }
 
     for (const { testCase, identifier } of testCases) {
-      await test(`${testCase} with position is pointing to 'expect.skip'`, async () => {
+      await t.test(`${testCase} with position is pointing to 'expect.skip'`, async () => {
         const position = isWindows ? 273 : 261;
         const testFile = new tstyche.TestFile(identifier, position);
 
@@ -102,7 +102,7 @@ await describe("integration", async () => {
     }
 
     for (const { testCase, identifier } of testCases) {
-      await test(`${testCase} with position is pointing to 'test'`, async () => {
+      await t.test(`${testCase} with position is pointing to 'test'`, async () => {
         const position = isWindows ? 43 : 41;
         const testFile = new tstyche.TestFile(identifier, position);
 
@@ -115,7 +115,7 @@ await describe("integration", async () => {
     }
 
     for (const { testCase, identifier } of testCases) {
-      await test(`${testCase} with position is pointing to 'test.skip'`, async () => {
+      await t.test(`${testCase} with position is pointing to 'test.skip'`, async () => {
         const position = isWindows ? 117 : 111;
         const testFile = new tstyche.TestFile(identifier, position);
 
@@ -128,22 +128,22 @@ await describe("integration", async () => {
     }
   });
 
-  await describe("configuration options", async () => {
+  await t.test("configuration options", async (t) => {
     /**
      * @type {import("tstyche/tstyche").TaskRunner | undefined}
      */
     let taskRunner;
 
-    beforeEach(() => {
+    t.beforeEach(() => {
       eventEmitter.addHandler(new TestResultHandler());
     });
 
-    afterEach(() => {
+    t.afterEach(() => {
       eventEmitter.removeHandlers();
       taskRunner?.close();
     });
 
-    await test("when the 'failFast: true' is set", async () => {
+    await t.test("when the 'failFast: true' is set", async () => {
       taskRunner = new tstyche.TaskRunner({ ...resolvedConfig, failFast: true }, selectService, storeService);
       const testFile = new tstyche.TestFile(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
 

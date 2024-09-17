@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "node:test";
+import { test } from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -7,12 +7,12 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'tstyche.config.json' file", async () => {
-  afterEach(async () => {
+await test("'tstyche.config.json' file", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when does not exist", async () => {
+  await t.test("when does not exist", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -25,7 +25,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when exist in the current directory", async () => {
+  await t.test("when exist in the current directory", async () => {
     const config = {
       failFast: true,
     };
@@ -44,7 +44,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("the '$schema' key is allowed", async () => {
+  await t.test("the '$schema' key is allowed", async () => {
     const config = { $schema: "https://tstyche.org/schemas/config.json" };
 
     await writeFixture(fixtureUrl, {
@@ -58,7 +58,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("empty config file is allowed", async () => {
+  await t.test("empty config file is allowed", async () => {
     const configText = `// {
 //   "failFast": true,
 //   "testFileMatch": ["**/*.tst.*"]
@@ -79,7 +79,7 @@ await describe("'tstyche.config.json' file", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("comments are allowed", async () => {
+  await t.test("comments are allowed", async () => {
     const configText = `{
   /* test */
   "failFast": true,
@@ -109,12 +109,12 @@ await describe("'tstyche.config.json' file", async () => {
   });
 });
 
-await describe("'--config' command line option", async () => {
-  afterEach(async () => {
+await test("'--config' command line option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when specified, reads configuration file from the location", async () => {
+  await t.test("when specified, reads configuration file from the location", async () => {
     const config = {
       rootPath: "../",
     };

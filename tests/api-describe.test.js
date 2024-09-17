@@ -8,7 +8,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("includes nested", async () => {
+await test("includes nested", async () => {
   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["nested"]);
 
   await assert.matchSnapshot(normalizeOutput(stdout), {
