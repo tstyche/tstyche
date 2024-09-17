@@ -12,7 +12,7 @@ function run(files, options) {
     .on("test:fail", () => {
       process.exitCode = 1;
     })
-    .compose(new reporters.spec())
+    .compose(files.length > 1 ? reporters.dot : new reporters.spec())
     .pipe(process.stdout);
 }
 
