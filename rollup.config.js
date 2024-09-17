@@ -1,12 +1,8 @@
-import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
-import process from "node:process";
 import typescript from "@rollup/plugin-typescript";
 import MagicString from "magic-string";
 import dts from "rollup-plugin-dts";
-
-assert.match(process.versions.node, /^20/, "This library must be build using Node.js LTS version.");
 
 const output = {
   dir: "./build",
@@ -108,7 +104,7 @@ const config = [
     external: [/^node:/, "./tstyche.js"],
     input: {
       bin: "./source/bin.ts",
-      index: "./source/main.ts",
+      index: "./source/index.ts",
       tstyche: "./source/tstyche.ts",
     },
     output,
@@ -120,7 +116,7 @@ const config = [
   },
 
   {
-    input: "./source/main.ts",
+    input: "./source/index.ts",
     output: {
       file: "./build/index.cjs",
       format: "cjs",

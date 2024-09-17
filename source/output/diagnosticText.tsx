@@ -44,17 +44,12 @@ export function diagnosticText(diagnostic: Diagnostic): ScribblerJsx.Element {
   let prefix: ScribblerJsx.Element | undefined;
 
   switch (diagnostic.category) {
-    case DiagnosticCategory.Error: {
+    case DiagnosticCategory.Error:
       prefix = <Text color={Color.Red}>{"Error: "}</Text>;
       break;
-    }
 
-    case DiagnosticCategory.Warning: {
+    case DiagnosticCategory.Warning:
       prefix = <Text color={Color.Yellow}>{"Warning: "}</Text>;
-      break;
-    }
-
-    default:
       break;
   }
 

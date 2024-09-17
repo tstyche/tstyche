@@ -48,30 +48,23 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
   }
 
   switch (optionDefinition.brand) {
-    case tstyche.OptionBrand.Boolean: {
+    case tstyche.OptionBrand.Boolean:
       jsonSchemaDefinition.type = "boolean";
       break;
-    }
 
-    case tstyche.OptionBrand.List: {
+    case tstyche.OptionBrand.List:
       jsonSchemaDefinition.items = createJsonSchemaDefinition(optionDefinition.items);
 
       jsonSchemaDefinition.type = "array";
       jsonSchemaDefinition.uniqueItems = true;
       break;
-    }
 
-    case tstyche.OptionBrand.Number: {
+    case tstyche.OptionBrand.Number:
       jsonSchemaDefinition.type = "number";
       break;
-    }
 
-    case tstyche.OptionBrand.String: {
+    case tstyche.OptionBrand.String:
       jsonSchemaDefinition.type = "string";
-      break;
-    }
-
-    default:
       break;
   }
 

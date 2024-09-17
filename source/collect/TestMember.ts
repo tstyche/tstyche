@@ -64,7 +64,7 @@ export class TestMember {
     };
 
     switch (this.brand) {
-      case TestMemberBrand.Describe: {
+      case TestMemberBrand.Describe:
         for (const member of this.members) {
           if (member.brand === TestMemberBrand.Expect) {
             diagnostics.push(
@@ -73,17 +73,15 @@ export class TestMember {
           }
         }
         break;
-      }
 
       case TestMemberBrand.Test:
-      case TestMemberBrand.Expect: {
+      case TestMemberBrand.Expect:
         for (const member of this.members) {
           if (member.brand !== TestMemberBrand.Expect) {
             diagnostics.push(Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(member.node)));
           }
         }
         break;
-      }
     }
 
     return diagnostics;

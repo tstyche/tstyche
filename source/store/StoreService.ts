@@ -2,8 +2,8 @@ import fs from "node:fs/promises";
 import { createRequire } from "node:module";
 import vm from "node:vm";
 import type ts from "typescript";
+import { environmentOptions } from "#config";
 import { Diagnostic } from "#diagnostic";
-import { Environment } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { Version } from "#version";
@@ -21,10 +21,10 @@ export class StoreService {
   #manifest: Manifest | undefined;
   #manifestService: ManifestService;
   #packageService: PackageService;
-  #npmRegistry = Environment.npmRegistry;
-  #storePath = Environment.storePath;
+  #npmRegistry = environmentOptions.npmRegistry;
+  #storePath = environmentOptions.storePath;
   #supportedTags: Array<string> | undefined;
-  #timeout = Environment.timeout * 1000;
+  #timeout = environmentOptions.timeout * 1000;
 
   constructor() {
     this.#fetcher = new Fetcher(this.#onDiagnostics, this.#timeout);
@@ -67,8 +67,8 @@ export class StoreService {
 
     let modulePath: string | undefined;
 
-    if (tag === "current" && Environment.typescriptPath != null) {
-      modulePath = Environment.typescriptPath;
+    if (tag === "current" && environmentOptions.typescriptPath != null) {
+      modulePath = environmentOptions.typescriptPath;
     } else {
       await this.open();
 
@@ -157,13 +157,17 @@ export class StoreService {
     }
   }
 
+  async prune(): Promise<void> {
+    await this.#manifestService.prune();
+  }
+
   async update(): Promise<void> {
     await this.#manifestService.open({ refresh: true });
   }
 
   async validateTag(tag: string): Promise<boolean | undefined> {
     if (tag === "current") {
-      return Environment.typescriptPath != null;
+      return environmentOptions.typescriptPath != null;
     }
 
     await this.open();

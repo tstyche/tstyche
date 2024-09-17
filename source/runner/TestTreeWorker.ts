@@ -4,25 +4,25 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
-import { DescribeResult, ExpectResult, type FileResult, TestResult } from "#result";
+import { DescribeResult, ExpectResult, type TaskResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { RunMode } from "./enums.js";
 
 interface TestFileWorkerOptions {
   cancellationToken: CancellationToken | undefined;
-  fileResult: FileResult;
   hasOnly: boolean;
   position: number | undefined;
+  taskResult: TaskResult;
 }
 
 export class TestTreeWorker {
   #compiler: typeof ts;
   #cancellationToken: CancellationToken | undefined;
   #expectService: ExpectService;
-  #fileResult: FileResult;
   #hasOnly: boolean;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
+  #taskResult: TaskResult;
 
   constructor(
     resolvedConfig: ResolvedConfig,
@@ -34,9 +34,9 @@ export class TestTreeWorker {
     this.#compiler = compiler;
 
     this.#cancellationToken = options.cancellationToken;
-    this.#fileResult = options.fileResult;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
+    this.#taskResult = options.taskResult;
 
     this.#expectService = new ExpectService(compiler, typeChecker);
   }
@@ -86,26 +86,23 @@ export class TestTreeWorker {
       const validationError = member.validate();
 
       if (validationError.length > 0) {
-        EventEmitter.dispatch(["file:error", { diagnostics: validationError, result: this.#fileResult }]);
+        EventEmitter.dispatch(["task:error", { diagnostics: validationError, result: this.#taskResult }]);
 
         break;
       }
 
       switch (member.brand) {
-        case TestMemberBrand.Describe: {
+        case TestMemberBrand.Describe:
           this.#visitDescribe(member, runMode, parentResult as DescribeResult | undefined);
           break;
-        }
 
-        case TestMemberBrand.Test: {
+        case TestMemberBrand.Test:
           this.#visitTest(member, runMode, parentResult as DescribeResult | undefined);
           break;
-        }
 
-        case TestMemberBrand.Expect: {
+        case TestMemberBrand.Expect:
           this.#visitAssertion(member as Assertion, runMode, parentResult as TestResult | undefined);
           break;
-        }
       }
     }
   }
@@ -173,10 +170,10 @@ export class TestTreeWorker {
       describe.diagnostics.size > 0
     ) {
       EventEmitter.dispatch([
-        "file:error",
+        "task:error",
         {
           diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics], this.#compiler),
-          result: this.#fileResult,
+          result: this.#taskResult,
         },
       ]);
     } else {

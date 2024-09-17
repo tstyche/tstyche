@@ -1,10 +1,10 @@
 import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
-import { Environment } from "#environment";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import type { OptionBrand, OptionGroup } from "./enums.js";
+import { environmentOptions } from "./environmentOptions.js";
 import type { DiagnosticsHandler } from "./types.js";
 
 export class OptionValidator {
@@ -29,14 +29,13 @@ export class OptionValidator {
   ): Promise<void> {
     switch (optionName) {
       case "config":
-      case "rootPath": {
+      case "rootPath":
         if (!existsSync(optionValue)) {
           this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
         break;
-      }
 
-      case "target": {
+      case "target":
         if ((await this.#storeService.validateTag(optionValue)) === false) {
           this.#onDiagnostics(
             Diagnostic.error(
@@ -49,25 +48,19 @@ export class OptionValidator {
           );
         }
         break;
-      }
 
-      case "testFileMatch": {
+      case "testFileMatch":
         for (const segment of ["/", "../"]) {
           if (optionValue.startsWith(segment)) {
             this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.testFileMatchCannotStartWith(segment), origin));
           }
         }
         break;
-      }
 
-      case "watch": {
-        if (Environment.isCi) {
+      case "watch":
+        if (environmentOptions.isCi) {
           this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.watchCannotBeEnabled(), origin));
         }
-        break;
-      }
-
-      default:
         break;
     }
   }

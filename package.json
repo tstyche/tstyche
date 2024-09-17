@@ -1,87 +1,87 @@
 {
-  "name": "tstyche",
-  "version": "3.0.0-beta.0",
-  "description": "The Essential Type Testing Tool.",
-  "keywords": [
-    "typescript",
-    "types",
-    "test",
-    "runner",
-    "expect"
-  ],
-  "homepage": "https://tstyche.org",
-  "bugs": {
-    "url": "https://github.com/tstyche/tstyche/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tstyche/tstyche.git"
-  },
-  "funding": "https://github.com/tstyche/tstyche?sponsor=1",
-  "license": "MIT",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": "./build/index.js",
-      "require": "./build/index.cjs"
-    },
-    "./package.json": "./package.json",
-    "./tstyche": "./build/tstyche.js"
-  },
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
-  "bin": "./build/bin.js",
-  "files": [
-    "build/*"
-  ],
-  "scripts": {
-    "bench": "./benchmarks/tstyche.bench.sh",
-    "build": "rollup --config rollup.config.js",
-    "build:watch": "yarn build --sourcemap --watch",
-    "check": "yarn check:spelling && yarn check:types",
-    "check:spelling": "cspell --config cspell.config.json --quiet",
-    "check:types": "tsc --noEmit --project tsconfig.json",
-    "clean": "rm -rf build",
-    "format": "biome format --write",
-    "generate": "yarn generate:schema && yarn generate:types",
-    "generate:schema": "node ./scripts/generate-schema.js",
-    "generate:types": "node ./scripts/generate-types.js",
-    "lint": "biome lint --write",
-    "prepublish": "yarn clean && yarn build",
-    "test": "yarn test:unit && yarn test:e2e",
-    "test:coverage": "yarn test:coverage:collect && yarn test:coverage:report",
-    "test:coverage:collect": "yarn build --sourcemap && NODE_V8_COVERAGE='./coverage/v8-coverage' yarn test:e2e",
-    "test:coverage:report": "node ./scripts/report-coverage.js",
-    "test:e2e": "yarn node --test tests/*.test.js",
-    "test:examples": "tstyche examples",
-    "test:types": "tstyche typetests",
-    "test:unit": "yarn node --test **/__tests__/*.test.js"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "@rollup/plugin-typescript": "11.1.6",
-    "@types/node": "20.16.1",
-    "@types/react": "18.3.4",
-    "ajv": "8.17.1",
-    "cspell": "8.14.2",
-    "magic-string": "0.30.11",
-    "monocart-coverage-reports": "2.10.3",
-    "pretty-ansi": "2.0.0",
-    "rollup": "4.21.0",
-    "rollup-plugin-dts": "6.1.1",
-    "tslib": "2.6.3",
-    "typescript": "5.5.4"
-  },
-  "peerDependencies": {
-    "typescript": "4.x || 5.x"
-  },
-  "peerDependenciesMeta": {
-    "typescript": {
-      "optional": true
-    }
-  },
-  "packageManager": "yarn@4.4.0",
-  "engines": {
-    "node": ">=18.14"
-  }
+	"name": "tstyche",
+	"version": "3.0.0-beta.1",
+	"description": "The Essential Type Testing Tool.",
+	"keywords": [
+		"typescript",
+		"types",
+		"test",
+		"runner",
+		"expect"
+	],
+	"homepage": "https://tstyche.org",
+	"bugs": {
+		"url": "https://github.com/tstyche/tstyche/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tstyche/tstyche.git"
+	},
+	"funding": "https://github.com/tstyche/tstyche?sponsor=1",
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./build/index.js",
+			"require": "./build/index.cjs"
+		},
+		"./package.json": "./package.json",
+		"./tstyche": "./build/tstyche.js"
+	},
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
+	"bin": "./build/bin.js",
+	"files": [
+		"build/*"
+	],
+	"scripts": {
+		"bench": "./benchmarks/tstyche.bench.sh",
+		"build": "rollup --config rollup.config.js",
+		"build:watch": "yarn build --sourcemap --watch",
+		"check": "yarn check:spelling && yarn check:types",
+		"check:spelling": "cspell --config cspell.config.json --quiet",
+		"check:types": "tsc --noEmit --project tsconfig.json",
+		"clean": "rm -rf build",
+		"format": "biome format --write",
+		"generate": "yarn generate:schema && yarn generate:types",
+		"generate:schema": "node ./scripts/generate-schema.js",
+		"generate:types": "node ./scripts/generate-types.js",
+		"lint": "biome lint --write",
+		"prepublish": "yarn clean && yarn build",
+		"test": "yarn test:unit && yarn test:e2e",
+		"test:coverage": "yarn test:coverage:collect && yarn test:coverage:report",
+		"test:coverage:collect": "yarn build --sourcemap && NODE_V8_COVERAGE='./coverage/v8-coverage' yarn test:e2e",
+		"test:coverage:report": "node ./scripts/report-coverage.js",
+		"test:e2e": "yarn node --test tests/*.test.js",
+		"test:examples": "tstyche examples",
+		"test:types": "tstyche typetests",
+		"test:unit": "yarn node --test **/__tests__/*.test.js"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.1",
+		"@rollup/plugin-typescript": "11.1.6",
+		"@types/node": "20.16.5",
+		"@types/react": "18.3.6",
+		"ajv": "8.17.1",
+		"cspell": "8.14.2",
+		"magic-string": "0.30.11",
+		"monocart-coverage-reports": "2.10.8",
+		"pretty-ansi": "2.0.0",
+		"rollup": "4.21.3",
+		"rollup-plugin-dts": "6.1.1",
+		"tslib": "2.7.0",
+		"typescript": "5.6.2"
+	},
+	"peerDependencies": {
+		"typescript": "4.x || 5.x"
+	},
+	"peerDependenciesMeta": {
+		"typescript": {
+			"optional": true
+		}
+	},
+	"packageManager": "yarn@4.5.0",
+	"engines": {
+		"node": ">=18.14"
+	}
 }

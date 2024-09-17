@@ -1,4 +1,4 @@
-import type { TestFile } from "#file";
+import type { Task } from "#task";
 import type { ProjectResult } from "./ProjectResult.js";
 import { ResultTiming } from "./ResultTiming.js";
 import { ResultStatus } from "./enums.js";
@@ -8,12 +8,12 @@ export type TargetResultStatus = ResultStatus.Runs | ResultStatus.Passed | Resul
 export class TargetResult {
   results = new Map<string | undefined, ProjectResult>();
   status: TargetResultStatus = ResultStatus.Runs;
-  testFiles: Array<TestFile>;
+  tasks: Array<Task>;
   timing = new ResultTiming();
   versionTag: string;
 
-  constructor(versionTag: string, testFiles: Array<TestFile>) {
+  constructor(versionTag: string, tasks: Array<Task>) {
     this.versionTag = versionTag;
-    this.testFiles = testFiles;
+    this.tasks = tasks;
   }
 }

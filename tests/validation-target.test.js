@@ -66,7 +66,7 @@ await test("'--target' command line option", async (t) => {
       env: { ["TSTYCHE_TYPESCRIPT_PATH"]: "" },
     });
 
-    assert.match(stdout, /^adds TypeScript/);
+    assert.equal(stdout, "");
 
     const expected = [
       "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",

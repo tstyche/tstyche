@@ -13,8 +13,6 @@ import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
 import type { DiagnosticsHandler } from "./types.js";
 
-export type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
-
 export class ConfigFileOptionsWorker {
   #compiler: typeof ts;
   #configFileOptionDefinitions: Map<string, OptionDefinition>;
@@ -118,21 +116,19 @@ export class ConfigFileOptionsWorker {
     isListItem = false,
   ): Promise<OptionValue> {
     switch (valueExpression.kind) {
-      case this.#compiler.SyntaxKind.TrueKeyword: {
+      case this.#compiler.SyntaxKind.TrueKeyword:
         if (optionDefinition.brand === OptionBrand.Boolean) {
           return true;
         }
         break;
-      }
 
-      case this.#compiler.SyntaxKind.FalseKeyword: {
+      case this.#compiler.SyntaxKind.FalseKeyword:
         if (optionDefinition.brand === OptionBrand.Boolean) {
           return false;
         }
         break;
-      }
 
-      case this.#compiler.SyntaxKind.StringLiteral: {
+      case this.#compiler.SyntaxKind.StringLiteral:
         if (!this.#isDoubleQuotedString(valueExpression, sourceFile)) {
           const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
@@ -154,9 +150,8 @@ export class ConfigFileOptionsWorker {
           return value;
         }
         break;
-      }
 
-      case this.#compiler.SyntaxKind.ArrayLiteralExpression: {
+      case this.#compiler.SyntaxKind.ArrayLiteralExpression:
         if (optionDefinition.brand === OptionBrand.List) {
           const value: Array<OptionValue> = [];
 
@@ -168,10 +163,6 @@ export class ConfigFileOptionsWorker {
 
           return value;
         }
-        break;
-      }
-
-      default:
         break;
     }
 
