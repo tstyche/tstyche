@@ -8,23 +8,25 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeUndefined' implementation", () => {
-  tstyche.expect(undefined).type.toBeUndefined();
-  tstyche.expect(null).type.not.toBeUndefined();
-});
-
-await test("toBeUndefined", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-stdout`,
-    testFileUrl: import.meta.url,
+await test("toBeUndefined", async (t) => {
+  await t.test("'toBeUndefined' implementation", () => {
+    tstyche.expect(undefined).type.toBeUndefined();
+    tstyche.expect(null).type.not.toBeUndefined();
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-stderr`,
-    testFileUrl: import.meta.url,
-  });
+  await t.test("toBeUndefined", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  assert.equal(exitCode, 1);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });

@@ -8,27 +8,29 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toRaiseError' implementation", () => {
-  function check() {
-    return;
-  }
+await test("toRaiseError", async (t) => {
+  await t.test("'toRaiseError' implementation", () => {
+    function check() {
+      return;
+    }
 
-  tstyche.expect(check(false)).type.toRaiseError();
-  tstyche.expect(check()).type.not.toRaiseError();
-});
-
-await test("toRaiseError", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-stdout`,
-    testFileUrl: import.meta.url,
+    tstyche.expect(check(false)).type.toRaiseError();
+    tstyche.expect(check()).type.not.toRaiseError();
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-stderr`,
-    testFileUrl: import.meta.url,
-  });
+  await t.test("toRaiseError", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  assert.equal(exitCode, 1);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });

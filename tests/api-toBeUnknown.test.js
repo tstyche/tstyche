@@ -8,23 +8,25 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeUnknown' implementation", () => {
-  tstyche.expect(/** @type {unknown} */ (null)).type.toBeUnknown();
-  tstyche.expect(/** @type {never} */ (null)).type.not.toBeUnknown();
-});
-
-await test("toBeUnknown", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-stdout`,
-    testFileUrl: import.meta.url,
+await test("toBeUnknown", async (t) => {
+  await t.test("'toBeUnknown' implementation", () => {
+    tstyche.expect(/** @type {unknown} */ (null)).type.toBeUnknown();
+    tstyche.expect(/** @type {never} */ (null)).type.not.toBeUnknown();
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-stderr`,
-    testFileUrl: import.meta.url,
-  });
+  await t.test("toBeUnknown", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  assert.equal(exitCode, 1);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });

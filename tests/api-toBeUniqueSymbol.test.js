@@ -8,26 +8,28 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeUniqueSymbol' implementation", () => {
-  /** @type {unique symbol} */
-  const s = Symbol();
+await test("toBeUniqueSymbol", async (t) => {
+  await t.test("'toBeUniqueSymbol' implementation", () => {
+    /** @type {unique symbol} */
+    const s = Symbol();
 
-  tstyche.expect(s).type.toBeUniqueSymbol();
-  tstyche.expect(Symbol()).type.not.toBeUniqueSymbol();
-});
-
-await test("toBeUniqueSymbol", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-stdout`,
-    testFileUrl: import.meta.url,
+    tstyche.expect(s).type.toBeUniqueSymbol();
+    tstyche.expect(Symbol()).type.not.toBeUniqueSymbol();
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-stderr`,
-    testFileUrl: import.meta.url,
-  });
+  await t.test("toBeUniqueSymbol", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  assert.equal(exitCode, 1);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });

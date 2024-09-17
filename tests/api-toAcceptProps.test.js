@@ -16,7 +16,7 @@ function Item(props) {
 }
 
 await test("toAcceptProps", async (t) => {
-  t.test("implementation", () => {
+  await t.test("'toAcceptProps' implementation", () => {
     tstyche.expect(Item).type.toAcceptProps({ name: "one", quantity: "2" });
     tstyche.expect(Item).type.not.toAcceptProps({});
   });

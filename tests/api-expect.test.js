@@ -8,98 +8,100 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'expect()' implementation'", () => {
-  tstyche.expect(null).type.toBeNull();
-});
-
-test("'expect.fail' implementation'", () => {
-  tstyche.expect.fail(null).type.toBeNever();
-});
-
-await test("expect.fail", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-fail.tst.ts"]);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-fail-stdout`,
-    testFileUrl: import.meta.url,
+await test("expect", async (t) => {
+  await t.test("'expect' implementation'", () => {
+    tstyche.expect(null).type.toBeNull();
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-fail-stderr`,
-    testFileUrl: import.meta.url,
+  await t.test("'expect.fail' implementation'", () => {
+    tstyche.expect.fail(null).type.toBeNever();
   });
 
-  assert.equal(exitCode, 1);
-});
+  await t.test("expect.fail", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-fail.tst.ts"]);
 
-test("'expect.only' implementation'", () => {
-  tstyche.expect.only(null).type.toBeNull();
-});
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-fail-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-await test("expect.only", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-only.tst.ts"]);
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-fail-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-only-stdout`,
-    testFileUrl: import.meta.url,
+    assert.equal(exitCode, 1);
   });
 
-  assert.equal(stderr, "");
-  assert.equal(exitCode, 0);
-});
-
-test("'expect.only.fail' implementation'", () => {
-  tstyche.expect.only.fail(null).type.toBeNever();
-});
-
-await test("expect.only.fail", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-only-fail.tst.ts"]);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-only-fail-stdout`,
-    testFileUrl: import.meta.url,
+  await t.test("'expect.only' implementation'", () => {
+    tstyche.expect.only(null).type.toBeNull();
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-only-fail-stderr`,
-    testFileUrl: import.meta.url,
+  await t.test("expect.only", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-only.tst.ts"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-only-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  assert.equal(exitCode, 1);
-});
-
-test("'expect.skip' implementation'", () => {
-  tstyche.expect.skip(null).type.toBeNever();
-});
-
-await test("expect.skip", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-skip.tst.ts"]);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-skip-stdout`,
-    testFileUrl: import.meta.url,
+  await t.test("'expect.only.fail' implementation'", () => {
+    tstyche.expect.only.fail(null).type.toBeNever();
   });
 
-  assert.equal(stderr, "");
-  assert.equal(exitCode, 0);
-});
+  await t.test("expect.only.fail", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-only-fail.tst.ts"]);
 
-test("'expect.skip.fail' implementation'", () => {
-  tstyche.expect.skip.fail(null).type.toBeNever();
-});
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-only-fail-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-await test("expect.skip.fail", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-skip-fail.tst.ts"]);
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-only-fail-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-skip-fail-stdout`,
-    testFileUrl: import.meta.url,
+    assert.equal(exitCode, 1);
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-skip-fail-stderr`,
-    testFileUrl: import.meta.url,
+  await t.test("'expect.skip' implementation'", () => {
+    tstyche.expect.skip(null).type.toBeNever();
   });
 
-  assert.equal(exitCode, 1);
+  await t.test("expect.skip", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-skip.tst.ts"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-skip-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("'expect.skip.fail' implementation'", () => {
+    tstyche.expect.skip.fail(null).type.toBeNever();
+  });
+
+  await t.test("expect.skip.fail", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-skip-fail.tst.ts"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-skip-fail-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-skip-fail-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });

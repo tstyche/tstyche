@@ -8,23 +8,25 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeAssignableWith' implementation", () => {
-  tstyche.expect({ a: "sample" }).type.toBeAssignableWith({ a: "sample" });
-  tstyche.expect({ a: "sample" }).type.not.toBeAssignableWith({ b: "sample" });
-});
-
-await test("toBeAssignableWith", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-stdout`,
-    testFileUrl: import.meta.url,
+await test("toBeAssignableWith", async (t) => {
+  await t.test("'toBeAssignableWith' implementation", () => {
+    tstyche.expect({ a: "sample" }).type.toBeAssignableWith({ a: "sample" });
+    tstyche.expect({ a: "sample" }).type.not.toBeAssignableWith({ b: "sample" });
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-stderr`,
-    testFileUrl: import.meta.url,
-  });
+  await t.test("toBeAssignableWith", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  assert.equal(exitCode, 1);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });
