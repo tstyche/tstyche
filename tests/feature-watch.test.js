@@ -673,7 +673,7 @@ await test("watch", async (t) => {
       assert.equal(exitCode, 0);
     });
 
-    await t.test("when the '--config' command line option is set", async () => {
+    await t.test("when the '--config' command line option is specified", async () => {
       fs.mkdirSync(new URL("config", fixtureUrl));
       fs.writeFileSync(
         new URL("config/tstyche.json", fixtureUrl),

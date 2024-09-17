@@ -158,7 +158,7 @@ await test("'--failFast' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("overrides configuration file option, when it is set to 'true'", async () => {
+  await t.test("overrides configuration file option, when set to 'true'", async () => {
     const config = {
       failFast: true,
     };
@@ -184,7 +184,7 @@ await test("'--failFast' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("overrides configuration file option, when it is set to 'false'", async () => {
+  await t.test("overrides configuration file option, when set to 'false'", async () => {
     const config = {
       failFast: false,
     };
