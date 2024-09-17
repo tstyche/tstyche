@@ -118,6 +118,17 @@
     },
 
     {
+      "include": ["tests/__utilities__/assert.js"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noMisplacedAssertion": "off"
+          }
+        }
+      }
+    },
+
+    {
       "include": ["**/*.tst.ts", "**/*.tst.tsx"],
       "linter": {
         "rules": {
