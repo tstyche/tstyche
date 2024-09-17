@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { describe, test } from "node:test";
+import test from "node:test";
 import { Ajv } from "ajv";
 
 const ajv = new Ajv({ allErrors: true });
@@ -27,8 +27,8 @@ function readJsonFixtureFile(fixtureFileName) {
 
 const configSchema = readJsonFile("../config-schema.json");
 
-describe("config-schema.json", () => {
-  describe("valid", () => {
+test("config-schema.json", async (t) => {
+  await t.test("valid", async (t) => {
     const testCases = [
       {
         fixtureFileName: "valid-all-options.json",
@@ -53,7 +53,7 @@ describe("config-schema.json", () => {
     ];
 
     for (const { fixtureFileName, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 
@@ -62,7 +62,7 @@ describe("config-schema.json", () => {
     }
   });
 
-  describe("invalid", () => {
+  await t.test("invalid", async (t) => {
     const testCases = [
       {
         fixtureFileName: "invalid-failFast.json",
@@ -103,7 +103,7 @@ describe("config-schema.json", () => {
     ];
 
     for (const { fixtureFileName, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 

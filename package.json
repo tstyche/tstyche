@@ -58,7 +58,7 @@
     "test:examples": "tstyche examples",
     "test:run": "yarn node ./tests/__utilities__/runner.js",
     "test:types": "tstyche typetests",
-    "test:unit": "yarn test:run **/__tests__/*.test.js"
+    "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.1",
