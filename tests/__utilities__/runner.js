@@ -14,6 +14,7 @@ let {
     include: { type: "string" },
     only: { type: "boolean" },
     parallel: { type: "boolean" },
+    update: { type: "boolean" },
   },
 });
 
