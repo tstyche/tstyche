@@ -7,38 +7,40 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-await test("named imports", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["named"]);
+await test("imports", async (t) => {
+  await t.test("named imports", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["named"]);
 
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-names-imports`,
-    testFileUrl: import.meta.url,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-names-imports`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  assert.equal(stderr, "");
-  assert.equal(exitCode, 0);
-});
+  await t.test("aliased imports", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["aliased"]);
 
-await test("aliased imports", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["aliased"]);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-aliased-imports`,
+      testFileUrl: import.meta.url,
+    });
 
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-aliased-imports`,
-    testFileUrl: import.meta.url,
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 
-  assert.equal(stderr, "");
-  assert.equal(exitCode, 0);
-});
+  await t.test("namespace imports", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["namespace"]);
 
-await test("namespace imports", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["namespace"]);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-namespace-imports`,
+      testFileUrl: import.meta.url,
+    });
 
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-namespace-imports`,
-    testFileUrl: import.meta.url,
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
-
-  assert.equal(stderr, "");
-  assert.equal(exitCode, 0);
 });
