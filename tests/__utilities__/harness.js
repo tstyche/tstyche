@@ -7,12 +7,14 @@ import reporters from "node:test/reporters";
  * @param {{ concurrency?: boolean, only?: boolean }} [options]
  */
 function run(files, options) {
+  const reporter = files.length > 1 ? reporters.dot : new reporters.spec()
+
   test
     .run({ concurrency: options?.concurrency, files, only: options?.only })
     .on("test:fail", () => {
       process.exitCode = 1;
     })
-    .compose(files.length > 1 ? reporters.dot : new reporters.spec())
+    .compose(reporter)
     .pipe(process.stdout);
 }
 
