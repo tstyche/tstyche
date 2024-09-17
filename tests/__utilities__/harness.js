@@ -3,7 +3,6 @@ import test from "node:test";
 import reporters from "node:test/reporters";
 
 /**
- *
  * @param {Array<string>} files
  * @param {{ concurrency?: boolean, only?: boolean }} [options]
  */
@@ -29,13 +28,20 @@ const serialFiles = [];
 for (const arg of process.argv.slice(2)) {
   if (arg.startsWith("--")) {
     flags.push(arg);
+    continue;
   }
 
   if (arg.includes("feature-")) {
     serialFiles.push(arg);
-  } else {
-    parallelFiles.push(arg);
+    continue;
   }
+
+  parallelFiles.push(arg);
+}
+
+if (flags.includes("--debug")) {
+  console.info({ flags, parallelFiles, serialFiles });
+  process.exit();
 }
 
 const only = flags.includes("--only");
