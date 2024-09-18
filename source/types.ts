@@ -100,6 +100,10 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
+   * Checks if the decorator function can be applied to the target class or class member.
+   */
+  toBeApplicable: (target: unknown, context: DecoratorContext) => void;
+  /**
    * Checks if the source type is assignable with the target type.
    *
    * @deprecated Use `.toBeAssignableWith()` or `.toBeAssignableTo()` instead. This matcher will be removed in TSTyche 3.
