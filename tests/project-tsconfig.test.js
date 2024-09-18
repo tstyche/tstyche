@@ -12,7 +12,7 @@ await test("TSConfig file", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("when TSConfig file is missing, sets default compiler options", async () => {
+  await t.test("when TSConfig file is missing, uses default compiler options", async () => {
     const testText = `import { expect, test } from "tstyche";
 
 test("'strictNullChecks': true", () => {
