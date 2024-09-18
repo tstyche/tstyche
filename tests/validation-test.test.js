@@ -7,18 +7,20 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-await test("handles nested 'describe()' or 'test()'", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+await test("test", async () => {
+  await test("handles nested 'describe' or 'test'", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-handles-nested-stdout`,
-    testFileUrl: import.meta.url,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-handles-nested-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-handles-nested-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
-
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-handles-nested-stderr`,
-    testFileUrl: import.meta.url,
-  });
-
-  assert.equal(exitCode, 1);
 });
