@@ -56,7 +56,7 @@
     "test:e2e:parallel": "yarn test:run tests/*.test.js --exclude feature --parallel",
     "test:e2e:serial": "yarn test:run tests/*.test.js --include feature",
     "test:examples": "tstyche examples",
-    "test:run": "yarn node ./tests/__utilities__/runner.js",
+    "test:run": "rm -rf ./tests/__fixtures__/.generated && yarn node ./tests/__utilities__/runner.js",
     "test:types": "tstyche typetests",
     "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
   },
