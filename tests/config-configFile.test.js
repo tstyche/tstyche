@@ -79,6 +79,26 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(exitCode, 0);
   });
 
+  await t.test("empty object is allowed", async () => {
+    const configText = `{
+  // "failFast": true
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(stdout, {
+      failFast: false,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("comments are allowed", async () => {
     const configText = `{
   /* test */

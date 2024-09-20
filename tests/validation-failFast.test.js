@@ -14,6 +14,7 @@ await test("'failFast' configuration file option", async (t) => {
   await t.test("when specified value is not boolean", async () => {
     const config = {
       failFast: "never",
+      target: ["current"]
     };
 
     await writeFixture(fixtureUrl, {

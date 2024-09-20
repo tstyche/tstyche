@@ -1,9 +1,11 @@
 Error: String literal with double quotes expected.
 
   1 | {
-  2 |   "rootPath": '../'
+  2 |   "rootPath": '../',
     |               ~~~~~
-  3 | }
+  3 |   "target": ["current"]
+  4 | }
+  5 | 
 
       at ./tstyche.config.json:2:15
 

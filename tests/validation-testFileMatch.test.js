@@ -56,6 +56,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
   await t.test("when option value is not a list", async () => {
     const config = {
       testFileMatch: "feature",
+      failFast: true
     };
 
     await writeFixture(fixtureUrl, {
@@ -77,7 +78,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
   await t.test("when item of the list is not a string", async () => {
     const config = {
-      testFileMatch: ["examples/*", false],
+      testFileMatch: ["examples/*", false, "**/*.tst.*"],
     };
 
     await writeFixture(fixtureUrl, {

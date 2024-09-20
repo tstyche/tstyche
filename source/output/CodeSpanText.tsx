@@ -61,9 +61,7 @@ interface CodeSpanTextProps {
 }
 
 export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanTextProps) {
-  const lastLineInFile = diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(
-    diagnosticOrigin.sourceFile.text.length,
-  ).line;
+  const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
 
   const { character: firstMarkedLineCharacter, line: firstMarkedLine } =
     diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
@@ -71,7 +69,7 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
     diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
 
   const firstLine = Math.max(firstMarkedLine - 2, 0);
-  const lastLine = Math.min(firstLine + 5, lastLineInFile);
+  const lastLine = Math.min(firstLine + 5, lineMap.length - 1);
   const gutterWidth = (lastLine + 1).toString().length + 2;
 
   let highlightColor: Color;
@@ -89,11 +87,8 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
   const codeSpan: Array<ScribblerJsx.Element> = [];
 
   for (let index = firstLine; index <= lastLine; index++) {
-    const lineStart = diagnosticOrigin.sourceFile.getPositionOfLineAndCharacter(index, 0);
-    const lineEnd =
-      index === lastLineInFile
-        ? diagnosticOrigin.sourceFile.text.length
-        : diagnosticOrigin.sourceFile.getPositionOfLineAndCharacter(index + 1, 0);
+    const lineStart = lineMap[index];
+    const lineEnd = index === lineMap.length - 1 ? diagnosticOrigin.sourceFile.text.length : lineMap[index + 1];
 
     const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 

@@ -68,14 +68,7 @@ export class ConfigService {
       encoding: "utf8",
     });
 
-    const compiler = await storeService.load(environmentOptions.typescriptPath != null ? "current" : "latest");
-
-    if (!compiler) {
-      return;
-    }
-
     const configFileWorker = new ConfigFileOptionsWorker(
-      compiler,
       this.#configFileOptions as Record<string, OptionValue>,
       this.#configFilePath,
       storeService,

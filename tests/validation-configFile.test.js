@@ -98,7 +98,7 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles syntax error", async () => {
+  await t.test("handles syntax errors", async () => {
     const configText = `{
   'failFast': true
 `;
@@ -112,7 +112,7 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(stdout, "");
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-syntax-error`,
+      fileName: `${testFileName}-syntax-errors`,
       testFileUrl: import.meta.url,
     });
 
@@ -121,7 +121,8 @@ await test("'tstyche.config.json' file", async (t) => {
 
   await t.test("handles single quoted option names", async () => {
     const configText = `{
-  'failFast': true
+  'failFast': true,
+  "target": ["current"]
 }`;
 
     await writeFixture(fixtureUrl, {
@@ -142,7 +143,8 @@ await test("'tstyche.config.json' file", async (t) => {
 
   await t.test("handles single quoted option values", async () => {
     const configText = `{
-  "rootPath": '../'
+  "rootPath": '../',
+  "target": ["current"]
 }`;
 
     await writeFixture(fixtureUrl, {
@@ -163,7 +165,7 @@ await test("'tstyche.config.json' file", async (t) => {
 
   await t.test("handles single quoted list values", async () => {
     const configText = `{
-  "target": ['4.8']
+  "target": ['4.8', "5.2"]
 }`;
 
     await writeFixture(fixtureUrl, {
