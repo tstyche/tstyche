@@ -88,7 +88,7 @@ await test("'target' configuration file option", async (t) => {
   await t.test("when option value is not a list", async () => {
     const config = {
       target: "current",
-      testFileMatch: ["examples/*.test.*"]
+      testFileMatch: ["examples/*.test.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -111,7 +111,7 @@ await test("'target' configuration file option", async (t) => {
   await t.test("when item of the list is not a string", async () => {
     const config = {
       target: ["4.8", 5.2, "latest"],
-      testFileMatch: ["examples/*.test.*"]
+      testFileMatch: ["examples/*.test.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -134,7 +134,7 @@ await test("'target' configuration file option", async (t) => {
   await t.test("when not supported version is specified", async () => {
     const config = {
       target: ["new"],
-      testFileMatch: ["examples/*.tst.*"]
+      testFileMatch: ["examples/*.tst.*"],
     };
 
     await writeFixture(fixtureUrl, {
