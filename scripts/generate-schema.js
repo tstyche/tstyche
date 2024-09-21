@@ -36,6 +36,10 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
   const jsonSchemaDefinition = {};
 
   if (defaultValue != null) {
+    if (optionDefinition.name === "rootPath" && typeof defaultValue === "string") {
+      defaultValue = tstyche.Path.relative("", defaultValue);
+    }
+
     jsonSchemaDefinition.default = defaultValue;
   }
 
@@ -74,6 +78,10 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
 const configFileOptionDefinitions = tstyche.OptionDefinitionsMap.for(tstyche.OptionGroup.ConfigFile);
 
 for (const [key, optionDefinition] of configFileOptionDefinitions) {
+  if (key.startsWith("$")) {
+    continue;
+  }
+
   jsonSchema.properties[key] = createJsonSchemaDefinition(
     optionDefinition,
     // @ts-expect-error index signature

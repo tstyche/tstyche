@@ -89,6 +89,10 @@ function createInterfaceDeclaration(identifierText, commentText, optionDefinitio
   const members = [];
 
   for (const [key, optionDefinition] of optionDefinitions) {
+    if (key.startsWith("$")) {
+      continue;
+    }
+
     switch (optionDefinition.brand) {
       case tstyche.OptionBrand.Boolean:
       case tstyche.OptionBrand.BareTrue:
