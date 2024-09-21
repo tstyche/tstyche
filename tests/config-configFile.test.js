@@ -112,7 +112,9 @@ await test("'tstyche.config.json' file", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     assert.matchObject(stdout, {
-      testFileMatch: [],
+      testFileMatch: [
+        /* test */
+      ],
     });
 
     assert.equal(stderr, "");
