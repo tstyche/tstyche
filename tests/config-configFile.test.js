@@ -101,7 +101,7 @@ await test("'tstyche.config.json' file", async (t) => {
 
   await t.test("empty list is allowed", async () => {
     const configText = `{
-  "testFileMatch": []
+  "testFileMatch": [ /* test */ ]
 }
 `;
 
@@ -112,9 +112,7 @@ await test("'tstyche.config.json' file", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     assert.matchObject(stdout, {
-      testFileMatch: [
-        /* test */
-      ],
+      testFileMatch: [],
     });
 
     assert.equal(stderr, "");
