@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import type { Diagnostic } from "#diagnostic";
+import { type Diagnostic, SourceFile } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { StoreService } from "#store";
@@ -68,14 +68,16 @@ export class ConfigService {
       encoding: "utf8",
     });
 
+    const sourceFile = new SourceFile(this.#configFilePath, configFileText);
+
     const configFileWorker = new ConfigFileOptionsWorker(
       this.#configFileOptions as Record<string, OptionValue>,
-      this.#configFilePath,
+      sourceFile,
       storeService,
       this.#onDiagnostics,
     );
 
-    await configFileWorker.parse(configFileText);
+    await configFileWorker.parse();
   }
 
   resolveConfig(): ResolvedConfig {

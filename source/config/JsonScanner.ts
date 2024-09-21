@@ -1,29 +1,28 @@
-import { DiagnosticOrigin, SourceFile } from "#diagnostic";
+import { DiagnosticOrigin, type SourceFile } from "#diagnostic";
 
 export class JsonScanner {
   #currentPosition = 0;
-  #filePath = "";
   #previousPosition = 0;
-  #text = "";
+  #sourceFile: SourceFile;
+
+  constructor(sourceFile: SourceFile) {
+    this.#sourceFile = sourceFile;
+  }
 
   #getOrigin() {
-    return new DiagnosticOrigin(
-      this.#previousPosition,
-      this.#currentPosition,
-      new SourceFile(this.#filePath, this.#text),
-    );
+    return new DiagnosticOrigin(this.#previousPosition, this.#currentPosition, this.#sourceFile);
   }
 
   isRead() {
-    return !(this.#currentPosition < this.#text.length);
+    return !(this.#currentPosition < this.#sourceFile.text.length);
   }
 
   #peekCharacter() {
-    return this.#text.charAt(this.#currentPosition);
+    return this.#sourceFile.text.charAt(this.#currentPosition);
   }
 
   #peekNextCharacter() {
-    return this.#text.charAt(this.#currentPosition + 1);
+    return this.#sourceFile.text.charAt(this.#currentPosition + 1);
   }
 
   peekToken(token: string) {
@@ -48,7 +47,7 @@ export class JsonScanner {
       quoteCharacter = text += this.#readCharacter();
     }
 
-    while (this.#currentPosition < this.#text.length) {
+    while (this.#currentPosition < this.#sourceFile.text.length) {
       if (
         this.#peekCharacter() === quoteCharacter ||
         (!quoteCharacter && /[\s,:\]}]/.test(this.#peekNextCharacter()))
@@ -65,7 +64,7 @@ export class JsonScanner {
   }
 
   #readCharacter() {
-    return this.#text.charAt(this.#currentPosition++);
+    return this.#sourceFile.text.charAt(this.#currentPosition++);
   }
 
   readToken(token: string): { origin: DiagnosticOrigin; value: string | undefined } {
@@ -82,13 +81,8 @@ export class JsonScanner {
     return { origin: this.#getOrigin(), value: undefined };
   }
 
-  setText(text: string, filePath: string) {
-    this.#text = text;
-    this.#filePath = filePath;
-  }
-
   #skipTrivia() {
-    while (this.#currentPosition < this.#text.length) {
+    while (this.#currentPosition < this.#sourceFile.text.length) {
       if (/\s/.test(this.#peekCharacter())) {
         this.#currentPosition++;
         continue;
@@ -98,7 +92,7 @@ export class JsonScanner {
         if (this.#peekNextCharacter() === "/") {
           this.#currentPosition += 2;
 
-          while (this.#currentPosition < this.#text.length) {
+          while (this.#currentPosition < this.#sourceFile.text.length) {
             if (this.#readCharacter() === "\n") {
               break;
             }
@@ -110,7 +104,7 @@ export class JsonScanner {
         if (this.#peekNextCharacter() === "*") {
           this.#currentPosition += 2;
 
-          while (this.#currentPosition < this.#text.length) {
+          while (this.#currentPosition < this.#sourceFile.text.length) {
             if (this.#peekCharacter() === "*" && this.#peekNextCharacter() === "/") {
               this.#currentPosition += 2;
               break;

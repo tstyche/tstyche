@@ -1,4 +1,4 @@
-import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, type DiagnosticOrigin, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
@@ -16,27 +16,27 @@ import type { DiagnosticsHandler } from "./types.js";
 export class ConfigFileOptionsWorker {
   #configFileOptionDefinitions: Map<string, OptionDefinition>;
   #configFileOptions: Record<string, OptionValue>;
-  #configFilePath: string;
   #jsonScanner: JsonScanner;
   #onDiagnostics: DiagnosticsHandler;
   #optionGroup = OptionGroup.ConfigFile;
   #optionValidator: OptionValidator;
+  #sourceFile: SourceFile;
   #storeService: StoreService;
 
   constructor(
     configFileOptions: Record<string, OptionValue>,
-    configFilePath: string,
+    sourceFile: SourceFile,
     storeService: StoreService,
     onDiagnostics: DiagnosticsHandler,
   ) {
     this.#configFileOptions = configFileOptions;
-    this.#configFilePath = configFilePath;
+    this.#sourceFile = sourceFile;
     this.#storeService = storeService;
     this.#onDiagnostics = onDiagnostics;
 
     this.#configFileOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
-    this.#jsonScanner = new JsonScanner();
+    this.#jsonScanner = new JsonScanner(this.#sourceFile);
     this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
   }
 
@@ -115,7 +115,7 @@ export class ConfigFileOptionsWorker {
         }
 
         if (optionDefinition.name === "rootPath") {
-          parsedValue = Path.resolve(Path.dirname(this.#configFilePath), parsedValue);
+          parsedValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), parsedValue);
         }
 
         await this.#optionValidator.check(
@@ -268,9 +268,7 @@ export class ConfigFileOptionsWorker {
     }
   }
 
-  async parse(text: string): Promise<void> {
-    this.#jsonScanner.setText(text, this.#configFilePath);
-
+  async parse(): Promise<void> {
     await this.#parseObject();
   }
 }
