@@ -39,6 +39,6 @@ export class SourceFile {
   getLineAndCharacterOfPosition(position: number): { line: number; character: number } {
     const line = this.#lineMap.findLastIndex((line) => line <= position);
 
-    return { line, character: position - this.#lineMap[line]! };
+    return { line, character: position - (this.#lineMap[line] as number) };
   }
 }
