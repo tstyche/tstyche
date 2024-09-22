@@ -40,24 +40,20 @@ export class ConfigFileOptionsWorker {
     this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
   }
 
-  #parseBoolean(text: string) {
-    switch (text) {
-      case "true":
-        return true;
-
-      case "false":
-        return false;
+  #parse(text: string) {
+    if (text === "true") {
+      return true;
     }
 
-    return;
-  }
+    if (text === "false") {
+      return false;
+    }
 
-  #parseString(text: string) {
-    if (text.startsWith('"') && text.endsWith('"')) {
+    if (text.startsWith('"') || text.endsWith("'")) {
       return text.slice(1, -1);
     }
 
-    return;
+    return text;
   }
 
   #onRequiresValue(
@@ -65,19 +61,9 @@ export class ConfigFileOptionsWorker {
     optionValue: { origin: DiagnosticOrigin; text: string | undefined },
     isListItem: boolean,
   ) {
-    let text: string;
-
-    if (
-      optionDefinition.brand === OptionBrand.String &&
-      optionValue.text?.startsWith("'") &&
-      optionValue.text.endsWith("'")
-    ) {
-      text = ConfigDiagnosticText.doubleQuotesExpected();
-    } else {
-      text = isListItem
-        ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
-        : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
-    }
+    const text = isListItem
+      ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
+      : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
 
     this.#onDiagnostics(Diagnostic.error(text, optionValue.origin));
   }
@@ -91,7 +77,7 @@ export class ConfigFileOptionsWorker {
         optionValue = this.#jsonScanner.read();
 
         if (optionValue.text != null) {
-          parsedValue = this.#parseBoolean(optionValue.text);
+          parsedValue = this.#parse(optionValue.text);
         }
 
         if (typeof parsedValue !== "boolean") {
@@ -106,7 +92,7 @@ export class ConfigFileOptionsWorker {
         optionValue = this.#jsonScanner.read();
 
         if (optionValue.text != null) {
-          parsedValue = this.#parseString(optionValue.text);
+          parsedValue = this.#parse(optionValue.text);
         }
 
         if (typeof parsedValue !== "string") {
@@ -201,24 +187,7 @@ export class ConfigFileOptionsWorker {
         continue;
       }
 
-      const optionNameText = this.#parseString(optionName.text);
-
-      if (!optionNameText) {
-        this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), optionName.origin));
-
-        if (this.#jsonScanner.readToken(":")) {
-          // TODO might not read list, this should be some fast-forward method
-          this.#jsonScanner.read();
-        }
-
-        const commaToken = this.#jsonScanner.readToken(",");
-
-        if (!commaToken.value) {
-          break;
-        }
-
-        continue;
-      }
+      const optionNameText = this.#parse(optionName.text).toString();
 
       const optionDefinition = this.#configFileOptionDefinitions.get(optionNameText);
 
