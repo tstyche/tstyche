@@ -110,7 +110,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when item of the list is not a string", async () => {
     const config = {
-      target: ["4.8", 5.2, "latest"],
+      target: ["4.8", true, "latest"],
       testFileMatch: ["examples/*.test.*"],
     };
 
