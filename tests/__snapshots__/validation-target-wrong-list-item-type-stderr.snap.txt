@@ -2,8 +2,8 @@ Error: Item of the 'target' list must be of type string.
 
   2 |   "target": [
   3 |     "4.8",
-  4 |     true,
-    |     ~~~~
+  4 |     5.2,
+    |     ~~~
   5 |     "latest"
   6 |   ],
   7 |   "testFileMatch": [

@@ -41,6 +41,10 @@ export class ConfigFileOptionsWorker {
   }
 
   #parse(text: string) {
+    if (/^['"]/.test(text)) {
+      return text.slice(1, -1);
+    }
+
     if (text === "true") {
       return true;
     }
@@ -49,8 +53,8 @@ export class ConfigFileOptionsWorker {
       return false;
     }
 
-    if (text.startsWith('"') || text.endsWith("'")) {
-      return text.slice(1, -1);
+    if (/^\d/.test(text)) {
+      return Number.parseFloat(text);
     }
 
     return text;
@@ -70,7 +74,7 @@ export class ConfigFileOptionsWorker {
 
   async #parseValue(optionDefinition: OptionDefinition | ItemDefinition, isListItem = false) {
     let optionValue: { origin: DiagnosticOrigin; text: string | undefined } | undefined;
-    let parsedValue: boolean | string | Array<OptionValue> | undefined;
+    let parsedValue: OptionValue;
 
     switch (optionDefinition.brand) {
       case OptionBrand.Boolean: {
