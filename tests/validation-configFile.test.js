@@ -98,90 +98,117 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles syntax errors", async () => {
-    const configText = `{
+  await t.test("handles syntax errors", async (t) => {
+    await t.test("when closing brace is missing", async () => {
+      const configText = `{
   'failFast': true
 `;
 
-    await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: configText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-syntax-errors-closing-brace`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+    await t.test("when closing bracket is missing", async () => {
+      const configText = `{
+  'failFast': true,
+  "testFileMatch": ["examples/*.tst.*"
+}
+`;
 
-    assert.equal(stdout, "");
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: configText,
+      });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-syntax-errors`,
-      testFileUrl: import.meta.url,
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-syntax-errors-closing-bracket`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
     });
-
-    assert.equal(exitCode, 1);
   });
 
-  await t.test("handles single quoted option names", async () => {
-    const configText = `{
+  await t.test("handles single quotes", async (t) => {
+    await t.test("when encountered in option names", async () => {
+      const configText = `{
   'failFast': true,
   "target": ["current"]
 }`;
 
-    await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: configText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-single-quoted-option-names`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-    assert.equal(stdout, "");
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-single-quoted-option-names`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
-  });
-
-  await t.test("handles single quoted option values", async () => {
-    const configText = `{
+    await t.test("when encountered in option values", async () => {
+      const configText = `{
   "rootPath": '../',
   "target": ["current"]
 }`;
 
-    await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: configText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-single-quoted-option-values`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-    assert.equal(stdout, "");
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-single-quoted-option-values`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
-  });
-
-  await t.test("handles single quoted list values", async () => {
-    const configText = `{
+    await t.test("when encountered in list values", async () => {
+      const configText = `{
   "target": ['4.8', "5.2"]
 }`;
 
-    await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: configText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-single-quoted-list-values`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
     });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-    assert.equal(stdout, "");
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-single-quoted-list-values`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
   });
 });
 
