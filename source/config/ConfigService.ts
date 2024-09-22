@@ -31,8 +31,8 @@ export class ConfigService {
   #configFilePath = Path.resolve(defaultOptions.rootPath, "./tstyche.config.json");
   #pathMatch: Array<string> = [];
 
-  #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    EventEmitter.dispatch(["config:error", { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics] }]);
+  #onDiagnostics(this: void, diagnostics: Diagnostic) {
+    EventEmitter.dispatch(["config:error", { diagnostics: [diagnostics] }]);
   }
 
   async parseCommandLine(commandLineArgs: Array<string>, storeService: StoreService): Promise<void> {

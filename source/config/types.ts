@@ -4,7 +4,7 @@ export type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
 
 export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
 
-export type DiagnosticsHandler = (diagnostics: Diagnostic | Array<Diagnostic>) => void;
+export type DiagnosticsHandler = (diagnostics: Diagnostic) => void;
 
 export interface EnvironmentOptions {
   /**
