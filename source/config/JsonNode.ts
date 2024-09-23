@@ -1,7 +1,7 @@
 import type { DiagnosticOrigin } from "#diagnostic";
 import type { OptionValue } from "./types.js";
 
-export class JsonElement {
+export class JsonNode {
   origin: DiagnosticOrigin;
   text: string | undefined;
 
@@ -11,9 +11,8 @@ export class JsonElement {
   }
 
   getValue(options: { expectsIdentifier: true }): string | undefined;
-  getValue(options: { expectsString: true }): string | undefined;
   getValue(): OptionValue;
-  getValue(options?: { expectsIdentifier?: boolean; expectsString?: boolean }): OptionValue {
+  getValue(options?: { expectsIdentifier?: boolean }): OptionValue {
     if (this.text == null) {
       return undefined;
     }
@@ -22,22 +21,20 @@ export class JsonElement {
       return this.text.slice(1, -1);
     }
 
-    if (!options?.expectsIdentifier) {
-      if (this.text === "true") {
-        return true;
-      }
-
-      if (this.text === "false") {
-        return false;
-      }
-
-      if (/^\d/.test(this.text)) {
-        return Number.parseFloat(this.text);
-      }
+    if (options?.expectsIdentifier) {
+      return this.text;
     }
 
-    if (!options?.expectsString) {
-      return this.text;
+    if (this.text === "true") {
+      return true;
+    }
+
+    if (this.text === "false") {
+      return false;
+    }
+
+    if (/^\d/.test(this.text)) {
+      return Number.parseFloat(this.text);
     }
 
     return undefined;

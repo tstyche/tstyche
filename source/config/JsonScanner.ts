@@ -1,5 +1,5 @@
 import { DiagnosticOrigin, type SourceFile } from "#diagnostic";
-import { JsonElement } from "./JsonElement.js";
+import { JsonNode } from "./JsonNode.js";
 
 export class JsonScanner {
   #currentPosition = 0;
@@ -32,11 +32,11 @@ export class JsonScanner {
     return this.#peekCharacter() === token;
   }
 
-  read(): JsonElement {
+  read(): JsonNode {
     this.#skipTrivia();
 
     if (/[\:\]}]/.test(this.#peekCharacter())) {
-      return new JsonElement(undefined, this.#getOrigin());
+      return new JsonNode(undefined, this.#getOrigin());
     }
 
     let quoteCharacter = "";
@@ -61,14 +61,14 @@ export class JsonScanner {
       text += this.#readCharacter();
     }
 
-    return new JsonElement(text, this.#getOrigin());
+    return new JsonNode(text, this.#getOrigin());
   }
 
   #readCharacter() {
     return this.#sourceFile.text.charAt(this.#currentPosition++);
   }
 
-  readToken(token: string): JsonElement {
+  readToken(token: string): JsonNode {
     this.#skipTrivia();
 
     this.#previousPosition = this.#currentPosition;
@@ -76,10 +76,10 @@ export class JsonScanner {
     if (this.#peekCharacter() === token) {
       this.#currentPosition++;
 
-      return new JsonElement(token, this.#getOrigin());
+      return new JsonNode(token, this.#getOrigin());
     }
 
-    return new JsonElement(undefined, this.#getOrigin());
+    return new JsonNode(undefined, this.#getOrigin());
   }
 
   #skipTrivia() {

@@ -2,7 +2,7 @@ import { Diagnostic, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
-import type { JsonElement } from "./JsonElement.js";
+import type { JsonNode } from "./JsonNode.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { type ItemDefinition, type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
 import { OptionValidator } from "./OptionValidator.js";
@@ -36,25 +36,25 @@ export class ConfigFileOptionsWorker {
     this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
   }
 
-  #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonElement: JsonElement, isListItem: boolean) {
+  #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {
     const text = isListItem
       ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
       : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
 
-    this.#onDiagnostics(Diagnostic.error(text, jsonElement.origin));
+    this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
   }
 
   async #parseValue(optionDefinition: OptionDefinition | ItemDefinition, isListItem = false) {
-    let jsonElement: JsonElement;
+    let jsonNode: JsonNode;
     let optionValue: OptionValue;
 
     switch (optionDefinition.brand) {
       case OptionBrand.Boolean: {
-        jsonElement = this.#jsonScanner.read();
-        optionValue = jsonElement.getValue();
+        jsonNode = this.#jsonScanner.read();
+        optionValue = jsonNode.getValue();
 
         if (typeof optionValue !== "boolean") {
-          this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
+          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
           break;
         }
 
@@ -62,11 +62,11 @@ export class ConfigFileOptionsWorker {
       }
 
       case OptionBrand.String: {
-        jsonElement = this.#jsonScanner.read();
-        optionValue = jsonElement.getValue({ expectsString: true });
+        jsonNode = this.#jsonScanner.read();
+        optionValue = jsonNode.getValue();
 
         if (typeof optionValue !== "string") {
-          this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
+          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
           break;
         }
 
@@ -74,12 +74,7 @@ export class ConfigFileOptionsWorker {
           optionValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
         }
 
-        await this.#optionValidator.check(
-          optionDefinition.name,
-          optionValue,
-          optionDefinition.brand,
-          jsonElement.origin,
-        );
+        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand, jsonNode.origin);
 
         break;
       }
@@ -89,9 +84,9 @@ export class ConfigFileOptionsWorker {
 
         if (!leftBracketToken.text) {
           // TODO check if object type is handled here
-          jsonElement = this.#jsonScanner.read();
+          jsonNode = this.#jsonScanner.read();
 
-          this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
+          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
           break;
         }
 
@@ -118,8 +113,8 @@ export class ConfigFileOptionsWorker {
         const rightBracketToken = this.#jsonScanner.readToken("]");
 
         if (!rightBracketToken.text) {
-          const text = ConfigDiagnosticText.expectedJsonElement("closing ']'");
-          const relatedText = ConfigDiagnosticText.seenJsonElement("opening '['");
+          const text = ConfigDiagnosticText.expectedJson("closing ']'");
+          const relatedText = ConfigDiagnosticText.seenJson("opening '['");
 
           const diagnostic = Diagnostic.error(text, rightBracketToken.origin).add({
             // TODO can be Info, since this is not an error
@@ -144,7 +139,7 @@ export class ConfigFileOptionsWorker {
     }
 
     if (!leftBraceToken.text) {
-      const text = ConfigDiagnosticText.expectedJsonElement("'{'");
+      const text = ConfigDiagnosticText.expectedJson("'{'");
 
       this.#onDiagnostics(Diagnostic.error(text, leftBraceToken.origin));
 
@@ -156,14 +151,14 @@ export class ConfigFileOptionsWorker {
         break;
       }
 
-      const optionNameElement = this.#jsonScanner.read();
+      const optionNameNode = this.#jsonScanner.read();
 
-      const optionName = optionNameElement.getValue({ expectsIdentifier: true });
+      const optionName = optionNameNode.getValue({ expectsIdentifier: true });
 
       if (!optionName) {
-        const text = ConfigDiagnosticText.expectedJsonElement("option name");
+        const text = ConfigDiagnosticText.expectedJson("option name");
 
-        this.#onDiagnostics(Diagnostic.error(text, optionNameElement.origin));
+        this.#onDiagnostics(Diagnostic.error(text, optionNameNode.origin));
 
         return;
       }
@@ -173,7 +168,7 @@ export class ConfigFileOptionsWorker {
       if (!optionDefinition) {
         const text = ConfigDiagnosticText.unknownOption(optionName);
 
-        this.#onDiagnostics(Diagnostic.error(text, optionNameElement.origin));
+        this.#onDiagnostics(Diagnostic.error(text, optionNameNode.origin));
 
         if (this.#jsonScanner.readToken(":")) {
           // TODO might not read list
@@ -209,8 +204,8 @@ export class ConfigFileOptionsWorker {
     const rightBraceToken = this.#jsonScanner.readToken("}");
 
     if (!rightBraceToken.text) {
-      const text = ConfigDiagnosticText.expectedJsonElement("closing '}'");
-      const relatedText = ConfigDiagnosticText.seenJsonElement("opening '{'");
+      const text = ConfigDiagnosticText.expectedJson("closing '}'");
+      const relatedText = ConfigDiagnosticText.seenJson("opening '{'");
 
       const diagnostic = Diagnostic.error(text, rightBraceToken.origin).add({
         // TODO can be Info, since this is not an error
