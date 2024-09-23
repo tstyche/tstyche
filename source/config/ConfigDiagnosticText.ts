@@ -1,10 +1,6 @@
 import { type OptionBrand, OptionGroup } from "./enums.js";
 
 export class ConfigDiagnosticText {
-  static doubleQuotesExpected(): string {
-    return "String literal with double quotes expected.";
-  }
-
   static expectsListItemType(optionName: string, optionBrand: OptionBrand): string {
     return `Item of the '${optionName}' list must be of type ${optionBrand}.`;
   }
