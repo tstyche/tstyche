@@ -429,9 +429,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-html@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "@cspell/dict-html@npm:4.0.5"
-  checksum: 10c0/6e1b9262bba042a951a6020dfd99efb5fb3a29a5ad8bbdc96a1dd197dc1d89384448afd3b6ff7227a48f2439a90bd3b297566b35c94dcc032f8b473ac147c16a
+  version: 4.0.6
+  resolution: "@cspell/dict-html@npm:4.0.6"
+  checksum: 10c0/5844d4eb26342349fc84a7dfbce33086db775e80cae9b23faae658a0a2aae062ae356f2ec72b389c162ebeaec54f928d276d883dffa479b64b655c2e6ecd52fd
   languageName: node
   linkType: hard
 
@@ -499,9 +499,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.1.4":
-  version: 5.1.4
-  resolution: "@cspell/dict-npm@npm:5.1.4"
-  checksum: 10c0/b1b7b42fbe52602705606fbbb5429241088ec7cb69b2b11373375f0bf1033b5deac5bf74b5b821959f43ce9260dfbe8ef757262756c7f5428dbf5efa1caacf6c
+  version: 5.1.5
+  resolution: "@cspell/dict-npm@npm:5.1.5"
+  checksum: 10c0/4a8c376a8363b6534f682cb7892ca16c30d3eba0ea7997399c1400c345cd82d150fbc4bc4cc85257e571523d75a2a50d8c37533bd7243c2bf6a0ac544784740c
   languageName: node
   linkType: hard
 
@@ -513,9 +513,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-powershell@npm:^5.0.8":
-  version: 5.0.8
-  resolution: "@cspell/dict-powershell@npm:5.0.8"
-  checksum: 10c0/13f3ecba41566b0971045e3713064dd6b61ae797c99b7ebf62d2aed5a37570ecef18e96ac779034c0f52a483f1f7fa511e7f498cad8dded974e0f8d78e0c1e58
+  version: 5.0.9
+  resolution: "@cspell/dict-powershell@npm:5.0.9"
+  checksum: 10c0/e5f31eb05b9070f232306c3581bcec4d3d812f79162be0ca3821f918d1dd0fd285221e494dee3d12055e79f9e59663411abeb8f439e30949fee9debe6ccb4c4b
   languageName: node
   linkType: hard
 
@@ -564,9 +564,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^4.1.3":
-  version: 4.1.3
-  resolution: "@cspell/dict-software-terms@npm:4.1.3"
-  checksum: 10c0/1dcfb726703dd76b484e21f0ad363b2938aa970320d306e83592b9b38b1e0aab85acf771b8e483c739651816316c656fa5170c1f749cb17dbc79d8d479486c73
+  version: 4.1.4
+  resolution: "@cspell/dict-software-terms@npm:4.1.4"
+  checksum: 10c0/470155744beb1b080acf981d9f61cf3d8c45ffd226d7da8696095653cceeef39d0c703d75e23a4d0392360839354e916485d2e4c59287d34fc30e9a1c9609ad9
   languageName: node
   linkType: hard
 
@@ -719,9 +719,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-typescript@npm:11.1.6":
-  version: 11.1.6
-  resolution: "@rollup/plugin-typescript@npm:11.1.6"
+"@rollup/plugin-typescript@npm:12.1.0":
+  version: 12.1.0
+  resolution: "@rollup/plugin-typescript@npm:12.1.0"
   dependencies:
     "@rollup/pluginutils": "npm:^5.1.0"
     resolve: "npm:^1.22.1"
@@ -734,13 +734,13 @@ __metadata:
       optional: true
     tslib:
       optional: true
-  checksum: 10c0/5347cd73ac28d4cf2401a3e689864a1a0df8f3ae029abd9c38525cbc84bcfa16c3a32a0ac5698dac65ec531ba7cf8332e14f5fc7f8fa501193da23320a134c5c
+  checksum: 10c0/46ebb87e52e1aac334f80cfa601096e25a8ce97cf43c68d42e72c8d5f9b7acd074d185c3ef98274930b3f56f47d7370a2837e4c909dc4e320a09bf6e48fc100d
   languageName: node
   linkType: hard
 
 "@rollup/pluginutils@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "@rollup/pluginutils@npm:5.1.0"
+  version: 5.1.1
+  resolution: "@rollup/pluginutils@npm:5.1.1"
   dependencies:
     "@types/estree": "npm:^1.0.0"
     estree-walker: "npm:^2.0.2"
@@ -750,7 +750,7 @@ __metadata:
   peerDependenciesMeta:
     rollup:
       optional: true
-  checksum: 10c0/c7bed15711f942d6fdd3470fef4105b73991f99a478605e13d41888963330a6f9e32be37e6ddb13f012bc7673ff5e54f06f59fd47109436c1c513986a8a7612d
+  checksum: 10c0/433a8b0b67ef9a36fb909a63c5ffa03846e15b6547fec9d2b9e15510dd898de9d1ec3f574aae29749d0e757e269112121a859f204b37becc470f1404e862b1e2
   languageName: node
   linkType: hard
 
@@ -866,10 +866,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:1.0.5, @types/estree@npm:^1.0.0":
+"@types/estree@npm:1.0.5":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
   checksum: 10c0/b3b0e334288ddb407c7b3357ca67dbee75ee22db242ca7c56fe27db4e1a31989cb8af48a84dd401deb787fe10cc6b2ab1ee82dc4783be87ededbe3d53c79c70d
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:^1.0.0":
+  version: 1.0.6
+  resolution: "@types/estree@npm:1.0.6"
+  checksum: 10c0/cdfd751f6f9065442cd40957c07fd80361c962869aa853c1c2fd03e101af8b9389d8ff4955a43a6fcfa223dd387a089937f95be0f3eec21ca527039fd2d9859a
   languageName: node
   linkType: hard
 
@@ -883,9 +890,9 @@ __metadata:
   linkType: hard
 
 "@types/prop-types@npm:*":
-  version: 15.7.12
-  resolution: "@types/prop-types@npm:15.7.12"
-  checksum: 10c0/1babcc7db6a1177779f8fde0ccc78d64d459906e6ef69a4ed4dd6339c920c2e05b074ee5a92120fe4e9d9f1a01c952f843ebd550bee2332fc2ef81d1706878f8
+  version: 15.7.13
+  resolution: "@types/prop-types@npm:15.7.13"
+  checksum: 10c0/1b20fc67281902c6743379960247bc161f3f0406ffc0df8e7058745a85ea1538612109db0406290512947f9632fe9e10e7337bf0ce6338a91d6c948df16a7c61
   languageName: node
   linkType: hard
 
@@ -1359,9 +1366,9 @@ __metadata:
   linkType: hard
 
 "eight-colors@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "eight-colors@npm:1.3.0"
-  checksum: 10c0/ce63fb13caf4bbdc460d5114ef14648718b4a0ad9e0357eaf6cfb0c21fdf488212d20fb5933aa2fc3969ec9cbe05850a135741926fe10723fdbbff7c6b0e0ef2
+  version: 1.3.1
+  resolution: "eight-colors@npm:1.3.1"
+  checksum: 10c0/af37c6302b4879e1d756d3fcf9dbf21b0e8bb95d662e2725700aa451a756c9996d37a66cb05cbdbd156663e93398b8224199180f3683d1780542f3c9fd553d7d
   languageName: node
   linkType: hard
 
@@ -2589,7 +2596,7 @@ __metadata:
   resolution: "tstyche@workspace:."
   dependencies:
     "@biomejs/biome": "npm:1.9.2"
-    "@rollup/plugin-typescript": "npm:11.1.6"
+    "@rollup/plugin-typescript": "npm:12.1.0"
     "@types/node": "npm:20.16.5"
     "@types/react": "npm:18.3.8"
     ajv: "npm:8.17.1"
