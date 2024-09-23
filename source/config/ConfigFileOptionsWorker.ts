@@ -113,8 +113,8 @@ export class ConfigFileOptionsWorker {
         const rightBracketToken = this.#jsonScanner.readToken("]");
 
         if (!rightBracketToken.text) {
-          const text = ConfigDiagnosticText.expectedJson("closing ']'");
-          const relatedText = ConfigDiagnosticText.seenJson("opening '['");
+          const text = ConfigDiagnosticText.expected("closing ']'");
+          const relatedText = ConfigDiagnosticText.seen("opening '['");
 
           const diagnostic = Diagnostic.error(text, rightBracketToken.origin).add({
             // TODO can be Info, since this is not an error
@@ -139,7 +139,7 @@ export class ConfigFileOptionsWorker {
     }
 
     if (!leftBraceToken.text) {
-      const text = ConfigDiagnosticText.expectedJson("'{'");
+      const text = ConfigDiagnosticText.expected("'{'");
 
       this.#onDiagnostics(Diagnostic.error(text, leftBraceToken.origin));
 
@@ -156,7 +156,7 @@ export class ConfigFileOptionsWorker {
       const optionName = optionNameNode.getValue({ expectsIdentifier: true });
 
       if (!optionName) {
-        const text = ConfigDiagnosticText.expectedJson("option name");
+        const text = ConfigDiagnosticText.expected("option name");
 
         this.#onDiagnostics(Diagnostic.error(text, optionNameNode.origin));
 
@@ -204,8 +204,8 @@ export class ConfigFileOptionsWorker {
     const rightBraceToken = this.#jsonScanner.readToken("}");
 
     if (!rightBraceToken.text) {
-      const text = ConfigDiagnosticText.expectedJson("closing '}'");
-      const relatedText = ConfigDiagnosticText.seenJson("opening '{'");
+      const text = ConfigDiagnosticText.expected("closing '}'");
+      const relatedText = ConfigDiagnosticText.seen("opening '{'");
 
       const diagnostic = Diagnostic.error(text, rightBraceToken.origin).add({
         // TODO can be Info, since this is not an error

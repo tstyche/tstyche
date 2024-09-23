@@ -1,7 +1,7 @@
 import { type OptionBrand, OptionGroup } from "./enums.js";
 
 export class ConfigDiagnosticText {
-  static expectedJson(element: string): string {
+  static expected(element: string): string {
     return `Expected ${element}.`;
   }
 
@@ -29,7 +29,7 @@ export class ConfigDiagnosticText {
     }
   }
 
-  static seenJson(element: string): string {
+  static seen(element: string): string {
     return `The ${element} was seen here.`;
   }
 
