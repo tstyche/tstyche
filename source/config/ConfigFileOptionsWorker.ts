@@ -1,8 +1,8 @@
-import { Diagnostic, type DiagnosticOrigin, type SourceFile } from "#diagnostic";
+import { Diagnostic, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
-import { JsonScanner } from "./JsonScanner.js";
+import { type JsonElement, JsonScanner } from "./JsonScanner.js";
 import {
   type ItemDefinition,
   type OptionDefinition,
@@ -40,95 +40,68 @@ export class ConfigFileOptionsWorker {
     this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
   }
 
-  #parse(text: string) {
-    if (/^['"]/.test(text)) {
-      return text.slice(1, -1);
-    }
-
-    if (text === "true") {
-      return true;
-    }
-
-    if (text === "false") {
-      return false;
-    }
-
-    if (/^\d/.test(text)) {
-      return Number.parseFloat(text);
-    }
-
-    return text;
-  }
-
-  #onRequiresValue(
-    optionDefinition: OptionDefinition | ItemDefinition,
-    optionValue: { origin: DiagnosticOrigin; text: string | undefined },
-    isListItem: boolean,
-  ) {
+  #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonElement: JsonElement, isListItem: boolean) {
     const text = isListItem
       ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
       : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
 
-    this.#onDiagnostics(Diagnostic.error(text, optionValue.origin));
+    this.#onDiagnostics(Diagnostic.error(text, jsonElement.origin));
   }
 
   async #parseValue(optionDefinition: OptionDefinition | ItemDefinition, isListItem = false) {
-    let optionValue: { origin: DiagnosticOrigin; text: string | undefined } | undefined;
+    let jsonElement: JsonElement;
     let parsedValue: OptionValue;
 
     switch (optionDefinition.brand) {
       case OptionBrand.Boolean: {
-        optionValue = this.#jsonScanner.read();
+        jsonElement = this.#jsonScanner.read();
 
-        if (optionValue.text != null) {
-          parsedValue = this.#parse(optionValue.text);
-        }
-
-        if (typeof parsedValue !== "boolean") {
-          this.#onRequiresValue(optionDefinition, optionValue, isListItem);
+        if (typeof jsonElement.value !== "boolean") {
+          this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
           break;
         }
+
+        parsedValue = jsonElement.value;
 
         break;
       }
 
       case OptionBrand.String: {
-        optionValue = this.#jsonScanner.read();
+        jsonElement = this.#jsonScanner.read();
 
-        if (optionValue.text != null) {
-          parsedValue = this.#parse(optionValue.text);
-        }
-
-        if (typeof parsedValue !== "string") {
-          this.#onRequiresValue(optionDefinition, optionValue, isListItem);
+        if (typeof jsonElement.value !== "string") {
+          this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
           break;
         }
 
+        parsedValue = jsonElement.value;
+
         if (optionDefinition.name === "rootPath") {
-          parsedValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), parsedValue);
+          parsedValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), jsonElement.value);
         }
 
         await this.#optionValidator.check(
           optionDefinition.name,
           parsedValue,
           optionDefinition.brand,
-          optionValue.origin,
+          jsonElement.origin,
         );
 
         break;
       }
 
       case OptionBrand.List: {
-        parsedValue = [];
-
         const leftBracketToken = this.#jsonScanner.readToken("[");
 
         if (!leftBracketToken.value) {
-          optionValue = this.#jsonScanner.read();
+          // TODO check if object type is handled here
+          jsonElement = this.#jsonScanner.read();
 
-          this.#onRequiresValue(optionDefinition, optionValue, isListItem);
+          this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
           break;
         }
+
+        parsedValue = [];
 
         while (!this.#jsonScanner.isRead()) {
           if (this.#jsonScanner.peekToken("]")) {
@@ -189,19 +162,24 @@ export class ConfigFileOptionsWorker {
         break;
       }
 
-      const optionName = this.#jsonScanner.read();
+      const optionNameElement = this.#jsonScanner.read();
 
-      if (!optionName.text) {
-        // TODO should emit some diagnostic, perhaps?
-        continue;
+      const optionName = optionNameElement.value?.toString();
+
+      if (!optionName) {
+        const text = ConfigDiagnosticText.expectedJsonElement("option name");
+
+        this.#onDiagnostics(Diagnostic.error(text, optionNameElement.origin));
+
+        return;
       }
 
-      const optionNameText = this.#parse(optionName.text).toString();
-
-      const optionDefinition = this.#configFileOptionDefinitions.get(optionNameText);
+      const optionDefinition = this.#configFileOptionDefinitions.get(optionName);
 
       if (!optionDefinition) {
-        this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.unknownOption(optionNameText), optionName.origin));
+        const text = ConfigDiagnosticText.unknownOption(optionName);
+
+        this.#onDiagnostics(Diagnostic.error(text, optionNameElement.origin));
 
         if (this.#jsonScanner.readToken(":")) {
           // TODO might not read list

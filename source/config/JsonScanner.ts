@@ -1,4 +1,42 @@
 import { DiagnosticOrigin, type SourceFile } from "#diagnostic";
+import type { OptionValue } from "./OptionDefinitionsMap.js";
+
+export class JsonElement {
+  origin: DiagnosticOrigin;
+  text: string | undefined;
+  value: OptionValue;
+
+  constructor(text: string | undefined, origin: DiagnosticOrigin) {
+    this.origin = origin;
+    this.text = text;
+
+    this.value = this.#resolveValue();
+  }
+
+  #resolveValue() {
+    if (this.text == null) {
+      return undefined;
+    }
+
+    if (/^['"]/.test(this.text)) {
+      return this.text.slice(1, -1);
+    }
+
+    if (this.text === "true") {
+      return true;
+    }
+
+    if (this.text === "false") {
+      return false;
+    }
+
+    if (/^\d/.test(this.text)) {
+      return Number.parseFloat(this.text);
+    }
+
+    return this.text;
+  }
+}
 
 export class JsonScanner {
   #currentPosition = 0;
@@ -31,11 +69,11 @@ export class JsonScanner {
     return this.#peekCharacter() === token;
   }
 
-  read(): { origin: DiagnosticOrigin; text: string | undefined } {
+  read(): JsonElement {
     this.#skipTrivia();
 
-    if (/[\]}]/.test(this.#peekCharacter())) {
-      return { origin: this.#getOrigin(), text: undefined };
+    if (/[\:\]}]/.test(this.#peekCharacter())) {
+      return new JsonElement(undefined, this.#getOrigin());
     }
 
     let quoteCharacter = "";
@@ -60,14 +98,14 @@ export class JsonScanner {
       text += this.#readCharacter();
     }
 
-    return { origin: this.#getOrigin(), text };
+    return new JsonElement(text, this.#getOrigin());
   }
 
   #readCharacter() {
     return this.#sourceFile.text.charAt(this.#currentPosition++);
   }
 
-  readToken(token: string): { origin: DiagnosticOrigin; value: string | undefined } {
+  readToken(token: string): JsonElement {
     this.#skipTrivia();
 
     this.#previousPosition = this.#currentPosition;
@@ -75,10 +113,10 @@ export class JsonScanner {
     if (this.#peekCharacter() === token) {
       this.#currentPosition++;
 
-      return { origin: this.#getOrigin(), value: token };
+      return new JsonElement(token, this.#getOrigin());
     }
 
-    return { origin: this.#getOrigin(), value: undefined };
+    return new JsonElement(undefined, this.#getOrigin());
   }
 
   #skipTrivia() {
@@ -119,5 +157,7 @@ export class JsonScanner {
       // makes sure white space after comments is skipped
       break;
     }
+
+    this.#previousPosition = this.#currentPosition;
   }
 }

@@ -79,26 +79,48 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles wrong root value", async () => {
-    const config = [{ failFast: true }];
-
-    await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-    assert.equal(stdout, "");
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-wrong-root-value`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
-  });
-
   await t.test("handles syntax errors", async (t) => {
+    await t.test("when root brace is missing", async () => {
+      const config = [{ failFast: true }];
+
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-syntax-errors-root-brace`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
+    });
+
+    await t.test("when option name is missing", async () => {
+      const configText = `{
+  : true,
+  "testFileMatch": ["examples/*.tst.*"
+`;
+
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: configText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-syntax-errors-option-name`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
+    });
+
     await t.test("when closing brace is missing", async () => {
       const configText = `{
   'failFast': true
