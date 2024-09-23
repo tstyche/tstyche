@@ -1,6 +1,10 @@
 import { type OptionBrand, OptionGroup } from "./enums.js";
 
 export class ConfigDiagnosticText {
+  static expectedJsonElement(element: string): string {
+    return `Expected ${element}.`;
+  }
+
   static expectsListItemType(optionName: string, optionBrand: OptionBrand): string {
     return `Item of the '${optionName}' list must be of type ${optionBrand}.`;
   }
@@ -23,6 +27,10 @@ export class ConfigDiagnosticText {
       case OptionGroup.ConfigFile:
         return optionName;
     }
+  }
+
+  static seenJsonElement(element: string): string {
+    return `The ${element} was seen here.`;
   }
 
   static testFileMatchCannotStartWith(segment: string): Array<string> {

@@ -151,9 +151,12 @@ export class ConfigFileOptionsWorker {
         const rightBracketToken = this.#jsonScanner.readToken("]");
 
         if (!rightBracketToken.value) {
-          const diagnostic = Diagnostic.error(`Expected closing ']'.`, rightBracketToken.origin).add({
+          const text = ConfigDiagnosticText.expectedJsonElement("closing ']'");
+          const relatedText = ConfigDiagnosticText.seenJsonElement("opening '['");
+
+          const diagnostic = Diagnostic.error(text, rightBracketToken.origin).add({
             // TODO can be Info, since this is not an error
-            related: [Diagnostic.error("The opening '[' was seen here.", leftBracketToken.origin)],
+            related: [Diagnostic.error(relatedText, leftBracketToken.origin)],
           });
 
           this.#onDiagnostics(diagnostic);
@@ -174,7 +177,9 @@ export class ConfigFileOptionsWorker {
     }
 
     if (!leftBraceToken.value) {
-      this.#onDiagnostics(Diagnostic.error(`Expected '{'.`, leftBraceToken.origin));
+      const text = ConfigDiagnosticText.expectedJsonElement("'{'");
+
+      this.#onDiagnostics(Diagnostic.error(text, leftBraceToken.origin));
 
       return;
     }
@@ -232,9 +237,12 @@ export class ConfigFileOptionsWorker {
     const rightBraceToken = this.#jsonScanner.readToken("}");
 
     if (!rightBraceToken.value) {
-      const diagnostic = Diagnostic.error(`Expected closing '}'.`, rightBraceToken.origin).add({
+      const text = ConfigDiagnosticText.expectedJsonElement("closing '}'");
+      const relatedText = ConfigDiagnosticText.seenJsonElement("opening '{'");
+
+      const diagnostic = Diagnostic.error(text, rightBraceToken.origin).add({
         // TODO can be Info, since this is not an error
-        related: [Diagnostic.error("The opening '{' was seen here.", leftBraceToken.origin)],
+        related: [Diagnostic.error(relatedText, leftBraceToken.origin)],
       });
 
       this.#onDiagnostics(diagnostic);
