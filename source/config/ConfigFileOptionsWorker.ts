@@ -2,16 +2,12 @@ import { Diagnostic, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
-import { type JsonElement, JsonScanner } from "./JsonScanner.js";
-import {
-  type ItemDefinition,
-  type OptionDefinition,
-  OptionDefinitionsMap,
-  type OptionValue,
-} from "./OptionDefinitionsMap.js";
+import type { JsonElement } from "./JsonElement.js";
+import { JsonScanner } from "./JsonScanner.js";
+import { type ItemDefinition, type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
 import { OptionValidator } from "./OptionValidator.js";
 import { OptionBrand, OptionGroup } from "./enums.js";
-import type { DiagnosticsHandler } from "./types.js";
+import type { DiagnosticsHandler, OptionValue } from "./types.js";
 
 export class ConfigFileOptionsWorker {
   #configFileOptionDefinitions: Map<string, OptionDefinition>;
@@ -50,39 +46,37 @@ export class ConfigFileOptionsWorker {
 
   async #parseValue(optionDefinition: OptionDefinition | ItemDefinition, isListItem = false) {
     let jsonElement: JsonElement;
-    let parsedValue: OptionValue;
+    let optionValue: OptionValue;
 
     switch (optionDefinition.brand) {
       case OptionBrand.Boolean: {
         jsonElement = this.#jsonScanner.read();
+        optionValue = jsonElement.getValue();
 
-        if (typeof jsonElement.value !== "boolean") {
+        if (typeof optionValue !== "boolean") {
           this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
           break;
         }
-
-        parsedValue = jsonElement.value;
 
         break;
       }
 
       case OptionBrand.String: {
         jsonElement = this.#jsonScanner.read();
+        optionValue = jsonElement.getValue();
 
-        if (typeof jsonElement.value !== "string") {
+        if (typeof optionValue !== "string") {
           this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
           break;
         }
 
-        parsedValue = jsonElement.value;
-
         if (optionDefinition.name === "rootPath") {
-          parsedValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), jsonElement.value);
+          optionValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
         }
 
         await this.#optionValidator.check(
           optionDefinition.name,
-          parsedValue,
+          optionValue,
           optionDefinition.brand,
           jsonElement.origin,
         );
@@ -93,7 +87,7 @@ export class ConfigFileOptionsWorker {
       case OptionBrand.List: {
         const leftBracketToken = this.#jsonScanner.readToken("[");
 
-        if (!leftBracketToken.value) {
+        if (!leftBracketToken.text) {
           // TODO check if object type is handled here
           jsonElement = this.#jsonScanner.read();
 
@@ -101,7 +95,7 @@ export class ConfigFileOptionsWorker {
           break;
         }
 
-        parsedValue = [];
+        optionValue = [];
 
         while (!this.#jsonScanner.isRead()) {
           if (this.#jsonScanner.peekToken("]")) {
@@ -111,19 +105,19 @@ export class ConfigFileOptionsWorker {
           const item = await this.#parseValue(optionDefinition.items, /* isListItem */ true);
 
           if (item != null) {
-            parsedValue.push(item);
+            optionValue.push(item);
           }
 
           const commaToken = this.#jsonScanner.readToken(",");
 
-          if (!commaToken.value) {
+          if (!commaToken.text) {
             break;
           }
         }
 
         const rightBracketToken = this.#jsonScanner.readToken("]");
 
-        if (!rightBracketToken.value) {
+        if (!rightBracketToken.text) {
           const text = ConfigDiagnosticText.expectedJsonElement("closing ']'");
           const relatedText = ConfigDiagnosticText.seenJsonElement("opening '['");
 
@@ -139,7 +133,7 @@ export class ConfigFileOptionsWorker {
       }
     }
 
-    return parsedValue;
+    return optionValue;
   }
 
   async #parseObject() {
@@ -149,7 +143,7 @@ export class ConfigFileOptionsWorker {
       return;
     }
 
-    if (!leftBraceToken.value) {
+    if (!leftBraceToken.text) {
       const text = ConfigDiagnosticText.expectedJsonElement("'{'");
 
       this.#onDiagnostics(Diagnostic.error(text, leftBraceToken.origin));
@@ -164,7 +158,7 @@ export class ConfigFileOptionsWorker {
 
       const optionNameElement = this.#jsonScanner.read();
 
-      const optionName = optionNameElement.value?.toString();
+      const optionName = optionNameElement.getValue()?.toString();
 
       if (!optionName) {
         const text = ConfigDiagnosticText.expectedJsonElement("option name");
@@ -188,7 +182,7 @@ export class ConfigFileOptionsWorker {
 
         const commaToken = this.#jsonScanner.readToken(",");
 
-        if (!commaToken.value) {
+        if (!commaToken.text) {
           break;
         }
 
@@ -207,14 +201,14 @@ export class ConfigFileOptionsWorker {
 
       const commaToken = this.#jsonScanner.readToken(",");
 
-      if (!commaToken.value) {
+      if (!commaToken.text) {
         break;
       }
     }
 
     const rightBraceToken = this.#jsonScanner.readToken("}");
 
-    if (!rightBraceToken.value) {
+    if (!rightBraceToken.text) {
       const text = ConfigDiagnosticText.expectedJsonElement("closing '}'");
       const relatedText = ConfigDiagnosticText.seenJsonElement("opening '{'");
 

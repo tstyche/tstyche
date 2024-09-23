@@ -6,10 +6,9 @@ import { Path } from "#path";
 import type { StoreService } from "#store";
 import { CommandLineOptionsWorker } from "./CommandLineOptionsWorker.js";
 import { ConfigFileOptionsWorker } from "./ConfigFileOptionsWorker.js";
-import type { OptionValue } from "./OptionDefinitionsMap.js";
 import { defaultOptions } from "./defaultOptions.js";
 import { environmentOptions } from "./environmentOptions.js";
-import type { CommandLineOptions, ConfigFileOptions, EnvironmentOptions } from "./types.js";
+import type { CommandLineOptions, ConfigFileOptions, EnvironmentOptions, OptionValue } from "./types.js";
 
 export interface ResolvedConfig
   extends EnvironmentOptions,

@@ -36,3 +36,5 @@ export interface EnvironmentOptions {
    */
   typescriptPath: string | undefined;
 }
+
+export type OptionValue = Array<OptionValue> | string | number | boolean | null | undefined;
