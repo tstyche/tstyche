@@ -209,6 +209,28 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
+
+  await t.test("allows trailing commas", async () => {
+    const configText = `{
+  "testFileMatch": ["**/*.tst.*",],
+  "failFast": true,
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(stdout, {
+      failFast: true,
+      testFileMatch: ["**/*.tst.*"],
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
 });
 
 await test("'--config' command line option", async (t) => {
