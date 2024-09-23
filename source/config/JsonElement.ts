@@ -10,7 +10,10 @@ export class JsonElement {
     this.text = text;
   }
 
-  getValue(): OptionValue {
+  getValue(options: { expectsIdentifier: true }): string | undefined;
+  getValue(options: { expectsString: true }): string | undefined;
+  getValue(): OptionValue;
+  getValue(options?: { expectsIdentifier?: boolean; expectsString?: boolean }): OptionValue {
     if (this.text == null) {
       return undefined;
     }
@@ -19,18 +22,24 @@ export class JsonElement {
       return this.text.slice(1, -1);
     }
 
-    if (this.text === "true") {
-      return true;
+    if (!options?.expectsIdentifier) {
+      if (this.text === "true") {
+        return true;
+      }
+
+      if (this.text === "false") {
+        return false;
+      }
+
+      if (/^\d/.test(this.text)) {
+        return Number.parseFloat(this.text);
+      }
     }
 
-    if (this.text === "false") {
-      return false;
+    if (!options?.expectsString) {
+      return this.text;
     }
 
-    if (/^\d/.test(this.text)) {
-      return Number.parseFloat(this.text);
-    }
-
-    return this.text;
+    return undefined;
   }
 }

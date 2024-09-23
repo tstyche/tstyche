@@ -63,7 +63,7 @@ export class ConfigFileOptionsWorker {
 
       case OptionBrand.String: {
         jsonElement = this.#jsonScanner.read();
-        optionValue = jsonElement.getValue();
+        optionValue = jsonElement.getValue({ expectsString: true });
 
         if (typeof optionValue !== "string") {
           this.#onRequiresValue(optionDefinition, jsonElement, isListItem);
@@ -158,7 +158,7 @@ export class ConfigFileOptionsWorker {
 
       const optionNameElement = this.#jsonScanner.read();
 
-      const optionName = optionNameElement.getValue()?.toString();
+      const optionName = optionNameElement.getValue({ expectsIdentifier: true });
 
       if (!optionName) {
         const text = ConfigDiagnosticText.expectedJsonElement("option name");

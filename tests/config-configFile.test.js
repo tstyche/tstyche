@@ -188,28 +188,6 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("allows unquoted option values", async () => {
-    const configText = `{
-  rootPath: ./,
-  testFileMatch: [**/*.tst.*]
-}
-`;
-
-    await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
-
-    assert.matchObject(normalizeOutput(stdout), {
-      rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile",
-      testFileMatch: ["**/*.tst.*"],
-    });
-
-    assert.equal(stderr, "");
-    assert.equal(exitCode, 0);
-  });
-
   await t.test("allows single quoted option values", async () => {
     const configText = `{
   'rootPath': './',

@@ -121,6 +121,29 @@ await test("'tstyche.config.json' file", async (t) => {
       assert.equal(exitCode, 1);
     });
 
+    await t.test("when option values are unquoted", async () => {
+      const configText = `{
+    rootPath: ./,
+    testFileMatch: [**/*.tst.*]
+  }
+  `;
+
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: configText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-syntax-errors-unquoted-values`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
+    });
+
     await t.test("when closing brace is missing", async () => {
       const configText = `{
   'failFast': true
