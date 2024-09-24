@@ -148,7 +148,6 @@
       "linter": {
         "rules": {
           "complexity": {
-            "noBannedTypes": "off",
             "useArrowFunction": "off"
           },
           "style": {
