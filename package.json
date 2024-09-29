@@ -68,7 +68,7 @@
     "ajv": "8.17.1",
     "cspell": "8.14.4",
     "magic-string": "0.30.11",
-    "monocart-coverage-reports": "2.10.9",
+    "monocart-coverage-reports": "2.11.0",
     "pretty-ansi": "2.0.0",
     "rollup": "4.22.5",
     "rollup-plugin-dts": "6.1.1",

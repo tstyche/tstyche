@@ -34,13 +34,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bcoe/v8-coverage@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "@bcoe/v8-coverage@npm:0.2.3"
-  checksum: 10c0/6b80ae4cb3db53f486da2dc63b6e190a74c8c3cca16bb2733f234a0b6a9382b09b146488ae08e2b22cf00f6c83e20f3e040a2f7894f05c045c946d6a090b1d52
-  languageName: node
-  linkType: hard
-
 "@biomejs/biome@npm:1.9.2":
   version: 1.9.2
   resolution: "@biomejs/biome@npm:1.9.2"
@@ -1358,7 +1351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eight-colors@npm:^1.3.0":
+"eight-colors@npm:^1.3.1":
   version: 1.3.1
   resolution: "eight-colors@npm:1.3.1"
   checksum: 10c0/af37c6302b4879e1d756d3fcf9dbf21b0e8bb95d662e2725700aa451a756c9996d37a66cb05cbdbd156663e93398b8224199180f3683d1780542f3c9fd553d7d
@@ -2071,18 +2064,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.10.9":
-  version: 2.10.9
-  resolution: "monocart-coverage-reports@npm:2.10.9"
+"monocart-coverage-reports@npm:2.11.0":
+  version: 2.11.0
+  resolution: "monocart-coverage-reports@npm:2.11.0"
   dependencies:
-    "@bcoe/v8-coverage": "npm:^0.2.3"
-    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
     acorn: "npm:^8.12.1"
     acorn-loose: "npm:^8.4.0"
     acorn-walk: "npm:^8.3.4"
     commander: "npm:^12.1.0"
     console-grid: "npm:^2.2.2"
-    eight-colors: "npm:^1.3.0"
+    eight-colors: "npm:^1.3.1"
     foreground-child: "npm:^3.3.0"
     istanbul-lib-coverage: "npm:^3.2.2"
     istanbul-lib-report: "npm:^3.0.1"
@@ -2091,7 +2082,7 @@ __metadata:
     monocart-locator: "npm:^1.0.2"
   bin:
     mcr: lib/cli.js
-  checksum: 10c0/9a4b21aa771c0b55c79aefe9321d4a72ecbcfefe4454e6c7738b03f1220774c803ac2cbbc0cde44b17c26f41912fcf99789d134b0639ce6d5dbba20671d5c2e8
+  checksum: 10c0/c7961e4170e32a62e89f7adac99d1c428ce13166b9d03467f04f953181bd2761e48e52a154da77658255dc9be84829c23c94174097a9743ed24f2e94cc67f79a
   languageName: node
   linkType: hard
 
@@ -2595,7 +2586,7 @@ __metadata:
     ajv: "npm:8.17.1"
     cspell: "npm:8.14.4"
     magic-string: "npm:0.30.11"
-    monocart-coverage-reports: "npm:2.10.9"
+    monocart-coverage-reports: "npm:2.11.0"
     pretty-ansi: "npm:2.0.0"
     rollup: "npm:4.22.5"
     rollup-plugin-dts: "npm:6.1.1"
