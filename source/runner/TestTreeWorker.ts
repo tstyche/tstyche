@@ -6,7 +6,7 @@ import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
 import { DescribeResult, ExpectResult, type TaskResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
-import { RunMode } from "./enums.js";
+import { RunMode } from "./RunMode.enum.js";
 
 interface TestFileWorkerOptions {
   cancellationToken: CancellationToken | undefined;

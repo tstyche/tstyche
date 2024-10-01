@@ -1,7 +1,8 @@
 import type ts from "typescript";
 import { TestMember } from "./TestMember.js";
+import type { TestMemberBrand } from "./TestMemberBrand.enum.js";
+import type { TestMemberFlags } from "./TestMemberFlags.enum.js";
 import type { TestTree } from "./TestTree.js";
-import type { TestMemberBrand, TestMemberFlags } from "./enums.js";
 
 export interface MatcherNode extends ts.CallExpression {
   expression: ts.PropertyAccessExpression;

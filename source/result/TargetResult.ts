@@ -1,7 +1,7 @@
 import type { Task } from "#task";
 import type { ProjectResult } from "./ProjectResult.js";
+import { ResultStatus } from "./ResultStatus.enum.js";
 import { ResultTiming } from "./ResultTiming.js";
-import { ResultStatus } from "./enums.js";
 
 export type TargetResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed;
 

@@ -1,4 +1,4 @@
-import type { CancellationReason } from "./enums.js";
+import type { CancellationReason } from "./CancellationReason.enum.js";
 
 export class CancellationToken {
   #isCancelled = false;

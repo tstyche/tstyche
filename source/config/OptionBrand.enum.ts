@@ -5,8 +5,3 @@ export const enum OptionBrand {
   BareTrue = "bareTrue", // a boolean option that does not take a value and when specified is interpreted as 'true'
   List = "list",
 }
-
-export const enum OptionGroup {
-  CommandLine = 1 << 1,
-  ConfigFile = 1 << 2,
-}

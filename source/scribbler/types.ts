@@ -1,4 +1,4 @@
-import type { Color } from "./enums.js";
+import type { Color } from "./Color.enum.js";
 
 export type ScribblerNode = Array<ScribblerNode> | ScribblerJsx.Element | string | number | undefined;
 

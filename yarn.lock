@@ -34,13 +34,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bcoe/v8-coverage@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "@bcoe/v8-coverage@npm:0.2.3"
-  checksum: 10c0/6b80ae4cb3db53f486da2dc63b6e190a74c8c3cca16bb2733f234a0b6a9382b09b146488ae08e2b22cf00f6c83e20f3e040a2f7894f05c045c946d6a090b1d52
-  languageName: node
-  linkType: hard
-
 "@biomejs/biome@npm:1.9.2":
   version: 1.9.2
   resolution: "@biomejs/biome@npm:1.9.2"
@@ -739,8 +732,8 @@ __metadata:
   linkType: hard
 
 "@rollup/pluginutils@npm:^5.1.0":
-  version: 5.1.1
-  resolution: "@rollup/pluginutils@npm:5.1.1"
+  version: 5.1.2
+  resolution: "@rollup/pluginutils@npm:5.1.2"
   dependencies:
     "@types/estree": "npm:^1.0.0"
     estree-walker: "npm:^2.0.2"
@@ -750,7 +743,7 @@ __metadata:
   peerDependenciesMeta:
     rollup:
       optional: true
-  checksum: 10c0/433a8b0b67ef9a36fb909a63c5ffa03846e15b6547fec9d2b9e15510dd898de9d1ec3f574aae29749d0e757e269112121a859f204b37becc470f1404e862b1e2
+  checksum: 10c0/30f4a98e91a8699b6666b64ecdc665439bd53dddbe964bbeca56da81ff889cfde3a3e059144b80c5a2d9b48aa158df18a45e9a847a33b757d3e8336b278b8836
   languageName: node
   linkType: hard
 
@@ -873,12 +866,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.16.9":
-  version: 20.16.9
-  resolution: "@types/node@npm:20.16.9"
+"@types/node@npm:20.16.10":
+  version: 20.16.10
+  resolution: "@types/node@npm:20.16.10"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/52d7cbd6792a26e6757c913d1f6dd0fb0104ac44c93dd87480c011d1211b3a1ba282962996bf6aec03f633b5b39f61576f1bafe8436592ab08ad39464e53e4b0
+  checksum: 10c0/c0c0c7ecb083ec638c2118e54b5242bb4c39a75608cbac9475cf15aaceb64b8bc997a87a0798e700a81d61651c8a7750ae0455be0f0996ada6e8b2bb818d90c5
   languageName: node
   linkType: hard
 
@@ -889,13 +882,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.3.9":
-  version: 18.3.9
-  resolution: "@types/react@npm:18.3.9"
+"@types/react@npm:18.3.10":
+  version: 18.3.10
+  resolution: "@types/react@npm:18.3.10"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/a92b8e061d0c833e096254782c56a802316593f4a907fb834b557cabe848a0829b9eb6056404ea239eb4d5ec5ac7b7724309761516c0a7a277916fa04dd4f805
+  checksum: 10c0/f5be1de1b0331c1fdb33d577f4cf7f1b949d4bded5347b2351a537f03c51dade5be115e21b161dcf1b37061954d320f6a0bdf8d7b70e24eda51071fdd614383d
   languageName: node
   linkType: hard
 
@@ -1358,7 +1351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eight-colors@npm:^1.3.0":
+"eight-colors@npm:^1.3.1":
   version: 1.3.1
   resolution: "eight-colors@npm:1.3.1"
   checksum: 10c0/af37c6302b4879e1d756d3fcf9dbf21b0e8bb95d662e2725700aa451a756c9996d37a66cb05cbdbd156663e93398b8224199180f3683d1780542f3c9fd553d7d
@@ -1475,9 +1468,9 @@ __metadata:
   linkType: hard
 
 "fast-uri@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "fast-uri@npm:3.0.1"
-  checksum: 10c0/3cd46d6006083b14ca61ffe9a05b8eef75ef87e9574b6f68f2e17ecf4daa7aaadeff44e3f0f7a0ef4e0f7e7c20fc07beec49ff14dc72d0b500f00386592f2d10
+  version: 3.0.2
+  resolution: "fast-uri@npm:3.0.2"
+  checksum: 10c0/8cdd3da7b4022a037d348d587d55caff74b7e4f862bbdd2cc35c1e6e3f97d0aedb567894d44c57ee8798d3192cceb97dcf41dbdabfa07dd2842a0474a6c6eeef
   languageName: node
   linkType: hard
 
@@ -2071,18 +2064,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.10.9":
-  version: 2.10.9
-  resolution: "monocart-coverage-reports@npm:2.10.9"
+"monocart-coverage-reports@npm:2.11.0":
+  version: 2.11.0
+  resolution: "monocart-coverage-reports@npm:2.11.0"
   dependencies:
-    "@bcoe/v8-coverage": "npm:^0.2.3"
-    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
     acorn: "npm:^8.12.1"
     acorn-loose: "npm:^8.4.0"
     acorn-walk: "npm:^8.3.4"
     commander: "npm:^12.1.0"
     console-grid: "npm:^2.2.2"
-    eight-colors: "npm:^1.3.0"
+    eight-colors: "npm:^1.3.1"
     foreground-child: "npm:^3.3.0"
     istanbul-lib-coverage: "npm:^3.2.2"
     istanbul-lib-report: "npm:^3.0.1"
@@ -2091,7 +2082,7 @@ __metadata:
     monocart-locator: "npm:^1.0.2"
   bin:
     mcr: lib/cli.js
-  checksum: 10c0/9a4b21aa771c0b55c79aefe9321d4a72ecbcfefe4454e6c7738b03f1220774c803ac2cbbc0cde44b17c26f41912fcf99789d134b0639ce6d5dbba20671d5c2e8
+  checksum: 10c0/c7961e4170e32a62e89f7adac99d1c428ce13166b9d03467f04f953181bd2761e48e52a154da77658255dc9be84829c23c94174097a9743ed24f2e94cc67f79a
   languageName: node
   linkType: hard
 
@@ -2157,9 +2148,9 @@ __metadata:
   linkType: hard
 
 "package-json-from-dist@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "package-json-from-dist@npm:1.0.0"
-  checksum: 10c0/e3ffaf6ac1040ab6082a658230c041ad14e72fabe99076a2081bb1d5d41210f11872403fc09082daf4387fc0baa6577f96c9c0e94c90c394fd57794b66aa4033
+  version: 1.0.1
+  resolution: "package-json-from-dist@npm:1.0.1"
+  checksum: 10c0/62ba2785eb655fec084a257af34dbe24292ab74516d6aecef97ef72d4897310bc6898f6c85b5cd22770eaa1ce60d55a0230e150fb6a966e3ecd6c511e23d164b
   languageName: node
   linkType: hard
 
@@ -2590,12 +2581,12 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:1.9.2"
     "@rollup/plugin-typescript": "npm:12.1.0"
-    "@types/node": "npm:20.16.9"
-    "@types/react": "npm:18.3.9"
+    "@types/node": "npm:20.16.10"
+    "@types/react": "npm:18.3.10"
     ajv: "npm:8.17.1"
     cspell: "npm:8.14.4"
     magic-string: "npm:0.30.11"
-    monocart-coverage-reports: "npm:2.10.9"
+    monocart-coverage-reports: "npm:2.11.0"
     pretty-ansi: "npm:2.0.0"
     rollup: "npm:4.22.5"
     rollup-plugin-dts: "npm:6.1.1"

@@ -1,4 +1,5 @@
-import { type OptionBrand, OptionGroup } from "./enums.js";
+import type { OptionBrand } from "./OptionBrand.enum.js";
+import { OptionGroup } from "./OptionGroup.enum.js";
 
 export class ConfigDiagnosticText {
   static expected(element: string): string {

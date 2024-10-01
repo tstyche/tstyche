@@ -1,4 +1,4 @@
-import { Color } from "./enums.js";
+import { Color } from "./Color.enum.js";
 import type { ScribblerNode } from "./types.js";
 
 interface TextProps {
