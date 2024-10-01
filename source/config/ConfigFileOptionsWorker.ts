@@ -3,9 +3,10 @@ import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
+import { OptionBrand } from "./OptionBrand.enum.js";
 import { type ItemDefinition, type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
+import { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionValidator } from "./OptionValidator.js";
-import { OptionBrand, OptionGroup } from "./enums.js";
 import type { DiagnosticsHandler, OptionValue } from "./types.js";
 
 export class ConfigFileOptionsWorker {

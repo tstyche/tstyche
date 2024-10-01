@@ -8,8 +8,8 @@ import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
+import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWorker } from "./TestTreeWorker.js";
-import { RunMode } from "./enums.js";
 
 export class TaskRunner {
   #compiler: typeof ts;

@@ -1,6 +1,6 @@
 import type ts from "typescript";
+import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
-import { DiagnosticCategory } from "./enums.js";
 
 export class Diagnostic {
   category: DiagnosticCategory;

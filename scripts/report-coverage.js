@@ -25,7 +25,7 @@ const config = {
 
   sourceFilter: {
     "**/source/tstyche.ts": false,
-    "**/source/**/enums.ts": false,
+    "**/source/**/*.enum.ts": false,
     "**/source/**/index.ts": false,
     "**/source/**/types.ts": false,
 

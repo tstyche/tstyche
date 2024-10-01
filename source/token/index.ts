@@ -1,2 +1,2 @@
 export { CancellationToken } from "./CancellationToken.js";
-export { CancellationReason } from "./enums.js";
+export { CancellationReason } from "./CancellationReason.enum.js";

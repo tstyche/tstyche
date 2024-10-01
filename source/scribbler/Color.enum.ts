@@ -1,5 +1,3 @@
-// reference: https://en.wikipedia.org/wiki/ANSI_escape_code
-
 export const enum Color {
   Reset = "0",
   Red = "31",

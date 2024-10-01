@@ -2,8 +2,9 @@ import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
+import type { OptionBrand } from "./OptionBrand.enum.js";
+import type { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionUsageText } from "./OptionUsageText.js";
-import type { OptionBrand, OptionGroup } from "./enums.js";
 import { environmentOptions } from "./environmentOptions.js";
 import type { DiagnosticsHandler } from "./types.js";
 

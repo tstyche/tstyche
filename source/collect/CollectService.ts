@@ -2,8 +2,8 @@ import type ts from "typescript";
 import { Assertion, type MatcherNode } from "./Assertion.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestMember } from "./TestMember.js";
+import { TestMemberBrand } from "./TestMemberBrand.enum.js";
 import { TestTree } from "./TestTree.js";
-import { TestMemberBrand } from "./enums.js";
 
 export class CollectService {
   #compiler: typeof ts;
