@@ -64,7 +64,7 @@
     "@biomejs/biome": "1.9.3",
     "@rollup/plugin-typescript": "12.1.0",
     "@types/node": "20.16.10",
-    "@types/react": "18.3.10",
+    "@types/react": "18.3.11",
     "ajv": "8.17.1",
     "cspell": "8.14.4",
     "magic-string": "0.30.11",
