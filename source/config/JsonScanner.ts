@@ -48,7 +48,7 @@ export class JsonScanner {
       quoteCharacter = text += this.#readCharacter();
     }
 
-    while (this.#currentPosition < this.#sourceFile.text.length) {
+    while (!this.isRead()) {
       text += this.#readCharacter();
 
       if (text.slice(-1) === quoteCharacter || (!quoteCharacter && /[\s,:\]}]/.test(this.#peekCharacter()))) {
@@ -106,7 +106,7 @@ export class JsonScanner {
       }
     }
 
-    while (this.#currentPosition < this.#sourceFile.text.length) {
+    while (!this.isRead()) {
       text += this.#readCharacter();
 
       if (text.slice(-1) === closingCharacter || (!closingCharacter && /[\s,:\]}]/.test(this.#peekCharacter()))) {
@@ -118,7 +118,7 @@ export class JsonScanner {
   }
 
   #skipTrivia() {
-    while (this.#currentPosition < this.#sourceFile.text.length) {
+    while (!this.isRead()) {
       if (/\s/.test(this.#peekCharacter())) {
         this.#currentPosition++;
         continue;
@@ -128,7 +128,7 @@ export class JsonScanner {
         if (this.#peekNextCharacter() === "/") {
           this.#currentPosition += 2;
 
-          while (this.#currentPosition < this.#sourceFile.text.length) {
+          while (!this.isRead()) {
             if (this.#readCharacter() === "\n") {
               break;
             }
@@ -140,7 +140,7 @@ export class JsonScanner {
         if (this.#peekNextCharacter() === "*") {
           this.#currentPosition += 2;
 
-          while (this.#currentPosition < this.#sourceFile.text.length) {
+          while (!this.isRead()) {
             if (this.#peekCharacter() === "*" && this.#peekNextCharacter() === "/") {
               this.#currentPosition += 2;
               break;
