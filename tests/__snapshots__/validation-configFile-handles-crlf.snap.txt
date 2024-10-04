@@ -1,0 +1,24 @@
+Error: Option 'failFast' requires a value of type boolean.
+
+  1 | {
+  2 |   "failFast": "always",
+    |               ~~~~~~~~
+  3 |   "rootPath": true
+  4 | }
+  5 | 
+  6 | 
+
+      at ./tstyche.config.json:2:15
+
+Error: Option 'rootPath' requires a value of type string.
+
+  1 | {
+  2 |   "failFast": "always",
+  3 |   "rootPath": true
+    |               ~~~~
+  4 | }
+  5 | 
+  6 | 
+
+      at ./tstyche.config.json:3:15
+

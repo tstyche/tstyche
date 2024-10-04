@@ -33,7 +33,7 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(stdout, "");
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-unknown-options-stderr`,
+      fileName: `${testFileName}-unknown-options`,
       testFileUrl: import.meta.url,
     });
 
@@ -55,14 +55,14 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(stdout, "");
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-wrong-option-value-type-stderr`,
+      fileName: `${testFileName}-wrong-option-value-type`,
       testFileUrl: import.meta.url,
     });
 
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when tabs are used for indentation, handles option values of wrong type", async () => {
+  await t.test("handles indentation tabs", async () => {
     const configText = `{
 \t"failFast": "always",
 \t"rootPath": true
@@ -78,7 +78,26 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(stdout, "");
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-tabs-wrong-option-value-type-stderr`,
+      fileName: `${testFileName}-handles-tabs`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("handles 'crlf' line endings", async () => {
+    const configText = `{\r\n  "failFast": "always",\r\n  "rootPath": true\r\n}\r\n`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stdout, "");
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-handles-crlf`,
       testFileUrl: import.meta.url,
     });
 
