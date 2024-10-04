@@ -84,10 +84,10 @@ export class ConfigFileOptionsWorker {
         const leftBracketToken = this.#jsonScanner.readToken("[");
 
         if (!leftBracketToken.text) {
-          // TODO check if object type is handled here
-          jsonNode = this.#jsonScanner.read();
+          jsonNode = this.#jsonScanner.skip();
 
           this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+
           break;
         }
 

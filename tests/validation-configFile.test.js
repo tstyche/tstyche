@@ -191,6 +191,29 @@ await test("'tstyche.config.json' file", async (t) => {
       assert.equal(exitCode, 1);
     });
 
+    await t.test("when opening bracket is missing", async () => {
+      const configText = `{
+  'failFast': true,
+  "testFileMatch": { "glob": "examples/*.tst.*" }
+}
+`;
+
+      await writeFixture(fixtureUrl, {
+        ["tstyche.config.json"]: configText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stdout, "");
+
+      await assert.matchSnapshot(stderr, {
+        fileName: `${testFileName}-syntax-errors-opening-bracket`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
+    });
+
     await t.test("when closing bracket is missing", async () => {
       const configText = `{
   'failFast': true,

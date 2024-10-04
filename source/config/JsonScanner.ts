@@ -49,16 +49,11 @@ export class JsonScanner {
     }
 
     while (this.#currentPosition < this.#sourceFile.text.length) {
-      if (
-        this.#peekCharacter() === quoteCharacter ||
-        (!quoteCharacter && /[\s,:\]}]/.test(this.#peekNextCharacter()))
-      ) {
-        text += this.#readCharacter();
+      text += this.#readCharacter();
 
+      if (text.slice(-1) === quoteCharacter || (!quoteCharacter && /[\s,:\]}]/.test(this.#peekCharacter()))) {
         break;
       }
-
-      text += this.#readCharacter();
     }
 
     return new JsonNode(text, this.#getOrigin());
@@ -82,21 +77,22 @@ export class JsonScanner {
     return new JsonNode(undefined, this.#getOrigin());
   }
 
-  skip(): void {
+  skip(): JsonNode {
     this.#skipTrivia();
-
-    let closingCharacter = "";
 
     this.#previousPosition = this.#currentPosition;
 
     if (/[\s,:\]}]/.test(this.#peekCharacter())) {
-      return;
+      return new JsonNode(undefined, this.#getOrigin());
     }
 
-    if (/[[{'"]/.test(this.#peekCharacter())) {
-      const openingCharacter = this.#readCharacter();
+    let text = "";
+    let closingCharacter = "";
 
-      switch (openingCharacter) {
+    if (/[[{'"]/.test(this.#peekCharacter())) {
+      text += this.#readCharacter();
+
+      switch (text) {
         case "[":
           closingCharacter = "]";
           break;
@@ -106,17 +102,19 @@ export class JsonScanner {
           break;
 
         default:
-          closingCharacter = openingCharacter;
+          closingCharacter = text;
       }
     }
 
     while (this.#currentPosition < this.#sourceFile.text.length) {
-      const character = this.#readCharacter();
+      text += this.#readCharacter();
 
-      if (character === closingCharacter || (!closingCharacter && /[\s,:\]}]/.test(this.#peekCharacter()))) {
+      if (text.slice(-1) === closingCharacter || (!closingCharacter && /[\s,:\]}]/.test(this.#peekCharacter()))) {
         break;
       }
     }
+
+    return new JsonNode(text, this.#getOrigin());
   }
 
   #skipTrivia() {
