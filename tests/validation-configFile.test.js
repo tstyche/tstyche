@@ -17,9 +17,10 @@ await test("'tstyche.config.json' file", async (t) => {
   "cacheTrailing": ["all", "best",],
   "globals": { delay: 123 },
   "globalsTrailing": { break: true, delay: 123, },
+  "mainBroken":,
+  "rootDir": "./path",
   "silent": true,
   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
-  "ups":,
 }
 `;
 

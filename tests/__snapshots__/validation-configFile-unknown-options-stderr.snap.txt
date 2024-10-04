@@ -6,7 +6,7 @@ Error: Unknown option 'cache'.
   3 |   "cacheTrailing": ["all", "best",],
   4 |   "globals": { delay: 123 },
   5 |   "globalsTrailing": { break: true, delay: 123, },
-  6 |   "silent": true,
+  6 |   "mainBroken":,
 
       at ./tstyche.config.json:2:3
 
@@ -18,7 +18,7 @@ Error: Unknown option 'cacheTrailing'.
     |   ~~~~~~~~~~~~~~~
   4 |   "globals": { delay: 123 },
   5 |   "globalsTrailing": { break: true, delay: 123, },
-  6 |   "silent": true,
+  6 |   "mainBroken":,
 
       at ./tstyche.config.json:3:3
 
@@ -29,8 +29,8 @@ Error: Unknown option 'globals'.
   4 |   "globals": { delay: 123 },
     |   ~~~~~~~~~
   5 |   "globalsTrailing": { break: true, delay: 123, },
-  6 |   "silent": true,
-  7 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
+  6 |   "mainBroken":,
+  7 |   "rootDir": "./path",
 
       at ./tstyche.config.json:4:3
 
@@ -40,32 +40,45 @@ Error: Unknown option 'globalsTrailing'.
   4 |   "globals": { delay: 123 },
   5 |   "globalsTrailing": { break: true, delay: 123, },
     |   ~~~~~~~~~~~~~~~~~
-  6 |   "silent": true,
-  7 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
-  8 |   "ups":,
+  6 |   "mainBroken":,
+  7 |   "rootDir": "./path",
+  8 |   "silent": true,
 
       at ./tstyche.config.json:5:3
 
-Error: Unknown option 'silent'.
+Error: Unknown option 'mainBroken'.
 
   4 |   "globals": { delay: 123 },
   5 |   "globalsTrailing": { break: true, delay: 123, },
-  6 |   "silent": true,
-    |   ~~~~~~~~
-  7 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
-  8 |   "ups":,
-  9 | }
+  6 |   "mainBroken":,
+    |   ~~~~~~~~~~~~
+  7 |   "rootDir": "./path",
+  8 |   "silent": true,
+  9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
 
       at ./tstyche.config.json:6:3
 
-Error: Unknown option 'ups'.
+Error: Unknown option 'rootDir'.
 
-   6 |   "silent": true,
-   7 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
-   8 |   "ups":,
-     |   ~~~~~
-   9 | }
-  10 | 
+   5 |   "globalsTrailing": { break: true, delay: 123, },
+   6 |   "mainBroken":,
+   7 |   "rootDir": "./path",
+     |   ~~~~~~~~~
+   8 |   "silent": true,
+   9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
+  10 | }
+
+       at ./tstyche.config.json:7:3
+
+Error: Unknown option 'silent'.
+
+   6 |   "mainBroken":,
+   7 |   "rootDir": "./path",
+   8 |   "silent": true,
+     |   ~~~~~~~~
+   9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
+  10 | }
+  11 | 
 
        at ./tstyche.config.json:8:3
 
