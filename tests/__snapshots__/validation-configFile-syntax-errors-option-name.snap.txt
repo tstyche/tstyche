@@ -1,0 +1,10 @@
+Error: Expected option name.
+
+  1 | {
+  2 |   : true,
+    |   ~
+  3 |   "testFileMatch": ["examples/*.tst.*"
+  4 | 
+
+      at ./tstyche.config.json:2:3
+

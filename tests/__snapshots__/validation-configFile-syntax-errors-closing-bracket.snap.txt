@@ -1,0 +1,21 @@
+Error: Expected closing ']'.
+
+  2 |   'failFast': true,
+  3 |   "testFileMatch": ["examples/*.tst.*"
+  4 | }
+    | ~
+  5 | 
+
+      at ./tstyche.config.json:4:1
+
+    The opening '[' was seen here.
+
+      1 | {
+      2 |   'failFast': true,
+      3 |   "testFileMatch": ["examples/*.tst.*"
+        |                    ~
+      4 | }
+      5 | 
+
+          at ./tstyche.config.json:3:20
+

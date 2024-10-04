@@ -79,6 +79,46 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(exitCode, 0);
   });
 
+  await t.test("empty object is allowed", async () => {
+    const configText = `{
+  // "failFast": true
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(stdout, {
+      failFast: false,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("empty list is allowed", async () => {
+    const configText = `{
+  "testFileMatch": [ /* test */ ]
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(stdout, {
+      testFileMatch: [],
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("comments are allowed", async () => {
     const configText = `{
   /* test */
@@ -102,6 +142,90 @@ await test("'tstyche.config.json' file", async (t) => {
       failFast: true,
       target: ["current"],
       testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("allows unquoted option names", async () => {
+    const configText = `{
+  failFast: true,
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(normalizeOutput(stdout), {
+      failFast: true,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("allows single quoted option names", async () => {
+    const configText = `{
+  'failFast': true,
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(normalizeOutput(stdout), {
+      failFast: true,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("allows single quoted option values", async () => {
+    const configText = `{
+  'rootPath': './',
+  'testFileMatch': ['**/*.tst.*']
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(normalizeOutput(stdout), {
+      rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile",
+      testFileMatch: ["**/*.tst.*"],
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("allows trailing commas", async () => {
+    const configText = `{
+  "testFileMatch": ["**/*.tst.*",],
+  "failFast": true,
+}
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: configText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.matchObject(stdout, {
+      failFast: true,
+      testFileMatch: ["**/*.tst.*"],
     });
 
     assert.equal(stderr, "");

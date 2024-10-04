@@ -29,6 +29,13 @@ export class OptionDefinitionsMap {
   static #definitions: Array<OptionDefinition> = [
     {
       brand: OptionBrand.String,
+      description: "The Url to the config file validation schema.",
+      group: OptionGroup.ConfigFile,
+      name: "$schema",
+    },
+
+    {
+      brand: OptionBrand.String,
       description: "The path to a TSTyche configuration file.",
       group: OptionGroup.CommandLine,
       name: "config",

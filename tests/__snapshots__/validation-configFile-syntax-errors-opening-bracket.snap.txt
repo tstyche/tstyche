@@ -1,0 +1,11 @@
+Error: Option 'testFileMatch' requires a value of type list.
+
+  1 | {
+  2 |   'failFast': true,
+  3 |   "testFileMatch": { "glob": "examples/*.tst.*" }
+    |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  4 | }
+  5 | 
+
+      at ./tstyche.config.json:3:20
+

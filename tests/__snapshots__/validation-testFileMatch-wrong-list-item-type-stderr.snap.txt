@@ -2,10 +2,11 @@ Error: Item of the 'testFileMatch' list must be of type string.
 
   2 |   "testFileMatch": [
   3 |     "examples/*",
-  4 |     false
+  4 |     false,
     |     ~~~~~
-  5 |   ]
-  6 | }
+  5 |     "**/*.tst.*"
+  6 |   ]
+  7 | }
 
       at ./tstyche.config.json:4:5
 

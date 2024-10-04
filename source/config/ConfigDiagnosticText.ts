@@ -2,8 +2,8 @@ import type { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 
 export class ConfigDiagnosticText {
-  static doubleQuotesExpected(): string {
-    return "String literal with double quotes expected.";
+  static expected(element: string): string {
+    return `Expected ${element}.`;
   }
 
   static expectsListItemType(optionName: string, optionBrand: OptionBrand): string {
@@ -28,6 +28,10 @@ export class ConfigDiagnosticText {
       case OptionGroup.ConfigFile:
         return optionName;
     }
+  }
+
+  static seen(element: string): string {
+    return `The ${element} was seen here.`;
   }
 
   static testFileMatchCannotStartWith(segment: string): Array<string> {

@@ -1,8 +1,9 @@
-import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
+import type { JsonNode } from "./JsonNode.js";
+import { JsonScanner } from "./JsonScanner.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { type ItemDefinition, type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
@@ -10,214 +11,212 @@ import { OptionValidator } from "./OptionValidator.js";
 import type { DiagnosticsHandler, OptionValue } from "./types.js";
 
 export class ConfigFileOptionsWorker {
-  #compiler: typeof ts;
   #configFileOptionDefinitions: Map<string, OptionDefinition>;
   #configFileOptions: Record<string, OptionValue>;
-  #configFilePath: string;
+  #jsonScanner: JsonScanner;
   #onDiagnostics: DiagnosticsHandler;
   #optionGroup = OptionGroup.ConfigFile;
   #optionValidator: OptionValidator;
+  #sourceFile: SourceFile;
   #storeService: StoreService;
 
   constructor(
-    compiler: typeof ts,
     configFileOptions: Record<string, OptionValue>,
-    configFilePath: string,
+    sourceFile: SourceFile,
     storeService: StoreService,
     onDiagnostics: DiagnosticsHandler,
   ) {
-    this.#compiler = compiler;
     this.#configFileOptions = configFileOptions;
-    this.#configFilePath = configFilePath;
+    this.#sourceFile = sourceFile;
     this.#storeService = storeService;
     this.#onDiagnostics = onDiagnostics;
 
     this.#configFileOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
+    this.#jsonScanner = new JsonScanner(this.#sourceFile);
     this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
   }
 
-  #isDoubleQuotedString(node: ts.Node, sourceFile: ts.SourceFile): boolean {
-    return (
-      node.kind === this.#compiler.SyntaxKind.StringLiteral &&
-      sourceFile.text.slice(this.#skipTrivia(node.pos, sourceFile), node.end).startsWith('"')
-    );
-  }
-
-  async parse(sourceText: string): Promise<void> {
-    const sourceFile = this.#compiler.parseJsonText(this.#configFilePath, sourceText) as ts.JsonSourceFile & {
-      parseDiagnostics: Array<ts.Diagnostic>;
-    };
-
-    if (sourceFile.parseDiagnostics.length > 0) {
-      this.#onDiagnostics(Diagnostic.fromDiagnostics(sourceFile.parseDiagnostics, this.#compiler));
-
-      return;
-    }
-
-    const rootExpression = sourceFile.statements[0]?.expression;
-
-    if (!rootExpression) {
-      return;
-    }
-
-    if (!this.#compiler.isObjectLiteralExpression(rootExpression)) {
-      const origin = DiagnosticOrigin.fromJsonNode(rootExpression, sourceFile, this.#skipTrivia);
-
-      this.#onDiagnostics(
-        Diagnostic.error("The root value of a configuration file must be an object literal.", origin),
-      );
-
-      return;
-    }
-
-    for (const property of rootExpression.properties) {
-      if (this.#compiler.isPropertyAssignment(property)) {
-        if (!this.#isDoubleQuotedString(property.name, sourceFile)) {
-          const origin = DiagnosticOrigin.fromJsonNode(property.name, sourceFile, this.#skipTrivia);
-
-          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
-          continue;
-        }
-
-        const optionName = (property.name as ts.StringLiteral).text;
-
-        if (optionName === "$schema") {
-          continue;
-        }
-
-        const optionDefinition = this.#configFileOptionDefinitions.get(optionName);
-
-        if (optionDefinition) {
-          this.#configFileOptions[optionDefinition.name] = await this.#parseOptionValue(
-            sourceFile,
-            property.initializer,
-            optionDefinition,
-          );
-        } else {
-          const origin = DiagnosticOrigin.fromJsonNode(property.name, sourceFile, this.#skipTrivia);
-
-          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.unknownOption(optionName), origin));
-        }
-      }
-    }
-
-    return;
-  }
-
-  async #parseOptionValue(
-    sourceFile: ts.SourceFile,
-    valueExpression: ts.Expression,
-    optionDefinition: OptionDefinition | ItemDefinition,
-    isListItem = false,
-  ): Promise<OptionValue> {
-    switch (valueExpression.kind) {
-      case this.#compiler.SyntaxKind.TrueKeyword:
-        if (optionDefinition.brand === OptionBrand.Boolean) {
-          return true;
-        }
-        break;
-
-      case this.#compiler.SyntaxKind.FalseKeyword:
-        if (optionDefinition.brand === OptionBrand.Boolean) {
-          return false;
-        }
-        break;
-
-      case this.#compiler.SyntaxKind.StringLiteral:
-        if (!this.#isDoubleQuotedString(valueExpression, sourceFile)) {
-          const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
-
-          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.doubleQuotesExpected(), origin));
-          return;
-        }
-
-        if (optionDefinition.brand === OptionBrand.String) {
-          let value = (valueExpression as ts.StringLiteral).text;
-
-          if (optionDefinition.name === "rootPath") {
-            value = Path.resolve(Path.dirname(this.#configFilePath), value);
-          }
-
-          const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
-
-          await this.#optionValidator.check(optionDefinition.name, value, optionDefinition.brand, origin);
-
-          return value;
-        }
-        break;
-
-      case this.#compiler.SyntaxKind.ArrayLiteralExpression:
-        if (optionDefinition.brand === OptionBrand.List) {
-          const value: Array<OptionValue> = [];
-
-          for (const element of (valueExpression as ts.ArrayLiteralExpression).elements) {
-            value.push(
-              await this.#parseOptionValue(sourceFile, element, optionDefinition.items, /* isListItem */ true),
-            );
-          }
-
-          return value;
-        }
-        break;
-    }
-
+  #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {
     const text = isListItem
       ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
       : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
-    const origin = DiagnosticOrigin.fromJsonNode(valueExpression, sourceFile, this.#skipTrivia);
 
-    this.#onDiagnostics(Diagnostic.error(text, origin));
-
-    return;
+    this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
   }
 
-  #skipTrivia(this: void, position: number, sourceFile: ts.SourceFile) {
-    const { text } = sourceFile.getSourceFile();
+  async #parseValue(optionDefinition: OptionDefinition | ItemDefinition, isListItem = false) {
+    let jsonNode: JsonNode;
+    let optionValue: OptionValue;
 
-    while (position < text.length) {
-      if (/\s/.test(text.charAt(position))) {
-        position++;
+    switch (optionDefinition.brand) {
+      case OptionBrand.Boolean: {
+        jsonNode = this.#jsonScanner.read();
+        optionValue = jsonNode.getValue();
 
-        continue;
-      }
-
-      if (text.charAt(position) === "/") {
-        if (text.charAt(position + 1) === "/") {
-          position += 2;
-
-          while (position < text.length) {
-            if (text.charAt(position) === "\n") {
-              break;
-            }
-            position++;
-          }
-
-          continue;
+        if (typeof optionValue !== "boolean") {
+          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+          break;
         }
 
-        if (text.charAt(position + 1) === "*") {
-          position += 2;
-
-          while (position < text.length) {
-            if (text.charAt(position) === "*" && text.charAt(position + 1) === "/") {
-              position += 2;
-              break;
-            }
-            position++;
-          }
-
-          continue;
-        }
-
-        position++;
-
-        continue;
+        break;
       }
 
-      break;
+      case OptionBrand.String: {
+        jsonNode = this.#jsonScanner.read();
+        optionValue = jsonNode.getValue();
+
+        if (typeof optionValue !== "string") {
+          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+          break;
+        }
+
+        if (optionDefinition.name === "rootPath") {
+          optionValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
+        }
+
+        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand, jsonNode.origin);
+
+        break;
+      }
+
+      case OptionBrand.List: {
+        const leftBracketToken = this.#jsonScanner.readToken("[");
+
+        if (!leftBracketToken.text) {
+          jsonNode = this.#jsonScanner.skip();
+
+          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+
+          break;
+        }
+
+        optionValue = [];
+
+        while (!this.#jsonScanner.isRead()) {
+          if (this.#jsonScanner.peekToken("]")) {
+            break;
+          }
+
+          const item = await this.#parseValue(optionDefinition.items, /* isListItem */ true);
+
+          if (item != null) {
+            optionValue.push(item);
+          }
+
+          const commaToken = this.#jsonScanner.readToken(",");
+
+          if (!commaToken.text) {
+            break;
+          }
+        }
+
+        const rightBracketToken = this.#jsonScanner.readToken("]");
+
+        if (!rightBracketToken.text) {
+          const text = ConfigDiagnosticText.expected("closing ']'");
+          const relatedText = ConfigDiagnosticText.seen("opening '['");
+
+          const diagnostic = Diagnostic.error(text, rightBracketToken.origin).add({
+            // TODO can be Info, since this is not an error
+            related: [Diagnostic.error(relatedText, leftBracketToken.origin)],
+          });
+
+          this.#onDiagnostics(diagnostic);
+        }
+
+        break;
+      }
     }
 
-    return position;
+    return optionValue;
+  }
+
+  async #parseObject() {
+    const leftBraceToken = this.#jsonScanner.readToken("{");
+
+    if (this.#jsonScanner.isRead()) {
+      return;
+    }
+
+    if (!leftBraceToken.text) {
+      const text = ConfigDiagnosticText.expected("'{'");
+
+      this.#onDiagnostics(Diagnostic.error(text, leftBraceToken.origin));
+
+      return;
+    }
+
+    while (!this.#jsonScanner.isRead()) {
+      if (this.#jsonScanner.peekToken("}")) {
+        break;
+      }
+
+      const optionNameNode = this.#jsonScanner.read();
+
+      const optionName = optionNameNode.getValue({ expectsIdentifier: true });
+
+      if (!optionName) {
+        const text = ConfigDiagnosticText.expected("option name");
+
+        this.#onDiagnostics(Diagnostic.error(text, optionNameNode.origin));
+
+        return;
+      }
+
+      const optionDefinition = this.#configFileOptionDefinitions.get(optionName);
+
+      if (!optionDefinition) {
+        const text = ConfigDiagnosticText.unknownOption(optionName);
+
+        this.#onDiagnostics(Diagnostic.error(text, optionNameNode.origin));
+
+        if (this.#jsonScanner.readToken(":")) {
+          this.#jsonScanner.skip();
+        }
+
+        const commaToken = this.#jsonScanner.readToken(",");
+
+        if (!commaToken.text) {
+          break;
+        }
+
+        continue;
+      }
+
+      if (this.#jsonScanner.peekToken(":")) {
+        this.#jsonScanner.readToken(":");
+      }
+
+      const parsedValue = await this.#parseValue(optionDefinition);
+
+      if (optionDefinition.name !== "$schema") {
+        this.#configFileOptions[optionDefinition.name] = parsedValue;
+      }
+
+      const commaToken = this.#jsonScanner.readToken(",");
+
+      if (!commaToken.text) {
+        break;
+      }
+    }
+
+    const rightBraceToken = this.#jsonScanner.readToken("}");
+
+    if (!rightBraceToken.text) {
+      const text = ConfigDiagnosticText.expected("closing '}'");
+      const relatedText = ConfigDiagnosticText.seen("opening '{'");
+
+      const diagnostic = Diagnostic.error(text, rightBraceToken.origin).add({
+        // TODO can be Info, since this is not an error
+        related: [Diagnostic.error(relatedText, leftBraceToken.origin)],
+      });
+
+      this.#onDiagnostics(diagnostic);
+    }
+  }
+
+  async parse(): Promise<void> {
+    await this.#parseObject();
   }
 }

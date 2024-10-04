@@ -88,6 +88,7 @@ await test("'target' configuration file option", async (t) => {
   await t.test("when option value is not a list", async () => {
     const config = {
       target: "current",
+      testFileMatch: ["examples/*.test.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -109,7 +110,8 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when item of the list is not a string", async () => {
     const config = {
-      target: ["4.8", 5],
+      target: ["4.8", 5.2, "latest"],
+      testFileMatch: ["examples/*.test.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -132,6 +134,7 @@ await test("'target' configuration file option", async (t) => {
   await t.test("when not supported version is specified", async () => {
     const config = {
       target: ["new"],
+      testFileMatch: ["examples/*.tst.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -164,11 +167,9 @@ await test("'target' configuration file option", async (t) => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, [], {
       env: { ["TSTYCHE_TYPESCRIPT_PATH"]: "" },
     });
-
-    assert.match(stdout, /^adds TypeScript/);
 
     const expected = [
       "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",

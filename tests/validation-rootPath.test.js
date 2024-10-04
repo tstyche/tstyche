@@ -15,6 +15,7 @@ await test("'rootPath' configuration file option", async (t) => {
   await t.test("when specified path does not exist", async () => {
     const config = {
       rootPath: "../nope",
+      testFileMatch: ["examples/*.t*st.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -36,6 +37,7 @@ await test("'rootPath' configuration file option", async (t) => {
   await t.test("when specified value is not string", async () => {
     const config = {
       rootPath: true,
+      testFileMatch: ["examples/*.t*st.*"],
     };
 
     await writeFixture(fixtureUrl, {

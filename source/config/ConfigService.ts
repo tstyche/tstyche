@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import type { Diagnostic } from "#diagnostic";
+import { type Diagnostic, SourceFile } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { StoreService } from "#store";
@@ -30,8 +30,8 @@ export class ConfigService {
   #configFilePath = Path.resolve(defaultOptions.rootPath, "./tstyche.config.json");
   #pathMatch: Array<string> = [];
 
-  #onDiagnostics(this: void, diagnostics: Diagnostic | Array<Diagnostic>) {
-    EventEmitter.dispatch(["config:error", { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics] }]);
+  #onDiagnostics(this: void, diagnostics: Diagnostic) {
+    EventEmitter.dispatch(["config:error", { diagnostics: [diagnostics] }]);
   }
 
   async parseCommandLine(commandLineArgs: Array<string>, storeService: StoreService): Promise<void> {
@@ -67,21 +67,16 @@ export class ConfigService {
       encoding: "utf8",
     });
 
-    const compiler = await storeService.load(environmentOptions.typescriptPath != null ? "current" : "latest");
-
-    if (!compiler) {
-      return;
-    }
+    const sourceFile = new SourceFile(this.#configFilePath, configFileText);
 
     const configFileWorker = new ConfigFileOptionsWorker(
-      compiler,
       this.#configFileOptions as Record<string, OptionValue>,
-      this.#configFilePath,
+      sourceFile,
       storeService,
       this.#onDiagnostics,
     );
 
-    await configFileWorker.parse(configFileText);
+    await configFileWorker.parse();
   }
 
   resolveConfig(): ResolvedConfig {

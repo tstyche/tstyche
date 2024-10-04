@@ -1,4 +1,4 @@
-Error: '}' expected. ts(1005)
+Error: Expected closing '}'.
 
   1 | {
   2 |   'failFast': true
@@ -7,7 +7,7 @@ Error: '}' expected. ts(1005)
 
       at ./tstyche.config.json:3:1
 
-    The parser expected to find a '}' to match the '{' token here. ts(1007)
+    The opening '{' was seen here.
 
       1 | {
         | ~

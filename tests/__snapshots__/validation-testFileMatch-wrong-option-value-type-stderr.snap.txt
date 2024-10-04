@@ -1,9 +1,11 @@
 Error: Option 'testFileMatch' requires a value of type list.
 
   1 | {
-  2 |   "testFileMatch": "feature"
+  2 |   "testFileMatch": "feature",
     |                    ~~~~~~~~~
-  3 | }
+  3 |   "failFast": true
+  4 | }
+  5 | 
 
       at ./tstyche.config.json:2:20
 
