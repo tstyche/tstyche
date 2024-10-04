@@ -118,7 +118,6 @@ export class ConfigFileOptionsWorker {
           const relatedText = ConfigDiagnosticText.seen("opening '['");
 
           const diagnostic = Diagnostic.error(text, rightBracketToken.origin).add({
-            // TODO can be Info, since this is not an error
             related: [Diagnostic.error(relatedText, leftBracketToken.origin)],
           });
 
@@ -208,7 +207,6 @@ export class ConfigFileOptionsWorker {
       const relatedText = ConfigDiagnosticText.seen("opening '{'");
 
       const diagnostic = Diagnostic.error(text, rightBraceToken.origin).add({
-        // TODO can be Info, since this is not an error
         related: [Diagnostic.error(relatedText, leftBraceToken.origin)],
       });
 

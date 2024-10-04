@@ -111,7 +111,6 @@ export class ExpectService {
         return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
       case "toRaiseError":
-        // TODO perhaps in the future the target argument could be: 'target?: string | number | Array<string | number>'
         return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target], onDiagnostics);
 
       default:
