@@ -42,7 +42,7 @@ Error: Unknown option 'globalsTrailing'.
     |   ~~~~~~~~~~~~~~~~~
   6 |   "mainBroken":,
   7 |   "rootDir": "./path",
-  8 |   "silent": true,
+  8 |   "silent": false,
 
       at ./tstyche.config.json:5:3
 
@@ -53,7 +53,7 @@ Error: Unknown option 'mainBroken'.
   6 |   "mainBroken":,
     |   ~~~~~~~~~~~~
   7 |   "rootDir": "./path",
-  8 |   "silent": true,
+  8 |   "silent": false,
   9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
 
       at ./tstyche.config.json:6:3
@@ -64,9 +64,9 @@ Error: Unknown option 'rootDir'.
    6 |   "mainBroken":,
    7 |   "rootDir": "./path",
      |   ~~~~~~~~~
-   8 |   "silent": true,
+   8 |   "silent": false,
    9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
-  10 | }
+  10 |   "veryLast": true
 
        at ./tstyche.config.json:7:3
 
@@ -74,11 +74,22 @@ Error: Unknown option 'silent'.
 
    6 |   "mainBroken":,
    7 |   "rootDir": "./path",
-   8 |   "silent": true,
+   8 |   "silent": false,
      |   ~~~~~~~~
    9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
-  10 | }
-  11 | 
+  10 |   "veryLast": true
+  11 | }
 
        at ./tstyche.config.json:8:3
+
+Error: Unknown option 'veryLast'.
+
+   8 |   "silent": false,
+   9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
+  10 |   "veryLast": true
+     |   ~~~~~~~~~~
+  11 | }
+  12 | 
+
+       at ./tstyche.config.json:10:3
 
