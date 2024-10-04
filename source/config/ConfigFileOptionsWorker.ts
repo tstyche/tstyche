@@ -172,8 +172,7 @@ export class ConfigFileOptionsWorker {
         this.#onDiagnostics(Diagnostic.error(text, optionNameNode.origin));
 
         if (this.#jsonScanner.readToken(":")) {
-          // TODO might not read list
-          this.#jsonScanner.read();
+          this.#jsonScanner.skip();
         }
 
         const commaToken = this.#jsonScanner.readToken(",");

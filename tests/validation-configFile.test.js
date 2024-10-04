@@ -12,14 +12,19 @@ await test("'tstyche.config.json' file", async (t) => {
   });
 
   await t.test("handles unknown options", async () => {
-    const config = {
-      cache: "all",
-      silent: true,
-      testFileMatch: ["**/packages/*/__typetests__/*.test.ts"],
-    };
+    const configText = `{
+  "cache": ["all"],
+  "cacheTrailing": ["all", "best",],
+  "globals": { delay: 123 },
+  "globalsTrailing": { break: true, delay: 123, },
+  "silent": true,
+  "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
+  "ups":,
+}
+`;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.config.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

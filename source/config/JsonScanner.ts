@@ -35,7 +35,7 @@ export class JsonScanner {
   read(): JsonNode {
     this.#skipTrivia();
 
-    if (/[\:\]}]/.test(this.#peekCharacter())) {
+    if (/[:\]}]/.test(this.#peekCharacter())) {
       return new JsonNode(undefined, this.#getOrigin());
     }
 
@@ -80,6 +80,43 @@ export class JsonScanner {
     }
 
     return new JsonNode(undefined, this.#getOrigin());
+  }
+
+  skip(): void {
+    this.#skipTrivia();
+
+    let closingCharacter = "";
+
+    this.#previousPosition = this.#currentPosition;
+
+    if (/[\s,:\]}]/.test(this.#peekCharacter())) {
+      return;
+    }
+
+    if (/[[{'"]/.test(this.#peekCharacter())) {
+      const openingCharacter = this.#readCharacter();
+
+      switch (openingCharacter) {
+        case "[":
+          closingCharacter = "]";
+          break;
+
+        case "{":
+          closingCharacter = "}";
+          break;
+
+        default:
+          closingCharacter = openingCharacter;
+      }
+    }
+
+    while (this.#currentPosition < this.#sourceFile.text.length) {
+      const character = this.#readCharacter();
+
+      if (character === closingCharacter || (!closingCharacter && /[\s,:\]}]/.test(this.#peekCharacter()))) {
+        break;
+      }
+    }
   }
 
   #skipTrivia() {
