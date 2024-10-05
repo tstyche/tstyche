@@ -1,5 +1,13 @@
 # Releases
 
+## [3.0.0-beta.2] - 2024-10-05
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Added
+
+- Add the `JsonScanner` class ([#310](https://github.com/tstyche/tstyche/pull/310))
+
 ## [3.0.0-beta.1] - 2024-08-25
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
@@ -315,6 +323,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.2
 [3.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.1
 [3.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.0
 [2.1.1]: https://github.com/tstyche/tstyche/releases/tag/v2.1.1
