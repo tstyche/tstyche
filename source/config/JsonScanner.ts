@@ -35,23 +35,36 @@ export class JsonScanner {
   read(): JsonNode {
     this.#skipTrivia();
 
-    if (/[:\]}]/.test(this.#peekCharacter())) {
+    this.#previousPosition = this.#currentPosition;
+
+    if (/[\s,:\]}]/.test(this.#peekCharacter())) {
       return new JsonNode(undefined, this.#getOrigin());
     }
 
-    let quoteCharacter = "";
     let text = "";
+    let closingTokenText = "";
 
-    this.#previousPosition = this.#currentPosition;
+    if (/[[{'"]/.test(this.#peekCharacter())) {
+      text += this.#readCharacter();
 
-    if (/['"]/.test(this.#peekCharacter())) {
-      quoteCharacter = text += this.#readCharacter();
+      switch (text) {
+        case "[":
+          closingTokenText = "]";
+          break;
+
+        case "{":
+          closingTokenText = "}";
+          break;
+
+        default:
+          closingTokenText = text;
+      }
     }
 
     while (!this.isRead()) {
       text += this.#readCharacter();
 
-      if (text.slice(-1) === quoteCharacter || (!quoteCharacter && /[\s,:\]}]/.test(this.#peekCharacter()))) {
+      if (text.slice(-1) === closingTokenText || (!closingTokenText && /[\s,:\]}]/.test(this.#peekCharacter()))) {
         break;
       }
     }
@@ -75,46 +88,6 @@ export class JsonScanner {
     }
 
     return new JsonNode(undefined, this.#getOrigin());
-  }
-
-  skip(): JsonNode {
-    this.#skipTrivia();
-
-    this.#previousPosition = this.#currentPosition;
-
-    if (/[\s,:\]}]/.test(this.#peekCharacter())) {
-      return new JsonNode(undefined, this.#getOrigin());
-    }
-
-    let text = "";
-    let closingCharacter = "";
-
-    if (/[[{'"]/.test(this.#peekCharacter())) {
-      text += this.#readCharacter();
-
-      switch (text) {
-        case "[":
-          closingCharacter = "]";
-          break;
-
-        case "{":
-          closingCharacter = "}";
-          break;
-
-        default:
-          closingCharacter = text;
-      }
-    }
-
-    while (!this.isRead()) {
-      text += this.#readCharacter();
-
-      if (text.slice(-1) === closingCharacter || (!closingCharacter && /[\s,:\]}]/.test(this.#peekCharacter()))) {
-        break;
-      }
-    }
-
-    return new JsonNode(text, this.#getOrigin());
   }
 
   #skipTrivia() {
@@ -152,7 +125,6 @@ export class JsonScanner {
         }
       }
 
-      // makes sure white space after comments is skipped
       break;
     }
 

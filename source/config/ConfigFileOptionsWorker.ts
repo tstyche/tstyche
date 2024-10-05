@@ -84,7 +84,7 @@ export class ConfigFileOptionsWorker {
         const leftBracketToken = this.#jsonScanner.readToken("[");
 
         if (!leftBracketToken.text) {
-          jsonNode = this.#jsonScanner.skip();
+          jsonNode = this.#jsonScanner.read();
 
           this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
 
@@ -171,7 +171,7 @@ export class ConfigFileOptionsWorker {
         this.#onDiagnostics(Diagnostic.error(text, optionNameNode.origin));
 
         if (this.#jsonScanner.readToken(":")) {
-          this.#jsonScanner.skip();
+          this.#jsonScanner.read();
         }
 
         const commaToken = this.#jsonScanner.readToken(",");
