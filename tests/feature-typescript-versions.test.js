@@ -72,21 +72,6 @@ expect<Sample>().type.not.toHaveProperty("setup");
 expect<Sample>().type.not.toHaveProperty("teardown");
 `;
 
-const toMatchTestText = `import { expect, test } from "tstyche";
-
-interface Options {
-  readonly environment?: string;
-  timers?: "fake" | "real";
-}
-
-const options: Options = {};
-
-test("is a match?", () => {
-  expect(options).type.toMatch<{ readonly environment?: string }>();
-  expect(options).type.toMatch<{ timers?: "fake" | "real" }>();
-});
-`;
-
 const toRaiseErrorTestText = `import { expect, test } from "tstyche";
 
 interface Matchers<R, T = unknown> {
@@ -117,7 +102,6 @@ await test("TypeScript 4.x", async (t) => {
     ["__typetests__/toBeAssignableTo.test.ts"]: `// @ts-expect-error\n${toBeAssignableToTestText}`,
     ["__typetests__/toBeAssignableWith.test.ts"]: `// @ts-expect-error\n${toBeAssignableWithTestText}`,
     ["__typetests__/toHaveProperty.test.ts"]: `// @ts-expect-error\n${toHavePropertyTestText}`,
-    ["__typetests__/toMatch.test.ts"]: `// @ts-expect-error\n${toMatchTestText}`,
     ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error\n${toRaiseErrorTestText}`,
   });
 
@@ -151,7 +135,6 @@ await test("TypeScript 5.x", async (t) => {
     ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
     ["__typetests__/toBeAssignableWith.test.ts"]: toBeAssignableWithTestText,
     ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
-    ["__typetests__/toMatch.test.ts"]: toMatchTestText,
     ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
   });
 
