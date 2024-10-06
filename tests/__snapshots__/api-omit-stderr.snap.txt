@@ -2,11 +2,11 @@ Error: Type '{ one: number; two?: string | undefined; }' is not identical to typ
 
    7 | test("is omitted?", () => {
    8 |   expect(omit(returnsObject(), "one")).type.toBe<{ two?: string }>();
-   9 |   expect(returnsObject()).type.toBe<{ two?: string }>();
+   9 |   expect(returnsObject()).type.toBe<{ two?: string }>(); // fail
      |                                     ~~~~~~~~~~~~~~~~
   10 | 
   11 |   expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number }>();
-  12 |   expect(returnsIntersection()).type.toBe<{ one: number }>();
+  12 |   expect(returnsIntersection()).type.toBe<{ one: number }>(); // fail
 
        at ./__typetests__/omit.tst.ts:9:37 ❭ is omitted?
 
@@ -14,11 +14,11 @@ Error: Type '{ one: number; two?: string | undefined; } | { one: number; }' is n
 
   10 | 
   11 |   expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number }>();
-  12 |   expect(returnsIntersection()).type.toBe<{ one: number }>();
+  12 |   expect(returnsIntersection()).type.toBe<{ one: number }>(); // fail
      |                                           ~~~~~~~~~~~~~~~
   13 | 
   14 |   expect(omit(returnsUnion(), "one")).type.toBe<{ two?: string }>();
-  15 |   expect(returnsUnion()).type.toBe<{ two?: string }>();
+  15 |   expect(returnsUnion()).type.toBe<{ two?: string }>(); // fail
 
        at ./__typetests__/omit.tst.ts:12:43 ❭ is omitted?
 
@@ -26,7 +26,7 @@ Error: Type '{ one: number; } & { two?: string | undefined; }' is not identical 
 
   13 | 
   14 |   expect(omit(returnsUnion(), "one")).type.toBe<{ two?: string }>();
-  15 |   expect(returnsUnion()).type.toBe<{ two?: string }>();
+  15 |   expect(returnsUnion()).type.toBe<{ two?: string }>(); // fail
      |                                    ~~~~~~~~~~~~~~~~
   16 | });
   17 | 

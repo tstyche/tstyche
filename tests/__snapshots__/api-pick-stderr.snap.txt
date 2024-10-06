@@ -2,11 +2,11 @@ Error: Type '{ one: number; two?: string | undefined; }' is not identical to typ
 
    7 | test("is picked?", () => {
    8 |   expect(pick(returnsObject(), "two")).type.toBe<{ two?: string }>();
-   9 |   expect(returnsObject()).type.toBe<{ two?: string }>();
+   9 |   expect(returnsObject()).type.toBe<{ two?: string }>(); // fail
      |                                     ~~~~~~~~~~~~~~~~
   10 | 
   11 |   expect(pick(returnsIntersection(), "one")).type.toBe<{ one: number }>();
-  12 |   expect(returnsIntersection()).type.toBe<{ one: number }>();
+  12 |   expect(returnsIntersection()).type.toBe<{ one: number }>(); // fail
 
        at ./__typetests__/pick.tst.ts:9:37 ❭ is picked?
 
@@ -14,11 +14,11 @@ Error: Type '{ one: number; two?: string | undefined; } | { one: number; }' is n
 
   10 | 
   11 |   expect(pick(returnsIntersection(), "one")).type.toBe<{ one: number }>();
-  12 |   expect(returnsIntersection()).type.toBe<{ one: number }>();
+  12 |   expect(returnsIntersection()).type.toBe<{ one: number }>(); // fail
      |                                           ~~~~~~~~~~~~~~~
   13 | 
   14 |   expect(pick(returnsUnion(), "two")).type.toBe<{ two?: string }>();
-  15 |   expect(returnsUnion()).type.toBe<{ two?: string }>();
+  15 |   expect(returnsUnion()).type.toBe<{ two?: string }>(); // fail
 
        at ./__typetests__/pick.tst.ts:12:43 ❭ is picked?
 
@@ -26,7 +26,7 @@ Error: Type '{ one: number; } & { two?: string | undefined; }' is not identical 
 
   13 | 
   14 |   expect(pick(returnsUnion(), "two")).type.toBe<{ two?: string }>();
-  15 |   expect(returnsUnion()).type.toBe<{ two?: string }>();
+  15 |   expect(returnsUnion()).type.toBe<{ two?: string }>(); // fail
      |                                    ~~~~~~~~~~~~~~~~
   16 | });
   17 | 

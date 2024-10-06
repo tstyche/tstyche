@@ -326,16 +326,10 @@ export declare const it: Test;
 export declare const expect: Expect;
 
 /**
- * Returns the target object without the specified keys.
+ * Reshapes type of the given object by removing the specified keys.
  */
-export declare function omit<T, K extends keyof any>(
-  target: T,
-  ...keys: [K, ...Array<K>]
-): Omit<T, (typeof keys)[number]>;
+export declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
 /**
- * Returns the target object with only the specified keys.
+ * Reshapes type of the given object by keeping only the specified keys.
  */
-export declare function pick<T, K extends keyof T>(
-  target: T,
-  ...keys: [K, ...Array<K>]
-): Pick<T, (typeof keys)[number]>;
+export declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
