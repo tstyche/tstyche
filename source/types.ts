@@ -328,7 +328,7 @@ export declare const expect: Expect;
 /**
  * Returns the target object without the specified keys.
  */
-export declare function omit<T, K extends keyof T>(
+export declare function omit<T, K extends keyof any>(
   target: T,
   ...keys: [K, ...Array<K>]
 ): Omit<T, (typeof keys)[number]>;

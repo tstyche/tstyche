@@ -1,0 +1,35 @@
+Error: Type 'Pick<{ one: number; two?: string | undefined; }, "two">' is not identical to type '{ one: number; two?: string | undefined; }'.
+
+   7 | test("is picked?", () => {
+   8 |   expect(pick(returnsObject(), "two")).type.toBe<{ two?: string }>();
+   9 |   expect(pick(returnsObject(), "two")).type.toBe<{ one: number; two?: string }>();
+     |                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  10 | 
+  11 |   expect(pick(returnsIntersection(), "one")).type.toBe<{ one: number }>();
+  12 |   expect(pick(returnsIntersection(), "one")).type.toBe<{ one: number; two?: string }>();
+
+       at ./__typetests__/pick.tst.ts:9:50 ❭ is picked?
+
+Error: Type 'Pick<{ one: number; two?: string | undefined; } | { one: number; }, "one">' is not identical to type '{ one: number; two?: string | undefined; }'.
+
+  10 | 
+  11 |   expect(pick(returnsIntersection(), "one")).type.toBe<{ one: number }>();
+  12 |   expect(pick(returnsIntersection(), "one")).type.toBe<{ one: number; two?: string }>();
+     |                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  13 | 
+  14 |   expect(pick(returnsUnion(), "two")).type.toBe<{ two?: string }>();
+  15 |   expect(pick(returnsUnion(), "two")).type.toBe<{ one: number; two?: string }>();
+
+       at ./__typetests__/pick.tst.ts:12:56 ❭ is picked?
+
+Error: Type 'Pick<{ one: number; } & { two?: string | undefined; }, "two">' is not identical to type '{ one: number; two?: string | undefined; }'.
+
+  13 | 
+  14 |   expect(pick(returnsUnion(), "two")).type.toBe<{ two?: string }>();
+  15 |   expect(pick(returnsUnion(), "two")).type.toBe<{ one: number; two?: string }>();
+     |                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  16 | });
+  17 | 
+
+       at ./__typetests__/pick.tst.ts:15:49 ❭ is picked?
+

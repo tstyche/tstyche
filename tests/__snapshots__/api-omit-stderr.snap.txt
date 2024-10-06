@@ -1,0 +1,35 @@
+Error: Type 'Omit<{ one: number; two?: string | undefined; }, "one">' is not identical to type '{ one: number; two?: string | undefined; }'.
+
+   7 | test("is omitted?", () => {
+   8 |   expect(omit(returnsObject(), "one")).type.toBe<{ two?: string }>();
+   9 |   expect(omit(returnsObject(), "one")).type.toBe<{ one: number; two?: string }>();
+     |                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  10 | 
+  11 |   expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number }>();
+  12 |   expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number; two?: string }>();
+
+       at ./__typetests__/omit.tst.ts:9:50 ❭ is omitted?
+
+Error: Type 'Omit<{ one: number; two?: string | undefined; } | { one: number; }, "two">' is not identical to type '{ one: number; two?: string | undefined; }'.
+
+  10 | 
+  11 |   expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number }>();
+  12 |   expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number; two?: string }>();
+     |                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  13 | 
+  14 |   expect(omit(returnsUnion(), "one")).type.toBe<{ two?: string }>();
+  15 |   expect(omit(returnsUnion(), "one")).type.toBe<{ one: number; two?: string }>();
+
+       at ./__typetests__/omit.tst.ts:12:56 ❭ is omitted?
+
+Error: Type 'Omit<{ one: number; } & { two?: string | undefined; }, "one">' is not identical to type '{ one: number; two?: string | undefined; }'.
+
+  13 | 
+  14 |   expect(omit(returnsUnion(), "one")).type.toBe<{ two?: string }>();
+  15 |   expect(omit(returnsUnion(), "one")).type.toBe<{ one: number; two?: string }>();
+     |                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  16 | });
+  17 | 
+
+       at ./__typetests__/omit.tst.ts:15:49 ❭ is omitted?
+

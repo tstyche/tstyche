@@ -13,7 +13,7 @@ await test("pick", async (t) => {
     assert.equal(tstyche.pick({ one: 1, two: true }, "two"), undefined);
   });
 
-  await t.test("pick", { skip: true }, async () => {
+  await t.test("pick", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {

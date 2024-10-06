@@ -13,7 +13,7 @@ await test("omit", async (t) => {
     assert.equal(tstyche.omit({ one: 1, two: true }, "two"), undefined);
   });
 
-  await t.test("omit", { skip: true }, async () => {
+  await t.test("omit", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
