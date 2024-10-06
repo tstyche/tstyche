@@ -112,9 +112,6 @@
         "rules": {
           "correctness": {
             "noUnusedVariables": "off"
-          },
-          "suspicious": {
-            "noExplicitAny": "off"
           }
         }
       }
