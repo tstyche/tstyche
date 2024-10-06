@@ -1,3 +1,17 @@
+Warning: The '.toMatch()' matcher is deprecated and will be removed in TSTyche 4.
+
+To learn more, visit https://tstyche.org/releases/tstyche-3
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+  5 |     expect().type.toMatch<{ test: void }>();
+    |                   ~~~~~~~
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/toMatch.tst.ts:5:19
+
 Error: An argument for 'source' or type argument for 'Source' must be provided.
 
   3 | describe("argument for 'source'", () => {

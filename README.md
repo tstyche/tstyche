@@ -56,7 +56,7 @@ test("handles numbers", () => {
 
 Here is the list of all matchers:
 
-- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()`, `.toMatch()` compare types or types of expression,
+- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()` compare types or types of expression,
 - `.toAcceptProps()` checks types of JSX component's props,
 - `.toHaveProperty()` looks up keys on an object type,
 - `.toRaiseError()` captures the type error message or code,

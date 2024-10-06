@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
@@ -65,6 +66,13 @@ export class ExpectService {
   match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
+    if (matcherNameText === "toMatch") {
+      const text = ExpectDiagnosticText.matcherIsDeprecated(matcherNameText);
+      const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+
+      EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
+    }
+
     if (!assertion.source[0]) {
       this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
@@ -78,6 +86,7 @@ export class ExpectService {
       case "toBe":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
+      // TODO '.toMatch()' is deprecated and must be removed in TSTyche 4
       case "toMatch":
         if (!assertion.target[0]) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);

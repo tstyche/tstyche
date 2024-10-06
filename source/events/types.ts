@@ -3,6 +3,7 @@ import type { DescribeResult, ExpectResult, Result, TargetResult, TaskResult, Te
 
 export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
+  | ["deprecation:info", { diagnostics: Array<Diagnostic> }]
   | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
