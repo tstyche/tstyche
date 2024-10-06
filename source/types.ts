@@ -131,14 +131,20 @@ interface Matchers {
   toHaveProperty: (key: string | number | symbol) => void;
   /**
    * Checks if the source type matches the target type.
+   *
+   * @deprecated This matcher will be removed in TSTyche 4. To learn more, visit https://tstyche.org/release-notes/tstyche-3.
    */
   toMatch: {
     /**
      * Checks if the source type matches the target type.
+     *
+     * @deprecated This matcher will be removed in TSTyche 4. To learn more, visit https://tstyche.org/release-notes/tstyche-3.
      */
     <Target>(): void;
     /**
      * Checks if the source type matches type of the target expression.
+     *
+     * @deprecated This matcher will be removed in TSTyche 4. To learn more, visit https://tstyche.org/release-notes/tstyche-3.
      */
     (target: unknown): void;
   };

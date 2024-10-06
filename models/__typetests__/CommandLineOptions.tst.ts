@@ -23,79 +23,79 @@ describe("CommandLineOptions", () => {
   });
 
   test("'config' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "config">>().type.toBe<{
       config?: string;
     }>();
   });
 
   test("'failFast' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "failFast">>().type.toBe<{
       failFast?: boolean;
     }>();
   });
 
   test("'help' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "help">>().type.toBe<{
       help?: boolean;
     }>();
   });
 
   test("'install' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "install">>().type.toBe<{
       install?: boolean;
     }>();
   });
 
   test("'listFiles' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "listFiles">>().type.toBe<{
       listFiles?: boolean;
     }>();
   });
 
   test("'only' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "only">>().type.toBe<{
       only?: string;
     }>();
   });
 
   test("'prune' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "prune">>().type.toBe<{
       prune?: boolean;
     }>();
   });
 
   test("'showConfig' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "showConfig">>().type.toBe<{
       showConfig?: boolean;
     }>();
   });
 
   test("'skip' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "skip">>().type.toBe<{
       skip?: string;
     }>();
   });
 
   test("'target' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "target">>().type.toBe<{
       target?: Array<string>;
     }>();
   });
 
   test("'update' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "update">>().type.toBe<{
       update?: boolean;
     }>();
   });
 
   test("'version' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "version">>().type.toBe<{
       version?: boolean;
     }>();
   });
 
   test("'watch' option", () => {
-    expect<tstyche.CommandLineOptions>().type.toMatch<{
+    expect<Pick<tstyche.CommandLineOptions, "watch">>().type.toBe<{
       watch?: boolean;
     }>();
   });
