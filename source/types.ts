@@ -126,28 +126,6 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the source type is identical to the target type.
-   *
-   * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
-   * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
-   */
-  toEqual: {
-    /**
-     * Checks if the source type is identical to the target type.
-     *
-     * @deprecated Use `.toBe()` instead. This matcher will be removed in TSTyche 3.
-     * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type is identical to type of the target expression.
-     *
-     * @deprecated This matcher will be removed in TSTyche 3.
-     * To learn more, visit https://tstyche.org/release-notes/tstyche-2.
-     */
-    (target: unknown): void;
-  };
-  /**
    * Checks if a property key exists on the source type.
    */
   toHaveProperty: (key: string | number | symbol) => void;
