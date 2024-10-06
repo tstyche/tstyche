@@ -14,25 +14,25 @@ describe("ConfigFileOptions", () => {
   });
 
   test("'failFast' option", () => {
-    expect<tstyche.ConfigFileOptions>().type.toMatch<{
+    expect<Pick<tstyche.ConfigFileOptions, "failFast">>().type.toBe<{
       failFast?: boolean;
     }>();
   });
 
   test("'rootPath' option", () => {
-    expect<tstyche.ConfigFileOptions>().type.toMatch<{
+    expect<Pick<tstyche.ConfigFileOptions, "rootPath">>().type.toBe<{
       rootPath?: string;
     }>();
   });
 
   test("'target' option", () => {
-    expect<tstyche.ConfigFileOptions>().type.toMatch<{
+    expect<Pick<tstyche.ConfigFileOptions, "target">>().type.toBe<{
       target?: Array<string>;
     }>();
   });
 
   test("'testFileMatch' option", () => {
-    expect<tstyche.ConfigFileOptions>().type.toMatch<{
+    expect<Pick<tstyche.ConfigFileOptions, "testFileMatch">>().type.toBe<{
       testFileMatch?: Array<string>;
     }>();
   });
