@@ -6,11 +6,11 @@ declare function returnsUnion(): { one: number } & { two?: string };
 
 test("is omitted?", () => {
   expect(omit(returnsObject(), "one")).type.toBe<{ two?: string }>();
-  expect(omit(returnsObject(), "one")).type.toBe<{ one: number; two?: string }>();
+  expect(returnsObject()).type.toBe<{ two?: string }>();
 
   expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number }>();
-  expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number; two?: string }>();
+  expect(returnsIntersection()).type.toBe<{ one: number }>();
 
   expect(omit(returnsUnion(), "one")).type.toBe<{ two?: string }>();
-  expect(omit(returnsUnion(), "one")).type.toBe<{ one: number; two?: string }>();
+  expect(returnsUnion()).type.toBe<{ two?: string }>();
 });
