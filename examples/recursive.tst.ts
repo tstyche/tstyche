@@ -1,4 +1,4 @@
-import { expect, test } from "tstyche";
+import { expect, omit, pick, test } from "tstyche";
 
 interface Sample {
   nested: Sample;
@@ -6,14 +6,32 @@ interface Sample {
   required: number;
 }
 
-test("Partial", () => {
-  expect<Partial<Sample>>().type.toMatch<{ nested?: Sample }>();
-  expect<Partial<Sample>>().type.toMatch<{ optional?: string }>();
-  expect<Partial<Sample>>().type.toMatch<{ required?: number }>();
+declare const sample: Sample;
+
+test("sample", () => {
+  expect(pick(sample, "nested")).type.toBe<{ nested: Sample }>();
+  expect(pick(sample, "optional")).type.toBe<{ optional?: string }>();
+  expect(pick(sample, "required")).type.toBe<{ required: number }>();
+
+  expect(omit(sample, "nested")).type.toBe<{ optional?: string; required: number }>();
 });
 
-test("Readonly", () => {
-  expect<Readonly<Sample>>().type.toMatch<{ readonly nested: Sample }>();
-  expect<Readonly<Sample>>().type.toMatch<{ readonly optional?: string }>();
-  expect<Readonly<Sample>>().type.toMatch<{ readonly required: number }>();
+declare const partialSample: Partial<Sample>;
+
+test("partialSample", () => {
+  expect(pick(partialSample, "nested")).type.toBe<{ nested?: Sample }>();
+  expect(pick(partialSample, "optional")).type.toBe<{ optional?: string }>();
+  expect(pick(partialSample, "required")).type.toBe<{ required?: number }>();
+
+  expect(omit(partialSample, "nested")).type.toBe<{ optional?: string; required?: number }>();
+});
+
+declare const readonlySample: Readonly<Sample>;
+
+test("readonlySample", () => {
+  expect(pick(readonlySample, "nested")).type.toBe<{ readonly nested: Sample }>();
+  expect(pick(readonlySample, "optional")).type.toBe<{ readonly optional?: string }>();
+  expect(pick(readonlySample, "required")).type.toBe<{ readonly required: number }>();
+
+  expect(omit(readonlySample, "nested")).type.toBe<{ readonly optional?: string; readonly required: number }>();
 });

@@ -362,3 +362,18 @@ export declare const it: Test;
  * Builds an assertion.
  */
 export declare const expect: Expect;
+
+/**
+ * Returns the target object without the specified keys.
+ */
+export declare function omit<T, K extends keyof T>(
+  target: T,
+  ...keys: [K, ...Array<K>]
+): Omit<T, (typeof keys)[number]>;
+/**
+ * Returns the target object with only the specified keys.
+ */
+export declare function pick<T, K extends keyof T>(
+  target: T,
+  ...keys: [K, ...Array<K>]
+): Pick<T, (typeof keys)[number]>;
