@@ -10,8 +10,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("pick", async (t) => {
   await t.test("'pick' implementation", () => {
-    assert.equal(
-      tstyche.pick({ one: 1, two: true }, 'two'), undefined);
+    assert.equal(tstyche.pick({ one: 1, two: true }, "two"), undefined);
   });
 
   await t.test("pick", { skip: true }, async () => {

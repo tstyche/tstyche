@@ -10,8 +10,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("omit", async (t) => {
   await t.test("'omit' implementation", () => {
-    assert.equal(
-      tstyche.omit({ one: 1, two: true }, 'two'), undefined);
+    assert.equal(tstyche.omit({ one: 1, two: true }, "two"), undefined);
   });
 
   await t.test("omit", { skip: true }, async () => {
