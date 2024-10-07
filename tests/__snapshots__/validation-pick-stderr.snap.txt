@@ -1,0 +1,60 @@
+Error: Expected at least 2 arguments, but got 0. ts(2555)
+
+  3 | describe("argument for 'object'", () => {
+  4 |   test("must be provided", () => {
+  5 |     pick();
+    |     ~~~~
+  6 |   });
+  7 | });
+  8 | 
+
+      at ./__typetests__/pick.tst.ts:5:5
+
+    An argument for 'object' was not provided. ts(6210)
+
+      314 |  * Reshapes type of the given object by keeping only the specified keys.
+      315 |  */
+      316 | declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
+          |                                             ~~~~~~~~~
+      317 | /**
+      318 |  * Defines a test group.
+      319 |  */
+
+            at ../../../build/index.d.ts:316:45
+
+Error: Expected at least 2 arguments, but got 1. ts(2555)
+
+   9 | describe("argument for 'keys'", () => {
+  10 |   test("must be provided", () => {
+  11 |     pick({ a: "test" });
+     |     ~~~~
+  12 |   });
+  13 | 
+  14 |   test("must be valid key", () => {
+
+       at ./__typetests__/pick.tst.ts:11:5
+
+    Arguments for the rest parameter 'keys' were not provided. ts(6236)
+
+      314 |  * Reshapes type of the given object by keeping only the specified keys.
+      315 |  */
+      316 | declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
+          |                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~
+      317 | /**
+      318 |  * Defines a test group.
+      319 |  */
+
+            at ../../../build/index.d.ts:316:56
+
+Error: Argument of type '"b"' is not assignable to parameter of type '"a"'. ts(2345)
+
+  13 | 
+  14 |   test("must be valid key", () => {
+  15 |     pick({ a: "test" }, "b");
+     |                         ~~~
+  16 |   });
+  17 | });
+  18 | 
+
+       at ./__typetests__/pick.tst.ts:15:25
+

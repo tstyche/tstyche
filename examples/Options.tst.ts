@@ -1,4 +1,4 @@
-import { expect, test } from "tstyche";
+import { expect, pick, test } from "tstyche";
 
 interface Options {
   locale?: Array<"en" | "de">;
@@ -22,14 +22,7 @@ interface Options {
 const options: Options = {};
 
 test("is a match?", () => {
-  expect(options).type.toMatch<{ readonly environment?: string }>();
-  expect(options).type.toMatch<{ timers?: "fake" | "real" }>();
+  expect(pick(options, "environment")).type.toBe<{ readonly environment?: string }>();
+
+  expect(pick(options, "timers")).type.toBe<{ timers?: "fake" | "real" }>();
 });
-
-expect<"fake" | "real">().type.toBeAssignableWith<"fake">();
-// But type '"fake" | "real"' is not assignable to type '"fake"'
-expect<"fake" | "real">().type.not.toMatch<"fake">();
-
-expect<string>().type.toBeAssignableWith<"node">();
-// But type 'string' is not assignable to type '"node"'
-expect<string>().type.not.toMatch<"node">();

@@ -1,0 +1,15 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/pick.tst.ts
+  argument for 'object'
+    × must be provided
+  argument for 'keys'
+    × must be provided
+    × must be valid key
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      3 failed, 3 total
+Duration:   <<timestamp>>
+
+Ran all test files.
