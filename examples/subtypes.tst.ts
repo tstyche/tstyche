@@ -1,27 +1,23 @@
 import { expect, omit, pick } from "tstyche";
 
-interface Sample {
-  deepNested: Sample;
-  optional?: string;
-  required: number;
-}
+class Queue<T> {
+  #entries: Array<T> = [];
 
-declare const sample: Sample;
+  get size(): number {
+    return this.#entries.length;
+  }
 
-expect(omit(sample, "deepNested")).type.toBe<{ optional?: string; required: number }>();
-
-// Equivalent to the `Omit` utility type
-expect<Omit<Sample, "deepNested">>().type.toBe<{ optional?: string; required: number }>();
-
-class Queue {
-  readonly size: number;
-
-  constructor() {
-    this.size = 0;
+  enqueue(item: T): void {
+    this.#entries.push(item);
   }
 }
+
+expect(omit(new Queue(), "enqueue")).type.toBe<{ readonly size: number }>();
+
+// Equivalent to the `Omit` utility type
+expect<Omit<Queue<string>, "enqueue">>().type.toBe<{ readonly size: number }>();
 
 expect(pick(new Queue(), "size")).type.toBe<{ readonly size: number }>();
 
 // Equivalent to the `Pick` utility type
-expect<Pick<Queue, "size">>().type.toBe<{ readonly size: number }>();
+expect<Pick<Queue<string>, "size">>().type.toBe<{ readonly size: number }>();
