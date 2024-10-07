@@ -2064,9 +2064,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monocart-coverage-reports@npm:2.11.0":
-  version: 2.11.0
-  resolution: "monocart-coverage-reports@npm:2.11.0"
+"monocart-coverage-reports@npm:2.11.1":
+  version: 2.11.1
+  resolution: "monocart-coverage-reports@npm:2.11.1"
   dependencies:
     acorn: "npm:^8.12.1"
     acorn-loose: "npm:^8.4.0"
@@ -2082,7 +2082,7 @@ __metadata:
     monocart-locator: "npm:^1.0.2"
   bin:
     mcr: lib/cli.js
-  checksum: 10c0/c7961e4170e32a62e89f7adac99d1c428ce13166b9d03467f04f953181bd2761e48e52a154da77658255dc9be84829c23c94174097a9743ed24f2e94cc67f79a
+  checksum: 10c0/62f1307dded07f2cb412ae245a98b72f2ec7df1c2e6f2bbb39af86e6072472e2f604b7d4766007f72556e66e953657d25c190bfbf1a68d358096f1c2e7f58414
   languageName: node
   linkType: hard
 
@@ -2586,7 +2586,7 @@ __metadata:
     ajv: "npm:8.17.1"
     cspell: "npm:8.14.4"
     magic-string: "npm:0.30.11"
-    monocart-coverage-reports: "npm:2.11.0"
+    monocart-coverage-reports: "npm:2.11.1"
     pretty-ansi: "npm:2.0.0"
     rollup: "npm:4.24.0"
     rollup-plugin-dts: "npm:6.1.1"
