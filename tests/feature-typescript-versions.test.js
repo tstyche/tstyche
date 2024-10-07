@@ -24,7 +24,7 @@ expect<Omit<Queue<string>, "enqueue">>().type.toBe<{ readonly size: number }>();
 
 expect(pick(new Queue(), "size")).type.toBe<{ readonly size: number }>();
 expect<Pick<Queue<string>, "size">>().type.toBe<{ readonly size: number }>();
-`
+`;
 
 const toAcceptPropsTestText = `import { expect, test } from "tstyche";
 
