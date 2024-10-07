@@ -309,18 +309,6 @@ interface Expect {
 }
 
 /**
- * Defines a test group.
- */
-export declare const describe: Describe;
-/**
- * Defines a single test.
- */
-export declare const test: Test;
-/**
- * Defines a single test.
- */
-export declare const it: Test;
-/**
  * Builds an assertion.
  */
 export declare const expect: Expect;
@@ -333,3 +321,16 @@ export declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, .
  * Reshapes type of the given object by keeping only the specified keys.
  */
 export declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
+
+/**
+ * Defines a test group.
+ */
+export declare const describe: Describe;
+/**
+ * Defines a single test.
+ */
+export declare const test: Test;
+/**
+ * Defines a single test.
+ */
+export declare const it: Test;

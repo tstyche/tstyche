@@ -12,15 +12,15 @@ Error: Expected at least 2 arguments, but got 0. ts(2555)
 
     An argument for 'object' was not provided. ts(6210)
 
-      322 |  * Reshapes type of the given object by removing the specified keys.
-      323 |  */
-      324 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
+      310 |  * Reshapes type of the given object by removing the specified keys.
+      311 |  */
+      312 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
           |                                                 ~~~~~~~~~
-      325 | /**
-      326 |  * Reshapes type of the given object by keeping only the specified keys.
-      327 |  */
+      313 | /**
+      314 |  * Reshapes type of the given object by keeping only the specified keys.
+      315 |  */
 
-            at ./../../../build/index.d.ts:324:49
+            at ./../../../build/index.d.ts:312:49
 
 Error: Expected at least 2 arguments, but got 1. ts(2555)
 
@@ -36,13 +36,13 @@ Error: Expected at least 2 arguments, but got 1. ts(2555)
 
     Arguments for the rest parameter 'keys' were not provided. ts(6236)
 
-      322 |  * Reshapes type of the given object by removing the specified keys.
-      323 |  */
-      324 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
+      310 |  * Reshapes type of the given object by removing the specified keys.
+      311 |  */
+      312 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
           |                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~
-      325 | /**
-      326 |  * Reshapes type of the given object by keeping only the specified keys.
-      327 |  */
+      313 | /**
+      314 |  * Reshapes type of the given object by keeping only the specified keys.
+      315 |  */
 
-            at ./../../../build/index.d.ts:324:60
+            at ./../../../build/index.d.ts:312:60
 
