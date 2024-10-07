@@ -20,7 +20,7 @@ Error: Expected at least 2 arguments, but got 0. ts(2555)
       314 |  * Reshapes type of the given object by keeping only the specified keys.
       315 |  */
 
-            at ./../../../build/index.d.ts:312:49
+            at ../../../build/index.d.ts:312:49
 
 Error: Expected at least 2 arguments, but got 1. ts(2555)
 
@@ -44,5 +44,5 @@ Error: Expected at least 2 arguments, but got 1. ts(2555)
       314 |  * Reshapes type of the given object by keeping only the specified keys.
       315 |  */
 
-            at ./../../../build/index.d.ts:312:60
+            at ../../../build/index.d.ts:312:60
 
