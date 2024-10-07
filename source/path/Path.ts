@@ -20,13 +20,13 @@ export class Path {
   }
 
   static relative(from: string, to: string): string {
-    let relativePath = path.relative(from, to);
+    const relativePath = Path.normalizeSlashes(path.relative(from, to));
 
-    if (!relativePath.startsWith("./")) {
-      relativePath = `./${relativePath}`;
+    if (/^\.\.?\//.test(relativePath)) {
+      return relativePath;
     }
 
-    return Path.normalizeSlashes(relativePath);
+    return `./${relativePath}`;
   }
 
   static resolve(...filePaths: Array<string>): string {
