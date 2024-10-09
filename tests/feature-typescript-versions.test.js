@@ -5,7 +5,7 @@ import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
-const subtypeTestText = `import { expect, omit, pick } from "tstyche";
+const subtypeTestText = `import { expect } from "tstyche";
 
 class Queue<T> {
   #entries: Array<T> = [];
@@ -117,8 +117,8 @@ await test("TypeScript 4.x", async (t) => {
   });
 
   await writeFixture(fixtureUrl, {
-    // 'moduleResolution: "node"' does not support self-referencing
-    ["__typetests__/subtype.test.ts"]: subtypeTestText.replace("tstyche", "../../../../../"),
+    // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
+    ["__typetests__/subtype.test.ts"]: `import { omit, pick } from "../../../../../"\n// @ts-expect-error\n${subtypeTestText}`,
     ["__typetests__/toAcceptProps.test.tsx"]: `// @ts-expect-error\n${toAcceptPropsTestText}`,
     ["__typetests__/toBe.test.ts"]: `// @ts-expect-error\n${toBeTestText}`,
     ["__typetests__/toBeAssignableTo.test.ts"]: `// @ts-expect-error\n${toBeAssignableToTestText}`,
@@ -152,7 +152,7 @@ await test("TypeScript 5.x", async (t) => {
   });
 
   await writeFixture(fixtureUrl, {
-    ["__typetests__/subtype.test.ts"]: subtypeTestText,
+    ["__typetests__/subtype.test.ts"]: `import { omit, pick } from "tstyche"\n${subtypeTestText}`,
     ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
     ["__typetests__/toBe.test.ts"]: toBeTestText,
     ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
