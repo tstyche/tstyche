@@ -94,7 +94,7 @@ export class EnvironmentService {
       // TODO use 'import.meta.resolve()' after dropping support for Node.js 18.18
       resolvedPath = Path.normalizeSlashes(createRequire(import.meta.url).resolve(specifier));
     } catch {
-      // the path cannot be resolved
+      // the specifier cannot be resolved
     }
 
     return resolvedPath;
