@@ -29,6 +29,10 @@ export interface CommandLineOptions {
      */
     only?: string;
     /**
+     * The list of TSTyche plugins.
+     */
+    plugins?: Array<string>;
+    /**
      * Remove all installed versions of the 'typescript' package and exit.
      */
     prune?: boolean;

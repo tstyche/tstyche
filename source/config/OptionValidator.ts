@@ -30,6 +30,7 @@ export class OptionValidator {
   ): Promise<void> {
     switch (optionName) {
       case "config":
+      case "plugins":
       case "rootPath":
         if (!existsSync(optionValue)) {
           this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));

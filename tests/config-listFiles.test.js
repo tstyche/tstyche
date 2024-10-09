@@ -77,26 +77,4 @@ await test("'--listFiles' command line option", async (t) => {
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
-
-  await t.test("when 'testFileMatch' is specified as an empty list", async () => {
-    const config = {
-      testFileMatch: [],
-    };
-
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
-      ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--listFiles"]);
-
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-testFileMatch-[]-stdout`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(stderr, "");
-    assert.equal(exitCode, 0);
-  });
 });

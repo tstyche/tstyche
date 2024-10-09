@@ -12,6 +12,7 @@ describe("CommandLineOptions", () => {
       install: true,
       listFiles: true,
       only: "external",
+      plugins: ["./tstyche-plugin.js"],
       prune: true,
       showConfig: true,
       skip: "internal",
@@ -61,6 +62,12 @@ describe("CommandLineOptions", () => {
   test("'prune' option", () => {
     expect<Pick<tstyche.CommandLineOptions, "prune">>().type.toBe<{
       prune?: boolean;
+    }>();
+  });
+
+  test("'plugins' option", () => {
+    expect<Pick<tstyche.CommandLineOptions, "plugins">>().type.toBe<{
+      plugins?: Array<string>;
     }>();
   });
 

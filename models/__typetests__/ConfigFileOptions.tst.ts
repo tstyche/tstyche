@@ -7,6 +7,7 @@ describe("ConfigFileOptions", () => {
   test("all options", () => {
     expect(options).type.toBeAssignableWith({
       failFast: true,
+      plugins: ["./tstyche-plugin.js"],
       rootPath: "../",
       target: ["4.9.5" as const, "5.0" as const, "latest" as const],
       testFileMatch: ["**/tests/types/**/*"],
@@ -16,6 +17,12 @@ describe("ConfigFileOptions", () => {
   test("'failFast' option", () => {
     expect<Pick<tstyche.ConfigFileOptions, "failFast">>().type.toBe<{
       failFast?: boolean;
+    }>();
+  });
+
+  test("'plugins' option", () => {
+    expect<Pick<tstyche.ConfigFileOptions, "plugins">>().type.toBe<{
+      plugins?: Array<string>;
     }>();
   });
 

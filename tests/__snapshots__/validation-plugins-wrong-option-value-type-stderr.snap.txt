@@ -1,0 +1,12 @@
+Error: Option 'plugins' requires a value of type list.
+
+  1 | {
+  2 |   "plugins": "./tstyche-plugin.js",
+    |              ~~~~~~~~~~~~~~~~~~~~~
+  3 |   "testFileMatch": [
+  4 |     "examples/*.test.*"
+  5 |   ]
+  6 | }
+
+      at ./tstyche.config.json:2:14
+

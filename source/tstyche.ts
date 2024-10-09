@@ -9,6 +9,7 @@ export * from "#handlers";
 export * from "#input";
 export * from "#output";
 export * from "#path";
+export * from "#plugins";
 export * from "#project";
 export * from "#result";
 export * from "#runner";
