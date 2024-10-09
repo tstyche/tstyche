@@ -3,6 +3,7 @@ import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig }
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler, SetupReporter } from "#handlers";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
+import { PluginService } from "#plugins";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
@@ -71,7 +72,7 @@ export class Cli {
 
       await configService.readConfigFile(storeService);
 
-      const resolvedConfig = configService.resolveConfig();
+      let resolvedConfig = configService.resolveConfig();
 
       if (cancellationToken.isCancellationRequested) {
         if (commandLineArguments.includes("--watch")) {
@@ -79,6 +80,12 @@ export class Cli {
         }
         continue;
       }
+
+      if (resolvedConfig.plugins.length > 0) {
+        await PluginService.register(resolvedConfig.plugins);
+      }
+
+      resolvedConfig = await PluginService.callHook("config", resolvedConfig);
 
       if (commandLineArguments.includes("--showConfig")) {
         this.#outputService.writeMessage(formattedText({ ...resolvedConfig }));
@@ -93,7 +100,7 @@ export class Cli {
       }
 
       const selectService = new SelectService(resolvedConfig);
-      let testFiles: Array<string> = [];
+      let testFiles: Array<string | URL> = [];
 
       if (resolvedConfig.testFileMatch.length > 0) {
         testFiles = await selectService.selectFiles();
@@ -104,11 +111,13 @@ export class Cli {
           }
           continue;
         }
+      }
 
-        if (commandLineArguments.includes("--listFiles")) {
-          this.#outputService.writeMessage(formattedText(testFiles));
-          continue;
-        }
+      testFiles = await PluginService.callHook("select", testFiles);
+
+      if (commandLineArguments.includes("--listFiles")) {
+        this.#outputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
+        continue;
       }
 
       this.#eventEmitter.removeHandler(setupReporter);

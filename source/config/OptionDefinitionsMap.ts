@@ -77,6 +77,17 @@ export class OptionDefinitionsMap {
     },
 
     {
+      brand: OptionBrand.List,
+      description: "The list of TSTyche plugins.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      items: {
+        brand: OptionBrand.String,
+        name: "plugins",
+      },
+      name: "plugins",
+    },
+
+    {
       brand: OptionBrand.BareTrue,
       description: "Remove all installed versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,

@@ -71,7 +71,7 @@ export class ConfigFileOptionsWorker {
           break;
         }
 
-        if (optionDefinition.name === "rootPath") {
+        if (optionDefinition.name === "plugins" || optionDefinition.name === "rootPath") {
           optionValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
         }
 
