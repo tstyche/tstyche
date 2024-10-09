@@ -150,7 +150,7 @@ await test("'plugins' configuration file option", async (t) => {
 
     assert.equal(stdout, "");
 
-    await assert.matchSnapshot(stderr, {
+    await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-path-does-not-exist-stderr`,
       testFileUrl: import.meta.url,
     });
