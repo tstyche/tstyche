@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import type { Hooks, Plugin } from "./types.js";
 
 export class PluginService {
@@ -20,7 +21,7 @@ export class PluginService {
   static async register(plugins: Array<string>) {
     for (const plugin of plugins) {
       if (!PluginService.#plugins.has(plugin)) {
-        PluginService.#plugins.set(plugin, (await import(plugin)).default);
+        PluginService.#plugins.set(plugin, (await import(pathToFileURL(plugin).toString())).default);
       }
     }
   }
