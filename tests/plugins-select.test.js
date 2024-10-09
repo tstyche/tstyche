@@ -11,10 +11,7 @@ await test("'--plugins' command line option", async (t) => {
   await t.test("when single plugin has 'select' hook", async () => {
     await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "--plugins",
-      "./select-plugin-1.js",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--plugins", "./select-plugin-1.js"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}single-plugin-stdout`,
