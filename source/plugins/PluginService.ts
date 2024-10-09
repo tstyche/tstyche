@@ -7,7 +7,11 @@ export class PluginService {
     for (const plugin of PluginService.#plugins.values()) {
       const result = await plugin[hook]?.(options);
 
-      Object.assign(options, result);
+      if (Array.isArray(result)) {
+        options = result as Hooks[T];
+      } else {
+        Object.assign(options, result);
+      }
     }
 
     return options;
