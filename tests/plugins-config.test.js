@@ -7,7 +7,7 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("'--plugins' command line option", async (t) => {
-  await t.test("when one plugin has 'config' hook", async () => {
+  await t.test("when single plugin has 'config' hook", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
@@ -24,7 +24,7 @@ await test("'--plugins' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when two plugins have 'config' hook", async () => {
+  await t.test("when multiple plugins have 'config' hook", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
