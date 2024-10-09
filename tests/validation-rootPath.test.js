@@ -22,7 +22,7 @@ await test("'rootPath' configuration file option", async (t) => {
       ["config/tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config ./config/tstyche.json"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config", "./config/tstyche.json"]);
 
     assert.equal(stdout, "");
 
