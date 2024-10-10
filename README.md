@@ -70,7 +70,7 @@ The `tstyche` command is the heart of TSTyche. For example, it can select test f
 tstyche JsonObject --only external --target 4.8,latest
 ```
 
-This simple! (And it has the watch mode too.)
+This simple! (And it has watch mode too.)
 
 ## Documentation
 

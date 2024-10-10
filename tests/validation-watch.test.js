@@ -11,7 +11,7 @@ await test("'--watch' command line option", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("when enabled in a continuous integration environment", async () => {
+  await t.test("when enabled in continuous integration environment", async () => {
     await writeFixture(fixtureUrl);
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--watch"], {
@@ -22,7 +22,7 @@ await test("'--watch' command line option", async (t) => {
 
     assert.equal(
       stderr,
-      ["Error: The watch mode cannot be enabled in a continuous integration environment.", "", ""].join("\n"),
+      ["Error: Watch mode cannot be enabled in continuous integration environment.", "", ""].join("\n"),
     );
 
     assert.equal(exitCode, 1);

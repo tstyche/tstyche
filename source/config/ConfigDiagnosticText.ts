@@ -60,6 +60,6 @@ export class ConfigDiagnosticText {
   }
 
   static watchCannotBeEnabled(): string {
-    return "The watch mode cannot be enabled in a continuous integration environment.";
+    return "Watch mode cannot be enabled in continuous integration environment.";
   }
 }

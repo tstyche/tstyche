@@ -8,7 +8,7 @@ export type DiagnosticsHandler = (diagnostics: Diagnostic) => void;
 
 export interface EnvironmentOptions {
   /**
-   * Is `true` if the process is running in a continuous integration environment.
+   * Is `true` if the process is running in continuous integration environment.
    */
   isCi: boolean;
   /**
