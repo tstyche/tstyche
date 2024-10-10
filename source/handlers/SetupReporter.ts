@@ -4,8 +4,8 @@ import { addsPackageText, diagnosticText } from "#output";
 import { Reporter } from "./Reporter.js";
 
 export class SetupReporter extends Reporter implements EventHandler {
-  handleEvent([eventName, payload]: Event): void {
-    if (eventName === "store:adds") {
+  on([event, payload]: Event): void {
+    if (event === "store:adds") {
       this.outputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
       return;
     }

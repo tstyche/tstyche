@@ -11,7 +11,7 @@ export class CancellationHandler implements EventHandler {
     this.#cancellationReason = cancellationReason;
   }
 
-  handleEvent([, payload]: Event): void {
+  on([, payload]: Event): void {
     if ("diagnostics" in payload) {
       if (payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)) {
         this.#cancellationToken.cancel(this.#cancellationReason);

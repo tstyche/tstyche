@@ -25,8 +25,8 @@ export class RunReporter extends Reporter implements EventHandler {
     return this.#fileCount === 0;
   }
 
-  handleEvent([eventName, payload]: Event): void {
-    switch (eventName) {
+  on([event, payload]: Event): void {
+    switch (event) {
       case "deprecation:info": {
         for (const diagnostic of payload.diagnostics) {
           if (!this.#seenDeprecations.has(diagnostic.text.toString())) {
