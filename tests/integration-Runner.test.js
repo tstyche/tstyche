@@ -26,11 +26,11 @@ class TestResultHandler {
   /**
    * @param {import("tstyche/tstyche").Event} event
    */
-  handleEvent([eventName, payload]) {
-    if (eventName === "run:start") {
+  on([event, payload]) {
+    if (event === "run:start") {
       result = undefined;
     }
-    if (eventName === "run:end") {
+    if (event === "run:end") {
       result = payload.result;
     }
   }
