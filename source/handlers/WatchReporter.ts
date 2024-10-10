@@ -3,8 +3,8 @@ import { diagnosticText, waitingForFileChangesText, watchUsageText } from "#outp
 import { Reporter } from "./Reporter.js";
 
 export class WatchReporter extends Reporter implements EventHandler {
-  handleEvent([eventName, payload]: Event): void {
-    switch (eventName) {
+  on([event, payload]: Event): void {
+    switch (event) {
       case "run:start":
         this.outputService.clearTerminal();
         break;

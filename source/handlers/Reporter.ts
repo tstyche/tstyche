@@ -8,5 +8,5 @@ export abstract class Reporter implements EventHandler {
     this.outputService = outputService;
   }
 
-  abstract handleEvent([eventName, payload]: Event): void;
+  abstract on([event, payload]: Event): void;
 }

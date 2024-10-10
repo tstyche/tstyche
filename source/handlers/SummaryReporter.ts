@@ -3,8 +3,8 @@ import { summaryText } from "#output";
 import { Reporter } from "./Reporter.js";
 
 export class SummaryReporter extends Reporter implements EventHandler {
-  handleEvent([eventName, payload]: Event): void {
-    if (eventName === "run:end") {
+  on([event, payload]: Event): void {
+    if (event === "run:end") {
       this.outputService.writeMessage(
         summaryText({
           duration: payload.result.timing.duration,

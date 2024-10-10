@@ -20,8 +20,8 @@ export class ResultHandler implements EventHandler {
   #taskResult: TaskResult | undefined;
   #testResult: TestResult | undefined;
 
-  handleEvent([eventName, payload]: Event): void {
-    switch (eventName) {
+  on([event, payload]: Event): void {
+    switch (event) {
       case "run:start":
         this.#result = payload.result;
         this.#result.timing.start = Date.now();

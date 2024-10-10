@@ -1,7 +1,7 @@
 import type { Event } from "./types.js";
 
 export interface EventHandler {
-  handleEvent: (event: Event) => void;
+  on: (event: Event) => void;
 }
 
 export class EventEmitter {
@@ -15,7 +15,7 @@ export class EventEmitter {
 
   static dispatch(event: Event): void {
     for (const handler of EventEmitter.#handlers) {
-      handler.handleEvent(event);
+      handler.on(event);
     }
   }
 
