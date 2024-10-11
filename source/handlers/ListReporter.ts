@@ -4,7 +4,7 @@ import { type OutputService, addsPackageText, diagnosticText, taskStatusText, us
 import { FileViewService } from "./FileViewService.js";
 import { Reporter } from "./Reporter.js";
 
-export class RunReporter extends Reporter implements EventHandler {
+export class ListReporter extends Reporter implements EventHandler {
   #currentCompilerVersion: string | undefined;
   #currentProjectConfigFilePath: string | undefined;
   #fileCount = 0;
