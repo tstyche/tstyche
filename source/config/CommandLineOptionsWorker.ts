@@ -100,7 +100,13 @@ export class CommandLineOptionsWorker {
             .filter((value) => value !== ""); // in case if a comma was at the end of a list, e.g. "--target 5.0,current,"
 
           if (optionDefinition.name === "plugins") {
-            optionValues = optionValues.map((optionValue) => Path.resolve(optionValue));
+            optionValues = optionValues.map((optionValue) => {
+              if (optionValue.startsWith(".")) {
+                return new URL(Path.resolve(optionValue), "file:").toString();
+              }
+
+              return optionValue;
+            });
           }
 
           for (const optionValue of optionValues) {

@@ -20,6 +20,10 @@ export class ConfigDiagnosticText {
     return `The specified path '${filePath}' does not exist.`;
   }
 
+  static moduleWasNotFound(specifier: string): string {
+    return `The specified module '${specifier}' was not found.`;
+  }
+
   static #optionName(optionName: string, optionGroup: OptionGroup) {
     switch (optionGroup) {
       case OptionGroup.CommandLine:

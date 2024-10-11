@@ -1,8 +1,7 @@
-/**
- * @type {import("tstyche/tstyche").Plugin}
- */
-export default {
+import { TSTyche } from "tstyche/tstyche";
+
+TSTyche.addHooks({
   config: (options) => {
     return { ...options, failFast: true };
   },
-};
+});

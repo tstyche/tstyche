@@ -1,10 +1,22 @@
 import type { Diagnostic } from "#diagnostic";
 import type { DescribeResult, ExpectResult, Result, TargetResult, TaskResult, TestResult } from "#result";
 
-export type Event =
+export interface EventHandler {
+  on: (event: Event) => void;
+}
+
+export interface Reporter {
+  on: (event: ReporterEvent) => void;
+}
+
+export type Event = ConfigEvent | ReporterEvent;
+
+export type ConfigEvent =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
+  | ["select:error", { diagnostics: Array<Diagnostic> }];
+
+export type ReporterEvent =
   | ["deprecation:info", { diagnostics: Array<Diagnostic> }]
-  | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
   | ["store:adds", { packagePath: string; packageVersion: string }]
