@@ -1,8 +1,4 @@
-import type { Event } from "./types.js";
-
-export interface EventHandler {
-  on: (event: Event) => void;
-}
+import type { Event, EventHandler } from "./types.js";
 
 export class EventEmitter {
   static #handlers = new Set<EventHandler>();

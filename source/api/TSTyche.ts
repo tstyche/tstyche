@@ -1,5 +1,5 @@
 import type { ResolvedConfig } from "#config";
-import { EventEmitter } from "#events";
+import { EventEmitter, type EventHandler, type Reporter } from "#events";
 import { ListReporter, SummaryReporter, WatchReporter } from "#handlers";
 import type { OutputService } from "#output";
 import { Runner } from "#runner";
@@ -10,6 +10,7 @@ import { CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
+  static #customReporters = new Set<Reporter>();
   #eventEmitter = new EventEmitter();
   #outputService: OutputService;
   #resolvedConfig: ResolvedConfig;
@@ -31,17 +32,38 @@ export class TSTyche {
     this.#runner = new Runner(this.#resolvedConfig, this.#selectService, this.#storeService);
   }
 
+  static addReporter(reporter: Reporter) {
+    TSTyche.#customReporters.add(reporter);
+  }
+
   close(): void {
     this.#runner.close();
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    this.#eventEmitter.addHandler(new ListReporter(this.#resolvedConfig, this.#outputService));
+    for (const reporter of TSTyche.#customReporters) {
+      this.#eventEmitter.addHandler(reporter as EventHandler);
+    }
+
+    for (const reporter of this.#resolvedConfig.reporters) {
+      switch (reporter) {
+        case "list":
+          this.#eventEmitter.addHandler(new ListReporter(this.#resolvedConfig, this.#outputService));
+          break;
+
+        case "summary":
+          if (!this.#resolvedConfig.watch) {
+            this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));
+          }
+          break;
+
+        default:
+          await import(reporter);
+      }
+    }
 
     if (this.#resolvedConfig.watch === true) {
       this.#eventEmitter.addHandler(new WatchReporter(this.#outputService));
-    } else {
-      this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));
     }
 
     await this.#runner.run(

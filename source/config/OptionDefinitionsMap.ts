@@ -95,6 +95,17 @@ export class OptionDefinitionsMap {
     },
 
     {
+      brand: OptionBrand.List,
+      description: "The list of reporters to use.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      items: {
+        brand: OptionBrand.String,
+        name: "reporters",
+      },
+      name: "reporters",
+    },
+
+    {
       brand: OptionBrand.String,
       description: "The path to a directory containing files of a test project.",
       group: OptionGroup.ConfigFile,
