@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
@@ -102,7 +103,7 @@ export class CommandLineOptionsWorker {
           if (optionDefinition.name === "plugins") {
             optionValues = optionValues.map((optionValue) => {
               if (optionValue.startsWith(".")) {
-                return new URL(Path.resolve(optionValue), "file:").toString();
+                return pathToFileURL(optionValue).toString();
               }
 
               return optionValue;

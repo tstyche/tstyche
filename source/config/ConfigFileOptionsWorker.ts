@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import { Diagnostic, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
@@ -73,8 +74,8 @@ export class ConfigFileOptionsWorker {
 
         if (optionDefinition.name === "plugins") {
           if (optionValue.startsWith(".")) {
-            const modulePath = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
-            optionValue = new URL(modulePath, "file:").toString();
+            const configFilePath = Path.relative(".", Path.dirname(this.#sourceFile.fileName));
+            optionValue = pathToFileURL(Path.join(configFilePath, optionValue)).toString();
           }
         }
 
