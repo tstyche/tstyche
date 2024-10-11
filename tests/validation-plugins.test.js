@@ -49,7 +49,7 @@ await test("'--plugins' command line option", async (t) => {
     assert.equal(stdout, "");
 
     const expected = [
-      "Error: The specified path '<<cwd>>/tests/__fixtures__/.generated/validation-plugins/tstyche-plugin.js' does not exist.",
+      "Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/validation-plugins/tstyche-plugin.js' does not exist.",
       "",
       "",
     ].join("\n");
@@ -72,7 +72,7 @@ await test("'--plugins' command line option", async (t) => {
     assert.equal(stdout, "");
 
     const expected = [
-      "Error: The specified path '<<cwd>>/tests/__fixtures__/.generated/validation-plugins/not-plugin.js' does not exist.",
+      "Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/validation-plugins/not-plugin.js' does not exist.",
       "",
       "",
     ].join("\n");

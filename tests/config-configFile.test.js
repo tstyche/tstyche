@@ -202,7 +202,7 @@ await test("'tstyche.config.json' file", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile",
+      rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile",
       testFileMatch: ["**/*.tst.*"],
     });
 
@@ -254,8 +254,8 @@ await test("'--config' command line option", async (t) => {
     ]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      configFilePath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile/config/tstyche.json",
-      rootPath: "<<cwd>>/tests/__fixtures__/.generated/config-configFile",
+      configFilePath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile/config/tstyche.json",
+      rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile",
     });
 
     assert.equal(stderr, "");
