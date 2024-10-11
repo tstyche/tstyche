@@ -57,7 +57,7 @@ await test("'--install' command line option", async (t) => {
       assert.equal(
         normalizeOutput(stdout),
         [
-          "adds TypeScript 4.9.5 to <<cwd>>/tests/__fixtures__/.generated/config-install/.store/typescript@4.9.5",
+          "adds TypeScript 4.9.5 to <<basePath>>/tests/__fixtures__/.generated/config-install/.store/typescript@4.9.5",
           "",
         ].join("\n"),
       );
@@ -81,8 +81,8 @@ await test("'--install' command line option", async (t) => {
     assert.equal(
       normalizeOutput(stdout),
       [
-        "adds TypeScript 4.8.4 to <<cwd>>/tests/__fixtures__/.generated/config-install/.store/typescript@4.8.4",
-        "adds TypeScript 5.0.4 to <<cwd>>/tests/__fixtures__/.generated/config-install/.store/typescript@5.0.4",
+        "adds TypeScript 4.8.4 to <<basePath>>/tests/__fixtures__/.generated/config-install/.store/typescript@4.8.4",
+        "adds TypeScript 5.0.4 to <<basePath>>/tests/__fixtures__/.generated/config-install/.store/typescript@5.0.4",
         "",
       ].join("\n"),
     );

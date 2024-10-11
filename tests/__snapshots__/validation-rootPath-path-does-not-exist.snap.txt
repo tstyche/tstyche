@@ -1,4 +1,4 @@
-Error: The specified path '<<cwd>>/tests/__fixtures__/.generated/validation-rootPath/nope' does not exist.
+Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/validation-rootPath/nope' does not exist.
 
   1 | {
   2 |   "rootPath": "../nope",
