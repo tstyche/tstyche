@@ -49,7 +49,7 @@ await test("'--plugins' command line option", async (t) => {
     assert.equal(stdout, "");
 
     const expected = [
-      "Error: The specified module 'file://<<cwd>>/tests/__fixtures__/.generated/validation-plugins/tstyche-plugin.js' was not found.",
+      "Error: The specified module '<<baseUrl>>/tests/__fixtures__/.generated/validation-plugins/tstyche-plugin.js' was not found.",
       "",
       "",
     ].join("\n");
@@ -72,7 +72,7 @@ await test("'--plugins' command line option", async (t) => {
     assert.equal(stdout, "");
 
     const expected = [
-      "Error: The specified module 'file://<<cwd>>/tests/__fixtures__/.generated/validation-plugins/not-plugin.js' was not found.",
+      "Error: The specified module '<<baseUrl>>/tests/__fixtures__/.generated/validation-plugins/not-plugin.js' was not found.",
       "",
       "",
     ].join("\n");
