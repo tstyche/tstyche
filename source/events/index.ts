@@ -1,2 +1,2 @@
 export { EventEmitter } from "./EventEmitter.js";
-export type { Event, EventHandler, Reporter, ReporterEvent } from "./types.js";
+export type { Event, EventHandler } from "./types.js";

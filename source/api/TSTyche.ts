@@ -1,5 +1,5 @@
 import type { ResolvedConfig } from "#config";
-import { EventEmitter, type EventHandler, type Reporter } from "#events";
+import { EventEmitter } from "#events";
 import { RunReporter, SummaryReporter, WatchReporter } from "#handlers";
 import { type Hooks, HooksService } from "#hooks";
 import type { OutputService } from "#output";
@@ -11,7 +11,6 @@ import { CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
-  static #customReporters = new Set<Reporter>();
   #eventEmitter = new EventEmitter();
   #outputService: OutputService;
   #resolvedConfig: ResolvedConfig;
@@ -37,19 +36,11 @@ export class TSTyche {
     HooksService.addHandler(hooks);
   }
 
-  static addReporter(reporter: Reporter) {
-    TSTyche.#customReporters.add(reporter);
-  }
-
   close(): void {
     this.#runner.close();
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    for (const reporter of TSTyche.#customReporters) {
-      this.#eventEmitter.addHandler(reporter as EventHandler);
-    }
-
     this.#eventEmitter.addHandler(new RunReporter(this.#resolvedConfig, this.#outputService));
 
     if (this.#resolvedConfig.watch === true) {
