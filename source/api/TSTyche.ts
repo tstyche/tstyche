@@ -1,6 +1,6 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
-import { RunReporter, SummaryReporter, WatchReporter } from "#handlers";
+import { ListReporter, SummaryReporter, WatchReporter } from "#handlers";
 import { type Hooks, HooksService } from "#hooks";
 import type { OutputService } from "#output";
 import { Runner } from "#runner";
@@ -41,7 +41,7 @@ export class TSTyche {
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    this.#eventEmitter.addHandler(new RunReporter(this.#resolvedConfig, this.#outputService));
+    this.#eventEmitter.addHandler(new ListReporter(this.#resolvedConfig, this.#outputService));
 
     if (this.#resolvedConfig.watch === true) {
       this.#eventEmitter.addHandler(new WatchReporter(this.#outputService));
