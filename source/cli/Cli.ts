@@ -127,7 +127,6 @@ export class Cli {
       const tstyche = new TSTyche(resolvedConfig, this.#outputService, selectService, storeService);
 
       await tstyche.run(testFiles, cancellationToken);
-      tstyche.close();
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();

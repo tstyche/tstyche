@@ -22,9 +22,9 @@ const eventEmitter = new tstyche.EventEmitter();
  */
 let result;
 
-class TestResultHandler {
+class TestResultReporter {
   /**
-   * @param {import("tstyche/tstyche").Event} event
+   * @param {import("tstyche/tstyche").ReporterEvent} event
    */
   on([event, payload]) {
     if (event === "run:start") {
@@ -40,7 +40,7 @@ await test("tstyche.Runner", async (t) => {
   await t.test("tasks", async (t) => {
     const runner = new tstyche.Runner(resolvedConfig, selectService, storeService);
 
-    eventEmitter.addHandler(new TestResultHandler());
+    eventEmitter.addReporter(new TestResultReporter());
 
     const testCases = [
       {
@@ -121,8 +121,7 @@ await test("tstyche.Runner", async (t) => {
       });
     }
 
-    eventEmitter.removeHandlers();
-    runner.close();
+    eventEmitter.removeReporters();
   });
 
   await t.test("configuration options", async (t) => {
@@ -132,12 +131,11 @@ await test("tstyche.Runner", async (t) => {
     let runner;
 
     t.beforeEach(() => {
-      eventEmitter.addHandler(new TestResultHandler());
+      eventEmitter.addReporter(new TestResultReporter());
     });
 
     t.afterEach(() => {
-      eventEmitter.removeHandlers();
-      runner?.close();
+      eventEmitter.removeReporters();
     });
 
     await t.test("when 'failFast: true' is specified", async () => {

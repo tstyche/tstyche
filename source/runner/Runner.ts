@@ -19,19 +19,14 @@ export class Runner {
     this.#resolvedConfig = resolvedConfig;
     this.#selectService = selectService;
     this.#storeService = storeService;
-
-    this.#eventEmitter.addHandler(new ResultHandler());
-  }
-
-  close(): void {
-    this.#eventEmitter.removeHandlers();
   }
 
   async run(tasks: Array<Task>, cancellationToken = new CancellationToken()): Promise<void> {
-    let cancellationHandler: CancellationHandler | undefined;
+    const resultHandler = new ResultHandler();
+    this.#eventEmitter.addHandler(resultHandler);
 
     if (this.#resolvedConfig.failFast) {
-      cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
+      const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
       this.#eventEmitter.addHandler(cancellationHandler);
     }
 
@@ -42,9 +37,7 @@ export class Runner {
       await this.#run(tasks, cancellationToken);
     }
 
-    if (cancellationHandler != null) {
-      this.#eventEmitter.removeHandler(cancellationHandler);
-    }
+    this.#eventEmitter.removeHandlers();
   }
 
   async #run(tasks: Array<Task>, cancellationToken: CancellationToken): Promise<void> {

@@ -33,10 +33,6 @@ export class TSTyche {
     this.#runner = new Runner(this.#resolvedConfig, this.#selectService, this.#storeService);
   }
 
-  close(): void {
-    this.#runner.close();
-  }
-
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
     for (const reporter of this.#resolvedConfig.reporters) {
       switch (reporter) {
