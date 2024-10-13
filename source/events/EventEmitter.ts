@@ -4,7 +4,8 @@ import type { Event, EventHandler } from "./types.js";
 export class EventEmitter {
   static #handlers = new Set<EventHandler>();
   #scopeHandlers = new Set<EventHandler>();
-  static #reporters = new Set<EventHandler>();
+  static #reporters = new Set<Reporter>();
+  #scopeReporters = new Set<Reporter>();
 
   addHandler(handler: EventHandler): void {
     this.#scopeHandlers.add(handler);
@@ -12,12 +13,13 @@ export class EventEmitter {
   }
 
   addReporter(reporter: Reporter): void {
-    EventEmitter.#reporters.add(reporter as EventHandler);
+    this.#scopeReporters.add(reporter);
+    EventEmitter.#reporters.add(reporter);
   }
 
   static dispatch(event: Event): void {
     for (const handler of [...EventEmitter.#handlers, ...EventEmitter.#reporters]) {
-      handler.on(event);
+      (handler as EventHandler).on(event);
     }
   }
 
@@ -27,7 +29,8 @@ export class EventEmitter {
   }
 
   removeReporter(reporter: Reporter): void {
-    EventEmitter.#reporters.delete(reporter as EventHandler);
+    this.#scopeReporters.delete(reporter);
+    EventEmitter.#reporters.delete(reporter);
   }
 
   removeHandlers(): void {
@@ -36,5 +39,13 @@ export class EventEmitter {
     }
 
     this.#scopeHandlers.clear();
+  }
+
+  removeReporters(): void {
+    for (const reporter of this.#scopeReporters) {
+      EventEmitter.#reporters.delete(reporter);
+    }
+
+    this.#scopeReporters.clear();
   }
 }

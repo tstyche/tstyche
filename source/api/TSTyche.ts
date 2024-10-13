@@ -67,5 +67,6 @@ export class TSTyche {
     );
 
     this.#eventEmitter.removeHandlers();
+    this.#eventEmitter.removeReporters();
   }
 }
