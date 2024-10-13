@@ -79,6 +79,8 @@ export class ConfigService {
     await configFileWorker.parse();
   }
 
+  // TODO take 'userConfig' and spread it as last one.
+  //      Can be used in 'integration-Runner.test.js'
   resolveConfig(): ResolvedConfig {
     return {
       ...defaultOptions,
