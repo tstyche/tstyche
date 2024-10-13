@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
@@ -101,6 +102,16 @@ export class CommandLineOptionsWorker {
 
           if (optionDefinition.name === "plugins") {
             optionValues = optionValues.map((optionValue) => Path.resolve(optionValue));
+          }
+
+          if (optionDefinition.name === "reporters") {
+            optionValues = optionValues.map((optionValue) => {
+              if (optionValue.startsWith(".")) {
+                return pathToFileURL(optionValue).toString();
+              }
+
+              return optionValue;
+            });
           }
 
           for (const optionValue of optionValues) {

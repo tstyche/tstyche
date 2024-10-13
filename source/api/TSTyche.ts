@@ -1,6 +1,4 @@
 import type { ResolvedConfig } from "#config";
-import { EventEmitter } from "#events";
-import { ListReporter, SummaryReporter, WatchReporter } from "#handlers";
 import type { OutputService } from "#output";
 import { Runner } from "#runner";
 import type { SelectService } from "#select";
@@ -10,7 +8,6 @@ import { CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
-  #eventEmitter = new EventEmitter();
   #outputService: OutputService;
   #resolvedConfig: ResolvedConfig;
   #runner: Runner;
@@ -28,27 +25,15 @@ export class TSTyche {
     this.#outputService = outputService;
     this.#selectService = selectService;
     this.#storeService = storeService;
-    this.#runner = new Runner(this.#resolvedConfig, this.#selectService, this.#storeService);
+    this.#runner = new Runner(this.#resolvedConfig, this.#outputService, this.#selectService, this.#storeService);
   }
 
-  close(): void {
-    this.#runner.close();
-  }
-
+  // TODO perhaps it could be a static method that constructs runner instance? CLI should use the 'Runner' class directly.
+  //      Or this class can be simply removed in favour of the 'Runner' class.
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    this.#eventEmitter.addHandler(new ListReporter(this.#resolvedConfig, this.#outputService));
-
-    if (this.#resolvedConfig.watch === true) {
-      this.#eventEmitter.addHandler(new WatchReporter(this.#outputService));
-    } else {
-      this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));
-    }
-
     await this.#runner.run(
       testFiles.map((testFile) => new Task(testFile)),
       cancellationToken,
     );
-
-    this.#eventEmitter.removeHandlers();
   }
 }

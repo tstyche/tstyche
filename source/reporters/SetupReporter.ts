@@ -1,10 +1,15 @@
 import { DiagnosticCategory } from "#diagnostic";
-import type { Event, EventHandler } from "#events";
-import { addsPackageText, diagnosticText } from "#output";
-import { Reporter } from "./Reporter.js";
+import { type OutputService, addsPackageText, diagnosticText } from "#output";
+import type { ReporterEvent } from "./types.js";
 
-export class SetupReporter extends Reporter implements EventHandler {
-  on([event, payload]: Event): void {
+export class SetupReporter {
+  protected outputService: OutputService;
+
+  constructor(outputService: OutputService) {
+    this.outputService = outputService;
+  }
+
+  on([event, payload]: ReporterEvent): void {
     if (event === "store:adds") {
       this.outputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
       return;

@@ -13,6 +13,10 @@ export interface ConfigFileOptions {
      */
     plugins?: Array<string>;
     /**
+     * The list of reporters to use.
+     */
+    reporters?: Array<string>;
+    /**
      * The path to a directory containing files of a test project.
      */
     rootPath?: string;

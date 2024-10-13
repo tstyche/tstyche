@@ -43,6 +43,10 @@ test("config-schema.json", async (t) => {
         testCase: "'plugins' option",
       },
       {
+        fixtureFileName: "valid-reporters.json",
+        testCase: "'reporters' option",
+      },
+      {
         fixtureFileName: "valid-rootPath.json",
         testCase: "'rootPath' option",
       },
@@ -83,6 +87,18 @@ test("config-schema.json", async (t) => {
       {
         fixtureFileName: "invalid-plugins-3.json",
         testCase: "value of 'plugins' option must be of type Array",
+      },
+      {
+        fixtureFileName: "invalid-reporters-1.json",
+        testCase: "item of 'reporters' option must be of type string",
+      },
+      {
+        fixtureFileName: "invalid-reporters-2.json",
+        testCase: "items of 'reporters' option must NOT be identical",
+      },
+      {
+        fixtureFileName: "invalid-reporters-3.json",
+        testCase: "value of 'reporters' option must be of type Array",
       },
       {
         fixtureFileName: "invalid-rootPath.json",
