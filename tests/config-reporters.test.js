@@ -91,24 +91,6 @@ await test("'--reporters' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("'summary' with custom reporter", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
-      ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["custom-reporter.js"]: customReporterText,
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "summary,./custom-reporter.js"]);
-
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-summary-with-custom-stdout`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(stderr, "");
-    assert.equal(exitCode, 0);
-  });
-
   await t.test("custom reporter", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
@@ -120,6 +102,24 @@ await test("'--reporters' command line option", async (t) => {
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-custom-reporter-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("'summary' with custom reporter", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["custom-reporter.js"]: customReporterText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "summary,./custom-reporter.js"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-summary-with-custom-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -199,29 +199,6 @@ await test("'reporters' configuration option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("'summary' with custom reporter", async () => {
-    const config = {
-      reporters: ["summary", "./custom-reporter.js"],
-    };
-
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
-      ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["custom-reporter.js"]: customReporterText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-summary-with-custom-stdout`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(stderr, "");
-    assert.equal(exitCode, 0);
-  });
-
   await t.test("custom reporter", async () => {
     const config = {
       reporters: ["./custom-reporter.js"],
@@ -238,6 +215,29 @@ await test("'reporters' configuration option", async (t) => {
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-custom-reporter-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("'summary' with custom reporter", async () => {
+    const config = {
+      reporters: ["summary", "./custom-reporter.js"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["custom-reporter.js"]: customReporterText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-summary-with-custom-stdout`,
       testFileUrl: import.meta.url,
     });
 
