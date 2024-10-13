@@ -1,18 +1,12 @@
 import process from "node:process";
 import type { WriteStream } from "node:tty";
-import { environmentOptions } from "#config";
 import { Scribbler, type ScribblerJsx } from "#scribbler";
 
 export class OutputService {
   #isClear = false;
-  #noColor = environmentOptions.noColor;
-  #scribbler: Scribbler;
+  #scribbler = new Scribbler();
   #stderr = process.stderr;
   #stdout = process.stdout;
-
-  constructor() {
-    this.#scribbler = new Scribbler({ noColor: this.#noColor });
-  }
 
   clearTerminal(): void {
     if (!this.#isClear) {
