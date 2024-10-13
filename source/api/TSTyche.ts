@@ -1,5 +1,4 @@
 import type { ResolvedConfig } from "#config";
-
 import type { OutputService } from "#output";
 import { Runner } from "#runner";
 import type { SelectService } from "#select";

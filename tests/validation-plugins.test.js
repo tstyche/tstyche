@@ -39,7 +39,7 @@ await test("'--plugins' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when specified path does not exist", async () => {
+  await t.test("when specified module is not found", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -58,7 +58,7 @@ await test("'--plugins' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when one of specified paths does not exist", async () => {
+  await t.test("when one of specified modules is not found", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tstyche-plugin.js"]: "",
@@ -134,7 +134,7 @@ await test("'plugins' configuration file option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when specified path does not exist", async () => {
+  await t.test("when specified module is not found", async () => {
     const config = {
       plugins: ["./tstyche-plugin.js", "./not-plugin.js"],
       testFileMatch: ["examples/*.tst.*"],
