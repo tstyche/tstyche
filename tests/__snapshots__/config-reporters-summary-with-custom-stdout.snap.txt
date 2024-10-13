@@ -1,7 +1,7 @@
 Hello from custom reporter one!
 
-<<basePath>>/tests/__fixtures__/config-reporters/__typetests__/isNumber.tst.ts
-<<basePath>>/tests/__fixtures__/config-reporters/__typetests__/isString.tst.ts
+<<basePath>>/tests/__fixtures__/.generated/config-reporters/__typetests__/isNumber.tst.ts
+<<basePath>>/tests/__fixtures__/.generated/config-reporters/__typetests__/isString.tst.ts
 
 Targets:    1 passed, 1 total
 Test files: 2 passed, 2 total
