@@ -37,6 +37,18 @@ export class OptionValidator {
         }
         break;
 
+      case "reporters":
+        if (["list", "summary"].includes(optionValue)) {
+          break;
+        }
+
+        try {
+          await import(optionValue);
+        } catch {
+          this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.moduleWasNotFound(optionValue), origin));
+        }
+        break;
+
       case "target":
         if ((await this.#storeService.validateTag(optionValue)) === false) {
           this.#onDiagnostics(

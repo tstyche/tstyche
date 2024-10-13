@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import { Diagnostic, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import type { StoreService } from "#store";
@@ -73,6 +74,13 @@ export class ConfigFileOptionsWorker {
 
         if (optionDefinition.name === "plugins" || optionDefinition.name === "rootPath") {
           optionValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
+        }
+
+        if (optionDefinition.name === "reporters") {
+          if (optionValue.startsWith(".")) {
+            const configFilePath = Path.relative(".", Path.dirname(this.#sourceFile.fileName));
+            optionValue = pathToFileURL(Path.join(configFilePath, optionValue)).toString();
+          }
         }
 
         await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand, jsonNode.origin);
