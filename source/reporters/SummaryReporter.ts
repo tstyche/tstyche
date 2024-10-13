@@ -4,6 +4,10 @@ import type { ReporterEvent } from "./types.js";
 
 export class SummaryReporter extends BaseReporter {
   on([event, payload]: ReporterEvent): void {
+    if (this.resolvedConfig.watch === true) {
+      return;
+    }
+
     if (event === "run:end") {
       this.outputService.writeMessage(
         summaryText({

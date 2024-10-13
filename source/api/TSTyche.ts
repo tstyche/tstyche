@@ -43,9 +43,7 @@ export class TSTyche {
           break;
 
         case "summary":
-          if (!this.#resolvedConfig.watch) {
-            this.#eventEmitter.addReporter(new SummaryReporter(this.#resolvedConfig, this.#outputService));
-          }
+          this.#eventEmitter.addReporter(new SummaryReporter(this.#resolvedConfig, this.#outputService));
           break;
 
         default: {
