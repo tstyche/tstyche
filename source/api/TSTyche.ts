@@ -8,6 +8,8 @@ import type { StoreService } from "#store";
 import { Task } from "#task";
 import { CancellationToken } from "#token";
 
+type ReporterConstructor = new (resolvedConfig: ResolvedConfig, outputService: OutputService) => Reporter;
+
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
   #eventEmitter = new EventEmitter();
@@ -47,9 +49,7 @@ export class TSTyche {
           break;
 
         default: {
-          const CustomReporter: new (resolvedConfig: ResolvedConfig, outputService: OutputService) => Reporter = (
-            await import(reporter)
-          ).default;
+          const CustomReporter: ReporterConstructor = (await import(reporter)).default;
           this.#eventEmitter.addReporter(new CustomReporter(this.#resolvedConfig, this.#outputService));
         }
       }
