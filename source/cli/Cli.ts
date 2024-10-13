@@ -2,7 +2,7 @@ import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
-import { HooksService } from "#hooks";
+import { type Hooks, HooksService } from "#hooks";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
 import { SetupReporter } from "#reporters";
 import { SelectService } from "#select";
@@ -83,7 +83,8 @@ export class Cli {
       }
 
       for (const plugin of resolvedConfig.plugins) {
-        await import(plugin);
+        const hooks: Hooks = (await import(plugin)).default;
+        HooksService.addHandler(hooks);
       }
 
       resolvedConfig = await HooksService.call("config", resolvedConfig);

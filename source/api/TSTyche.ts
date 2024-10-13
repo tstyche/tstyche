@@ -1,5 +1,4 @@
 import type { ResolvedConfig } from "#config";
-import { type Hooks, HooksService } from "#hooks";
 
 import type { OutputService } from "#output";
 import { Runner } from "#runner";
@@ -28,10 +27,6 @@ export class TSTyche {
     this.#selectService = selectService;
     this.#storeService = storeService;
     this.#runner = new Runner(this.#resolvedConfig, this.#outputService, this.#selectService, this.#storeService);
-  }
-
-  static addHooks(hooks: Hooks) {
-    HooksService.addHandler(hooks);
   }
 
   // TODO perhaps it could be a static method that constructs runner instance? CLI should use the 'Runner' class directly.

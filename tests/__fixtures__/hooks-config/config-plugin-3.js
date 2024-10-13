@@ -1,7 +1,8 @@
-import { TSTyche } from "tstyche/tstyche";
-
-TSTyche.addHooks({
+/**
+ * @type {import("tstyche/tstyche").Plugin}
+ */
+export default {
   select: () => {
     return ["./examples/firstItem.tst.ts"];
   },
-});
+};
