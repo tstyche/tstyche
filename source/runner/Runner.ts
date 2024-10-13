@@ -30,11 +30,10 @@ export class Runner {
       this.#eventEmitter.addHandler(cancellationHandler);
     }
 
+    await this.#run(tasks, cancellationToken);
+
     if (this.#resolvedConfig.watch === true) {
-      await this.#run(tasks, cancellationToken);
       await this.#watch(tasks, cancellationToken);
-    } else {
-      await this.#run(tasks, cancellationToken);
     }
 
     this.#eventEmitter.removeHandlers();
