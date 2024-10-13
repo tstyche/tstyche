@@ -36,6 +36,12 @@ export class OptionValidator {
         }
         break;
 
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: reporters and plugins share validation logic
+      case "reporters":
+        if (["list", "summary"].includes(optionValue)) {
+          break;
+        }
+
       case "plugins":
         try {
           await import(optionValue);

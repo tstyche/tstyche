@@ -37,6 +37,10 @@ export interface CommandLineOptions {
      */
     prune?: boolean;
     /**
+     * The list of reporters to use.
+     */
+    reporters?: Array<string>;
+    /**
      * Print the resolved configuration and exit.
      */
     showConfig?: boolean;

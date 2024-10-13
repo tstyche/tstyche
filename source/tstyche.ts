@@ -11,6 +11,7 @@ export * from "#input";
 export * from "#output";
 export * from "#path";
 export * from "#project";
+export * from "#reporters";
 export * from "#result";
 export * from "#runner";
 export * from "#scribbler";

@@ -1,0 +1,12 @@
+Error: Item of the 'reporters' list must be of type string.
+
+  2 |   "reporters": [
+  3 |     "./tstyche-reporter.js",
+  4 |     true
+    |     ~~~~
+  5 |   ],
+  6 |   "testFileMatch": [
+  7 |     "examples/*.test.*"
+
+      at ./tstyche.config.json:4:5
+

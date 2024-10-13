@@ -13,6 +13,7 @@ describe("CommandLineOptions", () => {
       listFiles: true,
       only: "external",
       plugins: ["./tstyche-plugin.js"],
+      reporters: ["./tstyche-reporter.js"],
       prune: true,
       showConfig: true,
       skip: "internal",
@@ -68,6 +69,12 @@ describe("CommandLineOptions", () => {
   test("'plugins' option", () => {
     expect<Pick<tstyche.CommandLineOptions, "plugins">>().type.toBe<{
       plugins?: Array<string>;
+    }>();
+  });
+
+  test("'reporters' option", () => {
+    expect<Pick<tstyche.CommandLineOptions, "reporters">>().type.toBe<{
+      reporters?: Array<string>;
     }>();
   });
 

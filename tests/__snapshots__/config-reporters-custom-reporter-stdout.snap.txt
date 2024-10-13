@@ -1,0 +1,5 @@
+Hello from custom reporter one!
+
+<<basePath>>/tests/__fixtures__/.generated/config-reporters/__typetests__/isNumber.tst.ts
+<<basePath>>/tests/__fixtures__/.generated/config-reporters/__typetests__/isString.tst.ts
+

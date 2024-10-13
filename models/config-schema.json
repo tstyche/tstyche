@@ -15,6 +15,18 @@
       "type": "array",
       "uniqueItems": true
     },
+    "reporters": {
+      "default": [
+        "list",
+        "summary"
+      ],
+      "description": "The list of reporters to use.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
     "rootPath": {
       "default": "./",
       "description": "The path to a directory containing files of a test project.",

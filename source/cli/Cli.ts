@@ -1,9 +1,10 @@
 import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
-import { CancellationHandler, ExitCodeHandler, SetupReporter } from "#handlers";
+import { CancellationHandler, ExitCodeHandler } from "#handlers";
 import { HooksService } from "#hooks";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
+import { SetupReporter } from "#reporters";
 import { SelectService } from "#select";
 import { StoreService } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
@@ -14,14 +15,14 @@ export class Cli {
   #outputService = new OutputService();
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
+    const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
+    this.#eventEmitter.addHandler(cancellationHandler);
+
     const exitCodeHandler = new ExitCodeHandler();
     this.#eventEmitter.addHandler(exitCodeHandler);
 
     const setupReporter = new SetupReporter(this.#outputService);
-    this.#eventEmitter.addHandler(setupReporter);
-
-    const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
-    this.#eventEmitter.addHandler(cancellationHandler);
+    this.#eventEmitter.addReporter(setupReporter);
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
@@ -66,8 +67,8 @@ export class Cli {
 
         this.#outputService.clearTerminal();
 
-        this.#eventEmitter.addHandler(setupReporter);
         this.#eventEmitter.addHandler(cancellationHandler);
+        this.#eventEmitter.addReporter(setupReporter);
       }
 
       await configService.readConfigFile(storeService);
@@ -120,13 +121,12 @@ export class Cli {
         continue;
       }
 
-      this.#eventEmitter.removeHandler(setupReporter);
       this.#eventEmitter.removeHandler(cancellationHandler);
+      this.#eventEmitter.removeReporter(setupReporter);
 
       const tstyche = new TSTyche(resolvedConfig, this.#outputService, selectService, storeService);
 
       await tstyche.run(testFiles, cancellationToken);
-      tstyche.close();
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();

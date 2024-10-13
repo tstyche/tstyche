@@ -1,9 +1,9 @@
-import type { Event, EventHandler } from "#events";
 import { diagnosticText, waitingForFileChangesText, watchUsageText } from "#output";
-import { Reporter } from "./Reporter.js";
+import { BaseReporter } from "./BaseReporter.js";
+import type { ReporterEvent } from "./types.js";
 
-export class WatchReporter extends Reporter implements EventHandler {
-  on([event, payload]: Event): void {
+export class WatchReporter extends BaseReporter {
+  on([event, payload]: ReporterEvent): void {
     switch (event) {
       case "run:start":
         this.outputService.clearTerminal();

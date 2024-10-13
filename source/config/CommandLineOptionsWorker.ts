@@ -110,6 +110,16 @@ export class CommandLineOptionsWorker {
             });
           }
 
+          if (optionDefinition.name === "reporters") {
+            optionValues = optionValues.map((optionValue) => {
+              if (optionValue.startsWith(".")) {
+                return pathToFileURL(optionValue).toString();
+              }
+
+              return optionValue;
+            });
+          }
+
           for (const optionValue of optionValues) {
             await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
           }
