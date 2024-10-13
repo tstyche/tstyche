@@ -16,6 +16,10 @@
       "uniqueItems": true
     },
     "reporters": {
+      "default": [
+        "list",
+        "summary"
+      ],
       "description": "The list of reporters to use.",
       "items": {
         "type": "string"
