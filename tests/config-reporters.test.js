@@ -8,53 +8,66 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("'--reporters' command line option", async (t) => {
-  await t.test("built-in reporters", async (t) => {
-    await t.test("list", async () => {
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "list"]);
+  await t.test("'list' reporter", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "list"]);
 
-      await assert.matchSnapshot(normalizeOutput(stdout), {
-        fileName: `${testFileName}-list-stdout`,
-        testFileUrl: import.meta.url,
-      });
-
-      assert.equal(stderr, "");
-      assert.equal(exitCode, 0);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-list-stdout`,
+      testFileUrl: import.meta.url,
     });
 
-    await t.test("summary", async () => {
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "summary"]);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
 
-      await assert.matchSnapshot(normalizeOutput(stdout), {
-        fileName: `${testFileName}-summary-stdout`,
-        testFileUrl: import.meta.url,
-      });
+  await t.test("'summary' reporter", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "summary"]);
 
-      assert.equal(stderr, "");
-      assert.equal(exitCode, 0);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-summary-stdout`,
+      testFileUrl: import.meta.url,
     });
 
-    await t.test("list with summary", async () => {
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "list,summary"]);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
 
-      await assert.matchSnapshot(normalizeOutput(stdout), {
-        fileName: `${testFileName}-list-with-summary-stdout`,
-        testFileUrl: import.meta.url,
-      });
+  await t.test("'list' with 'summary'", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "list,summary"]);
 
-      assert.equal(stderr, "");
-      assert.equal(exitCode, 0);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-list-with-summary-stdout`,
+      testFileUrl: import.meta.url,
     });
 
-    await t.test("summary with custom reporter", async () => {
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "summary,./custom-reporter-1.js"]);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
 
-      await assert.matchSnapshot(normalizeOutput(stdout), {
-        fileName: `${testFileName}-summary-with-custom-stdout`,
-        testFileUrl: import.meta.url,
-      });
+  await t.test("'summary' with custom reporter", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "--reporters",
+      "summary,./custom-reporter.js",
+    ]);
 
-      assert.equal(stderr, "");
-      assert.equal(exitCode, 0);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-summary-with-custom-stdout`,
+      testFileUrl: import.meta.url,
     });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("custom reporter", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "./custom-reporter.js"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-custom-reporter-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });
