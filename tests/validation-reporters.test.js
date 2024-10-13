@@ -71,11 +71,7 @@ await test("'--reporters' command line option", async (t) => {
 
     assert.equal(stdout, "");
 
-    const expected = [
-      "Error: The specified module 'not-reporter' was not found.",
-      "",
-      "",
-    ].join("\n");
+    const expected = ["Error: The specified module 'not-reporter' was not found.", "", ""].join("\n");
 
     assert.equal(normalizeOutput(stderr), expected);
     assert.equal(exitCode, 1);
