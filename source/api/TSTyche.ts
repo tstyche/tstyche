@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
-import { EventEmitter, type EventHandler, type Reporter } from "#events";
-import { ListReporter, SummaryReporter, WatchReporter } from "#handlers";
+import { EventEmitter } from "#events";
 import type { OutputService } from "#output";
+import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Runner } from "#runner";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
@@ -10,7 +10,6 @@ import { CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
-  static #customReporters = new Set<Reporter>();
   #eventEmitter = new EventEmitter();
   #outputService: OutputService;
   #resolvedConfig: ResolvedConfig;
@@ -32,38 +31,34 @@ export class TSTyche {
     this.#runner = new Runner(this.#resolvedConfig, this.#selectService, this.#storeService);
   }
 
-  static addReporter(reporter: Reporter) {
-    TSTyche.#customReporters.add(reporter);
-  }
-
   close(): void {
     this.#runner.close();
   }
 
   async run(testFiles: Array<string | URL>, cancellationToken = new CancellationToken()): Promise<void> {
-    for (const reporter of TSTyche.#customReporters) {
-      this.#eventEmitter.addHandler(reporter as EventHandler);
-    }
-
     for (const reporter of this.#resolvedConfig.reporters) {
       switch (reporter) {
         case "list":
-          this.#eventEmitter.addHandler(new ListReporter(this.#resolvedConfig, this.#outputService));
+          this.#eventEmitter.addReporter(new ListReporter(this.#resolvedConfig, this.#outputService));
           break;
 
         case "summary":
           if (!this.#resolvedConfig.watch) {
-            this.#eventEmitter.addHandler(new SummaryReporter(this.#outputService));
+            this.#eventEmitter.addReporter(new SummaryReporter(this.#resolvedConfig, this.#outputService));
           }
           break;
 
-        default:
-          await import(reporter);
+        default: {
+          const CustomReporter: new (resolvedConfig: ResolvedConfig, outputService: OutputService) => Reporter = (
+            await import(reporter)
+          ).default;
+          this.#eventEmitter.addReporter(new CustomReporter(this.#resolvedConfig, this.#outputService));
+        }
       }
     }
 
     if (this.#resolvedConfig.watch === true) {
-      this.#eventEmitter.addHandler(new WatchReporter(this.#outputService));
+      this.#eventEmitter.addReporter(new WatchReporter(this.#resolvedConfig, this.#outputService));
     }
 
     await this.#runner.run(

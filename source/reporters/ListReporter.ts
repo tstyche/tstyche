@@ -1,10 +1,9 @@
-import type { ResolvedConfig } from "#config";
-import type { Event, EventHandler } from "#events";
-import { type OutputService, addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
+import { addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
+import { BaseReporter } from "./BaseReporter.js";
 import { FileViewService } from "./FileViewService.js";
-import { Reporter } from "./Reporter.js";
+import type { ReporterEvent } from "./types.js";
 
-export class ListReporter extends Reporter implements EventHandler {
+export class ListReporter extends BaseReporter {
   #currentCompilerVersion: string | undefined;
   #currentProjectConfigFilePath: string | undefined;
   #fileCount = 0;
@@ -12,20 +11,13 @@ export class ListReporter extends Reporter implements EventHandler {
   #hasReportedAdds = false;
   #hasReportedError = false;
   #isFileViewExpanded = false;
-  #resolvedConfig: ResolvedConfig;
   #seenDeprecations = new Set<string>();
-
-  constructor(resolvedConfig: ResolvedConfig, outputService: OutputService) {
-    super(outputService);
-
-    this.#resolvedConfig = resolvedConfig;
-  }
 
   get #isLastFile() {
     return this.#fileCount === 0;
   }
 
-  on([event, payload]: Event): void {
+  on([event, payload]: ReporterEvent): void {
     switch (event) {
       case "deprecation:info": {
         for (const diagnostic of payload.diagnostics) {
@@ -38,7 +30,7 @@ export class ListReporter extends Reporter implements EventHandler {
       }
 
       case "run:start":
-        this.#isFileViewExpanded = payload.result.tasks.length === 1 && this.#resolvedConfig.watch !== true;
+        this.#isFileViewExpanded = payload.result.tasks.length === 1 && this.resolvedConfig.watch !== true;
         break;
 
       case "store:adds":
@@ -88,7 +80,7 @@ export class ListReporter extends Reporter implements EventHandler {
         break;
 
       case "task:start":
-        if (!this.#resolvedConfig.noInteractive) {
+        if (!this.resolvedConfig.noInteractive) {
           this.outputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
         }
 
@@ -103,7 +95,7 @@ export class ListReporter extends Reporter implements EventHandler {
         break;
 
       case "task:end":
-        if (!this.#resolvedConfig.noInteractive) {
+        if (!this.resolvedConfig.noInteractive) {
           this.outputService.eraseLastLine();
         }
 

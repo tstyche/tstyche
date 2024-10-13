@@ -5,17 +5,9 @@ export interface EventHandler {
   on: (event: Event) => void;
 }
 
-export interface Reporter {
-  on: (event: ReporterEvent) => void;
-}
-
-export type Event = ConfigEvent | ReporterEvent;
-
-export type ConfigEvent =
+export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
-  | ["select:error", { diagnostics: Array<Diagnostic> }];
-
-export type ReporterEvent =
+  | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["deprecation:info", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
