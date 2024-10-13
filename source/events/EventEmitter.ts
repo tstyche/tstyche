@@ -2,50 +2,55 @@ import type { Reporter } from "#reporters";
 import type { Event, EventHandler } from "./types.js";
 
 export class EventEmitter {
-  static #handlers = new Set<EventHandler>();
-  #scopeHandlers = new Set<EventHandler>();
-  static #reporters = new Set<Reporter>();
-  #scopeReporters = new Set<Reporter>();
+  static instanceCount = 0;
+  static #handlers = new Map<number, Set<EventHandler>>();
+  static #reporters = new Map<number, Set<Reporter>>();
+  #scope: number;
+
+  constructor() {
+    this.#scope = EventEmitter.instanceCount++;
+
+    EventEmitter.#handlers.set(this.#scope, new Set());
+    EventEmitter.#reporters.set(this.#scope, new Set());
+  }
 
   addHandler(handler: EventHandler): void {
-    this.#scopeHandlers.add(handler);
-    EventEmitter.#handlers.add(handler);
+    EventEmitter.#handlers.get(this.#scope)?.add(handler);
   }
 
   addReporter(reporter: Reporter): void {
-    this.#scopeReporters.add(reporter);
-    EventEmitter.#reporters.add(reporter);
+    EventEmitter.#reporters.get(this.#scope)?.add(reporter);
   }
 
   static dispatch(event: Event): void {
-    for (const handler of [...EventEmitter.#handlers, ...EventEmitter.#reporters]) {
-      (handler as EventHandler).on(event);
+    function forEachHandler(handlers: Set<EventHandler>, event: Event) {
+      for (const handler of handlers) {
+        handler.on(event);
+      }
+    }
+
+    for (const handlers of EventEmitter.#handlers.values()) {
+      forEachHandler(handlers, event);
+    }
+
+    for (const handlers of EventEmitter.#reporters.values()) {
+      forEachHandler(handlers as Set<EventHandler>, event);
     }
   }
 
   removeHandler(handler: EventHandler): void {
-    this.#scopeHandlers.delete(handler);
-    EventEmitter.#handlers.delete(handler);
+    EventEmitter.#handlers.get(this.#scope)?.delete(handler);
   }
 
   removeReporter(reporter: Reporter): void {
-    this.#scopeReporters.delete(reporter);
-    EventEmitter.#reporters.delete(reporter);
+    EventEmitter.#reporters.get(this.#scope)?.delete(reporter);
   }
 
   removeHandlers(): void {
-    for (const handler of this.#scopeHandlers) {
-      EventEmitter.#handlers.delete(handler);
-    }
-
-    this.#scopeHandlers.clear();
+    EventEmitter.#handlers.get(this.#scope)?.clear();
   }
 
   removeReporters(): void {
-    for (const reporter of this.#scopeReporters) {
-      EventEmitter.#reporters.delete(reporter);
-    }
-
-    this.#scopeReporters.clear();
+    EventEmitter.#reporters.get(this.#scope)?.clear();
   }
 }
