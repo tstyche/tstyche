@@ -1,6 +1,5 @@
-import type { Diagnostic } from "#diagnostic";
+import type { Diagnostic, DiagnosticsHandler } from "#diagnostic";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-import type { DiagnosticsHandler } from "./types.js";
 
 export class Fetcher {
   #onDiagnostics: DiagnosticsHandler;

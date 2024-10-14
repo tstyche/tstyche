@@ -1,5 +1,5 @@
 import { pathToFileURL } from "node:url";
-import { Diagnostic, type SourceFile } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { JsonNode } from "./JsonNode.js";
@@ -8,7 +8,7 @@ import { OptionBrand } from "./OptionBrand.enum.js";
 import { type ItemDefinition, type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionValidator } from "./OptionValidator.js";
-import type { DiagnosticsHandler, OptionValue } from "./types.js";
+import type { OptionValue } from "./types.js";
 
 export class ConfigFileOptionsWorker {
   #configFileOptionDefinitions: Map<string, OptionDefinition>;

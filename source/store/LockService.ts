@@ -1,8 +1,7 @@
 import { existsSync } from "node:fs";
-import type { Diagnostic } from "#diagnostic";
+import type { Diagnostic, DiagnosticsHandler } from "#diagnostic";
 import { Lock } from "./Lock.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-import type { DiagnosticsHandler } from "./types.js";
 
 export class LockService {
   #onDiagnostics: DiagnosticsHandler;

@@ -1,5 +1,5 @@
 import { pathToFileURL } from "node:url";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { Path } from "#path";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
@@ -7,7 +7,7 @@ import { type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitions
 import { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
-import type { DiagnosticsHandler, OptionValue } from "./types.js";
+import type { OptionValue } from "./types.js";
 
 export class CommandLineOptionsWorker {
   #commandLineOptionDefinitions: Map<string, OptionDefinition>;

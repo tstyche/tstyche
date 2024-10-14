@@ -1,12 +1,11 @@
 import { existsSync } from "node:fs";
-import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { Store } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { OptionBrand } from "./OptionBrand.enum.js";
 import type { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionUsageText } from "./OptionUsageText.js";
-import type { DiagnosticsHandler } from "./types.js";
 
 export class OptionValidator {
   #onDiagnostics: DiagnosticsHandler;
