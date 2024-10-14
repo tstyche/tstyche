@@ -147,7 +147,7 @@ await test("'reporters' configuration file option", async (t) => {
     assert.equal(stdout, "");
 
     await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-path-does-not-exist-stderr`,
+      fileName: `${testFileName}-module-is-not-found-stderr`,
       testFileUrl: import.meta.url,
     });
     assert.equal(exitCode, 1);
