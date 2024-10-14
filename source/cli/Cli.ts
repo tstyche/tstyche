@@ -125,6 +125,8 @@ export class Cli {
       const runner = new Runner(resolvedConfig, selectService);
 
       await runner.run(testFiles, cancellationToken);
+
+      HooksService.removeHandlers();
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();
