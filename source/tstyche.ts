@@ -1,4 +1,3 @@
-export * from "#api";
 export * from "#cli";
 export * from "#collect";
 export * from "#config";
