@@ -1,4 +1,4 @@
-import { summaryText } from "#output";
+import { OutputService, summaryText } from "#output";
 import { BaseReporter } from "./BaseReporter.js";
 import type { ReporterEvent } from "./types.js";
 
@@ -9,7 +9,7 @@ export class SummaryReporter extends BaseReporter {
     }
 
     if (event === "run:end") {
-      this.outputService.writeMessage(
+      OutputService.writeMessage(
         summaryText({
           duration: payload.result.timing.duration,
           expectCount: payload.result.expectCount,

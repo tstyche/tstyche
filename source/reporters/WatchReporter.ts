@@ -1,4 +1,4 @@
-import { diagnosticText, waitingForFileChangesText, watchUsageText } from "#output";
+import { OutputService, diagnosticText, waitingForFileChangesText, watchUsageText } from "#output";
 import { BaseReporter } from "./BaseReporter.js";
 import type { ReporterEvent } from "./types.js";
 
@@ -6,21 +6,21 @@ export class WatchReporter extends BaseReporter {
   on([event, payload]: ReporterEvent): void {
     switch (event) {
       case "run:start":
-        this.outputService.clearTerminal();
+        OutputService.clearTerminal();
         break;
 
       case "run:end":
-        this.outputService.writeMessage(watchUsageText());
+        OutputService.writeMessage(watchUsageText());
         break;
 
       case "watch:error":
-        this.outputService.clearTerminal();
+        OutputService.clearTerminal();
 
         for (const diagnostic of payload.diagnostics) {
-          this.outputService.writeError(diagnosticText(diagnostic));
+          OutputService.writeError(diagnosticText(diagnostic));
         }
 
-        this.outputService.writeMessage(waitingForFileChangesText());
+        OutputService.writeMessage(waitingForFileChangesText());
         break;
     }
   }

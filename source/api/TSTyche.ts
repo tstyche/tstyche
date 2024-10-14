@@ -1,5 +1,4 @@
 import type { ResolvedConfig } from "#config";
-import type { OutputService } from "#output";
 import { Runner } from "#runner";
 import type { SelectService } from "#select";
 import type { StoreService } from "#store";
@@ -8,24 +7,17 @@ import { CancellationToken } from "#token";
 
 // biome-ignore lint/style/useNamingConvention: this is an exception
 export class TSTyche {
-  #outputService: OutputService;
   #resolvedConfig: ResolvedConfig;
   #runner: Runner;
   #selectService: SelectService;
   #storeService: StoreService;
   static version = "__version__";
 
-  constructor(
-    resolvedConfig: ResolvedConfig,
-    outputService: OutputService,
-    selectService: SelectService,
-    storeService: StoreService,
-  ) {
+  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, storeService: StoreService) {
     this.#resolvedConfig = resolvedConfig;
-    this.#outputService = outputService;
     this.#selectService = selectService;
     this.#storeService = storeService;
-    this.#runner = new Runner(this.#resolvedConfig, this.#outputService, this.#selectService, this.#storeService);
+    this.#runner = new Runner(this.#resolvedConfig, this.#selectService, this.#storeService);
   }
 
   // TODO perhaps it could be a static method that constructs runner instance? CLI should use the 'Runner' class directly.

@@ -12,7 +12,6 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 const configService = new tstyche.ConfigService();
 const resolvedConfig = { ...configService.resolveConfig(), reporters: [] };
 
-const outputService = new tstyche.OutputService();
 const selectService = new tstyche.SelectService(resolvedConfig);
 const storeService = new tstyche.StoreService();
 
@@ -39,7 +38,7 @@ class TestResultReporter {
 
 await test("tstyche.Runner", async (t) => {
   await t.test("tasks", async (t) => {
-    const runner = new tstyche.Runner(resolvedConfig, outputService, selectService, storeService);
+    const runner = new tstyche.Runner(resolvedConfig, selectService, storeService);
 
     eventEmitter.addReporter(new TestResultReporter());
 
@@ -140,7 +139,7 @@ await test("tstyche.Runner", async (t) => {
     });
 
     await t.test("when 'failFast: true' is specified", async () => {
-      runner = new tstyche.Runner({ ...resolvedConfig, failFast: true }, outputService, selectService, storeService);
+      runner = new tstyche.Runner({ ...resolvedConfig, failFast: true }, selectService, storeService);
       const task = new tstyche.Task(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
 
       await runner.run([task]);

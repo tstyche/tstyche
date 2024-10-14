@@ -12,7 +12,6 @@ import { FileWatcher, type WatchHandler, Watcher } from "#watch";
 
 export class Cli {
   #eventEmitter = new EventEmitter();
-  #outputService = new OutputService();
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
     const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
@@ -21,19 +20,19 @@ export class Cli {
     const exitCodeHandler = new ExitCodeHandler();
     this.#eventEmitter.addHandler(exitCodeHandler);
 
-    const setupReporter = new SetupReporter(this.#outputService);
+    const setupReporter = new SetupReporter();
     this.#eventEmitter.addReporter(setupReporter);
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
 
-      this.#outputService.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
+      OutputService.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
 
       return;
     }
 
     if (commandLineArguments.includes("--version")) {
-      this.#outputService.writeMessage(formattedText(TSTyche.version));
+      OutputService.writeMessage(formattedText(TSTyche.version));
 
       return;
     }
@@ -65,7 +64,7 @@ export class Cli {
         cancellationToken.reset();
         exitCodeHandler.resetCode();
 
-        this.#outputService.clearTerminal();
+        OutputService.clearTerminal();
 
         this.#eventEmitter.addHandler(cancellationHandler);
         this.#eventEmitter.addReporter(setupReporter);
@@ -89,7 +88,7 @@ export class Cli {
       resolvedConfig = await PluginService.callHook("config", resolvedConfig);
 
       if (commandLineArguments.includes("--showConfig")) {
-        this.#outputService.writeMessage(formattedText({ ...resolvedConfig }));
+        OutputService.writeMessage(formattedText({ ...resolvedConfig }));
         continue;
       }
 
@@ -117,14 +116,14 @@ export class Cli {
       testFiles = await PluginService.callHook("select", testFiles);
 
       if (commandLineArguments.includes("--listFiles")) {
-        this.#outputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
+        OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
         continue;
       }
 
       this.#eventEmitter.removeHandler(cancellationHandler);
       this.#eventEmitter.removeReporter(setupReporter);
 
-      const tstyche = new TSTyche(resolvedConfig, this.#outputService, selectService, storeService);
+      const tstyche = new TSTyche(resolvedConfig, selectService, storeService);
 
       await tstyche.run(testFiles, cancellationToken);
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
@@ -142,7 +141,7 @@ export class Cli {
 
       cancellationToken.reset();
 
-      this.#outputService.writeMessage(waitingForFileChangesText());
+      OutputService.writeMessage(waitingForFileChangesText());
 
       const onChanged = () => {
         cancellationToken.cancel(CancellationReason.ConfigChange);
