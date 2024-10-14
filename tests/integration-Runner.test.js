@@ -12,9 +12,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 const configService = new tstyche.ConfigService();
 const resolvedConfig = { ...configService.resolveConfig(), reporters: [] };
 
-const outputService = new tstyche.OutputService();
 const selectService = new tstyche.SelectService(resolvedConfig);
-const storeService = new tstyche.StoreService();
 
 const eventEmitter = new tstyche.EventEmitter();
 
@@ -37,32 +35,72 @@ class TestResultReporter {
   }
 }
 
-await test("tstyche.Runner", async (t) => {
-  await t.test("tasks", async (t) => {
-    const runner = new tstyche.Runner(resolvedConfig, outputService, selectService, storeService);
+await test("Runner", async (t) => {
+  const testCases = [
+    {
+      testCase: "when test file is string",
+      testFiles: [
+        fileURLToPath(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl)),
+        fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),
+      ],
+    },
+    {
+      testCase: "when test file is URL object",
+      testFiles: [
+        new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl),
+        new URL("./__typetests__/toBeString.tst.ts", fixtureUrl),
+      ],
+    },
+    {
+      testCase: "when test file is URL string",
+      testFiles: [
+        new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl).toString(),
+        new URL("./__typetests__/toBeString.tst.ts", fixtureUrl).toString(),
+      ],
+    },
+  ];
+
+  for (const { testCase, testFiles } of testCases) {
+    await t.test(testCase, async () => {
+      const runner = new tstyche.Runner(resolvedConfig, selectService);
+
+      eventEmitter.addReporter(new TestResultReporter());
+
+      await runner.run(testFiles);
+
+      assert.deepEqual(result?.expectCount, { failed: 2, passed: 3, skipped: 3, todo: 0 });
+      assert.deepEqual(result?.fileCount, { failed: 2, passed: 0, skipped: 0, todo: 0 });
+      assert.deepEqual(result?.testCount, { failed: 2, passed: 2, skipped: 1, todo: 1 });
+
+      eventEmitter.removeReporters();
+    });
+  }
+
+  await t.test("when test file is a 'Task' object", async (t) => {
+    const runner = new tstyche.Runner(resolvedConfig, selectService);
 
     eventEmitter.addReporter(new TestResultReporter());
 
     const testCases = [
       {
         filePath: fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),
-        testCase: "when file path is string",
+        testCase: "and file path is string",
       },
       {
         filePath: new URL("./__typetests__/toBeString.tst.ts", fixtureUrl),
-        testCase: "when file path is URL object",
+        testCase: "and file path is URL object",
       },
       {
         filePath: new URL("./__typetests__/toBeString.tst.ts", fixtureUrl).toString(),
-        testCase: "when file path is URL string",
+        testCase: "and file path is URL string",
       },
     ];
 
     for (const { testCase, filePath } of testCases) {
       await t.test(testCase, async () => {
-        const task = new tstyche.Task(filePath);
+        const testFiles = [new tstyche.Task(filePath)];
 
-        await runner.run([task]);
+        await runner.run(testFiles);
 
         assert.deepEqual(result?.expectCount, { failed: 1, passed: 2, skipped: 3, todo: 0 });
         assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
@@ -140,10 +178,14 @@ await test("tstyche.Runner", async (t) => {
     });
 
     await t.test("when 'failFast: true' is specified", async () => {
-      runner = new tstyche.Runner({ ...resolvedConfig, failFast: true }, outputService, selectService, storeService);
-      const task = new tstyche.Task(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl));
+      runner = new tstyche.Runner({ ...resolvedConfig, failFast: true }, selectService);
 
-      await runner.run([task]);
+      const testFiles = [
+        new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl),
+        new URL("./__typetests__/toBeString.tst.ts", fixtureUrl),
+      ];
+
+      await runner.run(testFiles);
 
       assert.deepEqual(result?.expectCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
       assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });

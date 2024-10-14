@@ -1,18 +1,17 @@
-import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
 import { type Hooks, HooksService } from "#hooks";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
 import { SetupReporter } from "#reporters";
+import { Runner } from "#runner";
 import { SelectService } from "#select";
-import { StoreService } from "#store";
+import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 import { FileWatcher, type WatchHandler, Watcher } from "#watch";
 
 export class Cli {
   #eventEmitter = new EventEmitter();
-  #outputService = new OutputService();
 
   async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
     const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
@@ -21,40 +20,38 @@ export class Cli {
     const exitCodeHandler = new ExitCodeHandler();
     this.#eventEmitter.addHandler(exitCodeHandler);
 
-    const setupReporter = new SetupReporter(this.#outputService);
+    const setupReporter = new SetupReporter();
     this.#eventEmitter.addReporter(setupReporter);
 
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
 
-      this.#outputService.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
+      OutputService.writeMessage(helpText(commandLineOptionDefinitions, Runner.version));
 
       return;
     }
 
     if (commandLineArguments.includes("--version")) {
-      this.#outputService.writeMessage(formattedText(TSTyche.version));
+      OutputService.writeMessage(formattedText(Runner.version));
 
       return;
     }
 
-    const storeService = new StoreService();
-
     if (commandLineArguments.includes("--prune")) {
-      await storeService.prune();
+      await Store.prune();
 
       return;
     }
 
     if (commandLineArguments.includes("--update")) {
-      await storeService.update();
+      await Store.update();
 
       return;
     }
 
     const configService = new ConfigService();
 
-    await configService.parseCommandLine(commandLineArguments, storeService);
+    await configService.parseCommandLine(commandLineArguments);
 
     if (cancellationToken.isCancellationRequested) {
       return;
@@ -65,13 +62,13 @@ export class Cli {
         cancellationToken.reset();
         exitCodeHandler.resetCode();
 
-        this.#outputService.clearTerminal();
+        OutputService.clearTerminal();
 
         this.#eventEmitter.addHandler(cancellationHandler);
         this.#eventEmitter.addReporter(setupReporter);
       }
 
-      await configService.readConfigFile(storeService);
+      await configService.readConfigFile();
 
       let resolvedConfig = configService.resolveConfig();
 
@@ -90,13 +87,13 @@ export class Cli {
       resolvedConfig = await HooksService.call("config", resolvedConfig);
 
       if (commandLineArguments.includes("--showConfig")) {
-        this.#outputService.writeMessage(formattedText({ ...resolvedConfig }));
+        OutputService.writeMessage(formattedText({ ...resolvedConfig }));
         continue;
       }
 
       if (commandLineArguments.includes("--install")) {
         for (const tag of resolvedConfig.target) {
-          await storeService.install(tag);
+          await Store.install(tag);
         }
         continue;
       }
@@ -118,16 +115,16 @@ export class Cli {
       testFiles = await HooksService.call("select", testFiles);
 
       if (commandLineArguments.includes("--listFiles")) {
-        this.#outputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
+        OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
         continue;
       }
 
       this.#eventEmitter.removeHandler(cancellationHandler);
       this.#eventEmitter.removeReporter(setupReporter);
 
-      const tstyche = new TSTyche(resolvedConfig, this.#outputService, selectService, storeService);
+      const runner = new Runner(resolvedConfig, selectService);
 
-      await tstyche.run(testFiles, cancellationToken);
+      await runner.run(testFiles, cancellationToken);
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();
@@ -143,7 +140,7 @@ export class Cli {
 
       cancellationToken.reset();
 
-      this.#outputService.writeMessage(waitingForFileChangesText());
+      OutputService.writeMessage(waitingForFileChangesText());
 
       const onChanged = () => {
         cancellationToken.cancel(CancellationReason.ConfigChange);

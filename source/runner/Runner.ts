@@ -1,67 +1,60 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ResultHandler } from "#handlers";
-import type { OutputService } from "#output";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
 import type { SelectService } from "#select";
-import type { StoreService } from "#store";
-import type { Task } from "#task";
+import { Store } from "#store";
+import { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
 import { TaskRunner } from "./TaskRunner.js";
 
-type ReporterConstructor = new (resolvedConfig: ResolvedConfig, outputService: OutputService) => Reporter;
+type ReporterConstructor = new (resolvedConfig: ResolvedConfig) => Reporter;
 
 export class Runner {
   #eventEmitter = new EventEmitter();
-  #outputService: OutputService;
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
-  #storeService: StoreService;
+  static version = "__version__";
 
-  constructor(
-    resolvedConfig: ResolvedConfig,
-    outputService: OutputService,
-    selectService: SelectService,
-    storeService: StoreService,
-  ) {
-    this.#outputService = outputService;
+  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService) {
     this.#resolvedConfig = resolvedConfig;
     this.#selectService = selectService;
-    this.#storeService = storeService;
   }
 
   async #addReporters() {
     for (const reporter of this.#resolvedConfig.reporters) {
       switch (reporter) {
         case "list": {
-          const listReporter = new ListReporter(this.#resolvedConfig, this.#outputService);
+          const listReporter = new ListReporter(this.#resolvedConfig);
           this.#eventEmitter.addReporter(listReporter);
           break;
         }
 
         case "summary": {
-          const summaryReporter = new SummaryReporter(this.#resolvedConfig, this.#outputService);
+          const summaryReporter = new SummaryReporter(this.#resolvedConfig);
           this.#eventEmitter.addReporter(summaryReporter);
           break;
         }
 
         default: {
           const CustomReporter: ReporterConstructor = (await import(reporter)).default;
-          const customReporter = new CustomReporter(this.#resolvedConfig, this.#outputService);
+          const customReporter = new CustomReporter(this.#resolvedConfig);
           this.#eventEmitter.addReporter(customReporter);
         }
       }
     }
 
     if (this.#resolvedConfig.watch === true) {
-      const watchReporter = new WatchReporter(this.#resolvedConfig, this.#outputService);
+      const watchReporter = new WatchReporter(this.#resolvedConfig);
       this.#eventEmitter.addReporter(watchReporter);
     }
   }
 
-  async run(tasks: Array<Task>, cancellationToken = new CancellationToken()): Promise<void> {
+  async run(testFiles: Array<string | URL | Task>, cancellationToken = new CancellationToken()): Promise<void> {
+    const tasks = testFiles.map((testFile) => (testFile instanceof Task ? testFile : new Task(testFile)));
+
     const resultHandler = new ResultHandler();
     this.#eventEmitter.addHandler(resultHandler);
 
@@ -92,7 +85,7 @@ export class Runner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await this.#storeService.load(versionTag);
+      const compiler = await Store.load(versionTag);
 
       if (compiler) {
         // TODO to improve performance, task runners (or even test projects) could be cached in the future

@@ -1,4 +1,4 @@
-import { addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
+import { OutputService, addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
 import { BaseReporter } from "./BaseReporter.js";
 import { FileViewService } from "./FileViewService.js";
 import type { ReporterEvent } from "./types.js";
@@ -34,14 +34,14 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "store:adds":
-        this.outputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
+        OutputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
 
         this.#hasReportedAdds = true;
         break;
 
       case "store:error":
         for (const diagnostic of payload.diagnostics) {
-          this.outputService.writeError(diagnosticText(diagnostic));
+          OutputService.writeError(diagnosticText(diagnostic));
         }
         break;
 
@@ -59,7 +59,7 @@ export class ListReporter extends BaseReporter {
           this.#currentCompilerVersion !== payload.compilerVersion ||
           this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
         ) {
-          this.outputService.writeMessage(
+          OutputService.writeMessage(
             usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, {
               prependEmptyLine:
                 this.#currentCompilerVersion != null && !this.#hasReportedAdds && !this.#hasReportedError,
@@ -75,13 +75,13 @@ export class ListReporter extends BaseReporter {
 
       case "project:error":
         for (const diagnostic of payload.diagnostics) {
-          this.outputService.writeError(diagnosticText(diagnostic));
+          OutputService.writeError(diagnosticText(diagnostic));
         }
         break;
 
       case "task:start":
         if (!this.resolvedConfig.noInteractive) {
-          this.outputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
+          OutputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
         }
 
         this.#fileCount--;
@@ -96,15 +96,15 @@ export class ListReporter extends BaseReporter {
 
       case "task:end":
         if (!this.resolvedConfig.noInteractive) {
-          this.outputService.eraseLastLine();
+          OutputService.eraseLastLine();
         }
 
-        this.outputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
+        OutputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
 
-        this.outputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
+        OutputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
 
         if (this.#fileView.hasErrors) {
-          this.outputService.writeError(this.#fileView.getMessages());
+          OutputService.writeError(this.#fileView.getMessages());
           this.#hasReportedError = true;
         }
 

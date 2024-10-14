@@ -1,7 +1,6 @@
 import { pathToFileURL } from "node:url";
 import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
-import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
@@ -18,24 +17,21 @@ export class CommandLineOptionsWorker {
   #optionUsageText: OptionUsageText;
   #optionValidator: OptionValidator;
   #pathMatch: Array<string>;
-  #storeService: StoreService;
 
   constructor(
     commandLineOptions: Record<string, OptionValue>,
     pathMatch: Array<string>,
-    storeService: StoreService,
     onDiagnostics: DiagnosticsHandler,
   ) {
     this.#commandLineOptions = commandLineOptions;
     this.#pathMatch = pathMatch;
-    this.#storeService = storeService;
     this.#onDiagnostics = onDiagnostics;
 
     this.#commandLineOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
-    this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
+    this.#optionUsageText = new OptionUsageText(this.#optionGroup);
 
-    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
+    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#onDiagnostics);
   }
 
   async #onExpectsValue(optionDefinition: OptionDefinition) {
