@@ -64,10 +64,7 @@ await test("'--plugins' command line option", async (t) => {
       ["tstyche-plugin.js"]: "export {};",
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "--plugins",
-      "./tstyche-plugin.js,not-plugin",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--plugins", "./tstyche-plugin.js,not-plugin"]);
 
     assert.equal(stdout, "");
 
