@@ -94,13 +94,9 @@ export class CommandLineOptionsWorker {
           let optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== ""); // in case if a comma was at the end of a list, e.g. "--target 5.0,current,"
+            .filter((value) => value !== ""); // trailing commas are allowed, e.g. "--target 5.0,current,"
 
-          if (optionDefinition.name === "plugins") {
-            optionValues = optionValues.map((optionValue) => Path.resolve(optionValue));
-          }
-
-          if (optionDefinition.name === "reporters") {
+          if (optionDefinition.name === "plugins" || optionDefinition.name === "reporters") {
             optionValues = optionValues.map((optionValue) => {
               if (optionValue.startsWith(".")) {
                 return pathToFileURL(optionValue).toString();

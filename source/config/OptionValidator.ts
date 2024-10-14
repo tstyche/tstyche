@@ -28,18 +28,19 @@ export class OptionValidator {
   ): Promise<void> {
     switch (optionName) {
       case "config":
-      case "plugins":
       case "rootPath":
         if (!existsSync(optionValue)) {
           this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
         break;
 
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: reporters and plugins share validation logic
       case "reporters":
         if (["list", "summary"].includes(optionValue)) {
           break;
         }
 
+      case "plugins":
         try {
           await import(optionValue);
         } catch {
