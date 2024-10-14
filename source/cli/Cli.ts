@@ -1,10 +1,10 @@
-import { TSTyche } from "#api";
 import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
 import { PluginService } from "#plugins";
 import { SetupReporter } from "#reporters";
+import { Runner } from "#runner";
 import { SelectService } from "#select";
 import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
@@ -26,13 +26,13 @@ export class Cli {
     if (commandLineArguments.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
 
-      OutputService.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
+      OutputService.writeMessage(helpText(commandLineOptionDefinitions, Runner.version));
 
       return;
     }
 
     if (commandLineArguments.includes("--version")) {
-      OutputService.writeMessage(formattedText(TSTyche.version));
+      OutputService.writeMessage(formattedText(Runner.version));
 
       return;
     }
@@ -121,9 +121,9 @@ export class Cli {
       this.#eventEmitter.removeHandler(cancellationHandler);
       this.#eventEmitter.removeReporter(setupReporter);
 
-      const tstyche = new TSTyche(resolvedConfig, selectService);
+      const runner = new Runner(resolvedConfig, selectService);
 
-      await tstyche.run(testFiles, cancellationToken);
+      await runner.run(testFiles, cancellationToken);
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();

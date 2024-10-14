@@ -5,7 +5,7 @@ import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#re
 import { Result, TargetResult } from "#result";
 import type { SelectService } from "#select";
 import { Store } from "#store";
-import type { Task } from "#task";
+import { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
 import { TaskRunner } from "./TaskRunner.js";
@@ -16,6 +16,7 @@ export class Runner {
   #eventEmitter = new EventEmitter();
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
+  static version = "__version__";
 
   constructor(resolvedConfig: ResolvedConfig, selectService: SelectService) {
     this.#resolvedConfig = resolvedConfig;
@@ -51,7 +52,9 @@ export class Runner {
     }
   }
 
-  async run(tasks: Array<Task>, cancellationToken = new CancellationToken()): Promise<void> {
+  async run(testFiles: Array<string | URL | Task>, cancellationToken = new CancellationToken()): Promise<void> {
+    const tasks = testFiles.map((testFile) => (testFile instanceof Task ? testFile : new Task(testFile)));
+
     const resultHandler = new ResultHandler();
     this.#eventEmitter.addHandler(resultHandler);
 
