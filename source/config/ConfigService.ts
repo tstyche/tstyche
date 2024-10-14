@@ -76,8 +76,6 @@ export class ConfigService {
     await configFileWorker.parse();
   }
 
-  // TODO take 'userOptions: Partial<ResolvedConfig>' and spread it as last one.
-  //      (can be used in 'integration-Runner.test.js')
   resolveConfig(): ResolvedConfig {
     return {
       ...defaultOptions,
