@@ -61,21 +61,17 @@ await test("'--plugins' command line option", async (t) => {
   await t.test("when one of specified modules is not found", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche-plugin.js"]: "",
+      ["tstyche-plugin.js"]: "export {};",
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
       "--plugins",
-      "./tstyche-plugin.js,./not-plugin.js",
+      "./tstyche-plugin.js,not-plugin",
     ]);
 
     assert.equal(stdout, "");
 
-    const expected = [
-      "Error: The specified module '<<baseUrl>>/tests/__fixtures__/.generated/validation-plugins/not-plugin.js' was not found.",
-      "",
-      "",
-    ].join("\n");
+    const expected = ["Error: The specified module 'not-plugin' was not found.", "", ""].join("\n");
 
     assert.equal(normalizeOutput(stderr), expected);
     assert.equal(exitCode, 1);
@@ -119,7 +115,7 @@ await test("'plugins' configuration file option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-      ["tstyche-plugin.js"]: "",
+      ["tstyche-plugin.js"]: "export {};",
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -136,14 +132,14 @@ await test("'plugins' configuration file option", async (t) => {
 
   await t.test("when specified module is not found", async () => {
     const config = {
-      plugins: ["./tstyche-plugin.js", "./not-plugin.js"],
+      plugins: ["./tstyche-plugin.js", "not-plugin", "./not-plugin.js"],
       testFileMatch: ["examples/*.tst.*"],
     };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-      ["tstyche-plugin.js"]: "",
+      ["tstyche-plugin.js"]: "export {};",
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -151,7 +147,7 @@ await test("'plugins' configuration file option", async (t) => {
     assert.equal(stdout, "");
 
     await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-path-does-not-exist-stderr`,
+      fileName: `${testFileName}-module-is-not-found-stderr`,
       testFileUrl: import.meta.url,
     });
     assert.equal(exitCode, 1);

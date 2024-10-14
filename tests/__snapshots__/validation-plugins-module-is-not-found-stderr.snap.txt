@@ -1,0 +1,24 @@
+Error: The specified module 'not-plugin' was not found.
+
+  2 |   "plugins": [
+  3 |     "./tstyche-plugin.js",
+  4 |     "not-plugin",
+    |     ~~~~~~~~~~~~
+  5 |     "./not-plugin.js"
+  6 |   ],
+  7 |   "testFileMatch": [
+
+      at ./tstyche.config.json:4:5
+
+Error: The specified module '<<baseUrl>>/tests/__fixtures__/.generated/validation-plugins/not-plugin.js' was not found.
+
+  3 |     "./tstyche-plugin.js",
+  4 |     "not-plugin",
+  5 |     "./not-plugin.js"
+    |     ~~~~~~~~~~~~~~~~~
+  6 |   ],
+  7 |   "testFileMatch": [
+  8 |     "examples/*.tst.*"
+
+      at ./tstyche.config.json:5:5
+
