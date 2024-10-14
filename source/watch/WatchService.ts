@@ -2,7 +2,7 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { type InputHandler, InputService } from "#input";
-import { SelectDiagnosticText, type SelectService } from "#select";
+import { Select, SelectDiagnosticText } from "#select";
 import { Task } from "#task";
 import { CancellationReason, type CancellationToken } from "#token";
 import { Debounce, type ResolveHandler } from "./Debounce.js";
@@ -13,13 +13,11 @@ export class WatchService {
   #changedTestFiles = new Map<string, Task>();
   #inputService: InputService | undefined;
   #resolvedConfig: ResolvedConfig;
-  #selectService: SelectService;
   #watchedTestFiles: Map<string, Task>;
   #watchers: Array<Watcher> = [];
 
-  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, tasks: Array<Task>) {
+  constructor(resolvedConfig: ResolvedConfig, tasks: Array<Task>) {
     this.#resolvedConfig = resolvedConfig;
-    this.#selectService = selectService;
 
     this.#watchedTestFiles = new Map(tasks.map((task) => [task.filePath, task]));
   }
@@ -83,7 +81,7 @@ export class WatchService {
 
       if (task != null) {
         this.#changedTestFiles.set(filePath, task);
-      } else if (this.#selectService.isTestFile(filePath)) {
+      } else if (Select.isTestFile(filePath, this.#resolvedConfig)) {
         task = new Task(filePath);
 
         this.#changedTestFiles.set(filePath, task);

@@ -58,8 +58,8 @@ export class GlobPattern {
     }
   }
 
-  static toRegex(patterns: Array<string>, usageTarget: "directories" | "files"): RegExp {
-    const patternText = patterns.map((pattern) => `(${GlobPattern.#parse(pattern, usageTarget)})`).join("|");
+  static toRegex(patterns: Array<string>, target: "directories" | "files"): RegExp {
+    const patternText = patterns.map((pattern) => `(${GlobPattern.#parse(pattern, target)})`).join("|");
 
     return new RegExp(`^(${patternText})$`);
   }

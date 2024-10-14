@@ -3,7 +3,6 @@ import { EventEmitter } from "#events";
 import { CancellationHandler, ResultHandler } from "#handlers";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
-import type { SelectService } from "#select";
 import { Store } from "#store";
 import { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
@@ -15,12 +14,10 @@ type ReporterConstructor = new (resolvedConfig: ResolvedConfig) => Reporter;
 export class Runner {
   #eventEmitter = new EventEmitter();
   #resolvedConfig: ResolvedConfig;
-  #selectService: SelectService;
   static version = "__version__";
 
-  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService) {
+  constructor(resolvedConfig: ResolvedConfig) {
     this.#resolvedConfig = resolvedConfig;
-    this.#selectService = selectService;
   }
 
   async #addReporters() {
@@ -107,7 +104,7 @@ export class Runner {
   }
 
   async #watch(testFiles: Array<Task>, cancellationToken: CancellationToken): Promise<void> {
-    const watchService = new WatchService(this.#resolvedConfig, this.#selectService, testFiles);
+    const watchService = new WatchService(this.#resolvedConfig, testFiles);
 
     for await (const testFiles of watchService.watch(cancellationToken)) {
       await this.#run(testFiles, cancellationToken);
