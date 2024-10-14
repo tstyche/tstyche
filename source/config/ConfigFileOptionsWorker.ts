@@ -68,7 +68,7 @@ export class ConfigFileOptionsWorker {
           break;
         }
 
-        if (optionDefinition.name === "plugins") {
+        if (optionDefinition.name === "plugins" || optionDefinition.name === "reporters") {
           if (optionValue.startsWith(".")) {
             const configFilePath = Path.relative(".", Path.dirname(this.#sourceFile.fileName));
             optionValue = pathToFileURL(Path.join(configFilePath, optionValue)).toString();
@@ -77,13 +77,6 @@ export class ConfigFileOptionsWorker {
 
         if (optionDefinition.name === "rootPath") {
           optionValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
-        }
-
-        if (optionDefinition.name === "reporters") {
-          if (optionValue.startsWith(".")) {
-            const configFilePath = Path.relative(".", Path.dirname(this.#sourceFile.fileName));
-            optionValue = pathToFileURL(Path.join(configFilePath, optionValue)).toString();
-          }
         }
 
         await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand, jsonNode.origin);
