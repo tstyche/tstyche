@@ -4,16 +4,16 @@ import process from "node:process";
 import { Path } from "#path";
 import type { EnvironmentOptions } from "./types.js";
 
-export class EnvironmentService {
+export class Environment {
   static resolve(): EnvironmentOptions {
     return {
-      isCi: EnvironmentService.#resolveIsCi(),
-      noColor: EnvironmentService.#resolveNoColor(),
-      noInteractive: EnvironmentService.#resolveNoInteractive(),
-      npmRegistry: EnvironmentService.#resolveNpmRegistry(),
-      storePath: EnvironmentService.#resolveStorePath(),
-      timeout: EnvironmentService.#resolveTimeout(),
-      typescriptPath: EnvironmentService.#resolveTypeScriptPath(),
+      isCi: Environment.#resolveIsCi(),
+      noColor: Environment.#resolveNoColor(),
+      noInteractive: Environment.#resolveNoInteractive(),
+      npmRegistry: Environment.#resolveNpmRegistry(),
+      storePath: Environment.#resolveStorePath(),
+      timeout: Environment.#resolveTimeout(),
+      typescriptPath: Environment.#resolveTypeScriptPath(),
     };
   }
 

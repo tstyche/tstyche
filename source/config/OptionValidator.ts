@@ -1,25 +1,23 @@
 import { existsSync } from "node:fs";
 import { Diagnostic, type DiagnosticOrigin } from "#diagnostic";
-import type { StoreService } from "#store";
+import { environmentOptions } from "#environment";
+import { Store } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { OptionBrand } from "./OptionBrand.enum.js";
 import type { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionUsageText } from "./OptionUsageText.js";
-import { environmentOptions } from "./environmentOptions.js";
 import type { DiagnosticsHandler } from "./types.js";
 
 export class OptionValidator {
   #onDiagnostics: DiagnosticsHandler;
   #optionGroup: OptionGroup;
   #optionUsageText: OptionUsageText;
-  #storeService: StoreService;
 
-  constructor(optionGroup: OptionGroup, storeService: StoreService, onDiagnostics: DiagnosticsHandler) {
+  constructor(optionGroup: OptionGroup, onDiagnostics: DiagnosticsHandler) {
     this.#optionGroup = optionGroup;
-    this.#storeService = storeService;
     this.#onDiagnostics = onDiagnostics;
 
-    this.#optionUsageText = new OptionUsageText(this.#optionGroup, this.#storeService);
+    this.#optionUsageText = new OptionUsageText(this.#optionGroup);
   }
 
   async check(
@@ -50,7 +48,7 @@ export class OptionValidator {
         break;
 
       case "target":
-        if ((await this.#storeService.validateTag(optionValue)) === false) {
+        if ((await Store.validateTag(optionValue)) === false) {
           this.#onDiagnostics(
             Diagnostic.error(
               [

@@ -1,1 +1,1 @@
-export { StoreService } from "./StoreService.js";
+export { Store } from "./Store.js";

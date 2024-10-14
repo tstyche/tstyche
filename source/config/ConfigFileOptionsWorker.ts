@@ -1,7 +1,6 @@
 import { pathToFileURL } from "node:url";
 import { Diagnostic, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
-import type { StoreService } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { JsonNode } from "./JsonNode.js";
 import { JsonScanner } from "./JsonScanner.js";
@@ -19,23 +18,20 @@ export class ConfigFileOptionsWorker {
   #optionGroup = OptionGroup.ConfigFile;
   #optionValidator: OptionValidator;
   #sourceFile: SourceFile;
-  #storeService: StoreService;
 
   constructor(
     configFileOptions: Record<string, OptionValue>,
     sourceFile: SourceFile,
-    storeService: StoreService,
     onDiagnostics: DiagnosticsHandler,
   ) {
     this.#configFileOptions = configFileOptions;
     this.#sourceFile = sourceFile;
-    this.#storeService = storeService;
     this.#onDiagnostics = onDiagnostics;
 
     this.#configFileOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
 
     this.#jsonScanner = new JsonScanner(this.#sourceFile);
-    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#storeService, this.#onDiagnostics);
+    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#onDiagnostics);
   }
 
   #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {

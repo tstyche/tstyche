@@ -1,4 +1,4 @@
-import { environmentOptions } from "#config";
+import { environmentOptions } from "#environment";
 import type { ScribblerJsx, ScribblerNode } from "./types.js";
 
 export interface ScribblerOptions {

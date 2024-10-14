@@ -1,5 +1,5 @@
+import { environmentOptions } from "#environment";
 import { Path } from "#path";
-import { environmentOptions } from "./environmentOptions.js";
 import type { ConfigFileOptions } from "./types.js";
 
 export const defaultOptions: Required<ConfigFileOptions> = {
