@@ -1,2 +1,2 @@
+export { Select } from "./Select.js";
 export { SelectDiagnosticText } from "./SelectDiagnosticText.js";
-export { SelectService } from "./SelectService.js";

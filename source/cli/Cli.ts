@@ -5,7 +5,7 @@ import { type Hooks, HooksService } from "#hooks";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
 import { SetupReporter } from "#reporters";
 import { Runner } from "#runner";
-import { SelectService } from "#select";
+import { Select } from "#select";
 import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 import { FileWatcher, type WatchHandler, Watcher } from "#watch";
@@ -74,7 +74,7 @@ export class Cli {
 
       if (cancellationToken.isCancellationRequested) {
         if (commandLineArguments.includes("--watch")) {
-          await this.#waitForChangedFiles(resolvedConfig, /* selectService */ undefined, cancellationToken);
+          await this.#waitForChangedFiles(resolvedConfig, cancellationToken);
         }
         continue;
       }
@@ -98,15 +98,14 @@ export class Cli {
         continue;
       }
 
-      const selectService = new SelectService(resolvedConfig);
       let testFiles: Array<string | URL> = [];
 
       if (resolvedConfig.testFileMatch.length > 0) {
-        testFiles = await selectService.selectFiles();
+        testFiles = await Select.selectFiles(resolvedConfig);
 
         if (testFiles.length === 0) {
           if (commandLineArguments.includes("--watch")) {
-            await this.#waitForChangedFiles(resolvedConfig, selectService, cancellationToken);
+            await this.#waitForChangedFiles(resolvedConfig, cancellationToken);
           }
           continue;
         }
@@ -122,7 +121,7 @@ export class Cli {
       this.#eventEmitter.removeHandler(cancellationHandler);
       this.#eventEmitter.removeReporter(setupReporter);
 
-      const runner = new Runner(resolvedConfig, selectService);
+      const runner = new Runner(resolvedConfig);
 
       await runner.run(testFiles, cancellationToken);
 
@@ -132,11 +131,7 @@ export class Cli {
     this.#eventEmitter.removeHandlers();
   }
 
-  #waitForChangedFiles(
-    resolvedConfig: ResolvedConfig,
-    selectService: SelectService | undefined,
-    cancellationToken: CancellationToken,
-  ) {
+  #waitForChangedFiles(resolvedConfig: ResolvedConfig, cancellationToken: CancellationToken) {
     return new Promise<void>((resolve) => {
       const watchers: Array<Watcher> = [];
 
@@ -156,19 +151,17 @@ export class Cli {
 
       watchers.push(new FileWatcher(resolvedConfig.configFilePath, onChanged));
 
-      if (selectService != null) {
-        const onChangedTestFile: WatchHandler = (filePath) => {
-          if (selectService.isTestFile(filePath)) {
-            onChanged();
-          }
-        };
+      const onChangedTestFile: WatchHandler = (filePath) => {
+        if (Select.isTestFile(filePath, resolvedConfig)) {
+          onChanged();
+        }
+      };
 
-        const onRemoved: WatchHandler = () => {
-          // do nothing, only added files are important
-        };
+      const onRemoved: WatchHandler = () => {
+        // do nothing, only added files are important
+      };
 
-        watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, { recursive: true }));
-      }
+      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, { recursive: true }));
 
       for (const watcher of watchers) {
         watcher.watch();
