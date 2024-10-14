@@ -6,7 +6,7 @@ import { OutputService, formattedText, helpText, waitingForFileChangesText } fro
 import { PluginService } from "#plugins";
 import { SetupReporter } from "#reporters";
 import { SelectService } from "#select";
-import { StoreService } from "#store";
+import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 import { FileWatcher, type WatchHandler, Watcher } from "#watch";
 
@@ -37,23 +37,21 @@ export class Cli {
       return;
     }
 
-    const storeService = new StoreService();
-
     if (commandLineArguments.includes("--prune")) {
-      await storeService.prune();
+      await Store.prune();
 
       return;
     }
 
     if (commandLineArguments.includes("--update")) {
-      await storeService.update();
+      await Store.update();
 
       return;
     }
 
     const configService = new ConfigService();
 
-    await configService.parseCommandLine(commandLineArguments, storeService);
+    await configService.parseCommandLine(commandLineArguments);
 
     if (cancellationToken.isCancellationRequested) {
       return;
@@ -70,7 +68,7 @@ export class Cli {
         this.#eventEmitter.addReporter(setupReporter);
       }
 
-      await configService.readConfigFile(storeService);
+      await configService.readConfigFile();
 
       let resolvedConfig = configService.resolveConfig();
 
@@ -94,7 +92,7 @@ export class Cli {
 
       if (commandLineArguments.includes("--install")) {
         for (const tag of resolvedConfig.target) {
-          await storeService.install(tag);
+          await Store.install(tag);
         }
         continue;
       }
@@ -123,7 +121,7 @@ export class Cli {
       this.#eventEmitter.removeHandler(cancellationHandler);
       this.#eventEmitter.removeReporter(setupReporter);
 
-      const tstyche = new TSTyche(resolvedConfig, selectService, storeService);
+      const tstyche = new TSTyche(resolvedConfig, selectService);
 
       await tstyche.run(testFiles, cancellationToken);
     } while (cancellationToken.reason === CancellationReason.ConfigChange);

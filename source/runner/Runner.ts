@@ -4,7 +4,7 @@ import { CancellationHandler, ResultHandler } from "#handlers";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
 import type { SelectService } from "#select";
-import type { StoreService } from "#store";
+import { Store } from "#store";
 import type { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
@@ -16,12 +16,10 @@ export class Runner {
   #eventEmitter = new EventEmitter();
   #resolvedConfig: ResolvedConfig;
   #selectService: SelectService;
-  #storeService: StoreService;
 
-  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService, storeService: StoreService) {
+  constructor(resolvedConfig: ResolvedConfig, selectService: SelectService) {
     this.#resolvedConfig = resolvedConfig;
     this.#selectService = selectService;
-    this.#storeService = storeService;
   }
 
   async #addReporters() {
@@ -84,7 +82,7 @@ export class Runner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await this.#storeService.load(versionTag);
+      const compiler = await Store.load(versionTag);
 
       if (compiler) {
         // TODO to improve performance, task runners (or even test projects) could be cached in the future

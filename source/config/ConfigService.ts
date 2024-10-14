@@ -1,14 +1,13 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { type Diagnostic, SourceFile } from "#diagnostic";
+import { type EnvironmentOptions, environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import type { StoreService } from "#store";
 import { CommandLineOptionsWorker } from "./CommandLineOptionsWorker.js";
 import { ConfigFileOptionsWorker } from "./ConfigFileOptionsWorker.js";
 import { defaultOptions } from "./defaultOptions.js";
-import { environmentOptions } from "./environmentOptions.js";
-import type { CommandLineOptions, ConfigFileOptions, EnvironmentOptions, OptionValue } from "./types.js";
+import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types.js";
 
 export interface ResolvedConfig
   extends EnvironmentOptions,
@@ -34,14 +33,13 @@ export class ConfigService {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostics] }]);
   }
 
-  async parseCommandLine(commandLineArgs: Array<string>, storeService: StoreService): Promise<void> {
+  async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {
     this.#commandLineOptions = {};
     this.#pathMatch = [];
 
     const commandLineWorker = new CommandLineOptionsWorker(
       this.#commandLineOptions as Record<string, OptionValue>,
       this.#pathMatch,
-      storeService,
       this.#onDiagnostics,
     );
 
@@ -54,7 +52,7 @@ export class ConfigService {
     }
   }
 
-  async readConfigFile(storeService: StoreService): Promise<void> {
+  async readConfigFile(): Promise<void> {
     this.#configFileOptions = {
       rootPath: Path.dirname(this.#configFilePath),
     };
@@ -72,7 +70,6 @@ export class ConfigService {
     const configFileWorker = new ConfigFileOptionsWorker(
       this.#configFileOptions as Record<string, OptionValue>,
       sourceFile,
-      storeService,
       this.#onDiagnostics,
     );
 

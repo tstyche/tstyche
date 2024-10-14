@@ -1,15 +1,13 @@
-import type { StoreService } from "#store";
+import { Store } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 
 export class OptionUsageText {
   #optionGroup: OptionGroup;
-  #storeService: StoreService;
 
-  constructor(optionGroup: OptionGroup, storeService: StoreService) {
+  constructor(optionGroup: OptionGroup) {
     this.#optionGroup = optionGroup;
-    this.#storeService = storeService;
   }
 
   async get(optionName: string, optionBrand: OptionBrand): Promise<Array<string>> {
@@ -30,7 +28,7 @@ export class OptionUsageText {
             break;
         }
 
-        const supportedTags = await this.#storeService.getSupportedTags();
+        const supportedTags = await Store.getSupportedTags();
 
         if (supportedTags != null) {
           usageText.push(`Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`);
