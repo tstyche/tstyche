@@ -5,7 +5,7 @@ import { TestMember } from "./TestMember.js";
 import { TestMemberBrand } from "./TestMemberBrand.enum.js";
 import { TestTree } from "./TestTree.js";
 
-export class Collect {
+export class CollectService {
   #compiler: typeof ts;
 
   constructor(compiler: typeof ts) {

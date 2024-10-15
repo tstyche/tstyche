@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Collect } from "#collect";
+import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -13,7 +13,7 @@ import { TestTreeWalker } from "./TestTreeWalker.js";
 
 export class TaskRunner {
   #compiler: typeof ts;
-  #collectService: Collect;
+  #collectService: CollectService;
   #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
 
@@ -21,7 +21,7 @@ export class TaskRunner {
     this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
 
-    this.#collectService = new Collect(compiler);
+    this.#collectService = new CollectService(compiler);
     this.#projectService = new ProjectService(compiler);
   }
 
