@@ -24,66 +24,77 @@ export interface ResolvedConfig
 }
 
 export class ConfigService {
-  #commandLineOptions: CommandLineOptions = {};
-  #configFileOptions: ConfigFileOptions = {};
-  #configFilePath = Path.resolve(defaultOptions.rootPath, "./tstyche.config.json");
-  #pathMatch: Array<string> = [];
-
-  #onDiagnostics(this: void, diagnostics: Diagnostic) {
+  static #onDiagnostics(this: void, diagnostics: Diagnostic) {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostics] }]);
   }
 
-  async parseCommandLine(commandLine: Array<string>): Promise<void> {
-    this.#commandLineOptions = {};
-    this.#pathMatch = [];
+  static async parseCommandLine(
+    commandLine: Array<string>,
+  ): Promise<{ commandLineOptions: CommandLineOptions; pathMatch: Array<string> }> {
+    const commandLineOptions: CommandLineOptions = {};
+    const pathMatch: Array<string> = [];
 
     const commandLineParser = new CommandLineParser(
-      this.#commandLineOptions as Record<string, OptionValue>,
-      this.#pathMatch,
-      this.#onDiagnostics,
+      commandLineOptions as Record<string, OptionValue>,
+      pathMatch,
+      ConfigService.#onDiagnostics,
     );
 
     await commandLineParser.parse(commandLine);
 
-    if (this.#commandLineOptions.config != null) {
-      this.#configFilePath = this.#commandLineOptions.config;
-
-      delete this.#commandLineOptions.config;
-    }
+    return { commandLineOptions, pathMatch };
   }
 
-  async readConfigFile(): Promise<void> {
-    this.#configFileOptions = {
-      rootPath: Path.dirname(this.#configFilePath),
+  static async parseConfigFile(
+    filePath?: string,
+  ): Promise<{ configFileOptions: ConfigFileOptions; configFilePath: string }> {
+    const configFilePath = ConfigService.resolveConfigFilePath(filePath);
+
+    const configFileOptions: ConfigFileOptions = {
+      rootPath: Path.dirname(configFilePath),
     };
 
-    if (!existsSync(this.#configFilePath)) {
-      return;
+    if (existsSync(configFilePath)) {
+      const configFileText = await fs.readFile(configFilePath, {
+        encoding: "utf8",
+      });
+
+      const sourceFile = new SourceFile(configFilePath, configFileText);
+
+      const configFileParser = new ConfigFileParser(
+        configFileOptions as Record<string, OptionValue>,
+        sourceFile,
+        ConfigService.#onDiagnostics,
+      );
+
+      await configFileParser.parse();
+      await configFileParser.parse();
+      await configFileParser.parse();
     }
 
-    const configFileText = await fs.readFile(this.#configFilePath, {
-      encoding: "utf8",
-    });
-
-    const sourceFile = new SourceFile(this.#configFilePath, configFileText);
-
-    const configFileParser = new ConfigFileParser(
-      this.#configFileOptions as Record<string, OptionValue>,
-      sourceFile,
-      this.#onDiagnostics,
-    );
-
-    await configFileParser.parse();
+    return { configFileOptions, configFilePath };
   }
 
-  resolveConfig(): ResolvedConfig {
+  static resolveConfig(options?: {
+    configFileOptions?: ConfigFileOptions;
+    configFilePath?: string;
+    commandLineOptions?: CommandLineOptions;
+    pathMatch?: Array<string>;
+  }): ResolvedConfig {
+    // biome-ignore lint/performance/noDelete: that's fine
+    delete options?.commandLineOptions?.config;
+
     return {
+      configFilePath: options?.configFilePath ?? ConfigService.resolveConfigFilePath(),
+      pathMatch: options?.pathMatch ?? [],
       ...defaultOptions,
       ...environmentOptions,
-      ...this.#configFileOptions,
-      ...this.#commandLineOptions,
-      configFilePath: this.#configFilePath,
-      pathMatch: this.#pathMatch,
+      ...options?.configFileOptions,
+      ...options?.commandLineOptions,
     };
+  }
+
+  static resolveConfigFilePath(filePath?: string) {
+    return filePath != null ? Path.resolve(filePath) : Path.resolve("./tstyche.config.json");
   }
 }

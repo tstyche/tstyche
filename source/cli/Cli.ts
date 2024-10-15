@@ -49,9 +49,7 @@ export class Cli {
       return;
     }
 
-    const configService = new ConfigService();
-
-    await configService.parseCommandLine(commandLine);
+    const { commandLineOptions, pathMatch } = await ConfigService.parseCommandLine(commandLine);
 
     if (cancellationToken.isCancellationRequested) {
       return;
@@ -68,9 +66,14 @@ export class Cli {
         this.#eventEmitter.addReporter(setupReporter);
       }
 
-      await configService.readConfigFile();
+      const { configFileOptions, configFilePath } = await ConfigService.parseConfigFile(commandLineOptions.config);
 
-      let resolvedConfig = configService.resolveConfig();
+      let resolvedConfig = ConfigService.resolveConfig({
+        configFileOptions,
+        configFilePath,
+        commandLineOptions,
+        pathMatch,
+      });
 
       if (cancellationToken.isCancellationRequested) {
         if (commandLine.includes("--watch")) {

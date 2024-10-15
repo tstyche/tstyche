@@ -9,8 +9,7 @@ const isWindows = process.platform === "win32";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-const configService = new tstyche.ConfigService();
-const resolvedConfig = { ...configService.resolveConfig(), reporters: [] };
+const resolvedConfig = tstyche.ConfigService.resolveConfig({ configFileOptions: { reporters: [] } });
 
 const eventEmitter = new tstyche.EventEmitter();
 
