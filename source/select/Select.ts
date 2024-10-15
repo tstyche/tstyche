@@ -18,7 +18,7 @@ interface MatchPatterns {
 }
 
 export class Select {
-  static #patternsCache = new Map<Array<string>, MatchPatterns>();
+  static #patternsCache = new WeakMap<Array<string>, MatchPatterns>();
 
   static #getMatchPatterns(globPatterns: Array<string>) {
     let matchPatterns = Select.#patternsCache.get(globPatterns);
