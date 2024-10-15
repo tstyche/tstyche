@@ -9,7 +9,7 @@ export interface ConfigFileOptions {
      */
     failFast?: boolean;
     /**
-     * The list of TSTyche plugins.
+     * The list of plugins to use.
      */
     plugins?: Array<string>;
     /**

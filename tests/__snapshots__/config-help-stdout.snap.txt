@@ -31,7 +31,7 @@ Command Line Options
   Only run tests with matching name.
 
   --plugins  list of strings
-  The list of TSTyche plugins.
+  The list of plugins to use.
 
   --prune
   Remove all installed versions of the 'typescript' package and exit.

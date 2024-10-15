@@ -29,7 +29,7 @@ export interface CommandLineOptions {
      */
     only?: string;
     /**
-     * The list of TSTyche plugins.
+     * The list of plugins to use.
      */
     plugins?: Array<string>;
     /**

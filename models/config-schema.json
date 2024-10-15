@@ -8,7 +8,7 @@
     },
     "plugins": {
       "default": [],
-      "description": "The list of TSTyche plugins.",
+      "description": "The list of plugins to use.",
       "items": {
         "type": "string"
       },

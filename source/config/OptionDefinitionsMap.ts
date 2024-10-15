@@ -78,7 +78,7 @@ export class OptionDefinitionsMap {
 
     {
       brand: OptionBrand.List,
-      description: "The list of TSTyche plugins.",
+      description: "The list of plugins to use.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       items: {
         brand: OptionBrand.String,
