@@ -11,7 +11,7 @@ import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types
 
 export interface ResolvedConfig
   extends EnvironmentOptions,
-    Omit<CommandLineOptions, keyof ConfigFileOptions | "config">,
+    Omit<CommandLineOptions, "config" | keyof ConfigFileOptions>,
     Required<ConfigFileOptions> {
   /**
    * The path to a TSTyche configuration file.
@@ -76,13 +76,10 @@ export class Config {
   static resolve(options?: {
     configFileOptions?: ConfigFileOptions;
     configFilePath?: string;
-    commandLineOptions?: CommandLineOptions;
+    commandLineOptions?: Omit<CommandLineOptions, "config">;
     pathMatch?: Array<string>;
   }): ResolvedConfig {
-    // biome-ignore lint/performance/noDelete: that's fine
-    delete options?.commandLineOptions?.config;
-
-    return {
+    const resolvedConfig = {
       configFilePath: Config.resolveConfigFilePath(options?.configFilePath),
       pathMatch: options?.pathMatch ?? [],
       ...defaultOptions,
@@ -90,6 +87,13 @@ export class Config {
       ...options?.configFileOptions,
       ...options?.commandLineOptions,
     };
+
+    if ("config" in resolvedConfig) {
+      // biome-ignore lint/performance/noDelete: must clean up
+      delete resolvedConfig.config;
+    }
+
+    return resolvedConfig;
   }
 
   static resolveConfigFilePath(filePath?: string) {
