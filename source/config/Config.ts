@@ -83,7 +83,7 @@ export class Config {
     delete options?.commandLineOptions?.config;
 
     return {
-      configFilePath: options?.configFilePath ?? Config.resolveConfigFilePath(),
+      configFilePath: Config.resolveConfigFilePath(options?.configFilePath),
       pathMatch: options?.pathMatch ?? [],
       ...defaultOptions,
       ...environmentOptions,
