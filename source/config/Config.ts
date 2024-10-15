@@ -68,8 +68,6 @@ export class Config {
       );
 
       await configFileParser.parse();
-      await configFileParser.parse();
-      await configFileParser.parse();
     }
 
     return { configFileOptions, configFilePath };
