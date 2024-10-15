@@ -9,7 +9,7 @@ import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
 import type { OptionValue } from "./types.js";
 
-export class CommandLineOptionsWorker {
+export class CommandLineParser {
   #commandLineOptionDefinitions: Map<string, OptionDefinition>;
   #commandLineOptions: Record<string, OptionValue>;
   #onDiagnostics: DiagnosticsHandler;
@@ -18,12 +18,8 @@ export class CommandLineOptionsWorker {
   #optionValidator: OptionValidator;
   #pathMatch: Array<string>;
 
-  constructor(
-    commandLineOptions: Record<string, OptionValue>,
-    pathMatch: Array<string>,
-    onDiagnostics: DiagnosticsHandler,
-  ) {
-    this.#commandLineOptions = commandLineOptions;
+  constructor(commandLine: Record<string, OptionValue>, pathMatch: Array<string>, onDiagnostics: DiagnosticsHandler) {
+    this.#commandLineOptions = commandLine;
     this.#pathMatch = pathMatch;
     this.#onDiagnostics = onDiagnostics;
 

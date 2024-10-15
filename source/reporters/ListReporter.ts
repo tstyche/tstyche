@@ -1,13 +1,13 @@
 import { OutputService, addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
 import { BaseReporter } from "./BaseReporter.js";
-import { FileViewService } from "./FileViewService.js";
+import { FileView } from "./FileView.js";
 import type { ReporterEvent } from "./types.js";
 
 export class ListReporter extends BaseReporter {
   #currentCompilerVersion: string | undefined;
   #currentProjectConfigFilePath: string | undefined;
   #fileCount = 0;
-  #fileView = new FileViewService();
+  #fileView = new FileView();
   #hasReportedAdds = false;
   #hasReportedError = false;
   #isFileViewExpanded = false;

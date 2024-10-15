@@ -9,7 +9,7 @@ import { TaskResult } from "#result";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
 import { RunMode } from "./RunMode.enum.js";
-import { TestTreeWorker } from "./TestTreeWorker.js";
+import { TestTreeWalker } from "./TestTreeWalker.js";
 
 export class TaskRunner {
   #compiler: typeof ts;
@@ -90,13 +90,13 @@ export class TaskRunner {
 
     const typeChecker = program.getTypeChecker() as TypeChecker;
 
-    const testTreeWorker = new TestTreeWorker(this.#resolvedConfig, this.#compiler, typeChecker, {
+    const testTreeWalker = new TestTreeWalker(this.#resolvedConfig, this.#compiler, typeChecker, {
       cancellationToken,
       taskResult,
       hasOnly: testTree.hasOnly,
       position: task.position,
     });
 
-    testTreeWorker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);
+    testTreeWalker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);
   }
 }

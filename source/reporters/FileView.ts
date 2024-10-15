@@ -1,7 +1,7 @@
 import { describeNameText, fileViewText, testNameText } from "#output";
 import type { ScribblerJsx } from "#scribbler";
 
-export class FileViewService {
+export class FileView {
   #indent = 0;
   #lines: Array<ScribblerJsx.Element> = [];
   #messages: Array<ScribblerJsx.Element> = [];

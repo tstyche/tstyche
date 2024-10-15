@@ -8,14 +8,14 @@ import { DescribeResult, ExpectResult, type TaskResult, TestResult } from "#resu
 import type { CancellationToken } from "#token";
 import { RunMode } from "./RunMode.enum.js";
 
-interface TestFileWorkerOptions {
+interface TestFileWalkerOptions {
   cancellationToken: CancellationToken | undefined;
   hasOnly: boolean;
   position: number | undefined;
   taskResult: TaskResult;
 }
 
-export class TestTreeWorker {
+export class TestTreeWalker {
   #compiler: typeof ts;
   #cancellationToken: CancellationToken | undefined;
   #expectService: ExpectService;
@@ -28,7 +28,7 @@ export class TestTreeWorker {
     resolvedConfig: ResolvedConfig,
     compiler: typeof ts,
     typeChecker: TypeChecker,
-    options: TestFileWorkerOptions,
+    options: TestFileWalkerOptions,
   ) {
     this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;

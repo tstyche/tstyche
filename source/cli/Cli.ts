@@ -13,7 +13,7 @@ import { FileWatcher, type WatchHandler, Watcher } from "#watch";
 export class Cli {
   #eventEmitter = new EventEmitter();
 
-  async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
+  async run(commandLine: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
     const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
     this.#eventEmitter.addHandler(cancellationHandler);
 
@@ -23,7 +23,7 @@ export class Cli {
     const setupReporter = new SetupReporter();
     this.#eventEmitter.addReporter(setupReporter);
 
-    if (commandLineArguments.includes("--help")) {
+    if (commandLine.includes("--help")) {
       const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
 
       OutputService.writeMessage(helpText(commandLineOptionDefinitions, Runner.version));
@@ -31,19 +31,19 @@ export class Cli {
       return;
     }
 
-    if (commandLineArguments.includes("--version")) {
+    if (commandLine.includes("--version")) {
       OutputService.writeMessage(formattedText(Runner.version));
 
       return;
     }
 
-    if (commandLineArguments.includes("--prune")) {
+    if (commandLine.includes("--prune")) {
       await Store.prune();
 
       return;
     }
 
-    if (commandLineArguments.includes("--update")) {
+    if (commandLine.includes("--update")) {
       await Store.update();
 
       return;
@@ -51,7 +51,7 @@ export class Cli {
 
     const configService = new ConfigService();
 
-    await configService.parseCommandLine(commandLineArguments);
+    await configService.parseCommandLine(commandLine);
 
     if (cancellationToken.isCancellationRequested) {
       return;
@@ -73,7 +73,7 @@ export class Cli {
       let resolvedConfig = configService.resolveConfig();
 
       if (cancellationToken.isCancellationRequested) {
-        if (commandLineArguments.includes("--watch")) {
+        if (commandLine.includes("--watch")) {
           await this.#waitForChangedFiles(resolvedConfig, cancellationToken);
         }
         continue;
@@ -86,12 +86,12 @@ export class Cli {
 
       resolvedConfig = await HooksService.call("config", resolvedConfig);
 
-      if (commandLineArguments.includes("--showConfig")) {
+      if (commandLine.includes("--showConfig")) {
         OutputService.writeMessage(formattedText({ ...resolvedConfig }));
         continue;
       }
 
-      if (commandLineArguments.includes("--install")) {
+      if (commandLine.includes("--install")) {
         for (const tag of resolvedConfig.target) {
           await Store.install(tag);
         }
@@ -104,7 +104,7 @@ export class Cli {
         testFiles = await Select.selectFiles(resolvedConfig);
 
         if (testFiles.length === 0) {
-          if (commandLineArguments.includes("--watch")) {
+          if (commandLine.includes("--watch")) {
             await this.#waitForChangedFiles(resolvedConfig, cancellationToken);
           }
           continue;
@@ -113,7 +113,7 @@ export class Cli {
 
       testFiles = await HooksService.call("select", testFiles);
 
-      if (commandLineArguments.includes("--listFiles")) {
+      if (commandLine.includes("--listFiles")) {
         OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
         continue;
       }

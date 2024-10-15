@@ -4,8 +4,8 @@ import { type Diagnostic, SourceFile } from "#diagnostic";
 import { type EnvironmentOptions, environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import { CommandLineOptionsWorker } from "./CommandLineOptionsWorker.js";
-import { ConfigFileOptionsWorker } from "./ConfigFileOptionsWorker.js";
+import { CommandLineParser } from "./CommandLineParser.js";
+import { ConfigFileParser } from "./ConfigFileParser.js";
 import { defaultOptions } from "./defaultOptions.js";
 import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types.js";
 
@@ -33,17 +33,17 @@ export class ConfigService {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostics] }]);
   }
 
-  async parseCommandLine(commandLineArgs: Array<string>): Promise<void> {
+  async parseCommandLine(commandLine: Array<string>): Promise<void> {
     this.#commandLineOptions = {};
     this.#pathMatch = [];
 
-    const commandLineWorker = new CommandLineOptionsWorker(
+    const commandLineParser = new CommandLineParser(
       this.#commandLineOptions as Record<string, OptionValue>,
       this.#pathMatch,
       this.#onDiagnostics,
     );
 
-    await commandLineWorker.parse(commandLineArgs);
+    await commandLineParser.parse(commandLine);
 
     if (this.#commandLineOptions.config != null) {
       this.#configFilePath = this.#commandLineOptions.config;
@@ -67,13 +67,13 @@ export class ConfigService {
 
     const sourceFile = new SourceFile(this.#configFilePath, configFileText);
 
-    const configFileWorker = new ConfigFileOptionsWorker(
+    const configFileParser = new ConfigFileParser(
       this.#configFileOptions as Record<string, OptionValue>,
       sourceFile,
       this.#onDiagnostics,
     );
 
-    await configFileWorker.parse();
+    await configFileParser.parse();
   }
 
   resolveConfig(): ResolvedConfig {

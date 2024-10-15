@@ -10,7 +10,7 @@ import { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionValidator } from "./OptionValidator.js";
 import type { OptionValue } from "./types.js";
 
-export class ConfigFileOptionsWorker {
+export class ConfigFileParser {
   #configFileOptionDefinitions: Map<string, OptionDefinition>;
   #configFileOptions: Record<string, OptionValue>;
   #jsonScanner: JsonScanner;
