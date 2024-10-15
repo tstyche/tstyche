@@ -9,9 +9,6 @@ const isWindows = process.platform === "win32";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-const configService = new tstyche.ConfigService();
-const resolvedConfig = { ...configService.resolveConfig(), reporters: [] };
-
 const eventEmitter = new tstyche.EventEmitter();
 
 /**
@@ -60,6 +57,7 @@ await test("Runner", async (t) => {
 
   for (const { testCase, testFiles } of testCases) {
     await t.test(testCase, async () => {
+      const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
       const runner = new tstyche.Runner(resolvedConfig);
 
       eventEmitter.addReporter(new TestResultReporter());
@@ -75,6 +73,7 @@ await test("Runner", async (t) => {
   }
 
   await t.test("when test file is a 'Task' object", async (t) => {
+    const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
     const runner = new tstyche.Runner(resolvedConfig);
 
     eventEmitter.addReporter(new TestResultReporter());
@@ -162,11 +161,6 @@ await test("Runner", async (t) => {
   });
 
   await t.test("configuration options", async (t) => {
-    /**
-     * @type {import("tstyche/tstyche").Runner | undefined}
-     */
-    let runner;
-
     t.beforeEach(() => {
       eventEmitter.addReporter(new TestResultReporter());
     });
@@ -176,7 +170,10 @@ await test("Runner", async (t) => {
     });
 
     await t.test("when 'failFast: true' is specified", async () => {
-      runner = new tstyche.Runner({ ...resolvedConfig, failFast: true });
+      const resolvedConfig = tstyche.Config.resolve({
+        configFileOptions: { reporters: [], failFast: true },
+      });
+      const runner = new tstyche.Runner(resolvedConfig);
 
       const testFiles = [
         new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl),

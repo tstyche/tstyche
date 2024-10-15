@@ -1,4 +1,4 @@
-import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
+import { Config, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
 import { type Hooks, HooksService } from "#hooks";
@@ -49,9 +49,7 @@ export class Cli {
       return;
     }
 
-    const configService = new ConfigService();
-
-    await configService.parseCommandLine(commandLine);
+    const { commandLineOptions, pathMatch } = await Config.parseCommandLine(commandLine);
 
     if (cancellationToken.isCancellationRequested) {
       return;
@@ -68,9 +66,14 @@ export class Cli {
         this.#eventEmitter.addReporter(setupReporter);
       }
 
-      await configService.readConfigFile();
+      const { configFileOptions, configFilePath } = await Config.parseConfigFile(commandLineOptions.config);
 
-      let resolvedConfig = configService.resolveConfig();
+      let resolvedConfig = Config.resolve({
+        configFileOptions,
+        configFilePath,
+        commandLineOptions,
+        pathMatch,
+      });
 
       if (cancellationToken.isCancellationRequested) {
         if (commandLine.includes("--watch")) {
