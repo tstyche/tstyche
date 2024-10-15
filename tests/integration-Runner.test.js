@@ -57,7 +57,7 @@ await test("Runner", async (t) => {
 
   for (const { testCase, testFiles } of testCases) {
     await t.test(testCase, async () => {
-      const resolvedConfig = tstyche.ConfigService.resolveConfig({ configFileOptions: { reporters: [] } });
+      const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
       const runner = new tstyche.Runner(resolvedConfig);
 
       eventEmitter.addReporter(new TestResultReporter());
@@ -73,7 +73,7 @@ await test("Runner", async (t) => {
   }
 
   await t.test("when test file is a 'Task' object", async (t) => {
-    const resolvedConfig = tstyche.ConfigService.resolveConfig({ configFileOptions: { reporters: [] } });
+    const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
     const runner = new tstyche.Runner(resolvedConfig);
 
     eventEmitter.addReporter(new TestResultReporter());
@@ -170,7 +170,7 @@ await test("Runner", async (t) => {
     });
 
     await t.test("when 'failFast: true' is specified", async () => {
-      const resolvedConfig = tstyche.ConfigService.resolveConfig({
+      const resolvedConfig = tstyche.Config.resolve({
         configFileOptions: { reporters: [], failFast: true },
       });
       const runner = new tstyche.Runner(resolvedConfig);

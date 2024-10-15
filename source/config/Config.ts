@@ -23,7 +23,7 @@ export interface ResolvedConfig
   pathMatch: Array<string>;
 }
 
-export class ConfigService {
+export class Config {
   static #onDiagnostics(this: void, diagnostics: Diagnostic) {
     EventEmitter.dispatch(["config:error", { diagnostics: [diagnostics] }]);
   }
@@ -37,7 +37,7 @@ export class ConfigService {
     const commandLineParser = new CommandLineParser(
       commandLineOptions as Record<string, OptionValue>,
       pathMatch,
-      ConfigService.#onDiagnostics,
+      Config.#onDiagnostics,
     );
 
     await commandLineParser.parse(commandLine);
@@ -48,7 +48,7 @@ export class ConfigService {
   static async parseConfigFile(
     filePath?: string,
   ): Promise<{ configFileOptions: ConfigFileOptions; configFilePath: string }> {
-    const configFilePath = ConfigService.resolveConfigFilePath(filePath);
+    const configFilePath = Config.resolveConfigFilePath(filePath);
 
     const configFileOptions: ConfigFileOptions = {
       rootPath: Path.dirname(configFilePath),
@@ -64,7 +64,7 @@ export class ConfigService {
       const configFileParser = new ConfigFileParser(
         configFileOptions as Record<string, OptionValue>,
         sourceFile,
-        ConfigService.#onDiagnostics,
+        Config.#onDiagnostics,
       );
 
       await configFileParser.parse();
@@ -75,7 +75,7 @@ export class ConfigService {
     return { configFileOptions, configFilePath };
   }
 
-  static resolveConfig(options?: {
+  static resolve(options?: {
     configFileOptions?: ConfigFileOptions;
     configFilePath?: string;
     commandLineOptions?: CommandLineOptions;
@@ -85,7 +85,7 @@ export class ConfigService {
     delete options?.commandLineOptions?.config;
 
     return {
-      configFilePath: options?.configFilePath ?? ConfigService.resolveConfigFilePath(),
+      configFilePath: options?.configFilePath ?? Config.resolveConfigFilePath(),
       pathMatch: options?.pathMatch ?? [],
       ...defaultOptions,
       ...environmentOptions,
