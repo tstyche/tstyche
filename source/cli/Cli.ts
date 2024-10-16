@@ -115,7 +115,7 @@ export class Cli {
         }
       }
 
-      testFiles = await HooksService.call("select", testFiles);
+      testFiles = await HooksService.call("select", testFiles as Array<string>);
 
       if (commandLine.includes("--listFiles")) {
         OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));

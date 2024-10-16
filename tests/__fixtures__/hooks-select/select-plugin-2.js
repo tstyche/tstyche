@@ -1,5 +1,5 @@
 /**
- * @type {import("tstyche/tstyche").Plugin}
+ * @type {import("tstyche/tstyche").Hooks}
  */
 export default {
   select: () => {

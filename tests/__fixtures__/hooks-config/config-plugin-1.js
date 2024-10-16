@@ -1,8 +1,8 @@
 /**
- * @type {import("tstyche/tstyche").Plugin}
+ * @type {import("tstyche/tstyche").Hooks}
  */
 export default {
-  config: (options) => {
-    return { ...options, failFast: true };
+  config: (resolvedConfig) => {
+    return { ...resolvedConfig, failFast: true };
   },
 };

@@ -1,15 +1,12 @@
 import type { ResolvedConfig } from "#config";
 
-export type CustomizationHooks = {
-  config: ResolvedConfig;
-  select: Array<string | URL>;
-  // TODO also add 'runner', 'target', 'project', etc
-};
-
-export type Hooks = {
-  [K in keyof CustomizationHooks]?: (
-    options: CustomizationHooks[K],
-  ) => CustomizationHooks[K] extends Array<unknown>
-    ? CustomizationHooks[K] | Promise<CustomizationHooks[K]>
-    : Partial<CustomizationHooks[K]> | Promise<Partial<CustomizationHooks[K]>>;
-};
+export interface Hooks {
+  /**
+   * Is called after configuration is resolved and allows to modify it.
+   */
+  config?: (resolvedConfig: ResolvedConfig) => ResolvedConfig | Promise<ResolvedConfig> | null | undefined;
+  /**
+   * Is called after test files are selected and allows to modify the list.
+   */
+  select?: (testFiles: Array<string>) => Array<string | URL> | Promise<Array<string | URL>> | null | undefined;
+}
