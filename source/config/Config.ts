@@ -1,7 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { type Diagnostic, SourceFile } from "#diagnostic";
-import { type EnvironmentOptions, environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { CommandLineParser } from "./CommandLineParser.js";
@@ -10,8 +9,7 @@ import { defaultOptions } from "./defaultOptions.js";
 import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types.js";
 
 export interface ResolvedConfig
-  extends EnvironmentOptions,
-    Omit<CommandLineOptions, "config" | keyof ConfigFileOptions>,
+  extends Omit<CommandLineOptions, "config" | keyof ConfigFileOptions>,
     Required<ConfigFileOptions> {
   /**
    * The path to a TSTyche configuration file.
@@ -83,7 +81,6 @@ export class Config {
       configFilePath: Config.resolveConfigFilePath(options?.configFilePath),
       pathMatch: options?.pathMatch ?? [],
       ...defaultOptions,
-      ...environmentOptions,
       ...options?.configFileOptions,
       ...options?.commandLineOptions,
     };

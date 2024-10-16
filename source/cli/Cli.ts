@@ -1,4 +1,5 @@
 import { Config, OptionGroup, Options, type ResolvedConfig } from "#config";
+import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
 import { type Hooks, HooksService } from "#hooks";
@@ -90,7 +91,7 @@ export class Cli {
       resolvedConfig = await HooksService.call("config", resolvedConfig);
 
       if (commandLine.includes("--showConfig")) {
-        OutputService.writeMessage(formattedText({ ...resolvedConfig }));
+        OutputService.writeMessage(formattedText({ ...resolvedConfig, ...environmentOptions }));
         continue;
       }
 
