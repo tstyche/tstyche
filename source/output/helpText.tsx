@@ -120,17 +120,14 @@ function HelpFooterText() {
   return <Line>{"To learn more, visit https://tstyche.org"}</Line>;
 }
 
-export function helpText(
-  optionDefinitions: Map<string, OptionDefinition>,
-  tstycheVersion: string,
-): ScribblerJsx.Element {
+export function helpText(options: Map<string, OptionDefinition>, version: string): ScribblerJsx.Element {
   return (
     <Text>
-      <HelpHeaderText tstycheVersion={tstycheVersion} />
+      <HelpHeaderText tstycheVersion={version} />
       <Line />
       <CommandLineUsageText />
       <Line />
-      <CommandLineOptionsText optionDefinitions={optionDefinitions} />
+      <CommandLineOptionsText optionDefinitions={options} />
       <Line />
       <HelpFooterText />
       <Line />

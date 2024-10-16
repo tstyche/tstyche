@@ -3,16 +3,16 @@ import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { Path } from "#path";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
-import { type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionUsageText } from "./OptionUsageText.js";
 import { OptionValidator } from "./OptionValidator.js";
+import { type OptionDefinition, Options } from "./Options.js";
 import type { OptionValue } from "./types.js";
 
 export class CommandLineParser {
-  #commandLineOptionDefinitions: Map<string, OptionDefinition>;
   #commandLineOptions: Record<string, OptionValue>;
   #onDiagnostics: DiagnosticsHandler;
+  #options: Map<string, OptionDefinition>;
   #optionGroup = OptionGroup.CommandLine;
   #optionUsageText: OptionUsageText;
   #optionValidator: OptionValidator;
@@ -23,10 +23,9 @@ export class CommandLineParser {
     this.#pathMatch = pathMatch;
     this.#onDiagnostics = onDiagnostics;
 
-    this.#commandLineOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
+    this.#options = Options.for(this.#optionGroup);
 
     this.#optionUsageText = new OptionUsageText(this.#optionGroup);
-
     this.#optionValidator = new OptionValidator(this.#optionGroup, this.#onDiagnostics);
   }
 
@@ -48,7 +47,7 @@ export class CommandLineParser {
 
       if (arg.startsWith("--")) {
         const optionName = arg.slice(2);
-        const optionDefinition = this.#commandLineOptionDefinitions.get(optionName);
+        const optionDefinition = this.#options.get(optionName);
 
         if (optionDefinition) {
           index = await this.#parseOptionValue(commandLineArgs, index, optionDefinition);

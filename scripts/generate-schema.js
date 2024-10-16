@@ -75,9 +75,9 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
   return jsonSchemaDefinition;
 }
 
-const configFileOptionDefinitions = tstyche.OptionDefinitionsMap.for(tstyche.OptionGroup.ConfigFile);
+const configFileOptions = tstyche.Options.for(tstyche.OptionGroup.ConfigFile);
 
-for (const [key, optionDefinition] of configFileOptionDefinitions) {
+for (const [key, optionDefinition] of configFileOptions) {
   if (key.startsWith("$")) {
     continue;
   }

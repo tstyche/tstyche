@@ -25,7 +25,7 @@ interface ListTypeOptionDefinition extends BaseOptionDefinition {
   items: ItemDefinition;
 }
 
-export class OptionDefinitionsMap {
+export class Options {
   static #definitions: Array<OptionDefinition> = [
     {
       brand: OptionBrand.String,
@@ -174,7 +174,7 @@ export class OptionDefinitionsMap {
   static for(optionGroup: OptionGroup): Map<string, OptionDefinition> {
     const definitionMap = new Map<string, OptionDefinition>();
 
-    for (const definition of OptionDefinitionsMap.#definitions) {
+    for (const definition of Options.#definitions) {
       if (definition.group & optionGroup) {
         definitionMap.set(definition.name, definition);
       }
