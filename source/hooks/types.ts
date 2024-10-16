@@ -4,9 +4,9 @@ export interface Hooks {
   /**
    * Is called after configuration is resolved and allows to modify it.
    */
-  config?: (resolvedConfig: ResolvedConfig) => ResolvedConfig | Promise<ResolvedConfig>;
+  config?: (resolvedConfig: ResolvedConfig) => ResolvedConfig | Promise<ResolvedConfig> | null | undefined;
   /**
    * Is called after test files are selected and allows to modify the list.
    */
-  select?: (testFiles: Array<string>) => Array<string | URL> | Promise<Array<string | URL>>;
+  select?: (testFiles: Array<string>) => Array<string | URL> | Promise<Array<string | URL>> | null | undefined;
 }
