@@ -1,3 +1,4 @@
+import { environmentOptions } from "#environment";
 import { OutputService, addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
 import { BaseReporter } from "./BaseReporter.js";
 import { FileView } from "./FileView.js";
@@ -80,7 +81,7 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "task:start":
-        if (!this.resolvedConfig.noInteractive) {
+        if (!environmentOptions.noInteractive) {
           OutputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
         }
 
@@ -95,7 +96,7 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "task:end":
-        if (!this.resolvedConfig.noInteractive) {
+        if (!environmentOptions.noInteractive) {
           OutputService.eraseLastLine();
         }
 
