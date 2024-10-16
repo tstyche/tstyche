@@ -1,4 +1,5 @@
-import type { CustomizationHooks, Hooks } from "./types.js";
+import type { ResolvedConfig } from "#config";
+import type { Hooks } from "./types.js";
 
 export class HooksService {
   static #handlers = new Set<Hooks>();
@@ -7,17 +8,17 @@ export class HooksService {
     HooksService.#handlers.add(hooks);
   }
 
-  static async call<T extends keyof CustomizationHooks>(
-    hook: T,
-    options: CustomizationHooks[T],
-  ): Promise<CustomizationHooks[T]> {
-    for (const plugin of HooksService.#handlers.values()) {
-      const result = await plugin[hook]?.(options);
+  static async call(hook: "config", resolvedConfig: ResolvedConfig): Promise<ResolvedConfig>;
+  static async call(hook: "select", testFiles: Array<string>): Promise<Array<string | URL>>;
+  static async call(
+    hook: keyof Hooks,
+    options: ResolvedConfig | Array<string | URL>,
+  ): Promise<ResolvedConfig | Array<string | URL>> {
+    for (const handler of HooksService.#handlers) {
+      const result = await handler[hook]?.(options as ResolvedConfig & Array<string>);
 
-      if (Array.isArray(result)) {
-        options = result as CustomizationHooks[T];
-      } else {
-        Object.assign(options, result);
+      if (result != null) {
+        options = result;
       }
     }
 

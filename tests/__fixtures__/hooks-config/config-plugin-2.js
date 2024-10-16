@@ -1,9 +1,9 @@
 /**
- * @type {import("tstyche/tstyche").Plugin}
+ * @type {import("tstyche/tstyche").Hooks}
  */
 export default {
-  config: () => {
-    return { testFileMatch: [] };
+  config: (resolvedConfig) => {
+    return { ...resolvedConfig, testFileMatch: [] };
   },
   select: () => {
     return ["./examples/firstItem.tst.ts"];
