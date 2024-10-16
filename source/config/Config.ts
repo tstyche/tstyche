@@ -77,13 +77,14 @@ export class Config {
     configFileOptions?: ConfigFileOptions;
     configFilePath?: string;
     commandLineOptions?: Omit<CommandLineOptions, "config">;
+    environmentOptions?: EnvironmentOptions;
     pathMatch?: Array<string>;
   }): ResolvedConfig {
     const resolvedConfig = {
       configFilePath: Config.resolveConfigFilePath(options?.configFilePath),
       pathMatch: options?.pathMatch ?? [],
       ...defaultOptions,
-      ...environmentOptions,
+      ...(options?.environmentOptions ?? environmentOptions),
       ...options?.configFileOptions,
       ...options?.commandLineOptions,
     };
