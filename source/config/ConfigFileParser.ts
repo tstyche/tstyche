@@ -5,16 +5,16 @@ import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { JsonNode } from "./JsonNode.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
-import { type ItemDefinition, type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import { OptionValidator } from "./OptionValidator.js";
+import { type ItemDefinition, type OptionDefinition, Options } from "./Options.js";
 import type { OptionValue } from "./types.js";
 
 export class ConfigFileParser {
-  #configFileOptionDefinitions: Map<string, OptionDefinition>;
   #configFileOptions: Record<string, OptionValue>;
   #jsonScanner: JsonScanner;
   #onDiagnostics: DiagnosticsHandler;
+  #options: Map<string, OptionDefinition>;
   #optionGroup = OptionGroup.ConfigFile;
   #optionValidator: OptionValidator;
   #sourceFile: SourceFile;
@@ -28,7 +28,7 @@ export class ConfigFileParser {
     this.#sourceFile = sourceFile;
     this.#onDiagnostics = onDiagnostics;
 
-    this.#configFileOptionDefinitions = OptionDefinitionsMap.for(this.#optionGroup);
+    this.#options = Options.for(this.#optionGroup);
 
     this.#jsonScanner = new JsonScanner(this.#sourceFile);
     this.#optionValidator = new OptionValidator(this.#optionGroup, this.#onDiagnostics);
@@ -167,7 +167,7 @@ export class ConfigFileParser {
         return;
       }
 
-      const optionDefinition = this.#configFileOptionDefinitions.get(optionName);
+      const optionDefinition = this.#options.get(optionName);
 
       if (!optionDefinition) {
         const text = ConfigDiagnosticText.unknownOption(optionName);

@@ -1,4 +1,4 @@
-import { Config, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
+import { Config, OptionGroup, Options, type ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
 import { type Hooks, HooksService } from "#hooks";
@@ -24,9 +24,9 @@ export class Cli {
     this.#eventEmitter.addReporter(setupReporter);
 
     if (commandLine.includes("--help")) {
-      const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
+      const options = Options.for(OptionGroup.CommandLine);
 
-      OutputService.writeMessage(helpText(commandLineOptionDefinitions, Runner.version));
+      OutputService.writeMessage(helpText(options, Runner.version));
 
       return;
     }

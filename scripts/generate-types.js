@@ -3,13 +3,13 @@ import process from "node:process";
 import * as tstyche from "tstyche/tstyche";
 import ts from "typescript";
 
-const commandLineOptionDefinitions = tstyche.OptionDefinitionsMap.for(tstyche.OptionGroup.CommandLine);
-const configFileOptionDefinitions = tstyche.OptionDefinitionsMap.for(tstyche.OptionGroup.ConfigFile);
+const commandLineOptions = tstyche.Options.for(tstyche.OptionGroup.CommandLine);
+const configFileOptions = tstyche.Options.for(tstyche.OptionGroup.ConfigFile);
 
 /** @type {Array<[string, string, Map<string, tstyche.OptionDefinition>]>} */
 const filesToGenerate = [
-  ["ConfigFileOptions", "Options loaded from the configuration file.", configFileOptionDefinitions],
-  ["CommandLineOptions", "Options passed through the command line.", commandLineOptionDefinitions],
+  ["ConfigFileOptions", "Options loaded from the configuration file.", configFileOptions],
+  ["CommandLineOptions", "Options passed through the command line.", commandLineOptions],
 ];
 
 /**
