@@ -1,5 +1,29 @@
 # Releases
 
+## [3.0.0-beta.4] - 2024-10-17
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Fixed
+
+- Remove environment options to `ResolvedConfig` (reverts [#299](https://github.com/tstyche/tstyche/pull/299)) ([#336](https://github.com/tstyche/tstyche/pull/334))
+
+### Changed
+
+- **Breaking!** Rename the `Options` class ([#334](https://github.com/tstyche/tstyche/pull/334))
+- **Breaking!** Make the `Config` class not instantiable ([#332](https://github.com/tstyche/tstyche/pull/332))
+- **Breaking!** Make the `Select` class not instantiable ([#331](https://github.com/tstyche/tstyche/pull/331))
+- **Breaking!** Remove the `TSTyche` class ([#330](https://github.com/tstyche/tstyche/pull/330))
+- **Breaking!** Make the `Store` class not instantiable ([#329](https://github.com/tstyche/tstyche/pull/329))
+- **Breaking!** Make the `OutputService` class not instantiable ([#328](https://github.com/tstyche/tstyche/pull/328))
+- **Breaking!** Rename the `ListReporter` class ([#326](https://github.com/tstyche/tstyche/pull/326))
+- **Breaking!** Rename the `EventHandler.on()` method ([#323](https://github.com/tstyche/tstyche/pull/323))
+
+### Added
+
+- **New!** Add support for custom reporters ([#327](https://github.com/tstyche/tstyche/pull/327))
+- **New!** Add support for plugins ([#322](https://github.com/tstyche/tstyche/pull/322), [#324](https://github.com/tstyche/tstyche/pull/324), [#337](https://github.com/tstyche/tstyche/pull/337))
+
 ## [3.0.0-beta.3] - 2024-10-07
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
@@ -14,7 +38,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ### Added
 
-- **New!** Add the `omit()` and `pick()` utilities ([#314](https://github.com/tstyche/tstyche/pull/314))
+- **New!** Add `omit()` and `pick()` utilities ([#314](https://github.com/tstyche/tstyche/pull/314))
 
 ## [3.0.0-beta.2] - 2024-10-05
 
@@ -339,6 +363,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.4
 [3.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.3
 [3.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.2
 [3.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.1
