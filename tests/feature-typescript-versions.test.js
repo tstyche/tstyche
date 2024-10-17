@@ -167,11 +167,11 @@ await test("TypeScript 5.x", async (t) => {
 
   const { resolutions } = /** @type {{ resolutions: Record<string, string> }} */ (JSON.parse(manifestText));
 
-  const versionTags = Object.entries(resolutions)
+  const versions = Object.entries(resolutions)
     .filter((resolution) => resolution[0].startsWith("5"))
     .map((resolution) => resolution[1]);
 
-  const testCases = ["5.0.2", ...versionTags];
+  const testCases = ["5.0.2", ...versions];
 
   for (const version of testCases) {
     await t.test(`uses TypeScript ${version} as current target`, async () => {
