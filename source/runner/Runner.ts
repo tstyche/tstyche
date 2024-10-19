@@ -77,12 +77,12 @@ export class Runner {
 
     EventEmitter.dispatch(["run:start", { result }]);
 
-    for (const versionTag of this.#resolvedConfig.target) {
-      const targetResult = new TargetResult(versionTag, tasks);
+    for (const target of this.#resolvedConfig.target) {
+      const targetResult = new TargetResult(target, tasks);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await Store.load(versionTag);
+      const compiler = await Store.load(target);
 
       if (compiler) {
         // TODO to improve performance, task runners (or even test projects) could be cached in the future
