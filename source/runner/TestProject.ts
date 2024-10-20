@@ -11,7 +11,7 @@ import type { CancellationToken } from "#token";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
-export class TaskRunner {
+export class TestProject {
   #compiler: typeof ts;
   #collectService: CollectService;
   #resolvedConfig: ResolvedConfig;
@@ -25,22 +25,24 @@ export class TaskRunner {
     this.#projectService = new ProjectService(compiler);
   }
 
-  run(task: Task, cancellationToken?: CancellationToken): void {
-    if (cancellationToken?.isCancellationRequested === true) {
-      return;
+  run(tasks: Array<Task>, cancellationToken?: CancellationToken): void {
+    for (const task of tasks) {
+      if (cancellationToken?.isCancellationRequested === true) {
+        return;
+      }
+
+      this.#projectService.openFile(task.filePath, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
+
+      const taskResult = new TaskResult(task);
+
+      EventEmitter.dispatch(["task:start", { result: taskResult }]);
+
+      this.#run(task, taskResult, cancellationToken);
+
+      EventEmitter.dispatch(["task:end", { result: taskResult }]);
+
+      this.#projectService.closeFile(task.filePath);
     }
-
-    this.#projectService.openFile(task.filePath, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
-
-    const taskResult = new TaskResult(task);
-
-    EventEmitter.dispatch(["task:start", { result: taskResult }]);
-
-    this.#run(task, taskResult, cancellationToken);
-
-    EventEmitter.dispatch(["task:end", { result: taskResult }]);
-
-    this.#projectService.closeFile(task.filePath);
   }
 
   #run(task: Task, taskResult: TaskResult, cancellationToken?: CancellationToken) {

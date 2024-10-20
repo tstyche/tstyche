@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { FileSystem } from "#fs";
 import { Version } from "#version";
 
 export class ProjectService {
@@ -30,6 +31,7 @@ export class ProjectService {
 
     const host: ts.server.ServerHost = {
       ...this.#compiler.sys,
+      ...FileSystem,
       clearImmediate,
       clearTimeout,
       setImmediate,
