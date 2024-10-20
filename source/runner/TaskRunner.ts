@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
@@ -44,6 +45,15 @@ export class TaskRunner {
   }
 
   #run(task: Task, taskResult: TaskResult, cancellationToken?: CancellationToken) {
+    if (!existsSync(task.filePath)) {
+      EventEmitter.dispatch([
+        "task:error",
+        { diagnostics: [Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], result: taskResult },
+      ]);
+
+      return;
+    }
+
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
     const languageService = this.#projectService.getLanguageService(task.filePath);
