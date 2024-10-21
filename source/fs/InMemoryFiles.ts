@@ -1,6 +1,5 @@
-import path from "node:path";
 import { Path } from "#path";
-import type { FileSystemEntries } from "./types.js";
+import type { FileSystemEntries, FileTree } from "./types.js";
 
 export class InMemoryFiles {
   #directories = new Map<string, { directories: Set<string>; files: Set<string> }>();
@@ -8,27 +7,24 @@ export class InMemoryFiles {
   #rootPath: string;
 
   constructor(rootPath: string) {
-    this.#rootPath = rootPath;
+    this.#rootPath = Path.resolve(rootPath);
   }
 
-  add(files: Record<string, string>) {
-    for (const filePath in files) {
-      if (path.isAbsolute(filePath)) {
-        Path.relative(this.#rootPath, filePath);
-      }
+  add(fileTree: FileTree): InMemoryFiles {
+    for (const fileKey in fileTree) {
+      const filePath = Path.relative(this.#rootPath, fileKey);
 
-      if (!filePath.startsWith(".")) {
-        // TODO log a warning fist, perhaps via 'fs:info' or general 'warnings' event?
+      if (!filePath.startsWith("./")) {
+        // TODO log a warning first, perhaps via 'fs:add' or 'files:add'?
         continue;
       }
 
-      const pathSegments = filePath.split("/");
-      let pathSegmentIndex = 0;
+      const pathSegments = filePath.split("/").filter((pathSegment) => pathSegment !== ".");
+
       let currentPath = this.#rootPath;
+      let pathSegmentIndex = 0;
 
       for (const pathSegment of pathSegments) {
-        ++pathSegmentIndex;
-
         let entries = this.#directories.get(currentPath);
 
         if (!entries) {
@@ -36,18 +32,21 @@ export class InMemoryFiles {
           this.#directories.set(currentPath, entries);
         }
 
+        currentPath = Path.join(currentPath, pathSegment);
+        ++pathSegmentIndex;
+
         if (pathSegmentIndex === pathSegments.length) {
-          entries.files.add(currentPath);
+          entries.files.add(pathSegment);
 
           // biome-ignore lint/style/noNonNullAssertion: this is fine
-          this.#files.set(filePath, files[filePath]!);
+          this.#files.set(currentPath, fileTree[fileKey]!);
         } else {
-          entries.directories.add(currentPath);
+          entries.directories.add(pathSegment);
         }
-
-        currentPath = Path.join(currentPath, pathSegment);
       }
     }
+
+    return this;
   }
 
   getEntries(path: string): FileSystemEntries {
