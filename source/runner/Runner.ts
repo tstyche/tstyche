@@ -1,13 +1,15 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
+import { FileSystem, InMemoryFiles } from "#fs";
 import { CancellationHandler, ResultHandler } from "#handlers";
+import { HooksService } from "#hooks";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
 import { Store } from "#store";
 import { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
-import { TaskRunner } from "./TaskRunner.js";
+import { TestProject } from "./TestProject.js";
 
 type ReporterConstructor = new (resolvedConfig: ResolvedConfig) => Reporter;
 
@@ -85,12 +87,20 @@ export class Runner {
       const compiler = await Store.load(target);
 
       if (compiler) {
-        // TODO to improve performance, task runners (or even test projects) could be cached in the future
-        const taskRunner = new TaskRunner(this.#resolvedConfig, compiler);
+        const inMemoryFiles = await HooksService.call(
+          "project",
+          new InMemoryFiles(this.#resolvedConfig.rootPath),
+          compiler,
+        );
 
-        for (const task of tasks) {
-          taskRunner.run(task, cancellationToken);
-        }
+        FileSystem.addInMemoryFiles(inMemoryFiles);
+
+        // TODO to improve performance, test projects could be cached
+        const testProject = new TestProject(this.#resolvedConfig, compiler);
+
+        testProject.run(tasks, cancellationToken);
+
+        FileSystem.removeInMemoryFiles();
       }
 
       EventEmitter.dispatch(["target:end", { result: targetResult }]);

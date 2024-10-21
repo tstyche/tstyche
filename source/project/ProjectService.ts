@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { FileSystem } from "#fs";
 import { Version } from "#version";
 
 export class ProjectService {
@@ -28,15 +29,20 @@ export class ProjectService {
       close: noop,
     };
 
-    const host: ts.server.ServerHost = {
-      ...this.#compiler.sys,
+    const host = Object.assign(this.#compiler.sys, {
+      directoryExists: FileSystem.directoryExists,
+      fileExists: FileSystem.fileExists,
+      getAccessibleFileSystemEntries: FileSystem.getAccessibleFileSystemEntries,
+      readFile: FileSystem.readFile,
+
       clearImmediate,
       clearTimeout,
       setImmediate,
       setTimeout,
+
       watchDirectory: () => noopWatcher,
       watchFile: () => noopWatcher,
-    };
+    });
 
     this.#service = new this.#compiler.server.ProjectService({
       allowLocalPluginLoads: true,
