@@ -29,16 +29,20 @@ export class ProjectService {
       close: noop,
     };
 
-    const host: ts.server.ServerHost = {
-      ...this.#compiler.sys,
-      ...FileSystem,
+    const host = Object.assign(this.#compiler.sys, {
+      directoryExists: FileSystem.directoryExists,
+      fileExists: FileSystem.fileExists,
+      getAccessibleFileSystemEntries: FileSystem.getAccessibleFileSystemEntries,
+      readFile: FileSystem.readFile,
+
       clearImmediate,
       clearTimeout,
       setImmediate,
       setTimeout,
+
       watchDirectory: () => noopWatcher,
       watchFile: () => noopWatcher,
-    };
+    });
 
     this.#service = new this.#compiler.server.ProjectService({
       allowLocalPluginLoads: true,
