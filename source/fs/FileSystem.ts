@@ -44,8 +44,8 @@ export class FileSystem {
     const inMemoryEntries = FileSystem.#inMemoryFiles.getEntries(path);
 
     return {
-      directories: [...new Set(...directories, ...inMemoryEntries.directories)].sort(),
-      files: [...new Set(...files, ...inMemoryEntries.files)].sort(),
+      directories: [...new Set(directories.concat(inMemoryEntries.directories))].sort(),
+      files: [...new Set(files.concat(inMemoryEntries.files))].sort(),
     };
   }
 
