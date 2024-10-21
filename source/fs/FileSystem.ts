@@ -1,16 +1,16 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import type { MemoryFiles } from "./MemoryFiles.js";
+import type { InMemoryFiles } from "./InMemoryFiles.js";
 import type { FileSystemEntries, FileSystemEntryMeta } from "./types.js";
 
 export class FileSystem {
-  static #memoryFiles: MemoryFiles | undefined;
+  static #inMemoryFiles: InMemoryFiles | undefined;
 
-  static addMemoryFiles(memoryFiles: MemoryFiles) {
-    FileSystem.#memoryFiles = memoryFiles;
+  static addInMemoryFiles(inMemoryFiles: InMemoryFiles) {
+    FileSystem.#inMemoryFiles = inMemoryFiles;
   }
 
   static directoryExists(path: string): boolean {
-    return FileSystem.#memoryFiles?.hasDirectory(path) || !!statSync(path, { throwIfNoEntry: false })?.isDirectory();
+    return FileSystem.#inMemoryFiles?.hasDirectory(path) || !!statSync(path, { throwIfNoEntry: false })?.isDirectory();
   }
 
   static getAccessibleFileSystemEntries(path: string): FileSystemEntries {
@@ -37,24 +37,24 @@ export class FileSystem {
       // continue regardless of error
     }
 
-    if (!FileSystem.#memoryFiles) {
+    if (!FileSystem.#inMemoryFiles) {
       return { directories, files };
     }
 
-    const memoryEntries = FileSystem.#memoryFiles.getEntries(path);
+    const inMemoryEntries = FileSystem.#inMemoryFiles.getEntries(path);
 
     return {
-      directories: [...new Set(...directories, ...memoryEntries.directories)].sort(),
-      files: [...new Set(...files, ...memoryEntries.files)].sort(),
+      directories: [...new Set(...directories, ...inMemoryEntries.directories)].sort(),
+      files: [...new Set(...files, ...inMemoryEntries.files)].sort(),
     };
   }
 
   static fileExists(path: string): boolean {
-    return FileSystem.#memoryFiles?.hasFile(path) || !!statSync(path, { throwIfNoEntry: false })?.isFile();
+    return FileSystem.#inMemoryFiles?.hasFile(path) || !!statSync(path, { throwIfNoEntry: false })?.isFile();
   }
 
   static readFile(path: string): string | undefined {
-    let contents = FileSystem.#memoryFiles?.getFile(path);
+    let contents = FileSystem.#inMemoryFiles?.getFile(path);
 
     if (contents != null) {
       return contents;
@@ -69,7 +69,7 @@ export class FileSystem {
     return contents;
   }
 
-  static removeMemoryFiles() {
-    FileSystem.#memoryFiles = undefined;
+  static removeInMemoryFiles() {
+    FileSystem.#inMemoryFiles = undefined;
   }
 }

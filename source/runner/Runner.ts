@@ -1,6 +1,6 @@
 import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
-import { FileSystem, MemoryFiles } from "#fs";
+import { FileSystem, InMemoryFiles } from "#fs";
 import { CancellationHandler, ResultHandler } from "#handlers";
 import { HooksService } from "#hooks";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
@@ -87,20 +87,20 @@ export class Runner {
       const compiler = await Store.load(target);
 
       if (compiler) {
-        const memoryFiles = await HooksService.call(
+        const inMemoryFiles = await HooksService.call(
           "project",
-          new MemoryFiles(this.#resolvedConfig.rootPath),
+          new InMemoryFiles(this.#resolvedConfig.rootPath),
           compiler,
         );
 
-        FileSystem.addMemoryFiles(memoryFiles);
+        FileSystem.addInMemoryFiles(inMemoryFiles);
 
         // TODO to improve performance, test projects could be cached
         const testProject = new TestProject(this.#resolvedConfig, compiler);
 
         testProject.run(tasks, cancellationToken);
 
-        FileSystem.removeMemoryFiles();
+        FileSystem.removeInMemoryFiles();
       }
 
       EventEmitter.dispatch(["target:end", { result: targetResult }]);

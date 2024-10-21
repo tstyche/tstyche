@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
-import type { MemoryFiles } from "#fs";
+import type { InMemoryFiles } from "#fs";
 import type { Hooks } from "./types.js";
 
 export class HooksService {
@@ -11,16 +11,16 @@ export class HooksService {
   }
 
   static async call(hook: "config", resolvedConfig: ResolvedConfig): Promise<ResolvedConfig>;
-  static async call(hook: "project", memoryFiles: MemoryFiles, compiler: typeof ts): Promise<MemoryFiles>;
+  static async call(hook: "project", inMemoryFiles: InMemoryFiles, compiler: typeof ts): Promise<InMemoryFiles>;
   static async call(hook: "select", testFiles: Array<string>): Promise<Array<string | URL>>;
   static async call(
     hook: keyof Hooks,
-    options: ResolvedConfig | MemoryFiles | Array<string | URL>,
+    options: ResolvedConfig | InMemoryFiles | Array<string | URL>,
     context?: typeof ts,
-  ): Promise<ResolvedConfig | MemoryFiles | Array<string | URL>> {
+  ): Promise<ResolvedConfig | InMemoryFiles | Array<string | URL>> {
     for (const handler of HooksService.#handlers) {
       const result = await handler[hook]?.(
-        options as ResolvedConfig & MemoryFiles & Array<string>,
+        options as ResolvedConfig & InMemoryFiles & Array<string>,
         context as typeof ts,
       );
 

@@ -1,10 +1,10 @@
-import { existsSync } from "node:fs";
 import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
+import { FileSystem } from "#fs";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
@@ -47,7 +47,7 @@ export class TestProject {
   }
 
   #run(task: Task, taskResult: TaskResult, cancellationToken?: CancellationToken) {
-    if (!existsSync(task.filePath)) {
+    if (!FileSystem.fileExists(task.filePath)) {
       EventEmitter.dispatch([
         "task:error",
         { diagnostics: [Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], result: taskResult },

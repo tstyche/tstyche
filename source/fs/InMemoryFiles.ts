@@ -2,7 +2,7 @@ import path from "node:path";
 import { Path } from "#path";
 import type { FileSystemEntries } from "./types.js";
 
-export class MemoryFiles {
+export class InMemoryFiles {
   #directories = new Map<string, { directories: Set<string>; files: Set<string> }>();
   #files = new Map<string, string>();
   #rootPath: string;

@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
-import type { MemoryFiles } from "#fs";
+import type { InMemoryFiles } from "#fs";
 
 export interface Hooks {
   /**
@@ -8,9 +8,9 @@ export interface Hooks {
    */
   config?: (resolvedConfig: ResolvedConfig) => ResolvedConfig | Promise<ResolvedConfig>;
   /**
-   * Is called before a project is created and allows to modify its host.
+   * Is called before a project is created and allows adding in-memory files.
    */
-  project?: (memoryFiles: MemoryFiles, compiler: typeof ts) => MemoryFiles | Promise<MemoryFiles>;
+  project?: (inMemoryFiles: InMemoryFiles, compiler: typeof ts) => InMemoryFiles | Promise<InMemoryFiles>;
   /**
    * Is called after test files are selected and allows to modify the list.
    */

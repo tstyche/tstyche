@@ -1,2 +1,2 @@
 export { FileSystem } from "./FileSystem.js";
-export { MemoryFiles } from "./MemoryFiles.js";
+export { InMemoryFiles } from "./InMemoryFiles.js";
