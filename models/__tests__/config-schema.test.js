@@ -58,6 +58,10 @@ test("config-schema.json", async (t) => {
         fixtureFileName: "valid-testFileMatch.json",
         testCase: "'testFileMatch' option",
       },
+      {
+        fixtureFileName: "valid-tsconfig.json",
+        testCase: "'tsconfig' option",
+      },
     ];
 
     for (const { fixtureFileName, testCase } of testCases) {
@@ -131,6 +135,10 @@ test("config-schema.json", async (t) => {
       {
         fixtureFileName: "invalid-testFileMatch-3.json",
         testCase: "value of 'testFileMatch' option must be of type Array",
+      },
+      {
+        fixtureFileName: "invalid-tsconfig.json",
+        testCase: "value of 'tsconfig' option must be of type string",
       },
     ];
 
