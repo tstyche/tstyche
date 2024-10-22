@@ -51,15 +51,19 @@ export class ProjectService {
       useSingleInferredProject: false,
     });
 
-    if (this.#resolvedConfig.tsconfig !== "lookup") {
-      if (this.#resolvedConfig.tsconfig === "ignore") {
+    switch (this.#resolvedConfig.tsconfig) {
+      case "lookup":
+        break;
+
+      case "ignore":
         // @ts-expect-error: overriding private method
         this.#service.getConfigFileNameForFile = noop;
-      } else {
+        break;
+
+      default:
         // @ts-expect-error: overriding private method
         this.#service.getConfigFileNameForFile = () =>
           this.#compiler.server.toNormalizedPath(this.#resolvedConfig.tsconfig);
-      }
     }
 
     this.#service.setCompilerOptionsForInferredProjects(this.#getDefaultCompilerOptions());
