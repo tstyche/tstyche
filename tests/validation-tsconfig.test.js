@@ -57,7 +57,7 @@ await test("'--tsconfig' command line option", async (t) => {
     assert.equal(normalizeOutput(stderr), expected);
     assert.equal(exitCode, 1);
   });
-})
+});
 
 await test("'tsconfig' configuration file option", async (t) => {
   t.afterEach(async () => {
