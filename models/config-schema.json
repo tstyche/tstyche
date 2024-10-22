@@ -56,6 +56,10 @@
       },
       "type": "array",
       "uniqueItems": true
+    },
+    "tsconfig": {
+      "description": "The path to a custom TSConfig file.",
+      "type": "string"
     }
   },
   "type": "object"

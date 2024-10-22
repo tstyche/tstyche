@@ -53,6 +53,10 @@ export interface CommandLineOptions {
      */
     target?: Array<string>;
     /**
+     * The path to a custom TSConfig file.
+     */
+    tsconfig?: string;
+    /**
      * Fetch the 'typescript' package metadata from the registry and exit.
      */
     update?: boolean;

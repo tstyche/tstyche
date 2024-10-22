@@ -2,7 +2,7 @@ import { environmentOptions } from "#environment";
 import { Path } from "#path";
 import type { ConfigFileOptions } from "./types.js";
 
-export const defaultOptions: Required<ConfigFileOptions> = {
+export const defaultOptions: Required<Omit<ConfigFileOptions, "tsconfig">> = {
   failFast: false,
   plugins: [],
   reporters: ["list", "summary"],

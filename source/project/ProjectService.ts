@@ -1,13 +1,16 @@
 import type ts from "typescript";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
+  #resolvedConfig: ResolvedConfig;
   #service: ts.server.ProjectService;
 
-  constructor(compiler: typeof ts) {
+  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
+    this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
 
     const noop = () => undefined;
@@ -48,7 +51,13 @@ export class ProjectService {
       useSingleInferredProject: false,
     });
 
-    this.#service.setCompilerOptionsForInferredProjects(this.#getDefaultCompilerOptions());
+    if (this.#resolvedConfig.tsconfig != null) {
+      // @ts-expect-error: overriding private method
+      this.#service.getConfigFileNameForFile = () =>
+        this.#compiler.server.toNormalizedPath(this.#resolvedConfig.tsconfig as string);
+    } else {
+      this.#service.setCompilerOptionsForInferredProjects(this.#getDefaultCompilerOptions());
+    }
   }
 
   closeFile(filePath: string): void {

@@ -75,7 +75,7 @@ export class ConfigFileParser {
           }
         }
 
-        if (optionDefinition.name === "rootPath") {
+        if (optionDefinition.name === "rootPath" || optionDefinition.name === "tsconfig") {
           optionValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
         }
 

@@ -28,6 +28,7 @@ export class OptionValidator {
     switch (optionName) {
       case "config":
       case "rootPath":
+      case "tsconfig":
         if (!existsSync(optionValue)) {
           this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
