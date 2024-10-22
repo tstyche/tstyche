@@ -5,6 +5,7 @@ export * from "#diagnostic";
 export * from "#environment";
 export * from "#events";
 export * from "#expect";
+export * from "#fs";
 export * from "#handlers";
 export * from "#hooks";
 export * from "#input";

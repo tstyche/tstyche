@@ -1,4 +1,6 @@
+import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
+import type { InMemoryFiles } from "#fs";
 import type { Hooks } from "./types.js";
 
 export class HooksService {
@@ -9,13 +11,20 @@ export class HooksService {
   }
 
   static async call(hook: "config", resolvedConfig: ResolvedConfig): Promise<ResolvedConfig>;
+  static async call(hook: "projectSetup", inMemoryFiles: InMemoryFiles, compiler: typeof ts): Promise<InMemoryFiles>;
+  // @ts-expect-error TODO fix this later
+  static async call(hook: "projectTeardown"): Promise<void>;
   static async call(hook: "select", testFiles: Array<string>): Promise<Array<string | URL>>;
   static async call(
     hook: keyof Hooks,
-    options: ResolvedConfig | Array<string | URL>,
-  ): Promise<ResolvedConfig | Array<string | URL>> {
+    options: ResolvedConfig | InMemoryFiles | Array<string | URL>,
+    context?: typeof ts,
+  ): Promise<ResolvedConfig | InMemoryFiles | Array<string | URL>> {
     for (const handler of HooksService.#handlers) {
-      const result = await handler[hook]?.(options as ResolvedConfig & Array<string>);
+      const result = await handler[hook]?.(
+        options as ResolvedConfig & InMemoryFiles & Array<string>,
+        context as typeof ts,
+      );
 
       if (result != null) {
         options = result;
