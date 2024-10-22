@@ -17,7 +17,9 @@ const inMemoryFiles = new InMemoryFiles(".").add(testFiles);
 
 FileSystem.addInMemoryFiles(inMemoryFiles);
 
-// TODO add a fixture with real files and check if 'FileSystem' is merging real and memory files
+// TODO add a fixture with real files
+//      - check if 'FileSystem' is merging real and memory files
+//      - check is 'FileSystem' is overriding real files
 
 test("FileSystem", async (t) => {
   await t.test("'directoryExists()' method", () => {

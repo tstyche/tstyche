@@ -88,7 +88,7 @@ export class Runner {
 
       if (compiler) {
         const inMemoryFiles = await HooksService.call(
-          "project",
+          "projectSetup",
           new InMemoryFiles(this.#resolvedConfig.rootPath),
           compiler,
         );
@@ -96,11 +96,13 @@ export class Runner {
         FileSystem.addInMemoryFiles(inMemoryFiles);
 
         // TODO to improve performance, test projects could be cached
-        const testProject = new TestProject(this.#resolvedConfig, compiler);
+        const testProject = new TestProject(this.#resolvedConfig, compiler, inMemoryFiles);
 
         testProject.run(tasks, cancellationToken);
 
         FileSystem.removeInMemoryFiles();
+
+        await HooksService.call("projectTeardown");
       }
 
       EventEmitter.dispatch(["target:end", { result: targetResult }]);

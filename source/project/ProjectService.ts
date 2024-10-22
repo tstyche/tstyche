@@ -1,15 +1,17 @@
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { FileSystem } from "#fs";
+import { FileSystem, type InMemoryFiles } from "#fs";
 import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
+  #inMemoryFiles: InMemoryFiles;
   #service: ts.server.ProjectService;
 
-  constructor(compiler: typeof ts) {
+  constructor(compiler: typeof ts, inMemoryFiles: InMemoryFiles) {
     this.#compiler = compiler;
+    this.#inMemoryFiles = inMemoryFiles;
 
     const noop = () => undefined;
 
@@ -101,6 +103,8 @@ export class ProjectService {
   }
 
   openFile(filePath: string, sourceText?: string | undefined, projectRootPath?: string | undefined): void {
+    sourceText = this.#inMemoryFiles.getFile(filePath);
+
     const { configFileErrors, configFileName } = this.#service.openClientFile(
       filePath,
       sourceText,

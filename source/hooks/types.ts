@@ -8,9 +8,13 @@ export interface Hooks {
    */
   config?: (resolvedConfig: ResolvedConfig) => ResolvedConfig | Promise<ResolvedConfig>;
   /**
-   * Is called before a project is created and allows adding in-memory files.
+   * Is called before creating a test project and allows adding in-memory files.
    */
-  project?: (inMemoryFiles: InMemoryFiles, compiler: typeof ts) => InMemoryFiles | Promise<InMemoryFiles>;
+  projectSetup?: (inMemoryFiles: InMemoryFiles, compiler: typeof ts) => InMemoryFiles | Promise<InMemoryFiles>;
+  /**
+   * Is called after evaluating a test project.
+   */
+  projectTeardown?: () => void | Promise<void>;
   /**
    * Is called after test files are selected and allows to modify the list.
    */

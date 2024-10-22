@@ -11,7 +11,9 @@ export class HooksService {
   }
 
   static async call(hook: "config", resolvedConfig: ResolvedConfig): Promise<ResolvedConfig>;
-  static async call(hook: "project", inMemoryFiles: InMemoryFiles, compiler: typeof ts): Promise<InMemoryFiles>;
+  static async call(hook: "projectSetup", inMemoryFiles: InMemoryFiles, compiler: typeof ts): Promise<InMemoryFiles>;
+  // @ts-expect-error TODO fix this later
+  static async call(hook: "projectTeardown"): Promise<void>;
   static async call(hook: "select", testFiles: Array<string>): Promise<Array<string | URL>>;
   static async call(
     hook: keyof Hooks,

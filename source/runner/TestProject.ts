@@ -1,10 +1,11 @@
+import { existsSync } from "node:fs";
 import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
-import { FileSystem } from "#fs";
+import type { InMemoryFiles } from "#fs";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
@@ -15,15 +16,17 @@ import { TestTreeWalker } from "./TestTreeWalker.js";
 export class TestProject {
   #compiler: typeof ts;
   #collectService: CollectService;
+  #inMemoryFiles: InMemoryFiles;
   #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
 
-  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
+  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts, inMemoryFiles: InMemoryFiles) {
     this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
+    this.#inMemoryFiles = inMemoryFiles;
 
     this.#collectService = new CollectService(compiler);
-    this.#projectService = new ProjectService(compiler);
+    this.#projectService = new ProjectService(compiler, inMemoryFiles);
   }
 
   run(tasks: Array<Task>, cancellationToken?: CancellationToken): void {
@@ -47,7 +50,7 @@ export class TestProject {
   }
 
   #run(task: Task, taskResult: TaskResult, cancellationToken?: CancellationToken) {
-    if (!FileSystem.fileExists(task.filePath)) {
+    if (!(this.#inMemoryFiles.hasFile(task.filePath) || existsSync(task.filePath))) {
       EventEmitter.dispatch([
         "task:error",
         { diagnostics: [Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], result: taskResult },
