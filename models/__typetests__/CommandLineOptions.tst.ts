@@ -18,6 +18,7 @@ describe("CommandLineOptions", () => {
       showConfig: true,
       skip: "internal",
       target: ["4.9.5" as const, "5.0" as const, "latest" as const],
+      tsconfig: "./tsconfig.tst.json",
       update: true,
       version: true,
       watch: true,
@@ -93,6 +94,12 @@ describe("CommandLineOptions", () => {
   test("'target' option", () => {
     expect<Pick<tstyche.CommandLineOptions, "target">>().type.toBe<{
       target?: Array<string>;
+    }>();
+  });
+
+  test("'tsconfig' option", () => {
+    expect<Pick<tstyche.CommandLineOptions, "tsconfig">>().type.toBe<{
+      tsconfig?: string;
     }>();
   });
 

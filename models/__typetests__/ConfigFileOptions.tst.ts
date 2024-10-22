@@ -12,6 +12,7 @@ describe("ConfigFileOptions", () => {
       rootPath: "../",
       target: ["4.9.5" as const, "5.0" as const, "latest" as const],
       testFileMatch: ["**/tests/types/**/*"],
+      tsconfig: "./tsconfig.tst.json",
     });
   });
 
@@ -48,6 +49,12 @@ describe("ConfigFileOptions", () => {
   test("'testFileMatch' option", () => {
     expect<Pick<tstyche.ConfigFileOptions, "testFileMatch">>().type.toBe<{
       testFileMatch?: Array<string>;
+    }>();
+  });
+
+  test("'tsconfig' option", () => {
+    expect<Pick<tstyche.ConfigFileOptions, "tsconfig">>().type.toBe<{
+      tsconfig?: string;
     }>();
   });
 });
