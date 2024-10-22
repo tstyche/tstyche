@@ -48,6 +48,9 @@ Command Line Options
   --target  list of strings
   The list of TypeScript versions to be tested on.
 
+  --tsconfig  string
+  The path to a custom TSConfig file.
+
   --update
   Fetch the 'typescript' package metadata from the registry and exit.
 
