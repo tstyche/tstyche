@@ -10,8 +10,7 @@ import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types
 
 export interface ResolvedConfig
   extends Omit<CommandLineOptions, "config" | keyof ConfigFileOptions>,
-    Pick<ConfigFileOptions, "tsconfig">,
-    Required<Omit<ConfigFileOptions, "tsconfig">> {
+    Required<ConfigFileOptions> {
   /**
    * The path to a TSTyche configuration file.
    */

@@ -26,15 +26,20 @@ export class OptionValidator {
     origin?: DiagnosticOrigin,
   ): Promise<void> {
     switch (optionName) {
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
+      case "tsconfig":
+        if (["ignore", "lookup"].includes(optionValue)) {
+          break;
+        }
+
       case "config":
       case "rootPath":
-      case "tsconfig":
         if (!existsSync(optionValue)) {
           this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
         }
         break;
 
-      // biome-ignore lint/suspicious/noFallthroughSwitchClause: reporters and plugins share validation logic
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
       case "reporters":
         if (["list", "summary"].includes(optionValue)) {
           break;
