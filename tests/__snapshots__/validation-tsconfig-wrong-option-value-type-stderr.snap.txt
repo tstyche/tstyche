@@ -1,0 +1,10 @@
+Error: Option 'tsconfig' requires a value of type string.
+
+  1 | {
+  2 |   "tsconfig": 123
+    |               ~~~
+  3 | }
+  4 | 
+
+      at ./tstyche.config.json:2:15
+
