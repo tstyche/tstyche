@@ -23,7 +23,7 @@ export class TaskRunner {
     this.#compiler = compiler;
 
     this.#collectService = new CollectService(compiler);
-    this.#projectService = new ProjectService(compiler);
+    this.#projectService = new ProjectService(this.#resolvedConfig, compiler);
   }
 
   run(task: Task, cancellationToken?: CancellationToken): void {

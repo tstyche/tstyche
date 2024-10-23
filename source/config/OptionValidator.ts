@@ -26,6 +26,12 @@ export class OptionValidator {
     origin?: DiagnosticOrigin,
   ): Promise<void> {
     switch (optionName) {
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
+      case "tsconfig":
+        if (["findup", "ignore"].includes(optionValue)) {
+          break;
+        }
+
       case "config":
       case "rootPath":
         if (!existsSync(optionValue)) {
@@ -33,7 +39,7 @@ export class OptionValidator {
         }
         break;
 
-      // biome-ignore lint/suspicious/noFallthroughSwitchClause: reporters and plugins share validation logic
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
       case "reporters":
         if (["list", "summary"].includes(optionValue)) {
           break;

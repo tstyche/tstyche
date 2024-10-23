@@ -150,6 +150,13 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.String,
+      description: "The look up strategy to be used to find the TSConfig file.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      name: "tsconfig",
+    },
+
+    {
       brand: OptionBrand.BareTrue,
       description: "Fetch the 'typescript' package metadata from the registry and exit.",
       group: OptionGroup.CommandLine,

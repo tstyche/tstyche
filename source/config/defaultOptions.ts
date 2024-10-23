@@ -9,4 +9,5 @@ export const defaultOptions: Required<ConfigFileOptions> = {
   rootPath: Path.resolve("./"),
   target: environmentOptions.typescriptPath != null ? ["current"] : ["latest"],
   testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
+  tsconfig: "findup",
 };

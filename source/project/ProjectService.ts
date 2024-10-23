@@ -1,13 +1,16 @@
 import type ts from "typescript";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
+  #resolvedConfig: ResolvedConfig;
   #service: ts.server.ProjectService;
 
-  constructor(compiler: typeof ts) {
+  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
+    this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
 
     const noop = () => undefined;
@@ -47,6 +50,20 @@ export class ProjectService {
       useInferredProjectPerProjectRoot: true,
       useSingleInferredProject: false,
     });
+
+    switch (this.#resolvedConfig.tsconfig) {
+      case "findup":
+        break;
+
+      case "ignore":
+        // @ts-expect-error: overriding private method
+        this.#service.getConfigFileNameForFile = () => undefined;
+        break;
+
+      default:
+        // @ts-expect-error: overriding private method
+        this.#service.getConfigFileNameForFile = () => this.#resolvedConfig.tsconfig;
+    }
 
     this.#service.setCompilerOptionsForInferredProjects(this.#getDefaultCompilerOptions());
   }

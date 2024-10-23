@@ -28,4 +28,8 @@ export interface ConfigFileOptions {
      * The list of glob patterns matching the test files.
      */
     testFileMatch?: Array<string>;
+    /**
+     * The look up strategy to be used to find the TSConfig file.
+     */
+    tsconfig?: string;
 }
