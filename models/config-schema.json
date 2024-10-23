@@ -59,7 +59,7 @@
     },
     "tsconfig": {
       "default": "findup",
-      "description": "The look up strategy to be used to find the TSConfig or the path to the file.",
+      "description": "The look up strategy to be used to find the TSConfig or the path to a file.",
       "type": "string"
     }
   },
