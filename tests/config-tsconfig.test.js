@@ -70,10 +70,10 @@ await test("'--tsconfig' command line option", async (t) => {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tsconfig.tstyche.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tsconfig.test.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--tsconfig", "./tsconfig.tstyche.json"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--tsconfig", "./tsconfig.test.json"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-specified-stdout`,
@@ -161,14 +161,14 @@ await test("'tsconfig' configuration file option", async (t) => {
 
   await t.test("loads specified 'tsconfig.json'", async () => {
     const config = {
-      tsconfig: "./tsconfig.tstyche.json",
+      tsconfig: "./tsconfig.test.json",
     };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tsconfig.tstyche.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tsconfig.test.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 

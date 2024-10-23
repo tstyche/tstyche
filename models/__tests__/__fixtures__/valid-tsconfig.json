@@ -1,4 +1,4 @@
 {
   "$schema": "../../config-schema.json",
-  "tsconfig": "./tsconfig.tst.json"
+  "tsconfig": "./tsconfig.test.json"
 }

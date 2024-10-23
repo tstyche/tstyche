@@ -12,7 +12,7 @@ describe("ConfigFileOptions", () => {
       rootPath: "../",
       target: ["4.9.5" as const, "5.0" as const, "latest" as const],
       testFileMatch: ["**/tests/types/**/*"],
-      tsconfig: "./tsconfig.tst.json",
+      tsconfig: "./tsconfig.test.json",
     });
   });
 
