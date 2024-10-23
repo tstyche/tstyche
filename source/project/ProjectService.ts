@@ -52,18 +52,17 @@ export class ProjectService {
     });
 
     switch (this.#resolvedConfig.tsconfig) {
-      case "lookup":
+      case "find":
         break;
 
       case "ignore":
         // @ts-expect-error: overriding private method
-        this.#service.getConfigFileNameForFile = noop;
+        this.#service.getConfigFileNameForFile = () => undefined;
         break;
 
       default:
         // @ts-expect-error: overriding private method
-        this.#service.getConfigFileNameForFile = () =>
-          this.#compiler.server.toNormalizedPath(this.#resolvedConfig.tsconfig);
+        this.#service.getConfigFileNameForFile = () => this.#resolvedConfig.tsconfig;
     }
 
     this.#service.setCompilerOptionsForInferredProjects(this.#getDefaultCompilerOptions());

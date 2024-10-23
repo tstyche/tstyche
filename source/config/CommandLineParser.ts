@@ -117,7 +117,7 @@ export class CommandLineParser {
         if (optionValue !== "") {
           if (
             optionDefinition.name === "config" ||
-            (optionDefinition.name === "tsconfig" && !["ignore", "lookup"].includes(optionValue))
+            (optionDefinition.name === "tsconfig" && !["find", "ignore"].includes(optionValue))
           ) {
             optionValue = Path.resolve(optionValue);
           }

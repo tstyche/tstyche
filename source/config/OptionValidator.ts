@@ -28,7 +28,7 @@ export class OptionValidator {
     switch (optionName) {
       // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
       case "tsconfig":
-        if (["ignore", "lookup"].includes(optionValue)) {
+        if (["find", "ignore"].includes(optionValue)) {
           break;
         }
 
