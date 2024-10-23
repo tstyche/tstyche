@@ -52,7 +52,7 @@ export class ProjectService {
     });
 
     switch (this.#resolvedConfig.tsconfig) {
-      case "find":
+      case "findup":
         break;
 
       case "ignore":

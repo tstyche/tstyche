@@ -58,7 +58,7 @@
       "uniqueItems": true
     },
     "tsconfig": {
-      "default": "find",
+      "default": "findup",
       "description": "The path to a custom TSConfig file.",
       "type": "string"
     }
