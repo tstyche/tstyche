@@ -53,7 +53,7 @@ export interface CommandLineOptions {
      */
     target?: Array<string>;
     /**
-     * The path to a custom TSConfig file.
+     * The look up strategy to be used to find the TSConfig or the path to the file.
      */
     tsconfig?: string;
     /**
