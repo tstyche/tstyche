@@ -49,7 +49,7 @@ Command Line Options
   The list of TypeScript versions to be tested on.
 
   --tsconfig  string
-  The look up strategy to be used to find the TSConfig or the path to the file.
+  The look up strategy to be used to find the TSConfig file.
 
   --update
   Fetch the 'typescript' package metadata from the registry and exit.

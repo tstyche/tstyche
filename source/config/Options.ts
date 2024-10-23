@@ -151,7 +151,7 @@ export class Options {
 
     {
       brand: OptionBrand.String,
-      description: "The look up strategy to be used to find the TSConfig or the path to a file.",
+      description: "The look up strategy to be used to find the TSConfig file.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       name: "tsconfig",
     },
