@@ -1,4 +1,5 @@
 import assert from "node:assert";
+import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import * as tstyche from "tstyche/tstyche";
@@ -31,48 +32,57 @@ class TestResultReporter {
 }
 
 await test("Runner", async (t) => {
-  const testCases = [
-    {
-      testCase: "when test file is string",
-      testFiles: [
-        fileURLToPath(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl)),
-        fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),
-      ],
-    },
-    {
-      testCase: "when test file is URL object",
-      testFiles: [
-        new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl),
-        new URL("./__typetests__/toBeString.tst.ts", fixtureUrl),
-      ],
-    },
-    {
-      testCase: "when test file is URL string",
-      testFiles: [
-        new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl).toString(),
-        new URL("./__typetests__/toBeString.tst.ts", fixtureUrl).toString(),
-      ],
-    },
-  ];
+  await t.test("run tests", async (t) => {
+    const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
+    const runner = new tstyche.Runner(resolvedConfig);
 
-  for (const { testCase, testFiles } of testCases) {
-    await t.test(testCase, async () => {
-      const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
-      const runner = new tstyche.Runner(resolvedConfig);
+    eventEmitter.addReporter(new TestResultReporter());
 
-      eventEmitter.addReporter(new TestResultReporter());
+    const testCases = [
+      {
+        testCase: "when test file is relative path",
+        testFiles: [
+          path.relative(".", fileURLToPath(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl))),
+          path.relative(".", fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl))),
+        ],
+      },
+      {
+        testCase: "when test file is absolute path",
+        testFiles: [
+          fileURLToPath(new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl)),
+          fileURLToPath(new URL("./__typetests__/toBeString.tst.ts", fixtureUrl)),
+        ],
+      },
+      {
+        testCase: "when test file is URL object",
+        testFiles: [
+          new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl),
+          new URL("./__typetests__/toBeString.tst.ts", fixtureUrl),
+        ],
+      },
+      {
+        testCase: "when test file is URL string",
+        testFiles: [
+          new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl).toString(),
+          new URL("./__typetests__/toBeString.tst.ts", fixtureUrl).toString(),
+        ],
+      },
+    ];
 
-      await runner.run(testFiles);
+    for (const { testCase, testFiles } of testCases) {
+      await t.test(testCase, async () => {
+        await runner.run(testFiles);
 
-      assert.deepEqual(result?.expectCount, { failed: 2, passed: 3, skipped: 3, todo: 0 });
-      assert.deepEqual(result?.fileCount, { failed: 2, passed: 0, skipped: 0, todo: 0 });
-      assert.deepEqual(result?.testCount, { failed: 2, passed: 2, skipped: 1, todo: 1 });
+        assert.deepEqual(result?.expectCount, { failed: 2, passed: 3, skipped: 3, todo: 0 });
+        assert.deepEqual(result?.fileCount, { failed: 2, passed: 0, skipped: 0, todo: 0 });
+        assert.deepEqual(result?.testCount, { failed: 2, passed: 2, skipped: 1, todo: 1 });
+      });
+    }
 
-      eventEmitter.removeReporters();
-    });
-  }
+    eventEmitter.removeReporters();
+  });
 
-  await t.test("when test file is a 'Task' object", async (t) => {
+  await t.test("run tests when test file is 'Task' object", async (t) => {
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
     const runner = new tstyche.Runner(resolvedConfig);
 
@@ -160,7 +170,7 @@ await test("Runner", async (t) => {
     eventEmitter.removeReporters();
   });
 
-  await t.test("configuration options", async (t) => {
+  await t.test("configuration", async (t) => {
     t.beforeEach(() => {
       eventEmitter.addReporter(new TestResultReporter());
     });

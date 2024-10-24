@@ -6,7 +6,7 @@ export class Task {
   position: number | undefined;
 
   constructor(filePath: string | URL, position?: number) {
-    this.filePath = Path.normalizeSlashes(this.#toPath(filePath));
+    this.filePath = Path.resolve(this.#toPath(filePath));
     this.position = position;
   }
 
