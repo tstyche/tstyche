@@ -107,6 +107,6 @@ export class ToRaiseError {
       return this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(targetNode.text);
     }
 
-    return Number.parseInt(targetNode.text) === diagnostic.code;
+    return Number.parseInt(targetNode.text, 10) === diagnostic.code;
   }
 }
