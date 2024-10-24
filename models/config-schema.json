@@ -56,6 +56,11 @@
       },
       "type": "array",
       "uniqueItems": true
+    },
+    "tsconfig": {
+      "default": "findup",
+      "description": "The look up strategy to be used to find the TSConfig file.",
+      "type": "string"
     }
   },
   "type": "object"

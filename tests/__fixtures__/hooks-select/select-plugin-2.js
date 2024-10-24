@@ -3,6 +3,6 @@
  */
 export default {
   select: () => {
-    return [new URL("./ts-tests/toBeNumber.test.ts", import.meta.url)];
+    return ["./ts-tests/toBeNumber.test.ts"];
   },
 };

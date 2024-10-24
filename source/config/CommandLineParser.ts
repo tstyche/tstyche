@@ -115,7 +115,10 @@ export class CommandLineParser {
 
       case OptionBrand.String:
         if (optionValue !== "") {
-          if (optionDefinition.name === "config") {
+          if (
+            optionDefinition.name === "config" ||
+            (optionDefinition.name === "tsconfig" && !["findup", "ignore"].includes(optionValue))
+          ) {
             optionValue = Path.resolve(optionValue);
           }
 

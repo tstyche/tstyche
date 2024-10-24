@@ -1,5 +1,21 @@
 # Releases
 
+## [3.0.0-beta.5] - 2024-10-23
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Fixed
+
+- Mark not existing test file as failed ([#341](https://github.com/tstyche/tstyche/pull/341))
+
+### Changed
+
+- Rename `TargetResult.target` property ([#339](https://github.com/tstyche/tstyche/pull/339))
+
+### Added
+
+- **New!** Add the `tsconfig` configuration option ([#343](https://github.com/tstyche/tstyche/pull/343))
+
 ## [3.0.0-beta.4] - 2024-10-17
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
@@ -363,6 +379,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.5
 [3.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.4
 [3.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.3
 [3.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.2
