@@ -1,3 +1,4 @@
+import { Store } from "#store";
 import type { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 
@@ -46,13 +47,51 @@ export class ConfigDiagnosticText {
   }
 
   static requiresValueType(optionName: string, optionBrand: OptionBrand, optionGroup: OptionGroup): string {
-    optionName = ConfigDiagnosticText.#optionName(optionName, optionGroup);
+    const optionNameText = ConfigDiagnosticText.#optionName(optionName, optionGroup);
 
-    return `Option '${optionName}' requires a value of type ${optionBrand}.`;
+    return `Option '${optionNameText}' requires a value of type ${optionBrand}.`;
   }
 
   static unknownOption(optionName: string): string {
     return `Unknown option '${optionName}'.`;
+  }
+
+  static async usageText(
+    optionName: string,
+    optionBrand: OptionBrand,
+    optionGroup: OptionGroup,
+  ): Promise<Array<string>> {
+    const usageText: Array<string> = [];
+
+    switch (optionName) {
+      case "target": {
+        switch (optionGroup) {
+          case OptionGroup.CommandLine:
+            usageText.push(
+              "Value for the '--target' option must be a single tag or a comma separated list.",
+              "Usage examples: '--target 4.9', '--target latest', '--target 4.9,5.3.2,current'.",
+            );
+            break;
+
+          case OptionGroup.ConfigFile:
+            usageText.push("Item of the 'target' list must be a supported version tag.");
+            break;
+        }
+
+        const supportedTags = await Store.getSupportedTags();
+
+        if (supportedTags != null) {
+          usageText.push(`Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`);
+        }
+
+        break;
+      }
+
+      default:
+        usageText.push(ConfigDiagnosticText.requiresValueType(optionName, optionBrand, optionGroup));
+    }
+
+    return usageText;
   }
 
   static versionIsNotSupported(value: string): string {

@@ -1,11 +1,9 @@
-import { pathToFileURL } from "node:url";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { Path } from "#path";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import { OptionUsageText } from "./OptionUsageText.js";
-import { OptionValidator } from "./OptionValidator.js";
+import { OptionService } from "./OptionService.js";
 import { type OptionDefinition, Options } from "./Options.js";
 import type { OptionValue } from "./types.js";
 
@@ -13,9 +11,6 @@ export class CommandLineParser {
   #commandLineOptions: Record<string, OptionValue>;
   #onDiagnostics: DiagnosticsHandler;
   #options: Map<string, OptionDefinition>;
-  #optionGroup = OptionGroup.CommandLine;
-  #optionUsageText: OptionUsageText;
-  #optionValidator: OptionValidator;
   #pathMatch: Array<string>;
 
   constructor(commandLine: Record<string, OptionValue>, pathMatch: Array<string>, onDiagnostics: DiagnosticsHandler) {
@@ -23,17 +18,14 @@ export class CommandLineParser {
     this.#pathMatch = pathMatch;
     this.#onDiagnostics = onDiagnostics;
 
-    this.#options = Options.for(this.#optionGroup);
-
-    this.#optionUsageText = new OptionUsageText(this.#optionGroup);
-    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#onDiagnostics);
+    this.#options = Options.for(OptionGroup.CommandLine);
   }
 
   async #onExpectsValue(optionDefinition: OptionDefinition) {
     const text = [
-      ConfigDiagnosticText.expectsValue(optionDefinition.name, this.#optionGroup),
-      ...(await this.#optionUsageText.get(optionDefinition.name, optionDefinition.brand)),
-    ];
+      ConfigDiagnosticText.expectsValue(optionDefinition.name, OptionGroup.CommandLine),
+      await ConfigDiagnosticText.usageText(optionDefinition.name, optionDefinition.brand, OptionGroup.CommandLine),
+    ].flat();
 
     this.#onDiagnostics(Diagnostic.error(text));
   }
@@ -69,13 +61,13 @@ export class CommandLineParser {
 
     switch (optionDefinition.brand) {
       case OptionBrand.BareTrue:
-        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+        await OptionService.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = true;
         break;
 
       case OptionBrand.Boolean:
-        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+        await OptionService.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 
@@ -86,23 +78,14 @@ export class CommandLineParser {
 
       case OptionBrand.List:
         if (optionValue !== "") {
-          let optionValues = optionValue
+          const optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== ""); // trailing commas are allowed, e.g. "--target 5.0,current,"
-
-          if (optionDefinition.name === "plugins" || optionDefinition.name === "reporters") {
-            optionValues = optionValues.map((optionValue) => {
-              if (optionValue.startsWith(".")) {
-                return pathToFileURL(optionValue).toString();
-              }
-
-              return optionValue;
-            });
-          }
+            .filter((value) => value !== "") // trailing commas are allowed, e.g. "--target 5.0,current,"
+            .map((value) => OptionService.resolve(optionDefinition.name, value));
 
           for (const optionValue of optionValues) {
-            await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+            await OptionService.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
           }
 
           this.#commandLineOptions[optionDefinition.name] = optionValues;
@@ -115,14 +98,9 @@ export class CommandLineParser {
 
       case OptionBrand.String:
         if (optionValue !== "") {
-          if (
-            optionDefinition.name === "config" ||
-            (optionDefinition.name === "tsconfig" && !["findup", "ignore"].includes(optionValue))
-          ) {
-            optionValue = Path.resolve(optionValue);
-          }
+          optionValue = OptionService.resolve(optionDefinition.name, optionValue);
 
-          await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand);
+          await OptionService.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
 
           this.#commandLineOptions[optionDefinition.name] = optionValue;
 

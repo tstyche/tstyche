@@ -1,4 +1,3 @@
-import { pathToFileURL } from "node:url";
 import { Diagnostic, type DiagnosticsHandler, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
@@ -6,7 +5,7 @@ import type { JsonNode } from "./JsonNode.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import { OptionValidator } from "./OptionValidator.js";
+import { OptionService } from "./OptionService.js";
 import { type ItemDefinition, type OptionDefinition, Options } from "./Options.js";
 import type { OptionValue } from "./types.js";
 
@@ -15,8 +14,6 @@ export class ConfigFileParser {
   #jsonScanner: JsonScanner;
   #onDiagnostics: DiagnosticsHandler;
   #options: Map<string, OptionDefinition>;
-  #optionGroup = OptionGroup.ConfigFile;
-  #optionValidator: OptionValidator;
   #sourceFile: SourceFile;
 
   constructor(
@@ -28,16 +25,15 @@ export class ConfigFileParser {
     this.#sourceFile = sourceFile;
     this.#onDiagnostics = onDiagnostics;
 
-    this.#options = Options.for(this.#optionGroup);
+    this.#options = Options.for(OptionGroup.ConfigFile);
 
     this.#jsonScanner = new JsonScanner(this.#sourceFile);
-    this.#optionValidator = new OptionValidator(this.#optionGroup, this.#onDiagnostics);
   }
 
   #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {
     const text = isListItem
       ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
-      : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, this.#optionGroup);
+      : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, OptionGroup.ConfigFile);
 
     this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
   }
@@ -68,21 +64,16 @@ export class ConfigFileParser {
           break;
         }
 
-        if (optionDefinition.name === "plugins" || optionDefinition.name === "reporters") {
-          if (optionValue.startsWith(".")) {
-            const configFilePath = Path.relative(".", Path.dirname(this.#sourceFile.fileName));
-            optionValue = pathToFileURL(Path.join(configFilePath, optionValue)).toString();
-          }
-        }
+        const rootPath = Path.dirname(this.#sourceFile.fileName);
+        optionValue = OptionService.resolve(optionDefinition.name, optionValue, rootPath);
 
-        if (
-          optionDefinition.name === "rootPath" ||
-          (optionDefinition.name === "tsconfig" && !["findup", "ignore"].includes(optionValue))
-        ) {
-          optionValue = Path.resolve(Path.dirname(this.#sourceFile.fileName), optionValue);
-        }
-
-        await this.#optionValidator.check(optionDefinition.name, optionValue, optionDefinition.brand, jsonNode.origin);
+        await OptionService.validate(
+          optionDefinition,
+          optionValue,
+          OptionGroup.ConfigFile,
+          this.#onDiagnostics,
+          jsonNode.origin,
+        );
 
         break;
       }
