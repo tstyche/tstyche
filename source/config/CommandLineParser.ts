@@ -24,7 +24,7 @@ export class CommandLineParser {
   async #onExpectsValue(optionDefinition: OptionDefinition) {
     const text = [
       ConfigDiagnosticText.expectsValue(optionDefinition.name, OptionGroup.CommandLine),
-      await ConfigDiagnosticText.usageText(optionDefinition.name, optionDefinition.brand, OptionGroup.CommandLine),
+      await ConfigDiagnosticText.usage(optionDefinition.name, optionDefinition.brand, OptionGroup.CommandLine),
     ].flat();
 
     this.#onDiagnostics(Diagnostic.error(text));

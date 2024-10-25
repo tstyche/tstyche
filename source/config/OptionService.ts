@@ -74,7 +74,7 @@ export class OptionService {
             Diagnostic.error(
               [
                 ConfigDiagnosticText.versionIsNotSupported(optionValue),
-                await ConfigDiagnosticText.usageText(optionDefinition.name, optionDefinition.brand, optionGroup),
+                await ConfigDiagnosticText.usage(optionDefinition.name, optionDefinition.brand, optionGroup),
               ].flat(),
               origin,
             ),

@@ -56,42 +56,38 @@ export class ConfigDiagnosticText {
     return `Unknown option '${optionName}'.`;
   }
 
-  static async usageText(
-    optionName: string,
-    optionBrand: OptionBrand,
-    optionGroup: OptionGroup,
-  ): Promise<Array<string>> {
-    const usageText: Array<string> = [];
+  static async usage(optionName: string, optionBrand: OptionBrand, optionGroup: OptionGroup): Promise<Array<string>> {
+    const text: Array<string> = [];
 
     switch (optionName) {
       case "target": {
         switch (optionGroup) {
           case OptionGroup.CommandLine:
-            usageText.push(
+            text.push(
               "Value for the '--target' option must be a single tag or a comma separated list.",
               "Usage examples: '--target 4.9', '--target latest', '--target 4.9,5.3.2,current'.",
             );
             break;
 
           case OptionGroup.ConfigFile:
-            usageText.push("Item of the 'target' list must be a supported version tag.");
+            text.push("Item of the 'target' list must be a supported version tag.");
             break;
         }
 
         const supportedTags = await Store.getSupportedTags();
 
         if (supportedTags != null) {
-          usageText.push(`Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`);
+          text.push(`Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`);
         }
 
         break;
       }
 
       default:
-        usageText.push(ConfigDiagnosticText.requiresValueType(optionName, optionBrand, optionGroup));
+        text.push(ConfigDiagnosticText.requiresValueType(optionName, optionBrand, optionGroup));
     }
 
-    return usageText;
+    return text;
   }
 
   static versionIsNotSupported(value: string): string {
