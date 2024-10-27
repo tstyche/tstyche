@@ -26,13 +26,7 @@ export class ConfigDiagnosticText {
   }
 
   static #optionName(optionName: string, optionGroup: OptionGroup) {
-    switch (optionGroup) {
-      case OptionGroup.CommandLine:
-        return `--${optionName}`;
-
-      case OptionGroup.ConfigFile:
-        return optionName;
-    }
+    return optionGroup === OptionGroup.CommandLine ? `--${optionName}` : optionName;
   }
 
   static seen(element: string): string {
