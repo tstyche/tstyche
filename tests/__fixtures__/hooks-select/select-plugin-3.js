@@ -4,7 +4,7 @@
 export default {
   name: "select-plugin-3",
 
-  config: (resolvedConfig) => {
+  config(resolvedConfig) {
     return { ...resolvedConfig, failFast: true };
   },
 };

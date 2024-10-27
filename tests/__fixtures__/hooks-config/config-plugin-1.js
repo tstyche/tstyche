@@ -4,7 +4,7 @@
 export default {
   name: "config-plugin-1",
 
-  config: (resolvedConfig) => {
+  config(resolvedConfig) {
     return { ...resolvedConfig, failFast: true };
   },
 };
