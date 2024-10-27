@@ -1,7 +1,9 @@
 /**
- * @type {import("tstyche/tstyche").Hooks}
+ * @type {import("tstyche/tstyche").Plugin}
  */
 export default {
+  name: "example-plugin",
+
   config: (resolvedConfig) => {
     return {
       ...resolvedConfig,
