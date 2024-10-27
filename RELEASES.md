@@ -1,5 +1,21 @@
 # Releases
 
+## [3.0.0-beta.6] - 2024-10-27
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Fixed
+
+- Always resolve test file paths ([#346](https://github.com/tstyche/tstyche/pull/346))
+
+### Changed
+
+- Require plugins to have `name` property ([#349](https://github.com/tstyche/tstyche/pull/349), [#352](https://github.com/tstyche/tstyche/pull/352))
+
+### Added
+
+- Pass context to the `select` hook ([#350](https://github.com/tstyche/tstyche/pull/350))
+
 ## [3.0.0-beta.5] - 2024-10-23
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
@@ -379,6 +395,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.6
 [3.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.5
 [3.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.4
 [3.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.3
