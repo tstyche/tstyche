@@ -5,7 +5,6 @@ import type { JsonNode } from "./JsonNode.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import { OptionService } from "./OptionService.js";
 import { type ItemDefinition, type OptionDefinition, Options } from "./Options.js";
 import type { OptionValue } from "./types.js";
 
@@ -65,9 +64,9 @@ export class ConfigFileParser {
         }
 
         const rootPath = Path.dirname(this.#sourceFile.fileName);
-        optionValue = OptionService.resolve(optionDefinition.name, optionValue, rootPath);
+        optionValue = Options.resolve(optionDefinition.name, optionValue, rootPath);
 
-        await OptionService.validate(
+        await Options.validate(
           optionDefinition,
           optionValue,
           OptionGroup.ConfigFile,

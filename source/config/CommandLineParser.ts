@@ -3,7 +3,6 @@ import { Path } from "#path";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import { OptionService } from "./OptionService.js";
 import { type OptionDefinition, Options } from "./Options.js";
 import type { OptionValue } from "./types.js";
 
@@ -61,13 +60,13 @@ export class CommandLineParser {
 
     switch (optionDefinition.brand) {
       case OptionBrand.BareTrue:
-        await OptionService.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
+        await Options.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = true;
         break;
 
       case OptionBrand.Boolean:
-        await OptionService.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
+        await Options.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 
@@ -82,10 +81,10 @@ export class CommandLineParser {
             .split(",")
             .map((value) => value.trim())
             .filter((value) => value !== "") // trailing commas are allowed, e.g. "--target 5.0,current,"
-            .map((value) => OptionService.resolve(optionDefinition.name, value));
+            .map((value) => Options.resolve(optionDefinition.name, value));
 
           for (const optionValue of optionValues) {
-            await OptionService.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
+            await Options.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
           }
 
           this.#commandLineOptions[optionDefinition.name] = optionValues;
@@ -98,9 +97,9 @@ export class CommandLineParser {
 
       case OptionBrand.String:
         if (optionValue !== "") {
-          optionValue = OptionService.resolve(optionDefinition.name, optionValue);
+          optionValue = Options.resolve(optionDefinition.name, optionValue);
 
-          await OptionService.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
+          await Options.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
 
           this.#commandLineOptions[optionDefinition.name] = optionValue;
 
