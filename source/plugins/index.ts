@@ -1,2 +1,2 @@
 export { PluginService } from "./PluginService.js";
-export type { Hooks, Plugin } from "./types.js";
+export type { Plugin } from "./types.js";
