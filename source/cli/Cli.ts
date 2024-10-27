@@ -2,8 +2,8 @@ import { Config, OptionGroup, Options, type ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
-import { type Hooks, HooksService } from "#hooks";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
+import { type Plugin, PluginService } from "#plugins";
 import { SetupReporter } from "#reporters";
 import { Runner } from "#runner";
 import { Select } from "#select";
@@ -83,12 +83,12 @@ export class Cli {
         continue;
       }
 
-      for (const plugin of resolvedConfig.plugins) {
-        const hooks: Hooks = (await import(plugin)).default;
-        HooksService.addHandler(hooks);
+      for (const pluginIdentifier of resolvedConfig.plugins) {
+        const plugin: Plugin = (await import(pluginIdentifier)).default;
+        PluginService.addHandler(plugin);
       }
 
-      resolvedConfig = await HooksService.call("config", resolvedConfig);
+      resolvedConfig = await PluginService.call("config", resolvedConfig);
 
       if (commandLine.includes("--showConfig")) {
         OutputService.writeMessage(formattedText({ ...resolvedConfig, ...environmentOptions }));
@@ -115,7 +115,7 @@ export class Cli {
         }
       }
 
-      testFiles = await HooksService.call("select", testFiles as Array<string>);
+      testFiles = await PluginService.call("select", testFiles as Array<string>);
 
       if (commandLine.includes("--listFiles")) {
         OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
@@ -129,7 +129,7 @@ export class Cli {
 
       await runner.run(testFiles, cancellationToken);
 
-      HooksService.removeHandlers();
+      PluginService.removeHandlers();
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();

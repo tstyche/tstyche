@@ -1,5 +1,12 @@
 import type { ResolvedConfig } from "#config";
 
+export interface Plugin extends Hooks {
+  /**
+   * The name of this plugin.
+   */
+  name: string;
+}
+
 export interface Hooks {
   /**
    * Is called after configuration is resolved and allows to modify it.
