@@ -4,7 +4,7 @@
 export default {
   name: "config-plugin-3",
 
-  select: () => {
+  select() {
     return ["./examples/firstItem.tst.ts"];
   },
 };

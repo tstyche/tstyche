@@ -4,11 +4,11 @@
 export default {
   name: "config-plugin-2",
 
-  config: (resolvedConfig) => {
+  config(resolvedConfig) {
     return { ...resolvedConfig, testFileMatch: [] };
   },
 
-  select: () => {
+  select() {
     return ["./examples/firstItem.tst.ts"];
   },
 };

@@ -88,7 +88,7 @@ export class Cli {
         PluginService.addHandler(plugin);
       }
 
-      resolvedConfig = await PluginService.call("config", resolvedConfig);
+      resolvedConfig = await PluginService.call("config", resolvedConfig, /* context */ {});
 
       if (commandLine.includes("--showConfig")) {
         OutputService.writeMessage(formattedText({ ...resolvedConfig, ...environmentOptions }));
@@ -115,7 +115,7 @@ export class Cli {
         }
       }
 
-      testFiles = await PluginService.call("select", testFiles as Array<string>);
+      testFiles = await PluginService.call("select", testFiles as Array<string>, { resolvedConfig });
 
       if (commandLine.includes("--listFiles")) {
         OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));

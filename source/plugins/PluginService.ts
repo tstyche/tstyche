@@ -10,7 +10,7 @@ export class PluginService {
   static async call<T extends keyof Hooks>(
     hook: T,
     argument: Parameters<Required<Hooks>[T]>[0],
-    context?: Parameters<Required<Hooks>[T]>[1],
+    context: ThisParameterType<Required<Hooks>[T]>,
   ): Promise<Awaited<ReturnType<Required<Hooks>[T]>>> {
     let result = argument as Awaited<ReturnType<Required<Hooks>[T]>>;
 

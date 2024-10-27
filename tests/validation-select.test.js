@@ -12,13 +12,13 @@ test("is string?", () => {
 
 const pluginText = `import path from "node:path";
 export default {
-  config: (resolvedConfig) => {
+  config(resolvedConfig) {
     return { ...resolvedConfig, testFileMatch: [] /* disables look up */ };
   },
-  select: () => {
+  select() {
     return [
-      path.resolve("./__typetests__/toBeNotfound.test.ts"),
-      path.resolve("./__typetests__/isString.test.ts")
+      path.join(this.resolvedConfig.rootPath, "./__typetests__/toBeNotfound.test.ts"),
+      path.join(this.resolvedConfig.rootPath, "./__typetests__/isString.test.ts")
     ];
   },
 };
