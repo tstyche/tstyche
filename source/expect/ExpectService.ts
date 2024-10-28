@@ -18,25 +18,25 @@ export class ExpectService {
   #compiler: typeof ts;
   #typeChecker: TypeChecker;
 
-  toAcceptProps: ToAcceptProps;
-  toBe: ToBe;
-  toBeAny: PrimitiveTypeMatcher;
-  toBeAssignableTo: ToBeAssignableTo;
-  toBeAssignableWith: ToBeAssignableWith;
-  toBeBigInt: PrimitiveTypeMatcher;
-  toBeBoolean: PrimitiveTypeMatcher;
-  toBeNever: PrimitiveTypeMatcher;
-  toBeNull: PrimitiveTypeMatcher;
-  toBeNumber: PrimitiveTypeMatcher;
-  toBeString: PrimitiveTypeMatcher;
-  toBeSymbol: PrimitiveTypeMatcher;
-  toBeUndefined: PrimitiveTypeMatcher;
-  toBeUniqueSymbol: PrimitiveTypeMatcher;
-  toBeUnknown: PrimitiveTypeMatcher;
-  toBeVoid: PrimitiveTypeMatcher;
-  toHaveProperty: ToHaveProperty;
-  toMatch: ToMatch;
-  toRaiseError: ToRaiseError;
+  private toAcceptProps: ToAcceptProps;
+  private toBe: ToBe;
+  private toBeAny: PrimitiveTypeMatcher;
+  private toBeAssignableTo: ToBeAssignableTo;
+  private toBeAssignableWith: ToBeAssignableWith;
+  private toBeBigInt: PrimitiveTypeMatcher;
+  private toBeBoolean: PrimitiveTypeMatcher;
+  private toBeNever: PrimitiveTypeMatcher;
+  private toBeNull: PrimitiveTypeMatcher;
+  private toBeNumber: PrimitiveTypeMatcher;
+  private toBeString: PrimitiveTypeMatcher;
+  private toBeSymbol: PrimitiveTypeMatcher;
+  private toBeUndefined: PrimitiveTypeMatcher;
+  private toBeUniqueSymbol: PrimitiveTypeMatcher;
+  private toBeUnknown: PrimitiveTypeMatcher;
+  private toBeVoid: PrimitiveTypeMatcher;
+  private toHaveProperty: ToHaveProperty;
+  private toMatch: ToMatch;
+  private toRaiseError: ToRaiseError;
 
   constructor(compiler: typeof ts, typeChecker: TypeChecker) {
     this.#compiler = compiler;
