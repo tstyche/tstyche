@@ -1,6 +1,5 @@
 import { Store } from "#store";
 import type { OptionBrand } from "./OptionBrand.enum.js";
-import { OptionGroup } from "./OptionGroup.enum.js";
 
 export class ConfigDiagnosticText {
   static expected(element: string): string {
@@ -11,9 +10,7 @@ export class ConfigDiagnosticText {
     return `Item of the '${optionName}' list must be of type ${optionBrand}.`;
   }
 
-  static expectsValue(optionName: string, optionGroup: OptionGroup): string {
-    optionName = ConfigDiagnosticText.#optionName(optionName, optionGroup);
-
+  static expectsValue(optionName: string): string {
     return `Option '${optionName}' expects a value.`;
   }
 
@@ -23,10 +20,6 @@ export class ConfigDiagnosticText {
 
   static moduleWasNotFound(specifier: string): string {
     return `The specified module '${specifier}' was not found.`;
-  }
-
-  static #optionName(optionName: string, optionGroup: OptionGroup) {
-    return optionGroup === OptionGroup.CommandLine ? `--${optionName}` : optionName;
   }
 
   static seen(element: string): string {
@@ -40,32 +33,26 @@ export class ConfigDiagnosticText {
     ];
   }
 
-  static requiresValueType(optionName: string, optionBrand: OptionBrand, optionGroup: OptionGroup): string {
-    const optionNameText = ConfigDiagnosticText.#optionName(optionName, optionGroup);
-
-    return `Option '${optionNameText}' requires a value of type ${optionBrand}.`;
+  static requiresValueType(optionName: string, optionBrand: OptionBrand): string {
+    return `Option '${optionName}' requires a value of type ${optionBrand}.`;
   }
 
   static unknownOption(optionName: string): string {
     return `Unknown option '${optionName}'.`;
   }
 
-  static async usage(optionName: string, optionBrand: OptionBrand, optionGroup: OptionGroup): Promise<Array<string>> {
-    const text: Array<string> = [];
-
-    switch (optionName) {
+  static async usage(optionName: string, optionBrand: OptionBrand): Promise<Array<string>> {
+    switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
       case "target": {
-        switch (optionGroup) {
-          case OptionGroup.CommandLine:
-            text.push(
-              "Value for the '--target' option must be a single tag or a comma separated list.",
-              "Usage examples: '--target 4.9', '--target latest', '--target 4.9,5.3.2,current'.",
-            );
-            break;
+        const text: Array<string> = [];
 
-          case OptionGroup.ConfigFile:
-            text.push("Item of the 'target' list must be a supported version tag.");
-            break;
+        if (optionName.startsWith("--")) {
+          text.push(
+            "Value for the '--target' option must be a single tag or a comma separated list.",
+            "Usage examples: '--target 4.9', '--target latest', '--target 4.9,5.3.2,current'.",
+          );
+        } else {
+          text.push("Item of the 'target' list must be a supported version tag.");
         }
 
         const supportedTags = await Store.getSupportedTags();
@@ -74,14 +61,11 @@ export class ConfigDiagnosticText {
           text.push(`Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`);
         }
 
-        break;
+        return text;
       }
-
-      default:
-        text.push(ConfigDiagnosticText.requiresValueType(optionName, optionBrand, optionGroup));
     }
 
-    return text;
+    return [ConfigDiagnosticText.requiresValueType(optionName, optionBrand)];
   }
 
   static versionIsNotSupported(value: string): string {

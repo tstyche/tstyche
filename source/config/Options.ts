@@ -8,14 +8,6 @@ import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 
-export interface ItemDefinition {
-  brand: OptionBrand.String;
-  name: string;
-  pattern?: string;
-}
-
-export type OptionDefinition = PrimitiveTypeOptionDefinition | ListTypeOptionDefinition;
-
 interface BaseOptionDefinition {
   brand: OptionBrand;
   description: string;
@@ -27,10 +19,18 @@ interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
   brand: OptionBrand.String | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.BareTrue;
 }
 
+export interface ItemDefinition {
+  brand: OptionBrand.String;
+  name: string;
+  pattern?: string;
+}
+
 interface ListTypeOptionDefinition extends BaseOptionDefinition {
   brand: OptionBrand.List;
   items: ItemDefinition;
 }
+
+export type OptionDefinition = PrimitiveTypeOptionDefinition | ListTypeOptionDefinition;
 
 export class Options {
   static #definitions: Array<OptionDefinition> = [
@@ -198,7 +198,7 @@ export class Options {
   }
 
   static resolve(optionName: string, optionValue: string, rootPath = "."): string {
-    switch (optionName) {
+    switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
       // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
       case "tsconfig":
         if (["findup", "ignore"].includes(optionValue)) {
@@ -222,13 +222,13 @@ export class Options {
   }
 
   static async validate(
-    optionDefinition: OptionDefinition | ItemDefinition,
+    optionName: string,
     optionValue: string,
-    optionGroup: OptionGroup,
+    optionBrand: OptionBrand,
     onDiagnostics: DiagnosticsHandler,
     origin?: DiagnosticOrigin,
   ): Promise<void> {
-    switch (optionDefinition.name) {
+    switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
       // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
       case "tsconfig":
         if (["findup", "ignore"].includes(optionValue)) {
@@ -262,7 +262,7 @@ export class Options {
             Diagnostic.error(
               [
                 ConfigDiagnosticText.versionIsNotSupported(optionValue),
-                await ConfigDiagnosticText.usage(optionDefinition.name, optionDefinition.brand, optionGroup),
+                await ConfigDiagnosticText.usage(optionName, optionBrand),
               ].flat(),
               origin,
             ),

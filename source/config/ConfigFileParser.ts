@@ -32,7 +32,7 @@ export class ConfigFileParser {
   #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {
     const text = isListItem
       ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
-      : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand, OptionGroup.ConfigFile);
+      : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand);
 
     this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
   }
@@ -67,9 +67,9 @@ export class ConfigFileParser {
         optionValue = Options.resolve(optionDefinition.name, optionValue, rootPath);
 
         await Options.validate(
-          optionDefinition,
+          optionDefinition.name,
           optionValue,
-          OptionGroup.ConfigFile,
+          optionDefinition.brand,
           this.#onDiagnostics,
           jsonNode.origin,
         );

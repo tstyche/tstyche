@@ -20,10 +20,10 @@ export class CommandLineParser {
     this.#options = Options.for(OptionGroup.CommandLine);
   }
 
-  async #onExpectsValue(optionDefinition: OptionDefinition) {
+  async #onExpectsValue(optionName: string, optionBrand: OptionBrand) {
     const text = [
-      ConfigDiagnosticText.expectsValue(optionDefinition.name, OptionGroup.CommandLine),
-      await ConfigDiagnosticText.usage(optionDefinition.name, optionDefinition.brand, OptionGroup.CommandLine),
+      ConfigDiagnosticText.expectsValue(optionName),
+      await ConfigDiagnosticText.usage(optionName, optionBrand),
     ].flat();
 
     this.#onDiagnostics(Diagnostic.error(text));
@@ -37,11 +37,10 @@ export class CommandLineParser {
       index++;
 
       if (arg.startsWith("--")) {
-        const optionName = arg.slice(2);
-        const optionDefinition = this.#options.get(optionName);
+        const optionDefinition = this.#options.get(arg.slice(2));
 
         if (optionDefinition) {
-          index = await this.#parseOptionValue(commandLineArgs, index, optionDefinition);
+          index = await this.#parseOptionValue(commandLineArgs, index, arg, optionDefinition);
         } else {
           this.#onDiagnostics(Diagnostic.error(ConfigDiagnosticText.unknownOption(arg)));
         }
@@ -55,18 +54,23 @@ export class CommandLineParser {
     }
   }
 
-  async #parseOptionValue(commandLineArgs: Array<string>, index: number, optionDefinition: OptionDefinition) {
+  async #parseOptionValue(
+    commandLineArgs: Array<string>,
+    index: number,
+    optionName: string,
+    optionDefinition: OptionDefinition,
+  ) {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
       case OptionBrand.BareTrue:
-        await Options.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
+        await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = true;
         break;
 
       case OptionBrand.Boolean:
-        await Options.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
+        await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 
@@ -81,10 +85,10 @@ export class CommandLineParser {
             .split(",")
             .map((value) => value.trim())
             .filter((value) => value !== "") // trailing commas are allowed, e.g. "--target 5.0,current,"
-            .map((value) => Options.resolve(optionDefinition.name, value));
+            .map((value) => Options.resolve(optionName, value));
 
           for (const optionValue of optionValues) {
-            await Options.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
+            await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
           }
 
           this.#commandLineOptions[optionDefinition.name] = optionValues;
@@ -92,14 +96,14 @@ export class CommandLineParser {
           break;
         }
 
-        await this.#onExpectsValue(optionDefinition);
+        await this.#onExpectsValue(optionName, optionDefinition.brand);
         break;
 
       case OptionBrand.String:
         if (optionValue !== "") {
-          optionValue = Options.resolve(optionDefinition.name, optionValue);
+          optionValue = Options.resolve(optionName, optionValue);
 
-          await Options.validate(optionDefinition, optionValue, OptionGroup.CommandLine, this.#onDiagnostics);
+          await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
 
           this.#commandLineOptions[optionDefinition.name] = optionValue;
 
@@ -107,7 +111,7 @@ export class CommandLineParser {
           break;
         }
 
-        await this.#onExpectsValue(optionDefinition);
+        await this.#onExpectsValue(optionName, optionDefinition.brand);
         break;
     }
 
