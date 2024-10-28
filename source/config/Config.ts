@@ -22,8 +22,8 @@ export interface ResolvedConfig
 }
 
 export class Config {
-  static #onDiagnostics(this: void, diagnostics: Diagnostic) {
-    EventEmitter.dispatch(["config:error", { diagnostics: [diagnostics] }]);
+  static #onDiagnostics(this: void, diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["config:error", { diagnostics: [diagnostic] }]);
   }
 
   static async parseCommandLine(

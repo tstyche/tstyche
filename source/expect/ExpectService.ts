@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
@@ -12,7 +12,7 @@ import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
-import type { DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
+import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
@@ -63,7 +63,10 @@ export class ExpectService {
     this.toRaiseError = new ToRaiseError(compiler);
   }
 
-  match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
+  match(
+    assertion: Assertion,
+    onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
+  ): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
 
     if (matcherNameText === "toMatch") {

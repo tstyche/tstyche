@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
 import { DescribeResult, ExpectResult, type TaskResult, TestResult } from "#result";
@@ -122,7 +122,7 @@ export class TestTreeWalker {
       return;
     }
 
-    const onExpectDiagnostics = (diagnostics: Diagnostic | Array<Diagnostic>) => {
+    const onExpectDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>> = (diagnostics) => {
       EventEmitter.dispatch([
         "expect:error",
         { diagnostics: Array.isArray(diagnostics) ? diagnostics : [diagnostics], result: expectResult },

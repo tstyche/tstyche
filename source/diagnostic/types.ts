@@ -1,3 +1,6 @@
 import type { Diagnostic } from "./Diagnostic.js";
 
-export type DiagnosticsHandler = (this: void, diagnostic: Diagnostic) => void;
+export type DiagnosticsHandler<T extends Diagnostic | Array<Diagnostic> = Diagnostic> = (
+  this: void,
+  diagnostics: T,
+) => void;
