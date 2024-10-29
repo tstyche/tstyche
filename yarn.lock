@@ -842,12 +842,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.17.2":
-  version: 20.17.2
-  resolution: "@types/node@npm:20.17.2"
+"@types/node@npm:22.8.2":
+  version: 22.8.2
+  resolution: "@types/node@npm:22.8.2"
   dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10c0/453ca052f9544ad66a9988ff881024588008795690c9ea7252e0594333ea11cec7d176a76c5e0f6b89ba42427c6e4684321427f9f515e8a9ba9a729f80c13054
+    undici-types: "npm:~6.19.8"
+  checksum: 10c0/c6fa6c54c23e61015cace1517c4101602cae0ff3c4f6604f6cdb89875143921830e5602cabe8b4f90f90363451687a0497f1d07d30be8104fee758d6d44c90ac
   languageName: node
   linkType: hard
 
@@ -2455,7 +2455,7 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:1.9.4"
     "@rollup/plugin-typescript": "npm:12.1.1"
-    "@types/node": "npm:20.17.2"
+    "@types/node": "npm:22.8.2"
     "@types/react": "npm:18.3.12"
     ajv: "npm:8.17.1"
     cspell: "npm:8.15.4"
@@ -2496,7 +2496,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.19.2":
+"undici-types@npm:~6.19.8":
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
   checksum: 10c0/078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
