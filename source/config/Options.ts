@@ -1,5 +1,4 @@
 import { existsSync } from "node:fs";
-import { pathToFileURL } from "node:url";
 import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { Path } from "#path";
@@ -199,22 +198,32 @@ export class Options {
 
   static resolve(optionName: string, optionValue: string, rootPath = "."): string {
     switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
-      // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
+      case "config":
+      case "rootPath":
       case "tsconfig":
-        if (["findup", "ignore"].includes(optionValue)) {
+        if (optionName.endsWith("tsconfig") && ["findup", "ignore"].includes(optionValue)) {
           break;
         }
 
-      case "config":
-      case "rootPath":
         optionValue = Path.resolve(rootPath, optionValue);
         break;
 
       case "plugins":
       case "reporters":
-        if (optionValue.startsWith(".")) {
-          optionValue = pathToFileURL(Path.join(Path.relative(".", rootPath), optionValue)).toString();
+        if (optionName.endsWith("reporters") && ["list", "summary"].includes(optionValue)) {
+          break;
         }
+
+        try {
+          if (optionValue.startsWith(".")) {
+            optionValue = Path.resolve(rootPath, optionValue);
+          }
+
+          optionValue = import.meta.resolve(optionValue);
+        } catch {
+          // module was not found
+        }
+
         break;
     }
 
@@ -229,31 +238,33 @@ export class Options {
     origin?: DiagnosticOrigin,
   ): Promise<void> {
     switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
-      // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
-      case "tsconfig":
-        if (["findup", "ignore"].includes(optionValue)) {
-          break;
-        }
-
       case "config":
       case "rootPath":
-        if (!existsSync(optionValue)) {
-          onDiagnostics(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
-        }
-        break;
-
-      // biome-ignore lint/suspicious/noFallthroughSwitchClause: shared validation logic
-      case "reporters":
-        if (["list", "summary"].includes(optionValue)) {
+      case "tsconfig":
+        if (optionName.endsWith("tsconfig") && ["findup", "ignore"].includes(optionValue)) {
           break;
         }
 
-      case "plugins":
-        try {
-          await import(optionValue);
-        } catch {
-          onDiagnostics(Diagnostic.error(ConfigDiagnosticText.moduleWasNotFound(optionValue), origin));
+        if (existsSync(optionValue)) {
+          break;
         }
+
+        onDiagnostics(Diagnostic.error(ConfigDiagnosticText.fileDoesNotExist(optionValue), origin));
+
+        break;
+
+      case "plugins":
+      case "reporters":
+        if (optionName.endsWith("reporters") && ["list", "summary"].includes(optionValue)) {
+          break;
+        }
+
+        if (optionValue.startsWith("file:") && existsSync(new URL(optionValue))) {
+          break;
+        }
+
+        onDiagnostics(Diagnostic.error(ConfigDiagnosticText.moduleWasNotFound(optionValue), origin));
+
         break;
 
       case "target":

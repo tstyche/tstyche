@@ -1,4 +1,3 @@
-import { createRequire } from "node:module";
 import os from "node:os";
 import process from "node:process";
 import { Path } from "#path";
@@ -91,10 +90,9 @@ export class Environment {
     let resolvedPath: string | undefined;
 
     try {
-      // TODO use 'import.meta.resolve()' after dropping support for Node.js 18.18
-      resolvedPath = Path.normalizeSlashes(createRequire(import.meta.url).resolve(specifier));
+      resolvedPath = import.meta.resolve(specifier);
     } catch {
-      // the specifier cannot be resolved
+      // module was not found
     }
 
     return resolvedPath;
