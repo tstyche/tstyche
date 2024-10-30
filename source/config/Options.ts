@@ -1,4 +1,5 @@
 import { existsSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { Path } from "#path";
@@ -216,10 +217,10 @@ export class Options {
 
         try {
           if (optionValue.startsWith(".")) {
-            optionValue = Path.resolve(rootPath, optionValue);
+            optionValue = pathToFileURL(Path.relative(".", Path.resolve(rootPath, optionValue))).toString();
+          } else {
+            optionValue = import.meta.resolve(optionValue);
           }
-
-          optionValue = import.meta.resolve(optionValue);
         } catch {
           // module was not found
         }
