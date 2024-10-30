@@ -25,7 +25,7 @@ await test("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      typescriptPath: "<<basePath>>/node_modules/typescript/lib/typescript.js",
+      typescriptPath: "<<baseUrl>>/node_modules/typescript/lib/typescript.js",
     });
 
     assert.equal(stderr, "");
