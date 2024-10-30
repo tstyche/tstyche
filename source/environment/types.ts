@@ -24,7 +24,7 @@ export interface EnvironmentOptions {
    */
   timeout: number;
   /**
-   * The path to the currently installed TypeScript module.
+   * The specifier of the TypeScript module.
    */
-  typescriptPath: string | undefined;
+  typescriptModule: string | undefined;
 }

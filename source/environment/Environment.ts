@@ -12,7 +12,7 @@ export class Environment {
       npmRegistry: Environment.#resolveNpmRegistry(),
       storePath: Environment.#resolveStorePath(),
       timeout: Environment.#resolveTimeout(),
-      typescriptPath: Environment.#resolveTypeScriptPath(),
+      typescriptModule: Environment.#resolveTypeScriptModule(),
     };
   }
 
@@ -80,21 +80,21 @@ export class Environment {
     return 30;
   }
 
-  static #resolveTypeScriptPath() {
+  static #resolveTypeScriptModule() {
     let specifier = "typescript";
 
-    if (process.env["TSTYCHE_TYPESCRIPT_PATH"] != null) {
-      specifier = process.env["TSTYCHE_TYPESCRIPT_PATH"];
+    if (process.env["TSTYCHE_TYPESCRIPT_MODULE"] != null) {
+      specifier = process.env["TSTYCHE_TYPESCRIPT_MODULE"];
     }
 
-    let resolvedPath: string | undefined;
+    let resolvedModule: string | undefined;
 
     try {
-      resolvedPath = import.meta.resolve(specifier);
+      resolvedModule = import.meta.resolve(specifier);
     } catch {
       // module was not found
     }
 
-    return resolvedPath;
+    return resolvedModule;
   }
 }

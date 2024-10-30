@@ -135,7 +135,7 @@ await test("TypeScript 4.x", async (t) => {
       const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-        env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptModule },
+        env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
       });
 
       assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
@@ -179,7 +179,7 @@ await test("TypeScript 5.x", async (t) => {
       const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-        env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptModule },
+        env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
       });
 
       assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));

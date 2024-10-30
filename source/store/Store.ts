@@ -68,8 +68,8 @@ export class Store {
 
     let modulePath: string | undefined;
 
-    if (tag === "current" && environmentOptions.typescriptPath != null) {
-      modulePath = fileURLToPath(environmentOptions.typescriptPath);
+    if (tag === "current" && environmentOptions.typescriptModule != null) {
+      modulePath = fileURLToPath(environmentOptions.typescriptModule);
     } else {
       await Store.open();
 
@@ -172,7 +172,7 @@ export class Store {
 
   static async validateTag(tag: string): Promise<boolean | undefined> {
     if (tag === "current") {
-      return environmentOptions.typescriptPath != null;
+      return environmentOptions.typescriptModule != null;
     }
 
     await Store.open();
