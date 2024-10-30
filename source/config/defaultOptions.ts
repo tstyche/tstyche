@@ -7,7 +7,7 @@ export const defaultOptions: Required<ConfigFileOptions> = {
   plugins: [],
   reporters: ["list", "summary"],
   rootPath: Path.resolve("./"),
-  target: environmentOptions.typescriptPath != null ? ["current"] : ["latest"],
+  target: environmentOptions.typescriptModule != null ? ["current"] : ["latest"],
   testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
   tsconfig: "findup",
 };

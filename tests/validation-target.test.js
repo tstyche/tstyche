@@ -63,13 +63,13 @@ await test("'--target' command line option", async (t) => {
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-      env: { ["TSTYCHE_TYPESCRIPT_PATH"]: "" },
+      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
     });
 
     assert.equal(stdout, "");
 
     const expected = [
-      "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
+      "Error: Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.",
       "",
       "Value for the '--target' option must be a single tag or a comma separated list.",
       "Usage examples:",
@@ -168,11 +168,11 @@ await test("'target' configuration file option", async (t) => {
     });
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, [], {
-      env: { ["TSTYCHE_TYPESCRIPT_PATH"]: "" },
+      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
     });
 
     const expected = [
-      "Error: Cannot use 'current' as a target. Failed to resolve the path to the currently installed TypeScript module.",
+      "Error: Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.",
       "",
       "Item of the 'target' list must be a supported version tag.",
       "Supported tags:",

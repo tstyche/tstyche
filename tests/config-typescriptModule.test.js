@@ -13,7 +13,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async (t) => {
+await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -24,7 +24,7 @@ await test("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      typescriptPath: "<<baseUrl>>/node_modules/typescript/lib/typescript.js",
+      typescriptModule: "<<baseUrl>>/node_modules/typescript/lib/typescript.js",
     });
 
     assert.equal(stderr, "");
@@ -38,11 +38,11 @@ await test("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async (t) => {
 
     await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"]);
 
-    const typescriptPath = new URL("./.store/typescript@5.2.2/lib/typescript.js", fixtureUrl).toString();
+    const typescriptModule = new URL("./.store/typescript@5.2.2/lib/typescript.js", fixtureUrl).toString();
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {
-        ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath,
+        ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule,
       },
     });
 
