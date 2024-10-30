@@ -1,5 +1,14 @@
 # Releases
 
+## [3.0.0-rc.0] - 2024-10-30
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Changed
+
+- Rename the `TSTYCHE_TYPESCRIPT_MODULE` environment variable ([#356](https://github.com/tstyche/tstyche/pull/356))
+- Use `import.meta.resolve()` ([#355](https://github.com/tstyche/tstyche/pull/355))
+
 ## [3.0.0-beta.6] - 2024-10-27
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
