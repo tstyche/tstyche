@@ -6,8 +6,8 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ### Changed
 
-- Rename the `TSTYCHE_TYPESCRIPT_MODULE` environment variable ([#356](https://github.com/tstyche/tstyche/pull/356))
-- Use `import.meta.resolve()` ([#355](https://github.com/tstyche/tstyche/pull/355))
+- **Breaking!** Rename the `TSTYCHE_TYPESCRIPT_MODULE` environment variable ([#356](https://github.com/tstyche/tstyche/pull/356))
+- **Breaking!** Use `import.meta.resolve()` ([#355](https://github.com/tstyche/tstyche/pull/355))
 
 ## [3.0.0-beta.6] - 2024-10-27
 
@@ -404,6 +404,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-rc.0
 [3.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.6
 [3.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.5
 [3.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.4
