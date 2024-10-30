@@ -1,5 +1,4 @@
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -25,7 +24,7 @@ await test("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      typescriptPath: "<<basePath>>/node_modules/typescript/lib/typescript.js",
+      typescriptPath: "<<baseUrl>>/node_modules/typescript/lib/typescript.js",
     });
 
     assert.equal(stderr, "");
@@ -39,7 +38,7 @@ await test("'TSTYCHE_TYPESCRIPT_PATH' environment variable", async (t) => {
 
     await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"]);
 
-    const typescriptPath = fileURLToPath(new URL("./.store/typescript@5.2.2/lib/typescript.js", fixtureUrl));
+    const typescriptPath = new URL("./.store/typescript@5.2.2/lib/typescript.js", fixtureUrl).toString();
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {

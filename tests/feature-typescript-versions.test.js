@@ -1,6 +1,5 @@
 import fs from "node:fs/promises";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -133,10 +132,10 @@ await test("TypeScript 4.x", async (t) => {
     await t.test(`uses TypeScript ${version} as current target`, async () => {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
-      const typescriptPath = fileURLToPath(new URL(`./typescript@${version}/lib/typescript.js`, storeUrl));
+      const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-        env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
+        env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptModule },
       });
 
       assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
@@ -177,10 +176,10 @@ await test("TypeScript 5.x", async (t) => {
     await t.test(`uses TypeScript ${version} as current target`, async () => {
       await spawnTyche(fixtureUrl, ["--install", "--target", version]);
 
-      const typescriptPath = fileURLToPath(new URL(`./typescript@${version}/lib/typescript.js`, storeUrl));
+      const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-        env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
+        env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptModule },
       });
 
       assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));

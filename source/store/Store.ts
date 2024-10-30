@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
@@ -68,7 +69,7 @@ export class Store {
     let modulePath: string | undefined;
 
     if (tag === "current" && environmentOptions.typescriptPath != null) {
-      modulePath = environmentOptions.typescriptPath;
+      modulePath = fileURLToPath(environmentOptions.typescriptPath);
     } else {
       await Store.open();
 
