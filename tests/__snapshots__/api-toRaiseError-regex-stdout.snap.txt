@@ -1,0 +1,19 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toRaiseError-regex.tst.ts
+  × expression raises matching type error
+  × expression raises not matching type error
+  × type expression raises matching type error
+  × type expression raises not matching type error
+  × expression raises multiple matching type errors
+  × expression raises multiple not matching type errors
+  × expression raises more type errors than expected
+  × expression raises less type errors than expected messages
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 8 failed, 6 passed, 14 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'toRaiseError-regex.tst.ts'.
