@@ -29,4 +29,21 @@ await test("toBe", async (t) => {
 
     assert.equal(exitCode, 1);
   });
+
+  await t.test("exact optional property types", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "--only",
+      "exact",
+      "--tsconfig",
+      "./tsconfig-exact.json",
+    ]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-exact-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
 });

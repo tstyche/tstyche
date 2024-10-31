@@ -19,6 +19,16 @@ test("edge cases", () => {
   expect(Date).type.toBe<typeof Date>();
 });
 
+test("exact optional property types", () => {
+  // all four assertion pass only when '"exactOptionalPropertyTypes": true' is set
+
+  expect<{ a?: number }>().type.not.toBe<{ a?: number | undefined }>();
+  expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
+
+  expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
+});
+
 describe("source type", () => {
   test("is identical to target type", () => {
     expect<{ a: string; b: number }>().type.toBe<{ a: string; b: number }>();
