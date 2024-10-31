@@ -31,7 +31,13 @@ export class MatchWorker {
   checkIsIdenticalTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
     const relation = this.#typeChecker.relation.identity;
 
-    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
+    return (
+      this.#checkIsRelatedTo(sourceNode, targetNode, relation) &&
+      // following assignability checks ensure '{ a?: number }' and '{ a?: number | undefined }'
+      // are reported as not identical when '"exactOptionalPropertyTypes": true' is set
+      this.checkIsAssignableTo(sourceNode, targetNode) &&
+      this.checkIsAssignableWith(sourceNode, targetNode)
+    );
   }
 
   checkIsSubtype(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
