@@ -151,7 +151,7 @@ interface Matchers {
   /**
    * Checks if the source type raises an error.
    */
-  toRaiseError: (...target: Array<string | number>) => void;
+  toRaiseError: (...target: Array<string | number | RegExp>) => void;
 }
 
 interface Matchers {

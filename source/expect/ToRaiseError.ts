@@ -68,8 +68,14 @@ export class ToRaiseError {
     const diagnostics: Array<Diagnostic> = [];
 
     for (const targetNode of targetNodes) {
-      if (!(this.#compiler.isStringLiteralLike(targetNode) || this.#compiler.isNumericLiteral(targetNode))) {
-        const expectedText = "a string or number literal";
+      if (
+        !(
+          this.#compiler.isStringLiteralLike(targetNode) ||
+          this.#compiler.isNumericLiteral(targetNode) ||
+          this.#compiler.isRegularExpressionLiteral(targetNode)
+        )
+      ) {
+        const expectedText = "a string, number or regular expression literal";
 
         const text = ExpectDiagnosticText.argumentMustBe("target", expectedText);
         const origin = DiagnosticOrigin.fromNode(targetNode);
@@ -92,7 +98,10 @@ export class ToRaiseError {
       isMatch =
         matchWorker.assertion.diagnostics.size === targetNodes.length &&
         [...matchWorker.assertion.diagnostics].every((diagnostic, index) =>
-          this.#matchExpectedError(diagnostic, targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral),
+          this.#matchExpectedError(
+            diagnostic,
+            targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral | ts.RegularExpressionLiteral,
+          ),
         );
     }
 
@@ -102,7 +111,16 @@ export class ToRaiseError {
     };
   }
 
-  #matchExpectedError(diagnostic: ts.Diagnostic, targetNode: ts.StringLiteralLike | ts.NumericLiteral) {
+  #matchExpectedError(
+    diagnostic: ts.Diagnostic,
+    targetNode: ts.StringLiteralLike | ts.NumericLiteral | ts.RegularExpressionLiteral,
+  ) {
+    if (this.#compiler.isRegularExpressionLiteral(targetNode)) {
+      const targetRegex = new RegExp(...(targetNode.text.slice(1).split("/") as [pattern: string, flags: string]));
+
+      return targetRegex.test(this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0));
+    }
+
     if (this.#compiler.isStringLiteralLike(targetNode)) {
       return this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(targetNode.text);
     }
