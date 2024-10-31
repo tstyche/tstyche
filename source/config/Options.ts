@@ -197,12 +197,26 @@ export class Options {
     return definitionMap;
   }
 
+  static #getCanonicalOptionName(optionName: string) {
+    return optionName.startsWith("--") ? optionName.slice(2) : optionName;
+  }
+
+  static #isBuiltinReporter(optionValue: string) {
+    return ["list", "summary"].includes(optionValue);
+  }
+
+  static #isLookupStrategy(optionValue: string) {
+    return ["findup", "ignore"].includes(optionValue);
+  }
+
   static resolve(optionName: string, optionValue: string, rootPath = "."): string {
-    switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
+    const canonicalOptionName = Options.#getCanonicalOptionName(optionName);
+
+    switch (canonicalOptionName) {
       case "config":
       case "rootPath":
       case "tsconfig":
-        if (optionName.endsWith("tsconfig") && ["findup", "ignore"].includes(optionValue)) {
+        if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {
           break;
         }
 
@@ -211,7 +225,7 @@ export class Options {
 
       case "plugins":
       case "reporters":
-        if (optionName.endsWith("reporters") && ["list", "summary"].includes(optionValue)) {
+        if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
           break;
         }
 
@@ -238,11 +252,13 @@ export class Options {
     onDiagnostics: DiagnosticsHandler,
     origin?: DiagnosticOrigin,
   ): Promise<void> {
-    switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
+    const canonicalOptionName = Options.#getCanonicalOptionName(optionName);
+
+    switch (canonicalOptionName) {
       case "config":
       case "rootPath":
       case "tsconfig":
-        if (optionName.endsWith("tsconfig") && ["findup", "ignore"].includes(optionValue)) {
+        if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {
           break;
         }
 
@@ -256,7 +272,7 @@ export class Options {
 
       case "plugins":
       case "reporters":
-        if (optionName.endsWith("reporters") && ["list", "summary"].includes(optionValue)) {
+        if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
           break;
         }
 
