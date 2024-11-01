@@ -120,6 +120,7 @@ export class Store {
 
       const toExpose = [
         "getTypeOfSymbol", // TODO remove after dropping support for TypeScript 4.5
+        "isApplicableIndexType",
         "isTypeRelatedTo",
         "relation: { assignable: assignableRelation, identity: identityRelation, subtype: strictSubtypeRelation }",
       ];

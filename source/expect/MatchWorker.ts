@@ -16,6 +16,23 @@ export class MatchWorker {
     this.assertion = assertion;
   }
 
+  checkHasApplicableIndexType(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+    const sourceType = this.getType(sourceNode);
+    const targetType = this.getType(targetNode);
+
+    return this.#typeChecker
+      .getIndexInfosOfType(sourceType)
+      .some(({ keyType }) => this.#typeChecker.isApplicableIndexType(targetType, keyType));
+  }
+
+  checkHasProperty(sourceNode: ArgumentNode, propertyNameText: string): boolean {
+    const sourceType = this.getType(sourceNode);
+
+    return sourceType
+      .getProperties()
+      .some((property) => this.#compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText);
+  }
+
   checkIsAssignableTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
@@ -88,6 +105,7 @@ export class MatchWorker {
   getTypeText(node: ArgumentNode): string {
     const type = this.getType(node);
 
+    // TODO consider passing 'enclosingDeclaration' as well
     return this.#typeChecker.typeToString(type);
   }
 

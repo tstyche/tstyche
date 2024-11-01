@@ -54,7 +54,7 @@ export class ToHaveProperty {
 
     const targetType = matchWorker.getType(targetNode);
 
-    let propertyNameText: string;
+    let propertyNameText = "";
 
     if (matchWorker.isStringOrNumberLiteralType(targetType)) {
       propertyNameText = targetType.value.toString();
@@ -75,9 +75,9 @@ export class ToHaveProperty {
       return;
     }
 
-    const isMatch = sourceType.getProperties().some((property) => {
-      return this.#compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText;
-    });
+    const isMatch =
+      matchWorker.checkHasProperty(sourceNode, propertyNameText) ||
+      matchWorker.checkHasApplicableIndexType(sourceNode, targetNode);
 
     return {
       explain: () => this.#explain(matchWorker, sourceNode, targetNode),
