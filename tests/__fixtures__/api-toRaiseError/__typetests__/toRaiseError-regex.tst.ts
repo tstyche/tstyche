@@ -32,7 +32,7 @@ test("expression raises multiple matching type errors", () => {
     two<string>("pass");
   }).type.toRaiseError(
     /^Argument of type 'number' is not assignable to parameter of type 'string'.$/,
-    /Expected \d arguments/,
+    /expected \d arguments/i,
   );
 
   expect(() => {
@@ -40,7 +40,7 @@ test("expression raises multiple matching type errors", () => {
     two<string>("fail");
   }).type.not.toRaiseError(
     /^Argument of type 'number' is not assignable to parameter of type 'string'.$/,
-    /Expected \d arguments/,
+    /expected \d arguments/i,
   );
 });
 

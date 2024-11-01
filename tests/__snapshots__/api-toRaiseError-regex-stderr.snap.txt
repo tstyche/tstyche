@@ -108,7 +108,7 @@ Error: Expression type raised a matching type error.
   41 |   }).type.not.toRaiseError(
   42 |     /^Argument of type 'number' is not assignable to parameter of type 'string'.$/,
      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  43 |     /Expected \d arguments/,
+  43 |     /expected \d arguments/i,
   44 |   );
   45 | });
 
@@ -132,8 +132,8 @@ Error: Expression type raised a matching type error.
 
   41 |   }).type.not.toRaiseError(
   42 |     /^Argument of type 'number' is not assignable to parameter of type 'string'.$/,
-  43 |     /Expected \d arguments/,
-     |     ~~~~~~~~~~~~~~~~~~~~~~~
+  43 |     /expected \d arguments/i,
+     |     ~~~~~~~~~~~~~~~~~~~~~~~~
   44 |   );
   45 | });
   46 | 
@@ -150,7 +150,7 @@ Error: Expression type raised a matching type error.
          |                 ~~~~~~
       41 |   }).type.not.toRaiseError(
       42 |     /^Argument of type 'number' is not assignable to parameter of type 'string'.$/,
-      43 |     /Expected \d arguments/,
+      43 |     /expected \d arguments/i,
 
            at ./__typetests__/toRaiseError-regex.tst.ts:40:17
 
