@@ -28,9 +28,13 @@ export class MatchWorker {
         .some(({ keyType }) => this.#typeChecker.isApplicableIndexType(targetType, keyType));
     }
 
-    // TODO
-    // this.#compiler.IndexKind.Number
-    // this.#compiler.IndexKind.String
+    if (targetType.flags & this.#compiler.TypeFlags.StringLiteral) {
+      return sourceType.getStringIndexType() != null;
+    }
+
+    if (targetType.flags & this.#compiler.TypeFlags.NumberLiteral) {
+      return (sourceType.getStringIndexType() ?? sourceType.getNumberIndexType()) != null;
+    }
 
     return false;
   }
