@@ -111,7 +111,7 @@ export class Store {
     const packageConfigText = await fs.readFile(Path.resolve(modulePath, "../../package.json"), { encoding: "utf8" });
     const { version: packageVersion } = JSON.parse(packageConfigText) as { version: string };
 
-    // project service was moved to 'typescript.js' since TypeScript 5.3
+    // project service was moved to 'typescript.js' file since TypeScript 5.3
     if (!Version.isSatisfiedWith(packageVersion, "5.3")) {
       modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
     }
