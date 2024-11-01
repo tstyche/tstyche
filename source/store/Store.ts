@@ -108,38 +108,42 @@ export class Store {
     const exports = {};
     const module = { exports };
 
-    // TODO there is no need to handle 'tsserverlibrary.js' after dropping support for TypeScript 5.2
-    const candidatePaths = [Path.join(Path.dirname(modulePath), "tsserverlibrary.js"), modulePath];
+    const packageConfigText = await fs.readFile(Path.resolve(modulePath, "../../package.json"), { encoding: "utf8" });
+    const { version: packageVersion } = JSON.parse(packageConfigText) as { version: string };
 
-    for (const candidatePath of candidatePaths) {
-      const sourceText = await fs.readFile(candidatePath, { encoding: "utf8" });
-
-      if (!sourceText.includes("isTypeRelatedTo")) {
-        continue;
-      }
-
-      const toExpose = [
-        "getTypeOfSymbol", // TODO remove after dropping support for TypeScript 4.5
-        "isApplicableIndexType",
-        "isTypeRelatedTo",
-        "relation: { assignable: assignableRelation, identity: identityRelation, subtype: strictSubtypeRelation }",
-      ];
-
-      const modifiedSourceText = sourceText.replace(
-        "return checker;",
-        `return { ...checker, ${toExpose.join(", ")} };`,
-      );
-
-      const compiledWrapper = vm.compileFunction(
-        modifiedSourceText,
-        ["exports", "require", "module", "__filename", "__dirname"],
-        { filename: candidatePath },
-      );
-
-      compiledWrapper(exports, createRequire(candidatePath), module, candidatePath, Path.dirname(candidatePath));
-
-      break;
+    // project service was moved to 'typescript.js' since TypeScript 5.3
+    if (!Version.isSatisfiedWith(packageVersion, "5.3")) {
+      modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
     }
+
+    const sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
+
+    const toExpose: Array<string> = [];
+
+    // 'isApplicableIndexType()' was added since TypeScript 4.4
+    if (Version.isSatisfiedWith(packageVersion, "4.4")) {
+      toExpose.push("isApplicableIndexType");
+    }
+
+    // 'getTypeOfSymbol()' was exposed since TypeScript 4.6
+    if (!Version.isSatisfiedWith(packageVersion, "4.6")) {
+      toExpose.push("getTypeOfSymbol");
+    }
+
+    toExpose.push(
+      "isTypeRelatedTo",
+      "relation: { assignable: assignableRelation, identity: identityRelation, subtype: strictSubtypeRelation }",
+    );
+
+    const modifiedSourceText = sourceText.replace("return checker;", `return { ...checker, ${toExpose.join(", ")} };`);
+
+    const compiledWrapper = vm.compileFunction(
+      modifiedSourceText,
+      ["exports", "require", "module", "__filename", "__dirname"],
+      { filename: modulePath },
+    );
+
+    compiledWrapper(exports, createRequire(modulePath), module, modulePath, Path.dirname(modulePath));
 
     return module.exports as typeof ts;
   }
