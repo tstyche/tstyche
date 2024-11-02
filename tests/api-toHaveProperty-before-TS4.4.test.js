@@ -52,12 +52,7 @@ await test("toHaveProperty", async (t) => {
       ["__typetests__/toHaveProperty.tst.ts"]: toHavePropertyText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "--target",
-      "4.1,4.3",
-      "--tsconfig",
-      "ignore",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "4.1,4.3", "--tsconfig", "ignore"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-stdout`,
