@@ -13,14 +13,14 @@ interface PropertyMap {
 }
 
 const enum Result {
-  Fail = 0,
-  Pass = 1,
+  Fail,
+  Pass,
 }
 type ResultMap = Record<Result, unknown>;
 
 const enum Scroll {
-  Up = "up",
   Down = "down",
+  Up = "up",
 }
 type ScrollMap = Record<Scroll, unknown>;
 
