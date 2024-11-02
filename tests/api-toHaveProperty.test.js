@@ -31,7 +31,7 @@ await test("toHaveProperty", async (t) => {
   });
 
   await t.test("index signatures", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["toHaveProperty-index-signatures.tst.ts"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["index-signatures.tst.ts"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-index-signatures-stdout`,
@@ -43,6 +43,6 @@ await test("toHaveProperty", async (t) => {
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(exitCode, 0);
+    assert.equal(exitCode, 1);
   });
 });
