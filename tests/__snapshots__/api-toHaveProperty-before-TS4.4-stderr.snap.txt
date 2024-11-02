@@ -70,11 +70,11 @@ Error: Type 'Record<symbol, unknown>' does not have property '[kOne]'.
 
        at ./__typetests__/toHaveProperty.tst.ts:27:59 ❭ index signatures before TypeScript 4.4 ❭ does not support symbol keys
 
-Error: Type 'Record<`data_${string}`, unknown>' does not have property 'data_key'.
+Error: Type 'Record<`data-${string}`, unknown>' does not have property 'data-key'.
 
   29 | 
   30 |   test("does not support string literal keys", () => {
-  31 |     expect<Record<`data_${string}`, unknown>>().type.toHaveProperty("data_key"); // fail
+  31 |     expect<Record<`data-${string}`, unknown>>().type.toHaveProperty("data-key"); // fail
      |                                                                     ~~~~~~~~~~
   32 |   });
   33 | });
@@ -154,11 +154,11 @@ Error: Type 'Record<symbol, unknown>' does not have property '[kOne]'.
 
        at ./__typetests__/toHaveProperty.tst.ts:27:59 ❭ index signatures before TypeScript 4.4 ❭ does not support symbol keys
 
-Error: Type 'Record<`data_${string}`, unknown>' does not have property 'data_key'.
+Error: Type 'Record<`data-${string}`, unknown>' does not have property 'data-key'.
 
   29 | 
   30 |   test("does not support string literal keys", () => {
-  31 |     expect<Record<`data_${string}`, unknown>>().type.toHaveProperty("data_key"); // fail
+  31 |     expect<Record<`data-${string}`, unknown>>().type.toHaveProperty("data-key"); // fail
      |                                                                     ~~~~~~~~~~
   32 |   });
   33 | });
