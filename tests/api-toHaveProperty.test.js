@@ -45,27 +45,4 @@ await test("toHaveProperty", async (t) => {
 
     assert.equal(exitCode, 0);
   });
-
-  // TODO fixture must be generated
-  await t.test("index signatures before TypeScript 4.4", { skip: true }, async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "toHaveProperty-index-signatures-before-4.4.tst.ts",
-      "--target",
-      "4.0,4.3",
-      "--tsconfig",
-      "ignore",
-    ]);
-
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-index-signatures-before-4.4-stdout`,
-      testFileUrl: import.meta.url,
-    });
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-index-signatures-before-4.4-stderr`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
-  });
 });
