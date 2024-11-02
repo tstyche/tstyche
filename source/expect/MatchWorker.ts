@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
+import { Version } from "#version";
 import type { ArgumentNode, Relation, TypeChecker } from "./types.js";
 
 export class MatchWorker {
@@ -14,6 +15,36 @@ export class MatchWorker {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
     this.assertion = assertion;
+  }
+
+  checkHasApplicableIndexType(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+    const sourceType = this.getType(sourceNode);
+    const targetType = this.getType(targetNode);
+
+    // behavior of index signatures changed since TypeScript 4.4
+    if (Version.isSatisfiedWith(this.#compiler.version, "4.4")) {
+      return this.#typeChecker
+        .getIndexInfosOfType(sourceType)
+        .some(({ keyType }) => this.#typeChecker.isApplicableIndexType(targetType, keyType));
+    }
+
+    if (targetType.flags & this.#compiler.TypeFlags.StringLiteral) {
+      return sourceType.getStringIndexType() != null;
+    }
+
+    if (targetType.flags & this.#compiler.TypeFlags.NumberLiteral) {
+      return (sourceType.getStringIndexType() ?? sourceType.getNumberIndexType()) != null;
+    }
+
+    return false;
+  }
+
+  checkHasProperty(sourceNode: ArgumentNode, propertyNameText: string): boolean {
+    const sourceType = this.getType(sourceNode);
+
+    return sourceType
+      .getProperties()
+      .some((property) => this.#compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText);
   }
 
   checkIsAssignableTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
@@ -88,6 +119,7 @@ export class MatchWorker {
   getTypeText(node: ArgumentNode): string {
     const type = this.getType(node);
 
+    // TODO consider passing 'enclosingDeclaration' as well
     return this.#typeChecker.typeToString(type);
   }
 

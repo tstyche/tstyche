@@ -120,6 +120,11 @@ export class Store {
 
     const toExpose: Array<string> = [];
 
+    // 'isApplicableIndexType()' was added since TypeScript 4.4
+    if (Version.isSatisfiedWith(packageVersion, "4.4")) {
+      toExpose.push("isApplicableIndexType");
+    }
+
     // 'getTypeOfSymbol()' was exposed since TypeScript 4.6
     if (!Version.isSatisfiedWith(packageVersion, "4.6")) {
       toExpose.push("getTypeOfSymbol");

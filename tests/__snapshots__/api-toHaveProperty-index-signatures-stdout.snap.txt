@@ -1,0 +1,20 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/index-signatures.tst.ts
+  index signatures
+    × has expected string property key
+    × has expected number property key
+    × does not have expected number property key
+    × has expected symbol property key
+    × has expected enum property key
+    × does not have expected enum property key
+    × has expected string literal property key
+    × does not have expected string literal property key
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 20 failed, 20 passed, 40 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'index-signatures.tst.ts'.

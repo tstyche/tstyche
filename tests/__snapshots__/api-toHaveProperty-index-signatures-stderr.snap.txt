@@ -1,0 +1,240 @@
+Error: Type 'Record<string, unknown>' has property '123'.
+
+  28 |   test("has expected string property key", () => {
+  29 |     expect<Record<string, unknown>>().type.toHaveProperty(123);
+  30 |     expect<Record<string, unknown>>().type.not.toHaveProperty(123); // fail
+     |                                                               ~~~
+  31 | 
+  32 |     expect<Record<string, unknown>>().type.toHaveProperty("123");
+  33 |     expect<Record<string, unknown>>().type.not.toHaveProperty("123"); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:30:63 ❭ index signatures ❭ has expected string property key
+
+Error: Type 'Record<string, unknown>' has property '123'.
+
+  31 | 
+  32 |     expect<Record<string, unknown>>().type.toHaveProperty("123");
+  33 |     expect<Record<string, unknown>>().type.not.toHaveProperty("123"); // fail
+     |                                                               ~~~~~
+  34 | 
+  35 |     expect<Record<string, unknown>>().type.toHaveProperty("abc");
+  36 |     expect<Record<string, unknown>>().type.not.toHaveProperty("abc"); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:33:63 ❭ index signatures ❭ has expected string property key
+
+Error: Type 'Record<string, unknown>' has property 'abc'.
+
+  34 | 
+  35 |     expect<Record<string, unknown>>().type.toHaveProperty("abc");
+  36 |     expect<Record<string, unknown>>().type.not.toHaveProperty("abc"); // fail
+     |                                                               ~~~~~
+  37 | 
+  38 |     expect<Record<string, unknown>>().type.toHaveProperty(Result.Fail);
+  39 |     expect<Record<string, unknown>>().type.not.toHaveProperty(Result.Fail); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:36:63 ❭ index signatures ❭ has expected string property key
+
+Error: Type 'Record<string, unknown>' has property '0'.
+
+  37 | 
+  38 |     expect<Record<string, unknown>>().type.toHaveProperty(Result.Fail);
+  39 |     expect<Record<string, unknown>>().type.not.toHaveProperty(Result.Fail); // fail
+     |                                                               ~~~~~~~~~~~
+  40 | 
+  41 |     expect<Record<string, unknown>>().type.toHaveProperty(Scroll.Down);
+  42 |     expect<Record<string, unknown>>().type.not.toHaveProperty(Scroll.Down); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:39:63 ❭ index signatures ❭ has expected string property key
+
+Error: Type 'Record<string, unknown>' has property 'down'.
+
+  40 | 
+  41 |     expect<Record<string, unknown>>().type.toHaveProperty(Scroll.Down);
+  42 |     expect<Record<string, unknown>>().type.not.toHaveProperty(Scroll.Down); // fail
+     |                                                               ~~~~~~~~~~~
+  43 | 
+  44 |     expect<PropertyMap>().type.toHaveProperty("abc");
+  45 |     expect<PropertyMap>().type.not.toHaveProperty("abc"); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:42:63 ❭ index signatures ❭ has expected string property key
+
+Error: Type 'PropertyMap' has property 'abc'.
+
+  43 | 
+  44 |     expect<PropertyMap>().type.toHaveProperty("abc");
+  45 |     expect<PropertyMap>().type.not.toHaveProperty("abc"); // fail
+     |                                                   ~~~~~
+  46 |   });
+  47 | 
+  48 |   test("has expected number property key", () => {
+
+       at ./__typetests__/index-signatures.tst.ts:45:51 ❭ index signatures ❭ has expected string property key
+
+Error: Type 'Record<number, unknown>' has property '123'.
+
+  48 |   test("has expected number property key", () => {
+  49 |     expect<Record<number, unknown>>().type.toHaveProperty(123);
+  50 |     expect<Record<number, unknown>>().type.not.toHaveProperty(123); // fail
+     |                                                               ~~~
+  51 | 
+  52 |     expect<Record<number, unknown>>().type.toHaveProperty("123");
+  53 |     expect<Record<number, unknown>>().type.not.toHaveProperty("123"); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:50:63 ❭ index signatures ❭ has expected number property key
+
+Error: Type 'Record<number, unknown>' has property '123'.
+
+  51 | 
+  52 |     expect<Record<number, unknown>>().type.toHaveProperty("123");
+  53 |     expect<Record<number, unknown>>().type.not.toHaveProperty("123"); // fail
+     |                                                               ~~~~~
+  54 | 
+  55 |     expect<Record<number, unknown>>().type.toHaveProperty(Result.Fail);
+  56 |     expect<Record<number, unknown>>().type.not.toHaveProperty(Result.Fail); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:53:63 ❭ index signatures ❭ has expected number property key
+
+Error: Type 'Record<number, unknown>' has property '0'.
+
+  54 | 
+  55 |     expect<Record<number, unknown>>().type.toHaveProperty(Result.Fail);
+  56 |     expect<Record<number, unknown>>().type.not.toHaveProperty(Result.Fail); // fail
+     |                                                               ~~~~~~~~~~~
+  57 | 
+  58 |     expect<PropertyMap>().type.toHaveProperty(123);
+  59 |     expect<PropertyMap>().type.not.toHaveProperty(123); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:56:63 ❭ index signatures ❭ has expected number property key
+
+Error: Type 'PropertyMap' has property '123'.
+
+  57 | 
+  58 |     expect<PropertyMap>().type.toHaveProperty(123);
+  59 |     expect<PropertyMap>().type.not.toHaveProperty(123); // fail
+     |                                                   ~~~
+  60 |   });
+  61 | 
+  62 |   test("does not have expected number property key", () => {
+
+       at ./__typetests__/index-signatures.tst.ts:59:51 ❭ index signatures ❭ has expected number property key
+
+Error: Type 'Record<number, unknown>' does not have property 'abc'.
+
+  62 |   test("does not have expected number property key", () => {
+  63 |     expect<Record<number, unknown>>().type.not.toHaveProperty("abc");
+  64 |     expect<Record<number, unknown>>().type.toHaveProperty("abc"); // fail
+     |                                                           ~~~~~
+  65 | 
+  66 |     expect<Record<number, unknown>>().type.not.toHaveProperty(Scroll.Up);
+  67 |     expect<Record<number, unknown>>().type.toHaveProperty(Scroll.Up); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:64:59 ❭ index signatures ❭ does not have expected number property key
+
+Error: Type 'Record<number, unknown>' does not have property 'up'.
+
+  65 | 
+  66 |     expect<Record<number, unknown>>().type.not.toHaveProperty(Scroll.Up);
+  67 |     expect<Record<number, unknown>>().type.toHaveProperty(Scroll.Up); // fail
+     |                                                           ~~~~~~~~~
+  68 |   });
+  69 | 
+  70 |   test("has expected symbol property key", () => {
+
+       at ./__typetests__/index-signatures.tst.ts:67:59 ❭ index signatures ❭ does not have expected number property key
+
+Error: Type 'SymbolMap' has property '[symbolKey]'.
+
+  72 | 
+  73 |     expect<SymbolMap>().type.toHaveProperty(symbolKey);
+  74 |     expect<SymbolMap>().type.not.toHaveProperty(symbolKey); // fail
+     |                                                 ~~~~~~~~~
+  75 | 
+  76 |     expect<PropertyMap>().type.toHaveProperty(symbolKey);
+  77 |     expect<PropertyMap>().type.not.toHaveProperty(symbolKey); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:74:49 ❭ index signatures ❭ has expected symbol property key
+
+Error: Type 'PropertyMap' has property '[symbolKey]'.
+
+  75 | 
+  76 |     expect<PropertyMap>().type.toHaveProperty(symbolKey);
+  77 |     expect<PropertyMap>().type.not.toHaveProperty(symbolKey); // fail
+     |                                                   ~~~~~~~~~
+  78 |   });
+  79 | 
+  80 |   test("has expected enum property key", () => {
+
+       at ./__typetests__/index-signatures.tst.ts:77:51 ❭ index signatures ❭ has expected symbol property key
+
+Error: Type 'ScrollMap' has property 'up'.
+
+  80 |   test("has expected enum property key", () => {
+  81 |     expect<ScrollMap>().type.toHaveProperty(Scroll.Up);
+  82 |     expect<ScrollMap>().type.not.toHaveProperty(Scroll.Up); // fail
+     |                                                 ~~~~~~~~~
+  83 | 
+  84 |     expect<ResultMap>().type.toHaveProperty(Result.Pass);
+  85 |     expect<ResultMap>().type.not.toHaveProperty(Result.Pass); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:82:49 ❭ index signatures ❭ has expected enum property key
+
+Error: Type 'ResultMap' has property '1'.
+
+  83 | 
+  84 |     expect<ResultMap>().type.toHaveProperty(Result.Pass);
+  85 |     expect<ResultMap>().type.not.toHaveProperty(Result.Pass); // fail
+     |                                                 ~~~~~~~~~~~
+  86 |   });
+  87 | 
+  88 |   test("does not have expected enum property key", () => {
+
+       at ./__typetests__/index-signatures.tst.ts:85:49 ❭ index signatures ❭ has expected enum property key
+
+Error: Type 'ScrollMap' does not have property '0'.
+
+  88 |   test("does not have expected enum property key", () => {
+  89 |     expect<ScrollMap>().type.not.toHaveProperty(Result.Fail);
+  90 |     expect<ScrollMap>().type.toHaveProperty(Result.Fail); // fail
+     |                                             ~~~~~~~~~~~
+  91 | 
+  92 |     expect<ResultMap>().type.not.toHaveProperty(Scroll.Down);
+  93 |     expect<ResultMap>().type.toHaveProperty(Scroll.Down); // fail
+
+       at ./__typetests__/index-signatures.tst.ts:90:45 ❭ index signatures ❭ does not have expected enum property key
+
+Error: Type 'ResultMap' does not have property 'down'.
+
+  91 | 
+  92 |     expect<ResultMap>().type.not.toHaveProperty(Scroll.Down);
+  93 |     expect<ResultMap>().type.toHaveProperty(Scroll.Down); // fail
+     |                                             ~~~~~~~~~~~
+  94 |   });
+  95 | 
+  96 |   test("has expected string literal property key", () => {
+
+       at ./__typetests__/index-signatures.tst.ts:93:45 ❭ index signatures ❭ does not have expected enum property key
+
+Error: Type 'DataProps' has property 'data-sample'.
+
+   96 |   test("has expected string literal property key", () => {
+   97 |     expect<DataProps>().type.toHaveProperty("data-sample");
+   98 |     expect<DataProps>().type.not.toHaveProperty("data-sample"); // fail
+      |                                                 ~~~~~~~~~~~~~
+   99 |   });
+  100 | 
+  101 |   test("does not have expected string literal property key", () => {
+
+        at ./__typetests__/index-signatures.tst.ts:98:49 ❭ index signatures ❭ has expected string literal property key
+
+Error: Type 'DataProps' does not have property 'date-sample'.
+
+  101 |   test("does not have expected string literal property key", () => {
+  102 |     expect<DataProps>().type.not.toHaveProperty("date-sample");
+  103 |     expect<DataProps>().type.toHaveProperty("date-sample"); // fail
+      |                                             ~~~~~~~~~~~~~
+  104 |   });
+  105 | });
+  106 | 
+
+        at ./__typetests__/index-signatures.tst.ts:103:45 ❭ index signatures ❭ does not have expected string literal property key
+

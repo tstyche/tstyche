@@ -1,0 +1,168 @@
+Error: Type 'Record<string, unknown>' has property 'abc'.
+
+   5 |   test("has expected property key", () => {
+   6 |     expect<Record<string, unknown>>().type.toHaveProperty("abc");
+   7 |     expect<Record<string, unknown>>().type.not.toHaveProperty("abc"); // fail
+     |                                                               ~~~~~
+   8 | 
+   9 |     expect<Record<string, unknown>>().type.toHaveProperty("123");
+  10 |     expect<Record<string, unknown>>().type.not.toHaveProperty("123"); // fail
+
+       at ./__typetests__/toHaveProperty.tst.ts:7:63 ❭ index signatures before TypeScript 4.4 ❭ has expected property key
+
+Error: Type 'Record<string, unknown>' has property '123'.
+
+   8 | 
+   9 |     expect<Record<string, unknown>>().type.toHaveProperty("123");
+  10 |     expect<Record<string, unknown>>().type.not.toHaveProperty("123"); // fail
+     |                                                               ~~~~~
+  11 | 
+  12 |     expect<Record<string, unknown>>().type.toHaveProperty(123);
+  13 |     expect<Record<string, unknown>>().type.not.toHaveProperty(123); // fail
+
+       at ./__typetests__/toHaveProperty.tst.ts:10:63 ❭ index signatures before TypeScript 4.4 ❭ has expected property key
+
+Error: Type 'Record<string, unknown>' has property '123'.
+
+  11 | 
+  12 |     expect<Record<string, unknown>>().type.toHaveProperty(123);
+  13 |     expect<Record<string, unknown>>().type.not.toHaveProperty(123); // fail
+     |                                                               ~~~
+  14 | 
+  15 |     expect<Record<number, unknown>>().type.toHaveProperty(123);
+  16 |     expect<Record<number, unknown>>().type.not.toHaveProperty(123); // fail
+
+       at ./__typetests__/toHaveProperty.tst.ts:13:63 ❭ index signatures before TypeScript 4.4 ❭ has expected property key
+
+Error: Type 'Record<number, unknown>' has property '123'.
+
+  14 | 
+  15 |     expect<Record<number, unknown>>().type.toHaveProperty(123);
+  16 |     expect<Record<number, unknown>>().type.not.toHaveProperty(123); // fail
+     |                                                               ~~~
+  17 |   });
+  18 | 
+  19 |   test("does not have expected property key", () => {
+
+       at ./__typetests__/toHaveProperty.tst.ts:16:63 ❭ index signatures before TypeScript 4.4 ❭ has expected property key
+
+Error: Type 'Record<number, unknown>' does not have property '123'.
+
+  19 |   test("does not have expected property key", () => {
+  20 |     expect<Record<number, unknown>>().type.not.toHaveProperty("123");
+  21 |     expect<Record<number, unknown>>().type.toHaveProperty("123"); // fail
+     |                                                           ~~~~~
+  22 |   });
+  23 | 
+  24 |   test("does not support symbol keys", () => {
+
+       at ./__typetests__/toHaveProperty.tst.ts:21:59 ❭ index signatures before TypeScript 4.4 ❭ does not have expected property key
+
+Error: Type 'Record<symbol, unknown>' does not have property '[kOne]'.
+
+  25 |     const kOne = Symbol("one");
+  26 | 
+  27 |     expect<Record<symbol, unknown>>().type.toHaveProperty(kOne); // fail
+     |                                                           ~~~~
+  28 |   });
+  29 | 
+  30 |   test("does not support string literal keys", () => {
+
+       at ./__typetests__/toHaveProperty.tst.ts:27:59 ❭ index signatures before TypeScript 4.4 ❭ does not support symbol keys
+
+Error: Type 'Record<`data-${string}`, unknown>' does not have property 'data-key'.
+
+  29 | 
+  30 |   test("does not support string literal keys", () => {
+  31 |     expect<Record<`data-${string}`, unknown>>().type.toHaveProperty("data-key"); // fail
+     |                                                                     ~~~~~~~~~~
+  32 |   });
+  33 | });
+  34 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:31:69 ❭ index signatures before TypeScript 4.4 ❭ does not support string literal keys
+
+Error: Type 'Record<string, unknown>' has property 'abc'.
+
+   5 |   test("has expected property key", () => {
+   6 |     expect<Record<string, unknown>>().type.toHaveProperty("abc");
+   7 |     expect<Record<string, unknown>>().type.not.toHaveProperty("abc"); // fail
+     |                                                               ~~~~~
+   8 | 
+   9 |     expect<Record<string, unknown>>().type.toHaveProperty("123");
+  10 |     expect<Record<string, unknown>>().type.not.toHaveProperty("123"); // fail
+
+       at ./__typetests__/toHaveProperty.tst.ts:7:63 ❭ index signatures before TypeScript 4.4 ❭ has expected property key
+
+Error: Type 'Record<string, unknown>' has property '123'.
+
+   8 | 
+   9 |     expect<Record<string, unknown>>().type.toHaveProperty("123");
+  10 |     expect<Record<string, unknown>>().type.not.toHaveProperty("123"); // fail
+     |                                                               ~~~~~
+  11 | 
+  12 |     expect<Record<string, unknown>>().type.toHaveProperty(123);
+  13 |     expect<Record<string, unknown>>().type.not.toHaveProperty(123); // fail
+
+       at ./__typetests__/toHaveProperty.tst.ts:10:63 ❭ index signatures before TypeScript 4.4 ❭ has expected property key
+
+Error: Type 'Record<string, unknown>' has property '123'.
+
+  11 | 
+  12 |     expect<Record<string, unknown>>().type.toHaveProperty(123);
+  13 |     expect<Record<string, unknown>>().type.not.toHaveProperty(123); // fail
+     |                                                               ~~~
+  14 | 
+  15 |     expect<Record<number, unknown>>().type.toHaveProperty(123);
+  16 |     expect<Record<number, unknown>>().type.not.toHaveProperty(123); // fail
+
+       at ./__typetests__/toHaveProperty.tst.ts:13:63 ❭ index signatures before TypeScript 4.4 ❭ has expected property key
+
+Error: Type 'Record<number, unknown>' has property '123'.
+
+  14 | 
+  15 |     expect<Record<number, unknown>>().type.toHaveProperty(123);
+  16 |     expect<Record<number, unknown>>().type.not.toHaveProperty(123); // fail
+     |                                                               ~~~
+  17 |   });
+  18 | 
+  19 |   test("does not have expected property key", () => {
+
+       at ./__typetests__/toHaveProperty.tst.ts:16:63 ❭ index signatures before TypeScript 4.4 ❭ has expected property key
+
+Error: Type 'Record<number, unknown>' does not have property '123'.
+
+  19 |   test("does not have expected property key", () => {
+  20 |     expect<Record<number, unknown>>().type.not.toHaveProperty("123");
+  21 |     expect<Record<number, unknown>>().type.toHaveProperty("123"); // fail
+     |                                                           ~~~~~
+  22 |   });
+  23 | 
+  24 |   test("does not support symbol keys", () => {
+
+       at ./__typetests__/toHaveProperty.tst.ts:21:59 ❭ index signatures before TypeScript 4.4 ❭ does not have expected property key
+
+Error: Type 'Record<symbol, unknown>' does not have property '[kOne]'.
+
+  25 |     const kOne = Symbol("one");
+  26 | 
+  27 |     expect<Record<symbol, unknown>>().type.toHaveProperty(kOne); // fail
+     |                                                           ~~~~
+  28 |   });
+  29 | 
+  30 |   test("does not support string literal keys", () => {
+
+       at ./__typetests__/toHaveProperty.tst.ts:27:59 ❭ index signatures before TypeScript 4.4 ❭ does not support symbol keys
+
+Error: Type 'Record<`data-${string}`, unknown>' does not have property 'data-key'.
+
+  29 | 
+  30 |   test("does not support string literal keys", () => {
+  31 |     expect<Record<`data-${string}`, unknown>>().type.toHaveProperty("data-key"); // fail
+     |                                                                     ~~~~~~~~~~
+  32 |   });
+  33 | });
+  34 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:31:69 ❭ index signatures before TypeScript 4.4 ❭ does not support string literal keys
+
