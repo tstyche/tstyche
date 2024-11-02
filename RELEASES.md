@@ -1,5 +1,13 @@
 # Releases
 
+## [3.0.0-rc.2] - 2024-11-02
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Added
+
+- Implement index signature checks for the `.toHaveProperty()` matcher ([#362](https://github.com/tstyche/tstyche/pull/362))
+
 ## [3.0.0-rc.1] - 2024-10-31
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
@@ -416,6 +424,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-rc.2
 [3.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-rc.1
 [3.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-rc.0
 [3.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-beta.6
