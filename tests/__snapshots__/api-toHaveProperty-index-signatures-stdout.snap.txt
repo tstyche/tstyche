@@ -1,0 +1,17 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/toHaveProperty-index-signatures.tst.ts
+  index signatures
+    + when key is string
+    + when key is number
+    + when key is string symbol
+    + when key is enum member
+    + when key is string literal
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      5 passed, 5 total
+Assertions: 12 passed, 12 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'toHaveProperty-index-signatures.tst.ts'.

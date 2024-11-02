@@ -1,3 +1,4 @@
+// @ts-expect-error self-referencing is not supported
 import { describe, expect, test } from "tstyche";
 
 const enum Result {

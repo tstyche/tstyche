@@ -42,4 +42,4 @@ Tests:      30 failed, 30 total
 Assertions: 30 failed, 31 passed, 61 total
 Duration:   <<timestamp>>
 
-Ran all test files.
+Ran test files matching 'toHaveProperty.tst.ts'.
