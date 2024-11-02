@@ -21,7 +21,7 @@ export class MatchWorker {
     const sourceType = this.getType(sourceNode);
     const targetType = this.getType(targetNode);
 
-    // index signature behavior changed since TypeScript 4.4
+    // behavior of index signatures changed since TypeScript 4.4
     if (Version.isSatisfiedWith(this.#compiler.version, "4.4")) {
       return this.#typeChecker
         .getIndexInfosOfType(sourceType)

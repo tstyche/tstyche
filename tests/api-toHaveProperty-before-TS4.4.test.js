@@ -34,7 +34,7 @@ describe("index signatures before TypeScript 4.4", () => {
   });
 
   test("does not support string literal keys", () => {
-    expect<Record<\`data_\${string}\`, unknown>>().type.toHaveProperty("data_key"); // fail
+    expect<Record<\`data-\${string}\`, unknown>>().type.toHaveProperty("data-key"); // fail
   });
 });
 `;
