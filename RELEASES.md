@@ -6,7 +6,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ### Added
 
-- Implement index signature checks for the `.toHaveProperty()` matcher ([#362](https://github.com/tstyche/tstyche/pull/362))
+- Add index signature checks for the `.toHaveProperty()` matcher ([#362](https://github.com/tstyche/tstyche/pull/362))
 
 ## [3.0.0-rc.1] - 2024-10-31
 
