@@ -1,4 +1,9 @@
-import { describe as tstDescribe, expect as tstExpect, it as tstIt, test as tstTest } from "tstyche";
+import {
+  describe as tstDescribe,
+  expect as tstExpect,
+  it as tstIt,
+  test as tstTest,
+} from "tstyche";
 
 tstIt.todo("is todo?");
 

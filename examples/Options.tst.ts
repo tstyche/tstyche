@@ -22,7 +22,9 @@ interface Options {
 const options: Options = {};
 
 test("is a match?", () => {
-  expect(pick(options, "environment")).type.toBe<{ readonly environment?: string }>();
+  expect(pick(options, "environment")).type.toBe<{
+    readonly environment?: string;
+  }>();
 
   expect(pick(options, "timers")).type.toBe<{ timers?: "fake" | "real" }>();
 });

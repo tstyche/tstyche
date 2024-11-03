@@ -143,31 +143,45 @@ test("expression raises multiple type errors with matching messages and expected
   expect(() => {
     two(1111);
     two<string>("pass");
-  }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
+  }).type.toRaiseError(
+    "Argument of type 'number' is not assignable to parameter of type 'string'",
+    2554,
+  );
 
   expect(() => {
     two(1000);
     two<string>("fail");
-  }).type.not.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'", 2554);
+  }).type.not.toRaiseError(
+    "Argument of type 'number' is not assignable to parameter of type 'string'",
+    2554,
+  );
 });
 
 test("expression raises multiple type errors with not matching messages and not expected codes", () => {
   expect(() => {
     two(1111);
     two<string>("pass");
-  }).type.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
+  }).type.toRaiseError(
+    2554,
+    "Argument of type 'number' is not assignable to parameter of type 'string'",
+  );
 
   expect(() => {
     two(1000);
     two<string>("fail");
-  }).type.not.toRaiseError(2554, "Argument of type 'number' is not assignable to parameter of type 'string'");
+  }).type.not.toRaiseError(
+    2554,
+    "Argument of type 'number' is not assignable to parameter of type 'string'",
+  );
 });
 
 test("expression raises more type errors than expected messages", () => {
   expect(() => {
     two(1111);
     two<string>("pass");
-  }).type.toRaiseError("Argument of type 'number' is not assignable to parameter of type 'string'");
+  }).type.toRaiseError(
+    "Argument of type 'number' is not assignable to parameter of type 'string'",
+  );
 });
 
 test("expression raises more type errors than expected codes", () => {

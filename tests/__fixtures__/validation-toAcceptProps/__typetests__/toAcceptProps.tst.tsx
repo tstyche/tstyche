@@ -33,6 +33,8 @@ describe("type argument for 'Target'", () => {
 
     expect(() => <>{"test"}</>).type.toAcceptProps<string>();
 
-    expect(() => <>{"test"}</>).type.toAcceptProps<{ test: string } | { test: number }>();
+    expect(() => <>{"test"}</>).type.toAcceptProps<
+      { test: string } | { test: number }
+    >();
   });
 });
