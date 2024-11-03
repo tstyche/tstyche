@@ -96,13 +96,6 @@
 
   "overrides": [
     {
-      "include": ["examples/*"],
-      "formatter": {
-        "lineWidth": 80
-      }
-    },
-
-    {
       "include": ["source/handlers/ResultHandler.ts"],
       "linter": {
         "rules": {

@@ -66,9 +66,7 @@ test("expression raises more type errors than expected", () => {
   expect(() => {
     two(1111);
     two<string>("pass");
-  }).type.toRaiseError(
-    /^Argument of type 'number' is not assignable to parameter of type 'string'.$/,
-  );
+  }).type.toRaiseError(/^Argument of type 'number' is not assignable to parameter of type 'string'.$/);
 });
 
 test("expression raises less type errors than expected messages", () => {

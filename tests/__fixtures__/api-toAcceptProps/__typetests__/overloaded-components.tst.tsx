@@ -19,8 +19,7 @@ interface Overload {
 function OverloadFunction(props: FirstProps): React.JSX.Element;
 function OverloadFunction(props: SecondProps): React.JSX.Element;
 function OverloadFunction(props: FirstProps | SecondProps): React.JSX.Element {
-  const hasOne = (props: FirstProps | SecondProps): props is FirstProps =>
-    "one" in props;
+  const hasOne = (props: FirstProps | SecondProps): props is FirstProps => "one" in props;
 
   if (hasOne(props)) {
     return <a {...props} />;
@@ -35,10 +34,7 @@ describe("when target is a function component", () => {
     expect(OverloadFunction).type.not.toAcceptProps({}); // fail
 
     expect(OverloadFunction).type.toAcceptProps({ one: "sample", two: 123 });
-    expect(OverloadFunction).type.not.toAcceptProps({
-      one: "sample",
-      two: 123,
-    }); // fail
+    expect(OverloadFunction).type.not.toAcceptProps({ one: "sample", two: 123 }); // fail
   });
 
   test("property does not exist in props type", () => {

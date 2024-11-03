@@ -12,14 +12,10 @@ class Queue<T> {
   }
 }
 
-expect(omit(new Queue(), "enqueue", "entries")).type.toBe<{
-  readonly size: number;
-}>();
+expect(omit(new Queue(), "enqueue", "entries")).type.toBe<{ readonly size: number }>();
 
 // Equivalent to the 'Omit' utility type
-expect<Omit<Queue<string>, "enqueue" | "entries">>().type.toBe<{
-  readonly size: number;
-}>();
+expect<Omit<Queue<string>, "enqueue" | "entries">>().type.toBe<{ readonly size: number }>();
 
 expect(pick(new Queue(), "size")).type.toBe<{ readonly size: number }>();
 

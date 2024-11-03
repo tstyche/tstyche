@@ -13,8 +13,6 @@ export default {
   },
 
   select(testFiles) {
-    return testFiles.filter(
-      (testFile) => !testFile.endsWith("toBeNumber.test.ts"),
-    );
+    return testFiles.filter((testFile) => !testFile.endsWith("toBeNumber.test.ts"));
   },
 };
