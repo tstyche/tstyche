@@ -19,6 +19,4 @@ expect<Matchers>().type.toRaiseError(/between \d and \d type arguments/);
 expect<Matchers>().type.toRaiseError(/generic .+ requires .+ type arguments/i);
 
 // The exact error message
-expect<Matchers>().type.toRaiseError(
-  /^Generic type 'Matchers<R, T>' requires between 1 and 2 type arguments.$/,
-);
+expect<Matchers>().type.toRaiseError(/^Generic type 'Matchers<R, T>' requires between 1 and 2 type arguments.$/);
