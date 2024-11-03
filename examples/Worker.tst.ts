@@ -5,14 +5,17 @@ type Worker<T> = {
 };
 
 interface Sample {
+  [key: `data-${string}`]: string;
   isBusy?: boolean | undefined;
   runTest: (a: string, b: number) => void;
   setup: () => void;
   teardown: () => void;
 }
 
+expect<Worker<Sample>>().type.toHaveProperty("data-sample");
 expect<Worker<Sample>>().type.toHaveProperty("isBusy");
 expect<Worker<Sample>>().type.toHaveProperty("runTest");
 
+expect<Worker<Sample>>().type.not.toHaveProperty("sample");
 expect<Worker<Sample>>().type.not.toHaveProperty("setup");
 expect<Worker<Sample>>().type.not.toHaveProperty("teardown");
