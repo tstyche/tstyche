@@ -1,4 +1,4 @@
-import { expect } from "tstyche";
+import { expect, test } from "tstyche";
 
 type Worker<T> = {
   [K in keyof T as Exclude<K, "setup" | "teardown">]: T[K];
@@ -12,10 +12,11 @@ interface Sample {
   teardown: () => void;
 }
 
-expect<Worker<Sample>>().type.toHaveProperty("data-sample");
-expect<Worker<Sample>>().type.toHaveProperty("isBusy");
-expect<Worker<Sample>>().type.toHaveProperty("runTest");
+test("Worker", () => {
+  expect<Worker<Sample>>().type.toHaveProperty("data-sample");
+  expect<Worker<Sample>>().type.toHaveProperty("isBusy");
+  expect<Worker<Sample>>().type.toHaveProperty("runTest");
 
-expect<Worker<Sample>>().type.not.toHaveProperty("sample");
-expect<Worker<Sample>>().type.not.toHaveProperty("setup");
-expect<Worker<Sample>>().type.not.toHaveProperty("teardown");
+  expect<Worker<Sample>>().type.not.toHaveProperty("setup");
+  expect<Worker<Sample>>().type.not.toHaveProperty("teardown");
+});
