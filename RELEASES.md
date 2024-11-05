@@ -1,5 +1,55 @@
 # Releases
 
+## [3.0.0] - 2024-11-05
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+
+### Fixed
+
+- Take into account `exactOptionalPropertyTypes` option when comparing types ([#357](https://github.com/tstyche/tstyche/pull/357))
+- Always resolve test file paths ([#346](https://github.com/tstyche/tstyche/pull/346))
+- Mark not existing test file as failed ([#341](https://github.com/tstyche/tstyche/pull/341))
+- Fix relative path normalization logic ([#317](https://github.com/tstyche/tstyche/pull/317))
+- When requested, always suppress fetch errors ([#275](https://github.com/tstyche/tstyche/pull/275))
+
+### Changed
+
+- **Breaking!** Rename the `TSTYCHE_TYPESCRIPT_MODULE` environment variable ([#356](https://github.com/tstyche/tstyche/pull/356))
+- **Breaking!** Use `import.meta.resolve()` ([#355](https://github.com/tstyche/tstyche/pull/355))
+- **Breaking!** Rename `TargetResult.target` property ([#339](https://github.com/tstyche/tstyche/pull/339))
+- **Breaking!** Rename the `Options` class ([#334](https://github.com/tstyche/tstyche/pull/334))
+- **Breaking!** Make the `Config` class not instantiable ([#332](https://github.com/tstyche/tstyche/pull/332))
+- **Breaking!** Make the `Select` class not instantiable ([#331](https://github.com/tstyche/tstyche/pull/331))
+- **Breaking!** Remove the `TSTyche` class ([#330](https://github.com/tstyche/tstyche/pull/330))
+- **Breaking!** Make the `Store` class not instantiable ([#329](https://github.com/tstyche/tstyche/pull/329))
+- **Breaking!** Make the `OutputService` class not instantiable ([#328](https://github.com/tstyche/tstyche/pull/328))
+- **Breaking!** Rename the `ListReporter` class ([#326](https://github.com/tstyche/tstyche/pull/326))
+- **Breaking!** Rename the `EventHandler.on()` method ([#323](https://github.com/tstyche/tstyche/pull/323))
+- **Breaking!** Deprecate the `.toMatch()` matcher ([#315](https://github.com/tstyche/tstyche/pull/315))
+- **Breaking!** Remove `ConfigService` constructor arguments ([#297](https://github.com/tstyche/tstyche/pull/297))
+- **Breaking!** Rename `Task`, `TaskResult`, `Runner` classes and `task:*` events ([#296](https://github.com/tstyche/tstyche/pull/296))
+- **Breaking!** Remove `InputService` constructor options ([#294](https://github.com/tstyche/tstyche/pull/294))
+- **Breaking!** Remove `OutputService` constructor options ([#293](https://github.com/tstyche/tstyche/pull/293))
+- **Breaking!** Rename the `project:uses` event ([#290](https://github.com/tstyche/tstyche/pull/290))
+- **Breaking!** Rename the `store:adds` event ([#289](https://github.com/tstyche/tstyche/pull/289))
+- **Breaking!** Remove the deprecated `.toBeAssignable()` and `.toEqual()` matchers ([#286](https://github.com/tstyche/tstyche/pull/286))
+- **Breaking!** Drop support for Node.js 16 ([#285](https://github.com/tstyche/tstyche/pull/285))
+- **Breaking!** Directly fetch and extract tarballs of `typescript` packages ([#269](https://github.com/tstyche/tstyche/pull/269), [#291](https://github.com/tstyche/tstyche/pull/291))
+
+### Added
+
+- Add index signature checks for the `.toHaveProperty()` matcher ([#362](https://github.com/tstyche/tstyche/pull/362))
+- Allow `.toRaiseError()` to take regular expressions ([#358](https://github.com/tstyche/tstyche/pull/358))
+- **New!** Add the `tsconfig` configuration option ([#343](https://github.com/tstyche/tstyche/pull/343))
+- **New!** Add support for custom reporters ([#327](https://github.com/tstyche/tstyche/pull/327))
+- **New!** Add support for plugins ([#322](https://github.com/tstyche/tstyche/pull/322), [#324](https://github.com/tstyche/tstyche/pull/324), [#337](https://github.com/tstyche/tstyche/pull/337), [#349](https://github.com/tstyche/tstyche/pull/349), [#350](https://github.com/tstyche/tstyche/pull/350), [#352](https://github.com/tstyche/tstyche/pull/352))
+- **New!** Add `omit()` and `pick()` utilities ([#314](https://github.com/tstyche/tstyche/pull/314))
+- Add the `JsonScanner` class ([#310](https://github.com/tstyche/tstyche/pull/310))
+- Add `prune()` method to `StoreService` class ([#298](https://github.com/tstyche/tstyche/pull/298))
+- Add the `LockService` class ([#281](https://github.com/tstyche/tstyche/pull/281))
+- Add the `Fetcher` class ([#274](https://github.com/tstyche/tstyche/pull/274))
+- **New!** Add the `TSTYCHE_NPM_REGISTRY` environment variable ([#266](https://github.com/tstyche/tstyche/pull/266), [#282](https://github.com/tstyche/tstyche/pull/282))
+
 ## [3.0.0-rc.2] - 2024-11-02
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
