@@ -17,12 +17,10 @@
   "language": "en-US",
   "useGitignore": true,
   "words": [
-    "biomejs",
     "codacy",
     "findup",
     "jsxs",
     "monocart",
-    "packagephobia",
     "positionals",
     "tsserverlibrary",
     "tstyche",
