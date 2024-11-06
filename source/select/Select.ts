@@ -20,6 +20,33 @@ interface MatchPatterns {
 export class Select {
   static #patternsCache = new WeakMap<Array<string>, MatchPatterns>();
 
+  static async #getAccessibleFileSystemEntries(targetPath: string) {
+    const directories: Array<string> = [];
+    const files: Array<string> = [];
+
+    try {
+      const entries = await fs.readdir(targetPath, { withFileTypes: true });
+
+      for (const entry of entries) {
+        let entryMeta: FileSystemEntryMeta = entry;
+
+        if (entry.isSymbolicLink()) {
+          entryMeta = await fs.stat([targetPath, entry.name].join("/"));
+        }
+
+        if (entryMeta.isDirectory()) {
+          directories.push(entry.name);
+        } else if (entryMeta.isFile()) {
+          files.push(entry.name);
+        }
+      }
+    } catch {
+      // continue regardless of error
+    }
+
+    return { directories, files };
+  }
+
   static #getMatchPatterns(globPatterns: Array<string>) {
     let matchPatterns = Select.#patternsCache.get(globPatterns);
 
@@ -35,11 +62,11 @@ export class Select {
     return matchPatterns;
   }
 
-  static #isDirectoryIncluded(directoryPath: string, matchPatterns: MatchPatterns): boolean {
+  static #isDirectoryIncluded(directoryPath: string, matchPatterns: MatchPatterns) {
     return matchPatterns.includedDirectory.test(directoryPath);
   }
 
-  static #isFileIncluded(filePath: string, matchPatterns: MatchPatterns, resolvedConfig: ResolvedConfig): boolean {
+  static #isFileIncluded(filePath: string, matchPatterns: MatchPatterns, resolvedConfig: ResolvedConfig) {
     if (
       resolvedConfig.pathMatch.length > 0 &&
       !resolvedConfig.pathMatch.some((match) => filePath.toLowerCase().includes(match.toLowerCase()))
@@ -58,22 +85,6 @@ export class Select {
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["select:error", { diagnostics: [diagnostic] }]);
-  }
-
-  static async #resolveEntryMeta(entry: FileSystemEntryMeta & { name: string }, targetPath: string) {
-    if (!entry.isSymbolicLink()) {
-      return entry;
-    }
-
-    let entryMeta: FileSystemEntryMeta | undefined;
-
-    try {
-      entryMeta = await fs.stat([targetPath, entry.name].join("/"));
-    } catch {
-      // continue regardless of error
-    }
-
-    return entryMeta;
   }
 
   static async selectFiles(resolvedConfig: ResolvedConfig): Promise<Array<string>> {
@@ -96,25 +107,25 @@ export class Select {
     testFilePaths: Array<string>,
     matchPatterns: MatchPatterns,
     resolvedConfig: ResolvedConfig,
-  ): Promise<void> {
+  ) {
     const targetPath = Path.join(resolvedConfig.rootPath, currentPath);
 
-    try {
-      const entries = await fs.readdir(targetPath, { withFileTypes: true });
+    const entries = await Select.#getAccessibleFileSystemEntries(targetPath);
 
-      for (const entry of entries) {
-        const entryMeta = await Select.#resolveEntryMeta(entry, targetPath);
+    for (const directoryName of entries.directories) {
+      const directoryPath = [currentPath, directoryName].join("/");
 
-        const entryPath = [currentPath, entry.name].join("/");
-
-        if (entryMeta?.isDirectory() && Select.#isDirectoryIncluded(entryPath, matchPatterns)) {
-          await Select.#visitDirectory(entryPath, testFilePaths, matchPatterns, resolvedConfig);
-        } else if (entryMeta?.isFile() && Select.#isFileIncluded(entryPath, matchPatterns, resolvedConfig)) {
-          testFilePaths.push([targetPath, entry.name].join("/"));
-        }
+      if (Select.#isDirectoryIncluded(directoryPath, matchPatterns)) {
+        await Select.#visitDirectory(directoryPath, testFilePaths, matchPatterns, resolvedConfig);
       }
-    } catch {
-      // continue regardless of error
+    }
+
+    for (const fileName of entries.files) {
+      const filePath = [currentPath, fileName].join("/");
+
+      if (Select.#isFileIncluded(filePath, matchPatterns, resolvedConfig)) {
+        testFilePaths.push([targetPath, fileName].join("/"));
+      }
     }
   }
 }
