@@ -10,6 +10,7 @@ describe("CommandLineOptions", () => {
       failFast: true,
       help: true,
       install: true,
+      list: true,
       listFiles: true,
       only: "external",
       plugins: ["./tstyche-plugin.js"],
@@ -46,6 +47,12 @@ describe("CommandLineOptions", () => {
   test("'install' option", () => {
     expect<Pick<tstyche.CommandLineOptions, "install">>().type.toBe<{
       install?: boolean;
+    }>();
+  });
+
+  test("'list' option", () => {
+    expect<Pick<tstyche.CommandLineOptions, "list">>().type.toBe<{
+      list?: boolean;
     }>();
   });
 
