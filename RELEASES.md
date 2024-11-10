@@ -456,13 +456,13 @@ _Stable release based on [1.0.0-rc.2]._
 
 ### Fixed
 
-- Support TypeScript's 'node10' and 'node16' resolutions ([`7dd805a`](https://github.com/tstyche/tstyche/commit/7dd805a), [`9c83e79`](https://github.com/tstyche/tstyche/commit/9c83e79))
+- Support 'node10' and 'node16' resolutions ([`7dd805a`](https://github.com/tstyche/tstyche/commit/7dd805a), [`9c83e79`](https://github.com/tstyche/tstyche/commit/9c83e79))
 
 ## [1.0.0-beta.2] - 2023-11-12
 
 ### Fixed
 
-- Support TypeScript's 'node10' resolution ([#7](https://github.com/tstyche/tstyche/pull/7))
+- Support 'node10' resolution ([#7](https://github.com/tstyche/tstyche/pull/7))
 
 ## [1.0.0-beta.1] - 2023-11-09
 
