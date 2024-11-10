@@ -25,7 +25,7 @@ Command Line Options
   Install specified versions of the 'typescript' package and exit.
 
   --list
-  Print the list of supported TypeScript versions and exit.
+  Print the list of supported versions and tags of the 'typescript' package and exit.
 
   --listFiles
   Print the list of the selected test files and exit.
