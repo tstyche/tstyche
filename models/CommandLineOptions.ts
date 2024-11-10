@@ -21,6 +21,10 @@ export interface CommandLineOptions {
      */
     install?: boolean;
     /**
+     * Print the list of supported versions and tags of the 'typescript' package and exit.
+     */
+    list?: boolean;
+    /**
      * Print the list of the selected test files and exit.
      */
     listFiles?: boolean;

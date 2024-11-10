@@ -71,6 +71,13 @@ export class Options {
 
     {
       brand: OptionBrand.BareTrue,
+      description: "Print the list of supported versions and tags of the 'typescript' package and exit.",
+      group: OptionGroup.CommandLine,
+      name: "list",
+    },
+
+    {
+      brand: OptionBrand.BareTrue,
       description: "Print the list of the selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",

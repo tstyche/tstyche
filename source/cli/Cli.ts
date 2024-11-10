@@ -38,6 +38,16 @@ export class Cli {
       return;
     }
 
+    if (commandLine.includes("--list")) {
+      const supportedTags = await Store.getSupportedTags();
+
+      if (supportedTags != null) {
+        OutputService.writeMessage(formattedText(supportedTags));
+      }
+
+      return;
+    }
+
     if (commandLine.includes("--prune")) {
       await Store.prune();
 
