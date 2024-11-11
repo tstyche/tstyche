@@ -19,7 +19,6 @@
 
     "checkJs": true,
 
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
     "target": "es2022"
