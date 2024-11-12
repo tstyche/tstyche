@@ -19,7 +19,7 @@ export class Store {
   static #compilerInstanceCache = new Map<string, typeof ts>();
   static #fetcher: Fetcher;
   static #lockService: LockService;
-  static #manifest: Manifest | undefined;
+  static manifest: Manifest | undefined;
   static #manifestService: ManifestService;
   static #packageService: PackageService;
   static #npmRegistry = environmentOptions.npmRegistry;
@@ -48,7 +48,7 @@ export class Store {
 
     await Store.open();
 
-    const version = Store.#manifest?.resolve(tag);
+    const version = Store.manifest?.resolve(tag);
 
     if (!version) {
       Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
@@ -56,7 +56,7 @@ export class Store {
       return;
     }
 
-    await Store.#packageService.ensure(version, Store.#manifest);
+    await Store.#packageService.ensure(version, Store.manifest);
   }
 
   static async load(tag: string): Promise<typeof ts | undefined> {
@@ -73,7 +73,7 @@ export class Store {
     } else {
       await Store.open();
 
-      const version = Store.#manifest?.resolve(tag);
+      const version = Store.manifest?.resolve(tag);
 
       if (!version) {
         Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
@@ -87,7 +87,7 @@ export class Store {
         return compilerInstance;
       }
 
-      const packagePath = await Store.#packageService.ensure(version, Store.#manifest);
+      const packagePath = await Store.#packageService.ensure(version, Store.manifest);
 
       if (packagePath != null) {
         modulePath = Path.join(packagePath, "lib", "typescript.js");
@@ -156,14 +156,10 @@ export class Store {
     // ensure '.open()' can only be called once
     Store.open = () => Promise.resolve();
 
-    Store.#manifest = await Store.#manifestService.open();
+    Store.manifest = await Store.#manifestService.open();
 
-    if (Store.#manifest != null) {
-      Store.#supportedTags = [
-        ...Object.keys(Store.#manifest.resolutions),
-        ...Store.#manifest.versions,
-        "current",
-      ].sort();
+    if (Store.manifest != null) {
+      Store.#supportedTags = [...Object.keys(Store.manifest.resolutions), ...Store.manifest.versions, "current"].sort();
     }
   }
 
@@ -183,10 +179,10 @@ export class Store {
     await Store.open();
 
     if (
-      Store.#manifest?.isOutdated({ ageTolerance: 60 /* one minute */ }) &&
+      Store.manifest?.isOutdated({ ageTolerance: 60 /* one minute */ }) &&
       (!Version.isVersionTag(tag) ||
-        (Store.#manifest.resolutions["latest"] != null &&
-          Version.isGreaterThan(tag, Store.#manifest.resolutions["latest"])))
+        (Store.manifest.resolutions["latest"] != null &&
+          Version.isGreaterThan(tag, Store.manifest.resolutions["latest"])))
     ) {
       Store.#onDiagnostics(
         Diagnostic.warning([
