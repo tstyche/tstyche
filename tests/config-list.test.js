@@ -38,7 +38,7 @@ await test("'--list' command line option", async (t) => {
     JSON.parse(manifestText)
   );
 
-  const expected = `${JSON.stringify([...versions, ...Object.keys(resolutions), "current"].sort(), null, 2)}\n`;
+  const expected = `${JSON.stringify({ resolutions, versions }, null, 2)}\n`;
 
   await t.test("lists tags and versions", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--list"]);

@@ -39,10 +39,12 @@ export class Cli {
     }
 
     if (commandLine.includes("--list")) {
-      const supportedTags = await Store.getSupportedTags();
+      await Store.open();
 
-      if (supportedTags != null) {
-        OutputService.writeMessage(formattedText(supportedTags));
+      if (Store.manifest != null) {
+        OutputService.writeMessage(
+          formattedText({ resolutions: Store.manifest.resolutions, versions: Store.manifest.versions }),
+        );
       }
 
       return;
