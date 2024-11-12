@@ -71,7 +71,7 @@ export class Options {
 
     {
       brand: OptionBrand.BareTrue,
-      description: "Print the list of tag resolutions and supported versions of the 'typescript' package and exit.",
+      description: "Print the list of supported versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "list",
     },
