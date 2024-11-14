@@ -18,7 +18,7 @@ interface Size {
 declare function getSize(): Size;
 
 test("difference from '.toBeAssignableTo()'", () => {
-  expect<any>().type.toBeAssignableTo<string>();
+  expect<any>().type.toBeAssignableTo<string>(); // fails, because TSTyche does not allow 'any' as 'Source' type
   // But all types are not subtypes of the 'any' type
   expect<any>().type.not.toMatch<string>();
 

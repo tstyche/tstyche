@@ -1,8 +1,23 @@
+Error: A type argument for 'Source' cannot be of the 'any' type.
+
+The 'any' type is assignable to every type.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  19 | 
+  20 | test("difference from '.toBeAssignableTo()'", () => {
+  21 |   expect<any>().type.toBeAssignableTo<string>(); // fails, because TSTyche does not allow 'any' as 'Source' type
+     |          ~~~
+  22 |   // But all types are not subtypes of the 'any' type
+  23 |   expect<any>().type.not.toMatch<string>();
+  24 | 
+
+       at ./__typetests__/toMatch.tst.ts:21:10
+
 Warning: The '.toMatch()' matcher is deprecated and will be removed in TSTyche 4.
 
 To learn more, visit https://tstyche.org/releases/tstyche-3
 
-  21 |   expect<any>().type.toBeAssignableTo<string>();
+  21 |   expect<any>().type.toBeAssignableTo<string>(); // fails, because TSTyche does not allow 'any' as 'Source' type
   22 |   // But all types are not subtypes of the 'any' type
   23 |   expect<any>().type.not.toMatch<string>();
      |                          ~~~~~~~
