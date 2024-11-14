@@ -3,13 +3,19 @@ uses TypeScript <<version>> with ./tsconfig.json
 fail ./__typetests__/toBeAssignableTo.tst.ts
   argument for 'source'
     × must be provided
+    × cannot be of type 'any', 'never' or 'unknown'
+  type argument for 'Source'
+    × cannot be of type 'any', 'never' or 'unknown'
   argument for 'target'
     × must be provided
+    × cannot be of type 'any', 'never' or 'unknown'
+  type argument for 'Target'
+    × cannot be of type 'any', 'never' or 'unknown'
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      2 failed, 2 total
-Assertions: 2 failed, 2 total
+Tests:      6 failed, 6 total
+Assertions: 26 failed, 26 total
 Duration:   <<timestamp>>
 
 Ran all test files.

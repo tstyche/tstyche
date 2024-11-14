@@ -147,7 +147,7 @@ export class MatchWorker {
     return type;
   }
 
-  isAnyOrNeverType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
+  isAnyOrNeverType(type: ts.Type) {
     return !!(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never));
   }
 

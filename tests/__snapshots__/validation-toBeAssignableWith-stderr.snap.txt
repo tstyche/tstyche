@@ -5,20 +5,344 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
   5 |     expect().type.toBeAssignableWith<{ test: void }>();
     |     ~~~~~~
   6 |   });
-  7 | });
-  8 | 
+  7 | 
+  8 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
 
       at ./__typetests__/toBeAssignableWith.tst.ts:5:5
 
+Error: An argument for 'source' cannot be of the 'any' type.
+
+The 'any' type is assignable to every type.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+   7 | 
+   8 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
+   9 |     expect({} as any).type.toBeAssignableTo<{ a: number }>(); // use '.toBeAny()'
+     |            ~~~~~~~~~
+  10 |     expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
+  11 | 
+  12 |     expect({} as never).type.toBeAssignableTo<{ a: number }>(); // use '.toBeNever()'
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:9:12
+
+Error: Type 'any' is assignable to type '{ a: number; }'.
+
+   8 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
+   9 |     expect({} as any).type.toBeAssignableTo<{ a: number }>(); // use '.toBeAny()'
+  10 |     expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
+     |                                                 ~~~~~~~~~~~~~
+  11 | 
+  12 |     expect({} as never).type.toBeAssignableTo<{ a: number }>(); // use '.toBeNever()'
+  13 |     expect({} as never).type.not.toBeAssignableTo<{ a: number }>();
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:10:49 ❭ argument for 'source' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: An argument for 'source' cannot be of the 'never' type.
+
+The 'never' type is assignable to every type.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  10 |     expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
+  11 | 
+  12 |     expect({} as never).type.toBeAssignableTo<{ a: number }>(); // use '.toBeNever()'
+     |            ~~~~~~~~~~~
+  13 |     expect({} as never).type.not.toBeAssignableTo<{ a: number }>();
+  14 | 
+  15 |     expect({} as unknown).type.not.toBeAssignableTo<{ a: number }>(); // use '.toBeUnknown()'
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:12:12
+
+Error: Type 'never' is assignable to type '{ a: number; }'.
+
+  11 | 
+  12 |     expect({} as never).type.toBeAssignableTo<{ a: number }>(); // use '.toBeNever()'
+  13 |     expect({} as never).type.not.toBeAssignableTo<{ a: number }>();
+     |                                                   ~~~~~~~~~~~~~
+  14 | 
+  15 |     expect({} as unknown).type.not.toBeAssignableTo<{ a: number }>(); // use '.toBeUnknown()'
+  16 |     expect({} as unknown).type.toBeAssignableTo<{ a: number }>();
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:13:51 ❭ argument for 'source' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: An argument for 'source' cannot be of the 'unknown' type.
+
+The 'unknown' type is not assignable to every type.
+If this check is necessary, use the '.toBeUnknown()' matcher instead.
+
+  13 |     expect({} as never).type.not.toBeAssignableTo<{ a: number }>();
+  14 | 
+  15 |     expect({} as unknown).type.not.toBeAssignableTo<{ a: number }>(); // use '.toBeUnknown()'
+     |            ~~~~~~~~~~~~~
+  16 |     expect({} as unknown).type.toBeAssignableTo<{ a: number }>();
+  17 |   });
+  18 | });
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:15:12
+
+Error: Type 'unknown' is not assignable to type '{ a: number; }'.
+
+  14 | 
+  15 |     expect({} as unknown).type.not.toBeAssignableTo<{ a: number }>(); // use '.toBeUnknown()'
+  16 |     expect({} as unknown).type.toBeAssignableTo<{ a: number }>();
+     |                                                 ~~~~~~~~~~~~~
+  17 |   });
+  18 | });
+  19 | 
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:16:49 ❭ argument for 'source' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: A type argument for 'Source' cannot be of the 'any' type.
+
+The 'any' type is assignable with every type.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  20 | describe("type argument for 'Source'", () => {
+  21 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
+  22 |     expect<any>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeAny()'
+     |            ~~~
+  23 |     expect<any>().type.not.toBeAssignableWith<{ a: number }>();
+  24 | 
+  25 |     expect<unknown>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeUnknown()'
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:22:12
+
+Error: Type 'any' is assignable with type '{ a: number; }'.
+
+  21 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
+  22 |     expect<any>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeAny()'
+  23 |     expect<any>().type.not.toBeAssignableWith<{ a: number }>();
+     |                                               ~~~~~~~~~~~~~
+  24 | 
+  25 |     expect<unknown>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeUnknown()'
+  26 |     expect<unknown>().type.not.toBeAssignableWith<{ a: number }>();
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:23:47 ❭ type argument for 'Source' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: A type argument for 'Source' cannot be of the 'unknown' type.
+
+The 'unknown' type is assignable with every type.
+If this check is necessary, use the '.toBeUnknown()' matcher instead.
+
+  23 |     expect<any>().type.not.toBeAssignableWith<{ a: number }>();
+  24 | 
+  25 |     expect<unknown>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeUnknown()'
+     |            ~~~~~~~
+  26 |     expect<unknown>().type.not.toBeAssignableWith<{ a: number }>();
+  27 | 
+  28 |     expect<never>().type.not.toBeAssignableWith<{ a: number }>(); // use '.toBeNever()'
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:25:12
+
+Error: Type 'unknown' is assignable with type '{ a: number; }'.
+
+  24 | 
+  25 |     expect<unknown>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeUnknown()'
+  26 |     expect<unknown>().type.not.toBeAssignableWith<{ a: number }>();
+     |                                                   ~~~~~~~~~~~~~
+  27 | 
+  28 |     expect<never>().type.not.toBeAssignableWith<{ a: number }>(); // use '.toBeNever()'
+  29 |     expect<never>().type.toBeAssignableWith<{ a: number }>();
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:26:51 ❭ type argument for 'Source' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: A type argument for 'Source' cannot be of the 'never' type.
+
+The 'never' type is not assignable with every type.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  26 |     expect<unknown>().type.not.toBeAssignableWith<{ a: number }>();
+  27 | 
+  28 |     expect<never>().type.not.toBeAssignableWith<{ a: number }>(); // use '.toBeNever()'
+     |            ~~~~~
+  29 |     expect<never>().type.toBeAssignableWith<{ a: number }>();
+  30 |   });
+  31 | });
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:28:12
+
+Error: Type 'never' is not assignable with type '{ a: number; }'.
+
+  27 | 
+  28 |     expect<never>().type.not.toBeAssignableWith<{ a: number }>(); // use '.toBeNever()'
+  29 |     expect<never>().type.toBeAssignableWith<{ a: number }>();
+     |                                             ~~~~~~~~~~~~~
+  30 |   });
+  31 | });
+  32 | 
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:29:45 ❭ type argument for 'Source' ❭ cannot be of type 'any', 'never' or 'unknown'
+
 Error: An argument for 'target' or type argument for 'Target' must be provided.
 
-   9 | describe("argument for 'target'", () => {
-  10 |   test("must be provided", () => {
-  11 |     expect<{ test: void }>().type.toBeAssignableWith();
+  33 | describe("argument for 'target'", () => {
+  34 |   test("must be provided", () => {
+  35 |     expect<{ test: void }>().type.toBeAssignableWith();
      |                                   ~~~~~~~~~~~~~~~~~~
-  12 |   });
-  13 | });
-  14 | 
+  36 |   });
+  37 | 
+  38 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
 
-       at ./__typetests__/toBeAssignableWith.tst.ts:11:35
+       at ./__typetests__/toBeAssignableWith.tst.ts:35:35
+
+Error: An argument for 'target' cannot be of the 'any' type.
+
+Every type is assignable with the 'any' type.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  37 | 
+  38 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
+  39 |     expect<{ a: number }>().type.toBeAssignableWith({} as any); // use '.toBeAny()'
+     |                                                     ~~~~~~~~~
+  40 |     expect<{ a: number }>().type.not.toBeAssignableWith({} as any);
+  41 | 
+  42 |     expect<{ a: number }>().type.toBeAssignableWith({} as never); // use '.toBeNever()'
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:39:53
+
+Error: Type '{ a: number; }' is assignable with type 'any'.
+
+  38 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
+  39 |     expect<{ a: number }>().type.toBeAssignableWith({} as any); // use '.toBeAny()'
+  40 |     expect<{ a: number }>().type.not.toBeAssignableWith({} as any);
+     |                                                         ~~~~~~~~~
+  41 | 
+  42 |     expect<{ a: number }>().type.toBeAssignableWith({} as never); // use '.toBeNever()'
+  43 |     expect<{ a: number }>().type.not.toBeAssignableWith({} as never);
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:40:57 ❭ argument for 'target' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: An argument for 'target' cannot be of the 'never' type.
+
+Every type is assignable with the 'never' type.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  40 |     expect<{ a: number }>().type.not.toBeAssignableWith({} as any);
+  41 | 
+  42 |     expect<{ a: number }>().type.toBeAssignableWith({} as never); // use '.toBeNever()'
+     |                                                     ~~~~~~~~~~~
+  43 |     expect<{ a: number }>().type.not.toBeAssignableWith({} as never);
+  44 | 
+  45 |     expect<{ a: string }>().type.not.toBeAssignableWith({} as unknown); // use '.toBeUnknown()'
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:42:53
+
+Error: Type '{ a: number; }' is assignable with type 'never'.
+
+  41 | 
+  42 |     expect<{ a: number }>().type.toBeAssignableWith({} as never); // use '.toBeNever()'
+  43 |     expect<{ a: number }>().type.not.toBeAssignableWith({} as never);
+     |                                                         ~~~~~~~~~~~
+  44 | 
+  45 |     expect<{ a: string }>().type.not.toBeAssignableWith({} as unknown); // use '.toBeUnknown()'
+  46 |     expect<{ a: string }>().type.toBeAssignableWith({} as unknown);
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:43:57 ❭ argument for 'target' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: An argument for 'target' cannot be of the 'unknown' type.
+
+Every type is not assignable with the 'unknown' type.
+If this check is necessary, use the '.toBeUnknown()' matcher instead.
+
+  43 |     expect<{ a: number }>().type.not.toBeAssignableWith({} as never);
+  44 | 
+  45 |     expect<{ a: string }>().type.not.toBeAssignableWith({} as unknown); // use '.toBeUnknown()'
+     |                                                         ~~~~~~~~~~~~~
+  46 |     expect<{ a: string }>().type.toBeAssignableWith({} as unknown);
+  47 |   });
+  48 | });
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:45:57
+
+Error: Type '{ a: string; }' is not assignable with type 'unknown'.
+
+  44 | 
+  45 |     expect<{ a: string }>().type.not.toBeAssignableWith({} as unknown); // use '.toBeUnknown()'
+  46 |     expect<{ a: string }>().type.toBeAssignableWith({} as unknown);
+     |                                                     ~~~~~~~~~~~~~
+  47 |   });
+  48 | });
+  49 | 
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:46:53 ❭ argument for 'target' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: A type argument for 'Target' cannot be of the 'any' type.
+
+Every type is assignable with the 'any' type.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  50 | describe("type argument for 'Target'", () => {
+  51 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
+  52 |     expect<{ a: number }>().type.toBeAssignableWith<any>(); // use '.toBeAny()'
+     |                                                     ~~~
+  53 |     expect<{ a: number }>().type.not.toBeAssignableWith<any>();
+  54 | 
+  55 |     expect<{ a: number }>().type.toBeAssignableWith<never>(); // use '.toBeNever()'
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:52:53
+
+Error: Type '{ a: number; }' is assignable with type 'any'.
+
+  51 |   test("cannot be of type 'any', 'never' or 'unknown'", () => {
+  52 |     expect<{ a: number }>().type.toBeAssignableWith<any>(); // use '.toBeAny()'
+  53 |     expect<{ a: number }>().type.not.toBeAssignableWith<any>();
+     |                                                         ~~~
+  54 | 
+  55 |     expect<{ a: number }>().type.toBeAssignableWith<never>(); // use '.toBeNever()'
+  56 |     expect<{ a: number }>().type.not.toBeAssignableWith<never>();
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:53:57 ❭ type argument for 'Target' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: A type argument for 'Target' cannot be of the 'never' type.
+
+Every type is assignable with the 'never' type.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  53 |     expect<{ a: number }>().type.not.toBeAssignableWith<any>();
+  54 | 
+  55 |     expect<{ a: number }>().type.toBeAssignableWith<never>(); // use '.toBeNever()'
+     |                                                     ~~~~~
+  56 |     expect<{ a: number }>().type.not.toBeAssignableWith<never>();
+  57 | 
+  58 |     expect<{ a: string }>().type.not.toBeAssignableWith<unknown>(); // use '.toBeUnknown()'
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:55:53
+
+Error: Type '{ a: number; }' is assignable with type 'never'.
+
+  54 | 
+  55 |     expect<{ a: number }>().type.toBeAssignableWith<never>(); // use '.toBeNever()'
+  56 |     expect<{ a: number }>().type.not.toBeAssignableWith<never>();
+     |                                                         ~~~~~
+  57 | 
+  58 |     expect<{ a: string }>().type.not.toBeAssignableWith<unknown>(); // use '.toBeUnknown()'
+  59 |     expect<{ a: string }>().type.toBeAssignableWith<unknown>();
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:56:57 ❭ type argument for 'Target' ❭ cannot be of type 'any', 'never' or 'unknown'
+
+Error: A type argument for 'Target' cannot be of the 'unknown' type.
+
+Every type is not assignable with the 'unknown' type.
+If this check is necessary, use the '.toBeUnknown()' matcher instead.
+
+  56 |     expect<{ a: number }>().type.not.toBeAssignableWith<never>();
+  57 | 
+  58 |     expect<{ a: string }>().type.not.toBeAssignableWith<unknown>(); // use '.toBeUnknown()'
+     |                                                         ~~~~~~~
+  59 |     expect<{ a: string }>().type.toBeAssignableWith<unknown>();
+  60 |   });
+  61 | });
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:58:57
+
+Error: Type '{ a: string; }' is not assignable with type 'unknown'.
+
+  57 | 
+  58 |     expect<{ a: string }>().type.not.toBeAssignableWith<unknown>(); // use '.toBeUnknown()'
+  59 |     expect<{ a: string }>().type.toBeAssignableWith<unknown>();
+     |                                                     ~~~~~~~
+  60 |   });
+  61 | });
+  62 | 
+
+       at ./__typetests__/toBeAssignableWith.tst.ts:59:53 ❭ type argument for 'Target' ❭ cannot be of type 'any', 'never' or 'unknown'
 

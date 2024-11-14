@@ -3,6 +3,10 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' or type argument for '${typeArgumentNameText}' must be provided.`;
   }
 
+  static argumentCannotBeOfType(argumentNameText: string, typeText: string): string {
+    return `An argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
+  }
+
   static argumentMustBe(argumentNameText: string, expectedText: string): string {
     return `An argument for '${argumentNameText}' must be ${expectedText}.`;
   }
@@ -36,6 +40,10 @@ export class ExpectDiagnosticText {
 
   static raisedTypeError(count = 1): string {
     return `The raised type error${count === 1 ? "" : "s"}:`;
+  }
+
+  static typeArgumentCannotBeOfType(argumentNameText: string, typeText: string): string {
+    return `A type argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
   }
 
   static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
@@ -118,5 +126,11 @@ export class ExpectDiagnosticText {
 
   static typesOfPropertyAreNotCompatible(propertyNameText: string): string {
     return `Types of property '${propertyNameText}' are not compatible.`;
+  }
+
+  static usePrimitiveTypeMatcher(typeText: string): string {
+    const matcherNameText = `.toBe${typeText.charAt(0).toUpperCase()}${typeText.slice(1)}()`;
+
+    return `If this check is necessary, use the '${matcherNameText}' matcher instead.`;
   }
 }
