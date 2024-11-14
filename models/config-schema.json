@@ -6,6 +6,14 @@
       "description": "Stop running tests after the first failed assertion.",
       "type": "boolean"
     },
+    "noAssignableAny": {
+      "description": "Report the 'any' type as not assignable to and with all types.",
+      "type": "boolean"
+    },
+    "noAssignableNever": {
+      "description": "Report the 'never' type as not assignable to all types.",
+      "type": "boolean"
+    },
     "plugins": {
       "default": [],
       "description": "The list of plugins to use.",

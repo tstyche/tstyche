@@ -4,6 +4,8 @@ import type { ConfigFileOptions } from "./types.js";
 
 export const defaultOptions: Required<ConfigFileOptions> = {
   failFast: false,
+  noAssignableAny: false,
+  noAssignableNever: false,
   plugins: [],
   reporters: ["list", "summary"],
   rootPath: Path.resolve("./"),

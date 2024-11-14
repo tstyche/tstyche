@@ -84,6 +84,20 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.Boolean,
+      description: "Report the 'any' type as not assignable to and with all types.",
+      group: OptionGroup.ConfigFile,
+      name: "noAssignableAny",
+    },
+
+    {
+      brand: OptionBrand.Boolean,
+      description: "Report the 'never' type as not assignable to all types.",
+      group: OptionGroup.ConfigFile,
+      name: "noAssignableNever",
+    },
+
+    {
       brand: OptionBrand.String,
       description: "Only run tests with matching name.",
       group: OptionGroup.CommandLine,

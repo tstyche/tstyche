@@ -9,6 +9,14 @@ export interface ConfigFileOptions {
      */
     failFast?: boolean;
     /**
+     * Report the 'any' type as not assignable to and with all types.
+     */
+    noAssignableAny?: boolean;
+    /**
+     * Report the 'never' type as not assignable to all types.
+     */
+    noAssignableNever?: boolean;
+    /**
      * The list of plugins to use.
      */
     plugins?: Array<string>;

@@ -82,7 +82,7 @@ export class Runner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await Store.load(target);
+      const compiler = await Store.load(target, this.#resolvedConfig);
 
       if (compiler) {
         // TODO to improve performance, task runners (or even test projects) could be cached in the future

@@ -15,6 +15,11 @@ import { ManifestService } from "./ManifestService.js";
 import { PackageService } from "./PackageService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
+export interface LoadOptions {
+  noAssignableAny?: boolean;
+  noAssignableNever?: boolean;
+}
+
 export class Store {
   static #compilerInstanceCache = new Map<string, typeof ts>();
   static #fetcher: Fetcher;
@@ -59,7 +64,7 @@ export class Store {
     await Store.#packageService.ensure(version, Store.manifest);
   }
 
-  static async load(tag: string): Promise<typeof ts | undefined> {
+  static async load(tag: string, options?: LoadOptions): Promise<typeof ts | undefined> {
     let compilerInstance = Store.#compilerInstanceCache.get(tag);
 
     if (compilerInstance != null) {
@@ -95,7 +100,7 @@ export class Store {
     }
 
     if (modulePath != null) {
-      compilerInstance = await Store.#loadModule(modulePath);
+      compilerInstance = await Store.#loadModule(modulePath, options);
 
       Store.#compilerInstanceCache.set(tag, compilerInstance);
       Store.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
@@ -104,7 +109,7 @@ export class Store {
     return compilerInstance;
   }
 
-  static async #loadModule(modulePath: string) {
+  static async #loadModule(modulePath: string, options?: LoadOptions) {
     const exports = {};
     const module = { exports };
 
@@ -135,7 +140,17 @@ export class Store {
       "relation: { assignable: assignableRelation, identity: identityRelation, subtype: strictSubtypeRelation }",
     );
 
-    const modifiedSourceText = sourceText.replace("return checker;", `return { ...checker, ${toExpose.join(", ")} };`);
+    let modifiedSourceText = sourceText.replace("return checker;", `return { ...checker, ${toExpose.join(", ")} };`);
+
+    if (options?.noAssignableAny === true) {
+      modifiedSourceText = modifiedSourceText
+        .replace("t & 1 /* Any */ || ", "")
+        .replace("if (s & 1 /* Any */) return true;", "");
+    }
+
+    if (options?.noAssignableNever === true) {
+      modifiedSourceText = modifiedSourceText.replace("s & 131072 /* Never */ || ", "");
+    }
 
     const compiledWrapper = vm.compileFunction(
       modifiedSourceText,

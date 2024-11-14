@@ -1,4 +1,6 @@
 {
   "$schema": "./models/config-schema.json",
+  "noAssignableAny": true,
+  "noAssignableNever": true,
   "testFileMatch": ["examples/*.t*st.*", "models/__typetests__/*.tst.*", "tests/*.test.*"]
 }
