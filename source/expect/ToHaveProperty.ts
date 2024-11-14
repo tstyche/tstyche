@@ -40,7 +40,10 @@ export class ToHaveProperty {
 
     const sourceType = matchWorker.getType(sourceNode);
 
-    if (matchWorker.isAnyOrNeverType(sourceType) || !matchWorker.extendsObjectType(sourceType)) {
+    if (
+      sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
+      !matchWorker.extendsObjectType(sourceType)
+    ) {
       const expectedText = "of an object type";
 
       const text = this.#compiler.isTypeNode(sourceNode)
