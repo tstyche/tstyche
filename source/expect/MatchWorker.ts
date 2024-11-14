@@ -147,10 +147,6 @@ export class MatchWorker {
     return type;
   }
 
-  isAnyOrNeverType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return !!(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never));
-  }
-
   isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
     return !!(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
   }
