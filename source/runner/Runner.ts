@@ -6,6 +6,7 @@ import { Result, TargetResult } from "#result";
 import { Store } from "#store";
 import { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
+import { Version } from "#version";
 import { WatchService } from "#watch";
 import { TaskRunner } from "./TaskRunner.js";
 
@@ -77,7 +78,11 @@ export class Runner {
 
     EventEmitter.dispatch(["run:start", { result }]);
 
-    for (const target of this.#resolvedConfig.target) {
+    const targets = this.#resolvedConfig.target.flatMap((query) =>
+      Version.isRange(query) ? Version.slice(Object.keys(Store.manifest!.resolutions).slice(0, -4), query) : query,
+    );
+
+    for (const target of targets) {
       const targetResult = new TargetResult(target, tasks);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);

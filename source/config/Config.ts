@@ -90,6 +90,8 @@ export class Config {
       delete resolvedConfig.config;
     }
 
+    // TODO 'target' queries should be resolved here, so that '>=4.8, <5.2, 5.6' would work as expected
+
     return resolvedConfig;
   }
 

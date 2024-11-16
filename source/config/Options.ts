@@ -292,10 +292,14 @@ export class Options {
         break;
 
       case "target":
-        if ((await Store.validateTag(optionValue)) === false) {
+        if (
+          !/^[<>]=?\d\.\d$/.test(optionValue) ||
+          (await Store.validateTag(optionValue.replace(/^[<>]=?/, ""))) === false
+        ) {
           onDiagnostics(
             Diagnostic.error(
               [
+                // TODO check is this is version d.d.d, or a tag, otherwise error with: Cannot resolve query '>=xxx'
                 ConfigDiagnosticText.versionIsNotSupported(optionValue),
                 await ConfigDiagnosticText.usage(optionName, optionBrand),
               ].flat(),
