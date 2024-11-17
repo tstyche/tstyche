@@ -87,38 +87,43 @@ export class ExpectService {
 
     const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
 
-    const sourceType = matchWorker.getType(assertion.source[0]);
-    let targetType: ts.Type | undefined;
-
-    if (assertion.target[0] != null) {
-      targetType = matchWorker.getType(assertion.target[0]);
-    }
-
     if (this.#resolvedConfig.rejectAnyType && matcherNameText !== "toBeAny") {
+      const sourceType = matchWorker.getType(assertion.source[0]);
+
       if (sourceType.flags & this.#compiler.TypeFlags.Any) {
         this.#onSourceArgumentTypeRejected(assertion.source[0], "any", onDiagnostics);
 
         return;
       }
 
-      if (targetType != null && targetType.flags & this.#compiler.TypeFlags.Any) {
-        this.#onSourceArgumentTypeRejected(assertion.source[0], "any", onDiagnostics);
+      if (assertion.target[0] != null) {
+        const targetType = matchWorker.getType(assertion.target[0]);
 
-        return;
+        if (targetType.flags & this.#compiler.TypeFlags.Any) {
+          this.#onTargetArgumentTypeRejected(assertion.target[0], "any", onDiagnostics);
+
+          return;
+        }
       }
     }
 
     if (this.#resolvedConfig.rejectNeverType && matcherNameText !== "toBeNever") {
+      const sourceType = matchWorker.getType(assertion.source[0]);
+
       if (sourceType.flags & this.#compiler.TypeFlags.Never) {
-        this.#onTargetArgumentTypeRejected(assertion.source[0], "never", onDiagnostics);
+        this.#onSourceArgumentTypeRejected(assertion.source[0], "never", onDiagnostics);
 
         return;
       }
 
-      if (targetType != null && targetType.flags & this.#compiler.TypeFlags.Never) {
-        this.#onTargetArgumentTypeRejected(assertion.source[0], "never", onDiagnostics);
+      if (assertion.target[0] != null) {
+        const targetType = matchWorker.getType(assertion.target[0]);
 
-        return;
+        if (targetType.flags & this.#compiler.TypeFlags.Never) {
+          this.#onTargetArgumentTypeRejected(assertion.target[0], "never", onDiagnostics);
+
+          return;
+        }
       }
     }
 

@@ -1,4 +1,4 @@
-Error: An argument for 'target' cannot be of the 'never' type.
+Error: An argument for 'source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, use the '.toBeNever()' matcher instead.
@@ -13,7 +13,7 @@ If this check is necessary, use the '.toBeNever()' matcher instead.
 
       at ./__typetests__/isRejected.test.ts:5:12
 
-Error: An argument for 'target' cannot be of the 'never' type.
+Error: An argument for 'source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, use the '.toBeNever()' matcher instead.
@@ -28,7 +28,7 @@ If this check is necessary, use the '.toBeNever()' matcher instead.
 
       at ./__typetests__/isRejected.test.ts:6:12
 
-Error: A type argument for 'Target' cannot be of the 'never' type.
+Error: A type argument for 'Source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, use the '.toBeNever()' matcher instead.
@@ -43,7 +43,7 @@ If this check is necessary, use the '.toBeNever()' matcher instead.
 
        at ./__typetests__/isRejected.test.ts:16:12
 
-Error: A type argument for 'Target' cannot be of the 'never' type.
+Error: A type argument for 'Source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, use the '.toBeNever()' matcher instead.
@@ -66,12 +66,12 @@ If this check is necessary, use the '.toBeNever()' matcher instead.
   25 | describe("argument for 'target'", () => {
   26 |   test("rejects the 'never' type", () => {
   27 |     expect({ b: "abc" }).type.toBeAssignableWith({} as never); // use '.toBeNever()'
-     |            ~~~~~~~~~~~~
+     |                                                  ~~~~~~~~~~~
   28 |     expect({ b: "abc" }).type.not.toBeAssignableWith({} as never);
   29 |   });
   30 | 
 
-       at ./__typetests__/isRejected.test.ts:27:12
+       at ./__typetests__/isRejected.test.ts:27:50
 
 Error: An argument for 'target' cannot be of the 'never' type.
 
@@ -81,12 +81,12 @@ If this check is necessary, use the '.toBeNever()' matcher instead.
   26 |   test("rejects the 'never' type", () => {
   27 |     expect({ b: "abc" }).type.toBeAssignableWith({} as never); // use '.toBeNever()'
   28 |     expect({ b: "abc" }).type.not.toBeAssignableWith({} as never);
-     |            ~~~~~~~~~~~~
+     |                                                      ~~~~~~~~~~~
   29 |   });
   30 | 
   31 |   test("allows '.toBeNever()'", () => {
 
-       at ./__typetests__/isRejected.test.ts:28:12
+       at ./__typetests__/isRejected.test.ts:28:54
 
 Error: A type argument for 'Target' cannot be of the 'never' type.
 
@@ -96,12 +96,12 @@ If this check is necessary, use the '.toBeNever()' matcher instead.
   36 | describe("type argument for 'Target'", () => {
   37 |   test("rejects the 'never' type", () => {
   38 |     expect<{ a: number }>().type.toAcceptProps<never>(); // use '.toBeNever()'
-     |            ~~~~~~~~~~~~~
+     |                                                ~~~~~
   39 |     expect<{ a: number }>().type.not.toAcceptProps<never>();
   40 |   });
   41 | 
 
-       at ./__typetests__/isRejected.test.ts:38:12
+       at ./__typetests__/isRejected.test.ts:38:48
 
 Error: A type argument for 'Target' cannot be of the 'never' type.
 
@@ -111,10 +111,10 @@ If this check is necessary, use the '.toBeNever()' matcher instead.
   37 |   test("rejects the 'never' type", () => {
   38 |     expect<{ a: number }>().type.toAcceptProps<never>(); // use '.toBeNever()'
   39 |     expect<{ a: number }>().type.not.toAcceptProps<never>();
-     |            ~~~~~~~~~~~~~
+     |                                                    ~~~~~
   40 |   });
   41 | 
   42 |   test("allows '.toBeNever()'", () => {
 
-       at ./__typetests__/isRejected.test.ts:39:12
+       at ./__typetests__/isRejected.test.ts:39:52
 

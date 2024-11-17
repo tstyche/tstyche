@@ -58,7 +58,7 @@ If this check is necessary, use the '.toBeAny()' matcher instead.
 
        at ./__typetests__/isRejected.test.ts:17:12
 
-Error: An argument for 'source' cannot be of the 'any' type.
+Error: An argument for 'target' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, use the '.toBeAny()' matcher instead.
@@ -66,14 +66,14 @@ If this check is necessary, use the '.toBeAny()' matcher instead.
   25 | describe("argument for 'target'", () => {
   26 |   test("rejects the 'any' type", () => {
   27 |     expect({ a: 123 }).type.toBe({} as any); // use '.toBeAny()'
-     |            ~~~~~~~~~~
+     |                                  ~~~~~~~~~
   28 |     expect({ a: 123 }).type.not.toBe({} as any);
   29 |   });
   30 | 
 
-       at ./__typetests__/isRejected.test.ts:27:12
+       at ./__typetests__/isRejected.test.ts:27:34
 
-Error: An argument for 'source' cannot be of the 'any' type.
+Error: An argument for 'target' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, use the '.toBeAny()' matcher instead.
@@ -81,14 +81,14 @@ If this check is necessary, use the '.toBeAny()' matcher instead.
   26 |   test("rejects the 'any' type", () => {
   27 |     expect({ a: 123 }).type.toBe({} as any); // use '.toBeAny()'
   28 |     expect({ a: 123 }).type.not.toBe({} as any);
-     |            ~~~~~~~~~~
+     |                                      ~~~~~~~~~
   29 |   });
   30 | 
   31 |   test("allows '.toBeAny()'", () => {
 
-       at ./__typetests__/isRejected.test.ts:28:12
+       at ./__typetests__/isRejected.test.ts:28:38
 
-Error: A type argument for 'Source' cannot be of the 'any' type.
+Error: A type argument for 'Target' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, use the '.toBeAny()' matcher instead.
@@ -96,14 +96,14 @@ If this check is necessary, use the '.toBeAny()' matcher instead.
   36 | describe("type argument for 'Target'", () => {
   37 |   test("rejects the 'any' type", () => {
   38 |     expect<{ a: boolean }>().type.toBeAssignableTo<any>(); // use '.toBeAny()'
-     |            ~~~~~~~~~~~~~~
+     |                                                    ~~~
   39 |     expect<{ a: boolean }>().type.not.toBeAssignableTo<any>();
   40 |   });
   41 | 
 
-       at ./__typetests__/isRejected.test.ts:38:12
+       at ./__typetests__/isRejected.test.ts:38:52
 
-Error: A type argument for 'Source' cannot be of the 'any' type.
+Error: A type argument for 'Target' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, use the '.toBeAny()' matcher instead.
@@ -111,10 +111,10 @@ If this check is necessary, use the '.toBeAny()' matcher instead.
   37 |   test("rejects the 'any' type", () => {
   38 |     expect<{ a: boolean }>().type.toBeAssignableTo<any>(); // use '.toBeAny()'
   39 |     expect<{ a: boolean }>().type.not.toBeAssignableTo<any>();
-     |            ~~~~~~~~~~~~~~
+     |                                                        ~~~
   40 |   });
   41 | 
   42 |   test("allows '.toBeAny()'", () => {
 
-       at ./__typetests__/isRejected.test.ts:39:12
+       at ./__typetests__/isRejected.test.ts:39:56
 
