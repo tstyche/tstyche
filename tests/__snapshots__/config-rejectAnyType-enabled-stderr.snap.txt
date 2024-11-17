@@ -1,0 +1,120 @@
+Error: An argument for 'source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("rejects the 'any' type", () => {
+  5 |     expect({} as any).type.toBeAssignableTo<{ a: number }>(); // use '.toBeAny()'
+    |            ~~~~~~~~~
+  6 |     expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
+  7 |   });
+  8 | 
+
+      at ./__typetests__/isRejected.test.ts:5:12
+
+Error: An argument for 'source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  4 |   test("rejects the 'any' type", () => {
+  5 |     expect({} as any).type.toBeAssignableTo<{ a: number }>(); // use '.toBeAny()'
+  6 |     expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
+    |            ~~~~~~~~~
+  7 |   });
+  8 | 
+  9 |   test("allows '.toBeAny()'", () => {
+
+      at ./__typetests__/isRejected.test.ts:6:12
+
+Error: A type argument for 'Source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  14 | describe("type argument for 'Source'", () => {
+  15 |   test("rejects the 'any' type", () => {
+  16 |     expect<any>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeAny()'
+     |            ~~~
+  17 |     expect<any>().type.not.toBeAssignableWith<{ a: number }>();
+  18 |   });
+  19 | 
+
+       at ./__typetests__/isRejected.test.ts:16:12
+
+Error: A type argument for 'Source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  15 |   test("rejects the 'any' type", () => {
+  16 |     expect<any>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeAny()'
+  17 |     expect<any>().type.not.toBeAssignableWith<{ a: number }>();
+     |            ~~~
+  18 |   });
+  19 | 
+  20 |   test("allows '.toBeAny()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:17:12
+
+Error: An argument for 'source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  25 | describe("argument for 'target'", () => {
+  26 |   test("rejects the 'any' type", () => {
+  27 |     expect({ a: 123 }).type.toBe({} as any); // use '.toBeAny()'
+     |            ~~~~~~~~~~
+  28 |     expect({ a: 123 }).type.not.toBe({} as any);
+  29 |   });
+  30 | 
+
+       at ./__typetests__/isRejected.test.ts:27:12
+
+Error: An argument for 'source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  26 |   test("rejects the 'any' type", () => {
+  27 |     expect({ a: 123 }).type.toBe({} as any); // use '.toBeAny()'
+  28 |     expect({ a: 123 }).type.not.toBe({} as any);
+     |            ~~~~~~~~~~
+  29 |   });
+  30 | 
+  31 |   test("allows '.toBeAny()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:28:12
+
+Error: A type argument for 'Source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  36 | describe("type argument for 'Target'", () => {
+  37 |   test("rejects the 'any' type", () => {
+  38 |     expect<{ a: boolean }>().type.toBeAssignableTo<any>(); // use '.toBeAny()'
+     |            ~~~~~~~~~~~~~~
+  39 |     expect<{ a: boolean }>().type.not.toBeAssignableTo<any>();
+  40 |   });
+  41 | 
+
+       at ./__typetests__/isRejected.test.ts:38:12
+
+Error: A type argument for 'Source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, use the '.toBeAny()' matcher instead.
+
+  37 |   test("rejects the 'any' type", () => {
+  38 |     expect<{ a: boolean }>().type.toBeAssignableTo<any>(); // use '.toBeAny()'
+  39 |     expect<{ a: boolean }>().type.not.toBeAssignableTo<any>();
+     |            ~~~~~~~~~~~~~~
+  40 |   });
+  41 | 
+  42 |   test("allows '.toBeAny()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:39:12
+

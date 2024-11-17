@@ -1,0 +1,48 @@
+Error: Type 'any' is assignable to type '{ a: number; }'.
+
+  4 |   test("rejects the 'any' type", () => {
+  5 |     expect({} as any).type.toBeAssignableTo<{ a: number }>(); // use '.toBeAny()'
+  6 |     expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
+    |                                                 ~~~~~~~~~~~~~
+  7 |   });
+  8 | 
+  9 |   test("allows '.toBeAny()'", () => {
+
+      at ./__typetests__/isRejected.test.ts:6:49 ❭ argument for 'source' ❭ rejects the 'any' type
+
+Error: Type 'any' is assignable with type '{ a: number; }'.
+
+  15 |   test("rejects the 'any' type", () => {
+  16 |     expect<any>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeAny()'
+  17 |     expect<any>().type.not.toBeAssignableWith<{ a: number }>();
+     |                                               ~~~~~~~~~~~~~
+  18 |   });
+  19 | 
+  20 |   test("allows '.toBeAny()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:17:47 ❭ type argument for 'Source' ❭ rejects the 'any' type
+
+Error: Type '{ a: number; }' is not identical to type 'any'.
+
+  25 | describe("argument for 'target'", () => {
+  26 |   test("rejects the 'any' type", () => {
+  27 |     expect({ a: 123 }).type.toBe({} as any); // use '.toBeAny()'
+     |                                  ~~~~~~~~~
+  28 |     expect({ a: 123 }).type.not.toBe({} as any);
+  29 |   });
+  30 | 
+
+       at ./__typetests__/isRejected.test.ts:27:34 ❭ argument for 'target' ❭ rejects the 'any' type
+
+Error: Type '{ a: boolean; }' is assignable to type 'any'.
+
+  37 |   test("rejects the 'any' type", () => {
+  38 |     expect<{ a: boolean }>().type.toBeAssignableTo<any>(); // use '.toBeAny()'
+  39 |     expect<{ a: boolean }>().type.not.toBeAssignableTo<any>();
+     |                                                        ~~~
+  40 |   });
+  41 | 
+  42 |   test("allows '.toBeAny()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:39:56 ❭ type argument for 'Target' ❭ rejects the 'any' type
+

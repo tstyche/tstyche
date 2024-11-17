@@ -15,6 +15,14 @@
       "type": "array",
       "uniqueItems": true
     },
+    "rejectAnyType": {
+      "description": "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
+      "type": "boolean"
+    },
+    "rejectNeverType": {
+      "description": "Reject the 'never' type passed as an argument to the 'expect()' function or a matcher.",
+      "type": "boolean"
+    },
     "reporters": {
       "default": [
         "list",

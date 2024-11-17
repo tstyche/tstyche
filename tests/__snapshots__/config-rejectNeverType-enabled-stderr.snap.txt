@@ -1,0 +1,120 @@
+Error: An argument for 'target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("rejects the 'never' type", () => {
+  5 |     expect({} as never).type.toBe<{ a: number }>(); // use '.toBeNever()'
+    |            ~~~~~~~~~~~
+  6 |     expect({} as never).type.not.toBe<{ a: number }>();
+  7 |   });
+  8 | 
+
+      at ./__typetests__/isRejected.test.ts:5:12
+
+Error: An argument for 'target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  4 |   test("rejects the 'never' type", () => {
+  5 |     expect({} as never).type.toBe<{ a: number }>(); // use '.toBeNever()'
+  6 |     expect({} as never).type.not.toBe<{ a: number }>();
+    |            ~~~~~~~~~~~
+  7 |   });
+  8 | 
+  9 |   test("allows '.toBeNever()'", () => {
+
+      at ./__typetests__/isRejected.test.ts:6:12
+
+Error: A type argument for 'Target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  14 | describe("type argument for 'Source'", () => {
+  15 |   test("rejects the 'never' type", () => {
+  16 |     expect<never>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeNever()'
+     |            ~~~~~
+  17 |     expect<never>().type.not.toBeAssignableWith<{ a: number }>();
+  18 |   });
+  19 | 
+
+       at ./__typetests__/isRejected.test.ts:16:12
+
+Error: A type argument for 'Target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  15 |   test("rejects the 'never' type", () => {
+  16 |     expect<never>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeNever()'
+  17 |     expect<never>().type.not.toBeAssignableWith<{ a: number }>();
+     |            ~~~~~
+  18 |   });
+  19 | 
+  20 |   test("allows '.toBeNever()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:17:12
+
+Error: An argument for 'target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  25 | describe("argument for 'target'", () => {
+  26 |   test("rejects the 'never' type", () => {
+  27 |     expect({ b: "abc" }).type.toBeAssignableWith({} as never); // use '.toBeNever()'
+     |            ~~~~~~~~~~~~
+  28 |     expect({ b: "abc" }).type.not.toBeAssignableWith({} as never);
+  29 |   });
+  30 | 
+
+       at ./__typetests__/isRejected.test.ts:27:12
+
+Error: An argument for 'target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  26 |   test("rejects the 'never' type", () => {
+  27 |     expect({ b: "abc" }).type.toBeAssignableWith({} as never); // use '.toBeNever()'
+  28 |     expect({ b: "abc" }).type.not.toBeAssignableWith({} as never);
+     |            ~~~~~~~~~~~~
+  29 |   });
+  30 | 
+  31 |   test("allows '.toBeNever()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:28:12
+
+Error: A type argument for 'Target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  36 | describe("type argument for 'Target'", () => {
+  37 |   test("rejects the 'never' type", () => {
+  38 |     expect<{ a: number }>().type.toAcceptProps<never>(); // use '.toBeNever()'
+     |            ~~~~~~~~~~~~~
+  39 |     expect<{ a: number }>().type.not.toAcceptProps<never>();
+  40 |   });
+  41 | 
+
+       at ./__typetests__/isRejected.test.ts:38:12
+
+Error: A type argument for 'Target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, use the '.toBeNever()' matcher instead.
+
+  37 |   test("rejects the 'never' type", () => {
+  38 |     expect<{ a: number }>().type.toAcceptProps<never>(); // use '.toBeNever()'
+  39 |     expect<{ a: number }>().type.not.toAcceptProps<never>();
+     |            ~~~~~~~~~~~~~
+  40 |   });
+  41 | 
+  42 |   test("allows '.toBeNever()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:39:12
+

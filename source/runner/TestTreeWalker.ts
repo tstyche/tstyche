@@ -38,7 +38,7 @@ export class TestTreeWalker {
     this.#position = options.position;
     this.#taskResult = options.taskResult;
 
-    this.#expectService = new ExpectService(compiler, typeChecker);
+    this.#expectService = new ExpectService(compiler, typeChecker, this.#resolvedConfig);
   }
 
   #resolveRunMode(mode: RunMode, member: TestMember): RunMode {

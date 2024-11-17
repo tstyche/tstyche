@@ -5,6 +5,8 @@ import type { ConfigFileOptions } from "./types.js";
 export const defaultOptions: Required<ConfigFileOptions> = {
   failFast: false,
   plugins: [],
+  rejectAnyType: false,
+  rejectNeverType: false,
   reporters: ["list", "summary"],
   rootPath: Path.resolve("./"),
   target: environmentOptions.typescriptModule != null ? ["current"] : ["latest"],

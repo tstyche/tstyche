@@ -1,0 +1,23 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/isRejected.test.ts
+  argument for 'source'
+    × rejects the 'any' type
+    + allows '.toBeAny()'
+  type argument for 'Source'
+    × rejects the 'any' type
+    + allows '.toBeAny()'
+  argument for 'target'
+    × rejects the 'any' type
+    + allows '.toBeAny()'
+  type argument for 'Target'
+    × rejects the 'any' type
+    + allows '.toBeAny()'
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      4 failed, 4 passed, 8 total
+Assertions: 4 failed, 8 passed, 12 total
+Duration:   <<timestamp>>
+
+Ran all test files.

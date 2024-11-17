@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
@@ -16,6 +17,7 @@ import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
+  #resolvedConfig: ResolvedConfig;
   #typeChecker: TypeChecker;
 
   private toAcceptProps: ToAcceptProps;
@@ -38,8 +40,9 @@ export class ExpectService {
   private toMatch: ToMatch;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#resolvedConfig = resolvedConfig;
     this.#typeChecker = typeChecker;
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
@@ -83,6 +86,41 @@ export class ExpectService {
     }
 
     const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
+
+    const sourceType = matchWorker.getType(assertion.source[0]);
+    let targetType: ts.Type | undefined;
+
+    if (assertion.target[0] != null) {
+      targetType = matchWorker.getType(assertion.target[0]);
+    }
+
+    if (this.#resolvedConfig.rejectAnyType && matcherNameText !== "toBeAny") {
+      if (sourceType.flags & this.#compiler.TypeFlags.Any) {
+        this.#onSourceArgumentTypeRejected(assertion.source[0], "any", onDiagnostics);
+
+        return;
+      }
+
+      if (targetType != null && targetType.flags & this.#compiler.TypeFlags.Any) {
+        this.#onSourceArgumentTypeRejected(assertion.source[0], "any", onDiagnostics);
+
+        return;
+      }
+    }
+
+    if (this.#resolvedConfig.rejectNeverType && matcherNameText !== "toBeNever") {
+      if (sourceType.flags & this.#compiler.TypeFlags.Never) {
+        this.#onTargetArgumentTypeRejected(assertion.source[0], "never", onDiagnostics);
+
+        return;
+      }
+
+      if (targetType != null && targetType.flags & this.#compiler.TypeFlags.Never) {
+        this.#onTargetArgumentTypeRejected(assertion.source[0], "never", onDiagnostics);
+
+        return;
+      }
+    }
 
     switch (matcherNameText) {
       case "toAcceptProps":
@@ -156,6 +194,34 @@ export class ExpectService {
   #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+
+    onDiagnostics(Diagnostic.error(text, origin));
+  }
+
+  #onSourceArgumentTypeRejected(sourceNode: ts.Node, typeText: string, onDiagnostics: DiagnosticsHandler) {
+    const text = [
+      this.#compiler.isTypeNode(sourceNode)
+        ? ExpectDiagnosticText.typeArgumentCannotBeOfType("Source", typeText)
+        : ExpectDiagnosticText.argumentCannotBeOfType("source", typeText),
+      ExpectDiagnosticText.typeIsRejected(typeText),
+      ExpectDiagnosticText.usePrimitiveTypeMatcher(typeText),
+    ];
+
+    const origin = DiagnosticOrigin.fromNode(sourceNode);
+
+    onDiagnostics(Diagnostic.error(text, origin));
+  }
+
+  #onTargetArgumentTypeRejected(sourceNode: ts.Node, typeText: string, onDiagnostics: DiagnosticsHandler) {
+    const text = [
+      this.#compiler.isTypeNode(sourceNode)
+        ? ExpectDiagnosticText.typeArgumentCannotBeOfType("Target", typeText)
+        : ExpectDiagnosticText.argumentCannotBeOfType("target", typeText),
+      ExpectDiagnosticText.typeIsRejected(typeText),
+      ExpectDiagnosticText.usePrimitiveTypeMatcher(typeText),
+    ];
+
+    const origin = DiagnosticOrigin.fromNode(sourceNode);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
