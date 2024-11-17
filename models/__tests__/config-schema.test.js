@@ -43,6 +43,14 @@ test("config-schema.json", async (t) => {
         testCase: "'plugins' option",
       },
       {
+        fixtureFileName: "valid-rejectAnyType.json",
+        testCase: "'rejectAnyType' option",
+      },
+      {
+        fixtureFileName: "valid-rejectNeverType.json",
+        testCase: "'rejectNeverType' option",
+      },
+      {
         fixtureFileName: "valid-reporters.json",
         testCase: "'reporters' option",
       },
@@ -91,6 +99,14 @@ test("config-schema.json", async (t) => {
       {
         fixtureFileName: "invalid-plugins-3.json",
         testCase: "value of 'plugins' option must be of type Array",
+      },
+      {
+        fixtureFileName: "invalid-rejectAnyType.json",
+        testCase: "value of 'rejectAnyType' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-rejectNeverType.json",
+        testCase: "value of 'rejectNeverType' option must be of type boolean",
       },
       {
         fixtureFileName: "invalid-reporters-1.json",
