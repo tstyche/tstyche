@@ -1,11 +1,9 @@
 import { describe, expect, test } from "tstyche";
 import type * as tstyche from "tstyche/tstyche";
 
-const options: tstyche.CommandLineOptions = {};
-
 describe("CommandLineOptions", () => {
   test("all options", () => {
-    expect(options).type.toBeAssignableWith({
+    expect<tstyche.CommandLineOptions>().type.toBeAssignableWith({
       config: "./config/tstyche.json",
       failFast: true,
       help: true,
@@ -24,6 +22,10 @@ describe("CommandLineOptions", () => {
       version: true,
       watch: true,
     });
+  });
+
+  test("all options are optional", () => {
+    expect<tstyche.CommandLineOptions>().type.toBeAssignableWith({});
   });
 
   test("'config' option", () => {
