@@ -87,44 +87,8 @@ export class ExpectService {
 
     const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
 
-    if (this.#resolvedConfig.rejectAnyType && matcherNameText !== "toBeAny") {
-      const sourceType = matchWorker.getType(assertion.source[0]);
-
-      if (sourceType.flags & this.#compiler.TypeFlags.Any) {
-        this.#onSourceArgumentTypeRejected(assertion.source[0], "any", onDiagnostics);
-
-        return;
-      }
-
-      if (assertion.target[0] != null) {
-        const targetType = matchWorker.getType(assertion.target[0]);
-
-        if (targetType.flags & this.#compiler.TypeFlags.Any) {
-          this.#onTargetArgumentTypeRejected(assertion.target[0], "any", onDiagnostics);
-
-          return;
-        }
-      }
-    }
-
-    if (this.#resolvedConfig.rejectNeverType && matcherNameText !== "toBeNever") {
-      const sourceType = matchWorker.getType(assertion.source[0]);
-
-      if (sourceType.flags & this.#compiler.TypeFlags.Never) {
-        this.#onSourceArgumentTypeRejected(assertion.source[0], "never", onDiagnostics);
-
-        return;
-      }
-
-      if (assertion.target[0] != null) {
-        const targetType = matchWorker.getType(assertion.target[0]);
-
-        if (targetType.flags & this.#compiler.TypeFlags.Never) {
-          this.#onTargetArgumentTypeRejected(assertion.target[0], "never", onDiagnostics);
-
-          return;
-        }
-      }
+    if (this.#rejectsTypeArgument(matcherNameText, assertion, matchWorker, onDiagnostics)) {
+      return;
     }
 
     switch (matcherNameText) {
@@ -203,31 +167,42 @@ export class ExpectService {
     onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onSourceArgumentTypeRejected(sourceNode: ts.Node, typeText: string, onDiagnostics: DiagnosticsHandler) {
-    const text = [
-      this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentCannotBeOfType("Source", typeText)
-        : ExpectDiagnosticText.argumentCannotBeOfType("source", typeText),
-      ExpectDiagnosticText.typeIsRejected(typeText),
-      ExpectDiagnosticText.usePrimitiveTypeMatcher(typeText),
-    ];
+  #rejectsTypeArgument(
+    matcherNameText: string,
+    assertion: Assertion,
+    matchWorker: MatchWorker,
+    onDiagnostics: DiagnosticsHandler<Diagnostic>,
+  ) {
+    for (const argumentType of ["Any", "Never"] as const) {
+      if (this.#resolvedConfig[`reject${argumentType}Type`] && matcherNameText !== `toBe${argumentType}`) {
+        for (const argumentName of ["Source", "Target"] as const) {
+          const argumentNode = assertion[`get${argumentName}Node`]()[0];
 
-    const origin = DiagnosticOrigin.fromNode(sourceNode);
+          if (argumentNode != null) {
+            const sourceType = matchWorker.getType(argumentNode);
 
-    onDiagnostics(Diagnostic.error(text, origin));
-  }
+            if (sourceType.flags & this.#compiler.TypeFlags[argumentType]) {
+              const typeText = argumentType.toLowerCase();
 
-  #onTargetArgumentTypeRejected(sourceNode: ts.Node, typeText: string, onDiagnostics: DiagnosticsHandler) {
-    const text = [
-      this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentCannotBeOfType("Target", typeText)
-        : ExpectDiagnosticText.argumentCannotBeOfType("target", typeText),
-      ExpectDiagnosticText.typeIsRejected(typeText),
-      ExpectDiagnosticText.usePrimitiveTypeMatcher(typeText),
-    ];
+              const text = [
+                this.#compiler.isTypeNode(argumentNode)
+                  ? ExpectDiagnosticText.typeArgumentCannotBeOfType(argumentName, typeText)
+                  : ExpectDiagnosticText.argumentCannotBeOfType(argumentName.toLowerCase(), typeText),
+                ExpectDiagnosticText.typeIsRejected(typeText),
+                ExpectDiagnosticText.usePrimitiveTypeMatcher(typeText),
+              ];
 
-    const origin = DiagnosticOrigin.fromNode(sourceNode);
+              const origin = DiagnosticOrigin.fromNode(argumentNode);
 
-    onDiagnostics(Diagnostic.error(text, origin));
+              onDiagnostics(Diagnostic.error(text, origin));
+
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    return false;
   }
 }

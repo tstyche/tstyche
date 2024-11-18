@@ -42,11 +42,21 @@ export class Assertion extends TestMember {
     return this.matcherNode.expression.name;
   }
 
+  /** @deprecated Use the 'getSourceNode()' method instead */
   get source(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
+    return this.getSourceNode();
+  }
+
+  getSourceNode(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
     return this.node.typeArguments ?? this.node.arguments;
   }
 
+  /** @deprecated Use the 'getTargetNode()' method instead */
   get target(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
+    return this.getTargetNode();
+  }
+
+  getTargetNode(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
     return this.matcherNode.typeArguments ?? this.matcherNode.arguments;
   }
 }
