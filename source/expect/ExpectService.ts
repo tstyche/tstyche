@@ -88,7 +88,7 @@ export class ExpectService {
 
     const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
 
-    if (this.#rejectsTypeArgument(matcherNameText, assertion, matchWorker, onDiagnostics)) {
+    if (this.#rejectsTypeArguments(matcherNameText, assertion, matchWorker, onDiagnostics)) {
       return;
     }
 
@@ -168,7 +168,7 @@ export class ExpectService {
     onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #rejectsTypeArgument(
+  #rejectsTypeArguments(
     matcherNameText: string,
     assertion: Assertion,
     matchWorker: MatchWorker,
@@ -182,24 +182,26 @@ export class ExpectService {
         for (const argumentName of ["source", "target"] as const) {
           const argumentNode = assertion[argumentName][0];
 
-          if (argumentNode != null) {
-            const sourceType = matchWorker.getType(argumentNode);
+          if (!argumentNode) {
+            continue;
+          }
 
-            if (sourceType.flags & this.#compiler.TypeFlags[Format.capitalize(argumentType)]) {
-              const text = [
-                this.#compiler.isTypeNode(argumentNode)
-                  ? ExpectDiagnosticText.typeArgumentCannotBeOfType(Format.capitalize(argumentName), argumentType)
-                  : ExpectDiagnosticText.argumentCannotBeOfType(argumentName, argumentType),
-                ExpectDiagnosticText.typeIsRejected(argumentType),
-                ExpectDiagnosticText.usePrimitiveTypeMatcher(argumentType),
-              ];
+          const sourceType = matchWorker.getType(argumentNode);
 
-              const origin = DiagnosticOrigin.fromNode(argumentNode);
+          if (sourceType.flags & this.#compiler.TypeFlags[Format.capitalize(argumentType)]) {
+            const text = [
+              this.#compiler.isTypeNode(argumentNode)
+                ? ExpectDiagnosticText.typeArgumentCannotBeOfType(Format.capitalize(argumentName), argumentType)
+                : ExpectDiagnosticText.argumentCannotBeOfType(argumentName, argumentType),
+              ExpectDiagnosticText.typeIsRejected(argumentType),
+              ExpectDiagnosticText.usePrimitiveTypeMatcher(argumentType),
+            ];
 
-              onDiagnostics(Diagnostic.error(text, origin));
+            const origin = DiagnosticOrigin.fromNode(argumentNode);
 
-              return true;
-            }
+            onDiagnostics(Diagnostic.error(text, origin));
+
+            return true;
           }
         }
       }
