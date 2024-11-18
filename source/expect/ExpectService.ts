@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
@@ -16,6 +17,7 @@ import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
+  #resolvedConfig: ResolvedConfig;
   #typeChecker: TypeChecker;
 
   private toAcceptProps: ToAcceptProps;
@@ -38,8 +40,9 @@ export class ExpectService {
   private toMatch: ToMatch;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#resolvedConfig = resolvedConfig;
     this.#typeChecker = typeChecker;
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
@@ -83,6 +86,10 @@ export class ExpectService {
     }
 
     const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
+
+    if (this.#rejectsTypeArgument(matcherNameText, assertion, matchWorker, onDiagnostics)) {
+      return;
+    }
 
     switch (matcherNameText) {
       case "toAcceptProps":
@@ -158,5 +165,44 @@ export class ExpectService {
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostics(Diagnostic.error(text, origin));
+  }
+
+  #rejectsTypeArgument(
+    matcherNameText: string,
+    assertion: Assertion,
+    matchWorker: MatchWorker,
+    onDiagnostics: DiagnosticsHandler<Diagnostic>,
+  ) {
+    for (const argumentType of ["Any", "Never"] as const) {
+      if (this.#resolvedConfig[`reject${argumentType}Type`] && matcherNameText !== `toBe${argumentType}`) {
+        for (const argumentName of ["Source", "Target"] as const) {
+          const argumentNode = assertion[`get${argumentName}Node`]()[0];
+
+          if (argumentNode != null) {
+            const sourceType = matchWorker.getType(argumentNode);
+
+            if (sourceType.flags & this.#compiler.TypeFlags[argumentType]) {
+              const typeText = argumentType.toLowerCase();
+
+              const text = [
+                this.#compiler.isTypeNode(argumentNode)
+                  ? ExpectDiagnosticText.typeArgumentCannotBeOfType(argumentName, typeText)
+                  : ExpectDiagnosticText.argumentCannotBeOfType(argumentName.toLowerCase(), typeText),
+                ExpectDiagnosticText.typeIsRejected(typeText),
+                ExpectDiagnosticText.usePrimitiveTypeMatcher(typeText),
+              ];
+
+              const origin = DiagnosticOrigin.fromNode(argumentNode);
+
+              onDiagnostics(Diagnostic.error(text, origin));
+
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    return false;
   }
 }

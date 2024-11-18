@@ -11,7 +11,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 await test("toBeUnknown", async (t) => {
   await t.test("'toBeUnknown' implementation", () => {
     tstyche.expect(/** @type {unknown} */ (null)).type.toBeUnknown();
-    tstyche.expect(/** @type {never} */ (null)).type.not.toBeUnknown();
+    tstyche.expect("sample").type.not.toBeUnknown();
   });
 
   await t.test("toBeUnknown", async () => {

@@ -1,0 +1,84 @@
+Error: Type 'never' is not identical to type '{ a: number; }'.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("rejects the 'never' type", () => {
+  5 |     expect({} as never).type.toBe<{ a: number }>(); // use '.toBeNever()'
+    |                                   ~~~~~~~~~~~~~
+  6 |     expect({} as never).type.not.toBe<{ a: number }>();
+  7 |   });
+  8 | 
+
+      at ./__typetests__/isRejected.test.ts:5:35 ❭ argument for 'source' ❭ rejects the 'never' type
+
+Error: Type 'never' is not assignable with type '{ a: number; }'.
+
+  14 | describe("type argument for 'Source'", () => {
+  15 |   test("rejects the 'never' type", () => {
+  16 |     expect<never>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeNever()'
+     |                                             ~~~~~~~~~~~~~
+  17 |     expect<never>().type.not.toBeAssignableWith<{ a: number }>();
+  18 |   });
+  19 | 
+
+       at ./__typetests__/isRejected.test.ts:16:45 ❭ type argument for 'Source' ❭ rejects the 'never' type
+
+Error: Type '{ b: string; }' is assignable with type 'never'.
+
+  26 |   test("rejects the 'never' type", () => {
+  27 |     expect({ b: "abc" }).type.toBeAssignableWith({} as never); // use '.toBeNever()'
+  28 |     expect({ b: "abc" }).type.not.toBeAssignableWith({} as never);
+     |                                                      ~~~~~~~~~~~
+  29 |   });
+  30 | 
+  31 |   test("allows '.toBeNever()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:28:54 ❭ argument for 'target' ❭ rejects the 'never' type
+
+Error: A type argument for 'Source' must be of a function or class type.
+
+  36 | describe("type argument for 'Target'", () => {
+  37 |   test("rejects the 'never' type", () => {
+  38 |     expect<{ a: number }>().type.toAcceptProps<never>(); // use '.toBeNever()'
+     |            ~~~~~~~~~~~~~
+  39 |     expect<{ a: number }>().type.not.toAcceptProps<never>();
+  40 |   });
+  41 | 
+
+       at ./__typetests__/isRejected.test.ts:38:12
+
+Error: A type argument for 'Target' must be of an object type.
+
+  36 | describe("type argument for 'Target'", () => {
+  37 |   test("rejects the 'never' type", () => {
+  38 |     expect<{ a: number }>().type.toAcceptProps<never>(); // use '.toBeNever()'
+     |                                                ~~~~~
+  39 |     expect<{ a: number }>().type.not.toAcceptProps<never>();
+  40 |   });
+  41 | 
+
+       at ./__typetests__/isRejected.test.ts:38:48
+
+Error: A type argument for 'Source' must be of a function or class type.
+
+  37 |   test("rejects the 'never' type", () => {
+  38 |     expect<{ a: number }>().type.toAcceptProps<never>(); // use '.toBeNever()'
+  39 |     expect<{ a: number }>().type.not.toAcceptProps<never>();
+     |            ~~~~~~~~~~~~~
+  40 |   });
+  41 | 
+  42 |   test("allows '.toBeNever()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:39:12
+
+Error: A type argument for 'Target' must be of an object type.
+
+  37 |   test("rejects the 'never' type", () => {
+  38 |     expect<{ a: number }>().type.toAcceptProps<never>(); // use '.toBeNever()'
+  39 |     expect<{ a: number }>().type.not.toAcceptProps<never>();
+     |                                                    ~~~~~
+  40 |   });
+  41 | 
+  42 |   test("allows '.toBeNever()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:39:52
+

@@ -2,6 +2,8 @@
   "$schema": "../../config-schema.json",
   "failFast": true,
   "plugins": ["./tstyche-plugin.js"],
+  "rejectAnyType": true,
+  "rejectNeverType": true,
   "reporters": ["./tstyche-reporter.js"],
   "rootPath": "../",
   "target": ["4.9", "5.0.4", "beta", "latest", "next", "rc"],
