@@ -133,7 +133,6 @@ await test("'rejectAnyType' config file option", async (t) => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });

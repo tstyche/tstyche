@@ -129,7 +129,6 @@ await test("'rejectNeverType' config file option", async (t) => {
     });
 
     assert.equal(stderr, "");
-
     assert.equal(exitCode, 0);
   });
 });
