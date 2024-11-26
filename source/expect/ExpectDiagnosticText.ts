@@ -130,15 +130,12 @@ export class ExpectDiagnosticText {
     return `Types of property '${propertyNameText}' are not compatible.`;
   }
 
-  static typeIsRejected(typeText: string): string {
+  static typeWasRejected(typeText: string): Array<string> {
     const optionNameText = `reject${Format.capitalize(typeText)}Type`;
 
-    return `The '${typeText}' type was rejected because the '${optionNameText}' option is enabled.`;
-  }
-
-  static usePrimitiveTypeMatcher(typeText: string): string {
-    const matcherNameText = `.toBe${Format.capitalize(typeText)}()`;
-
-    return `If this check is necessary, use the '${matcherNameText}' matcher instead.`;
+    return [
+      `The '${typeText}' type was rejected because the '${optionNameText}' option is enabled.`,
+      `If this check is necessary, pass '${typeText}' as the type argument explicitly.`,
+    ];
   }
 }

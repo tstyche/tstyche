@@ -11,7 +11,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 await test("toBeAny", async (t) => {
   await t.test("'toBeAny' implementation", () => {
     tstyche.expect(/** @type {any} */ (null)).type.toBeAny();
-    tstyche.expect("sample").type.not.toBeAny();
+    tstyche.expect(/** @type {never} */ (null)).type.not.toBeAny();
   });
 
   await t.test("toBeAny", async () => {
