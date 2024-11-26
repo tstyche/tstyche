@@ -16,10 +16,12 @@
       "uniqueItems": true
     },
     "rejectAnyType": {
+      "default": false,
       "description": "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
       "type": "boolean"
     },
     "rejectNeverType": {
+      "default": false,
       "description": "Reject the 'never' type passed as an argument to the 'expect()' function or a matcher.",
       "type": "boolean"
     },
