@@ -1,8 +1,10 @@
 import type ts from "typescript";
 import type { Assertion } from "#collect";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
+import { Format } from "./Format.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
@@ -16,6 +18,7 @@ import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
+  #rejectTypes = new Set<"any" | "never">();
   #typeChecker: TypeChecker;
 
   private toAcceptProps: ToAcceptProps;
@@ -38,9 +41,17 @@ export class ExpectService {
   private toMatch: ToMatch;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+  // TODO mark 'resolvedConfig' as required in TSTyche 4
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig?: ResolvedConfig) {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
+
+    if (resolvedConfig?.rejectAnyType) {
+      this.#rejectTypes.add("any");
+    }
+    if (resolvedConfig?.rejectNeverType) {
+      this.#rejectTypes.add("never");
+    }
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe();
@@ -97,6 +108,10 @@ export class ExpectService {
           return;
         }
 
+        if (this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
+          return;
+        }
+
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
       case "toBeAny":
@@ -123,6 +138,10 @@ export class ExpectService {
         return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
       case "toRaiseError":
+        if (assertion.isNot && this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
+          return;
+        }
+
         return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target], onDiagnostics);
 
       default:
@@ -158,5 +177,38 @@ export class ExpectService {
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostics(Diagnostic.error(text, origin));
+  }
+
+  #rejectsTypeArguments(matchWorker: MatchWorker, onDiagnostics: DiagnosticsHandler<Diagnostic>) {
+    for (const rejectedType of this.#rejectTypes) {
+      for (const argumentName of ["source", "target"] as const) {
+        const argumentNode = matchWorker.assertion[argumentName][0];
+
+        if (
+          !argumentNode ||
+          // allows explicit '.toBe<any>()' and '.toBe<never>()'
+          argumentNode.kind === this.#compiler.SyntaxKind[`${Format.capitalize(rejectedType)}Keyword`]
+        ) {
+          continue;
+        }
+
+        if (matchWorker.getType(argumentNode).flags & this.#compiler.TypeFlags[Format.capitalize(rejectedType)]) {
+          const text = [
+            this.#compiler.isTypeNode(argumentNode)
+              ? ExpectDiagnosticText.typeArgumentCannotBeOfType(Format.capitalize(argumentName), rejectedType)
+              : ExpectDiagnosticText.argumentCannotBeOfType(argumentName, rejectedType),
+            ...ExpectDiagnosticText.typeWasRejected(rejectedType),
+          ];
+
+          const origin = DiagnosticOrigin.fromNode(argumentNode);
+
+          onDiagnostics(Diagnostic.error(text, origin));
+
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }

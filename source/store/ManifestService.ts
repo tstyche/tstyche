@@ -108,7 +108,7 @@ export class ManifestService {
       return this.#create();
     }
 
-    if (manifest.isOutdated() || options?.refresh === true) {
+    if (manifest.isOutdated() || options?.refresh) {
       // error events are dispatched only when manifest refresh is requested explicitly (e.g. via the '--update' option)
       const freshManifest = await this.#load({ suppressErrors: !options?.refresh });
 

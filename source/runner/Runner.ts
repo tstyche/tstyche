@@ -44,7 +44,7 @@ export class Runner {
       }
     }
 
-    if (this.#resolvedConfig.watch === true) {
+    if (this.#resolvedConfig.watch) {
       const watchReporter = new WatchReporter(this.#resolvedConfig);
       this.#eventEmitter.addReporter(watchReporter);
     }
@@ -65,7 +65,7 @@ export class Runner {
 
     await this.#run(tasks, cancellationToken);
 
-    if (this.#resolvedConfig.watch === true) {
+    if (this.#resolvedConfig.watch) {
       await this.#watch(tasks, cancellationToken);
     }
 

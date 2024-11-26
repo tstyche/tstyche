@@ -10,9 +10,12 @@ export interface MatcherNode extends ts.CallExpression {
 
 export class Assertion extends TestMember {
   isNot: boolean;
+  matcherName: ts.MemberName;
   matcherNode: MatcherNode;
   modifierNode: ts.PropertyAccessExpression;
   notNode: ts.PropertyAccessExpression | undefined;
+  source: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>;
+  target: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>;
 
   constructor(
     compiler: typeof ts,
@@ -27,8 +30,11 @@ export class Assertion extends TestMember {
     super(compiler, brand, node, parent, flags);
 
     this.isNot = notNode != null;
+    this.matcherName = matcherNode.expression.name;
     this.matcherNode = matcherNode;
     this.modifierNode = modifierNode;
+    this.source = this.node.typeArguments ?? this.node.arguments;
+    this.target = this.matcherNode.typeArguments ?? this.matcherNode.arguments;
 
     for (const diagnostic of parent.diagnostics) {
       if (diagnostic.start != null && diagnostic.start >= this.source.pos && diagnostic.start <= this.source.end) {
@@ -36,17 +42,5 @@ export class Assertion extends TestMember {
         parent.diagnostics.delete(diagnostic);
       }
     }
-  }
-
-  get matcherName(): ts.MemberName {
-    return this.matcherNode.expression.name;
-  }
-
-  get source(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
-    return this.node.typeArguments ?? this.node.arguments;
-  }
-
-  get target(): ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> {
-    return this.matcherNode.typeArguments ?? this.matcherNode.arguments;
   }
 }

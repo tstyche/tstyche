@@ -4,7 +4,7 @@ import type { ReporterEvent } from "./types.js";
 
 export class SummaryReporter extends BaseReporter {
   on([event, payload]: ReporterEvent): void {
-    if (this.resolvedConfig.watch === true) {
+    if (this.resolvedConfig.watch) {
       return;
     }
 

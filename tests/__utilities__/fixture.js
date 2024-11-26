@@ -23,7 +23,7 @@ export async function createSymbolicLink(fixtureUrl, source, target) {
  * @param {{ generated?: boolean }} [options]
  */
 export function getFixtureFileUrl(fixture, options = { generated: false }) {
-  return new URL(`../__fixtures__/${options.generated === true ? ".generated/" : ""}${fixture}/`, import.meta.url);
+  return new URL(`../__fixtures__/${options.generated ? ".generated/" : ""}${fixture}/`, import.meta.url);
 }
 
 /**

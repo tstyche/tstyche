@@ -13,6 +13,14 @@ export interface ConfigFileOptions {
      */
     plugins?: Array<string>;
     /**
+     * Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.
+     */
+    rejectAnyType?: boolean;
+    /**
+     * Reject the 'never' type passed as an argument to the 'expect()' function or a matcher.
+     */
+    rejectNeverType?: boolean;
+    /**
      * The list of reporters to use.
      */
     reporters?: Array<string>;

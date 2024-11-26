@@ -109,6 +109,20 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.Boolean,
+      description: "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
+      group: OptionGroup.ConfigFile,
+      name: "rejectAnyType",
+    },
+
+    {
+      brand: OptionBrand.Boolean,
+      description: "Reject the 'never' type passed as an argument to the 'expect()' function or a matcher.",
+      group: OptionGroup.ConfigFile,
+      name: "rejectNeverType",
+    },
+
+    {
       brand: OptionBrand.List,
       description: "The list of reporters to use.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile,

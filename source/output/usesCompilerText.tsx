@@ -19,7 +19,7 @@ export function usesCompilerText(
 
   return (
     <Text>
-      {options?.prependEmptyLine === true ? <Line /> : undefined}
+      {options?.prependEmptyLine ? <Line /> : undefined}
       <Line>
         <Text color={Color.Blue}>{"uses"}</Text>
         {" TypeScript "}
