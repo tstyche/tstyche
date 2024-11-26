@@ -16,7 +16,7 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: corepack enable
-      - run: yarn install
-      - run: yarn build
-      - run: yarn test:types --target next
-      - run: yarn test:examples --target next
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm test:types --target next
+      - run: pnpm test:examples --target next

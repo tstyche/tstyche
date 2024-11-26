@@ -4,7 +4,6 @@
   "files": {
     "ignore": [
       ".cache/**",
-      ".yarn/**",
       "build/**",
       "coverage/**",
       "models/CommandLineOptions.ts",

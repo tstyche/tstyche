@@ -24,7 +24,8 @@ await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
     assert.matchObject(normalizeOutput(stdout), {
-      typescriptModule: "<<baseUrl>>/node_modules/typescript/lib/typescript.js",
+      typescriptModule:
+        /^<<baseUrl>>\/node_modules\/\.pnpm\/typescript@\d\.\d\.\d\/node_modules\/typescript\/lib\/typescript\.js$/,
     });
 
     assert.equal(stderr, "");

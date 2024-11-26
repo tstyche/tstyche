@@ -22,9 +22,9 @@ jobs:
           check-latest: true
           node-version: lts/*
       - run: corepack enable
-      - run: yarn install
-      - run: yarn build
-      - run: yarn bench
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm bench
 
       - uses: bencherdev/bencher@main
       - name: Run bencher

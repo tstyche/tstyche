@@ -11,12 +11,21 @@ export { doesNotMatch, equal, match, notEqual } from "node:assert/strict";
  */
 export function matchObject(source, target) {
   if (typeof source === "string") {
-    source = /** @type {{ version: string }} */ (JSON.parse(source));
+    source = /** @type {Record<string, unknown>} */ (JSON.parse(source));
   }
 
-  for (const targetKey of Object.keys(target)) {
-    assert.equal(targetKey in source, true, `Target does not have the '${targetKey}' property.`);
-    assert.deepEqual(source[targetKey], target[targetKey], `Values of the '${targetKey}' properties do not match.`);
+  for (const key of Object.keys(target)) {
+    assert(key in source, `Target does not have the '${key}' property.`);
+
+    /** @type {unknown} */
+    const sourceValue = source[key];
+    const targetValue = target[key];
+
+    if (typeof sourceValue === "string" && targetValue instanceof RegExp) {
+      assert.match(sourceValue, targetValue, `Values of the '${key}' properties do not match.`);
+    } else {
+      assert.deepEqual(sourceValue, targetValue, `Values of the '${key}' properties do not match.`);
+    }
   }
 }
 

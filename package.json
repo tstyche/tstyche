@@ -37,28 +37,28 @@
   "scripts": {
     "bench": "./benchmarks/tstyche.bench.sh",
     "build": "rollup --config rollup.config.js",
-    "build:watch": "yarn build --sourcemap --watch",
-    "check": "yarn check:spelling && yarn check:types",
+    "build:watch": "pnpm build --sourcemap --watch",
+    "check": "pnpm check:spelling && pnpm check:types",
     "check:spelling": "cspell --config cspell.config.json --quiet",
     "check:types": "tsc --noEmit --project tsconfig.json",
     "clean": "rm -rf build",
     "format": "biome format --write",
-    "generate": "yarn generate:schema && yarn generate:types",
+    "generate": "pnpm generate:schema && pnpm generate:types",
     "generate:schema": "node ./scripts/generate-schema.js",
     "generate:types": "node ./scripts/generate-types.js",
     "lint": "biome lint --write",
-    "prepublish": "yarn clean && yarn build",
-    "test": "yarn test:unit && yarn test:e2e",
-    "test:coverage": "yarn test:coverage:collect && yarn test:coverage:report",
-    "test:coverage:collect": "yarn build --sourcemap && NODE_V8_COVERAGE='./coverage/v8-coverage' yarn test:e2e",
+    "prepublish": "pnpm clean && pnpm build",
+    "test": "pnpm test:unit && pnpm test:e2e",
+    "test:coverage": "pnpm test:coverage:collect && pnpm test:coverage:report",
+    "test:coverage:collect": "pnpm build --sourcemap && NODE_V8_COVERAGE='./coverage/v8-coverage' pnpm test:e2e",
     "test:coverage:report": "node ./scripts/report-coverage.js",
-    "test:e2e": "yarn test:e2e:parallel && yarn test:e2e:serial",
-    "test:e2e:parallel": "yarn test:run tests/*.test.js --exclude feature --parallel",
-    "test:e2e:serial": "yarn test:run tests/*.test.js --include feature",
+    "test:e2e": "pnpm test:e2e:parallel && pnpm test:e2e:serial",
+    "test:e2e:parallel": "pnpm test:run tests/*.test.js --exclude feature --parallel",
+    "test:e2e:serial": "pnpm test:run tests/*.test.js --include feature",
     "test:examples": "tstyche examples",
-    "test:run": "rm -rf ./tests/__fixtures__/.generated && yarn node ./tests/__utilities__/runner.js",
+    "test:run": "rm -rf ./tests/__fixtures__/.generated && pnpm node ./tests/__utilities__/runner.js",
     "test:types": "tstyche typetests",
-    "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
+    "test:unit": "pnpm test:run **/__tests__/*.test.js --parallel"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
@@ -83,7 +83,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@4.5.3",
+  "packageManager": "pnpm@9.14.2",
   "engines": {
     "node": ">=18.19"
   }
