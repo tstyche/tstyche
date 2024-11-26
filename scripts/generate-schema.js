@@ -8,7 +8,6 @@ import * as tstyche from "tstyche/tstyche";
  * @property {unknown} [default]
  * @property {string} [description]
  * @property {JsonSchemaDefinition} [items]
- * @property {string} [pattern]
  * @property {string | Array<string>} type
  * @property {boolean} [uniqueItems]
  */
@@ -45,10 +44,6 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
 
   if ("description" in optionDefinition) {
     jsonSchemaDefinition.description = optionDefinition.description;
-  }
-
-  if ("pattern" in optionDefinition) {
-    jsonSchemaDefinition.pattern = optionDefinition.pattern;
   }
 
   switch (optionDefinition.brand) {

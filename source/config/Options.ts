@@ -22,7 +22,6 @@ interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
 export interface ItemDefinition {
   brand: OptionBrand.String;
   name: string;
-  pattern?: string;
 }
 
 interface ListTypeOptionDefinition extends BaseOptionDefinition {
@@ -161,7 +160,6 @@ export class Options {
       items: {
         brand: OptionBrand.String,
         name: "target",
-        pattern: "^([45]\\.[0-9](\\.[0-9])?)|beta|current|latest|next|rc$",
       },
       name: "target",
     },

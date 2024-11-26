@@ -130,14 +130,10 @@ test("config-schema.json", async (t) => {
       },
       {
         fixtureFileName: "invalid-target-2.json",
-        testCase: "item of 'target' option must be one of the allowed values",
-      },
-      {
-        fixtureFileName: "invalid-target-3.json",
         testCase: "items of 'target' option must NOT be identical",
       },
       {
-        fixtureFileName: "invalid-target-4.json",
+        fixtureFileName: "invalid-target-3.json",
         testCase: "value of 'target' option must be of type Array",
       },
       {
