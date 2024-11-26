@@ -41,14 +41,15 @@ export class ExpectService {
   private toMatch: ToMatch;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig: ResolvedConfig) {
+  // TODO mark 'resolvedConfig' as required in TSTyche 4
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig?: ResolvedConfig) {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
 
-    if (resolvedConfig.rejectAnyType) {
+    if (resolvedConfig?.rejectAnyType) {
       this.#rejectTypes.add("any");
     }
-    if (resolvedConfig.rejectNeverType) {
+    if (resolvedConfig?.rejectNeverType) {
       this.#rejectTypes.add("never");
     }
 
