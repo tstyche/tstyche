@@ -1,23 +1,25 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/isRejected.test.ts
+pass ./__typetests__/isRejected.test.ts
   argument for 'source'
-    × rejects the 'never' type
+    + rejects the 'never' type
     + allows '.toBeNever()'
+    + allows '.toRaiseError()', but not '.not.toRaiseError()'
   type argument for 'Source'
-    × rejects the 'never' type
+    + allows only explicit 'never'
     + allows '.toBeNever()'
+    + allows '.toRaiseError()', but not '.not.toRaiseError()'
   argument for 'target'
-    × rejects the 'never' type
+    + rejects the 'never' type
     + allows '.toBeNever()'
   type argument for 'Target'
-    × rejects the 'never' type
+    + allows only explicit 'never'
     + allows '.toBeNever()'
 
-Targets:    1 failed, 1 total
-Test files: 1 failed, 1 total
-Tests:      4 failed, 4 passed, 8 total
-Assertions: 5 failed, 7 passed, 12 total
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      10 passed, 10 total
+Assertions: 16 passed, 16 total
 Duration:   <<timestamp>>
 
 Ran all test files.

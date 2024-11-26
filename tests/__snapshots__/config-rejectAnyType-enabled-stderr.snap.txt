@@ -1,120 +1,120 @@
 Error: An argument for 'source' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
-If this check is necessary, use the '.toBeAny()' matcher instead.
+If this check is necessary, pass 'any' as the type argument explicitly.
 
-  3 | describe("argument for 'source'", () => {
   4 |   test("rejects the 'any' type", () => {
-  5 |     expect({} as any).type.toBeAssignableTo<{ a: number }>(); // use '.toBeAny()'
-    |            ~~~~~~~~~
-  6 |     expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
-  7 |   });
-  8 | 
+  5 |     // @ts-expect-error missing import test
+  6 |     expect(getResult("sample")).type.toBe<Result<string>>(); // rejected
+    |            ~~~~~~~~~~~~~~~~~~~
+  7 |     // @ts-expect-error missing import test
+  8 |     expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
+  9 |   });
 
-      at ./__typetests__/isRejected.test.ts:5:12
+      at ./__typetests__/isRejected.test.ts:6:12
 
 Error: An argument for 'source' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
-If this check is necessary, use the '.toBeAny()' matcher instead.
+If this check is necessary, pass 'any' as the type argument explicitly.
 
-  4 |   test("rejects the 'any' type", () => {
-  5 |     expect({} as any).type.toBeAssignableTo<{ a: number }>(); // use '.toBeAny()'
-  6 |     expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
-    |            ~~~~~~~~~
-  7 |   });
-  8 | 
-  9 |   test("allows '.toBeAny()'", () => {
+   6 |     expect(getResult("sample")).type.toBe<Result<string>>(); // rejected
+   7 |     // @ts-expect-error missing import test
+   8 |     expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
+     |            ~~~~~~~~~~~~~~
+   9 |   });
+  10 | 
+  11 |   test("allows '.toBeAny()'", () => {
 
-      at ./__typetests__/isRejected.test.ts:6:12
+       at ./__typetests__/isRejected.test.ts:8:12
+
+Error: An argument for 'source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, pass 'any' as the type argument explicitly.
+
+  19 | 
+  20 |     expect(any()).type.toRaiseError();
+  21 |     expect(any(1)).type.not.toRaiseError(); // rejected
+     |            ~~~~~~
+  22 |   });
+  23 | });
+  24 | 
+
+       at ./__typetests__/isRejected.test.ts:21:12
 
 Error: A type argument for 'Source' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
-If this check is necessary, use the '.toBeAny()' matcher instead.
+If this check is necessary, pass 'any' as the type argument explicitly.
 
-  14 | describe("type argument for 'Source'", () => {
-  15 |   test("rejects the 'any' type", () => {
-  16 |     expect<any>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeAny()'
+  28 |   test("allows only explicit 'any'", () => {
+  29 |     expect<any>().type.toBeAssignableTo<{ a: number }>();
+  30 |     expect<Any>().type.toBeAssignableTo<{ a: number }>(); // rejected
      |            ~~~
-  17 |     expect<any>().type.not.toBeAssignableWith<{ a: number }>();
-  18 |   });
-  19 | 
+  31 |   });
+  32 | 
+  33 |   test("allows '.toBeAny()'", () => {
 
-       at ./__typetests__/isRejected.test.ts:16:12
+       at ./__typetests__/isRejected.test.ts:30:12
 
 Error: A type argument for 'Source' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
-If this check is necessary, use the '.toBeAny()' matcher instead.
+If this check is necessary, pass 'any' as the type argument explicitly.
 
-  15 |   test("rejects the 'any' type", () => {
-  16 |     expect<any>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeAny()'
-  17 |     expect<any>().type.not.toBeAssignableWith<{ a: number }>();
-     |            ~~~
-  18 |   });
-  19 | 
-  20 |   test("allows '.toBeAny()'", () => {
+  39 | 
+  40 |     expect<Any>().type.toRaiseError();
+  41 |     expect<Any<any>>().type.not.toRaiseError(); // rejected
+     |            ~~~~~~~~
+  42 |   });
+  43 | });
+  44 | 
 
-       at ./__typetests__/isRejected.test.ts:17:12
-
-Error: An argument for 'target' cannot be of the 'any' type.
-
-The 'any' type was rejected because the 'rejectAnyType' option is enabled.
-If this check is necessary, use the '.toBeAny()' matcher instead.
-
-  25 | describe("argument for 'target'", () => {
-  26 |   test("rejects the 'any' type", () => {
-  27 |     expect({ a: 123 }).type.toBe({} as any); // use '.toBeAny()'
-     |                                  ~~~~~~~~~
-  28 |     expect({ a: 123 }).type.not.toBe({} as any);
-  29 |   });
-  30 | 
-
-       at ./__typetests__/isRejected.test.ts:27:34
+       at ./__typetests__/isRejected.test.ts:41:12
 
 Error: An argument for 'target' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
-If this check is necessary, use the '.toBeAny()' matcher instead.
+If this check is necessary, pass 'any' as the type argument explicitly.
 
-  26 |   test("rejects the 'any' type", () => {
-  27 |     expect({ a: 123 }).type.toBe({} as any); // use '.toBeAny()'
-  28 |     expect({ a: 123 }).type.not.toBe({} as any);
-     |                                      ~~~~~~~~~
-  29 |   });
-  30 | 
-  31 |   test("allows '.toBeAny()'", () => {
+  46 |   test("rejects the 'any' type", () => {
+  47 |     // @ts-expect-error missing import test
+  48 |     expect<string>().type.toBeAssignableWith(getResult("sample")); // rejected
+     |                                              ~~~~~~~~~~~~~~~~~~~
+  49 |     // @ts-expect-error missing import test
+  50 |     expect<number>().type.not.toBe(getResult(123)); // rejected
+  51 |   });
 
-       at ./__typetests__/isRejected.test.ts:28:38
+       at ./__typetests__/isRejected.test.ts:48:46
+
+Error: An argument for 'target' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, pass 'any' as the type argument explicitly.
+
+  48 |     expect<string>().type.toBeAssignableWith(getResult("sample")); // rejected
+  49 |     // @ts-expect-error missing import test
+  50 |     expect<number>().type.not.toBe(getResult(123)); // rejected
+     |                                    ~~~~~~~~~~~~~~
+  51 |   });
+  52 | 
+  53 |   test("allows '.toBeAny()'", () => {
+
+       at ./__typetests__/isRejected.test.ts:50:36
 
 Error: A type argument for 'Target' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
-If this check is necessary, use the '.toBeAny()' matcher instead.
+If this check is necessary, pass 'any' as the type argument explicitly.
 
-  36 | describe("type argument for 'Target'", () => {
-  37 |   test("rejects the 'any' type", () => {
-  38 |     expect<{ a: boolean }>().type.toBeAssignableTo<any>(); // use '.toBeAny()'
-     |                                                    ~~~
-  39 |     expect<{ a: boolean }>().type.not.toBeAssignableTo<any>();
-  40 |   });
-  41 | 
+  61 | 
+  62 |     expect<{ a: boolean }>().type.toBeAssignableTo<any>();
+  63 |     expect<{ a: boolean }>().type.not.toBe<Any>(); // rejected
+     |                                            ~~~
+  64 |   });
+  65 | 
+  66 |   test("allows '.toBeAny()'", () => {
 
-       at ./__typetests__/isRejected.test.ts:38:52
-
-Error: A type argument for 'Target' cannot be of the 'any' type.
-
-The 'any' type was rejected because the 'rejectAnyType' option is enabled.
-If this check is necessary, use the '.toBeAny()' matcher instead.
-
-  37 |   test("rejects the 'any' type", () => {
-  38 |     expect<{ a: boolean }>().type.toBeAssignableTo<any>(); // use '.toBeAny()'
-  39 |     expect<{ a: boolean }>().type.not.toBeAssignableTo<any>();
-     |                                                        ~~~
-  40 |   });
-  41 | 
-  42 |   test("allows '.toBeAny()'", () => {
-
-       at ./__typetests__/isRejected.test.ts:39:56
+       at ./__typetests__/isRejected.test.ts:63:44
 

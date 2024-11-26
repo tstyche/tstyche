@@ -8,30 +8,52 @@ const isRejectedText = `import { describe, expect, test } from "tstyche";
 
 describe("argument for 'source'", () => {
   test("rejects the 'any' type", () => {
-    expect({} as any).type.toBeAssignableTo<{ a: number }>(); // use '.toBeAny()'
-    expect({} as any).type.not.toBeAssignableTo<{ a: number }>();
+    // @ts-expect-error missing import test
+    expect(getResult("sample")).type.toBe<Result<string>>(); // rejected
+    // @ts-expect-error missing import test
+    expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
   });
 
   test("allows '.toBeAny()'", () => {
     expect({} as any).type.toBeAny();
   });
+
+  test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
+    function any(a: number) {
+      return a as any;
+    }
+
+    expect(any()).type.toRaiseError();
+    expect(any(1)).type.not.toRaiseError(); // rejected
+  });
 });
 
 describe("type argument for 'Source'", () => {
-  test("rejects the 'any' type", () => {
-    expect<any>().type.toBeAssignableWith<{ a: number }>(); // use '.toBeAny()'
-    expect<any>().type.not.toBeAssignableWith<{ a: number }>();
+  type Any = any;
+
+  test("allows only explicit 'any'", () => {
+    expect<any>().type.toBeAssignableTo<{ a: number }>();
+    expect<Any>().type.toBeAssignableTo<{ a: number }>(); // rejected
   });
 
   test("allows '.toBeAny()'", () => {
-    expect<any>().type.toBeAny();
+    expect<Any>().type.toBeAny();
+  });
+
+  test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
+    type Any<T> = any;
+
+    expect<Any>().type.toRaiseError();
+    expect<Any<any>>().type.not.toRaiseError(); // rejected
   });
 });
 
 describe("argument for 'target'", () => {
   test("rejects the 'any' type", () => {
-    expect({ a: 123 }).type.toBe({} as any); // use '.toBeAny()'
-    expect({ a: 123 }).type.not.toBe({} as any);
+    // @ts-expect-error missing import test
+    expect<string>().type.toBeAssignableWith(getResult("sample")); // rejected
+    // @ts-expect-error missing import test
+    expect<number>().type.not.toBe(getResult(123)); // rejected
   });
 
   test("allows '.toBeAny()'", () => {
@@ -40,9 +62,11 @@ describe("argument for 'target'", () => {
 });
 
 describe("type argument for 'Target'", () => {
-  test("rejects the 'any' type", () => {
-    expect<{ a: boolean }>().type.toBeAssignableTo<any>(); // use '.toBeAny()'
-    expect<{ a: boolean }>().type.not.toBeAssignableTo<any>();
+  test("allows only explicit 'any'", () => {
+    type Any = any;
+
+    expect<{ a: boolean }>().type.toBeAssignableTo<any>();
+    expect<{ a: boolean }>().type.not.toBe<Any>(); // rejected
   });
 
   test("allows '.toBeAny()'", () => {
@@ -108,11 +132,7 @@ await test("'rejectAnyType' config file option", async (t) => {
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-disabled-stderr`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
   });
 });
