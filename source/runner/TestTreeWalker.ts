@@ -79,7 +79,7 @@ export class TestTreeWalker {
     parentResult: DescribeResult | TestResult | undefined,
   ): void {
     for (const member of members) {
-      if (this.#cancellationToken?.isCancellationRequested === true) {
+      if (this.#cancellationToken?.isCancellationRequested) {
         break;
       }
 

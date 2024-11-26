@@ -27,7 +27,7 @@ export class TaskRunner {
   }
 
   run(task: Task, cancellationToken?: CancellationToken): void {
-    if (cancellationToken?.isCancellationRequested === true) {
+    if (cancellationToken?.isCancellationRequested) {
       return;
     }
 

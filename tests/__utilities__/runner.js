@@ -26,7 +26,7 @@ if (include != null) {
   files = files.filter((file) => file.includes(include));
 }
 
-if (debug === true) {
+if (debug) {
   console.info({ flags: { debug, exclude, include, only, parallel }, files });
   process.exit();
 }

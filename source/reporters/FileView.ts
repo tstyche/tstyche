@@ -38,6 +38,6 @@ export class FileView {
   }
 
   getViewText(options?: { appendEmptyLine: boolean }): ScribblerJsx.Element {
-    return fileViewText(this.#lines, options?.appendEmptyLine === true || this.hasErrors);
+    return fileViewText(this.#lines, options?.appendEmptyLine || this.hasErrors);
   }
 }
