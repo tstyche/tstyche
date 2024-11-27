@@ -91,8 +91,7 @@ export class Config {
       delete resolvedConfig.config;
     }
 
-    // resolving earlier is less performant, because configuration file options are overridden
-    resolvedConfig.target = Target.resolve(resolvedConfig.target);
+    resolvedConfig.target = Target.expand(resolvedConfig.target);
 
     return resolvedConfig;
   }
