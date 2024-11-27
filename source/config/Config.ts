@@ -3,6 +3,8 @@ import fs from "node:fs/promises";
 import { type Diagnostic, SourceFile } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
+import { Store } from "#store";
+import { Version } from "#version";
 import { CommandLineParser } from "./CommandLineParser.js";
 import { ConfigFileParser } from "./ConfigFileParser.js";
 import { defaultOptions } from "./defaultOptions.js";
@@ -90,7 +92,11 @@ export class Config {
       delete resolvedConfig.config;
     }
 
-    // TODO 'target' queries should be resolved here, so that '>=4.8, <5.2, 5.6' would work as expected
+    // TODO consider adding 'minorVersions' as a property to 'manifest' in TSTyche 4
+    const minorVersions = Object.keys(Store.manifest?.resolutions ?? []).slice(0, -4);
+
+    // resolving earlier is less performant, because configuration file options are overridden
+    resolvedConfig.target = Version.resolveQueries(resolvedConfig.target, minorVersions);
 
     return resolvedConfig;
   }

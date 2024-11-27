@@ -305,8 +305,8 @@ export class Options {
 
       case "target":
         if (
-          !/^[<>]=?\d\.\d$/.test(optionValue) ||
-          (await Store.validateTag(optionValue.replace(/^[<>]=?/, ""))) === false
+          // !/^[<>]=?\d\.\d$/.test(optionValue) ||
+          (await Store.validateTag(optionValue.replace(/^(not )?([<>]=?)?/, ""))) === false
         ) {
           onDiagnostics(
             Diagnostic.error(

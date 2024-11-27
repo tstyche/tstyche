@@ -67,7 +67,7 @@ export class ManifestService {
       }
     }
 
-    const minorVersions = [...new Set(versions.map((version) => version.slice(0, -2)))];
+    const minorVersions = new Set(versions.map((version) => version.slice(0, -2)));
 
     for (const tag of minorVersions) {
       const resolvedVersion = versions.findLast((version) => version.startsWith(tag));
