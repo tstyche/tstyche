@@ -1,21 +1,5 @@
 export class Version {
-  static isGreaterThan(source: string, target: string): boolean {
-    return !(source === target) && Version.#satisfies(source, target);
-  }
-
-  static isRange(query: string) {
-    return /^[<>]=?\d\.\d$/.test(query);
-  }
-
-  static isSatisfiedWith(source: string, target: string): boolean {
-    return source === target || Version.#satisfies(source, target);
-  }
-
-  static isVersionTag(target: string): boolean {
-    return /^\d+/.test(target);
-  }
-
-  static #pick(query: string, list: Array<string>): Array<string> {
+  static #filter(query: string, list: Array<string>): Array<string> {
     if (!Version.isRange(query)) {
       return [query];
     }
@@ -39,15 +23,31 @@ export class Version {
     return matchingVersions;
   }
 
+  static isGreaterThan(source: string, target: string): boolean {
+    return !(source === target) && Version.#satisfies(source, target);
+  }
+
+  static isRange(query: string) {
+    return /^[<>]=?\d\.\d$/.test(query);
+  }
+
+  static isSatisfiedWith(source: string, target: string): boolean {
+    return source === target || Version.#satisfies(source, target);
+  }
+
+  static isVersionTag(target: string): boolean {
+    return /^\d+/.test(target);
+  }
+
   static resolveQueries(queries: Array<string>, minorVersions: Array<string>): Array<string> {
     const exclude: Array<string> = [];
     const include: Array<string> = [];
 
     for (const query of queries) {
       if (query.startsWith("not")) {
-        exclude.push(...Version.#pick(query.slice(4), minorVersions));
+        exclude.push(...Version.#filter(query.slice(4), minorVersions));
       } else {
-        include.push(...Version.#pick(query, minorVersions));
+        include.push(...Version.#filter(query, minorVersions));
       }
     }
 
