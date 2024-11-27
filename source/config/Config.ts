@@ -4,9 +4,9 @@ import { type Diagnostic, SourceFile } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { Store } from "#store";
-import { Version } from "#version";
 import { CommandLineParser } from "./CommandLineParser.js";
 import { ConfigFileParser } from "./ConfigFileParser.js";
+import { Target } from "./Target.js";
 import { defaultOptions } from "./defaultOptions.js";
 import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types.js";
 
@@ -96,7 +96,7 @@ export class Config {
     const minorVersions = Object.keys(Store.manifest?.resolutions ?? []).slice(0, -4);
 
     // resolving earlier is less performant, because configuration file options are overridden
-    resolvedConfig.target = Version.resolveQueries(resolvedConfig.target, minorVersions);
+    resolvedConfig.target = Target.resolve(resolvedConfig.target, minorVersions);
 
     return resolvedConfig;
   }
