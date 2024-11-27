@@ -1,3 +1,5 @@
+import { Store } from "#store";
+
 export class Target {
   static #filter(query: string, list: Array<string>): Array<string> {
     if (!Target.isRange(query)) {
@@ -27,9 +29,12 @@ export class Target {
     return /^[<>]=?\d\.\d$/.test(query);
   }
 
-  static resolve(queries: Array<string>, minorVersions: Array<string>): Array<string> {
+  static resolve(queries: Array<string>): Array<string> {
     const exclude: Array<string> = [];
     const include: Array<string> = [];
+
+    // TODO consider adding 'minorVersions' as a property to 'manifest' in TSTyche 4
+    const minorVersions = Object.keys(Store.manifest?.resolutions ?? []).slice(0, -4);
 
     for (const query of queries) {
       if (query.startsWith("not")) {

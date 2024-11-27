@@ -3,7 +3,6 @@ import fs from "node:fs/promises";
 import { type Diagnostic, SourceFile } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import { Store } from "#store";
 import { CommandLineParser } from "./CommandLineParser.js";
 import { ConfigFileParser } from "./ConfigFileParser.js";
 import { Target } from "./Target.js";
@@ -92,11 +91,8 @@ export class Config {
       delete resolvedConfig.config;
     }
 
-    // TODO consider adding 'minorVersions' as a property to 'manifest' in TSTyche 4
-    const minorVersions = Object.keys(Store.manifest?.resolutions ?? []).slice(0, -4);
-
     // resolving earlier is less performant, because configuration file options are overridden
-    resolvedConfig.target = Target.resolve(resolvedConfig.target, minorVersions);
+    resolvedConfig.target = Target.resolve(resolvedConfig.target);
 
     return resolvedConfig;
   }
