@@ -7,6 +7,7 @@ export class Version {
     return source === target || Version.#satisfies(source, target);
   }
 
+  // TODO rename to 'isVersion()'
   static isVersionTag(target: string): boolean {
     return /^\d+/.test(target);
   }
