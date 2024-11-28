@@ -18,6 +18,7 @@ export class ManifestService {
   #manifestFilePath: string;
   #npmRegistry: string;
   #storePath: string;
+  #supportedVersionRegex = /^(4|5)\.\d\.\d$/;
 
   constructor(storePath: string, npmRegistry: string, fetcher: Fetcher) {
     this.#storePath = storePath;
@@ -60,14 +61,14 @@ export class ManifestService {
     const packageMetadata = (await response.json()) as PackageMetadata;
 
     for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
-      if (/^(4|5)\.\d\.\d$/.test(tag)) {
+      if (this.#supportedVersionRegex.test(tag)) {
         versions.push(tag);
 
         packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
       }
     }
 
-    const minorVersions = [...new Set(versions.map((version) => version.slice(0, -2)))];
+    const minorVersions = new Set(versions.map((version) => version.slice(0, -2)));
 
     for (const tag of minorVersions) {
       const resolvedVersion = versions.findLast((version) => version.startsWith(tag));
