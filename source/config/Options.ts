@@ -303,10 +303,15 @@ export class Options {
 
         break;
 
-      case "target":
+      case "target": {
+        await Store.open();
+
+        const rangeRegex = /^[<>]=?\d\.\d( [<>]=?\d\.\d)?$/;
+
         if (
-          // !/^[<>]=?\d\.\d$/.test(optionValue) ||
-          (await Store.validateTag(optionValue.replace(/^(not )?([<>]=?)?/, ""))) === false
+          !rangeRegex.test(optionValue)
+          // TODO fix this
+          // (await Store.validateTag(optionValue.replace(/^(not )?([<>]=?)?/, ""))) === false
         ) {
           onDiagnostics(
             Diagnostic.error(
@@ -320,6 +325,7 @@ export class Options {
           );
         }
         break;
+      }
 
       case "testFileMatch":
         for (const segment of ["/", "../"]) {

@@ -1,49 +1,52 @@
 import { Store } from "#store";
+import { Version } from "#version";
 
 export class Target {
   static expand(queries: Array<string>): Array<string> {
-    const exclude: Array<string> = [];
     const include: Array<string> = [];
 
-    // TODO consider adding 'minorVersions' as a property to 'manifest' in TSTyche 4
-    const minorVersions = Object.keys(Store.manifest?.resolutions ?? []).slice(0, -4);
-
     for (const query of queries) {
-      if (query.startsWith("not")) {
-        exclude.push(...Target.#filter(query.slice(4), minorVersions));
-      } else {
-        include.push(...Target.#filter(query, minorVersions));
+      if (Version.isVersionTag(query)) {
+        include.push(query);
+
+        continue;
       }
+
+      const comparators = query.split(" ");
+
+      // TODO consider adding 'getMinorVersions()' method to 'manifest'
+      let versions = Object.keys(Store.manifest?.resolutions ?? []).slice(0, -4);
+
+      for (const comparator of comparators) {
+        versions = Target.#filter(comparator, versions);
+      }
+
+      include.push(...versions);
     }
 
-    return include.filter((query) => !exclude.includes(query));
+    return include;
   }
 
-  static #filter(query: string, list: Array<string>): Array<string> {
-    if (!Target.isRange(query)) {
-      return [query];
-    }
-
-    const targetVersionIndex = list.findIndex((version) => version === query.replace(/^[<>]=?/, ""));
+  static #filter(comparator: string, versions: Array<string>): Array<string> {
+    const targetVersionIndex = versions.findIndex((version) => version === comparator.replace(/^[<>]=?/, ""));
 
     let matchingVersions: Array<string> = [];
 
     if (targetVersionIndex !== -1) {
-      switch (query.charAt(0)) {
+      switch (comparator.charAt(0)) {
         case ">":
-          matchingVersions = list.slice(query.charAt(1) === "=" ? targetVersionIndex : targetVersionIndex + 1);
+          matchingVersions = versions.slice(comparator.charAt(1) === "=" ? targetVersionIndex : targetVersionIndex + 1);
           break;
 
         case "<":
-          matchingVersions = list.slice(0, query.charAt(1) === "=" ? targetVersionIndex + 1 : targetVersionIndex);
+          matchingVersions = versions.slice(
+            0,
+            comparator.charAt(1) === "=" ? targetVersionIndex + 1 : targetVersionIndex,
+          );
           break;
       }
     }
 
     return matchingVersions;
-  }
-
-  static isRange(query: string) {
-    return /^[<>]=?\d\.\d$/.test(query);
   }
 }
