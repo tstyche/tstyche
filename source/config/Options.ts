@@ -7,6 +7,7 @@ import { Store } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
+import { Target } from "./Target.js";
 
 interface BaseOptionDefinition {
   brand: OptionBrand;
@@ -304,19 +305,41 @@ export class Options {
         break;
 
       case "target": {
-        await Store.open();
+        // maybe a range?
+        if (/[<>=]/.test(optionValue)) {
+          if (Target.isRange(optionValue)) {
+            for (const value of optionValue.split(" ").map((value) => value.replace(/^([<>]=?)?/, ""))) {
+              if ((await Store.validateTag(value)) === false) {
+                onDiagnostics(
+                  Diagnostic.error(
+                    [
+                      ConfigDiagnosticText.versionIsNotSupported(value),
+                      await ConfigDiagnosticText.usage(optionName, optionBrand),
+                    ].flat(),
+                    origin,
+                  ),
+                );
+              }
+            }
+          } else {
+            onDiagnostics(
+              Diagnostic.error(
+                [
+                  ConfigDiagnosticText.rangeIsNotValid(optionValue),
+                  await ConfigDiagnosticText.usage(optionName, optionBrand),
+                ].flat(),
+                origin,
+              ),
+            );
+          }
 
-        const rangeRegex = /^[<>]=?\d\.\d( [<>]=?\d\.\d)?$/;
+          break;
+        }
 
-        if (
-          !rangeRegex.test(optionValue)
-          // TODO fix this
-          // (await Store.validateTag(optionValue.replace(/^(not )?([<>]=?)?/, ""))) === false
-        ) {
+        if ((await Store.validateTag(optionValue)) === false) {
           onDiagnostics(
             Diagnostic.error(
               [
-                // TODO check is this is version d.d.d, or a tag, otherwise error with: Cannot resolve query '>=xxx'
                 ConfigDiagnosticText.versionIsNotSupported(optionValue),
                 await ConfigDiagnosticText.usage(optionName, optionBrand),
               ].flat(),
@@ -324,6 +347,7 @@ export class Options {
             ),
           );
         }
+
         break;
       }
 

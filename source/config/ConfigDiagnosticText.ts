@@ -22,6 +22,10 @@ export class ConfigDiagnosticText {
     return `The specified module '${specifier}' was not found.`;
   }
 
+  static rangeIsNotValid(value: string): string {
+    return `The specified range '${value}' is not valid.`;
+  }
+
   static seen(element: string): string {
     return `The ${element} was seen here.`;
   }

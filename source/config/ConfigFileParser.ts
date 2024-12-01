@@ -78,6 +78,8 @@ export class ConfigFileParser {
       }
 
       case OptionBrand.List: {
+        optionValue = [];
+
         const leftBracketToken = this.#jsonScanner.readToken("[");
 
         if (!leftBracketToken.text) {
@@ -87,8 +89,6 @@ export class ConfigFileParser {
 
           break;
         }
-
-        optionValue = [];
 
         while (!this.#jsonScanner.isRead()) {
           if (this.#jsonScanner.peekToken("]")) {
