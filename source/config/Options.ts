@@ -308,14 +308,15 @@ export class Options {
         // maybe a range?
         if (/[<>=]/.test(optionValue)) {
           if (Target.isRange(optionValue)) {
-            for (const value of optionValue.split(" ").map((value) => value.replace(/^([<>]=?)?/, ""))) {
+            for (const value of optionValue.split(" ").map((value) => value.replace(/^[<>]=?/, ""))) {
               if ((await Store.validateTag(value)) === false) {
                 onDiagnostics(
                   Diagnostic.error(
                     [
                       ConfigDiagnosticText.versionIsNotSupported(value),
-                      await ConfigDiagnosticText.usage(optionName, optionBrand),
-                    ].flat(),
+                      ...ConfigDiagnosticText.usage(optionName, optionBrand),
+                      ConfigDiagnosticText.inspectSupportedVersions(),
+                    ],
                     origin,
                   ),
                 );
@@ -324,10 +325,7 @@ export class Options {
           } else {
             onDiagnostics(
               Diagnostic.error(
-                [
-                  ConfigDiagnosticText.rangeIsNotValid(optionValue),
-                  await ConfigDiagnosticText.usage(optionName, optionBrand),
-                ].flat(),
+                [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()],
                 origin,
               ),
             );
@@ -341,8 +339,9 @@ export class Options {
             Diagnostic.error(
               [
                 ConfigDiagnosticText.versionIsNotSupported(optionValue),
-                await ConfigDiagnosticText.usage(optionName, optionBrand),
-              ].flat(),
+                ...ConfigDiagnosticText.usage(optionName, optionBrand),
+                ConfigDiagnosticText.inspectSupportedVersions(),
+              ],
               origin,
             ),
           );

@@ -29,8 +29,8 @@ await test("'--target' command line option", async (t) => {
     const expected = [
       "Error: Option '--target' expects a value.",
       "",
-      "Value for the '--target' option must be a single tag or a comma separated list.",
-      "Usage examples:",
+      "Value for the '--target' option must be a string or a comma separated list.",
+      "Examples:",
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
@@ -49,8 +49,8 @@ await test("'--target' command line option", async (t) => {
     const expected = [
       "Error: TypeScript version 'new' is not supported.",
       "",
-      "Value for the '--target' option must be a single tag or a comma separated list.",
-      "Usage examples:",
+      "Value for the '--target' option must be a string or a comma separated list.",
+      "Examples:",
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
@@ -71,8 +71,8 @@ await test("'--target' command line option", async (t) => {
     const expected = [
       "Error: Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.",
       "",
-      "Value for the '--target' option must be a single tag or a comma separated list.",
-      "Usage examples:",
+      "Value for the '--target' option must be a string or a comma separated list.",
+      "Examples:",
     ].join("\n");
 
     assert.match(stderr, new RegExp(`^${expected}`));
@@ -145,15 +145,8 @@ await test("'target' configuration file option", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     assert.equal(stdout, "");
+    assert.match(stderr, /^Error: TypeScript version 'new' is not supported.\n/);
 
-    const expected = [
-      "Error: TypeScript version 'new' is not supported.",
-      "",
-      "Item of the 'target' list must be a supported version tag.",
-      "Supported tags:",
-    ].join("\n");
-
-    assert.match(stderr, new RegExp(`^${expected}`));
     assert.equal(exitCode, 1);
   });
 
@@ -171,14 +164,11 @@ await test("'target' configuration file option", async (t) => {
       env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
     });
 
-    const expected = [
-      "Error: Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.",
-      "",
-      "Item of the 'target' list must be a supported version tag.",
-      "Supported tags:",
-    ].join("\n");
+    assert.match(
+      stderr,
+      /^Error: Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.\n/,
+    );
 
-    assert.match(stderr, new RegExp(`^${expected}`));
     assert.equal(exitCode, 1);
   });
 });

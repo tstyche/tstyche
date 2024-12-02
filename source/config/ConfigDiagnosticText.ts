@@ -1,4 +1,3 @@
-import { Store } from "#store";
 import type { OptionBrand } from "./OptionBrand.enum.js";
 
 export class ConfigDiagnosticText {
@@ -18,12 +17,28 @@ export class ConfigDiagnosticText {
     return `The specified path '${filePath}' does not exist.`;
   }
 
+  static inspectSupportedVersions() {
+    return "Use the '--list' command line option to inspect the list of supported versions.";
+  }
+
   static moduleWasNotFound(specifier: string): string {
     return `The specified module '${specifier}' was not found.`;
   }
 
   static rangeIsNotValid(value: string): string {
     return `The specified range '${value}' is not valid.`;
+  }
+
+  static rangeUsage(): Array<string> {
+    return [
+      "A range must be specified using an operator and a minor version.",
+      "To set an upper bound, the intersection of two ranges can be used.",
+      "Examples: '>=5.5', '>=5.0 <5.3'.",
+    ];
+  }
+
+  static requiresValueType(optionName: string, optionBrand: OptionBrand): string {
+    return `Option '${optionName}' requires a value of type ${optionBrand}.`;
   }
 
   static seen(element: string): string {
@@ -37,32 +52,20 @@ export class ConfigDiagnosticText {
     ];
   }
 
-  static requiresValueType(optionName: string, optionBrand: OptionBrand): string {
-    return `Option '${optionName}' requires a value of type ${optionBrand}.`;
-  }
-
   static unknownOption(optionName: string): string {
     return `Unknown option '${optionName}'.`;
   }
 
-  static async usage(optionName: string, optionBrand: OptionBrand): Promise<Array<string>> {
+  static usage(optionName: string, optionBrand: OptionBrand): Array<string> {
     switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
       case "target": {
         const text: Array<string> = [];
 
         if (optionName.startsWith("--")) {
           text.push(
-            "Value for the '--target' option must be a single tag or a comma separated list.",
-            "Usage examples: '--target 4.9', '--target latest', '--target 4.9,5.3.2,current'.",
+            "Value for the '--target' option must be a string or a comma separated list.",
+            "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3, 5.4.2, >=5.5''.",
           );
-        } else {
-          text.push("Item of the 'target' list must be a supported version tag.");
-        }
-
-        const supportedTags = await Store.getSupportedTags();
-
-        if (supportedTags != null) {
-          text.push(`Supported tags: ${["'", supportedTags.join("', '"), "'"].join("")}.`);
         }
 
         return text;
