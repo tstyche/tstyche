@@ -181,7 +181,7 @@ export class Store {
 
     if (
       Store.manifest?.isOutdated({ ageTolerance: 60 /* one minute */ }) &&
-      (!Version.isVersionTag(tag) ||
+      (!/^\d/.test(tag) ||
         (Store.manifest.resolutions["latest"] != null &&
           Version.isGreaterThan(tag, Store.manifest.resolutions["latest"])))
     ) {
