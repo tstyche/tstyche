@@ -3,65 +3,6 @@ import test from "node:test";
 import { Version } from "tstyche/tstyche";
 
 test("Version", async (t) => {
-  await t.test("'isVersionTag' method", async (t) => {
-    const testCases = [
-      {
-        expected: true,
-        target: "6",
-        testCase: "when target is major version",
-      },
-      {
-        expected: true,
-        target: "5.3",
-        testCase: "when target is minor version",
-      },
-      {
-        expected: true,
-        target: "4.9.5",
-        testCase: "when target is patch version",
-      },
-      {
-        expected: true,
-        target: "5.3.0-beta",
-        testCase: "when target is beta version",
-      },
-      {
-        expected: true,
-        target: "5.4.0-dev.20240113",
-        testCase: "when target is dev version",
-      },
-
-      {
-        expected: false,
-        target: "beta",
-        testCase: "when target is 'beta'",
-      },
-      {
-        expected: false,
-        target: "latest",
-        testCase: "when target is 'latest'",
-      },
-      {
-        expected: false,
-        target: "next",
-        testCase: "when target is 'next'",
-      },
-      {
-        expected: false,
-        target: "rc",
-        testCase: "when target is 'rc'",
-      },
-    ];
-
-    for (const { expected, target, testCase } of testCases) {
-      await t.test(testCase, () => {
-        const result = Version.isVersionTag(target);
-
-        assert.strictEqual(result, expected);
-      });
-    }
-  });
-
   await t.test("'isGreaterThan' method", async (t) => {
     const testCases = [
       {

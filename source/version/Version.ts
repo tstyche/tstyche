@@ -7,7 +7,7 @@ export class Version {
     return source === target || Version.#satisfies(source, target);
   }
 
-  // TODO consider removing in TSTyche 4
+  /** @deprecated Name of this method is misleading and it is also not needed. */
   static isVersionTag(target: string): boolean {
     return /^\d+/.test(target);
   }
