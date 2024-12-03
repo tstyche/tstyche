@@ -1,5 +1,18 @@
 # Releases
 
+## [3.1.0] - 2024-12-03
+
+### Changed
+
+- Deprecate the `Version.isVersionTag()` method ([#379](https://github.com/tstyche/tstyche/pull/379))
+- Deprecate the `Store.getSupportedTags()` method ([#377](https://github.com/tstyche/tstyche/pull/377))
+
+### Added
+
+- **New!** Support testing against TypeScript version ranges ([#377](https://github.com/tstyche/tstyche/pull/377))
+- **New!** Add the `rejectAnyType` and `rejectNeverType` configuration options ([#370](https://github.com/tstyche/tstyche/pull/370), [#373](https://github.com/tstyche/tstyche/pull/373))
+- Add the `--list` command line option ([#364](https://github.com/tstyche/tstyche/pull/364), [#366](https://github.com/tstyche/tstyche/pull/366))
+
 ## [3.0.0] - 2024-11-05
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
@@ -474,6 +487,8 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.1.0]: https://github.com/tstyche/tstyche/releases/tag/v3.1.0
+[3.0.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0
 [3.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-rc.2
 [3.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-rc.1
 [3.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-rc.0
