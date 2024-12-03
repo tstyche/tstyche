@@ -15,14 +15,15 @@ export class Target {
 
       const comparators = query.split(" ");
 
-      // TODO consider adding 'getMinorVersions()' method to 'manifest'
-      let versions = Object.keys(Store.manifest?.resolutions ?? []).slice(0, -4);
+      if (Store.manifest != null) {
+        let versions = Object.keys(Store.manifest.resolutions).slice(0, -4);
 
-      for (const comparator of comparators) {
-        versions = Target.#filter(comparator, versions);
+        for (const comparator of comparators) {
+          versions = Target.#filter(comparator, versions);
+        }
+
+        include.push(...versions);
       }
-
-      include.push(...versions);
     }
 
     return include;
