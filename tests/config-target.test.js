@@ -65,7 +65,7 @@ await test("'--target' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when range of versions is specified", async () => {
+  await t.test("when version range is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -80,7 +80,7 @@ await test("'--target' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when range of versions with an upper bound is specified", async () => {
+  await t.test("when version range with an upper bound is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
@@ -90,7 +90,7 @@ await test("'--target' command line option", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      fileName: `${testFileName}-upper-bound-version-range-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -239,7 +239,7 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when range of versions is specified", async () => {
+  await t.test("when version range is specified", async () => {
     const config = {
       target: [">5.1"],
     };
@@ -258,7 +258,7 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when range of versions with an upper bound is specified", async () => {
+  await t.test("when version range with an upper bound is specified", async () => {
     const config = {
       target: [">=5.3 <5.5"],
     };
@@ -272,7 +272,7 @@ await test("'target' configuration file option", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-">=5.3-<5.5"-stdout`,
+      fileName: `${testFileName}-upper-bound-version-range-stdout`,
       testFileUrl: import.meta.url,
     });
 
