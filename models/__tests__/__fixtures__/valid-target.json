@@ -1,4 +1,4 @@
 {
   "$schema": "../../config-schema.json",
-  "target": ["4.9", "5.0.4", "beta", "current", "latest", "next", "rc"]
+  "target": ["4.9", ">=5.0 <5.3", "5.4.2", ">=5.5", "beta", "current", "latest", "next", "rc"]
 }

@@ -7,6 +7,7 @@ import { Store } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
+import { Target } from "./Target.js";
 
 interface BaseOptionDefinition {
   brand: OptionBrand;
@@ -22,7 +23,6 @@ interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
 export interface ItemDefinition {
   brand: OptionBrand.String;
   name: string;
-  pattern?: string;
 }
 
 interface ListTypeOptionDefinition extends BaseOptionDefinition {
@@ -161,7 +161,6 @@ export class Options {
       items: {
         brand: OptionBrand.String,
         name: "target",
-        pattern: "^([45]\\.[0-9](\\.[0-9])?)|beta|current|latest|next|rc$",
       },
       name: "target",
     },
@@ -305,19 +304,51 @@ export class Options {
 
         break;
 
-      case "target":
+      case "target": {
+        // maybe a range?
+        if (/[<>=]/.test(optionValue)) {
+          if (Target.isRange(optionValue)) {
+            for (const value of optionValue.split(" ").map((value) => value.replace(/^[<>]=?/, ""))) {
+              if ((await Store.validateTag(value)) === false) {
+                onDiagnostics(
+                  Diagnostic.error(
+                    [
+                      ConfigDiagnosticText.versionIsNotSupported(value),
+                      ...ConfigDiagnosticText.usage(optionName, optionBrand),
+                      ConfigDiagnosticText.inspectSupportedVersions(),
+                    ],
+                    origin,
+                  ),
+                );
+              }
+            }
+          } else {
+            onDiagnostics(
+              Diagnostic.error(
+                [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()],
+                origin,
+              ),
+            );
+          }
+
+          break;
+        }
+
         if ((await Store.validateTag(optionValue)) === false) {
           onDiagnostics(
             Diagnostic.error(
               [
                 ConfigDiagnosticText.versionIsNotSupported(optionValue),
-                await ConfigDiagnosticText.usage(optionName, optionBrand),
-              ].flat(),
+                ...ConfigDiagnosticText.usage(optionName, optionBrand),
+                ConfigDiagnosticText.inspectSupportedVersions(),
+              ],
               origin,
             ),
           );
         }
+
         break;
+      }
 
       case "testFileMatch":
         for (const segment of ["/", "../"]) {

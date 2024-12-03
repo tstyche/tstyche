@@ -35,6 +35,7 @@ export class Store {
     Store.#manifestService = new ManifestService(Store.#storePath, Store.#npmRegistry, Store.#fetcher);
   }
 
+  /** @deprecated Use 'Store.manifest' directly. */
   static async getSupportedTags(): Promise<Array<string> | undefined> {
     await Store.open();
 

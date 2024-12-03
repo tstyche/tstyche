@@ -65,6 +65,54 @@ await test("'--target' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
+  await t.test("when version range is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const args = ["--target", '">5.1"', "--showConfig"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+
+    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4",\n {4}"5\.5"/);
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when version range with an upper bound is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const args = ["--target", '">=5.3 <5.5"'];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-upper-bound-version-range-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when combination of ranges and versions is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const args = ["--target", '">=5.2 <=5.3, 5.4.2, >5.5"', "--showConfig"];
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+
+    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4\.2",\n {4}"5\.6"/);
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("when 'current' tag is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -186,6 +234,66 @@ await test("'target' configuration file option", async (t) => {
       fileName: `${testFileName}-target-4.8-5.3.2-current-stdout`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when version range is specified", async () => {
+    const config = {
+      target: [">5.1"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4",\n {4}"5\.5"/);
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when version range with an upper bound is specified", async () => {
+    const config = {
+      target: [">=5.3 <5.5"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-upper-bound-version-range-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when combination of ranges and versions is specified", async () => {
+    const config = {
+      target: [">=5.2 <=5.3", "5.4.2", ">5.5"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4\.2",\n {4}"5\.6"/);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);

@@ -5,6 +5,7 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { CommandLineParser } from "./CommandLineParser.js";
 import { ConfigFileParser } from "./ConfigFileParser.js";
+import { Target } from "./Target.js";
 import { defaultOptions } from "./defaultOptions.js";
 import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types.js";
 
@@ -89,6 +90,8 @@ export class Config {
       // biome-ignore lint/performance/noDelete: must clean up
       delete resolvedConfig.config;
     }
+
+    resolvedConfig.target = Target.expand(resolvedConfig.target);
 
     return resolvedConfig;
   }

@@ -1,0 +1,16 @@
+Error: The specified range '5.2 >=5.4' is not valid.
+
+A range must be specified using an operator and a minor version.
+To set an upper bound, the intersection of two ranges can be used.
+Examples: '>=5.5', '>=5.0 <5.3'.
+
+  1 | {
+  2 |   "target": [
+  3 |     "5.2 >=5.4"
+    |     ~~~~~~~~~~~
+  4 |   ],
+  5 |   "testFileMatch": [
+  6 |     "examples/*.tst.*"
+
+      at ./tstyche.config.json:3:5
+
