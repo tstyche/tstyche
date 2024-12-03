@@ -57,7 +57,7 @@ await test("'--target' command line option", async (t) => {
   });
 
   await t.test("when range with not supported version is specified", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "'>=3.2'"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=3.2"']);
 
     assert.equal(stdout, "");
 
@@ -75,7 +75,7 @@ await test("'--target' command line option", async (t) => {
   });
 
   await t.test("when not valid range is specified", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "'5.2 >=5.4'"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.2 >=5.4"']);
 
     assert.equal(stdout, "");
 

@@ -18,7 +18,6 @@ export async function spawnTyche(fixtureUrl, args, options) {
         ...options?.env,
       },
       shell: true,
-      windowsVerbatimArguments: false,
     });
 
     let stdoutOutput = "";
