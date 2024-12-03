@@ -13,12 +13,10 @@ export class Target {
         continue;
       }
 
-      const comparators = query.split(" ");
-
       if (Store.manifest != null) {
         let versions = Object.keys(Store.manifest.resolutions).slice(0, -4);
 
-        for (const comparator of comparators) {
+        for (const comparator of query.split(" ")) {
           versions = Target.#filter(comparator, versions);
         }
 
