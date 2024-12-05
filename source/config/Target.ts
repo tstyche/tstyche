@@ -1,9 +1,10 @@
 import { Store } from "#store";
+import { Version } from "#version";
 
 export class Target {
   static #rangeRegex = /^[<>]=?\d\.\d( [<>]=?\d\.\d)?$/;
 
-  static expand(queries: Array<string>): Array<string> {
+  static async expand(queries: Array<string>): Promise<Array<string>> {
     const include: Array<string> = [];
 
     for (const query of queries) {
@@ -12,6 +13,8 @@ export class Target {
 
         continue;
       }
+
+      await Store.open();
 
       if (Store.manifest != null) {
         let versions = Object.keys(Store.manifest.resolutions).slice(0, -4);
@@ -28,16 +31,22 @@ export class Target {
   }
 
   static #filter(comparator: string, versions: Array<string>): Array<string> {
-    const targetVersionIndex = versions.findIndex((version) => version === comparator.replace(/^[<>]=?/, ""));
+    const targetVersion = comparator.replace(/^[<>]=?/, "");
 
-    if (targetVersionIndex !== -1) {
-      switch (comparator.charAt(0)) {
-        case ">":
-          return versions.slice(comparator.charAt(1) === "=" ? targetVersionIndex : targetVersionIndex + 1);
+    switch (comparator.charAt(0)) {
+      case ">":
+        return versions.filter((sourceVersion) =>
+          comparator.charAt(1) === "="
+            ? Version.isSatisfiedWith(sourceVersion, targetVersion)
+            : Version.isGreaterThan(sourceVersion, targetVersion),
+        );
 
-        case "<":
-          return versions.slice(0, comparator.charAt(1) === "=" ? targetVersionIndex + 1 : targetVersionIndex);
-      }
+      case "<":
+        return versions.filter((sourceVersion) =>
+          comparator.charAt(1) === "="
+            ? Version.isSatisfiedWith(targetVersion, sourceVersion)
+            : Version.isGreaterThan(targetVersion, sourceVersion),
+        );
     }
 
     return [];

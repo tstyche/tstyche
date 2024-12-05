@@ -56,24 +56,6 @@ await test("'--target' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when range with not supported version is specified", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=3.2"']);
-
-    assert.equal(stdout, "");
-
-    const expected = [
-      "Error: TypeScript version '3.2' is not supported.",
-      "",
-      "Value for the '--target' option must be a string or a comma separated list.",
-      "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3, 5.4.2, >=5.5''.",
-      "Use the '--list' command line option to inspect the list of supported versions.",
-      "\n",
-    ].join("\n");
-
-    assert.equal(stderr, expected);
-    assert.equal(exitCode, 1);
-  });
-
   await t.test("when not valid range is specified", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.2 >=5.4"']);
 
@@ -181,29 +163,6 @@ await test("'target' configuration file option", async (t) => {
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-not-supported-version-stderr`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
-  });
-
-  await t.test("when range with not supported version is specified", async () => {
-    const config = {
-      target: [">=3.2"],
-      testFileMatch: ["examples/*.tst.*"],
-    };
-
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-    assert.equal(stdout, "");
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-range-with-not-supported-version-stderr`,
       testFileUrl: import.meta.url,
     });
 

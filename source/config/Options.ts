@@ -307,22 +307,7 @@ export class Options {
       case "target": {
         // maybe a range?
         if (/[<>=]/.test(optionValue)) {
-          if (Target.isRange(optionValue)) {
-            for (const value of optionValue.split(" ").map((value) => value.replace(/^[<>]=?/, ""))) {
-              if ((await Store.validateTag(value)) === false) {
-                onDiagnostics(
-                  Diagnostic.error(
-                    [
-                      ConfigDiagnosticText.versionIsNotSupported(value),
-                      ...ConfigDiagnosticText.usage(optionName, optionBrand),
-                      ConfigDiagnosticText.inspectSupportedVersions(),
-                    ],
-                    origin,
-                  ),
-                );
-              }
-            }
-          } else {
+          if (!Target.isRange(optionValue)) {
             onDiagnostics(
               Diagnostic.error(
                 [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()],

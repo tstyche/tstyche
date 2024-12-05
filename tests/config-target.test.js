@@ -71,8 +71,7 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", '">5.1"', "--showConfig"];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">5.1"', "--showConfig"]);
 
     assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4",\n {4}"5\.5"/);
 
@@ -86,13 +85,26 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", '">=5.3 <5.5"'];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.3 <5.5"']);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-upper-bound-version-range-stdout`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when range with not supported version is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.4 <8.2"', "--showConfig"]);
+
+    assert.match(stdout, /"target": \[\n {4}"5\.4",\n {4}"5\.5",\n {4}"5\.6",\n {4}"5\.7"/);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -275,6 +287,25 @@ await test("'target' configuration file option", async (t) => {
       fileName: `${testFileName}-upper-bound-version-range-stdout`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when range with not supported version is specified", async () => {
+    const config = {
+      target: [">=5.4 <8.2"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.match(stdout, /"target": \[\n {4}"5\.4",\n {4}"5\.5",\n {4}"5\.6",\n {4}"5\.7"/);
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
