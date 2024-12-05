@@ -1,5 +1,11 @@
 # Releases
 
+## [3.1.1] - 2024-12-05
+
+### Fixed
+
+- Allow specifying unsupported versions in `target` ranges ([#383](https://github.com/tstyche/tstyche/pull/383))
+
 ## [3.1.0] - 2024-12-03
 
 ### Changed
@@ -487,6 +493,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.1.1]: https://github.com/tstyche/tstyche/releases/tag/v3.1.1
 [3.1.0]: https://github.com/tstyche/tstyche/releases/tag/v3.1.0
 [3.0.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0
 [3.0.0-rc.2]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0-rc.2
