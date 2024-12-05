@@ -92,6 +92,7 @@ export class ManifestService {
       }
     }
 
+    // TODO include 'minorVersions' in the manifest in TSTyche 4
     return new Manifest({ npmRegistry: this.#npmRegistry, packages, resolutions, versions });
   }
 

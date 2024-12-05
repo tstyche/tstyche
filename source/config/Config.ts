@@ -41,6 +41,10 @@ export class Config {
 
     await commandLineParser.parse(commandLine);
 
+    if (commandLineOptions.target != null) {
+      commandLineOptions.target = await Target.expand(commandLineOptions.target);
+    }
+
     return { commandLineOptions, pathMatch };
   }
 
@@ -67,6 +71,10 @@ export class Config {
       );
 
       await configFileParser.parse();
+
+      if (configFileOptions.target != null) {
+        configFileOptions.target = await Target.expand(configFileOptions.target);
+      }
     }
 
     return { configFileOptions, configFilePath };
@@ -90,8 +98,6 @@ export class Config {
       // biome-ignore lint/performance/noDelete: must clean up
       delete resolvedConfig.config;
     }
-
-    resolvedConfig.target = Target.expand(resolvedConfig.target);
 
     return resolvedConfig;
   }
