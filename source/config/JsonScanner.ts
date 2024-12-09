@@ -14,7 +14,7 @@ export class JsonScanner {
     return new DiagnosticOrigin(this.#previousPosition, this.#currentPosition, this.#sourceFile);
   }
 
-  isRead() {
+  isRead(): boolean {
     return !(this.#currentPosition < this.#sourceFile.text.length);
   }
 
@@ -26,7 +26,7 @@ export class JsonScanner {
     return this.#sourceFile.text.charAt(this.#currentPosition + 1);
   }
 
-  peekToken(token: string) {
+  peekToken(token: string): boolean {
     this.#skipTrivia();
 
     return this.#peekCharacter() === token;

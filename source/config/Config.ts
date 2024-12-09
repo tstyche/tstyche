@@ -102,7 +102,7 @@ export class Config {
     return resolvedConfig;
   }
 
-  static resolveConfigFilePath(filePath?: string) {
+  static resolveConfigFilePath(filePath?: string): string {
     return filePath != null ? Path.resolve(filePath) : Path.resolve("./tstyche.config.json");
   }
 }

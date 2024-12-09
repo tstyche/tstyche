@@ -17,7 +17,7 @@ export class ConfigDiagnosticText {
     return `The specified path '${filePath}' does not exist.`;
   }
 
-  static inspectSupportedVersions() {
+  static inspectSupportedVersions(): string {
     return "Use the '--list' command line option to inspect the list of supported versions.";
   }
 
