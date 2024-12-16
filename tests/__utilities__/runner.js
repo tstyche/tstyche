@@ -14,7 +14,7 @@ let {
     include: { type: "string" },
     only: { type: "boolean" },
     parallel: { type: "boolean" },
-    update: { type: "boolean" },
+    write: { type: "boolean" },
   },
 });
 
@@ -26,7 +26,7 @@ if (include != null) {
   testFiles = testFiles.filter((file) => file.includes(include));
 }
 
-const options = process.argv.filter((arg) => arg === "--update");
+const options = process.argv.filter((arg) => arg === "--write");
 
 if (debug) {
   console.info({ flags: { debug, exclude, include, only, parallel }, options, testFiles });

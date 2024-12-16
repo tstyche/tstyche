@@ -27,7 +27,7 @@ export function matchObject(source, target) {
 export async function matchSnapshot(source, snapshot) {
   const snapshotFileUrl = new URL(`__snapshots__/${snapshot.fileName}.snap.txt`, snapshot.testFileUrl);
 
-  if (existsSync(snapshotFileUrl) && !process.argv.includes("--update")) {
+  if (existsSync(snapshotFileUrl) && !process.argv.includes("--write")) {
     const target = await fs.readFile(snapshotFileUrl, { encoding: "utf8" });
 
     assert.equal(source.replace(/\r\n/g, "\n"), target.replace(/\r\n/g, "\n"));
