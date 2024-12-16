@@ -4,7 +4,7 @@ import reporters from "node:test/reporters";
 import { parseArgs } from "node:util";
 
 let {
-  positionals: files,
+  positionals: testFiles,
   values: { debug, exclude, include, only, parallel },
 } = parseArgs({
   allowPositionals: true,
@@ -19,19 +19,21 @@ let {
 });
 
 if (exclude != null) {
-  files = files.filter((file) => !file.includes(exclude));
+  testFiles = testFiles.filter((file) => !file.includes(exclude));
 }
 
 if (include != null) {
-  files = files.filter((file) => file.includes(include));
+  testFiles = testFiles.filter((file) => file.includes(include));
 }
 
+const options = process.argv.filter((arg) => arg === "--update");
+
 if (debug) {
-  console.info({ flags: { debug, exclude, include, only, parallel }, files });
+  console.info({ flags: { debug, exclude, include, only, parallel }, options, testFiles });
   process.exit();
 }
 
-run({ concurrency: parallel, files, only })
+run({ argv: options, concurrency: parallel, files: testFiles, only })
   .on("test:fail", () => {
     process.exitCode = 1;
   })
