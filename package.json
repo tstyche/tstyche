@@ -70,7 +70,7 @@
     "magic-string": "0.30.17",
     "monocart-coverage-reports": "2.11.5",
     "pretty-ansi": "3.0.0",
-    "rollup": "4.28.1",
+    "rollup": "4.29.0",
     "rollup-plugin-dts": "6.1.1",
     "tslib": "2.8.1",
     "typescript": "5.7.2"
