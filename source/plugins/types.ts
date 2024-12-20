@@ -1,6 +1,6 @@
 import type { ResolvedConfig } from "#config";
 
-interface SelectHookContext {
+export interface SelectHookContext {
   resolvedConfig: ResolvedConfig;
 }
 
