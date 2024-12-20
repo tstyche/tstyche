@@ -6,6 +6,7 @@ import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
+  #lastSeenProject: string | undefined = "";
   #resolvedConfig: ResolvedConfig;
   #service: ts.server.ProjectService;
 
@@ -119,10 +120,14 @@ export class ProjectService {
       projectRootPath,
     );
 
-    EventEmitter.dispatch([
-      "project:uses",
-      { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
-    ]);
+    if (configFileName !== this.#lastSeenProject) {
+      this.#lastSeenProject = configFileName;
+
+      EventEmitter.dispatch([
+        "project:uses",
+        { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
+      ]);
+    }
 
     if (configFileErrors && configFileErrors.length > 0) {
       EventEmitter.dispatch([

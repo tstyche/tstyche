@@ -5,12 +5,11 @@ import { FileView } from "./FileView.js";
 import type { ReporterEvent } from "./types.js";
 
 export class ListReporter extends BaseReporter {
-  #currentCompilerVersion: string | undefined;
-  #currentProjectConfigFilePath: string | undefined;
   #fileCount = 0;
   #fileView = new FileView();
   #hasReportedAdds = false;
   #hasReportedError = false;
+  #hasReportedUses = false;
   #isFileViewExpanded = false;
   #seenDeprecations = new Set<string>();
 
@@ -48,30 +47,18 @@ export class ListReporter extends BaseReporter {
 
       case "target:start":
         this.#fileCount = payload.result.tasks.length;
-        break;
-
-      case "target:end":
-        this.#currentCompilerVersion = undefined;
-        this.#currentProjectConfigFilePath = undefined;
+        this.#hasReportedUses = false;
         break;
 
       case "project:uses":
-        if (
-          this.#currentCompilerVersion !== payload.compilerVersion ||
-          this.#currentProjectConfigFilePath !== payload.projectConfigFilePath
-        ) {
-          OutputService.writeMessage(
-            usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, {
-              prependEmptyLine:
-                this.#currentCompilerVersion != null && !this.#hasReportedAdds && !this.#hasReportedError,
-            }),
-          );
+        OutputService.writeMessage(
+          usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, {
+            prependEmptyLine: this.#hasReportedUses && !this.#hasReportedAdds && !this.#hasReportedError,
+          }),
+        );
 
-          this.#hasReportedAdds = false;
-
-          this.#currentCompilerVersion = payload.compilerVersion;
-          this.#currentProjectConfigFilePath = payload.projectConfigFilePath;
-        }
+        this.#hasReportedAdds = false;
+        this.#hasReportedUses = true;
         break;
 
       case "project:error":
