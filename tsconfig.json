@@ -19,8 +19,6 @@
 
     "checkJs": true,
 
-    "forceConsistentCasingInFileNames": true,
-
     "target": "es2022"
   },
   "exclude": [
