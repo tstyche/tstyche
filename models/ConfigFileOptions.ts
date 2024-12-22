@@ -5,6 +5,18 @@
  */
 export interface ConfigFileOptions {
     /**
+     * Enable type error reporting for external files.
+     */
+    checkExternalFiles?: boolean;
+    /**
+     * Enable type error reporting for library files.
+     */
+    checkLibraryFiles?: boolean;
+    /**
+     * Enable type error reporting for source files.
+     */
+    checkSourceFiles?: boolean;
+    /**
      * Stop running tests after the first failed assertion.
      */
     failFast?: boolean;

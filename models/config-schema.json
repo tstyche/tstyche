@@ -1,6 +1,21 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
+    "checkExternalFiles": {
+      "default": false,
+      "description": "Enable type error reporting for external files.",
+      "type": "boolean"
+    },
+    "checkLibraryFiles": {
+      "default": false,
+      "description": "Enable type error reporting for library files.",
+      "type": "boolean"
+    },
+    "checkSourceFiles": {
+      "default": false,
+      "description": "Enable type error reporting for source files.",
+      "type": "boolean"
+    },
     "failFast": {
       "default": false,
       "description": "Stop running tests after the first failed assertion.",

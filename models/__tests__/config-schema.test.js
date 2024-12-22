@@ -35,6 +35,18 @@ test("config-schema.json", async (t) => {
         testCase: "all options",
       },
       {
+        fixtureFileName: "valid-checkExternalFiles.json",
+        testCase: "'checkExternalFiles' option",
+      },
+      {
+        fixtureFileName: "valid-checkLibraryFiles.json",
+        testCase: "'checkLibraryFiles' option",
+      },
+      {
+        fixtureFileName: "valid-checkSourceFiles.json",
+        testCase: "'checkSourceFiles' option",
+      },
+      {
         fixtureFileName: "valid-failFast.json",
         testCase: "'failFast' option",
       },
@@ -84,6 +96,18 @@ test("config-schema.json", async (t) => {
 
   await t.test("invalid", async (t) => {
     const testCases = [
+      {
+        fixtureFileName: "invalid-checkExternalFiles.json",
+        testCase: "value of 'checkExternalFiles' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-checkLibraryFiles.json",
+        testCase: "value of 'checkLibraryFiles' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-checkSourceFiles.json",
+        testCase: "value of 'checkSourceFiles' option must be of type boolean",
+      },
       {
         fixtureFileName: "invalid-failFast.json",
         testCase: "value of 'failFast' option must be of type boolean",

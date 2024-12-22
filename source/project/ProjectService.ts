@@ -2,12 +2,14 @@ import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { Select } from "#select";
 import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
   #lastSeenProject: string | undefined = "";
   #resolvedConfig: ResolvedConfig;
+  #seenPrograms = new WeakSet<ts.Program>();
   #service: ts.server.ProjectService;
 
   constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
@@ -134,6 +136,60 @@ export class ProjectService {
         "project:error",
         { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>, this.#compiler) },
       ]);
+    }
+
+    const { checkExternalFiles, checkLibraryFiles, checkSourceFiles } = this.#resolvedConfig;
+
+    if (checkExternalFiles || checkLibraryFiles || checkSourceFiles) {
+      const languageService = this.getLanguageService(filePath);
+
+      if (!languageService) {
+        return;
+      }
+
+      const program = languageService.getProgram();
+
+      if (!program || this.#seenPrograms.has(program)) {
+        return;
+      }
+
+      this.#seenPrograms.add(program);
+
+      // program.getCompilerOptions().skipLibCheck; // TODO warn if enabled
+      // program.getCompilerOptions().skipDefaultLibCheck; // TODO warn if enabled
+
+      const filesToCheck: Array<ts.SourceFile> = [];
+
+      for (const sourceFile of program.getSourceFiles()) {
+        if (program.isSourceFileFromExternalLibrary(sourceFile)) {
+          checkExternalFiles && filesToCheck.push(sourceFile);
+          continue;
+        }
+
+        if (program.isSourceFileDefaultLibrary(sourceFile)) {
+          checkLibraryFiles && filesToCheck.push(sourceFile);
+          continue;
+        }
+
+        if (!Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+          checkSourceFiles && filesToCheck.push(sourceFile);
+        }
+      }
+
+      const diagnostics: Array<ts.Diagnostic> = [];
+
+      for (const sourceFile of filesToCheck) {
+        diagnostics.push(...program.getSyntacticDiagnostics(sourceFile), ...program.getSemanticDiagnostics(sourceFile));
+      }
+
+      if (diagnostics.length > 0) {
+        EventEmitter.dispatch([
+          "project:error",
+          { diagnostics: Diagnostic.fromDiagnostics(diagnostics, this.#compiler) },
+        ]);
+
+        return;
+      }
     }
   }
 }
