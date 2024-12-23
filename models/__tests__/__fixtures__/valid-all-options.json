@@ -1,5 +1,6 @@
 {
   "$schema": "../../config-schema.json",
+  "checkSourceFiles": true,
   "failFast": true,
   "plugins": ["./tstyche-plugin.js"],
   "rejectAnyType": true,

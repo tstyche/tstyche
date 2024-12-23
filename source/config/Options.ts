@@ -42,6 +42,13 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.Boolean,
+      description: "Enable type error reporting for source files.",
+      group: OptionGroup.ConfigFile,
+      name: "checkSourceFiles",
+    },
+
+    {
       brand: OptionBrand.String,
       description: "The path to a TSTyche configuration file.",
       group: OptionGroup.CommandLine,

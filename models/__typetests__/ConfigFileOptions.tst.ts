@@ -4,6 +4,7 @@ import type * as tstyche from "tstyche/tstyche";
 describe("ConfigFileOptions", () => {
   test("all options", () => {
     expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({
+      checkSourceFiles: true,
       failFast: true,
       plugins: ["./tstyche-plugin.js"],
       rejectAnyType: true,
@@ -18,6 +19,12 @@ describe("ConfigFileOptions", () => {
 
   test("all options are optional", () => {
     expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({});
+  });
+
+  test("'checkSourceFiles' option", () => {
+    expect<Pick<tstyche.ConfigFileOptions, "checkSourceFiles">>().type.toBe<{
+      checkSourceFiles?: boolean;
+    }>();
   });
 
   test("'failFast' option", () => {

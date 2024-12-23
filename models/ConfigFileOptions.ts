@@ -5,6 +5,10 @@
  */
 export interface ConfigFileOptions {
     /**
+     * Enable type error reporting for source files.
+     */
+    checkSourceFiles?: boolean;
+    /**
      * Stop running tests after the first failed assertion.
      */
     failFast?: boolean;
