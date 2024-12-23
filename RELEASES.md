@@ -1,5 +1,16 @@
 # Releases
 
+## [3.2.0] - 2024-12-23
+
+### Fixed
+
+- Emit the `project:uses` event only once per project ([#386](https://github.com/tstyche/tstyche/pull/386))
+
+### Added
+
+- **New!** Add the `checkSourceFiles` option ([#388](https://github.com/tstyche/tstyche/pull/388), [#390](https://github.com/tstyche/tstyche/pull/390))
+- Expose the `SelectHookContext` type ([#387](https://github.com/tstyche/tstyche/pull/387))
+
 ## [3.1.1] - 2024-12-05
 
 ### Fixed
@@ -493,6 +504,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.2.0]: https://github.com/tstyche/tstyche/releases/tag/v3.2.0
 [3.1.1]: https://github.com/tstyche/tstyche/releases/tag/v3.1.1
 [3.1.0]: https://github.com/tstyche/tstyche/releases/tag/v3.1.0
 [3.0.0]: https://github.com/tstyche/tstyche/releases/tag/v3.0.0
