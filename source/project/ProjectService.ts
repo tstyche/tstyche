@@ -107,8 +107,10 @@ export class ProjectService {
       /* ensureProject */ true,
     );
 
-    if (this.#resolvedConfig.checkSourceFiles) {
-      project?.setCompilerOptions({ ...project?.getCompilerOptions(), skipLibCheck: false });
+    const compilerOptions = project?.getCompilerOptions();
+
+    if (this.#resolvedConfig.checkSourceFiles && compilerOptions?.skipLibCheck) {
+      project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
     }
 
     return project;
@@ -149,8 +151,6 @@ export class ProjectService {
 
       const program = languageService?.getProgram();
 
-      // TODO
-      //      - check how inferred projects are handled
       if (!program || this.#seenPrograms.has(program)) {
         return;
       }
