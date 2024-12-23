@@ -43,20 +43,6 @@ export class Options {
 
     {
       brand: OptionBrand.Boolean,
-      description: "Enable type error reporting for external files.",
-      group: OptionGroup.ConfigFile,
-      name: "checkExternalFiles",
-    },
-
-    {
-      brand: OptionBrand.Boolean,
-      description: "Enable type error reporting for library files.",
-      group: OptionGroup.ConfigFile,
-      name: "checkLibraryFiles",
-    },
-
-    {
-      brand: OptionBrand.Boolean,
       description: "Enable type error reporting for source files.",
       group: OptionGroup.ConfigFile,
       name: "checkSourceFiles",

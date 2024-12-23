@@ -4,8 +4,6 @@ import type * as tstyche from "tstyche/tstyche";
 describe("ConfigFileOptions", () => {
   test("all options", () => {
     expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({
-      checkExternalFiles: true,
-      checkLibraryFiles: true,
       checkSourceFiles: true,
       failFast: true,
       plugins: ["./tstyche-plugin.js"],
@@ -21,18 +19,6 @@ describe("ConfigFileOptions", () => {
 
   test("all options are optional", () => {
     expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({});
-  });
-
-  test("'checkExternalFiles' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "checkExternalFiles">>().type.toBe<{
-      checkExternalFiles?: boolean;
-    }>();
-  });
-
-  test("'checkLibraryFiles' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "checkLibraryFiles">>().type.toBe<{
-      checkLibraryFiles?: boolean;
-    }>();
   });
 
   test("'checkSourceFiles' option", () => {

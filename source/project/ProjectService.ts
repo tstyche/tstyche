@@ -107,14 +107,8 @@ export class ProjectService {
       /* ensureProject */ true,
     );
 
-    const { checkExternalFiles, checkLibraryFiles, checkSourceFiles } = this.#resolvedConfig;
-
-    if (checkExternalFiles || checkLibraryFiles || checkSourceFiles) {
+    if (this.#resolvedConfig.checkSourceFiles) {
       project?.setCompilerOptions({ ...project?.getCompilerOptions(), skipLibCheck: false });
-    }
-
-    if (checkLibraryFiles) {
-      project?.setCompilerOptions({ ...project?.getCompilerOptions(), skipDefaultLibCheck: false });
     }
 
     return project;
@@ -150,9 +144,7 @@ export class ProjectService {
       ]);
     }
 
-    const { checkExternalFiles, checkLibraryFiles, checkSourceFiles } = this.#resolvedConfig;
-
-    if (checkExternalFiles || checkLibraryFiles || checkSourceFiles) {
+    if (this.#resolvedConfig.checkSourceFiles) {
       const languageService = this.getLanguageService(filePath);
 
       if (!languageService) {
@@ -172,18 +164,12 @@ export class ProjectService {
       const filesToCheck: Array<ts.SourceFile> = [];
 
       for (const sourceFile of program.getSourceFiles()) {
-        if (program.isSourceFileFromExternalLibrary(sourceFile)) {
-          checkExternalFiles && filesToCheck.push(sourceFile);
-          continue;
-        }
-
-        if (program.isSourceFileDefaultLibrary(sourceFile)) {
-          checkLibraryFiles && filesToCheck.push(sourceFile);
+        if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
           continue;
         }
 
         if (!Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-          checkSourceFiles && filesToCheck.push(sourceFile);
+          filesToCheck.push(sourceFile);
         }
       }
 
