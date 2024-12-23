@@ -102,10 +102,22 @@ export class ProjectService {
   }
 
   getDefaultProject(filePath: string): ts.server.Project | undefined {
-    return this.#service.getDefaultProjectForFile(
+    const project = this.#service.getDefaultProjectForFile(
       this.#compiler.server.toNormalizedPath(filePath),
       /* ensureProject */ true,
     );
+
+    const { checkExternalFiles, checkLibraryFiles, checkSourceFiles } = this.#resolvedConfig;
+
+    if (checkExternalFiles || checkLibraryFiles || checkSourceFiles) {
+      project?.setCompilerOptions({ ...project?.getCompilerOptions(), skipLibCheck: false });
+    }
+
+    if (checkLibraryFiles) {
+      project?.setCompilerOptions({ ...project?.getCompilerOptions(), skipDefaultLibCheck: false });
+    }
+
+    return project;
   }
 
   getLanguageService(filePath: string): ts.LanguageService | undefined {
@@ -141,6 +153,9 @@ export class ProjectService {
     const { checkExternalFiles, checkLibraryFiles, checkSourceFiles } = this.#resolvedConfig;
 
     if (checkExternalFiles || checkLibraryFiles || checkSourceFiles) {
+      // TODO
+      //      - check how inferred projects are handled
+
       const languageService = this.getLanguageService(filePath);
 
       if (!languageService) {
@@ -154,9 +169,6 @@ export class ProjectService {
       }
 
       this.#seenPrograms.add(program);
-
-      // program.getCompilerOptions().skipLibCheck; // TODO warn if enabled
-      // program.getCompilerOptions().skipDefaultLibCheck; // TODO warn if enabled
 
       const filesToCheck: Array<ts.SourceFile> = [];
 
