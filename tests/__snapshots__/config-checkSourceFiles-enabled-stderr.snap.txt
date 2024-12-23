@@ -1,0 +1,44 @@
+Error: This expression is not callable.
+  Type 'Boolean' has no call signatures. ts(2349)
+
+  1 | export type Sample = { a: string };
+  2 | 
+  3 | false();
+    | ~~~~~
+  4 | 
+
+      at ./__typetests__/Sample.ts:3:1
+
+Error: 'const' modifier can only appear on a type parameter of a function, method or class ts(1277)
+
+   5 | }
+   6 | 
+   7 | export type ParseKeys<const Context extends {}> = Context;
+     |                       ~~~~~
+   8 | 
+   9 | false();
+  10 | 
+
+       at ./__typetests__/ambient.d.ts:7:23
+
+Error: Statements are not allowed in ambient contexts. ts(1036)
+
+   7 | export type ParseKeys<const Context extends {}> = Context;
+   8 | 
+   9 | false();
+     | ~~~~~
+  10 | 
+
+       at ./__typetests__/ambient.d.ts:9:1
+
+Error: This expression is not callable.
+  Type 'Boolean' has no call signatures. ts(2349)
+
+   7 | export type ParseKeys<const Context extends {}> = Context;
+   8 | 
+   9 | false();
+     | ~~~~~
+  10 | 
+
+       at ./__typetests__/ambient.d.ts:9:1
+

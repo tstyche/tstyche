@@ -153,9 +153,6 @@ export class ProjectService {
     const { checkExternalFiles, checkLibraryFiles, checkSourceFiles } = this.#resolvedConfig;
 
     if (checkExternalFiles || checkLibraryFiles || checkSourceFiles) {
-      // TODO
-      //      - check how inferred projects are handled
-
       const languageService = this.getLanguageService(filePath);
 
       if (!languageService) {
@@ -164,6 +161,8 @@ export class ProjectService {
 
       const program = languageService.getProgram();
 
+      // TODO
+      //      - check how inferred projects are handled
       if (!program || this.#seenPrograms.has(program)) {
         return;
       }
