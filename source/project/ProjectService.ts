@@ -147,11 +147,7 @@ export class ProjectService {
     if (this.#resolvedConfig.checkSourceFiles) {
       const languageService = this.getLanguageService(filePath);
 
-      if (!languageService) {
-        return;
-      }
-
-      const program = languageService.getProgram();
+      const program = languageService?.getProgram();
 
       // TODO
       //      - check how inferred projects are handled
