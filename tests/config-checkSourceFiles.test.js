@@ -6,7 +6,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const ambientFileText = `declare module "ambient-example" {
   interface CustomOptions {
-    // TODO
+    test: boolean;
   }
 }
 
@@ -15,15 +15,27 @@ export type ParseKeys<const Context extends {}> = Context;
 false();
 `;
 
-const isStringTestText = `import { expect, test } from "tstyche";
+const isSampleTestText = `import { expect, test } from "tstyche";
 import { type Sample } from "./Sample.js";
 
 expect<Sample>().type.toBe<{ a: string }>();
 `;
 
-const externalFileText = `export type Sample = { a: string };
+const importedFileText = `export type Sample = { a: string };
 
 false();
+`;
+
+const isStringTestText = `import { expect, test } from "tstyche";
+test("is string?", () => {
+  expect<string>().type.toBeString();
+});
+`;
+
+const isNumberTestText = `import { expect, test } from "tstyche";
+test("is number?", () => {
+  expect<number>().type.toBeNumber();
+});
 `;
 
 const tsconfig = {
@@ -49,8 +61,10 @@ await test("'checkSourceFiles' config file option", async (t) => {
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/ambient.d.ts"]: ambientFileText,
+      ["__typetests__/isNumber.test.ts"]: isNumberTestText,
+      ["__typetests__/isSample.test.ts"]: isSampleTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
-      ["__typetests__/Sample.ts"]: externalFileText,
+      ["__typetests__/Sample.ts"]: importedFileText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
@@ -77,8 +91,10 @@ await test("'checkSourceFiles' config file option", async (t) => {
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/ambient.d.ts"]: ambientFileText,
+      ["__typetests__/isNumber.test.ts"]: isNumberTestText,
+      ["__typetests__/isSample.test.ts"]: isSampleTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
-      ["__typetests__/Sample.ts"]: externalFileText,
+      ["__typetests__/Sample.ts"]: importedFileText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
