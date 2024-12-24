@@ -67,7 +67,7 @@ export class TaskRunner {
     if (syntacticDiagnostics.length > 0) {
       EventEmitter.dispatch([
         "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics, this.#compiler), result: taskResult },
+        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics), result: taskResult },
       ]);
 
       return;
@@ -92,7 +92,7 @@ export class TaskRunner {
     if (testTree.diagnostics.size > 0) {
       EventEmitter.dispatch([
         "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics], this.#compiler), result: taskResult },
+        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics]), result: taskResult },
       ]);
 
       return;

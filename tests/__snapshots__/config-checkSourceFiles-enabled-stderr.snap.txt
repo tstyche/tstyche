@@ -1,5 +1,6 @@
-Error: This expression is not callable.
-  Type 'Boolean' has no call signatures. ts(2349)
+Error: This expression is not callable. ts(2349)
+
+Type 'Boolean' has no call signatures.
 
   1 | export type Sample = { a: string };
   2 | 
@@ -31,8 +32,9 @@ Error: Statements are not allowed in ambient contexts. ts(1036)
 
        at ./__typetests__/ambient.d.ts:9:1
 
-Error: This expression is not callable.
-  Type 'Boolean' has no call signatures. ts(2349)
+Error: This expression is not callable. ts(2349)
+
+Type 'Boolean' has no call signatures.
 
    7 | export type ParseKeys<const Context extends {}> = Context;
    8 | 

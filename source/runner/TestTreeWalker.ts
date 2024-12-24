@@ -130,7 +130,7 @@ export class TestTreeWalker {
     };
 
     if (assertion.diagnostics.size > 0 && assertion.matcherName.getText() !== "toRaiseError") {
-      onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertion.diagnostics], this.#compiler));
+      onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertion.diagnostics]));
 
       return;
     }
@@ -172,7 +172,7 @@ export class TestTreeWalker {
       EventEmitter.dispatch([
         "task:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics], this.#compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics]),
           result: this.#taskResult,
         },
       ]);
@@ -200,7 +200,7 @@ export class TestTreeWalker {
       EventEmitter.dispatch([
         "test:error",
         {
-          diagnostics: Diagnostic.fromDiagnostics([...test.diagnostics], this.#compiler),
+          diagnostics: Diagnostic.fromDiagnostics([...test.diagnostics]),
           result: testResult,
         },
       ]);

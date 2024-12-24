@@ -142,7 +142,7 @@ export class ProjectService {
     if (configFileErrors && configFileErrors.length > 0) {
       EventEmitter.dispatch([
         "project:error",
-        { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>, this.#compiler) },
+        { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>) },
       ]);
     }
 
@@ -176,10 +176,7 @@ export class ProjectService {
       }
 
       if (diagnostics.length > 0) {
-        EventEmitter.dispatch([
-          "project:error",
-          { diagnostics: Diagnostic.fromDiagnostics(diagnostics, this.#compiler) },
-        ]);
+        EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
 
         return;
       }

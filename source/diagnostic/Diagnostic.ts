@@ -38,7 +38,7 @@ export class Diagnostic {
     return new Diagnostic([this.text, text].flat(), this.category, origin ?? this.origin);
   }
 
-  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
+  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
@@ -50,13 +50,28 @@ export class Diagnostic {
       let related: Array<Diagnostic> | undefined;
 
       if (diagnostic.relatedInformation != null) {
-        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation, compiler);
+        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
       }
 
-      const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+      const text =
+        typeof diagnostic.messageText === "string"
+          ? diagnostic.messageText
+          : Diagnostic.#getMessageChainText(diagnostic.messageText);
 
       return new Diagnostic(text, DiagnosticCategory.Error, origin).add({ code, related });
     });
+  }
+
+  static #getMessageChainText(chain: ts.DiagnosticMessageChain): Array<string> {
+    const result = [chain.messageText];
+
+    if (chain.next != null) {
+      for (const nextChain of chain.next) {
+        result.push(...Diagnostic.#getMessageChainText(nextChain));
+      }
+    }
+
+    return result;
   }
 
   static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {

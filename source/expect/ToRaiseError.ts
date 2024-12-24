@@ -29,7 +29,7 @@ export class ToRaiseError {
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
-        ...Diagnostic.fromDiagnostics([...matchWorker.assertion.diagnostics], this.#compiler),
+        ...Diagnostic.fromDiagnostics([...matchWorker.assertion.diagnostics]),
       ];
 
       return [Diagnostic.error(text, origin).add({ related })];
@@ -49,7 +49,7 @@ export class ToRaiseError {
 
         const related = [
           Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
-          ...Diagnostic.fromDiagnostics([diagnostic], this.#compiler),
+          ...Diagnostic.fromDiagnostics([diagnostic]),
         ];
 
         accumulator.push(Diagnostic.error(text, origin).add({ related }));
