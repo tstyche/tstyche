@@ -16,7 +16,7 @@ function DiagnosticText({ diagnostic }: DiagnosticTextProps) {
       {index === 1 ? <Line /> : undefined}
       <Line>
         {text}
-        {code}
+        {index === 0 ? code : undefined}
       </Line>
     </Text>
   ));

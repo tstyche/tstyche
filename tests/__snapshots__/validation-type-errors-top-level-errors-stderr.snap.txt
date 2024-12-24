@@ -1,24 +1,38 @@
 Error: Type 'string' is not assignable to type 'number'. ts(2322)
 
-   5 | });
-   6 | 
-   7 | const a: number = "nine";
+   6 | });
+   7 | 
+   8 | const a: number = "nine";
      |       ~
-   8 | 
-   9 | if (a > 9) {
-  10 |   //
+   9 | 
+  10 | if (a > 9) {
+  11 |   //
 
-       at ./__typetests__/top-level.tst.ts:7:7
+       at ./__typetests__/top-level.tst.ts:8:7
 
 Error: Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
 
-  11 | }
-  12 | 
-  13 | test(284963, () => {
+  12 | }
+  13 | 
+  14 | test(284963, () => {
      |      ~~~~~~
-  14 |   expect<string>().type.toBeString();
-  15 | });
-  16 | 
+  15 |   expect<string>().type.toBeString();
+  16 | });
+  17 | 
 
-       at ./__typetests__/top-level.tst.ts:13:6
+       at ./__typetests__/top-level.tst.ts:14:6
+
+Error: Argument of type 'Diagnostic' is not assignable to parameter of type 'DiagnosticWithLocation'. ts(2345)
+
+Types of property 'file' are incompatible.
+Type 'SourceFile | undefined' is not assignable to type 'SourceFile'.
+Type 'undefined' is not assignable to type 'SourceFile'.
+
+  18 | declare function silence(d: ts.DiagnosticWithLocation): void;
+  19 | 
+  20 | silence({} as ts.Diagnostic);
+     |         ~~~~~~~~~~~~~~~~~~~
+  21 | 
+
+       at ./__typetests__/top-level.tst.ts:20:9
 
