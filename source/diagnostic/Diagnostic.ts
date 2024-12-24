@@ -43,7 +43,7 @@ export class Diagnostic {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
-      if (Diagnostic.#isTsDiagnosticWithLocation(diagnostic)) {
+      if (diagnostic.file != null && diagnostic.start != null && diagnostic.length != null) {
         origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
       }
 
@@ -57,10 +57,6 @@ export class Diagnostic {
 
       return new Diagnostic(text, DiagnosticCategory.Error, origin).add({ code, related });
     });
-  }
-
-  static #isTsDiagnosticWithLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticWithLocation {
-    return diagnostic.file != null && diagnostic.start != null && diagnostic.length != null;
   }
 
   static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {
