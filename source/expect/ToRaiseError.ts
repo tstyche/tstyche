@@ -122,6 +122,7 @@ export class ToRaiseError {
     }
 
     if (this.#compiler.isStringLiteralLike(targetNode)) {
+      // TODO use 'Diagnostic.toMessageText()' to get list of messages, loop through and check each of them in TSTyche 4
       return this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(targetNode.text);
     }
 

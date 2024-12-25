@@ -56,18 +56,18 @@ export class Diagnostic {
       const text =
         typeof diagnostic.messageText === "string"
           ? diagnostic.messageText
-          : Diagnostic.#getMessageChainText(diagnostic.messageText);
+          : Diagnostic.#toMessageText(diagnostic.messageText);
 
       return new Diagnostic(text, DiagnosticCategory.Error, origin).add({ code, related });
     });
   }
 
-  static #getMessageChainText(chain: ts.DiagnosticMessageChain): Array<string> {
+  static #toMessageText(chain: ts.DiagnosticMessageChain): Array<string> {
     const result = [chain.messageText];
 
     if (chain.next != null) {
       for (const nextChain of chain.next) {
-        result.push(...Diagnostic.#getMessageChainText(nextChain));
+        result.push(...Diagnostic.#toMessageText(nextChain));
       }
     }
 
