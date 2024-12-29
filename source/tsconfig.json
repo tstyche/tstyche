@@ -8,6 +8,8 @@
       "#*": ["./*/index.js"]
     },
 
+    "verbatimModuleSyntax": true,
+
     "jsx": "react-jsx",
     "jsxImportSource": "#scribbler",
     "target": "es2023",
