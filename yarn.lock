@@ -245,9 +245,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-companies@npm:^3.1.8":
-  version: 3.1.10
-  resolution: "@cspell/dict-companies@npm:3.1.10"
-  checksum: 10c0/8cf8fb5bac18eeb37299b9746bc708cba409d0a573c6dee39329613fbfbfacd6504f7a923735b7806ae428bae7e22325ebfe273e6a8f85614c08b2ab79664611
+  version: 3.1.11
+  resolution: "@cspell/dict-companies@npm:3.1.11"
+  checksum: 10c0/2ae4a43b1d5e3663b40357aec3077f4b8f77149a0191d219c6cab5362ea58fb64d41161981b001d9cf01b9e93b63b72651ce584a98bd83ac5b9b96205a55ae40
   languageName: node
   linkType: hard
 
@@ -392,9 +392,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-golang@npm:^6.0.17":
-  version: 6.0.17
-  resolution: "@cspell/dict-golang@npm:6.0.17"
-  checksum: 10c0/a4f98996e33639d987d06868ed7e4e34dc5bd0167f9907872331c1d125f9d0185ab39852ef232e355681e1fa1bb778fc0aefa4782ecfda94c08b83f6ef0d4f5e
+  version: 6.0.18
+  resolution: "@cspell/dict-golang@npm:6.0.18"
+  checksum: 10c0/09f3ef103c095f5c192f462383ecef021f1fe75c0d2880ce971ab7b3f494c861fdda97b93c619c7823db036670bb3d05971d49f9bf1a1fb979343ab9f51ca15f
   languageName: node
   linkType: hard
 
@@ -502,9 +502,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.1.17":
-  version: 5.1.19
-  resolution: "@cspell/dict-npm@npm:5.1.19"
-  checksum: 10c0/7a68593c6c90197629de099ed71b82a163068078f41a3f3a994e4ae04cbebbe5accbe72b9983fc594a2d5fc739ed2bf341b085afc46bdd0b4a66bb56207d9018
+  version: 5.1.20
+  resolution: "@cspell/dict-npm@npm:5.1.20"
+  checksum: 10c0/50f171c2bf914409e7e48e1fc71a1aea52562b0d45d6c5e2f716411252ecc1f2fd22fc6d6494c298adf2571d7d48caae48f28d80aed2e7e2379775ace68fa32c
   languageName: node
   linkType: hard
 
@@ -567,9 +567,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^4.1.19":
-  version: 4.1.21
-  resolution: "@cspell/dict-software-terms@npm:4.1.21"
-  checksum: 10c0/2bffe7ffb3d563ed0d116f5ce024c638778ba6121ce0c0d3061bd244c3723b198879143244957f6fa9208594b975f1cec3e71558a82a377293520f7021966493
+  version: 4.2.1
+  resolution: "@cspell/dict-software-terms@npm:4.2.1"
+  checksum: 10c0/d4a3a16ea7a5559817d1fd93a0777c1ac01a0f21cec3f61a9e3011bcbd850cacca1621d9b612956d1f19b407bb2efb8ffe3b806fc31e6c1eb045b60e2b66006d
   languageName: node
   linkType: hard
 
@@ -595,9 +595,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-terraform@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "@cspell/dict-terraform@npm:1.0.6"
-  checksum: 10c0/0494d01703d671c47b93085ba791c2098640d11fc366adc877df16e79b5eccedf7d93d46d6acb37f4fa24f2c7ffac761ff1cd4c539ece2701519abbbbaa445e4
+  version: 1.0.7
+  resolution: "@cspell/dict-terraform@npm:1.0.7"
+  checksum: 10c0/da162e9075180df3141982121a4535d12f3ae257e3c469601fe01a3e82b8d70fc0b9f6a17a036b513cd16324c0e03841561bb2f1f6acea4790e5ee22c6917999
   languageName: node
   linkType: hard
 
