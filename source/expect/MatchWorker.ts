@@ -81,7 +81,19 @@ export class MatchWorker {
     const sourceType = this.getType(sourceNode);
     const targetType = this.getType(targetNode);
 
-    return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
+    let result = this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
+
+    if (
+      !result &&
+      relation === this.#typeChecker.relation.identity &&
+      // expect<{ a: string } & { a: string }>().type.toBe<{ a: string }>();
+      // expect<{ a: string } | { a: string }>().type.toBe<{ a: string }>();
+      (sourceType.isIntersection() || sourceType.isUnion())
+    ) {
+      result = sourceType.types.every((type) => this.#typeChecker.isTypeRelatedTo(type, targetType, relation));
+    }
+
+    return result;
   }
 
   extendsObjectType(type: ts.Type): boolean {

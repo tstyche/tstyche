@@ -1,144 +1,192 @@
+Error: Type '{ a: string; } | { a: string; }' is identical to type '{ a: string; }'.
+
+  18 | 
+  19 |   expect<{ a: string } | { a: string }>().type.toBe<{ a: string }>();
+  20 |   expect<{ a: string } | { a: string }>().type.not.toBe<{ a: string }>();
+     |                                                         ~~~~~~~~~~~~~
+  21 | 
+  22 |   expect<{ a: string } | { b: string }>().type.not.toBe<{ a: string }>();
+  23 |   expect<{ a: string } | { b: string }>().type.toBe<{ a: string }>();
+
+       at ./__typetests__/toBe.tst.ts:20:57 ❭ edge cases
+
+Error: Type '{ a: string; } | { b: string; }' is not identical to type '{ a: string; }'.
+
+  21 | 
+  22 |   expect<{ a: string } | { b: string }>().type.not.toBe<{ a: string }>();
+  23 |   expect<{ a: string } | { b: string }>().type.toBe<{ a: string }>();
+     |                                                     ~~~~~~~~~~~~~
+  24 | 
+  25 |   expect<{ a: string } & { a: string }>().type.toBe<{ a: string }>();
+  26 |   expect<{ a: string } & { a: string }>().type.not.toBe<{ a: string }>();
+
+       at ./__typetests__/toBe.tst.ts:23:53 ❭ edge cases
+
+Error: Type '{ a: string; } & { a: string; }' is identical to type '{ a: string; }'.
+
+  24 | 
+  25 |   expect<{ a: string } & { a: string }>().type.toBe<{ a: string }>();
+  26 |   expect<{ a: string } & { a: string }>().type.not.toBe<{ a: string }>();
+     |                                                         ~~~~~~~~~~~~~
+  27 | 
+  28 |   expect<{ a: string } & { b: string }>().type.not.toBe<{ a: string }>();
+  29 |   expect<{ a: string } & { b: string }>().type.toBe<{ a: string }>();
+
+       at ./__typetests__/toBe.tst.ts:26:57 ❭ edge cases
+
+Error: Type '{ a: string; } & { b: string; }' is not identical to type '{ a: string; }'.
+
+  27 | 
+  28 |   expect<{ a: string } & { b: string }>().type.not.toBe<{ a: string }>();
+  29 |   expect<{ a: string } & { b: string }>().type.toBe<{ a: string }>();
+     |                                                     ~~~~~~~~~~~~~
+  30 | 
+  31 |   expect(Date).type.toBe<typeof Date>();
+  32 | });
+
+       at ./__typetests__/toBe.tst.ts:29:53 ❭ edge cases
+
 Error: Type '{ a?: number | undefined; }' is identical to type '{ a?: number | undefined; }'.
 
-  23 |   // all four assertion pass only when '"exactOptionalPropertyTypes": true' is set
-  24 | 
-  25 |   expect<{ a?: number }>().type.not.toBe<{ a?: number | undefined }>();
+  35 |   // all four assertion pass only when '"exactOptionalPropertyTypes": true' is set
+  36 | 
+  37 |   expect<{ a?: number }>().type.not.toBe<{ a?: number | undefined }>();
      |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~
-  26 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
-  27 | 
-  28 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  38 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
+  39 | 
+  40 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
 
-       at ./__typetests__/toBe.tst.ts:25:42 ❭ exact optional property types
+       at ./__typetests__/toBe.tst.ts:37:42 ❭ exact optional property types
 
 Error: Type '{ a?: number | undefined; }' is identical to type '{ a?: number | undefined; }'.
 
-  24 | 
-  25 |   expect<{ a?: number }>().type.not.toBe<{ a?: number | undefined }>();
-  26 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
+  36 | 
+  37 |   expect<{ a?: number }>().type.not.toBe<{ a?: number | undefined }>();
+  38 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
      |                                                      ~~~~~~~~~~~~~~
-  27 | 
-  28 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
-  29 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
+  39 | 
+  40 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  41 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
 
-       at ./__typetests__/toBe.tst.ts:26:54 ❭ exact optional property types
+       at ./__typetests__/toBe.tst.ts:38:54 ❭ exact optional property types
 
 Error: Type '{ a?: number | undefined; }' is assignable with type '{ a?: number | undefined; }'.
 
-  26 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
-  27 | 
-  28 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  38 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
+  39 | 
+  40 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
      |                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~
-  29 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
-  30 | });
-  31 | 
+  41 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
+  42 | });
+  43 | 
 
-       at ./__typetests__/toBe.tst.ts:28:56 ❭ exact optional property types
+       at ./__typetests__/toBe.tst.ts:40:56 ❭ exact optional property types
 
 Error: Type '{ a?: number | undefined; }' is assignable to type '{ a?: number | undefined; }'.
 
-  27 | 
-  28 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
-  29 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
+  39 | 
+  40 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  41 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
      |                                                                  ~~~~~~~~~~~~~~
-  30 | });
-  31 | 
-  32 | describe("source type", () => {
+  42 | });
+  43 | 
+  44 | describe("source type", () => {
 
-       at ./__typetests__/toBe.tst.ts:29:66 ❭ exact optional property types
+       at ./__typetests__/toBe.tst.ts:41:66 ❭ exact optional property types
 
 Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
 
-  35 |     expect<Names>().type.toBe<{ first: string; last?: string }>();
-  36 | 
-  37 |     expect<Names>().type.toBe<{ first: string; last: string }>();
+  47 |     expect<Names>().type.toBe<{ first: string; last?: string }>();
+  48 | 
+  49 |     expect<Names>().type.toBe<{ first: string; last: string }>();
      |                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  38 |   });
-  39 | 
-  40 |   test("is NOT identical to target type", () => {
+  50 |   });
+  51 | 
+  52 |   test("is NOT identical to target type", () => {
 
-       at ./__typetests__/toBe.tst.ts:37:31 ❭ source type ❭ is identical to target type
+       at ./__typetests__/toBe.tst.ts:49:31 ❭ source type ❭ is identical to target type
 
 Error: Type 'Names' is identical to type '{ first: string; last?: string | undefined; }'.
 
-  41 |     expect<Names>().type.not.toBe<{ first: string; last: string }>();
-  42 | 
-  43 |     expect<Names>().type.not.toBe<{ first: string; last?: string }>();
+  53 |     expect<Names>().type.not.toBe<{ first: string; last: string }>();
+  54 | 
+  55 |     expect<Names>().type.not.toBe<{ first: string; last?: string }>();
      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  44 |   });
-  45 | 
-  46 |   test("is identical to target expression", () => {
+  56 |   });
+  57 | 
+  58 |   test("is identical to target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:43:35 ❭ source type ❭ is NOT identical to target type
+       at ./__typetests__/toBe.tst.ts:55:35 ❭ source type ❭ is NOT identical to target type
 
 Error: Type '{ first: string; last: string; }' is not identical to type 'Names'.
 
-  48 |     expect<{ first: string; last?: string }>().type.toBe(getNames());
-  49 | 
-  50 |     expect<{ first: string; last: string }>().type.toBe(getNames());
+  60 |     expect<{ first: string; last?: string }>().type.toBe(getNames());
+  61 | 
+  62 |     expect<{ first: string; last: string }>().type.toBe(getNames());
      |                                                         ~~~~~~~~~~
-  51 |   });
-  52 | 
-  53 |   test("is NOT identical to target expression", () => {
+  63 |   });
+  64 | 
+  65 |   test("is NOT identical to target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:50:57 ❭ source type ❭ is identical to target expression
+       at ./__typetests__/toBe.tst.ts:62:57 ❭ source type ❭ is identical to target expression
 
 Error: Type '{ first: string; last?: string | undefined; }' is identical to type 'Names'.
 
-  54 |     expect<{ first: string; last: string }>().type.not.toBe(getNames());
-  55 | 
-  56 |     expect<{ first: string; last?: string }>().type.not.toBe(getNames());
+  66 |     expect<{ first: string; last: string }>().type.not.toBe(getNames());
+  67 | 
+  68 |     expect<{ first: string; last?: string }>().type.not.toBe(getNames());
      |                                                              ~~~~~~~~~~
-  57 |   });
-  58 | });
-  59 | 
+  69 |   });
+  70 | });
+  71 | 
 
-       at ./__typetests__/toBe.tst.ts:56:62 ❭ source type ❭ is NOT identical to target expression
+       at ./__typetests__/toBe.tst.ts:68:62 ❭ source type ❭ is NOT identical to target expression
 
 Error: Type 'Names' is not identical to type '{ first: string; last: string; }'.
 
-  63 |     expect(getNames()).type.toBe<Names>();
-  64 | 
-  65 |     expect(getNames()).type.toBe<{ first: string; last: string }>();
+  75 |     expect(getNames()).type.toBe<Names>();
+  76 | 
+  77 |     expect(getNames()).type.toBe<{ first: string; last: string }>();
      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  66 |   });
-  67 | 
-  68 |   test("is NOT identical to target type", () => {
+  78 |   });
+  79 | 
+  80 |   test("is NOT identical to target type", () => {
 
-       at ./__typetests__/toBe.tst.ts:65:34 ❭ source expression ❭ identical to target type
+       at ./__typetests__/toBe.tst.ts:77:34 ❭ source expression ❭ identical to target type
 
 Error: Type 'Names' is identical to type '{ first: string; last?: string | undefined; }'.
 
-  69 |     expect(getNames()).type.not.toBe<{ first: string; last: string }>();
-  70 | 
-  71 |     expect(getNames()).type.not.toBe<{ first: string; last?: string }>();
+  81 |     expect(getNames()).type.not.toBe<{ first: string; last: string }>();
+  82 | 
+  83 |     expect(getNames()).type.not.toBe<{ first: string; last?: string }>();
      |                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  72 |   });
-  73 | 
-  74 |   test("identical to target expression", () => {
+  84 |   });
+  85 | 
+  86 |   test("identical to target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:71:38 ❭ source expression ❭ is NOT identical to target type
+       at ./__typetests__/toBe.tst.ts:83:38 ❭ source expression ❭ is NOT identical to target type
 
 Error: Type '{ height: number; }' is not identical to type 'Size'.
 
-  75 |     expect({ height: 14, width: 25 }).type.toBe(getSize());
-  76 | 
-  77 |     expect({ height: 14 }).type.toBe(getSize());
+  87 |     expect({ height: 14, width: 25 }).type.toBe(getSize());
+  88 | 
+  89 |     expect({ height: 14 }).type.toBe(getSize());
      |                                      ~~~~~~~~~
-  78 |   });
-  79 | 
-  80 |   test("is NOT identical to target expression", () => {
+  90 |   });
+  91 | 
+  92 |   test("is NOT identical to target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:77:38 ❭ source expression ❭ identical to target expression
+       at ./__typetests__/toBe.tst.ts:89:38 ❭ source expression ❭ identical to target expression
 
 Error: Type '{ height: number; width: number; }' is identical to type 'Size'.
 
-  81 |     expect({ height: 14 }).type.not.toBe(getSize());
-  82 | 
-  83 |     expect({ height: 14, width: 25 }).type.not.toBe(getSize());
+  93 |     expect({ height: 14 }).type.not.toBe(getSize());
+  94 | 
+  95 |     expect({ height: 14, width: 25 }).type.not.toBe(getSize());
      |                                                     ~~~~~~~~~
-  84 |   });
-  85 | });
-  86 | 
+  96 |   });
+  97 | });
+  98 | 
 
-       at ./__typetests__/toBe.tst.ts:83:53 ❭ source expression ❭ is NOT identical to target expression
+       at ./__typetests__/toBe.tst.ts:95:53 ❭ source expression ❭ is NOT identical to target expression
 
