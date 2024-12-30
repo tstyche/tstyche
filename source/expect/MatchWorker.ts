@@ -81,6 +81,10 @@ export class MatchWorker {
     const sourceType = this.getType(sourceNode);
     const targetType = this.getType(targetNode);
 
+    if (relation === this.#typeChecker.relation.identity && sourceType.isUnion()) {
+      return sourceType.types.every((type) => this.#typeChecker.isTypeRelatedTo(type, targetType, relation));
+    }
+
     return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
   }
 
