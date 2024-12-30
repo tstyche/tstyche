@@ -19,6 +19,9 @@ test("edge cases", () => {
   expect<{ a: string } | { a: string }>().type.toBe<{ a: string }>();
   expect<{ a: string } | { a: string }>().type.not.toBe<{ a: string }>();
 
+  expect<{ a: string } & { a: string }>().type.toBe<{ a: string }>();
+  expect<{ a: string } & { a: string }>().type.not.toBe<{ a: string }>();
+
   expect(Date).type.toBe<typeof Date>();
 });
 
