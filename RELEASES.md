@@ -1,5 +1,11 @@
 # Releases
 
+## [3.3.1] - 2024-12-31
+
+### Fixed
+
+- Treat intersections or unions of identical types as identical to its constituent type (target types) ([#393](https://github.com/tstyche/tstyche/pull/393))
+
 ## [3.3.0] - 2024-12-30
 
 ### Fixed
@@ -8,7 +14,7 @@
 
 ### Changed
 
-- Treat intersections or unions of identical types as identical to its constituent type ([#392](https://github.com/tstyche/tstyche/pull/392))
+- Treat intersections or unions of identical types as identical to its constituent type (source types) ([#392](https://github.com/tstyche/tstyche/pull/392))
 
 ## [3.2.0] - 2024-12-23
 
@@ -514,6 +520,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.3.1]: https://github.com/tstyche/tstyche/releases/tag/v3.3.1
 [3.3.0]: https://github.com/tstyche/tstyche/releases/tag/v3.3.0
 [3.2.0]: https://github.com/tstyche/tstyche/releases/tag/v3.2.0
 [3.1.1]: https://github.com/tstyche/tstyche/releases/tag/v3.1.1
