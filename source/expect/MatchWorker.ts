@@ -80,12 +80,12 @@ export class MatchWorker {
   #checkIsRelatedTo(sourceNode: ArgumentNode, targetNode: ArgumentNode, relation: Relation) {
     const sourceType =
       relation === this.#typeChecker.relation.identity
-        ? this.#trySimplifyType(this.getType(sourceNode))
+        ? this.#simplifyType(this.getType(sourceNode))
         : this.getType(sourceNode);
 
     const targetType =
       relation === this.#typeChecker.relation.identity
-        ? this.#trySimplifyType(this.getType(targetNode))
+        ? this.#simplifyType(this.getType(targetNode))
         : this.getType(targetNode);
 
     return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
@@ -185,14 +185,18 @@ export class MatchWorker {
     return DiagnosticOrigin.fromNode(enclosingNode, this.assertion);
   }
 
-  #trySimplifyType(type: ts.Type) {
-    if (type.isIntersection() || type.isUnion()) {
+  #simplifyType(type: ts.Type): ts.Type {
+    if (type.isUnionOrIntersection()) {
       // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
-      const candidateType = type.types[0]!;
+      const candidateType = this.#simplifyType(type.types[0]!);
 
       if (
         type.types.every((type) =>
-          this.#typeChecker.isTypeRelatedTo(type, candidateType, this.#typeChecker.relation.identity),
+          this.#typeChecker.isTypeRelatedTo(
+            this.#simplifyType(type),
+            candidateType,
+            this.#typeChecker.relation.identity,
+          ),
         )
       ) {
         return candidateType;
