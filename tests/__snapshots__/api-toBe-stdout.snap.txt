@@ -17,7 +17,7 @@ fail ./__typetests__/toBe.tst.ts
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      10 failed, 10 total
-Assertions: 20 failed, 22 passed, 42 total
+Assertions: 24 failed, 26 passed, 50 total
 Duration:   <<timestamp>>
 
 Ran all test files.

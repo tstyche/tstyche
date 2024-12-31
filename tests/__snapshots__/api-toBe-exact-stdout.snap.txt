@@ -17,7 +17,7 @@ pass ./__typetests__/toBe.tst.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      9 skipped, 1 passed, 10 total
-Assertions: 38 skipped, 4 passed, 42 total
+Assertions: 46 skipped, 4 passed, 50 total
 Duration:   <<timestamp>>
 
 Ran tests matching 'exact' in all test files.
