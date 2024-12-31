@@ -78,22 +78,15 @@ export class MatchWorker {
   }
 
   #checkIsRelatedTo(sourceNode: ArgumentNode, targetNode: ArgumentNode, relation: Relation) {
-    const sourceType = this.getType(sourceNode);
-    const targetType = this.getType(targetNode);
+    const sourceType = this.#typeChecker.relation.identity
+      ? this.#trySimplifyType(this.getType(sourceNode))
+      : this.getType(sourceNode);
 
-    let result = this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
+    const targetType = this.#typeChecker.relation.identity
+      ? this.#trySimplifyType(this.getType(targetNode))
+      : this.getType(targetNode);
 
-    if (
-      !result &&
-      relation === this.#typeChecker.relation.identity &&
-      // expect<{ a: string } & { a: string }>().type.toBe<{ a: string }>();
-      // expect<{ a: string } | { a: string }>().type.toBe<{ a: string }>();
-      (sourceType.isIntersection() || sourceType.isUnion())
-    ) {
-      result = sourceType.types.every((type) => this.#typeChecker.isTypeRelatedTo(type, targetType, relation));
-    }
-
-    return result;
+    return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
   }
 
   extendsObjectType(type: ts.Type): boolean {
@@ -188,5 +181,22 @@ export class MatchWorker {
     }
 
     return DiagnosticOrigin.fromNode(enclosingNode, this.assertion);
+  }
+
+  #trySimplifyType(type: ts.Type) {
+    if (type.isIntersection() || type.isUnion()) {
+      // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
+      const candidateType = type.types[0]!;
+
+      if (
+        type.types.every((type) =>
+          this.#typeChecker.isTypeRelatedTo(type, candidateType, this.#typeChecker.relation.identity),
+        )
+      ) {
+        return candidateType;
+      }
+    }
+
+    return type;
   }
 }
