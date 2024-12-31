@@ -78,13 +78,15 @@ export class MatchWorker {
   }
 
   #checkIsRelatedTo(sourceNode: ArgumentNode, targetNode: ArgumentNode, relation: Relation) {
-    const sourceType = this.#typeChecker.relation.identity
-      ? this.#trySimplifyType(this.getType(sourceNode))
-      : this.getType(sourceNode);
+    const sourceType =
+      relation === this.#typeChecker.relation.identity
+        ? this.#trySimplifyType(this.getType(sourceNode))
+        : this.getType(sourceNode);
 
-    const targetType = this.#typeChecker.relation.identity
-      ? this.#trySimplifyType(this.getType(targetNode))
-      : this.getType(targetNode);
+    const targetType =
+      relation === this.#typeChecker.relation.identity
+        ? this.#trySimplifyType(this.getType(targetNode))
+        : this.getType(targetNode);
 
     return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
   }
