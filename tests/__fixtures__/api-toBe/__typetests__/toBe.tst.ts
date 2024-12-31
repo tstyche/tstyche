@@ -28,6 +28,18 @@ test("edge cases", () => {
   expect<{ a: string } & { b: string }>().type.not.toBe<{ a: string }>();
   expect<{ a: string } & { b: string }>().type.toBe<{ a: string }>();
 
+  expect<{ a: string }>().type.toBe<{ a: string } | { a: string }>();
+  expect<{ a: string }>().type.not.toBe<{ a: string } | { a: string }>();
+
+  expect<{ a: string }>().type.not.toBe<{ a: string } | { b: string }>();
+  expect<{ a: string }>().type.toBe<{ a: string } | { b: string }>();
+
+  expect<{ a: string }>().type.toBe<{ a: string } & { a: string }>();
+  expect<{ a: string }>().type.not.toBe<{ a: string } & { a: string }>();
+
+  expect<{ a: string }>().type.not.toBe<{ a: string } & { b: string }>();
+  expect<{ a: string }>().type.toBe<{ a: string } & { b: string }>();
+
   expect(Date).type.toBe<typeof Date>();
 });
 
