@@ -5,3 +5,5 @@ build
 coverage
 node_modules
 *.log
+.idea
+*.iml

@@ -43,6 +43,32 @@ function tidyJs() {
 }
 
 /** @returns {import("rollup").Plugin} */
+function mochaLike() {
+  // Adding a CJS package.json allows IDE reporters which rely on
+  // `require.main` (*cough*JetBrains*cough*) to still function.
+  const packageJson = JSON.stringify(
+    {
+      name: "tstyche-as-mocha",
+      type: "commonjs",
+    },
+    undefined,
+    2,
+  ).concat("\n");
+
+  return {
+    name: "cjs-package-json",
+    /** @this {import("rollup").PluginContext} this */
+    buildStart() {
+      this.emitFile({
+        code: packageJson,
+        fileName: "package.json",
+        type: "prebuilt-chunk",
+      });
+    },
+  };
+}
+
+/** @returns {import("rollup").Plugin} */
 function tidyDts() {
   const tstycheEntry = "tstyche.d.ts";
 
@@ -111,6 +137,35 @@ const config = [
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript({ compilerOptions: { removeComments: true }, tsconfig: "./source/tsconfig.json" }),
+      tidyJs(),
+    ],
+  },
+
+  {
+    external: [/^node:/, "mocha"],
+    input: "./as-mocha/mocha.ts",
+    output: {
+      file: "./as-mocha/build/mocha.js",
+      format: "cjs",
+    },
+    plugins: [
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      typescript({ tsconfig: "./as-mocha/tsconfig.json" }),
+      mochaLike(),
+      tidyJs(),
+    ],
+  },
+
+  {
+    external: [/^node:/, "mocha"],
+    input: ["./as-mocha/lib/reporters/base.ts"],
+    output: {
+      dir: "./as-mocha/build/lib/reporters/",
+      format: "cjs",
+    },
+    plugins: [
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      typescript({ tsconfig: "./as-mocha/tsconfig.json" }),
       tidyJs(),
     ],
   },

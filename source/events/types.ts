@@ -17,9 +17,12 @@ export type Event =
   | ["target:end", { result: TargetResult }]
   | ["project:uses", { compilerVersion: string; projectConfigFilePath: string | undefined }]
   | ["project:error", { diagnostics: Array<Diagnostic> }]
-  | ["task:start", { result: TaskResult }]
-  | ["task:error", { diagnostics: Array<Diagnostic>; result: TaskResult }]
-  | ["task:end", { result: TaskResult }]
+  | ["task:start", { result: TaskResult; parentResult: DescribeResult | TestResult | TaskResult | TargetResult }]
+  | [
+      "task:error",
+      { diagnostics: Array<Diagnostic>; parentResult: DescribeResult | TestResult | TaskResult; result: TaskResult },
+    ]
+  | ["task:end", { result: TaskResult; parentResult: DescribeResult | TestResult | TaskResult | TargetResult }]
   | ["describe:start", { result: DescribeResult }]
   | ["describe:end", { result: DescribeResult }]
   | ["test:start", { result: TestResult }]

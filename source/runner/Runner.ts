@@ -49,6 +49,10 @@ export class Runner {
     }
   }
 
+  public addReporter(reporter: Reporter): void {
+    this.#eventEmitter.addReporter(reporter);
+  }
+
   async run(testFiles: Array<string | URL | Task>, cancellationToken = new CancellationToken()): Promise<void> {
     const tasks = testFiles.map((testFile) => (testFile instanceof Task ? testFile : new Task(testFile)));
 
@@ -78,7 +82,7 @@ export class Runner {
     EventEmitter.dispatch(["run:start", { result }]);
 
     for (const target of this.#resolvedConfig.target) {
-      const targetResult = new TargetResult(target, tasks);
+      const targetResult = new TargetResult(target, tasks, result);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
@@ -89,7 +93,7 @@ export class Runner {
         const taskRunner = new TaskRunner(this.#resolvedConfig, compiler);
 
         for (const task of tasks) {
-          taskRunner.run(task, cancellationToken);
+          taskRunner.run(task, cancellationToken, targetResult);
         }
       }
 

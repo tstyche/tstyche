@@ -22,7 +22,7 @@
     "target": "es2022"
   },
   "exclude": [
-    "build/**/*",
+    "**/build/**/*",
     "coverage/**/*",
     "examples/**/*",
     "models/**/*",
