@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import type { TaskResult } from "../result/index.js";
 import type { Assertion } from "./Assertion.js";
 import { TestMemberBrand } from "./TestMemberBrand.enum.js";
 import type { TestMemberFlags } from "./TestMemberFlags.enum.js";
@@ -13,20 +14,23 @@ export class TestMember {
   members: Array<TestMember | Assertion> = [];
   name = "";
   node: ts.CallExpression;
-  parent: TestTree | TestMember;
+  parentTreeMember: TestTree | TestMember;
+  parent: TaskResult;
 
   constructor(
     compiler: typeof ts,
     brand: TestMemberBrand,
     node: ts.CallExpression,
-    parent: TestTree | TestMember,
+    parentTreeMember: TestTree | TestMember,
     flags: TestMemberFlags,
+    parent: TaskResult,
   ) {
     this.brand = brand;
     this.#compiler = compiler;
     this.node = node;
-    this.parent = parent;
+    this.parentTreeMember = parentTreeMember;
     this.flags = flags;
+    this.parent = parent;
 
     if (node.arguments[0] != null && compiler.isStringLiteralLike(node.arguments[0])) {
       this.name = node.arguments[0].text;
@@ -40,10 +44,10 @@ export class TestMember {
       const blockStart = node.arguments[1].body.getStart();
       const blockEnd = node.arguments[1].body.getEnd();
 
-      for (const diagnostic of parent.diagnostics) {
+      for (const diagnostic of parentTreeMember.diagnostics) {
         if (diagnostic.start != null && diagnostic.start >= blockStart && diagnostic.start <= blockEnd) {
           this.diagnostics.add(diagnostic);
-          parent.diagnostics.delete(diagnostic);
+          parentTreeMember.diagnostics.delete(diagnostic);
         }
       }
     }

@@ -1,7 +1,7 @@
 import { DiagnosticCategory } from "#diagnostic";
 import type { Event, EventHandler } from "#events";
 import {
-  type DescribeResult,
+  DescribeResult,
   type ExpectResult,
   ProjectResult,
   type Result,
@@ -62,7 +62,11 @@ export class ResultHandler implements EventHandler {
         let projectResult = this.#targetResult!.results.get(payload.projectConfigFilePath);
 
         if (!projectResult) {
-          projectResult = new ProjectResult(payload.compilerVersion, payload.projectConfigFilePath);
+          projectResult = new ProjectResult(
+            payload.compilerVersion,
+            payload.projectConfigFilePath,
+            this.#targetResult!,
+          );
           this.#targetResult!.results.set(payload.projectConfigFilePath, projectResult);
         }
 
@@ -119,7 +123,13 @@ export class ResultHandler implements EventHandler {
 
       case "describe:end":
         this.#describeResult!.timing.end = Date.now();
-        this.#describeResult = this.#describeResult!.parent;
+        if (this.#describeResult != null) {
+          if (this.#describeResult.parent instanceof DescribeResult) {
+            this.#describeResult = this.#describeResult.parent;
+          } else {
+            this.#taskResult ??= this.#describeResult.parent;
+          }
+        }
         break;
 
       case "test:start":

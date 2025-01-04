@@ -76,7 +76,7 @@ export class TestTreeWalker {
   visit(
     members: Array<TestMember | Assertion>,
     runMode: RunMode,
-    parentResult: DescribeResult | TestResult | undefined,
+    parentResult: DescribeResult | TestResult | TaskResult,
   ): void {
     for (const member of members) {
       if (this.#cancellationToken?.isCancellationRequested) {
@@ -86,31 +86,31 @@ export class TestTreeWalker {
       const validationError = member.validate();
 
       if (validationError.length > 0) {
-        EventEmitter.dispatch(["task:error", { diagnostics: validationError, result: this.#taskResult }]);
+        EventEmitter.dispatch(["task:error", { diagnostics: validationError, parentResult, result: this.#taskResult }]);
 
         break;
       }
 
       switch (member.brand) {
         case TestMemberBrand.Describe:
-          this.#visitDescribe(member, runMode, parentResult as DescribeResult | undefined);
+          this.#visitDescribe(member, runMode, parentResult as DescribeResult | TaskResult);
           break;
 
         case TestMemberBrand.Test:
-          this.#visitTest(member, runMode, parentResult as DescribeResult | undefined);
+          this.#visitTest(member, runMode, parentResult as DescribeResult | TaskResult);
           break;
 
         case TestMemberBrand.Expect:
-          this.#visitAssertion(member as Assertion, runMode, parentResult as TestResult | undefined);
+          this.#visitAssertion(member as Assertion, runMode, parentResult as TestResult);
           break;
       }
     }
   }
 
-  #visitAssertion(assertion: Assertion, runMode: RunMode, parentResult: TestResult | undefined) {
-    this.visit(assertion.members, runMode, parentResult);
+  #visitAssertion(assertion: Assertion, runMode: RunMode, testResult: TestResult) {
+    this.visit(assertion.members, runMode, testResult);
 
-    const expectResult = new ExpectResult(assertion, parentResult);
+    const expectResult = new ExpectResult(assertion, testResult);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
 
@@ -158,7 +158,7 @@ export class TestTreeWalker {
     }
   }
 
-  #visitDescribe(describe: TestMember, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  #visitDescribe(describe: TestMember, runMode: RunMode, parentResult: DescribeResult | TaskResult) {
     const describeResult = new DescribeResult(describe, parentResult);
 
     EventEmitter.dispatch(["describe:start", { result: describeResult }]);
@@ -173,6 +173,7 @@ export class TestTreeWalker {
         "task:error",
         {
           diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics]),
+          parentResult,
           result: this.#taskResult,
         },
       ]);
@@ -183,7 +184,7 @@ export class TestTreeWalker {
     EventEmitter.dispatch(["describe:end", { result: describeResult }]);
   }
 
-  #visitTest(test: TestMember, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  #visitTest(test: TestMember, runMode: RunMode, parentResult: DescribeResult | TaskResult) {
     const testResult = new TestResult(test, parentResult);
 
     EventEmitter.dispatch(["test:start", { result: testResult }]);

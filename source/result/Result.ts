@@ -7,6 +7,7 @@ import type { TargetResult } from "./TargetResult.js";
 export class Result {
   expectCount = new ResultCount();
   fileCount = new ResultCount();
+  parent: undefined;
   resolvedConfig: ResolvedConfig;
   results: Array<TargetResult> = [];
   targetCount = new ResultCount();

@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "@types/mocha": ">=10.0.10"
+  },
+  "peerDependencies": {
+    "mocha": ">=11",
+    "tstyche": ">=3.3.1"
+  },
+  "name": "tstyche-as-mocha",
+  "bin": "./build/mocha.js",
+  "bin-tsx": "./mocha.ts",
+  "type": "module"
+}

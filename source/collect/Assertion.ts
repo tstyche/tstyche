@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import type { TaskResult } from "../result/index.js";
 import { TestMember } from "./TestMember.js";
 import type { TestMemberBrand } from "./TestMemberBrand.enum.js";
 import type { TestMemberFlags } from "./TestMemberFlags.enum.js";
@@ -25,9 +26,10 @@ export class Assertion extends TestMember {
     flags: TestMemberFlags,
     matcherNode: MatcherNode,
     modifierNode: ts.PropertyAccessExpression,
-    notNode?: ts.PropertyAccessExpression,
+    notNode: ts.PropertyAccessExpression | undefined,
+    parentResult: TaskResult,
   ) {
-    super(compiler, brand, node, parent, flags);
+    super(compiler, brand, node, parent, flags, parentResult);
 
     this.isNot = notNode != null;
     this.matcherName = matcherNode.expression.name;

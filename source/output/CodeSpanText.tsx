@@ -12,7 +12,7 @@ function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
 
   while ("name" in ancestor) {
     text.push(ancestor.name);
-    ancestor = ancestor.parent;
+    ancestor = ancestor.parentTreeMember;
   }
 
   text.push("");
@@ -140,7 +140,7 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
       <Text color={Color.Gray}>{" at "}</Text>
       <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
       <Text color={Color.Gray}>{`:${firstMarkedLine + 1}:${firstMarkedLineCharacter + 1}`}</Text>
-      {diagnosticOrigin.assertion && <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parent} />}
+      {diagnosticOrigin.assertion && <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parentTreeMember} />}
     </Line>
   );
 

@@ -1,3 +1,4 @@
+import type { TargetResult } from "#result";
 import { existsSync } from "node:fs";
 import type ts from "typescript";
 import { CollectService } from "#collect";
@@ -26,20 +27,20 @@ export class TaskRunner {
     this.#projectService = new ProjectService(this.#resolvedConfig, compiler);
   }
 
-  run(task: Task, cancellationToken?: CancellationToken): void {
+  run(task: Task, cancellationToken: CancellationToken | undefined, parentResult: TargetResult): void {
     if (cancellationToken?.isCancellationRequested) {
       return;
     }
 
     this.#projectService.openFile(task.filePath, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
 
-    const taskResult = new TaskResult(task);
+    const taskResult = new TaskResult(task, parentResult);
 
-    EventEmitter.dispatch(["task:start", { result: taskResult }]);
+    EventEmitter.dispatch(["task:start", { parentResult, result: taskResult }]);
 
     this.#run(task, taskResult, cancellationToken);
 
-    EventEmitter.dispatch(["task:end", { result: taskResult }]);
+    EventEmitter.dispatch(["task:end", { parentResult, result: taskResult }]);
 
     this.#projectService.closeFile(task.filePath);
   }
@@ -48,7 +49,11 @@ export class TaskRunner {
     if (!existsSync(task.filePath)) {
       EventEmitter.dispatch([
         "task:error",
-        { diagnostics: [Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], result: taskResult },
+        {
+          diagnostics: [Diagnostic.error(`Test file '${task.filePath}' does not exist.`)],
+          parentResult: taskResult,
+          result: taskResult,
+        },
       ]);
 
       return;
@@ -67,7 +72,7 @@ export class TaskRunner {
     if (syntacticDiagnostics.length > 0) {
       EventEmitter.dispatch([
         "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics), result: taskResult },
+        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics), parentResult: taskResult, result: taskResult },
       ]);
 
       return;
@@ -87,12 +92,16 @@ export class TaskRunner {
       return;
     }
 
-    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics, taskResult);
 
     if (testTree.diagnostics.size > 0) {
       EventEmitter.dispatch([
         "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics]), result: taskResult },
+        {
+          diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics]),
+          parentResult: taskResult,
+          result: taskResult,
+        },
       ]);
 
       return;
@@ -107,6 +116,6 @@ export class TaskRunner {
       position: task.position,
     });
 
-    testTreeWalker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);
+    testTreeWalker.visit(testTree.members, RunMode.Normal, taskResult);
   }
 }

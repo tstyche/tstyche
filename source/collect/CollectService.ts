@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import type { TaskResult } from "../result/index.js";
 import { Assertion, type MatcherNode } from "./Assertion.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestMember } from "./TestMember.js";
@@ -12,17 +13,22 @@ export class CollectService {
     this.#compiler = compiler;
   }
 
-  #collectTestMembers(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestMember) {
+  #collectTestMembers(
+    node: ts.Node,
+    identifiers: IdentifierLookup,
+    parent: TestTree | TestMember,
+    parentResult: TaskResult,
+  ) {
     if (this.#compiler.isCallExpression(node)) {
       const meta = identifiers.resolveTestMemberMeta(node);
 
       if (meta != null && (meta.brand === TestMemberBrand.Describe || meta.brand === TestMemberBrand.Test)) {
-        const testMember = new TestMember(this.#compiler, meta.brand, node, parent, meta.flags);
+        const testMember = new TestMember(this.#compiler, meta.brand, node, parent, meta.flags, parentResult);
 
         parent.members.push(testMember);
 
         this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestMembers(node, identifiers, testMember);
+          this.#collectTestMembers(node, identifiers, testMember, parentResult);
         });
 
         return;
@@ -52,12 +58,13 @@ export class CollectService {
           matcherNode,
           modifierNode,
           notNode,
+          parentResult,
         );
 
         parent.members.push(assertion);
 
         this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestMembers(node, identifiers, assertion);
+          this.#collectTestMembers(node, identifiers, assertion, parentResult);
         });
 
         return;
@@ -71,14 +78,18 @@ export class CollectService {
     }
 
     this.#compiler.forEachChild(node, (node) => {
-      this.#collectTestMembers(node, identifiers, parent);
+      this.#collectTestMembers(node, identifiers, parent, parentResult);
     });
   }
 
-  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
-    const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
+  createTestTree(
+    sourceFile: ts.SourceFile,
+    semanticDiagnostics: Array<ts.Diagnostic>,
+    parent: TaskResult,
+  ): TestTree {
+    const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile, parent);
 
-    this.#collectTestMembers(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+    this.#collectTestMembers(sourceFile, new IdentifierLookup(this.#compiler), testTree, parent);
 
     return testTree;
   }
