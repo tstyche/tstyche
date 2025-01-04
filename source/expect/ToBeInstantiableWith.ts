@@ -38,12 +38,10 @@ export class ToBeInstantiableWith {
     const diagnostics: Array<Diagnostic> = [];
 
     for (let index = 0; index < typeArgumentCount; index++) {
-      // biome-ignore lint/style/noNonNullAssertion: fine like this, because length matches
-      const typeParameter = typeParameters[index]!;
+      const typeParameter = typeParameters[index] as ts.TypeParameterDeclaration;
       const constraint = this.#compiler.getEffectiveConstraintOfTypeParameter(typeParameter);
 
-      // biome-ignore lint/style/noNonNullAssertion: fine like this, because length matches
-      const argument = typeArguments[index]!;
+      const argument = typeArguments[index] as ts.TypeNode;
 
       if (constraint != null) {
         const constraintType = matchWorker.getType(constraint);
@@ -219,10 +217,10 @@ export class ToBeInstantiableWith {
     }
 
     for (let index = 0; index < typeArgumentCount; index++) {
-      // biome-ignore lint/style/noNonNullAssertion: fine like this, because length matches
-      const constraint = this.#compiler.getEffectiveConstraintOfTypeParameter(typeParameters[index]!);
-      // biome-ignore lint/style/noNonNullAssertion: fine like this, because length matches
-      const argument = typeArguments[index]!;
+      const constraint = this.#compiler.getEffectiveConstraintOfTypeParameter(
+        typeParameters[index] as ts.TypeParameterDeclaration,
+      );
+      const argument = typeArguments[index] as ts.TypeNode;
 
       if (constraint != null) {
         const constraintType = matchWorker.getType(constraint);
