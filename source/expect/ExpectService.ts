@@ -132,9 +132,13 @@ export class ExpectService {
         return this[matcherNameText].match(matchWorker, assertion.source[0]);
 
       case "toBeInstantiableWith": {
-        // TODO this.#onTargetTypeArgumentMustBeProvided()
+        if (!assertion.target[0]) {
+          this.#onTargetTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
-        return this.toBeInstantiableWith.match(matchWorker, assertion.source[0], assertion.target[0] as ts.TypeNode);
+          return;
+        }
+
+        return this.toBeInstantiableWith.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
       }
 
       case "toHaveProperty":
@@ -183,6 +187,13 @@ export class ExpectService {
 
   #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+
+    onDiagnostics(Diagnostic.error(text, origin));
+  }
+
+  #onTargetTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+    const text = ExpectDiagnosticText.typeArgumentMustBeProvided("Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostics(Diagnostic.error(text, origin));

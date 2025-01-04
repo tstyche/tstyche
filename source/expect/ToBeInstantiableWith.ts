@@ -1,5 +1,6 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult, TypeChecker } from "./types.js";
 
@@ -122,7 +123,12 @@ export class ToBeInstantiableWith {
     return { max: typeParameters.length, min: defaultIndex === -1 ? typeParameters.length : defaultIndex };
   }
 
-  match(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode): MatchResult | undefined {
+  match(
+    matchWorker: MatchWorker,
+    sourceNode: ArgumentNode,
+    targetNode: ArgumentNode,
+    onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
+  ): MatchResult | undefined {
     const identifier = this.#compiler.isIdentifier(sourceNode)
       ? sourceNode
       : this.#compiler.isTypeReferenceNode(sourceNode)
@@ -137,7 +143,11 @@ export class ToBeInstantiableWith {
     // TODO eliminate not generic types, probably those that do not take type arguments?
 
     if (!this.#compiler.isTypeNode(targetNode)) {
-      // TODO error: Must be type argument.
+      const text = ExpectDiagnosticText.typeArgumentMustBeProvided("Target");
+      const origin = DiagnosticOrigin.fromNode(targetNode);
+
+      onDiagnostics([Diagnostic.error(text, origin)]);
+
       return;
     }
 
@@ -152,27 +162,38 @@ export class ToBeInstantiableWith {
     }
 
     if (!this.#compiler.isTupleTypeNode(targetNode)) {
-      // TODO error: "A type argument for 'Target' must be of tuple type."
+      const text = ExpectDiagnosticText.typeArgumentMustBe("Target", "of a tuple type");
+      const origin = DiagnosticOrigin.fromNode(targetNode);
+
+      onDiagnostics([Diagnostic.error(text, origin)]);
+
       return;
     }
 
-    const diagnostics: Array<string> = [];
+    const diagnostics: Array<Diagnostic> = [];
     const typeArguments: Array<ts.TypeNode> = [];
 
     for (const element of targetNode.elements) {
       if (this.#compiler.isNamedTupleMember(element)) {
-        diagnostics.push("Named element is not allowed in the 'Target' type.");
+        const text = ExpectDiagnosticText.typeArgumentDoesNotAllow("Target", "named element");
+        const origin = DiagnosticOrigin.fromNode(element);
+
+        diagnostics.push(Diagnostic.error(text, origin));
       }
 
       if (this.#compiler.isRestTypeNode(element)) {
-        diagnostics.push("Rest element is not allowed in the 'Target' type.");
+        const text = ExpectDiagnosticText.typeArgumentDoesNotAllow("Target", "rest element");
+        const origin = DiagnosticOrigin.fromNode(element);
+
+        diagnostics.push(Diagnostic.error(text, origin));
       }
 
       typeArguments.push(element);
     }
 
     if (diagnostics.length > 0) {
-      // TODO Emit diagnostics
+      onDiagnostics(diagnostics);
+
       return;
     }
 
