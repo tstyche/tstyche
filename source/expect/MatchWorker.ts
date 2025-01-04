@@ -123,15 +123,15 @@ export class MatchWorker {
     return signatures;
   }
 
-  getTypeText(node: ArgumentNode): string {
+  getTypeText(node: ts.Node): string {
     const type = this.getType(node);
 
     // TODO consider passing 'enclosingDeclaration' as well
     return this.#typeChecker.typeToString(type);
   }
 
-  getType(node: ArgumentNode): ts.Type {
-    return this.#compiler.isExpression(node) ? this.#getTypeOfNode(node) : this.#getTypeOfTypeNode(node);
+  getType(node: ts.Node): ts.Type {
+    return this.#compiler.isExpression(node) ? this.#getTypeOfNode(node) : this.#getTypeOfTypeNode(node as ts.TypeNode);
   }
 
   #getTypeOfNode(node: ts.Node) {

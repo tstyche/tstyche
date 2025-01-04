@@ -11,6 +11,7 @@ import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
+import { ToBeInstantiableWith } from "./ToBeInstantiableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
@@ -28,6 +29,7 @@ export class ExpectService {
   private toBeAssignableWith: ToBeAssignableWith;
   private toBeBigInt: PrimitiveTypeMatcher;
   private toBeBoolean: PrimitiveTypeMatcher;
+  private toBeInstantiableWith: ToBeInstantiableWith;
   private toBeNever: PrimitiveTypeMatcher;
   private toBeNull: PrimitiveTypeMatcher;
   private toBeNumber: PrimitiveTypeMatcher;
@@ -60,6 +62,7 @@ export class ExpectService {
     this.toBeAssignableWith = new ToBeAssignableWith();
     this.toBeBigInt = new PrimitiveTypeMatcher(compiler.TypeFlags.BigInt);
     this.toBeBoolean = new PrimitiveTypeMatcher(compiler.TypeFlags.Boolean);
+    this.toBeInstantiableWith = new ToBeInstantiableWith(compiler, typeChecker);
     this.toBeNever = new PrimitiveTypeMatcher(compiler.TypeFlags.Never);
     this.toBeNull = new PrimitiveTypeMatcher(compiler.TypeFlags.Null);
     this.toBeNumber = new PrimitiveTypeMatcher(compiler.TypeFlags.Number);
@@ -127,6 +130,12 @@ export class ExpectService {
       case "toBeUnknown":
       case "toBeVoid":
         return this[matcherNameText].match(matchWorker, assertion.source[0]);
+
+      case "toBeInstantiableWith": {
+        // TODO this.#onTargetTypeArgumentMustBeProvided()
+
+        return this.toBeInstantiableWith.match(matchWorker, assertion.source[0], assertion.target[0] as ts.TypeNode);
+      }
 
       case "toHaveProperty":
         if (!assertion.target[0]) {
