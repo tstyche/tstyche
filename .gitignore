@@ -1,10 +1,11 @@
+.DS_Store
 .cache
 .generated
+.idea
 .yarn
 build
 coverage
 node_modules
-*.log
 *.bench.json
-.idea/
 *.iml
+*.log
