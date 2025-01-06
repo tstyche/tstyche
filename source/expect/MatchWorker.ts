@@ -2,7 +2,7 @@ import type ts from "typescript";
 import type { Assertion } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
 import { Version } from "#version";
-import type { ArgumentNode, Relation, TypeChecker } from "./types.js";
+import type { Relation, TypeChecker } from "./types.js";
 
 export class MatchWorker {
   assertion: Assertion;
@@ -17,7 +17,7 @@ export class MatchWorker {
     this.assertion = assertion;
   }
 
-  checkHasApplicableIndexType(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+  checkHasApplicableIndexType(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const sourceType = this.getType(sourceNode);
     const targetType = this.getType(targetNode);
 
@@ -39,7 +39,7 @@ export class MatchWorker {
     return false;
   }
 
-  checkHasProperty(sourceNode: ArgumentNode, propertyNameText: string): boolean {
+  checkHasProperty(sourceNode: ts.Node, propertyNameText: string): boolean {
     const sourceType = this.getType(sourceNode);
 
     return sourceType
@@ -47,19 +47,19 @@ export class MatchWorker {
       .some((property) => this.#compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText);
   }
 
-  checkIsAssignableTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+  checkIsAssignableTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
     return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  checkIsAssignableWith(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+  checkIsAssignableWith(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
     return this.#checkIsRelatedTo(targetNode, sourceNode, relation);
   }
 
-  checkIsIdenticalTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+  checkIsIdenticalTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const relation = this.#typeChecker.relation.identity;
 
     return (
@@ -71,13 +71,13 @@ export class MatchWorker {
     );
   }
 
-  checkIsSubtype(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+  checkIsSubtype(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const relation = this.#typeChecker.relation.subtype;
 
     return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  #checkIsRelatedTo(sourceNode: ArgumentNode, targetNode: ArgumentNode, relation: Relation) {
+  #checkIsRelatedTo(sourceNode: ts.Node, targetNode: ts.Node, relation: Relation) {
     const sourceType =
       relation === this.#typeChecker.relation.identity
         ? this.#simplifyType(this.getType(sourceNode))
@@ -107,7 +107,7 @@ export class MatchWorker {
     return this.#getTypeOfNode(parameter);
   }
 
-  getSignatures(node: ArgumentNode): Array<ts.Signature> {
+  getSignatures(node: ts.Node): Array<ts.Signature> {
     let signatures = this.#signatureCache.get(node);
 
     if (!signatures) {
@@ -123,15 +123,15 @@ export class MatchWorker {
     return signatures;
   }
 
-  getTypeText(node: ArgumentNode): string {
+  getTypeText(node: ts.Node): string {
     const type = this.getType(node);
 
     // TODO consider passing 'enclosingDeclaration' as well
     return this.#typeChecker.typeToString(type);
   }
 
-  getType(node: ArgumentNode): ts.Type {
-    return this.#compiler.isExpression(node) ? this.#getTypeOfNode(node) : this.#getTypeOfTypeNode(node);
+  getType(node: ts.Node): ts.Type {
+    return this.#compiler.isTypeNode(node) ? this.#getTypeOfTypeNode(node) : this.#getTypeOfNode(node);
   }
 
   #getTypeOfNode(node: ts.Node) {
