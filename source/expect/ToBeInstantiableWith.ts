@@ -19,16 +19,15 @@ export class ToBeInstantiableWith {
     typeParameters: ReadonlyArray<ts.TypeParameterDeclaration>,
     targetNode: ArgumentNode,
     typeArguments: Array<ts.TypeNode>,
-    typeParameterCount: { max: number; min: number },
     typeArgumentCount: number,
   ) {
     const sourceTypeText = matchWorker.getTypeText(identifier);
 
     if (matchWorker.assertion.isNot) {
       const text =
-        typeParameterCount.max === 0
+        typeArgumentCount === 0
           ? "without type arguments"
-          : `with given type argument${typeParameterCount.max === 1 ? "" : "s"}`;
+          : `with given type argument${typeArgumentCount === 1 ? "" : "s"}`;
 
       const origin = DiagnosticOrigin.fromNode(targetNode);
 
@@ -235,15 +234,7 @@ export class ToBeInstantiableWith {
 
     return {
       explain: () =>
-        this.#explain(
-          matchWorker,
-          identifier,
-          typeParameters,
-          targetNode,
-          typeArguments,
-          typeParameterCount,
-          typeArgumentCount,
-        ),
+        this.#explain(matchWorker, identifier, typeParameters, targetNode, typeArguments, typeArgumentCount),
       isMatch,
     };
   }

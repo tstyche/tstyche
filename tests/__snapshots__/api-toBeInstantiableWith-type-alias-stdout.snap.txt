@@ -1,0 +1,16 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/type-alias.tst.ts
+  when target is a type alias
+    × can be instantiated
+    × requires at least type arguments
+    × takes at most type arguments
+    × constraint is not satisfied
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      4 failed, 4 total
+Assertions: 12 failed, 13 passed, 25 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'type-alias'.
