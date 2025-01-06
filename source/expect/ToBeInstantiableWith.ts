@@ -42,16 +42,14 @@ export class ToBeInstantiableWith {
 
       const argument = typeArguments[index] as ts.TypeNode;
 
-      if (constraint != null) {
-        if (!matchWorker.checkIsAssignableWith(constraint, argument)) {
-          const constraintTypeText = matchWorker.getTypeText(constraint);
-          const argumentTypeText = matchWorker.getTypeText(argument);
+      if (constraint != null && !matchWorker.checkIsAssignableWith(constraint, argument)) {
+        const constraintTypeText = matchWorker.getTypeText(constraint);
+        const argumentTypeText = matchWorker.getTypeText(argument);
 
-          const text = `The constraint '${constraintTypeText}' is not satisfied with type '${argumentTypeText}'.`;
-          const origin = DiagnosticOrigin.fromNode(argument);
+        const text = `The constraint '${constraintTypeText}' is not satisfied with type '${argumentTypeText}'.`;
+        const origin = DiagnosticOrigin.fromNode(argument);
 
-          diagnostics.push(Diagnostic.error(text, origin));
-        }
+        diagnostics.push(Diagnostic.error(text, origin));
       }
     }
 
