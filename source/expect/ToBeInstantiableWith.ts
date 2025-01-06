@@ -216,19 +216,14 @@ export class ToBeInstantiableWith {
     }
 
     for (let index = 0; index < typeArgumentCount; index++) {
-      const constraint = this.#compiler.getEffectiveConstraintOfTypeParameter(
-        typeParameters[index] as ts.TypeParameterDeclaration,
-      );
+      const typeParameter = typeParameters[index] as ts.TypeParameterDeclaration;
+      const constraint = this.#compiler.getEffectiveConstraintOfTypeParameter(typeParameter);
+
       const argument = typeArguments[index] as ts.TypeNode;
 
-      if (constraint != null) {
-        const constraintType = matchWorker.getType(constraint);
-        const argumentType = matchWorker.getType(argument);
-
-        if (!this.#typeChecker.isTypeAssignableTo(constraintType, argumentType)) {
-          isMatch = false;
-          break;
-        }
+      if (constraint != null && !matchWorker.checkIsAssignableWith(constraint, argument)) {
+        isMatch = false;
+        break;
       }
     }
 
