@@ -70,23 +70,21 @@ export class ToBeInstantiableWith {
   ) {
     const sourceTypeText = matchWorker.getTypeText(identifier);
 
-    let parameterCountText: string;
+    let countText: string;
 
-    if (typeParameterCount.max === 0) {
-      parameterCountText = "does not take type arguments";
-    } else if (typeArgumentCount > typeParameterCount.max) {
-      parameterCountText = `takes ${
+    if (typeArgumentCount > typeParameterCount.max) {
+      countText = `takes ${
         typeParameterCount.max > typeParameterCount.min ? "at most " : "only "
       }${typeParameterCount.max} type argument${typeParameterCount.max === 1 ? "" : "s"}`;
     } else {
-      parameterCountText = `requires ${
+      countText = `requires ${
         typeParameterCount.min < typeParameterCount.max ? "at least " : ""
       }${typeParameterCount.min} type argument${typeParameterCount.min === 1 ? "" : "s"}`;
     }
 
     const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
-    return [Diagnostic.error(`Generic type '${sourceTypeText}' ${parameterCountText}.`, origin)];
+    return [Diagnostic.error(`Generic type '${sourceTypeText}' ${countText}.`, origin)];
   }
 
   #getEffectiveTypeParameters(identifier: ts.EntityName) {
