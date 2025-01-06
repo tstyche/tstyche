@@ -43,10 +43,7 @@ export class ToBeInstantiableWith {
       const argument = typeArguments[index] as ts.TypeNode;
 
       if (constraint != null) {
-        const constraintType = matchWorker.getType(constraint);
-        const argumentType = matchWorker.getType(argument);
-
-        if (!this.#typeChecker.isTypeAssignableTo(constraintType, argumentType)) {
+        if (!matchWorker.checkIsAssignableWith(constraint, argument)) {
           const constraintTypeText = matchWorker.getTypeText(constraint);
           const argumentTypeText = matchWorker.getTypeText(argument);
 
@@ -91,9 +88,11 @@ export class ToBeInstantiableWith {
     let typeParameters: ReadonlyArray<ts.TypeParameterDeclaration> = [];
 
     // TODO what happens with overloads?
+    //      - signatureToSignatureDeclaration() ?
     const symbol = this.#typeChecker.getSymbolAtLocation(identifier);
 
     for (const declaration of symbol?.declarations ?? []) {
+      // TODO also can be a generic method in a class instance
       if (
         this.#compiler.isTypeAliasDeclaration(declaration) ||
         this.#compiler.isInterfaceDeclaration(declaration) ||
@@ -124,11 +123,13 @@ export class ToBeInstantiableWith {
     targetNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const identifier = this.#compiler.isIdentifier(sourceNode)
-      ? sourceNode
-      : this.#compiler.isTypeReferenceNode(sourceNode)
-        ? sourceNode.typeName
-        : undefined;
+    let identifier: ts.EntityName | undefined;
+
+    if (this.#compiler.isTypeReferenceNode(sourceNode)) {
+      identifier = sourceNode.typeName;
+    } else if (this.#compiler.isIdentifier(sourceNode)) {
+      identifier = sourceNode;
+    }
 
     if (!identifier) {
       // TODO error: Must be an identifier or a type reference.
@@ -136,6 +137,7 @@ export class ToBeInstantiableWith {
     }
 
     // TODO eliminate not generic types, probably those that do not take type arguments?
+    // type alias, interface: is 'TypeReferenceNode' and has 'typeArguments:undefined'
 
     if (!this.#compiler.isTypeNode(targetNode)) {
       const text = ExpectDiagnosticText.typeArgumentMustBeProvided("Target");
