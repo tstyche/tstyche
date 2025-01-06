@@ -10,7 +10,7 @@ fail ./__typetests__/type-alias.tst.ts
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      4 failed, 4 total
-Assertions: 12 failed, 13 passed, 25 total
+Assertions: 14 failed, 14 passed, 28 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'type-alias'.

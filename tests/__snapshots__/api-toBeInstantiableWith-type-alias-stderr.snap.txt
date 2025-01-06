@@ -1,144 +1,168 @@
 Error: Generic type 'Single<T>' can be instantiated without type arguments.
 
+  10 |   test("can be instantiated", () => {
   11 |     expect<Single<_>>().type.toBeInstantiableWith<[]>();
-  12 |     expect<Single<_>>().type.toBeInstantiableWith<[string]>();
-  13 |     expect<Single<_>>().type.not.toBeInstantiableWith<[]>(); // fail
+  12 |     expect<Single<_>>().type.not.toBeInstantiableWith<[]>(); // fail
      |                                                       ~~
-  14 | 
-  15 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string, number]>();
-  16 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
+  13 | 
+  14 |     expect<Single<_>>().type.toBeInstantiableWith<[string]>();
+  15 |     expect<Single<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
 
-       at ./__typetests__/type-alias.tst.ts:13:55
+       at ./__typetests__/type-alias.tst.ts:12:55
+
+Error: Generic type 'Single<T>' can be instantiated with given type argument.
+
+  13 | 
+  14 |     expect<Single<_>>().type.toBeInstantiableWith<[string]>();
+  15 |     expect<Single<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
+     |                                                       ~~~~~~~~
+  16 | 
+  17 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string, number]>();
+  18 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
+
+       at ./__typetests__/type-alias.tst.ts:15:55
 
 Error: Generic type 'Double<T, V>' can be instantiated with given type arguments.
 
-  14 | 
-  15 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string, number]>();
-  16 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
+  16 | 
+  17 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string, number]>();
+  18 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
      |                                                          ~~~~~~~~~~~~~~~~
-  17 | 
-  18 |     expect<Triple<_>>().type.toBeInstantiableWith<[string]>();
-  19 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
+  19 | 
+  20 |     expect<Triple<_>>().type.toBeInstantiableWith<[string]>();
+  21 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
 
-       at ./__typetests__/type-alias.tst.ts:16:58
+       at ./__typetests__/type-alias.tst.ts:18:58
 
 Error: Generic type 'Triple<T, U, V>' can be instantiated with given type argument.
 
-  17 | 
-  18 |     expect<Triple<_>>().type.toBeInstantiableWith<[string]>();
-  19 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
+  19 | 
+  20 |     expect<Triple<_>>().type.toBeInstantiableWith<[string]>();
+  21 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
      |                                                       ~~~~~~~~
-  20 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
-  21 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
-  22 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
-
-       at ./__typetests__/type-alias.tst.ts:19:55
-
-Error: Generic type 'Triple<T, U, V>' can be instantiated with given type arguments.
-
-  19 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
-  20 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
-  21 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
-     |                                                       ~~~~~~~~~~~~~~~~
-  22 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
-  23 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
-  24 |   });
+  22 | 
+  23 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
+  24 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
 
        at ./__typetests__/type-alias.tst.ts:21:55
 
 Error: Generic type 'Triple<T, U, V>' can be instantiated with given type arguments.
 
-  21 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
-  22 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
-  23 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
-     |                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~
-  24 |   });
+  22 | 
+  23 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
+  24 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
+     |                                                       ~~~~~~~~~~~~~~~~
   25 | 
-  26 |   test("requires at least type arguments", () => {
+  26 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
+  27 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
 
-       at ./__typetests__/type-alias.tst.ts:23:55
+       at ./__typetests__/type-alias.tst.ts:24:55
+
+Error: Generic type 'Triple<T, U, V>' can be instantiated with given type arguments.
+
+  25 | 
+  26 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
+  27 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
+     |                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~
+  28 |   });
+  29 | 
+  30 |   test("requires at least type arguments", () => {
+
+       at ./__typetests__/type-alias.tst.ts:27:55
 
 Error: Generic type 'Triple<T, U, V>' requires at least 1 type argument.
 
-  26 |   test("requires at least type arguments", () => {
-  27 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[]>();
-  28 |     expect<Triple<_>>().type.toBeInstantiableWith<[]>(); // fail
+  30 |   test("requires at least type arguments", () => {
+  31 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[]>();
+  32 |     expect<Triple<_>>().type.toBeInstantiableWith<[]>(); // fail
      |                                                   ~~
-  29 | 
-  30 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[]>();
-  31 |     expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail
+  33 | 
+  34 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[]>();
+  35 |     expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail
 
-       at ./__typetests__/type-alias.tst.ts:28:51 ❭ when target is a type alias ❭ requires at least type arguments
+       at ./__typetests__/type-alias.tst.ts:32:51 ❭ when target is a type alias ❭ requires at least type arguments
 
 Error: Generic type 'Double<T, V>' requires 2 type arguments.
 
-  29 | 
-  30 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[]>();
-  31 |     expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail
+  33 | 
+  34 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[]>();
+  35 |     expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail
      |                                                      ~~
-  32 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string]>();
-  33 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string]>(); // fail
-  34 |   });
+  36 | 
+  37 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string]>();
+  38 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string]>(); // fail
 
-       at ./__typetests__/type-alias.tst.ts:31:54 ❭ when target is a type alias ❭ requires at least type arguments
+       at ./__typetests__/type-alias.tst.ts:35:54 ❭ when target is a type alias ❭ requires at least type arguments
 
 Error: Generic type 'Double<T, V>' requires 2 type arguments.
 
-  31 |     expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail
-  32 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string]>();
-  33 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string]>(); // fail
+  36 | 
+  37 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string]>();
+  38 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string]>(); // fail
      |                                                      ~~~~~~~~
-  34 |   });
-  35 | 
-  36 |   test("takes at most type arguments", () => {
+  39 |   });
+  40 | 
+  41 |   test("takes at most type arguments", () => {
 
-       at ./__typetests__/type-alias.tst.ts:33:54 ❭ when target is a type alias ❭ requires at least type arguments
+       at ./__typetests__/type-alias.tst.ts:38:54 ❭ when target is a type alias ❭ requires at least type arguments
 
 Error: Generic type 'Triple<T, U, V>' takes at most 3 type arguments.
 
-  36 |   test("takes at most type arguments", () => {
-  37 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
-  38 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail
+  41 |   test("takes at most type arguments", () => {
+  42 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
+  43 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail
      |                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  39 | 
-  40 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[number, number, number]>();
-  41 |     expect<Double<_, _>>().type.toBeInstantiableWith<[number, number, number]>(); // fail
+  44 | 
+  45 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[number, number, number]>();
+  46 |     expect<Double<_, _>>().type.toBeInstantiableWith<[number, number, number]>(); // fail
 
-       at ./__typetests__/type-alias.tst.ts:38:51 ❭ when target is a type alias ❭ takes at most type arguments
+       at ./__typetests__/type-alias.tst.ts:43:51 ❭ when target is a type alias ❭ takes at most type arguments
 
 Error: Generic type 'Double<T, V>' takes only 2 type arguments.
 
-  39 | 
-  40 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[number, number, number]>();
-  41 |     expect<Double<_, _>>().type.toBeInstantiableWith<[number, number, number]>(); // fail
+  44 | 
+  45 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[number, number, number]>();
+  46 |     expect<Double<_, _>>().type.toBeInstantiableWith<[number, number, number]>(); // fail
      |                                                      ~~~~~~~~~~~~~~~~~~~~~~~~
-  42 |   });
-  43 | 
-  44 |   test("constraint is not satisfied", () => {
+  47 | 
+  48 |     expect<Single<_>>().type.not.toBeInstantiableWith<[string, string]>();
+  49 |     expect<Single<_>>().type.toBeInstantiableWith<[string, string]>(); // fail
 
-       at ./__typetests__/type-alias.tst.ts:41:54 ❭ when target is a type alias ❭ takes at most type arguments
+       at ./__typetests__/type-alias.tst.ts:46:54 ❭ when target is a type alias ❭ takes at most type arguments
+
+Error: Generic type 'Single<T>' takes at most 1 type argument.
+
+  47 | 
+  48 |     expect<Single<_>>().type.not.toBeInstantiableWith<[string, string]>();
+  49 |     expect<Single<_>>().type.toBeInstantiableWith<[string, string]>(); // fail
+     |                                                   ~~~~~~~~~~~~~~~~
+  50 |   });
+  51 | 
+  52 |   test("constraint is not satisfied", () => {
+
+       at ./__typetests__/type-alias.tst.ts:49:51 ❭ when target is a type alias ❭ takes at most type arguments
 
 Error: The constraint 'string' is not satisfied with type 'number'.
 
-  44 |   test("constraint is not satisfied", () => {
-  45 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[number]>(); // fail
-  46 |     expect<Triple<_>>().type.toBeInstantiableWith<[number]>();
+  51 | 
+  52 |   test("constraint is not satisfied", () => {
+  53 |     expect<Triple<_>>().type.toBeInstantiableWith<[number]>();
      |                                                    ~~~~~~
-  47 | 
-  48 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, string]>();
-  49 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, string]>(); // fail
+  54 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[number]>(); // fail
+  55 | 
+  56 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, string]>();
 
-       at ./__typetests__/type-alias.tst.ts:46:52
+       at ./__typetests__/type-alias.tst.ts:53:52
 
 Error: The constraint 'number' is not satisfied with type 'string'.
 
-  46 |     expect<Triple<_>>().type.toBeInstantiableWith<[number]>();
-  47 | 
-  48 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, string]>();
+  54 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[number]>(); // fail
+  55 | 
+  56 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, string]>();
      |                                                            ~~~~~~
-  49 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, string]>(); // fail
-  50 |   });
-  51 | });
+  57 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, string]>(); // fail
+  58 |   });
+  59 | });
 
-       at ./__typetests__/type-alias.tst.ts:48:60
+       at ./__typetests__/type-alias.tst.ts:56:60
 
