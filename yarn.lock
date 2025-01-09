@@ -889,12 +889,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:19.0.2":
-  version: 19.0.2
-  resolution: "@types/react@npm:19.0.2"
+"@types/react@npm:19.0.4":
+  version: 19.0.4
+  resolution: "@types/react@npm:19.0.4"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/8992f39701fcf1bf893ef8f94a56196445667baf08fe4f6050a14e229a17aad3265ad3efc01595ff3b4d5d5c69da885f9aa4ff80f164a613018734efcff1eb8f
+  checksum: 10c0/96ecd1a73af57fd7b7facf5b36ec069b131c7608a98a0f1098183023bfb21c60a26a0dc09004fbe0ac70c436ef887bbec5690882cfb77c6e0c679f7e45987722
   languageName: node
   linkType: hard
 
@@ -2448,7 +2448,7 @@ __metadata:
     "@biomejs/biome": "npm:1.9.4"
     "@rollup/plugin-typescript": "npm:12.1.2"
     "@types/node": "npm:22.10.5"
-    "@types/react": "npm:19.0.2"
+    "@types/react": "npm:19.0.4"
     ajv: "npm:8.17.1"
     cspell: "npm:8.17.1"
     magic-string: "npm:0.30.17"
