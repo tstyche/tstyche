@@ -1,5 +1,15 @@
 # Releases
 
+## [3.4.0] - 2025-01-11
+
+### Fixed
+
+- Simplify complex unions and intersections for identicality checks ([#394](https://github.com/tstyche/tstyche/pull/394))
+
+### Changed
+
+- Respect non-interactive environments in watch mode ([#405](https://github.com/tstyche/tstyche/pull/405))
+
 ## [3.3.1] - 2024-12-31
 
 ### Fixed
@@ -520,6 +530,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.4.0]: https://github.com/tstyche/tstyche/releases/tag/v3.4.0
 [3.3.1]: https://github.com/tstyche/tstyche/releases/tag/v3.3.1
 [3.3.0]: https://github.com/tstyche/tstyche/releases/tag/v3.3.0
 [3.2.0]: https://github.com/tstyche/tstyche/releases/tag/v3.2.0
