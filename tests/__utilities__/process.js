@@ -39,7 +39,6 @@ export class Process {
         ["TSTYCHE_STORE_PATH"]: "./.store",
         ...options?.env,
       },
-      shell: true,
     });
 
     this.#subprocess.stdout.setEncoding("utf8");
