@@ -64,7 +64,7 @@ export class Process {
   }
 
   close() {
-    this.#subprocess.kill("SIGKILL");
+    this.#subprocess.kill();
   }
 
   resetOutput() {
