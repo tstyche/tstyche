@@ -1,5 +1,7 @@
 import { spawn } from "node:child_process";
 
+export const isWindows = process.platform === "win32";
+
 class Deferred {
   constructor() {
     this.promise = new Promise((resolve, reject) => {
@@ -39,6 +41,7 @@ export class Process {
         ["TSTYCHE_STORE_PATH"]: "./.store",
         ...options?.env,
       },
+      shell: isWindows,
     });
 
     this.#subprocess.stdout.setEncoding("utf8");

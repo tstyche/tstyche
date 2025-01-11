@@ -4,7 +4,7 @@ import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
-import { Process } from "./__utilities__/process.js";
+import { Process, isWindows } from "./__utilities__/process.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -171,6 +171,13 @@ await test("watch", async (t) => {
   });
 
   await t.test("signal sent", async (t) => {
+    // these test can only run with 'shell: false'
+    if (isWindows) {
+      t.skip();
+
+      return;
+    }
+
     t.afterEach(async () => {
       await clearFixture(fixtureUrl);
     });
