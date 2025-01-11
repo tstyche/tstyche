@@ -51,29 +51,29 @@ export class WatchService {
       debounce.resolveWith([]);
     };
 
-    const onInput: InputHandler = (chunk) => {
-      switch (chunk.toLowerCase()) {
-        case "\u0003" /* Ctrl-C */:
-        case "\u0004" /* Ctrl-D */:
-        case "\u001B" /* Escape */:
-        case "q":
-        case "x":
-          onClose(CancellationReason.WatchClose);
-          break;
-
-        case "\u000D" /* Return */:
-        case "\u0020" /* Space */:
-        case "a":
-          debounce.clearTimeout();
-
-          if (this.#watchedTestFiles.size > 0) {
-            debounce.resolveWith([...this.#watchedTestFiles.values()]);
-          }
-          break;
-      }
-    };
-
     if (!environmentOptions.noInteractive) {
+      const onInput: InputHandler = (chunk) => {
+        switch (chunk.toLowerCase()) {
+          case "\u0003" /* Ctrl-C */:
+          case "\u0004" /* Ctrl-D */:
+          case "\u001B" /* Escape */:
+          case "q":
+          case "x":
+            onClose(CancellationReason.WatchClose);
+            break;
+
+          case "\u000D" /* Return */:
+          case "\u0020" /* Space */:
+          case "a":
+            debounce.clearTimeout();
+
+            if (this.#watchedTestFiles.size > 0) {
+              debounce.resolveWith([...this.#watchedTestFiles.values()]);
+            }
+            break;
+        }
+      };
+
       this.#inputService = new InputService(onInput);
     }
 
