@@ -36,7 +36,6 @@ export class Process {
       env: {
         ...process.env,
         ["TSTYCHE_NO_COLOR"]: "true",
-        ["TSTYCHE_NO_INTERACTIVE"]: "",
         ["TSTYCHE_STORE_PATH"]: "./.store",
         ...options?.env,
       },
@@ -62,6 +61,11 @@ export class Process {
     this.#subprocess.on("close", (exitCode) => {
       this.#onExit.resolve({ exitCode, stderr: this.#output.stderr, stdout: this.#output.stdout });
     });
+  }
+
+  /** @type {(signal: any) => void} */
+  kill(signal) {
+    this.#subprocess.kill(signal);
   }
 
   resetOutput() {

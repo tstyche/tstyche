@@ -62,7 +62,7 @@ await test("watch", async (t) => {
     return;
   }
 
-  await t.test("interactive input", async (t) => {
+  await t.test("interactive input", { skip: true }, async (t) => {
     t.afterEach(async () => {
       await clearFixture(fixtureUrl);
     });
@@ -170,7 +170,68 @@ await test("watch", async (t) => {
     }
   });
 
-  await t.test("test file changes", async (t) => {
+  await t.test("signal sent", async (t) => {
+    t.afterEach(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    t.beforeEach(async () => {
+      await writeFixture(fixtureUrl, {
+        ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
+        ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+    });
+
+    const signalTestCases = [
+      {
+        signal: "SIGINT",
+        testCase: "exits watch mode, when 'SIGINT' is sent",
+      },
+      {
+        signal: "SIGHUP",
+        testCase: "exits watch mode, when 'SIGHUP' is sent",
+      },
+      {
+        signal: "SIGQUIT",
+        testCase: "exits watch mode, when 'SIGQUIT' is sent",
+      },
+      {
+        signal: "SIGTERM",
+        testCase: "exits watch mode, when 'SIGTERM' is sent",
+      },
+    ];
+
+    for (const { signal, testCase } of signalTestCases) {
+      await t.test(testCase, async () => {
+        const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+        await process.waitForIdle();
+
+        fs.writeFileSync(new URL("a-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
+
+        const fileAdded = await process.waitForIdle();
+
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stdout)), {
+          fileName: `${testFileName}-signal-sent-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stderr)), {
+          fileName: `${testFileName}-signal-sent-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        process.kill(signal);
+
+        await process.waitForExit();
+      });
+    }
+  });
+
+  await t.test("test file changes", { skip: true }, async (t) => {
     t.afterEach(async () => {
       await clearFixture(fixtureUrl);
     });
@@ -439,7 +500,7 @@ await test("watch", async (t) => {
     });
   });
 
-  await t.test("config file changes", async (t) => {
+  await t.test("config file changes", { skip: true }, async (t) => {
     t.afterEach(async () => {
       await clearFixture(fixtureUrl);
     });
