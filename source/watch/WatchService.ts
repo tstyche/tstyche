@@ -35,9 +35,9 @@ export class WatchService {
       return testFiles;
     };
 
-    const debounce = new Debounce<Array<Task>>(100, onResolve);
+    const debounce = new Debounce(100, onResolve);
 
-    const onClose = (reason: CancellationReason) => {
+    const onClose = () => {
       debounce.clearTimeout();
 
       this.#inputService?.close();
@@ -46,10 +46,10 @@ export class WatchService {
         watcher.close();
       }
 
-      cancellationToken.cancel(reason);
-
       debounce.resolveWith([]);
     };
+
+    cancellationToken.onCancellationRequested(onClose);
 
     if (!environmentOptions.noInteractive) {
       const onInput: InputHandler = (chunk) => {
@@ -59,7 +59,8 @@ export class WatchService {
           case "\u001B" /* Escape */:
           case "q":
           case "x":
-            onClose(CancellationReason.WatchClose);
+            cancellationToken.cancel(CancellationReason.WatchClose);
+            onClose();
             break;
 
           case "\u000D" /* Return */:
@@ -106,7 +107,8 @@ export class WatchService {
     this.#watchers.push(new Watcher(this.#resolvedConfig.rootPath, onChangedFile, onRemovedFile, { recursive: true }));
 
     const onChangedConfigFile = () => {
-      onClose(CancellationReason.ConfigChange);
+      cancellationToken.cancel(CancellationReason.ConfigChange);
+      onClose();
     };
 
     this.#watchers.push(new FileWatcher(this.#resolvedConfig.configFilePath, onChangedConfigFile));

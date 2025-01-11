@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
@@ -15,6 +16,7 @@ type ReporterConstructor = new (resolvedConfig: ResolvedConfig) => Reporter;
 export class Runner {
   #eventEmitter = new EventEmitter();
   #resolvedConfig: ResolvedConfig;
+  #signals = ["SIGINT" as const, "SIGHUP" as const, "SIGQUIT" as const, "SIGTERM" as const];
   static version = "__version__";
 
   constructor(resolvedConfig: ResolvedConfig) {
@@ -51,6 +53,14 @@ export class Runner {
   }
 
   async run(testFiles: Array<string | URL | Task>, cancellationToken = new CancellationToken()): Promise<void> {
+    const onSignal = () => {
+      cancellationToken.cancel(CancellationReason.Signal);
+    };
+
+    for (const signal of this.#signals) {
+      process.addListener(signal, onSignal);
+    }
+
     const tasks = testFiles.map((testFile) => (testFile instanceof Task ? testFile : new Task(testFile)));
 
     const resultHandler = new ResultHandler();
@@ -71,6 +81,10 @@ export class Runner {
 
     this.#eventEmitter.removeReporters();
     this.#eventEmitter.removeHandlers();
+
+    for (const signal of this.#signals) {
+      process.removeListener(signal, onSignal);
+    }
   }
 
   async #run(tasks: Array<Task>, cancellationToken: CancellationToken): Promise<void> {
