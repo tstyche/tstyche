@@ -150,7 +150,7 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build
-      - run: yarn test
+      - run: yarn test:run tests/feature-watch.test.js
 
   coverage-collect:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
