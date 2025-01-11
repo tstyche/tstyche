@@ -1,4 +1,10 @@
+<clearTerminal>
 uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
 
+runs ./a-feature/__typetests__/isString.test.ts
+<moveCursorUpBy1Row>
+<eraseLineEnd>
 fail ./a-feature/__typetests__/isString.test.ts
 
+Press a to run all tests.
+Press x to exit.
