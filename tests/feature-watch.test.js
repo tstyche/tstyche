@@ -4,7 +4,7 @@ import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
-import { Process } from "./__utilities__/process.js";
+import { Process, isWindows } from "./__utilities__/process.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -111,7 +111,9 @@ await test("watch", async (t) => {
 
     for (const { key, testCase } of exitTestCases) {
       await t.test(testCase, async () => {
-        const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+        const process = new Process(fixtureUrl, ["--watch"], {
+          env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+        });
 
         await process.waitForIdle();
         await process.write(key);
@@ -149,7 +151,9 @@ await test("watch", async (t) => {
 
     for (const { key, testCase } of runAllTestCases) {
       await t.test(testCase, async () => {
-        const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+        const process = new Process(fixtureUrl, ["--watch"], {
+          env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+        });
 
         await process.waitForIdle();
         await process.write(key);
@@ -166,6 +170,74 @@ await test("watch", async (t) => {
 
         assert.equal(stderr, "");
         assert.equal(exitCode, 0);
+      });
+    }
+  });
+
+  await t.test("signal sent", async (t) => {
+    // these test can only run with 'shell: false', but that does not work on Windows
+    if (isWindows) {
+      t.skip();
+
+      return;
+    }
+
+    t.afterEach(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    t.beforeEach(async () => {
+      await writeFixture(fixtureUrl, {
+        ["a-feature/__typetests__/isNumber.test.ts"]: isNumberTestText,
+        ["a-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["a-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["b-feature/__typetests__/isString.test.ts"]: isStringTestText,
+        ["b-feature/__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      });
+    });
+
+    const signalTestCases = [
+      {
+        signal: "SIGINT",
+        testCase: "exits watch mode, when 'SIGINT' is sent",
+      },
+      {
+        signal: "SIGHUP",
+        testCase: "exits watch mode, when 'SIGHUP' is sent",
+      },
+      {
+        signal: "SIGQUIT",
+        testCase: "exits watch mode, when 'SIGQUIT' is sent",
+      },
+      {
+        signal: "SIGTERM",
+        testCase: "exits watch mode, when 'SIGTERM' is sent",
+      },
+    ];
+
+    for (const { signal, testCase } of signalTestCases) {
+      await t.test(testCase, async () => {
+        const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+
+        await process.waitForIdle();
+
+        fs.writeFileSync(new URL("a-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
+
+        const fileAdded = await process.waitForIdle();
+
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stdout)), {
+          fileName: `${testFileName}-signal-sent-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stderr)), {
+          fileName: `${testFileName}-signal-sent-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        process.kill(signal);
+
+        await process.waitForExit();
       });
     }
   });
@@ -187,7 +259,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when single test file is added", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -214,7 +288,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when multiple test files are added", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -242,7 +318,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when single test file is changed", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -269,7 +347,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when multiple test files are changed", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -297,7 +377,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when single test file is renamed", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -325,7 +407,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when multiple test files are renamed", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -357,7 +441,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when single test file is removed", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -382,7 +468,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when multiple test files are removed", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -408,7 +496,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when the '--failFast' command line option is specified", async () => {
-      const process = new Process(fixtureUrl, ["--failFast", "--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--failFast", "--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
       process.resetOutput();
@@ -453,7 +543,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when config file is added", async () => {
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
 
@@ -484,7 +576,9 @@ await test("watch", async (t) => {
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
 
@@ -515,7 +609,9 @@ await test("watch", async (t) => {
         JSON.stringify({ failFast: "no", testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
 
@@ -570,7 +666,9 @@ await test("watch", async (t) => {
         JSON.stringify({ testFileMatch: ["**/isVoid.*"] }, null, 2),
       );
 
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
 
@@ -615,7 +713,9 @@ await test("watch", async (t) => {
     });
 
     await t.test("when no test files are left to run", async () => {
-      const process = new Process(fixtureUrl, ["isNumber", "--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["isNumber", "--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
 
@@ -651,7 +751,9 @@ await test("watch", async (t) => {
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
-      const process = new Process(fixtureUrl, ["--watch"], { env: { ["CI"]: undefined } });
+      const process = new Process(fixtureUrl, ["--watch"], {
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
+      });
 
       await process.waitForIdle();
 
@@ -681,7 +783,7 @@ await test("watch", async (t) => {
       );
 
       const process = new Process(fixtureUrl, ["--config", "config/tstyche.json", "--watch"], {
-        env: { ["CI"]: undefined },
+        env: { ["CI"]: undefined, ["TSTYCHE_NO_INTERACTIVE"]: "" },
       });
 
       await process.waitForIdle();

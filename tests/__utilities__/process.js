@@ -1,5 +1,7 @@
 import { spawn } from "node:child_process";
 
+export const isWindows = process.platform === "win32";
+
 class Deferred {
   constructor() {
     this.promise = new Promise((resolve, reject) => {
@@ -36,11 +38,10 @@ export class Process {
       env: {
         ...process.env,
         ["TSTYCHE_NO_COLOR"]: "true",
-        ["TSTYCHE_NO_INTERACTIVE"]: "",
         ["TSTYCHE_STORE_PATH"]: "./.store",
         ...options?.env,
       },
-      shell: true,
+      shell: isWindows,
     });
 
     this.#subprocess.stdout.setEncoding("utf8");
@@ -62,6 +63,11 @@ export class Process {
     this.#subprocess.on("close", (exitCode) => {
       this.#onExit.resolve({ exitCode, stderr: this.#output.stderr, stdout: this.#output.stdout });
     });
+  }
+
+  /** @type {(signal: any) => void} */
+  kill(signal) {
+    this.#subprocess.kill(signal);
   }
 
   resetOutput() {
