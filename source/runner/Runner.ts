@@ -1,4 +1,5 @@
 import type { ResolvedConfig } from "#config";
+import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ResultHandler } from "#handlers";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
@@ -21,6 +22,11 @@ export class Runner {
   }
 
   async #addReporters() {
+    if (this.#resolvedConfig.watch && !environmentOptions.noInteractive) {
+      const watchReporter = new WatchReporter(this.#resolvedConfig);
+      this.#eventEmitter.addReporter(watchReporter);
+    }
+
     for (const reporter of this.#resolvedConfig.reporters) {
       switch (reporter) {
         case "list": {
@@ -41,11 +47,6 @@ export class Runner {
           this.#eventEmitter.addReporter(customReporter);
         }
       }
-    }
-
-    if (this.#resolvedConfig.watch) {
-      const watchReporter = new WatchReporter(this.#resolvedConfig);
-      this.#eventEmitter.addReporter(watchReporter);
     }
   }
 

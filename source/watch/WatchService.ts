@@ -1,5 +1,6 @@
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
+import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { type InputHandler, InputService } from "#input";
 import { Select, SelectDiagnosticText } from "#select";
@@ -72,7 +73,9 @@ export class WatchService {
       }
     };
 
-    this.#inputService = new InputService(onInput);
+    if (!environmentOptions.noInteractive) {
+      this.#inputService = new InputService(onInput);
+    }
 
     const onChangedFile: WatchHandler = (filePath) => {
       debounce.refreshTimeout();
