@@ -2,6 +2,9 @@ Waiting for file changes.
 <clearTerminal>
 uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
 
+runs ./a-feature/__typetests__/isNumber.test.ts
+<moveCursorUpBy1Row>
+<eraseLineEnd>
 pass ./a-feature/__typetests__/isNumber.test.ts
 
 Press a to run all tests.
@@ -11,6 +14,9 @@ Waiting for file changes.
 <clearTerminal>
 uses TypeScript <<version>> with ./a-feature/__typetests__/tsconfig.json
 
+runs ./a-feature/__typetests__/isVoid.test.ts
+<moveCursorUpBy1Row>
+<eraseLineEnd>
 pass ./a-feature/__typetests__/isVoid.test.ts
 
 Press a to run all tests.
