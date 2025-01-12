@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 
 export const isWindows = process.platform === "win32";
 
+// TODO use 'Promise.withResolvers()' after dropping support for Node.js 20
 class Deferred {
   constructor() {
     this.promise = new Promise((resolve, reject) => {

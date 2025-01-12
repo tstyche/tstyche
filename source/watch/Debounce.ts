@@ -28,6 +28,7 @@ export class Debounce<T> {
   }
 
   setup(): Promise<T> {
+    // TODO use 'Promise.withResolvers()' after dropping support for Node.js 20
     return new Promise<T>((resolve) => {
       this.#resolve = resolve;
     });
