@@ -65,6 +65,7 @@ interface CodeFrameTextProps {
 export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }: CodeFrameTextProps) {
   const linesAbove = options?.linesAbove ?? 2;
   const linesBelow = options?.linesBelow ?? 3;
+  const showBreadcrumbs = options?.showBreadcrumbs ?? true;
 
   const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
 
@@ -139,13 +140,19 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
     }
   }
 
+  let breadcrumbs: ScribblerJsx.Element | undefined;
+
+  if (showBreadcrumbs && diagnosticOrigin.assertion != null) {
+    breadcrumbs = <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parent} />;
+  }
+
   const location = (
     <Line>
       {" ".repeat(gutterWidth + 2)}
       <Text color={Color.Gray}>{" at "}</Text>
       <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
       <Text color={Color.Gray}>{`:${firstMarkedLine + 1}:${firstMarkedLineCharacter + 1}`}</Text>
-      {diagnosticOrigin.assertion && <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parent} />}
+      {breadcrumbs}
     </Line>
   );
 
