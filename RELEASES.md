@@ -1,5 +1,11 @@
 # Releases
 
+## [3.5.0] - 2025-01-14
+
+### Added
+
+- Make code frame output configurable ([#407](https://github.com/tstyche/tstyche/pull/407), [#408](https://github.com/tstyche/tstyche/pull/408))
+
 ## [3.4.0] - 2025-01-11
 
 ### Fixed
@@ -530,6 +536,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[3.5.0]: https://github.com/tstyche/tstyche/releases/tag/v3.5.0
 [3.4.0]: https://github.com/tstyche/tstyche/releases/tag/v3.4.0
 [3.3.1]: https://github.com/tstyche/tstyche/releases/tag/v3.3.1
 [3.3.0]: https://github.com/tstyche/tstyche/releases/tag/v3.3.0
