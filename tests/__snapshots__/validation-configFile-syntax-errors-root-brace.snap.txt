@@ -5,8 +5,6 @@ Error: Expected '{'.
   2 |   {
   3 |     "failFast": true
   4 |   }
-  5 | ]
-  6 | 
 
       at ./tstyche.config.json:1:1
 

@@ -6,7 +6,6 @@ Error: Option 'rootPath' requires a value of type string.
   3 |   "testFileMatch": [
   4 |     "examples/*.t*st.*"
   5 |   ]
-  6 | }
 
       at ./tstyche.config.json:2:15
 
