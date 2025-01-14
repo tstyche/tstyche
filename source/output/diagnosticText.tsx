@@ -1,12 +1,14 @@
 import { type Diagnostic, DiagnosticCategory } from "#diagnostic";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
-import { CodeSpanText } from "./CodeSpanText.js";
+import { CodeFrameText } from "./CodeFrameText.js";
+import type { CodeFrameOptions } from "./types.js";
 
 interface DiagnosticTextProps {
+  codeFrameOptions?: CodeFrameOptions;
   diagnostic: Diagnostic;
 }
 
-function DiagnosticText({ diagnostic }: DiagnosticTextProps) {
+function DiagnosticText({ codeFrameOptions, diagnostic }: DiagnosticTextProps) {
   const code = diagnostic.code ? <Text color={Color.Gray}> {diagnostic.code}</Text> : undefined;
 
   const text = Array.isArray(diagnostic.text) ? diagnostic.text : [diagnostic.text];
@@ -23,24 +25,28 @@ function DiagnosticText({ diagnostic }: DiagnosticTextProps) {
 
   const related = diagnostic.related?.map((relatedDiagnostic) => <DiagnosticText diagnostic={relatedDiagnostic} />);
 
-  const codeSpan = diagnostic.origin ? (
+  const codeFrame = diagnostic.origin ? (
     <Text>
       <Line />
-      <CodeSpanText diagnosticCategory={diagnostic.category} diagnosticOrigin={diagnostic.origin} />
+      <CodeFrameText
+        diagnosticCategory={diagnostic.category}
+        diagnosticOrigin={diagnostic.origin}
+        options={codeFrameOptions}
+      />
     </Text>
   ) : undefined;
 
   return (
     <Text>
       {message}
-      {codeSpan}
+      {codeFrame}
       <Line />
       <Text indent={2}>{related}</Text>
     </Text>
   );
 }
 
-export function diagnosticText(diagnostic: Diagnostic): ScribblerJsx.Element {
+export function diagnosticText(diagnostic: Diagnostic, codeFrameOptions: CodeFrameOptions = {}): ScribblerJsx.Element {
   let prefix: ScribblerJsx.Element | undefined;
 
   switch (diagnostic.category) {
@@ -56,7 +62,7 @@ export function diagnosticText(diagnostic: Diagnostic): ScribblerJsx.Element {
   return (
     <Text>
       {prefix}
-      <DiagnosticText diagnostic={diagnostic} />
+      <DiagnosticText codeFrameOptions={codeFrameOptions} diagnostic={diagnostic} />
     </Text>
   );
 }

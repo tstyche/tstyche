@@ -2,6 +2,7 @@ import type { TestMember, TestTree } from "#collect";
 import { DiagnosticCategory, type DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
+import type { CodeFrameOptions } from "./types.js";
 
 interface BreadcrumbsTextProps {
   ancestor: TestMember | TestTree;
@@ -55,12 +56,16 @@ function SquiggleLineText({ gutterWidth, indentWidth = 0, squiggleColor, squiggl
   );
 }
 
-interface CodeSpanTextProps {
+interface CodeFrameTextProps {
   diagnosticCategory: DiagnosticCategory;
   diagnosticOrigin: DiagnosticOrigin;
+  options?: CodeFrameOptions | undefined;
 }
 
-export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanTextProps) {
+export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }: CodeFrameTextProps) {
+  const linesAbove = options?.linesAbove ?? 2;
+  const linesBelow = options?.linesBelow ?? 3;
+
   const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
 
   const { character: firstMarkedLineCharacter, line: firstMarkedLine } =
@@ -68,8 +73,8 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
   const { character: lastMarkedLineCharacter, line: lastMarkedLine } =
     diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
 
-  const firstLine = Math.max(firstMarkedLine - 2, 0);
-  const lastLine = Math.min(firstLine + 5, lineMap.length - 1);
+  const firstLine = Math.max(firstMarkedLine - linesAbove, 0);
+  const lastLine = Math.min(lastMarkedLine + linesBelow, lineMap.length - 1);
   const gutterWidth = (lastLine + 1).toString().length + 2;
 
   let highlightColor: Color;
@@ -84,7 +89,7 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
       break;
   }
 
-  const codeSpan: Array<ScribblerJsx.Element> = [];
+  const codeFrame: Array<ScribblerJsx.Element> = [];
 
   for (let index = firstLine; index <= lastLine; index++) {
     const lineStart = lineMap[index];
@@ -93,7 +98,7 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
     const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
     if (index >= firstMarkedLine && index <= lastMarkedLine) {
-      codeSpan.push(
+      codeFrame.push(
         <CodeLineText
           gutterWidth={gutterWidth}
           lineNumber={index + 1}
@@ -108,7 +113,7 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
             ? lastMarkedLineCharacter - firstMarkedLineCharacter
             : lineText.length - firstMarkedLineCharacter;
 
-        codeSpan.push(
+        codeFrame.push(
           <SquiggleLineText
             gutterWidth={gutterWidth}
             indentWidth={firstMarkedLineCharacter}
@@ -117,7 +122,7 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
           />,
         );
       } else if (index === lastMarkedLine) {
-        codeSpan.push(
+        codeFrame.push(
           <SquiggleLineText
             gutterWidth={gutterWidth}
             squiggleColor={highlightColor}
@@ -125,12 +130,12 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
           />,
         );
       } else {
-        codeSpan.push(
+        codeFrame.push(
           <SquiggleLineText gutterWidth={gutterWidth} squiggleColor={highlightColor} squiggleWidth={lineText.length} />,
         );
       }
     } else {
-      codeSpan.push(<CodeLineText gutterWidth={gutterWidth} lineNumber={index + 1} lineText={lineText} />);
+      codeFrame.push(<CodeLineText gutterWidth={gutterWidth} lineNumber={index + 1} lineText={lineText} />);
     }
   }
 
@@ -146,7 +151,7 @@ export function CodeSpanText({ diagnosticCategory, diagnosticOrigin }: CodeSpanT
 
   return (
     <Text>
-      {codeSpan}
+      {codeFrame}
       <Line />
       {location}
     </Text>
