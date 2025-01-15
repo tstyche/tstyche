@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { CancellationHandler, ResultHandler } from "#handlers";
+import { CancellationHandler, ResultHandler, TestTreeHandler } from "#handlers";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
 import { Store } from "#store";
@@ -56,12 +56,15 @@ export class Runner {
     const resultHandler = new ResultHandler();
     this.#eventEmitter.addHandler(resultHandler);
 
-    await this.#addReporters();
+    const testTreeHandler = new TestTreeHandler();
+    this.#eventEmitter.addHandler(testTreeHandler);
 
     if (this.#resolvedConfig.failFast) {
       const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
       this.#eventEmitter.addHandler(cancellationHandler);
     }
+
+    await this.#addReporters();
 
     await this.#run(tasks, cancellationToken);
 
