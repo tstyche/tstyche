@@ -50,7 +50,7 @@ export class TestMember {
     }
   }
 
-  // TODO consider moving validation logic to the collector and passing 'onDiagnostics()' around
+  // TODO move validation to 'CollectService' and report validation errors using 'collect:error' event
   validate(): Array<Diagnostic> {
     const diagnostics: Array<Diagnostic> = [];
 
