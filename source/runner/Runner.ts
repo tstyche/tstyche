@@ -21,6 +21,19 @@ export class Runner {
     this.#resolvedConfig = resolvedConfig;
   }
 
+  #addHandlers(cancellationToken: CancellationToken) {
+    const resultHandler = new ResultHandler();
+    this.#eventEmitter.addHandler(resultHandler);
+
+    const testTreeHandler = new TestTreeHandler();
+    this.#eventEmitter.addHandler(testTreeHandler);
+
+    if (this.#resolvedConfig.failFast) {
+      const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
+      this.#eventEmitter.addHandler(cancellationHandler);
+    }
+  }
+
   async #addReporters() {
     if (this.#resolvedConfig.watch && !environmentOptions.noInteractive) {
       const watchReporter = new WatchReporter(this.#resolvedConfig);
@@ -53,17 +66,7 @@ export class Runner {
   async run(testFiles: Array<string | URL | Task>, cancellationToken = new CancellationToken()): Promise<void> {
     const tasks = testFiles.map((testFile) => (testFile instanceof Task ? testFile : new Task(testFile)));
 
-    const resultHandler = new ResultHandler();
-    this.#eventEmitter.addHandler(resultHandler);
-
-    const testTreeHandler = new TestTreeHandler();
-    this.#eventEmitter.addHandler(testTreeHandler);
-
-    if (this.#resolvedConfig.failFast) {
-      const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
-      this.#eventEmitter.addHandler(cancellationHandler);
-    }
-
+    this.#addHandlers(cancellationToken);
     await this.#addReporters();
 
     await this.#run(tasks, cancellationToken);
