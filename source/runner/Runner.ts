@@ -79,7 +79,7 @@ export class Runner {
     this.#eventEmitter.removeHandlers();
   }
 
-  async #run(tasks: Array<Task>, cancellationToken: CancellationToken): Promise<void> {
+  async #run(tasks: Array<Task>, cancellationToken: CancellationToken) {
     const result = new Result(this.#resolvedConfig, tasks);
 
     EventEmitter.dispatch(["run:start", { result }]);
@@ -110,7 +110,7 @@ export class Runner {
     }
   }
 
-  async #watch(testFiles: Array<Task>, cancellationToken: CancellationToken): Promise<void> {
+  async #watch(testFiles: Array<Task>, cancellationToken: CancellationToken) {
     const watchService = new WatchService(this.#resolvedConfig, testFiles);
 
     for await (const testFiles of watchService.watch(cancellationToken)) {
