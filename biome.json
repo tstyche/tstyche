@@ -96,7 +96,7 @@
 
   "overrides": [
     {
-      "include": ["source/handlers/ResultHandler.ts"],
+      "include": ["source/handlers/ResultHandler.ts", "source/handlers/TestTreeHandler.ts"],
       "linter": {
         "rules": {
           "style": {

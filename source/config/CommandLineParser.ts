@@ -20,11 +20,11 @@ export class CommandLineParser {
     this.#options = Options.for(OptionGroup.CommandLine);
   }
 
-  async #onExpectsValue(optionName: string, optionBrand: OptionBrand) {
+  #onExpectsValue(optionName: string, optionBrand: OptionBrand) {
     const text = [
       ConfigDiagnosticText.expectsValue(optionName),
-      await ConfigDiagnosticText.usage(optionName, optionBrand),
-    ].flat();
+      ...ConfigDiagnosticText.usage(optionName, optionBrand),
+    ];
 
     this.#onDiagnostics(Diagnostic.error(text));
   }
@@ -96,7 +96,7 @@ export class CommandLineParser {
           break;
         }
 
-        await this.#onExpectsValue(optionName, optionDefinition.brand);
+        this.#onExpectsValue(optionName, optionDefinition.brand);
         break;
 
       case OptionBrand.String:
@@ -111,7 +111,7 @@ export class CommandLineParser {
           break;
         }
 
-        await this.#onExpectsValue(optionName, optionDefinition.brand);
+        this.#onExpectsValue(optionName, optionDefinition.brand);
         break;
     }
 

@@ -7,7 +7,7 @@ export default class CustomReporter {
   }
 
   /**
-   * @param {import("tstyche/tstyche").Event} event
+   * @param {import("tstyche/tstyche").ReporterEvent} reporterEvent
    */
   on([event, payload]) {
     if (event === "run:start") {

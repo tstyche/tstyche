@@ -8,6 +8,7 @@ export { helpText } from "./helpText.js";
 export { OutputService } from "./OutputService.js";
 export { summaryText } from "./summaryText.js";
 export { testNameText } from "./testNameText.js";
+export type { CodeFrameOptions } from "./types.js";
 export { usesCompilerText } from "./usesCompilerText.js";
 export { waitingForFileChangesText } from "./waitingForFileChangesText.js";
 export { watchUsageText } from "./watchUsageText.js";

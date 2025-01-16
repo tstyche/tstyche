@@ -9,6 +9,8 @@ Error: 'describe()' cannot be nested within 'expect()'.
   6 |   });
     | ~~~~
   7 | 
+  8 |   it("cannot be nested", () => {
+  9 |     //
 
       at ./__typetests__/handles-nested.tst.ts:4:3
 
@@ -23,6 +25,8 @@ Error: 'it()' cannot be nested within 'expect()'.
   10 |   });
      | ~~~~
   11 | 
+  12 |   test("cannot be nested", () => {
+  13 |     //
 
        at ./__typetests__/handles-nested.tst.ts:8:3
 
@@ -37,6 +41,8 @@ Error: 'test()' cannot be nested within 'expect()'.
   14 |   });
      | ~~~~
   15 | 
+  16 |   // can be nested!
+  17 |   expect<number>().type.toBeString();
 
        at ./__typetests__/handles-nested.tst.ts:12:3
 

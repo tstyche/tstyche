@@ -6,7 +6,6 @@ Error: Unknown option 'cache'.
   3 |   "cacheTrailing": ["all", "best",],
   4 |   "globals": { delay: 123 },
   5 |   "globalsTrailing": { break: true, delay: 123, },
-  6 |   "mainBroken":,
 
       at ./tstyche.config.json:2:3
 
