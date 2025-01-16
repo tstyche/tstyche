@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { EventEmitter } from "#events";
 import { Assertion, type MatcherNode } from "./Assertion.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestMember } from "./TestMember.js";
@@ -12,17 +13,19 @@ export class CollectService {
     this.#compiler = compiler;
   }
 
-  #collectTestMembers(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestMember) {
+  #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestMember) {
     if (this.#compiler.isCallExpression(node)) {
       const meta = identifiers.resolveTestMemberMeta(node);
 
       if (meta != null && (meta.brand === TestMemberBrand.Describe || meta.brand === TestMemberBrand.Test)) {
-        const testMember = new TestMember(this.#compiler, meta.brand, node, parent, meta.flags);
+        const testTreeNode = new TestMember(this.#compiler, meta.brand, node, parent, meta.flags);
 
-        parent.members.push(testMember);
+        parent.members.push(testTreeNode);
+
+        EventEmitter.dispatch(["collect:node", { testNode: testTreeNode }]);
 
         this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestMembers(node, identifiers, testMember);
+          this.#collectTestTreeNodes(node, identifiers, testTreeNode);
         });
 
         return;
@@ -43,7 +46,7 @@ export class CollectService {
           return;
         }
 
-        const assertion = new Assertion(
+        const assertionNode = new Assertion(
           this.#compiler,
           meta.brand,
           node,
@@ -54,10 +57,12 @@ export class CollectService {
           notNode,
         );
 
-        parent.members.push(assertion);
+        parent.members.push(assertionNode);
+
+        EventEmitter.dispatch(["collect:node", { testNode: assertionNode }]);
 
         this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestMembers(node, identifiers, assertion);
+          this.#collectTestTreeNodes(node, identifiers, assertionNode);
         });
 
         return;
@@ -71,14 +76,18 @@ export class CollectService {
     }
 
     this.#compiler.forEachChild(node, (node) => {
-      this.#collectTestMembers(node, identifiers, parent);
+      this.#collectTestTreeNodes(node, identifiers, parent);
     });
   }
 
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
-    this.#collectTestMembers(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+    EventEmitter.dispatch(["collect:start", { testTree }]);
+
+    this.#collectTestTreeNodes(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+
+    EventEmitter.dispatch(["collect:end", { testTree }]);
 
     return testTree;
   }

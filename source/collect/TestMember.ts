@@ -10,6 +10,7 @@ export class TestMember {
   #compiler: typeof ts;
   diagnostics = new Set<ts.Diagnostic>();
   flags: TestMemberFlags;
+  // TODO rename to 'children' in TStyche 4
   members: Array<TestMember | Assertion> = [];
   name = "";
   node: ts.CallExpression;
@@ -49,7 +50,7 @@ export class TestMember {
     }
   }
 
-  // TODO consider moving validation logic to the collector and passing 'onDiagnostics()' around
+  // TODO move validation to 'CollectService' and report validation errors using 'collect:error' event
   validate(): Array<Diagnostic> {
     const diagnostics: Array<Diagnostic> = [];
 

@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { CancellationHandler, ResultHandler } from "#handlers";
+import { CancellationHandler, ResultHandler, TestTreeHandler } from "#handlers";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
 import { Store } from "#store";
@@ -19,6 +19,19 @@ export class Runner {
 
   constructor(resolvedConfig: ResolvedConfig) {
     this.#resolvedConfig = resolvedConfig;
+  }
+
+  #addHandlers(cancellationToken: CancellationToken) {
+    const resultHandler = new ResultHandler();
+    this.#eventEmitter.addHandler(resultHandler);
+
+    const testTreeHandler = new TestTreeHandler();
+    this.#eventEmitter.addHandler(testTreeHandler);
+
+    if (this.#resolvedConfig.failFast) {
+      const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
+      this.#eventEmitter.addHandler(cancellationHandler);
+    }
   }
 
   async #addReporters() {
@@ -53,15 +66,8 @@ export class Runner {
   async run(testFiles: Array<string | URL | Task>, cancellationToken = new CancellationToken()): Promise<void> {
     const tasks = testFiles.map((testFile) => (testFile instanceof Task ? testFile : new Task(testFile)));
 
-    const resultHandler = new ResultHandler();
-    this.#eventEmitter.addHandler(resultHandler);
-
+    this.#addHandlers(cancellationToken);
     await this.#addReporters();
-
-    if (this.#resolvedConfig.failFast) {
-      const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
-      this.#eventEmitter.addHandler(cancellationHandler);
-    }
 
     await this.#run(tasks, cancellationToken);
 
@@ -73,7 +79,7 @@ export class Runner {
     this.#eventEmitter.removeHandlers();
   }
 
-  async #run(tasks: Array<Task>, cancellationToken: CancellationToken): Promise<void> {
+  async #run(tasks: Array<Task>, cancellationToken: CancellationToken) {
     const result = new Result(this.#resolvedConfig, tasks);
 
     EventEmitter.dispatch(["run:start", { result }]);
@@ -104,7 +110,7 @@ export class Runner {
     }
   }
 
-  async #watch(testFiles: Array<Task>, cancellationToken: CancellationToken): Promise<void> {
+  async #watch(testFiles: Array<Task>, cancellationToken: CancellationToken) {
     const watchService = new WatchService(this.#resolvedConfig, testFiles);
 
     for await (const testFiles of watchService.watch(cancellationToken)) {
