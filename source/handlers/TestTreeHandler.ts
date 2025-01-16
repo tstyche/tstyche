@@ -18,7 +18,6 @@ export class TestTreeHandler implements EventHandler {
         if (payload.testNode.flags & TestMemberFlags.Only) {
           this.testTree!.hasOnly = true;
         }
-
         break;
     }
   }
