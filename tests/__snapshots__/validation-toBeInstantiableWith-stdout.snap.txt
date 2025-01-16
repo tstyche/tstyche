@@ -1,0 +1,23 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeInstantiableWith.tst.ts
+  argument for 'source'
+    × must be provided
+    - todo must be a generic type
+  type argument for 'Source'
+    - todo must be a generic type
+  argument for 'target'
+    × must be type argument
+  type argument for 'Target'
+    × must be provided
+    × must be a tuple type
+    × named element is not allowed
+    × rest element is not allowed
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      6 failed, 2 todo, 8 total
+Assertions: 6 failed, 6 total
+Duration:   <<timestamp>>
+
+Ran all test files.

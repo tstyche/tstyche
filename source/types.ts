@@ -126,6 +126,10 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
+   * Checks if the generic type can be instantiated with the given type arguments.
+   */
+  toBeInstantiableWith: <Target extends [...args: Array<unknown>]>() => void;
+  /**
    * Checks if a property key exists on the source type.
    */
   toHaveProperty: (key: string | number | symbol) => void;
@@ -307,6 +311,11 @@ interface Expect {
     };
   };
 }
+
+/**
+ * The fill-in type. Useful to fill in the required type arguments of generic types.
+ */
+export type _ = never;
 
 /**
  * Builds an assertion.
