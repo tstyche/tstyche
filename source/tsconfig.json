@@ -12,7 +12,8 @@
 
     "jsx": "react-jsx",
     "jsxImportSource": "#scribbler",
-    "target": "es2023",
+    "lib": ["es2023"], // do not use the "dom" type definitions
+    "target": "es2022",
 
     "skipLibCheck": false
   },

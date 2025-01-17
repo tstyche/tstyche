@@ -19,6 +19,7 @@
 
     "checkJs": true,
 
+    "lib": ["es2022"], // do not use the "dom" type definitions
     "target": "es2022"
   },
   "exclude": [
