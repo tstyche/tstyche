@@ -4,9 +4,9 @@ import typescript from "@rollup/plugin-typescript";
 import MagicString from "magic-string";
 import dts from "rollup-plugin-dts";
 
-const output = {
-  dir: "./build",
-};
+const output = { dir: "./build" };
+
+const tsconfig = "./source/tsconfig.json";
 
 const packageConfigText = await fs.readFile(new URL("./package.json", import.meta.url), { encoding: "utf8" });
 const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
@@ -93,8 +93,8 @@ const config = [
     plugins: [
       clean(),
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ tsconfig: "./source/tsconfig.json" }),
-      dts({ tsconfig: "./source/tsconfig.json" }),
+      typescript({ tsconfig }),
+      dts({ tsconfig }),
       tidyDts(),
     ],
   },
@@ -107,8 +107,8 @@ const config = [
     },
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ tsconfig: "./source/tsconfig.json" }),
-      dts({ tsconfig: "./source/tsconfig.json" }),
+      typescript({ tsconfig }),
+      dts({ tsconfig }),
     ],
   },
 
@@ -122,7 +122,7 @@ const config = [
     output,
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true }, tsconfig: "./source/tsconfig.json" }),
+      typescript({ compilerOptions: { removeComments: true }, tsconfig }),
       tidyJs(),
     ],
   },
@@ -135,7 +135,7 @@ const config = [
     },
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true }, tsconfig: "./source/tsconfig.json" }),
+      typescript({ compilerOptions: { removeComments: true }, tsconfig }),
     ],
   },
 ];
