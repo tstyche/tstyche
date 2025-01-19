@@ -11,23 +11,23 @@ export class Debounce<T> {
     this.#onResolve = onResolve;
   }
 
-  clearTimeout(): void {
+  cancel(): void {
     clearTimeout(this.#timeout);
   }
 
-  refreshTimeout(): void {
-    this.clearTimeout();
+  refresh(): void {
+    this.cancel();
 
     this.#timeout = setTimeout(() => {
       this.#resolve?.(this.#onResolve());
     }, this.#delay);
   }
 
-  resolveWith(value: T): void {
+  resolve(value: T): void {
     this.#resolve?.(value);
   }
 
-  setup(): Promise<T> {
+  schedule(): Promise<T> {
     // TODO use 'Promise.withResolvers()' after dropping support for Node.js 20
     return new Promise<T>((resolve) => {
       this.#resolve = resolve;

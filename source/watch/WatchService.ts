@@ -38,7 +38,7 @@ export class WatchService {
     const debounce = new Debounce<Array<Task>>(100, onResolve);
 
     const onClose = (reason: CancellationReason) => {
-      debounce.clearTimeout();
+      debounce.cancel();
 
       this.#inputService?.close();
 
@@ -48,7 +48,7 @@ export class WatchService {
 
       cancellationToken.cancel(reason);
 
-      debounce.resolveWith([]);
+      debounce.resolve([]);
     };
 
     if (!environmentOptions.noInteractive) {
@@ -65,10 +65,10 @@ export class WatchService {
           case "\u000D" /* Return */:
           case "\u0020" /* Space */:
           case "a":
-            debounce.clearTimeout();
+            debounce.cancel();
 
             if (this.#watchedTestFiles.size > 0) {
-              debounce.resolveWith([...this.#watchedTestFiles.values()]);
+              debounce.resolve([...this.#watchedTestFiles.values()]);
             }
             break;
         }
@@ -78,7 +78,7 @@ export class WatchService {
     }
 
     const onChangedFile: WatchHandler = (filePath) => {
-      debounce.refreshTimeout();
+      debounce.refresh();
 
       let task = this.#watchedTestFiles.get(filePath);
 
@@ -97,7 +97,7 @@ export class WatchService {
       this.#watchedTestFiles.delete(filePath);
 
       if (this.#watchedTestFiles.size === 0) {
-        debounce.clearTimeout();
+        debounce.cancel();
 
         this.#onDiagnostics(Diagnostic.error(SelectDiagnosticText.noTestFilesWereLeft(this.#resolvedConfig)));
       }
@@ -116,7 +116,7 @@ export class WatchService {
     }
 
     while (!cancellationToken.isCancellationRequested) {
-      const testFiles = await debounce.setup();
+      const testFiles = await debounce.schedule();
 
       if (testFiles.length > 0) {
         yield testFiles;
