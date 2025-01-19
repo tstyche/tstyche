@@ -12,6 +12,17 @@ const packageConfigText = await fs.readFile(new URL("./package.json", import.met
 const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
 /** @returns {import("rollup").Plugin} */
+function clean() {
+  return {
+    name: "clean",
+
+    async buildStart() {
+      await fs.rm(output.dir, { force: true, recursive: true });
+    },
+  };
+}
+
+/** @returns {import("rollup").Plugin} */
 function tidyJs() {
   const binEntry = "bin.js";
   const tstycheEntry = "tstyche.js";
@@ -80,6 +91,7 @@ const config = [
     },
     output,
     plugins: [
+      clean(),
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript({ tsconfig: "./source/tsconfig.json" }),
       dts({ tsconfig: "./source/tsconfig.json" }),

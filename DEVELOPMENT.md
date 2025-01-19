@@ -52,10 +52,9 @@ tstyche ./examples
 Please make sure the CI tests will pass:
 
 ```shell
+yarn build
 yarn lint
 yarn check
-yarn clean
-yarn build
 yarn test
 ```
 
