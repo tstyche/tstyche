@@ -62,7 +62,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@rollup/plugin-typescript": "12.1.2",
-    "@types/node": "22.10.9",
+    "@types/node": "22.10.10",
     "@types/react": "19.0.8",
     "ajv": "8.17.1",
     "cspell": "8.17.2",
