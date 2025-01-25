@@ -9,6 +9,8 @@ export namespace ScribblerJsx {
     props: Record<string, unknown>;
     type: FunctionComponent | number | string;
   }
+  // TODO remove 'ElementChildrenAttribute' after TypeScript 5.8 is released
+  // Reference: https://github.com/microsoft/TypeScript/pull/60880
   export interface ElementChildrenAttribute {
     children: ScribblerNode;
   }
