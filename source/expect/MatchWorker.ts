@@ -71,12 +71,6 @@ export class MatchWorker {
     );
   }
 
-  checkIsSubtype(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    const relation = this.#typeChecker.relation.subtype;
-
-    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
-  }
-
   #checkIsRelatedTo(sourceNode: ts.Node, targetNode: ts.Node, relation: Relation) {
     const sourceType =
       relation === this.#typeChecker.relation.identity

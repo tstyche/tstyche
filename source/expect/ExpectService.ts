@@ -2,7 +2,6 @@ import type ts from "typescript";
 import type { Assertion } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { EventEmitter } from "#events";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { Format } from "./Format.js";
 import { MatchWorker } from "./MatchWorker.js";
@@ -12,7 +11,6 @@ import { ToBe } from "./ToBe.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
-import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
@@ -38,7 +36,6 @@ export class ExpectService {
   private toBeUnknown: PrimitiveTypeMatcher;
   private toBeVoid: PrimitiveTypeMatcher;
   private toHaveProperty: ToHaveProperty;
-  private toMatch: ToMatch;
   private toRaiseError: ToRaiseError;
 
   // TODO mark 'resolvedConfig' as required in TSTyche 4
@@ -70,7 +67,6 @@ export class ExpectService {
     this.toBeUnknown = new PrimitiveTypeMatcher(compiler.TypeFlags.Unknown);
     this.toBeVoid = new PrimitiveTypeMatcher(compiler.TypeFlags.Void);
     this.toHaveProperty = new ToHaveProperty(compiler);
-    this.toMatch = new ToMatch();
     this.toRaiseError = new ToRaiseError(compiler);
   }
 
@@ -79,13 +75,6 @@ export class ExpectService {
     onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
   ): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
-
-    if (matcherNameText === "toMatch") {
-      const text = ExpectDiagnosticText.matcherIsDeprecated(matcherNameText);
-      const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
-
-      EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
-    }
 
     if (!assertion.source[0]) {
       this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
@@ -100,8 +89,6 @@ export class ExpectService {
       case "toBe":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
-      // TODO '.toMatch()' is deprecated and must be removed in TSTyche 4
-      case "toMatch":
         if (!assertion.target[0]) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 

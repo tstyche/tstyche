@@ -13,5 +13,5 @@ export type Relation = Map<string, unknown>;
 export interface TypeChecker extends ts.TypeChecker {
   isApplicableIndexType: (source: ts.Type, target: ts.Type) => boolean;
   isTypeRelatedTo: (source: ts.Type, target: ts.Type, relation: Relation) => boolean;
-  relation: { assignable: Relation; identity: Relation; subtype: Relation };
+  relation: { assignable: Relation; identity: Relation };
 }
