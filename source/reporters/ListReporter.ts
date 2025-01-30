@@ -11,7 +11,6 @@ export class ListReporter extends BaseReporter {
   #hasReportedError = false;
   #hasReportedUses = false;
   #isFileViewExpanded = false;
-  #seenDeprecations = new Set<string>();
 
   get #isLastFile() {
     return this.#fileCount === 0;
@@ -19,16 +18,6 @@ export class ListReporter extends BaseReporter {
 
   on([event, payload]: ReporterEvent): void {
     switch (event) {
-      case "deprecation:info": {
-        for (const diagnostic of payload.diagnostics) {
-          if (!this.#seenDeprecations.has(diagnostic.text.toString())) {
-            this.#fileView.addMessage(diagnosticText(diagnostic));
-            this.#seenDeprecations.add(diagnostic.text.toString());
-          }
-        }
-        break;
-      }
-
       case "run:start":
         this.#isFileViewExpanded = payload.result.tasks.length === 1 && this.resolvedConfig.watch !== true;
         break;
@@ -97,7 +86,6 @@ export class ListReporter extends BaseReporter {
         }
 
         this.#fileView.clear();
-        this.#seenDeprecations.clear();
         break;
 
       case "describe:start":
