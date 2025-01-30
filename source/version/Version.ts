@@ -7,11 +7,6 @@ export class Version {
     return source === target || Version.#satisfies(source, target);
   }
 
-  /** @deprecated Name of this method is misleading and it is also not needed. */
-  static isVersionTag(target: string): boolean {
-    return /^\d+/.test(target);
-  }
-
   static #satisfies(source: string, target: string): boolean {
     const sourceElements = source.split(/\.|-/);
     const targetElements = target.split(/\.|-/);
