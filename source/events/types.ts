@@ -9,7 +9,6 @@ export interface EventHandler {
 export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
   | ["select:error", { diagnostics: Array<Diagnostic> }]
-  | ["deprecation:info", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
   | ["store:adds", { packagePath: string; packageVersion: string }]

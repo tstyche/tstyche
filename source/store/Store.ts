@@ -124,10 +124,7 @@ export class Store {
       toExpose.push("getTypeOfSymbol");
     }
 
-    toExpose.push(
-      "isTypeRelatedTo",
-      "relation: { assignable: assignableRelation, identity: identityRelation, subtype: strictSubtypeRelation }",
-    );
+    toExpose.push("isTypeRelatedTo", "relation: { assignable: assignableRelation, identity: identityRelation }");
 
     const modifiedSourceText = sourceText.replace("return checker;", `return { ...checker, ${toExpose.join(", ")} };`);
 
