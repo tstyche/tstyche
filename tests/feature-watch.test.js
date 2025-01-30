@@ -45,23 +45,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("watch", async (t) => {
-  let isRecursiveWatchAvailable;
-
-  try {
-    const watcher = fs.watch(process.cwd(), { persistent: false, recursive: true });
-    watcher.close();
-
-    isRecursiveWatchAvailable = true;
-  } catch {
-    isRecursiveWatchAvailable = false;
-  }
-
-  if (!isRecursiveWatchAvailable) {
-    t.skip();
-
-    return;
-  }
-
   await t.test("interactive input", async (t) => {
     t.afterEach(async () => {
       await clearFixture(fixtureUrl);
