@@ -35,7 +35,7 @@ export class Store {
     Store.#manifestService = new ManifestService(Store.#storePath, Store.#npmRegistry, Store.#fetcher);
   }
 
-  static async install(tag: string): Promise<void> {
+  static async fetch(tag: string): Promise<void> {
     if (tag === "current") {
       return;
     }

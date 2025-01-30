@@ -107,9 +107,9 @@ export class Cli {
         continue;
       }
 
-      if (commandLine.includes("--install")) {
+      if (commandLine.includes("--fetch")) {
         for (const tag of resolvedConfig.target) {
-          await Store.install(tag);
+          await Store.fetch(tag);
         }
         continue;
       }

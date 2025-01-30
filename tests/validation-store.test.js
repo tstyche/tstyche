@@ -100,7 +100,7 @@ await test("store", async (t) => {
     });
 
     const expected = [
-      "Error: Failed to install 'typescript@5.1.6'.",
+      "Error: Failed to fetch the 'typescript@5.1.6' package.",
       "",
       "The request timeout of 0.001s was exceeded.",
       "",
@@ -124,7 +124,7 @@ await test("store", async (t) => {
     });
 
     const expected = [
-      "Error: Failed to install 'typescript@5.4.5'.",
+      "Error: Failed to fetch the 'typescript@5.4.5' package.",
       "",
       "Lock wait timeout of 1.5s was exceeded.",
       "",

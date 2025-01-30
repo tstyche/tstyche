@@ -6,8 +6,8 @@ describe("CommandLineOptions", () => {
     expect<tstyche.CommandLineOptions>().type.toBeAssignableWith({
       config: "./config/tstyche.json",
       failFast: true,
+      fetch: true,
       help: true,
-      install: true,
       list: true,
       listFiles: true,
       only: "external",
@@ -40,15 +40,15 @@ describe("CommandLineOptions", () => {
     }>();
   });
 
-  test("'help' option", () => {
-    expect<Pick<tstyche.CommandLineOptions, "help">>().type.toBe<{
-      help?: boolean;
+  test("'fetch' option", () => {
+    expect<Pick<tstyche.CommandLineOptions, "fetch">>().type.toBe<{
+      fetch?: boolean;
     }>();
   });
 
-  test("'install' option", () => {
-    expect<Pick<tstyche.CommandLineOptions, "install">>().type.toBe<{
-      install?: boolean;
+  test("'help' option", () => {
+    expect<Pick<tstyche.CommandLineOptions, "help">>().type.toBe<{
+      help?: boolean;
     }>();
   });
 

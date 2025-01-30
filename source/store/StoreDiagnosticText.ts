@@ -7,8 +7,8 @@ export class StoreDiagnosticText {
     return `Failed to fetch metadata of the 'typescript' package from '${registry}'.`;
   }
 
-  static failedToInstalTypeScript(version: string): string {
-    return `Failed to install 'typescript@${version}'.`;
+  static failedToFetchPackage(version: string): string {
+    return `Failed to fetch the 'typescript@${version}' package.`;
   }
 
   static failedToUpdateMetadata(registry: string): string {

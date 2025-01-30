@@ -18,11 +18,11 @@ Command Line Options
   --failFast  boolean
   Stop running tests after the first failed assertion.
 
+  --fetch
+  Fetch specified versions of the 'typescript' package and exit.
+
   --help
   Print the list of command line options with brief descriptions and exit.
-
-  --install
-  Install specified versions of the 'typescript' package and exit.
 
   --list
   Print the list of supported versions of the 'typescript' package and exit.

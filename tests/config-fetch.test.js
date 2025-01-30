@@ -18,26 +18,26 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("'--install' command line option", async (t) => {
+await test("'--fetch' command line option", async (t) => {
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
   const testCases = [
     {
-      args: ["--install", "--target", "4.9"],
+      args: ["--fetch", "--target", "4.9"],
       testCase: "when '--target' command line option is specified",
     },
     {
-      args: ["--install", "false", "--target", "4.9"],
+      args: ["--fetch", "false", "--target", "4.9"],
       testCase: "does not take arguments",
     },
     {
-      args: ["feature", "--install", "--target", "4.9"],
+      args: ["feature", "--fetch", "--target", "4.9"],
       testCase: "ignores search string specified before the option",
     },
     {
-      args: ["--install", "feature", "--target", "4.9"],
+      args: ["--fetch", "feature", "--target", "4.9"],
       testCase: "ignores search string specified after the option",
     },
   ];
@@ -57,7 +57,7 @@ await test("'--install' command line option", async (t) => {
       assert.equal(
         normalizeOutput(stdout),
         [
-          "adds TypeScript 4.9.5 to <<basePath>>/tests/__fixtures__/.generated/config-install/.store/typescript@4.9.5",
+          "adds TypeScript 4.9.5 to <<basePath>>/tests/__fixtures__/.generated/config-fetch/.store/typescript@4.9.5",
           "",
         ].join("\n"),
       );
@@ -76,13 +76,13 @@ await test("'--install' command line option", async (t) => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch"]);
 
     assert.equal(
       normalizeOutput(stdout),
       [
-        "adds TypeScript 4.8.4 to <<basePath>>/tests/__fixtures__/.generated/config-install/.store/typescript@4.8.4",
-        "adds TypeScript 5.0.4 to <<basePath>>/tests/__fixtures__/.generated/config-install/.store/typescript@5.0.4",
+        "adds TypeScript 4.8.4 to <<basePath>>/tests/__fixtures__/.generated/config-fetch/.store/typescript@4.8.4",
+        "adds TypeScript 5.0.4 to <<basePath>>/tests/__fixtures__/.generated/config-fetch/.store/typescript@5.0.4",
         "",
       ].join("\n"),
     );
@@ -100,7 +100,7 @@ await test("'--install' command line option", async (t) => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch"]);
 
     assert.equal(stdout, "");
     assert.equal(stderr, "");
@@ -116,7 +116,7 @@ await test("'--install' command line option", async (t) => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "current"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", "current"]);
 
     assert.equal(stdout, "");
     assert.equal(stderr, "");
