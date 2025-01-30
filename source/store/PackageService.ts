@@ -55,7 +55,7 @@ export class PackageService {
   async ensure(packageVersion: string, manifest?: Manifest): Promise<string | undefined> {
     let packagePath: string | undefined = Path.join(this.#storePath, `typescript@${packageVersion}`);
 
-    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(packageVersion));
+    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageVersion));
 
     if (await this.#lockService.isLocked(packagePath, diagnostic)) {
       return;

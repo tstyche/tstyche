@@ -36,7 +36,7 @@ await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"]);
+    await spawnTyche(fixtureUrl, ["--fetch", "--target", "5.2.2"]);
 
     const typescriptModule = new URL("./.store/typescript@5.2.2/lib/typescript.js", fixtureUrl).toString();
 

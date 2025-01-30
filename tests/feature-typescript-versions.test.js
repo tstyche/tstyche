@@ -130,7 +130,7 @@ await test("TypeScript 4.x", async (t) => {
 
   for (const version of testCases) {
     await t.test(`uses TypeScript ${version} as current target`, async () => {
-      await spawnTyche(fixtureUrl, ["--install", "--target", version]);
+      await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
 
       const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
@@ -174,7 +174,7 @@ await test("TypeScript 5.x", async (t) => {
 
   for (const version of testCases) {
     await t.test(`uses TypeScript ${version} as current target`, async () => {
-      await spawnTyche(fixtureUrl, ["--install", "--target", version]);
+      await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
 
       const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 

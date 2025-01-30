@@ -13,13 +13,13 @@ export interface CommandLineOptions {
      */
     failFast?: boolean;
     /**
+     * Fetch specified versions of the 'typescript' package and exit.
+     */
+    fetch?: boolean;
+    /**
      * Print the list of command line options with brief descriptions and exit.
      */
     help?: boolean;
-    /**
-     * Install specified versions of the 'typescript' package and exit.
-     */
-    install?: boolean;
     /**
      * Print the list of supported versions of the 'typescript' package and exit.
      */

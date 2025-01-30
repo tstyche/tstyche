@@ -64,16 +64,16 @@ export class Options {
 
     {
       brand: OptionBrand.BareTrue,
-      description: "Print the list of command line options with brief descriptions and exit.",
+      description: "Fetch specified versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
-      name: "help",
+      name: "fetch",
     },
 
     {
       brand: OptionBrand.BareTrue,
-      description: "Install specified versions of the 'typescript' package and exit.",
+      description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,
-      name: "install",
+      name: "help",
     },
 
     {
