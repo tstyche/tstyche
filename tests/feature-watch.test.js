@@ -45,18 +45,8 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("watch", async (t) => {
-  let isRecursiveWatchAvailable;
-
-  try {
-    const watcher = fs.watch(process.cwd(), { persistent: false, recursive: true });
-    watcher.close();
-
-    isRecursiveWatchAvailable = true;
-  } catch {
-    isRecursiveWatchAvailable = false;
-  }
-
-  if (!isRecursiveWatchAvailable) {
+  // TODO remove this check after dropping support for Node.js 20
+  if (process.versions.node.startsWith("20.9") && process.platform === "linux") {
     t.skip();
 
     return;

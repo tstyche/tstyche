@@ -2,10 +2,10 @@
 
 For the smoothest development experience in this codebase, you'll need:
 
-- [Node.js] — You'll need at least v18, but would be better served with v22.
-- [nvm] — Optional, but helpful.
-- [yarn] — Not just npm.
-- [hyperfine] — Optional for many basic tasks, but required for performance metrics.
+- [Node.js] — Install the latest Long Term Support (LTS) release.
+  - Recommended: use [n] or similar tool for managing Node.js versions.
+- [Yarn] — Not just npm.
+- [Hyperfine] — Optional for many basic tasks, but required for performance metrics.
 
 You'll do a typical setup sequence from there.
 
@@ -27,7 +27,7 @@ Run tests:
 yarn test
 ```
 
-You can then see everything as a user would, by running tstyche against some example tests:
+You can then see everything as a user would, by running TSTyche against some example tests:
 
 ```shell
 yarn test:examples
@@ -39,13 +39,13 @@ Which is just an alias for:
 tstyche ./examples
 ```
 
-## Install notes for macos
+## Install notes for macOS
 
 - You can't just `brew install yarn`.
   It will install an ancient version, and won't work.
-  Instead, see the [yarn setup instructions].
+  Instead, see the [Yarn setup instructions].
 
-- For hyperfine, the version from brew works well enough: `brew install hyperfine`.
+- For Hyperfine, the version from Brew works well enough: `brew install hyperfine`.
 
 ## Before you commit
 
@@ -59,7 +59,7 @@ yarn test
 ```
 
 [Node.js]: https://nodejs.org
-[nvm]: https://github.com/nvm-sh/nvm
-[yarn]: https://yarnpkg.com/getting-started/install
-[hyperfine]: https://github.com/sharkdp/hyperfine
-[yarn setup instructions]: https://yarnpkg.com/getting-started/install
+[n]: https://github.com/tj/n
+[Yarn]: https://yarnpkg.com/getting-started/install
+[Hyperfine]: https://github.com/sharkdp/hyperfine
+[Yarn setup instructions]: https://yarnpkg.com/getting-started/install
