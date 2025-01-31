@@ -1,4 +1,4 @@
-export const enum TestMemberBrand {
+export const enum TestTreeNodeBrand {
   Describe = "describe",
   Test = "test",
   Expect = "expect",

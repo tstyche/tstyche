@@ -1,17 +1,17 @@
 import type ts from "typescript";
-import type { Assertion } from "#collect";
+import type { AssertionNode } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
 import { Version } from "#version";
 import type { Relation, TypeChecker } from "./types.js";
 
 export class MatchWorker {
-  assertion: Assertion;
+  assertion: AssertionNode;
   #compiler: typeof ts;
   #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
   #typeCache = new Map<ts.Node, ts.Type>();
   #typeChecker: TypeChecker;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: Assertion) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: AssertionNode) {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
     this.assertion = assertion;

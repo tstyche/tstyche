@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import type { Assertion } from "#collect";
+import type { AssertionNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
@@ -71,7 +71,7 @@ export class ExpectService {
   }
 
   match(
-    assertion: Assertion,
+    assertion: AssertionNode,
     onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
   ): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
@@ -138,28 +138,32 @@ export class ExpectService {
     return;
   }
 
-  #onMatcherIsNotSupported(matcherNameText: string, assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+  #onMatcherIsNotSupported(matcherNameText: string, assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+  #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentMustBeProvided(argumentNameText: string, assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+  #onTargetArgumentMustBeProvided(
+    argumentNameText: string,
+    assertion: AssertionNode,
+    onDiagnostics: DiagnosticsHandler,
+  ) {
     const text = ExpectDiagnosticText.argumentMustBeProvided(argumentNameText);
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+  #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 

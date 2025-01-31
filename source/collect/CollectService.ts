@@ -1,10 +1,10 @@
 import type ts from "typescript";
 import { EventEmitter } from "#events";
-import { Assertion, type MatcherNode } from "./Assertion.js";
+import { AssertionNode, type MatcherNode } from "./AssertionNode.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
-import { TestMember } from "./TestMember.js";
-import { TestMemberBrand } from "./TestMemberBrand.enum.js";
 import { TestTree } from "./TestTree.js";
+import { TestTreeNode } from "./TestTreeNode.js";
+import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 
 export class CollectService {
   #compiler: typeof ts;
@@ -13,14 +13,14 @@ export class CollectService {
     this.#compiler = compiler;
   }
 
-  #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestMember) {
+  #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestTreeNode) {
     if (this.#compiler.isCallExpression(node)) {
       const meta = identifiers.resolveTestMemberMeta(node);
 
-      if (meta != null && (meta.brand === TestMemberBrand.Describe || meta.brand === TestMemberBrand.Test)) {
-        const testTreeNode = new TestMember(this.#compiler, meta.brand, node, parent, meta.flags);
+      if (meta != null && (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test)) {
+        const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
 
-        parent.members.push(testTreeNode);
+        parent.children.push(testTreeNode);
 
         EventEmitter.dispatch(["collect:node", { testNode: testTreeNode }]);
 
@@ -31,7 +31,7 @@ export class CollectService {
         return;
       }
 
-      if (meta != null && meta.brand === TestMemberBrand.Expect) {
+      if (meta != null && meta.brand === TestTreeNodeBrand.Expect) {
         const modifierNode = this.#getChainedNode(node, "type");
 
         if (!modifierNode) {
@@ -46,7 +46,7 @@ export class CollectService {
           return;
         }
 
-        const assertionNode = new Assertion(
+        const assertionNode = new AssertionNode(
           this.#compiler,
           meta.brand,
           node,
@@ -57,7 +57,7 @@ export class CollectService {
           notNode,
         );
 
-        parent.members.push(assertionNode);
+        parent.children.push(assertionNode);
 
         EventEmitter.dispatch(["collect:node", { testNode: assertionNode }]);
 

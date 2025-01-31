@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
+import { type AssertionNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -8,7 +8,7 @@ import { DescribeResult, ExpectResult, type TaskResult, TestResult } from "#resu
 import type { CancellationToken } from "#token";
 import { RunMode } from "./RunMode.enum.js";
 
-interface TestFileWalkerOptions {
+interface TestTreeWalkerOptions {
   cancellationToken: CancellationToken | undefined;
   hasOnly: boolean;
   position: number | undefined;
@@ -16,7 +16,6 @@ interface TestFileWalkerOptions {
 }
 
 export class TestTreeWalker {
-  #compiler: typeof ts;
   #cancellationToken: CancellationToken | undefined;
   #expectService: ExpectService;
   #hasOnly: boolean;
@@ -28,10 +27,9 @@ export class TestTreeWalker {
     resolvedConfig: ResolvedConfig,
     compiler: typeof ts,
     typeChecker: TypeChecker,
-    options: TestFileWalkerOptions,
+    options: TestTreeWalkerOptions,
   ) {
     this.#resolvedConfig = resolvedConfig;
-    this.#compiler = compiler;
 
     this.#cancellationToken = options.cancellationToken;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
@@ -41,30 +39,32 @@ export class TestTreeWalker {
     this.#expectService = new ExpectService(compiler, typeChecker, this.#resolvedConfig);
   }
 
-  #resolveRunMode(mode: RunMode, member: TestMember): RunMode {
-    if (member.flags & TestMemberFlags.Fail) {
+  #resolveRunMode(mode: RunMode, testNode: TestTreeNode): RunMode {
+    if (testNode.flags & TestTreeNodeFlags.Fail) {
       mode |= RunMode.Fail;
     }
 
     if (
-      member.flags & TestMemberFlags.Only ||
-      (this.#resolvedConfig.only != null && member.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
+      testNode.flags & TestTreeNodeFlags.Only ||
+      (this.#resolvedConfig.only != null &&
+        testNode.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
     ) {
       mode |= RunMode.Only;
     }
 
     if (
-      member.flags & TestMemberFlags.Skip ||
-      (this.#resolvedConfig.skip != null && member.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
+      testNode.flags & TestTreeNodeFlags.Skip ||
+      (this.#resolvedConfig.skip != null &&
+        testNode.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
     ) {
       mode |= RunMode.Skip;
     }
 
-    if (member.flags & TestMemberFlags.Todo) {
+    if (testNode.flags & TestTreeNodeFlags.Todo) {
       mode |= RunMode.Todo;
     }
 
-    if (this.#position != null && member.node.getStart() === this.#position) {
+    if (this.#position != null && testNode.node.getStart() === this.#position) {
       mode |= RunMode.Only;
       // skip mode is overridden, when 'position' is specified
       mode &= ~RunMode.Skip;
@@ -74,16 +74,16 @@ export class TestTreeWalker {
   }
 
   visit(
-    members: Array<TestMember | Assertion>,
+    testNodes: Array<TestTreeNode | AssertionNode>,
     runMode: RunMode,
     parentResult: DescribeResult | TestResult | undefined,
   ): void {
-    for (const member of members) {
+    for (const testNode of testNodes) {
       if (this.#cancellationToken?.isCancellationRequested) {
         break;
       }
 
-      const validationError = member.validate();
+      const validationError = testNode.validate();
 
       if (validationError.length > 0) {
         EventEmitter.dispatch(["task:error", { diagnostics: validationError, result: this.#taskResult }]);
@@ -91,24 +91,24 @@ export class TestTreeWalker {
         break;
       }
 
-      switch (member.brand) {
-        case TestMemberBrand.Describe:
-          this.#visitDescribe(member, runMode, parentResult as DescribeResult | undefined);
+      switch (testNode.brand) {
+        case TestTreeNodeBrand.Describe:
+          this.#visitDescribe(testNode, runMode, parentResult as DescribeResult | undefined);
           break;
 
-        case TestMemberBrand.Test:
-          this.#visitTest(member, runMode, parentResult as DescribeResult | undefined);
+        case TestTreeNodeBrand.Test:
+          this.#visitTest(testNode, runMode, parentResult as DescribeResult | undefined);
           break;
 
-        case TestMemberBrand.Expect:
-          this.#visitAssertion(member as Assertion, runMode, parentResult as TestResult | undefined);
+        case TestTreeNodeBrand.Expect:
+          this.#visitAssertion(testNode as AssertionNode, runMode, parentResult as TestResult | undefined);
           break;
       }
     }
   }
 
-  #visitAssertion(assertion: Assertion, runMode: RunMode, parentResult: TestResult | undefined) {
-    this.visit(assertion.members, runMode, parentResult);
+  #visitAssertion(assertion: AssertionNode, runMode: RunMode, parentResult: TestResult | undefined) {
+    this.visit(assertion.children, runMode, parentResult);
 
     const expectResult = new ExpectResult(assertion, parentResult);
 
@@ -158,7 +158,7 @@ export class TestTreeWalker {
     }
   }
 
-  #visitDescribe(describe: TestMember, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  #visitDescribe(describe: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
     const describeResult = new DescribeResult(describe, parentResult);
 
     EventEmitter.dispatch(["describe:start", { result: describeResult }]);
@@ -177,13 +177,13 @@ export class TestTreeWalker {
         },
       ]);
     } else {
-      this.visit(describe.members, runMode, describeResult);
+      this.visit(describe.children, runMode, describeResult);
     }
 
     EventEmitter.dispatch(["describe:end", { result: describeResult }]);
   }
 
-  #visitTest(test: TestMember, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  #visitTest(test: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
     const testResult = new TestResult(test, parentResult);
 
     EventEmitter.dispatch(["test:start", { result: testResult }]);
@@ -208,7 +208,7 @@ export class TestTreeWalker {
       return;
     }
 
-    this.visit(test.members, runMode, testResult);
+    this.visit(test.children, runMode, testResult);
 
     if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
       EventEmitter.dispatch(["test:skip", { result: testResult }]);
