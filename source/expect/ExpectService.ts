@@ -38,8 +38,7 @@ export class ExpectService {
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
-  // TODO mark 'resolvedConfig' as required in TSTyche 4
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig?: ResolvedConfig) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
 
