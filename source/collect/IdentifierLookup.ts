@@ -1,6 +1,6 @@
 import type ts from "typescript";
-import { TestMemberBrand } from "./TestMemberBrand.enum.js";
-import { TestMemberFlags } from "./TestMemberFlags.enum.js";
+import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
+import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
 export interface Identifiers {
   namedImports: Record<string, string | undefined>;
@@ -59,8 +59,8 @@ export class IdentifierLookup {
     }
   }
 
-  resolveTestMemberMeta(node: ts.CallExpression): { brand: TestMemberBrand; flags: TestMemberFlags } | undefined {
-    let flags = TestMemberFlags.None;
+  resolveTestMemberMeta(node: ts.CallExpression): { brand: TestTreeNodeBrand; flags: TestTreeNodeFlags } | undefined {
+    let flags = TestTreeNodeFlags.None;
     let expression = node.expression;
 
     while (this.#compiler.isPropertyAccessExpression(expression)) {
@@ -70,19 +70,19 @@ export class IdentifierLookup {
 
       switch (expression.name.getText()) {
         case "fail":
-          flags |= TestMemberFlags.Fail;
+          flags |= TestTreeNodeFlags.Fail;
           break;
 
         case "only":
-          flags |= TestMemberFlags.Only;
+          flags |= TestTreeNodeFlags.Only;
           break;
 
         case "skip":
-          flags |= TestMemberFlags.Skip;
+          flags |= TestTreeNodeFlags.Skip;
           break;
 
         case "todo":
-          flags |= TestMemberFlags.Todo;
+          flags |= TestTreeNodeFlags.Todo;
           break;
       }
 
@@ -108,14 +108,14 @@ export class IdentifierLookup {
 
     switch (identifierName) {
       case "describe":
-        return { brand: TestMemberBrand.Describe, flags };
+        return { brand: TestTreeNodeBrand.Describe, flags };
 
       case "it":
       case "test":
-        return { brand: TestMemberBrand.Test, flags };
+        return { brand: TestTreeNodeBrand.Test, flags };
 
       case "expect":
-        return { brand: TestMemberBrand.Expect, flags };
+        return { brand: TestTreeNodeBrand.Expect, flags };
     }
 
     return;

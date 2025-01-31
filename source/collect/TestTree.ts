@@ -1,12 +1,11 @@
 import type ts from "typescript";
-import type { Assertion } from "./Assertion.js";
-import type { TestMember } from "./TestMember.js";
+import type { AssertionNode } from "./AssertionNode.js";
+import type { TestTreeNode } from "./TestTreeNode.js";
 
 export class TestTree {
+  children: Array<TestTreeNode | AssertionNode> = [];
   diagnostics: Set<ts.Diagnostic>;
   hasOnly = false;
-  // TODO rename to 'children' in TStyche 4
-  members: Array<TestMember | Assertion> = [];
   sourceFile: ts.SourceFile;
 
   constructor(diagnostics: Set<ts.Diagnostic>, sourceFile: ts.SourceFile) {

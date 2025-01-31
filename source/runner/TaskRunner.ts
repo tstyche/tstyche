@@ -107,6 +107,6 @@ export class TaskRunner {
       position: task.position,
     });
 
-    testTreeWalker.visit(testTree.members, RunMode.Normal, /* parentResult */ undefined);
+    testTreeWalker.visit(testTree.children, RunMode.Normal, /* parentResult */ undefined);
   }
 }

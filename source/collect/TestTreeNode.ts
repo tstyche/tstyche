@@ -1,27 +1,26 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
-import type { Assertion } from "./Assertion.js";
-import { TestMemberBrand } from "./TestMemberBrand.enum.js";
-import type { TestMemberFlags } from "./TestMemberFlags.enum.js";
+import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTree } from "./TestTree.js";
+import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
+import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
-export class TestMember {
-  brand: TestMemberBrand;
+export class TestTreeNode {
+  brand: TestTreeNodeBrand;
+  children: Array<TestTreeNode | AssertionNode> = [];
   #compiler: typeof ts;
   diagnostics = new Set<ts.Diagnostic>();
-  flags: TestMemberFlags;
-  // TODO rename to 'children' in TStyche 4
-  members: Array<TestMember | Assertion> = [];
+  flags: TestTreeNodeFlags;
   name = "";
   node: ts.CallExpression;
-  parent: TestTree | TestMember;
+  parent: TestTree | TestTreeNode;
 
   constructor(
     compiler: typeof ts,
-    brand: TestMemberBrand,
+    brand: TestTreeNodeBrand,
     node: ts.CallExpression,
-    parent: TestTree | TestMember,
-    flags: TestMemberFlags,
+    parent: TestTree | TestTreeNode,
+    flags: TestTreeNodeFlags,
   ) {
     this.brand = brand;
     this.#compiler = compiler;
@@ -66,9 +65,9 @@ export class TestMember {
     };
 
     switch (this.brand) {
-      case TestMemberBrand.Describe:
-        for (const member of this.members) {
-          if (member.brand === TestMemberBrand.Expect) {
+      case TestTreeNodeBrand.Describe:
+        for (const member of this.children) {
+          if (member.brand === TestTreeNodeBrand.Expect) {
             diagnostics.push(
               Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(getParentCallExpression(member.node))),
             );
@@ -76,10 +75,10 @@ export class TestMember {
         }
         break;
 
-      case TestMemberBrand.Test:
-      case TestMemberBrand.Expect:
-        for (const member of this.members) {
-          if (member.brand !== TestMemberBrand.Expect) {
+      case TestTreeNodeBrand.Test:
+      case TestTreeNodeBrand.Expect:
+        for (const member of this.children) {
+          if (member.brand !== TestTreeNodeBrand.Expect) {
             diagnostics.push(Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(member.node)));
           }
         }

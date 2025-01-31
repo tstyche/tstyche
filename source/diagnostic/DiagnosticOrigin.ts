@@ -1,27 +1,27 @@
 import type ts from "typescript";
-import type { Assertion } from "#collect";
+import type { AssertionNode } from "#collect";
 import type { SourceFile } from "./SourceFile.js";
 
 export class DiagnosticOrigin {
-  assertion: Assertion | undefined;
+  assertion: AssertionNode | undefined;
   end: number;
   sourceFile: SourceFile | ts.SourceFile;
   start: number;
 
-  constructor(start: number, end: number, sourceFile: SourceFile | ts.SourceFile, assertion?: Assertion) {
+  constructor(start: number, end: number, sourceFile: SourceFile | ts.SourceFile, assertion?: AssertionNode) {
     this.start = start;
     this.end = end;
     this.sourceFile = sourceFile;
     this.assertion = assertion;
   }
 
-  static fromAssertion(assertion: Assertion): DiagnosticOrigin {
+  static fromAssertion(assertion: AssertionNode): DiagnosticOrigin {
     const node = assertion.matcherName;
 
     return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), assertion);
   }
 
-  static fromNode(node: ts.Node, assertion?: Assertion): DiagnosticOrigin {
+  static fromNode(node: ts.Node, assertion?: AssertionNode): DiagnosticOrigin {
     return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), assertion);
   }
 }

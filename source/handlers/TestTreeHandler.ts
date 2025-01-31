@@ -1,4 +1,4 @@
-import { TestMemberFlags, type TestTree } from "#collect";
+import { type TestTree, TestTreeNodeFlags } from "#collect";
 import type { Event, EventHandler } from "#events";
 
 export class TestTreeHandler implements EventHandler {
@@ -15,7 +15,7 @@ export class TestTreeHandler implements EventHandler {
         break;
 
       case "collect:node":
-        if (payload.testNode.flags & TestMemberFlags.Only) {
+        if (payload.testNode.flags & TestTreeNodeFlags.Only) {
           this.testTree!.hasOnly = true;
         }
         break;
