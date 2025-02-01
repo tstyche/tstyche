@@ -1,6 +1,12 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
 
+  "json": {
+    "parser": {
+      "allowComments": true
+    }
+  },
+
   "files": {
     "ignore": [
       ".cache/**",
