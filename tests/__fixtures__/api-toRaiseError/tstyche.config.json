@@ -1,0 +1,4 @@
+{
+  // allows snapshotting error messages of '.not.toRaiseError()'
+  "rejectAnyType": false
+}
