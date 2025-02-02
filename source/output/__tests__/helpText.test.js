@@ -81,7 +81,7 @@ test("helpText", async (t) => {
         "  <blue>tstyche path/to/first.test.ts</>",
         "  Only run the test files with matching path.",
         "",
-        "  <blue>tstyche --target 4.9,5.3.2,current</>",
+        "  <blue>tstyche --target 5.3,5.6.2,current</>",
         "  Test on all specified versions of TypeScript.",
         "",
         "",

@@ -77,12 +77,13 @@ export class ProjectService {
 
   #getDefaultCompilerOptions() {
     const defaultCompilerOptions: ts.server.protocol.CompilerOptions = {
+      allowImportingTsExtensions: true,
       allowJs: true,
       checkJs: true,
       esModuleInterop: true,
       jsx: "preserve" as ts.server.protocol.JsxEmit,
       module: "esnext" as ts.server.protocol.ModuleKind,
-      moduleResolution: "node" as ts.server.protocol.ModuleResolutionKind,
+      moduleResolution: "bundler" as ts.server.protocol.ModuleResolutionKind,
       resolveJsonModule: true,
       strictFunctionTypes: true,
       strictNullChecks: true,
@@ -91,11 +92,6 @@ export class ProjectService {
 
     if (Version.isSatisfiedWith(this.#compiler.version, "5.4")) {
       defaultCompilerOptions.module = "preserve" as ts.server.protocol.ModuleKind;
-    }
-
-    if (Version.isSatisfiedWith(this.#compiler.version, "5.0")) {
-      defaultCompilerOptions.allowImportingTsExtensions = true;
-      defaultCompilerOptions.moduleResolution = "bundler" as ts.server.protocol.ModuleResolutionKind;
     }
 
     return defaultCompilerOptions;

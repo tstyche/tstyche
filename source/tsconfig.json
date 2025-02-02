@@ -1,19 +1,13 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "module": "node16",
-    "moduleResolution": "node16",
     "paths": {
       "#scribbler/jsx-runtime": ["./scribbler/jsxRuntime.js"],
       "#*": ["./*/index.js"]
     },
 
-    "verbatimModuleSyntax": true,
-
     "jsx": "react-jsx",
     "jsxImportSource": "#scribbler",
-    "lib": ["es2023"], // do not use the "dom" type definitions
-    "target": "es2022",
 
     "skipLibCheck": false
   },

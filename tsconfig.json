@@ -18,8 +18,9 @@
     "preserveConstEnums": true,
 
     "checkJs": true,
+    "verbatimModuleSyntax": true,
 
-    "lib": ["es2022"], // do not use the "dom" type definitions
+    "lib": ["es2023"], // do not use the "dom" type definitions
     "target": "es2022"
   },
   "exclude": [

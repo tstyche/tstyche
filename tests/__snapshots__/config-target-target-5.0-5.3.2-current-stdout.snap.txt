@@ -1,5 +1,5 @@
-adds TypeScript 4.8.4 to <<basePath>>/tests/__fixtures__/.generated/config-target/.store/typescript@4.8.4
-uses TypeScript 4.8.4 with ./tsconfig.json
+adds TypeScript 5.0.4 to <<basePath>>/tests/__fixtures__/.generated/config-target/.store/typescript@5.0.4
+uses TypeScript 5.0.4 with ./tsconfig.json
 
 pass ./__typetests__/isString.tst.ts
   + is string?

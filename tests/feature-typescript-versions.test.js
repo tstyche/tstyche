@@ -110,41 +110,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 const storeUrl = new URL("./.store/", fixtureUrl);
 
-await test("TypeScript 4.x", async (t) => {
-  t.after(async () => {
-    await clearFixture(fixtureUrl);
-  });
-
-  await writeFixture(fixtureUrl, {
-    // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
-    ["__typetests__/subtype.test.ts"]: `import { omit, pick } from "../../../../../"\n// @ts-expect-error\n${subtypeTestText}`,
-    ["__typetests__/toAcceptProps.test.tsx"]: `// @ts-expect-error\n${toAcceptPropsTestText}`,
-    ["__typetests__/toBe.test.ts"]: `// @ts-expect-error\n${toBeTestText}`,
-    ["__typetests__/toBeAssignableTo.test.ts"]: `// @ts-expect-error\n${toBeAssignableToTestText}`,
-    ["__typetests__/toBeAssignableWith.test.ts"]: `// @ts-expect-error\n${toBeAssignableWithTestText}`,
-    ["__typetests__/toHaveProperty.test.ts"]: `// @ts-expect-error\n${toHavePropertyTestText}`,
-    ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error\n${toRaiseErrorTestText}`,
-  });
-
-  const testCases = ["4.0.2", "4.0.8", "4.1.6", "4.2.4", "4.3.5", "4.4.4", "4.5.5", "4.6.4", "4.7.4", "4.8.4", "4.9.5"];
-
-  for (const version of testCases) {
-    await t.test(`uses TypeScript ${version} as current target`, async () => {
-      await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
-
-      const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-        env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
-      });
-
-      assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
-      assert.equal(stderr, "");
-      assert.equal(exitCode, 0);
-    });
-  }
-});
-
 await test("TypeScript 5.x", async (t) => {
   t.after(async () => {
     await clearFixture(fixtureUrl);
