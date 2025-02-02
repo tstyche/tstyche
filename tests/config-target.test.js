@@ -35,7 +35,7 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", "4.8"];
+    const args = ["--target", "5.2"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -53,7 +53,7 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", "4.8,5.3.2,current"];
+    const args = ["--target", "5.0,5.3.2,current"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -145,7 +145,7 @@ await test("'--target' command line option", async (t) => {
 
   await t.test("when 'target' configuration file option is specified", async () => {
     const config = {
-      target: ["4.8", "current"],
+      target: ["5.4", "current"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -209,7 +209,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when single target is specified", async () => {
     const config = {
-      target: ["4.8"],
+      target: ["5.4"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -221,7 +221,7 @@ await test("'target' configuration file option", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-target-4.8-stdout`,
+      fileName: `${testFileName}-target-5.4-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -231,7 +231,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when multiple targets are specified", async () => {
     const config = {
-      target: ["4.8", "5.3.2", "current"],
+      target: ["5.0", "5.3.2", "current"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -243,7 +243,7 @@ await test("'target' configuration file option", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-target-4.8-5.3.2-current-stdout`,
+      fileName: `${testFileName}-target-5.0-5.3.2-current-stdout`,
       testFileUrl: import.meta.url,
     });
 

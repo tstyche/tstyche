@@ -1,7 +1,6 @@
 import type ts from "typescript";
 import type { AssertionNode } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
-import { Version } from "#version";
 import type { Relation, TypeChecker } from "./types.js";
 
 export class MatchWorker {
@@ -21,22 +20,9 @@ export class MatchWorker {
     const sourceType = this.getType(sourceNode);
     const targetType = this.getType(targetNode);
 
-    // behavior of index signatures changed since TypeScript 4.4
-    if (Version.isSatisfiedWith(this.#compiler.version, "4.4")) {
-      return this.#typeChecker
-        .getIndexInfosOfType(sourceType)
-        .some(({ keyType }) => this.#typeChecker.isApplicableIndexType(targetType, keyType));
-    }
-
-    if (targetType.flags & this.#compiler.TypeFlags.StringLiteral) {
-      return sourceType.getStringIndexType() != null;
-    }
-
-    if (targetType.flags & this.#compiler.TypeFlags.NumberLiteral) {
-      return (sourceType.getStringIndexType() ?? sourceType.getNumberIndexType()) != null;
-    }
-
-    return false;
+    return this.#typeChecker
+      .getIndexInfosOfType(sourceType)
+      .some(({ keyType }) => this.#typeChecker.isApplicableIndexType(targetType, keyType));
   }
 
   checkHasProperty(sourceNode: ts.Node, propertyNameText: string): boolean {

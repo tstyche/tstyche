@@ -112,19 +112,11 @@ export class Store {
 
     const sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
 
-    const toExpose: Array<string> = [];
-
-    // 'isApplicableIndexType()' was added since TypeScript 4.4
-    if (Version.isSatisfiedWith(packageVersion, "4.4")) {
-      toExpose.push("isApplicableIndexType");
-    }
-
-    // 'getTypeOfSymbol()' was exposed since TypeScript 4.6
-    if (!Version.isSatisfiedWith(packageVersion, "4.6")) {
-      toExpose.push("getTypeOfSymbol");
-    }
-
-    toExpose.push("isTypeRelatedTo", "relation: { assignable: assignableRelation, identity: identityRelation }");
+    const toExpose = [
+      "isApplicableIndexType",
+      "isTypeRelatedTo",
+      "relation: { assignable: assignableRelation, identity: identityRelation }",
+    ];
 
     const modifiedSourceText = sourceText.replace("return checker;", `return { ...checker, ${toExpose.join(", ")} };`);
 

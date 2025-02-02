@@ -52,7 +52,7 @@ function CommandLineUsageText() {
   const usage: Array<[commandText: string, descriptionText: string]> = [
     ["tstyche", "Run all tests."],
     ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
-    ["tstyche --target 4.9,5.3.2,current", "Test on all specified versions of TypeScript."],
+    ["tstyche --target 5.3,5.6.2,current", "Test on all specified versions of TypeScript."],
   ];
 
   const usageText = usage.map(([commandText, descriptionText]) => (

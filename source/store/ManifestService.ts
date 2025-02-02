@@ -18,7 +18,7 @@ export class ManifestService {
   #manifestFilePath: string;
   #npmRegistry: string;
   #storePath: string;
-  #supportedVersionRegex = /^(4|5)\.\d\.\d$/;
+  #supportedVersionRegex = /^(5)\.\d\.\d$/;
 
   constructor(storePath: string, npmRegistry: string, fetcher: Fetcher) {
     this.#storePath = storePath;
