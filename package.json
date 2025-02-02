@@ -28,8 +28,6 @@
     "./package.json": "./package.json",
     "./tstyche": "./build/tstyche.js"
   },
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
   "bin": "./build/bin.js",
   "files": [
     "build/*"
@@ -75,7 +73,7 @@
     "typescript": "5.7.3"
   },
   "peerDependencies": {
-    "typescript": "4.x || 5.x"
+    "typescript": "5.x"
   },
   "peerDependenciesMeta": {
     "typescript": {
