@@ -35,7 +35,7 @@ test("'useUnknownInCatchVariables': false", () => {
   try {
     //
   } catch (error) {
-    expect(error).type.toBeAny();
+    expect(error).type.toBe<unknown>();
   }
 });
 `;

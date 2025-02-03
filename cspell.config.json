@@ -16,5 +16,5 @@
   "ignorePaths": ["**/__snapshots__/**/*"],
   "language": "en-US",
   "useGitignore": true,
-  "words": ["codacy", "findup", "identicality", "jsxs", "monocart", "tsserverlibrary", "typetests"]
+  "words": ["codacy", "findup", "identicality", "jsxs", "monocart", "nodenext", "tsserverlibrary", "typetests"]
 }

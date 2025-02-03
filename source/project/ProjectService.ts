@@ -3,7 +3,6 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Select } from "#select";
-import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
@@ -80,19 +79,16 @@ export class ProjectService {
       allowImportingTsExtensions: true,
       allowJs: true,
       checkJs: true,
-      esModuleInterop: true,
+      exactOptionalPropertyTypes: true,
       jsx: "preserve" as ts.server.protocol.JsxEmit,
-      module: "esnext" as ts.server.protocol.ModuleKind,
-      moduleResolution: "bundler" as ts.server.protocol.ModuleResolutionKind,
+      module: "nodenext" as ts.server.protocol.ModuleKind,
+      moduleResolution: "nodenext" as ts.server.protocol.ModuleResolutionKind,
+      noUncheckedIndexedAccess: true,
       resolveJsonModule: true,
-      strictFunctionTypes: true,
-      strictNullChecks: true,
+      strict: true,
       target: "esnext" as ts.server.protocol.ScriptTarget,
+      verbatimModuleSyntax: true,
     };
-
-    if (Version.isSatisfiedWith(this.#compiler.version, "5.4")) {
-      defaultCompilerOptions.module = "preserve" as ts.server.protocol.ModuleKind;
-    }
 
     return defaultCompilerOptions;
   }
