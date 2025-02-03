@@ -175,8 +175,9 @@ await test("store", async (t) => {
     for (const { target, testCase } of testCases) {
       await t.test(testCase, async () => {
         const storeManifest = {
-          $version: "2",
+          $version: "3",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+          minorVersions: ["5.2", "5.3"],
           npmRegistry: "https://registry.npmjs.org",
           resolutions: {
             ["5.2"]: "5.2.2",
@@ -230,7 +231,8 @@ await test("store", async (t) => {
     for (const { target, testCase } of testCases) {
       await t.test(testCase, async () => {
         const storeManifest = {
-          $version: "2",
+          $version: "3",
+          minorVersions: ["5.2", "5.3"],
           npmRegistry: "https://registry.npmjs.org",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
           resolutions: {
@@ -266,8 +268,9 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "2",
+        $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        minorVersions: ["5.2", "5.3"],
         npmRegistry: "https://tstyche.org",
         packages: {
           "5.2.2": {
@@ -310,8 +313,9 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "2",
+        $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        minorVersions: ["5.2", "5.3"],
         npmRegistry: "https://registry.npmjs.org",
         packages: {
           "5.2.2": {
@@ -354,8 +358,9 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "2",
+        $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        minorVersions: ["5.2", "5.3"],
         npmRegistry: "https://nothing.tstyche.org",
         packages: {
           "5.2.2": {

@@ -108,7 +108,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when text is unparsable, store manifest is regenerated", async () => {
-    const storeManifest = '{"$version":"2","last';
+    const storeManifest = '{"$version":"3","last';
 
     await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: storeManifest,
@@ -128,7 +128,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when '$version' is different, store manifest is regenerated", async () => {
-    const storeManifest = { $version: "1" };
+    const storeManifest = { $version: "2" };
 
     await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: JSON.stringify(storeManifest),
@@ -141,7 +141,7 @@ await test("store", async (t) => {
       encoding: "utf8",
     });
 
-    assert.matchObject(result, { $version: "2" });
+    assert.matchObject(result, { $version: "3" });
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -149,7 +149,7 @@ await test("store", async (t) => {
 
   await t.test("when 'npmRegistry' is different, store manifest is regenerated", async () => {
     const storeManifest = {
-      $version: "2",
+      $version: "3",
       npmRegistry: "https://registry.npmjs.org",
     };
 
@@ -176,7 +176,7 @@ await test("store", async (t) => {
 
   await t.test("when is up to date, store manifest is not regenerated", async () => {
     const storeManifest = JSON.stringify({
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
       npmRegistry: "https://registry.npmjs.org",
       packages: {
@@ -212,7 +212,7 @@ await test("store", async (t) => {
 
   await t.test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = JSON.stringify({
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
       npmRegistry: "https://registry.npmjs.org",
       packages: {

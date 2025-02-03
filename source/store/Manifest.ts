@@ -1,6 +1,7 @@
 export interface ManifestData {
   $version?: string;
   lastUpdated?: number;
+  minorVersions: Array<string>;
   npmRegistry: string;
   packages: Record<string, { integrity: string; tarball: string }>;
   resolutions: Record<string, string>;
@@ -8,10 +9,11 @@ export interface ManifestData {
 }
 
 export class Manifest {
-  static #version = "2";
+  static #version = "3";
 
   $version: string;
   lastUpdated: number;
+  minorVersions: Array<string>;
   npmRegistry: string;
   packages: Record<string, { integrity: string; tarball: string }>;
   resolutions: Record<string, string>;
@@ -20,6 +22,7 @@ export class Manifest {
   constructor(data: ManifestData) {
     this.$version = data.$version ?? Manifest.#version;
     this.lastUpdated = data.lastUpdated ?? Date.now();
+    this.minorVersions = data.minorVersions;
     this.npmRegistry = data.npmRegistry;
     this.packages = data.packages;
     this.resolutions = data.resolutions;
@@ -62,6 +65,7 @@ export class Manifest {
     const manifestData: Required<ManifestData> = {
       $version: this.$version,
       lastUpdated: this.lastUpdated,
+      minorVersions: this.minorVersions,
       npmRegistry: this.npmRegistry,
       packages: this.packages,
       resolutions: this.resolutions,

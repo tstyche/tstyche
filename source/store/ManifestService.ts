@@ -68,7 +68,7 @@ export class ManifestService {
       }
     }
 
-    const minorVersions = new Set(versions.map((version) => version.slice(0, -2)));
+    const minorVersions = [...new Set(versions.map((version) => version.slice(0, -2)))];
 
     for (const tag of minorVersions) {
       const resolvedVersion = versions.findLast((version) => version.startsWith(tag));
@@ -92,8 +92,7 @@ export class ManifestService {
       }
     }
 
-    // TODO include 'minorVersions' in the manifest in TSTyche 4
-    return new Manifest({ npmRegistry: this.#npmRegistry, packages, resolutions, versions });
+    return new Manifest({ minorVersions, npmRegistry: this.#npmRegistry, packages, resolutions, versions });
   }
 
   async open(options?: { refresh?: boolean }): Promise<Manifest | undefined> {
