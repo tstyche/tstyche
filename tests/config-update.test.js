@@ -51,7 +51,7 @@ await test("'--update' command line option", async (t) => {
 
   await t.test("updates existing store manifest", async () => {
     const oldStoreManifest = JSON.stringify({
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://registry.npmjs.org",
     });

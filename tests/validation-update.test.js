@@ -19,7 +19,7 @@ await test("'--update' command line option", async (t) => {
 
   await t.test("when fetch request of metadata fails with 404", async () => {
     const storeManifest = {
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://tstyche.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
@@ -51,7 +51,7 @@ await test("'--update' command line option", async (t) => {
 
   await t.test("when fetch request of metadata times out", async () => {
     const storeManifest = {
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://nothing.tstyche.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
@@ -83,7 +83,7 @@ await test("'--update' command line option", async (t) => {
 
   await t.test("when fetch request of metadata fails", async () => {
     const storeManifest = {
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://nothing.tstyche.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],

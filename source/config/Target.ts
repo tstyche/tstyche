@@ -17,7 +17,7 @@ export class Target {
       await Store.open();
 
       if (Store.manifest != null) {
-        let versions = Object.keys(Store.manifest.resolutions).slice(0, -4);
+        let versions = [...Store.manifest.minorVersions];
 
         for (const comparator of query.split(" ")) {
           versions = Target.#filter(comparator, versions);
