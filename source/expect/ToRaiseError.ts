@@ -115,17 +115,21 @@ export class ToRaiseError {
     diagnostic: ts.Diagnostic,
     targetNode: ts.StringLiteralLike | ts.NumericLiteral | ts.RegularExpressionLiteral,
   ) {
+    if (this.#compiler.isNumericLiteral(targetNode)) {
+      return Number.parseInt(targetNode.text, 10) === diagnostic.code;
+    }
+
+    const messageText =
+      typeof diagnostic.messageText === "string"
+        ? diagnostic.messageText
+        : Diagnostic.toMessageText(diagnostic.messageText).join("\n");
+
     if (this.#compiler.isRegularExpressionLiteral(targetNode)) {
       const targetRegex = new RegExp(...(targetNode.text.slice(1).split("/") as [pattern: string, flags: string]));
 
-      return targetRegex.test(this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0));
+      return targetRegex.test(messageText);
     }
 
-    if (this.#compiler.isStringLiteralLike(targetNode)) {
-      // TODO use 'Diagnostic.toMessageText()' to get list of messages, loop through and check each of them in TSTyche 4
-      return this.#compiler.flattenDiagnosticMessageText(diagnostic.messageText, " ", 0).includes(targetNode.text);
-    }
-
-    return Number.parseInt(targetNode.text, 10) === diagnostic.code;
+    return messageText.includes(targetNode.text);
   }
 }
