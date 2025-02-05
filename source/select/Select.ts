@@ -77,7 +77,6 @@ export class Select {
     return matchPatterns.includedFile.test(filePath);
   }
 
-  // TODO rename to 'isTestFileIncluded()' and add 'isTestFile()' that ignores 'matchPatterns'
   static isTestFile(filePath: string, resolvedConfig: ResolvedConfig): boolean {
     const matchPatterns = Select.#getMatchPatterns(resolvedConfig.testFileMatch);
 
