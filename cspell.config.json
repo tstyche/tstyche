@@ -5,9 +5,9 @@
     "typescript"
   ],
   "files": [
-    "**/*.js",
-    "**/*.json",
-    "**/*.md",
+    "*.js",
+    "*.json",
+    "*.md",
     "benchmarks/**/*",
     "examples/**/*",
     "models/**/*",
@@ -20,7 +20,6 @@
     "findup",
     "jsxs",
     "monocart",
-    "nodenext",
     "tsserverlibrary",
     "typetests"
   ]

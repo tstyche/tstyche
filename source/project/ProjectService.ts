@@ -80,13 +80,13 @@ export class ProjectService {
       allowJs: true,
       checkJs: true,
       exactOptionalPropertyTypes: true,
-      jsx: "preserve" as ts.server.protocol.JsxEmit,
-      module: "nodenext" as ts.server.protocol.ModuleKind,
-      moduleResolution: "nodenext" as ts.server.protocol.ModuleResolutionKind,
+      jsx: this.#compiler.JsxEmit.Preserve,
+      module: this.#compiler.ModuleKind.NodeNext,
+      moduleResolution: this.#compiler.ModuleResolutionKind.NodeNext,
       noUncheckedIndexedAccess: true,
       resolveJsonModule: true,
       strict: true,
-      target: "esnext" as ts.server.protocol.ScriptTarget,
+      target: this.#compiler.ScriptTarget.ESNext,
       verbatimModuleSyntax: true,
     };
 
