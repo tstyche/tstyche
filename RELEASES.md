@@ -10,7 +10,7 @@
 
 ### Fixed
 
-- Simplify complex unions and intersections for identicality checks ([#394](https://github.com/tstyche/tstyche/pull/394))
+- Simplify complex unions and intersections for `.toBe()` checks ([#394](https://github.com/tstyche/tstyche/pull/394))
 
 ### Changed
 
