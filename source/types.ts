@@ -1,3 +1,10 @@
+interface SkipConditions {
+  /**
+   * The range of TypeScript versions.
+   */
+  target?: string;
+}
+
 interface Describe {
   /**
    * Defines a group of tests.
@@ -20,6 +27,13 @@ interface Describe {
    * @param callback - The function to create a scope for a group of tests.
    */
   skip: (name: string, callback: () => void | Promise<void>) => void;
+  /**
+   * If any of the given conditions are met, marks a group of tests as skipped.
+   *
+   * @param name - The name of the group.
+   * @param callback - The function to create a scope for a group of tests.
+   */
+  skipIf: (conditions: SkipConditions) => (name: string, callback: () => void | Promise<void>) => void;
   /**
    * Marks a group of tests as yet to be implemented.
    *
@@ -51,6 +65,13 @@ interface Test {
    * @param callback - The function with a code snippet and assertions.
    */
   skip: (name: string, callback: () => void | Promise<void>) => void;
+  /**
+   * If any of the given conditions are met, a test as skipped.
+   *
+   * @param name - The name of the test.
+   * @param callback - The function with a code snippet and assertions.
+   */
+  skipIf: (conditions: SkipConditions) => (name: string, callback: () => void | Promise<void>) => void;
   /**
    * Marks a test as yet to be implemented.
    *
@@ -260,6 +281,37 @@ interface Expect {
    * Marks an assertion as skipped.
    */
   skip: {
+    /**
+     * Marks an assertion as skipped.
+     *
+     * @template Source - The type against which the assertion is made.
+     */
+    <Source>(): Modifier;
+    /**
+     * Marks an assertion as skipped.
+     *
+     * @param source - The expression against which type the assertion is made.
+     */
+    (source: unknown): Modifier;
+    fail: {
+      /**
+       * Marks an assertion as supposed to fail.
+       *
+       * @template Source - The type against which the assertion is made.
+       */
+      <Source>(): Modifier;
+      /**
+       * Marks an assertion as supposed to fail.
+       *
+       * @param source - The expression against which type the assertion is made.
+       */
+      (source: unknown): Modifier;
+    };
+  };
+  /**
+   * If any of the given conditions are met, an assertion as skipped.
+   */
+  skipIf(conditions: SkipConditions): {
     /**
      * Marks an assertion as skipped.
      *
