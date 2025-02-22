@@ -12,13 +12,13 @@ Error: Expected 2 arguments, but got 1. ts(2554)
 
     An argument for 'callback' was not provided. ts(6210)
 
-      36 |      * @param callback - The function with a code snippet and assertions.
-      37 |      */
-      38 |     (name: string, callback: () => void | Promise<void>): void;
+      49 |      * @param callback - The function with a code snippet and assertions.
+      50 |      */
+      51 |     (name: string, callback: () => void | Promise<void>): void;
          |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      39 |     /**
-      40 |      * Marks a test as focused.
-      41 |      *
+      52 |     /**
+      53 |      * Marks a test as focused.
+      54 |      *
 
-           at ../../../build/index.d.ts:38:20
+           at ../../../build/index.d.ts:51:20
 
