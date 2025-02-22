@@ -28,7 +28,7 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn build --sourcemap
-      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+      - uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: build-${{ github.sha }}
           path: build
@@ -182,7 +182,7 @@ jobs:
       - run: node ./scripts/report-coverage.js
         env:
           FORCE_COLOR: true
-      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+      - uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: coverage-${{ matrix.os }}-${{ github.sha }}
           path: coverage/raw-coverage-*
