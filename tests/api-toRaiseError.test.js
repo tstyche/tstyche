@@ -49,4 +49,20 @@ await test("toRaiseError", async (t) => {
 
     assert.equal(exitCode, 1);
   });
+
+  await t.test("toRaiseError(multiline)", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["toRaiseError-multiline.tst.ts"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-multiline-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-multiline-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });
