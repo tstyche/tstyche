@@ -48,7 +48,7 @@ jobs:
           node-version: lts/*
       - run: corepack enable
       - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           name: build-${{ github.sha }}
           path: build
@@ -70,7 +70,7 @@ jobs:
           node-version: lts/*
       - run: corepack enable
       - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           name: build-${{ github.sha }}
           path: build
@@ -91,7 +91,7 @@ jobs:
           node-version: lts/*
       - run: corepack enable
       - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           name: build-${{ github.sha }}
           path: build
@@ -120,7 +120,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: corepack enable
       - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           name: build-${{ github.sha }}
           path: build
@@ -146,7 +146,7 @@ jobs:
           node-version: lts/*
       - run: corepack enable
       - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           name: build-${{ github.sha }}
           path: build
@@ -172,7 +172,7 @@ jobs:
           node-version: 20
       - run: corepack enable
       - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           name: build-${{ github.sha }}
           path: build
@@ -204,11 +204,11 @@ jobs:
           node-version: lts/*
       - run: corepack enable
       - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           name: build-${{ github.sha }}
           path: build
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           merge-multiple: true
           path: coverage
