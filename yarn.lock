@@ -376,9 +376,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-fullstack@npm:^3.2.5":
-  version: 3.2.5
-  resolution: "@cspell/dict-fullstack@npm:3.2.5"
-  checksum: 10c0/715a0591efa35a25528a0498ebe3d4ec07ec4f4173b0ea1fa855c72c810275118be6c393c9699c7a03ccae26de4aa5b9952ba93bfafc3139fd9b96a8f32eb781
+  version: 3.2.6
+  resolution: "@cspell/dict-fullstack@npm:3.2.6"
+  checksum: 10c0/bf3482a116586a4d45881ec5e9264f396e1fb2426b172901d799baa6533f6aa19055f8b2f651546272b7bdd73f0223d2a723c3ce0e3df1cb398fe37a9161df5c
   languageName: node
   linkType: hard
 
@@ -514,9 +514,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.1.27":
-  version: 5.1.27
-  resolution: "@cspell/dict-npm@npm:5.1.27"
-  checksum: 10c0/dcaacea771c2f1121e00fc75c008b9b17f059580d935693314f7aeaad7bfcb14adb84611856ab6f0943274bcb2d7e5280ab7f9edb5a8f452b3c1310a33ffe405
+  version: 5.1.28
+  resolution: "@cspell/dict-npm@npm:5.1.28"
+  checksum: 10c0/d1db4cd07d41d782bc1a0af1ff44ff2c1a69e73e29f7a4b1bb96919a894d2c6b95274905062829ab7b5477286bd6c9505e1a0d578d8584a380591c12eb0d998a
   languageName: node
   linkType: hard
 
@@ -614,9 +614,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-terraform@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@cspell/dict-terraform@npm:1.1.0"
-  checksum: 10c0/b8efebb726d831ac0d2e594253365d74c9fe4fef1f3fd1105307045f067950c20ff9788b15b48662328113cd4386e5238bc00ac3f820c0327d8abbdd24b4fa0f
+  version: 1.1.1
+  resolution: "@cspell/dict-terraform@npm:1.1.1"
+  checksum: 10c0/c6d54c4e9cae5f8e83fe07051d09224c7d8cdbe02e3d8c75613f1c01e187a0959065fbe9c67fcaf8715aac6633196b32839e5ae05e9a63d7b07448b3e7e33eb3
   languageName: node
   linkType: hard
 
@@ -1142,7 +1142,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.6":
+"cross-spawn@npm:^7.0.6":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
   dependencies:
@@ -1454,9 +1454,9 @@ __metadata:
   linkType: hard
 
 "find-up-simple@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "find-up-simple@npm:1.0.0"
-  checksum: 10c0/de1ad5e55c8c162f5600fe3297bb55a3da5cd9cb8c6755e463ec1d52c4c15a84e312a68397fb5962d13263b3dbd4ea294668c465ccacc41291d7cc97588769f9
+  version: 1.0.1
+  resolution: "find-up-simple@npm:1.0.1"
+  checksum: 10c0/ad34de157b7db925d50ff78302fefb28e309f3bc947c93ffca0f9b0bccf9cf1a2dc57d805d5c94ec9fc60f4838f5dbdfd2a48ecd77c23015fa44c6dd5f60bc40
   languageName: node
   linkType: hard
 
@@ -1477,17 +1477,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"foreground-child@npm:^3.1.0":
-  version: 3.3.0
-  resolution: "foreground-child@npm:3.3.0"
-  dependencies:
-    cross-spawn: "npm:^7.0.0"
-    signal-exit: "npm:^4.0.1"
-  checksum: 10c0/028f1d41000553fcfa6c4bb5c372963bf3d9bf0b1f25a87d1a6253014343fb69dfb1b42d9625d7cf44c8ba429940f3d0ff718b62105d4d4a4f6ef8ca0a53faa2
-  languageName: node
-  linkType: hard
-
-"foreground-child@npm:^3.3.1":
+"foreground-child@npm:^3.1.0, foreground-child@npm:^3.3.1":
   version: 3.3.1
   resolution: "foreground-child@npm:3.3.1"
   dependencies:
@@ -1880,8 +1870,8 @@ __metadata:
   linkType: hard
 
 "minipass-fetch@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "minipass-fetch@npm:4.0.0"
+  version: 4.0.1
+  resolution: "minipass-fetch@npm:4.0.1"
   dependencies:
     encoding: "npm:^0.1.13"
     minipass: "npm:^7.0.3"
@@ -1890,7 +1880,7 @@ __metadata:
   dependenciesMeta:
     encoding:
       optional: true
-  checksum: 10c0/7fa30ce7c373fb6f94c086b374fff1589fd7e78451855d2d06c2e2d9df936d131e73e952163063016592ed3081444bd8d1ea608533313b0149156ce23311da4b
+  checksum: 10c0/a3147b2efe8e078c9bf9d024a0059339c5a09c5b1dded6900a219c218cc8b1b78510b62dae556b507304af226b18c3f1aeb1d48660283602d5b6586c399eed5c
   languageName: node
   linkType: hard
 
