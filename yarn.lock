@@ -257,9 +257,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-cpp@npm:^6.0.4":
-  version: 6.0.5
-  resolution: "@cspell/dict-cpp@npm:6.0.5"
-  checksum: 10c0/8f248fc36f0188fe27d0b1464f10bf5059706353ead43d4c1a3d03c144b48145f9a842dba1e9e173ba4e51a2ce046daa425af826d64eea85e07e3806e1d0e1fc
+  version: 6.0.6
+  resolution: "@cspell/dict-cpp@npm:6.0.6"
+  checksum: 10c0/e31077f8cb9e13d41c666900dbf72ae57509e4120e67eda6d703db5dedcff87ae630ccf6bf24374dc57c797260a58348c9f29812a3909d21dd0a5202cbcbabb0
   languageName: node
   linkType: hard
 
@@ -327,9 +327,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-en-common-misspellings@npm:^2.0.9":
-  version: 2.0.9
-  resolution: "@cspell/dict-en-common-misspellings@npm:2.0.9"
-  checksum: 10c0/e47b7d203ac37cc372012763ab108b8505a88bf5abfba17e965f987fa45b92db405620d4dd8585bd91d194987c0da8f25ba0ccbf9b89eb66e786a198e9962cd4
+  version: 2.0.10
+  resolution: "@cspell/dict-en-common-misspellings@npm:2.0.10"
+  checksum: 10c0/8068cd633dd0f52e4770380959e9ef3d54b15b5c063b9c532a0298c3878f17848ebffb8ca4065577a5a739dcc2415de031464f07f65b6499970b40d4b2905e00
   languageName: node
   linkType: hard
 
@@ -397,9 +397,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-golang@npm:^6.0.18":
-  version: 6.0.18
-  resolution: "@cspell/dict-golang@npm:6.0.18"
-  checksum: 10c0/09f3ef103c095f5c192f462383ecef021f1fe75c0d2880ce971ab7b3f494c861fdda97b93c619c7823db036670bb3d05971d49f9bf1a1fb979343ab9f51ca15f
+  version: 6.0.19
+  resolution: "@cspell/dict-golang@npm:6.0.19"
+  checksum: 10c0/1befb872db949357feeecb2bf492c78f381944c713472f44642a92aedffe97b4ddaaaec35f36efacbd96ba73ecaca94cfd283b4998351eea23cecdf6d4eb5c34
   languageName: node
   linkType: hard
 
@@ -514,9 +514,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.1.27":
-  version: 5.1.29
-  resolution: "@cspell/dict-npm@npm:5.1.29"
-  checksum: 10c0/affb83c8c0054bfabe57a794586eda7681079c051466959f473918db4160c8a25f59b7023dbad03081a7a4c5c0396ef86ab585dc6399709700dc30aeae892303
+  version: 5.1.30
+  resolution: "@cspell/dict-npm@npm:5.1.30"
+  checksum: 10c0/56b1a1fe5598032bb20b60cb5129b798829f62d2fc1135cbaeb346fe47d3e58d7740605e829456ec1706c628fc4fc799395718cb37ce32ced0110a6105d2f9da
   languageName: node
   linkType: hard
 
@@ -542,11 +542,11 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-python@npm:^4.2.15":
-  version: 4.2.15
-  resolution: "@cspell/dict-python@npm:4.2.15"
+  version: 4.2.16
+  resolution: "@cspell/dict-python@npm:4.2.16"
   dependencies:
     "@cspell/dict-data-science": "npm:^2.0.7"
-  checksum: 10c0/4bbd36ac1f0111e342fd808cc14965e59d4582b8c454826b24ccf4a02d07484879700dbdd77eb686a3ef17fd12edb4c4529b4d2c8d0aa0267ac961809d13c75d
+  checksum: 10c0/4ee40454f04b8b20bd0e9b0484310db8f5015232410c585cf2eb9fbc88064352df322c47593b4fa7ea8046b3a5c1d960b16e48e5d49e77478b0ea07b7a7c037a
   languageName: node
   linkType: hard
 
@@ -558,9 +558,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-ruby@npm:^5.0.7":
-  version: 5.0.7
-  resolution: "@cspell/dict-ruby@npm:5.0.7"
-  checksum: 10c0/84ae8331467911d687f9c145a0cc310f06e9bae0c2abc872cfc2d890abe0fe9c53a7f6ea7d3f5de546ffcc715b2b8c63dcfe30e5d58a9eea910d307dad335b55
+  version: 5.0.8
+  resolution: "@cspell/dict-ruby@npm:5.0.8"
+  checksum: 10c0/24807292b33f3468c1580ef9bc781a6c93bb3b745b9130fa1d23ae9fe685609e08f13b0bdd61d271ec7307cf86273909fcff3958cc190a08b4fc2433729cf950
   languageName: node
   linkType: hard
 
