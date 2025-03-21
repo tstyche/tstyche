@@ -68,7 +68,7 @@
     "monocart-coverage-reports": "2.12.3",
     "pretty-ansi": "3.0.0",
     "rollup": "4.36.0",
-    "rollup-plugin-dts": "6.1.1",
+    "rollup-plugin-dts": "6.2.1",
     "tslib": "2.8.1",
     "typescript": "5.8.2"
   },
