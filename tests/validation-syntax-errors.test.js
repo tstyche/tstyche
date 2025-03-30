@@ -17,7 +17,7 @@ test("is syntax error?", () => {
 });
 
 test("is skipped?", () => {
-  expect(one("abc")).type.toBeVoid();
+  expect(one("abc")).type.toBe<void>();
 });
 
 test("is broken?"

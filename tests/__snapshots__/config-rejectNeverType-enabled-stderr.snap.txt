@@ -24,7 +24,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
     |            ~~~~~~~~~~~
   7 |   });
   8 | 
-  9 |   test("allows '.toBeNever()'", () => {
+  9 |   test("allows '.toBe<never>()'", () => {
 
       at ./__typetests__/isRejected.test.ts:6:12
 
@@ -54,7 +54,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
      |            ~~~~~
   29 |   });
   30 | 
-  31 |   test("allows '.toBeNever()'", () => {
+  31 |   test("allows '.toBe<never>()'", () => {
 
        at ./__typetests__/isRejected.test.ts:28:12
 
@@ -99,7 +99,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
      |                                    ~~~~~~~~~~~
   47 |   });
   48 | 
-  49 |   test("allows '.toBeNever()'", () => {
+  49 |   test("allows '.toBe<never>()'", () => {
 
        at ./__typetests__/isRejected.test.ts:46:36
 
@@ -114,7 +114,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
      |                                            ~~~~~
   60 |   });
   61 | 
-  62 |   test("allows '.toBeNever()'", () => {
+  62 |   test("allows '.toBe<never>()'", () => {
 
        at ./__typetests__/isRejected.test.ts:59:44
 

@@ -1,28 +1,28 @@
 import { describe, expect, test } from "tstyche";
 
-expect<string>().type.toBeString();
-expect.fail<string>().type.toBeString();
+expect<string>().type.toBe<string>();
+expect.fail<string>().type.toBe<string>();
 
-expect.fail<never>().type.toBeString();
+expect.fail<never>().type.toBe<string>();
 
 expect
   .fail(() => {
-    expect<number>().type.toBeNumber();
+    expect<number>().type.toBe<number>();
   })
   .type.toBe<void>();
 
 describe("is describe?", () => {
   test("is string?", () => {
-    expect<string>().type.toBeString();
-    expect.fail<string>().type.toBeString();
+    expect<string>().type.toBe<string>();
+    expect.fail<string>().type.toBe<string>();
 
-    expect.fail<never>().type.toBeVoid();
+    expect.fail<never>().type.toBe<void>();
   });
 });
 
 test("is number?", () => {
-  expect<number>().type.toBeNumber();
-  expect.fail<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
+  expect.fail<number>().type.toBe<number>();
 
-  expect.fail<never>().type.toBeVoid();
+  expect.fail<never>().type.toBe<void>();
 });

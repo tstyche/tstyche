@@ -1,9 +1,9 @@
 import { expect, test } from "tstyche";
 
 test("is NOT number?", () => {
-  expect<string>().type.toBeNumber();
+  expect<string>().type.toBe<number>();
 });
 
 test("is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });

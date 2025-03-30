@@ -1,14 +1,14 @@
 import { describe, expect, test } from "tstyche";
 
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 describe("nested 'expect()' is handled?", () => {
-  expect<never>().type.toBeNever();
-  expect<null>().type.toBeNull();
+  expect<never>().type.toBe<never>();
+  expect<null>().type.toBe<null>();
 
   test("is number?", () => {
-    expect<number>().type.toBeNumber();
+    expect<number>().type.toBe<number>();
   });
 });

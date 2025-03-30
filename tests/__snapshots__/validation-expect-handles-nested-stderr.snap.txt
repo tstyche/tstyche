@@ -42,7 +42,7 @@ Error: 'test()' cannot be nested within 'expect()'.
      | ~~~~
   15 | 
   16 |   // can be nested!
-  17 |   expect<number>().type.toBeString();
+  17 |   expect<number>().type.toBe<string>();
 
        at ./__typetests__/handles-nested.tst.ts:12:3
 

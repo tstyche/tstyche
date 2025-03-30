@@ -56,7 +56,7 @@ describe("parent", () => {
     const testText = `import { describe } from "tstyche";
 describe.skip("skipped describe", function () {
   test("is skipped?", () => {
-    expect<void>().type.toBeVoid();
+    expect<void>().type.toBe<void>();
   });
 });
 `;
@@ -122,7 +122,7 @@ test("empty test", () => {
   await t.test("allows a file to have only skipped test", async () => {
     const testText = `import { describe, expect, test } from "tstyche";
 test.skip("is skipped?", () => {
-  expect<void>().type.toBeVoid();
+  expect<void>().type.toBe<void>();
 });
 `;
 
@@ -164,7 +164,7 @@ test.todo("and this one");
 
   await t.test("allows a file to have only expect", async () => {
     const testText = `import { describe, expect, test } from "tstyche";
-expect<number>().type.toBeNumber();
+expect<number>().type.toBe<number>();
 `;
 
     await writeFixture(fixtureUrl, {

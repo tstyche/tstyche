@@ -130,7 +130,7 @@ await test("Runner", async (t) => {
 
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'expect.skip'`, async () => {
-        const position = isWindows ? 273 : 261;
+        const position = isWindows ? 281 : 269;
         const task = new tstyche.Task(filePath, position);
 
         await runner.run([task]);
@@ -156,7 +156,7 @@ await test("Runner", async (t) => {
 
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'test.skip'`, async () => {
-        const position = isWindows ? 117 : 111;
+        const position = isWindows ? 119 : 113;
         const task = new tstyche.Task(filePath, position);
 
         await runner.run([task]);

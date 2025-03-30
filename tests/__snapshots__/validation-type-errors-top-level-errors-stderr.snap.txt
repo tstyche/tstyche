@@ -16,7 +16,7 @@ Error: Argument of type 'number' is not assignable to parameter of type 'string'
   13 | 
   14 | test(284963, () => {
      |      ~~~~~~
-  15 |   expect<string>().type.toBeString();
+  15 |   expect<string>().type.toBe<string>();
   16 | });
   17 | 
 

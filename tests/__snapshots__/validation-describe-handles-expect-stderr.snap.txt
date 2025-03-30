@@ -2,9 +2,9 @@ Error: 'expect()' cannot be nested within 'describe()'.
 
    6 | 
    7 | describe("nested 'expect()' is handled?", () => {
-   8 |   expect<never>().type.toBeNever();
-     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   9 |   expect<null>().type.toBeNull();
+   8 |   expect<never>().type.toBe<never>();
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   9 |   expect<null>().type.toBe<null>();
   10 | 
   11 |   test("is number?", () => {
 
@@ -13,12 +13,12 @@ Error: 'expect()' cannot be nested within 'describe()'.
 Error: 'expect()' cannot be nested within 'describe()'.
 
    7 | describe("nested 'expect()' is handled?", () => {
-   8 |   expect<never>().type.toBeNever();
-   9 |   expect<null>().type.toBeNull();
-     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   8 |   expect<never>().type.toBe<never>();
+   9 |   expect<null>().type.toBe<null>();
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   10 | 
   11 |   test("is number?", () => {
-  12 |     expect<number>().type.toBeNumber();
+  12 |     expect<number>().type.toBe<number>();
 
        at ./__typetests__/handles-expect.tst.ts:9:3
 

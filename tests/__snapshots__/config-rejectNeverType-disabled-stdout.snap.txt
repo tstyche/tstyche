@@ -3,18 +3,18 @@ uses TypeScript <<version>> with ./tsconfig.json
 pass ./__typetests__/isRejected.test.ts
   argument for 'source'
     + rejects the 'never' type
-    + allows '.toBeNever()'
+    + allows '.toBe<never>()'
     + allows '.toRaiseError()', but not '.not.toRaiseError()'
   type argument for 'Source'
     + allows only explicit 'never'
-    + allows '.toBeNever()'
+    + allows '.toBe<never>()'
     + allows '.toRaiseError()', but not '.not.toRaiseError()'
   argument for 'target'
     + rejects the 'never' type
-    + allows '.toBeNever()'
+    + allows '.toBe<never>()'
   type argument for 'Target'
     + allows only explicit 'never'
-    + allows '.toBeNever()'
+    + allows '.toBe<never>()'
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total

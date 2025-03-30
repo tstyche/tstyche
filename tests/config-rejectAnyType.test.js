@@ -14,8 +14,8 @@ describe("argument for 'source'", () => {
     expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
   });
 
-  test("allows '.toBeAny()'", () => {
-    expect({} as any).type.toBeAny();
+  test("allows '.toBe<any>()'", () => {
+    expect({} as any).type.toBe<any>();
   });
 
   test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
@@ -36,8 +36,8 @@ describe("type argument for 'Source'", () => {
     expect<Any>().type.toBeAssignableTo<{ a: number }>(); // rejected
   });
 
-  test("allows '.toBeAny()'", () => {
-    expect<Any>().type.toBeAny();
+  test("allows '.toBe<any>()'", () => {
+    expect<Any>().type.toBe<any>();
   });
 
   test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
@@ -56,8 +56,8 @@ describe("argument for 'target'", () => {
     expect<number>().type.not.toBe(getResult(123)); // rejected
   });
 
-  test("allows '.toBeAny()'", () => {
-    expect({ a: 123 }).type.not.toBeAny();
+  test("allows '.toBe<any>()'", () => {
+    expect({ a: 123 }).type.not.toBe<any>();
   });
 });
 
@@ -69,8 +69,8 @@ describe("type argument for 'Target'", () => {
     expect<{ a: boolean }>().type.not.toBe<Any>(); // rejected
   });
 
-  test("allows '.toBeAny()'", () => {
-    expect<{ a: boolean }>().type.not.toBeAny();
+  test("allows '.toBe<any>()'", () => {
+    expect<{ a: boolean }>().type.not.toBe<any>();
   });
 });
 `;

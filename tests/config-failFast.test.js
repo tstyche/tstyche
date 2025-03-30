@@ -6,15 +6,15 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.not.toBeString();
-  expect<string>().type.not.toBeString();
+  expect<string>().type.not.toBe<string>();
+  expect<string>().type.not.toBe<string>();
 });
 `;
 
 const isNumberTestText = `import { expect, test } from "tstyche";
 test("is number?", () => {
-  expect<number>().type.not.toBeNumber();
-  expect<number>().type.not.toBeNumber();
+  expect<number>().type.not.toBe<number>();
+  expect<number>().type.not.toBe<number>();
 });
 `;
 

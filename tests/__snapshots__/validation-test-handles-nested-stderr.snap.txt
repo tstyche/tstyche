@@ -4,13 +4,13 @@ Error: 'describe()' cannot be nested within 'test()'.
   3 | test("is string?", () => {
   4 |   describe("nested describe is handled?", () => {
     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  5 |     expect<number>().type.toBeNumber();
-    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  5 |     expect<number>().type.toBe<number>();
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   6 |   });
     | ~~~~
   7 | 
   8 |   test("nested test is handled?", () => {
-  9 |     expect<never>().type.toBeNever();
+  9 |     expect<never>().type.toBe<never>();
 
       at ./__typetests__/handles-nested.tst.ts:4:3
 
@@ -20,12 +20,12 @@ Error: 'test()' cannot be nested within 'test()'.
    7 | 
    8 |   test("nested test is handled?", () => {
      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   9 |     expect<never>().type.toBeNever();
-     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   9 |     expect<never>().type.toBe<never>();
+     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   10 |   });
      | ~~~~
   11 | 
-  12 |   expect<string>().type.toBeString();
+  12 |   expect<string>().type.toBe<string>();
   13 | });
 
        at ./__typetests__/handles-nested.tst.ts:8:3

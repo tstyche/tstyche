@@ -12,15 +12,15 @@ Error: Expected at least 2 arguments, but got 0. ts(2555)
 
     An argument for 'object' was not provided. ts(6210)
 
-      295 |  * Reshapes type of the given object by keeping only the specified keys.
-      296 |  */
-      297 | declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
+      245 |  * Reshapes type of the given object by keeping only the specified keys.
+      246 |  */
+      247 | declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
           |                                             ~~~~~~~~~
-      298 | /**
-      299 |  * Defines a test group.
-      300 |  */
+      248 | /**
+      249 |  * Defines a test group.
+      250 |  */
 
-            at ../../../build/index.d.ts:297:45
+            at ../../../build/index.d.ts:247:45
 
 Error: Expected at least 2 arguments, but got 1. ts(2555)
 
@@ -36,15 +36,15 @@ Error: Expected at least 2 arguments, but got 1. ts(2555)
 
     Arguments for the rest parameter 'keys' were not provided. ts(6236)
 
-      295 |  * Reshapes type of the given object by keeping only the specified keys.
-      296 |  */
-      297 | declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
+      245 |  * Reshapes type of the given object by keeping only the specified keys.
+      246 |  */
+      247 | declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
           |                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~
-      298 | /**
-      299 |  * Defines a test group.
-      300 |  */
+      248 | /**
+      249 |  * Defines a test group.
+      250 |  */
 
-            at ../../../build/index.d.ts:297:56
+            at ../../../build/index.d.ts:247:56
 
 Error: Argument of type '"b"' is not assignable to parameter of type '"a"'. ts(2345)
 

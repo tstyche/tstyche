@@ -1,5 +1,5 @@
 import tstyche = require("tstyche");
 
 tstyche.test("is supported?", () => {
-  tstyche.expect<void>().type.toBeVoid();
+  tstyche.expect<void>().type.toBe<void>();
 });

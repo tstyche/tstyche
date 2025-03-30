@@ -8,31 +8,31 @@ import { Process, isWindows } from "./__utilities__/process.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
 const isStringTestWithErrorText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<number>().type.toBeString();
+  expect<number>().type.toBe<string>();
 });
 `;
 
 const isNumberTestText = `import { expect, test } from "tstyche";
 test("is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 `;
 
 const isNumberTestWithErrorText = `import { expect, test } from "tstyche";
 test("is number?", () => {
-  expect<string>().type.toBeNumber();
+  expect<string>().type.toBe<number>();
 });
 `;
 
 const isVoidTestText = `import { expect, test } from "tstyche";
 test("is void?", () => {
-  expect<void>().type.toBeVoid();
+  expect<void>().type.toBe<void>();
 });
 `;
 

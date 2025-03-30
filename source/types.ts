@@ -135,57 +135,6 @@ interface Matchers {
   toRaiseError: (...target: Array<string | number | RegExp>) => void;
 }
 
-interface Matchers {
-  /**
-   * Checks if the source type is `any`.
-   */
-  toBeAny: () => void;
-  /**
-   * Checks if the source type is `bigint`.
-   */
-  toBeBigInt: () => void;
-  /**
-   * Checks if the source type is `boolean`.
-   */
-  toBeBoolean: () => void;
-  /**
-   * Checks if the source type is `never`.
-   */
-  toBeNever: () => void;
-  /**
-   * Checks if the source type is `null`.
-   */
-  toBeNull: () => void;
-  /**
-   * Checks if the source type is `number`.
-   */
-  toBeNumber: () => void;
-  /**
-   * Checks if the source type is `string`.
-   */
-  toBeString: () => void;
-  /**
-   * Checks if the source type is `symbol`.
-   */
-  toBeSymbol: () => void;
-  /**
-   * Checks if the source type is `undefined`.
-   */
-  toBeUndefined: () => void;
-  /**
-   * Checks if the source type is `unique symbol`.
-   */
-  toBeUniqueSymbol: () => void;
-  /**
-   * Checks if the source type is `unknown`.
-   */
-  toBeUnknown: () => void;
-  /**
-   * Checks if the source type is `void`.
-   */
-  toBeVoid: () => void;
-}
-
 interface Modifier {
   /**
    * Passes the source type to the matcher.

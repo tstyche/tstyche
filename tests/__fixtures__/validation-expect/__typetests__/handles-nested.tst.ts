@@ -14,5 +14,5 @@ expect(() => {
   });
 
   // can be nested!
-  expect<number>().type.toBeString();
+  expect<number>().type.toBe<string>();
 }).type.toBe<void>();
