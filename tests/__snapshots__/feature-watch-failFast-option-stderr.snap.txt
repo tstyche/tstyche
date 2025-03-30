@@ -1,22 +1,22 @@
-Error: Type is 'string'.
+Error: Type 'string' is not identical to type 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {
   3 |   expect<string>().type.toBe<number>();
-    |                         ~~~~~~~~~~
+    |                              ~~~~~~
   4 | });
   5 | 
 
-      at ./a-feature/__typetests__/isNumber.test.ts:3:25 ❭ is number?
+      at ./a-feature/__typetests__/isNumber.test.ts:3:30 ❭ is number?
 
-Error: Type is 'string'.
+Error: Type 'string' is not identical to type 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {
   3 |   expect<string>().type.toBe<number>();
-    |                         ~~~~~~~~~~
+    |                              ~~~~~~
   4 | });
   5 | 
 
-      at ./a-feature/__typetests__/isNumber.test.ts:3:25 ❭ is number?
+      at ./a-feature/__typetests__/isNumber.test.ts:3:30 ❭ is number?
 
