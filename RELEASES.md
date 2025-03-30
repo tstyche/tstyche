@@ -1,5 +1,28 @@
 # Releases
 
+## [4.0.0-beta.0] - 2024-08-12
+
+### Added
+
+- Add `collect:*` events ([#411](https://github.com/tstyche/tstyche/pull/411))
+
+### Changed
+
+- **Breaking!** Remove primitive type matchers ([#442](https://github.com/tstyche/tstyche/pull/442))
+- **Breaking!** Exclude whitespace when comparing diagnostic messages ([#427](https://github.com/tstyche/tstyche/pull/427))
+- **Breaking!** Make add the `minorVersions` property to store manifest ([#425](https://github.com/tstyche/tstyche/pull/425))
+- **Breaking!** Make default compiler options strict ([#424](https://github.com/tstyche/tstyche/pull/424))
+- **Breaking!** Drop support for TypeScript `4.x` ([#423](https://github.com/tstyche/tstyche/pull/423))
+- **Breaking!** Enable the `rejectAnyType` and `rejectNeverType` options by default ([#422](https://github.com/tstyche/tstyche/pull/422))
+- **Breaking!** Enable the `checkSourceFiles` option by default ([#421](https://github.com/tstyche/tstyche/pull/421))
+- **Breaking!** Require passing `resolvedConfig` to `ExpectService` constructor ([#420](https://github.com/tstyche/tstyche/pull/420))
+- **Breaking!** Rename `AssertionNode` and `TestTreeNode` classes ([#419](https://github.com/tstyche/tstyche/pull/419))
+- **Breaking!** Drop support for Node.js 18 ([#418](https://github.com/tstyche/tstyche/pull/418))
+- **Breaking!** Rename the `--fetch` command line option ([#417](https://github.com/tstyche/tstyche/pull/417))
+- **Breaking!** Remove the `.toMatch()` matcher ([#416](https://github.com/tstyche/tstyche/pull/416))
+- **Breaking!** Remove `Store.getSupportedTags()` method ([#415](https://github.com/tstyche/tstyche/pull/415))
+- **Breaking!** Remove `Version.isVersionTag()` method ([#414](https://github.com/tstyche/tstyche/pull/414))
+
 ## [3.5.0] - 2025-01-14
 
 ### Added
@@ -536,6 +559,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.0
 [3.5.0]: https://github.com/tstyche/tstyche/releases/tag/v3.5.0
 [3.4.0]: https://github.com/tstyche/tstyche/releases/tag/v3.4.0
 [3.3.1]: https://github.com/tstyche/tstyche/releases/tag/v3.3.1
