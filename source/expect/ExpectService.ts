@@ -132,14 +132,21 @@ export class ExpectService {
 
   #rejectsTypeArguments(matchWorker: MatchWorker, onDiagnostics: DiagnosticsHandler<Diagnostic>) {
     for (const rejectedType of this.#rejectTypes) {
+      const allowedKeyword = this.#compiler.SyntaxKind[`${Format.capitalize(rejectedType)}Keyword`];
+
+      if (
+        // allows explicit 'expect<any>()' and 'expect<never>()'
+        matchWorker.assertion.source[0]?.kind === allowedKeyword ||
+        // allows explicit '.toBe<any>()' and '.toBe<never>()'
+        matchWorker.assertion.target[0]?.kind === allowedKeyword
+      ) {
+        continue;
+      }
+
       for (const argumentName of ["source", "target"] as const) {
         const argumentNode = matchWorker.assertion[argumentName][0];
 
-        if (
-          !argumentNode ||
-          // allows explicit '.toBe<any>()' and '.toBe<never>()'
-          argumentNode.kind === this.#compiler.SyntaxKind[`${Format.capitalize(rejectedType)}Keyword`]
-        ) {
+        if (!argumentNode) {
           continue;
         }
 
