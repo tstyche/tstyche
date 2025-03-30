@@ -6,7 +6,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -26,15 +26,15 @@ await test("'--skip' command line option", async (t) => {
   await t.test("selects tests to run", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test("internal is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -59,16 +59,16 @@ test("external is string?", () => {
     const testText = `import { describe, expect, test } from "tstyche";
 describe("internal", () => {
   test("is string?", () => {
-    expect<string>().type.toBeString();
+    expect<string>().type.toBe<string>();
   });
 });
 
 test("internal is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -92,15 +92,15 @@ test("external is string?", () => {
   await t.test("overrides the '.only' run mode flag", async () => {
     const testText = `import { expect, test } from "tstyche";
 test.only("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test.only("internal is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test.only("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -124,15 +124,15 @@ test.only("external is string?", () => {
   await t.test("when '--only' command line option is specified", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test("internal is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test.only("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -156,15 +156,15 @@ test.only("external is string?", () => {
   await t.test("when search string is specified before the option", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test("internal is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -188,15 +188,15 @@ test("external is string?", () => {
   await t.test("when search string is specified after the option", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test("internal is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 

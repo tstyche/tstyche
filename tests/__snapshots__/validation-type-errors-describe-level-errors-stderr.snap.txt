@@ -6,7 +6,7 @@ Error: Expected 2 arguments, but got 1. ts(2554)
      |   ~~~~
   15 | 
   16 |   test("looks at this test?", () => {
-  17 |     expect<number>().type.toBeNumber();
+  17 |     expect<number>().type.toBe<number>();
 
        at ./__typetests__/describe-level.tst.ts:14:3
 

@@ -2,7 +2,7 @@ Error: Type is 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {
-  3 |   expect<string>().type.toBeNumber();
+  3 |   expect<string>().type.toBe<number>();
     |                         ~~~~~~~~~~
   4 | });
   5 | 
@@ -13,7 +13,7 @@ Error: Type is 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {
-  3 |   expect<string>().type.toBeNumber();
+  3 |   expect<string>().type.toBe<number>();
     |                         ~~~~~~~~~~
   4 | });
   5 | 

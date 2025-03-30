@@ -3,5 +3,5 @@ import { expect, test } from "tstyche";
 declare function returnsNumber(): number;
 
 test("is number?", () => {
-  expect(returnsNumber()).type.toBeNumber();
+  expect(returnsNumber()).type.toBe<number>();
 });

@@ -61,10 +61,6 @@ export class ExpectDiagnosticText {
     return `Type '${typeText}' has property '${propertyNameText}'.`;
   }
 
-  static typeIs(typeText: string): string {
-    return `Type is '${typeText}'.`;
-  }
-
   static typeIsAssignableTo(sourceTypeText: string, targetTypeText: string): string {
     return `Type '${sourceTypeText}' is assignable to type '${targetTypeText}'.`;
   }

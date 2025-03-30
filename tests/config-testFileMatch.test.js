@@ -12,13 +12,13 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
 const isNumberTestText = `import { expect, test } from "tstyche";
 test("is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 `;
 

@@ -10,11 +10,11 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("expect", async (t) => {
   await t.test("'expect' implementation'", () => {
-    tstyche.expect(null).type.toBeNull();
+    tstyche.expect(null).type.toBe(null);
   });
 
   await t.test("'expect.fail' implementation'", () => {
-    tstyche.expect.fail(null).type.toBeNever();
+    tstyche.expect.fail(null).type.toBe("fail");
   });
 
   await t.test("expect.fail", async () => {
@@ -34,7 +34,7 @@ await test("expect", async (t) => {
   });
 
   await t.test("'expect.only' implementation'", () => {
-    tstyche.expect.only(null).type.toBeNull();
+    tstyche.expect.only(null).type.toBe(null);
   });
 
   await t.test("expect.only", async () => {
@@ -50,7 +50,7 @@ await test("expect", async (t) => {
   });
 
   await t.test("'expect.only.fail' implementation'", () => {
-    tstyche.expect.only.fail(null).type.toBeNever();
+    tstyche.expect.only.fail(null).type.toBe("fail");
   });
 
   await t.test("expect.only.fail", async () => {
@@ -70,7 +70,7 @@ await test("expect", async (t) => {
   });
 
   await t.test("'expect.skip' implementation'", () => {
-    tstyche.expect.skip(null).type.toBeNever();
+    tstyche.expect.skip(null).type.toBe("skip");
   });
 
   await t.test("expect.skip", async () => {
@@ -86,7 +86,7 @@ await test("expect", async (t) => {
   });
 
   await t.test("'expect.skip.fail' implementation'", () => {
-    tstyche.expect.skip.fail(null).type.toBeNever();
+    tstyche.expect.skip.fail(null).type.toBe("fail");
   });
 
   await t.test("expect.skip.fail", async () => {

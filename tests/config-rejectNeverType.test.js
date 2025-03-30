@@ -12,8 +12,8 @@ describe("argument for 'source'", () => {
     expect({} as never).type.not.toBeAssignableWith<number>(); // rejected
   });
 
-  test("allows '.toBeNever()'", () => {
-    expect({} as never).type.toBeNever();
+  test("allows '.toBe<never>()'", () => {
+    expect({} as never).type.toBe<never>();
   });
 
   test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
@@ -34,8 +34,8 @@ describe("type argument for 'Source'", () => {
     expect<Never>().type.toBeAssignableTo<{ a: number }>(); // rejected
   });
 
-  test("allows '.toBeNever()'", () => {
-    expect<Never>().type.toBeNever();
+  test("allows '.toBe<never>()'", () => {
+    expect<Never>().type.toBe<never>();
   });
 
   test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
@@ -52,8 +52,8 @@ describe("argument for 'target'", () => {
     expect<number>().type.not.toBe({} as never); // rejected
   });
 
-  test("allows '.toBeNever()'", () => {
-    expect({ a: 123 }).type.not.toBeNever();
+  test("allows '.toBe<never>()'", () => {
+    expect({ a: 123 }).type.not.toBe<never>();
   });
 });
 
@@ -65,8 +65,8 @@ describe("type argument for 'Target'", () => {
     expect<{ a: boolean }>().type.not.toBe<Never>(); // rejected
   });
 
-  test("allows '.toBeNever()'", () => {
-    expect<{ a: boolean }>().type.not.toBeNever();
+  test("allows '.toBe<never>()'", () => {
+    expect<{ a: boolean }>().type.not.toBe<never>();
   });
 });
 `;

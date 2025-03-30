@@ -1,8 +1,8 @@
 import { expect, test } from "tstyche";
 
 test("is string?", () => {
-  expect<string>().type.toBeString();
-  expect<number>().type.not.toBeString();
+  expect<string>().type.toBe<string>();
+  expect<number>().type.not.toBe<string>();
 });
 
 test("is not supported?", () => {

@@ -12,15 +12,15 @@ Error: Expected at least 2 arguments, but got 0. ts(2555)
 
     An argument for 'object' was not provided. ts(6210)
 
-      291 |  * Reshapes type of the given object by removing the specified keys.
-      292 |  */
-      293 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
+      241 |  * Reshapes type of the given object by removing the specified keys.
+      242 |  */
+      243 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
           |                                                 ~~~~~~~~~
-      294 | /**
-      295 |  * Reshapes type of the given object by keeping only the specified keys.
-      296 |  */
+      244 | /**
+      245 |  * Reshapes type of the given object by keeping only the specified keys.
+      246 |  */
 
-            at ../../../build/index.d.ts:293:49
+            at ../../../build/index.d.ts:243:49
 
 Error: Expected at least 2 arguments, but got 1. ts(2555)
 
@@ -36,13 +36,13 @@ Error: Expected at least 2 arguments, but got 1. ts(2555)
 
     Arguments for the rest parameter 'keys' were not provided. ts(6236)
 
-      291 |  * Reshapes type of the given object by removing the specified keys.
-      292 |  */
-      293 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
+      241 |  * Reshapes type of the given object by removing the specified keys.
+      242 |  */
+      243 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
           |                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~
-      294 | /**
-      295 |  * Reshapes type of the given object by keeping only the specified keys.
-      296 |  */
+      244 | /**
+      245 |  * Reshapes type of the given object by keeping only the specified keys.
+      246 |  */
 
-            at ../../../build/index.d.ts:293:60
+            at ../../../build/index.d.ts:243:60
 
