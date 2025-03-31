@@ -13,7 +13,7 @@ export interface CommandLineOptions {
      */
     failFast?: boolean;
     /**
-     * Fetch specified versions of the 'typescript' package and exit.
+     * Fetch the specified versions of the 'typescript' package and exit.
      */
     fetch?: boolean;
     /**

@@ -64,7 +64,7 @@ export class Options {
 
     {
       brand: OptionBrand.BareTrue,
-      description: "Fetch specified versions of the 'typescript' package and exit.",
+      description: "Fetch the specified versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "fetch",
     },

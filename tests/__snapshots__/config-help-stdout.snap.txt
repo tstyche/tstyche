@@ -19,7 +19,7 @@ Command Line Options
   Stop running tests after the first failed assertion.
 
   --fetch
-  Fetch specified versions of the 'typescript' package and exit.
+  Fetch the specified versions of the 'typescript' package and exit.
 
   --help
   Print the list of command line options with brief descriptions and exit.
