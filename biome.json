@@ -1,5 +1,11 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+
+  "json": {
+    "parser": {
+      "allowComments": true
+    }
+  },
 
   "files": {
     "ignore": [
@@ -11,14 +17,14 @@
       "models/config-schema.json",
       "models/ConfigFileOptions.ts",
       "node_modules/**",
+      "cspell.config.json",
       "package.json"
     ]
   },
 
   "formatter": {
     "enabled": true,
-    "indentStyle": "space",
-    "lineWidth": 120
+    "useEditorconfig": true
   },
 
   "linter": {
@@ -28,16 +34,23 @@
       "recommended": true,
 
       "complexity": {
+        "noUselessStringConcat": "error",
+        "noUselessUndefinedInitialization": "error",
+        "useDateNow": "error",
+
         "noBannedTypes": "off",
         "noStaticOnlyClass": "off",
         "useLiteralKeys": "off"
       },
 
       "correctness": {
+        "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
+        "noUnusedFunctionParameters": "error",
         "noUnusedImports": "error",
         "noUnusedPrivateClassMembers": "error",
         "noUnusedVariables": "error",
+        "useImportExtensions": "error",
 
         "useJsxKeyInIterable": "off"
       },
@@ -46,6 +59,7 @@
         "noImplicitBoolean": "error",
         "noNegationElse": "error",
         "noParameterProperties": "error",
+        "noYodaExpression": "error",
         "useBlockStatements": "error",
         "useCollapsedElseIf": "error",
         "useConsistentArrayType": {
@@ -54,18 +68,29 @@
             "syntax": "generic"
           }
         },
+        "useConsistentBuiltinInstantiation": "error",
+        "useExplicitLengthCheck": "error",
         "useNamingConvention": "error",
         "useForOf": "error",
         "useShorthandAssign": "error",
-        "useSingleCaseStatement": "error",
+        "useThrowNewError": "error",
 
         "noParameterAssign": "off"
       },
 
       "suspicious": {
-        "noConsoleLog": "warn",
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["info"]
+          }
+        },
+        "noEvolvingTypes": "error",
+        "noMisplacedAssertion": "error",
         "noSkippedTests": "error",
         "useAwait": "error",
+        "useErrorMessage": "error",
+        "useNumberToFixedDigitsArgument": "error",
 
         "noConstEnum": "off"
       }
@@ -78,7 +103,7 @@
 
   "overrides": [
     {
-      "include": ["source/handlers/ResultHandler.ts", "source/version/Version.ts"],
+      "include": ["source/handlers/ResultHandler.ts", "source/handlers/TestTreeHandler.ts"],
       "linter": {
         "rules": {
           "style": {
@@ -94,6 +119,17 @@
         "rules": {
           "correctness": {
             "noUnusedVariables": "off"
+          }
+        }
+      }
+    },
+
+    {
+      "include": ["tests/__utilities__/assert.js"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noMisplacedAssertion": "off"
           }
         }
       }
@@ -119,7 +155,6 @@
       "linter": {
         "rules": {
           "complexity": {
-            "noBannedTypes": "off",
             "useArrowFunction": "off"
           },
           "style": {

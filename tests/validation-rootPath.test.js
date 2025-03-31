@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "poku";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -7,21 +7,22 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'rootPath' configuration file option", async () => {
-  afterEach(async () => {
+await test("'rootPath' configuration file option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("when specified path does not exist", async () => {
+  await t.test("when specified path does not exist", async () => {
     const config = {
       rootPath: "../nope",
+      testFileMatch: ["examples/*.t*st.*"],
     };
 
     await writeFixture(fixtureUrl, {
       ["config/tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config ./config/tstyche.json"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config", "./config/tstyche.json"]);
 
     assert.equal(stdout, "");
 
@@ -33,9 +34,10 @@ await describe("'rootPath' configuration file option", async () => {
     assert.equal(exitCode, 1);
   });
 
-  await test("when specified value is not string", async () => {
+  await t.test("when specified value is not string", async () => {
     const config = {
       rootPath: true,
+      testFileMatch: ["examples/*.t*st.*"],
     };
 
     await writeFixture(fixtureUrl, {

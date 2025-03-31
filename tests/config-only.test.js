@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "poku";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -6,7 +6,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -18,23 +18,23 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'--only' command line option", async () => {
-  afterEach(async () => {
+await test("'--only' command line option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("selects tests to run", async () => {
+  await t.test("selects tests to run", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test("external is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -55,20 +55,20 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("selects test group to run", async () => {
+  await t.test("selects test group to run", async () => {
     const testText = `import { describe, expect, test } from "tstyche";
 describe("external", () => {
   test("is string?", () => {
-    expect<string>().type.toBeString();
+    expect<string>().type.toBe<string>();
   });
 });
 
 test("external is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -89,18 +89,18 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("does not override the '.skip' run mode flag", async () => {
+  await t.test("does not override the '.skip' run mode flag", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test.skip("external is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -121,18 +121,18 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when '--skip' command line option is specified", async () => {
+  await t.test("when '--skip' command line option is specified", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test("external is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -153,18 +153,18 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when search string is specified before the option", async () => {
+  await t.test("when search string is specified before the option", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test("external is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -185,18 +185,18 @@ test("internal is string?", () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when search string is specified after the option", async () => {
+  await t.test("when search string is specified after the option", async () => {
     const testText = `import { expect, test } from "tstyche";
 test("external is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test("external is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 
 test("internal is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 

@@ -7,17 +7,13 @@ export class Version {
     return source === target || Version.#satisfies(source, target);
   }
 
-  static isVersionTag(target: string): boolean {
-    return /^\d+/.test(target);
-  }
-
   static #satisfies(source: string, target: string): boolean {
     const sourceElements = source.split(/\.|-/);
     const targetElements = target.split(/\.|-/);
 
     function compare(index = 0): boolean {
-      const sourceElement = sourceElements[index]!;
-      const targetElement = targetElements[index]!;
+      const sourceElement = sourceElements[index] as string;
+      const targetElement = targetElements[index] as string;
 
       if (sourceElement > targetElement) {
         return true;

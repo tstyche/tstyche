@@ -1,5 +1,0 @@
-Targets:    1 passed, 1 total
-Test files: 0 total
-Duration:   <<timestamp>>
-
-Ran all test files.

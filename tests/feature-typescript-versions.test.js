@@ -1,9 +1,29 @@
 import fs from "node:fs/promises";
-import { fileURLToPath } from "node:url";
-import { describe, test } from "poku";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
+
+const subtypeTestText = `import { expect } from "tstyche";
+
+class Queue<T> {
+  #entries: Array<T> = [];
+
+  get size(): number {
+    return this.#entries.length;
+  }
+
+  enqueue(item: T): void {
+    this.#entries.push(item);
+  }
+}
+
+expect(omit(new Queue(), "enqueue")).type.toBe<{ readonly size: number }>();
+expect<Omit<Queue<string>, "enqueue">>().type.toBe<{ readonly size: number }>();
+
+expect(pick(new Queue(), "size")).type.toBe<{ readonly size: number }>();
+expect<Pick<Queue<string>, "size">>().type.toBe<{ readonly size: number }>();
+`;
 
 const toAcceptPropsTestText = `import { expect, test } from "tstyche";
 
@@ -72,21 +92,6 @@ expect<Sample>().type.not.toHaveProperty("setup");
 expect<Sample>().type.not.toHaveProperty("teardown");
 `;
 
-const toMatchTestText = `import { expect, test } from "tstyche";
-
-interface Options {
-  readonly environment?: string;
-  timers?: "fake" | "real";
-}
-
-const options: Options = {};
-
-test("is a match?", () => {
-  expect(options).type.toMatch<{ readonly environment?: string }>();
-  expect(options).type.toMatch<{ timers?: "fake" | "real" }>();
-});
-`;
-
 const toRaiseErrorTestText = `import { expect, test } from "tstyche";
 
 interface Matchers<R, T = unknown> {
@@ -105,57 +110,18 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 const storeUrl = new URL("./.store/", fixtureUrl);
 
-await describe("TypeScript 4.x", async () => {
-  if (process.versions.node.startsWith("16")) {
-    // store is not supported on Node.js 16
-    return;
-  }
-
-  await writeFixture(fixtureUrl, {
-    // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
-    ["__typetests__/toAcceptProps.test.tsx"]: `// @ts-expect-error\n${toAcceptPropsTestText}`,
-    ["__typetests__/toBe.test.ts"]: `// @ts-expect-error\n${toBeTestText}`,
-    ["__typetests__/toBeAssignableTo.test.ts"]: `// @ts-expect-error\n${toBeAssignableToTestText}`,
-    ["__typetests__/toBeAssignableWith.test.ts"]: `// @ts-expect-error\n${toBeAssignableWithTestText}`,
-    ["__typetests__/toHaveProperty.test.ts"]: `// @ts-expect-error\n${toHavePropertyTestText}`,
-    ["__typetests__/toMatch.test.ts"]: `// @ts-expect-error\n${toMatchTestText}`,
-    ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error\n${toRaiseErrorTestText}`,
+await test("TypeScript 5.x", async (t) => {
+  t.after(async () => {
+    await clearFixture(fixtureUrl);
   });
 
-  const testCases = ["4.0.2", "4.0.8", "4.1.6", "4.2.4", "4.3.5", "4.4.4", "4.5.5", "4.6.4", "4.7.4", "4.8.4", "4.9.5"];
-
-  for (const version of testCases) {
-    await test(`uses TypeScript ${version} as current target`, async () => {
-      await spawnTyche(fixtureUrl, ["--install", "--target", version]);
-
-      const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-        env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
-      });
-
-      assert.match(stdout, RegExp(`^uses TypeScript ${version}\n`));
-      assert.equal(stderr, "");
-      assert.equal(exitCode, 0);
-    });
-  }
-
-  await clearFixture(fixtureUrl);
-});
-
-await describe("TypeScript 5.x", async () => {
-  if (process.versions.node.startsWith("16")) {
-    // store is not supported on Node.js 16
-    return;
-  }
-
   await writeFixture(fixtureUrl, {
+    ["__typetests__/subtype.test.ts"]: `import { omit, pick } from "tstyche"\n${subtypeTestText}`,
     ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
     ["__typetests__/toBe.test.ts"]: toBeTestText,
     ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
     ["__typetests__/toBeAssignableWith.test.ts"]: toBeAssignableWithTestText,
     ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
-    ["__typetests__/toMatch.test.ts"]: toMatchTestText,
     ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
   });
 
@@ -165,27 +131,25 @@ await describe("TypeScript 5.x", async () => {
 
   const { resolutions } = /** @type {{ resolutions: Record<string, string> }} */ (JSON.parse(manifestText));
 
-  const versionTags = Object.entries(resolutions)
+  const versions = Object.entries(resolutions)
     .filter((resolution) => resolution[0].startsWith("5"))
     .map((resolution) => resolution[1]);
 
-  const testCases = ["5.0.2", ...versionTags];
+  const testCases = ["5.0.2", ...versions];
 
   for (const version of testCases) {
-    await test(`uses TypeScript ${version} as current target`, async () => {
-      await spawnTyche(fixtureUrl, ["--install", "--target", version]);
+    await t.test(`uses TypeScript ${version} as current target`, async () => {
+      await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
 
-      const typescriptPath = fileURLToPath(new URL(`./${version}/node_modules/typescript/lib/typescript.js`, storeUrl));
+      const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-        env: { ["TSTYCHE_TYPESCRIPT_PATH"]: typescriptPath },
+        env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
       });
 
-      assert.match(stdout, RegExp(`^uses TypeScript ${version}\n`));
+      assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
       assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   }
-
-  await clearFixture(fixtureUrl);
 });

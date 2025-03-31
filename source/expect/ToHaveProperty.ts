@@ -1,8 +1,8 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
-import type { ArgumentNode, DiagnosticsHandler, MatchResult } from "./types.js";
+import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToHaveProperty {
   #compiler: typeof ts;
@@ -34,13 +34,16 @@ export class ToHaveProperty {
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
     targetNode: ArgumentNode,
-    onDiagnostics: DiagnosticsHandler,
+    onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];
 
     const sourceType = matchWorker.getType(sourceNode);
 
-    if (matchWorker.isAnyOrNeverType(sourceType) || !matchWorker.extendsObjectType(sourceType)) {
+    if (
+      sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
+      !matchWorker.extendsObjectType(sourceType)
+    ) {
       const expectedText = "of an object type";
 
       const text = this.#compiler.isTypeNode(sourceNode)
@@ -54,7 +57,7 @@ export class ToHaveProperty {
 
     const targetType = matchWorker.getType(targetNode);
 
-    let propertyNameText: string;
+    let propertyNameText = "";
 
     if (matchWorker.isStringOrNumberLiteralType(targetType)) {
       propertyNameText = targetType.value.toString();
@@ -75,9 +78,9 @@ export class ToHaveProperty {
       return;
     }
 
-    const isMatch = sourceType.getProperties().some((property) => {
-      return this.#compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText;
-    });
+    const isMatch =
+      matchWorker.checkHasProperty(sourceNode, propertyNameText) ||
+      matchWorker.checkHasApplicableIndexType(sourceNode, targetNode);
 
     return {
       explain: () => this.#explain(matchWorker, sourceNode, targetNode),

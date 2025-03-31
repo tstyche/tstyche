@@ -1,7 +1,8 @@
+import assert from "node:assert";
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import test from "node:test";
 import { Ajv } from "ajv";
-import { assert, describe, test } from "poku";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -26,16 +27,36 @@ function readJsonFixtureFile(fixtureFileName) {
 
 const configSchema = readJsonFile("../config-schema.json");
 
-describe("config-schema.json", () => {
-  describe("valid", () => {
+test("config-schema.json", async (t) => {
+  await t.test("valid", async (t) => {
     const testCases = [
       {
         fixtureFileName: "valid-all-options.json",
         testCase: "all options",
       },
       {
+        fixtureFileName: "valid-checkSourceFiles.json",
+        testCase: "'checkSourceFiles' option",
+      },
+      {
         fixtureFileName: "valid-failFast.json",
         testCase: "'failFast' option",
+      },
+      {
+        fixtureFileName: "valid-plugins.json",
+        testCase: "'plugins' option",
+      },
+      {
+        fixtureFileName: "valid-rejectAnyType.json",
+        testCase: "'rejectAnyType' option",
+      },
+      {
+        fixtureFileName: "valid-rejectNeverType.json",
+        testCase: "'rejectNeverType' option",
+      },
+      {
+        fixtureFileName: "valid-reporters.json",
+        testCase: "'reporters' option",
       },
       {
         fixtureFileName: "valid-rootPath.json",
@@ -49,10 +70,14 @@ describe("config-schema.json", () => {
         fixtureFileName: "valid-testFileMatch.json",
         testCase: "'testFileMatch' option",
       },
+      {
+        fixtureFileName: "valid-tsconfig.json",
+        testCase: "'tsconfig' option",
+      },
     ];
 
     for (const { fixtureFileName, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 
@@ -61,11 +86,47 @@ describe("config-schema.json", () => {
     }
   });
 
-  describe("invalid", () => {
+  await t.test("invalid", async (t) => {
     const testCases = [
+      {
+        fixtureFileName: "invalid-checkSourceFiles.json",
+        testCase: "value of 'checkSourceFiles' option must be of type boolean",
+      },
       {
         fixtureFileName: "invalid-failFast.json",
         testCase: "value of 'failFast' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-plugins-1.json",
+        testCase: "item of 'plugins' option must be of type string",
+      },
+      {
+        fixtureFileName: "invalid-plugins-2.json",
+        testCase: "items of 'plugins' option must NOT be identical",
+      },
+      {
+        fixtureFileName: "invalid-plugins-3.json",
+        testCase: "value of 'plugins' option must be of type Array",
+      },
+      {
+        fixtureFileName: "invalid-rejectAnyType.json",
+        testCase: "value of 'rejectAnyType' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-rejectNeverType.json",
+        testCase: "value of 'rejectNeverType' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-reporters-1.json",
+        testCase: "item of 'reporters' option must be of type string",
+      },
+      {
+        fixtureFileName: "invalid-reporters-2.json",
+        testCase: "items of 'reporters' option must NOT be identical",
+      },
+      {
+        fixtureFileName: "invalid-reporters-3.json",
+        testCase: "value of 'reporters' option must be of type Array",
       },
       {
         fixtureFileName: "invalid-rootPath.json",
@@ -77,14 +138,10 @@ describe("config-schema.json", () => {
       },
       {
         fixtureFileName: "invalid-target-2.json",
-        testCase: "item of 'target' option must be one of the allowed values",
-      },
-      {
-        fixtureFileName: "invalid-target-3.json",
         testCase: "items of 'target' option must NOT be identical",
       },
       {
-        fixtureFileName: "invalid-target-4.json",
+        fixtureFileName: "invalid-target-3.json",
         testCase: "value of 'target' option must be of type Array",
       },
       {
@@ -99,10 +156,14 @@ describe("config-schema.json", () => {
         fixtureFileName: "invalid-testFileMatch-3.json",
         testCase: "value of 'testFileMatch' option must be of type Array",
       },
+      {
+        fixtureFileName: "invalid-tsconfig.json",
+        testCase: "value of 'tsconfig' option must be of type string",
+      },
     ];
 
     for (const { fixtureFileName, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const validate = ajv.compile(configSchema);
         const fixture = readJsonFixtureFile(fixtureFileName);
 

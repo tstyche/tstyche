@@ -6,18 +6,18 @@ describe.skip("is skipped describe?", () => {
   test("is skipped?", () => {
     const b: number = "abc";
 
-    expect<string>().type.toBeString();
+    expect<string>().type.toBe<string>();
   });
 });
 
 describe("is parent describe?", () => {
   test("is string?", () => {
-    expect<string>().type.toBeString();
+    expect<string>().type.toBe<string>();
   });
 
   describe.skip("is nested skipped describe?", function () {
     test.skip("is skipped too?", () => {
-      expect<string>().type.toBeString();
+      expect<string>().type.toBe<string>();
     });
 
     test.todo("is todo?");
@@ -27,5 +27,5 @@ describe("is parent describe?", () => {
 });
 
 test("is string still?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });

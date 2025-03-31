@@ -1,12 +1,12 @@
-Error: Type is 'string'.
+Error: Type 'string' is identical to type 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {
-  3 |   expect<string>().type.not.toBeString();
-    |                             ~~~~~~~~~~
-  4 |   expect<string>().type.not.toBeString();
+  3 |   expect<string>().type.not.toBe<string>();
+    |                                  ~~~~~~
+  4 |   expect<string>().type.not.toBe<string>();
   5 | });
   6 | 
 
-      at ./__typetests__/isString.tst.ts:3:29 ❭ is string?
+      at ./__typetests__/isString.tst.ts:3:34 ❭ is string?
 

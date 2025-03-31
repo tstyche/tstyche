@@ -16,7 +16,53 @@ test("edge cases", () => {
   expect<any>().type.not.toBe<never>();
   expect<any>().type.not.toBe<unknown>();
 
+  expect<{ a: string } | { a: string }>().type.toBe<{ a: string }>();
+  expect<{ a: string } | { a: string }>().type.not.toBe<{ a: string }>();
+
+  expect<{ a: string } | { b: string }>().type.not.toBe<{ a: string }>();
+  expect<{ a: string } | { b: string }>().type.toBe<{ a: string }>();
+
+  expect<{ a: string } & { a: string }>().type.toBe<{ a: string }>();
+  expect<{ a: string } & { a: string }>().type.not.toBe<{ a: string }>();
+
+  expect<{ a: string } & { b: string }>().type.not.toBe<{ a: string }>();
+  expect<{ a: string } & { b: string }>().type.toBe<{ a: string }>();
+
+  expect<(({ a: string } & { a: string }) | { a: string }) & { a: string }>().type.toBe<{ a: string }>();
+  expect<(({ a: string } & { a: string }) | { a: string }) & { a: string }>().type.not.toBe<{ a: string }>();
+
+  expect<(({ a: string } & { a: string }) | { a: string }) & { b: string }>().type.not.toBe<{ a: string }>();
+  expect<(({ a: string } & { a: string }) | { a: string }) & { b: string }>().type.toBe<{ a: string }>();
+
+  expect<{ a: string }>().type.toBe<{ a: string } | { a: string }>();
+  expect<{ a: string }>().type.not.toBe<{ a: string } | { a: string }>();
+
+  expect<{ a: string }>().type.not.toBe<{ a: string } | { b: string }>();
+  expect<{ a: string }>().type.toBe<{ a: string } | { b: string }>();
+
+  expect<{ a: string }>().type.toBe<{ a: string } & { a: string }>();
+  expect<{ a: string }>().type.not.toBe<{ a: string } & { a: string }>();
+
+  expect<{ a: string }>().type.not.toBe<{ a: string } & { b: string }>();
+  expect<{ a: string }>().type.toBe<{ a: string } & { b: string }>();
+
+  expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>();
+  expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>();
+
+  expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>();
+  expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>();
+
   expect(Date).type.toBe<typeof Date>();
+});
+
+test("exact optional property types", () => {
+  // all four assertion pass only when '"exactOptionalPropertyTypes": true' is set
+
+  expect<{ a?: number }>().type.not.toBe<{ a?: number | undefined }>();
+  expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
+
+  expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
 });
 
 describe("source type", () => {

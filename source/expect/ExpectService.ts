@@ -1,94 +1,54 @@
 import type ts from "typescript";
-import type { Assertion } from "#collect";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
-import { EventEmitter } from "#events";
+import type { AssertionNode } from "#collect";
+import type { ResolvedConfig } from "#config";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
+import { Format } from "./Format.js";
 import { MatchWorker } from "./MatchWorker.js";
-import { PrimitiveTypeMatcher } from "./PrimitiveTypeMatcher.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
-import { ToMatch } from "./ToMatch.js";
 import { ToRaiseError } from "./ToRaiseError.js";
-import type { DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
+import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
+  #rejectTypes = new Set<"any" | "never">();
   #typeChecker: TypeChecker;
 
-  toAcceptProps: ToAcceptProps;
-  toBe: ToBe;
-  toBeAny: PrimitiveTypeMatcher;
-  toBeAssignable: ToBeAssignableWith;
-  toBeAssignableTo: ToBeAssignableTo;
-  toBeAssignableWith: ToBeAssignableWith;
-  toBeBigInt: PrimitiveTypeMatcher;
-  toBeBoolean: PrimitiveTypeMatcher;
-  toBeNever: PrimitiveTypeMatcher;
-  toBeNull: PrimitiveTypeMatcher;
-  toBeNumber: PrimitiveTypeMatcher;
-  toBeString: PrimitiveTypeMatcher;
-  toBeSymbol: PrimitiveTypeMatcher;
-  toBeUndefined: PrimitiveTypeMatcher;
-  toBeUniqueSymbol: PrimitiveTypeMatcher;
-  toBeUnknown: PrimitiveTypeMatcher;
-  toBeVoid: PrimitiveTypeMatcher;
-  toEqual: ToBe;
-  toHaveProperty: ToHaveProperty;
-  toMatch: ToMatch;
-  toRaiseError: ToRaiseError;
+  private toAcceptProps: ToAcceptProps;
+  private toBe: ToBe;
+  private toBeAssignableTo: ToBeAssignableTo;
+  private toBeAssignableWith: ToBeAssignableWith;
+  private toHaveProperty: ToHaveProperty;
+  private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
 
+    if (resolvedConfig?.rejectAnyType) {
+      this.#rejectTypes.add("any");
+    }
+    if (resolvedConfig?.rejectNeverType) {
+      this.#rejectTypes.add("never");
+    }
+
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe();
-    this.toBeAny = new PrimitiveTypeMatcher(compiler.TypeFlags.Any);
-    this.toBeAssignable = new ToBeAssignableWith();
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeAssignableWith = new ToBeAssignableWith();
-    this.toBeBigInt = new PrimitiveTypeMatcher(compiler.TypeFlags.BigInt);
-    this.toBeBoolean = new PrimitiveTypeMatcher(compiler.TypeFlags.Boolean);
-    this.toBeNever = new PrimitiveTypeMatcher(compiler.TypeFlags.Never);
-    this.toBeNull = new PrimitiveTypeMatcher(compiler.TypeFlags.Null);
-    this.toBeNumber = new PrimitiveTypeMatcher(compiler.TypeFlags.Number);
-    this.toBeString = new PrimitiveTypeMatcher(compiler.TypeFlags.String);
-    this.toBeSymbol = new PrimitiveTypeMatcher(compiler.TypeFlags.ESSymbol);
-    this.toBeUndefined = new PrimitiveTypeMatcher(compiler.TypeFlags.Undefined);
-    this.toBeUniqueSymbol = new PrimitiveTypeMatcher(compiler.TypeFlags.UniqueESSymbol);
-    this.toBeUnknown = new PrimitiveTypeMatcher(compiler.TypeFlags.Unknown);
-    this.toBeVoid = new PrimitiveTypeMatcher(compiler.TypeFlags.Void);
-    this.toEqual = new ToBe();
     this.toHaveProperty = new ToHaveProperty(compiler);
-    this.toMatch = new ToMatch();
     this.toRaiseError = new ToRaiseError(compiler);
   }
 
-  #handleDeprecated(matcherNameText: string, assertion: Assertion) {
-    switch (matcherNameText) {
-      case "toBeAssignable":
-      case "toEqual": {
-        const text = ExpectDiagnosticText.matcherIsDeprecated(matcherNameText);
-        const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
-
-        EventEmitter.dispatch(["deprecation:info", { diagnostics: [Diagnostic.warning(text, origin)] }]);
-
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-  }
-
-  match(assertion: Assertion, onDiagnostics: DiagnosticsHandler): MatchResult | undefined {
+  match(
+    assertion: AssertionNode,
+    onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
+  ): MatchResult | undefined {
     const matcherNameText = assertion.matcherName.getText();
-
-    this.#handleDeprecated(matcherNameText, assertion);
 
     if (!assertion.source[0]) {
       this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
@@ -101,38 +61,21 @@ export class ExpectService {
     switch (matcherNameText) {
       case "toAcceptProps":
       case "toBe":
-      // TODO '.toBeAssignable()' is deprecated and must be removed in TSTyche 3
-      case "toBeAssignable":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
-      // TODO '.toEqual()' is deprecated and must be removed in TSTyche 3
-      case "toEqual":
-      case "toMatch": {
         if (!assertion.target[0]) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
           return;
         }
 
+        if (this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
+          return;
+        }
+
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
-      }
 
-      case "toBeAny":
-      case "toBeBigInt":
-      case "toBeBoolean":
-      case "toBeNever":
-      case "toBeNull":
-      case "toBeNumber":
-      case "toBeString":
-      case "toBeSymbol":
-      case "toBeUndefined":
-      case "toBeUniqueSymbol":
-      case "toBeUnknown":
-      case "toBeVoid": {
-        return this[matcherNameText].match(matchWorker, assertion.source[0]);
-      }
-
-      case "toHaveProperty": {
+      case "toHaveProperty":
         if (!assertion.target[0]) {
           this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostics);
 
@@ -140,42 +83,90 @@ export class ExpectService {
         }
 
         return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
-      }
 
-      case "toRaiseError": {
-        // TODO perhaps in the future the target argument could be: 'target?: string | number | Array<string | number>'
+      case "toRaiseError":
+        if (assertion.isNot && this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
+          return;
+        }
+
         return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target], onDiagnostics);
-      }
 
-      default: {
-        const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
-        const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
-
-        onDiagnostics(Diagnostic.error(text, origin));
-      }
+      default:
+        this.#onMatcherIsNotSupported(matcherNameText, assertion, onDiagnostics);
     }
 
     return;
   }
 
-  #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+  #onMatcherIsNotSupported(matcherNameText: string, assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
+    const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+
+    onDiagnostics(Diagnostic.error(text, origin));
+  }
+
+  #onSourceArgumentOrTypeArgumentMustBeProvided(assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("source", "Source");
     const origin = DiagnosticOrigin.fromNode(assertion.node.expression);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentMustBeProvided(argumentNameText: string, assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+  #onTargetArgumentMustBeProvided(
+    argumentNameText: string,
+    assertion: AssertionNode,
+    onDiagnostics: DiagnosticsHandler,
+  ) {
     const text = ExpectDiagnosticText.argumentMustBeProvided(argumentNameText);
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: Assertion, onDiagnostics: DiagnosticsHandler) {
+  #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
     const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
 
     onDiagnostics(Diagnostic.error(text, origin));
+  }
+
+  #rejectsTypeArguments(matchWorker: MatchWorker, onDiagnostics: DiagnosticsHandler<Diagnostic>) {
+    for (const rejectedType of this.#rejectTypes) {
+      const allowedKeyword = this.#compiler.SyntaxKind[`${Format.capitalize(rejectedType)}Keyword`];
+
+      if (
+        // allows explicit 'expect<any>()' and 'expect<never>()'
+        matchWorker.assertion.source[0]?.kind === allowedKeyword ||
+        // allows explicit '.toBe<any>()' and '.toBe<never>()'
+        matchWorker.assertion.target[0]?.kind === allowedKeyword
+      ) {
+        continue;
+      }
+
+      for (const argumentName of ["source", "target"] as const) {
+        const argumentNode = matchWorker.assertion[argumentName][0];
+
+        if (!argumentNode) {
+          continue;
+        }
+
+        if (matchWorker.getType(argumentNode).flags & this.#compiler.TypeFlags[Format.capitalize(rejectedType)]) {
+          const text = [
+            this.#compiler.isTypeNode(argumentNode)
+              ? ExpectDiagnosticText.typeArgumentCannotBeOfType(Format.capitalize(argumentName), rejectedType)
+              : ExpectDiagnosticText.argumentCannotBeOfType(argumentName, rejectedType),
+            ...ExpectDiagnosticText.typeWasRejected(rejectedType),
+          ];
+
+          const origin = DiagnosticOrigin.fromNode(argumentNode);
+
+          onDiagnostics(Diagnostic.error(text, origin));
+
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }

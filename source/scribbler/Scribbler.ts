@@ -1,3 +1,4 @@
+import { environmentOptions } from "#environment";
 import type { ScribblerJsx, ScribblerNode } from "./types.js";
 
 export interface ScribblerOptions {
@@ -13,7 +14,7 @@ export class Scribbler {
 
   constructor(options?: ScribblerOptions) {
     this.#newLine = options?.newLine ?? "\n";
-    this.#noColor = options?.noColor ?? false;
+    this.#noColor = options?.noColor ?? environmentOptions.noColor;
   }
 
   #escapeSequence(attributes: string | Array<string>): string {

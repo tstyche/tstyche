@@ -3,8 +3,9 @@
   "compilerOptions": {
     "module": "node16",
     "moduleResolution": "node16",
+
     "paths": {
-      "#scribbler/jsx-runtime": ["./scribbler/jsx-runtime.js"],
+      "#scribbler/jsx-runtime": ["./scribbler/jsxRuntime.js"],
       "#*": ["./*/index.js"]
     },
 

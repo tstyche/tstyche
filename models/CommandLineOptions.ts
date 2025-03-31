@@ -13,13 +13,17 @@ export interface CommandLineOptions {
      */
     failFast?: boolean;
     /**
+     * Fetch the specified versions of the 'typescript' package and exit.
+     */
+    fetch?: boolean;
+    /**
      * Print the list of command line options with brief descriptions and exit.
      */
     help?: boolean;
     /**
-     * Install specified versions of the 'typescript' package and exit.
+     * Print the list of supported versions of the 'typescript' package and exit.
      */
-    install?: boolean;
+    list?: boolean;
     /**
      * Print the list of the selected test files and exit.
      */
@@ -29,9 +33,17 @@ export interface CommandLineOptions {
      */
     only?: string;
     /**
+     * The list of plugins to use.
+     */
+    plugins?: Array<string>;
+    /**
      * Remove all installed versions of the 'typescript' package and exit.
      */
     prune?: boolean;
+    /**
+     * The list of reporters to use.
+     */
+    reporters?: Array<string>;
     /**
      * Print the resolved configuration and exit.
      */
@@ -44,6 +56,10 @@ export interface CommandLineOptions {
      * The list of TypeScript versions to be tested on.
      */
     target?: Array<string>;
+    /**
+     * The look up strategy to be used to find the TSConfig file.
+     */
+    tsconfig?: string;
     /**
      * Fetch the 'typescript' package metadata from the registry and exit.
      */

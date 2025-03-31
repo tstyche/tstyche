@@ -1,0 +1,13 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/pick.tst.ts
+  × is single key picked?
+  × are several keys picked?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Assertions: 6 failed, 6 passed, 12 total
+Duration:   <<timestamp>>
+
+Ran all test files.

@@ -7,16 +7,12 @@ export class StoreDiagnosticText {
     return `Failed to fetch metadata of the 'typescript' package from '${registry}'.`;
   }
 
-  static failedToInstalTypeScript(version: string): string {
-    return `Failed to install 'typescript@${version}'.`;
+  static failedToFetchPackage(version: string): string {
+    return `Failed to fetch the 'typescript@${version}' package.`;
   }
 
   static failedToUpdateMetadata(registry: string): string {
     return `Failed to update metadata of the 'typescript' package from '${registry}'.`;
-  }
-
-  static failedWithStatusCode(code: number): string {
-    return `Request failed with status code ${code}.`;
   }
 
   static maybeNetworkConnectionIssue(): string {
@@ -27,7 +23,15 @@ export class StoreDiagnosticText {
     return `The resolution of the '${tag}' tag may be outdated.`;
   }
 
-  static setupTimeoutExceeded(timeout: number): string {
-    return `Setup timeout of ${timeout / 1000}s was exceeded.`;
+  static requestFailedWithStatusCode(code: number): string {
+    return `The request failed with status code ${code}.`;
+  }
+
+  static requestTimeoutWasExceeded(timeout: number): string {
+    return `The request timeout of ${timeout / 1000}s was exceeded.`;
+  }
+
+  static lockWaitTimeoutWasExceeded(timeout: number): string {
+    return `Lock wait timeout of ${timeout / 1000}s was exceeded.`;
   }
 }

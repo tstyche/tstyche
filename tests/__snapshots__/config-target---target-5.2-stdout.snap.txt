@@ -1,0 +1,13 @@
+adds TypeScript 5.2.2 to <<basePath>>/tests/__fixtures__/.generated/config-target/.store/typescript@5.2.2
+uses TypeScript 5.2.2 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
+Duration:   <<timestamp>>
+
+Ran all test files.

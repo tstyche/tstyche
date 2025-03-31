@@ -1,6 +1,6 @@
 {
   "name": "tstyche",
-  "version": "2.1.1",
+  "version": "4.0.0-beta.0",
   "description": "The Essential Type Testing Tool.",
   "keywords": [
     "typescript",
@@ -28,8 +28,6 @@
     "./package.json": "./package.json",
     "./tstyche": "./build/tstyche.js"
   },
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
   "bin": "./build/bin.js",
   "files": [
     "build/*"
@@ -41,50 +39,49 @@
     "check": "yarn check:spelling && yarn check:types",
     "check:spelling": "cspell --config cspell.config.json --quiet",
     "check:types": "tsc --noEmit --project tsconfig.json",
-    "clean": "rm -rf build",
     "format": "biome format --write",
     "generate": "yarn generate:schema && yarn generate:types",
     "generate:schema": "node ./scripts/generate-schema.js",
     "generate:types": "node ./scripts/generate-types.js",
     "lint": "biome lint --write",
-    "prepublish": "yarn clean && yarn build && yarn test",
+    "prepublish": "yarn build",
     "test": "yarn test:unit && yarn test:e2e",
     "test:coverage": "yarn test:coverage:collect && yarn test:coverage:report",
     "test:coverage:collect": "yarn build --sourcemap && NODE_V8_COVERAGE='./coverage/v8-coverage' yarn test:e2e",
     "test:coverage:report": "node ./scripts/report-coverage.js",
     "test:e2e": "yarn test:e2e:parallel && yarn test:e2e:serial",
-    "test:e2e:parallel": "yarn poku tests/*.test.* --exclude='install|npmRegistry|store|target|typescript|update|watch' --parallel",
-    "test:e2e:serial": "yarn poku tests/*-{install,npmRegistry,store,target,typescript*,update,watch}.test.*",
+    "test:e2e:parallel": "yarn test:run tests/*.test.js --exclude feature --parallel",
+    "test:e2e:serial": "yarn test:run tests/*.test.js --include feature",
     "test:examples": "tstyche examples",
+    "test:run": "rm -rf ./tests/__fixtures__/.generated && yarn node ./tests/__utilities__/runner.js",
     "test:types": "tstyche typetests",
-    "test:unit": "yarn poku **/__tests__/*.test.* --parallel"
+    "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "@rollup/plugin-typescript": "11.1.6",
-    "@types/node": "20.14.13",
-    "@types/react": "18.3.3",
+    "@biomejs/biome": "1.9.4",
+    "@rollup/plugin-typescript": "12.1.2",
+    "@types/node": "22.13.14",
+    "@types/react": "19.0.12",
     "ajv": "8.17.1",
-    "cspell": "8.12.1",
-    "magic-string": "0.30.11",
-    "monocart-coverage-reports": "2.10.0",
-    "poku": "2.2.4",
-    "pretty-ansi": "2.0.0",
-    "rollup": "4.19.1",
-    "rollup-plugin-dts": "6.1.1",
-    "tslib": "2.6.3",
-    "typescript": "5.5.4"
+    "cspell": "8.18.1",
+    "magic-string": "0.30.17",
+    "monocart-coverage-reports": "2.12.3",
+    "pretty-ansi": "3.0.0",
+    "rollup": "4.38.0",
+    "rollup-plugin-dts": "6.2.1",
+    "tslib": "2.8.1",
+    "typescript": "5.8.2"
   },
   "peerDependencies": {
-    "typescript": "4.x || 5.x"
+    "typescript": "5.x"
   },
   "peerDependenciesMeta": {
     "typescript": {
       "optional": true
     }
   },
-  "packageManager": "yarn@3.8.3",
+  "packageManager": "yarn@4.8.1",
   "engines": {
-    "node": ">=16.14"
+    "node": ">=20.9"
   }
 }

@@ -1,4 +1,4 @@
-import { afterEach, describe, test } from "poku";
+import test from "node:test";
 import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
@@ -7,19 +7,19 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'TSTYCHE_NO_INTERACTIVE' environment variable", async () => {
-  afterEach(async () => {
+await test("'TSTYCHE_NO_INTERACTIVE' environment variable", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await test("has default value", async () => {
+  await t.test("has default value", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -34,7 +34,7 @@ await describe("'TSTYCHE_NO_INTERACTIVE' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when truthy, interactive elements are disabled", async () => {
+  await t.test("when truthy, interactive elements are disabled", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -54,7 +54,7 @@ await describe("'TSTYCHE_NO_INTERACTIVE' environment variable", async () => {
     assert.equal(exitCode, 0);
   });
 
-  await test("when falsy, interactive elements are enabled", async () => {
+  await t.test("when falsy, interactive elements are enabled", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });

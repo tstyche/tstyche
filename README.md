@@ -2,10 +2,8 @@
 
 [![version][version-badge]][version-url]
 [![license][license-badge]][license-url]
-[![requirements][requirements-badge]][requirements-url]
 [![install-size][install-size-badge]][install-size-url]
 [![coverage][coverage-badge]][coverage-url]
-[![discord][discord-badge]][discord-url]
 
 The Essential Type Testing Tool.
 
@@ -41,8 +39,8 @@ To organize, debug and plan tests TSTyche has:
 The assertions can be used to write type tests (like in the above example) or mixed in your functional tests:
 
 ```ts
-import assert from "node:assert/strict";
-import { test } from "node:test";
+import assert from "node:assert";
+import test from "node:test";
 import * as tstyche from "tstyche";
 
 function secondItem<T>(target: Array<T>): T | undefined {
@@ -58,21 +56,20 @@ test("handles numbers", () => {
 
 Here is the list of all matchers:
 
-- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()`, `.toMatch()` compare types or types of expression,
-- `.toAcceptProps()` checks types of JSX component's props,
+- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()` compare types or types of expression,
+- `.toAcceptProps()` checks JSX component props type,
 - `.toHaveProperty()` looks up keys on an object type,
-- `.toRaiseError()` captures the type error message or code,
-- `.toBeString()`, `.toBeNumber()`, `.toBeVoid()` and 9 more shorthand checks for primitive types.
+- `.toRaiseError()` captures the type error message or code.
 
 ## Runner
 
-The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and pass them through TypeScript `4.8` and `latest`:
+The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and pass them through a range of TypeScript versions:
 
-```sh
-tstyche JsonObject --only external --target 4.8,latest
+```shell
+tstyche query-params --only multiple --target '>=5.0 <5.3'
 ```
 
-This simple! (And it has the watch mode too.)
+This simple! (And it has watch mode too.)
 
 ## Documentation
 
@@ -80,7 +77,7 @@ Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
 
 ## Feedback
 
-If you have any questions or suggestions, [start a discussion](https://github.com/tstyche/tstyche/discussions/new/choose) or [open an issue](https://github.com/tstyche/tstyche/issues/new/choose) on GitHub. Preferring a chat? Join our [Discord server][discord-url].
+If you have any questions or suggestions, [start a discussion](https://github.com/tstyche/tstyche/discussions/new/choose) or [open an issue](https://github.com/tstyche/tstyche/issues/new/choose) on GitHub. Preferring a chat? Join our [Discord server](https://discord.gg/gCSasd3QJq).
 
 ## License
 
@@ -90,11 +87,7 @@ If you have any questions or suggestions, [start a discussion](https://github.co
 [version-url]: https://npmjs.com/package/tstyche
 [license-badge]: https://badgen.net/github/license/tstyche/tstyche
 [license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
-[requirements-badge]: https://badgen.net/npm/node/tstyche
-[requirements-url]: https://tstyche.org/reference/requirements
 [install-size-badge]: https://badgen.net/packagephobia/install/tstyche
 [install-size-url]: https://packagephobia.com/result?p=tstyche
 [coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
 [coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
-[discord-badge]: https://badgen.net/static/chat/on%20Discord
-[discord-url]: https://discord.gg/gCSasd3QJq

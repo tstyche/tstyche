@@ -1,48 +1,72 @@
 import type ts from "typescript";
-import type { Assertion } from "#collect";
+import type { AssertionNode } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
-import type { ArgumentNode, Relation, TypeChecker } from "./types.js";
+import type { Relation, TypeChecker } from "./types.js";
 
 export class MatchWorker {
-  assertion: Assertion;
+  assertion: AssertionNode;
   #compiler: typeof ts;
   #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
   #typeCache = new Map<ts.Node, ts.Type>();
   #typeChecker: TypeChecker;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: Assertion) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: AssertionNode) {
     this.#compiler = compiler;
     this.#typeChecker = typeChecker;
     this.assertion = assertion;
   }
 
-  checkIsAssignableTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+  checkHasApplicableIndexType(sourceNode: ts.Node, targetNode: ts.Node): boolean {
+    const sourceType = this.getType(sourceNode);
+    const targetType = this.getType(targetNode);
+
+    return this.#typeChecker
+      .getIndexInfosOfType(sourceType)
+      .some(({ keyType }) => this.#typeChecker.isApplicableIndexType(targetType, keyType));
+  }
+
+  checkHasProperty(sourceNode: ts.Node, propertyNameText: string): boolean {
+    const sourceType = this.getType(sourceNode);
+
+    return sourceType
+      .getProperties()
+      .some((property) => this.#compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText);
+  }
+
+  checkIsAssignableTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
     return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
-  checkIsAssignableWith(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+  checkIsAssignableWith(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const relation = this.#typeChecker.relation.assignable;
 
     return this.#checkIsRelatedTo(targetNode, sourceNode, relation);
   }
 
-  checkIsIdenticalTo(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
+  checkIsIdenticalTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const relation = this.#typeChecker.relation.identity;
 
-    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
+    return (
+      this.#checkIsRelatedTo(sourceNode, targetNode, relation) &&
+      // following assignability checks ensure '{ a?: number }' and '{ a?: number | undefined }'
+      // are reported as not identical when '"exactOptionalPropertyTypes": true' is set
+      this.checkIsAssignableTo(sourceNode, targetNode) &&
+      this.checkIsAssignableWith(sourceNode, targetNode)
+    );
   }
 
-  checkIsSubtype(sourceNode: ArgumentNode, targetNode: ArgumentNode): boolean {
-    const relation = this.#typeChecker.relation.subtype;
+  #checkIsRelatedTo(sourceNode: ts.Node, targetNode: ts.Node, relation: Relation) {
+    const sourceType =
+      relation === this.#typeChecker.relation.identity
+        ? this.#simplifyType(this.getType(sourceNode))
+        : this.getType(sourceNode);
 
-    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
-  }
-
-  #checkIsRelatedTo(sourceNode: ArgumentNode, targetNode: ArgumentNode, relation: Relation) {
-    const sourceType = this.getType(sourceNode);
-    const targetType = this.getType(targetNode);
+    const targetType =
+      relation === this.#typeChecker.relation.identity
+        ? this.#simplifyType(this.getType(targetNode))
+        : this.getType(targetNode);
 
     return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
   }
@@ -63,7 +87,7 @@ export class MatchWorker {
     return this.#getTypeOfNode(parameter);
   }
 
-  getSignatures(node: ArgumentNode): Array<ts.Signature> {
+  getSignatures(node: ts.Node): Array<ts.Signature> {
     let signatures = this.#signatureCache.get(node);
 
     if (!signatures) {
@@ -79,14 +103,15 @@ export class MatchWorker {
     return signatures;
   }
 
-  getTypeText(node: ArgumentNode): string {
+  getTypeText(node: ts.Node): string {
     const type = this.getType(node);
 
+    // TODO consider passing 'enclosingDeclaration' as well
     return this.#typeChecker.typeToString(type);
   }
 
-  getType(node: ArgumentNode): ts.Type {
-    return this.#compiler.isExpression(node) ? this.#getTypeOfNode(node) : this.#getTypeOfTypeNode(node);
+  getType(node: ts.Node): ts.Type {
+    return this.#compiler.isTypeNode(node) ? this.#getTypeOfTypeNode(node) : this.#getTypeOfNode(node);
   }
 
   #getTypeOfNode(node: ts.Node) {
@@ -107,10 +132,6 @@ export class MatchWorker {
     }
 
     return type;
-  }
-
-  isAnyOrNeverType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return !!(type.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never));
   }
 
   isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
@@ -142,5 +163,26 @@ export class MatchWorker {
     }
 
     return DiagnosticOrigin.fromNode(enclosingNode, this.assertion);
+  }
+
+  #simplifyType(type: ts.Type): ts.Type {
+    if (type.isUnionOrIntersection()) {
+      // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
+      const candidateType = this.#simplifyType(type.types[0]!);
+
+      if (
+        type.types.every((type) =>
+          this.#typeChecker.isTypeRelatedTo(
+            this.#simplifyType(type),
+            candidateType,
+            this.#typeChecker.relation.identity,
+          ),
+        )
+      ) {
+        return candidateType;
+      }
+    }
+
+    return type;
   }
 }

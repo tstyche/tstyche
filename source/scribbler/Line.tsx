@@ -1,5 +1,5 @@
+import type { Color } from "./Color.enum.js";
 import { Text } from "./Text.js";
-import type { Color } from "./enums.js";
 import type { ScribblerNode } from "./types.js";
 
 interface LineProps {

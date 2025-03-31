@@ -1,8 +1,8 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
-import type { ArgumentNode, DiagnosticsHandler, MatchResult, TypeChecker } from "./types.js";
+import type { ArgumentNode, MatchResult, TypeChecker } from "./types.js";
 
 export class ToAcceptProps {
   #compiler: typeof ts;
@@ -223,7 +223,7 @@ export class ToAcceptProps {
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
     targetNode: ArgumentNode,
-    onDiagnostics: DiagnosticsHandler,
+    onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];
 

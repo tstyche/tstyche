@@ -1,24 +1,19 @@
-import { afterEach, describe, test } from "poku";
+import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await describe("'--prune' command line option", async () => {
-  if (process.versions.node.startsWith("16")) {
-    // store is not supported on Node.js 16
-    return;
-  }
-
-  afterEach(async () => {
+await test("'--prune' command line option", async (t) => {
+  t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
@@ -42,8 +37,8 @@ await describe("'--prune' command line option", async () => {
   ];
 
   for (const { args, testCase } of testCases) {
-    await test(testCase, async () => {
-      const storeManifest = { $version: "0" };
+    await t.test(testCase, async () => {
+      const storeManifest = { $version: "3" };
       const storeUrl = new URL("./.store", fixtureUrl);
 
       await writeFixture(fixtureUrl, {
@@ -51,11 +46,11 @@ await describe("'--prune' command line option", async () => {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
 
-      assert.fileExists(storeUrl);
+      assert.pathExists(storeUrl);
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-      assert.fileDoesNotExist(storeUrl);
+      assert.pathDoesNotExist(storeUrl);
 
       assert.equal(stdout, "");
       assert.equal(stderr, "");
@@ -63,7 +58,7 @@ await describe("'--prune' command line option", async () => {
     });
   }
 
-  await test("does nothing, if directory does not exist", async () => {
+  await t.test("does nothing, if directory does not exist", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });

@@ -1,31 +1,26 @@
 {
-  "cache": {
-    "cacheLocation": "./.cache/cspell",
-    "useCache": true
-  },
+  "dictionaries": [
+    "node",
+    "npm",
+    "typescript"
+  ],
   "files": [
-    "**/*.js",
-    "**/*.json",
-    "**/*.md",
+    "*.js",
+    "*.json",
+    "*.md",
+    "benchmarks/**/*",
     "examples/**/*",
     "models/**/*",
+    "scripts/**/*",
     "source/**/*",
-    "tests/**/*",
-    "typetests/**/*"
+    "tests/**/*"
   ],
-  "ignorePaths": ["**/__snapshots__/**/*"],
-  "language": "en-US",
-  "useGitignore": true,
   "words": [
-    "biomejs",
     "codacy",
+    "findup",
     "jsxs",
     "monocart",
-    "packagephobia",
-    "poku",
     "tsserverlibrary",
-    "tstyche",
-    "typecheck",
     "typetests"
   ]
 }

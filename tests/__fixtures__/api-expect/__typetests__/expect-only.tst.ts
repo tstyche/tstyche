@@ -1,34 +1,34 @@
 import { describe, expect, test } from "tstyche";
 
-expect.only<string>().type.toBeString();
-expect<never>().type.toBeString();
+expect.only<string>().type.toBe<string>();
+expect<never>().type.toBe<string>();
 
 expect
   .only(() => {
-    expect<never>().type.toBeNumber();
+    expect<never>().type.toBe<number>();
   })
   .type.toBe<() => void>();
 
 describe("is describe?", () => {
   test("is skipped?", () => {
-    expect<never>().type.toBeVoid();
-    expect.only<string>().type.toBeString();
+    expect<never>().type.toBe<void>();
+    expect.only<string>().type.toBe<string>();
   });
 });
 
 describe("is skipped describe?", () => {
   test("is skipped?", () => {
-    expect<never>().type.toBeVoid();
+    expect<never>().type.toBe<void>();
   });
 });
 
 test.only("is number?", () => {
-  expect<number>().type.toBeNumber();
-  expect.skip<never>().type.toBeVoid();
+  expect<number>().type.toBe<number>();
+  expect.skip<never>().type.toBe<void>();
 });
 
 test("is skipped?", () => {
-  expect<never>().type.toBeString();
+  expect<never>().type.toBe<string>();
 });
 
 test.todo("is todo?");

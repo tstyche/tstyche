@@ -1,21 +1,28 @@
+import type { AssertionNode, TestTree, TestTreeNode } from "#collect";
 import type { Diagnostic } from "#diagnostic";
-import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, TestResult } from "#result";
+import type { DescribeResult, ExpectResult, Result, TargetResult, TaskResult, TestResult } from "#result";
+
+export interface EventHandler {
+  on: (event: Event) => void;
+}
 
 export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
-  | ["deprecation:info", { diagnostics: Array<Diagnostic> }]
   | ["select:error", { diagnostics: Array<Diagnostic> }]
   | ["run:start", { result: Result }]
   | ["run:end", { result: Result }]
-  | ["store:info", { compilerVersion: string; installationPath: string }]
+  | ["store:adds", { packagePath: string; packageVersion: string }]
   | ["store:error", { diagnostics: Array<Diagnostic> }]
   | ["target:start", { result: TargetResult }]
   | ["target:end", { result: TargetResult }]
-  | ["project:info", { compilerVersion: string; projectConfigFilePath: string | undefined }]
+  | ["project:uses", { compilerVersion: string; projectConfigFilePath: string | undefined }]
   | ["project:error", { diagnostics: Array<Diagnostic> }]
-  | ["file:start", { result: FileResult }]
-  | ["file:error", { diagnostics: Array<Diagnostic>; result: FileResult }]
-  | ["file:end", { result: FileResult }]
+  | ["task:start", { result: TaskResult }]
+  | ["task:error", { diagnostics: Array<Diagnostic>; result: TaskResult }]
+  | ["task:end", { result: TaskResult }]
+  | ["collect:start", { testTree: TestTree }]
+  | ["collect:node", { testNode: TestTreeNode | AssertionNode }]
+  | ["collect:end", { testTree: TestTree }]
   | ["describe:start", { result: DescribeResult }]
   | ["describe:end", { result: DescribeResult }]
   | ["test:start", { result: TestResult }]

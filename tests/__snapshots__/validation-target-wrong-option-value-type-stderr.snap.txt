@@ -1,9 +1,11 @@
 Error: Option 'target' requires a value of type list.
 
   1 | {
-  2 |   "target": "current"
+  2 |   "target": "current",
     |             ~~~~~~~~~
-  3 | }
+  3 |   "testFileMatch": [
+  4 |     "examples/*.test.*"
+  5 |   ]
 
       at ./tstyche.config.json:2:13
 

@@ -1,9 +1,10 @@
 import type ts from "typescript";
-import { Assertion, type MatcherNode } from "./Assertion.js";
+import { EventEmitter } from "#events";
+import { AssertionNode, type MatcherNode } from "./AssertionNode.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
-import { TestMember } from "./TestMember.js";
 import { TestTree } from "./TestTree.js";
-import { TestMemberBrand } from "./enums.js";
+import { TestTreeNode } from "./TestTreeNode.js";
+import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 
 export class CollectService {
   #compiler: typeof ts;
@@ -12,23 +13,25 @@ export class CollectService {
     this.#compiler = compiler;
   }
 
-  #collectTestMembers(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestMember) {
+  #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestTreeNode) {
     if (this.#compiler.isCallExpression(node)) {
       const meta = identifiers.resolveTestMemberMeta(node);
 
-      if (meta != null && (meta.brand === TestMemberBrand.Describe || meta.brand === TestMemberBrand.Test)) {
-        const testMember = new TestMember(this.#compiler, meta.brand, node, parent, meta.flags);
+      if (meta != null && (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test)) {
+        const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
 
-        parent.members.push(testMember);
+        parent.children.push(testTreeNode);
+
+        EventEmitter.dispatch(["collect:node", { testNode: testTreeNode }]);
 
         this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestMembers(node, identifiers, testMember);
+          this.#collectTestTreeNodes(node, identifiers, testTreeNode);
         });
 
         return;
       }
 
-      if (meta != null && meta.brand === TestMemberBrand.Expect) {
+      if (meta != null && meta.brand === TestTreeNodeBrand.Expect) {
         const modifierNode = this.#getChainedNode(node, "type");
 
         if (!modifierNode) {
@@ -43,7 +46,7 @@ export class CollectService {
           return;
         }
 
-        const assertion = new Assertion(
+        const assertionNode = new AssertionNode(
           this.#compiler,
           meta.brand,
           node,
@@ -54,10 +57,12 @@ export class CollectService {
           notNode,
         );
 
-        parent.members.push(assertion);
+        parent.children.push(assertionNode);
+
+        EventEmitter.dispatch(["collect:node", { testNode: assertionNode }]);
 
         this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestMembers(node, identifiers, assertion);
+          this.#collectTestTreeNodes(node, identifiers, assertionNode);
         });
 
         return;
@@ -71,14 +76,18 @@ export class CollectService {
     }
 
     this.#compiler.forEachChild(node, (node) => {
-      this.#collectTestMembers(node, identifiers, parent);
+      this.#collectTestTreeNodes(node, identifiers, parent);
     });
   }
 
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
-    this.#collectTestMembers(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+    EventEmitter.dispatch(["collect:start", { testTree }]);
+
+    this.#collectTestTreeNodes(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+
+    EventEmitter.dispatch(["collect:end", { testTree }]);
 
     return testTree;
   }

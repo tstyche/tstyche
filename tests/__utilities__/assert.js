@@ -1,22 +1,9 @@
+import { strict as assert } from "node:assert/strict";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { strict as assert } from "poku";
+import process from "node:process";
 
-export const { doesNotMatch, equal, match, notEqual } = assert;
-
-/**
- * @param {string | URL} source
- */
-export function fileExists(source) {
-  assert(existsSync(source), `File ${source.toString()} exists.`);
-}
-
-/**
- * @param {string | URL} source
- */
-export function fileDoesNotExist(source) {
-  assert(!existsSync(source), `File ${source.toString()} does not exist.`);
-}
+export { doesNotMatch, equal, match, notEqual } from "node:assert/strict";
 
 /**
  * @param {Record<string, unknown> | string} source
@@ -24,12 +11,12 @@ export function fileDoesNotExist(source) {
  */
 export function matchObject(source, target) {
   if (typeof source === "string") {
-    source = /** @type {{ version: string }} */ (JSON.parse(source));
+    source = /** @type {Record<string, unknown>} */ (JSON.parse(source));
   }
 
-  for (const targetKey of Object.keys(target)) {
-    assert.equal(targetKey in source, true, `Target has the '${targetKey}' property.`);
-    assert.deepEqual(source[targetKey], target[targetKey], `Values of the '${targetKey}' properties match.`);
+  for (const key of Object.keys(target)) {
+    assert.equal(key in source, true, `Target does not have the '${key}' property.`);
+    assert.deepEqual(source[key], target[key], `Values of the '${key}' properties do not match.`);
   }
 }
 
@@ -40,7 +27,7 @@ export function matchObject(source, target) {
 export async function matchSnapshot(source, snapshot) {
   const snapshotFileUrl = new URL(`__snapshots__/${snapshot.fileName}.snap.txt`, snapshot.testFileUrl);
 
-  if (existsSync(snapshotFileUrl) && !process.argv.includes("--update")) {
+  if (existsSync(snapshotFileUrl) && !process.argv.includes("--write")) {
     const target = await fs.readFile(snapshotFileUrl, { encoding: "utf8" });
 
     assert.equal(source.replace(/\r\n/g, "\n"), target.replace(/\r\n/g, "\n"));
@@ -52,4 +39,18 @@ export async function matchSnapshot(source, snapshot) {
     await fs.mkdir(new URL("__snapshots__", snapshot.testFileUrl), { recursive: true });
     await fs.writeFile(snapshotFileUrl, source);
   }
+}
+
+/**
+ * @param {string | URL} source
+ */
+export function pathExists(source) {
+  assert(existsSync(source), `Path '${source.toString()}' does not exist.`);
+}
+
+/**
+ * @param {string | URL} source
+ */
+export function pathDoesNotExist(source) {
+  assert(!existsSync(source), `Path '${source.toString()}' exists.`);
 }

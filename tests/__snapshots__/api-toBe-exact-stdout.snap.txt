@@ -1,0 +1,23 @@
+uses TypeScript <<version>> with ./tsconfig-exact.json
+
+pass ./__typetests__/toBe.tst.ts
+  - skip edge cases
+  + exact optional property types
+  source type
+    - skip is identical to target type
+    - skip is NOT identical to target type
+    - skip is identical to target expression
+    - skip is NOT identical to target expression
+  source expression
+    - skip identical to target type
+    - skip is NOT identical to target type
+    - skip identical to target expression
+    - skip is NOT identical to target expression
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      9 skipped, 1 passed, 10 total
+Assertions: 46 skipped, 4 passed, 50 total
+Duration:   <<timestamp>>
+
+Ran tests matching 'exact' in all test files.

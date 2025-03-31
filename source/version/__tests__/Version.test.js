@@ -1,67 +1,9 @@
-import { assert, describe, test } from "poku";
+import assert from "node:assert";
+import test from "node:test";
 import { Version } from "tstyche/tstyche";
 
-describe("Version", () => {
-  describe("'isVersionTag' method", () => {
-    const testCases = [
-      {
-        expected: true,
-        target: "6",
-        testCase: "when target is major version",
-      },
-      {
-        expected: true,
-        target: "5.3",
-        testCase: "when target is minor version",
-      },
-      {
-        expected: true,
-        target: "4.9.5",
-        testCase: "when target is patch version",
-      },
-      {
-        expected: true,
-        target: "5.3.0-beta",
-        testCase: "when target is beta version",
-      },
-      {
-        expected: true,
-        target: "5.4.0-dev.20240113",
-        testCase: "when target is dev version",
-      },
-
-      {
-        expected: false,
-        target: "beta",
-        testCase: "when target is 'beta'",
-      },
-      {
-        expected: false,
-        target: "latest",
-        testCase: "when target is 'latest'",
-      },
-      {
-        expected: false,
-        target: "next",
-        testCase: "when target is 'next'",
-      },
-      {
-        expected: false,
-        target: "rc",
-        testCase: "when target is 'rc'",
-      },
-    ];
-
-    for (const { expected, target, testCase } of testCases) {
-      test(testCase, () => {
-        const result = Version.isVersionTag(target);
-
-        assert.strictEqual(result, expected);
-      });
-    }
-  });
-
-  describe("'isGreaterThan' method", () => {
+test("Version", async (t) => {
+  await t.test("'isGreaterThan' method", async (t) => {
     const testCases = [
       {
         expected: true,
@@ -164,7 +106,7 @@ describe("Version", () => {
     ];
 
     for (const { expected, source, target, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const result = Version.isGreaterThan(source, target);
 
         assert.strictEqual(result, expected);
@@ -172,7 +114,7 @@ describe("Version", () => {
     }
   });
 
-  describe("'isSatisfiedWith' method", () => {
+  await t.test("'isSatisfiedWith' method", async (t) => {
     const testCases = [
       {
         expected: true,
@@ -275,7 +217,7 @@ describe("Version", () => {
     ];
 
     for (const { expected, source, target, testCase } of testCases) {
-      test(testCase, () => {
+      await t.test(testCase, () => {
         const result = Version.isSatisfiedWith(source, target);
 
         assert.strictEqual(result, expected);

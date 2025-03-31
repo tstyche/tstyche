@@ -1,8 +1,11 @@
+.DS_Store
 .cache
 .generated
-.yarn/*
-!.yarn/releases
+.idea
+.yarn
 build
 coverage
 node_modules
+*.bench.json
+*.iml
 *.log

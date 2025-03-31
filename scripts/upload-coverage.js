@@ -42,10 +42,10 @@ const response = await fetch(endpoint, {
   body: coverageReportText,
 });
 
-const result = await response.json();
+const result = /** @type {{ error?: unknown }} */ (await response.json());
 
 if ("error" in result) {
-  throw new Error("Error:", result);
+  throw new Error(`Error: ${result.error}`);
 }
 
 console.info("Success:", result);

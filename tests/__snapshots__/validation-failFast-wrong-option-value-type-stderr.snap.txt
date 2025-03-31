@@ -1,9 +1,11 @@
 Error: Option 'failFast' requires a value of type boolean.
 
   1 | {
-  2 |   "failFast": "never"
+  2 |   "failFast": "never",
     |               ~~~~~~~
-  3 | }
+  3 |   "target": [
+  4 |     "current"
+  5 |   ]
 
       at ./tstyche.config.json:2:15
 

@@ -8,7 +8,6 @@ import * as tstyche from "tstyche/tstyche";
  * @property {unknown} [default]
  * @property {string} [description]
  * @property {JsonSchemaDefinition} [items]
- * @property {string} [pattern]
  * @property {string | Array<string>} type
  * @property {boolean} [uniqueItems]
  */
@@ -36,6 +35,10 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
   const jsonSchemaDefinition = {};
 
   if (defaultValue != null) {
+    if (optionDefinition.name === "rootPath" && typeof defaultValue === "string") {
+      defaultValue = tstyche.Path.relative("", defaultValue);
+    }
+
     jsonSchemaDefinition.default = defaultValue;
   }
 
@@ -43,44 +46,37 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
     jsonSchemaDefinition.description = optionDefinition.description;
   }
 
-  if ("pattern" in optionDefinition) {
-    jsonSchemaDefinition.pattern = optionDefinition.pattern;
-  }
-
   switch (optionDefinition.brand) {
-    case tstyche.OptionBrand.Boolean: {
+    case tstyche.OptionBrand.Boolean:
       jsonSchemaDefinition.type = "boolean";
       break;
-    }
 
-    case tstyche.OptionBrand.List: {
+    case tstyche.OptionBrand.List:
       jsonSchemaDefinition.items = createJsonSchemaDefinition(optionDefinition.items);
 
       jsonSchemaDefinition.type = "array";
       jsonSchemaDefinition.uniqueItems = true;
       break;
-    }
 
-    case tstyche.OptionBrand.Number: {
+    case tstyche.OptionBrand.Number:
       jsonSchemaDefinition.type = "number";
       break;
-    }
 
-    case tstyche.OptionBrand.String: {
+    case tstyche.OptionBrand.String:
       jsonSchemaDefinition.type = "string";
-      break;
-    }
-
-    default:
       break;
   }
 
   return jsonSchemaDefinition;
 }
 
-const configFileOptionDefinitions = tstyche.OptionDefinitionsMap.for(tstyche.OptionGroup.ConfigFile);
+const configFileOptions = tstyche.Options.for(tstyche.OptionGroup.ConfigFile);
 
-for (const [key, optionDefinition] of configFileOptionDefinitions) {
+for (const [key, optionDefinition] of configFileOptions) {
+  if (key.startsWith("$")) {
+    continue;
+  }
+
   jsonSchema.properties[key] = createJsonSchemaDefinition(
     optionDefinition,
     // @ts-expect-error index signature

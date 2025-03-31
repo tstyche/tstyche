@@ -1,1 +1,2 @@
-export { Environment } from "./Environment.js";
+export { environmentOptions } from "./environmentOptions.js";
+export type { EnvironmentOptions } from "./types.js";

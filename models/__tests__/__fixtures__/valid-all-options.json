@@ -1,7 +1,13 @@
 {
   "$schema": "../../config-schema.json",
+  "checkSourceFiles": true,
   "failFast": true,
+  "plugins": ["./tstyche-plugin.js"],
+  "rejectAnyType": true,
+  "rejectNeverType": true,
+  "reporters": ["./tstyche-reporter.js"],
   "rootPath": "../",
-  "target": ["4.9", "5.0.4", "beta", "latest", "next", "rc"],
-  "testFileMatch": ["examples/*.test.ts", "**/__typetests__/*.test.ts"]
+  "target": ["5.1", "5.5.2", "beta", "latest", "next", "rc"],
+  "testFileMatch": ["examples/*.test.ts", "**/__typetests__/*.test.ts"],
+  "tsconfig": "./tsconfig.test.json"
 }

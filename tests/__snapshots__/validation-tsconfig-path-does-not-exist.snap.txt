@@ -1,0 +1,10 @@
+Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/validation-tsconfig/not.tsconfig.json' does not exist.
+
+  1 | {
+  2 |   "tsconfig": "./not.tsconfig.json"
+    |               ~~~~~~~~~~~~~~~~~~~~~
+  3 | }
+  4 | 
+
+      at ./tstyche.config.json:2:15
+

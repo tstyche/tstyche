@@ -3,11 +3,11 @@ Error: The assertion was supposed to fail, but it passed.
 Consider removing the '.fail' flag.
 
   2 | 
-  3 | expect<string>().type.toBeString();
-  4 | expect.fail<string>().type.toBeString();
+  3 | expect<string>().type.toBe<string>();
+  4 | expect.fail<string>().type.toBe<string>();
     |        ~~~~
   5 | 
-  6 | expect.fail<never>().type.toBeString();
+  6 | expect.fail<never>().type.toBe<string>();
   7 | 
 
       at ./__typetests__/expect-fail.tst.ts:4:8
@@ -17,11 +17,11 @@ Error: The assertion was supposed to fail, but it passed.
 Consider removing the '.fail' flag.
 
   15 |   test("is string?", () => {
-  16 |     expect<string>().type.toBeString();
-  17 |     expect.fail<string>().type.toBeString();
+  16 |     expect<string>().type.toBe<string>();
+  17 |     expect.fail<string>().type.toBe<string>();
      |            ~~~~
   18 | 
-  19 |     expect.fail<never>().type.toBeVoid();
+  19 |     expect.fail<never>().type.toBe<void>();
   20 |   });
 
        at ./__typetests__/expect-fail.tst.ts:17:12
@@ -31,11 +31,11 @@ Error: The assertion was supposed to fail, but it passed.
 Consider removing the '.fail' flag.
 
   23 | test("is number?", () => {
-  24 |   expect<number>().type.toBeNumber();
-  25 |   expect.fail<number>().type.toBeNumber();
+  24 |   expect<number>().type.toBe<number>();
+  25 |   expect.fail<number>().type.toBe<number>();
      |          ~~~~
   26 | 
-  27 |   expect.fail<never>().type.toBeVoid();
+  27 |   expect.fail<never>().type.toBe<void>();
   28 | });
 
        at ./__typetests__/expect-fail.tst.ts:25:10

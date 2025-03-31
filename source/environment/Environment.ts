@@ -1,64 +1,19 @@
-import { createRequire } from "node:module";
 import os from "node:os";
 import process from "node:process";
 import { Path } from "#path";
+import type { EnvironmentOptions } from "./types.js";
 
 export class Environment {
-  static #isCi = Environment.#resolveIsCi();
-  static #noColor = Environment.#resolveNoColor();
-  static #noInteractive = Environment.#resolveNoInteractive();
-  static #npmRegistry = Environment.#resolveNpmRegistry();
-  static #storePath = Environment.#resolveStorePath();
-  static #timeout = Environment.#resolveTimeout();
-  static #typescriptPath = Environment.#resolveTypeScriptPath();
-
-  /**
-   * Is `true` if the process is running in a continuous integration environment.
-   */
-  static get isCi(): boolean {
-    return Environment.#isCi;
-  }
-
-  /**
-   * Specifies whether color should be disabled in the output.
-   */
-  static get noColor(): boolean {
-    return Environment.#noColor;
-  }
-
-  /**
-   * Specifies whether interactive elements should be disabled in the output.
-   */
-  static get noInteractive(): boolean {
-    return Environment.#noInteractive;
-  }
-
-  /**
-   * The base URL of the 'npm' registry to use.
-   */
-  static get npmRegistry(): string {
-    return Environment.#npmRegistry;
-  }
-
-  /**
-   * The directory where to store the 'typescript' packages.
-   */
-  static get storePath(): string {
-    return Environment.#storePath;
-  }
-
-  /**
-   * The number of seconds to wait before giving up stale operations.
-   */
-  static get timeout(): number {
-    return Environment.#timeout;
-  }
-
-  /**
-   * The path to the currently installed TypeScript module.
-   */
-  static get typescriptPath(): string | undefined {
-    return Environment.#typescriptPath;
+  static resolve(): EnvironmentOptions {
+    return {
+      isCi: Environment.#resolveIsCi(),
+      noColor: Environment.#resolveNoColor(),
+      noInteractive: Environment.#resolveNoInteractive(),
+      npmRegistry: Environment.#resolveNpmRegistry(),
+      storePath: Environment.#resolveStorePath(),
+      timeout: Environment.#resolveTimeout(),
+      typescriptModule: Environment.#resolveTypeScriptModule(),
+    };
   }
 
   static #resolveIsCi() {
@@ -125,22 +80,21 @@ export class Environment {
     return 30;
   }
 
-  static #resolveTypeScriptPath() {
-    let moduleId = "typescript";
+  static #resolveTypeScriptModule() {
+    let specifier = "typescript";
 
-    if (process.env["TSTYCHE_TYPESCRIPT_PATH"] != null) {
-      moduleId = process.env["TSTYCHE_TYPESCRIPT_PATH"];
+    if (process.env["TSTYCHE_TYPESCRIPT_MODULE"] != null) {
+      specifier = process.env["TSTYCHE_TYPESCRIPT_MODULE"];
     }
 
-    let resolvedPath: string | undefined;
+    let resolvedModule: string | undefined;
 
     try {
-      // TODO use 'import.meta.resolve()' after dropping support for Node.js 16
-      resolvedPath = Path.normalizeSlashes(createRequire(import.meta.url).resolve(moduleId));
+      resolvedModule = import.meta.resolve(specifier);
     } catch {
-      // the path cannot be resolved
+      // module was not found
     }
 
-    return resolvedPath;
+    return resolvedModule;
   }
 }

@@ -3,46 +3,43 @@ import type { Event, EventHandler } from "#events";
 import {
   type DescribeResult,
   type ExpectResult,
-  type FileResult,
   ProjectResult,
   type Result,
   ResultStatus,
   type TargetResult,
+  type TaskResult,
   type TestResult,
 } from "#result";
 
 export class ResultHandler implements EventHandler {
   #describeResult: DescribeResult | undefined;
   #expectResult: ExpectResult | undefined;
-  #fileResult: FileResult | undefined;
   #projectResult: ProjectResult | undefined;
   #result: Result | undefined;
   #targetResult: TargetResult | undefined;
+  #taskResult: TaskResult | undefined;
   #testResult: TestResult | undefined;
 
-  handleEvent([eventName, payload]: Event): void {
-    switch (eventName) {
-      case "run:start": {
+  on([event, payload]: Event): void {
+    switch (event) {
+      case "run:start":
         this.#result = payload.result;
         this.#result.timing.start = Date.now();
         break;
-      }
 
-      case "run:end": {
+      case "run:end":
         this.#result!.timing.end = Date.now();
         this.#result = undefined;
         break;
-      }
 
-      case "target:start": {
+      case "target:start":
         this.#result!.results.push(payload.result);
 
         this.#targetResult = payload.result;
         this.#targetResult.timing.start = Date.now();
         break;
-      }
 
-      case "target:end": {
+      case "target:end":
         if (this.#targetResult!.status === ResultStatus.Failed) {
           this.#result!.targetCount.failed++;
         } else {
@@ -53,165 +50,149 @@ export class ResultHandler implements EventHandler {
         this.#targetResult!.timing.end = Date.now();
         this.#targetResult = undefined;
         break;
-      }
 
-      case "store:error": {
+      case "store:error":
         if (payload.diagnostics.some(({ category }) => category === DiagnosticCategory.Error)) {
           this.#targetResult!.status = ResultStatus.Failed;
         }
         break;
-      }
 
-      case "project:info": {
-        {
-          let projectResult = this.#targetResult!.results.get(payload.projectConfigFilePath);
+      // TODO consider moving 'new ProjectResult' to the runner
+      case "project:uses": {
+        let projectResult = this.#targetResult!.results.get(payload.projectConfigFilePath);
 
-          if (!projectResult) {
-            projectResult = new ProjectResult(payload.compilerVersion, payload.projectConfigFilePath);
-            this.#targetResult!.results.set(payload.projectConfigFilePath, projectResult);
-          }
-
-          this.#projectResult = projectResult;
+        if (!projectResult) {
+          projectResult = new ProjectResult(payload.compilerVersion, payload.projectConfigFilePath);
+          this.#targetResult!.results.set(payload.projectConfigFilePath, projectResult);
         }
+
+        this.#projectResult = projectResult;
         break;
       }
 
-      case "project:error": {
+      case "project:error":
         this.#targetResult!.status = ResultStatus.Failed;
         this.#projectResult!.diagnostics.push(...payload.diagnostics);
         break;
-      }
 
-      case "file:start": {
+      case "task:start":
         this.#projectResult!.results.push(payload.result);
 
-        this.#fileResult = payload.result;
-        this.#fileResult.timing.start = Date.now();
+        this.#taskResult = payload.result;
+        this.#taskResult.timing.start = Date.now();
         break;
-      }
 
-      case "file:error": {
+      case "task:error":
         this.#targetResult!.status = ResultStatus.Failed;
-        this.#fileResult!.status = ResultStatus.Failed;
-        this.#fileResult!.diagnostics.push(...payload.diagnostics);
+        this.#taskResult!.status = ResultStatus.Failed;
+        this.#taskResult!.diagnostics.push(...payload.diagnostics);
         break;
-      }
 
-      case "file:end": {
+      case "task:end":
         if (
-          this.#fileResult!.status === ResultStatus.Failed ||
-          this.#fileResult!.expectCount.failed > 0 ||
-          this.#fileResult!.testCount.failed > 0
+          this.#taskResult!.status === ResultStatus.Failed ||
+          this.#taskResult!.expectCount.failed > 0 ||
+          this.#taskResult!.testCount.failed > 0
         ) {
           this.#result!.fileCount.failed++;
           this.#targetResult!.status = ResultStatus.Failed;
-          this.#fileResult!.status = ResultStatus.Failed;
+          this.#taskResult!.status = ResultStatus.Failed;
         } else {
           this.#result!.fileCount.passed++;
-          this.#fileResult!.status = ResultStatus.Passed;
+          this.#taskResult!.status = ResultStatus.Passed;
         }
 
-        this.#fileResult!.timing.end = Date.now();
-        this.#fileResult = undefined;
+        this.#taskResult!.timing.end = Date.now();
+        this.#taskResult = undefined;
         break;
-      }
 
-      case "describe:start": {
+      case "describe:start":
         if (this.#describeResult) {
           this.#describeResult.results.push(payload.result);
         } else {
-          this.#fileResult!.results.push(payload.result);
+          this.#taskResult!.results.push(payload.result);
         }
 
         this.#describeResult = payload.result;
         this.#describeResult.timing.start = Date.now();
         break;
-      }
 
-      case "describe:end": {
+      case "describe:end":
         this.#describeResult!.timing.end = Date.now();
         this.#describeResult = this.#describeResult!.parent;
         break;
-      }
 
-      case "test:start": {
+      case "test:start":
         if (this.#describeResult) {
           this.#describeResult.results.push(payload.result);
         } else {
-          this.#fileResult!.results.push(payload.result);
+          this.#taskResult!.results.push(payload.result);
         }
 
         this.#testResult = payload.result;
         this.#testResult.timing.start = Date.now();
         break;
-      }
 
-      case "test:error": {
+      case "test:error":
         this.#result!.testCount.failed++;
-        this.#fileResult!.testCount.failed++;
+        this.#taskResult!.testCount.failed++;
 
         this.#testResult!.status = ResultStatus.Failed;
         this.#testResult!.diagnostics.push(...payload.diagnostics);
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
-      }
 
-      case "test:fail": {
+      case "test:fail":
         this.#result!.testCount.failed++;
-        this.#fileResult!.testCount.failed++;
+        this.#taskResult!.testCount.failed++;
 
         this.#testResult!.status = ResultStatus.Failed;
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
-      }
 
-      case "test:pass": {
+      case "test:pass":
         this.#result!.testCount.passed++;
-        this.#fileResult!.testCount.passed++;
+        this.#taskResult!.testCount.passed++;
 
         this.#testResult!.status = ResultStatus.Passed;
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
-      }
 
-      case "test:skip": {
+      case "test:skip":
         this.#result!.testCount.skipped++;
-        this.#fileResult!.testCount.skipped++;
+        this.#taskResult!.testCount.skipped++;
 
         this.#testResult!.status = ResultStatus.Skipped;
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
-      }
 
-      case "test:todo": {
+      case "test:todo":
         this.#result!.testCount.todo++;
-        this.#fileResult!.testCount.todo++;
+        this.#taskResult!.testCount.todo++;
 
         this.#testResult!.status = ResultStatus.Todo;
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
-      }
 
-      case "expect:start": {
+      case "expect:start":
         if (this.#testResult) {
           this.#testResult.results.push(payload.result);
         } else {
-          this.#fileResult!.results.push(payload.result);
+          this.#taskResult!.results.push(payload.result);
         }
 
         this.#expectResult = payload.result;
         this.#expectResult.timing.start = Date.now();
         break;
-      }
 
-      case "expect:error": {
+      case "expect:error":
         this.#result!.expectCount.failed++;
-        this.#fileResult!.expectCount.failed++;
+        this.#taskResult!.expectCount.failed++;
 
         if (this.#testResult) {
           this.#testResult.expectCount.failed++;
@@ -222,11 +203,10 @@ export class ResultHandler implements EventHandler {
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
         break;
-      }
 
-      case "expect:fail": {
+      case "expect:fail":
         this.#result!.expectCount.failed++;
-        this.#fileResult!.expectCount.failed++;
+        this.#taskResult!.expectCount.failed++;
 
         if (this.#testResult) {
           this.#testResult.expectCount.failed++;
@@ -236,11 +216,10 @@ export class ResultHandler implements EventHandler {
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
         break;
-      }
 
-      case "expect:pass": {
+      case "expect:pass":
         this.#result!.expectCount.passed++;
-        this.#fileResult!.expectCount.passed++;
+        this.#taskResult!.expectCount.passed++;
 
         if (this.#testResult) {
           this.#testResult.expectCount.passed++;
@@ -250,11 +229,10 @@ export class ResultHandler implements EventHandler {
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
         break;
-      }
 
-      case "expect:skip": {
+      case "expect:skip":
         this.#result!.expectCount.skipped++;
-        this.#fileResult!.expectCount.skipped++;
+        this.#taskResult!.expectCount.skipped++;
 
         if (this.#testResult) {
           this.#testResult.expectCount.skipped++;
@@ -263,10 +241,6 @@ export class ResultHandler implements EventHandler {
         this.#expectResult!.status = ResultStatus.Skipped;
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
-        break;
-      }
-
-      default:
         break;
     }
   }

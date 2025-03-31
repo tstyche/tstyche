@@ -1,4 +1,10 @@
+import { Format } from "./Format.js";
+
 export class ExpectDiagnosticText {
+  static argumentCannotBeOfType(argumentNameText: string, typeText: string): string {
+    return `An argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
+  }
+
   static argumentOrTypeArgumentMustBeProvided(argumentNameText: string, typeArgumentNameText: string): string {
     return `An argument for '${argumentNameText}' or type argument for '${typeArgumentNameText}' must be provided.`;
   }
@@ -19,13 +25,6 @@ export class ExpectDiagnosticText {
     return `${isTypeNode ? "Component type" : "Component"} does not accept props of the given type.`;
   }
 
-  static matcherIsDeprecated(matcherNameText: string): Array<string> {
-    return [
-      `The '.${matcherNameText}()' matcher is deprecated and will be removed in TSTyche 3.`,
-      "To learn more, visit https://tstyche.org/releases/tstyche-2",
-    ];
-  }
-
   static matcherIsNotSupported(matcherNameText: string): string {
     return `The '.${matcherNameText}()' matcher is not supported.`;
   }
@@ -36,6 +35,10 @@ export class ExpectDiagnosticText {
 
   static raisedTypeError(count = 1): string {
     return `The raised type error${count === 1 ? "" : "s"}:`;
+  }
+
+  static typeArgumentCannotBeOfType(argumentNameText: string, typeText: string): string {
+    return `A type argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
   }
 
   static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
@@ -54,20 +57,8 @@ export class ExpectDiagnosticText {
     return `Type '${typeText}' does not have property '${propertyNameText}'.`;
   }
 
-  static typeDoesMatch(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' does match type '${targetTypeText}'.`;
-  }
-
-  static typeDoesNotMatch(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' does not match type '${targetTypeText}'.`;
-  }
-
   static typeHasProperty(typeText: string, propertyNameText: string): string {
     return `Type '${typeText}' has property '${propertyNameText}'.`;
-  }
-
-  static typeIs(typeText: string): string {
-    return `Type is '${typeText}'.`;
   }
 
   static typeIsAssignableTo(sourceTypeText: string, targetTypeText: string): string {
@@ -118,5 +109,14 @@ export class ExpectDiagnosticText {
 
   static typesOfPropertyAreNotCompatible(propertyNameText: string): string {
     return `Types of property '${propertyNameText}' are not compatible.`;
+  }
+
+  static typeWasRejected(typeText: string): Array<string> {
+    const optionNameText = `reject${Format.capitalize(typeText)}Type`;
+
+    return [
+      `The '${typeText}' type was rejected because the '${optionNameText}' option is enabled.`,
+      `If this check is necessary, pass '${typeText}' as the type argument explicitly.`,
+    ];
   }
 }

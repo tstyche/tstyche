@@ -33,4 +33,4 @@ Tests:      25 failed, 25 total
 Assertions: 25 failed, 19 passed, 44 total
 Duration:   <<timestamp>>
 
-Ran all test files.
+Ran test files matching 'toRaiseError.tst.ts'.

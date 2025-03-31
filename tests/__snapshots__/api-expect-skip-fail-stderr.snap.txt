@@ -3,8 +3,8 @@ Error: The assertion was supposed to fail, but it passed.
 Consider removing the '.fail' flag.
 
   2 | 
-  3 | expect.skip.fail<string>().type.toBeString();
-  4 | expect.fail<string>().type.toBeString();
+  3 | expect.skip.fail<string>().type.toBe<string>();
+  4 | expect.fail<string>().type.toBe<string>();
     |        ~~~~
   5 | 
   6 | expect.skip
@@ -17,8 +17,8 @@ Error: The assertion was supposed to fail, but it passed.
 Consider removing the '.fail' flag.
 
   13 |   test("is string?", () => {
-  14 |     expect.skip.fail<string>().type.toBeString();
-  15 |     expect.fail<string>().type.toBeString();
+  14 |     expect.skip.fail<string>().type.toBe<string>();
+  15 |     expect.fail<string>().type.toBe<string>();
      |            ~~~~
   16 |   });
   17 | });
@@ -31,8 +31,8 @@ Error: The assertion was supposed to fail, but it passed.
 Consider removing the '.fail' flag.
 
   19 | test("is number?", () => {
-  20 |   expect.skip.fail<number>().type.toBeNumber();
-  21 |   expect.fail<number>().type.toBeNumber();
+  20 |   expect.skip.fail<number>().type.toBe<number>();
+  21 |   expect.fail<number>().type.toBe<number>();
      |          ~~~~
   22 | });
   23 | 

@@ -52,7 +52,7 @@ function CommandLineUsageText() {
   const usage: Array<[commandText: string, descriptionText: string]> = [
     ["tstyche", "Run all tests."],
     ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
-    ["tstyche --target 4.9,5.3.2,current", "Test on all specified versions of TypeScript."],
+    ["tstyche --target 5.3,5.6.2,current", "Test on all specified versions of TypeScript."],
   ];
 
   const usageText = usage.map(([commandText, descriptionText]) => (
@@ -120,17 +120,14 @@ function HelpFooterText() {
   return <Line>{"To learn more, visit https://tstyche.org"}</Line>;
 }
 
-export function helpText(
-  optionDefinitions: Map<string, OptionDefinition>,
-  tstycheVersion: string,
-): ScribblerJsx.Element {
+export function helpText(options: Map<string, OptionDefinition>, version: string): ScribblerJsx.Element {
   return (
     <Text>
-      <HelpHeaderText tstycheVersion={tstycheVersion} />
+      <HelpHeaderText tstycheVersion={version} />
       <Line />
       <CommandLineUsageText />
       <Line />
-      <CommandLineOptionsText optionDefinitions={optionDefinitions} />
+      <CommandLineOptionsText optionDefinitions={options} />
       <Line />
       <HelpFooterText />
       <Line />

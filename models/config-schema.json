@@ -1,10 +1,46 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
+    "checkSourceFiles": {
+      "default": true,
+      "description": "Enable type error reporting for source files.",
+      "type": "boolean"
+    },
     "failFast": {
       "default": false,
       "description": "Stop running tests after the first failed assertion.",
       "type": "boolean"
+    },
+    "plugins": {
+      "default": [],
+      "description": "The list of plugins to use.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "rejectAnyType": {
+      "default": true,
+      "description": "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
+      "type": "boolean"
+    },
+    "rejectNeverType": {
+      "default": true,
+      "description": "Reject the 'never' type passed as an argument to the 'expect()' function or a matcher.",
+      "type": "boolean"
+    },
+    "reporters": {
+      "default": [
+        "list",
+        "summary"
+      ],
+      "description": "The list of reporters to use.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
     },
     "rootPath": {
       "default": "./",
@@ -17,7 +53,6 @@
       ],
       "description": "The list of TypeScript versions to be tested on.",
       "items": {
-        "pattern": "^([45]\\.[0-9](\\.[0-9])?)|beta|current|latest|next|rc$",
         "type": "string"
       },
       "type": "array",
@@ -35,6 +70,11 @@
       },
       "type": "array",
       "uniqueItems": true
+    },
+    "tsconfig": {
+      "default": "findup",
+      "description": "The look up strategy to be used to find the TSConfig file.",
+      "type": "string"
     }
   },
   "type": "object"

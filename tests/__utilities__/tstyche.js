@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import process from "node:process";
 
 /**
  * @param {URL} fixtureUrl
@@ -21,11 +22,15 @@ export async function spawnTyche(fixtureUrl, args, options) {
 
     let stdoutOutput = "";
 
+    tstyche.stdout.setEncoding("utf8");
+
     tstyche.stdout.on("data", (data) => {
       stdoutOutput += data;
     });
 
     let stderrOutput = "";
+
+    tstyche.stderr.setEncoding("utf8");
 
     tstyche.stderr.on("data", (data) => {
       stderrOutput += data;
@@ -36,7 +41,7 @@ export async function spawnTyche(fixtureUrl, args, options) {
     });
 
     tstyche.on("close", (exitCode) => {
-      resolve({ exitCode, stderr: stderrOutput.toString(), stdout: stdoutOutput.toString() });
+      resolve({ exitCode, stderr: stderrOutput, stdout: stdoutOutput });
     });
   });
 }

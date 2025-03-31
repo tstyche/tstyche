@@ -3,9 +3,9 @@ import { DiagnosticCategory } from "#diagnostic";
 import type { Event, EventHandler } from "#events";
 
 export class ExitCodeHandler implements EventHandler {
-  handleEvent([eventName, payload]: Event): void {
-    if (eventName === "run:start") {
-      // useful when tests are reran in the watch mode
+  on([event, payload]: Event): void {
+    if (event === "run:start") {
+      // useful when tests are reran in watch mode
       this.resetCode();
       return;
     }

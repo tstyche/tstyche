@@ -1,40 +1,40 @@
 import { describe, expect, test } from "tstyche";
 
-expect<string>().type.toBeString();
-expect.only.fail<string>().type.toBeString();
+expect<string>().type.toBe<string>();
+expect.only.fail<string>().type.toBe<string>();
 
-expect.only.fail<never>().type.toBeString();
+expect.only.fail<never>().type.toBe<string>();
 
 expect.only
   .fail(() => {
-    expect<never>().type.toBeNumber();
+    expect<never>().type.toBe<number>();
   })
   .type.toBe<void>();
 
 describe("is skipped describe?", () => {
   test("is skipped?", () => {
-    expect<never>().type.toBeVoid();
-    expect.only.fail<string>().type.toBeString();
+    expect<never>().type.toBe<void>();
+    expect.only.fail<string>().type.toBe<string>();
 
-    expect.only.fail<never>().type.toBeVoid();
+    expect.only.fail<never>().type.toBe<void>();
   });
 });
 
 describe("is skipped describe?", () => {
   test("is skipped?", () => {
-    expect<never>().type.toBeVoid();
+    expect<never>().type.toBe<void>();
   });
 });
 
 test.only("is number?", () => {
-  expect.skip<string>().type.toBeNumber();
-  expect.fail<number>().type.toBeNumber();
+  expect.skip<string>().type.toBe<number>();
+  expect.fail<number>().type.toBe<number>();
 
-  expect.fail<never>().type.toBeVoid();
+  expect.fail<never>().type.toBe<void>();
 });
 
 test("is skipped?", () => {
-  expect<never>().type.toBeString();
+  expect<never>().type.toBe<string>();
 });
 
 test.todo("is todo?");

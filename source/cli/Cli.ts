@@ -1,65 +1,68 @@
-import fs from "node:fs/promises";
-import { TSTyche } from "#api";
-import { ConfigService, OptionDefinitionsMap, OptionGroup, type ResolvedConfig } from "#config";
-import { Environment } from "#environment";
+import { Config, OptionGroup, Options, type ResolvedConfig } from "#config";
+import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { CancellationHandler, ExitCodeHandler, SetupReporter } from "#handlers";
+import { CancellationHandler, ExitCodeHandler } from "#handlers";
 import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
-import { SelectService } from "#select";
-import { StoreService } from "#store";
+import { type Plugin, PluginService } from "#plugins";
+import { SetupReporter } from "#reporters";
+import { Runner } from "#runner";
+import { Select } from "#select";
+import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 import { FileWatcher, type WatchHandler, Watcher } from "#watch";
 
 export class Cli {
   #eventEmitter = new EventEmitter();
-  #outputService = new OutputService();
-  #storeService = new StoreService();
 
-  async run(commandLineArguments: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
-    const exitCodeHandler = new ExitCodeHandler();
-    this.#eventEmitter.addHandler(exitCodeHandler);
-
-    const setupReporter = new SetupReporter(this.#outputService);
-    this.#eventEmitter.addHandler(setupReporter);
-
+  async run(commandLine: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
     const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
     this.#eventEmitter.addHandler(cancellationHandler);
 
-    if (commandLineArguments.includes("--help")) {
-      const commandLineOptionDefinitions = OptionDefinitionsMap.for(OptionGroup.CommandLine);
+    const exitCodeHandler = new ExitCodeHandler();
+    this.#eventEmitter.addHandler(exitCodeHandler);
 
-      this.#outputService.writeMessage(helpText(commandLineOptionDefinitions, TSTyche.version));
+    const setupReporter = new SetupReporter();
+    this.#eventEmitter.addReporter(setupReporter);
 
-      return;
-    }
+    if (commandLine.includes("--help")) {
+      const options = Options.for(OptionGroup.CommandLine);
 
-    if (commandLineArguments.includes("--prune")) {
-      await fs.rm(Environment.storePath, { force: true, recursive: true });
-
-      return;
-    }
-
-    if (commandLineArguments.includes("--version")) {
-      this.#outputService.writeMessage(formattedText(TSTyche.version));
+      OutputService.writeMessage(helpText(options, Runner.version));
 
       return;
     }
 
-    if (commandLineArguments.includes("--update")) {
-      await this.#storeService.update();
+    if (commandLine.includes("--version")) {
+      OutputService.writeMessage(formattedText(Runner.version));
 
       return;
     }
 
-    const compiler = await this.#storeService.load(Environment.typescriptPath != null ? "current" : "latest");
+    if (commandLine.includes("--list")) {
+      await Store.open();
 
-    if (!compiler) {
+      if (Store.manifest != null) {
+        OutputService.writeMessage(
+          formattedText({ resolutions: Store.manifest.resolutions, versions: Store.manifest.versions }),
+        );
+      }
+
       return;
     }
 
-    const configService = new ConfigService(compiler, this.#storeService);
+    if (commandLine.includes("--prune")) {
+      await Store.prune();
 
-    await configService.parseCommandLine(commandLineArguments);
+      return;
+    }
+
+    if (commandLine.includes("--update")) {
+      await Store.update();
+
+      return;
+    }
+
+    const { commandLineOptions, pathMatch } = await Config.parseCommandLine(commandLine);
 
     if (cancellationToken.isCancellationRequested) {
       return;
@@ -70,87 +73,87 @@ export class Cli {
         cancellationToken.reset();
         exitCodeHandler.resetCode();
 
-        this.#outputService.clearTerminal();
+        OutputService.clearTerminal();
 
-        this.#eventEmitter.addHandler(setupReporter);
         this.#eventEmitter.addHandler(cancellationHandler);
+        this.#eventEmitter.addReporter(setupReporter);
       }
 
-      await configService.readConfigFile();
+      const { configFileOptions, configFilePath } = await Config.parseConfigFile(commandLineOptions.config);
 
-      const resolvedConfig = configService.resolveConfig();
+      let resolvedConfig = Config.resolve({
+        configFileOptions,
+        configFilePath,
+        commandLineOptions,
+        pathMatch,
+      });
 
       if (cancellationToken.isCancellationRequested) {
-        if (commandLineArguments.includes("--watch")) {
-          await this.#waitForChangedFiles(resolvedConfig, /* selectService */ undefined, cancellationToken);
+        if (commandLine.includes("--watch")) {
+          await this.#waitForChangedFiles(resolvedConfig, cancellationToken);
         }
         continue;
       }
 
-      if (commandLineArguments.includes("--showConfig")) {
-        this.#outputService.writeMessage(
-          formattedText({
-            noColor: Environment.noColor,
-            noInteractive: Environment.noInteractive,
-            npmRegistry: Environment.npmRegistry,
-            storePath: Environment.storePath,
-            timeout: Environment.timeout,
-            typescriptPath: Environment.typescriptPath,
-            ...resolvedConfig,
-          }),
-        );
+      for (const pluginSpecifier of resolvedConfig.plugins) {
+        const plugin: Plugin = (await import(pluginSpecifier)).default;
+        PluginService.addHandler(plugin);
+      }
+
+      resolvedConfig = await PluginService.call("config", resolvedConfig, /* context */ {});
+
+      if (commandLine.includes("--showConfig")) {
+        OutputService.writeMessage(formattedText({ ...resolvedConfig, ...environmentOptions }));
         continue;
       }
 
-      if (commandLineArguments.includes("--install")) {
+      if (commandLine.includes("--fetch")) {
         for (const tag of resolvedConfig.target) {
-          await this.#storeService.install(tag);
+          await Store.fetch(tag);
         }
         continue;
       }
 
-      const selectService = new SelectService(resolvedConfig);
-      let testFiles: Array<string> = [];
+      let testFiles: Array<string | URL> = [];
 
-      if (resolvedConfig.testFileMatch.length !== 0) {
-        testFiles = await selectService.selectFiles();
+      if (resolvedConfig.testFileMatch.length > 0) {
+        testFiles = await Select.selectFiles(resolvedConfig);
 
         if (testFiles.length === 0) {
-          if (commandLineArguments.includes("--watch")) {
-            await this.#waitForChangedFiles(resolvedConfig, selectService, cancellationToken);
+          if (commandLine.includes("--watch")) {
+            await this.#waitForChangedFiles(resolvedConfig, cancellationToken);
           }
           continue;
         }
-
-        if (commandLineArguments.includes("--listFiles")) {
-          this.#outputService.writeMessage(formattedText(testFiles));
-          continue;
-        }
       }
 
-      this.#eventEmitter.removeHandler(setupReporter);
+      testFiles = await PluginService.call("select", testFiles as Array<string>, { resolvedConfig });
+
+      if (commandLine.includes("--listFiles")) {
+        OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
+        continue;
+      }
+
       this.#eventEmitter.removeHandler(cancellationHandler);
+      this.#eventEmitter.removeReporter(setupReporter);
 
-      const tstyche = new TSTyche(resolvedConfig, this.#outputService, selectService, this.#storeService);
+      const runner = new Runner(resolvedConfig);
 
-      await tstyche.run(testFiles, cancellationToken);
-      tstyche.close();
+      await runner.run(testFiles, cancellationToken);
+
+      PluginService.removeHandlers();
     } while (cancellationToken.reason === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();
   }
 
-  #waitForChangedFiles(
-    resolvedConfig: ResolvedConfig,
-    selectService: SelectService | undefined,
-    cancellationToken: CancellationToken,
-  ) {
+  #waitForChangedFiles(resolvedConfig: ResolvedConfig, cancellationToken: CancellationToken) {
     return new Promise<void>((resolve) => {
       const watchers: Array<Watcher> = [];
 
       cancellationToken.reset();
 
-      this.#outputService.writeMessage(waitingForFileChangesText());
+      OutputService.writeMessage(waitingForFileChangesText());
 
       const onChanged = () => {
         cancellationToken.cancel(CancellationReason.ConfigChange);
@@ -164,19 +167,17 @@ export class Cli {
 
       watchers.push(new FileWatcher(resolvedConfig.configFilePath, onChanged));
 
-      if (selectService != null) {
-        const onChangedTestFile: WatchHandler = (filePath) => {
-          if (selectService.isTestFile(filePath)) {
-            onChanged();
-          }
-        };
+      const onChangedTestFile: WatchHandler = (filePath) => {
+        if (Select.isTestFile(filePath, resolvedConfig)) {
+          onChanged();
+        }
+      };
 
-        const onRemoved: WatchHandler = () => {
-          // do nothing, only added files are important
-        };
+      const onRemoved: WatchHandler = () => {
+        // do nothing, only added files are important
+      };
 
-        watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, { recursive: true }));
-      }
+      watchers.push(new Watcher(resolvedConfig.rootPath, onChangedTestFile, onRemoved, { recursive: true }));
 
       for (const watcher of watchers) {
         watcher.watch();

@@ -1,12 +1,14 @@
 import { type Diagnostic, DiagnosticCategory } from "#diagnostic";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
-import { CodeSpanText } from "./CodeSpanText.js";
+import { CodeFrameText } from "./CodeFrameText.js";
+import type { CodeFrameOptions } from "./types.js";
 
 interface DiagnosticTextProps {
+  codeFrameOptions?: CodeFrameOptions;
   diagnostic: Diagnostic;
 }
 
-function DiagnosticText({ diagnostic }: DiagnosticTextProps) {
+function DiagnosticText({ codeFrameOptions, diagnostic }: DiagnosticTextProps) {
   const code = diagnostic.code ? <Text color={Color.Gray}> {diagnostic.code}</Text> : undefined;
 
   const text = Array.isArray(diagnostic.text) ? diagnostic.text : [diagnostic.text];
@@ -16,52 +18,51 @@ function DiagnosticText({ diagnostic }: DiagnosticTextProps) {
       {index === 1 ? <Line /> : undefined}
       <Line>
         {text}
-        {code}
+        {index === 0 ? code : undefined}
       </Line>
     </Text>
   ));
 
   const related = diagnostic.related?.map((relatedDiagnostic) => <DiagnosticText diagnostic={relatedDiagnostic} />);
 
-  const codeSpan = diagnostic.origin ? (
+  const codeFrame = diagnostic.origin ? (
     <Text>
       <Line />
-      <CodeSpanText diagnosticCategory={diagnostic.category} diagnosticOrigin={diagnostic.origin} />
+      <CodeFrameText
+        diagnosticCategory={diagnostic.category}
+        diagnosticOrigin={diagnostic.origin}
+        options={codeFrameOptions}
+      />
     </Text>
   ) : undefined;
 
   return (
     <Text>
       {message}
-      {codeSpan}
+      {codeFrame}
       <Line />
       <Text indent={2}>{related}</Text>
     </Text>
   );
 }
 
-export function diagnosticText(diagnostic: Diagnostic): ScribblerJsx.Element {
+export function diagnosticText(diagnostic: Diagnostic, codeFrameOptions: CodeFrameOptions = {}): ScribblerJsx.Element {
   let prefix: ScribblerJsx.Element | undefined;
 
   switch (diagnostic.category) {
-    case DiagnosticCategory.Error: {
+    case DiagnosticCategory.Error:
       prefix = <Text color={Color.Red}>{"Error: "}</Text>;
       break;
-    }
 
-    case DiagnosticCategory.Warning: {
+    case DiagnosticCategory.Warning:
       prefix = <Text color={Color.Yellow}>{"Warning: "}</Text>;
-      break;
-    }
-
-    default:
       break;
   }
 
   return (
     <Text>
       {prefix}
-      <DiagnosticText diagnostic={diagnostic} />
+      <DiagnosticText codeFrameOptions={codeFrameOptions} diagnostic={diagnostic} />
     </Text>
   );
 }

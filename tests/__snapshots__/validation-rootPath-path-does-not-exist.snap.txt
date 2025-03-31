@@ -1,9 +1,11 @@
-Error: The specified path '<<cwd>>/tests/__fixtures__/.generated/validation-rootPath/nope' does not exist.
+Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/validation-rootPath/nope' does not exist.
 
   1 | {
-  2 |   "rootPath": "../nope"
+  2 |   "rootPath": "../nope",
     |               ~~~~~~~~~
-  3 | }
+  3 |   "testFileMatch": [
+  4 |     "examples/*.t*st.*"
+  5 |   ]
 
       at ./config/tstyche.json:2:15
 

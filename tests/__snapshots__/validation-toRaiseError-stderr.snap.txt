@@ -10,7 +10,7 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
       at ./__typetests__/toRaiseError.tst.ts:5:5
 
-Error: An argument for 'target' must be a string or number literal.
+Error: An argument for 'target' must be a string, number or regular expression literal.
 
   14 |   test("must be of type 'string | number'", () => {
   15 |     // @ts-expect-error testing purpose
@@ -22,7 +22,7 @@ Error: An argument for 'target' must be a string or number literal.
 
        at ./__typetests__/toRaiseError.tst.ts:16:42
 
-Error: An argument for 'target' must be a string or number literal.
+Error: An argument for 'target' must be a string, number or regular expression literal.
 
   14 |   test("must be of type 'string | number'", () => {
   15 |     // @ts-expect-error testing purpose

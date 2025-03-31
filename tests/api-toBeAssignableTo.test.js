@@ -1,4 +1,4 @@
-import { test } from "poku";
+import test from "node:test";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
@@ -8,23 +8,25 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-test("'toBeAssignableTo' implementation", () => {
-  tstyche.expect({ a: "sample" }).type.toBeAssignableTo({ a: "sample" });
-  tstyche.expect({ a: "sample" }).type.not.toBeAssignableTo({ b: "sample" });
-});
-
-await test("toBeAssignableTo", async () => {
-  const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
-
-  await assert.matchSnapshot(normalizeOutput(stdout), {
-    fileName: `${testFileName}-stdout`,
-    testFileUrl: import.meta.url,
+await test("toBeAssignableTo", async (t) => {
+  await t.test("'toBeAssignableTo' implementation", () => {
+    tstyche.expect({ a: "sample" }).type.toBeAssignableTo({ a: "sample" });
+    tstyche.expect({ a: "sample" }).type.not.toBeAssignableTo({ b: "sample" });
   });
 
-  await assert.matchSnapshot(stderr, {
-    fileName: `${testFileName}-stderr`,
-    testFileUrl: import.meta.url,
-  });
+  await t.test("toBeAssignableTo", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  assert.equal(exitCode, 1);
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });

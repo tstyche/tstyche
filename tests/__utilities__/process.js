@@ -1,5 +1,8 @@
 import { spawn } from "node:child_process";
 
+export const isWindows = process.platform === "win32";
+
+// TODO use 'Promise.withResolvers()' after dropping support for Node.js 20
 class Deferred {
   constructor() {
     this.promise = new Promise((resolve, reject) => {
@@ -10,10 +13,8 @@ class Deferred {
 }
 
 class Output {
-  constructor() {
-    this.stderr = "";
-    this.stdout = "";
-  }
+  stderr = "";
+  stdout = "";
 }
 
 export class Process {
@@ -41,14 +42,18 @@ export class Process {
         ["TSTYCHE_STORE_PATH"]: "./.store",
         ...options?.env,
       },
-      shell: true,
+      shell: isWindows,
     });
+
+    this.#subprocess.stdout.setEncoding("utf8");
 
     this.#subprocess.stdout.on("data", (data) => {
       this.#output.stdout += data;
 
       this.#idleTimeout?.refresh();
     });
+
+    this.#subprocess.stderr.setEncoding("utf8");
 
     this.#subprocess.stderr.on("data", (data) => {
       this.#output.stderr += data;
@@ -59,6 +64,11 @@ export class Process {
     this.#subprocess.on("close", (exitCode) => {
       this.#onExit.resolve({ exitCode, stderr: this.#output.stderr, stdout: this.#output.stdout });
     });
+  }
+
+  /** @type {(signal: any) => void} */
+  kill(signal) {
+    this.#subprocess.kill(signal);
   }
 
   resetOutput() {

@@ -1,6 +1,7 @@
-export type { CommandLineOptions } from "./CommandLineOptionsWorker.js";
 export { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
-export type { ConfigFileOptions } from "./ConfigFileOptionsWorker.js";
-export { ConfigService, type ResolvedConfig, defaultOptions } from "./ConfigService.js";
-export { OptionBrand, OptionGroup } from "./enums.js";
-export { type ItemDefinition, type OptionDefinition, OptionDefinitionsMap } from "./OptionDefinitionsMap.js";
+export { Config, type ResolvedConfig } from "./Config.js";
+export { OptionBrand } from "./OptionBrand.enum.js";
+export { type ItemDefinition, type OptionDefinition, Options } from "./Options.js";
+export { OptionGroup } from "./OptionGroup.enum.js";
+export { defaultOptions } from "./defaultOptions.js";
+export type { CommandLineOptions, ConfigFileOptions } from "./types.js";

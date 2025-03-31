@@ -1,0 +1,10 @@
+Error: Expected '{'.
+
+  1 | [
+    | ~
+  2 |   {
+  3 |     "failFast": true
+  4 |   }
+
+      at ./tstyche.config.json:1:1
+

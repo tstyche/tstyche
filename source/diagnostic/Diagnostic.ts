@@ -1,6 +1,6 @@
 import type ts from "typescript";
+import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
-import { DiagnosticCategory } from "./enums.js";
 
 export class Diagnostic {
   category: DiagnosticCategory;
@@ -38,45 +38,40 @@ export class Diagnostic {
     return new Diagnostic([this.text, text].flat(), this.category, origin ?? this.origin);
   }
 
-  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>, compiler: typeof ts): Array<Diagnostic> {
+  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
-      if (Diagnostic.#isTsDiagnosticWithLocation(diagnostic)) {
+      if (diagnostic.file != null && diagnostic.start != null && diagnostic.length != null) {
         origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
       }
 
       let related: Array<Diagnostic> | undefined;
 
       if (diagnostic.relatedInformation != null) {
-        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation, compiler);
+        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
       }
 
-      const text = compiler.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+      const text =
+        typeof diagnostic.messageText === "string"
+          ? diagnostic.messageText
+          : Diagnostic.toMessageText(diagnostic.messageText);
 
       return new Diagnostic(text, DiagnosticCategory.Error, origin).add({ code, related });
     });
   }
 
-  static fromError(text: string | Array<string>, error: unknown): Diagnostic {
-    const messageText = Array.isArray(text) ? text : [text];
+  static toMessageText(chain: ts.DiagnosticMessageChain): Array<string> {
+    const result = [chain.messageText];
 
-    if (error instanceof Error && error.stack != null) {
-      if (messageText.length > 1) {
-        messageText.push("");
+    if (chain.next != null) {
+      for (const nextChain of chain.next) {
+        result.push(...Diagnostic.toMessageText(nextChain));
       }
-
-      const stackLines = error.stack.split("\n").map((line) => line.trimStart());
-
-      messageText.push(...stackLines);
     }
 
-    return Diagnostic.error(messageText);
-  }
-
-  static #isTsDiagnosticWithLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticWithLocation {
-    return diagnostic.file != null && diagnostic.start != null && diagnostic.length != null;
+    return result;
   }
 
   static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {
