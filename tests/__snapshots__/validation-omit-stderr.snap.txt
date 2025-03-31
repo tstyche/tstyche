@@ -12,15 +12,15 @@ Error: Expected at least 2 arguments, but got 0. ts(2555)
 
     An argument for 'object' was not provided. ts(6210)
 
-      241 |  * Reshapes type of the given object by removing the specified keys.
-      242 |  */
-      243 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
-          |                                                 ~~~~~~~~~
-      244 | /**
-      245 |  * Reshapes type of the given object by keeping only the specified keys.
+      245 |  * Reshapes type of the given object by removing the specified keys.
       246 |  */
+      247 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
+          |                                                 ~~~~~~~~~
+      248 | /**
+      249 |  * Reshapes type of the given object by keeping only the specified keys.
+      250 |  */
 
-            at ../../../build/index.d.ts:243:49
+            at ../../../build/index.d.ts:247:49
 
 Error: Expected at least 2 arguments, but got 1. ts(2555)
 
@@ -36,13 +36,13 @@ Error: Expected at least 2 arguments, but got 1. ts(2555)
 
     Arguments for the rest parameter 'keys' were not provided. ts(6236)
 
-      241 |  * Reshapes type of the given object by removing the specified keys.
-      242 |  */
-      243 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
-          |                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~
-      244 | /**
-      245 |  * Reshapes type of the given object by keeping only the specified keys.
+      245 |  * Reshapes type of the given object by removing the specified keys.
       246 |  */
+      247 | declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
+          |                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~
+      248 | /**
+      249 |  * Reshapes type of the given object by keeping only the specified keys.
+      250 |  */
 
-            at ../../../build/index.d.ts:243:60
+            at ../../../build/index.d.ts:247:60
 
