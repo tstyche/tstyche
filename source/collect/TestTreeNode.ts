@@ -66,10 +66,10 @@ export class TestTreeNode {
 
     switch (this.brand) {
       case TestTreeNodeBrand.Describe:
-        for (const member of this.children) {
-          if (member.brand === TestTreeNodeBrand.Expect) {
+        for (const child of this.children) {
+          if (child.brand === TestTreeNodeBrand.Expect) {
             diagnostics.push(
-              Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(getParentCallExpression(member.node))),
+              Diagnostic.error(getText(child.node), DiagnosticOrigin.fromNode(getParentCallExpression(child.node))),
             );
           }
         }
@@ -77,9 +77,9 @@ export class TestTreeNode {
 
       case TestTreeNodeBrand.Test:
       case TestTreeNodeBrand.Expect:
-        for (const member of this.children) {
-          if (member.brand !== TestTreeNodeBrand.Expect) {
-            diagnostics.push(Diagnostic.error(getText(member.node), DiagnosticOrigin.fromNode(member.node)));
+        for (const child of this.children) {
+          if (child.brand !== TestTreeNodeBrand.Expect) {
+            diagnostics.push(Diagnostic.error(getText(child.node), DiagnosticOrigin.fromNode(child.node)));
           }
         }
         break;
