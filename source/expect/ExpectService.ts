@@ -75,6 +75,10 @@ export class ExpectService {
 
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
+      case "toBeApplicable":
+        // TODO implement
+        break;
+
       case "toHaveProperty":
         if (!assertion.target?.[0]) {
           this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostics);

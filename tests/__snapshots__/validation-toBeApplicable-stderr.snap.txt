@@ -1,0 +1,12 @@
+Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  4 |   test("must be provided", () => {
+  5 |     class Fixture {
+  6 |       @(expect().type.toBeApplicable)
+    |         ~~~~~~
+  7 |       toString() {
+  8 |         return "Fixture";
+  9 |       }
+
+      at ./__typetests__/toBeApplicable.tst.ts:6:9
+
