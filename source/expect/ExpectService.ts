@@ -48,7 +48,7 @@ export class ExpectService {
     assertion: AssertionNode,
     onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const matcherNameText = assertion.matcherName.getText();
+    const matcherNameText = assertion.matcherName.text;
 
     if (!assertion.source[0]) {
       this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
@@ -63,7 +63,7 @@ export class ExpectService {
       case "toBe":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
-        if (!assertion.target[0]) {
+        if (!assertion.target?.[0]) {
           this.#onTargetArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
 
           return;
@@ -76,7 +76,7 @@ export class ExpectService {
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
       case "toHaveProperty":
-        if (!assertion.target[0]) {
+        if (!assertion.target?.[0]) {
           this.#onTargetArgumentMustBeProvided("key", assertion, onDiagnostics);
 
           return;
@@ -89,7 +89,8 @@ export class ExpectService {
           return;
         }
 
-        return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target], onDiagnostics);
+        // biome-ignore lint/style/noNonNullAssertion: validation makes sure that 'target' is defined
+        return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target!], onDiagnostics);
 
       default:
         this.#onMatcherIsNotSupported(matcherNameText, assertion, onDiagnostics);
@@ -138,13 +139,13 @@ export class ExpectService {
         // allows explicit 'expect<any>()' and 'expect<never>()'
         matchWorker.assertion.source[0]?.kind === allowedKeyword ||
         // allows explicit '.toBe<any>()' and '.toBe<never>()'
-        matchWorker.assertion.target[0]?.kind === allowedKeyword
+        matchWorker.assertion.target?.[0]?.kind === allowedKeyword
       ) {
         continue;
       }
 
       for (const argumentName of ["source", "target"] as const) {
-        const argumentNode = matchWorker.assertion[argumentName][0];
+        const argumentNode = matchWorker.assertion[argumentName]?.[0];
 
         if (!argumentNode) {
           continue;
