@@ -87,8 +87,7 @@ export class AbilityLayer {
   }
 
   openFile(sourceFile: ts.SourceFile): void {
-    // TODO should handle any file extension
-    this.#filePath = `${sourceFile.fileName.replace(".ts", `-${crypto.randomUUID()}.ts`)}`;
+    this.#filePath = sourceFile.fileName.replace(/(.*)\.(.*)$/, `$1-${crypto.randomUUID()}.$2`);
     this.#text = sourceFile.text;
   }
 }
