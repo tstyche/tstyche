@@ -32,7 +32,7 @@ export class AbilityLayer {
     }
   }
 
-  closeFile(): void {
+  close(): void {
     if (this.#nodes.length > 0) {
       this.#projectService.openFile(this.#filePath, this.#text, this.#resolvedConfig.rootPath);
 
@@ -59,8 +59,6 @@ export class AbilityLayer {
           }
         }
       }
-
-      this.#projectService.closeFile(this.#filePath);
     }
 
     this.#filePath = "";
@@ -86,8 +84,8 @@ export class AbilityLayer {
     }
   }
 
-  openFile(sourceFile: ts.SourceFile): void {
-    this.#filePath = sourceFile.fileName.replace(/(.*)\.(.*)$/, `$1-${crypto.randomUUID()}.$2`);
+  open(sourceFile: ts.SourceFile): void {
+    this.#filePath = sourceFile.fileName;
     this.#text = sourceFile.text;
   }
 }

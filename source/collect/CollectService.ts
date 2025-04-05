@@ -104,11 +104,11 @@ export class CollectService {
 
     EventEmitter.dispatch(["collect:start", { testTree }]);
 
-    this.#abilityLayer.openFile(sourceFile);
+    this.#abilityLayer.open(sourceFile);
 
     this.#collectTestTreeNodes(sourceFile, new IdentifierLookup(this.#compiler), testTree);
 
-    this.#abilityLayer.closeFile();
+    this.#abilityLayer.close();
 
     EventEmitter.dispatch(["collect:end", { testTree }]);
 
