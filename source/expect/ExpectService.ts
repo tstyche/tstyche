@@ -7,6 +7,7 @@ import { Format } from "./Format.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
+import { ToBeApplicable } from "./ToBeApplicable.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
@@ -20,6 +21,7 @@ export class ExpectService {
 
   private toAcceptProps: ToAcceptProps;
   private toBe: ToBe;
+  private toBeApplicable: ToBeApplicable;
   private toBeAssignableTo: ToBeAssignableTo;
   private toBeAssignableWith: ToBeAssignableWith;
   private toHaveProperty: ToHaveProperty;
@@ -38,6 +40,7 @@ export class ExpectService {
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe();
+    this.toBeApplicable = new ToBeApplicable(compiler);
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeAssignableWith = new ToBeAssignableWith();
     this.toHaveProperty = new ToHaveProperty(compiler);
@@ -76,8 +79,11 @@ export class ExpectService {
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
       case "toBeApplicable":
-        // TODO implement
-        break;
+        if (this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
+          return;
+        }
+
+        return this.toBeApplicable.match(matchWorker, assertion.source[0], onDiagnostics);
 
       case "toHaveProperty":
         if (!assertion.target?.[0]) {
