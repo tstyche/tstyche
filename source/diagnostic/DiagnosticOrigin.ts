@@ -16,7 +16,7 @@ export class DiagnosticOrigin {
   }
 
   static fromAssertion(assertion: AssertionNode): DiagnosticOrigin {
-    const node = assertion.matcherName;
+    const node = assertion.matcherNameNode.name;
 
     return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), assertion);
   }

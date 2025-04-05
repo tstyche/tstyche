@@ -4,10 +4,13 @@ import { TestTreeNode } from "./TestTreeNode.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
+export type AbilityDiagnostic = [diagnostic: ts.Diagnostic, origin: ts.Node];
+
 export class AssertionNode extends TestTreeNode {
+  abilityDiagnostics: Set<AbilityDiagnostic> | undefined;
   isNot: boolean;
-  matcherName: ts.MemberName;
   matcherNode: ts.CallExpression | ts.Decorator;
+  matcherNameNode: ts.PropertyAccessExpression;
   modifierNode: ts.PropertyAccessExpression;
   notNode: ts.PropertyAccessExpression | undefined;
   source: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>;
@@ -27,8 +30,8 @@ export class AssertionNode extends TestTreeNode {
     super(compiler, brand, node, parent, flags);
 
     this.isNot = notNode != null;
-    this.matcherName = matcherNameNode.name;
     this.matcherNode = matcherNode;
+    this.matcherNameNode = matcherNameNode;
     this.modifierNode = modifierNode;
     this.source = this.node.typeArguments ?? this.node.arguments;
 

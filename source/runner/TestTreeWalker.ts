@@ -129,7 +129,7 @@ export class TestTreeWalker {
       ]);
     };
 
-    if (assertion.diagnostics.size > 0 && assertion.matcherName.getText() !== "toRaiseError") {
+    if (assertion.diagnostics.size > 0 && assertion.matcherNameNode.name.text !== "toRaiseError") {
       onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertion.diagnostics]));
 
       return;

@@ -1,5 +1,8 @@
 import type ts from "typescript";
+import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
+import type { ProjectService } from "#project";
+import { AbilityLayer } from "./AbilityLayer.js";
 import { AssertionNode } from "./AssertionNode.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestTree } from "./TestTree.js";
@@ -7,10 +10,17 @@ import { TestTreeNode } from "./TestTreeNode.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 
 export class CollectService {
+  #abilityLayer: AbilityLayer;
   #compiler: typeof ts;
+  #projectService: ProjectService;
+  #resolvedConfig: ResolvedConfig;
 
-  constructor(compiler: typeof ts) {
+  constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#projectService = projectService;
+    this.#resolvedConfig = resolvedConfig;
+
+    this.#abilityLayer = new AbilityLayer(this.#projectService, this.#resolvedConfig);
   }
 
   #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestTreeNode) {
@@ -66,6 +76,8 @@ export class CollectService {
 
         parent.children.push(assertionNode);
 
+        this.#abilityLayer.handleNode(assertionNode);
+
         EventEmitter.dispatch(["collect:node", { testNode: assertionNode }]);
 
         this.#compiler.forEachChild(node, (node) => {
@@ -92,7 +104,11 @@ export class CollectService {
 
     EventEmitter.dispatch(["collect:start", { testTree }]);
 
+    this.#abilityLayer.openFile(sourceFile);
+
     this.#collectTestTreeNodes(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+
+    this.#abilityLayer.closeFile();
 
     EventEmitter.dispatch(["collect:end", { testTree }]);
 

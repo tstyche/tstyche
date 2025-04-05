@@ -48,7 +48,7 @@ export class ExpectService {
     assertion: AssertionNode,
     onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const matcherNameText = assertion.matcherName.text;
+    const matcherNameText = assertion.matcherNameNode.name.text;
 
     if (!assertion.source[0]) {
       this.#onSourceArgumentOrTypeArgumentMustBeProvided(assertion, onDiagnostics);
@@ -105,7 +105,7 @@ export class ExpectService {
 
   #onMatcherIsNotSupported(matcherNameText: string, assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
-    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherNameNode.name);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
@@ -123,14 +123,14 @@ export class ExpectService {
     onDiagnostics: DiagnosticsHandler,
   ) {
     const text = ExpectDiagnosticText.argumentMustBeProvided(argumentNameText);
-    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherNameNode.name);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
 
   #onTargetArgumentOrTypeArgumentMustBeProvided(assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.argumentOrTypeArgumentMustBeProvided("target", "Target");
-    const origin = DiagnosticOrigin.fromNode(assertion.matcherName);
+    const origin = DiagnosticOrigin.fromNode(assertion.matcherNameNode.name);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }
