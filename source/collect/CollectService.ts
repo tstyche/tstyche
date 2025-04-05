@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { EventEmitter } from "#events";
-import { AssertionNode, type MatcherNode } from "./AssertionNode.js";
+import { AssertionNode } from "./AssertionNode.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
@@ -40,9 +40,15 @@ export class CollectService {
 
         const notNode = this.#getChainedNode(modifierNode, "not");
 
-        const matcherNode = this.#getChainedNode(notNode ?? modifierNode)?.parent;
+        const matcherNameNode = this.#getChainedNode(notNode ?? modifierNode);
 
-        if (!matcherNode || !this.#isMatcherNode(matcherNode)) {
+        if (!matcherNameNode) {
+          return;
+        }
+
+        const matcherNode = this.#getMatcherNode(matcherNameNode);
+
+        if (!matcherNode) {
           return;
         }
 
@@ -53,6 +59,7 @@ export class CollectService {
           parent,
           meta.flags,
           matcherNode,
+          matcherNameNode,
           modifierNode,
           notNode,
         );
@@ -104,7 +111,19 @@ export class CollectService {
     return parent;
   }
 
-  #isMatcherNode(node: ts.Node): node is MatcherNode {
-    return this.#compiler.isCallExpression(node) && this.#compiler.isPropertyAccessExpression(node.expression);
+  #getMatcherNode(node: ts.Node): ts.CallExpression | ts.Decorator | undefined {
+    if (this.#compiler.isCallExpression(node.parent)) {
+      return node.parent;
+    }
+
+    if (this.#compiler.isDecorator(node.parent)) {
+      return node.parent;
+    }
+
+    if (this.#compiler.isParenthesizedExpression(node.parent)) {
+      return this.#getMatcherNode(node.parent);
+    }
+
+    return;
   }
 }
