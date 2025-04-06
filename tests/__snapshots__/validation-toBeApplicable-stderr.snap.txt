@@ -10,3 +10,15 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
       at ./__typetests__/toBeApplicable.tst.ts:6:9
 
+Error: An argument for 'source' must be of a function type.
+
+  13 |   test("must be of a function type", () => {
+  14 |     class Fixture {
+  15 |       @(expect("sample").type.toBeApplicable)
+     |                ~~~~~~~~
+  16 |       toString() {
+  17 |         return "Fixture";
+  18 |       }
+
+       at ./__typetests__/toBeApplicable.tst.ts:15:16
+

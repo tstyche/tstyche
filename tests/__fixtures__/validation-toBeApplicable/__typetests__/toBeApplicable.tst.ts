@@ -9,4 +9,13 @@ describe("argument for 'source'", () => {
       }
     }
   });
+
+  test("must be of a function type", () => {
+    class Fixture {
+      @(expect("sample").type.toBeApplicable)
+      toString() {
+        return "Fixture";
+      }
+    }
+  });
 });
