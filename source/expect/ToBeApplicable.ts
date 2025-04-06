@@ -12,31 +12,39 @@ export class ToBeApplicable {
   }
 
   #resolveTargetText(node: ts.Node) {
+    let text: string | undefined;
+
     switch (node.kind) {
       case this.#compiler.SyntaxKind.ClassDeclaration:
-        return "class";
+        text = "class";
+        break;
 
       case this.#compiler.SyntaxKind.MethodDeclaration:
-        return "method";
+        text = "method";
+        break;
 
       case this.#compiler.SyntaxKind.PropertyDeclaration:
-        if (
-          (node as ts.PropertyDeclaration).modifiers?.some(
-            (modifier) => modifier.kind === this.#compiler.SyntaxKind.AccessorKeyword,
-          )
-        ) {
-          return "accessor";
-        }
-        return "field";
+        text = (node as ts.PropertyDeclaration).modifiers?.some(
+          (modifier) => modifier.kind === this.#compiler.SyntaxKind.AccessorKeyword,
+        )
+          ? "accessor"
+          : "field";
+        break;
 
       case this.#compiler.SyntaxKind.GetAccessor:
-        return "getter";
+        text = "getter";
+        break;
 
       case this.#compiler.SyntaxKind.SetAccessor:
-        return "setter";
+        text = "setter";
+        break;
     }
 
-    return;
+    if (text != null) {
+      return ` to this ${text}`;
+    }
+
+    return "";
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode) {
