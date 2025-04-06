@@ -11,13 +11,43 @@ export class ToBeApplicable {
     this.#compiler = compiler;
   }
 
+  #resolveTargetText(node: ts.Node) {
+    switch (node.kind) {
+      case this.#compiler.SyntaxKind.ClassDeclaration:
+        return "class";
+
+      case this.#compiler.SyntaxKind.MethodDeclaration:
+        return "method";
+
+      case this.#compiler.SyntaxKind.PropertyDeclaration:
+        if (
+          (node as ts.PropertyDeclaration).modifiers?.some(
+            (modifier) => modifier.kind === this.#compiler.SyntaxKind.AccessorKeyword,
+          )
+        ) {
+          return "accessor";
+        }
+        return "field";
+
+      case this.#compiler.SyntaxKind.GetAccessor:
+        return "getter";
+
+      case this.#compiler.SyntaxKind.SetAccessor:
+        return "setter";
+    }
+
+    return;
+  }
+
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode) {
+    const targetText = this.#resolveTargetText(matchWorker.assertion.matcherNode.parent);
+
     const diagnostics: Array<Diagnostic> = [];
 
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [
-          "The given decorator can not be applied.",
+          ExpectDiagnosticText.decoratorCanNotBeApplied(targetText),
           typeof diagnostic.messageText === "string"
             ? diagnostic.messageText
             : Diagnostic.toMessageText(diagnostic.messageText),
@@ -30,7 +60,7 @@ export class ToBeApplicable {
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-      diagnostics.push(Diagnostic.error("The given decorator can be applied.", origin));
+      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.decoratorCanBeApplied(targetText), origin));
     }
 
     return diagnostics;
