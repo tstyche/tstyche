@@ -1,16 +1,26 @@
 import type ts from "typescript";
+import type { ResolvedConfig } from "#config";
 import { EventEmitter } from "#events";
-import { AssertionNode, type MatcherNode } from "./AssertionNode.js";
+import type { ProjectService } from "#project";
+import { AbilityLayer } from "./AbilityLayer.js";
+import { AssertionNode } from "./AssertionNode.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 
 export class CollectService {
+  #abilityLayer: AbilityLayer;
   #compiler: typeof ts;
+  #projectService: ProjectService;
+  #resolvedConfig: ResolvedConfig;
 
-  constructor(compiler: typeof ts) {
+  constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#projectService = projectService;
+    this.#resolvedConfig = resolvedConfig;
+
+    this.#abilityLayer = new AbilityLayer(this.#projectService, this.#resolvedConfig);
   }
 
   #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestTreeNode) {
@@ -40,9 +50,15 @@ export class CollectService {
 
         const notNode = this.#getChainedNode(modifierNode, "not");
 
-        const matcherNode = this.#getChainedNode(notNode ?? modifierNode)?.parent;
+        const matcherNameNode = this.#getChainedNode(notNode ?? modifierNode);
 
-        if (!matcherNode || !this.#isMatcherNode(matcherNode)) {
+        if (!matcherNameNode) {
+          return;
+        }
+
+        const matcherNode = this.#getMatcherNode(matcherNameNode);
+
+        if (!matcherNode) {
           return;
         }
 
@@ -53,11 +69,14 @@ export class CollectService {
           parent,
           meta.flags,
           matcherNode,
+          matcherNameNode,
           modifierNode,
           notNode,
         );
 
         parent.children.push(assertionNode);
+
+        this.#abilityLayer.handleNode(assertionNode);
 
         EventEmitter.dispatch(["collect:node", { testNode: assertionNode }]);
 
@@ -85,7 +104,11 @@ export class CollectService {
 
     EventEmitter.dispatch(["collect:start", { testTree }]);
 
+    this.#abilityLayer.open(sourceFile);
+
     this.#collectTestTreeNodes(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+
+    this.#abilityLayer.close();
 
     EventEmitter.dispatch(["collect:end", { testTree }]);
 
@@ -104,7 +127,19 @@ export class CollectService {
     return parent;
   }
 
-  #isMatcherNode(node: ts.Node): node is MatcherNode {
-    return this.#compiler.isCallExpression(node) && this.#compiler.isPropertyAccessExpression(node.expression);
+  #getMatcherNode(node: ts.Node): ts.CallExpression | ts.Decorator | undefined {
+    if (this.#compiler.isCallExpression(node.parent)) {
+      return node.parent;
+    }
+
+    if (this.#compiler.isDecorator(node.parent)) {
+      return node.parent;
+    }
+
+    if (this.#compiler.isParenthesizedExpression(node.parent)) {
+      return this.#getMatcherNode(node.parent);
+    }
+
+    return;
   }
 }

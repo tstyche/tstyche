@@ -103,6 +103,17 @@
 
   "overrides": [
     {
+      "include": ["examples/*"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedFunctionParameters": "off"
+          }
+        }
+      }
+    },
+
+    {
       "include": ["source/handlers/ResultHandler.ts", "source/handlers/TestTreeHandler.ts"],
       "linter": {
         "rules": {

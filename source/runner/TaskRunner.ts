@@ -22,8 +22,8 @@ export class TaskRunner {
     this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
 
-    this.#collectService = new CollectService(compiler);
     this.#projectService = new ProjectService(this.#resolvedConfig, compiler);
+    this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
   }
 
   run(task: Task, cancellationToken?: CancellationToken): void {

@@ -25,6 +25,14 @@ export class ExpectDiagnosticText {
     return `${isTypeNode ? "Component type" : "Component"} does not accept props of the given type.`;
   }
 
+  static decoratorCanBeApplied(targetText: string): string {
+    return `The decorator function can be applied${targetText}.`;
+  }
+
+  static decoratorCanNotBeApplied(targetText: string): string {
+    return `The decorator function can not be applied${targetText}.`;
+  }
+
   static matcherIsNotSupported(matcherNameText: string): string {
     return `The '.${matcherNameText}()' matcher is not supported.`;
   }

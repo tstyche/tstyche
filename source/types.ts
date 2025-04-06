@@ -100,6 +100,10 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
+   * Checks if the decorator function can be applied.
+   */
+  toBeApplicable: (target: unknown, context: DecoratorContext) => void;
+  /**
    * Checks if the source type is assignable to the target type.
    */
   toBeAssignableTo: {
