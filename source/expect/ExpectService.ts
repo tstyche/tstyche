@@ -64,6 +64,7 @@ export class ExpectService {
     switch (matcherNameText) {
       case "toAcceptProps":
       case "toBe":
+      case "toBeApplicable":
       case "toBeAssignableTo":
       case "toBeAssignableWith":
         if (!assertion.target?.[0]) {
@@ -77,13 +78,6 @@ export class ExpectService {
         }
 
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
-
-      case "toBeApplicable":
-        if (this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
-          return;
-        }
-
-        return this.toBeApplicable.match(matchWorker, assertion.source[0], onDiagnostics);
 
       case "toHaveProperty":
         if (!assertion.target?.[0]) {

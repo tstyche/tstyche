@@ -77,6 +77,7 @@ export class ToBeApplicable {
   match(
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
+    _targetNode: ArgumentNode, // does not have any target node, but this helps to reduce code in the 'ExpectService'
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const type = matchWorker.getType(sourceNode);
