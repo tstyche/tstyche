@@ -1,6 +1,12 @@
 # Releases
 
-## [4.0.0-beta.0] - 2024-08-12
+## [4.0.0-beta.1] - 2025-04-06
+
+### Added
+
+- **New!** Add the `.toBeApplicable` matcher ([#100](https://github.com/tstyche/tstyche/pull/100))
+
+## [4.0.0-beta.0] - 2025-03-30
 
 ### Added
 
@@ -559,6 +565,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.1
 [4.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.0
 [3.5.0]: https://github.com/tstyche/tstyche/releases/tag/v3.5.0
 [3.4.0]: https://github.com/tstyche/tstyche/releases/tag/v3.4.0
