@@ -40,8 +40,8 @@ export class ToBeApplicable {
         break;
     }
 
-    if (text != null) {
-      return ` to this ${text}`;
+    if (text.length > 0) {
+      text = ` to this ${text}`;
     }
 
     return text;
