@@ -44,6 +44,11 @@ declare function accessorDecorator(
   context: ClassAccessorDecoratorContext<Base, number>,
 ): ClassAccessorDecoratorResult<Base, number>;
 
+declare function publicOnly(
+  target: unknown,
+  context: ClassMemberDecoratorContext & { private: false },
+): (...args: any) => any;
+
 describe("source expression", () => {
   test("is applicable to class", () => {
     @(expect(classDecorator).type.toBeApplicable)
@@ -196,6 +201,34 @@ describe("source expression", () => {
 
       // fail
       @(expect(accessorDecorator).type.toBeApplicable) accessor no = false;
+    }
+  });
+
+  test("is applicable to public members only", () => {
+    class Sample {
+      @(expect(publicOnly).type.toBeApplicable)
+      one(): void {
+        // ..
+      }
+
+      // fail
+      @(expect(publicOnly).type.not.toBeApplicable) two(): void {
+        // ..
+      }
+    }
+  });
+
+  test("is NOT applicable to public members only", () => {
+    class Sample {
+      @(expect(publicOnly).type.not.toBeApplicable)
+      #one(): void {
+        // ..
+      }
+
+      // fail
+      @(expect(publicOnly).type.toBeApplicable) #two(): void {
+        // ..
+      }
     }
   });
 });
