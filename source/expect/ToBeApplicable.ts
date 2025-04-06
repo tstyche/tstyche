@@ -17,7 +17,7 @@ export class ToBeApplicable {
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [
-          "The given decorator function is not applicable.",
+          "The given decorator can not be applied.",
           typeof diagnostic.messageText === "string"
             ? diagnostic.messageText
             : Diagnostic.toMessageText(diagnostic.messageText),
@@ -30,7 +30,7 @@ export class ToBeApplicable {
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-      diagnostics.push(Diagnostic.error("The given decorator function is applicable.", origin));
+      diagnostics.push(Diagnostic.error("The given decorator can be applied.", origin));
     }
 
     return diagnostics;
