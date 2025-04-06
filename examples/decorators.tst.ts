@@ -4,7 +4,7 @@ function bind<This, Value extends (this: This, ...args: any) => any>(
   target: Value,
   context: ClassMethodDecoratorContext<This, Value>,
 ) {
-  // ...
+  // ..
 }
 
 export class Person {

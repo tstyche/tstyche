@@ -2,6 +2,8 @@ uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/toBeApplicable.tst.ts
   source expression
+    × is applicable to class
+    × is NOT applicable to class
     × is applicable to method
     × is NOT applicable to method
     × is applicable to field
@@ -10,11 +12,13 @@ fail ./__typetests__/toBeApplicable.tst.ts
     × is NOT applicable to getter
     × is applicable to setter
     × is NOT applicable to setter
+    × is applicable to accessor
+    × is NOT applicable to accessor
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      8 failed, 8 total
-Assertions: 8 failed, 8 passed, 16 total
+Tests:      12 failed, 12 total
+Assertions: 12 failed, 12 passed, 24 total
 Duration:   <<timestamp>>
 
 Ran all test files.
