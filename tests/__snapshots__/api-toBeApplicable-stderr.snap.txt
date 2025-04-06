@@ -1,14 +1,14 @@
 Error: The given decorator can be applied to this method.
 
-  24 | 
-  25 |       // fail
-  26 |       @(expect(methodDecorator).type.not.toBeApplicable) two(): void {
+  34 | 
+  35 |       // fail
+  36 |       @(expect(methodDecorator).type.not.toBeApplicable) two(): void {
      |                                          ~~~~~~~~~~~~~~
-  27 |         // ...
-  28 |       }
-  29 |     }
+  37 |         // ...
+  38 |       }
+  39 |     }
 
-       at ./__typetests__/toBeApplicable.tst.ts:26:42 ❭ source expression ❭ is applicable to method
+       at ./__typetests__/toBeApplicable.tst.ts:36:42 ❭ source expression ❭ is applicable to method
 
 Error: The given decorator can not be applied to this method.
 
@@ -16,42 +16,42 @@ Decorator function return type '(this: Sample, value: number) => number' is not 
 Type '(this: Sample, value: number) => number' is not assignable to type '() => void'.
 Target signature provides too few arguments. Expected 1 or more, but got 0.
 
-  38 | 
-  39 |       // fail
-  40 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
+  48 | 
+  49 |       // fail
+  50 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
      |                ~~~~~~~~~~~~~~
-  41 |         // ...
-  42 |       }
-  43 |     }
+  51 |         // ...
+  52 |       }
+  53 |     }
 
-       at ./__typetests__/toBeApplicable.tst.ts:40:16
+       at ./__typetests__/toBeApplicable.tst.ts:50:16
 
 Error: The given decorator can not be applied to this method.
 
 Unable to resolve signature of method decorator when called as an expression.
 Argument of type '() => void' is not assignable to parameter of type 'undefined'.
 
-  38 | 
-  39 |       // fail
-  40 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
+  48 | 
+  49 |       // fail
+  50 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
      |                ~~~~~~~~~~~~~~
-  41 |         // ...
-  42 |       }
-  43 |     }
+  51 |         // ...
+  52 |       }
+  53 |     }
 
-       at ./__typetests__/toBeApplicable.tst.ts:40:16
+       at ./__typetests__/toBeApplicable.tst.ts:50:16
 
 Error: The given decorator can be applied to this field.
 
-  50 | 
-  51 |       // fail
-  52 |       @(expect(fieldDecorator).type.not.toBeApplicable) two = 2;
+  60 | 
+  61 |       // fail
+  62 |       @(expect(fieldDecorator).type.not.toBeApplicable) two = 2;
      |                                         ~~~~~~~~~~~~~~
-  53 |     }
-  54 |   });
-  55 | 
+  63 |     }
+  64 |   });
+  65 | 
 
-       at ./__typetests__/toBeApplicable.tst.ts:52:41 ❭ source expression ❭ is applicable to field
+       at ./__typetests__/toBeApplicable.tst.ts:62:41 ❭ source expression ❭ is applicable to field
 
 Error: The given decorator can not be applied to this field.
 
@@ -59,28 +59,119 @@ Decorator function return type '(this: Base, ...args: unknown[]) => unknown' is 
 Type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type '(this: Sample, value: number) => number'.
 Type 'unknown' is not assignable to type 'number'.
 
-  60 | 
-  61 |       // fail
-  62 |       @(expect(methodDecorator).type.toBeApplicable) two = 2;
+  70 | 
+  71 |       // fail
+  72 |       @(expect(methodDecorator).type.toBeApplicable) two = 2;
      |                ~~~~~~~~~~~~~~~
-  63 |     }
-  64 |   });
-  65 | });
+  73 |     }
+  74 |   });
+  75 | 
 
-       at ./__typetests__/toBeApplicable.tst.ts:62:16
+       at ./__typetests__/toBeApplicable.tst.ts:72:16
 
 Error: The given decorator can not be applied to this field.
 
 Unable to resolve signature of property decorator when called as an expression.
 Argument of type 'undefined' is not assignable to parameter of type '(this: Base, ...args: unknown[]) => unknown'.
 
-  60 | 
-  61 |       // fail
-  62 |       @(expect(methodDecorator).type.toBeApplicable) two = 2;
+  70 | 
+  71 |       // fail
+  72 |       @(expect(methodDecorator).type.toBeApplicable) two = 2;
      |                ~~~~~~~~~~~~~~~
-  63 |     }
-  64 |   });
-  65 | });
+  73 |     }
+  74 |   });
+  75 | 
 
-       at ./__typetests__/toBeApplicable.tst.ts:62:16
+       at ./__typetests__/toBeApplicable.tst.ts:72:16
+
+Error: The given decorator can be applied to this getter.
+
+  82 | 
+  83 |       // fail
+  84 |       @(expect(getterDecorator).type.not.toBeApplicable) get y() {
+     |                                          ~~~~~~~~~~~~~~
+  85 |         return "sample";
+  86 |       }
+  87 |     }
+
+       at ./__typetests__/toBeApplicable.tst.ts:84:42 ❭ source expression ❭ is applicable to getter
+
+Error: The given decorator can not be applied to this getter.
+
+Decorator function return type 'void | ((this: Base) => string)' is not assignable to type 'void | (() => boolean)'.
+Type '(this: Base) => string' is not assignable to type 'void | (() => boolean)'.
+Type '(this: Base) => string' is not assignable to type '() => boolean'.
+Type 'string' is not assignable to type 'boolean'.
+
+   96 | 
+   97 |       // fail
+   98 |       @(expect(getterDecorator).type.toBeApplicable) get y() {
+      |                ~~~~~~~~~~~~~~~
+   99 |         return true;
+  100 |       }
+  101 |     }
+
+        at ./__typetests__/toBeApplicable.tst.ts:98:16
+
+Error: The given decorator can not be applied to this getter.
+
+Unable to resolve signature of method decorator when called as an expression.
+Argument of type '() => boolean' is not assignable to parameter of type '(this: Base) => string'.
+Type 'boolean' is not assignable to type 'string'.
+
+   96 | 
+   97 |       // fail
+   98 |       @(expect(getterDecorator).type.toBeApplicable) get y() {
+      |                ~~~~~~~~~~~~~~~
+   99 |         return true;
+  100 |       }
+  101 |     }
+
+        at ./__typetests__/toBeApplicable.tst.ts:98:16
+
+Error: The given decorator can be applied to this setter.
+
+  112 | 
+  113 |       // fail
+  114 |       @(expect(setterDecorator).type.not.toBeApplicable) set y(value: string) {
+      |                                          ~~~~~~~~~~~~~~
+  115 |         this.#value = value;
+  116 |       }
+  117 |     }
+
+        at ./__typetests__/toBeApplicable.tst.ts:114:42 ❭ source expression ❭ is applicable to setter
+
+Error: The given decorator can not be applied to this setter.
+
+Decorator function return type '(this: Base, value: string) => void' is not assignable to type 'void | ((value: number) => void)'.
+Type '(this: Base, value: string) => void' is not assignable to type '(value: number) => void'.
+Types of parameters 'value' and 'value' are incompatible.
+Type 'number' is not assignable to type 'string'.
+
+  128 | 
+  129 |       // fail
+  130 |       @(expect(setterDecorator).type.toBeApplicable) set y(value: number) {
+      |                ~~~~~~~~~~~~~~~
+  131 |         this.#value = value;
+  132 |       }
+  133 |     }
+
+        at ./__typetests__/toBeApplicable.tst.ts:130:16
+
+Error: The given decorator can not be applied to this setter.
+
+Unable to resolve signature of method decorator when called as an expression.
+Argument of type '(value: number) => void' is not assignable to parameter of type '(this: Base, value: string) => void'.
+Types of parameters 'value' and 'value' are incompatible.
+Type 'string' is not assignable to type 'number'.
+
+  128 | 
+  129 |       // fail
+  130 |       @(expect(setterDecorator).type.toBeApplicable) set y(value: number) {
+      |                ~~~~~~~~~~~~~~~
+  131 |         this.#value = value;
+  132 |       }
+  133 |     }
+
+        at ./__typetests__/toBeApplicable.tst.ts:130:16
 
