@@ -61,6 +61,13 @@ export class ExpectService {
 
     const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
 
+    if (
+      !(matcherNameText === "toRaiseError" && assertion.isNot === false) &&
+      this.#rejectsTypeArguments(matchWorker, onDiagnostics)
+    ) {
+      return;
+    }
+
     switch (matcherNameText) {
       case "toAcceptProps":
       case "toBe":
@@ -72,17 +79,9 @@ export class ExpectService {
           return;
         }
 
-        if (this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
-          return;
-        }
-
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
       case "toBeApplicable":
-        if (this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
-          return;
-        }
-
         return this.toBeApplicable.match(matchWorker, assertion.source[0], onDiagnostics);
 
       case "toHaveProperty":
@@ -95,10 +94,6 @@ export class ExpectService {
         return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
       case "toRaiseError":
-        if (assertion.isNot && this.#rejectsTypeArguments(matchWorker, onDiagnostics)) {
-          return;
-        }
-
         // biome-ignore lint/style/noNonNullAssertion: validation makes sure that 'target' is defined
         return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target!], onDiagnostics);
 
