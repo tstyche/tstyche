@@ -1,0 +1,86 @@
+Error: The given decorator can be applied to this method.
+
+  24 | 
+  25 |       // fail
+  26 |       @(expect(methodDecorator).type.not.toBeApplicable) two(): void {
+     |                                          ~~~~~~~~~~~~~~
+  27 |         // ...
+  28 |       }
+  29 |     }
+
+       at ./__typetests__/toBeApplicable.tst.ts:26:42 ❭ source expression ❭ is applicable to method
+
+Error: The given decorator can not be applied to this method.
+
+Decorator function return type '(this: Sample, value: number) => number' is not assignable to type 'void | (() => void)'.
+Type '(this: Sample, value: number) => number' is not assignable to type '() => void'.
+Target signature provides too few arguments. Expected 1 or more, but got 0.
+
+  38 | 
+  39 |       // fail
+  40 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
+     |                ~~~~~~~~~~~~~~
+  41 |         // ...
+  42 |       }
+  43 |     }
+
+       at ./__typetests__/toBeApplicable.tst.ts:40:16
+
+Error: The given decorator can not be applied to this method.
+
+Unable to resolve signature of method decorator when called as an expression.
+Argument of type '() => void' is not assignable to parameter of type 'undefined'.
+
+  38 | 
+  39 |       // fail
+  40 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
+     |                ~~~~~~~~~~~~~~
+  41 |         // ...
+  42 |       }
+  43 |     }
+
+       at ./__typetests__/toBeApplicable.tst.ts:40:16
+
+Error: The given decorator can be applied to this field.
+
+  50 | 
+  51 |       // fail
+  52 |       @(expect(fieldDecorator).type.not.toBeApplicable) two = 2;
+     |                                         ~~~~~~~~~~~~~~
+  53 |     }
+  54 |   });
+  55 | 
+
+       at ./__typetests__/toBeApplicable.tst.ts:52:41 ❭ source expression ❭ is applicable to field
+
+Error: The given decorator can not be applied to this field.
+
+Decorator function return type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type 'void | ((this: Sample, value: number) => number)'.
+Type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type '(this: Sample, value: number) => number'.
+Type 'unknown' is not assignable to type 'number'.
+
+  60 | 
+  61 |       // fail
+  62 |       @(expect(methodDecorator).type.toBeApplicable) two = 2;
+     |                ~~~~~~~~~~~~~~~
+  63 |     }
+  64 |   });
+  65 | });
+
+       at ./__typetests__/toBeApplicable.tst.ts:62:16
+
+Error: The given decorator can not be applied to this field.
+
+Unable to resolve signature of property decorator when called as an expression.
+Argument of type 'undefined' is not assignable to parameter of type '(this: Base, ...args: unknown[]) => unknown'.
+
+  60 | 
+  61 |       // fail
+  62 |       @(expect(methodDecorator).type.toBeApplicable) two = 2;
+     |                ~~~~~~~~~~~~~~~
+  63 |     }
+  64 |   });
+  65 | });
+
+       at ./__typetests__/toBeApplicable.tst.ts:62:16
+
