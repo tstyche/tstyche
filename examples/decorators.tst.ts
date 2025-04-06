@@ -1,10 +1,10 @@
 import { expect } from "tstyche";
 
 function bind<This, Value extends (this: This, ...args: any) => any>(
-  _target: Value,
-  _context: ClassMethodDecoratorContext<This, Value>,
+  target: Value,
+  context: ClassMethodDecoratorContext<This, Value>,
 ) {
-  // skipped
+  // ...
 }
 
 export class Person {
