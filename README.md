@@ -58,6 +58,7 @@ Here is the list of all matchers:
 
 - `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()` compare types or types of expression,
 - `.toAcceptProps()` checks JSX component props type,
+- `.toBeApplicable` ensures that a decorator can be applied,
 - `.toHaveProperty()` looks up keys on an object type,
 - `.toRaiseError()` captures the type error message or code.
 
