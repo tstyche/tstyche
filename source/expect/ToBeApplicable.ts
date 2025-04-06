@@ -12,7 +12,7 @@ export class ToBeApplicable {
   }
 
   #resolveTargetText(node: ts.Node) {
-    let text: string | undefined;
+    let text = "";
 
     switch (node.kind) {
       case this.#compiler.SyntaxKind.ClassDeclaration:
@@ -44,7 +44,7 @@ export class ToBeApplicable {
       return ` to this ${text}`;
     }
 
-    return "";
+    return text;
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode) {
