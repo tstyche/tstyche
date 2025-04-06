@@ -72,8 +72,7 @@ export class AbilityLayer {
                 node.abilityDiagnostics = new Set();
               }
 
-              // TODO only add diagnostics, but leave origin mapping for the matchers
-              node.abilityDiagnostics.add([diagnostic, node.source[0] ?? node.node]);
+              node.abilityDiagnostics.add(diagnostic);
 
               diagnostics.delete(diagnostic);
             }

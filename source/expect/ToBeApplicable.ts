@@ -11,11 +11,11 @@ export class ToBeApplicable {
     this.#compiler = compiler;
   }
 
-  #explain(matchWorker: MatchWorker) {
+  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode) {
     const diagnostics: Array<Diagnostic> = [];
 
     if (matchWorker.assertion.abilityDiagnostics) {
-      for (const [diagnostic, node] of matchWorker.assertion.abilityDiagnostics) {
+      for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [
           "The given decorator function is not applicable.",
           typeof diagnostic.messageText === "string"
@@ -23,7 +23,7 @@ export class ToBeApplicable {
             : Diagnostic.toMessageText(diagnostic.messageText),
         ];
 
-        const origin = DiagnosticOrigin.fromNode(node);
+        const origin = DiagnosticOrigin.fromNode(sourceNode);
 
         diagnostics.push(Diagnostic.error(text.flat(), origin));
       }
@@ -58,7 +58,7 @@ export class ToBeApplicable {
     }
 
     return {
-      explain: () => this.#explain(matchWorker),
+      explain: () => this.#explain(matchWorker, sourceNode),
       isMatch: !matchWorker.assertion.abilityDiagnostics,
     };
   }
