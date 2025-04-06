@@ -26,11 +26,11 @@ export class ExpectDiagnosticText {
   }
 
   static decoratorCanBeApplied(targetText: string): string {
-    return `The given decorator can be applied${targetText}.`;
+    return `The decorator function can be applied${targetText}.`;
   }
 
   static decoratorCanNotBeApplied(targetText: string): string {
-    return `The given decorator can not be applied${targetText}.`;
+    return `The decorator function can not be applied${targetText}.`;
   }
 
   static matcherIsNotSupported(matcherNameText: string): string {

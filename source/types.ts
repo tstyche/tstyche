@@ -100,7 +100,7 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the given decorator can be applied.
+   * Checks if the decorator function can be applied.
    */
   toBeApplicable: (target: unknown, context: DecoratorContext) => void;
   /**
