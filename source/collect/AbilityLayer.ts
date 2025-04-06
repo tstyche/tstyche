@@ -6,7 +6,6 @@ import type { ProjectService } from "#project";
 interface TextRange {
   end: number;
   start: number;
-  text?: string;
 }
 
 export class AbilityLayer {
@@ -21,12 +20,33 @@ export class AbilityLayer {
     this.#resolvedConfig = resolvedConfig;
   }
 
+  #getErasedRangeText(range: TextRange) {
+    if (this.#text.indexOf("\n", range.start) >= range.end) {
+      return " ".repeat(range.end - range.start);
+    }
+
+    const text: Array<string> = [];
+
+    for (let i = range.start; i < range.end; i++) {
+      switch (this.#text.charAt(i)) {
+        case "\n":
+        case "\r":
+          text.push(this.#text.charAt(i));
+          break;
+
+        default:
+          text.push(" ");
+      }
+    }
+
+    return text.join("");
+  }
+
   #addRanges(node: AssertionNode, ranges: Array<TextRange>): void {
     this.#nodes.push(node);
 
     for (const range of ranges) {
-      // TODO line ends must be respected
-      const rangeText = range.text ?? " ".repeat(range.end - range.start);
+      const rangeText = this.#getErasedRangeText(range);
 
       this.#text = `${this.#text.slice(0, range.start)}${rangeText}${this.#text.slice(range.end)}`;
     }
@@ -52,6 +72,7 @@ export class AbilityLayer {
                 node.abilityDiagnostics = new Set();
               }
 
+              // TODO only add diagnostics, but leave origin mapping for the matchers
               node.abilityDiagnostics.add([diagnostic, node.source[0] ?? node.node]);
 
               diagnostics.delete(diagnostic);
