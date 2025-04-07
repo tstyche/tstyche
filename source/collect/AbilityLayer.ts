@@ -43,7 +43,7 @@ export class AbilityLayer {
   }
 
   #addRanges(node: AssertionNode, ranges: Array<TextRange>): void {
-    this.#nodes.unshift(node);
+    this.#nodes.push(node);
 
     for (const range of ranges) {
       const rangeText = this.#getErasedRangeText(range);
@@ -59,9 +59,10 @@ export class AbilityLayer {
       const languageService = this.#projectService.getLanguageService(this.#filePath);
 
       const diagnostics = new Set(languageService?.getSemanticDiagnostics(this.#filePath));
+      const nodes = this.#nodes.reverse();
 
       for (const diagnostic of diagnostics) {
-        for (const node of this.#nodes) {
+        for (const node of nodes) {
           if (
             diagnostic.start != null &&
             diagnostic.start >= node.matcherNode.pos &&
