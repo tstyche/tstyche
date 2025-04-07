@@ -27,11 +27,13 @@ export class AbilityLayer {
 
     const text: Array<string> = [];
 
-    for (let i = range.start; i < range.end; i++) {
-      switch (this.#text.charAt(i)) {
+    for (let index = range.start; index < range.end; index++) {
+      const character = this.#text.charAt(index);
+
+      switch (character) {
         case "\n":
         case "\r":
-          text.push(this.#text.charAt(i));
+          text.push(character);
           break;
 
         default:
