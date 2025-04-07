@@ -1,8 +1,8 @@
 Error: The decorator function can not be applied to this class.
 
-Decorator function return type 'new (a: number, b: boolean) => Base' is not assignable to type 'void | typeof Second'.
-Type 'new (a: number, b: boolean) => Base' is not assignable to type 'typeof Second'.
-Target signature provides too few arguments. Expected 2 or more, but got 0.
+Unable to resolve signature of class decorator when called as an expression.
+Argument of type 'typeof Second' is not assignable to parameter of type 'new (a: number, b: boolean) => Base'.
+Type 'Second' is missing the following properties from type 'Base': #a, #b, sample
 
   58 | 
   59 |     // fail
@@ -16,9 +16,9 @@ Target signature provides too few arguments. Expected 2 or more, but got 0.
 
 Error: The decorator function can not be applied to this class.
 
-Unable to resolve signature of class decorator when called as an expression.
-Argument of type 'typeof Second' is not assignable to parameter of type 'new (a: number, b: boolean) => Base'.
-Type 'Second' is missing the following properties from type 'Base': #a, #b, sample
+Decorator function return type 'new (a: number, b: boolean) => Base' is not assignable to type 'void | typeof Second'.
+Type 'new (a: number, b: boolean) => Base' is not assignable to type 'typeof Second'.
+Target signature provides too few arguments. Expected 2 or more, but got 0.
 
   58 | 
   59 |     // fail
@@ -56,9 +56,8 @@ Error: The decorator function can be applied to this method.
 
 Error: The decorator function can not be applied to this method.
 
-Decorator function return type '(this: Sample, value: number) => number' is not assignable to type 'void | (() => void)'.
-Type '(this: Sample, value: number) => number' is not assignable to type '() => void'.
-Target signature provides too few arguments. Expected 1 or more, but got 0.
+Unable to resolve signature of method decorator when called as an expression.
+Argument of type '() => void' is not assignable to parameter of type 'undefined'.
 
    99 | 
   100 |       // fail
@@ -72,8 +71,9 @@ Target signature provides too few arguments. Expected 1 or more, but got 0.
 
 Error: The decorator function can not be applied to this method.
 
-Unable to resolve signature of method decorator when called as an expression.
-Argument of type '() => void' is not assignable to parameter of type 'undefined'.
+Decorator function return type '(this: Sample, value: number) => number' is not assignable to type 'void | (() => void)'.
+Type '(this: Sample, value: number) => number' is not assignable to type '() => void'.
+Target signature provides too few arguments. Expected 1 or more, but got 0.
 
    99 | 
   100 |       // fail
@@ -99,10 +99,8 @@ Error: The decorator function can be applied to this field.
 
 Error: The decorator function can not be applied to this field.
 
-Decorator function return type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type 'void | ((this: Sample, value: number) => number)'.
-Type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type '(this: Sample, value: number) => number'.
-The 'this' types of each signature are incompatible.
-Type 'Sample' is missing the following properties from type 'Base': #a, #b, sample
+Unable to resolve signature of property decorator when called as an expression.
+Argument of type 'undefined' is not assignable to parameter of type '(this: Base, ...args: unknown[]) => unknown'.
 
   121 | 
   122 |       // fail
@@ -116,8 +114,10 @@ Type 'Sample' is missing the following properties from type 'Base': #a, #b, samp
 
 Error: The decorator function can not be applied to this field.
 
-Unable to resolve signature of property decorator when called as an expression.
-Argument of type 'undefined' is not assignable to parameter of type '(this: Base, ...args: unknown[]) => unknown'.
+Decorator function return type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type 'void | ((this: Sample, value: number) => number)'.
+Type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type '(this: Sample, value: number) => number'.
+The 'this' types of each signature are incompatible.
+Type 'Sample' is missing the following properties from type 'Base': #a, #b, sample
 
   121 | 
   122 |       // fail
@@ -150,10 +150,9 @@ Type 'Base' is missing the following properties from type 'Sample': x, y
 
 Error: The decorator function can not be applied to this getter.
 
-Decorator function return type 'void | ((this: Base) => string)' is not assignable to type 'void | (() => boolean)'.
-Type '(this: Base) => string' is not assignable to type 'void | (() => boolean)'.
-Type '(this: Base) => string' is not assignable to type '() => boolean'.
-Type 'string' is not assignable to type 'boolean'.
+Unable to resolve signature of method decorator when called as an expression.
+Argument of type '() => boolean' is not assignable to parameter of type '(this: Base) => string'.
+Type 'boolean' is not assignable to type 'string'.
 
   147 | 
   148 |       // fail
@@ -167,9 +166,10 @@ Type 'string' is not assignable to type 'boolean'.
 
 Error: The decorator function can not be applied to this getter.
 
-Unable to resolve signature of method decorator when called as an expression.
-Argument of type '() => boolean' is not assignable to parameter of type '(this: Base) => string'.
-Type 'boolean' is not assignable to type 'string'.
+Decorator function return type 'void | ((this: Base) => string)' is not assignable to type 'void | (() => boolean)'.
+Type '(this: Base) => string' is not assignable to type 'void | (() => boolean)'.
+Type '(this: Base) => string' is not assignable to type '() => boolean'.
+Type 'string' is not assignable to type 'boolean'.
 
   147 | 
   148 |       // fail
@@ -202,6 +202,23 @@ Type 'Base' is missing the following properties from type 'Sample': #value, x, y
 
 Error: The decorator function can not be applied to this setter.
 
+Unable to resolve signature of method decorator when called as an expression.
+Argument of type '(value: number) => void' is not assignable to parameter of type '(this: Base, value: string) => void'.
+Types of parameters 'value' and 'value' are incompatible.
+Type 'string' is not assignable to type 'number'.
+
+  179 | 
+  180 |       // fail
+  181 |       @(expect(setterDecorator).type.toBeApplicable) set y(value: number) {
+      |                ~~~~~~~~~~~~~~~
+  182 |         this.#value = value;
+  183 |       }
+  184 |     }
+
+        at ./__typetests__/toBeApplicable.tst.ts:181:16
+
+Error: The decorator function can not be applied to this setter.
+
 Decorator function return type '(this: Base, value: string) => void' is not assignable to type 'void | ((value: number) => void)'.
 Type '(this: Base, value: string) => void' is not assignable to type '(value: number) => void'.
 Types of parameters 'value' and 'value' are incompatible.
@@ -217,22 +234,21 @@ Type 'number' is not assignable to type 'string'.
 
         at ./__typetests__/toBeApplicable.tst.ts:181:16
 
-Error: The decorator function can not be applied to this setter.
+Error: The decorator function can not be applied to this accessor.
 
-Unable to resolve signature of method decorator when called as an expression.
-Argument of type '(value: number) => void' is not assignable to parameter of type '(this: Base, value: string) => void'.
-Types of parameters 'value' and 'value' are incompatible.
-Type 'string' is not assignable to type 'number'.
+Unable to resolve signature of property decorator when called as an expression.
+Argument of type 'ClassAccessorDecoratorTarget<Sample, number>' is not assignable to parameter of type 'ClassAccessorDecoratorTarget<Base, number>'.
+Type 'Sample' is missing the following properties from type 'Base': #a, #b, sample
 
-  179 | 
-  180 |       // fail
-  181 |       @(expect(setterDecorator).type.toBeApplicable) set y(value: number) {
-      |                ~~~~~~~~~~~~~~~
-  182 |         this.#value = value;
-  183 |       }
-  184 |     }
+  187 |   test("is applicable to accessor", () => {
+  188 |     class Sample {
+  189 |       @(expect(accessorDecorator).type.toBeApplicable)
+      |                ~~~~~~~~~~~~~~~~~
+  190 |       accessor nine = 9;
+  191 | 
+  192 |       // fail
 
-        at ./__typetests__/toBeApplicable.tst.ts:181:16
+        at ./__typetests__/toBeApplicable.tst.ts:189:16
 
 Error: The decorator function can not be applied to this accessor.
 
@@ -253,24 +269,8 @@ Type 'Base' is missing the following properties from type 'Sample': nine, ten
 Error: The decorator function can not be applied to this accessor.
 
 Unable to resolve signature of property decorator when called as an expression.
-Argument of type 'ClassAccessorDecoratorTarget<Sample, number>' is not assignable to parameter of type 'ClassAccessorDecoratorTarget<Base, number>'.
+Argument of type 'ClassAccessorDecoratorTarget<Sample, boolean>' is not assignable to parameter of type 'ClassAccessorDecoratorTarget<Base, number>'.
 Type 'Sample' is missing the following properties from type 'Base': #a, #b, sample
-
-  187 |   test("is applicable to accessor", () => {
-  188 |     class Sample {
-  189 |       @(expect(accessorDecorator).type.toBeApplicable)
-      |                ~~~~~~~~~~~~~~~~~
-  190 |       accessor nine = 9;
-  191 | 
-  192 |       // fail
-
-        at ./__typetests__/toBeApplicable.tst.ts:189:16
-
-Error: The decorator function can not be applied to this accessor.
-
-Decorator function return type 'ClassAccessorDecoratorResult<Base, number>' is not assignable to type 'void | ClassAccessorDecoratorResult<Sample, boolean>'.
-Type 'ClassAccessorDecoratorResult<Base, number>' is not assignable to type 'ClassAccessorDecoratorResult<Sample, boolean>'.
-Type 'Base' is missing the following properties from type 'Sample': yes, no
 
   201 | 
   202 |       // fail
@@ -284,9 +284,9 @@ Type 'Base' is missing the following properties from type 'Sample': yes, no
 
 Error: The decorator function can not be applied to this accessor.
 
-Unable to resolve signature of property decorator when called as an expression.
-Argument of type 'ClassAccessorDecoratorTarget<Sample, boolean>' is not assignable to parameter of type 'ClassAccessorDecoratorTarget<Base, number>'.
-Type 'Sample' is missing the following properties from type 'Base': #a, #b, sample
+Decorator function return type 'ClassAccessorDecoratorResult<Base, number>' is not assignable to type 'void | ClassAccessorDecoratorResult<Sample, boolean>'.
+Type 'ClassAccessorDecoratorResult<Base, number>' is not assignable to type 'ClassAccessorDecoratorResult<Sample, boolean>'.
+Type 'Base' is missing the following properties from type 'Sample': yes, no
 
   201 | 
   202 |       // fail
