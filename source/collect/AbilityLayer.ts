@@ -43,7 +43,7 @@ export class AbilityLayer {
   }
 
   #addRanges(node: AssertionNode, ranges: Array<TextRange>): void {
-    this.#nodes.push(node);
+    this.#nodes.unshift(node);
 
     for (const range of ranges) {
       const rangeText = this.#getErasedRangeText(range);
@@ -58,24 +58,22 @@ export class AbilityLayer {
 
       const languageService = this.#projectService.getLanguageService(this.#filePath);
 
-      const diagnostics = new Set(languageService?.getSemanticDiagnostics(this.#filePath)?.toReversed());
+      const diagnostics = new Set(languageService?.getSemanticDiagnostics(this.#filePath));
 
-      if (diagnostics.size > 0) {
-        for (const node of this.#nodes.toReversed()) {
-          for (const diagnostic of diagnostics) {
-            if (
-              diagnostic.start != null &&
-              diagnostic.start >= node.matcherNode.pos &&
-              diagnostic.start <= node.matcherNode.end
-            ) {
-              if (!node.abilityDiagnostics) {
-                node.abilityDiagnostics = new Set();
-              }
-
-              node.abilityDiagnostics.add(diagnostic);
-
-              diagnostics.delete(diagnostic);
+      for (const diagnostic of diagnostics) {
+        for (const node of this.#nodes) {
+          if (
+            diagnostic.start != null &&
+            diagnostic.start >= node.matcherNode.pos &&
+            diagnostic.start <= node.matcherNode.end
+          ) {
+            if (!node.abilityDiagnostics) {
+              node.abilityDiagnostics = new Set();
             }
+
+            node.abilityDiagnostics.add(diagnostic);
+
+            diagnostics.delete(diagnostic);
           }
         }
       }
