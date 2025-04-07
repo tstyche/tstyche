@@ -13,16 +13,16 @@ import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
 export class TaskRunner {
-  #compiler: typeof ts;
   #collectService: CollectService;
+  #compiler: typeof ts;
   #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
 
-  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
-    this.#resolvedConfig = resolvedConfig;
+  constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#resolvedConfig = resolvedConfig;
 
-    this.#projectService = new ProjectService(this.#resolvedConfig, compiler);
+    this.#projectService = new ProjectService(compiler, this.#resolvedConfig);
     this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
   }
 
@@ -100,7 +100,7 @@ export class TaskRunner {
 
     const typeChecker = program.getTypeChecker() as TypeChecker;
 
-    const testTreeWalker = new TestTreeWalker(this.#resolvedConfig, this.#compiler, typeChecker, {
+    const testTreeWalker = new TestTreeWalker(this.#compiler, typeChecker, this.#resolvedConfig, {
       cancellationToken,
       taskResult,
       hasOnly: testTree.hasOnly,

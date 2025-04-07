@@ -24,9 +24,9 @@ export class TestTreeWalker {
   #taskResult: TaskResult;
 
   constructor(
-    resolvedConfig: ResolvedConfig,
     compiler: typeof ts,
     typeChecker: TypeChecker,
+    resolvedConfig: ResolvedConfig,
     options: TestTreeWalkerOptions,
   ) {
     this.#resolvedConfig = resolvedConfig;

@@ -93,7 +93,7 @@ export class Runner {
 
       if (compiler) {
         // TODO to improve performance, task runners (or even test projects) could be cached in the future
-        const taskRunner = new TaskRunner(this.#resolvedConfig, compiler);
+        const taskRunner = new TaskRunner(compiler, this.#resolvedConfig);
 
         for (const task of tasks) {
           taskRunner.run(task, cancellationToken);
