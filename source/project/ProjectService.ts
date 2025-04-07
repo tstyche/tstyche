@@ -11,9 +11,9 @@ export class ProjectService {
   #seenPrograms = new WeakSet<ts.Program>();
   #service: ts.server.ProjectService;
 
-  constructor(resolvedConfig: ResolvedConfig, compiler: typeof ts) {
-    this.#resolvedConfig = resolvedConfig;
+  constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#resolvedConfig = resolvedConfig;
 
     const noop = () => undefined;
 
