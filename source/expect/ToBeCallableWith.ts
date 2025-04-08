@@ -43,6 +43,12 @@ export class ToBeCallableWith {
             : Diagnostic.toMessageText(diagnostic.messageText),
         ];
 
+        let related: Array<Diagnostic> | undefined;
+
+        if (diagnostic.relatedInformation != null) {
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+        }
+
         let origin: DiagnosticOrigin;
 
         if (
@@ -62,7 +68,7 @@ export class ToBeCallableWith {
               : DiagnosticOrigin.fromAssertion(matchWorker.assertion);
         }
 
-        diagnostics.push(Diagnostic.error(text.flat(), origin));
+        diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
       }
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
