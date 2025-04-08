@@ -43,12 +43,6 @@ export class ToBeCallableWith {
             : Diagnostic.toMessageText(diagnostic.messageText),
         ];
 
-        let related: Array<Diagnostic> | undefined;
-
-        if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
-        }
-
         let origin: DiagnosticOrigin;
 
         if (
@@ -66,6 +60,12 @@ export class ToBeCallableWith {
             targetNodes.length > 0
               ? DiagnosticOrigin.fromNodes(targetNodes)
               : DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+        }
+
+        let related: Array<Diagnostic> | undefined;
+
+        if (diagnostic.relatedInformation != null) {
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
         }
 
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
