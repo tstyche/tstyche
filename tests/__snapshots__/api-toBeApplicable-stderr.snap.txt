@@ -1,4 +1,4 @@
-Error: The decorator function can not be applied to this class.
+Error: The decorator function cannot be applied to this class.
 
 Unable to resolve signature of class decorator when called as an expression.
 Argument of type 'typeof Second' is not assignable to parameter of type 'new (a: number, b: boolean) => Base'.
@@ -14,7 +14,7 @@ Type 'Second' is missing the following properties from type 'Base': #a, #b, samp
 
        at ./__typetests__/toBeApplicable.tst.ts:60:14
 
-Error: The decorator function can not be applied to this class.
+Error: The decorator function cannot be applied to this class.
 
 Decorator function return type 'new (a: number, b: boolean) => Base' is not assignable to type 'void | typeof Second'.
 Type 'new (a: number, b: boolean) => Base' is not assignable to type 'typeof Second'.
@@ -54,7 +54,7 @@ Error: The decorator function can be applied to this method.
 
        at ./__typetests__/toBeApplicable.tst.ts:87:42 ❭ source expression ❭ is applicable to method
 
-Error: The decorator function can not be applied to this method.
+Error: The decorator function cannot be applied to this method.
 
 Unable to resolve signature of method decorator when called as an expression.
 Argument of type '() => void' is not assignable to parameter of type 'undefined'.
@@ -69,7 +69,7 @@ Argument of type '() => void' is not assignable to parameter of type 'undefined'
 
         at ./__typetests__/toBeApplicable.tst.ts:101:16
 
-Error: The decorator function can not be applied to this method.
+Error: The decorator function cannot be applied to this method.
 
 Decorator function return type '(this: Sample, value: number) => number' is not assignable to type 'void | (() => void)'.
 Type '(this: Sample, value: number) => number' is not assignable to type '() => void'.
@@ -97,7 +97,7 @@ Error: The decorator function can be applied to this field.
 
         at ./__typetests__/toBeApplicable.tst.ts:113:41 ❭ source expression ❭ is applicable to field
 
-Error: The decorator function can not be applied to this field.
+Error: The decorator function cannot be applied to this field.
 
 Unable to resolve signature of property decorator when called as an expression.
 Argument of type 'undefined' is not assignable to parameter of type '(this: Base, ...args: unknown[]) => unknown'.
@@ -112,7 +112,7 @@ Argument of type 'undefined' is not assignable to parameter of type '(this: Base
 
         at ./__typetests__/toBeApplicable.tst.ts:123:16
 
-Error: The decorator function can not be applied to this field.
+Error: The decorator function cannot be applied to this field.
 
 Decorator function return type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type 'void | ((this: Sample, value: number) => number)'.
 Type '(this: Base, ...args: unknown[]) => unknown' is not assignable to type '(this: Sample, value: number) => number'.
@@ -129,7 +129,7 @@ Type 'Sample' is missing the following properties from type 'Base': #a, #b, samp
 
         at ./__typetests__/toBeApplicable.tst.ts:123:16
 
-Error: The decorator function can not be applied to this getter.
+Error: The decorator function cannot be applied to this getter.
 
 Unable to resolve signature of method decorator when called as an expression.
 Argument of type 'ClassGetterDecoratorContext<Sample, string> & { name: "x"; private: false; static: false; }' is not assignable to parameter of type 'ClassGetterDecoratorContext<Base, string>'.
@@ -148,7 +148,7 @@ Type 'Base' is missing the following properties from type 'Sample': x, y
 
         at ./__typetests__/toBeApplicable.tst.ts:129:16
 
-Error: The decorator function can not be applied to this getter.
+Error: The decorator function cannot be applied to this getter.
 
 Unable to resolve signature of method decorator when called as an expression.
 Argument of type '() => boolean' is not assignable to parameter of type '(this: Base) => string'.
@@ -164,7 +164,7 @@ Type 'boolean' is not assignable to type 'string'.
 
         at ./__typetests__/toBeApplicable.tst.ts:149:16
 
-Error: The decorator function can not be applied to this getter.
+Error: The decorator function cannot be applied to this getter.
 
 Decorator function return type 'void | ((this: Base) => string)' is not assignable to type 'void | (() => boolean)'.
 Type '(this: Base) => string' is not assignable to type 'void | (() => boolean)'.
@@ -181,7 +181,7 @@ Type 'string' is not assignable to type 'boolean'.
 
         at ./__typetests__/toBeApplicable.tst.ts:149:16
 
-Error: The decorator function can not be applied to this setter.
+Error: The decorator function cannot be applied to this setter.
 
 Unable to resolve signature of method decorator when called as an expression.
 Argument of type 'ClassSetterDecoratorContext<Sample, string> & { name: "x"; private: false; static: false; }' is not assignable to parameter of type 'ClassSetterDecoratorContext<Base, string>'.
@@ -200,7 +200,7 @@ Type 'Base' is missing the following properties from type 'Sample': #value, x, y
 
         at ./__typetests__/toBeApplicable.tst.ts:159:16
 
-Error: The decorator function can not be applied to this setter.
+Error: The decorator function cannot be applied to this setter.
 
 Unable to resolve signature of method decorator when called as an expression.
 Argument of type '(value: number) => void' is not assignable to parameter of type '(this: Base, value: string) => void'.
@@ -217,7 +217,7 @@ Type 'string' is not assignable to type 'number'.
 
         at ./__typetests__/toBeApplicable.tst.ts:181:16
 
-Error: The decorator function can not be applied to this setter.
+Error: The decorator function cannot be applied to this setter.
 
 Decorator function return type '(this: Base, value: string) => void' is not assignable to type 'void | ((value: number) => void)'.
 Type '(this: Base, value: string) => void' is not assignable to type '(value: number) => void'.
@@ -234,7 +234,7 @@ Type 'number' is not assignable to type 'string'.
 
         at ./__typetests__/toBeApplicable.tst.ts:181:16
 
-Error: The decorator function can not be applied to this accessor.
+Error: The decorator function cannot be applied to this accessor.
 
 Unable to resolve signature of property decorator when called as an expression.
 Argument of type 'ClassAccessorDecoratorTarget<Sample, number>' is not assignable to parameter of type 'ClassAccessorDecoratorTarget<Base, number>'.
@@ -250,7 +250,7 @@ Type 'Sample' is missing the following properties from type 'Base': #a, #b, samp
 
         at ./__typetests__/toBeApplicable.tst.ts:189:16
 
-Error: The decorator function can not be applied to this accessor.
+Error: The decorator function cannot be applied to this accessor.
 
 Decorator function return type 'ClassAccessorDecoratorResult<Base, number>' is not assignable to type 'void | ClassAccessorDecoratorResult<Sample, number>'.
 Type 'ClassAccessorDecoratorResult<Base, number>' is not assignable to type 'ClassAccessorDecoratorResult<Sample, number>'.
@@ -266,7 +266,7 @@ Type 'Base' is missing the following properties from type 'Sample': nine, ten
 
         at ./__typetests__/toBeApplicable.tst.ts:189:16
 
-Error: The decorator function can not be applied to this accessor.
+Error: The decorator function cannot be applied to this accessor.
 
 Unable to resolve signature of property decorator when called as an expression.
 Argument of type 'ClassAccessorDecoratorTarget<Sample, boolean>' is not assignable to parameter of type 'ClassAccessorDecoratorTarget<Base, number>'.
@@ -282,7 +282,7 @@ Type 'Sample' is missing the following properties from type 'Base': #a, #b, samp
 
         at ./__typetests__/toBeApplicable.tst.ts:203:16
 
-Error: The decorator function can not be applied to this accessor.
+Error: The decorator function cannot be applied to this accessor.
 
 Decorator function return type 'ClassAccessorDecoratorResult<Base, number>' is not assignable to type 'void | ClassAccessorDecoratorResult<Sample, boolean>'.
 Type 'ClassAccessorDecoratorResult<Base, number>' is not assignable to type 'ClassAccessorDecoratorResult<Sample, boolean>'.
@@ -310,7 +310,7 @@ Error: The decorator function can be applied to this method.
 
         at ./__typetests__/toBeApplicable.tst.ts:215:37 ❭ source expression ❭ is applicable to public members only
 
-Error: The decorator function can not be applied to this method.
+Error: The decorator function cannot be applied to this method.
 
 Unable to resolve signature of method decorator when called as an expression.
 Argument of type 'ClassMethodDecoratorContext<Sample, () => void> & { name: "#two"; private: true; static: false; }' is not assignable to parameter of type 'ClassMemberDecoratorContext & { private: false; }'.

@@ -20,8 +20,8 @@ export class ToAcceptProps {
       let diagnostic: Diagnostic | undefined;
 
       const introText = matchWorker.assertion.isNot
-        ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(sourceNode))
-        : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(sourceNode));
+        ? ExpectDiagnosticText.acceptsProps(this.#compiler.isTypeNode(sourceNode))
+        : ExpectDiagnosticText.doesNotAcceptProps(this.#compiler.isTypeNode(sourceNode));
 
       const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
@@ -123,8 +123,8 @@ export class ToAcceptProps {
 
         if (!sourceProperty) {
           const text = [
-            ExpectDiagnosticText.typeIsNotCompatibleWith(sourceTypeText, targetTypeText),
-            ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
+            ExpectDiagnosticText.isNotCompatibleWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.doesNotHaveProperty(sourceTypeText, targetPropertyName),
           ];
 
           const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
@@ -136,8 +136,8 @@ export class ToAcceptProps {
 
         if (this.#isOptionalProperty(targetProperty) && !this.#isOptionalProperty(sourceProperty)) {
           const text = [
-            ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
-            ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
+            ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.requiresProperty(sourceTypeText, targetPropertyName),
           ];
 
           const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
@@ -155,9 +155,9 @@ export class ToAcceptProps {
           const sourcePropertyTypeText = this.#typeChecker.typeToString(sourcePropertyType);
 
           const text = [
-            ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText),
             ExpectDiagnosticText.typesOfPropertyAreNotCompatible(targetPropertyName),
-            ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
+            ExpectDiagnosticText.isNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
           ];
 
           const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
@@ -174,8 +174,8 @@ export class ToAcceptProps {
 
           if (!targetProperty && !this.#isOptionalProperty(sourceProperty)) {
             const text = [
-              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
-              ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, sourcePropertyName),
+              ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText),
+              ExpectDiagnosticText.requiresProperty(sourceTypeText, sourcePropertyName),
             ];
 
             diagnostics.push(diagnostic.extendWith(text));
@@ -184,7 +184,7 @@ export class ToAcceptProps {
       }
 
       if (diagnostics.length === 0) {
-        const text = ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText);
+        const text = ExpectDiagnosticText.isAssignableWith(sourceTypeText, targetTypeText);
 
         diagnostics.push(diagnostic.extendWith(text));
 
@@ -199,8 +199,8 @@ export class ToAcceptProps {
 
       const isMatch = sourceType.types.some((sourceType) => {
         const text = matchWorker.assertion.isNot
-          ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
-          : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText);
+          ? ExpectDiagnosticText.isAssignableWith(sourceTypeText, targetTypeText)
+          : ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText);
 
         const { diagnostics, isMatch } = explain(sourceType, targetType, diagnostic.extendWith(text));
 

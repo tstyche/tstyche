@@ -17,7 +17,7 @@ export class ToRaiseError {
     const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
     if (matchWorker.assertion.diagnostics.size === 0) {
-      const text = ExpectDiagnosticText.typeDidNotRaiseError(isTypeNode);
+      const text = ExpectDiagnosticText.didNotRaiseError(isTypeNode);
 
       return [Diagnostic.error(text, origin)];
     }
@@ -25,7 +25,7 @@ export class ToRaiseError {
     if (matchWorker.assertion.diagnostics.size !== targetNodes.length) {
       const count = matchWorker.assertion.diagnostics.size;
 
-      const text = ExpectDiagnosticText.typeRaisedError(isTypeNode, count, targetNodes.length);
+      const text = ExpectDiagnosticText.raisedError(isTypeNode, count, targetNodes.length);
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
@@ -42,8 +42,8 @@ export class ToRaiseError {
 
       if (matchWorker.assertion.isNot ? isMatch : !isMatch) {
         const text = matchWorker.assertion.isNot
-          ? ExpectDiagnosticText.typeRaisedMatchingError(isTypeNode)
-          : ExpectDiagnosticText.typeDidNotRaiseMatchingError(isTypeNode);
+          ? ExpectDiagnosticText.raisedMatchingError(isTypeNode)
+          : ExpectDiagnosticText.didNotRaiseMatchingError(isTypeNode);
 
         const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 

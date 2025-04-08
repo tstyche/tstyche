@@ -26,8 +26,8 @@ export class ToHaveProperty {
     const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
     return matchWorker.assertion.isNot
-      ? [Diagnostic.error(ExpectDiagnosticText.typeHasProperty(sourceTypeText, propertyNameText), origin)]
-      : [Diagnostic.error(ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
+      ? [Diagnostic.error(ExpectDiagnosticText.hasProperty(sourceTypeText, propertyNameText), origin)]
+      : [Diagnostic.error(ExpectDiagnosticText.doesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
   }
 
   match(
