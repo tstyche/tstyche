@@ -55,7 +55,7 @@ export class ToBeApplicable {
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [
-          ExpectDiagnosticText.decoratorCanNotBeApplied(targetText),
+          ExpectDiagnosticText.cannotBeApplied(targetText),
           typeof diagnostic.messageText === "string"
             ? diagnostic.messageText
             : Diagnostic.toMessageText(diagnostic.messageText),
@@ -68,7 +68,7 @@ export class ToBeApplicable {
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.decoratorCanBeApplied(targetText), origin));
+      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.canBeApplied(targetText), origin));
     }
 
     return diagnostics;

@@ -17,20 +17,28 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' must be provided.`;
   }
 
-  static componentAcceptsProps(isTypeNode: boolean): string {
+  static acceptsProps(isTypeNode: boolean): string {
     return `${isTypeNode ? "Component type" : "Component"} accepts props of the given type.`;
   }
 
-  static componentDoesNotAcceptProps(isTypeNode: boolean): string {
+  static doesNotAcceptProps(isTypeNode: boolean): string {
     return `${isTypeNode ? "Component type" : "Component"} does not accept props of the given type.`;
   }
 
-  static decoratorCanBeApplied(targetText: string): string {
+  static canBeApplied(targetText: string): string {
     return `The decorator function can be applied${targetText}.`;
   }
 
-  static decoratorCanNotBeApplied(targetText: string): string {
-    return `The decorator function can not be applied${targetText}.`;
+  static cannotBeApplied(targetText: string): string {
+    return `The decorator function cannot be applied${targetText}.`;
+  }
+
+  static doesNotHaveProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
+  }
+
+  static hasProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' has property '${propertyNameText}'.`;
   }
 
   static matcherIsNotSupported(matcherNameText: string): string {
@@ -53,51 +61,7 @@ export class ExpectDiagnosticText {
     return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
-  static typeDidNotRaiseError(isTypeNode: boolean): string {
-    return `${isTypeNode ? "Type" : "Expression type"} did not raise a type error.`;
-  }
-
-  static typeDidNotRaiseMatchingError(isTypeNode: boolean): string {
-    return `${isTypeNode ? "Type" : "Expression type"} did not raise a matching type error.`;
-  }
-
-  static typeDoesNotHaveProperty(typeText: string, propertyNameText: string): string {
-    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
-  }
-
-  static typeHasProperty(typeText: string, propertyNameText: string): string {
-    return `Type '${typeText}' has property '${propertyNameText}'.`;
-  }
-
-  static typeIsAssignableTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is assignable to type '${targetTypeText}'.`;
-  }
-
-  static typeIsAssignableWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`;
-  }
-
-  static typeIsIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is identical to type '${targetTypeText}'.`;
-  }
-
-  static typeIsNotAssignableTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not assignable to type '${targetTypeText}'.`;
-  }
-
-  static typeIsNotAssignableWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`;
-  }
-
-  static typeIsNotCompatibleWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`;
-  }
-
-  static typeIsNotIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not identical to type '${targetTypeText}'.`;
-  }
-
-  static typeRaisedError(isTypeNode: boolean, count: number, targetCount: number): string {
+  static raisedError(isTypeNode: boolean, count: number, targetCount: number): string {
     let countText = "a";
 
     if (count > 1 || targetCount > 1) {
@@ -107,11 +71,47 @@ export class ExpectDiagnosticText {
     return `${isTypeNode ? "Type" : "Expression type"} raised ${countText} type error${count === 1 ? "" : "s"}.`;
   }
 
-  static typeRaisedMatchingError(isTypeNode: boolean): string {
+  static didNotRaiseError(isTypeNode: boolean): string {
+    return `${isTypeNode ? "Type" : "Expression type"} did not raise a type error.`;
+  }
+
+  static raisedMatchingError(isTypeNode: boolean): string {
     return `${isTypeNode ? "Type" : "Expression type"} raised a matching type error.`;
   }
 
-  static typeRequiresProperty(typeText: string, propertyNameText: string): string {
+  static didNotRaiseMatchingError(isTypeNode: boolean): string {
+    return `${isTypeNode ? "Type" : "Expression type"} did not raise a matching type error.`;
+  }
+
+  static isAssignableTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is assignable to type '${targetTypeText}'.`;
+  }
+
+  static isNotAssignableTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not assignable to type '${targetTypeText}'.`;
+  }
+
+  static isAssignableWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`;
+  }
+
+  static isNotAssignableWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`;
+  }
+
+  static isIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is identical to type '${targetTypeText}'.`;
+  }
+
+  static isNotIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not identical to type '${targetTypeText}'.`;
+  }
+
+  static isNotCompatibleWith(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`;
+  }
+
+  static requiresProperty(typeText: string, propertyNameText: string): string {
     return `Type '${typeText}' requires property '${propertyNameText}'.`;
   }
 
