@@ -130,6 +130,10 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
+   * Checks if the source type can be called with the target arguments.
+   */
+  toBeCallableWith: (...target: Array<unknown>) => void;
+  /**
    * Checks if a property key exists on the source type.
    */
   toHaveProperty: (key: string | number | symbol) => void;

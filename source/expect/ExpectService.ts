@@ -10,6 +10,7 @@ import { ToBe } from "./ToBe.js";
 import { ToBeApplicable } from "./ToBeApplicable.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
+import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
@@ -24,6 +25,7 @@ export class ExpectService {
   private toBeApplicable: ToBeApplicable;
   private toBeAssignableTo: ToBeAssignableTo;
   private toBeAssignableWith: ToBeAssignableWith;
+  private toBeCallableWith: ToBeCallableWith;
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
@@ -43,6 +45,7 @@ export class ExpectService {
     this.toBeApplicable = new ToBeApplicable(compiler);
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeAssignableWith = new ToBeAssignableWith();
+    this.toBeCallableWith = new ToBeCallableWith(compiler);
     this.toHaveProperty = new ToHaveProperty(compiler);
     this.toRaiseError = new ToRaiseError(compiler);
   }
@@ -83,6 +86,10 @@ export class ExpectService {
 
       case "toBeApplicable":
         return this.toBeApplicable.match(matchWorker, assertion.source[0], onDiagnostics);
+
+      case "toBeCallableWith":
+        // biome-ignore lint/style/noNonNullAssertion: validation makes sure that 'target' is defined
+        return this.toBeCallableWith.match(matchWorker, assertion.source[0], assertion.target!, onDiagnostics);
 
       case "toHaveProperty":
         if (!assertion.target?.[0]) {

@@ -17,6 +17,14 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' must be provided.`;
   }
 
+  static canBeCalled(isTypeNode: boolean, targetText: string): string {
+    return `${isTypeNode ? "Type" : "Expression"} can be called ${targetText}.`;
+  }
+
+  static cannotBeCalled(isTypeNode: boolean, targetText: string): string {
+    return `${isTypeNode ? "Type" : "Expression"} cannot be called ${targetText}.`;
+  }
+
   static componentAcceptsProps(isTypeNode: boolean): string {
     return `${isTypeNode ? "Component type" : "Component"} accepts props of the given type.`;
   }
