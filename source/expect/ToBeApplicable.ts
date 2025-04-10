@@ -61,6 +61,8 @@ export class ToBeApplicable {
             : Diagnostic.toMessageText(diagnostic.messageText),
         ];
 
+        // TODO related diagnostics?
+
         const origin = DiagnosticOrigin.fromNode(sourceNode);
 
         diagnostics.push(Diagnostic.error(text.flat(), origin));
