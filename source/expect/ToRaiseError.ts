@@ -11,7 +11,7 @@ export class ToRaiseError {
     this.#compiler = compiler;
   }
 
-  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: Array<ArgumentNode>) {
+  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
     const isTypeNode = this.#compiler.isTypeNode(sourceNode);
 
     const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
@@ -62,7 +62,7 @@ export class ToRaiseError {
   match(
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
-    targetNodes: Array<ArgumentNode>,
+    targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];

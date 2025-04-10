@@ -88,7 +88,7 @@ export class ExpectService {
         return this.toBeApplicable.match(matchWorker, assertion.source[0], onDiagnostics);
 
       case "toBeCallableWith":
-        // biome-ignore lint/style/noNonNullAssertion: validation makes sure that 'target' is defined
+        // biome-ignore lint/style/noNonNullAssertion: collect logic makes sure that 'target' is defined
         return this.toBeCallableWith.match(matchWorker, assertion.source[0], assertion.target!, onDiagnostics);
 
       case "toHaveProperty":
@@ -101,8 +101,8 @@ export class ExpectService {
         return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
 
       case "toRaiseError":
-        // biome-ignore lint/style/noNonNullAssertion: validation makes sure that 'target' is defined
-        return this.toRaiseError.match(matchWorker, assertion.source[0], [...assertion.target!], onDiagnostics);
+        // biome-ignore lint/style/noNonNullAssertion: collect logic makes sure that 'target' is defined
+        return this.toRaiseError.match(matchWorker, assertion.source[0], assertion.target!, onDiagnostics);
 
       default:
         this.#onMatcherIsNotSupported(matcherNameText, assertion, onDiagnostics);
