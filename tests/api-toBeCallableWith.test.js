@@ -47,4 +47,20 @@ await test("toBeCallableWith", async (t) => {
 
     assert.equal(exitCode, 1);
   });
+
+  await t.test("overload signatures", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overload-signatures.tst.ts"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overload-signatures-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-overload-signatures-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });
