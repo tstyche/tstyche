@@ -83,36 +83,8 @@ export class ToBeCallableWith {
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
     targetNodes: ts.NodeArray<ArgumentNode>,
-    onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
+    _onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>, // not used here
   ): MatchResult | undefined {
-    let mustBeText: string | undefined;
-
-    if (
-      !(
-        sourceNode.kind === this.#compiler.SyntaxKind.Identifier ||
-        // instantiation expressions are allowed
-        sourceNode.kind === this.#compiler.SyntaxKind.ExpressionWithTypeArguments
-      )
-    ) {
-      mustBeText = "an identifier or instantiation expression";
-    }
-
-    if (matchWorker.getType(sourceNode).getCallSignatures().length === 0) {
-      mustBeText = "of a function type";
-    }
-
-    if (mustBeText != null) {
-      const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", mustBeText)
-        : ExpectDiagnosticText.argumentMustBe("source", mustBeText);
-
-      const origin = DiagnosticOrigin.fromNode(sourceNode);
-
-      onDiagnostics([Diagnostic.error(text, origin)]);
-
-      return;
-    }
-
     return {
       explain: () => this.#explain(matchWorker, sourceNode, targetNodes),
       isMatch: !matchWorker.assertion.abilityDiagnostics,
