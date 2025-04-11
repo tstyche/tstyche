@@ -1,5 +1,11 @@
 # Releases
 
+## [4.0.0-beta.3] - 2025-04-11
+
+### Fixed
+
+- Relax validation of the target of `.toBeCallableWith()` matcher ([#448](https://github.com/tstyche/tstyche/pull/448))
+
 ## [4.0.0-beta.2] - 2025-04-11
 
 ### Added
@@ -579,6 +585,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.3
 [4.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.2
 [4.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.1
 [4.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.0
