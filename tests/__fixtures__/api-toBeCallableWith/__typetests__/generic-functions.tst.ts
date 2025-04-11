@@ -34,14 +34,17 @@ describe("when target is an expression", () => {
 
     expect(getLonger).type.toBeCallableWith("one", "two");
     expect(getLonger).type.not.toBeCallableWith("one", "two"); // fail
+
+    expect(getLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);
+    expect(getLonger<string | Array<number>>).type.not.toBeCallableWith("zero", [123]); // fail
   });
 
   test("cannot be called with the given arguments", () => {
     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: number) => {});
     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: number) => {}); // fail
 
-    expect(getLonger).type.not.toBeCallableWith("one", ["two"]);
-    expect(getLonger).type.toBeCallableWith("one", ["two"]); // fail
+    expect(getLonger).type.not.toBeCallableWith("zero", [123]);
+    expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
 
     expect(getLonger).type.not.toBeCallableWith(1, 2);
     expect(getLonger).type.toBeCallableWith(1, 2); // fail

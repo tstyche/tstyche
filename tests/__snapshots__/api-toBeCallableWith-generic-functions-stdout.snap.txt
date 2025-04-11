@@ -10,7 +10,7 @@ fail ./__typetests__/generic-functions.tst.ts
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      4 failed, 4 total
-Assertions: 8 failed, 8 passed, 16 total
+Assertions: 9 failed, 9 passed, 18 total
 Duration:   <<timestamp>>
 
 Ran test files matching 'generic-functions.tst.ts'.

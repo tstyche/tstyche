@@ -66,65 +66,77 @@ Error: Expression can be called with the given arguments.
   35 |     expect(getLonger).type.toBeCallableWith("one", "two");
   36 |     expect(getLonger).type.not.toBeCallableWith("one", "two"); // fail
      |                                ~~~~~~~~~~~~~~~~
-  37 |   });
-  38 | 
-  39 |   test("cannot be called with the given arguments", () => {
+  37 | 
+  38 |     expect(getLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);
+  39 |     expect(getLonger<string | Array<number>>).type.not.toBeCallableWith("zero", [123]); // fail
 
        at ./__typetests__/generic-functions.tst.ts:36:32 ❭ when target is an expression ❭ can be called with the given arguments
 
+Error: Type can be called with the given arguments.
+
+  37 | 
+  38 |     expect(getLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);
+  39 |     expect(getLonger<string | Array<number>>).type.not.toBeCallableWith("zero", [123]); // fail
+     |                                                        ~~~~~~~~~~~~~~~~
+  40 |   });
+  41 | 
+  42 |   test("cannot be called with the given arguments", () => {
+
+       at ./__typetests__/generic-functions.tst.ts:39:56 ❭ when target is an expression ❭ can be called with the given arguments
+
 Error: Expression cannot be called with the given arguments.
 
 Type 'string' is not assignable to type 'number'.
 
-  39 |   test("cannot be called with the given arguments", () => {
-  40 |     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: number) => {});
-  41 |     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: number) => {}); // fail
+  42 |   test("cannot be called with the given arguments", () => {
+  43 |     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: number) => {});
+  44 |     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: number) => {}); // fail
      |                                            ~~~
-  42 | 
-  43 |     expect(getLonger).type.not.toBeCallableWith("one", ["two"]);
-  44 |     expect(getLonger).type.toBeCallableWith("one", ["two"]); // fail
+  45 | 
+  46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
+  47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:41:44
+       at ./__typetests__/generic-functions.tst.ts:44:44
 
 Error: Expression cannot be called with the given arguments.
 
 Type 'string' is not assignable to type 'number'.
 
-  39 |   test("cannot be called with the given arguments", () => {
-  40 |     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: number) => {});
-  41 |     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: number) => {}); // fail
+  42 |   test("cannot be called with the given arguments", () => {
+  43 |     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: number) => {});
+  44 |     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: number) => {}); // fail
      |                                                 ~~~
-  42 | 
-  43 |     expect(getLonger).type.not.toBeCallableWith("one", ["two"]);
-  44 |     expect(getLonger).type.toBeCallableWith("one", ["two"]); // fail
+  45 | 
+  46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
+  47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:41:49
+       at ./__typetests__/generic-functions.tst.ts:44:49
 
 Error: Expression cannot be called with the given arguments.
 
-Argument of type 'string[]' is not assignable to parameter of type '"one"'.
+Argument of type 'number[]' is not assignable to parameter of type '"zero"'.
 
-  42 | 
-  43 |     expect(getLonger).type.not.toBeCallableWith("one", ["two"]);
-  44 |     expect(getLonger).type.toBeCallableWith("one", ["two"]); // fail
-     |                                                    ~~~~~~~
   45 | 
-  46 |     expect(getLonger).type.not.toBeCallableWith(1, 2);
-  47 |     expect(getLonger).type.toBeCallableWith(1, 2); // fail
+  46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
+  47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
+     |                                                     ~~~~~
+  48 | 
+  49 |     expect(getLonger).type.not.toBeCallableWith(1, 2);
+  50 |     expect(getLonger).type.toBeCallableWith(1, 2); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:44:52
+       at ./__typetests__/generic-functions.tst.ts:47:53
 
 Error: Expression cannot be called with the given arguments.
 
 Argument of type 'number' is not assignable to parameter of type '{ length: number; }'.
 
-  45 | 
-  46 |     expect(getLonger).type.not.toBeCallableWith(1, 2);
-  47 |     expect(getLonger).type.toBeCallableWith(1, 2); // fail
+  48 | 
+  49 |     expect(getLonger).type.not.toBeCallableWith(1, 2);
+  50 |     expect(getLonger).type.toBeCallableWith(1, 2); // fail
      |                                             ~
-  48 |   });
-  49 | });
-  50 | 
+  51 |   });
+  52 | });
+  53 | 
 
-       at ./__typetests__/generic-functions.tst.ts:47:45
+       at ./__typetests__/generic-functions.tst.ts:50:45
 

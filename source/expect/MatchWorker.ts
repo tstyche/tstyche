@@ -111,7 +111,9 @@ export class MatchWorker {
   }
 
   getType(node: ts.Node): ts.Type {
-    return this.#compiler.isTypeNode(node) ? this.#getTypeOfTypeNode(node) : this.#getTypeOfNode(node);
+    return this.#compiler.isTypeNode(node) && node.kind !== this.#compiler.SyntaxKind.ExpressionWithTypeArguments
+      ? this.#getTypeOfTypeNode(node)
+      : this.#getTypeOfNode(node);
   }
 
   #getTypeOfNode(node: ts.Node) {
