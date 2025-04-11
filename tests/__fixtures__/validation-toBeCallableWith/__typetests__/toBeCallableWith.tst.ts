@@ -6,6 +6,10 @@ describe("argument for 'source'", () => {
   });
 
   test("must be of a function type", () => {
-    expect({ a: "sample" }).type.toBeCallableWith(false);
+    expect("sample").type.toBeCallableWith(false);
+  });
+
+  test("must be an identifier or instantiation expression", () => {
+    expect(() => "sample").type.toBeCallableWith(false);
   });
 });

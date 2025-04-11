@@ -87,12 +87,26 @@ export class ToBeCallableWith {
   ): MatchResult | undefined {
     const type = matchWorker.getType(sourceNode);
 
-    if (type.getCallSignatures().length === 0) {
-      const expectedText = "of a function type";
+    let mustBeText: string | undefined;
 
+    if (
+      !(
+        sourceNode.kind === this.#compiler.SyntaxKind.Identifier ||
+        // instantiation expressions are allowed
+        sourceNode.kind === this.#compiler.SyntaxKind.ExpressionWithTypeArguments
+      )
+    ) {
+      mustBeText = "an identifier or instantiation expression";
+    }
+
+    if (type.getCallSignatures().length === 0) {
+      mustBeText = "of a function type";
+    }
+
+    if (mustBeText != null) {
       const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
-        : ExpectDiagnosticText.argumentMustBe("source", expectedText);
+        ? ExpectDiagnosticText.typeArgumentMustBe("Source", mustBeText)
+        : ExpectDiagnosticText.argumentMustBe("source", mustBeText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
