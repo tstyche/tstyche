@@ -97,7 +97,7 @@ export class ToBeCallableWith {
       mustBeText = "an identifier or instantiation expression";
     }
 
-    if (type.getCallSignatures().length === 0) {
+    if (matchWorker.getType(sourceNode).getCallSignatures().length === 0) {
       mustBeText = "of a function type";
     }
 
