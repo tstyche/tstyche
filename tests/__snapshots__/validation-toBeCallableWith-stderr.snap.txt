@@ -10,27 +10,33 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
       at ./__typetests__/toBeCallableWith.tst.ts:5:5
 
-Error: An argument for 'source' must be of a function type.
+Error: Expression cannot be called with the given argument.
+
+This expression is not callable.
+Type 'String' has no call signatures.
 
    7 | 
    8 |   test("must be of a function type", () => {
    9 |     expect("sample").type.toBeCallableWith(false);
-     |            ~~~~~~~~
+     |                                            ~~~~~
   10 |   });
   11 | 
   12 |   test("must be an identifier or instantiation expression", () => {
 
-       at ./__typetests__/toBeCallableWith.tst.ts:9:12
+       at ./__typetests__/toBeCallableWith.tst.ts:9:44
 
-Error: An argument for 'source' must be an identifier or instantiation expression.
+Error: Expression cannot be called with the given argument.
+
+This expression is not callable.
+Type 'String' has no call signatures.
 
   11 | 
   12 |   test("must be an identifier or instantiation expression", () => {
   13 |     expect(() => "sample").type.toBeCallableWith(false);
-     |            ~~~~~~~~~~~~~~
+     |                                                  ~~~~~
   14 |   });
   15 | });
   16 | 
 
-       at ./__typetests__/toBeCallableWith.tst.ts:13:12
+       at ./__typetests__/toBeCallableWith.tst.ts:13:50
 
