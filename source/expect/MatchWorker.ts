@@ -7,7 +7,6 @@ export class MatchWorker {
   assertion: AssertionNode;
   #compiler: typeof ts;
   #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
-  #typeCache = new Map<ts.Node, ts.Type>();
   #typeChecker: TypeChecker;
 
   constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: AssertionNode) {
@@ -84,7 +83,7 @@ export class MatchWorker {
       return;
     }
 
-    return this.#getTypeOfNode(parameter);
+    return this.getType(parameter);
   }
 
   getSignatures(node: ts.Node): Array<ts.Signature> {
@@ -111,27 +110,7 @@ export class MatchWorker {
   }
 
   getType(node: ts.Node): ts.Type {
-    return this.#compiler.isTypeNode(node) ? this.#getTypeOfTypeNode(node) : this.#getTypeOfNode(node);
-  }
-
-  #getTypeOfNode(node: ts.Node) {
-    let type = this.#typeCache.get(node);
-
-    if (!type) {
-      type = this.#typeChecker.getTypeAtLocation(node);
-    }
-
-    return type;
-  }
-
-  #getTypeOfTypeNode(node: ts.TypeNode) {
-    let type = this.#typeCache.get(node);
-
-    if (!type) {
-      type = this.#typeChecker.getTypeFromTypeNode(node);
-    }
-
-    return type;
+    return this.#typeChecker.getTypeAtLocation(node);
   }
 
   isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
