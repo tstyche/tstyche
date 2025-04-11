@@ -85,8 +85,6 @@ export class ToBeCallableWith {
     targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const type = matchWorker.getType(sourceNode);
-
     let mustBeText: string | undefined;
 
     if (
