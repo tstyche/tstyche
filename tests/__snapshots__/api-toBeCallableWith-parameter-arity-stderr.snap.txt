@@ -217,114 +217,232 @@ Error: Expression can be called with the given arguments.
   70 |     expect(optionalSecond).type.not.toBeCallableWith("one", undefined); // fail
      |                                     ~~~~~~~~~~~~~~~~
   71 | 
-  72 |     expect(optionalSecond).type.toBeCallableWith("one", 123);
-  73 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123); // fail
+  72 |     expect(optionalSecond).type.toBeCallableWith(...["one", undefined]);
+  73 |     expect(optionalSecond).type.not.toBeCallableWith(...["one", undefined]); // fail
 
        at ./__typetests__/parameter-arity.tst.ts:70:37 ❭ when target is an expression ❭ can be called with the given arguments
 
 Error: Expression can be called with the given arguments.
 
   71 | 
-  72 |     expect(optionalSecond).type.toBeCallableWith("one", 123);
-  73 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123); // fail
+  72 |     expect(optionalSecond).type.toBeCallableWith(...["one", undefined]);
+  73 |     expect(optionalSecond).type.not.toBeCallableWith(...["one", undefined]); // fail
      |                                     ~~~~~~~~~~~~~~~~
   74 | 
-  75 |     expect(defaultSecond).type.toBeCallableWith("one", undefined);
-  76 |     expect(defaultSecond).type.not.toBeCallableWith("one", undefined); // fail
+  75 |     expect(optionalSecond).type.toBeCallableWith("one", 123);
+  76 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123); // fail
 
        at ./__typetests__/parameter-arity.tst.ts:73:37 ❭ when target is an expression ❭ can be called with the given arguments
 
 Error: Expression can be called with the given arguments.
 
   74 | 
-  75 |     expect(defaultSecond).type.toBeCallableWith("one", undefined);
-  76 |     expect(defaultSecond).type.not.toBeCallableWith("one", undefined); // fail
-     |                                    ~~~~~~~~~~~~~~~~
+  75 |     expect(optionalSecond).type.toBeCallableWith("one", 123);
+  76 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123); // fail
+     |                                     ~~~~~~~~~~~~~~~~
   77 | 
-  78 |     expect(defaultSecond).type.toBeCallableWith("one", 123);
-  79 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123); // fail
+  78 |     expect(optionalSecond).type.toBeCallableWith(...["one", 123]);
+  79 |     expect(optionalSecond).type.not.toBeCallableWith(...["one", 123]); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:76:36 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:76:37 ❭ when target is an expression ❭ can be called with the given arguments
 
 Error: Expression can be called with the given arguments.
 
   77 | 
-  78 |     expect(defaultSecond).type.toBeCallableWith("one", 123);
-  79 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123); // fail
-     |                                    ~~~~~~~~~~~~~~~~
-  80 |   });
-  81 | 
-  82 |   test("cannot be called with the given arguments", () => {
+  78 |     expect(optionalSecond).type.toBeCallableWith(...["one", 123]);
+  79 |     expect(optionalSecond).type.not.toBeCallableWith(...["one", 123]); // fail
+     |                                     ~~~~~~~~~~~~~~~~
+  80 | 
+  81 |     expect(defaultSecond).type.toBeCallableWith("one", undefined);
+  82 |     expect(defaultSecond).type.not.toBeCallableWith("one", undefined); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:79:36 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:79:37 ❭ when target is an expression ❭ can be called with the given arguments
+
+Error: Expression can be called with the given arguments.
+
+  80 | 
+  81 |     expect(defaultSecond).type.toBeCallableWith("one", undefined);
+  82 |     expect(defaultSecond).type.not.toBeCallableWith("one", undefined); // fail
+     |                                    ~~~~~~~~~~~~~~~~
+  83 | 
+  84 |     expect(defaultSecond).type.toBeCallableWith(...["one", undefined]);
+  85 |     expect(defaultSecond).type.not.toBeCallableWith(...["one", undefined]); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:82:36 ❭ when target is an expression ❭ can be called with the given arguments
+
+Error: Expression can be called with the given arguments.
+
+  83 | 
+  84 |     expect(defaultSecond).type.toBeCallableWith(...["one", undefined]);
+  85 |     expect(defaultSecond).type.not.toBeCallableWith(...["one", undefined]); // fail
+     |                                    ~~~~~~~~~~~~~~~~
+  86 | 
+  87 |     expect(defaultSecond).type.toBeCallableWith("one", 123);
+  88 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:85:36 ❭ when target is an expression ❭ can be called with the given arguments
+
+Error: Expression can be called with the given arguments.
+
+  86 | 
+  87 |     expect(defaultSecond).type.toBeCallableWith("one", 123);
+  88 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123); // fail
+     |                                    ~~~~~~~~~~~~~~~~
+  89 | 
+  90 |     expect(defaultSecond).type.toBeCallableWith(...["one", 123]);
+  91 |     expect(defaultSecond).type.not.toBeCallableWith(...["one", 123]); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:88:36 ❭ when target is an expression ❭ can be called with the given arguments
+
+Error: Expression can be called with the given arguments.
+
+  89 | 
+  90 |     expect(defaultSecond).type.toBeCallableWith(...["one", 123]);
+  91 |     expect(defaultSecond).type.not.toBeCallableWith(...["one", 123]); // fail
+     |                                    ~~~~~~~~~~~~~~~~
+  92 |   });
+  93 | 
+  94 |   test("cannot be called with the given arguments", () => {
+
+       at ./__typetests__/parameter-arity.tst.ts:91:36 ❭ when target is an expression ❭ can be called with the given arguments
 
 Error: Expression cannot be called with the given arguments.
 
 Expected 1 arguments, but got 2.
 
-  82 |   test("cannot be called with the given arguments", () => {
-  83 |     expect(oneArgument).type.not.toBeCallableWith("one", "two");
-  84 |     expect(oneArgument).type.toBeCallableWith("one", "two"); // fail: Expected 1 arguments, but got 2.
+  94 |   test("cannot be called with the given arguments", () => {
+  95 |     expect(oneArgument).type.not.toBeCallableWith("one", "two");
+  96 |     expect(oneArgument).type.toBeCallableWith("one", "two"); // fail: Expected 1 arguments, but got 2.
      |                                                      ~~~~~
-  85 | 
-  86 |     expect(optionalFirst).type.not.toBeCallableWith("one", "two");
-  87 |     expect(optionalFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+  97 | 
+  98 |     expect(oneArgument).type.not.toBeCallableWith(...["one", "two"]);
+  99 |     expect(oneArgument).type.toBeCallableWith(...["one", "two"]); // fail: Expected 1 arguments, but got 2.
 
-       at ./__typetests__/parameter-arity.tst.ts:84:54
+       at ./__typetests__/parameter-arity.tst.ts:96:54
+
+Error: Expression cannot be called with the given arguments.
+
+Expected 1 arguments, but got 2.
+
+   97 | 
+   98 |     expect(oneArgument).type.not.toBeCallableWith(...["one", "two"]);
+   99 |     expect(oneArgument).type.toBeCallableWith(...["one", "two"]); // fail: Expected 1 arguments, but got 2.
+      |                                               ~~~~~~~~~~~~~~~~~
+  100 | 
+  101 |     expect(optionalFirst).type.not.toBeCallableWith("one", "two");
+  102 |     expect(optionalFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:99:47
 
 Error: Expression cannot be called with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
-  85 | 
-  86 |     expect(optionalFirst).type.not.toBeCallableWith("one", "two");
-  87 |     expect(optionalFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
-     |                                                        ~~~~~
-  88 | 
-  89 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123, true);
-  90 |     expect(optionalSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+  100 | 
+  101 |     expect(optionalFirst).type.not.toBeCallableWith("one", "two");
+  102 |     expect(optionalFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+      |                                                        ~~~~~
+  103 | 
+  104 |     expect(optionalFirst).type.not.toBeCallableWith(...["one", "two"]);
+  105 |     expect(optionalFirst).type.toBeCallableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
 
-       at ./__typetests__/parameter-arity.tst.ts:87:56
-
-Error: Expression cannot be called with the given arguments.
-
-Expected 1-2 arguments, but got 3.
-
-  88 | 
-  89 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123, true);
-  90 |     expect(optionalSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
-     |                                                              ~~~~
-  91 | 
-  92 |     expect(defaultFirst).type.not.toBeCallableWith("one", "two");
-  93 |     expect(defaultFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
-
-       at ./__typetests__/parameter-arity.tst.ts:90:62
+        at ./__typetests__/parameter-arity.tst.ts:102:56
 
 Error: Expression cannot be called with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
-  91 | 
-  92 |     expect(defaultFirst).type.not.toBeCallableWith("one", "two");
-  93 |     expect(defaultFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
-     |                                                       ~~~~~
-  94 | 
-  95 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123, true);
-  96 |     expect(defaultSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+  103 | 
+  104 |     expect(optionalFirst).type.not.toBeCallableWith(...["one", "two"]);
+  105 |     expect(optionalFirst).type.toBeCallableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+      |                                                 ~~~~~~~~~~~~~~~~~
+  106 | 
+  107 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123, true);
+  108 |     expect(optionalSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
 
-       at ./__typetests__/parameter-arity.tst.ts:93:55
+        at ./__typetests__/parameter-arity.tst.ts:105:49
 
 Error: Expression cannot be called with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 
-  94 | 
-  95 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123, true);
-  96 |     expect(defaultSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
-     |                                                             ~~~~
-  97 |   });
-  98 | });
-  99 | 
+  106 | 
+  107 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123, true);
+  108 |     expect(optionalSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+      |                                                              ~~~~
+  109 | 
+  110 |     expect(optionalSecond).type.not.toBeCallableWith(...["one", 123, true]);
+  111 |     expect(optionalSecond).type.toBeCallableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
 
-       at ./__typetests__/parameter-arity.tst.ts:96:61
+        at ./__typetests__/parameter-arity.tst.ts:108:62
+
+Error: Expression cannot be called with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  109 | 
+  110 |     expect(optionalSecond).type.not.toBeCallableWith(...["one", 123, true]);
+  111 |     expect(optionalSecond).type.toBeCallableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~
+  112 | 
+  113 |     expect(defaultFirst).type.not.toBeCallableWith("one", "two");
+  114 |     expect(defaultFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:111:50
+
+Error: Expression cannot be called with the given arguments.
+
+Expected 0-1 arguments, but got 2.
+
+  112 | 
+  113 |     expect(defaultFirst).type.not.toBeCallableWith("one", "two");
+  114 |     expect(defaultFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+      |                                                       ~~~~~
+  115 | 
+  116 |     expect(defaultFirst).type.not.toBeCallableWith(...["one", "two"]);
+  117 |     expect(defaultFirst).type.toBeCallableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:114:55
+
+Error: Expression cannot be called with the given arguments.
+
+Expected 0-1 arguments, but got 2.
+
+  115 | 
+  116 |     expect(defaultFirst).type.not.toBeCallableWith(...["one", "two"]);
+  117 |     expect(defaultFirst).type.toBeCallableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+      |                                                ~~~~~~~~~~~~~~~~~
+  118 | 
+  119 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123, true);
+  120 |     expect(defaultSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+
+        at ./__typetests__/parameter-arity.tst.ts:117:48
+
+Error: Expression cannot be called with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  118 | 
+  119 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123, true);
+  120 |     expect(defaultSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+      |                                                             ~~~~
+  121 | 
+  122 |     expect(defaultSecond).type.not.toBeCallableWith(...["one", 123, true]);
+  123 |     expect(defaultSecond).type.toBeCallableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+
+        at ./__typetests__/parameter-arity.tst.ts:120:61
+
+Error: Expression cannot be called with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  121 | 
+  122 |     expect(defaultSecond).type.not.toBeCallableWith(...["one", 123, true]);
+  123 |     expect(defaultSecond).type.toBeCallableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+      |                                                 ~~~~~~~~~~~~~~~~~~~~~
+  124 |   });
+  125 | });
+  126 | 
+
+        at ./__typetests__/parameter-arity.tst.ts:123:49
 

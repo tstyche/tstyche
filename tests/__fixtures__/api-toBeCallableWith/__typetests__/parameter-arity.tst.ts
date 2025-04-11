@@ -69,30 +69,57 @@ describe("when target is an expression", () => {
     expect(optionalSecond).type.toBeCallableWith("one", undefined);
     expect(optionalSecond).type.not.toBeCallableWith("one", undefined); // fail
 
+    expect(optionalSecond).type.toBeCallableWith(...["one", undefined]);
+    expect(optionalSecond).type.not.toBeCallableWith(...["one", undefined]); // fail
+
     expect(optionalSecond).type.toBeCallableWith("one", 123);
     expect(optionalSecond).type.not.toBeCallableWith("one", 123); // fail
+
+    expect(optionalSecond).type.toBeCallableWith(...["one", 123]);
+    expect(optionalSecond).type.not.toBeCallableWith(...["one", 123]); // fail
 
     expect(defaultSecond).type.toBeCallableWith("one", undefined);
     expect(defaultSecond).type.not.toBeCallableWith("one", undefined); // fail
 
+    expect(defaultSecond).type.toBeCallableWith(...["one", undefined]);
+    expect(defaultSecond).type.not.toBeCallableWith(...["one", undefined]); // fail
+
     expect(defaultSecond).type.toBeCallableWith("one", 123);
     expect(defaultSecond).type.not.toBeCallableWith("one", 123); // fail
+
+    expect(defaultSecond).type.toBeCallableWith(...["one", 123]);
+    expect(defaultSecond).type.not.toBeCallableWith(...["one", 123]); // fail
   });
 
   test("cannot be called with the given arguments", () => {
     expect(oneArgument).type.not.toBeCallableWith("one", "two");
     expect(oneArgument).type.toBeCallableWith("one", "two"); // fail: Expected 1 arguments, but got 2.
 
+    expect(oneArgument).type.not.toBeCallableWith(...["one", "two"]);
+    expect(oneArgument).type.toBeCallableWith(...["one", "two"]); // fail: Expected 1 arguments, but got 2.
+
     expect(optionalFirst).type.not.toBeCallableWith("one", "two");
     expect(optionalFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+
+    expect(optionalFirst).type.not.toBeCallableWith(...["one", "two"]);
+    expect(optionalFirst).type.toBeCallableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
 
     expect(optionalSecond).type.not.toBeCallableWith("one", 123, true);
     expect(optionalSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
 
+    expect(optionalSecond).type.not.toBeCallableWith(...["one", 123, true]);
+    expect(optionalSecond).type.toBeCallableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+
     expect(defaultFirst).type.not.toBeCallableWith("one", "two");
     expect(defaultFirst).type.toBeCallableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
 
+    expect(defaultFirst).type.not.toBeCallableWith(...["one", "two"]);
+    expect(defaultFirst).type.toBeCallableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+
     expect(defaultSecond).type.not.toBeCallableWith("one", 123, true);
     expect(defaultSecond).type.toBeCallableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+
+    expect(defaultSecond).type.not.toBeCallableWith(...["one", 123, true]);
+    expect(defaultSecond).type.toBeCallableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
   });
 });
