@@ -31,4 +31,20 @@ await test("toBeCallableWith", async (t) => {
 
     assert.equal(exitCode, 1);
   });
+
+  await t.test("generic functions", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["generic-functions.tst.ts"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-generic-functions-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-generic-functions-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });
