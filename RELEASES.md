@@ -6,6 +6,14 @@
 
 - **New!** Add the `.toBeCallableWith()` matcher ([#447](https://github.com/tstyche/tstyche/pull/447))
 
+### Fixed
+
+- Do not reverse diagnostics of the ability layer ([#446](https://github.com/tstyche/tstyche/pull/446))
+
+### Changed
+
+- Always take `compiler` as the first constructor argument ([#445](https://github.com/tstyche/tstyche/pull/445))
+
 ## [4.0.0-beta.1] - 2025-04-06
 
 ### Added
