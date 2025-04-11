@@ -1,0 +1,36 @@
+Error: An argument for 'source' or type argument for 'Source' must be provided.
+
+  3 | describe("argument for 'source'", () => {
+  4 |   test("must be provided", () => {
+  5 |     expect().type.toBeCallableWith(false);
+    |     ~~~~~~
+  6 |   });
+  7 | 
+  8 |   test("must be of a function type", () => {
+
+      at ./__typetests__/toBeCallableWith.tst.ts:5:5
+
+Error: An argument for 'source' must be of a function type.
+
+   7 | 
+   8 |   test("must be of a function type", () => {
+   9 |     expect("sample").type.toBeCallableWith(false);
+     |            ~~~~~~~~
+  10 |   });
+  11 | 
+  12 |   test("must be an identifier or instantiation expression", () => {
+
+       at ./__typetests__/toBeCallableWith.tst.ts:9:12
+
+Error: An argument for 'source' must be an identifier or instantiation expression.
+
+  11 | 
+  12 |   test("must be an identifier or instantiation expression", () => {
+  13 |     expect(() => "sample").type.toBeCallableWith(false);
+     |            ~~~~~~~~~~~~~~
+  14 |   });
+  15 | });
+  16 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:13:12
+

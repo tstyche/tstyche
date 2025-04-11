@@ -1,0 +1,142 @@
+Error: Expression can be called with the given argument.
+
+  18 |   test("can be called with the given argument", () => {
+  19 |     expect(firstItem).type.toBeCallableWith(["a", "b", "c"]);
+  20 |     expect(firstItem).type.not.toBeCallableWith(["a", "b", "c"]); // fail
+     |                                ~~~~~~~~~~~~~~~~
+  21 |   });
+  22 | 
+  23 |   test("cannot be called without arguments", () => {
+
+       at ./__typetests__/generic-functions.tst.ts:20:32 ❭ when target is an expression ❭ can be called with the given argument
+
+Error: Expression cannot be called without arguments.
+
+Expected 1 arguments, but got 0.
+
+  22 | 
+  23 |   test("cannot be called without arguments", () => {
+  24 |     expect(firstItem).type.toBeCallableWith();
+     |                            ~~~~~~~~~~~~~~~~
+  25 |     expect(firstItem).type.not.toBeCallableWith(); // fail: Expected 1 arguments, but got 0.
+  26 |   });
+  27 | 
+
+       at ./__typetests__/generic-functions.tst.ts:24:28 ❭ when target is an expression ❭ cannot be called without arguments
+
+    An argument for 'target' was not provided. ts(6210)
+
+      1 | import { describe, expect, test } from "tstyche";
+      2 | 
+      3 | function firstItem<T>(target: Array<T>): T | undefined {
+        |                       ~~~~~~~~~~~~~~~~
+      4 |   return target[0];
+      5 | }
+      6 | 
+
+          at ./__typetests__/generic-functions.tst.ts:3:23
+
+Error: Expression can be called with the given arguments.
+
+  28 |   test("can be called with the given arguments", () => {
+  29 |     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: string) => {});
+  30 |     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: string) => {}); // fail
+     |                              ~~~~~~~~~~~~~~~~
+  31 | 
+  32 |     expect(getLonger).type.toBeCallableWith([1, 2], [1, 2, 3]);
+  33 |     expect(getLonger).type.not.toBeCallableWith([1, 2], [1, 2, 3]); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:30:30 ❭ when target is an expression ❭ can be called with the given arguments
+
+Error: Expression can be called with the given arguments.
+
+  31 | 
+  32 |     expect(getLonger).type.toBeCallableWith([1, 2], [1, 2, 3]);
+  33 |     expect(getLonger).type.not.toBeCallableWith([1, 2], [1, 2, 3]); // fail
+     |                                ~~~~~~~~~~~~~~~~
+  34 | 
+  35 |     expect(getLonger).type.toBeCallableWith("one", "two");
+  36 |     expect(getLonger).type.not.toBeCallableWith("one", "two"); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:33:32 ❭ when target is an expression ❭ can be called with the given arguments
+
+Error: Expression can be called with the given arguments.
+
+  34 | 
+  35 |     expect(getLonger).type.toBeCallableWith("one", "two");
+  36 |     expect(getLonger).type.not.toBeCallableWith("one", "two"); // fail
+     |                                ~~~~~~~~~~~~~~~~
+  37 | 
+  38 |     expect(getLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);
+  39 |     expect(getLonger<string | Array<number>>).type.not.toBeCallableWith("zero", [123]); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:36:32 ❭ when target is an expression ❭ can be called with the given arguments
+
+Error: Type can be called with the given arguments.
+
+  37 | 
+  38 |     expect(getLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);
+  39 |     expect(getLonger<string | Array<number>>).type.not.toBeCallableWith("zero", [123]); // fail
+     |                                                        ~~~~~~~~~~~~~~~~
+  40 |   });
+  41 | 
+  42 |   test("cannot be called with the given arguments", () => {
+
+       at ./__typetests__/generic-functions.tst.ts:39:56 ❭ when target is an expression ❭ can be called with the given arguments
+
+Error: Expression cannot be called with the given arguments.
+
+Type 'string' is not assignable to type 'number'.
+
+  42 |   test("cannot be called with the given arguments", () => {
+  43 |     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: number) => {});
+  44 |     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: number) => {}); // fail
+     |                                            ~~~
+  45 | 
+  46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
+  47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:44:44
+
+Error: Expression cannot be called with the given arguments.
+
+Type 'string' is not assignable to type 'number'.
+
+  42 |   test("cannot be called with the given arguments", () => {
+  43 |     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: number) => {});
+  44 |     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: number) => {}); // fail
+     |                                                 ~~~
+  45 | 
+  46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
+  47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:44:49
+
+Error: Expression cannot be called with the given arguments.
+
+Argument of type 'number[]' is not assignable to parameter of type '"zero"'.
+
+  45 | 
+  46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
+  47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
+     |                                                     ~~~~~
+  48 | 
+  49 |     expect(getLonger).type.not.toBeCallableWith(1, 2);
+  50 |     expect(getLonger).type.toBeCallableWith(1, 2); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:47:53
+
+Error: Expression cannot be called with the given arguments.
+
+Argument of type 'number' is not assignable to parameter of type '{ length: number; }'.
+
+  48 | 
+  49 |     expect(getLonger).type.not.toBeCallableWith(1, 2);
+  50 |     expect(getLonger).type.toBeCallableWith(1, 2); // fail
+     |                                             ~
+  51 |   });
+  52 | });
+  53 | 
+
+       at ./__typetests__/generic-functions.tst.ts:50:45
+

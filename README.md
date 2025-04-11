@@ -18,14 +18,18 @@ If you are used to test JavaScript, a simple type test file should look familiar
 ```ts
 import { expect, test } from "tstyche";
 
-function firstItem<T>(target: Array<T>): T | undefined {
-  return target[0];
+function pickLonger<T extends { length: number }>(a: T, b: T) {
+  return a.length >= b.length ? a : b;
 }
 
-test("firstItem", () => {
-  expect(firstItem(["a", "b", "c"])).type.toBe<string | undefined>();
+test("pickLonger()", () => {
+  expect(pickLonger([1, 2], [1, 2, 3])).type.toBe<Array<number>>();
+  expect(pickLonger("two", "three")).type.toBe<"two" | "three">();
 
-  expect(firstItem()).type.toRaiseError("Expected 1 argument");
+  expect(pickLonger).type.not.toBeCallableWith(1, 2);
+
+  expect(pickLonger).type.not.toBeCallableWith("zero", [123]);
+  expect(pickLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);
 });
 ```
 
@@ -59,6 +63,7 @@ Here is the list of all matchers:
 - `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()` compare types or types of expression,
 - `.toAcceptProps()` checks the type of JSX component props,
 - `.toBeApplicable` ensures that the decorator function can be applied,
+- `.toBeCallableWith()` checks whether a function can be called with the given arguments,
 - `.toHaveProperty()` looks up keys on an object type,
 - `.toRaiseError()` captures the message or code of a type error.
 

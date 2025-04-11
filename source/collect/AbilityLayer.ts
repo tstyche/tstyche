@@ -102,6 +102,20 @@ export class AbilityLayer {
 
         break;
       }
+
+      case "toBeCallableWith": {
+        const expectStart = assertionNode.node.pos;
+        const expectExpressionEnd = assertionNode.node.expression.end;
+        const expectEnd = assertionNode.node.end;
+        const matcherNameEnd = assertionNode.matcherNameNode.end;
+
+        this.#addRanges(assertionNode, [
+          { end: expectExpressionEnd + 1, start: expectStart },
+          { end: matcherNameEnd, start: expectEnd - 1 },
+        ]);
+
+        break;
+      }
     }
   }
 

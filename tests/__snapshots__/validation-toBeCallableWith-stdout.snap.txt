@@ -1,15 +1,15 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/pick.tst.ts
-  argument for 'object'
+fail ./__typetests__/toBeCallableWith.tst.ts
+  argument for 'source'
     × must be provided
-  argument for 'keys'
-    × must be provided
-    × must be valid key
+    × must be of a function type
+    × must be an identifier or instantiation expression
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      3 failed, 3 total
+Assertions: 3 failed, 3 total
 Duration:   <<timestamp>>
 
 Ran all test files.
