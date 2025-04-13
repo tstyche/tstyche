@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -119,10 +119,11 @@ export class ToRaiseError {
       return Number.parseInt(targetNode.text, 10) === diagnostic.code;
     }
 
-    const messageText =
-      typeof diagnostic.messageText === "string"
-        ? diagnostic.messageText
-        : Diagnostic.toMessageText(diagnostic.messageText).join("\n");
+    let messageText = getDiagnosticMessageText(diagnostic);
+
+    if (Array.isArray(messageText)) {
+      messageText = messageText.join("\n");
+    }
 
     if (this.#compiler.isRegularExpressionLiteral(targetNode)) {
       const targetRegex = new RegExp(...(targetNode.text.slice(1).split("/") as [pattern: string, flags: string]));

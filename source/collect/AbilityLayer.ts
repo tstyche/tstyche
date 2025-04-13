@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import type { AssertionNode } from "#collect";
 import type { ResolvedConfig } from "#config";
+import { textRangeContainsDiagnostic } from "#diagnostic";
 import type { ProjectService } from "#project";
 
 interface TextRange {
@@ -64,7 +65,7 @@ export class AbilityLayer {
 
       for (const node of this.#nodes.reverse()) {
         for (const diagnostic of diagnostics) {
-          if (this.#containsDiagnostic(node.matcherNode, diagnostic)) {
+          if (textRangeContainsDiagnostic(node.matcherNode, diagnostic)) {
             if (!node.abilityDiagnostics) {
               node.abilityDiagnostics = new Set();
             }
@@ -80,10 +81,6 @@ export class AbilityLayer {
     this.#filePath = "";
     this.#nodes = [];
     this.#text = "";
-  }
-
-  #containsDiagnostic(node: ts.Node, diagnostic: ts.Diagnostic) {
-    return diagnostic.start != null && diagnostic.start >= node.pos && diagnostic.start <= node.end;
   }
 
   handleNode(assertionNode: AssertionNode): void {

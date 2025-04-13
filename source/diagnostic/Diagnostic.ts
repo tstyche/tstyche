@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
+import { getDiagnosticMessageText } from "./helpers.js";
 
 export class Diagnostic {
   category: DiagnosticCategory;
@@ -53,25 +54,10 @@ export class Diagnostic {
         related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
       }
 
-      const text =
-        typeof diagnostic.messageText === "string"
-          ? diagnostic.messageText
-          : Diagnostic.toMessageText(diagnostic.messageText);
+      const text = getDiagnosticMessageText(diagnostic);
 
       return new Diagnostic(text, DiagnosticCategory.Error, origin).add({ code, related });
     });
-  }
-
-  static toMessageText(chain: ts.DiagnosticMessageChain): Array<string> {
-    const result = [chain.messageText];
-
-    if (chain.next != null) {
-      for (const nextChain of chain.next) {
-        result.push(...Diagnostic.toMessageText(nextChain));
-      }
-    }
-
-    return result;
   }
 
   static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {

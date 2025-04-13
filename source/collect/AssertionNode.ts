@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { textRangeContainsDiagnostic } from "#diagnostic";
 import type { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
@@ -38,7 +39,7 @@ export class AssertionNode extends TestTreeNode {
     }
 
     for (const diagnostic of parent.diagnostics) {
-      if (diagnostic.start != null && diagnostic.start >= this.source.pos && diagnostic.start <= this.source.end) {
+      if (textRangeContainsDiagnostic(this.source, diagnostic)) {
         this.diagnostics.add(diagnostic);
         parent.diagnostics.delete(diagnostic);
       }

@@ -1,5 +1,13 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import {
+  Diagnostic,
+  DiagnosticOrigin,
+  type DiagnosticsHandler,
+  getDiagnosticMessageText,
+  isDiagnosticWithLocation,
+  textRangeContainsDiagnostic,
+  textSpanEnd,
+} from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -9,10 +17,6 @@ export class ToBeCallableWith {
 
   constructor(compiler: typeof ts) {
     this.#compiler = compiler;
-  }
-
-  isDiagnosticWithLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticWithLocation {
-    return diagnostic.start != null;
   }
 
   #resolveTargetText(nodes: ts.NodeArray<ArgumentNode>) {
@@ -38,23 +42,13 @@ export class ToBeCallableWith {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [
           ExpectDiagnosticText.cannotBeCalled(isTypeNode, targetText),
-          typeof diagnostic.messageText === "string"
-            ? diagnostic.messageText
-            : Diagnostic.toMessageText(diagnostic.messageText),
+          getDiagnosticMessageText(diagnostic),
         ];
 
         let origin: DiagnosticOrigin;
 
-        if (
-          this.isDiagnosticWithLocation(diagnostic) &&
-          diagnostic.start >= targetNodes.pos &&
-          diagnostic.start <= targetNodes.end
-        ) {
-          origin = new DiagnosticOrigin(
-            diagnostic.start,
-            diagnostic.start + diagnostic.length,
-            sourceNode.getSourceFile(),
-          );
+        if (isDiagnosticWithLocation(diagnostic) && textRangeContainsDiagnostic(targetNodes, diagnostic)) {
+          origin = new DiagnosticOrigin(diagnostic.start, textSpanEnd(diagnostic), sourceNode.getSourceFile());
         } else {
           origin =
             targetNodes.length > 0

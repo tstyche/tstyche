@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -54,12 +54,7 @@ export class ToBeApplicable {
 
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
-        const text = [
-          ExpectDiagnosticText.cannotBeApplied(targetText),
-          typeof diagnostic.messageText === "string"
-            ? diagnostic.messageText
-            : Diagnostic.toMessageText(diagnostic.messageText),
-        ];
+        const text = [ExpectDiagnosticText.cannotBeApplied(targetText), getDiagnosticMessageText(diagnostic)];
 
         // TODO related diagnostics?
 
