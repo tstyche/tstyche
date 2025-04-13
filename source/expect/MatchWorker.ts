@@ -7,11 +7,11 @@ export class MatchWorker {
   assertion: AssertionNode;
   #compiler: typeof ts;
   #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
-  #typeChecker: TypeChecker;
+  typeChecker: TypeChecker;
 
   constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: AssertionNode) {
     this.#compiler = compiler;
-    this.#typeChecker = typeChecker;
+    this.typeChecker = typeChecker;
     this.assertion = assertion;
   }
 
@@ -19,9 +19,9 @@ export class MatchWorker {
     const sourceType = this.getType(sourceNode);
     const targetType = this.getType(targetNode);
 
-    return this.#typeChecker
+    return this.typeChecker
       .getIndexInfosOfType(sourceType)
-      .some(({ keyType }) => this.#typeChecker.isApplicableIndexType(targetType, keyType));
+      .some(({ keyType }) => this.typeChecker.isApplicableIndexType(targetType, keyType));
   }
 
   checkHasProperty(sourceNode: ts.Node, propertyNameText: string): boolean {
@@ -33,19 +33,19 @@ export class MatchWorker {
   }
 
   checkIsAssignableTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    const relation = this.#typeChecker.relation.assignable;
+    const relation = this.typeChecker.relation.assignable;
 
     return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
   }
 
   checkIsAssignableWith(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    const relation = this.#typeChecker.relation.assignable;
+    const relation = this.typeChecker.relation.assignable;
 
     return this.#checkIsRelatedTo(targetNode, sourceNode, relation);
   }
 
   checkIsIdenticalTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    const relation = this.#typeChecker.relation.identity;
+    const relation = this.typeChecker.relation.identity;
 
     return (
       this.#checkIsRelatedTo(sourceNode, targetNode, relation) &&
@@ -58,22 +58,22 @@ export class MatchWorker {
 
   #checkIsRelatedTo(sourceNode: ts.Node, targetNode: ts.Node, relation: Relation) {
     const sourceType =
-      relation === this.#typeChecker.relation.identity
+      relation === this.typeChecker.relation.identity
         ? this.#simplifyType(this.getType(sourceNode))
         : this.getType(sourceNode);
 
     const targetType =
-      relation === this.#typeChecker.relation.identity
+      relation === this.typeChecker.relation.identity
         ? this.#simplifyType(this.getType(targetNode))
         : this.getType(targetNode);
 
-    return this.#typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
+    return this.typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
   }
 
   extendsObjectType(type: ts.Type): boolean {
     const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
 
-    return this.#typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
+    return this.typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
   }
 
   getParameterType(signature: ts.Signature, index: number): ts.Type | undefined {
@@ -103,15 +103,15 @@ export class MatchWorker {
   }
 
   getTypeText(node: ts.Node): string {
-    const type = this.getType(node);
-
     // TODO consider passing 'enclosingDeclaration' as well
-    return this.#typeChecker.typeToString(type);
+    return this.typeChecker.typeToString(this.getType(node));
   }
 
   getType(node: ts.Node): ts.Type {
-    return this.#typeChecker.getTypeAtLocation(node);
+    return this.typeChecker.getTypeAtLocation(node);
   }
+
+  // TODO move the 'is*()' methods to './helpers.ts'
 
   isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
     return !!(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
@@ -151,11 +151,7 @@ export class MatchWorker {
 
       if (
         type.types.every((type) =>
-          this.#typeChecker.isTypeRelatedTo(
-            this.#simplifyType(type),
-            candidateType,
-            this.#typeChecker.relation.identity,
-          ),
+          this.typeChecker.isTypeRelatedTo(this.#simplifyType(type), candidateType, this.typeChecker.relation.identity),
         )
       ) {
         return candidateType;

@@ -77,8 +77,40 @@ export class ToBeCallableWith {
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
     targetNodes: ts.NodeArray<ArgumentNode>,
-    _onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>, // not used here
+    onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
+    let type: ts.Type | undefined;
+
+    if (this.#compiler.isCallExpression(sourceNode)) {
+      const signature = matchWorker.typeChecker.getResolvedSignature(sourceNode);
+
+      if (signature != null) {
+        type = matchWorker.typeChecker.getTypeOfSymbol(signature.getReturnType().symbol);
+      }
+    }
+
+    if (
+      // instantiation expressions are allowed
+      this.#compiler.isExpressionWithTypeArguments(sourceNode) ||
+      this.#compiler.isIdentifier(sourceNode)
+    ) {
+      type = matchWorker.getType(sourceNode);
+    }
+
+    if (!type || type.getCallSignatures().length === 0) {
+      const text = this.#compiler.isTypeNode(sourceNode)
+        ? ExpectDiagnosticText.typeArgumentMustBe("Source", "an identifier of a callable type")
+        : ExpectDiagnosticText.argumentMustBe("source", "an identifier of a callable expression");
+
+      const origin = DiagnosticOrigin.fromNode(sourceNode);
+
+      // TODO when 'sourceNode' is a class identifier, suggest using the '.toBeConstructable()' matcher
+
+      onDiagnostics([Diagnostic.error(text, origin)]);
+
+      return;
+    }
+
     return {
       explain: () => this.#explain(matchWorker, sourceNode, targetNodes),
       isMatch: !matchWorker.assertion.abilityDiagnostics,
