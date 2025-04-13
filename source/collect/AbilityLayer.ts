@@ -61,15 +61,10 @@ export class AbilityLayer {
       const languageService = this.#projectService.getLanguageService(this.#filePath);
 
       const diagnostics = new Set(languageService?.getSemanticDiagnostics(this.#filePath));
-      const nodes = this.#nodes.reverse();
 
-      for (const diagnostic of diagnostics) {
-        for (const node of nodes) {
-          if (
-            diagnostic.start != null &&
-            diagnostic.start >= node.matcherNode.pos &&
-            diagnostic.start <= node.matcherNode.end
-          ) {
+      for (const node of this.#nodes.reverse()) {
+        for (const diagnostic of diagnostics) {
+          if (this.#containsDiagnostic(node.matcherNode, diagnostic)) {
             if (!node.abilityDiagnostics) {
               node.abilityDiagnostics = new Set();
             }
@@ -85,6 +80,10 @@ export class AbilityLayer {
     this.#filePath = "";
     this.#nodes = [];
     this.#text = "";
+  }
+
+  #containsDiagnostic(node: ts.Node, diagnostic: ts.Diagnostic) {
+    return diagnostic.start != null && diagnostic.start >= node.pos && diagnostic.start <= node.end;
   }
 
   handleNode(assertionNode: AssertionNode): void {
