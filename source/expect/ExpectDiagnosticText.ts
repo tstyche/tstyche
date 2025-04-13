@@ -25,6 +25,14 @@ export class ExpectDiagnosticText {
     return `${isTypeNode ? "Type" : "Expression"} cannot be called ${targetText}.`;
   }
 
+  static canBeConstructable(isTypeNode: boolean, targetText: string): string {
+    return `${isTypeNode ? "Type" : "Expression"} can be constructable ${targetText}.`;
+  }
+
+  static cannotBeConstructable(isTypeNode: boolean, targetText: string): string {
+    return `${isTypeNode ? "Type" : "Expression"} cannot be constructable ${targetText}.`;
+  }
+
   static acceptsProps(isTypeNode: boolean): string {
     return `${isTypeNode ? "Component type" : "Component"} accepts props of the given type.`;
   }
