@@ -2,6 +2,7 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
+import { isUnionType } from "./predicates.js";
 import type { ArgumentNode, MatchResult, TypeChecker } from "./types.js";
 
 export class ToAcceptProps {
@@ -54,7 +55,7 @@ export class ToAcceptProps {
     );
   }
 
-  #checkProperties(matchWorker: MatchWorker, sourceType: ts.Type | undefined, targetType: ts.Type) {
+  #checkProperties(sourceType: ts.Type | undefined, targetType: ts.Type) {
     const check = (sourceType: ts.Type | undefined, targetType: ts.Type) => {
       for (const targetProperty of targetType.getProperties()) {
         const targetPropertyName = targetProperty.getName();
@@ -92,7 +93,7 @@ export class ToAcceptProps {
       return true;
     };
 
-    if (sourceType != null && matchWorker.isUnionType(sourceType)) {
+    if (sourceType != null && isUnionType(this.#compiler, sourceType)) {
       return sourceType.types.some((sourceType) => check(sourceType, targetType));
     }
 
@@ -194,7 +195,7 @@ export class ToAcceptProps {
       return { diagnostics, isMatch: false };
     };
 
-    if (sourceType != null && matchWorker.isUnionType(sourceType)) {
+    if (sourceType != null && isUnionType(this.#compiler, sourceType)) {
       let accumulator: Array<Diagnostic> = [];
 
       const isMatch = sourceType.types.some((sourceType) => {
@@ -243,7 +244,7 @@ export class ToAcceptProps {
 
     const targetType = matchWorker.getType(targetNode);
 
-    if (!matchWorker.isObjectType(targetType)) {
+    if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
       const expectedText = "of an object type";
 
       const text = this.#compiler.isTypeNode(targetNode)
@@ -264,7 +265,7 @@ export class ToAcceptProps {
     const isMatch = signatures.some((signature) => {
       const sourceType = matchWorker.getParameterType(signature, 0);
 
-      return this.#checkProperties(matchWorker, sourceType, targetType);
+      return this.#checkProperties(sourceType, targetType);
     });
 
     return {
