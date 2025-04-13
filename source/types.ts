@@ -134,6 +134,10 @@ interface Matchers {
    */
   toBeCallableWith: (...target: Array<unknown>) => void;
   /**
+   * Checks if the source type can be tagged with the target template string.
+   */
+  toBeTaggableWith: (target: string) => void;
+  /**
    * Checks if a property key exists on the source type.
    */
   toHaveProperty: (key: string | number | symbol) => void;
