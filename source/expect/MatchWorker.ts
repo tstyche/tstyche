@@ -111,24 +111,6 @@ export class MatchWorker {
     return this.typeChecker.getTypeAtLocation(node);
   }
 
-  // TODO move the 'is*()' methods to './helpers.ts'
-
-  isStringOrNumberLiteralType(type: ts.Type): type is ts.StringLiteralType | ts.NumberLiteralType {
-    return !!(type.flags & this.#compiler.TypeFlags.StringOrNumberLiteral);
-  }
-
-  isObjectType(type: ts.Type): type is ts.ObjectType {
-    return !!(type.flags & this.#compiler.TypeFlags.Object);
-  }
-
-  isUnionType(type: ts.Type): type is ts.UnionType {
-    return !!(type.flags & this.#compiler.TypeFlags.Union);
-  }
-
-  isUniqueSymbolType(type: ts.Type): type is ts.UniqueESSymbolType {
-    return !!(type.flags & this.#compiler.TypeFlags.UniqueESSymbol);
-  }
-
   resolveDiagnosticOrigin(symbol: ts.Symbol, enclosingNode: ts.Node) {
     if (
       symbol.valueDeclaration != null &&

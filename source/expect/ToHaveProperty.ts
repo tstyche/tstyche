@@ -2,6 +2,7 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
+import { isStringOrNumberLiteralType, isUniqueSymbolType } from "./predicates.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToHaveProperty {
@@ -17,7 +18,7 @@ export class ToHaveProperty {
     const targetType = matchWorker.getType(targetNode);
     let propertyNameText: string;
 
-    if (matchWorker.isStringOrNumberLiteralType(targetType)) {
+    if (isStringOrNumberLiteralType(this.#compiler, targetType)) {
       propertyNameText = targetType.value.toString();
     } else {
       propertyNameText = `[${this.#compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
@@ -59,9 +60,9 @@ export class ToHaveProperty {
 
     let propertyNameText = "";
 
-    if (matchWorker.isStringOrNumberLiteralType(targetType)) {
+    if (isStringOrNumberLiteralType(this.#compiler, targetType)) {
       propertyNameText = targetType.value.toString();
-    } else if (matchWorker.isUniqueSymbolType(targetType)) {
+    } else if (isUniqueSymbolType(this.#compiler, targetType)) {
       propertyNameText = this.#compiler.unescapeLeadingUnderscores(targetType.escapedName);
     } else {
       const expectedText = "of type 'string | number | symbol'";
