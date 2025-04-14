@@ -3,10 +3,10 @@ import {
   Diagnostic,
   DiagnosticOrigin,
   type DiagnosticsHandler,
+  diagnosticBelongsToNode,
   getDiagnosticMessageText,
+  getTextSpanEnd,
   isDiagnosticWithLocation,
-  textRangeContainsDiagnostic,
-  textSpanEnd,
 } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -47,8 +47,8 @@ export class ToBeConstructableWith {
 
         let origin: DiagnosticOrigin;
 
-        if (isDiagnosticWithLocation(diagnostic) && textRangeContainsDiagnostic(targetNodes, diagnostic)) {
-          origin = new DiagnosticOrigin(diagnostic.start, textSpanEnd(diagnostic), sourceNode.getSourceFile());
+        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNodes)) {
+          origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), sourceNode.getSourceFile());
         } else {
           origin =
             targetNodes.length > 0
