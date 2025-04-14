@@ -82,14 +82,13 @@ export class ToBeCallableWith {
     let type: ts.Type | undefined;
 
     if (this.#compiler.isCallExpression(sourceNode)) {
-      const signature = matchWorker.typeChecker.getResolvedSignature(sourceNode);
-
-      if (signature != null) {
-        type = matchWorker.typeChecker.getTypeOfSymbol(signature.getReturnType().symbol);
-      }
+      type = matchWorker.typeChecker.getResolvedSignature(sourceNode)?.getReturnType();
     }
 
     if (
+      this.#compiler.isArrowFunction(sourceNode) ||
+      this.#compiler.isFunctionDeclaration(sourceNode) ||
+      this.#compiler.isFunctionExpression(sourceNode) ||
       // instantiation expressions are allowed
       this.#compiler.isExpressionWithTypeArguments(sourceNode) ||
       this.#compiler.isIdentifier(sourceNode)
@@ -98,13 +97,19 @@ export class ToBeCallableWith {
     }
 
     if (!type || type.getCallSignatures().length === 0) {
-      const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", "an identifier of a callable type")
-        : ExpectDiagnosticText.argumentMustBe("source", "an identifier of a callable expression");
+      const text: Array<string> = [];
+
+      if (this.#compiler.isTypeNode(sourceNode)) {
+        text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a callable type"));
+      } else {
+        text.push(ExpectDiagnosticText.argumentMustBe("source", "a callable expression"));
+      }
+
+      if (type != null && type.getConstructSignatures().length > 0) {
+        text.push("Did you mean to use the '.toBeConstructable()' matcher?");
+      }
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
-
-      // TODO when 'sourceNode' is a class identifier, suggest using the '.toBeConstructable()' matcher
 
       onDiagnostics([Diagnostic.error(text, origin)]);
 

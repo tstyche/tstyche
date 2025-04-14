@@ -6,14 +6,14 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
      |     ~~~~~~
   22 |   });
   23 | 
-  24 |   test("must be an identifier of a callable expression", () => {
+  24 |   test("must be a callable expression", () => {
 
        at ./__typetests__/toBeCallableWith.tst.ts:21:5
 
-Error: An argument for 'source' must be an identifier of a callable expression.
+Error: An argument for 'source' must be a callable expression.
 
   23 | 
-  24 |   test("must be an identifier of a callable expression", () => {
+  24 |   test("must be a callable expression", () => {
   25 |     expect("abc").type.toBeCallableWith();
      |            ~~~~~
   26 |     expect(123).type.toBeCallableWith();
@@ -22,9 +22,9 @@ Error: An argument for 'source' must be an identifier of a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:25:12
 
-Error: An argument for 'source' must be an identifier of a callable expression.
+Error: An argument for 'source' must be a callable expression.
 
-  24 |   test("must be an identifier of a callable expression", () => {
+  24 |   test("must be a callable expression", () => {
   25 |     expect("abc").type.toBeCallableWith();
   26 |     expect(123).type.toBeCallableWith();
      |            ~~~
@@ -34,7 +34,7 @@ Error: An argument for 'source' must be an identifier of a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:26:12
 
-Error: An argument for 'source' must be an identifier of a callable expression.
+Error: An argument for 'source' must be a callable expression.
 
   25 |     expect("abc").type.toBeCallableWith();
   26 |     expect(123).type.toBeCallableWith();
@@ -46,7 +46,7 @@ Error: An argument for 'source' must be an identifier of a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:27:12
 
-Error: An argument for 'source' must be an identifier of a callable expression.
+Error: An argument for 'source' must be a callable expression.
 
   26 |     expect(123).type.toBeCallableWith();
   27 |     expect(false).type.toBeCallableWith();
@@ -58,7 +58,7 @@ Error: An argument for 'source' must be an identifier of a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:28:12
 
-Error: An argument for 'source' must be an identifier of a callable expression.
+Error: An argument for 'source' must be a callable expression.
 
   27 |     expect(false).type.toBeCallableWith();
   28 |     expect(undefined).type.toBeCallableWith();
@@ -70,93 +70,59 @@ Error: An argument for 'source' must be an identifier of a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:29:12
 
-Error: An argument for 'source' must be an identifier of a callable expression.
+Error: An argument for 'source' must be a callable expression.
 
-  29 |     expect(null).type.toBeCallableWith();
-  30 | 
-  31 |     expect(() => undefined).type.toBeCallableWith();
-     |            ~~~~~~~~~~~~~~~
-  32 |     expect(() => {}).type.toBeCallableWith();
   33 |     expect(() => () => false).type.toBeCallableWith();
   34 | 
-
-       at ./__typetests__/toBeCallableWith.tst.ts:31:12
-
-Error: An argument for 'source' must be an identifier of a callable expression.
-
-  30 | 
-  31 |     expect(() => undefined).type.toBeCallableWith();
-  32 |     expect(() => {}).type.toBeCallableWith();
-     |            ~~~~~~~~
-  33 |     expect(() => () => false).type.toBeCallableWith();
-  34 | 
-  35 |     expect(getPerson).type.toBeCallableWith("abc"); // allowed
-
-       at ./__typetests__/toBeCallableWith.tst.ts:32:12
-
-Error: An argument for 'source' must be an identifier of a callable expression.
-
-  31 |     expect(() => undefined).type.toBeCallableWith();
-  32 |     expect(() => {}).type.toBeCallableWith();
-  33 |     expect(() => () => false).type.toBeCallableWith();
-     |            ~~~~~~~~~~~~~~~~~
-  34 | 
-  35 |     expect(getPerson).type.toBeCallableWith("abc"); // allowed
-  36 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
-
-       at ./__typetests__/toBeCallableWith.tst.ts:33:12
-
-Error: An argument for 'source' must be an identifier of a callable expression.
-
-  34 | 
-  35 |     expect(getPerson).type.toBeCallableWith("abc"); // allowed
-  36 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
+  35 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
      |            ~~~~~~~~~~~~~~~~
-  37 | 
-  38 |     expect(getPersonGetter).type.toBeCallableWith(); // allowed
-  39 |     expect(getPersonGetter()).type.toBeCallableWith("abc"); // allowed
+  36 | 
+  37 |     expect(Person).type.toBeCallableWith("abc");
+  38 |   });
 
-       at ./__typetests__/toBeCallableWith.tst.ts:36:12
+       at ./__typetests__/toBeCallableWith.tst.ts:35:12
 
-Error: An argument for 'source' must be an identifier of a callable expression.
+Error: An argument for 'source' must be a callable expression.
 
-  39 |     expect(getPersonGetter()).type.toBeCallableWith("abc"); // allowed
-  40 | 
-  41 |     expect(Person).type.toBeCallableWith("abc");
+Did you mean to use the '.toBeConstructable()' matcher?
+
+  35 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
+  36 | 
+  37 |     expect(Person).type.toBeCallableWith("abc");
      |            ~~~~~~
-  42 |   });
-  43 | 
-  44 |   test("is rejected type?", () => {
+  38 |   });
+  39 | 
+  40 |   test("allowed expressions", () => {
 
-       at ./__typetests__/toBeCallableWith.tst.ts:41:12
+       at ./__typetests__/toBeCallableWith.tst.ts:37:12
 
 Error: An argument for 'source' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
-  43 | 
-  44 |   test("is rejected type?", () => {
-  45 |     expect("abc" as any).type.toBeCallableWith();
+  63 | 
+  64 |   test("is rejected type?", () => {
+  65 |     expect("abc" as any).type.toBeCallableWith();
      |            ~~~~~~~~~~~~
-  46 |     expect("abc" as never).type.toBeCallableWith();
-  47 |   });
-  48 | });
+  66 |     expect("abc" as never).type.toBeCallableWith();
+  67 |   });
+  68 | });
 
-       at ./__typetests__/toBeCallableWith.tst.ts:45:12
+       at ./__typetests__/toBeCallableWith.tst.ts:65:12
 
 Error: An argument for 'source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
 
-  44 |   test("is rejected type?", () => {
-  45 |     expect("abc" as any).type.toBeCallableWith();
-  46 |     expect("abc" as never).type.toBeCallableWith();
+  64 |   test("is rejected type?", () => {
+  65 |     expect("abc" as any).type.toBeCallableWith();
+  66 |     expect("abc" as never).type.toBeCallableWith();
      |            ~~~~~~~~~~~~~~
-  47 |   });
-  48 | });
-  49 | 
+  67 |   });
+  68 | });
+  69 | 
 
-       at ./__typetests__/toBeCallableWith.tst.ts:46:12
+       at ./__typetests__/toBeCallableWith.tst.ts:66:12
 
