@@ -14,12 +14,12 @@ declare function t(name: string, cb: () => Promise<unknown>): Promise<void>;
 declare function t(name: string, cb: () => unknown): void;
 
 describe("when target is an expression", () => {
-  test("can be called with the given argument", () => {
+  test("is callable with the given argument", () => {
     expect(makeDate).type.toBeCallableWith(12345678);
     expect(makeDate).type.not.toBeCallableWith(12345678); // fail
   });
 
-  test("can be called with the given arguments", () => {
+  test("is callable with the given arguments", () => {
     expect(makeDate).type.toBeCallableWith(4, 5, 6);
     expect(makeDate).type.not.toBeCallableWith(4, 5, 6); // fail
 
@@ -30,7 +30,7 @@ describe("when target is an expression", () => {
     expect(t).type.not.toBeCallableWith("two", () => Promise.resolve()); // fail
   });
 
-  test("cannot be called without arguments", () => {
+  test("is not callable without arguments", () => {
     expect(makeDate).type.not.toBeCallableWith();
     expect(makeDate).type.toBeCallableWith(); // fail: Expected 1-3 arguments, but got 0.
 
@@ -38,12 +38,12 @@ describe("when target is an expression", () => {
     expect(t).type.toBeCallableWith(); // fail: Expected 2 arguments, but got 0.
   });
 
-  test("cannot be called with the given argument", () => {
+  test("is not callable with the given argument", () => {
     expect(t).type.not.toBeCallableWith("nope");
     expect(t).type.toBeCallableWith("nope"); // fail: Expected 2 arguments, but got 1.
   });
 
-  test("cannot be called with the given arguments", () => {
+  test("is not callable with the given arguments", () => {
     expect(makeDate).type.not.toBeCallableWith(2, 3);
     expect(makeDate).type.toBeCallableWith(2, 3); // fail: No overload expects 2 arguments, but overloads do exist that expect either 1 or 3 arguments.
 

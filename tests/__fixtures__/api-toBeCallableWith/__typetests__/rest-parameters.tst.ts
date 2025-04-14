@@ -7,7 +7,7 @@ declare function middle(...args: [string, ...Array<number>, boolean]): void;
 declare function trailing(x: boolean, ...y: Array<string>): void;
 
 describe("when target is an expression", () => {
-  test("can be called with the given argument", () => {
+  test("is callable with the given argument", () => {
     expect(optional).type.toBeCallableWith("one");
     expect(optional).type.not.toBeCallableWith("one"); // fail
 
@@ -18,7 +18,7 @@ describe("when target is an expression", () => {
     expect(trailing).type.not.toBeCallableWith(true); // fail
   });
 
-  test("can be called with the given arguments", () => {
+  test("is callable with the given arguments", () => {
     expect(optional).type.toBeCallableWith("one", 2, true);
     expect(optional).type.not.toBeCallableWith("one", 2, true); // fail
 
@@ -41,12 +41,12 @@ describe("when target is an expression", () => {
     expect(trailing).type.not.toBeCallableWith(false, ...["ten", "eleven"]); // fail
   });
 
-  test("can be called without arguments", () => {
+  test("is callable without arguments", () => {
     expect(optional).type.toBeCallableWith();
     expect(optional).type.not.toBeCallableWith(); // fail
   });
 
-  test("cannot be called without arguments", () => {
+  test("is not callable without arguments", () => {
     expect(leading).type.not.toBeCallableWith();
     expect(leading).type.toBeCallableWith(); // fail: Source has 0 element(s) but target requires 1.
 
@@ -57,7 +57,7 @@ describe("when target is an expression", () => {
     expect(trailing).type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
   });
 
-  test("cannot be called with the given arguments", () => {
+  test("is not callable with the given arguments", () => {
     expect(leading).type.not.toBeCallableWith("one", "two");
     expect(leading).type.toBeCallableWith("one", "two"); // fail
 

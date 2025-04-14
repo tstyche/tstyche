@@ -15,7 +15,7 @@ function defaultSecond(a: string, b = 123) {
 }
 
 describe("when target is an expression", () => {
-  test("can be called without arguments", () => {
+  test("is callable without arguments", () => {
     expect(noArguments).type.toBeCallableWith();
     expect(noArguments).type.not.toBeCallableWith(); // fail
 
@@ -26,7 +26,7 @@ describe("when target is an expression", () => {
     expect(defaultFirst).type.not.toBeCallableWith(); // fail
   });
 
-  test("cannot be called without arguments", () => {
+  test("is not callable without arguments", () => {
     expect(oneArgument).type.not.toBeCallableWith();
     expect(oneArgument).type.toBeCallableWith(); // fail: Expected 1 arguments, but got 0.
 
@@ -37,7 +37,7 @@ describe("when target is an expression", () => {
     expect(defaultSecond).type.toBeCallableWith(); // fail: Expected 1-2 arguments, but got 0.
   });
 
-  test("can be called with the given argument", () => {
+  test("is callable with the given argument", () => {
     expect(oneArgument).type.toBeCallableWith("one");
     expect(oneArgument).type.not.toBeCallableWith("one"); // fail
 
@@ -60,12 +60,12 @@ describe("when target is an expression", () => {
     expect(defaultSecond).type.not.toBeCallableWith("one"); // fail
   });
 
-  test("cannot be called with the given argument", () => {
+  test("is not callable with the given argument", () => {
     expect(noArguments).type.not.toBeCallableWith("one");
     expect(noArguments).type.toBeCallableWith("one"); // fail: Expected 0 arguments, but got 1.
   });
 
-  test("can be called with the given arguments", () => {
+  test("is callable with the given arguments", () => {
     expect(optionalSecond).type.toBeCallableWith("one", undefined);
     expect(optionalSecond).type.not.toBeCallableWith("one", undefined); // fail
 
@@ -91,7 +91,7 @@ describe("when target is an expression", () => {
     expect(defaultSecond).type.not.toBeCallableWith(...["one", 123]); // fail
   });
 
-  test("cannot be called with the given arguments", () => {
+  test("is not callable with the given arguments", () => {
     expect(oneArgument).type.not.toBeCallableWith("one", "two");
     expect(oneArgument).type.toBeCallableWith("one", "two"); // fail: Expected 1 arguments, but got 2.
 

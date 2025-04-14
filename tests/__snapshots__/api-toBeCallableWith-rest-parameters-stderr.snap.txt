@@ -1,6 +1,6 @@
 Error: Expression is callable with the given argument.
 
-  10 |   test("can be called with the given argument", () => {
+  10 |   test("is callable with the given argument", () => {
   11 |     expect(optional).type.toBeCallableWith("one");
   12 |     expect(optional).type.not.toBeCallableWith("one"); // fail
      |                               ~~~~~~~~~~~~~~~~
@@ -8,7 +8,7 @@ Error: Expression is callable with the given argument.
   14 |     expect(leading).type.toBeCallableWith(false);
   15 |     expect(leading).type.not.toBeCallableWith(false); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:12:31 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/rest-parameters.tst.ts:12:31 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -20,7 +20,7 @@ Error: Expression is callable with the given argument.
   17 |     expect(trailing).type.toBeCallableWith(true);
   18 |     expect(trailing).type.not.toBeCallableWith(true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:15:30 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/rest-parameters.tst.ts:15:30 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -30,13 +30,13 @@ Error: Expression is callable with the given argument.
      |                               ~~~~~~~~~~~~~~~~
   19 |   });
   20 | 
-  21 |   test("can be called with the given arguments", () => {
+  21 |   test("is callable with the given arguments", () => {
 
-       at ./__typetests__/rest-parameters.tst.ts:18:31 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/rest-parameters.tst.ts:18:31 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given arguments.
 
-  21 |   test("can be called with the given arguments", () => {
+  21 |   test("is callable with the given arguments", () => {
   22 |     expect(optional).type.toBeCallableWith("one", 2, true);
   23 |     expect(optional).type.not.toBeCallableWith("one", 2, true); // fail
      |                               ~~~~~~~~~~~~~~~~
@@ -44,7 +44,7 @@ Error: Expression is callable with the given arguments.
   25 |     expect(leading).type.toBeCallableWith("one", "two", true);
   26 |     expect(leading).type.not.toBeCallableWith("one", "two", true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:23:31 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:23:31 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -56,7 +56,7 @@ Error: Expression is callable with the given arguments.
   28 |     expect(leading).type.toBeCallableWith(...["one", "two"], true);
   29 |     expect(leading).type.not.toBeCallableWith(...["one", "two"], true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:26:30 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:26:30 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -68,7 +68,7 @@ Error: Expression is callable with the given arguments.
   31 |     expect(middle).type.toBeCallableWith("one", 123, 456, true);
   32 |     expect(middle).type.not.toBeCallableWith("one", 123, 456, true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:29:30 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:29:30 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -80,7 +80,7 @@ Error: Expression is callable with the given arguments.
   34 |     expect(middle).type.toBeCallableWith(...["one", 123, 456, true]);
   35 |     expect(middle).type.not.toBeCallableWith(...["one", 123, 456, true]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:32:29 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:32:29 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -92,7 +92,7 @@ Error: Expression is callable with the given arguments.
   37 |     expect(trailing).type.toBeCallableWith(false, "ten", "eleven");
   38 |     expect(trailing).type.not.toBeCallableWith(false, "ten", "eleven"); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:35:29 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:35:29 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -104,7 +104,7 @@ Error: Expression is callable with the given arguments.
   40 |     expect(trailing).type.toBeCallableWith(false, ...["ten", "eleven"]);
   41 |     expect(trailing).type.not.toBeCallableWith(false, ...["ten", "eleven"]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:38:31 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:38:31 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -114,28 +114,28 @@ Error: Expression is callable with the given arguments.
      |                               ~~~~~~~~~~~~~~~~
   42 |   });
   43 | 
-  44 |   test("can be called without arguments", () => {
+  44 |   test("is callable without arguments", () => {
 
-       at ./__typetests__/rest-parameters.tst.ts:41:31 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:41:31 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable without arguments.
 
-  44 |   test("can be called without arguments", () => {
+  44 |   test("is callable without arguments", () => {
   45 |     expect(optional).type.toBeCallableWith();
   46 |     expect(optional).type.not.toBeCallableWith(); // fail
      |                               ~~~~~~~~~~~~~~~~
   47 |   });
   48 | 
-  49 |   test("cannot be called without arguments", () => {
+  49 |   test("is not callable without arguments", () => {
 
-       at ./__typetests__/rest-parameters.tst.ts:46:31 ❭ when target is an expression ❭ can be called without arguments
+       at ./__typetests__/rest-parameters.tst.ts:46:31 ❭ when target is an expression ❭ is callable without arguments
 
 Error: Expression is not callable without arguments.
 
 Argument of type '[]' is not assignable to parameter of type '[...string[], boolean]'.
 Source has 0 element(s) but target requires 1.
 
-  49 |   test("cannot be called without arguments", () => {
+  49 |   test("is not callable without arguments", () => {
   50 |     expect(leading).type.not.toBeCallableWith();
   51 |     expect(leading).type.toBeCallableWith(); // fail: Source has 0 element(s) but target requires 1.
      |                          ~~~~~~~~~~~~~~~~
@@ -143,7 +143,7 @@ Source has 0 element(s) but target requires 1.
   53 |     expect(middle).type.not.toBeCallableWith();
   54 |     expect(middle).type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
 
-       at ./__typetests__/rest-parameters.tst.ts:51:26 ❭ when target is an expression ❭ cannot be called without arguments
+       at ./__typetests__/rest-parameters.tst.ts:51:26 ❭ when target is an expression ❭ is not callable without arguments
 
 Error: Expression is not callable without arguments.
 
@@ -157,7 +157,7 @@ Expected at least 1 arguments, but got 0.
   56 |     expect(trailing).type.not.toBeCallableWith();
   57 |     expect(trailing).type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
 
-       at ./__typetests__/rest-parameters.tst.ts:54:25 ❭ when target is an expression ❭ cannot be called without arguments
+       at ./__typetests__/rest-parameters.tst.ts:54:25 ❭ when target is an expression ❭ is not callable without arguments
 
     Arguments for the rest parameter 'args' were not provided. ts(6236)
 
@@ -181,9 +181,9 @@ Expected at least 1 arguments, but got 0.
      |                           ~~~~~~~~~~~~~~~~
   58 |   });
   59 | 
-  60 |   test("cannot be called with the given arguments", () => {
+  60 |   test("is not callable with the given arguments", () => {
 
-       at ./__typetests__/rest-parameters.tst.ts:57:27 ❭ when target is an expression ❭ cannot be called without arguments
+       at ./__typetests__/rest-parameters.tst.ts:57:27 ❭ when target is an expression ❭ is not callable without arguments
 
     An argument for 'x' was not provided. ts(6210)
 
@@ -193,7 +193,7 @@ Expected at least 1 arguments, but got 0.
          |                           ~~~~~~~~~~
        8 | 
        9 | describe("when target is an expression", () => {
-      10 |   test("can be called with the given argument", () => {
+      10 |   test("is callable with the given argument", () => {
 
            at ./__typetests__/rest-parameters.tst.ts:7:27
 
@@ -203,7 +203,7 @@ Argument of type '["one", "two"]' is not assignable to parameter of type '[...st
 Type at position 1 in source is not compatible with type at position 1 in target.
 Type 'string' is not assignable to type 'boolean'.
 
-  60 |   test("cannot be called with the given arguments", () => {
+  60 |   test("is not callable with the given arguments", () => {
   61 |     expect(leading).type.not.toBeCallableWith("one", "two");
   62 |     expect(leading).type.toBeCallableWith("one", "two"); // fail
      |                                           ~~~~~~~~~~~~

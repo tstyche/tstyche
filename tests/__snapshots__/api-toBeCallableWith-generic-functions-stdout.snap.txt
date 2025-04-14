@@ -2,10 +2,10 @@ uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/generic-functions.tst.ts
   when target is an expression
-    × can be called with the given argument
-    × cannot be called without arguments
-    × can be called with the given arguments
-    × cannot be called with the given arguments
+    × is callable with the given argument
+    × is not callable without arguments
+    × is callable with the given arguments
+    × is not callable with the given arguments
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
