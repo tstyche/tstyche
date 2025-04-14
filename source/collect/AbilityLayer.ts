@@ -84,34 +84,20 @@ export class AbilityLayer {
   }
 
   handleNode(assertionNode: AssertionNode): void {
+    const expectStart = assertionNode.node.pos;
+    const expectExpressionEnd = assertionNode.node.expression.end;
+    const expectEnd = assertionNode.node.end;
+    const matcherNameEnd = assertionNode.matcherNameNode.end;
+
     switch (assertionNode.matcherNameNode.name.text) {
-      case "toBeApplicable": {
-        const expectStart = assertionNode.node.pos;
-        const expectExpressionEnd = assertionNode.node.expression.end;
-        const expectEnd = assertionNode.node.end;
-        const matcherNameEnd = assertionNode.matcherNameNode.end;
-
+      case "toBeApplicable":
+      case "toBeCallableWith":
         this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd + 1, start: expectStart },
-          { end: matcherNameEnd, start: expectEnd - 1 },
+          { end: expectExpressionEnd, start: expectStart },
+          { end: matcherNameEnd, start: expectEnd },
         ]);
 
         break;
-      }
-
-      case "toBeCallableWith": {
-        const expectStart = assertionNode.node.pos;
-        const expectExpressionEnd = assertionNode.node.expression.end;
-        const expectEnd = assertionNode.node.end;
-        const matcherNameEnd = assertionNode.matcherNameNode.end;
-
-        this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd + 1, start: expectStart },
-          { end: matcherNameEnd, start: expectEnd - 1 },
-        ]);
-
-        break;
-      }
     }
   }
 

@@ -21,7 +21,7 @@ describe("argument for 'source'", () => {
     expect().type.toBeCallableWith(false);
   });
 
-  test("must be an identifier of a callable expression", () => {
+  test("must be a callable expression", () => {
     expect("abc").type.toBeCallableWith();
     expect(123).type.toBeCallableWith();
     expect(false).type.toBeCallableWith();
@@ -32,13 +32,33 @@ describe("argument for 'source'", () => {
     expect(() => {}).type.toBeCallableWith();
     expect(() => () => false).type.toBeCallableWith();
 
-    expect(getPerson).type.toBeCallableWith("abc"); // allowed
     expect(getPerson("abc")).type.toBeCallableWith("abc");
 
-    expect(getPersonGetter).type.toBeCallableWith(); // allowed
-    expect(getPersonGetter()).type.toBeCallableWith("abc"); // allowed
-
     expect(Person).type.toBeCallableWith("abc");
+  });
+
+  test("allowed expressions", () => {
+    expect(getPerson).type.toBeCallableWith("abc");
+
+    expect(getPersonGetter).type.toBeCallableWith();
+    expect(getPersonGetter()).type.toBeCallableWith("abc");
+
+    expect((a?: string) => a).type.toBeCallableWith("true");
+    expect((a?: string) => a).type.toBeCallableWith();
+
+    expect(function (a?: string) {
+      return a;
+    }).type.toBeCallableWith("true");
+    expect(function (a?: string) {
+      return a;
+    }).type.toBeCallableWith();
+
+    expect(function quick(a?: string) {
+      return a;
+    }).type.toBeCallableWith("true");
+    expect(function quick(a?: string) {
+      return a;
+    }).type.toBeCallableWith();
   });
 
   test("is rejected type?", () => {
