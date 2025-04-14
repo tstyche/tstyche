@@ -76,6 +76,8 @@ export class ToBeApplicable {
     sourceNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
+    // TODO consider reusing validation of 'ToBeCallableWith'
+
     const type = matchWorker.getType(sourceNode);
 
     if (type.getCallSignatures().length === 0) {
