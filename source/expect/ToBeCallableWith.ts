@@ -82,11 +82,7 @@ export class ToBeCallableWith {
     let type: ts.Type | undefined;
 
     if (this.#compiler.isCallExpression(sourceNode)) {
-      const signature = matchWorker.typeChecker.getResolvedSignature(sourceNode);
-
-      if (signature != null) {
-        type = matchWorker.typeChecker.getTypeOfSymbol(signature.getReturnType().symbol);
-      }
+      type = matchWorker.typeChecker.getResolvedSignature(sourceNode)?.getReturnType();
     }
 
     if (
@@ -103,8 +99,6 @@ export class ToBeCallableWith {
         : ExpectDiagnosticText.argumentMustBe("source", "an identifier of a callable expression");
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
-
-      // TODO when 'sourceNode' is a class identifier, suggest using the '.toBeConstructable()' matcher
 
       onDiagnostics([Diagnostic.error(text, origin)]);
 

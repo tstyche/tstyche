@@ -82,11 +82,7 @@ export class ToBeConstructableWith {
     let type: ts.Type | undefined;
 
     if (this.#compiler.isCallExpression(sourceNode)) {
-      const signature = matchWorker.typeChecker.getResolvedSignature(sourceNode);
-
-      if (signature != null) {
-        type = signature.getReturnType();
-      }
+      type = matchWorker.typeChecker.getResolvedSignature(sourceNode)?.getReturnType();
     }
 
     if (
