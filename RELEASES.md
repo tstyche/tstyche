@@ -595,6 +595,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.4
 [4.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.3
 [4.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.2
 [4.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.1
