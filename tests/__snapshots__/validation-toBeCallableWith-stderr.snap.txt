@@ -84,7 +84,7 @@ Error: An argument for 'source' must be a callable expression.
 
 Error: An argument for 'source' must be a callable expression.
 
-Did you mean to use the '.toBeConstructable()' matcher?
+Did you mean to use the '.toBeConstructableWith()' matcher?
 
   35 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
   36 | 
