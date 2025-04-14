@@ -1,4 +1,4 @@
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   10 |   test("can be called with the given argument", () => {
   11 |     expect(optional).type.toBeCallableWith("one");
@@ -10,7 +10,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/rest-parameters.tst.ts:12:31 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   13 | 
   14 |     expect(leading).type.toBeCallableWith(false);
@@ -22,7 +22,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/rest-parameters.tst.ts:15:30 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   16 | 
   17 |     expect(trailing).type.toBeCallableWith(true);
@@ -34,7 +34,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/rest-parameters.tst.ts:18:31 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   21 |   test("can be called with the given arguments", () => {
   22 |     expect(optional).type.toBeCallableWith("one", 2, true);
@@ -46,7 +46,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/rest-parameters.tst.ts:23:31 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   24 | 
   25 |     expect(leading).type.toBeCallableWith("one", "two", true);
@@ -58,7 +58,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/rest-parameters.tst.ts:26:30 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   27 | 
   28 |     expect(leading).type.toBeCallableWith(...["one", "two"], true);
@@ -70,7 +70,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/rest-parameters.tst.ts:29:30 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   30 | 
   31 |     expect(middle).type.toBeCallableWith("one", 123, 456, true);
@@ -82,7 +82,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/rest-parameters.tst.ts:32:29 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   33 | 
   34 |     expect(middle).type.toBeCallableWith(...["one", 123, 456, true]);
@@ -94,7 +94,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/rest-parameters.tst.ts:35:29 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   36 | 
   37 |     expect(trailing).type.toBeCallableWith(false, "ten", "eleven");
@@ -106,7 +106,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/rest-parameters.tst.ts:38:31 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   39 | 
   40 |     expect(trailing).type.toBeCallableWith(false, ...["ten", "eleven"]);
@@ -118,7 +118,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/rest-parameters.tst.ts:41:31 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called without arguments.
+Error: Expression is callable without arguments.
 
   44 |   test("can be called without arguments", () => {
   45 |     expect(optional).type.toBeCallableWith();
@@ -130,7 +130,7 @@ Error: Expression can be called without arguments.
 
        at ./__typetests__/rest-parameters.tst.ts:46:31 ❭ when target is an expression ❭ can be called without arguments
 
-Error: Expression cannot be called without arguments.
+Error: Expression is not callable without arguments.
 
 Argument of type '[]' is not assignable to parameter of type '[...string[], boolean]'.
 Source has 0 element(s) but target requires 1.
@@ -145,7 +145,7 @@ Source has 0 element(s) but target requires 1.
 
        at ./__typetests__/rest-parameters.tst.ts:51:26 ❭ when target is an expression ❭ cannot be called without arguments
 
-Error: Expression cannot be called without arguments.
+Error: Expression is not callable without arguments.
 
 Expected at least 1 arguments, but got 0.
 
@@ -171,7 +171,7 @@ Expected at least 1 arguments, but got 0.
 
           at ./__typetests__/rest-parameters.tst.ts:6:25
 
-Error: Expression cannot be called without arguments.
+Error: Expression is not callable without arguments.
 
 Expected at least 1 arguments, but got 0.
 
@@ -197,7 +197,7 @@ Expected at least 1 arguments, but got 0.
 
            at ./__typetests__/rest-parameters.tst.ts:7:27
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type '["one", "two"]' is not assignable to parameter of type '[...string[], boolean]'.
 Type at position 1 in source is not compatible with type at position 1 in target.
@@ -213,7 +213,7 @@ Type 'string' is not assignable to type 'boolean'.
 
        at ./__typetests__/rest-parameters.tst.ts:62:43
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type '[string, string]' is not assignable to parameter of type '[...string[], boolean]'.
 Type at position 1 in source is not compatible with type at position 1 in target.
@@ -229,7 +229,7 @@ Type 'string' is not assignable to type 'boolean'.
 
        at ./__typetests__/rest-parameters.tst.ts:65:43
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type '[3, 4, true]' is not assignable to parameter of type '[...string[], boolean]'.
 Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
@@ -245,7 +245,7 @@ Type 'number' is not assignable to type 'string'.
 
        at ./__typetests__/rest-parameters.tst.ts:68:43
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type '[number, number, true]' is not assignable to parameter of type '[...string[], boolean]'.
 Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
@@ -261,7 +261,7 @@ Type 'number' is not assignable to type 'string'.
 
        at ./__typetests__/rest-parameters.tst.ts:71:43
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type '[2, 3]' is not assignable to parameter of type '[...number[], boolean]'.
 Type at position 1 in source is not compatible with type at position 1 in target.
@@ -277,7 +277,7 @@ Type 'number' is not assignable to type 'boolean'.
 
        at ./__typetests__/rest-parameters.tst.ts:74:49
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type '[number, number]' is not assignable to parameter of type '[...number[], boolean]'.
 Type at position 1 in source is not compatible with type at position 1 in target.
@@ -293,7 +293,7 @@ Type 'number' is not assignable to type 'boolean'.
 
        at ./__typetests__/rest-parameters.tst.ts:77:42
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type '["two", "three", true]' is not assignable to parameter of type '[...number[], boolean]'.
 Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
@@ -309,7 +309,7 @@ Type 'string' is not assignable to type 'number'.
 
        at ./__typetests__/rest-parameters.tst.ts:80:49
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type '[string, string, boolean]' is not assignable to parameter of type '[...number[], boolean]'.
 Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
@@ -325,7 +325,7 @@ Type 'string' is not assignable to type 'number'.
 
        at ./__typetests__/rest-parameters.tst.ts:83:42
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type 'string' is not assignable to parameter of type 'boolean'.
 
@@ -339,7 +339,7 @@ Argument of type 'string' is not assignable to parameter of type 'boolean'.
 
        at ./__typetests__/rest-parameters.tst.ts:86:44
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type 'string' is not assignable to parameter of type 'boolean'.
 
@@ -353,7 +353,7 @@ Argument of type 'string' is not assignable to parameter of type 'boolean'.
 
        at ./__typetests__/rest-parameters.tst.ts:89:44
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type 'number' is not assignable to parameter of type 'string'.
 
@@ -367,7 +367,7 @@ Argument of type 'number' is not assignable to parameter of type 'string'.
 
        at ./__typetests__/rest-parameters.tst.ts:92:51
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Argument of type 'number' is not assignable to parameter of type 'string'.
 
