@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, diagnosticBelongsToNode } from "#diagnostic";
 import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTree } from "./TestTree.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
@@ -32,17 +32,11 @@ export class TestTreeNode {
       this.name = node.arguments[0].text;
     }
 
-    if (
-      node.arguments[1] != null &&
-      compiler.isFunctionLike(node.arguments[1]) &&
-      compiler.isBlock(node.arguments[1].body)
-    ) {
-      const blockStart = node.arguments[1].body.getStart();
-      const blockEnd = node.arguments[1].body.getEnd();
-
+    if (node.arguments[1] != null && compiler.isFunctionLike(node.arguments[1])) {
       for (const diagnostic of parent.diagnostics) {
-        if (diagnostic.start != null && diagnostic.start >= blockStart && diagnostic.start <= blockEnd) {
+        if (diagnosticBelongsToNode(diagnostic, node.arguments[1].body)) {
           this.diagnostics.add(diagnostic);
+
           parent.diagnostics.delete(diagnostic);
         }
       }
