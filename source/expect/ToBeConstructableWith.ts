@@ -85,7 +85,7 @@ export class ToBeConstructableWith {
       const signature = matchWorker.typeChecker.getResolvedSignature(sourceNode);
 
       if (signature != null) {
-        type = matchWorker.typeChecker.getTypeOfSymbol(signature.getReturnType().symbol);
+        type = signature.getReturnType();
       }
     }
 
@@ -103,8 +103,6 @@ export class ToBeConstructableWith {
         : ExpectDiagnosticText.argumentMustBe("source", "an identifier of a constructable expression");
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
-
-      // TODO when 'sourceNode' is a function, suggest using the '.toBeCallable()' matcher
 
       onDiagnostics([Diagnostic.error(text, origin)]);
 

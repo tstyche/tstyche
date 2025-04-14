@@ -1,0 +1,15 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeConstructableWith.tst.ts
+  argument for 'source'
+    × must be provided
+    × must be an identifier of a constructable expression
+    × is rejected type?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      3 failed, 3 total
+Assertions: 15 failed, 1 passed, 16 total
+Duration:   <<timestamp>>
+
+Ran all test files.
