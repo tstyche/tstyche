@@ -1,5 +1,12 @@
 # Releases
 
+## [4.0.0-beta.4] - 2025-04-14
+
+### Added
+
+- **New!** Add the `.toBeConstructableWith()` matcher ([#451](https://github.com/tstyche/tstyche/pull/451))
+- Improve validation of the source node passed to `.toBeCallableWith()` ([#449](https://github.com/tstyche/tstyche/pull/449), [#453](https://github.com/tstyche/tstyche/pull/453))
+
 ## [4.0.0-beta.3] - 2025-04-11
 
 ### Fixed
