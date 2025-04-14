@@ -2,11 +2,11 @@ uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/rest-parameters.tst.ts
   when target is an expression
-    × can be called with the given argument
-    × can be called with the given arguments
-    × can be called without arguments
-    × cannot be called without arguments
-    × cannot be called with the given arguments
+    × is constructable with the given argument
+    × is constructable with the given arguments
+    × is constructable without arguments
+    × is not constructable without arguments
+    × is not constructable with the given arguments
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
