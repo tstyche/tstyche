@@ -1,0 +1,17 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/rest-parameters.tst.ts
+  when target is an expression
+    × is constructable with the given argument
+    × is constructable with the given arguments
+    × is constructable without arguments
+    × is not constructable without arguments
+    × is not constructable with the given arguments
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      5 failed, 5 total
+Assertions: 26 failed, 26 passed, 52 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'rest-parameters.tst.ts'.

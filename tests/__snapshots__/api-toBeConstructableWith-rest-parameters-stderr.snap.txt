@@ -1,0 +1,383 @@
+Error: Expression is constructable with the given argument.
+
+  34 |   test("is constructable with the given argument", () => {
+  35 |     expect(Optional).type.toBeConstructableWith("one");
+  36 |     expect(Optional).type.not.toBeConstructableWith("one"); // fail
+     |                               ~~~~~~~~~~~~~~~~~~~~~
+  37 | 
+  38 |     expect(Leading).type.toBeConstructableWith(false);
+  39 |     expect(Leading).type.not.toBeConstructableWith(false); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:36:31 ❭ when target is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given argument.
+
+  37 | 
+  38 |     expect(Leading).type.toBeConstructableWith(false);
+  39 |     expect(Leading).type.not.toBeConstructableWith(false); // fail
+     |                              ~~~~~~~~~~~~~~~~~~~~~
+  40 | 
+  41 |     expect(Trailing).type.toBeConstructableWith(true);
+  42 |     expect(Trailing).type.not.toBeConstructableWith(true); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:39:30 ❭ when target is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given argument.
+
+  40 | 
+  41 |     expect(Trailing).type.toBeConstructableWith(true);
+  42 |     expect(Trailing).type.not.toBeConstructableWith(true); // fail
+     |                               ~~~~~~~~~~~~~~~~~~~~~
+  43 |   });
+  44 | 
+  45 |   test("is constructable with the given arguments", () => {
+
+       at ./__typetests__/rest-parameters.tst.ts:42:31 ❭ when target is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given arguments.
+
+  45 |   test("is constructable with the given arguments", () => {
+  46 |     expect(Optional).type.toBeConstructableWith("one", 2, true);
+  47 |     expect(Optional).type.not.toBeConstructableWith("one", 2, true); // fail
+     |                               ~~~~~~~~~~~~~~~~~~~~~
+  48 | 
+  49 |     expect(Leading).type.toBeConstructableWith("one", "two", true);
+  50 |     expect(Leading).type.not.toBeConstructableWith("one", "two", true); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:47:31 ❭ when target is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  48 | 
+  49 |     expect(Leading).type.toBeConstructableWith("one", "two", true);
+  50 |     expect(Leading).type.not.toBeConstructableWith("one", "two", true); // fail
+     |                              ~~~~~~~~~~~~~~~~~~~~~
+  51 | 
+  52 |     expect(Leading).type.toBeConstructableWith(...["one", "two"], true);
+  53 |     expect(Leading).type.not.toBeConstructableWith(...["one", "two"], true); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:50:30 ❭ when target is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  51 | 
+  52 |     expect(Leading).type.toBeConstructableWith(...["one", "two"], true);
+  53 |     expect(Leading).type.not.toBeConstructableWith(...["one", "two"], true); // fail
+     |                              ~~~~~~~~~~~~~~~~~~~~~
+  54 | 
+  55 |     expect(Middle).type.toBeConstructableWith("one", 123, 456, true);
+  56 |     expect(Middle).type.not.toBeConstructableWith("one", 123, 456, true); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:53:30 ❭ when target is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  54 | 
+  55 |     expect(Middle).type.toBeConstructableWith("one", 123, 456, true);
+  56 |     expect(Middle).type.not.toBeConstructableWith("one", 123, 456, true); // fail
+     |                             ~~~~~~~~~~~~~~~~~~~~~
+  57 | 
+  58 |     expect(Middle).type.toBeConstructableWith(...["one", 123, 456, true]);
+  59 |     expect(Middle).type.not.toBeConstructableWith(...["one", 123, 456, true]); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:56:29 ❭ when target is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  57 | 
+  58 |     expect(Middle).type.toBeConstructableWith(...["one", 123, 456, true]);
+  59 |     expect(Middle).type.not.toBeConstructableWith(...["one", 123, 456, true]); // fail
+     |                             ~~~~~~~~~~~~~~~~~~~~~
+  60 | 
+  61 |     expect(Trailing).type.toBeConstructableWith(false, "ten", "eleven");
+  62 |     expect(Trailing).type.not.toBeConstructableWith(false, "ten", "eleven"); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:59:29 ❭ when target is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  60 | 
+  61 |     expect(Trailing).type.toBeConstructableWith(false, "ten", "eleven");
+  62 |     expect(Trailing).type.not.toBeConstructableWith(false, "ten", "eleven"); // fail
+     |                               ~~~~~~~~~~~~~~~~~~~~~
+  63 | 
+  64 |     expect(Trailing).type.toBeConstructableWith(false, ...["ten", "eleven"]);
+  65 |     expect(Trailing).type.not.toBeConstructableWith(false, ...["ten", "eleven"]); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:62:31 ❭ when target is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  63 | 
+  64 |     expect(Trailing).type.toBeConstructableWith(false, ...["ten", "eleven"]);
+  65 |     expect(Trailing).type.not.toBeConstructableWith(false, ...["ten", "eleven"]); // fail
+     |                               ~~~~~~~~~~~~~~~~~~~~~
+  66 |   });
+  67 | 
+  68 |   test("is constructable without arguments", () => {
+
+       at ./__typetests__/rest-parameters.tst.ts:65:31 ❭ when target is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable without arguments.
+
+  68 |   test("is constructable without arguments", () => {
+  69 |     expect(Optional).type.toBeConstructableWith();
+  70 |     expect(Optional).type.not.toBeConstructableWith(); // fail
+     |                               ~~~~~~~~~~~~~~~~~~~~~
+  71 |   });
+  72 | 
+  73 |   test("is not constructable without arguments", () => {
+
+       at ./__typetests__/rest-parameters.tst.ts:70:31 ❭ when target is an expression ❭ is constructable without arguments
+
+Error: Expression is not constructable without arguments.
+
+Argument of type '[]' is not assignable to parameter of type '[...string[], boolean]'.
+Source has 0 element(s) but target requires 1.
+
+  73 |   test("is not constructable without arguments", () => {
+  74 |     expect(Leading).type.not.toBeConstructableWith();
+  75 |     expect(Leading).type.toBeConstructableWith(); // fail: Source has 0 element(s) but target requires 1.
+     |                          ~~~~~~~~~~~~~~~~~~~~~
+  76 | 
+  77 |     expect(Middle).type.not.toBeConstructableWith();
+  78 |     expect(Middle).type.toBeConstructableWith(); // fail: Expected at least 1 arguments, but got 0.
+
+       at ./__typetests__/rest-parameters.tst.ts:75:26 ❭ when target is an expression ❭ is not constructable without arguments
+
+Error: Expression is not constructable without arguments.
+
+Expected at least 1 arguments, but got 0.
+
+  76 | 
+  77 |     expect(Middle).type.not.toBeConstructableWith();
+  78 |     expect(Middle).type.toBeConstructableWith(); // fail: Expected at least 1 arguments, but got 0.
+     |                         ~~~~~~~~~~~~~~~~~~~~~
+  79 | 
+  80 |     expect(Trailing).type.not.toBeConstructableWith();
+  81 |     expect(Trailing).type.toBeConstructableWith(); // fail: Expected at least 1 arguments, but got 0.
+
+       at ./__typetests__/rest-parameters.tst.ts:78:25 ❭ when target is an expression ❭ is not constructable without arguments
+
+    Arguments for the rest parameter 'args' were not provided. ts(6236)
+
+      17 | class Middle {
+      18 |   a: Array<unknown>;
+      19 |   constructor(...args: [string, ...Array<number>, boolean]) {
+         |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      20 |     this.a = args;
+      21 |   }
+      22 | }
+
+           at ./__typetests__/rest-parameters.tst.ts:19:15
+
+Error: Expression is not constructable without arguments.
+
+Expected at least 1 arguments, but got 0.
+
+  79 | 
+  80 |     expect(Trailing).type.not.toBeConstructableWith();
+  81 |     expect(Trailing).type.toBeConstructableWith(); // fail: Expected at least 1 arguments, but got 0.
+     |                           ~~~~~~~~~~~~~~~~~~~~~
+  82 |   });
+  83 | 
+  84 |   test("is not constructable with the given arguments", () => {
+
+       at ./__typetests__/rest-parameters.tst.ts:81:27 ❭ when target is an expression ❭ is not constructable without arguments
+
+    An argument for 'x' was not provided. ts(6210)
+
+      25 |   x: boolean;
+      26 |   y: Array<string>;
+      27 |   constructor(x: boolean, ...y: Array<string>) {
+         |               ~~~~~~~~~~
+      28 |     this.x = x;
+      29 |     this.y = y;
+      30 |   }
+
+           at ./__typetests__/rest-parameters.tst.ts:27:15
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '["one", "two"]' is not assignable to parameter of type '[...string[], boolean]'.
+Type at position 1 in source is not compatible with type at position 1 in target.
+Type 'string' is not assignable to type 'boolean'.
+
+  84 |   test("is not constructable with the given arguments", () => {
+  85 |     expect(Leading).type.not.toBeConstructableWith("one", "two");
+  86 |     expect(Leading).type.toBeConstructableWith("one", "two"); // fail
+     |                                                ~~~~~~~~~~~~
+  87 | 
+  88 |     expect(Leading).type.not.toBeConstructableWith(...["one", "two"]);
+  89 |     expect(Leading).type.toBeConstructableWith(...["one", "two"]); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:86:48
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '[string, string]' is not assignable to parameter of type '[...string[], boolean]'.
+Type at position 1 in source is not compatible with type at position 1 in target.
+Type 'string' is not assignable to type 'boolean'.
+
+  87 | 
+  88 |     expect(Leading).type.not.toBeConstructableWith(...["one", "two"]);
+  89 |     expect(Leading).type.toBeConstructableWith(...["one", "two"]); // fail
+     |                                                ~~~~~~~~~~~~~~~~~
+  90 | 
+  91 |     expect(Leading).type.not.toBeConstructableWith(3, 4, true);
+  92 |     expect(Leading).type.toBeConstructableWith(3, 4, true); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:89:48
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '[3, 4, true]' is not assignable to parameter of type '[...string[], boolean]'.
+Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
+Type 'number' is not assignable to type 'string'.
+
+  90 | 
+  91 |     expect(Leading).type.not.toBeConstructableWith(3, 4, true);
+  92 |     expect(Leading).type.toBeConstructableWith(3, 4, true); // fail
+     |                                                ~~~~~~~~~~
+  93 | 
+  94 |     expect(Leading).type.not.toBeConstructableWith(...[3, 4], true);
+  95 |     expect(Leading).type.toBeConstructableWith(...[3, 4], true); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:92:48
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '[number, number, true]' is not assignable to parameter of type '[...string[], boolean]'.
+Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
+Type 'number' is not assignable to type 'string'.
+
+  93 | 
+  94 |     expect(Leading).type.not.toBeConstructableWith(...[3, 4], true);
+  95 |     expect(Leading).type.toBeConstructableWith(...[3, 4], true); // fail
+     |                                                ~~~~~~~~~~~~~~~
+  96 | 
+  97 |     expect(Middle).type.not.toBeConstructableWith("one", 2, 3);
+  98 |     expect(Middle).type.toBeConstructableWith("one", 2, 3); // fail
+
+       at ./__typetests__/rest-parameters.tst.ts:95:48
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '[2, 3]' is not assignable to parameter of type '[...number[], boolean]'.
+Type at position 1 in source is not compatible with type at position 1 in target.
+Type 'number' is not assignable to type 'boolean'.
+
+   96 | 
+   97 |     expect(Middle).type.not.toBeConstructableWith("one", 2, 3);
+   98 |     expect(Middle).type.toBeConstructableWith("one", 2, 3); // fail
+      |                                                      ~~~~
+   99 | 
+  100 |     expect(Middle).type.not.toBeConstructableWith(...["one", 2, 3]);
+  101 |     expect(Middle).type.toBeConstructableWith(...["one", 2, 3]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:98:54
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '[number, number]' is not assignable to parameter of type '[...number[], boolean]'.
+Type at position 1 in source is not compatible with type at position 1 in target.
+Type 'number' is not assignable to type 'boolean'.
+
+   99 | 
+  100 |     expect(Middle).type.not.toBeConstructableWith(...["one", 2, 3]);
+  101 |     expect(Middle).type.toBeConstructableWith(...["one", 2, 3]); // fail
+      |                                               ~~~~~~~~~~~~~~~~
+  102 | 
+  103 |     expect(Middle).type.not.toBeConstructableWith("one", "two", "three", true);
+  104 |     expect(Middle).type.toBeConstructableWith("one", "two", "three", true); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:101:47
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '["two", "three", true]' is not assignable to parameter of type '[...number[], boolean]'.
+Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
+Type 'string' is not assignable to type 'number'.
+
+  102 | 
+  103 |     expect(Middle).type.not.toBeConstructableWith("one", "two", "three", true);
+  104 |     expect(Middle).type.toBeConstructableWith("one", "two", "three", true); // fail
+      |                                                      ~~~~~~~~~~~~~~~~~~~~
+  105 | 
+  106 |     expect(Middle).type.not.toBeConstructableWith(...["one", "two", "three", true]);
+  107 |     expect(Middle).type.toBeConstructableWith(...["one", "two", "three", true]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:104:54
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '[string, string, boolean]' is not assignable to parameter of type '[...number[], boolean]'.
+Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
+Type 'string' is not assignable to type 'number'.
+
+  105 | 
+  106 |     expect(Middle).type.not.toBeConstructableWith(...["one", "two", "three", true]);
+  107 |     expect(Middle).type.toBeConstructableWith(...["one", "two", "three", true]); // fail
+      |                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  108 | 
+  109 |     expect(Trailing).type.not.toBeConstructableWith("ten", "eleven");
+  110 |     expect(Trailing).type.toBeConstructableWith("ten", "eleven"); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:107:47
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type 'string' is not assignable to parameter of type 'boolean'.
+
+  108 | 
+  109 |     expect(Trailing).type.not.toBeConstructableWith("ten", "eleven");
+  110 |     expect(Trailing).type.toBeConstructableWith("ten", "eleven"); // fail
+      |                                                 ~~~~~
+  111 | 
+  112 |     expect(Trailing).type.not.toBeConstructableWith(...["ten", "eleven"]);
+  113 |     expect(Trailing).type.toBeConstructableWith(...["ten", "eleven"]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:110:49
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type 'string' is not assignable to parameter of type 'boolean'.
+
+  111 | 
+  112 |     expect(Trailing).type.not.toBeConstructableWith(...["ten", "eleven"]);
+  113 |     expect(Trailing).type.toBeConstructableWith(...["ten", "eleven"]); // fail
+      |                                                 ~~~~~~~~~~~~~~~~~~~~
+  114 | 
+  115 |     expect(Trailing).type.not.toBeConstructableWith(false, 10, 11);
+  116 |     expect(Trailing).type.toBeConstructableWith(false, 10, 11); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:113:49
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  114 | 
+  115 |     expect(Trailing).type.not.toBeConstructableWith(false, 10, 11);
+  116 |     expect(Trailing).type.toBeConstructableWith(false, 10, 11); // fail
+      |                                                        ~~
+  117 | 
+  118 |     expect(Trailing).type.not.toBeConstructableWith(false, ...[10, 11]);
+  119 |     expect(Trailing).type.toBeConstructableWith(false, ...[10, 11]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:116:56
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  117 | 
+  118 |     expect(Trailing).type.not.toBeConstructableWith(false, ...[10, 11]);
+  119 |     expect(Trailing).type.toBeConstructableWith(false, ...[10, 11]); // fail
+      |                                                        ~~~~~~~~~~~
+  120 |   });
+  121 | });
+  122 | 
+
+        at ./__typetests__/rest-parameters.tst.ts:119:56
+

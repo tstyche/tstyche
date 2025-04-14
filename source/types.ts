@@ -134,6 +134,10 @@ interface Matchers {
    */
   toBeCallableWith: (...target: Array<unknown>) => void;
   /**
+   * Checks if the source type is constructable with the given arguments.
+   */
+  toBeConstructableWith: (...target: Array<unknown>) => void;
+  /**
    * Checks if a property key exists on the source type.
    */
   toHaveProperty: (key: string | number | symbol) => void;

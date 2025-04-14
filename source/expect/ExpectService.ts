@@ -11,6 +11,7 @@ import { ToBeApplicable } from "./ToBeApplicable.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToBeCallableWith } from "./ToBeCallableWith.js";
+import { ToBeConstructableWith } from "./ToBeConstructableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
@@ -26,6 +27,7 @@ export class ExpectService {
   private toBeAssignableTo: ToBeAssignableTo;
   private toBeAssignableWith: ToBeAssignableWith;
   private toBeCallableWith: ToBeCallableWith;
+  private toBeConstructableWith: ToBeConstructableWith;
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
@@ -46,6 +48,7 @@ export class ExpectService {
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeAssignableWith = new ToBeAssignableWith();
     this.toBeCallableWith = new ToBeCallableWith(compiler);
+    this.toBeConstructableWith = new ToBeConstructableWith(compiler);
     this.toHaveProperty = new ToHaveProperty(compiler);
     this.toRaiseError = new ToRaiseError(compiler);
   }
@@ -88,6 +91,7 @@ export class ExpectService {
         return this.toBeApplicable.match(matchWorker, assertion.source[0], onDiagnostics);
 
       case "toBeCallableWith":
+      case "toBeConstructableWith":
       case "toRaiseError":
         // biome-ignore lint/style/noNonNullAssertion: collect logic makes sure that 'target' is defined
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target!, onDiagnostics);

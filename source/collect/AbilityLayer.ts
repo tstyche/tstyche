@@ -6,6 +6,7 @@ import type { ProjectService } from "#project";
 
 interface TextRange {
   end: number;
+  replacement?: string;
   start: number;
 }
 
@@ -49,7 +50,10 @@ export class AbilityLayer {
     this.#nodes.push(node);
 
     for (const range of ranges) {
-      const rangeText = this.#getErasedRangeText(range);
+      const rangeText =
+        range.replacement != null
+          ? `${range.replacement}${this.#getErasedRangeText(range).slice(range.replacement.length)}`
+          : this.#getErasedRangeText(range);
 
       this.#text = `${this.#text.slice(0, range.start)}${rangeText}${this.#text.slice(range.end)}`;
     }
@@ -84,16 +88,24 @@ export class AbilityLayer {
   }
 
   handleNode(assertionNode: AssertionNode): void {
-    const expectStart = assertionNode.node.pos;
-    const expectExpressionEnd = assertionNode.node.expression.end;
-    const expectEnd = assertionNode.node.end;
-    const matcherNameEnd = assertionNode.matcherNameNode.end;
+    const expectStart = assertionNode.node.getStart();
+    const expectExpressionEnd = assertionNode.node.expression.getEnd();
+    const expectEnd = assertionNode.node.getEnd();
+    const matcherNameEnd = assertionNode.matcherNameNode.getEnd();
 
     switch (assertionNode.matcherNameNode.name.text) {
       case "toBeApplicable":
       case "toBeCallableWith":
         this.#addRanges(assertionNode, [
           { end: expectExpressionEnd, start: expectStart },
+          { end: matcherNameEnd, start: expectEnd },
+        ]);
+
+        break;
+
+      case "toBeConstructableWith":
+        this.#addRanges(assertionNode, [
+          { end: expectExpressionEnd, start: expectStart, replacement: "new" },
           { end: matcherNameEnd, start: expectEnd },
         ]);
 

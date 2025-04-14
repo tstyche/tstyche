@@ -1,0 +1,18 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/parameter-arity.tst.ts
+  when target is an expression
+    × is constructable without arguments
+    × is not constructable without arguments
+    × is constructable with the given argument
+    × is not constructable with the given argument
+    × is constructable with the given arguments
+    × is not constructable with the given arguments
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      6 failed, 6 total
+Assertions: 32 failed, 32 passed, 64 total
+Duration:   <<timestamp>>
+
+Ran test files matching 'parameter-arity.tst.ts'.
