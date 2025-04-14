@@ -26,7 +26,8 @@ class Stack<T> {
 }
 
 test("Stack", () => {
-  expect(Stack).type.toBeConstructableWith(10);
+  expect(Stack).type.toBeConstructableWith(12);
 
   expect(Stack).type.not.toBeConstructableWith();
+  expect(Stack).type.not.toBeConstructableWith("two");
 });
