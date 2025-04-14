@@ -1,4 +1,4 @@
-Error: Expression can be called without arguments.
+Error: Expression is callable without arguments.
 
   18 |   test("can be called without arguments", () => {
   19 |     expect(noArguments).type.toBeCallableWith();
@@ -10,7 +10,7 @@ Error: Expression can be called without arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:20:34 ❭ when target is an expression ❭ can be called without arguments
 
-Error: Expression can be called without arguments.
+Error: Expression is callable without arguments.
 
   21 | 
   22 |     expect(optionalFirst).type.toBeCallableWith();
@@ -22,7 +22,7 @@ Error: Expression can be called without arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:23:36 ❭ when target is an expression ❭ can be called without arguments
 
-Error: Expression can be called without arguments.
+Error: Expression is callable without arguments.
 
   24 | 
   25 |     expect(defaultFirst).type.toBeCallableWith();
@@ -34,7 +34,7 @@ Error: Expression can be called without arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:26:35 ❭ when target is an expression ❭ can be called without arguments
 
-Error: Expression cannot be called without arguments.
+Error: Expression is not callable without arguments.
 
 Expected 1 arguments, but got 0.
 
@@ -60,7 +60,7 @@ Expected 1 arguments, but got 0.
 
           at ./__typetests__/parameter-arity.tst.ts:4:22
 
-Error: Expression cannot be called without arguments.
+Error: Expression is not callable without arguments.
 
 Expected 1-2 arguments, but got 0.
 
@@ -86,7 +86,7 @@ Expected 1-2 arguments, but got 0.
 
            at ./__typetests__/parameter-arity.tst.ts:7:33
 
-Error: Expression cannot be called without arguments.
+Error: Expression is not callable without arguments.
 
 Expected 1-2 arguments, but got 0.
 
@@ -112,7 +112,7 @@ Expected 1-2 arguments, but got 0.
 
            at ./__typetests__/parameter-arity.tst.ts:13:24
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   40 |   test("can be called with the given argument", () => {
   41 |     expect(oneArgument).type.toBeCallableWith("one");
@@ -124,7 +124,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:42:34 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   43 | 
   44 |     expect(optionalFirst).type.toBeCallableWith(undefined);
@@ -136,7 +136,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:45:36 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   46 | 
   47 |     expect(optionalFirst).type.toBeCallableWith("one");
@@ -148,7 +148,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:48:36 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   49 | 
   50 |     expect(optionalSecond).type.toBeCallableWith("one");
@@ -160,7 +160,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:51:37 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   52 | 
   53 |     expect(defaultFirst).type.toBeCallableWith(undefined);
@@ -172,7 +172,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:54:35 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   55 | 
   56 |     expect(defaultFirst).type.toBeCallableWith("one");
@@ -184,7 +184,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:57:35 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be called with the given argument.
+Error: Expression is callable with the given argument.
 
   58 | 
   59 |     expect(defaultSecond).type.toBeCallableWith("one");
@@ -196,7 +196,7 @@ Error: Expression can be called with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:60:36 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression cannot be called with the given argument.
+Error: Expression is not callable with the given argument.
 
 Expected 0 arguments, but got 1.
 
@@ -210,7 +210,7 @@ Expected 0 arguments, but got 1.
 
        at ./__typetests__/parameter-arity.tst.ts:65:47
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   68 |   test("can be called with the given arguments", () => {
   69 |     expect(optionalSecond).type.toBeCallableWith("one", undefined);
@@ -222,7 +222,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:70:37 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   71 | 
   72 |     expect(optionalSecond).type.toBeCallableWith(...["one", undefined]);
@@ -234,7 +234,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:73:37 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   74 | 
   75 |     expect(optionalSecond).type.toBeCallableWith("one", 123);
@@ -246,7 +246,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:76:37 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   77 | 
   78 |     expect(optionalSecond).type.toBeCallableWith(...["one", 123]);
@@ -258,7 +258,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:79:37 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   80 | 
   81 |     expect(defaultSecond).type.toBeCallableWith("one", undefined);
@@ -270,7 +270,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:82:36 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   83 | 
   84 |     expect(defaultSecond).type.toBeCallableWith(...["one", undefined]);
@@ -282,7 +282,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:85:36 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   86 | 
   87 |     expect(defaultSecond).type.toBeCallableWith("one", 123);
@@ -294,7 +294,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:88:36 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be called with the given arguments.
+Error: Expression is callable with the given arguments.
 
   89 | 
   90 |     expect(defaultSecond).type.toBeCallableWith(...["one", 123]);
@@ -306,7 +306,7 @@ Error: Expression can be called with the given arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:91:36 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 1 arguments, but got 2.
 
@@ -320,7 +320,7 @@ Expected 1 arguments, but got 2.
 
        at ./__typetests__/parameter-arity.tst.ts:96:54
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 1 arguments, but got 2.
 
@@ -334,7 +334,7 @@ Expected 1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:99:47
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
@@ -348,7 +348,7 @@ Expected 0-1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:102:56
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
@@ -362,7 +362,7 @@ Expected 0-1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:105:49
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 
@@ -376,7 +376,7 @@ Expected 1-2 arguments, but got 3.
 
         at ./__typetests__/parameter-arity.tst.ts:108:62
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 
@@ -390,7 +390,7 @@ Expected 1-2 arguments, but got 3.
 
         at ./__typetests__/parameter-arity.tst.ts:111:50
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
@@ -404,7 +404,7 @@ Expected 0-1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:114:55
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
@@ -418,7 +418,7 @@ Expected 0-1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:117:48
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 
@@ -432,7 +432,7 @@ Expected 1-2 arguments, but got 3.
 
         at ./__typetests__/parameter-arity.tst.ts:120:61
 
-Error: Expression cannot be called with the given arguments.
+Error: Expression is not callable with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 

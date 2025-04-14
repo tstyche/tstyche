@@ -40,10 +40,7 @@ export class ToBeCallableWith {
 
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
-        const text = [
-          ExpectDiagnosticText.cannotBeCalled(isTypeNode, targetText),
-          getDiagnosticMessageText(diagnostic),
-        ];
+        const text = [ExpectDiagnosticText.isNotCallable(isTypeNode, targetText), getDiagnosticMessageText(diagnostic)];
 
         let origin: DiagnosticOrigin;
 
@@ -67,7 +64,7 @@ export class ToBeCallableWith {
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.canBeCalled(isTypeNode, targetText), origin));
+      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.isCallable(isTypeNode, targetText), origin));
     }
 
     return diagnostics;

@@ -17,12 +17,12 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' must be provided.`;
   }
 
-  static canBeCalled(isTypeNode: boolean, targetText: string): string {
-    return `${isTypeNode ? "Type" : "Expression"} can be called ${targetText}.`;
+  static isCallable(isTypeNode: boolean, targetText: string): string {
+    return `${isTypeNode ? "Type" : "Expression"} is callable ${targetText}.`;
   }
 
-  static cannotBeCalled(isTypeNode: boolean, targetText: string): string {
-    return `${isTypeNode ? "Type" : "Expression"} cannot be called ${targetText}.`;
+  static isNotCallable(isTypeNode: boolean, targetText: string): string {
+    return `${isTypeNode ? "Type" : "Expression"} is not callable ${targetText}.`;
   }
 
   static acceptsProps(isTypeNode: boolean): string {
