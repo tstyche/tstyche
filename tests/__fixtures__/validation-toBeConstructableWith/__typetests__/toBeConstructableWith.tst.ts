@@ -12,6 +12,10 @@ function getPerson(name: string) {
   return new Person(name);
 }
 
+function getPersonConstructor() {
+  return Person;
+}
+
 function getPersonGetter() {
   return getPerson;
 }
@@ -37,7 +41,9 @@ describe("argument for 'source'", () => {
 
     expect(getPersonGetter).type.toBeConstructableWith();
     expect(getPersonGetter()).type.toBeConstructableWith("abc");
+    expect(getPersonConstructor).type.toBeConstructableWith("abc");
 
+    expect(getPersonConstructor()).type.toBeConstructableWith("abc"); // allowed
     expect(Person).type.toBeConstructableWith("abc"); // allowed
   });
 

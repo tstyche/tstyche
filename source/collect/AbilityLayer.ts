@@ -105,8 +105,8 @@ export class AbilityLayer {
 
       case "toBeConstructableWith":
         this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd + 1, start: expectStart, replacement: "new" },
-          { end: matcherNameEnd, start: expectEnd - 1 },
+          { end: expectExpressionEnd, start: expectStart, replacement: "new" },
+          { end: matcherNameEnd, start: expectEnd },
         ]);
 
         break;

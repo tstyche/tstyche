@@ -95,8 +95,8 @@ export class ToBeConstructableWith {
 
     if (!type || type.getConstructSignatures().length === 0) {
       const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", "an identifier of a constructable type")
-        : ExpectDiagnosticText.argumentMustBe("source", "an identifier of a constructable expression");
+        ? ExpectDiagnosticText.typeArgumentMustBe("Source", "a constructable type")
+        : ExpectDiagnosticText.argumentMustBe("source", "a constructable expression");
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
