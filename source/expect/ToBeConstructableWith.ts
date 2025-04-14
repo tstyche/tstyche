@@ -103,7 +103,7 @@ export class ToBeConstructableWith {
       }
 
       if (type != null && type.getCallSignatures().length > 0) {
-        text.push("Did you mean to use the '.toBeCallableWith()' matcher?");
+        text.push(ExpectDiagnosticText.didYouMeanToUse("the '.toBeCallableWith()' matcher"));
       }
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
