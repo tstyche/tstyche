@@ -42,7 +42,7 @@ class DefaultSecond {
 }
 
 describe("when target is an expression", () => {
-  test("can be called without arguments", () => {
+  test("is constructable without arguments", () => {
     expect(Zero).type.toBeConstructableWith();
     expect(Zero).type.not.toBeConstructableWith(); // fail
 
@@ -53,7 +53,7 @@ describe("when target is an expression", () => {
     expect(DefaultFirst).type.not.toBeConstructableWith(); // fail
   });
 
-  test("cannot be called without arguments", () => {
+  test("is not constructable without arguments", () => {
     expect(One).type.not.toBeConstructableWith();
     expect(One).type.toBeConstructableWith(); // fail: Expected 1 arguments, but got 0.
 
@@ -64,7 +64,7 @@ describe("when target is an expression", () => {
     expect(DefaultSecond).type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
   });
 
-  test("can be called with the given argument", () => {
+  test("is constructable with the given argument", () => {
     expect(One).type.toBeConstructableWith("one");
     expect(One).type.not.toBeConstructableWith("one"); // fail
 
@@ -87,12 +87,12 @@ describe("when target is an expression", () => {
     expect(DefaultSecond).type.not.toBeConstructableWith("one"); // fail
   });
 
-  test("cannot be called with the given argument", () => {
+  test("is not constructable with the given argument", () => {
     expect(Zero).type.not.toBeConstructableWith("one");
     expect(Zero).type.toBeConstructableWith("one"); // fail: Expected 0 arguments, but got 1.
   });
 
-  test("can be called with the given arguments", () => {
+  test("is constructable with the given arguments", () => {
     expect(OptionalSecond).type.toBeConstructableWith("one", undefined);
     expect(OptionalSecond).type.not.toBeConstructableWith("one", undefined); // fail
 
@@ -118,7 +118,7 @@ describe("when target is an expression", () => {
     expect(DefaultSecond).type.not.toBeConstructableWith(...["one", 123]); // fail
   });
 
-  test("cannot be called with the given arguments", () => {
+  test("is not constructable with the given arguments", () => {
     expect(One).type.not.toBeConstructableWith("one", "two");
     expect(One).type.toBeConstructableWith("one", "two"); // fail: Expected 1 arguments, but got 2.
 

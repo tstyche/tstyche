@@ -31,7 +31,7 @@ class Trailing {
 }
 
 describe("when target is an expression", () => {
-  test("can be called with the given argument", () => {
+  test("is constructable with the given argument", () => {
     expect(Optional).type.toBeConstructableWith("one");
     expect(Optional).type.not.toBeConstructableWith("one"); // fail
 
@@ -42,7 +42,7 @@ describe("when target is an expression", () => {
     expect(Trailing).type.not.toBeConstructableWith(true); // fail
   });
 
-  test("can be called with the given arguments", () => {
+  test("is constructable with the given arguments", () => {
     expect(Optional).type.toBeConstructableWith("one", 2, true);
     expect(Optional).type.not.toBeConstructableWith("one", 2, true); // fail
 
@@ -65,12 +65,12 @@ describe("when target is an expression", () => {
     expect(Trailing).type.not.toBeConstructableWith(false, ...["ten", "eleven"]); // fail
   });
 
-  test("can be called without arguments", () => {
+  test("is constructable without arguments", () => {
     expect(Optional).type.toBeConstructableWith();
     expect(Optional).type.not.toBeConstructableWith(); // fail
   });
 
-  test("cannot be called without arguments", () => {
+  test("is not constructable without arguments", () => {
     expect(Leading).type.not.toBeConstructableWith();
     expect(Leading).type.toBeConstructableWith(); // fail: Source has 0 element(s) but target requires 1.
 
@@ -81,7 +81,7 @@ describe("when target is an expression", () => {
     expect(Trailing).type.toBeConstructableWith(); // fail: Expected at least 1 arguments, but got 0.
   });
 
-  test("cannot be called with the given arguments", () => {
+  test("is not constructable with the given arguments", () => {
     expect(Leading).type.not.toBeConstructableWith("one", "two");
     expect(Leading).type.toBeConstructableWith("one", "two"); // fail
 
