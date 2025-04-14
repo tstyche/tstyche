@@ -134,7 +134,7 @@ interface Matchers {
    */
   toBeCallableWith: (...target: Array<unknown>) => void;
   /**
-   * Checks if the source type can be constructed with the given arguments.
+   * Checks if the source type is constructable with the given arguments.
    */
   toBeConstructableWith: (...target: Array<unknown>) => void;
   /**
