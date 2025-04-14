@@ -15,17 +15,17 @@ function getLonger<T extends { length: number }>(a: T, b: T) {
 }
 
 describe("when target is an expression", () => {
-  test("can be called with the given argument", () => {
+  test("is callable with the given argument", () => {
     expect(firstItem).type.toBeCallableWith(["a", "b", "c"]);
     expect(firstItem).type.not.toBeCallableWith(["a", "b", "c"]); // fail
   });
 
-  test("cannot be called without arguments", () => {
+  test("is not callable without arguments", () => {
     expect(firstItem).type.toBeCallableWith();
     expect(firstItem).type.not.toBeCallableWith(); // fail: Expected 1 arguments, but got 0.
   });
 
-  test("can be called with the given arguments", () => {
+  test("is callable with the given arguments", () => {
     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: string) => {});
     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: string) => {}); // fail
 
@@ -39,7 +39,7 @@ describe("when target is an expression", () => {
     expect(getLonger<string | Array<number>>).type.not.toBeCallableWith("zero", [123]); // fail
   });
 
-  test("cannot be called with the given arguments", () => {
+  test("is not callable with the given arguments", () => {
     expect(forEach).type.not.toBeCallableWith(["1", "2"], (_n: number) => {});
     expect(forEach).type.toBeCallableWith(["1", "2"], (_n: number) => {}); // fail
 

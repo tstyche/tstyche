@@ -1,6 +1,6 @@
 Error: Expression is callable without arguments.
 
-  18 |   test("can be called without arguments", () => {
+  18 |   test("is callable without arguments", () => {
   19 |     expect(noArguments).type.toBeCallableWith();
   20 |     expect(noArguments).type.not.toBeCallableWith(); // fail
      |                                  ~~~~~~~~~~~~~~~~
@@ -8,7 +8,7 @@ Error: Expression is callable without arguments.
   22 |     expect(optionalFirst).type.toBeCallableWith();
   23 |     expect(optionalFirst).type.not.toBeCallableWith(); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:20:34 ❭ when target is an expression ❭ can be called without arguments
+       at ./__typetests__/parameter-arity.tst.ts:20:34 ❭ when target is an expression ❭ is callable without arguments
 
 Error: Expression is callable without arguments.
 
@@ -20,7 +20,7 @@ Error: Expression is callable without arguments.
   25 |     expect(defaultFirst).type.toBeCallableWith();
   26 |     expect(defaultFirst).type.not.toBeCallableWith(); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:23:36 ❭ when target is an expression ❭ can be called without arguments
+       at ./__typetests__/parameter-arity.tst.ts:23:36 ❭ when target is an expression ❭ is callable without arguments
 
 Error: Expression is callable without arguments.
 
@@ -30,15 +30,15 @@ Error: Expression is callable without arguments.
      |                                   ~~~~~~~~~~~~~~~~
   27 |   });
   28 | 
-  29 |   test("cannot be called without arguments", () => {
+  29 |   test("is not callable without arguments", () => {
 
-       at ./__typetests__/parameter-arity.tst.ts:26:35 ❭ when target is an expression ❭ can be called without arguments
+       at ./__typetests__/parameter-arity.tst.ts:26:35 ❭ when target is an expression ❭ is callable without arguments
 
 Error: Expression is not callable without arguments.
 
 Expected 1 arguments, but got 0.
 
-  29 |   test("cannot be called without arguments", () => {
+  29 |   test("is not callable without arguments", () => {
   30 |     expect(oneArgument).type.not.toBeCallableWith();
   31 |     expect(oneArgument).type.toBeCallableWith(); // fail: Expected 1 arguments, but got 0.
      |                              ~~~~~~~~~~~~~~~~
@@ -46,7 +46,7 @@ Expected 1 arguments, but got 0.
   33 |     expect(optionalSecond).type.not.toBeCallableWith();
   34 |     expect(optionalSecond).type.toBeCallableWith(); // fail: Expected 1-2 arguments, but got 0.
 
-       at ./__typetests__/parameter-arity.tst.ts:31:30 ❭ when target is an expression ❭ cannot be called without arguments
+       at ./__typetests__/parameter-arity.tst.ts:31:30 ❭ when target is an expression ❭ is not callable without arguments
 
     An argument for 'a' was not provided. ts(6210)
 
@@ -72,7 +72,7 @@ Expected 1-2 arguments, but got 0.
   36 |     expect(defaultSecond).type.not.toBeCallableWith();
   37 |     expect(defaultSecond).type.toBeCallableWith(); // fail: Expected 1-2 arguments, but got 0.
 
-       at ./__typetests__/parameter-arity.tst.ts:34:33 ❭ when target is an expression ❭ cannot be called without arguments
+       at ./__typetests__/parameter-arity.tst.ts:34:33 ❭ when target is an expression ❭ is not callable without arguments
 
     An argument for 'a' was not provided. ts(6210)
 
@@ -96,9 +96,9 @@ Expected 1-2 arguments, but got 0.
      |                                ~~~~~~~~~~~~~~~~
   38 |   });
   39 | 
-  40 |   test("can be called with the given argument", () => {
+  40 |   test("is callable with the given argument", () => {
 
-       at ./__typetests__/parameter-arity.tst.ts:37:32 ❭ when target is an expression ❭ cannot be called without arguments
+       at ./__typetests__/parameter-arity.tst.ts:37:32 ❭ when target is an expression ❭ is not callable without arguments
 
     An argument for 'a' was not provided. ts(6210)
 
@@ -114,7 +114,7 @@ Expected 1-2 arguments, but got 0.
 
 Error: Expression is callable with the given argument.
 
-  40 |   test("can be called with the given argument", () => {
+  40 |   test("is callable with the given argument", () => {
   41 |     expect(oneArgument).type.toBeCallableWith("one");
   42 |     expect(oneArgument).type.not.toBeCallableWith("one"); // fail
      |                                  ~~~~~~~~~~~~~~~~
@@ -122,7 +122,7 @@ Error: Expression is callable with the given argument.
   44 |     expect(optionalFirst).type.toBeCallableWith(undefined);
   45 |     expect(optionalFirst).type.not.toBeCallableWith(undefined); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:42:34 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/parameter-arity.tst.ts:42:34 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -134,7 +134,7 @@ Error: Expression is callable with the given argument.
   47 |     expect(optionalFirst).type.toBeCallableWith("one");
   48 |     expect(optionalFirst).type.not.toBeCallableWith("one"); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:45:36 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/parameter-arity.tst.ts:45:36 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -146,7 +146,7 @@ Error: Expression is callable with the given argument.
   50 |     expect(optionalSecond).type.toBeCallableWith("one");
   51 |     expect(optionalSecond).type.not.toBeCallableWith("one"); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:48:36 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/parameter-arity.tst.ts:48:36 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -158,7 +158,7 @@ Error: Expression is callable with the given argument.
   53 |     expect(defaultFirst).type.toBeCallableWith(undefined);
   54 |     expect(defaultFirst).type.not.toBeCallableWith(undefined); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:51:37 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/parameter-arity.tst.ts:51:37 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -170,7 +170,7 @@ Error: Expression is callable with the given argument.
   56 |     expect(defaultFirst).type.toBeCallableWith("one");
   57 |     expect(defaultFirst).type.not.toBeCallableWith("one"); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:54:35 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/parameter-arity.tst.ts:54:35 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -182,7 +182,7 @@ Error: Expression is callable with the given argument.
   59 |     expect(defaultSecond).type.toBeCallableWith("one");
   60 |     expect(defaultSecond).type.not.toBeCallableWith("one"); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:57:35 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/parameter-arity.tst.ts:57:35 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -192,27 +192,27 @@ Error: Expression is callable with the given argument.
      |                                    ~~~~~~~~~~~~~~~~
   61 |   });
   62 | 
-  63 |   test("cannot be called with the given argument", () => {
+  63 |   test("is not callable with the given argument", () => {
 
-       at ./__typetests__/parameter-arity.tst.ts:60:36 ❭ when target is an expression ❭ can be called with the given argument
+       at ./__typetests__/parameter-arity.tst.ts:60:36 ❭ when target is an expression ❭ is callable with the given argument
 
 Error: Expression is not callable with the given argument.
 
 Expected 0 arguments, but got 1.
 
-  63 |   test("cannot be called with the given argument", () => {
+  63 |   test("is not callable with the given argument", () => {
   64 |     expect(noArguments).type.not.toBeCallableWith("one");
   65 |     expect(noArguments).type.toBeCallableWith("one"); // fail: Expected 0 arguments, but got 1.
      |                                               ~~~~~
   66 |   });
   67 | 
-  68 |   test("can be called with the given arguments", () => {
+  68 |   test("is callable with the given arguments", () => {
 
        at ./__typetests__/parameter-arity.tst.ts:65:47
 
 Error: Expression is callable with the given arguments.
 
-  68 |   test("can be called with the given arguments", () => {
+  68 |   test("is callable with the given arguments", () => {
   69 |     expect(optionalSecond).type.toBeCallableWith("one", undefined);
   70 |     expect(optionalSecond).type.not.toBeCallableWith("one", undefined); // fail
      |                                     ~~~~~~~~~~~~~~~~
@@ -220,7 +220,7 @@ Error: Expression is callable with the given arguments.
   72 |     expect(optionalSecond).type.toBeCallableWith(...["one", undefined]);
   73 |     expect(optionalSecond).type.not.toBeCallableWith(...["one", undefined]); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:70:37 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:70:37 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -232,7 +232,7 @@ Error: Expression is callable with the given arguments.
   75 |     expect(optionalSecond).type.toBeCallableWith("one", 123);
   76 |     expect(optionalSecond).type.not.toBeCallableWith("one", 123); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:73:37 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:73:37 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -244,7 +244,7 @@ Error: Expression is callable with the given arguments.
   78 |     expect(optionalSecond).type.toBeCallableWith(...["one", 123]);
   79 |     expect(optionalSecond).type.not.toBeCallableWith(...["one", 123]); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:76:37 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:76:37 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -256,7 +256,7 @@ Error: Expression is callable with the given arguments.
   81 |     expect(defaultSecond).type.toBeCallableWith("one", undefined);
   82 |     expect(defaultSecond).type.not.toBeCallableWith("one", undefined); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:79:37 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:79:37 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -268,7 +268,7 @@ Error: Expression is callable with the given arguments.
   84 |     expect(defaultSecond).type.toBeCallableWith(...["one", undefined]);
   85 |     expect(defaultSecond).type.not.toBeCallableWith(...["one", undefined]); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:82:36 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:82:36 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -280,7 +280,7 @@ Error: Expression is callable with the given arguments.
   87 |     expect(defaultSecond).type.toBeCallableWith("one", 123);
   88 |     expect(defaultSecond).type.not.toBeCallableWith("one", 123); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:85:36 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:85:36 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -292,7 +292,7 @@ Error: Expression is callable with the given arguments.
   90 |     expect(defaultSecond).type.toBeCallableWith(...["one", 123]);
   91 |     expect(defaultSecond).type.not.toBeCallableWith(...["one", 123]); // fail
 
-       at ./__typetests__/parameter-arity.tst.ts:88:36 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:88:36 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -302,15 +302,15 @@ Error: Expression is callable with the given arguments.
      |                                    ~~~~~~~~~~~~~~~~
   92 |   });
   93 | 
-  94 |   test("cannot be called with the given arguments", () => {
+  94 |   test("is not callable with the given arguments", () => {
 
-       at ./__typetests__/parameter-arity.tst.ts:91:36 ❭ when target is an expression ❭ can be called with the given arguments
+       at ./__typetests__/parameter-arity.tst.ts:91:36 ❭ when target is an expression ❭ is callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
 Expected 1 arguments, but got 2.
 
-  94 |   test("cannot be called with the given arguments", () => {
+  94 |   test("is not callable with the given arguments", () => {
   95 |     expect(oneArgument).type.not.toBeCallableWith("one", "two");
   96 |     expect(oneArgument).type.toBeCallableWith("one", "two"); // fail: Expected 1 arguments, but got 2.
      |                                                      ~~~~~

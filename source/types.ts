@@ -130,7 +130,7 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the source type can be called with the given arguments.
+   * Checks if the source type is callable with the given arguments.
    */
   toBeCallableWith: (...target: Array<unknown>) => void;
   /**

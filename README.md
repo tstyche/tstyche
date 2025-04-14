@@ -63,7 +63,7 @@ Here is the list of all matchers:
 - `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()` compare types or types of expression,
 - `.toAcceptProps()` checks the type of JSX component props,
 - `.toBeApplicable` ensures that the decorator function can be applied,
-- `.toBeCallableWith()` checks whether a function can be called with the given arguments,
+- `.toBeCallableWith()` checks whether a function is callable with the given arguments,
 - `.toHaveProperty()` looks up keys on an object type,
 - `.toRaiseError()` captures the message or code of a type error.
 
