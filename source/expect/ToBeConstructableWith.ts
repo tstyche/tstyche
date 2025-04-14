@@ -41,7 +41,7 @@ export class ToBeConstructableWith {
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [
-          ExpectDiagnosticText.cannotBeConstructable(isTypeNode, targetText),
+          ExpectDiagnosticText.isNotConstructable(isTypeNode, targetText),
           getDiagnosticMessageText(diagnostic),
         ];
 
@@ -67,7 +67,7 @@ export class ToBeConstructableWith {
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.canBeConstructable(isTypeNode, targetText), origin));
+      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.isConstructable(isTypeNode, targetText), origin));
     }
 
     return diagnostics;

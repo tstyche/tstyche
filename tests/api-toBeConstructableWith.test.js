@@ -69,19 +69,19 @@ await test("toBeConstructableWith", async (t) => {
   //   assert.equal(exitCode, 1);
   // });
 
-  // await t.test("rest parameters", async () => {
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["rest-parameters.tst.ts"]);
+  await t.test("rest parameters", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["rest-parameters.tst.ts"]);
 
-  //   await assert.matchSnapshot(normalizeOutput(stdout), {
-  //     fileName: `${testFileName}-rest-parameters-stdout`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-rest-parameters-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   await assert.matchSnapshot(stderr, {
-  //     fileName: `${testFileName}-rest-parameters-stderr`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-rest-parameters-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   assert.equal(exitCode, 1);
-  // });
+    assert.equal(exitCode, 1);
+  });
 });

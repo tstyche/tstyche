@@ -1,4 +1,4 @@
-Error: Expression can be constructable without arguments.
+Error: Expression is constructable without arguments.
 
   45 |   test("can be called without arguments", () => {
   46 |     expect(Zero).type.toBeConstructableWith();
@@ -10,7 +10,7 @@ Error: Expression can be constructable without arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:47:27 ❭ when target is an expression ❭ can be called without arguments
 
-Error: Expression can be constructable without arguments.
+Error: Expression is constructable without arguments.
 
   48 | 
   49 |     expect(OptionalFirst).type.toBeConstructableWith();
@@ -22,7 +22,7 @@ Error: Expression can be constructable without arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:50:36 ❭ when target is an expression ❭ can be called without arguments
 
-Error: Expression can be constructable without arguments.
+Error: Expression is constructable without arguments.
 
   51 | 
   52 |     expect(DefaultFirst).type.toBeConstructableWith();
@@ -34,7 +34,7 @@ Error: Expression can be constructable without arguments.
 
        at ./__typetests__/parameter-arity.tst.ts:53:35 ❭ when target is an expression ❭ can be called without arguments
 
-Error: Expression cannot be constructable without arguments.
+Error: Expression is not constructable without arguments.
 
 Expected 1 arguments, but got 0.
 
@@ -60,7 +60,7 @@ Expected 1 arguments, but got 0.
 
            at ./__typetests__/parameter-arity.tst.ts:7:15
 
-Error: Expression cannot be constructable without arguments.
+Error: Expression is not constructable without arguments.
 
 Expected 1-2 arguments, but got 0.
 
@@ -86,7 +86,7 @@ Expected 1-2 arguments, but got 0.
 
            at ./__typetests__/parameter-arity.tst.ts:22:15
 
-Error: Expression cannot be constructable without arguments.
+Error: Expression is not constructable without arguments.
 
 Expected 1-2 arguments, but got 0.
 
@@ -112,7 +112,7 @@ Expected 1-2 arguments, but got 0.
 
            at ./__typetests__/parameter-arity.tst.ts:38:15
 
-Error: Expression can be constructable with the given argument.
+Error: Expression is constructable with the given argument.
 
   67 |   test("can be called with the given argument", () => {
   68 |     expect(One).type.toBeConstructableWith("one");
@@ -124,7 +124,7 @@ Error: Expression can be constructable with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:69:26 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be constructable with the given argument.
+Error: Expression is constructable with the given argument.
 
   70 | 
   71 |     expect(OptionalFirst).type.toBeConstructableWith(undefined);
@@ -136,7 +136,7 @@ Error: Expression can be constructable with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:72:36 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be constructable with the given argument.
+Error: Expression is constructable with the given argument.
 
   73 | 
   74 |     expect(OptionalFirst).type.toBeConstructableWith("one");
@@ -148,7 +148,7 @@ Error: Expression can be constructable with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:75:36 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be constructable with the given argument.
+Error: Expression is constructable with the given argument.
 
   76 | 
   77 |     expect(OptionalSecond).type.toBeConstructableWith("one");
@@ -160,7 +160,7 @@ Error: Expression can be constructable with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:78:37 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be constructable with the given argument.
+Error: Expression is constructable with the given argument.
 
   79 | 
   80 |     expect(DefaultFirst).type.toBeConstructableWith(undefined);
@@ -172,7 +172,7 @@ Error: Expression can be constructable with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:81:35 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be constructable with the given argument.
+Error: Expression is constructable with the given argument.
 
   82 | 
   83 |     expect(DefaultFirst).type.toBeConstructableWith("one");
@@ -184,7 +184,7 @@ Error: Expression can be constructable with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:84:35 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression can be constructable with the given argument.
+Error: Expression is constructable with the given argument.
 
   85 | 
   86 |     expect(DefaultSecond).type.toBeConstructableWith("one");
@@ -196,7 +196,7 @@ Error: Expression can be constructable with the given argument.
 
        at ./__typetests__/parameter-arity.tst.ts:87:36 ❭ when target is an expression ❭ can be called with the given argument
 
-Error: Expression cannot be constructable with the given argument.
+Error: Expression is not constructable with the given argument.
 
 Expected 0 arguments, but got 1.
 
@@ -210,7 +210,7 @@ Expected 0 arguments, but got 1.
 
        at ./__typetests__/parameter-arity.tst.ts:92:45
 
-Error: Expression can be constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
    95 |   test("can be called with the given arguments", () => {
    96 |     expect(OptionalSecond).type.toBeConstructableWith("one", undefined);
@@ -222,7 +222,7 @@ Error: Expression can be constructable with the given arguments.
 
         at ./__typetests__/parameter-arity.tst.ts:97:37 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
    98 | 
    99 |     expect(OptionalSecond).type.toBeConstructableWith(...["one", undefined]);
@@ -234,7 +234,7 @@ Error: Expression can be constructable with the given arguments.
 
         at ./__typetests__/parameter-arity.tst.ts:100:37 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
   101 | 
   102 |     expect(OptionalSecond).type.toBeConstructableWith("one", 123);
@@ -246,7 +246,7 @@ Error: Expression can be constructable with the given arguments.
 
         at ./__typetests__/parameter-arity.tst.ts:103:37 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
   104 | 
   105 |     expect(OptionalSecond).type.toBeConstructableWith(...["one", 123]);
@@ -258,7 +258,7 @@ Error: Expression can be constructable with the given arguments.
 
         at ./__typetests__/parameter-arity.tst.ts:106:37 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
   107 | 
   108 |     expect(DefaultSecond).type.toBeConstructableWith("one", undefined);
@@ -270,7 +270,7 @@ Error: Expression can be constructable with the given arguments.
 
         at ./__typetests__/parameter-arity.tst.ts:109:36 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
   110 | 
   111 |     expect(DefaultSecond).type.toBeConstructableWith(...["one", undefined]);
@@ -282,7 +282,7 @@ Error: Expression can be constructable with the given arguments.
 
         at ./__typetests__/parameter-arity.tst.ts:112:36 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
   113 | 
   114 |     expect(DefaultSecond).type.toBeConstructableWith("one", 123);
@@ -294,7 +294,7 @@ Error: Expression can be constructable with the given arguments.
 
         at ./__typetests__/parameter-arity.tst.ts:115:36 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression can be constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
   116 | 
   117 |     expect(DefaultSecond).type.toBeConstructableWith(...["one", 123]);
@@ -306,7 +306,7 @@ Error: Expression can be constructable with the given arguments.
 
         at ./__typetests__/parameter-arity.tst.ts:118:36 ❭ when target is an expression ❭ can be called with the given arguments
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 1 arguments, but got 2.
 
@@ -320,7 +320,7 @@ Expected 1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:123:51
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 1 arguments, but got 2.
 
@@ -334,7 +334,7 @@ Expected 1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:126:44
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
@@ -348,7 +348,7 @@ Expected 0-1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:129:61
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
@@ -362,7 +362,7 @@ Expected 0-1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:132:54
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 
@@ -376,7 +376,7 @@ Expected 1-2 arguments, but got 3.
 
         at ./__typetests__/parameter-arity.tst.ts:135:67
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 
@@ -390,7 +390,7 @@ Expected 1-2 arguments, but got 3.
 
         at ./__typetests__/parameter-arity.tst.ts:138:55
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
@@ -404,7 +404,7 @@ Expected 0-1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:141:60
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 0-1 arguments, but got 2.
 
@@ -418,7 +418,7 @@ Expected 0-1 arguments, but got 2.
 
         at ./__typetests__/parameter-arity.tst.ts:144:53
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 
@@ -432,7 +432,7 @@ Expected 1-2 arguments, but got 3.
 
         at ./__typetests__/parameter-arity.tst.ts:147:66
 
-Error: Expression cannot be constructable with the given arguments.
+Error: Expression is not constructable with the given arguments.
 
 Expected 1-2 arguments, but got 3.
 
