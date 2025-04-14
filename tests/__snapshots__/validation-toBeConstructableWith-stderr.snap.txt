@@ -6,14 +6,14 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
      |     ~~~~~~
   26 |   });
   27 | 
-  28 |   test("must be an identifier of a constructable expression", () => {
+  28 |   test("must be a constructable expression", () => {
 
        at ./__typetests__/toBeConstructableWith.tst.ts:25:5
 
 Error: An argument for 'source' must be a constructable expression.
 
   27 | 
-  28 |   test("must be an identifier of a constructable expression", () => {
+  28 |   test("must be a constructable expression", () => {
   29 |     expect("abc").type.toBeConstructableWith();
      |            ~~~~~
   30 |     expect(123).type.toBeConstructableWith();
@@ -24,7 +24,7 @@ Error: An argument for 'source' must be a constructable expression.
 
 Error: An argument for 'source' must be a constructable expression.
 
-  28 |   test("must be an identifier of a constructable expression", () => {
+  28 |   test("must be a constructable expression", () => {
   29 |     expect("abc").type.toBeConstructableWith();
   30 |     expect(123).type.toBeConstructableWith();
      |            ~~~
@@ -108,6 +108,8 @@ Error: An argument for 'source' must be a constructable expression.
 
 Error: An argument for 'source' must be a constructable expression.
 
+Did you mean to use the '.toBeCallableWith()' matcher?
+
   37 |     expect(() => () => false).type.toBeConstructableWith();
   38 | 
   39 |     expect(getPerson).type.toBeConstructableWith("abc");
@@ -132,37 +134,43 @@ Error: An argument for 'source' must be a constructable expression.
 
 Error: An argument for 'source' must be a constructable expression.
 
+Did you mean to use the '.toBeCallableWith()' matcher?
+
   40 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
   41 | 
   42 |     expect(getPersonGetter).type.toBeConstructableWith();
      |            ~~~~~~~~~~~~~~~
   43 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
   44 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
-  45 | 
+  45 |   });
 
        at ./__typetests__/toBeConstructableWith.tst.ts:42:12
 
 Error: An argument for 'source' must be a constructable expression.
+
+Did you mean to use the '.toBeCallableWith()' matcher?
 
   41 | 
   42 |     expect(getPersonGetter).type.toBeConstructableWith();
   43 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
      |            ~~~~~~~~~~~~~~~~~
   44 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
-  45 | 
-  46 |     expect(getPersonConstructor()).type.toBeConstructableWith("abc"); // allowed
+  45 |   });
+  46 | 
 
        at ./__typetests__/toBeConstructableWith.tst.ts:43:12
 
 Error: An argument for 'source' must be a constructable expression.
 
+Did you mean to use the '.toBeCallableWith()' matcher?
+
   42 |     expect(getPersonGetter).type.toBeConstructableWith();
   43 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
   44 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
      |            ~~~~~~~~~~~~~~~~~~~~
-  45 | 
-  46 |     expect(getPersonConstructor()).type.toBeConstructableWith("abc"); // allowed
-  47 |     expect(Person).type.toBeConstructableWith("abc"); // allowed
+  45 |   });
+  46 | 
+  47 |   test("allowed expressions", () => {
 
        at ./__typetests__/toBeConstructableWith.tst.ts:44:12
 
@@ -171,28 +179,28 @@ Error: An argument for 'source' cannot be of the 'any' type.
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
-  49 | 
-  50 |   test("is rejected type?", () => {
-  51 |     expect("abc" as any).type.toBeConstructableWith();
+  51 | 
+  52 |   test("is rejected type?", () => {
+  53 |     expect("abc" as any).type.toBeConstructableWith();
      |            ~~~~~~~~~~~~
-  52 |     expect("abc" as never).type.toBeConstructableWith();
-  53 |   });
-  54 | });
+  54 |     expect("abc" as never).type.toBeConstructableWith();
+  55 |   });
+  56 | });
 
-       at ./__typetests__/toBeConstructableWith.tst.ts:51:12
+       at ./__typetests__/toBeConstructableWith.tst.ts:53:12
 
 Error: An argument for 'source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
 
-  50 |   test("is rejected type?", () => {
-  51 |     expect("abc" as any).type.toBeConstructableWith();
-  52 |     expect("abc" as never).type.toBeConstructableWith();
+  52 |   test("is rejected type?", () => {
+  53 |     expect("abc" as any).type.toBeConstructableWith();
+  54 |     expect("abc" as never).type.toBeConstructableWith();
      |            ~~~~~~~~~~~~~~
-  53 |   });
-  54 | });
-  55 | 
+  55 |   });
+  56 | });
+  57 | 
 
-       at ./__typetests__/toBeConstructableWith.tst.ts:52:12
+       at ./__typetests__/toBeConstructableWith.tst.ts:54:12
 

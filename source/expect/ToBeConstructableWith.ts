@@ -94,9 +94,17 @@ export class ToBeConstructableWith {
     }
 
     if (!type || type.getConstructSignatures().length === 0) {
-      const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", "a constructable type")
-        : ExpectDiagnosticText.argumentMustBe("source", "a constructable expression");
+      const text: Array<string> = [];
+
+      if (this.#compiler.isTypeNode(sourceNode)) {
+        text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a constructable type"));
+      } else {
+        text.push(ExpectDiagnosticText.argumentMustBe("source", "a constructable expression"));
+      }
+
+      if (type != null && type.getCallSignatures().length > 0) {
+        text.push("Did you mean to use the '.toBeCallableWith()' matcher?");
+      }
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 

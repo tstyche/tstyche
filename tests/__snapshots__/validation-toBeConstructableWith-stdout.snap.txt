@@ -3,12 +3,13 @@ uses TypeScript <<version>> with ./tsconfig.json
 fail ./__typetests__/toBeConstructableWith.tst.ts
   argument for 'source'
     × must be provided
-    × must be an identifier of a constructable expression
+    × must be a constructable expression
+    + allowed expressions
     × is rejected type?
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      3 failed, 3 total
+Tests:      3 failed, 1 passed, 4 total
 Assertions: 16 failed, 2 passed, 18 total
 Duration:   <<timestamp>>
 

@@ -25,7 +25,7 @@ describe("argument for 'source'", () => {
     expect().type.toBeConstructableWith(false);
   });
 
-  test("must be an identifier of a constructable expression", () => {
+  test("must be a constructable expression", () => {
     expect("abc").type.toBeConstructableWith();
     expect(123).type.toBeConstructableWith();
     expect(false).type.toBeConstructableWith();
@@ -42,9 +42,11 @@ describe("argument for 'source'", () => {
     expect(getPersonGetter).type.toBeConstructableWith();
     expect(getPersonGetter()).type.toBeConstructableWith("abc");
     expect(getPersonConstructor).type.toBeConstructableWith("abc");
+  });
 
-    expect(getPersonConstructor()).type.toBeConstructableWith("abc"); // allowed
-    expect(Person).type.toBeConstructableWith("abc"); // allowed
+  test("allowed expressions", () => {
+    expect(getPersonConstructor()).type.toBeConstructableWith("abc");
+    expect(Person).type.toBeConstructableWith("abc");
   });
 
   test("is rejected type?", () => {
