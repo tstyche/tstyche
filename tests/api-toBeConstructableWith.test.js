@@ -37,21 +37,21 @@ await test("toBeConstructableWith", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  // await t.test("generic classes", async () => {
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["generic-classes.tst.ts"]);
+  await t.test("generic classes", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["generic-classes.tst.ts"]);
 
-  //   await assert.matchSnapshot(normalizeOutput(stdout), {
-  //     fileName: `${testFileName}-generic-classes-stdout`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-generic-classes-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   await assert.matchSnapshot(stderr, {
-  //     fileName: `${testFileName}-generic-classes-stderr`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-generic-classes-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   assert.equal(exitCode, 1);
-  // });
+    assert.equal(exitCode, 1);
+  });
 
   await t.test("overload signatures", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overload-signatures.tst.ts"]);
