@@ -1,5 +1,9 @@
 import type ts from "typescript";
 
+export function diagnosticBelongsToNode(diagnostic: ts.Diagnostic, node: ts.NodeArray<ts.Node> | ts.Node): boolean {
+  return diagnostic.start != null && diagnostic.start >= node.pos && diagnostic.start <= node.end;
+}
+
 function diagnosticMessageChainToText(chain: ts.DiagnosticMessageChain) {
   const result = [chain.messageText];
 
@@ -18,14 +22,10 @@ export function getDiagnosticMessageText(diagnostic: ts.Diagnostic): string | Ar
     : diagnosticMessageChainToText(diagnostic.messageText);
 }
 
+export function getTextSpanEnd(span: ts.TextSpan): number {
+  return span.start + span.length;
+}
+
 export function isDiagnosticWithLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticWithLocation {
   return diagnostic.file != null && diagnostic.start != null && diagnostic.length != null;
-}
-
-export function textRangeContainsDiagnostic(range: ts.TextRange, diagnostic: ts.Diagnostic): boolean {
-  return diagnostic.start != null && diagnostic.start >= range.pos && diagnostic.start <= range.end;
-}
-
-export function textSpanEnd(span: ts.TextSpan): number {
-  return span.start + span.length;
 }

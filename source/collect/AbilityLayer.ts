@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import type { AssertionNode } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { textRangeContainsDiagnostic } from "#diagnostic";
+import { diagnosticBelongsToNode } from "#diagnostic";
 import type { ProjectService } from "#project";
 
 interface TextRange {
@@ -65,7 +65,7 @@ export class AbilityLayer {
 
       for (const node of this.#nodes.reverse()) {
         for (const diagnostic of diagnostics) {
-          if (textRangeContainsDiagnostic(node.matcherNode, diagnostic)) {
+          if (diagnosticBelongsToNode(diagnostic, node.matcherNode)) {
             if (!node.abilityDiagnostics) {
               node.abilityDiagnostics = new Set();
             }
