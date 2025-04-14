@@ -57,6 +57,10 @@ export class ExpectDiagnosticText {
     return `Type '${typeText}' has property '${propertyNameText}'.`;
   }
 
+  static didYouMeanToUse(suggestionText: string): string {
+    return `Did you mean to use ${suggestionText}?`;
+  }
+
   static matcherIsNotSupported(matcherNameText: string): string {
     return `The '.${matcherNameText}()' matcher is not supported.`;
   }

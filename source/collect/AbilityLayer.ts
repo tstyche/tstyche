@@ -97,8 +97,8 @@ export class AbilityLayer {
       case "toBeApplicable":
       case "toBeCallableWith":
         this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd + 1, start: expectStart },
-          { end: matcherNameEnd, start: expectEnd - 1 },
+          { end: expectExpressionEnd, start: expectStart },
+          { end: matcherNameEnd, start: expectEnd },
         ]);
 
         break;

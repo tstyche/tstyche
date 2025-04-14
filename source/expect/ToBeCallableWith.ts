@@ -86,6 +86,9 @@ export class ToBeCallableWith {
     }
 
     if (
+      this.#compiler.isArrowFunction(sourceNode) ||
+      this.#compiler.isFunctionDeclaration(sourceNode) ||
+      this.#compiler.isFunctionExpression(sourceNode) ||
       // instantiation expressions are allowed
       this.#compiler.isExpressionWithTypeArguments(sourceNode) ||
       this.#compiler.isIdentifier(sourceNode)
@@ -94,9 +97,17 @@ export class ToBeCallableWith {
     }
 
     if (!type || type.getCallSignatures().length === 0) {
-      const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", "an identifier of a callable type")
-        : ExpectDiagnosticText.argumentMustBe("source", "an identifier of a callable expression");
+      const text: Array<string> = [];
+
+      if (this.#compiler.isTypeNode(sourceNode)) {
+        text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a callable type"));
+      } else {
+        text.push(ExpectDiagnosticText.argumentMustBe("source", "a callable expression"));
+      }
+
+      if (type != null && type.getConstructSignatures().length > 0) {
+        text.push(ExpectDiagnosticText.didYouMeanToUse("the '.toBeConstructableWith()' matcher"));
+      }
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
