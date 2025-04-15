@@ -1,7 +1,7 @@
 import test from "node:test";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
-import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
+import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -78,5 +78,45 @@ await test("toBeCallableWith", async (t) => {
     });
 
     assert.equal(exitCode, 1);
+  });
+
+  await test("handles missing semicolons", async (t) => {
+    const toBeCallableWithText = `import { expect, test } from "tstyche"
+
+function pickLonger<T extends { length: number }>(a: T, b: T) {
+  return a.length >= b.length ? a : b
+}
+
+test("pickLonger()", () => {
+  expect(pickLonger([1, 2], [1, 2, 3])).type.toBe<Array<number>>()
+  expect(pickLonger("two", "three")).type.toBe<"two" | "three">()
+
+  expect(pickLonger).type.not.toBeCallableWith(1, 2)
+
+  expect(pickLonger).type.not.toBeCallableWith("zero", [123])
+  expect(pickLonger<string | Array<number>>).type.toBeCallableWith("zero", [123])
+})
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toBeCallableWith.tst.ts"]: toBeCallableWithText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout-missing-semicolons`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 });
