@@ -16,6 +16,10 @@ function getPersonGetter() {
   return getPerson;
 }
 
+const obj = {
+  person: () => new Person("sample"),
+};
+
 describe("argument for 'source'", () => {
   test("must be provided", () => {
     expect().type.toBeCallableWith(false);
@@ -42,6 +46,8 @@ describe("argument for 'source'", () => {
 
     expect(getPersonGetter).type.toBeCallableWith();
     expect(getPersonGetter()).type.toBeCallableWith("abc");
+
+    expect(obj.person).type.toBeCallableWith();
 
     expect((a?: string) => a).type.toBeCallableWith("true");
     expect((a?: string) => a).type.toBeCallableWith();

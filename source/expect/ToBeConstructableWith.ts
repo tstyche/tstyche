@@ -86,9 +86,10 @@ export class ToBeConstructableWith {
     }
 
     if (
-      // instantiation expressions are allowed
+      // allows instantiation expressions
       this.#compiler.isExpressionWithTypeArguments(sourceNode) ||
-      this.#compiler.isIdentifier(sourceNode)
+      this.#compiler.isIdentifier(sourceNode) ||
+      this.#compiler.isPropertyAccessExpression(sourceNode)
     ) {
       type = matchWorker.getType(sourceNode);
     }
