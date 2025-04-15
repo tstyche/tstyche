@@ -95,7 +95,6 @@ export class AbilityLayer {
 
     switch (assertionNode.matcherNameNode.name.text) {
       case "toBeApplicable":
-      case "toBeCallableWith":
         this.#addRanges(assertionNode, [
           { end: expectExpressionEnd, start: expectStart },
           { end: matcherNameEnd, start: expectEnd },
@@ -103,9 +102,17 @@ export class AbilityLayer {
 
         break;
 
+      case "toBeCallableWith":
+        this.#addRanges(assertionNode, [
+          { end: expectExpressionEnd, start: expectStart, replacement: ";" },
+          { end: matcherNameEnd, start: expectEnd },
+        ]);
+
+        break;
+
       case "toBeConstructableWith":
         this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd, start: expectStart, replacement: "new" },
+          { end: expectExpressionEnd, start: expectStart, replacement: "; new" },
           { end: matcherNameEnd, start: expectEnd },
         ]);
 
