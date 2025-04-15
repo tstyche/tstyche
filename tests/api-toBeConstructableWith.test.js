@@ -1,7 +1,7 @@
 import test from "node:test";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
-import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
+import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -83,5 +83,52 @@ await test("toBeConstructableWith", async (t) => {
     });
 
     assert.equal(exitCode, 1);
+  });
+
+  await test("handles missing semicolons", async (t) => {
+    const toBeConstructableWithText = `import { expect, test } from "tstyche"
+
+class Pair<T> {
+  left: T
+  right: T
+
+  constructor(left: T, right: T) {
+    this.left = left
+    this.right = right
+  }
+}
+
+test("Pair", () => {
+  expect(Pair).type.toBeConstructableWith("sun", "moon")
+  expect(Pair).type.toBeConstructableWith(true, false)
+
+  expect(Pair).type.not.toBeConstructableWith("five", 10)
+  expect(Pair<number | string>).type.toBeConstructableWith("five", 10)
+
+  expect(Pair).type.not.toBeConstructableWith()
+  expect(Pair).type.not.toBeConstructableWith("nope")
+})
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toBeConstructableWith.tst.ts"]: toBeConstructableWithText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout-missing-semicolons`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+
+    assert.equal(exitCode, 0);
   });
 });
