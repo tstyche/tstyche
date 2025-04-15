@@ -1,5 +1,11 @@
 # Releases
 
+## [4.0.0-beta.5] - 2025-04-15
+
+### Fixed
+
+- Insert missing semicolons in the ability layer text ([#456](https://github.com/tstyche/tstyche/pull/456))
+
 ## [4.0.0-beta.4] - 2025-04-14
 
 ### Added
@@ -595,6 +601,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.5
 [4.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.4
 [4.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.3
 [4.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.2
