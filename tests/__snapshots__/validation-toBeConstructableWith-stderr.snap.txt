@@ -1,206 +1,206 @@
 Error: An argument for 'source' or type argument for 'Source' must be provided.
 
-  23 | describe("argument for 'source'", () => {
-  24 |   test("must be provided", () => {
-  25 |     expect().type.toBeConstructableWith(false);
+  27 | describe("argument for 'source'", () => {
+  28 |   test("must be provided", () => {
+  29 |     expect().type.toBeConstructableWith(false);
      |     ~~~~~~
-  26 |   });
-  27 | 
-  28 |   test("must be a constructable expression", () => {
+  30 |   });
+  31 | 
+  32 |   test("must be a constructable expression", () => {
 
-       at ./__typetests__/toBeConstructableWith.tst.ts:25:5
+       at ./__typetests__/toBeConstructableWith.tst.ts:29:5
 
 Error: An argument for 'source' must be a constructable expression.
 
-  27 | 
-  28 |   test("must be a constructable expression", () => {
-  29 |     expect("abc").type.toBeConstructableWith();
+  31 | 
+  32 |   test("must be a constructable expression", () => {
+  33 |     expect("abc").type.toBeConstructableWith();
      |            ~~~~~
-  30 |     expect(123).type.toBeConstructableWith();
-  31 |     expect(false).type.toBeConstructableWith();
-  32 |     expect(undefined).type.toBeConstructableWith();
-
-       at ./__typetests__/toBeConstructableWith.tst.ts:29:12
-
-Error: An argument for 'source' must be a constructable expression.
-
-  28 |   test("must be a constructable expression", () => {
-  29 |     expect("abc").type.toBeConstructableWith();
-  30 |     expect(123).type.toBeConstructableWith();
-     |            ~~~
-  31 |     expect(false).type.toBeConstructableWith();
-  32 |     expect(undefined).type.toBeConstructableWith();
-  33 |     expect(null).type.toBeConstructableWith();
-
-       at ./__typetests__/toBeConstructableWith.tst.ts:30:12
-
-Error: An argument for 'source' must be a constructable expression.
-
-  29 |     expect("abc").type.toBeConstructableWith();
-  30 |     expect(123).type.toBeConstructableWith();
-  31 |     expect(false).type.toBeConstructableWith();
-     |            ~~~~~
-  32 |     expect(undefined).type.toBeConstructableWith();
-  33 |     expect(null).type.toBeConstructableWith();
-  34 | 
-
-       at ./__typetests__/toBeConstructableWith.tst.ts:31:12
-
-Error: An argument for 'source' must be a constructable expression.
-
-  30 |     expect(123).type.toBeConstructableWith();
-  31 |     expect(false).type.toBeConstructableWith();
-  32 |     expect(undefined).type.toBeConstructableWith();
-     |            ~~~~~~~~~
-  33 |     expect(null).type.toBeConstructableWith();
-  34 | 
-  35 |     expect(() => undefined).type.toBeConstructableWith();
-
-       at ./__typetests__/toBeConstructableWith.tst.ts:32:12
-
-Error: An argument for 'source' must be a constructable expression.
-
-  31 |     expect(false).type.toBeConstructableWith();
-  32 |     expect(undefined).type.toBeConstructableWith();
-  33 |     expect(null).type.toBeConstructableWith();
-     |            ~~~~
-  34 | 
-  35 |     expect(() => undefined).type.toBeConstructableWith();
-  36 |     expect(() => {}).type.toBeConstructableWith();
+  34 |     expect(123).type.toBeConstructableWith();
+  35 |     expect(false).type.toBeConstructableWith();
+  36 |     expect(undefined).type.toBeConstructableWith();
 
        at ./__typetests__/toBeConstructableWith.tst.ts:33:12
 
 Error: An argument for 'source' must be a constructable expression.
 
-  33 |     expect(null).type.toBeConstructableWith();
-  34 | 
-  35 |     expect(() => undefined).type.toBeConstructableWith();
-     |            ~~~~~~~~~~~~~~~
-  36 |     expect(() => {}).type.toBeConstructableWith();
-  37 |     expect(() => () => false).type.toBeConstructableWith();
+  32 |   test("must be a constructable expression", () => {
+  33 |     expect("abc").type.toBeConstructableWith();
+  34 |     expect(123).type.toBeConstructableWith();
+     |            ~~~
+  35 |     expect(false).type.toBeConstructableWith();
+  36 |     expect(undefined).type.toBeConstructableWith();
+  37 |     expect(null).type.toBeConstructableWith();
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:34:12
+
+Error: An argument for 'source' must be a constructable expression.
+
+  33 |     expect("abc").type.toBeConstructableWith();
+  34 |     expect(123).type.toBeConstructableWith();
+  35 |     expect(false).type.toBeConstructableWith();
+     |            ~~~~~
+  36 |     expect(undefined).type.toBeConstructableWith();
+  37 |     expect(null).type.toBeConstructableWith();
   38 | 
 
        at ./__typetests__/toBeConstructableWith.tst.ts:35:12
 
 Error: An argument for 'source' must be a constructable expression.
 
-  34 | 
-  35 |     expect(() => undefined).type.toBeConstructableWith();
-  36 |     expect(() => {}).type.toBeConstructableWith();
-     |            ~~~~~~~~
-  37 |     expect(() => () => false).type.toBeConstructableWith();
+  34 |     expect(123).type.toBeConstructableWith();
+  35 |     expect(false).type.toBeConstructableWith();
+  36 |     expect(undefined).type.toBeConstructableWith();
+     |            ~~~~~~~~~
+  37 |     expect(null).type.toBeConstructableWith();
   38 | 
-  39 |     expect(getPerson).type.toBeConstructableWith("abc");
+  39 |     expect(() => undefined).type.toBeConstructableWith();
 
        at ./__typetests__/toBeConstructableWith.tst.ts:36:12
 
 Error: An argument for 'source' must be a constructable expression.
 
-  35 |     expect(() => undefined).type.toBeConstructableWith();
-  36 |     expect(() => {}).type.toBeConstructableWith();
-  37 |     expect(() => () => false).type.toBeConstructableWith();
-     |            ~~~~~~~~~~~~~~~~~
+  35 |     expect(false).type.toBeConstructableWith();
+  36 |     expect(undefined).type.toBeConstructableWith();
+  37 |     expect(null).type.toBeConstructableWith();
+     |            ~~~~
   38 | 
-  39 |     expect(getPerson).type.toBeConstructableWith("abc");
-  40 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
+  39 |     expect(() => undefined).type.toBeConstructableWith();
+  40 |     expect(() => {}).type.toBeConstructableWith();
 
        at ./__typetests__/toBeConstructableWith.tst.ts:37:12
 
 Error: An argument for 'source' must be a constructable expression.
 
-Did you mean to use the '.toBeCallableWith()' matcher?
-
-  37 |     expect(() => () => false).type.toBeConstructableWith();
+  37 |     expect(null).type.toBeConstructableWith();
   38 | 
-  39 |     expect(getPerson).type.toBeConstructableWith("abc");
-     |            ~~~~~~~~~
-  40 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
-  41 | 
-  42 |     expect(getPersonGetter).type.toBeConstructableWith();
+  39 |     expect(() => undefined).type.toBeConstructableWith();
+     |            ~~~~~~~~~~~~~~~
+  40 |     expect(() => {}).type.toBeConstructableWith();
+  41 |     expect(() => () => false).type.toBeConstructableWith();
+  42 | 
 
        at ./__typetests__/toBeConstructableWith.tst.ts:39:12
 
 Error: An argument for 'source' must be a constructable expression.
 
   38 | 
-  39 |     expect(getPerson).type.toBeConstructableWith("abc");
-  40 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
-     |            ~~~~~~~~~~~~~~~~
-  41 | 
-  42 |     expect(getPersonGetter).type.toBeConstructableWith();
-  43 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
+  39 |     expect(() => undefined).type.toBeConstructableWith();
+  40 |     expect(() => {}).type.toBeConstructableWith();
+     |            ~~~~~~~~
+  41 |     expect(() => () => false).type.toBeConstructableWith();
+  42 | 
+  43 |     expect(getPerson).type.toBeConstructableWith("abc");
 
        at ./__typetests__/toBeConstructableWith.tst.ts:40:12
 
 Error: An argument for 'source' must be a constructable expression.
 
-Did you mean to use the '.toBeCallableWith()' matcher?
+  39 |     expect(() => undefined).type.toBeConstructableWith();
+  40 |     expect(() => {}).type.toBeConstructableWith();
+  41 |     expect(() => () => false).type.toBeConstructableWith();
+     |            ~~~~~~~~~~~~~~~~~
+  42 | 
+  43 |     expect(getPerson).type.toBeConstructableWith("abc");
+  44 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
 
-  40 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
-  41 | 
-  42 |     expect(getPersonGetter).type.toBeConstructableWith();
-     |            ~~~~~~~~~~~~~~~
-  43 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
-  44 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
-  45 |   });
-
-       at ./__typetests__/toBeConstructableWith.tst.ts:42:12
+       at ./__typetests__/toBeConstructableWith.tst.ts:41:12
 
 Error: An argument for 'source' must be a constructable expression.
 
 Did you mean to use the '.toBeCallableWith()' matcher?
 
-  41 | 
-  42 |     expect(getPersonGetter).type.toBeConstructableWith();
-  43 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
-     |            ~~~~~~~~~~~~~~~~~
-  44 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
-  45 |   });
-  46 | 
+  41 |     expect(() => () => false).type.toBeConstructableWith();
+  42 | 
+  43 |     expect(getPerson).type.toBeConstructableWith("abc");
+     |            ~~~~~~~~~
+  44 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
+  45 | 
+  46 |     expect(getPersonGetter).type.toBeConstructableWith();
 
        at ./__typetests__/toBeConstructableWith.tst.ts:43:12
 
 Error: An argument for 'source' must be a constructable expression.
 
-Did you mean to use the '.toBeCallableWith()' matcher?
-
-  42 |     expect(getPersonGetter).type.toBeConstructableWith();
-  43 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
-  44 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
-     |            ~~~~~~~~~~~~~~~~~~~~
-  45 |   });
-  46 | 
-  47 |   test("allowed expressions", () => {
+  42 | 
+  43 |     expect(getPerson).type.toBeConstructableWith("abc");
+  44 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
+     |            ~~~~~~~~~~~~~~~~
+  45 | 
+  46 |     expect(getPersonGetter).type.toBeConstructableWith();
+  47 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
 
        at ./__typetests__/toBeConstructableWith.tst.ts:44:12
+
+Error: An argument for 'source' must be a constructable expression.
+
+Did you mean to use the '.toBeCallableWith()' matcher?
+
+  44 |     expect(getPerson("abc")).type.toBeConstructableWith("abc");
+  45 | 
+  46 |     expect(getPersonGetter).type.toBeConstructableWith();
+     |            ~~~~~~~~~~~~~~~
+  47 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
+  48 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
+  49 |   });
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:46:12
+
+Error: An argument for 'source' must be a constructable expression.
+
+Did you mean to use the '.toBeCallableWith()' matcher?
+
+  45 | 
+  46 |     expect(getPersonGetter).type.toBeConstructableWith();
+  47 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
+     |            ~~~~~~~~~~~~~~~~~
+  48 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
+  49 |   });
+  50 | 
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:47:12
+
+Error: An argument for 'source' must be a constructable expression.
+
+Did you mean to use the '.toBeCallableWith()' matcher?
+
+  46 |     expect(getPersonGetter).type.toBeConstructableWith();
+  47 |     expect(getPersonGetter()).type.toBeConstructableWith("abc");
+  48 |     expect(getPersonConstructor).type.toBeConstructableWith("abc");
+     |            ~~~~~~~~~~~~~~~~~~~~
+  49 |   });
+  50 | 
+  51 |   test("allowed expressions", () => {
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:48:12
 
 Error: An argument for 'source' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
-  51 | 
-  52 |   test("is rejected type?", () => {
-  53 |     expect("abc" as any).type.toBeConstructableWith();
+  56 | 
+  57 |   test("is rejected type?", () => {
+  58 |     expect("abc" as any).type.toBeConstructableWith();
      |            ~~~~~~~~~~~~
-  54 |     expect("abc" as never).type.toBeConstructableWith();
-  55 |   });
-  56 | });
+  59 |     expect("abc" as never).type.toBeConstructableWith();
+  60 |   });
+  61 | });
 
-       at ./__typetests__/toBeConstructableWith.tst.ts:53:12
+       at ./__typetests__/toBeConstructableWith.tst.ts:58:12
 
 Error: An argument for 'source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
 
-  52 |   test("is rejected type?", () => {
-  53 |     expect("abc" as any).type.toBeConstructableWith();
-  54 |     expect("abc" as never).type.toBeConstructableWith();
+  57 |   test("is rejected type?", () => {
+  58 |     expect("abc" as any).type.toBeConstructableWith();
+  59 |     expect("abc" as never).type.toBeConstructableWith();
      |            ~~~~~~~~~~~~~~
-  55 |   });
-  56 | });
-  57 | 
+  60 |   });
+  61 | });
+  62 | 
 
-       at ./__typetests__/toBeConstructableWith.tst.ts:54:12
+       at ./__typetests__/toBeConstructableWith.tst.ts:59:12
 

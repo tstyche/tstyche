@@ -20,6 +20,10 @@ function getPersonGetter() {
   return getPerson;
 }
 
+const obj = {
+  Person,
+};
+
 describe("argument for 'source'", () => {
   test("must be provided", () => {
     expect().type.toBeConstructableWith(false);
@@ -47,6 +51,7 @@ describe("argument for 'source'", () => {
   test("allowed expressions", () => {
     expect(getPersonConstructor()).type.toBeConstructableWith("abc");
     expect(Person).type.toBeConstructableWith("abc");
+    expect(obj.Person).type.toBeConstructableWith("abc");
   });
 
   test("is rejected type?", () => {
