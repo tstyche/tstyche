@@ -1,4 +1,4 @@
-import { Format } from "./Format.js";
+import { capitalize } from "./helpers.js";
 
 export class ExpectDiagnosticText {
   static argumentCannotBeOfType(argumentNameText: string, typeText: string): string {
@@ -140,7 +140,7 @@ export class ExpectDiagnosticText {
   }
 
   static typeWasRejected(typeText: string): Array<string> {
-    const optionNameText = `reject${Format.capitalize(typeText)}Type`;
+    const optionNameText = `reject${capitalize(typeText)}Type`;
 
     return [
       `The '${typeText}' type was rejected because the '${optionNameText}' option is enabled.`,

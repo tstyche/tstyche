@@ -3,7 +3,6 @@ import { type AssertionNode, nodeBelongsToArgumentList } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import { Format } from "./Format.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
@@ -14,6 +13,7 @@ import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToBeConstructableWith } from "./ToBeConstructableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToRaiseError } from "./ToRaiseError.js";
+import { capitalize } from "./helpers.js";
 import type { MatchResult, TypeChecker } from "./types.js";
 
 export class ExpectService {
@@ -146,7 +146,7 @@ export class ExpectService {
 
   #rejectsTypeArguments(matchWorker: MatchWorker, onDiagnostics: DiagnosticsHandler<Diagnostic>) {
     for (const rejectedType of this.#rejectTypes) {
-      const allowedKeyword = this.#compiler.SyntaxKind[`${Format.capitalize(rejectedType)}Keyword`];
+      const allowedKeyword = this.#compiler.SyntaxKind[`${capitalize(rejectedType)}Keyword`];
 
       if (
         // allows explicit 'expect<any>()' and 'expect<never>()'
@@ -164,11 +164,11 @@ export class ExpectService {
           continue;
         }
 
-        if (matchWorker.getType(argumentNode).flags & this.#compiler.TypeFlags[Format.capitalize(rejectedType)]) {
+        if (matchWorker.getType(argumentNode).flags & this.#compiler.TypeFlags[capitalize(rejectedType)]) {
           const text = [
             nodeBelongsToArgumentList(this.#compiler, argumentNode)
               ? ExpectDiagnosticText.argumentCannotBeOfType(argumentName, rejectedType)
-              : ExpectDiagnosticText.typeArgumentCannotBeOfType(Format.capitalize(argumentName), rejectedType),
+              : ExpectDiagnosticText.typeArgumentCannotBeOfType(capitalize(argumentName), rejectedType),
             ...ExpectDiagnosticText.typeWasRejected(rejectedType),
           ];
 
