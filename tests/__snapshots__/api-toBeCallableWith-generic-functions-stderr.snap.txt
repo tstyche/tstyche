@@ -72,7 +72,7 @@ Error: Expression is callable with the given arguments.
 
        at ./__typetests__/generic-functions.tst.ts:36:32 ❭ when target is an expression ❭ is callable with the given arguments
 
-Error: Type is callable with the given arguments.
+Error: Expression is callable with the given arguments.
 
   37 | 
   38 |     expect(getLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);

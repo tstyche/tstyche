@@ -17,28 +17,28 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' must be provided.`;
   }
 
-  static isCallable(isTypeNode: boolean, targetText: string): string {
-    return `${isTypeNode ? "Type" : "Expression"} is callable ${targetText}.`;
+  static isCallable(isArgument: boolean, targetText: string): string {
+    return `${isArgument ? "Expression" : "Type"} is callable ${targetText}.`;
   }
 
-  static isNotCallable(isTypeNode: boolean, targetText: string): string {
-    return `${isTypeNode ? "Type" : "Expression"} is not callable ${targetText}.`;
+  static isNotCallable(isArgument: boolean, targetText: string): string {
+    return `${isArgument ? "Expression" : "Type"} is not callable ${targetText}.`;
   }
 
-  static isConstructable(isTypeNode: boolean, targetText: string): string {
-    return `${isTypeNode ? "Type" : "Expression"} is constructable ${targetText}.`;
+  static isConstructable(isArgument: boolean, targetText: string): string {
+    return `${isArgument ? "Expression" : "Type"} is constructable ${targetText}.`;
   }
 
-  static isNotConstructable(isTypeNode: boolean, targetText: string): string {
-    return `${isTypeNode ? "Type" : "Expression"} is not constructable ${targetText}.`;
+  static isNotConstructable(isArgument: boolean, targetText: string): string {
+    return `${isArgument ? "Expression" : "Type"} is not constructable ${targetText}.`;
   }
 
-  static acceptsProps(isTypeNode: boolean): string {
-    return `${isTypeNode ? "Component type" : "Component"} accepts props of the given type.`;
+  static acceptsProps(isArgument: boolean): string {
+    return `${isArgument ? "Component" : "Component type"} accepts props of the given type.`;
   }
 
-  static doesNotAcceptProps(isTypeNode: boolean): string {
-    return `${isTypeNode ? "Component type" : "Component"} does not accept props of the given type.`;
+  static doesNotAcceptProps(isArgument: boolean): string {
+    return `${isArgument ? "Component" : "Component type"} does not accept props of the given type.`;
   }
 
   static canBeApplied(targetText: string): string {
@@ -81,26 +81,26 @@ export class ExpectDiagnosticText {
     return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
-  static raisedError(isTypeNode: boolean, count: number, targetCount: number): string {
+  static raisedError(isArgument: boolean, count: number, targetCount: number): string {
     let countText = "a";
 
     if (count > 1 || targetCount > 1) {
       countText = count > targetCount ? `${count}` : `only ${count}`;
     }
 
-    return `${isTypeNode ? "Type" : "Expression type"} raised ${countText} type error${count === 1 ? "" : "s"}.`;
+    return `${isArgument ? "Expression" : "Type"} raised ${countText} type error${count === 1 ? "" : "s"}.`;
   }
 
-  static didNotRaiseError(isTypeNode: boolean): string {
-    return `${isTypeNode ? "Type" : "Expression type"} did not raise a type error.`;
+  static didNotRaiseError(isArgument: boolean): string {
+    return `${isArgument ? "Expression" : "Type"} did not raise a type error.`;
   }
 
-  static raisedMatchingError(isTypeNode: boolean): string {
-    return `${isTypeNode ? "Type" : "Expression type"} raised a matching type error.`;
+  static raisedMatchingError(isArgument: boolean): string {
+    return `${isArgument ? "Expression" : "Type"} raised a matching type error.`;
   }
 
-  static didNotRaiseMatchingError(isTypeNode: boolean): string {
-    return `${isTypeNode ? "Type" : "Expression type"} did not raise a matching type error.`;
+  static didNotRaiseMatchingError(isArgument: boolean): string {
+    return `${isArgument ? "Expression" : "Type"} did not raise a matching type error.`;
   }
 
   static isAssignableTo(sourceTypeText: string, targetTypeText: string): string {

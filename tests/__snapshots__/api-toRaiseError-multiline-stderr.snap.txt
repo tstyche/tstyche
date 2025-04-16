@@ -1,4 +1,4 @@
-Error: Expression type raised a matching type error.
+Error: Expression raised a matching type error.
 
   10 | 
   11 |   expect(lines({})).type.not.toRaiseError(
@@ -40,7 +40,7 @@ Error: Expression type raised a matching type error.
 
               at ./__typetests__/toRaiseError-multiline.tst.ts:3:29
 
-Error: Expression type did not raise a matching type error.
+Error: Expression did not raise a matching type error.
 
   22 | 
   23 |   expect(lines({})).type.toRaiseError(

@@ -48,7 +48,7 @@ Error: Expression is constructable with the given arguments.
 
        at ./__typetests__/generic-classes.tst.ts:32:29 ❭ when target is an expression ❭ is constructable with the given arguments
 
-Error: Type is constructable with the given arguments.
+Error: Expression is constructable with the given arguments.
 
   33 | 
   34 |     expect(Second<number | string>).type.toBeConstructableWith(["1", 2], (_n: string | number) => {});

@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { isArgumentNode } from "#collect";
 import {
   Diagnostic,
   DiagnosticOrigin,
@@ -32,7 +33,7 @@ export class ToBeCallableWith {
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
-    const isTypeNode = this.#compiler.isTypeNode(sourceNode);
+    const isArgument = isArgumentNode(this.#compiler, sourceNode);
 
     const targetText = this.#resolveTargetText(targetNodes);
 
@@ -40,7 +41,7 @@ export class ToBeCallableWith {
 
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
-        const text = [ExpectDiagnosticText.isNotCallable(isTypeNode, targetText), getDiagnosticMessageText(diagnostic)];
+        const text = [ExpectDiagnosticText.isNotCallable(isArgument, targetText), getDiagnosticMessageText(diagnostic)];
 
         let origin: DiagnosticOrigin;
 
@@ -64,7 +65,7 @@ export class ToBeCallableWith {
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.isCallable(isTypeNode, targetText), origin));
+      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.isCallable(isArgument, targetText), origin));
     }
 
     return diagnostics;
@@ -97,10 +98,10 @@ export class ToBeCallableWith {
     if (!type || type.getCallSignatures().length === 0) {
       const text: Array<string> = [];
 
-      if (this.#compiler.isTypeNode(sourceNode)) {
-        text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a callable type"));
-      } else {
+      if (isArgumentNode(this.#compiler, sourceNode)) {
         text.push(ExpectDiagnosticText.argumentMustBe("source", "a callable expression"));
+      } else {
+        text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a callable type"));
       }
 
       if (type != null && type.getConstructSignatures().length > 0) {

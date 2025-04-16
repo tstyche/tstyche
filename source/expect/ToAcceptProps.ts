@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { isArgumentNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -15,14 +16,16 @@ export class ToAcceptProps {
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
+    const isArgument = isArgumentNode(this.#compiler, sourceNode);
+
     const signatures = matchWorker.getSignatures(sourceNode);
 
     return signatures.reduce<Array<Diagnostic>>((accumulator, signature, index) => {
       let diagnostic: Diagnostic | undefined;
 
       const introText = matchWorker.assertion.isNot
-        ? ExpectDiagnosticText.acceptsProps(this.#compiler.isTypeNode(sourceNode))
-        : ExpectDiagnosticText.doesNotAcceptProps(this.#compiler.isTypeNode(sourceNode));
+        ? ExpectDiagnosticText.acceptsProps(isArgument)
+        : ExpectDiagnosticText.doesNotAcceptProps(isArgument);
 
       const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 
@@ -233,9 +236,9 @@ export class ToAcceptProps {
     if (signatures.length === 0) {
       const expectedText = "of a function or class type";
 
-      const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
-        : ExpectDiagnosticText.argumentMustBe("source", expectedText);
+      const text = isArgumentNode(this.#compiler, sourceNode)
+        ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
+        : ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
@@ -247,9 +250,9 @@ export class ToAcceptProps {
     if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
       const expectedText = "of an object type";
 
-      const text = this.#compiler.isTypeNode(targetNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
-        : ExpectDiagnosticText.argumentMustBe("target", expectedText);
+      const text = isArgumentNode(this.#compiler, targetNode)
+        ? ExpectDiagnosticText.argumentMustBe("target", expectedText)
+        : ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText);
 
       const origin = DiagnosticOrigin.fromNode(targetNode);
 

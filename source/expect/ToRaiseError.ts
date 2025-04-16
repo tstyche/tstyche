@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { isArgumentNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -12,12 +13,12 @@ export class ToRaiseError {
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
-    const isTypeNode = this.#compiler.isTypeNode(sourceNode);
+    const isArgument = isArgumentNode(this.#compiler, sourceNode);
 
     const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
     if (matchWorker.assertion.diagnostics.size === 0) {
-      const text = ExpectDiagnosticText.didNotRaiseError(isTypeNode);
+      const text = ExpectDiagnosticText.didNotRaiseError(isArgument);
 
       return [Diagnostic.error(text, origin)];
     }
@@ -25,7 +26,7 @@ export class ToRaiseError {
     if (matchWorker.assertion.diagnostics.size !== targetNodes.length) {
       const count = matchWorker.assertion.diagnostics.size;
 
-      const text = ExpectDiagnosticText.raisedError(isTypeNode, count, targetNodes.length);
+      const text = ExpectDiagnosticText.raisedError(isArgument, count, targetNodes.length);
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
@@ -42,8 +43,8 @@ export class ToRaiseError {
 
       if (matchWorker.assertion.isNot ? isMatch : !isMatch) {
         const text = matchWorker.assertion.isNot
-          ? ExpectDiagnosticText.raisedMatchingError(isTypeNode)
-          : ExpectDiagnosticText.didNotRaiseMatchingError(isTypeNode);
+          ? ExpectDiagnosticText.raisedMatchingError(isArgument)
+          : ExpectDiagnosticText.didNotRaiseMatchingError(isArgument);
 
         const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
 

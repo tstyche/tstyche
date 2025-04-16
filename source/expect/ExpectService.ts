@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import type { AssertionNode } from "#collect";
+import { type AssertionNode, isArgumentNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
@@ -166,9 +166,9 @@ export class ExpectService {
 
         if (matchWorker.getType(argumentNode).flags & this.#compiler.TypeFlags[Format.capitalize(rejectedType)]) {
           const text = [
-            this.#compiler.isTypeNode(argumentNode)
-              ? ExpectDiagnosticText.typeArgumentCannotBeOfType(Format.capitalize(argumentName), rejectedType)
-              : ExpectDiagnosticText.argumentCannotBeOfType(argumentName, rejectedType),
+            isArgumentNode(this.#compiler, argumentNode)
+              ? ExpectDiagnosticText.argumentCannotBeOfType(argumentName, rejectedType)
+              : ExpectDiagnosticText.typeArgumentCannotBeOfType(Format.capitalize(argumentName), rejectedType),
             ...ExpectDiagnosticText.typeWasRejected(rejectedType),
           ];
 

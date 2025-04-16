@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { isArgumentNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -47,9 +48,9 @@ export class ToHaveProperty {
     ) {
       const expectedText = "of an object type";
 
-      const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
-        : ExpectDiagnosticText.argumentMustBe("source", expectedText);
+      const text = isArgumentNode(this.#compiler, sourceNode)
+        ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
+        : ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 

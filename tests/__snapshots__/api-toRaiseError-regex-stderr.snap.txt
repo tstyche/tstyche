@@ -1,4 +1,4 @@
-Error: Expression type raised a matching type error.
+Error: Expression raised a matching type error.
 
    6 | test("expression raises matching type error", () => {
    7 |   expect(one("pass")).type.toRaiseError(/Expected \d arguments/);
@@ -24,7 +24,7 @@ Error: Expression type raised a matching type error.
 
            at ./__typetests__/toRaiseError-regex.tst.ts:8:14
 
-Error: Expression type did not raise a matching type error.
+Error: Expression did not raise a matching type error.
 
   11 | test("expression raises not matching type error", () => {
   12 |   expect(one("pass")).type.not.toRaiseError(/Expected \s arguments/);
@@ -102,7 +102,7 @@ Error: Type did not raise a matching type error.
 
            at ./__typetests__/toRaiseError-regex.tst.ts:23:10
 
-Error: Expression type raised a matching type error.
+Error: Expression raised a matching type error.
 
   40 |     two<string>("fail");
   41 |   }).type.not.toRaiseError(
@@ -128,7 +128,7 @@ Error: Expression type raised a matching type error.
 
            at ./__typetests__/toRaiseError-regex.tst.ts:39:9
 
-Error: Expression type raised a matching type error.
+Error: Expression raised a matching type error.
 
   41 |   }).type.not.toRaiseError(
   42 |     /^Argument of type 'number' is not assignable to parameter of type 'string'.$/,
@@ -154,7 +154,7 @@ Error: Expression type raised a matching type error.
 
            at ./__typetests__/toRaiseError-regex.tst.ts:40:17
 
-Error: Expression type did not raise a matching type error.
+Error: Expression did not raise a matching type error.
 
   58 |     two<string>("fail");
   59 |   }).type.toRaiseError(
@@ -180,7 +180,7 @@ Error: Expression type did not raise a matching type error.
 
            at ./__typetests__/toRaiseError-regex.tst.ts:57:9
 
-Error: Expression type did not raise a matching type error.
+Error: Expression did not raise a matching type error.
 
   59 |   }).type.toRaiseError(
   60 |     /Expected \s arguments/,
@@ -206,7 +206,7 @@ Error: Expression type did not raise a matching type error.
 
            at ./__typetests__/toRaiseError-regex.tst.ts:58:17
 
-Error: Expression type raised 2 type errors.
+Error: Expression raised 2 type errors.
 
   67 |     two(1111);
   68 |     two<string>("pass");
@@ -244,7 +244,7 @@ Error: Expression type raised 2 type errors.
 
            at ./__typetests__/toRaiseError-regex.tst.ts:68:17
 
-Error: Expression type raised only 2 type errors.
+Error: Expression raised only 2 type errors.
 
   74 |     two(1111);
   75 |     two<string>("pass");
