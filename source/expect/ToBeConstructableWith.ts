@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { isArgumentNode } from "#collect";
+import { nodeBelongsToArgumentList } from "#collect";
 import {
   Diagnostic,
   DiagnosticOrigin,
@@ -33,7 +33,7 @@ export class ToBeConstructableWith {
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
-    const isArgument = isArgumentNode(this.#compiler, sourceNode);
+    const isExpression = nodeBelongsToArgumentList(this.#compiler, sourceNode);
 
     const targetText = this.#resolveTargetText(targetNodes);
 
@@ -42,7 +42,7 @@ export class ToBeConstructableWith {
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [
-          ExpectDiagnosticText.isNotConstructable(isArgument, targetText),
+          ExpectDiagnosticText.isNotConstructable(isExpression, targetText),
           getDiagnosticMessageText(diagnostic),
         ];
 
@@ -68,7 +68,7 @@ export class ToBeConstructableWith {
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
 
-      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.isConstructable(isArgument, targetText), origin));
+      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.isConstructable(isExpression, targetText), origin));
     }
 
     return diagnostics;
@@ -98,7 +98,7 @@ export class ToBeConstructableWith {
     if (!type || type.getConstructSignatures().length === 0) {
       const text: Array<string> = [];
 
-      if (isArgumentNode(this.#compiler, sourceNode)) {
+      if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
         text.push(ExpectDiagnosticText.argumentMustBe("source", "a constructable expression"));
       } else {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a constructable type"));

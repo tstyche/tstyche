@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { isArgumentNode } from "#collect";
+import { nodeBelongsToArgumentList } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -82,7 +82,7 @@ export class ToBeApplicable {
     if (type.getCallSignatures().length === 0) {
       const expectedText = "of a function type";
 
-      const text = isArgumentNode(this.#compiler, sourceNode)
+      const text = nodeBelongsToArgumentList(this.#compiler, sourceNode)
         ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText);
 
