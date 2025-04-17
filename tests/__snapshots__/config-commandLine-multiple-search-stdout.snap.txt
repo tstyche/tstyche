@@ -12,5 +12,3 @@ Test files: 6 passed, 6 total
 Tests:      6 passed, 6 total
 Assertions: 6 passed, 6 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'string', 'a-feature' or 'b-feature'.

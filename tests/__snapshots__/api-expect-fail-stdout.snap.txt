@@ -10,5 +10,3 @@ Test files: 1 failed, 1 total
 Tests:      2 failed, 2 total
 Assertions: 3 failed, 8 passed, 11 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'expect-fail.tst.ts'.

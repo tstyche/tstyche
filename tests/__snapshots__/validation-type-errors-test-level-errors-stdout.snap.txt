@@ -10,5 +10,3 @@ Test files: 1 failed, 1 total
 Tests:      1 failed, 1 skipped, 1 passed, 3 total
 Assertions: 1 passed, 1 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'test-level'.

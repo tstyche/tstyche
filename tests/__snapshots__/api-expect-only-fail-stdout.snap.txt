@@ -14,5 +14,3 @@ Test files: 1 failed, 1 total
 Tests:      1 failed, 3 skipped, 1 todo, 5 total
 Assertions: 3 failed, 6 skipped, 4 passed, 13 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'expect-only-fail.tst.ts'.

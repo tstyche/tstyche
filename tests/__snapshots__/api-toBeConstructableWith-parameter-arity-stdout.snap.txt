@@ -14,5 +14,3 @@ Test files: 1 failed, 1 total
 Tests:      6 failed, 6 total
 Assertions: 32 failed, 32 passed, 64 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'parameter-arity.tst.ts'.

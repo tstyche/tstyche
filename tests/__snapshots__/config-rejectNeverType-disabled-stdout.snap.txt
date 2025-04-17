@@ -21,5 +21,3 @@ Test files: 1 passed, 1 total
 Tests:      10 passed, 10 total
 Assertions: 16 passed, 16 total
 Duration:   <<timestamp>>
-
-Ran all test files.

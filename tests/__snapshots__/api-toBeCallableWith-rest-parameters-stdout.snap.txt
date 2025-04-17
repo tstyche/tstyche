@@ -13,5 +13,3 @@ Test files: 1 failed, 1 total
 Tests:      5 failed, 5 total
 Assertions: 26 failed, 26 passed, 52 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'rest-parameters.tst.ts'.

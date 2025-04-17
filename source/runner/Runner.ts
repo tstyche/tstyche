@@ -80,7 +80,7 @@ export class Runner {
   }
 
   async #run(tasks: Array<Task>, cancellationToken: CancellationToken) {
-    const result = new Result(this.#resolvedConfig, tasks);
+    const result = new Result(tasks);
 
     EventEmitter.dispatch(["run:start", { result }]);
 

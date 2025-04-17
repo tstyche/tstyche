@@ -63,102 +63,16 @@ function DurationText({ seconds }: DurationTextProps) {
   return <Text>{`${Math.round(seconds * 10) / 10}s`}</Text>;
 }
 
-interface MatchTextProps {
-  text: Array<string> | string;
-}
-
-function MatchText({ text }: MatchTextProps) {
-  if (typeof text === "string") {
-    return <Text>'{text}'</Text>;
-  }
-
-  if (text.length === 1) {
-    return <Text>'{...text}'</Text>;
-  }
-
-  const lastItem = text.pop();
-
-  return (
-    <Text>
-      {text.map((match, index, list) => (
-        <Text>
-          '{match}'{index === list.length - 1 ? <Text> </Text> : <Text color={Color.Gray}>{", "}</Text>}
-        </Text>
-      ))}
-      <Text color={Color.Gray}>or</Text> '{lastItem}'
-    </Text>
-  );
-}
-
-interface RanFilesTextProps {
-  onlyMatch: string | undefined;
-  pathMatch: Array<string>;
-  skipMatch: string | undefined;
-}
-
-function RanFilesText({ onlyMatch, pathMatch, skipMatch }: RanFilesTextProps) {
-  const testNameMatchText: Array<ScribblerJsx.Element> = [];
-
-  if (onlyMatch != null) {
-    testNameMatchText.push(
-      <Text>
-        <Text color={Color.Gray}>{"matching "}</Text>
-        <MatchText text={onlyMatch} />
-      </Text>,
-    );
-  }
-
-  if (skipMatch != null) {
-    testNameMatchText.push(
-      <Text>
-        {onlyMatch && <Text color={Color.Gray}>{" and "}</Text>}
-        <Text color={Color.Gray}>{"not matching "}</Text>
-        <MatchText text={skipMatch} />
-      </Text>,
-    );
-  }
-
-  let pathMatchText: ScribblerJsx.Element | undefined;
-
-  if (pathMatch.length > 0) {
-    pathMatchText = (
-      <Text>
-        <Text color={Color.Gray}>{"test files matching "}</Text>
-        <MatchText text={pathMatch} />
-        <Text color={Color.Gray}>.</Text>
-      </Text>
-    );
-  } else {
-    pathMatchText = <Text color={Color.Gray}>{"all test files."}</Text>;
-  }
-
-  return (
-    <Line>
-      <Text color={Color.Gray}>{"Ran "}</Text>
-      {testNameMatchText.length > 0 ? <Text color={Color.Gray}>{"tests "}</Text> : undefined}
-      {testNameMatchText}
-      {testNameMatchText.length > 0 ? <Text color={Color.Gray}>{" in "}</Text> : undefined}
-      {pathMatchText}
-    </Line>
-  );
-}
-
 export function summaryText({
   duration,
   expectCount,
   fileCount,
-  onlyMatch,
-  pathMatch,
-  skipMatch,
   targetCount,
   testCount,
 }: {
   duration: number;
   expectCount: ResultCount;
   fileCount: ResultCount;
-  onlyMatch: string | undefined;
-  pathMatch: Array<string>;
-  skipMatch: string | undefined;
   targetCount: ResultCount;
   testCount: ResultCount;
 }): ScribblerJsx.Element {
@@ -229,8 +143,6 @@ export function summaryText({
       {testCount.total > 0 ? testCountText : undefined}
       {expectCount.total > 0 ? assertionCountText : undefined}
       <RowText label="Duration" text={<DurationText seconds={duration / 1000} />} />
-      <Line />
-      <RanFilesText onlyMatch={onlyMatch} pathMatch={pathMatch} skipMatch={skipMatch} />
     </Text>
   );
 }

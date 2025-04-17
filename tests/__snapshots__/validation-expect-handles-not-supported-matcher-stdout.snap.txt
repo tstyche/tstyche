@@ -9,5 +9,3 @@ Test files: 1 failed, 1 total
 Tests:      1 failed, 1 passed, 2 total
 Assertions: 2 failed, 2 passed, 4 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'matcher-not-supported'.

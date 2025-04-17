@@ -8,5 +8,3 @@ Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      2 todo, 2 total
 Duration:   <<timestamp>>
-
-Ran all test files.

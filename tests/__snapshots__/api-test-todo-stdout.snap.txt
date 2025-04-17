@@ -11,5 +11,3 @@ Test files: 1 passed, 1 total
 Tests:      3 todo, 1 passed, 4 total
 Assertions: 1 passed, 1 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'todo'.

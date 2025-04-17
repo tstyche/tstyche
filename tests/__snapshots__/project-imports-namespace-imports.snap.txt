@@ -14,5 +14,3 @@ Test files: 1 passed, 1 total
 Tests:      3 skipped, 2 todo, 1 passed, 6 total
 Assertions: 3 skipped, 1 passed, 4 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'namespace'.
