@@ -12,5 +12,3 @@ Test files: 1 failed, 1 total
 Tests:      1 skipped, 2 passed, 3 total
 Assertions: 2 passed, 2 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'describe-level'.

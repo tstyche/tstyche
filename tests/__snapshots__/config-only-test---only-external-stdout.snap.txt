@@ -10,5 +10,3 @@ Test files: 1 passed, 1 total
 Tests:      1 skipped, 2 passed, 3 total
 Assertions: 1 skipped, 2 passed, 3 total
 Duration:   <<timestamp>>
-
-Ran tests matching 'external' in all test files.

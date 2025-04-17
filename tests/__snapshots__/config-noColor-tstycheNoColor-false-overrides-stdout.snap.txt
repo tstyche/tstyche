@@ -8,5 +8,3 @@ Test files: <green>1 passed</>, 1 total
 Tests:      <green>1 passed</>, 1 total
 Assertions: <green>1 passed</>, 1 total
 Duration:   <<timestamp>>
-
-<gray>Ran </><gray>all test files.</>

@@ -8,5 +8,3 @@ Test files: 2 passed, 2 total
 Tests:      2 passed, 2 total
 Assertions: 2 passed, 2 total
 Duration:   <<timestamp>>
-
-Ran all test files.

@@ -17,5 +17,3 @@ Test files: 1 failed, 1 total
 Tests:      8 failed, 8 total
 Assertions: 68 failed, 68 passed, 136 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'function-components'.

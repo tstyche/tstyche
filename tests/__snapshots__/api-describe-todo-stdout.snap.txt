@@ -19,5 +19,3 @@ Test files: 1 passed, 1 total
 Tests:      1 skipped, 6 todo, 1 passed, 8 total
 Assertions: 1 skipped, 1 passed, 2 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'todo'.

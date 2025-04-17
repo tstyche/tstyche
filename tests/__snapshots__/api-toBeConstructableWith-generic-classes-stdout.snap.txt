@@ -12,5 +12,3 @@ Test files: 1 failed, 1 total
 Tests:      4 failed, 4 total
 Assertions: 6 failed, 6 passed, 12 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'generic-classes.tst.ts'.

@@ -5,5 +5,3 @@ fail ./__typetests__/handles-nested.tst.ts
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Duration:   <<timestamp>>
-
-Ran all test files.
