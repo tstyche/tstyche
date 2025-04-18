@@ -22,6 +22,7 @@ export class IdentifierLookup {
         it: undefined,
         namespace: undefined,
         test: undefined,
+        when: undefined,
       },
       namespace: undefined,
     };
@@ -116,6 +117,9 @@ export class IdentifierLookup {
 
       case "expect":
         return { brand: TestTreeNodeBrand.Expect, flags };
+
+      case "when":
+        return { brand: TestTreeNodeBrand.When, flags };
     }
 
     return;
