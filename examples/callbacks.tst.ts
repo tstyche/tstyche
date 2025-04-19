@@ -1,4 +1,4 @@
-import { describe, expect, test } from "tstyche";
+import { describe, expect, test, when } from "tstyche";
 
 interface Context {
   options?: unknown;
@@ -25,4 +25,14 @@ describe("onEvent", () => {
       }),
     ).type.toBe<void>();
   });
+});
+
+declare function pipe<T>(source: T, ...target: Array<(source: T) => T>): void;
+declare function pick<T, K extends keyof T>(key: K): <K extends keyof T>(object: T) => Pick<T, K>;
+
+test("pick", () => {
+  expect.fail(pick).type.toBeCallableWith("valid");
+
+  when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("valid"));
+  when(pipe).isCalledWith({ valid: true }, expect(pick).type.not.toBeCallableWith("required"));
 });
