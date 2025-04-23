@@ -18,18 +18,15 @@ If you are used to test JavaScript, a simple type test file should look familiar
 ```ts
 import { expect, test } from "tstyche";
 
-function pickLonger<T extends { length: number }>(a: T, b: T) {
-  return a.length >= b.length ? a : b;
+function isSameLength<T extends { length: number }>(a: T, b: T) {
+  return a.length === b.length;
 }
 
-test("pickLonger()", () => {
-  expect(pickLonger([1, 2], [1, 2, 3])).type.toBe<Array<number>>();
-  expect(pickLonger("two", "three")).type.toBe<"two" | "three">();
+test("isSameLength", () => {
+  expect(isSameLength([1, 2], [1, 2, 3])).type.toBe<boolean>();
+  expect(isSameLength("two", "three")).type.toBe<boolean>();
 
-  expect(pickLonger).type.not.toBeCallableWith(1, 2);
-
-  expect(pickLonger).type.not.toBeCallableWith("zero", [123]);
-  expect(pickLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);
+  expect(isSameLength).type.not.toBeCallableWith(10, 220);
 });
 ```
 
