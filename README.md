@@ -24,9 +24,9 @@ function isSameLength<T extends { length: number }>(a: T, b: T) {
 
 test("isSameLength", () => {
   expect(isSameLength([1, 2], [1, 2, 3])).type.toBe<boolean>();
-  expect(isSameLength("two", "three")).type.toBe<boolean>();
+  expect(isSameLength("one", "two")).type.toBe<boolean>();
 
-  expect(isSameLength).type.not.toBeCallableWith(10, 220);
+  expect(isSameLength).type.not.toBeCallableWith(1, 2);
 });
 ```
 
