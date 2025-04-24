@@ -16,7 +16,7 @@ await test("toBeApplicable", async (t) => {
     //  * @param {ClassMemberDecoratorContext & { private: false }} _context
     //  */
     // function publicOnly(_target, _context) {
-    //   // ..
+    //   // ...
     // }
     //
     // /** @param {unknown} _target */
