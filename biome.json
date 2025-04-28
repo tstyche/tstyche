@@ -9,7 +9,6 @@
 
   "files": {
     "ignore": [
-      ".cache/**",
       ".yarn/**",
       "build/**",
       "coverage/**",
