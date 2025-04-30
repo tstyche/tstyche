@@ -124,6 +124,17 @@
     },
 
     {
+      "include": ["source/react.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
+          }
+        }
+      }
+    },
+
+    {
       "include": ["source/types.ts"],
       "linter": {
         "rules": {
