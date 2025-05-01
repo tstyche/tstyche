@@ -9,7 +9,7 @@ Type 'Second' is missing the following properties from type 'Base': #a, #b, samp
   60 |     @(expect(classDecorator).type.toBeApplicable)
      |              ~~~~~~~~~~~~~~
   61 |     class Second {
-  62 |       // ..
+  62 |       // ...
   63 |     }
 
        at ./__typetests__/toBeApplicable.tst.ts:60:14
@@ -25,7 +25,7 @@ Target signature provides too few arguments. Expected 2 or more, but got 0.
   60 |     @(expect(classDecorator).type.toBeApplicable)
      |              ~~~~~~~~~~~~~~
   61 |     class Second {
-  62 |       // ..
+  62 |       // ...
   63 |     }
 
        at ./__typetests__/toBeApplicable.tst.ts:60:14
@@ -37,7 +37,7 @@ Error: The decorator function can be applied to this class.
   73 |     @(expect(classDecorator).type.not.toBeApplicable)
      |                                       ~~~~~~~~~~~~~~
   74 |     class Second extends Base {
-  75 |       // ..
+  75 |       // ...
   76 |     }
 
        at ./__typetests__/toBeApplicable.tst.ts:73:39 ❭ source expression ❭ is NOT applicable to class
@@ -48,7 +48,7 @@ Error: The decorator function can be applied to this method.
   86 |       // fail
   87 |       @(expect(methodDecorator).type.not.toBeApplicable) two(): void {
      |                                          ~~~~~~~~~~~~~~
-  88 |         // ..
+  88 |         // ...
   89 |       }
   90 |     }
 
@@ -63,7 +63,7 @@ Argument of type '() => void' is not assignable to parameter of type 'undefined'
   100 |       // fail
   101 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
       |                ~~~~~~~~~~~~~~
-  102 |         // ..
+  102 |         // ...
   103 |       }
   104 |     }
 
@@ -79,7 +79,7 @@ Target signature provides too few arguments. Expected 1 or more, but got 0.
   100 |       // fail
   101 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
       |                ~~~~~~~~~~~~~~
-  102 |         // ..
+  102 |         // ...
   103 |       }
   104 |     }
 
@@ -304,7 +304,7 @@ Error: The decorator function can be applied to this method.
   214 |       // fail
   215 |       @(expect(publicOnly).type.not.toBeApplicable) two(): void {
       |                                     ~~~~~~~~~~~~~~
-  216 |         // ..
+  216 |         // ...
   217 |       }
   218 |     }
 
@@ -323,7 +323,7 @@ Type 'true' is not assignable to type 'false'.
   228 |       // fail
   229 |       @(expect(publicOnly).type.toBeApplicable) #two(): void {
       |                ~~~~~~~~~~
-  230 |         // ..
+  230 |         // ...
   231 |       }
   232 |     }
 

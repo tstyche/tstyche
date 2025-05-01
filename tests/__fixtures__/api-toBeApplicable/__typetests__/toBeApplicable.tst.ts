@@ -53,26 +53,26 @@ describe("source expression", () => {
   test("is applicable to class", () => {
     @(expect(classDecorator).type.toBeApplicable)
     class First extends Base {
-      // ..
+      // ...
     }
 
     // fail
     @(expect(classDecorator).type.toBeApplicable)
     class Second {
-      // ..
+      // ...
     }
   });
 
   test("is NOT applicable to class", () => {
     @(expect(classDecorator).type.not.toBeApplicable)
     class First {
-      // ..
+      // ...
     }
 
     // fail
     @(expect(classDecorator).type.not.toBeApplicable)
     class Second extends Base {
-      // ..
+      // ...
     }
   });
 
@@ -80,12 +80,12 @@ describe("source expression", () => {
     class Sample extends Base {
       @(expect(methodDecorator).type.toBeApplicable)
       one(): void {
-        // ..
+        // ...
       }
 
       // fail
       @(expect(methodDecorator).type.not.toBeApplicable) two(): void {
-        // ..
+        // ...
       }
     }
   });
@@ -94,12 +94,12 @@ describe("source expression", () => {
     class Sample extends Base {
       @(expect(fieldDecorator).type.not.toBeApplicable)
       one(): void {
-        // ..
+        // ...
       }
 
       // fail
       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
-        // ..
+        // ...
       }
     }
   });
@@ -208,12 +208,12 @@ describe("source expression", () => {
     class Sample {
       @(expect(publicOnly).type.toBeApplicable)
       one(): void {
-        // ..
+        // ...
       }
 
       // fail
       @(expect(publicOnly).type.not.toBeApplicable) two(): void {
-        // ..
+        // ...
       }
     }
   });
@@ -222,12 +222,12 @@ describe("source expression", () => {
     class Sample {
       @(expect(publicOnly).type.not.toBeApplicable)
       #one(): void {
-        // ..
+        // ...
       }
 
       // fail
       @(expect(publicOnly).type.toBeApplicable) #two(): void {
-        // ..
+        // ...
       }
     }
   });
