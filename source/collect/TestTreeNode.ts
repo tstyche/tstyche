@@ -70,17 +70,9 @@ export class TestTreeNode {
         break;
 
       case TestTreeNodeBrand.Test:
+      case TestTreeNodeBrand.Expect:
         for (const child of this.children) {
           if (child.brand === TestTreeNodeBrand.Describe || child.brand === TestTreeNodeBrand.Test) {
-            diagnostics.push(Diagnostic.error(getText(child.node), DiagnosticOrigin.fromNode(child.node)));
-          }
-        }
-        break;
-
-      case TestTreeNodeBrand.Expect:
-      case TestTreeNodeBrand.When:
-        for (const child of this.children) {
-          if (child.brand !== TestTreeNodeBrand.Expect) {
             diagnostics.push(Diagnostic.error(getText(child.node), DiagnosticOrigin.fromNode(child.node)));
           }
         }
