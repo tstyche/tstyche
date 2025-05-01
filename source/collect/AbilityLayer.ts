@@ -3,6 +3,8 @@ import type { AssertionNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { ProjectService } from "#project";
+import type { WhenNode } from "./WhenNode.js";
+import { nodeBelongsToArgumentList } from "./helpers.js";
 
 interface TextRange {
   end: number;
@@ -11,13 +13,15 @@ interface TextRange {
 }
 
 export class AbilityLayer {
+  #compiler: typeof ts;
   #filePath = "";
-  #nodes: Array<AssertionNode> = [];
+  #nodes: Array<AssertionNode | WhenNode> = [];
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
   #text = "";
 
-  constructor(projectService: ProjectService, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
+    this.#compiler = compiler;
     this.#projectService = projectService;
     this.#resolvedConfig = resolvedConfig;
   }
@@ -46,7 +50,7 @@ export class AbilityLayer {
     return text.join("");
   }
 
-  #addRanges(node: AssertionNode, ranges: Array<TextRange>): void {
+  #addRanges(node: AssertionNode | WhenNode, ranges: Array<TextRange>): void {
     this.#nodes.push(node);
 
     for (const range of ranges) {
@@ -69,7 +73,7 @@ export class AbilityLayer {
 
       for (const node of this.#nodes.reverse()) {
         for (const diagnostic of diagnostics) {
-          if (diagnosticBelongsToNode(diagnostic, node.matcherNode)) {
+          if (diagnosticBelongsToNode(diagnostic, "matcherNode" in node ? node.matcherNode : node.actionNode)) {
             if (!node.abilityDiagnostics) {
               node.abilityDiagnostics = new Set();
             }
@@ -87,7 +91,28 @@ export class AbilityLayer {
     this.#text = "";
   }
 
-  handleNode(assertionNode: AssertionNode): void {
+  handleWhen(whenNode: WhenNode): void {
+    const whenStart = whenNode.node.getStart();
+    const whenExpressionEnd = whenNode.node.expression.getEnd();
+    const whenEnd = whenNode.node.getEnd();
+    const actionNameEnd = whenNode.actionNameNode.getEnd();
+
+    switch (whenNode.actionNameNode.name.text) {
+      case "isCalledWith":
+        this.#addRanges(whenNode, [
+          {
+            end: whenExpressionEnd,
+            start: whenStart,
+            replacement: nodeBelongsToArgumentList(this.#compiler, whenNode.actionNode) ? "" : ";",
+          },
+          { end: actionNameEnd, start: whenEnd },
+        ]);
+
+        break;
+    }
+  }
+
+  handleAssertion(assertionNode: AssertionNode): void {
     const expectStart = assertionNode.node.getStart();
     const expectExpressionEnd = assertionNode.node.expression.getEnd();
     const expectEnd = assertionNode.node.getEnd();
@@ -104,7 +129,11 @@ export class AbilityLayer {
 
       case "toBeCallableWith":
         this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd, start: expectStart, replacement: ";" },
+          {
+            end: expectExpressionEnd,
+            start: expectStart,
+            replacement: nodeBelongsToArgumentList(this.#compiler, assertionNode.matcherNode) ? "" : ";",
+          },
           { end: matcherNameEnd, start: expectEnd },
         ]);
 
@@ -112,7 +141,11 @@ export class AbilityLayer {
 
       case "toBeConstructableWith":
         this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd, start: expectStart, replacement: "; new" },
+          {
+            end: expectExpressionEnd,
+            start: expectStart,
+            replacement: nodeBelongsToArgumentList(this.#compiler, assertionNode.matcherNode) ? "new" : "; new",
+          },
           { end: matcherNameEnd, start: expectEnd },
         ]);
 
