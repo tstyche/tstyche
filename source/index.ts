@@ -18,4 +18,5 @@ export {
   doNothing as omit,
   doNothing as pick,
   noopChain as test,
+  noopChain as when,
 };

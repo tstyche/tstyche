@@ -8,6 +8,7 @@ import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
+import { WhenNode } from "./WhenNode.js";
 
 export class CollectService {
   #abilityLayer: AbilityLayer;
@@ -20,7 +21,7 @@ export class CollectService {
     this.#projectService = projectService;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#abilityLayer = new AbilityLayer(this.#projectService, this.#resolvedConfig);
+    this.#abilityLayer = new AbilityLayer(compiler, this.#projectService, this.#resolvedConfig);
   }
 
   #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestTreeNode) {
@@ -76,12 +77,41 @@ export class CollectService {
 
         parent.children.push(assertionNode);
 
-        this.#abilityLayer.handleNode(assertionNode);
+        this.#abilityLayer.handleAssertion(assertionNode);
 
         EventEmitter.dispatch(["collect:node", { testNode: assertionNode }]);
 
         this.#compiler.forEachChild(node, (node) => {
           this.#collectTestTreeNodes(node, identifiers, assertionNode);
+        });
+
+        return;
+      }
+
+      if (meta != null && meta.brand === TestTreeNodeBrand.When) {
+        const actionNameNode = this.#getChainedNode(node);
+
+        if (!actionNameNode) {
+          return;
+        }
+
+        const actionNode = this.#getActionNode(actionNameNode);
+
+        if (!actionNode) {
+          return;
+        }
+
+        const whenNode = new WhenNode(this.#compiler, meta.brand, node, parent, meta.flags, actionNode, actionNameNode);
+
+        parent.children.push(whenNode);
+
+        this.#abilityLayer.handleWhen(whenNode);
+
+        // TODO move after '.forEachChild()' call, otherwise children are not yet collected
+        EventEmitter.dispatch(["collect:node", { testNode: whenNode }]);
+
+        this.#compiler.forEachChild(node, (node) => {
+          this.#collectTestTreeNodes(node, identifiers, whenNode);
         });
 
         return;
@@ -138,6 +168,14 @@ export class CollectService {
 
     if (this.#compiler.isParenthesizedExpression(node.parent)) {
       return this.#getMatcherNode(node.parent);
+    }
+
+    return;
+  }
+
+  #getActionNode(node: ts.Node): ts.CallExpression | undefined {
+    if (this.#compiler.isCallExpression(node.parent)) {
+      return node.parent;
     }
 
     return;
