@@ -107,6 +107,7 @@ export class CollectService {
 
         this.#abilityLayer.handleWhen(whenNode);
 
+        // TODO move after '.forEachChild()' call, otherwise children are not yet collected
         EventEmitter.dispatch(["collect:node", { testNode: whenNode }]);
 
         this.#compiler.forEachChild(node, (node) => {
