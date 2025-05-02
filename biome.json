@@ -113,7 +113,7 @@
     },
 
     {
-      "include": ["source/handlers/ResultHandler.ts", "source/handlers/TestTreeHandler.ts"],
+      "include": ["source/handlers/ResultHandler.ts"],
       "linter": {
         "rules": {
           "style": {

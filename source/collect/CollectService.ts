@@ -8,6 +8,7 @@ import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
+import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 import { WhenNode } from "./WhenNode.js";
 
 export class CollectService {
@@ -15,6 +16,7 @@ export class CollectService {
   #compiler: typeof ts;
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
+  #testTree: TestTree | undefined;
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
@@ -31,13 +33,11 @@ export class CollectService {
       if (meta != null && (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test)) {
         const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
 
-        parent.children.push(testTreeNode);
-
-        EventEmitter.dispatch(["collect:node", { testNode: testTreeNode }]);
-
         this.#compiler.forEachChild(node, (node) => {
           this.#collectTestTreeNodes(node, identifiers, testTreeNode);
         });
+
+        this.#onNode(testTreeNode, parent);
 
         return;
       }
@@ -75,15 +75,13 @@ export class CollectService {
           notNode,
         );
 
-        parent.children.push(assertionNode);
-
         this.#abilityLayer.handleAssertion(assertionNode);
-
-        EventEmitter.dispatch(["collect:node", { testNode: assertionNode }]);
 
         this.#compiler.forEachChild(node, (node) => {
           this.#collectTestTreeNodes(node, identifiers, assertionNode);
         });
+
+        this.#onNode(assertionNode, parent);
 
         return;
       }
@@ -103,16 +101,9 @@ export class CollectService {
 
         const whenNode = new WhenNode(this.#compiler, meta.brand, node, parent, meta.flags, actionNode, actionNameNode);
 
-        parent.children.push(whenNode);
-
         this.#abilityLayer.handleWhen(whenNode);
 
-        // TODO move after '.forEachChild()' call, otherwise children are not yet collected
-        EventEmitter.dispatch(["collect:node", { testNode: whenNode }]);
-
-        this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestTreeNodes(node, identifiers, whenNode);
-        });
+        this.#onNode(whenNode, parent);
 
         return;
       }
@@ -132,7 +123,9 @@ export class CollectService {
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
-    EventEmitter.dispatch(["collect:start", { testTree }]);
+    EventEmitter.dispatch(["collect:start", { tree: testTree }]);
+
+    this.#testTree = testTree;
 
     this.#abilityLayer.open(sourceFile);
 
@@ -140,7 +133,9 @@ export class CollectService {
 
     this.#abilityLayer.close();
 
-    EventEmitter.dispatch(["collect:end", { testTree }]);
+    this.#testTree = undefined;
+
+    EventEmitter.dispatch(["collect:end", { tree: testTree }]);
 
     return testTree;
   }
@@ -179,5 +174,16 @@ export class CollectService {
     }
 
     return;
+  }
+
+  #onNode(node: TestTreeNode | AssertionNode | WhenNode, parent: TestTree | TestTreeNode) {
+    parent.children.push(node);
+
+    if (node.flags & TestTreeNodeFlags.Only) {
+      // biome-ignore lint/style/noNonNullAssertion: logic makes sure that 'testTree' is defined
+      this.#testTree!.hasOnly = true;
+    }
+
+    EventEmitter.dispatch(["collect:node", { node }]);
   }
 }
