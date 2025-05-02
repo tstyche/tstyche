@@ -1,0 +1,48 @@
+Error: 'describe()' cannot be nested within 'when()'.
+
+   8 | when(pipe).isCalledWith(
+   9 |   { valid: true },
+  10 |   describe("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  11 |     //
+     | ~~~~~~
+  12 |   }),
+     | ~~~~
+  13 | );
+  14 | 
+  15 | when(pipe).isCalledWith(
+
+       at ./__typetests__/handles-nested.tst.ts:10:3
+
+Error: 'it()' cannot be nested within 'when()'.
+
+  15 | when(pipe).isCalledWith(
+  16 |   { valid: true },
+  17 |   it("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  18 |     //
+     | ~~~~~~
+  19 |   }),
+     | ~~~~
+  20 | );
+  21 | 
+  22 | when(pipe).isCalledWith(
+
+       at ./__typetests__/handles-nested.tst.ts:17:3
+
+Error: 'test()' cannot be nested within 'when()'.
+
+  22 | when(pipe).isCalledWith(
+  23 |   { valid: true },
+  24 |   test("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  25 |     //
+     | ~~~~~~
+  26 |   }),
+     | ~~~~
+  27 | );
+  28 | 
+  29 | expect(() => {
+
+       at ./__typetests__/handles-nested.tst.ts:24:3
+

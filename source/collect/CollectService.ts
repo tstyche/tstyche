@@ -1,9 +1,11 @@
 import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ProjectService } from "#project";
 import { AbilityLayer } from "./AbilityLayer.js";
 import { AssertionNode } from "./AssertionNode.js";
+import { CollectDiagnosticText } from "./CollectDiagnosticText.js";
 import { IdentifierLookup } from "./IdentifierLookup.js";
 import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
@@ -96,8 +98,23 @@ export class CollectService {
         const actionNode = this.#getActionNode(actionNameNode);
 
         if (!actionNode) {
+          // TODO make sure that the 'actionNode' is actually called
+          // "'.isCalledWith()' must be called with an argument."
           return;
         }
+
+        this.#compiler.forEachChild(actionNode, (node) => {
+          if (this.#compiler.isCallExpression(node)) {
+            const meta = identifiers.resolveTestMemberMeta(node);
+
+            if (meta != null && (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test)) {
+              const text = CollectDiagnosticText.cannotBeNestedWithin(node.expression.getText(), "when");
+              const origin = DiagnosticOrigin.fromNode(node);
+
+              this.#onDiagnostics(Diagnostic.error(text, origin));
+            }
+          }
+        });
 
         const whenNode = new WhenNode(this.#compiler, meta.brand, node, parent, meta.flags, actionNode, actionNameNode);
 
@@ -174,6 +191,10 @@ export class CollectService {
     }
 
     return;
+  }
+
+  #onDiagnostics(this: void, diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["collect:error", { diagnostics: [diagnostic] }]);
   }
 
   #onNode(node: TestTreeNode | AssertionNode | WhenNode, parent: TestTree | TestTreeNode) {

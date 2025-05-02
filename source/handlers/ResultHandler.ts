@@ -83,6 +83,7 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "task:error":
+      case "collect:error":
         this.#targetResult!.status = ResultStatus.Failed;
         this.#taskResult!.status = ResultStatus.Failed;
         this.#taskResult!.diagnostics.push(...payload.diagnostics);
