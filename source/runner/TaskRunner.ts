@@ -5,16 +5,18 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
+import { CancellationHandler } from "#handlers";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
-import type { CancellationToken } from "#token";
+import { CancellationReason, type CancellationToken } from "#token";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
 export class TaskRunner {
   #collectService: CollectService;
   #compiler: typeof ts;
+  #eventEmitter = new EventEmitter();
   #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
 
@@ -26,8 +28,8 @@ export class TaskRunner {
     this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
   }
 
-  run(task: Task, cancellationToken?: CancellationToken): void {
-    if (cancellationToken?.isCancellationRequested) {
+  run(task: Task, cancellationToken: CancellationToken): void {
+    if (cancellationToken.isCancellationRequested) {
       return;
     }
 
@@ -44,7 +46,7 @@ export class TaskRunner {
     this.#projectService.closeFile(task.filePath);
   }
 
-  #run(task: Task, taskResult: TaskResult, cancellationToken?: CancellationToken) {
+  #run(task: Task, taskResult: TaskResult, cancellationToken: CancellationToken) {
     if (!existsSync(task.filePath)) {
       EventEmitter.dispatch([
         "task:error",
@@ -87,7 +89,16 @@ export class TaskRunner {
       return;
     }
 
+    const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.CollectError);
+    this.#eventEmitter.addHandler(cancellationHandler);
+
     const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+
+    this.#eventEmitter.removeHandler(cancellationHandler);
+
+    if (cancellationToken.isCancellationRequested) {
+      return;
+    }
 
     if (testTree.diagnostics.size > 0) {
       EventEmitter.dispatch([

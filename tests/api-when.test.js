@@ -8,7 +8,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-await test("toBe", async (t) => {
+await test("when", async (t) => {
   await t.test("'when' implementation", () => {
     /**
      * @param {string} source

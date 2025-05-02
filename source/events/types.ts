@@ -21,6 +21,7 @@ export type Event =
   | ["task:error", { diagnostics: Array<Diagnostic>; result: TaskResult }]
   | ["task:end", { result: TaskResult }]
   | ["collect:start", { tree: TestTree }]
+  | ["collect:error", { diagnostics: Array<Diagnostic> }]
   | ["collect:node", { node: TestTreeNode | AssertionNode | WhenNode }]
   | ["collect:end", { tree: TestTree }]
   | ["describe:start", { result: DescribeResult }]
