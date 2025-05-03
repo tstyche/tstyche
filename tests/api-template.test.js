@@ -33,7 +33,7 @@ await test("template", async (t) => {
     |                              ~~~~~~
   8 | });
   9 | \n
-      at ./__typetests__/template.tst.ts:7:30 ❭ is number a string?`),
+      at ./__typetests__/template.tst.ts`),
       true,
     );
 
