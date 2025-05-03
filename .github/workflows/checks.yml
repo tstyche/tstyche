@@ -96,6 +96,8 @@ jobs:
           name: build-${{ github.sha }}
           path: build
       - run: yarn test:types --target '>=5.0'
+        env:
+          NODE_OPTIONS: --experimental-strip-types
       - run: yarn test:examples --target '>=5.0'
       - run: yarn tstyche tests/*.js --target '>=5.4'
 
