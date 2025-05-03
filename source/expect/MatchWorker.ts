@@ -71,7 +71,10 @@ export class MatchWorker {
   }
 
   extendsObjectType(type: ts.Type): boolean {
-    const nonPrimitiveType = { flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type; // the intrinsic 'object' type
+    const nonPrimitiveType =
+      "getNonPrimitiveType" in this.typeChecker
+        ? this.typeChecker.getNonPrimitiveType()
+        : ({ flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type); // TODO remove this workaround after dropping support for TypeScript 5.8
 
     return this.typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
   }
