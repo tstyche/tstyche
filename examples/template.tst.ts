@@ -4,9 +4,9 @@ let testText = `
 import { expect, test } from "tstyche";
 `;
 
-for (const target of ["string", "number"]) {
-  testText += `test("is ${target} a string?", () => {
-  expect<string>().type.toBe<${target}>();
+for (const typeText of ["string", "number"]) {
+  testText += `test("is ${typeText} a ${typeText}?", () => {
+  expect<${typeText}>().type.toBe<${typeText}>();
 });
 `;
 }
