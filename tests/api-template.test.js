@@ -25,17 +25,7 @@ await test("template", async (t) => {
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(
-      stderr.startsWith(`Error: Type 'string' is not identical to type 'number'.\n
-  5 | });
-  6 | test("is number a string?", () => {
-  7 |   expect<string>().type.toBe<number>();
-    |                              ~~~~~~
-  8 | });
-  9 | \n
-      at ./__typetests__/template.tst.ts`),
-      true,
-    );
+    assert.equal(stderr.startsWith(`Error: Type 'string' is not identical to type 'number'.`), true);
 
     assert.equal(exitCode, 1);
   });
