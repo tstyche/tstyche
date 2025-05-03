@@ -28,7 +28,7 @@ export class TaskRunner {
     this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
   }
 
-  run(task: Task, cancellationToken: CancellationToken): void {
+  async run(task: Task, cancellationToken: CancellationToken): Promise<void> {
     if (cancellationToken.isCancellationRequested) {
       return;
     }
@@ -39,14 +39,14 @@ export class TaskRunner {
 
     EventEmitter.dispatch(["task:start", { result: taskResult }]);
 
-    this.#run(task, taskResult, cancellationToken);
+    await this.#run(task, taskResult, cancellationToken);
 
     EventEmitter.dispatch(["task:end", { result: taskResult }]);
 
     this.#projectService.closeFile(task.filePath);
   }
 
-  #run(task: Task, taskResult: TaskResult, cancellationToken: CancellationToken) {
+  async #run(task: Task, taskResult: TaskResult, cancellationToken: CancellationToken) {
     if (!existsSync(task.filePath)) {
       EventEmitter.dispatch([
         "task:error",
@@ -58,15 +58,11 @@ export class TaskRunner {
 
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
-    const languageService = this.#projectService.getLanguageService(task.filePath);
+    let languageService = this.#projectService.getLanguageService(task.filePath);
 
-    if (!languageService) {
-      return;
-    }
+    const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(task.filePath);
 
-    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(task.filePath);
-
-    if (syntacticDiagnostics.length > 0) {
+    if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
       EventEmitter.dispatch([
         "task:error",
         { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics), result: taskResult },
@@ -75,15 +71,47 @@ export class TaskRunner {
       return;
     }
 
-    const semanticDiagnostics = languageService.getSemanticDiagnostics(task.filePath);
+    let semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
 
-    const program = languageService.getProgram();
+    let program = languageService?.getProgram();
 
-    if (!program) {
-      return;
+    let sourceFile = program?.getSourceFile(task.filePath);
+
+    if (sourceFile?.text.startsWith("// @tstyche-template")) {
+      if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
+        EventEmitter.dispatch([
+          "task:error",
+          { diagnostics: Diagnostic.fromDiagnostics(semanticDiagnostics), result: taskResult },
+        ]);
+
+        return;
+      }
+
+      const text: string = (await import(task.filePath)).default;
+
+      // TODO better validate that this is actually a string
+
+      this.#projectService.openFile(task.filePath, text, this.#resolvedConfig.rootPath);
+
+      languageService = this.#projectService.getLanguageService(task.filePath);
+
+      const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(task.filePath);
+
+      if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
+        EventEmitter.dispatch([
+          "task:error",
+          { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics), result: taskResult },
+        ]);
+
+        return;
+      }
+
+      semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
+
+      program = languageService?.getProgram();
+
+      sourceFile = program?.getSourceFile(task.filePath);
     }
-
-    const sourceFile = program.getSourceFile(task.filePath);
 
     if (!sourceFile) {
       return;
@@ -109,7 +137,7 @@ export class TaskRunner {
       return;
     }
 
-    const typeChecker = program.getTypeChecker() as TypeChecker;
+    const typeChecker = program?.getTypeChecker() as TypeChecker;
 
     const testTreeWalker = new TestTreeWalker(this.#compiler, typeChecker, this.#resolvedConfig, {
       cancellationToken,

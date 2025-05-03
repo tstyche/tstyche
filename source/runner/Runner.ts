@@ -93,7 +93,7 @@ export class Runner {
         const taskRunner = new TaskRunner(compiler, this.#resolvedConfig);
 
         for (const task of tasks) {
-          taskRunner.run(task, cancellationToken);
+          await taskRunner.run(task, cancellationToken);
         }
       }
 

@@ -1,0 +1,13 @@
+Error: Type 'string' is not identical to type 'number'.
+
+  5 | });
+  6 | test("is number a string?", () => {
+  7 |   expect<string>().type.toBe<number>();
+    |                              ~~~~~~
+  8 | });
+  9 | 
+
+      at ./__typetests__/template.tst.ts:7:30 ❭ is number a string?
+
+(node:44235) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
