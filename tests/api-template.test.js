@@ -17,7 +17,7 @@ await test("template", async (t) => {
 
   await t.test("template", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types" },
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -25,7 +25,10 @@ await test("template", async (t) => {
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr.startsWith(`Error: Type 'string' is not identical to type 'number'.`), true);
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
     assert.equal(exitCode, 1);
   });

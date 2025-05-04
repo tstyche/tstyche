@@ -2384,6 +2384,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-blank-space@npm:0.6.1":
+  version: 0.6.1
+  resolution: "ts-blank-space@npm:0.6.1"
+  dependencies:
+    typescript: "npm:5.1.6 - 5.8.x"
+  checksum: 10c0/cf674e96d204c3f6d99e29966580b7c3526680ff012dfa3e45aef10a1052011b5ced55bae81d57f46b153053ed9413082a2d15db7812c2c0eb138d178b0f376c
+  languageName: node
+  linkType: hard
+
 "tslib@npm:2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
@@ -2406,6 +2415,7 @@ __metadata:
     pretty-ansi: "npm:3.0.0"
     rollup: "npm:4.40.1"
     rollup-plugin-dts: "npm:6.2.1"
+    ts-blank-space: "npm:0.6.1"
     tslib: "npm:2.8.1"
     typescript: "npm:5.8.3"
   peerDependencies:
@@ -2418,7 +2428,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"typescript@npm:5.8.3":
+"typescript@npm:5.1.6 - 5.8.x, typescript@npm:5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
   bin:
@@ -2428,7 +2438,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.1.6 - 5.8.x#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
   bin:
