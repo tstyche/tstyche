@@ -62,6 +62,24 @@ await test("template test file", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("handles test text level syntax errors", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-syntax"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-test-text-syntax-errors-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-test-text-syntax-errors-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("handles test text level type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-type"], {
       env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
