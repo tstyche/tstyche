@@ -9,7 +9,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("template", async (t) => {
   // TODO figure out why this is failing on Windows
-  if (process.platform !== "win32") {
+  if (process.platform === "win32") {
     t.skip();
 
     return;
