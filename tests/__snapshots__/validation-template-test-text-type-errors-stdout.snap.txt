@@ -1,0 +1,10 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/test-text-type-errors.tst.ts
+  × is string a string?
+  × is number a string?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 failed, 2 total
+Duration:   <<timestamp>>

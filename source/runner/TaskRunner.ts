@@ -29,6 +29,10 @@ export class TaskRunner {
     this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
   }
 
+  #onDiagnostics(this: void, diagnostics: Array<Diagnostic>, result: TaskResult) {
+    EventEmitter.dispatch(["task:error", { diagnostics, result }]);
+  }
+
   async run(task: Task, cancellationToken: CancellationToken): Promise<void> {
     if (cancellationToken.isCancellationRequested) {
       return;
@@ -49,10 +53,7 @@ export class TaskRunner {
 
   async #run(task: Task, taskResult: TaskResult, cancellationToken: CancellationToken) {
     if (!existsSync(task.filePath)) {
-      EventEmitter.dispatch([
-        "task:error",
-        { diagnostics: [Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], result: taskResult },
-      ]);
+      this.#onDiagnostics([Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], taskResult);
 
       return;
     }
@@ -64,10 +65,7 @@ export class TaskRunner {
     const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(task.filePath);
 
     if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
-      EventEmitter.dispatch([
-        "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics), result: taskResult },
-      ]);
+      this.#onDiagnostics(Diagnostic.fromDiagnostics(syntacticDiagnostics), taskResult);
 
       return;
     }
@@ -80,30 +78,28 @@ export class TaskRunner {
 
     if (sourceFile?.text.startsWith("// @tstyche-template")) {
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
-        EventEmitter.dispatch([
-          "task:error",
-          { diagnostics: Diagnostic.fromDiagnostics(semanticDiagnostics), result: taskResult },
-        ]);
+        this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
 
         return;
       }
 
       const moduleSpecifier = pathToFileURL(task.filePath).toString();
-      const text: string = (await import(moduleSpecifier)).default;
+      const testText = (await import(moduleSpecifier))?.default;
 
-      // TODO better validate that this is actually a string
+      if (typeof testText !== "string") {
+        this.#onDiagnostics([Diagnostic.error("A template test file must export a string.")], taskResult);
 
-      this.#projectService.openFile(task.filePath, text, this.#resolvedConfig.rootPath);
+        return;
+      }
+
+      this.#projectService.openFile(task.filePath, testText, this.#resolvedConfig.rootPath);
 
       languageService = this.#projectService.getLanguageService(task.filePath);
 
       const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(task.filePath);
 
       if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
-        EventEmitter.dispatch([
-          "task:error",
-          { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics), result: taskResult },
-        ]);
+        this.#onDiagnostics(Diagnostic.fromDiagnostics(syntacticDiagnostics), taskResult);
 
         return;
       }
@@ -131,10 +127,7 @@ export class TaskRunner {
     }
 
     if (testTree.diagnostics.size > 0) {
-      EventEmitter.dispatch([
-        "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics]), result: taskResult },
-      ]);
+      this.#onDiagnostics(Diagnostic.fromDiagnostics([...testTree.diagnostics]), taskResult);
 
       return;
     }
