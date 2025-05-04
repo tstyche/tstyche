@@ -26,19 +26,57 @@ await test("template test file", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  // await t.test("handles test level type errors", async () => {
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-level"]);
+  await t.test("handles missing export", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["missing-export"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
 
-  //   await assert.matchSnapshot(normalizeOutput(stdout), {
-  //     fileName: `${testFileName}-test-level-errors-stdout`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-missing-export-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   await assert.matchSnapshot(stderr, {
-  //     fileName: `${testFileName}-test-level-errors-stderr`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-missing-export-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   assert.equal(exitCode, 1);
-  // });
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("handles test file level type errors", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-file-level"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-test-file-level-errors-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-test-file-level-errors-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("handles test text level type errors", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-level"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-test-text-level-errors-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-test-text-level-errors-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });
