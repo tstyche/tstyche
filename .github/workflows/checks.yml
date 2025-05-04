@@ -97,8 +97,6 @@ jobs:
           path: build
       - run: yarn test:types --target '>=5.0'
       - run: yarn test:examples --target '>=5.0'
-        env:
-          NODE_OPTIONS: '--import ts-blank-space/register'
       - run: yarn tstyche tests/*.js --target '>=5.4'
 
   test-node:
