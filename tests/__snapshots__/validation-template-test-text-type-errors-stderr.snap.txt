@@ -8,7 +8,7 @@ Error: Property 'toBe' does not exist on type 'Modifier'. ts(2339)
   6 | test("is number a string?", () => {
   7 |   expect<string>().toBe<number>();
 
-      at ./__typetests__/test-text-level-type-errors.tst.ts:4:20
+      at ./__typetests__/test-text-type-errors.tst.ts:4:20
 
 Error: Property 'toBe' does not exist on type 'Modifier'. ts(2339)
 
@@ -19,5 +19,5 @@ Error: Property 'toBe' does not exist on type 'Modifier'. ts(2339)
   8 | });
   9 | 
 
-      at ./__typetests__/test-text-level-type-errors.tst.ts:7:20
+      at ./__typetests__/test-text-type-errors.tst.ts:7:20
 

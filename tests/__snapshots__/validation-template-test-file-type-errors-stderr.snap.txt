@@ -8,5 +8,5 @@ Error: Type 'string' is not assignable to type 'number'. ts(2322)
    9 | for (const target of ["string", "number"]) {
   10 |   testText += `test("is ${target} a string?", () => {
 
-       at ./__typetests__/test-file-level-type-errors.tst.ts:7:14
+       at ./__typetests__/test-file-type-errors.tst.ts:7:14
 
