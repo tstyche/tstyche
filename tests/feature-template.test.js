@@ -8,13 +8,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("template", async (t) => {
-  // TODO figure out why this is failing on Windows
-  if (process.platform === "win32") {
-    t.skip();
-
-    return;
-  }
-
   await t.test("template", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
