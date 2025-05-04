@@ -1,4 +1,5 @@
 import { existsSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
@@ -87,7 +88,8 @@ export class TaskRunner {
         return;
       }
 
-      const text: string = (await import(task.filePath)).default;
+      const moduleSpecifier = pathToFileURL(task.filePath).toString();
+      const text: string = (await import(moduleSpecifier)).default;
 
       // TODO better validate that this is actually a string
 
