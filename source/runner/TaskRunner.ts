@@ -89,11 +89,18 @@ export class TaskRunner {
       }
 
       const moduleSpecifier = pathToFileURL(task.filePath).toString();
-      const text: string = (await import(moduleSpecifier)).default;
+      const testText = (await import(moduleSpecifier))?.default;
 
-      // TODO better validate that this is actually a string
+      if (typeof testText !== "string") {
+        EventEmitter.dispatch([
+          "task:error",
+          { diagnostics: [Diagnostic.error("A template test file must export a string.")], result: taskResult },
+        ]);
 
-      this.#projectService.openFile(task.filePath, text, this.#resolvedConfig.rootPath);
+        return;
+      }
+
+      this.#projectService.openFile(task.filePath, testText, this.#resolvedConfig.rootPath);
 
       languageService = this.#projectService.getLanguageService(task.filePath);
 
