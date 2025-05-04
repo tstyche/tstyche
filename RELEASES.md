@@ -1,5 +1,16 @@
 # Releases
 
+## [4.0.0-beta.7] - 2025-05-04
+
+### Added
+
+- **New!** Add template test file support ([#468](https://github.com/tstyche/tstyche/pull/468))
+- **New!** Add the `when()` utility and the `.isCalledWith()` action ([#460](https://github.com/tstyche/tstyche/pull/460), [#466](https://github.com/tstyche/tstyche/pull/466))
+
+### Changed
+
+- **Breaking!** Remove config details from summary and `Result` ([#459](https://github.com/tstyche/tstyche/pull/459))
+
 ## [4.0.0-beta.6] - 2025-04-15
 
 ### Fixed
@@ -607,6 +618,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.7
 [4.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.6
 [4.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.5
 [4.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.4
