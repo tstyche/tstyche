@@ -44,7 +44,25 @@ await test("template test file", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles test file level type errors", async () => {
+  await t.test("handles test file syntax errors", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-file-syntax"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-test-file-syntax-errors-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-test-file-syntax-errors-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("handles test file type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-file-type"], {
       env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
     });
@@ -62,7 +80,7 @@ await test("template test file", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles test text level syntax errors", async () => {
+  await t.test("handles test text syntax errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-syntax"], {
       env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
     });
@@ -80,7 +98,7 @@ await test("template test file", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles test text level type errors", async () => {
+  await t.test("handles test text type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-type"], {
       env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
     });
