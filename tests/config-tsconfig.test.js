@@ -89,7 +89,7 @@ await test("'--tsconfig' command line option", async (t) => {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tsconfig.test.json"]: JSON.stringify({ extends: "../../tsconfig.json", include: [] }, null, 2),
+      ["tsconfig.test.json"]: JSON.stringify({ extends: "../../tsconfig.json", include: ["src/**/*"] }, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--tsconfig", "./tsconfig.test.json"]);
@@ -211,7 +211,7 @@ await test("'tsconfig' configuration file option", async (t) => {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tsconfig.test.json"]: JSON.stringify({ extends: "../../tsconfig.json", include: [] }, null, 2),
+      ["tsconfig.test.json"]: JSON.stringify({ extends: "../../tsconfig.json", include: ["src/**/*"] }, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
