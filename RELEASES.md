@@ -1,5 +1,19 @@
 # Releases
 
+## [4.0.0-beta.8] - 2025-05-05
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
+## Added
+
+- Add validation for template test files ([#470](https://github.com/tstyche/tstyche/pull/470))
+
+### Fixed
+
+- Do not typecheck already seen test files ([#475](https://github.com/tstyche/tstyche/pull/475))
+- Always use default compiler options when file is not included ([#473](https://github.com/tstyche/tstyche/pull/473))
+- Normalize template test file specifier ([#469](https://github.com/tstyche/tstyche/pull/469))
+
 ## [4.0.0-beta.7] - 2025-05-04
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
@@ -634,6 +648,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-beta.8]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.8
 [4.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.7
 [4.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.6
 [4.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.5
