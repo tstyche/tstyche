@@ -16,6 +16,7 @@ import { WhenNode } from "./WhenNode.js";
 export class CollectService {
   #abilityLayer: AbilityLayer;
   #compiler: typeof ts;
+  #identifierLookup: IdentifierLookup;
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
   #testTree: TestTree | undefined;
@@ -26,17 +27,18 @@ export class CollectService {
     this.#resolvedConfig = resolvedConfig;
 
     this.#abilityLayer = new AbilityLayer(compiler, this.#projectService, this.#resolvedConfig);
+    this.#identifierLookup = new IdentifierLookup(compiler);
   }
 
-  #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestTreeNode) {
+  #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode) {
     if (this.#compiler.isCallExpression(node)) {
-      const meta = identifiers.resolveTestMemberMeta(node);
+      const meta = this.#identifierLookup.resolveTestMemberMeta(node);
 
       if (meta != null && (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test)) {
         const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
 
         this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestTreeNodes(node, identifiers, testTreeNode);
+          this.#collectTestTreeNodes(node, testTreeNode);
         });
 
         this.#onNode(testTreeNode, parent);
@@ -80,7 +82,7 @@ export class CollectService {
         this.#abilityLayer.handleAssertion(assertionNode);
 
         this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestTreeNodes(node, identifiers, assertionNode);
+          this.#collectTestTreeNodes(node, assertionNode);
         });
 
         this.#onNode(assertionNode, parent);
@@ -105,10 +107,10 @@ export class CollectService {
 
         this.#compiler.forEachChild(actionNode, (node) => {
           if (this.#compiler.isCallExpression(node)) {
-            const meta = identifiers.resolveTestMemberMeta(node);
+            const meta = this.#identifierLookup.resolveTestMemberMeta(node);
 
             if (meta != null && (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test)) {
-              const text = CollectDiagnosticText.cannotBeNestedWithin(node.expression.getText(), "when");
+              const text = CollectDiagnosticText.cannotBeNestedWithin(meta.identifier, "when");
               const origin = DiagnosticOrigin.fromNode(node);
 
               this.#onDiagnostics(Diagnostic.error(text, origin));
@@ -127,13 +129,13 @@ export class CollectService {
     }
 
     if (this.#compiler.isImportDeclaration(node)) {
-      identifiers.handleImportDeclaration(node);
+      this.#identifierLookup.handleImportDeclaration(node);
 
       return;
     }
 
     this.#compiler.forEachChild(node, (node) => {
-      this.#collectTestTreeNodes(node, identifiers, parent);
+      this.#collectTestTreeNodes(node, parent);
     });
   }
 
@@ -146,7 +148,7 @@ export class CollectService {
 
     this.#abilityLayer.open(sourceFile);
 
-    this.#collectTestTreeNodes(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+    this.#collectTestTreeNodes(sourceFile, testTree);
 
     this.#abilityLayer.close();
 

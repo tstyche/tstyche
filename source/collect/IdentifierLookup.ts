@@ -7,6 +7,12 @@ export interface Identifiers {
   namespace: string | undefined;
 }
 
+export interface TestMemberMeta {
+  brand: TestTreeNodeBrand;
+  flags: TestTreeNodeFlags;
+  identifier: string;
+}
+
 export class IdentifierLookup {
   #compiler: typeof ts;
   #identifiers: Identifiers;
@@ -60,7 +66,7 @@ export class IdentifierLookup {
     }
   }
 
-  resolveTestMemberMeta(node: ts.CallExpression): { brand: TestTreeNodeBrand; flags: TestTreeNodeFlags } | undefined {
+  resolveTestMemberMeta(node: ts.CallExpression): TestMemberMeta | undefined {
     let flags = TestTreeNodeFlags.None;
     let expression = node.expression;
 
@@ -90,36 +96,36 @@ export class IdentifierLookup {
       expression = expression.expression;
     }
 
-    let identifierName: string | undefined;
+    let identifier: string | undefined;
 
     if (
       this.#compiler.isPropertyAccessExpression(expression) &&
       expression.expression.getText() === this.#identifiers.namespace
     ) {
-      identifierName = expression.name.getText();
+      identifier = expression.name.getText();
     } else {
-      identifierName = Object.keys(this.#identifiers.namedImports).find(
+      identifier = Object.keys(this.#identifiers.namedImports).find(
         (key) => this.#identifiers.namedImports[key] === expression.getText(),
       );
     }
 
-    if (!identifierName) {
+    if (!identifier) {
       return;
     }
 
-    switch (identifierName) {
+    switch (identifier) {
       case "describe":
-        return { brand: TestTreeNodeBrand.Describe, flags };
+        return { brand: TestTreeNodeBrand.Describe, flags, identifier };
 
       case "it":
       case "test":
-        return { brand: TestTreeNodeBrand.Test, flags };
+        return { brand: TestTreeNodeBrand.Test, flags, identifier };
 
       case "expect":
-        return { brand: TestTreeNodeBrand.Expect, flags };
+        return { brand: TestTreeNodeBrand.Expect, flags, identifier };
 
       case "when":
-        return { brand: TestTreeNodeBrand.When, flags };
+        return { brand: TestTreeNodeBrand.When, flags, identifier };
     }
 
     return;
