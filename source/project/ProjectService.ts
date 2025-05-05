@@ -9,6 +9,7 @@ export class ProjectService {
   #compiler: typeof ts;
   #lastSeenProject: string | undefined = "";
   #resolvedConfig: ResolvedConfig;
+  #seenFiles = new Set<string>();
   #seenPrograms = new WeakSet<ts.Program>();
   #service: ts.server.ProjectService;
 
@@ -158,7 +159,9 @@ export class ProjectService {
       ]);
     }
 
-    if (this.#resolvedConfig.checkSourceFiles) {
+    if (this.#resolvedConfig.checkSourceFiles && !this.#seenFiles.has(filePath)) {
+      this.#seenFiles.add(filePath);
+
       const languageService = this.getLanguageService(filePath);
 
       const program = languageService?.getProgram();
@@ -169,28 +172,31 @@ export class ProjectService {
 
       this.#seenPrograms.add(program);
 
-      const filesToCheck: Array<ts.SourceFile> = [];
+      const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
+        if (this.#seenFiles.has(sourceFile.fileName)) {
+          return false;
+        }
 
-      for (const sourceFile of program.getSourceFiles()) {
         if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
-          continue;
+          return false;
         }
 
-        if (!Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-          filesToCheck.push(sourceFile);
+        if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+          return false;
         }
-      }
+
+        return true;
+      });
 
       const diagnostics: Array<ts.Diagnostic> = [];
 
-      for (const sourceFile of filesToCheck) {
+      for (const sourceFile of sourceFilesToCheck) {
+        this.#seenFiles.add(sourceFile.fileName);
         diagnostics.push(...program.getSyntacticDiagnostics(sourceFile), ...program.getSemanticDiagnostics(sourceFile));
       }
 
       if (diagnostics.length > 0) {
         EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
-
-        return;
       }
     }
   }
