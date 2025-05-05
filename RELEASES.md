@@ -2,6 +2,8 @@
 
 ## [4.0.0-beta.7] - 2025-05-04
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
 ### Added
 
 - **New!** Add template test file support ([#468](https://github.com/tstyche/tstyche/pull/468))
@@ -13,17 +15,23 @@
 
 ## [4.0.0-beta.6] - 2025-04-15
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
 ### Fixed
 
 - Allow passing property access expressions to the `.toBeCallableWith()` and `.toBeConstructableWith()` matchers (#457)
 
 ## [4.0.0-beta.5] - 2025-04-15
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
 ### Fixed
 
 - Insert missing semicolons in the ability layer text ([#456](https://github.com/tstyche/tstyche/pull/456))
 
 ## [4.0.0-beta.4] - 2025-04-14
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -35,11 +43,15 @@
 
 ## [4.0.0-beta.3] - 2025-04-11
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
 ### Fixed
 
 - Relax validation of the target of `.toBeCallableWith()` matcher ([#448](https://github.com/tstyche/tstyche/pull/448))
 
 ## [4.0.0-beta.2] - 2025-04-11
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -55,11 +67,15 @@
 
 ## [4.0.0-beta.1] - 2025-04-06
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
 ### Added
 
 - **New!** Add the `.toBeApplicable` matcher ([#100](https://github.com/tstyche/tstyche/pull/100))
 
 ## [4.0.0-beta.0] - 2025-03-30
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
