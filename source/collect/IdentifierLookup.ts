@@ -7,7 +7,7 @@ export interface Identifiers {
   namespace: string | undefined;
 }
 
-export interface TestMemberMeta {
+export interface TestTreeNodeMeta {
   brand: TestTreeNodeBrand;
   flags: TestTreeNodeFlags;
   identifier: string;
@@ -66,7 +66,7 @@ export class IdentifierLookup {
     }
   }
 
-  resolveTestMemberMeta(node: ts.CallExpression): TestMemberMeta | undefined {
+  resolveTestTreeNodeMeta(node: ts.CallExpression): TestTreeNodeMeta | undefined {
     let flags = TestTreeNodeFlags.None;
     let expression = node.expression;
 

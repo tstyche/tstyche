@@ -1,8 +1,8 @@
 import type ts from "typescript";
-import { Diagnostic, DiagnosticOrigin, diagnosticBelongsToNode } from "#diagnostic";
+import { diagnosticBelongsToNode } from "#diagnostic";
 import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTree } from "./TestTree.js";
-import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
+import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
 export class TestTreeNode {
@@ -41,44 +41,5 @@ export class TestTreeNode {
         }
       }
     }
-  }
-
-  // TODO move validation to 'CollectService' and report validation errors using 'collect:error' event
-  validate(): Array<Diagnostic> {
-    const diagnostics: Array<Diagnostic> = [];
-
-    const getText = (node: ts.CallExpression) =>
-      `'${node.expression.getText()}()' cannot be nested within '${this.node.expression.getText()}()'.`;
-
-    const getParentCallExpression = (node: ts.Node) => {
-      while (!this.#compiler.isCallExpression(node.parent)) {
-        node = node.parent;
-      }
-
-      return node.parent;
-    };
-
-    switch (this.brand) {
-      case TestTreeNodeBrand.Describe:
-        for (const child of this.children) {
-          if (child.brand === TestTreeNodeBrand.Expect || child.brand === TestTreeNodeBrand.When) {
-            diagnostics.push(
-              Diagnostic.error(getText(child.node), DiagnosticOrigin.fromNode(getParentCallExpression(child.node))),
-            );
-          }
-        }
-        break;
-
-      case TestTreeNodeBrand.Test:
-      case TestTreeNodeBrand.Expect:
-        for (const child of this.children) {
-          if (child.brand === TestTreeNodeBrand.Describe || child.brand === TestTreeNodeBrand.Test) {
-            diagnostics.push(Diagnostic.error(getText(child.node), DiagnosticOrigin.fromNode(child.node)));
-          }
-        }
-        break;
-    }
-
-    return diagnostics;
   }
 }
