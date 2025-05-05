@@ -9,8 +9,8 @@ export class ProjectService {
   #compiler: typeof ts;
   #lastSeenProject: string | undefined = "";
   #resolvedConfig: ResolvedConfig;
-  #seenFiles = new Set<string>();
   #seenPrograms = new WeakSet<ts.Program>();
+  #seenTestFiles = new Set<string>();
   #service: ts.server.ProjectService;
 
   constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
@@ -159,8 +159,8 @@ export class ProjectService {
       ]);
     }
 
-    if (this.#resolvedConfig.checkSourceFiles && !this.#seenFiles.has(filePath)) {
-      this.#seenFiles.add(filePath);
+    if (this.#resolvedConfig.checkSourceFiles && !this.#seenTestFiles.has(filePath)) {
+      this.#seenTestFiles.add(filePath);
 
       const languageService = this.getLanguageService(filePath);
 
@@ -173,10 +173,6 @@ export class ProjectService {
       this.#seenPrograms.add(program);
 
       const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
-        if (this.#seenFiles.has(sourceFile.fileName)) {
-          return false;
-        }
-
         if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
           return false;
         }
@@ -191,7 +187,6 @@ export class ProjectService {
       const diagnostics: Array<ts.Diagnostic> = [];
 
       for (const sourceFile of sourceFilesToCheck) {
-        this.#seenFiles.add(sourceFile.fileName);
         diagnostics.push(...program.getSyntacticDiagnostics(sourceFile), ...program.getSemanticDiagnostics(sourceFile));
       }
 
