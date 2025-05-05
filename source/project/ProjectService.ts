@@ -2,6 +2,7 @@ import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { Path } from "#path";
 import { Select } from "#select";
 
 export class ProjectService {
@@ -53,20 +54,6 @@ export class ProjectService {
       useSingleInferredProject: false,
     });
 
-    switch (this.#resolvedConfig.tsconfig) {
-      case "findup":
-        break;
-
-      case "ignore":
-        // @ts-expect-error: overriding private method
-        this.#service.getConfigFileNameForFile = () => undefined;
-        break;
-
-      default:
-        // @ts-expect-error: overriding private method
-        this.#service.getConfigFileNameForFile = () => this.#resolvedConfig.tsconfig;
-    }
-
     this.#service.setCompilerOptionsForInferredProjects(this.#getDefaultCompilerOptions());
   }
 
@@ -114,7 +101,40 @@ export class ProjectService {
     return project?.getLanguageService(/* ensureSynchronized */ true);
   }
 
+  #isFileIncluded(filePath: string) {
+    const configSourceFile = this.#compiler.readJsonConfigFile(
+      this.#resolvedConfig.tsconfig,
+      this.#compiler.sys.readFile,
+    );
+
+    const { fileNames } = this.#compiler.parseJsonSourceFileConfigFileContent(
+      configSourceFile,
+      this.#compiler.sys,
+      Path.dirname(this.#resolvedConfig.tsconfig),
+      undefined,
+      this.#resolvedConfig.tsconfig,
+    );
+
+    return fileNames.includes(filePath);
+  }
+
   openFile(filePath: string, sourceText?: string | undefined, projectRootPath?: string | undefined): void {
+    switch (this.#resolvedConfig.tsconfig) {
+      case "findup":
+        break;
+
+      case "ignore":
+        // @ts-expect-error: overriding private method
+        this.#service.getConfigFileNameForFile = () => undefined;
+        break;
+
+      default:
+        // @ts-expect-error: overriding private method
+        this.#service.getConfigFileNameForFile = this.#isFileIncluded(filePath)
+          ? () => this.#resolvedConfig.tsconfig
+          : () => undefined;
+    }
+
     const { configFileErrors, configFileName } = this.#service.openClientFile(
       filePath,
       sourceText,
