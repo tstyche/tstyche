@@ -28,5 +28,5 @@ when(pipe).isCalledWith(
 
 expect(() => {
   // 'when()' or 'expect()' can be nested!
-  when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("valid"));
-}).type.toBe<() => void>();
+  when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith(true));
+}).type.toBe<void>();

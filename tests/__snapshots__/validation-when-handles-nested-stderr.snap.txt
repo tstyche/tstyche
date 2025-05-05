@@ -94,3 +94,26 @@ Error: Argument of type 'void' is not assignable to parameter of type '(source: 
 
        at ./__typetests__/handles-nested.tst.ts:24:3
 
+Error: Expression is not callable with the given argument.
+
+Argument of type 'true' is not assignable to parameter of type '"valid"'.
+
+  29 | expect(() => {
+  30 |   // 'when()' or 'expect()' can be nested!
+  31 |   when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith(true));
+     |                                                                               ~~~~
+  32 | }).type.toBe<void>();
+  33 | 
+
+       at ./__typetests__/handles-nested.tst.ts:31:79
+
+Error: Type '() => void' is not identical to type 'void'.
+
+  30 |   // 'when()' or 'expect()' can be nested!
+  31 |   when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith(true));
+  32 | }).type.toBe<void>();
+     |              ~~~~
+  33 | 
+
+       at ./__typetests__/handles-nested.tst.ts:32:14
+
