@@ -10,6 +10,7 @@ export class ProjectService {
   #lastSeenProject: string | undefined = "";
   #resolvedConfig: ResolvedConfig;
   #seenPrograms = new WeakSet<ts.Program>();
+  #seenTestFiles = new Set<string>();
   #service: ts.server.ProjectService;
 
   constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
@@ -158,7 +159,9 @@ export class ProjectService {
       ]);
     }
 
-    if (this.#resolvedConfig.checkSourceFiles) {
+    if (this.#resolvedConfig.checkSourceFiles && !this.#seenTestFiles.has(filePath)) {
+      this.#seenTestFiles.add(filePath);
+
       const languageService = this.getLanguageService(filePath);
 
       const program = languageService?.getProgram();
@@ -169,28 +172,26 @@ export class ProjectService {
 
       this.#seenPrograms.add(program);
 
-      const filesToCheck: Array<ts.SourceFile> = [];
-
-      for (const sourceFile of program.getSourceFiles()) {
+      const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
         if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
-          continue;
+          return false;
         }
 
-        if (!Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-          filesToCheck.push(sourceFile);
+        if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+          return false;
         }
-      }
+
+        return true;
+      });
 
       const diagnostics: Array<ts.Diagnostic> = [];
 
-      for (const sourceFile of filesToCheck) {
+      for (const sourceFile of sourceFilesToCheck) {
         diagnostics.push(...program.getSyntacticDiagnostics(sourceFile), ...program.getSemanticDiagnostics(sourceFile));
       }
 
       if (diagnostics.length > 0) {
         EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
-
-        return;
       }
     }
   }
