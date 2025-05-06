@@ -15,23 +15,11 @@ export interface TestTreeNodeMeta {
 
 export class IdentifierLookup {
   #compiler: typeof ts;
-  #identifiers: Identifiers;
+  #identifiers!: Identifiers;
   #moduleSpecifiers = ['"tstyche"', "'tstyche'"];
 
   constructor(compiler: typeof ts) {
     this.#compiler = compiler;
-
-    this.#identifiers = {
-      namedImports: {
-        describe: undefined,
-        expect: undefined,
-        it: undefined,
-        namespace: undefined,
-        test: undefined,
-        when: undefined,
-      },
-      namespace: undefined,
-    };
   }
 
   handleImportDeclaration(node: ts.ImportDeclaration): void {
@@ -64,6 +52,20 @@ export class IdentifierLookup {
         this.#identifiers.namespace = node.importClause.namedBindings.name.getText();
       }
     }
+  }
+
+  open() {
+    this.#identifiers = {
+      namedImports: {
+        describe: undefined,
+        expect: undefined,
+        it: undefined,
+        namespace: undefined,
+        test: undefined,
+        when: undefined,
+      },
+      namespace: undefined,
+    };
   }
 
   resolveTestTreeNodeMeta(node: ts.CallExpression): TestTreeNodeMeta | undefined {

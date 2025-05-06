@@ -16,20 +16,16 @@ import { WhenNode } from "./WhenNode.js";
 export class CollectService {
   #abilityLayer: AbilityLayer;
   #compiler: typeof ts;
-  #identifierLookup!: IdentifierLookup;
-  #projectService: ProjectService;
-  #resolvedConfig: ResolvedConfig;
-  #testTree: TestTree | undefined;
+  #identifierLookup: IdentifierLookup;
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
-    this.#projectService = projectService;
-    this.#resolvedConfig = resolvedConfig;
 
-    this.#abilityLayer = new AbilityLayer(compiler, this.#projectService, this.#resolvedConfig);
+    this.#abilityLayer = new AbilityLayer(compiler, projectService, resolvedConfig);
+    this.#identifierLookup = new IdentifierLookup(compiler);
   }
 
-  #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode) {
+  #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode, testTree: TestTree) {
     if (this.#compiler.isCallExpression(node)) {
       const meta = this.#identifierLookup.resolveTestTreeNodeMeta(node);
 
@@ -42,10 +38,10 @@ export class CollectService {
           const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
 
           this.#compiler.forEachChild(node, (node) => {
-            this.#collectTestTreeNodes(node, testTreeNode);
+            this.#collectTestTreeNodes(node, testTreeNode, testTree);
           });
 
-          this.#onNode(testTreeNode, parent);
+          this.#onNode(testTreeNode, parent, testTree);
 
           return;
         }
@@ -86,10 +82,10 @@ export class CollectService {
           this.#abilityLayer.handleAssertion(assertionNode);
 
           this.#compiler.forEachChild(node, (node) => {
-            this.#collectTestTreeNodes(node, assertionNode);
+            this.#collectTestTreeNodes(node, assertionNode, testTree);
           });
 
-          this.#onNode(assertionNode, parent);
+          this.#onNode(assertionNode, parent, testTree);
 
           return;
         }
@@ -134,7 +130,7 @@ export class CollectService {
 
           this.#abilityLayer.handleWhen(whenNode);
 
-          this.#onNode(whenNode, parent);
+          this.#onNode(whenNode, parent, testTree);
 
           return;
         }
@@ -148,26 +144,21 @@ export class CollectService {
     }
 
     this.#compiler.forEachChild(node, (node) => {
-      this.#collectTestTreeNodes(node, parent);
+      this.#collectTestTreeNodes(node, parent, testTree);
     });
   }
 
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
-    this.#identifierLookup = new IdentifierLookup(this.#compiler);
-
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);
 
-    this.#testTree = testTree;
-
     this.#abilityLayer.open(sourceFile);
+    this.#identifierLookup.open();
 
-    this.#collectTestTreeNodes(sourceFile, testTree);
+    this.#collectTestTreeNodes(sourceFile, testTree, testTree);
 
     this.#abilityLayer.close();
-
-    this.#testTree = undefined;
 
     EventEmitter.dispatch(["collect:end", { tree: testTree }]);
 
@@ -247,12 +238,11 @@ export class CollectService {
     EventEmitter.dispatch(["collect:error", { diagnostics: [diagnostic] }]);
   }
 
-  #onNode(node: TestTreeNode | AssertionNode | WhenNode, parent: TestTree | TestTreeNode) {
+  #onNode(node: TestTreeNode | AssertionNode | WhenNode, parent: TestTree | TestTreeNode, testTree: TestTree) {
     parent.children.push(node);
 
     if (node.flags & TestTreeNodeFlags.Only) {
-      // biome-ignore lint/style/noNonNullAssertion: logic makes sure that 'testTree' is defined
-      this.#testTree!.hasOnly = true;
+      testTree.hasOnly = true;
     }
 
     EventEmitter.dispatch(["collect:node", { node }]);
