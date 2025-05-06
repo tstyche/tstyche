@@ -1,5 +1,7 @@
 import { spawn } from "node:child_process";
 
+export const isWindows = process.platform === "win32";
+
 // TODO use 'Promise.withResolvers()' after dropping support for Node.js 20
 class Deferred {
   constructor() {
@@ -32,7 +34,7 @@ export class Process {
    * @param {{ env?: Record<string, string | undefined> }} [options]
    */
   constructor(fixtureUrl, args = [], options = {}) {
-    this.#subprocess = spawn(["tstyche", ...args].join(" "), {
+    const spawnOptions = {
       cwd: fixtureUrl,
       env: {
         ...process.env,
@@ -40,8 +42,12 @@ export class Process {
         ["TSTYCHE_STORE_PATH"]: "./.store",
         ...options?.env,
       },
-      shell: true,
-    });
+      shell: isWindows,
+    };
+
+    this.#subprocess = isWindows
+      ? spawn(["tstyche", ...args].join(" "), spawnOptions)
+      : spawn("tstyche", args, spawnOptions);
 
     this.#subprocess.stdout.setEncoding("utf8");
 
