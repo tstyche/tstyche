@@ -1,6 +1,6 @@
 {
   "name": "tstyche",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.8",
   "description": "The Essential Type Testing Tool.",
   "keywords": [
     "typescript",
@@ -62,7 +62,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@rollup/plugin-typescript": "12.1.2",
-    "@types/node": "22.15.3",
+    "@types/node": "22.15.12",
     "@types/react": "19.1.2",
     "ajv": "8.17.1",
     "cspell": "9.0.0",
@@ -76,7 +76,7 @@
     "typescript": "5.8.3"
   },
   "peerDependencies": {
-    "typescript": "5.x"
+    "typescript": ">=4.7"
   },
   "peerDependenciesMeta": {
     "typescript": {
