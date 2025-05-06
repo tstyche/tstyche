@@ -16,7 +16,7 @@ import { WhenNode } from "./WhenNode.js";
 export class CollectService {
   #abilityLayer: AbilityLayer;
   #compiler: typeof ts;
-  #identifierLookup: IdentifierLookup;
+  #identifierLookup!: IdentifierLookup;
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
   #testTree: TestTree | undefined;
@@ -27,7 +27,6 @@ export class CollectService {
     this.#resolvedConfig = resolvedConfig;
 
     this.#abilityLayer = new AbilityLayer(compiler, this.#projectService, this.#resolvedConfig);
-    this.#identifierLookup = new IdentifierLookup(compiler);
   }
 
   #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode) {
@@ -155,6 +154,8 @@ export class CollectService {
 
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
+
+    this.#identifierLookup = new IdentifierLookup(this.#compiler);
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);
 

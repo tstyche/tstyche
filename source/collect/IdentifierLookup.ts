@@ -18,10 +18,10 @@ export class IdentifierLookup {
   #identifiers: Identifiers;
   #moduleSpecifiers = ['"tstyche"', "'tstyche'"];
 
-  constructor(compiler: typeof ts, identifiers?: Identifiers) {
+  constructor(compiler: typeof ts) {
     this.#compiler = compiler;
 
-    this.#identifiers = identifiers ?? {
+    this.#identifiers = {
       namedImports: {
         describe: undefined,
         expect: undefined,
