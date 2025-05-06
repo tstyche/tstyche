@@ -85,7 +85,7 @@ await test("toBeConstructableWith", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles missing semicolons", async (t) => {
+  await t.test("handles missing semicolons", async (t) => {
     const toBeConstructableWithText = `import { expect, test } from "tstyche"
 
 class Pair<T> {

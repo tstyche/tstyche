@@ -80,7 +80,7 @@ await test("toBeCallableWith", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles missing semicolons", async (t) => {
+  await t.test("handles missing semicolons", async (t) => {
     const toBeCallableWithText = `import { expect, test } from "tstyche"
 
 function pickLonger<T extends { length: number }>(a: T, b: T) {

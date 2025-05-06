@@ -59,8 +59,8 @@ await test("toBeApplicable", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await test("respects line endings", async (t) => {
-    const toBeApplicable = `import { expect, test } from "tstyche";
+  await t.test("respects line endings", async (t) => {
+    const toBeApplicableText = `import { expect, test } from "tstyche";
 
 declare function setterDecorator(
   target: (value: string) => void,
@@ -91,7 +91,7 @@ test("is applicable to setter", () => {
     });
 
     await writeFixture(fixtureUrl, {
-      ["__typetests__/toBeApplicable.tst.ts"]: toBeApplicable,
+      ["__typetests__/toBeApplicable.tst.ts"]: toBeApplicableText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
