@@ -92,14 +92,6 @@ export class TestTreeWalker {
         break;
       }
 
-      const validationError = testNode.validate();
-
-      if (validationError.length > 0) {
-        EventEmitter.dispatch(["task:error", { diagnostics: validationError, result: this.#taskResult }]);
-
-        break;
-      }
-
       switch (testNode.brand) {
         case TestTreeNodeBrand.Describe:
           this.#visitDescribe(testNode, runMode, parentResult as DescribeResult | undefined);
@@ -236,8 +228,14 @@ export class TestTreeWalker {
     }
   }
 
-  #visitWhen(when: WhenNode, runMode: RunMode, parentResult: TestResult | undefined) {
+  #visitWhen(when: WhenNode, _runMode: RunMode, _parentResult: TestResult | undefined) {
     // TODO make sure a function was passed to '.isCalledWith()' action
+
+    // must be a switch with all possible actions
+    // and 'default' similar to '.onMatcherIsNotSupported()'
+
+    // the 'isCalledWith' branch checks:
+    //   - if argument is callable
 
     if (when.abilityDiagnostics != null && when.abilityDiagnostics.size > 0) {
       const diagnostics: Array<Diagnostic> = [];
@@ -269,6 +267,8 @@ export class TestTreeWalker {
       return;
     }
 
-    this.visit(when.children, runMode, parentResult);
+    // TODO are there any children?
+
+    // this.visit(when.children, runMode, parentResult);
   }
 }

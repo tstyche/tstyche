@@ -6,11 +6,10 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
-import { CancellationHandler } from "#handlers";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
-import { CancellationReason, type CancellationToken } from "#token";
+import type { CancellationToken } from "#token";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
@@ -115,16 +114,7 @@ export class TaskRunner {
       return;
     }
 
-    const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.CollectError);
-    this.#eventEmitter.addHandler(cancellationHandler);
-
     const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
-
-    this.#eventEmitter.removeHandler(cancellationHandler);
-
-    if (cancellationToken.isCancellationRequested) {
-      return;
-    }
 
     if (testTree.diagnostics.size > 0) {
       this.#onDiagnostics(Diagnostic.fromDiagnostics([...testTree.diagnostics]), taskResult);
