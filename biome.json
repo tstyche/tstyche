@@ -17,8 +17,7 @@
       "models/ConfigFileOptions.ts",
       "node_modules/**",
       "cspell.config.json",
-      "package.json",
-      "test-file-syntax-errors.tst.ts"
+      "package.json"
     ]
   },
 
