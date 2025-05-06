@@ -1,7 +1,5 @@
 import { spawn } from "node:child_process";
 
-export const isWindows = process.platform === "win32";
-
 // TODO use 'Promise.withResolvers()' after dropping support for Node.js 20
 class Deferred {
   constructor() {
@@ -42,7 +40,7 @@ export class Process {
         ["TSTYCHE_STORE_PATH"]: "./.store",
         ...options?.env,
       },
-      shell: isWindows,
+      shell: true,
     });
 
     this.#subprocess.stdout.setEncoding("utf8");
