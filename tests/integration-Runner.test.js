@@ -32,6 +32,13 @@ class TestResultReporter {
 }
 
 await test("Runner", async (t) => {
+  // TODO currently does not work, because Node.js 24 does not await for 't.test()' to finish
+  if (process.versions.node.startsWith("24")) {
+    t.skip();
+
+    return;
+  }
+
   await t.test("run tests", async (t) => {
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
     const runner = new tstyche.Runner(resolvedConfig);
