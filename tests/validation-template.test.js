@@ -1,6 +1,6 @@
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
-import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
+import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -45,7 +45,28 @@ await test("template test file", async (t) => {
   });
 
   await t.test("handles test file syntax errors", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-file-syntax"], {
+    const templateText = `// @tstyche-template
+
+function getTestText() {
+  return \`import { expect, test } from "tstyche";
+expect<string>().type.toBe<string>();
+\`;
+}
+
+export default getTestText(;
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/template.tst.ts"]: templateText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["template"], {
       env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
     });
 
