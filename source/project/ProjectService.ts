@@ -4,6 +4,7 @@ import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { Select } from "#select";
+import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
@@ -64,7 +65,6 @@ export class ProjectService {
 
   #getDefaultCompilerOptions() {
     const defaultCompilerOptions: ts.server.protocol.CompilerOptions = {
-      allowImportingTsExtensions: true,
       allowJs: true,
       checkJs: true,
       exactOptionalPropertyTypes: true,
@@ -75,8 +75,12 @@ export class ProjectService {
       resolveJsonModule: true,
       strict: true,
       target: this.#compiler.ScriptTarget.ESNext,
-      verbatimModuleSyntax: true,
     };
+
+    if (Version.isSatisfiedWith(this.#compiler.version, "5.0")) {
+      defaultCompilerOptions.allowImportingTsExtensions = true;
+      defaultCompilerOptions.verbatimModuleSyntax = true;
+    }
 
     return defaultCompilerOptions;
   }
