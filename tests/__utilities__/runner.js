@@ -33,7 +33,7 @@ if (debug) {
   process.exit();
 }
 
-run({ argv: options, concurrency: parallel, files: testFiles, isolation: "none", only })
+run({ argv: options, concurrency: parallel, files: testFiles, only })
   .on("test:fail", () => {
     process.exitCode = 1;
   })
