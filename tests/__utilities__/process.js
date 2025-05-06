@@ -33,8 +33,8 @@ export class Process {
    * @param {Array<string>} [args]
    * @param {{ env?: Record<string, string | undefined> }} [options]
    */
-  constructor(fixtureUrl, args, options) {
-    this.#subprocess = spawn("tstyche", args, {
+  constructor(fixtureUrl, args = [], options = {}) {
+    this.#subprocess = spawn(["tstyche", ...args].join(" "), {
       cwd: fixtureUrl,
       env: {
         ...process.env,
