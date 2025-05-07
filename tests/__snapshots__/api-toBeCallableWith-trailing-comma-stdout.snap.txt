@@ -1,0 +1,10 @@
+uses TypeScript <<version>>
+
+fail ./__typetests__/toBeCallableWith.tst.ts
+  × handles trailing comma?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 3 failed, 3 total
+Duration:   <<timestamp>>

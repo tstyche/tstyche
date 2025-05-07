@@ -7,9 +7,9 @@ import type { WhenNode } from "./WhenNode.js";
 import { nodeBelongsToArgumentList } from "./helpers.js";
 
 interface TextRange {
+  start: number;
   end: number;
   replacement?: string;
-  start: number;
 }
 
 export class AbilityLayer {
@@ -91,6 +91,12 @@ export class AbilityLayer {
     this.#text = "";
   }
 
+  #eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>, parent: AssertionNode | WhenNode) {
+    if (node.hasTrailingComma) {
+      this.#addRanges(parent, [{ start: node.end - 1, end: node.end }]);
+    }
+  }
+
   handleWhen(whenNode: WhenNode): void {
     const whenStart = whenNode.node.getStart();
     const whenExpressionEnd = whenNode.node.expression.getEnd();
@@ -99,13 +105,15 @@ export class AbilityLayer {
 
     switch (whenNode.actionNameNode.name.text) {
       case "isCalledWith":
+        this.#eraseTrailingComma(whenNode.target, whenNode);
+
         this.#addRanges(whenNode, [
           {
-            end: whenExpressionEnd,
             start: whenStart,
+            end: whenExpressionEnd,
             replacement: nodeBelongsToArgumentList(this.#compiler, whenNode.actionNode) ? "" : ";",
           },
-          { end: actionNameEnd, start: whenEnd },
+          { start: whenEnd, end: actionNameEnd },
         ]);
 
         break;
@@ -121,32 +129,36 @@ export class AbilityLayer {
     switch (assertionNode.matcherNameNode.name.text) {
       case "toBeApplicable":
         this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd, start: expectStart },
-          { end: matcherNameEnd, start: expectEnd },
+          { start: expectStart, end: expectExpressionEnd },
+          { start: expectEnd, end: matcherNameEnd },
         ]);
 
         break;
 
       case "toBeCallableWith":
+        this.#eraseTrailingComma(assertionNode.source, assertionNode);
+
         this.#addRanges(assertionNode, [
           {
-            end: expectExpressionEnd,
             start: expectStart,
+            end: expectExpressionEnd,
             replacement: nodeBelongsToArgumentList(this.#compiler, assertionNode.matcherNode) ? "" : ";",
           },
-          { end: matcherNameEnd, start: expectEnd },
+          { start: expectEnd, end: matcherNameEnd },
         ]);
 
         break;
 
       case "toBeConstructableWith":
+        this.#eraseTrailingComma(assertionNode.source, assertionNode);
+
         this.#addRanges(assertionNode, [
           {
-            end: expectExpressionEnd,
             start: expectStart,
+            end: expectExpressionEnd,
             replacement: nodeBelongsToArgumentList(this.#compiler, assertionNode.matcherNode) ? "new" : "; new",
           },
-          { end: matcherNameEnd, start: expectEnd },
+          { start: expectEnd, end: matcherNameEnd },
         ]);
 
         break;
