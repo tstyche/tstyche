@@ -91,9 +91,9 @@ export class AbilityLayer {
     this.#text = "";
   }
 
-  #eraseTrailingComma(assertionNode: AssertionNode) {
-    if (assertionNode.source.hasTrailingComma) {
-      this.#addRanges(assertionNode, [{ start: assertionNode.source.end - 1, end: assertionNode.source.end }]);
+  #eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>, parent: AssertionNode | WhenNode) {
+    if (node.hasTrailingComma) {
+      this.#addRanges(parent, [{ start: node.end - 1, end: node.end }]);
     }
   }
 
@@ -105,6 +105,8 @@ export class AbilityLayer {
 
     switch (whenNode.actionNameNode.name.text) {
       case "isCalledWith":
+        this.#eraseTrailingComma(whenNode.target, whenNode);
+
         this.#addRanges(whenNode, [
           {
             end: whenExpressionEnd,
@@ -134,7 +136,7 @@ export class AbilityLayer {
         break;
 
       case "toBeCallableWith":
-        this.#eraseTrailingComma(assertionNode);
+        this.#eraseTrailingComma(assertionNode.source, assertionNode);
 
         this.#addRanges(assertionNode, [
           {
@@ -148,7 +150,7 @@ export class AbilityLayer {
         break;
 
       case "toBeConstructableWith":
-        this.#eraseTrailingComma(assertionNode);
+        this.#eraseTrailingComma(assertionNode.source, assertionNode);
 
         this.#addRanges(assertionNode, [
           {
