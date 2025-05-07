@@ -3,7 +3,7 @@ import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
@@ -16,7 +16,6 @@ import { TestTreeWalker } from "./TestTreeWalker.js";
 export class TaskRunner {
   #collectService: CollectService;
   #compiler: typeof ts;
-  #eventEmitter = new EventEmitter();
   #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
 
@@ -124,9 +123,12 @@ export class TaskRunner {
 
     const typeChecker = program?.getTypeChecker() as TypeChecker;
 
-    const testTreeWalker = new TestTreeWalker(this.#compiler, typeChecker, this.#resolvedConfig, {
+    const onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>> = (diagnostics) => {
+      this.#onDiagnostics(diagnostics, taskResult);
+    };
+
+    const testTreeWalker = new TestTreeWalker(this.#compiler, typeChecker, this.#resolvedConfig, onTaskDiagnostics, {
       cancellationToken,
-      taskResult,
       hasOnly: testTree.hasOnly,
       position: task.position,
     });

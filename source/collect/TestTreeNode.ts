@@ -4,11 +4,11 @@ import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTree } from "./TestTree.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
+import type { WhenNode } from "./WhenNode.js";
 
 export class TestTreeNode {
   brand: TestTreeNodeBrand;
-  children: Array<TestTreeNode | AssertionNode> = [];
-  #compiler: typeof ts;
+  children: Array<TestTreeNode | AssertionNode | WhenNode> = [];
   diagnostics = new Set<ts.Diagnostic>();
   flags: TestTreeNodeFlags;
   name = "";
@@ -23,7 +23,6 @@ export class TestTreeNode {
     flags: TestTreeNodeFlags,
   ) {
     this.brand = brand;
-    this.#compiler = compiler;
     this.node = node;
     this.parent = parent;
     this.flags = flags;
