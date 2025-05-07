@@ -40,7 +40,7 @@ export class TestTreeWalker {
     this.#position = options.position;
 
     this.#expectService = new ExpectService(compiler, typeChecker, this.#resolvedConfig);
-    this.#whenService = new WhenService();
+    this.#whenService = new WhenService(onTaskDiagnostics);
   }
 
   #resolveRunMode(mode: RunMode, testNode: TestTreeNode): RunMode {
