@@ -7,9 +7,9 @@ import type { WhenNode } from "./WhenNode.js";
 import { nodeBelongsToArgumentList } from "./helpers.js";
 
 interface TextRange {
+  start: number;
   end: number;
   replacement?: string;
-  start: number;
 }
 
 export class AbilityLayer {
@@ -91,6 +91,12 @@ export class AbilityLayer {
     this.#text = "";
   }
 
+  #eraseTrailingComma(assertionNode: AssertionNode) {
+    if (assertionNode.source.hasTrailingComma) {
+      this.#addRanges(assertionNode, [{ start: assertionNode.source.end - 1, end: assertionNode.source.end }]);
+    }
+  }
+
   handleWhen(whenNode: WhenNode): void {
     const whenStart = whenNode.node.getStart();
     const whenExpressionEnd = whenNode.node.expression.getEnd();
@@ -128,6 +134,8 @@ export class AbilityLayer {
         break;
 
       case "toBeCallableWith":
+        this.#eraseTrailingComma(assertionNode);
+
         this.#addRanges(assertionNode, [
           {
             end: expectExpressionEnd,
@@ -140,6 +148,8 @@ export class AbilityLayer {
         break;
 
       case "toBeConstructableWith":
+        this.#eraseTrailingComma(assertionNode);
+
         this.#addRanges(assertionNode, [
           {
             end: expectExpressionEnd,
