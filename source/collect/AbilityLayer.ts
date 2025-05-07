@@ -109,11 +109,11 @@ export class AbilityLayer {
 
         this.#addRanges(whenNode, [
           {
-            end: whenExpressionEnd,
             start: whenStart,
+            end: whenExpressionEnd,
             replacement: nodeBelongsToArgumentList(this.#compiler, whenNode.actionNode) ? "" : ";",
           },
-          { end: actionNameEnd, start: whenEnd },
+          { start: whenEnd, end: actionNameEnd },
         ]);
 
         break;
@@ -129,8 +129,8 @@ export class AbilityLayer {
     switch (assertionNode.matcherNameNode.name.text) {
       case "toBeApplicable":
         this.#addRanges(assertionNode, [
-          { end: expectExpressionEnd, start: expectStart },
-          { end: matcherNameEnd, start: expectEnd },
+          { start: expectStart, end: expectExpressionEnd },
+          { start: expectEnd, end: matcherNameEnd },
         ]);
 
         break;
@@ -140,11 +140,11 @@ export class AbilityLayer {
 
         this.#addRanges(assertionNode, [
           {
-            end: expectExpressionEnd,
             start: expectStart,
+            end: expectExpressionEnd,
             replacement: nodeBelongsToArgumentList(this.#compiler, assertionNode.matcherNode) ? "" : ";",
           },
-          { end: matcherNameEnd, start: expectEnd },
+          { start: expectEnd, end: matcherNameEnd },
         ]);
 
         break;
@@ -154,11 +154,11 @@ export class AbilityLayer {
 
         this.#addRanges(assertionNode, [
           {
-            end: expectExpressionEnd,
             start: expectStart,
+            end: expectExpressionEnd,
             replacement: nodeBelongsToArgumentList(this.#compiler, assertionNode.matcherNode) ? "new" : "; new",
           },
-          { end: matcherNameEnd, start: expectEnd },
+          { start: expectEnd, end: matcherNameEnd },
         ]);
 
         break;
