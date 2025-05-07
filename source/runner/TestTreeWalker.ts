@@ -12,6 +12,7 @@ import {
 } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
+import { Reject } from "#reject";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import type { WhenNode } from "../collect/WhenNode.js";
@@ -45,7 +46,9 @@ export class TestTreeWalker {
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
 
-    this.#expectService = new ExpectService(compiler, typeChecker, this.#resolvedConfig);
+    const reject = new Reject(compiler, typeChecker, resolvedConfig);
+
+    this.#expectService = new ExpectService(compiler, typeChecker, reject);
   }
 
   #resolveRunMode(mode: RunMode, testNode: TestTreeNode): RunMode {

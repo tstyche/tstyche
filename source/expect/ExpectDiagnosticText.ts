@@ -1,10 +1,4 @@
-import { capitalize } from "./helpers.js";
-
 export class ExpectDiagnosticText {
-  static argumentCannotBeOfType(argumentNameText: string, typeText: string): string {
-    return `An argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
-  }
-
   static argumentOrTypeArgumentMustBeProvided(argumentNameText: string, typeArgumentNameText: string): string {
     return `An argument for '${argumentNameText}' or type argument for '${typeArgumentNameText}' must be provided.`;
   }
@@ -73,10 +67,6 @@ export class ExpectDiagnosticText {
     return `The raised type error${count === 1 ? "" : "s"}:`;
   }
 
-  static typeArgumentCannotBeOfType(argumentNameText: string, typeText: string): string {
-    return `A type argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
-  }
-
   static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
     return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
@@ -137,14 +127,5 @@ export class ExpectDiagnosticText {
 
   static typesOfPropertyAreNotCompatible(propertyNameText: string): string {
     return `Types of property '${propertyNameText}' are not compatible.`;
-  }
-
-  static typeWasRejected(typeText: string): Array<string> {
-    const optionNameText = `reject${capitalize(typeText)}Type`;
-
-    return [
-      `The '${typeText}' type was rejected because the '${optionNameText}' option is enabled.`,
-      `If this check is necessary, pass '${typeText}' as the type argument explicitly.`,
-    ];
   }
 }
