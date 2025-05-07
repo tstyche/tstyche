@@ -11,6 +11,7 @@ export * from "#output";
 export * from "#path";
 export * from "#plugins";
 export * from "#project";
+export * from "#reject";
 export * from "#reporters";
 export * from "#result";
 export * from "#runner";

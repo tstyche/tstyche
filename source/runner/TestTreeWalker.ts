@@ -4,6 +4,7 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
+import { Reject } from "#reject";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { WhenService } from "#when";
@@ -39,7 +40,9 @@ export class TestTreeWalker {
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
 
-    this.#expectService = new ExpectService(compiler, typeChecker, this.#resolvedConfig);
+    const reject = new Reject(compiler, typeChecker, resolvedConfig);
+
+    this.#expectService = new ExpectService(compiler, typeChecker, reject);
     this.#whenService = new WhenService(onTaskDiagnostics);
   }
 
