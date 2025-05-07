@@ -12,7 +12,7 @@ import { WhenDiagnosticText } from "./WhenDiagnosticText.js";
 
 export class WhenService {
   action(when: WhenNode, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
-    if (!this.#checkWhen(when, onDiagnostics)) {
+    if (!this.#check(when, onDiagnostics)) {
       return;
     }
 
@@ -45,7 +45,7 @@ export class WhenService {
     }
   }
 
-  #checkWhen(when: WhenNode, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>) {
+  #check(when: WhenNode, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>) {
     const actionNameText = when.actionNameNode.name.getText();
 
     switch (actionNameText) {
