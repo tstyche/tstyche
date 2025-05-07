@@ -1,8 +1,7 @@
 import type ts from "typescript";
 import type { AssertionNode } from "#collect";
-import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { Reject } from "#reject";
+import type { Reject } from "#reject";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
@@ -31,9 +30,9 @@ export class ExpectService {
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, reject: Reject) {
     this.#compiler = compiler;
-    this.#reject = new Reject(compiler, typeChecker, resolvedConfig);
+    this.#reject = reject;
     this.#typeChecker = typeChecker;
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
