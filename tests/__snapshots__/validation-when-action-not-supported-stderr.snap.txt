@@ -1,0 +1,10 @@
+Error: The '.isSupportedWith()' action is not supported.
+
+  5 | 
+  6 | // @ts-expect-error
+  7 | when(pipe).isSupportedWith({ valid: true }, expect(pick).type.toBeCallableWith("valid"));
+    |            ~~~~~~~~~~~~~~~
+  8 | 
+
+      at ./__typetests__/action-not-supported.tst.ts:7:12
+

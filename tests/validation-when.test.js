@@ -9,7 +9,7 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("when", async (t) => {
   await t.test("handles nested 'describe' or 'test'", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-nested"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-handles-nested-stdout`,
@@ -18,6 +18,22 @@ await test("when", async (t) => {
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-handles-nested-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("handles not supported action", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["action-not-supported"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-action-not-supported-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-action-not-supported-stderr`,
       testFileUrl: import.meta.url,
     });
 
