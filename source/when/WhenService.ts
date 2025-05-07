@@ -11,8 +11,14 @@ import {
 import { WhenDiagnosticText } from "./WhenDiagnosticText.js";
 
 export class WhenService {
-  action(when: WhenNode, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
-    if (!this.#check(when, onDiagnostics)) {
+  #onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
+
+  constructor(onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>) {
+    this.#onDiagnostics = onDiagnostics;
+  }
+
+  action(when: WhenNode): void {
+    if (!this.#check(when)) {
       return;
     }
 
@@ -41,11 +47,11 @@ export class WhenService {
         }
       }
 
-      onDiagnostics(diagnostics);
+      this.#onDiagnostics(diagnostics);
     }
   }
 
-  #check(when: WhenNode, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>) {
+  #check(when: WhenNode) {
     const actionNameText = when.actionNameNode.name.getText();
 
     switch (actionNameText) {
@@ -54,7 +60,7 @@ export class WhenService {
         break;
 
       default:
-        this.#onActionIsNotSupported(actionNameText, when, onDiagnostics);
+        this.#onActionIsNotSupported(actionNameText, when, this.#onDiagnostics);
         return false;
     }
 
