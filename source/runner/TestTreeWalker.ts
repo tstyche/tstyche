@@ -218,6 +218,6 @@ export class TestTreeWalker {
   }
 
   #visitWhen(when: WhenNode) {
-    this.#whenService.action(when, this.#onTaskDiagnostics);
+    this.#whenService.action(when);
   }
 }
