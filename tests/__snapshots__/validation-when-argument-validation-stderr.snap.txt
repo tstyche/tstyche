@@ -1,0 +1,42 @@
+Error: An argument for 'target' must be provided.
+
+  3 | describe("argument for 'target'", () => {
+  4 |   test("must be provided", () => {
+  5 |     when().isCalledWith({ valid: true });
+    |     ~~~~
+  6 |   });
+  7 | 
+  8 |   test("is rejected type?", () => {
+
+      at ./__typetests__/when.tst.ts:5:5
+
+Error: An argument for 'target' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, pass 'any' as the type argument explicitly.
+
+   7 | 
+   8 |   test("is rejected type?", () => {
+   9 |     when("abc" as any).isCalledWith({ valid: true });
+     |          ~~~~~~~~~~~~
+  10 |     when("abc" as never).isCalledWith({ valid: true });
+  11 |   });
+  12 | });
+
+       at ./__typetests__/when.tst.ts:9:10
+
+Error: An argument for 'target' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, pass 'never' as the type argument explicitly.
+
+   8 |   test("is rejected type?", () => {
+   9 |     when("abc" as any).isCalledWith({ valid: true });
+  10 |     when("abc" as never).isCalledWith({ valid: true });
+     |          ~~~~~~~~~~~~~~
+  11 |   });
+  12 | });
+  13 | 
+
+       at ./__typetests__/when.tst.ts:10:10
+

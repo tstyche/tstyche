@@ -8,16 +8,27 @@ import {
   getTextSpanEnd,
   isDiagnosticWithLocation,
 } from "#diagnostic";
+import type { Reject } from "#reject";
 import { WhenDiagnosticText } from "./WhenDiagnosticText.js";
 
 export class WhenService {
   #onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
+  #reject: Reject;
 
-  constructor(onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>) {
+  constructor(reject: Reject, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>) {
+    this.#reject = reject;
     this.#onDiagnostics = onDiagnostics;
   }
 
   action(when: WhenNode): void {
+    if (this.#reject.argumentNotProvided("target", when.target[0], when.node.expression, this.#onDiagnostics)) {
+      return;
+    }
+
+    if (this.#reject.argumentType([["target", when.target[0]]], this.#onDiagnostics)) {
+      return;
+    }
+
     if (!this.#check(when)) {
       return;
     }

@@ -1,0 +1,11 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/when.tst.ts
+  argument for 'target'
+    + must be provided
+    + is rejected type?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 passed, 2 total
+Duration:   <<timestamp>>
