@@ -8,7 +8,7 @@ import {
   getTextSpanEnd,
   isDiagnosticWithLocation,
 } from "#diagnostic";
-import { Ensure } from "#ensure";
+import { argumentIsProvided } from "#ensure";
 import type { Reject } from "#reject";
 import { WhenDiagnosticText } from "./WhenDiagnosticText.js";
 
@@ -23,7 +23,7 @@ export class WhenService {
 
   action(when: WhenNode): void {
     if (
-      !Ensure.argumentIsProvided("target", when.target[0], when.node.expression, this.#onDiagnostics) ||
+      !argumentIsProvided("target", when.target[0], when.node.expression, this.#onDiagnostics) ||
       this.#reject.argumentType([["target", when.target[0]]], this.#onDiagnostics)
     ) {
       return;
