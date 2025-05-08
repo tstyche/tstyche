@@ -5,10 +5,6 @@ export class RejectDiagnosticText {
     return `An argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
   }
 
-  static argumentMustBeProvided(argumentNameText: string): string {
-    return `An argument for '${argumentNameText}' must be provided.`;
-  }
-
   static typeArgumentCannotBeOfType(argumentNameText: string, typeText: string): string {
     return `A type argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
   }
