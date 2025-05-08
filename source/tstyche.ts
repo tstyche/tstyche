@@ -23,3 +23,4 @@ export * from "#task";
 export * from "#token";
 export * from "#version";
 export * from "#watch";
+export * from "#when";

@@ -7,7 +7,7 @@ import { capitalize } from "./helpers.js";
 
 export class Reject {
   #compiler: typeof ts;
-  #discriminatedArgumentTypes = new Set<"any" | "never">();
+  #rejectedArgumentTypes = new Set<"any" | "never">();
   #typeChecker: ts.TypeChecker;
 
   constructor(compiler: typeof ts, typeChecker: ts.TypeChecker, resolvedConfig: ResolvedConfig) {
@@ -15,19 +15,19 @@ export class Reject {
     this.#typeChecker = typeChecker;
 
     if (resolvedConfig?.rejectAnyType) {
-      this.#discriminatedArgumentTypes.add("any");
+      this.#rejectedArgumentTypes.add("any");
     }
     if (resolvedConfig?.rejectNeverType) {
-      this.#discriminatedArgumentTypes.add("never");
+      this.#rejectedArgumentTypes.add("never");
     }
   }
 
   argumentType(
     target: Array<[name: string, node: ts.Expression | ts.TypeNode | undefined]>,
-    onDiagnostics: DiagnosticsHandler<Diagnostic>,
+    onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): boolean {
-    for (const discriminatedType of this.#discriminatedArgumentTypes) {
-      const allowedKeyword = this.#compiler.SyntaxKind[`${capitalize(discriminatedType)}Keyword`];
+    for (const rejectedType of this.#rejectedArgumentTypes) {
+      const allowedKeyword = this.#compiler.SyntaxKind[`${capitalize(rejectedType)}Keyword`];
 
       // allows explicit 'expect<any>()', 'expect<never>()', '.toBe<any>()' and '.toBe<never>()'
       if (target.some(([, node]) => node?.kind === allowedKeyword)) {
@@ -39,17 +39,17 @@ export class Reject {
           continue;
         }
 
-        if (this.#typeChecker.getTypeAtLocation(node).flags & this.#compiler.TypeFlags[capitalize(discriminatedType)]) {
+        if (this.#typeChecker.getTypeAtLocation(node).flags & this.#compiler.TypeFlags[capitalize(rejectedType)]) {
           const text = [
             nodeBelongsToArgumentList(this.#compiler, node)
-              ? RejectDiagnosticText.argumentCannotBeOfType(name, discriminatedType)
-              : RejectDiagnosticText.typeArgumentCannotBeOfType(capitalize(name), discriminatedType),
-            ...RejectDiagnosticText.typeWasRejected(discriminatedType),
+              ? RejectDiagnosticText.argumentCannotBeOfType(name, rejectedType)
+              : RejectDiagnosticText.typeArgumentCannotBeOfType(capitalize(name), rejectedType),
+            ...RejectDiagnosticText.typeWasRejected(rejectedType),
           ];
 
           const origin = DiagnosticOrigin.fromNode(node);
 
-          onDiagnostics(Diagnostic.error(text, origin));
+          onDiagnostics([Diagnostic.error(text, origin)]);
 
           return true;
         }

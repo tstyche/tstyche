@@ -1,20 +1,13 @@
 import type ts from "typescript";
 import { type AssertionNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
-import {
-  Diagnostic,
-  DiagnosticOrigin,
-  type DiagnosticsHandler,
-  diagnosticBelongsToNode,
-  getDiagnosticMessageText,
-  getTextSpanEnd,
-  isDiagnosticWithLocation,
-} from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
 import { Reject } from "#reject";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
+import { WhenService } from "#when";
 import type { WhenNode } from "../collect/WhenNode.js";
 import { RunMode } from "./RunMode.enum.js";
 
@@ -31,6 +24,7 @@ export class TestTreeWalker {
   #onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
+  #whenService: WhenService;
 
   constructor(
     compiler: typeof ts,
@@ -49,6 +43,7 @@ export class TestTreeWalker {
     const reject = new Reject(compiler, typeChecker, resolvedConfig);
 
     this.#expectService = new ExpectService(compiler, typeChecker, reject);
+    this.#whenService = new WhenService(reject, onTaskDiagnostics);
   }
 
   #resolveRunMode(mode: RunMode, testNode: TestTreeNode): RunMode {
@@ -226,34 +221,6 @@ export class TestTreeWalker {
   }
 
   #visitWhen(when: WhenNode) {
-    if (when.abilityDiagnostics != null && when.abilityDiagnostics.size > 0) {
-      const diagnostics: Array<Diagnostic> = [];
-
-      for (const diagnostic of when.abilityDiagnostics) {
-        if (isDiagnosticWithLocation(diagnostic)) {
-          const text = getDiagnosticMessageText(diagnostic);
-
-          let origin: DiagnosticOrigin;
-
-          if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, when.node)) {
-            origin = DiagnosticOrigin.fromNodes(when.target);
-          } else {
-            origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), when.node.getSourceFile());
-          }
-
-          let related: Array<Diagnostic> | undefined;
-
-          if (diagnostic.relatedInformation != null) {
-            related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
-          }
-
-          diagnostics.push(Diagnostic.error(text, origin).add({ related }));
-        }
-      }
-
-      this.#onTaskDiagnostics(diagnostics);
-
-      return;
-    }
+    this.#whenService.action(when);
   }
 }
