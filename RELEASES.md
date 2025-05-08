@@ -1,5 +1,22 @@
 # Releases
 
+## [4.0.0-beta.9] - 2025-05-08
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
+## Added
+
+- Bring back support for TypeScript >=4.7 ([#476](https://github.com/tstyche/tstyche/pull/476))
+- Add validation for `when()` target ([#480](https://github.com/tstyche/tstyche/pull/480))
+
+### Fixed
+
+- Handle trailing commas in the ability layer text ([#479](https://github.com/tstyche/tstyche/pull/479))
+
+### Changed
+
+- Move test tree validation logic to the `Collect` class ([#471](https://github.com/tstyche/tstyche/pull/471))
+
 ## [4.0.0-beta.8] - 2025-05-05
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
@@ -648,6 +665,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-beta.9]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.9
 [4.0.0-beta.8]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.8
 [4.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.7
 [4.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.6
