@@ -1,14 +1,10 @@
 export class ExpectDiagnosticText {
-  static argumentOrTypeArgumentMustBeProvided(argumentNameText: string, typeArgumentNameText: string): string {
-    return `An argument for '${argumentNameText}' or type argument for '${typeArgumentNameText}' must be provided.`;
-  }
-
   static argumentMustBe(argumentNameText: string, expectedText: string): string {
     return `An argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
-  static argumentMustBeProvided(argumentNameText: string): string {
-    return `An argument for '${argumentNameText}' must be provided.`;
+  static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
+    return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
   static isCallable(isExpression: boolean, targetText: string): string {
@@ -43,12 +39,12 @@ export class ExpectDiagnosticText {
     return `The decorator function cannot be applied${targetText}.`;
   }
 
-  static doesNotHaveProperty(typeText: string, propertyNameText: string): string {
-    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
-  }
-
   static hasProperty(typeText: string, propertyNameText: string): string {
     return `Type '${typeText}' has property '${propertyNameText}'.`;
+  }
+
+  static doesNotHaveProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
   }
 
   static didYouMeanToUse(suggestionText: string): string {
@@ -65,10 +61,6 @@ export class ExpectDiagnosticText {
 
   static raisedTypeError(count = 1): string {
     return `The raised type error${count === 1 ? "" : "s"}:`;
-  }
-
-  static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
-    return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
   static raisedError(isExpression: boolean, count: number, targetCount: number): string {
