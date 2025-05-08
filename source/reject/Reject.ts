@@ -58,22 +58,4 @@ export class Reject {
 
     return false;
   }
-
-  argumentNotProvided(
-    name: string,
-    node: ts.Expression | ts.TypeNode | undefined,
-    enclosingNode: ts.Node,
-    onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
-  ): node is ts.Expression | ts.TypeNode {
-    if (node != null) {
-      return false;
-    }
-
-    const text = RejectDiagnosticText.argumentMustBeProvided(name);
-    const origin = DiagnosticOrigin.fromNode(enclosingNode);
-
-    onDiagnostics([Diagnostic.error(text, origin)]);
-
-    return true;
-  }
 }

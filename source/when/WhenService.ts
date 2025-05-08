@@ -8,6 +8,7 @@ import {
   getTextSpanEnd,
   isDiagnosticWithLocation,
 } from "#diagnostic";
+import { Ensure } from "#ensure";
 import type { Reject } from "#reject";
 import { WhenDiagnosticText } from "./WhenDiagnosticText.js";
 
@@ -21,16 +22,23 @@ export class WhenService {
   }
 
   action(when: WhenNode): void {
-    if (this.#reject.argumentNotProvided("target", when.target[0], when.node.expression, this.#onDiagnostics)) {
+    if (
+      !Ensure.argumentIsProvided("target", when.target[0], when.node.expression, this.#onDiagnostics) ||
+      this.#reject.argumentType([["target", when.target[0]]], this.#onDiagnostics)
+    ) {
       return;
     }
 
-    if (this.#reject.argumentType([["target", when.target[0]]], this.#onDiagnostics)) {
-      return;
-    }
+    const actionNameText = when.actionNameNode.name.getText();
 
-    if (!this.#check(when)) {
-      return;
+    switch (actionNameText) {
+      case "isCalledWith":
+        // TODO is argument callable?
+        break;
+
+      default:
+        this.#onActionIsNotSupported(actionNameText, when, this.#onDiagnostics);
+        return;
     }
 
     if (when.abilityDiagnostics != null && when.abilityDiagnostics.size > 0) {
@@ -60,22 +68,6 @@ export class WhenService {
 
       this.#onDiagnostics(diagnostics);
     }
-  }
-
-  #check(when: WhenNode) {
-    const actionNameText = when.actionNameNode.name.getText();
-
-    switch (actionNameText) {
-      case "isCalledWith":
-        // TODO is argument callable?
-        break;
-
-      default:
-        this.#onActionIsNotSupported(actionNameText, when, this.#onDiagnostics);
-        return false;
-    }
-
-    return true;
   }
 
   #onActionIsNotSupported(
