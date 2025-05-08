@@ -25,6 +25,7 @@
       "import": "./build/index.js",
       "require": "./build/index.cjs"
     },
+    "./react": "./build/react.d.ts",
     "./package.json": "./package.json",
     "./tstyche": "./build/tstyche.js"
   },
