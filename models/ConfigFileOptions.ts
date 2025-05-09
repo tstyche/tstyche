@@ -13,6 +13,10 @@ export interface ConfigFileOptions {
      */
     failFast?: boolean;
     /**
+     * The list of modules to preload before the test run.
+     */
+    import?: Array<string>;
+    /**
      * The list of plugins to use.
      */
     plugins?: Array<string>;

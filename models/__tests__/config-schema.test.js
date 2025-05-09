@@ -47,6 +47,10 @@ test("config-schema.json", async (t) => {
         testCase: "'plugins' option",
       },
       {
+        fixtureFileName: "valid-import.json",
+        testCase: "'import' option",
+      },
+      {
         fixtureFileName: "valid-rejectAnyType.json",
         testCase: "'rejectAnyType' option",
       },
@@ -95,6 +99,18 @@ test("config-schema.json", async (t) => {
       {
         fixtureFileName: "invalid-failFast.json",
         testCase: "value of 'failFast' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-import-1.json",
+        testCase: "item of 'import' option must be of type string",
+      },
+      {
+        fixtureFileName: "invalid-import-2.json",
+        testCase: "items of 'import' option must NOT be identical",
+      },
+      {
+        fixtureFileName: "invalid-import-3.json",
+        testCase: "value of 'import' option must be of type Array",
       },
       {
         fixtureFileName: "invalid-plugins-1.json",

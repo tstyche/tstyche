@@ -11,6 +11,14 @@
       "description": "Stop running tests after the first failed assertion.",
       "type": "boolean"
     },
+    "import": {
+      "description": "The list of modules to preload before the test run.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
     "plugins": {
       "default": [],
       "description": "The list of plugins to use.",

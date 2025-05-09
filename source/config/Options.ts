@@ -77,6 +77,17 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.List,
+      description: "The list of modules to preload before the test run.",
+      group: OptionGroup.ConfigFile,
+      items: {
+        brand: OptionBrand.String,
+        name: "import",
+      },
+      name: "import",
+    },
+
+    {
       brand: OptionBrand.BareTrue,
       description: "Print the list of supported versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
@@ -250,6 +261,7 @@ export class Options {
         optionValue = Path.resolve(rootPath, optionValue);
         break;
 
+      case "import":
       case "plugins":
       case "reporters":
         if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
@@ -297,6 +309,7 @@ export class Options {
 
         break;
 
+      case "import":
       case "plugins":
       case "reporters":
         if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
