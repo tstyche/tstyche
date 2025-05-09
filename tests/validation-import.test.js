@@ -13,6 +13,66 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
+await test("'--import' command line option", async (t) => {
+  t.afterEach(async () => {
+    await clearFixture(fixtureUrl);
+  });
+
+  await t.test("when option value is missing", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--import"]);
+
+    assert.equal(stdout, "");
+
+    const expected = [
+      "Error: Option '--import' expects a value.",
+      "",
+      "Option '--import' requires a value of type list.",
+      "",
+      "",
+    ].join("\n");
+
+    assert.equal(stderr, expected);
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when specified module is not found", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--import", "not-found"]);
+
+    assert.equal(stdout, "");
+
+    const expected = ["Error: The specified module 'not-found' was not found.", "", ""].join("\n");
+
+    assert.equal(normalizeOutput(stderr), expected);
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when one of specified modules is not found", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "--import",
+      "ts-blank-space/register,not-found",
+    ]);
+
+    assert.equal(stdout, "");
+
+    const expected = ["Error: The specified module 'not-found' was not found.", "", ""].join("\n");
+
+    assert.equal(normalizeOutput(stderr), expected);
+    assert.equal(exitCode, 1);
+  });
+});
+
 await test("'import' configuration file option", async (t) => {
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
