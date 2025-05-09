@@ -24,6 +24,9 @@ Command Line Options
   --help
   Print the list of command line options with brief descriptions and exit.
 
+  --import  list of strings
+  The list of modules to preload at startup.
+
   --list
   Print the list of supported versions of the 'typescript' package and exit.
 

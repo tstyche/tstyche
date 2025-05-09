@@ -1,12 +1,11 @@
 // @tstyche-template
 
-let testText = `
-import { expect, test } from "tstyche";
+let testText = `import { expect, test } from "tstyche";
 `;
 
-for (const target of ["string", "number"]) {
-  testText += `test("is ${target} a string?", () => {
-  expect<string>().type.toBe<${target}>();
+for (const source of ["string", "number"]) {
+  testText += `test("is ${source} a string?", () => {
+  expect<${source}>().type.toBe<string>();
 });
 `;
 }

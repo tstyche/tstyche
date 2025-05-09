@@ -21,6 +21,10 @@ export interface CommandLineOptions {
      */
     help?: boolean;
     /**
+     * The list of modules to preload at startup.
+     */
+    import?: Array<string>;
+    /**
      * Print the list of supported versions of the 'typescript' package and exit.
      */
     list?: boolean;
