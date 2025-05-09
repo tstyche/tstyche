@@ -1,5 +1,5 @@
 {
   "$schema": "./models/config-schema.json",
   "import": ["ts-blank-space/register"],
-  "testFileMatch": ["examples/*.t*st.*", "tests/*.test.*", "typetests/*.tst.*"]
+  "testFileMatch": ["examples/*.js", "examples/*.ts", "examples/*.tsx", "tests/*.test.*", "typetests/*.tst.*"]
 }

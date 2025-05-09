@@ -60,18 +60,11 @@ export class Runner {
     }
   }
 
-  async #preloadModules() {
-    for (const moduleSpecifier of this.#resolvedConfig.import) {
-      await import(moduleSpecifier);
-    }
-  }
-
   async run(testFiles: Array<string | URL | Task>, cancellationToken = new CancellationToken()): Promise<void> {
     const tasks = testFiles.map((testFile) => (testFile instanceof Task ? testFile : new Task(testFile)));
 
     this.#addHandlers(cancellationToken);
     await this.#addReporters();
-    await this.#preloadModules();
 
     await this.#run(tasks, cancellationToken);
 

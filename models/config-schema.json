@@ -12,7 +12,8 @@
       "type": "boolean"
     },
     "import": {
-      "description": "The list of modules to preload before the test run.",
+      "default": [],
+      "description": "The list of modules to preload at startup.",
       "items": {
         "type": "string"
       },

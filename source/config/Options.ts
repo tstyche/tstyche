@@ -58,7 +58,7 @@ export class Options {
     {
       brand: OptionBrand.Boolean,
       description: "Stop running tests after the first failed assertion.",
-      group: OptionGroup.ConfigFile | OptionGroup.CommandLine,
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       name: "failFast",
     },
 
@@ -78,8 +78,8 @@ export class Options {
 
     {
       brand: OptionBrand.List,
-      description: "The list of modules to preload before the test run.",
-      group: OptionGroup.ConfigFile,
+      description: "The list of modules to preload at startup.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       items: {
         brand: OptionBrand.String,
         name: "import",

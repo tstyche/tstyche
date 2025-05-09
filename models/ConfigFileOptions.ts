@@ -13,7 +13,7 @@ export interface ConfigFileOptions {
      */
     failFast?: boolean;
     /**
-     * The list of modules to preload before the test run.
+     * The list of modules to preload at startup.
      */
     import?: Array<string>;
     /**
