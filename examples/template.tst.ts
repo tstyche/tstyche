@@ -1,7 +1,6 @@
 // @tstyche-template
 
-let testText = `
-import { expect, test } from "tstyche";
+let testText = `import { expect, test } from "tstyche";
 `;
 
 for (const typeText of ["string", "number"]) {
