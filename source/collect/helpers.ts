@@ -7,3 +7,7 @@ export function nodeBelongsToArgumentList(compiler: typeof ts, node: ts.Node): b
 
   return false;
 }
+
+export function nodeIsChildOfExpressionStatement(compiler: typeof ts, node: ts.Node): boolean {
+  return compiler.isExpressionStatement(node.parent);
+}
