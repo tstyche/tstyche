@@ -4,7 +4,7 @@ import type { ResolvedConfig } from "#config";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { ProjectService } from "#project";
 import type { WhenNode } from "./WhenNode.js";
-import { nodeBelongsToArgumentList } from "./helpers.js";
+import { nodeIsChildOfExpressionStatement } from "./helpers.js";
 
 interface TextRange {
   start: number;
@@ -111,7 +111,7 @@ export class AbilityLayer {
           {
             start: whenStart,
             end: whenExpressionEnd,
-            replacement: nodeBelongsToArgumentList(this.#compiler, whenNode.actionNode) ? "" : ";",
+            replacement: nodeIsChildOfExpressionStatement(this.#compiler, whenNode.actionNode) ? ";" : "",
           },
           { start: whenEnd, end: actionNameEnd },
         ]);
@@ -142,7 +142,7 @@ export class AbilityLayer {
           {
             start: expectStart,
             end: expectExpressionEnd,
-            replacement: nodeBelongsToArgumentList(this.#compiler, assertionNode.matcherNode) ? "" : ";",
+            replacement: nodeIsChildOfExpressionStatement(this.#compiler, assertionNode.matcherNode) ? ";" : "",
           },
           { start: expectEnd, end: matcherNameEnd },
         ]);
@@ -156,7 +156,7 @@ export class AbilityLayer {
           {
             start: expectStart,
             end: expectExpressionEnd,
-            replacement: nodeBelongsToArgumentList(this.#compiler, assertionNode.matcherNode) ? "new" : "; new",
+            replacement: nodeIsChildOfExpressionStatement(this.#compiler, assertionNode.matcherNode) ? "; new" : "new",
           },
           { start: expectEnd, end: matcherNameEnd },
         ]);
