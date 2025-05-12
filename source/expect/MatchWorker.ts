@@ -15,6 +15,27 @@ export class MatchWorker {
     this.assertion = assertion;
   }
 
+  areSignaturesIdentical(sourceSignatures: ReadonlyArray<ts.Signature>, targetSignatures: ReadonlyArray<ts.Signature>) {
+    if (sourceSignatures.length !== targetSignatures.length) {
+      return false;
+    }
+
+    for (let index = 0; index < sourceSignatures.length; index++) {
+      if (
+        !this.checkIsIdenticalTo(
+          // biome-ignore lint/style/noNonNullAssertion: lengths were checked
+          sourceSignatures[index]!.getDeclaration(),
+          // biome-ignore lint/style/noNonNullAssertion: lengths were checked
+          targetSignatures[index]!.getDeclaration(),
+        )
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   checkHasApplicableIndexType(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     const sourceType = this.getType(sourceNode);
     const targetType = this.getType(targetNode);
