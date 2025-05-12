@@ -1,7 +1,8 @@
 import type ts from "typescript";
 import type { AssertionNode } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
-import type { Relation, TypeChecker } from "./types.js";
+import { Relation } from "./Relation.enum.js";
+import type { TypeChecker } from "./types.js";
 
 export class MatchWorker {
   assertion: AssertionNode;
@@ -33,22 +34,16 @@ export class MatchWorker {
   }
 
   checkIsAssignableTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    const relation = this.typeChecker.relation.assignable;
-
-    return this.#checkIsRelatedTo(sourceNode, targetNode, relation);
+    return this.#checkIsRelatedTo(sourceNode, targetNode, Relation.Assignable);
   }
 
   checkIsAssignableWith(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    const relation = this.typeChecker.relation.assignable;
-
-    return this.#checkIsRelatedTo(targetNode, sourceNode, relation);
+    return this.#checkIsRelatedTo(targetNode, sourceNode, Relation.Assignable);
   }
 
   checkIsIdenticalTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    const relation = this.typeChecker.relation.identity;
-
     return (
-      this.#checkIsRelatedTo(sourceNode, targetNode, relation) &&
+      this.#checkIsRelatedTo(sourceNode, targetNode, Relation.Identical) &&
       // following assignability checks ensure '{ a?: number }' and '{ a?: number | undefined }'
       // are reported as not identical when '"exactOptionalPropertyTypes": true' is set
       this.checkIsAssignableTo(sourceNode, targetNode) &&
@@ -58,16 +53,17 @@ export class MatchWorker {
 
   #checkIsRelatedTo(sourceNode: ts.Node, targetNode: ts.Node, relation: Relation) {
     const sourceType =
-      relation === this.typeChecker.relation.identity
-        ? this.#simplifyType(this.getType(sourceNode))
-        : this.getType(sourceNode);
+      relation === "identical" ? this.#simplifyType(this.getType(sourceNode)) : this.getType(sourceNode);
 
     const targetType =
-      relation === this.typeChecker.relation.identity
-        ? this.#simplifyType(this.getType(targetNode))
-        : this.getType(targetNode);
+      relation === "identical" ? this.#simplifyType(this.getType(targetNode)) : this.getType(targetNode);
 
-    return this.typeChecker.isTypeRelatedTo(sourceType, targetType, relation);
+    switch (relation) {
+      case Relation.Assignable:
+        return this.typeChecker.isTypeAssignableTo(sourceType, targetType);
+      case Relation.Identical:
+        return this.typeChecker.isTypeIdenticalTo(sourceType, targetType);
+    }
   }
 
   extendsObjectType(type: ts.Type): boolean {
@@ -131,11 +127,7 @@ export class MatchWorker {
       // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
       const candidateType = this.#simplifyType(type.types[0]!);
 
-      if (
-        type.types.every((type) =>
-          this.typeChecker.isTypeRelatedTo(this.#simplifyType(type), candidateType, this.typeChecker.relation.identity),
-        )
-      ) {
+      if (type.types.every((type) => this.typeChecker.isTypeIdenticalTo(this.#simplifyType(type), candidateType))) {
         return candidateType;
       }
     }
