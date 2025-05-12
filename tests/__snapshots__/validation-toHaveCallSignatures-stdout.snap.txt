@@ -1,0 +1,11 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toHaveCallSignatures.tst.ts
+  argument for 'Target'
+    × must be omitted or have at least one call signature
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 3 failed, 2 passed, 5 total
+Duration:   <<timestamp>>
