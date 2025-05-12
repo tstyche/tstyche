@@ -58,7 +58,7 @@ export class Options {
     {
       brand: OptionBrand.Boolean,
       description: "Stop running tests after the first failed assertion.",
-      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      group: OptionGroup.ConfigFile | OptionGroup.CommandLine,
       name: "failFast",
     },
 
@@ -74,17 +74,6 @@ export class Options {
       description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,
       name: "help",
-    },
-
-    {
-      brand: OptionBrand.List,
-      description: "The list of modules to preload at startup.",
-      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
-      items: {
-        brand: OptionBrand.String,
-        name: "import",
-      },
-      name: "import",
     },
 
     {
@@ -261,7 +250,6 @@ export class Options {
         optionValue = Path.resolve(rootPath, optionValue);
         break;
 
-      case "import":
       case "plugins":
       case "reporters":
         if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
@@ -309,7 +297,6 @@ export class Options {
 
         break;
 
-      case "import":
       case "plugins":
       case "reporters":
         if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {

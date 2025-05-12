@@ -95,10 +95,6 @@ export class Cli {
         continue;
       }
 
-      for (const moduleSpecifier of resolvedConfig.import) {
-        await import(moduleSpecifier);
-      }
-
       for (const pluginSpecifier of resolvedConfig.plugins) {
         const plugin: Plugin = (await import(pluginSpecifier)).default;
         PluginService.addHandler(plugin);

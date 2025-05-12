@@ -13,10 +13,6 @@ export interface ConfigFileOptions {
      */
     failFast?: boolean;
     /**
-     * The list of modules to preload at startup.
-     */
-    import?: Array<string>;
-    /**
      * The list of plugins to use.
      */
     plugins?: Array<string>;
