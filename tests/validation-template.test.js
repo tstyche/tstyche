@@ -8,9 +8,16 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("template test file", async (t) => {
+  // TODO remove this check after dropping support for Node.js 20
+  if (process.versions.node.startsWith("20")) {
+    t.skip();
+
+    return;
+  }
+
   await t.test("must export a string", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["must-export-a-string"], {
-      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -28,7 +35,7 @@ await test("template test file", async (t) => {
 
   await t.test("handles missing export", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["missing-export"], {
-      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -67,7 +74,7 @@ export default getTestText(;
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["template"], {
-      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -85,7 +92,7 @@ export default getTestText(;
 
   await t.test("handles test file type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-file-type"], {
-      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -103,7 +110,7 @@ export default getTestText(;
 
   await t.test("handles test text syntax errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-syntax"], {
-      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
@@ -121,7 +128,7 @@ export default getTestText(;
 
   await t.test("handles test text type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-type"], {
-      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {

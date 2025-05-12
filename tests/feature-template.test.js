@@ -8,9 +8,16 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("template", async (t) => {
+  // TODO remove this check after dropping support for Node.js 20
+  if (process.versions.node.startsWith("20")) {
+    t.skip();
+
+    return;
+  }
+
   await t.test("template", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {

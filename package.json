@@ -54,7 +54,7 @@
     "test:e2e": "yarn test:e2e:parallel && yarn test:e2e:serial",
     "test:e2e:parallel": "yarn test:run tests/*.test.js --exclude feature --parallel",
     "test:e2e:serial": "yarn test:run tests/*.test.js --include feature",
-    "test:examples": "NODE_OPTIONS='--import ts-blank-space/register' tstyche examples",
+    "test:examples": "NODE_OPTIONS='--experimental-strip-types' tstyche examples",
     "test:run": "rm -rf ./tests/__fixtures__/.generated && yarn node ./tests/__utilities__/runner.js",
     "test:types": "tstyche typetests",
     "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
@@ -71,7 +71,6 @@
     "pretty-ansi": "3.0.0",
     "rollup": "4.40.2",
     "rollup-plugin-dts": "6.2.1",
-    "ts-blank-space": "0.6.1",
     "tslib": "2.8.1",
     "typescript": "5.8.3"
   },
