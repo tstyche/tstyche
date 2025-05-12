@@ -8,7 +8,6 @@ describe("CommandLineOptions", () => {
       failFast: true,
       fetch: true,
       help: true,
-      import: ["ts-blank-space/register"],
       list: true,
       listFiles: true,
       only: "external",
@@ -50,12 +49,6 @@ describe("CommandLineOptions", () => {
   test("'help' option", () => {
     expect<Pick<tstyche.CommandLineOptions, "help">>().type.toBe<{
       help?: boolean;
-    }>();
-  });
-
-  test("'import' option", () => {
-    expect<Pick<tstyche.CommandLineOptions, "import">>().type.toBe<{
-      import?: Array<string>;
     }>();
   });
 

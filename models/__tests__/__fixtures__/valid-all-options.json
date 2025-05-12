@@ -2,7 +2,6 @@
   "$schema": "../../config-schema.json",
   "checkSourceFiles": true,
   "failFast": true,
-  "import": ["ts-blank-space/register"],
   "plugins": ["./tstyche-plugin.js"],
   "rejectAnyType": true,
   "rejectNeverType": true,

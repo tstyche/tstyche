@@ -9,7 +9,9 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("template", async (t) => {
   await t.test("template", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-stdout`,

@@ -1,4 +1,0 @@
-{
-  "$schema": "../../config-schema.json",
-  "import": ["ts-blank-space/register", "ts-blank-space/register"]
-}

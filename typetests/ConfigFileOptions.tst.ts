@@ -6,7 +6,6 @@ describe("ConfigFileOptions", () => {
     expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({
       checkSourceFiles: true,
       failFast: true,
-      import: ["ts-blank-space/register"],
       plugins: ["./tstyche-plugin.js"],
       rejectAnyType: true,
       rejectNeverType: true,
@@ -31,12 +30,6 @@ describe("ConfigFileOptions", () => {
   test("'failFast' option", () => {
     expect<Pick<tstyche.ConfigFileOptions, "failFast">>().type.toBe<{
       failFast?: boolean;
-    }>();
-  });
-
-  test("'import' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "import">>().type.toBe<{
-      import?: Array<string>;
     }>();
   });
 

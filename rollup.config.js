@@ -64,9 +64,9 @@ function tidyDts() {
       if (chunkInfo.fileName === tstycheEntry) {
         const magicString = new MagicString(code);
 
-        magicString.replaceAll("import ", "import type ");
+        magicString.replaceAll("import", "import type");
 
-        magicString.replaceAll("const enum ", "enum ");
+        magicString.replaceAll("const enum", "enum");
 
         magicString.replaceAll("__version__", version);
 

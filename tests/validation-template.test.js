@@ -9,11 +9,9 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("template test file", async (t) => {
   await t.test("must export a string", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "must-export-a-string",
-      "--import",
-      "ts-blank-space/register",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["must-export-a-string"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-must-export-a-string-stdout`,
@@ -29,11 +27,9 @@ await test("template test file", async (t) => {
   });
 
   await t.test("handles missing export", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "missing-export",
-      "--import",
-      "ts-blank-space/register",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["missing-export"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-missing-export-stdout`,
@@ -70,11 +66,9 @@ export default getTestText(;
       ["__typetests__/template.tst.ts"]: templateText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "template",
-      "--import",
-      "ts-blank-space/register",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["template"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-test-file-syntax-errors-stdout`,
@@ -90,11 +84,9 @@ export default getTestText(;
   });
 
   await t.test("handles test file type errors", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "test-file-type",
-      "--import",
-      "ts-blank-space/register",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-file-type"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-test-file-type-errors-stdout`,
@@ -110,11 +102,9 @@ export default getTestText(;
   });
 
   await t.test("handles test text syntax errors", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "test-text-syntax",
-      "--import",
-      "ts-blank-space/register",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-syntax"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-test-text-syntax-errors-stdout`,
@@ -130,11 +120,9 @@ export default getTestText(;
   });
 
   await t.test("handles test text type errors", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "test-text-type",
-      "--import",
-      "ts-blank-space/register",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-text-type"], {
+      env: { ["NODE_OPTIONS"]: "--import ts-blank-space/register" },
+    });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-test-text-type-errors-stdout`,
