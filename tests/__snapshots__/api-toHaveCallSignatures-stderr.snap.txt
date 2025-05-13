@@ -1,72 +1,72 @@
 Error: The source type has call signatures.
 
-  21 |       expect<CallOrConstruct>().type.toHaveCallSignatures();
-  22 | 
-  23 |       expect<() => void>().type.not.toHaveCallSignatures(); // fail
+  20 |       expect<HasBoth>().type.toHaveCallSignatures();
+  21 | 
+  22 |       expect<() => void>().type.not.toHaveCallSignatures(); // fail
      |                                     ~~~~~~~~~~~~~~~~~~~~
-  24 |       expect<CallOrConstruct>().type.not.toHaveCallSignatures(); // fail
-  25 |     });
-  26 | 
+  23 |       expect<HasBoth>().type.not.toHaveCallSignatures(); // fail
+  24 |     });
+  25 | 
 
-       at ./__typetests__/toHaveCallSignatures.tst.ts:23:37 ❭ when source is a type ❭ when target is omitted ❭ has call signatures
+       at ./__typetests__/toHaveCallSignatures.tst.ts:22:37 ❭ when source is a type ❭ when target is omitted ❭ has call signatures
 
 Error: The source type has call signatures.
 
-  22 | 
-  23 |       expect<() => void>().type.not.toHaveCallSignatures(); // fail
-  24 |       expect<CallOrConstruct>().type.not.toHaveCallSignatures(); // fail
-     |                                          ~~~~~~~~~~~~~~~~~~~~
-  25 |     });
-  26 | 
-  27 |     test("does NOT have call signatures", () => {
+  21 | 
+  22 |       expect<() => void>().type.not.toHaveCallSignatures(); // fail
+  23 |       expect<HasBoth>().type.not.toHaveCallSignatures(); // fail
+     |                                  ~~~~~~~~~~~~~~~~~~~~
+  24 |     });
+  25 | 
+  26 |     test("does NOT have call signatures", () => {
 
-       at ./__typetests__/toHaveCallSignatures.tst.ts:24:42 ❭ when source is a type ❭ when target is omitted ❭ has call signatures
+       at ./__typetests__/toHaveCallSignatures.tst.ts:23:34 ❭ when source is a type ❭ when target is omitted ❭ has call signatures
 
 Error: The source type does not have call signatures.
 
-  27 |     test("does NOT have call signatures", () => {
-  28 |       expect<Person>().type.not.toHaveCallSignatures();
-  29 |       expect<Person>().type.toHaveCallSignatures(); // fail
+  26 |     test("does NOT have call signatures", () => {
+  27 |       expect<Person>().type.not.toHaveCallSignatures();
+  28 |       expect<Person>().type.toHaveCallSignatures(); // fail
      |                             ~~~~~~~~~~~~~~~~~~~~
-  30 |     });
-  31 |   });
-  32 | });
+  29 |     });
+  30 |   });
+  31 | });
 
-       at ./__typetests__/toHaveCallSignatures.tst.ts:29:29 ❭ when source is a type ❭ when target is omitted ❭ does NOT have call signatures
+       at ./__typetests__/toHaveCallSignatures.tst.ts:28:29 ❭ when source is a type ❭ when target is omitted ❭ does NOT have call signatures
 
 Error: The source expression has call signatures.
 
-  38 |       expect(Date).type.toHaveCallSignatures();
-  39 | 
-  40 |       expect(() => {}).type.not.toHaveCallSignatures(); // fail
+  37 |       expect(Date).type.toHaveCallSignatures();
+  38 | 
+  39 |       expect(() => {}).type.not.toHaveCallSignatures(); // fail
      |                                 ~~~~~~~~~~~~~~~~~~~~
-  41 |       expect(Date).type.not.toHaveCallSignatures(); // fail
-  42 |     });
-  43 | 
+  40 |       expect(Date).type.not.toHaveCallSignatures(); // fail
+  41 |     });
+  42 | 
 
-       at ./__typetests__/toHaveCallSignatures.tst.ts:40:33 ❭ when source is an expression ❭ when target is omitted ❭ has call signatures
+       at ./__typetests__/toHaveCallSignatures.tst.ts:39:33 ❭ when source is an expression ❭ when target is omitted ❭ has call signatures
 
 Error: The source expression has call signatures.
 
-  39 | 
-  40 |       expect(() => {}).type.not.toHaveCallSignatures(); // fail
-  41 |       expect(Date).type.not.toHaveCallSignatures(); // fail
+  38 | 
+  39 |       expect(() => {}).type.not.toHaveCallSignatures(); // fail
+  40 |       expect(Date).type.not.toHaveCallSignatures(); // fail
      |                             ~~~~~~~~~~~~~~~~~~~~
-  42 |     });
-  43 | 
-  44 |     test("does NOT have call signatures", () => {
+  41 |     });
+  42 | 
+  43 |     test("does NOT have call signatures", () => {
 
-       at ./__typetests__/toHaveCallSignatures.tst.ts:41:29 ❭ when source is an expression ❭ when target is omitted ❭ has call signatures
+       at ./__typetests__/toHaveCallSignatures.tst.ts:40:29 ❭ when source is an expression ❭ when target is omitted ❭ has call signatures
 
 Error: The source expression does not have call signatures.
 
-  44 |     test("does NOT have call signatures", () => {
-  45 |       expect(Person).type.not.toHaveCallSignatures();
-  46 |       expect(Person).type.toHaveCallSignatures(); // fail
+  43 |     test("does NOT have call signatures", () => {
+  44 |       expect(Person).type.not.toHaveCallSignatures();
+  45 |       expect(Person).type.toHaveCallSignatures(); // fail
      |                           ~~~~~~~~~~~~~~~~~~~~
-  47 |     });
-  48 |   });
-  49 | });
+  46 |     });
+  47 |   });
+  48 | });
 
-       at ./__typetests__/toHaveCallSignatures.tst.ts:46:27 ❭ when source is an expression ❭ when target is omitted ❭ does NOT have call signatures
+       at ./__typetests__/toHaveCallSignatures.tst.ts:45:27 ❭ when source is an expression ❭ when target is omitted ❭ does NOT have call signatures
 

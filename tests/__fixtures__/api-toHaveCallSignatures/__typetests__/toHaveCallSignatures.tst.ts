@@ -1,8 +1,7 @@
 import { describe, expect, test } from "tstyche";
 
-interface CallOrConstruct {
+interface HasBoth {
   new (): Date;
-  new (value: number | string): Date;
   (): string;
 }
 
@@ -18,10 +17,10 @@ describe("when source is a type", () => {
   describe("when target is omitted", () => {
     test("has call signatures", () => {
       expect<() => void>().type.toHaveCallSignatures();
-      expect<CallOrConstruct>().type.toHaveCallSignatures();
+      expect<HasBoth>().type.toHaveCallSignatures();
 
       expect<() => void>().type.not.toHaveCallSignatures(); // fail
-      expect<CallOrConstruct>().type.not.toHaveCallSignatures(); // fail
+      expect<HasBoth>().type.not.toHaveCallSignatures(); // fail
     });
 
     test("does NOT have call signatures", () => {
