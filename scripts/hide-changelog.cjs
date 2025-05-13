@@ -11,13 +11,8 @@ const hiddenFilePath = path.resolve(`.${changelogFileName}`);
 module.exports = {
   name: "hide-changelog",
   factory: () => ({
+    /** @type {import("@yarnpkg/core").Hooks} */
     hooks: {
-      /**
-       * @param {() => Promise<number>} executor
-       * @param {never} _project
-       * @param {never} _locator
-       * @param {string} scriptName
-       */
       wrapScriptExecution(executor, _project, _locator, scriptName) {
         if (scriptName.startsWith("publish")) {
           return async () => {
