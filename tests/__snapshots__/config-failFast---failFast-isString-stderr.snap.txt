@@ -1,4 +1,4 @@
-Error: Type 'string' is identical to type 'string'.
+Error: Type 'string' is the same as type 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {

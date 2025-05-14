@@ -1,4 +1,4 @@
-Error: Type 'number' is identical to type 'number'.
+Error: Type 'number' is the same as type 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {
@@ -10,7 +10,7 @@ Error: Type 'number' is identical to type 'number'.
 
       at ./__typetests__/isNumber.tst.ts:3:34 ❭ is number?
 
-Error: Type 'number' is identical to type 'number'.
+Error: Type 'number' is the same as type 'number'.
 
   2 | test("is number?", () => {
   3 |   expect<number>().type.not.toBe<number>();
@@ -21,7 +21,7 @@ Error: Type 'number' is identical to type 'number'.
 
       at ./__typetests__/isNumber.tst.ts:4:34 ❭ is number?
 
-Error: Type 'string' is identical to type 'string'.
+Error: Type 'string' is the same as type 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {
@@ -33,7 +33,7 @@ Error: Type 'string' is identical to type 'string'.
 
       at ./__typetests__/isString.tst.ts:3:34 ❭ is string?
 
-Error: Type 'string' is identical to type 'string'.
+Error: Type 'string' is the same as type 'string'.
 
   2 | test("is string?", () => {
   3 |   expect<string>().type.not.toBe<string>();

@@ -1,4 +1,4 @@
-Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; }' is not identical to type '{ two?: string | undefined; }'.
+Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; }' is not the same as type '{ two?: string | undefined; }'.
 
    9 | test("is single key picked?", () => {
   10 |   expect(pick(returnsObject(), "two")).type.toBe<{ two?: string }>();
@@ -10,7 +10,7 @@ Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefine
 
        at ./__typetests__/pick.tst.ts:11:37 ❭ is single key picked?
 
-Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; } | { one: number; three?: boolean | undefined; }' is not identical to type '{ one: number; }'.
+Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; } | { one: number; three?: boolean | undefined; }' is not the same as type '{ one: number; }'.
 
   12 | 
   13 |   expect(pick(returnsIntersection(), "one")).type.toBe<{ one: number }>();
@@ -22,7 +22,7 @@ Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefine
 
        at ./__typetests__/pick.tst.ts:14:43 ❭ is single key picked?
 
-Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | undefined; }' is not identical to type '{ two?: string | undefined; }'.
+Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | undefined; }' is not the same as type '{ two?: string | undefined; }'.
 
   15 | 
   16 |   expect(pick(returnsUnion(), "two")).type.toBe<{ two?: string }>();
@@ -34,7 +34,7 @@ Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | un
 
        at ./__typetests__/pick.tst.ts:17:36 ❭ is single key picked?
 
-Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; }' is not identical to type '{ one: number; three?: boolean | undefined; }'.
+Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; }' is not the same as type '{ one: number; three?: boolean | undefined; }'.
 
   20 | test("are several keys picked?", () => {
   21 |   expect(pick(returnsObject(), "one", "three")).type.toBe<{ one: number; three?: boolean }>();
@@ -46,7 +46,7 @@ Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefine
 
        at ./__typetests__/pick.tst.ts:22:37 ❭ are several keys picked?
 
-Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; } | { one: number; three?: boolean | undefined; }' is not identical to type '{ one: number; three?: boolean | undefined; }'.
+Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; } | { one: number; three?: boolean | undefined; }' is not the same as type '{ one: number; three?: boolean | undefined; }'.
 
   23 | 
   24 |   expect(pick(returnsIntersection(), "one", "three")).type.toBe<{ one: number; three?: boolean }>();
@@ -58,7 +58,7 @@ Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefine
 
        at ./__typetests__/pick.tst.ts:25:43 ❭ are several keys picked?
 
-Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | undefined; }' is not identical to type '{ two?: string | undefined; three?: boolean | undefined; }'.
+Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | undefined; }' is not the same as type '{ two?: string | undefined; three?: boolean | undefined; }'.
 
   26 | 
   27 |   expect(pick(returnsUnion(), "two", "three")).type.toBe<{ two?: string; three?: boolean }>();

@@ -1,4 +1,4 @@
-# Releases
+# Changelog
 
 ## [4.0.0-beta.9] - 2025-05-08
 

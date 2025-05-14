@@ -107,7 +107,7 @@ Argument of type 'true' is not assignable to parameter of type '"valid"'.
 
        at ./__typetests__/handles-nested.tst.ts:31:79
 
-Error: Type '() => void' is not identical to type 'void'.
+Error: Type '() => void' is not the same as type 'void'.
 
   30 |   // 'when()' or 'expect()' can be nested!
   31 |   when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith(true));

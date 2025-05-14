@@ -1,4 +1,4 @@
-Error: Type 'number' is identical to type 'number'.
+Error: Type 'number' is the same as type 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {

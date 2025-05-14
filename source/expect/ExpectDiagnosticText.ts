@@ -101,12 +101,12 @@ export class ExpectDiagnosticText {
     return `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`;
   }
 
-  static isIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is identical to type '${targetTypeText}'.`;
+  static isTheSame(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is the same as type '${targetTypeText}'.`;
   }
 
-  static isNotIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not identical to type '${targetTypeText}'.`;
+  static isNotTheSame(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not the same as type '${targetTypeText}'.`;
   }
 
   static isNotCompatibleWith(sourceTypeText: string, targetTypeText: string): string {
