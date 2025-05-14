@@ -1,4 +1,4 @@
-Error: Type 'string' is not identical to type 'number'.
+Error: Type 'string' is not the same as type 'number'.
 
   5 | });
   6 | test("is number a string?", () => {

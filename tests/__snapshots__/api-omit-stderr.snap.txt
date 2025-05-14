@@ -1,4 +1,4 @@
-Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; }' is not identical to type '{ two?: string | undefined; three?: boolean | undefined; }'.
+Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; }' is not the same as type '{ two?: string | undefined; three?: boolean | undefined; }'.
 
    9 | test("is single key omitted?", () => {
   10 |   expect(omit(returnsObject(), "one")).type.toBe<{ two?: string; three?: boolean }>();
@@ -10,7 +10,7 @@ Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefine
 
        at ./__typetests__/omit.tst.ts:11:37 ❭ is single key omitted?
 
-Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; } | { one: number; three?: boolean | undefined; }' is not identical to type '{ one: number; three?: boolean | undefined; }'.
+Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; } | { one: number; three?: boolean | undefined; }' is not the same as type '{ one: number; three?: boolean | undefined; }'.
 
   12 | 
   13 |   expect(omit(returnsIntersection(), "two")).type.toBe<{ one: number; three?: boolean }>();
@@ -22,7 +22,7 @@ Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefine
 
        at ./__typetests__/omit.tst.ts:14:43 ❭ is single key omitted?
 
-Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | undefined; }' is not identical to type '{ two?: string | undefined; three?: boolean | undefined; }'.
+Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | undefined; }' is not the same as type '{ two?: string | undefined; three?: boolean | undefined; }'.
 
   15 | 
   16 |   expect(omit(returnsUnion(), "one")).type.toBe<{ two?: string; three?: boolean }>();
@@ -34,7 +34,7 @@ Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | un
 
        at ./__typetests__/omit.tst.ts:17:36 ❭ is single key omitted?
 
-Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; }' is not identical to type '{ two?: string | undefined; }'.
+Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; }' is not the same as type '{ two?: string | undefined; }'.
 
   20 | test("are several keys omitted?", () => {
   21 |   expect(omit(returnsObject(), "one", "three")).type.toBe<{ two?: string }>();
@@ -46,7 +46,7 @@ Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefine
 
        at ./__typetests__/omit.tst.ts:22:37 ❭ are several keys omitted?
 
-Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; } | { one: number; three?: boolean | undefined; }' is not identical to type '{ one: number; }'.
+Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefined; } | { one: number; three?: boolean | undefined; }' is not the same as type '{ one: number; }'.
 
   23 | 
   24 |   expect(omit(returnsIntersection(), "two", "three")).type.toBe<{ one: number }>();
@@ -58,7 +58,7 @@ Error: Type '{ one: number; two?: string | undefined; three?: boolean | undefine
 
        at ./__typetests__/omit.tst.ts:25:43 ❭ are several keys omitted?
 
-Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | undefined; }' is not identical to type '{ two?: string | undefined; }'.
+Error: Type '{ one: number; } & { two?: string | undefined; three?: boolean | undefined; }' is not the same as type '{ two?: string | undefined; }'.
 
   26 | 
   27 |   expect(omit(returnsUnion(), "one", "three")).type.toBe<{ two?: string }>();

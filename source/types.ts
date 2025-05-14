@@ -87,15 +87,15 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the source type is identical to the target type.
+   * Checks if the source type is the same as the target type.
    */
   toBe: {
     /**
-     * Checks if the source type is identical to the target type.
+     * Checks if the source type is the same as the target type.
      */
     <Target>(): void;
     /**
-     * Checks if the source type is identical to type of the target expression.
+     * Checks if the source type is the same as type of the target expression.
      */
     (target: unknown): void;
   };

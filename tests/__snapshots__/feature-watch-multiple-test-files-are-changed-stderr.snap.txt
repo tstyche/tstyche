@@ -1,4 +1,4 @@
-Error: Type 'string' is not identical to type 'number'.
+Error: Type 'string' is not the same as type 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {
@@ -9,7 +9,7 @@ Error: Type 'string' is not identical to type 'number'.
 
       at ./a-feature/__typetests__/isNumber.test.ts:3:30 ❭ is number?
 
-Error: Type 'number' is not identical to type 'string'.
+Error: Type 'number' is not the same as type 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {
