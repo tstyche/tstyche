@@ -4,6 +4,7 @@ import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
+import { Directive } from "#directive";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
@@ -74,7 +75,7 @@ export class TaskRunner {
 
     let sourceFile = program?.getSourceFile(task.filePath);
 
-    if (sourceFile?.text.startsWith("// @tstyche-template")) {
+    if (sourceFile != null && Directive.isTemplate(this.#compiler, sourceFile.text)) {
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
 
