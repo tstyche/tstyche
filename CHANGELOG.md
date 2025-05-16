@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.0.0-rc.0] - 2025-05-15
+
+_Release candidate based on [4.0.0-beta.10]._
+
+## [4.0.0-beta.10] - 2025-05-14
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
+### Fixed
+
+- Prepend semicolon only before expression statements in the ability layer ([#483](https://github.com/tstyche/tstyche/pull/483))
+
 ## [4.0.0-beta.9] - 2025-05-08
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
@@ -665,6 +677,8 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-rc.0
+[4.0.0-beta.10]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.10
 [4.0.0-beta.9]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.9
 [4.0.0-beta.8]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.8
 [4.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.7

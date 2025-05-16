@@ -3,6 +3,11 @@
 const fs = require("node:fs/promises");
 const path = require("node:path");
 
+/**
+ * @typedef {Object} Hooks
+ * @property {(executor: () => Promise<number>, _project: never, _locator: never, scriptName: string ) => () => Promise<number>} wrapScriptExecution
+ */
+
 const changelogFileName = "CHANGELOG.md";
 
 const changelogFilePath = path.resolve(changelogFileName);
@@ -11,13 +16,8 @@ const hiddenFilePath = path.resolve(`.${changelogFileName}`);
 module.exports = {
   name: "hide-changelog",
   factory: () => ({
+    /** @type {Hooks} */
     hooks: {
-      /**
-       * @param {() => Promise<number>} executor
-       * @param {never} _project
-       * @param {never} _locator
-       * @param {string} scriptName
-       */
       wrapScriptExecution(executor, _project, _locator, scriptName) {
         if (scriptName.startsWith("publish")) {
           return async () => {

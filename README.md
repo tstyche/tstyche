@@ -77,7 +77,7 @@ This simple! (And it has watch mode too.)
 
 ## Documentation
 
-Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
+Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 
 ## Feedback
 
