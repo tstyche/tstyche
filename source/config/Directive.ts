@@ -6,7 +6,7 @@ import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import { Target } from "./Target.js";
-import type { OptionValue } from "./types.js";
+import type { InlineConfig, OptionValue } from "./types.js";
 
 interface TextRange {
   start: number;
@@ -20,24 +20,19 @@ interface DirectiveTextRanges {
   argument?: TextRange;
 }
 
-export interface Directives {
-  if?: { target?: Array<string> };
-  template?: boolean;
-}
-
 export class Directive {
   static #directiveRegex = /^(\/\/\s*@tstyche)(\s*|-)?(\S*)?(\s*)?(.*)?/i;
 
-  static async getDirectives(
+  static async getInlineConfig(
     compiler: typeof ts,
     sourceFile: ts.SourceFile | undefined,
     position = 0,
-  ): Promise<Directives | undefined> {
+  ): Promise<InlineConfig | undefined> {
     if (!sourceFile) {
       return;
     }
 
-    const directives: Directives = {};
+    const inlineConfig: InlineConfig = {};
 
     const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
 
@@ -47,11 +42,11 @@ export class Directive {
           continue;
         }
 
-        await Directive.#parse(directives, sourceFile, comment);
+        await Directive.#parse(inlineConfig, sourceFile, comment);
       }
     }
 
-    return directives;
+    return inlineConfig;
   }
 
   static #getTextRanges(sourceFile: ts.SourceFile, comment: ts.CommentRange) {
@@ -92,7 +87,7 @@ export class Directive {
     EventEmitter.dispatch(["directive:error", { diagnostics: [diagnostic] }]);
   }
 
-  static async #parse(directives: Directives, sourceFile: ts.SourceFile, comment: ts.CommentRange) {
+  static async #parse(inlineConfig: InlineConfig, sourceFile: ts.SourceFile, comment: ts.CommentRange) {
     const ranges = Directive.#getTextRanges(sourceFile, comment);
 
     if (!ranges) {
@@ -121,7 +116,7 @@ export class Directive {
             return;
           }
 
-          directives.if = value;
+          inlineConfig.if = value;
         }
         return;
 
@@ -133,7 +128,7 @@ export class Directive {
           Directive.#onDiagnostics(Diagnostic.error(text, origin));
         }
 
-        directives.template = true;
+        inlineConfig.template = true;
         return;
     }
 
@@ -146,10 +141,10 @@ export class Directive {
   }
 
   static async #parseJson(sourceFile: ts.SourceFile, start: number, end: number): Promise<Record<string, OptionValue>> {
-    const directive: { target?: Array<string> } = {};
+    const inlineOptions: Record<string, OptionValue> = {};
 
     const configParser = new ConfigParser(
-      directive as Record<string, OptionValue>,
+      inlineOptions as Record<string, OptionValue>,
       OptionGroup.InlineConfig,
       sourceFile,
       new JsonScanner(sourceFile, { start, end }),
@@ -158,10 +153,10 @@ export class Directive {
 
     await configParser.parse();
 
-    if ("target" in directive) {
-      directive.target = await Target.expand(directive.target);
+    if ("target" in inlineOptions) {
+      inlineOptions["target"] = await Target.expand(inlineOptions["target"] as Array<string>);
     }
 
-    return directive;
+    return inlineOptions;
   }
 }

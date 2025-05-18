@@ -72,18 +72,18 @@ export class TaskRunner {
     let semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
     let program = languageService?.getProgram();
     let sourceFile = program?.getSourceFile(task.filePath);
-    let fileDirectives = await Directive.getDirectives(this.#compiler, sourceFile);
+    let fileConfig = await Directive.getInlineConfig(this.#compiler, sourceFile);
 
     let runMode = RunMode.Normal;
 
     if (
-      fileDirectives?.if?.target != null &&
-      !fileDirectives.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
+      fileConfig?.if?.target != null &&
+      !fileConfig.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
     ) {
       runMode |= RunMode.Skip;
     }
 
-    if (fileDirectives?.template) {
+    if (fileConfig?.template) {
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
 
@@ -114,11 +114,11 @@ export class TaskRunner {
       semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
       program = languageService?.getProgram();
       sourceFile = program?.getSourceFile(task.filePath);
-      fileDirectives = await Directive.getDirectives(this.#compiler, sourceFile);
+      fileConfig = await Directive.getInlineConfig(this.#compiler, sourceFile);
 
       if (
-        fileDirectives?.if?.target != null &&
-        !fileDirectives.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
+        fileConfig?.if?.target != null &&
+        !fileConfig.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
       ) {
         runMode |= RunMode.Skip;
       }
