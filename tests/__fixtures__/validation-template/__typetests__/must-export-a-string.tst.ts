@@ -1,4 +1,4 @@
-// @tstyche-template
+// @tstyche template
 
 let testText = `
 import { expect, test } from "tstyche";

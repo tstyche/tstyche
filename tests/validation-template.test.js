@@ -52,7 +52,7 @@ await test("template test file", async (t) => {
   });
 
   await t.test("handles test file syntax errors", async () => {
-    const templateText = `// @tstyche-template
+    const templateText = `// @tstyche template
 
 function getTestText() {
   return \`import { expect, test } from "tstyche";

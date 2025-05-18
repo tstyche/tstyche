@@ -2,15 +2,15 @@ import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { CollectService } from "#collect";
-import type { ResolvedConfig } from "#config";
+import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
-import { Directive } from "#directive";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
+import { Version } from "#version";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
@@ -70,12 +70,20 @@ export class TaskRunner {
     }
 
     let semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
-
     let program = languageService?.getProgram();
-
     let sourceFile = program?.getSourceFile(task.filePath);
+    let fileDirectives = await Directive.getDirectives(this.#compiler, sourceFile);
 
-    if (sourceFile != null && Directive.isTemplate(this.#compiler, sourceFile.text)) {
+    let runMode = RunMode.Normal;
+
+    if (
+      fileDirectives?.if?.target != null &&
+      !fileDirectives.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
+    ) {
+      runMode |= RunMode.Skip;
+    }
+
+    if (fileDirectives?.template) {
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
 
@@ -104,10 +112,16 @@ export class TaskRunner {
       }
 
       semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
-
       program = languageService?.getProgram();
-
       sourceFile = program?.getSourceFile(task.filePath);
+      fileDirectives = await Directive.getDirectives(this.#compiler, sourceFile);
+
+      if (
+        fileDirectives?.if?.target != null &&
+        !fileDirectives.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
+      ) {
+        runMode |= RunMode.Skip;
+      }
     }
 
     if (!sourceFile) {
@@ -134,6 +148,6 @@ export class TaskRunner {
       position: task.position,
     });
 
-    testTreeWalker.visit(testTree.children, RunMode.Normal, /* parentResult */ undefined);
+    testTreeWalker.visit(testTree.children, runMode, /* parentResult */ undefined);
   }
 }

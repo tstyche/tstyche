@@ -1,29 +1,39 @@
+import type ts from "typescript";
 import { DiagnosticOrigin, type SourceFile } from "#diagnostic";
 import { JsonNode } from "./JsonNode.js";
 
-export class JsonScanner {
-  #currentPosition = 0;
-  #previousPosition = 0;
-  #sourceFile: SourceFile;
+export interface JsonScannerOptions {
+  start?: number;
+  end?: number;
+}
 
-  constructor(sourceFile: SourceFile) {
+export class JsonScanner {
+  #end: number;
+  #position: number;
+  #previousPosition: number;
+  #sourceFile: SourceFile | ts.SourceFile;
+
+  constructor(sourceFile: SourceFile | ts.SourceFile, options?: JsonScannerOptions) {
+    this.#end = options?.end ?? sourceFile.text.length;
+    this.#position = options?.start ?? 0;
+    this.#previousPosition = options?.start ?? 0;
     this.#sourceFile = sourceFile;
   }
 
   #getOrigin() {
-    return new DiagnosticOrigin(this.#previousPosition, this.#currentPosition, this.#sourceFile);
+    return new DiagnosticOrigin(this.#previousPosition, this.#position, this.#sourceFile);
   }
 
   isRead(): boolean {
-    return !(this.#currentPosition < this.#sourceFile.text.length);
+    return !(this.#position < this.#end);
   }
 
   #peekCharacter() {
-    return this.#sourceFile.text.charAt(this.#currentPosition);
+    return this.#sourceFile.text.charAt(this.#position);
   }
 
   #peekNextCharacter() {
-    return this.#sourceFile.text.charAt(this.#currentPosition + 1);
+    return this.#sourceFile.text.charAt(this.#position + 1);
   }
 
   peekToken(token: string): boolean {
@@ -35,7 +45,7 @@ export class JsonScanner {
   read(): JsonNode {
     this.#skipTrivia();
 
-    this.#previousPosition = this.#currentPosition;
+    this.#previousPosition = this.#position;
 
     if (/[\s,:\]}]/.test(this.#peekCharacter())) {
       return new JsonNode(undefined, this.#getOrigin());
@@ -73,16 +83,16 @@ export class JsonScanner {
   }
 
   #readCharacter() {
-    return this.#sourceFile.text.charAt(this.#currentPosition++);
+    return this.#sourceFile.text.charAt(this.#position++);
   }
 
   readToken(token: string): JsonNode {
     this.#skipTrivia();
 
-    this.#previousPosition = this.#currentPosition;
+    this.#previousPosition = this.#position;
 
     if (this.#peekCharacter() === token) {
-      this.#currentPosition++;
+      this.#position++;
 
       return new JsonNode(token, this.#getOrigin());
     }
@@ -93,13 +103,13 @@ export class JsonScanner {
   #skipTrivia() {
     while (!this.isRead()) {
       if (/\s/.test(this.#peekCharacter())) {
-        this.#currentPosition++;
+        this.#position++;
         continue;
       }
 
       if (this.#peekCharacter() === "/") {
         if (this.#peekNextCharacter() === "/") {
-          this.#currentPosition += 2;
+          this.#position += 2;
 
           while (!this.isRead()) {
             if (this.#readCharacter() === "\n") {
@@ -111,14 +121,14 @@ export class JsonScanner {
         }
 
         if (this.#peekNextCharacter() === "*") {
-          this.#currentPosition += 2;
+          this.#position += 2;
 
           while (!this.isRead()) {
             if (this.#peekCharacter() === "*" && this.#peekNextCharacter() === "/") {
-              this.#currentPosition += 2;
+              this.#position += 2;
               break;
             }
-            this.#currentPosition++;
+            this.#position++;
           }
 
           continue;
@@ -128,6 +138,6 @@ export class JsonScanner {
       break;
     }
 
-    this.#previousPosition = this.#currentPosition;
+    this.#previousPosition = this.#position;
   }
 }

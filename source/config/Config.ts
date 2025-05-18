@@ -4,7 +4,9 @@ import { type Diagnostic, SourceFile } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { CommandLineParser } from "./CommandLineParser.js";
-import { ConfigFileParser } from "./ConfigFileParser.js";
+import { ConfigParser } from "./ConfigParser.js";
+import { JsonScanner } from "./JsonScanner.js";
+import { OptionGroup } from "./OptionGroup.enum.js";
 import { Target } from "./Target.js";
 import { defaultOptions } from "./defaultOptions.js";
 import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types.js";
@@ -64,9 +66,11 @@ export class Config {
 
       const sourceFile = new SourceFile(configFilePath, configFileText);
 
-      const configFileParser = new ConfigFileParser(
+      const configFileParser = new ConfigParser(
         configFileOptions as Record<string, OptionValue>,
+        OptionGroup.ConfigFile,
         sourceFile,
+        new JsonScanner(sourceFile),
         Config.#onDiagnostics,
       );
 
