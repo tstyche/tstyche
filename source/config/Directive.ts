@@ -154,7 +154,7 @@ export class Directive {
 
     const configParser = new ConfigParser(
       inlineOptions as Record<string, OptionValue>,
-      OptionGroup.InlineConfig,
+      OptionGroup.InlineConditions,
       sourceFile,
       new JsonScanner(sourceFile, { start, end }),
       Directive.#onDiagnostics,

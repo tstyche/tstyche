@@ -164,7 +164,7 @@ export class Options {
     {
       brand: OptionBrand.List,
       description: "The list of TypeScript versions to be tested on.",
-      group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConfig,
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
       items: {
         brand: OptionBrand.String,
         name: "target",
