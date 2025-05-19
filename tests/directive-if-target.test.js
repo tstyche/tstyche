@@ -91,7 +91,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "'>=5.5 <5.8'"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-single-matching-target-stdout`,
+      fileName: `${testFileName}-multiple-matching-target-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -109,7 +109,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "'>=5.5 <5.8'"]);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-single-not-matching-target-stdout`,
+      fileName: `${testFileName}-multiple-not-matching-target-stdout`,
       testFileUrl: import.meta.url,
     });
 
