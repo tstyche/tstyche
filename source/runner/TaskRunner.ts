@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { CollectService } from "#collect";
-import { Directive, type InlineConfig, type ResolvedConfig } from "#config";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
@@ -10,7 +10,6 @@ import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
-import { Version } from "#version";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
@@ -77,20 +76,18 @@ export class TaskRunner {
       return;
     }
 
-    let fileConfig: InlineConfig | undefined;
     let runMode = RunMode.Normal;
 
-    let testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+    let testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    if (testTree.directiveRanges != null) {
-      fileConfig = await Directive.getInlineConfig(sourceFile, testTree.directiveRanges);
-
-      if (fileConfig?.if?.target != null && !fileConfig.if.target.includes(this.#compiler.version)) {
-        runMode |= RunMode.Skip;
-      }
+    if (
+      testTree?.inlineConfig?.if?.target != null &&
+      !testTree.inlineConfig.if.target.includes(this.#compiler.version)
+    ) {
+      runMode |= RunMode.Skip;
     }
 
-    if (fileConfig?.template) {
+    if (testTree?.inlineConfig?.template) {
       // TODO testTree.children must be not allowed in template files
 
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
@@ -129,17 +126,13 @@ export class TaskRunner {
       return;
     }
 
-    testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+    testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    if (testTree.directiveRanges != null) {
-      fileConfig = await Directive.getInlineConfig(sourceFile, testTree.directiveRanges);
-
-      if (
-        fileConfig?.if?.target != null &&
-        !fileConfig.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
-      ) {
-        runMode |= RunMode.Skip;
-      }
+    if (
+      testTree?.inlineConfig?.if?.target != null &&
+      !testTree.inlineConfig.if.target.includes(this.#compiler.version)
+    ) {
+      runMode |= RunMode.Skip;
     }
 
     if (testTree.diagnostics.size > 0) {
