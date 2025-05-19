@@ -85,10 +85,7 @@ export class TaskRunner {
     if (testTree.directiveRanges != null) {
       fileConfig = await Directive.getInlineConfig(sourceFile, testTree.directiveRanges);
 
-      if (
-        fileConfig?.if?.target != null &&
-        !fileConfig.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
-      ) {
+      if (fileConfig?.if?.target != null && !fileConfig.if.target.includes(this.#compiler.version)) {
         runMode |= RunMode.Skip;
       }
     }
