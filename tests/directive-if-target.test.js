@@ -88,7 +88,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "'>=5.5 <5.8'"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-multiple-matching-target-stdout`,
@@ -106,7 +106,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "'>=5.5 <5.8'"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-multiple-not-matching-target-stdout`,
