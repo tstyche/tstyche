@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import type { DirectiveRange } from "#config";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
@@ -24,9 +25,10 @@ export class AssertionNode extends TestTreeNode {
     matcherNode: ts.CallExpression | ts.Decorator,
     matcherNameNode: ts.PropertyAccessExpression,
     modifierNode: ts.PropertyAccessExpression,
-    notNode?: ts.PropertyAccessExpression,
+    notNode: ts.PropertyAccessExpression | undefined,
+    directiveRanges: Array<DirectiveRange> | undefined,
   ) {
-    super(compiler, brand, node, parent, flags);
+    super(compiler, brand, node, parent, flags, directiveRanges);
 
     this.isNot = notNode != null;
     this.matcherNode = matcherNode;

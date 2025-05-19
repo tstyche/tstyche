@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import type { ResolvedConfig } from "#config";
+import { Directive, type DirectiveRange, type ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ProjectService } from "#project";
@@ -30,12 +30,18 @@ export class CollectService {
       const meta = this.#identifierLookup.resolveTestTreeNodeMeta(node);
 
       if (meta != null) {
+        const directiveRanges = Directive.getDirectiveRanges(this.#compiler, node.getSourceFile(), node.getFullStart());
+
+        if (directiveRanges != null && !this.#checkDirectives(node, meta, directiveRanges)) {
+          return;
+        }
+
         if (!this.#checkNode(node, meta, parent)) {
           return;
         }
 
         if (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test) {
-          const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
+          const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags, directiveRanges);
 
           this.#compiler.forEachChild(node, (node) => {
             this.#collectTestTreeNodes(node, testTreeNode, testTree);
@@ -77,6 +83,7 @@ export class CollectService {
             matcherNameNode,
             modifierNode,
             notNode,
+            directiveRanges,
           );
 
           this.#abilityLayer.handleAssertion(assertionNode);
@@ -149,7 +156,9 @@ export class CollectService {
   }
 
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
-    const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
+    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, sourceFile);
+
+    const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile, directiveRanges);
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);
 
@@ -163,6 +172,12 @@ export class CollectService {
     EventEmitter.dispatch(["collect:end", { tree: testTree }]);
 
     return testTree;
+  }
+
+  #checkDirectives(_node: ts.Node, _meta: TestTreeNodeMeta, _directiveRanges: Array<DirectiveRange>) {
+    // TODO `'test()' cannot be configured using the 'template' directive.`
+
+    return true;
   }
 
   #checkNode(node: ts.Node, meta: TestTreeNodeMeta, parent: TestTree | TestTreeNode) {

@@ -5,7 +5,6 @@ import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import { Target } from "./Target.js";
 import type { InlineConfig, OptionValue } from "./types.js";
 
 interface TextRange {
@@ -14,7 +13,7 @@ interface TextRange {
   text: string;
 }
 
-interface DirectiveTextRanges {
+export interface DirectiveRange {
   namespace: TextRange;
   directive?: TextRange;
   argument?: TextRange;
@@ -23,33 +22,48 @@ interface DirectiveTextRanges {
 export class Directive {
   static #directiveRegex = /^(\/\/\s*@tstyche)(\s*|-)?(\S*)?(\s*)?(.*)?/i;
 
-  static async getInlineConfig(
+  static getDirectiveRanges(
     compiler: typeof ts,
-    sourceFile: ts.SourceFile | undefined,
+    sourceFile: ts.SourceFile,
     position = 0,
-  ): Promise<InlineConfig | undefined> {
-    if (!sourceFile) {
+  ): Array<DirectiveRange> | undefined {
+    const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
+
+    if (!comments || comments.length === 0) {
       return;
     }
 
+    const ranges: Array<DirectiveRange> = [];
+
+    for (const comment of comments) {
+      if (comment.kind !== compiler.SyntaxKind.SingleLineCommentTrivia) {
+        continue;
+      }
+
+      const range = Directive.#getRange(sourceFile, comment);
+
+      if (range != null) {
+        ranges.push(range);
+      }
+    }
+
+    return ranges;
+  }
+
+  static async getInlineConfig(
+    sourceFile: ts.SourceFile,
+    directiveRange: Array<DirectiveRange>,
+  ): Promise<InlineConfig | undefined> {
     const inlineConfig: InlineConfig = {};
 
-    const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
-
-    if (comments != null) {
-      for (const comment of comments) {
-        if (comment.kind !== compiler.SyntaxKind.SingleLineCommentTrivia) {
-          continue;
-        }
-
-        await Directive.#parse(inlineConfig, sourceFile, comment);
-      }
+    for (const range of directiveRange) {
+      await Directive.#parse(inlineConfig, sourceFile, range);
     }
 
     return inlineConfig;
   }
 
-  static #getTextRanges(sourceFile: ts.SourceFile, comment: ts.CommentRange) {
+  static #getRange(sourceFile: ts.SourceFile, comment: ts.CommentRange) {
     const found = sourceFile.text.substring(comment.pos, comment.end).match(Directive.#directiveRegex);
 
     const namespaceText = found?.[1];
@@ -58,7 +72,7 @@ export class Directive {
       return;
     }
 
-    const ranges: DirectiveTextRanges = {
+    const ranges: DirectiveRange = {
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 
@@ -87,13 +101,7 @@ export class Directive {
     EventEmitter.dispatch(["directive:error", { diagnostics: [diagnostic] }]);
   }
 
-  static async #parse(inlineConfig: InlineConfig, sourceFile: ts.SourceFile, comment: ts.CommentRange) {
-    const ranges = Directive.#getTextRanges(sourceFile, comment);
-
-    if (!ranges) {
-      return;
-    }
-
+  static async #parse(inlineConfig: InlineConfig, sourceFile: ts.SourceFile, ranges: DirectiveRange) {
     switch (ranges.directive?.text) {
       case "if":
         {
@@ -152,10 +160,6 @@ export class Directive {
     );
 
     await configParser.parse();
-
-    if ("target" in inlineOptions) {
-      inlineOptions["target"] = await Target.expand(inlineOptions["target"] as Array<string>);
-    }
 
     return inlineOptions;
   }

@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { CollectService } from "#collect";
-import { Directive, type ResolvedConfig } from "#config";
+import { Directive, type InlineConfig, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
@@ -72,18 +72,30 @@ export class TaskRunner {
     let semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
     let program = languageService?.getProgram();
     let sourceFile = program?.getSourceFile(task.filePath);
-    let fileConfig = await Directive.getInlineConfig(this.#compiler, sourceFile);
 
+    if (!sourceFile) {
+      return;
+    }
+
+    let fileConfig: InlineConfig | undefined;
     let runMode = RunMode.Normal;
 
-    if (
-      fileConfig?.if?.target != null &&
-      !fileConfig.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
-    ) {
-      runMode |= RunMode.Skip;
+    let testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+
+    if (testTree.directiveRanges != null) {
+      fileConfig = await Directive.getInlineConfig(sourceFile, testTree.directiveRanges);
+
+      if (
+        fileConfig?.if?.target != null &&
+        !fileConfig.if.target.some((target) => Version.isSatisfiedWith(this.#compiler.version, target))
+      ) {
+        runMode |= RunMode.Skip;
+      }
     }
 
     if (fileConfig?.template) {
+      // TODO testTree.children must be not allowed in template files
+
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
 
@@ -114,7 +126,16 @@ export class TaskRunner {
       semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
       program = languageService?.getProgram();
       sourceFile = program?.getSourceFile(task.filePath);
-      fileConfig = await Directive.getInlineConfig(this.#compiler, sourceFile);
+    }
+
+    if (!sourceFile) {
+      return;
+    }
+
+    testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+
+    if (testTree.directiveRanges != null) {
+      fileConfig = await Directive.getInlineConfig(sourceFile, testTree.directiveRanges);
 
       if (
         fileConfig?.if?.target != null &&
@@ -123,12 +144,6 @@ export class TaskRunner {
         runMode |= RunMode.Skip;
       }
     }
-
-    if (!sourceFile) {
-      return;
-    }
-
-    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
     if (testTree.diagnostics.size > 0) {
       this.#onDiagnostics(Diagnostic.fromDiagnostics([...testTree.diagnostics]), taskResult);

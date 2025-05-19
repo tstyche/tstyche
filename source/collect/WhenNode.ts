@@ -20,7 +20,7 @@ export class WhenNode extends TestTreeNode {
     actionNode: ts.CallExpression,
     actionNameNode: ts.PropertyAccessExpression,
   ) {
-    super(compiler, brand, node, parent, flags);
+    super(compiler, brand, node, parent, flags, /* directiveRanges */ undefined);
 
     this.actionNode = actionNode;
     this.actionNameNode = actionNameNode;

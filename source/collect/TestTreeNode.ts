@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import type { DirectiveRange } from "#config";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTree } from "./TestTree.js";
@@ -10,6 +11,7 @@ export class TestTreeNode {
   brand: TestTreeNodeBrand;
   children: Array<TestTreeNode | AssertionNode | WhenNode> = [];
   diagnostics = new Set<ts.Diagnostic>();
+  directiveRanges: Array<DirectiveRange> | undefined;
   flags: TestTreeNodeFlags;
   name = "";
   node: ts.CallExpression;
@@ -21,11 +23,13 @@ export class TestTreeNode {
     node: ts.CallExpression,
     parent: TestTree | TestTreeNode,
     flags: TestTreeNodeFlags,
+    directiveRanges: Array<DirectiveRange> | undefined,
   ) {
     this.brand = brand;
     this.node = node;
     this.parent = parent;
     this.flags = flags;
+    this.directiveRanges = directiveRanges;
 
     if (node.arguments[0] != null && compiler.isStringLiteralLike(node.arguments[0])) {
       this.name = node.arguments[0].text;
