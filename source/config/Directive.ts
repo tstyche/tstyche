@@ -166,7 +166,7 @@ export class Directive {
     await configParser.parse();
 
     if ("target" in inlineOptions) {
-      inlineOptions["target"] = await Target.expand(inlineOptions["target"] as Array<string>, { resolve: true });
+      inlineOptions["target"] = await Target.expand(inlineOptions["target"] as Array<string>);
     }
 
     return inlineOptions;

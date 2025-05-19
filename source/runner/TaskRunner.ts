@@ -10,6 +10,7 @@ import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
+import { Version } from "#version";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
@@ -82,13 +83,14 @@ export class TaskRunner {
 
     if (
       testTree?.inlineConfig?.if?.target != null &&
-      !testTree.inlineConfig.if.target.includes(this.#compiler.version)
+      !Version.isIncluded(this.#compiler.version, testTree.inlineConfig.if.target)
     ) {
       runMode |= RunMode.Skip;
     }
 
     if (testTree?.inlineConfig?.template) {
       // TODO testTree.children must be not allowed in template files
+      //      since the 'CollectService' knows it deals with a template file, this can be validated early
 
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
@@ -126,13 +128,13 @@ export class TaskRunner {
       }
 
       testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
-    }
 
-    if (
-      testTree?.inlineConfig?.if?.target != null &&
-      !testTree.inlineConfig.if.target.includes(this.#compiler.version)
-    ) {
-      runMode |= RunMode.Skip;
+      if (
+        testTree?.inlineConfig?.if?.target != null &&
+        !Version.isIncluded(this.#compiler.version, testTree.inlineConfig.if.target)
+      ) {
+        runMode |= RunMode.Skip;
+      }
     }
 
     if (testTree.diagnostics.size > 0) {

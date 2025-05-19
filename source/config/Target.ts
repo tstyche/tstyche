@@ -4,7 +4,7 @@ import { Version } from "#version";
 export class Target {
   static #rangeRegex = /^[<>]=?\d\.\d( [<>]=?\d\.\d)?$/;
 
-  static async expand(queries: Array<string>, options?: { resolve?: boolean }): Promise<Array<string>> {
+  static async expand(queries: Array<string>): Promise<Array<string>> {
     const include: Array<string> = [];
 
     for (const query of queries) {
@@ -27,9 +27,7 @@ export class Target {
       }
     }
 
-    return options?.resolve
-      ? include.map((version) => Store.manifest?.resolve(version)).filter((version) => version != null)
-      : include;
+    return include;
   }
 
   static #filter(comparator: string, versions: Array<string>): Array<string> {

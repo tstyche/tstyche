@@ -3,6 +3,10 @@ export class Version {
     return !(source === target) && Version.#satisfies(source, target);
   }
 
+  static isIncluded(source: string, range: Array<string>): boolean {
+    return range.some((target) => source.startsWith(target));
+  }
+
   static isSatisfiedWith(source: string, target: string): boolean {
     return source === target || Version.#satisfies(source, target);
   }
