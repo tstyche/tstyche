@@ -120,13 +120,13 @@ export class TaskRunner {
       semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
       program = languageService?.getProgram();
       sourceFile = program?.getSourceFile(task.filePath);
-    }
 
-    if (!sourceFile) {
-      return;
-    }
+      if (!sourceFile) {
+        return;
+      }
 
-    testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+      testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+    }
 
     if (
       testTree?.inlineConfig?.if?.target != null &&
