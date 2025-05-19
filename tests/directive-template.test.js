@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-await test("template", async (t) => {
+await test("'// @tstyche template' directive", async (t) => {
   // TODO remove this check after dropping support for Node.js 20
   if (process.versions.node.startsWith("20")) {
     t.skip();

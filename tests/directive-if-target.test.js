@@ -116,4 +116,38 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
+
+  await t.test("when matching version range is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: getIsStringTestText([">=5.6"]),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-matching-range-target-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when partly matching version range is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: getIsStringTestText([">=5.4"]),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-partly-matching-range-target-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
 });
