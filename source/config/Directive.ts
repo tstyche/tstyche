@@ -118,15 +118,7 @@ export class Directive {
             return;
           }
 
-          const value: { target?: Array<string> } = await Directive.#parseJson(
-            sourceFile,
-            ranges.argument.start,
-            ranges.argument.end,
-          );
-
-          if (!value) {
-            return;
-          }
+          const value = await Directive.#parseJson(sourceFile, ranges.argument.start, ranges.argument.end);
 
           inlineConfig.if = value;
         }
