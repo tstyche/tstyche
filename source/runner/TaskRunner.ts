@@ -54,7 +54,6 @@ export class TaskRunner {
     task: Task,
     taskResult: TaskResult,
     runMode = RunMode.Normal,
-    isTemplate?: boolean,
   ): Promise<{ runMode: RunMode; testTree: TestTree; typeChecker: TypeChecker } | undefined> {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
@@ -86,7 +85,7 @@ export class TaskRunner {
       runMode |= RunMode.Skip;
     }
 
-    if (!isTemplate && testTree?.inlineConfig?.template) {
+    if (testTree?.inlineConfig?.template) {
       // TODO testTree.children must be not allowed in template files
       //      since the 'CollectService' knows it deals with a template file, this can be validated early
 
@@ -107,7 +106,7 @@ export class TaskRunner {
 
       this.#projectService.openFile(task.filePath, testText, this.#resolvedConfig.rootPath);
 
-      return this.#getTaskFacts(task, taskResult, runMode, /* isTemplate */ true);
+      return this.#getTaskFacts(task, taskResult, runMode);
     }
 
     return { runMode, testTree, typeChecker };
