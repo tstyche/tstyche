@@ -1,9 +1,9 @@
 import streamConsumers from "node:stream/consumers";
 
-export type ExtractedFile = {
+export interface ExtractedFile {
   contents: Uint8Array;
   name: string;
-};
+}
 
 export class TarReader {
   static #textDecoder = new TextDecoder();
