@@ -192,4 +192,22 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
     assert.equal(exitCode, 0);
   });
+
+  await t.test("when combination of ranges and versions is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: getIsStringTestText([">=5.0 <5.3", "5.4.2", ">5.5"]),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.2 <5.8"']);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-combination-of-ranges-and-versions-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
 });
