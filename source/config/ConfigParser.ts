@@ -169,9 +169,8 @@ export class ConfigParser {
 
         this.#onDiagnostics(Diagnostic.error(text, optionNameNode.origin));
 
-        if (this.#jsonScanner.readToken(":")) {
-          this.#jsonScanner.read();
-        }
+        this.#jsonScanner.readToken(":");
+        this.#jsonScanner.read();
 
         const commaToken = this.#jsonScanner.readToken(",");
 
