@@ -8,7 +8,7 @@ Error: Expression expected. ts(1109)
   8 | 
   9 | test("is syntax error?", () => {
 
-      at ./__typetests__/test-text-syntax-errors.tst.ts:6:8
+      at ./__typetests__/sample.tst.ts:6:8
 
 Error: Argument expression expected. ts(1135)
 
@@ -20,7 +20,7 @@ Error: Argument expression expected. ts(1135)
   13 | test("is skipped?", () => {
   14 |   expect(one("abc")).type.toBe<void>();
 
-       at ./__typetests__/test-text-syntax-errors.tst.ts:11:1
+       at ./__typetests__/sample.tst.ts:11:1
 
 Error: ')' expected. ts(1005)
 
@@ -29,5 +29,5 @@ Error: ')' expected. ts(1005)
   18 | 
      | ~
 
-       at ./__typetests__/test-text-syntax-errors.tst.ts:18:1
+       at ./__typetests__/sample.tst.ts:18:1
 

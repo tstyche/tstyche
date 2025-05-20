@@ -1,6 +1,6 @@
-uses TypeScript <<version>> with ./tsconfig.json
+uses TypeScript <<version>>
 
-fail ./__typetests__/test-text-type-errors.tst.ts
+fail ./__typetests__/sample.tst.ts
   × is string a string?
   × is number a string?
 

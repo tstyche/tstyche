@@ -1,32 +1,34 @@
+import type ts from "typescript";
 import { Diagnostic, type DiagnosticsHandler, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { JsonNode } from "./JsonNode.js";
-import { JsonScanner } from "./JsonScanner.js";
+import type { JsonScanner } from "./JsonScanner.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
-import { OptionGroup } from "./OptionGroup.enum.js";
+import type { OptionGroup } from "./OptionGroup.enum.js";
 import { type ItemDefinition, type OptionDefinition, Options } from "./Options.js";
 import type { OptionValue } from "./types.js";
 
-export class ConfigFileParser {
+export class ConfigParser {
   #configFileOptions: Record<string, OptionValue>;
   #jsonScanner: JsonScanner;
   #onDiagnostics: DiagnosticsHandler;
   #options: Map<string, OptionDefinition>;
-  #sourceFile: SourceFile;
+  #sourceFile: SourceFile | ts.SourceFile;
 
   constructor(
-    configFileOptions: Record<string, OptionValue>,
-    sourceFile: SourceFile,
+    configOptions: Record<string, OptionValue>,
+    optionGroup: OptionGroup,
+    sourceFile: SourceFile | ts.SourceFile,
+    jsonScanner: JsonScanner,
     onDiagnostics: DiagnosticsHandler,
   ) {
-    this.#configFileOptions = configFileOptions;
-    this.#sourceFile = sourceFile;
+    this.#configFileOptions = configOptions;
+    this.#jsonScanner = jsonScanner;
     this.#onDiagnostics = onDiagnostics;
+    this.#sourceFile = sourceFile;
 
-    this.#options = Options.for(OptionGroup.ConfigFile);
-
-    this.#jsonScanner = new JsonScanner(this.#sourceFile);
+    this.#options = Options.for(optionGroup);
   }
 
   #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {

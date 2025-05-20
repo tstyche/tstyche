@@ -1,0 +1,45 @@
+Error: The '// @tstyche' directive is not supported.
+
+  1 | // @tstyche
+    | ~~~~~~~~~~~
+  2 | // @tstyche-
+  3 | 
+  4 | // @tstyche nope
+
+      at ./__typetests__/directive-not-supported.tst.ts:1:1
+
+Error: The '// @tstyche' directive is not supported.
+
+  1 | // @tstyche
+  2 | // @tstyche-
+    | ~~~~~~~~~~~
+  3 | 
+  4 | // @tstyche nope
+  5 | // @tstyche-nope
+
+      at ./__typetests__/directive-not-supported.tst.ts:2:1
+
+Error: The 'nope' directive is not supported.
+
+  2 | // @tstyche-
+  3 | 
+  4 | // @tstyche nope
+    |             ~~~~
+  5 | // @tstyche-nope
+  6 | 
+  7 | import { expect, test } from "tstyche";
+
+      at ./__typetests__/directive-not-supported.tst.ts:4:13
+
+Error: The 'nope' directive is not supported.
+
+  3 | 
+  4 | // @tstyche nope
+  5 | // @tstyche-nope
+    |             ~~~~
+  6 | 
+  7 | import { expect, test } from "tstyche";
+  8 | 
+
+      at ./__typetests__/directive-not-supported.tst.ts:5:13
+

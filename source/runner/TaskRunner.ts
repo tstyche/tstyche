@@ -4,13 +4,13 @@ import type ts from "typescript";
 import { CollectService } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
-import { Directive } from "#directive";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
+import { Version } from "#version";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
@@ -70,12 +70,28 @@ export class TaskRunner {
     }
 
     let semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
-
     let program = languageService?.getProgram();
-
     let sourceFile = program?.getSourceFile(task.filePath);
 
-    if (sourceFile != null && Directive.isTemplate(this.#compiler, sourceFile.text)) {
+    if (!sourceFile) {
+      return;
+    }
+
+    let runMode = RunMode.Normal;
+
+    let testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+
+    if (
+      testTree?.inlineConfig?.if?.target != null &&
+      !Version.isIncluded(this.#compiler.version, testTree.inlineConfig.if.target)
+    ) {
+      runMode |= RunMode.Skip;
+    }
+
+    if (testTree?.inlineConfig?.template) {
+      // TODO testTree.children must be not allowed in template files
+      //      since the 'CollectService' knows it deals with a template file, this can be validated early
+
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
 
@@ -104,17 +120,22 @@ export class TaskRunner {
       }
 
       semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
-
       program = languageService?.getProgram();
-
       sourceFile = program?.getSourceFile(task.filePath);
-    }
 
-    if (!sourceFile) {
-      return;
-    }
+      if (!sourceFile) {
+        return;
+      }
 
-    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+      testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+
+      if (
+        testTree?.inlineConfig?.if?.target != null &&
+        !Version.isIncluded(this.#compiler.version, testTree.inlineConfig.if.target)
+      ) {
+        runMode |= RunMode.Skip;
+      }
+    }
 
     if (testTree.diagnostics.size > 0) {
       this.#onDiagnostics(Diagnostic.fromDiagnostics([...testTree.diagnostics]), taskResult);
@@ -134,6 +155,6 @@ export class TaskRunner {
       position: task.position,
     });
 
-    testTreeWalker.visit(testTree.children, RunMode.Normal, /* parentResult */ undefined);
+    testTreeWalker.visit(testTree.children, runMode, /* parentResult */ undefined);
   }
 }

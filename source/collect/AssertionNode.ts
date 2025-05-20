@@ -24,7 +24,7 @@ export class AssertionNode extends TestTreeNode {
     matcherNode: ts.CallExpression | ts.Decorator,
     matcherNameNode: ts.PropertyAccessExpression,
     modifierNode: ts.PropertyAccessExpression,
-    notNode?: ts.PropertyAccessExpression,
+    notNode: ts.PropertyAccessExpression | undefined,
   ) {
     super(compiler, brand, node, parent, flags);
 

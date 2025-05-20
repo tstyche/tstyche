@@ -1,0 +1,20 @@
+Error: Expected closing '}'.
+
+  1 | // @tstyche if { target: ["5.2"]
+    |                                 ~
+  2 | 
+  3 | import { expect, test } from "tstyche";
+  4 | 
+
+      at ./__typetests__/sample.tst.ts:1:33
+
+    The opening '{' was seen here.
+
+      1 | // @tstyche if { target: ["5.2"]
+        |                ~
+      2 | 
+      3 | import { expect, test } from "tstyche";
+      4 | 
+
+          at ./__typetests__/sample.tst.ts:1:16
+

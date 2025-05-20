@@ -1,0 +1,21 @@
+Error: Directive 'template' does not take an argument.
+
+  1 | // @tstyche template nope
+    |             ~~~~~~~~
+  2 | 
+  3 | let testText = `import { expect, test } from "tstyche";
+  4 | `;
+
+      at ./__typetests__/sample.tst.ts:1:13
+
+Error: Type 'string' is not the same as type 'number'.
+
+  4 | });
+  5 | test("is number a string?", () => {
+  6 |   expect<string>().type.toBe<number>();
+    |                              ~~~~~~
+  7 | });
+  8 | 
+
+      at ./__typetests__/sample.tst.ts:6:30 ❭ is number a string?
+
