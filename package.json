@@ -65,7 +65,7 @@
     "@types/node": "22.15.19",
     "@types/react": "19.1.4",
     "ajv": "8.17.1",
-    "cspell": "9.0.1",
+    "cspell": "9.0.2",
     "magic-string": "0.30.17",
     "monocart-coverage-reports": "2.12.6",
     "pretty-ansi": "3.0.0",
