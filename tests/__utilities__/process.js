@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import process from "node:process";
 
 export const isWindows = process.platform === "win32";
 
