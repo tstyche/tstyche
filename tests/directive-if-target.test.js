@@ -45,43 +45,43 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  // await t.test("when single matching target is specified", async () => {
-  //   await writeFixture(fixtureUrl, {
-  //     ["__typetests__/isString.tst.ts"]: getIsStringTestText(["5.6"]),
-  //     ["__typetests__/isNumber.tst.ts"]: getIsNumberTestText(["5.6.2"]),
-  //     ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-  //   });
+  await t.test("when single matching target is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: getIsStringTestText(["5.6"]),
+      ["__typetests__/isNumber.tst.ts"]: getIsNumberTestText(["5.6.2"]),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
 
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "'>=5.5 <5.8'"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
 
-  //   assert.equal(stderr, "");
+    assert.equal(stderr, "");
 
-  //   await assert.matchSnapshot(normalizeOutput(stdout), {
-  //     fileName: `${testFileName}-single-matching-stdout`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-single-matching-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   assert.equal(exitCode, 0);
-  // });
+    assert.equal(exitCode, 0);
+  });
 
-  // await t.test("when single NOT matching target is specified", async () => {
-  //   await writeFixture(fixtureUrl, {
-  //     ["__typetests__/isString.tst.ts"]: getIsStringTestText(["5.4"]),
-  //     ["__typetests__/isNumber.tst.ts"]: getIsNumberTestText(["5.4.2"]),
-  //     ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-  //   });
+  await t.test("when single NOT matching target is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: getIsStringTestText(["5.4"]),
+      ["__typetests__/isNumber.tst.ts"]: getIsNumberTestText(["5.4.2"]),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
 
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "'>=5.5 <5.8'"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
 
-  //   assert.equal(stderr, "");
+    assert.equal(stderr, "");
 
-  //   await assert.matchSnapshot(normalizeOutput(stdout), {
-  //     fileName: `${testFileName}-single-not-matching-stdout`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-single-not-matching-stdout`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   assert.equal(exitCode, 0);
-  // });
+    assert.equal(exitCode, 0);
+  });
 
   await t.test("when multiple matching target is specified", async () => {
     await writeFixture(fixtureUrl, {
