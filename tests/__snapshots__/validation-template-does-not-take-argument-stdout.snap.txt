@@ -1,10 +1,11 @@
 uses TypeScript <<version>>
 
 fail ./__typetests__/sample.tst.ts
-  × is string a string?
+  + is string a string?
   × is number a string?
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      2 failed, 2 total
+Tests:      1 failed, 1 passed, 2 total
+Assertions: 1 failed, 1 passed, 2 total
 Duration:   <<timestamp>>

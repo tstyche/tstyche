@@ -6,5 +6,5 @@ Error: ')' expected. ts(1005)
      |                            ~
   10 | 
 
-       at ./__typetests__/template.tst.ts:9:28
+       at ./__typetests__/sample.tst.ts:9:28
 

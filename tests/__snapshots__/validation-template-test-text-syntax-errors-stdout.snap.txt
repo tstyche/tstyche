@@ -1,6 +1,6 @@
-uses TypeScript <<version>> with ./tsconfig.json
+uses TypeScript <<version>>
 
-fail ./__typetests__/test-text-syntax-errors.tst.ts
+fail ./__typetests__/sample.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
