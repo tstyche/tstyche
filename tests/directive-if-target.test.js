@@ -150,4 +150,38 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
+
+  await t.test("when version range with an upper bound is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: getIsStringTestText([">=5.6 <5.7"]),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-matching-range-with-upper-bound-target-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when NOT matching version range is specified", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: getIsStringTestText([">=5.6 <5.5"]),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-not-matching-range-with-upper-bound-target-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stderr, "");
+    assert.equal(exitCode, 0);
+  });
 });
