@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Directive, type ResolvedConfig } from "#config";
+import { Directive, type InlineConfig, type ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ProjectService } from "#project";
@@ -149,7 +149,13 @@ export class CollectService {
   }
 
   async createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): Promise<TestTree> {
-    const inlineConfig = await Directive.getInlineConfig(this.#compiler, sourceFile);
+    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, sourceFile);
+
+    let inlineConfig: InlineConfig | undefined;
+
+    if (directiveRanges != null) {
+      inlineConfig = await Directive.getInlineConfig(directiveRanges, sourceFile);
+    }
 
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile, inlineConfig);
 
