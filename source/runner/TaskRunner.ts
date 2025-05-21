@@ -50,7 +50,7 @@ export class TaskRunner {
     this.#projectService.closeFile(task.filePath);
   }
 
-  async #getTaskFacts(
+  async #resolveTaskFacts(
     task: Task,
     taskResult: TaskResult,
     runMode = RunMode.Normal,
@@ -106,7 +106,7 @@ export class TaskRunner {
 
       this.#projectService.openFile(task.filePath, testText, this.#resolvedConfig.rootPath);
 
-      return this.#getTaskFacts(task, taskResult, runMode);
+      return this.#resolveTaskFacts(task, taskResult, runMode);
     }
 
     return { runMode, testTree, typeChecker };
@@ -119,7 +119,7 @@ export class TaskRunner {
       return;
     }
 
-    const facts = await this.#getTaskFacts(task, taskResult);
+    const facts = await this.#resolveTaskFacts(task, taskResult);
 
     if (!facts) {
       return;
