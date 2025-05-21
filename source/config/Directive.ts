@@ -21,6 +21,7 @@ export interface DirectiveRange {
 }
 
 export class Directive {
+  static #commentSeparatorRegex = /--+/;
   static #directiveRegex = /^(\/\/\s*@tstyche)(\s*|-)?(\S*)?(\s*)?(.*)?/i;
 
   static getDirectiveRanges(
@@ -62,7 +63,8 @@ export class Directive {
   }
 
   static #getRange(sourceFile: ts.SourceFile, comment: ts.CommentRange) {
-    const found = sourceFile.text.substring(comment.pos, comment.end).match(Directive.#directiveRegex);
+    const [text] = sourceFile.text.substring(comment.pos, comment.end).split(Directive.#commentSeparatorRegex);
+    const found = text?.match(Directive.#directiveRegex);
 
     const namespaceText = found?.[1];
 

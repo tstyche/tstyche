@@ -211,8 +211,62 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
     assert.equal(exitCode, 0);
   });
 
+  await t.test("when specified with a note", async () => {
+    const isStringTestText = `// @tstyche if { target: ["5.6"] } -- For lower versions, the inferred type is 'unknown'.
+
+import { expect, test } from "tstyche";
+
+test("is string?", () => {
+  expect<string>().type.toBe<string>();
+});
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-with-note-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("when specified in kebab case", async () => {
     const isStringTestText = `//@tstyche-if { target: ["5.6"] }
+
+import { expect, test } from "tstyche";
+
+test("is string?", () => {
+  expect<string>().type.toBe<string>();
+});
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-kebab-case-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when specified in kebab case with a note", async () => {
+    const isStringTestText = `//@tstyche-if { target: ["5.6"] } --- For lower versions, the inferred type is 'unknown'.
 
 import { expect, test } from "tstyche";
 
