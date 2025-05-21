@@ -68,9 +68,59 @@ await test("'// @tstyche template' directive", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("when specified with a note", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/template.tst.ts"]: getTemplateTestText(
+        "// @tstyche template -- For documentation, see: https://tstyche.org/guide/template-test-files.",
+      ),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("when specified in kebab case", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/template.tst.ts"]: getTemplateTestText("//@tstyche-template"),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
+      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when specified in kebab case with a note", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/template.tst.ts"]: getTemplateTestText(
+        "//@tstyche-template --- For documentation, see: https://tstyche.org/guide/template-test-files.",
+      ),
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
