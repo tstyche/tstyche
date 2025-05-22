@@ -78,7 +78,7 @@ export class TaskRunner {
 
     const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    const inlineConfig = await testTree.getInlineConfig();
+    const inlineConfig = await testTree.getInlineConfig(this.#compiler);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       runMode |= RunMode.Skip;

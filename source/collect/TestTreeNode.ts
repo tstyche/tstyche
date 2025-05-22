@@ -9,7 +9,6 @@ import type { WhenNode } from "./WhenNode.js";
 
 export class TestTreeNode {
   brand: TestTreeNodeBrand;
-  #compiler: typeof ts;
   children: Array<TestTreeNode | AssertionNode | WhenNode> = [];
   diagnostics = new Set<ts.Diagnostic>();
   flags: TestTreeNodeFlags;
@@ -24,7 +23,6 @@ export class TestTreeNode {
     parent: TestTree | TestTreeNode,
     flags: TestTreeNodeFlags,
   ) {
-    this.#compiler = compiler;
     this.brand = brand;
     this.node = node;
     this.parent = parent;
@@ -45,12 +43,12 @@ export class TestTreeNode {
     }
   }
 
-  getDirectiveRanges(): Array<DirectiveRange> | undefined {
-    return Directive.getDirectiveRanges(this.#compiler, this.node.getSourceFile(), this.node.getFullStart());
+  getDirectiveRanges(compiler: typeof ts): Array<DirectiveRange> | undefined {
+    return Directive.getDirectiveRanges(compiler, this.node.getSourceFile(), this.node.getFullStart());
   }
 
-  async getInlineConfig(): Promise<InlineConfig | undefined> {
-    const directiveRanges = this.getDirectiveRanges();
+  async getInlineConfig(compiler: typeof ts): Promise<InlineConfig | undefined> {
+    const directiveRanges = this.getDirectiveRanges(compiler);
 
     if (directiveRanges != null) {
       return await Directive.getInlineConfig(directiveRanges, this.node.getSourceFile());

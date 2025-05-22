@@ -50,7 +50,7 @@ export class TestTreeWalker {
   }
 
   async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
-    const inlineConfig = await node.getInlineConfig();
+    const inlineConfig = await node.getInlineConfig(this.#compiler);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       mode |= RunMode.Skip;
