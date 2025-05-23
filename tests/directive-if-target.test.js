@@ -34,6 +34,7 @@ test("is number?", () => {
     testCase: "at the top of a file",
     testCaseShort: "file-level",
   },
+
   {
     isStringTestText: `import { expect, test } from "tstyche";
 
@@ -52,6 +53,25 @@ test("is number?", () => {
     testCase: "above 'test()'",
     testCaseShort: "test-level",
   },
+
+  {
+    isStringTestText: `import { expect, test } from "tstyche";
+
+ test("is string?", () => {
+  %s
+  expect<string>().type.toBe<string>();
+});
+`,
+    isNumberTestText: `import { expect, test } from "tstyche";
+
+test("is number?", () => {
+  %s
+  expect<number>().type.toBe<number>();
+});
+`,
+    testCase: "above 'expect()'",
+    testCaseShort: "expect-level",
+  },
 ];
 
 await test("'// @tstyche if { target: <range> }' directive", async (t) => {
@@ -59,7 +79,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  for (const { isStringTestText, isNumberTestText, testCase } of testCases) {
+  for (const { isStringTestText, isNumberTestText, testCase, testCaseShort } of testCases) {
     await t.test(testCase, async (t) => {
       await t.test("when single matching target is specified", async () => {
         await writeFixture(fixtureUrl, {
@@ -73,7 +93,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-single-matching-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-single-matching-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -92,7 +112,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-single-not-matching-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-single-not-matching-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -114,7 +134,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-multiple-matching-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-multiple-matching-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -136,7 +156,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-multiple-not-matching-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-multiple-not-matching-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -154,7 +174,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-matching-range-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-matching-range-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -172,7 +192,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-partly-matching-range-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-partly-matching-range-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -190,7 +210,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-matching-range-with-upper-bound-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-matching-range-with-upper-bound-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -208,7 +228,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-not-matching-range-with-upper-bound-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-not-matching-range-with-upper-bound-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -229,7 +249,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-combination-of-ranges-and-versions-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-combination-of-ranges-and-versions-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -250,7 +270,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-with-note-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-with-note-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -268,7 +288,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-kebab-case-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-kebab-case-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -289,7 +309,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         assert.equal(stderr, "");
 
         await assert.matchSnapshot(normalizeOutput(stdout), {
-          fileName: `${testFileName}-kebab-case-stdout`,
+          fileName: `${testFileName}-${testCaseShort}-kebab-case-stdout`,
           testFileUrl: import.meta.url,
         });
 
