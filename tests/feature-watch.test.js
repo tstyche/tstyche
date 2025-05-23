@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import process from "node:process";
 import test from "node:test";
 import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";

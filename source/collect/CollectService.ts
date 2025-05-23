@@ -1,148 +1,209 @@
 import type ts from "typescript";
-import type { ResolvedConfig } from "#config";
+import { Directive, type InlineConfig, type ResolvedConfig } from "#config";
+import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ProjectService } from "#project";
 import { AbilityLayer } from "./AbilityLayer.js";
 import { AssertionNode } from "./AssertionNode.js";
-import { IdentifierLookup } from "./IdentifierLookup.js";
+import { CollectDiagnosticText } from "./CollectDiagnosticText.js";
+import { IdentifierLookup, type TestTreeNodeMeta } from "./IdentifierLookup.js";
 import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
+import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 import { WhenNode } from "./WhenNode.js";
 
 export class CollectService {
   #abilityLayer: AbilityLayer;
   #compiler: typeof ts;
-  #projectService: ProjectService;
-  #resolvedConfig: ResolvedConfig;
+  #identifierLookup: IdentifierLookup;
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
-    this.#projectService = projectService;
-    this.#resolvedConfig = resolvedConfig;
 
-    this.#abilityLayer = new AbilityLayer(compiler, this.#projectService, this.#resolvedConfig);
+    this.#abilityLayer = new AbilityLayer(compiler, projectService, resolvedConfig);
+    this.#identifierLookup = new IdentifierLookup(compiler);
   }
 
-  #collectTestTreeNodes(node: ts.Node, identifiers: IdentifierLookup, parent: TestTree | TestTreeNode) {
+  #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode, testTree: TestTree) {
     if (this.#compiler.isCallExpression(node)) {
-      const meta = identifiers.resolveTestMemberMeta(node);
+      const meta = this.#identifierLookup.resolveTestTreeNodeMeta(node);
 
-      if (meta != null && (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test)) {
-        const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
-
-        parent.children.push(testTreeNode);
-
-        EventEmitter.dispatch(["collect:node", { testNode: testTreeNode }]);
-
-        this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestTreeNodes(node, identifiers, testTreeNode);
-        });
-
-        return;
-      }
-
-      if (meta != null && meta.brand === TestTreeNodeBrand.Expect) {
-        const modifierNode = this.#getChainedNode(node, "type");
-
-        if (!modifierNode) {
+      if (meta != null) {
+        if (!this.#checkNode(node, meta, parent)) {
           return;
         }
 
-        const notNode = this.#getChainedNode(modifierNode, "not");
+        if (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test) {
+          const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
 
-        const matcherNameNode = this.#getChainedNode(notNode ?? modifierNode);
+          this.#compiler.forEachChild(node, (node) => {
+            this.#collectTestTreeNodes(node, testTreeNode, testTree);
+          });
 
-        if (!matcherNameNode) {
+          this.#onNode(testTreeNode, parent, testTree);
+
           return;
         }
 
-        const matcherNode = this.#getMatcherNode(matcherNameNode);
+        if (meta.brand === TestTreeNodeBrand.Expect) {
+          const modifierNode = this.#getChainedNode(node, "type");
 
-        if (!matcherNode) {
+          if (!modifierNode) {
+            return;
+          }
+
+          const notNode = this.#getChainedNode(modifierNode, "not");
+
+          const matcherNameNode = this.#getChainedNode(notNode ?? modifierNode);
+
+          if (!matcherNameNode) {
+            return;
+          }
+
+          const matcherNode = this.#getMatcherNode(matcherNameNode);
+
+          if (!matcherNode) {
+            return;
+          }
+
+          const assertionNode = new AssertionNode(
+            this.#compiler,
+            meta.brand,
+            node,
+            parent,
+            meta.flags,
+            matcherNode,
+            matcherNameNode,
+            modifierNode,
+            notNode,
+          );
+
+          this.#abilityLayer.handleAssertion(assertionNode);
+
+          this.#compiler.forEachChild(node, (node) => {
+            this.#collectTestTreeNodes(node, assertionNode, testTree);
+          });
+
+          this.#onNode(assertionNode, parent, testTree);
+
           return;
         }
 
-        const assertionNode = new AssertionNode(
-          this.#compiler,
-          meta.brand,
-          node,
-          parent,
-          meta.flags,
-          matcherNode,
-          matcherNameNode,
-          modifierNode,
-          notNode,
-        );
+        if (meta.brand === TestTreeNodeBrand.When) {
+          const actionNameNode = this.#getChainedNode(node);
 
-        parent.children.push(assertionNode);
+          if (!actionNameNode) {
+            return;
+          }
 
-        this.#abilityLayer.handleAssertion(assertionNode);
+          const actionNode = this.#getActionNode(actionNameNode);
 
-        EventEmitter.dispatch(["collect:node", { testNode: assertionNode }]);
+          if (!actionNode) {
+            // TODO make sure that the 'actionNode' is actually called
+            // "'.isCalledWith()' must be called with an argument."
+            return;
+          }
 
-        this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestTreeNodes(node, identifiers, assertionNode);
-        });
+          this.#compiler.forEachChild(actionNode, (node) => {
+            if (this.#compiler.isCallExpression(node)) {
+              const meta = this.#identifierLookup.resolveTestTreeNodeMeta(node);
 
-        return;
-      }
+              if (meta?.brand === TestTreeNodeBrand.Describe || meta?.brand === TestTreeNodeBrand.Test) {
+                const text = CollectDiagnosticText.cannotBeNestedWithin(meta.identifier, "when");
+                const origin = DiagnosticOrigin.fromNode(node);
 
-      if (meta != null && meta.brand === TestTreeNodeBrand.When) {
-        const actionNameNode = this.#getChainedNode(node);
+                this.#onDiagnostics(Diagnostic.error(text, origin));
+              }
+            }
+          });
 
-        if (!actionNameNode) {
+          const whenNode = new WhenNode(
+            this.#compiler,
+            meta.brand,
+            node,
+            parent,
+            meta.flags,
+            actionNode,
+            actionNameNode,
+          );
+
+          this.#abilityLayer.handleWhen(whenNode);
+
+          this.#onNode(whenNode, parent, testTree);
+
           return;
         }
-
-        const actionNode = this.#getActionNode(actionNameNode);
-
-        if (!actionNode) {
-          return;
-        }
-
-        const whenNode = new WhenNode(this.#compiler, meta.brand, node, parent, meta.flags, actionNode, actionNameNode);
-
-        parent.children.push(whenNode);
-
-        this.#abilityLayer.handleWhen(whenNode);
-
-        // TODO move after '.forEachChild()' call, otherwise children are not yet collected
-        EventEmitter.dispatch(["collect:node", { testNode: whenNode }]);
-
-        this.#compiler.forEachChild(node, (node) => {
-          this.#collectTestTreeNodes(node, identifiers, whenNode);
-        });
-
-        return;
       }
     }
 
     if (this.#compiler.isImportDeclaration(node)) {
-      identifiers.handleImportDeclaration(node);
+      this.#identifierLookup.handleImportDeclaration(node);
 
       return;
     }
 
     this.#compiler.forEachChild(node, (node) => {
-      this.#collectTestTreeNodes(node, identifiers, parent);
+      this.#collectTestTreeNodes(node, parent, testTree);
     });
   }
 
-  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
-    const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
+  async createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): Promise<TestTree> {
+    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, sourceFile);
 
-    EventEmitter.dispatch(["collect:start", { testTree }]);
+    let inlineConfig: InlineConfig | undefined;
+
+    if (directiveRanges != null) {
+      inlineConfig = await Directive.getInlineConfig(directiveRanges, sourceFile);
+    }
+
+    const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile, inlineConfig);
+
+    EventEmitter.dispatch(["collect:start", { tree: testTree }]);
 
     this.#abilityLayer.open(sourceFile);
+    this.#identifierLookup.open();
 
-    this.#collectTestTreeNodes(sourceFile, new IdentifierLookup(this.#compiler), testTree);
+    this.#collectTestTreeNodes(sourceFile, testTree, testTree);
 
     this.#abilityLayer.close();
 
-    EventEmitter.dispatch(["collect:end", { testTree }]);
+    EventEmitter.dispatch(["collect:end", { tree: testTree }]);
 
     return testTree;
+  }
+
+  #checkNode(node: ts.Node, meta: TestTreeNodeMeta, parent: TestTree | TestTreeNode) {
+    if ("brand" in parent && !this.#isNodeAllowed(meta, parent)) {
+      const text = CollectDiagnosticText.cannotBeNestedWithin(meta.identifier, parent.node.expression.getText());
+      const origin = DiagnosticOrigin.fromNode(node);
+
+      this.#onDiagnostics(Diagnostic.error(text, origin));
+
+      return false;
+    }
+
+    return true;
+  }
+
+  #isNodeAllowed(meta: TestTreeNodeMeta, parent: TestTreeNode) {
+    switch (meta.brand) {
+      case TestTreeNodeBrand.Describe:
+      case TestTreeNodeBrand.Test:
+        if (parent.brand === TestTreeNodeBrand.Test || parent.brand === TestTreeNodeBrand.Expect) {
+          return false;
+        }
+        break;
+
+      case TestTreeNodeBrand.Expect:
+      case TestTreeNodeBrand.When:
+        if (parent.brand === TestTreeNodeBrand.Describe) {
+          return false;
+        }
+        break;
+    }
+
+    return true;
   }
 
   #getChainedNode({ parent }: ts.Node, name?: string) {
@@ -179,5 +240,19 @@ export class CollectService {
     }
 
     return;
+  }
+
+  #onDiagnostics(this: void, diagnostic: Diagnostic) {
+    EventEmitter.dispatch(["collect:error", { diagnostics: [diagnostic] }]);
+  }
+
+  #onNode(node: TestTreeNode | AssertionNode | WhenNode, parent: TestTree | TestTreeNode, testTree: TestTree) {
+    parent.children.push(node);
+
+    if (node.flags & TestTreeNodeFlags.Only) {
+      testTree.hasOnly = true;
+    }
+
+    EventEmitter.dispatch(["collect:node", { node }]);
   }
 }

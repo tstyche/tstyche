@@ -80,7 +80,7 @@ await test("toBeCallableWith", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles missing semicolons", async (t) => {
+  await t.test("handles missing semicolons", async (t) => {
     const toBeCallableWithText = `import { expect, test } from "tstyche"
 
 function pickLonger<T extends { length: number }>(a: T, b: T) {
@@ -111,12 +111,56 @@ test("pickLonger()", () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-stdout-missing-semicolons`,
+      fileName: `${testFileName}-missing-semicolons-stdout`,
       testFileUrl: import.meta.url,
     });
 
     assert.equal(stderr, "");
 
     assert.equal(exitCode, 0);
+  });
+
+  await t.test("handles trailing comma", async (t) => {
+    const toBeCallableWithText = `import { expect, test } from "tstyche";
+
+function isSameLength<T extends { length: number }>(a: T, b: T) {
+  return a.length === b.length;
+}
+
+test("handles trailing comma?", () => {
+  expect(
+    isSameLength,
+  ).type.not.toBeCallableWith("one", "two"); // fail
+  expect(
+    isSameLength,  \n  ).type.toBeCallableWith(1, 2); // fail
+  expect(
+    isSameLength  ,
+  ).type.toBeCallableWith("zero", [123]); // fail
+});
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toBeCallableWith.tst.ts"]: toBeCallableWithText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-trailing-comma-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-trailing-comma-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 });

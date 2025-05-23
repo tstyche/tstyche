@@ -1,0 +1,39 @@
+Error: Expression is callable with the given arguments.
+
+   8 |   expect(
+   9 |     isSameLength,
+  10 |   ).type.not.toBeCallableWith("one", "two"); // fail
+     |              ~~~~~~~~~~~~~~~~
+  11 |   expect(
+  12 |     isSameLength,
+  13 |   ).type.toBeCallableWith(1, 2); // fail
+
+       at ./__typetests__/toBeCallableWith.tst.ts:10:14 ❭ handles trailing comma?
+
+Error: Expression is not callable with the given arguments.
+
+Argument of type 'number' is not assignable to parameter of type '{ length: number; }'.
+
+  11 |   expect(
+  12 |     isSameLength,
+  13 |   ).type.toBeCallableWith(1, 2); // fail
+     |                           ~
+  14 |   expect(
+  15 |     isSameLength  ,
+  16 |   ).type.toBeCallableWith("zero", [123]); // fail
+
+       at ./__typetests__/toBeCallableWith.tst.ts:13:27
+
+Error: Expression is not callable with the given arguments.
+
+Argument of type 'number[]' is not assignable to parameter of type 'string'.
+
+  14 |   expect(
+  15 |     isSameLength  ,
+  16 |   ).type.toBeCallableWith("zero", [123]); // fail
+     |                                   ~~~~~
+  17 | });
+  18 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:16:35
+

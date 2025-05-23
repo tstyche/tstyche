@@ -7,25 +7,19 @@ export interface Identifiers {
   namespace: string | undefined;
 }
 
+export interface TestTreeNodeMeta {
+  brand: TestTreeNodeBrand;
+  flags: TestTreeNodeFlags;
+  identifier: string;
+}
+
 export class IdentifierLookup {
   #compiler: typeof ts;
-  #identifiers: Identifiers;
+  #identifiers!: Identifiers;
   #moduleSpecifiers = ['"tstyche"', "'tstyche'"];
 
-  constructor(compiler: typeof ts, identifiers?: Identifiers) {
+  constructor(compiler: typeof ts) {
     this.#compiler = compiler;
-
-    this.#identifiers = identifiers ?? {
-      namedImports: {
-        describe: undefined,
-        expect: undefined,
-        it: undefined,
-        namespace: undefined,
-        test: undefined,
-        when: undefined,
-      },
-      namespace: undefined,
-    };
   }
 
   handleImportDeclaration(node: ts.ImportDeclaration): void {
@@ -60,7 +54,21 @@ export class IdentifierLookup {
     }
   }
 
-  resolveTestMemberMeta(node: ts.CallExpression): { brand: TestTreeNodeBrand; flags: TestTreeNodeFlags } | undefined {
+  open() {
+    this.#identifiers = {
+      namedImports: {
+        describe: undefined,
+        expect: undefined,
+        it: undefined,
+        namespace: undefined,
+        test: undefined,
+        when: undefined,
+      },
+      namespace: undefined,
+    };
+  }
+
+  resolveTestTreeNodeMeta(node: ts.CallExpression): TestTreeNodeMeta | undefined {
     let flags = TestTreeNodeFlags.None;
     let expression = node.expression;
 
@@ -90,36 +98,36 @@ export class IdentifierLookup {
       expression = expression.expression;
     }
 
-    let identifierName: string | undefined;
+    let identifier: string | undefined;
 
     if (
       this.#compiler.isPropertyAccessExpression(expression) &&
       expression.expression.getText() === this.#identifiers.namespace
     ) {
-      identifierName = expression.name.getText();
+      identifier = expression.name.getText();
     } else {
-      identifierName = Object.keys(this.#identifiers.namedImports).find(
+      identifier = Object.keys(this.#identifiers.namedImports).find(
         (key) => this.#identifiers.namedImports[key] === expression.getText(),
       );
     }
 
-    if (!identifierName) {
+    if (!identifier) {
       return;
     }
 
-    switch (identifierName) {
+    switch (identifier) {
       case "describe":
-        return { brand: TestTreeNodeBrand.Describe, flags };
+        return { brand: TestTreeNodeBrand.Describe, flags, identifier };
 
       case "it":
       case "test":
-        return { brand: TestTreeNodeBrand.Test, flags };
+        return { brand: TestTreeNodeBrand.Test, flags, identifier };
 
       case "expect":
-        return { brand: TestTreeNodeBrand.Expect, flags };
+        return { brand: TestTreeNodeBrand.Expect, flags, identifier };
 
       case "when":
-        return { brand: TestTreeNodeBrand.When, flags };
+        return { brand: TestTreeNodeBrand.When, flags, identifier };
     }
 
     return;

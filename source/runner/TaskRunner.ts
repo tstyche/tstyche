@@ -1,14 +1,16 @@
 import { existsSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 import type ts from "typescript";
-import { CollectService } from "#collect";
+import { CollectService, type TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { Diagnostic } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
+import { Version } from "#version";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
@@ -26,8 +28,12 @@ export class TaskRunner {
     this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
   }
 
-  run(task: Task, cancellationToken?: CancellationToken): void {
-    if (cancellationToken?.isCancellationRequested) {
+  #onDiagnostics(this: void, diagnostics: Array<Diagnostic>, result: TaskResult) {
+    EventEmitter.dispatch(["task:error", { diagnostics, result }]);
+  }
+
+  async run(task: Task, cancellationToken: CancellationToken): Promise<void> {
+    if (cancellationToken.isCancellationRequested) {
       return;
     }
 
@@ -37,76 +43,110 @@ export class TaskRunner {
 
     EventEmitter.dispatch(["task:start", { result: taskResult }]);
 
-    this.#run(task, taskResult, cancellationToken);
+    await this.#run(task, taskResult, cancellationToken);
 
     EventEmitter.dispatch(["task:end", { result: taskResult }]);
 
     this.#projectService.closeFile(task.filePath);
   }
 
-  #run(task: Task, taskResult: TaskResult, cancellationToken?: CancellationToken) {
-    if (!existsSync(task.filePath)) {
-      EventEmitter.dispatch([
-        "task:error",
-        { diagnostics: [Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], result: taskResult },
-      ]);
-
-      return;
-    }
-
+  async #resolveTaskFacts(
+    task: Task,
+    taskResult: TaskResult,
+    runMode = RunMode.Normal,
+  ): Promise<{ runMode: RunMode; testTree: TestTree; typeChecker: TypeChecker } | undefined> {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
     const languageService = this.#projectService.getLanguageService(task.filePath);
 
-    if (!languageService) {
-      return;
-    }
+    const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(task.filePath);
 
-    const syntacticDiagnostics = languageService.getSyntacticDiagnostics(task.filePath);
-
-    if (syntacticDiagnostics.length > 0) {
-      EventEmitter.dispatch([
-        "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics(syntacticDiagnostics), result: taskResult },
-      ]);
+    if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
+      this.#onDiagnostics(Diagnostic.fromDiagnostics(syntacticDiagnostics), taskResult);
 
       return;
     }
 
-    const semanticDiagnostics = languageService.getSemanticDiagnostics(task.filePath);
-
-    const program = languageService.getProgram();
-
-    if (!program) {
-      return;
-    }
-
-    const sourceFile = program.getSourceFile(task.filePath);
+    const semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
+    const program = languageService?.getProgram();
+    const typeChecker = program?.getTypeChecker() as TypeChecker;
+    const sourceFile = program?.getSourceFile(task.filePath);
 
     if (!sourceFile) {
       return;
     }
 
-    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+    const testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    if (testTree.diagnostics.size > 0) {
-      EventEmitter.dispatch([
-        "task:error",
-        { diagnostics: Diagnostic.fromDiagnostics([...testTree.diagnostics]), result: taskResult },
-      ]);
+    if (
+      testTree?.inlineConfig?.if?.target != null &&
+      !Version.isIncluded(this.#compiler.version, testTree.inlineConfig.if.target)
+    ) {
+      runMode |= RunMode.Skip;
+    }
+
+    if (testTree?.inlineConfig?.template) {
+      // TODO testTree.children must be not allowed in template files
+      //      since the 'CollectService' knows it deals with a template file, this can be validated early
+
+      if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
+        this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
+
+        return;
+      }
+
+      const moduleSpecifier = pathToFileURL(task.filePath).toString();
+      const testText = (await import(moduleSpecifier))?.default;
+
+      if (typeof testText !== "string") {
+        this.#onDiagnostics([Diagnostic.error("A template test file must export a string.")], taskResult);
+
+        return;
+      }
+
+      this.#projectService.openFile(task.filePath, testText, this.#resolvedConfig.rootPath);
+
+      return this.#resolveTaskFacts(task, taskResult, runMode);
+    }
+
+    return { runMode, testTree, typeChecker };
+  }
+
+  async #run(task: Task, taskResult: TaskResult, cancellationToken: CancellationToken) {
+    if (!existsSync(task.filePath)) {
+      this.#onDiagnostics([Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], taskResult);
 
       return;
     }
 
-    const typeChecker = program.getTypeChecker() as TypeChecker;
+    const facts = await this.#resolveTaskFacts(task, taskResult);
 
-    const testTreeWalker = new TestTreeWalker(this.#compiler, typeChecker, this.#resolvedConfig, {
-      cancellationToken,
-      taskResult,
-      hasOnly: testTree.hasOnly,
-      position: task.position,
-    });
+    if (!facts) {
+      return;
+    }
 
-    testTreeWalker.visit(testTree.children, RunMode.Normal, /* parentResult */ undefined);
+    if (facts.testTree.diagnostics.size > 0) {
+      this.#onDiagnostics(Diagnostic.fromDiagnostics([...facts.testTree.diagnostics]), taskResult);
+
+      return;
+    }
+
+    const onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>> = (diagnostics) => {
+      this.#onDiagnostics(diagnostics, taskResult);
+    };
+
+    const testTreeWalker = new TestTreeWalker(
+      this.#compiler,
+      facts.typeChecker,
+      this.#resolvedConfig,
+      onTaskDiagnostics,
+      {
+        cancellationToken,
+        hasOnly: facts.testTree.hasOnly,
+        position: task.position,
+      },
+    );
+
+    testTreeWalker.visit(facts.testTree.children, facts.runMode, /* parentResult */ undefined);
   }
 }

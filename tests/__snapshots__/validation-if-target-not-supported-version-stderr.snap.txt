@@ -1,0 +1,12 @@
+Error: TypeScript version 'new' is not supported.
+
+Use the '--list' command line option to inspect the list of supported versions.
+
+  1 | // @tstyche if { target: ["new"] }
+    |                           ~~~~~
+  2 | 
+  3 | import { expect, test } from "tstyche";
+  4 | 
+
+      at ./__typetests__/sample.tst.ts:1:27
+

@@ -1,19 +1,13 @@
 import type ts from "typescript";
 import { type AssertionNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags } from "#collect";
 import type { ResolvedConfig } from "#config";
-import {
-  Diagnostic,
-  DiagnosticOrigin,
-  type DiagnosticsHandler,
-  diagnosticBelongsToNode,
-  getDiagnosticMessageText,
-  getTextSpanEnd,
-  isDiagnosticWithLocation,
-} from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
-import { DescribeResult, ExpectResult, type TaskResult, TestResult } from "#result";
+import { Reject } from "#reject";
+import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
+import { WhenService } from "#when";
 import type { WhenNode } from "../collect/WhenNode.js";
 import { RunMode } from "./RunMode.enum.js";
 
@@ -21,31 +15,35 @@ interface TestTreeWalkerOptions {
   cancellationToken: CancellationToken | undefined;
   hasOnly: boolean;
   position: number | undefined;
-  taskResult: TaskResult;
 }
 
 export class TestTreeWalker {
   #cancellationToken: CancellationToken | undefined;
   #expectService: ExpectService;
   #hasOnly: boolean;
+  #onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
-  #taskResult: TaskResult;
+  #whenService: WhenService;
 
   constructor(
     compiler: typeof ts,
     typeChecker: TypeChecker,
     resolvedConfig: ResolvedConfig,
+    onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
     options: TestTreeWalkerOptions,
   ) {
     this.#resolvedConfig = resolvedConfig;
+    this.#onTaskDiagnostics = onTaskDiagnostics;
 
     this.#cancellationToken = options.cancellationToken;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
-    this.#taskResult = options.taskResult;
 
-    this.#expectService = new ExpectService(compiler, typeChecker, this.#resolvedConfig);
+    const reject = new Reject(compiler, typeChecker, resolvedConfig);
+
+    this.#expectService = new ExpectService(compiler, typeChecker, reject);
+    this.#whenService = new WhenService(reject, onTaskDiagnostics);
   }
 
   #resolveRunMode(mode: RunMode, testNode: TestTreeNode): RunMode {
@@ -83,38 +81,30 @@ export class TestTreeWalker {
   }
 
   visit(
-    testNodes: Array<TestTreeNode | AssertionNode>,
+    nodes: Array<TestTreeNode | AssertionNode | WhenNode>,
     runMode: RunMode,
     parentResult: DescribeResult | TestResult | undefined,
   ): void {
-    for (const testNode of testNodes) {
+    for (const node of nodes) {
       if (this.#cancellationToken?.isCancellationRequested) {
         break;
       }
 
-      const validationError = testNode.validate();
-
-      if (validationError.length > 0) {
-        EventEmitter.dispatch(["task:error", { diagnostics: validationError, result: this.#taskResult }]);
-
-        break;
-      }
-
-      switch (testNode.brand) {
+      switch (node.brand) {
         case TestTreeNodeBrand.Describe:
-          this.#visitDescribe(testNode, runMode, parentResult as DescribeResult | undefined);
+          this.#visitDescribe(node, runMode, parentResult as DescribeResult | undefined);
           break;
 
         case TestTreeNodeBrand.Test:
-          this.#visitTest(testNode, runMode, parentResult as DescribeResult | undefined);
+          this.#visitTest(node, runMode, parentResult as DescribeResult | undefined);
           break;
 
         case TestTreeNodeBrand.Expect:
-          this.#visitAssertion(testNode as AssertionNode, runMode, parentResult as TestResult | undefined);
+          this.#visitAssertion(node as AssertionNode, runMode, parentResult as TestResult | undefined);
           break;
 
         case TestTreeNodeBrand.When:
-          this.#visitWhen(testNode as WhenNode, runMode, parentResult as TestResult | undefined);
+          this.#visitWhen(node as WhenNode);
           break;
       }
     }
@@ -182,13 +172,7 @@ export class TestTreeWalker {
       !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
       describe.diagnostics.size > 0
     ) {
-      EventEmitter.dispatch([
-        "task:error",
-        {
-          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics]),
-          result: this.#taskResult,
-        },
-      ]);
+      this.#onTaskDiagnostics(Diagnostic.fromDiagnostics([...describe.diagnostics]));
     } else {
       this.visit(describe.children, runMode, describeResult);
     }
@@ -236,39 +220,7 @@ export class TestTreeWalker {
     }
   }
 
-  #visitWhen(when: WhenNode, runMode: RunMode, parentResult: TestResult | undefined) {
-    // TODO make sure a function was passed to '.isCalledWith()' action
-
-    if (when.abilityDiagnostics != null && when.abilityDiagnostics.size > 0) {
-      const diagnostics: Array<Diagnostic> = [];
-
-      for (const diagnostic of when.abilityDiagnostics) {
-        if (isDiagnosticWithLocation(diagnostic)) {
-          const text = getDiagnosticMessageText(diagnostic);
-
-          let origin: DiagnosticOrigin;
-
-          if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, when.node)) {
-            origin = DiagnosticOrigin.fromNodes(when.target);
-          } else {
-            origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), when.node.getSourceFile());
-          }
-
-          let related: Array<Diagnostic> | undefined;
-
-          if (diagnostic.relatedInformation != null) {
-            related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
-          }
-
-          diagnostics.push(Diagnostic.error(text, origin).add({ related }));
-        }
-      }
-
-      EventEmitter.dispatch(["task:error", { diagnostics, result: this.#taskResult }]);
-
-      return;
-    }
-
-    this.visit(when.children, runMode, parentResult);
+  #visitWhen(when: WhenNode) {
+    this.#whenService.action(when);
   }
 }

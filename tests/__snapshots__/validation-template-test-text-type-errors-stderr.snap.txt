@@ -1,0 +1,23 @@
+Error: Property 'toBe' does not exist on type 'Modifier'. ts(2339)
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is string a string?", () => {
+  3 |   expect<string>().toBe<string>();
+    |                    ~~~~
+  4 | });
+  5 | test("is number a string?", () => {
+  6 |   expect<string>().toBe<number>();
+
+      at ./__typetests__/sample.tst.ts:3:20
+
+Error: Property 'toBe' does not exist on type 'Modifier'. ts(2339)
+
+  4 | });
+  5 | test("is number a string?", () => {
+  6 |   expect<string>().toBe<number>();
+    |                    ~~~~
+  7 | });
+  8 | 
+
+      at ./__typetests__/sample.tst.ts:6:20
+

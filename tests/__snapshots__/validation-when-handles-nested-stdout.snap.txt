@@ -1,0 +1,12 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/handles-nested.tst.ts
+  cannot be nested
+  + cannot be nested
+  + cannot be nested
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      2 passed, 2 total
+Assertions: 2 failed, 1 passed, 3 total
+Duration:   <<timestamp>>

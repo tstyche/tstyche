@@ -1,6 +1,64 @@
-# Releases
+# Changelog
+
+## [4.0.0-rc.0] - 2025-05-15
+
+_Release candidate based on [4.0.0-beta.10]._
+
+## [4.0.0-beta.10] - 2025-05-14
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
+### Fixed
+
+- Prepend semicolon only before expression statements in the ability layer ([#483](https://github.com/tstyche/tstyche/pull/483))
+
+## [4.0.0-beta.9] - 2025-05-08
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
+## Added
+
+- Bring back support for TypeScript >=4.7 ([#476](https://github.com/tstyche/tstyche/pull/476))
+- Add validation for `when()` target ([#480](https://github.com/tstyche/tstyche/pull/480))
+
+### Fixed
+
+- Handle trailing commas in the ability layer text ([#479](https://github.com/tstyche/tstyche/pull/479))
+
+### Changed
+
+- Move test tree validation logic to the `Collect` class ([#471](https://github.com/tstyche/tstyche/pull/471))
+
+## [4.0.0-beta.8] - 2025-05-05
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
+## Added
+
+- Add validation for template test files ([#470](https://github.com/tstyche/tstyche/pull/470))
+
+### Fixed
+
+- Do not typecheck already seen test files ([#475](https://github.com/tstyche/tstyche/pull/475))
+- Always use default compiler options when file is not included ([#473](https://github.com/tstyche/tstyche/pull/473))
+- Normalize template test file specifier ([#469](https://github.com/tstyche/tstyche/pull/469))
+
+## [4.0.0-beta.7] - 2025-05-04
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
+### Added
+
+- **New!** Add template test file support ([#468](https://github.com/tstyche/tstyche/pull/468))
+- **New!** Add the `when()` utility and the `.isCalledWith()` action ([#460](https://github.com/tstyche/tstyche/pull/460), [#466](https://github.com/tstyche/tstyche/pull/466))
+
+### Changed
+
+- **Breaking!** Remove config details from summary and `Result` ([#459](https://github.com/tstyche/tstyche/pull/459))
 
 ## [4.0.0-beta.6] - 2025-04-15
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Fixed
 
@@ -8,11 +66,15 @@
 
 ## [4.0.0-beta.5] - 2025-04-15
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
 ### Fixed
 
 - Insert missing semicolons in the ability layer text ([#456](https://github.com/tstyche/tstyche/pull/456))
 
 ## [4.0.0-beta.4] - 2025-04-14
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -24,11 +86,15 @@
 
 ## [4.0.0-beta.3] - 2025-04-11
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
 ### Fixed
 
 - Relax validation of the target of `.toBeCallableWith()` matcher ([#448](https://github.com/tstyche/tstyche/pull/448))
 
 ## [4.0.0-beta.2] - 2025-04-11
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -44,11 +110,15 @@
 
 ## [4.0.0-beta.1] - 2025-04-06
 
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
 ### Added
 
 - **New!** Add the `.toBeApplicable` matcher ([#100](https://github.com/tstyche/tstyche/pull/100))
 
 ## [4.0.0-beta.0] - 2025-03-30
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -607,6 +677,11 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-rc.0
+[4.0.0-beta.10]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.10
+[4.0.0-beta.9]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.9
+[4.0.0-beta.8]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.8
+[4.0.0-beta.7]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.7
 [4.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.6
 [4.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.5
 [4.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.4

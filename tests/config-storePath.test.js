@@ -1,4 +1,5 @@
 import os from "node:os";
+import process from "node:process";
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";

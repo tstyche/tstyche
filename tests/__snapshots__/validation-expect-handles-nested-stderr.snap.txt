@@ -46,3 +46,24 @@ Error: 'test()' cannot be nested within 'expect()'.
 
        at ./__typetests__/handles-nested.tst.ts:12:3
 
+Error: Type 'number' is not the same as type 'string'.
+
+  15 | 
+  16 |   // can be nested!
+  17 |   expect<number>().type.toBe<string>();
+     |                              ~~~~~~
+  18 | }).type.toBe<void>();
+  19 | 
+
+       at ./__typetests__/handles-nested.tst.ts:17:30 ❭ 
+
+Error: Type '() => void' is not the same as type 'void'.
+
+  16 |   // can be nested!
+  17 |   expect<number>().type.toBe<string>();
+  18 | }).type.toBe<void>();
+     |              ~~~~
+  19 | 
+
+       at ./__typetests__/handles-nested.tst.ts:18:14
+

@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import process from "node:process";
 
 export const isWindows = process.platform === "win32";
 
@@ -33,8 +34,8 @@ export class Process {
    * @param {Array<string>} [args]
    * @param {{ env?: Record<string, string | undefined> }} [options]
    */
-  constructor(fixtureUrl, args, options) {
-    this.#subprocess = spawn("tstyche", args, {
+  constructor(fixtureUrl, args = [], options = {}) {
+    const spawnOptions = {
       cwd: fixtureUrl,
       env: {
         ...process.env,
@@ -43,7 +44,11 @@ export class Process {
         ...options?.env,
       },
       shell: isWindows,
-    });
+    };
+
+    this.#subprocess = isWindows
+      ? spawn(["tstyche", ...args].join(" "), spawnOptions)
+      : spawn("tstyche", args, spawnOptions);
 
     this.#subprocess.stdout.setEncoding("utf8");
 

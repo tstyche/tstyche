@@ -30,7 +30,7 @@ await test("toBeAssignableTo", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await test("handles unrelated diagnostics", async (t) => {
+  await t.test("handles unrelated diagnostics", async (t) => {
     const unrelatedText = `import { expect, test } from "tstyche";
 
 function pickLonger<T extends { length: number }>(a: T, b: T) {

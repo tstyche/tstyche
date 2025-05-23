@@ -4,21 +4,21 @@ hyperfine \
   --export-json 'tstyche.bench.json' \
   --time-unit 'second' \
   --warmup 2 \
-  'tstyche examples' \
+  'yarn test:examples' \
   --command-name 'warm cache: tstyche examples' \
   --prepare '' \
-  'tstyche examples --target next' \
+  'yarn test:examples --target next' \
   --command-name 'warm cache: tstyche examples --target next' \
   --prepare '' \
-  'tstyche examples --target 5.2' \
+  'yarn test:examples --target 5.2' \
   --command-name 'warm cache: tstyche examples --target 5.2' \
   --prepare '' \
-  'tstyche examples' \
+  'yarn test:examples' \
   --command-name 'cold cache: tstyche examples' \
   --prepare 'tstyche --prune' \
-  'tstyche examples --target next' \
+  'yarn test:examples --target next' \
   --command-name 'cold cache: tstyche examples --target next' \
   --prepare 'tstyche --prune' \
-  'tstyche examples --target 5.2' \
+  'yarn test:examples --target 5.2' \
   --command-name 'cold cache: tstyche examples --target 5.2' \
   --prepare 'tstyche --prune'

@@ -1,0 +1,10 @@
+Error: Directive 'if' requires an argument.
+
+  1 | // @tstyche if
+    |             ~~
+  2 | 
+  3 | import { expect, test } from "tstyche";
+  4 | 
+
+      at ./__typetests__/sample.tst.ts:1:13
+

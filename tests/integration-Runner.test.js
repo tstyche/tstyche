@@ -33,10 +33,16 @@ class TestResultReporter {
 
 await test("Runner", async (t) => {
   await t.test("run tests", async (t) => {
+    t.before(() => {
+      eventEmitter.addReporter(new TestResultReporter());
+    });
+
+    t.after(() => {
+      eventEmitter.removeReporters();
+    });
+
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
     const runner = new tstyche.Runner(resolvedConfig);
-
-    eventEmitter.addReporter(new TestResultReporter());
 
     const testCases = [
       {
@@ -78,15 +84,19 @@ await test("Runner", async (t) => {
         assert.deepEqual(result?.testCount, { failed: 2, passed: 2, skipped: 1, todo: 1 });
       });
     }
-
-    eventEmitter.removeReporters();
   });
 
   await t.test("run tests when test file is 'Task' object", async (t) => {
+    t.before(() => {
+      eventEmitter.addReporter(new TestResultReporter());
+    });
+
+    t.after(() => {
+      eventEmitter.removeReporters();
+    });
+
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
     const runner = new tstyche.Runner(resolvedConfig);
-
-    eventEmitter.addReporter(new TestResultReporter());
 
     const testCases = [
       {
@@ -166,8 +176,6 @@ await test("Runner", async (t) => {
         assert.deepEqual(result?.testCount, { failed: 1, passed: 0, skipped: 2, todo: 1 });
       });
     }
-
-    eventEmitter.removeReporters();
   });
 
   await t.test("configuration", async (t) => {

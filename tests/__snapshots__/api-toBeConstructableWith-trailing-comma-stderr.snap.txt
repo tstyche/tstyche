@@ -1,0 +1,49 @@
+Error: Expression is constructable with the given arguments.
+
+  14 |   expect(
+  15 |     Pair,
+  16 |   ).type.not.toBeConstructableWith("sun", "moon"); // fail
+     |              ~~~~~~~~~~~~~~~~~~~~~
+  17 |   expect(
+  18 |     Pair  ,
+  19 |   ).type.not.toBeConstructableWith(true, false); // fail
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:16:14 ❭ Pair
+
+Error: Expression is constructable with the given arguments.
+
+  17 |   expect(
+  18 |     Pair  ,
+  19 |   ).type.not.toBeConstructableWith(true, false); // fail
+     |              ~~~~~~~~~~~~~~~~~~~~~
+  20 | 
+  21 |   expect(
+  22 |     Pair,
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:19:14 ❭ Pair
+
+Error: Expression is not constructable with the given argument.
+
+Expected 2 arguments, but got 1.
+
+  21 |   expect(
+  22 |     Pair,
+  23 |   ).type.toBeConstructableWith("nope"); // fail
+     |                                ~~~~~~
+  24 | });
+  25 | 
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:23:32
+
+    An argument for 'right' was not provided. ts(6210)
+
+       5 |   right: T;
+       6 | 
+       7 |   constructor(left: T, right: T) {
+         |                        ~~~~~~~~
+       8 |     this.left = left;
+       9 |     this.right = right;
+      10 |   }
+
+           at ./__typetests__/toBeConstructableWith.tst.ts:7:24
+

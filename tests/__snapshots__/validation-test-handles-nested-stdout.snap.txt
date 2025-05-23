@@ -1,7 +1,10 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/handles-nested.tst.ts
+  + is string?
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 1 passed, 1 total
 Duration:   <<timestamp>>

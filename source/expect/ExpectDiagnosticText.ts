@@ -1,20 +1,10 @@
-import { capitalize } from "./helpers.js";
-
 export class ExpectDiagnosticText {
-  static argumentCannotBeOfType(argumentNameText: string, typeText: string): string {
-    return `An argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
-  }
-
-  static argumentOrTypeArgumentMustBeProvided(argumentNameText: string, typeArgumentNameText: string): string {
-    return `An argument for '${argumentNameText}' or type argument for '${typeArgumentNameText}' must be provided.`;
-  }
-
   static argumentMustBe(argumentNameText: string, expectedText: string): string {
     return `An argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
-  static argumentMustBeProvided(argumentNameText: string): string {
-    return `An argument for '${argumentNameText}' must be provided.`;
+  static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
+    return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
   static isCallable(isExpression: boolean, targetText: string): string {
@@ -49,12 +39,12 @@ export class ExpectDiagnosticText {
     return `The decorator function cannot be applied${targetText}.`;
   }
 
-  static doesNotHaveProperty(typeText: string, propertyNameText: string): string {
-    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
-  }
-
   static hasProperty(typeText: string, propertyNameText: string): string {
     return `Type '${typeText}' has property '${propertyNameText}'.`;
+  }
+
+  static doesNotHaveProperty(typeText: string, propertyNameText: string): string {
+    return `Type '${typeText}' does not have property '${propertyNameText}'.`;
   }
 
   static didYouMeanToUse(suggestionText: string): string {
@@ -71,14 +61,6 @@ export class ExpectDiagnosticText {
 
   static raisedTypeError(count = 1): string {
     return `The raised type error${count === 1 ? "" : "s"}:`;
-  }
-
-  static typeArgumentCannotBeOfType(argumentNameText: string, typeText: string): string {
-    return `A type argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
-  }
-
-  static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
-    return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
   static raisedError(isExpression: boolean, count: number, targetCount: number): string {
@@ -119,12 +101,12 @@ export class ExpectDiagnosticText {
     return `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`;
   }
 
-  static isIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is identical to type '${targetTypeText}'.`;
+  static isTheSame(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is the same as type '${targetTypeText}'.`;
   }
 
-  static isNotIdenticalTo(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not identical to type '${targetTypeText}'.`;
+  static isNotTheSame(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not the same as type '${targetTypeText}'.`;
   }
 
   static isNotCompatibleWith(sourceTypeText: string, targetTypeText: string): string {
@@ -137,14 +119,5 @@ export class ExpectDiagnosticText {
 
   static typesOfPropertyAreNotCompatible(propertyNameText: string): string {
     return `Types of property '${propertyNameText}' are not compatible.`;
-  }
-
-  static typeWasRejected(typeText: string): Array<string> {
-    const optionNameText = `reject${capitalize(typeText)}Type`;
-
-    return [
-      `The '${typeText}' type was rejected because the '${optionNameText}' option is enabled.`,
-      `If this check is necessary, pass '${typeText}' as the type argument explicitly.`,
-    ];
   }
 }
