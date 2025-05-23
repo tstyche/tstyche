@@ -36,6 +36,29 @@ test("is number?", () => {
   },
 
   {
+    isStringTestText: `import { describe, expect, test } from "tstyche";
+
+%s
+describe("is skipped?", () => {
+  test("is string?", () => {
+    expect<string>().type.toBe<string>();
+  });
+});
+`,
+    isNumberTestText: `import { describe, expect, test } from "tstyche";
+
+%s
+describe("is skipped?", () => {
+  test("is number?", () => {
+    expect<number>().type.toBe<number>();
+  });
+});
+`,
+    testCase: "above 'describe()'",
+    testCaseShort: "describe-level",
+  },
+
+  {
     isStringTestText: `import { expect, test } from "tstyche";
 
 %s
