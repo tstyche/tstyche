@@ -76,18 +76,16 @@ export class TaskRunner {
       return;
     }
 
-    const testTree = await this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    if (
-      testTree?.inlineConfig?.if?.target != null &&
-      !Version.isIncluded(this.#compiler.version, testTree.inlineConfig.if.target)
-    ) {
+    const inlineConfig = await testTree.getInlineConfig(this.#compiler);
+
+    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       runMode |= RunMode.Skip;
     }
 
-    if (testTree?.inlineConfig?.template) {
+    if (inlineConfig?.template) {
       // TODO testTree.children must be not allowed in template files
-      //      since the 'CollectService' knows it deals with a template file, this can be validated early
 
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
@@ -147,6 +145,6 @@ export class TaskRunner {
       },
     );
 
-    testTreeWalker.visit(facts.testTree.children, facts.runMode, /* parentResult */ undefined);
+    await testTreeWalker.visit(facts.testTree.children, facts.runMode, /* parentResult */ undefined);
   }
 }

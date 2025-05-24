@@ -7,6 +7,7 @@ import { ExpectService, type TypeChecker } from "#expect";
 import { Reject } from "#reject";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
+import { Version } from "#version";
 import { WhenService } from "#when";
 import type { WhenNode } from "../collect/WhenNode.js";
 import { RunMode } from "./RunMode.enum.js";
@@ -19,6 +20,7 @@ interface TestTreeWalkerOptions {
 
 export class TestTreeWalker {
   #cancellationToken: CancellationToken | undefined;
+  #compiler: typeof ts;
   #expectService: ExpectService;
   #hasOnly: boolean;
   #onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
@@ -33,6 +35,7 @@ export class TestTreeWalker {
     onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
     options: TestTreeWalkerOptions,
   ) {
+    this.#compiler = compiler;
     this.#resolvedConfig = resolvedConfig;
     this.#onTaskDiagnostics = onTaskDiagnostics;
 
@@ -46,32 +49,36 @@ export class TestTreeWalker {
     this.#whenService = new WhenService(reject, onTaskDiagnostics);
   }
 
-  #resolveRunMode(mode: RunMode, testNode: TestTreeNode): RunMode {
-    if (testNode.flags & TestTreeNodeFlags.Fail) {
+  async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
+    const inlineConfig = await node.getInlineConfig(this.#compiler);
+
+    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
+      mode |= RunMode.Skip;
+    }
+
+    if (node.flags & TestTreeNodeFlags.Fail) {
       mode |= RunMode.Fail;
     }
 
     if (
-      testNode.flags & TestTreeNodeFlags.Only ||
-      (this.#resolvedConfig.only != null &&
-        testNode.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
+      node.flags & TestTreeNodeFlags.Only ||
+      (this.#resolvedConfig.only != null && node.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
     ) {
       mode |= RunMode.Only;
     }
 
     if (
-      testNode.flags & TestTreeNodeFlags.Skip ||
-      (this.#resolvedConfig.skip != null &&
-        testNode.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
+      node.flags & TestTreeNodeFlags.Skip ||
+      (this.#resolvedConfig.skip != null && node.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
     ) {
       mode |= RunMode.Skip;
     }
 
-    if (testNode.flags & TestTreeNodeFlags.Todo) {
+    if (node.flags & TestTreeNodeFlags.Todo) {
       mode |= RunMode.Todo;
     }
 
-    if (this.#position != null && testNode.node.getStart() === this.#position) {
+    if (this.#position != null && node.node.getStart() === this.#position) {
       mode |= RunMode.Only;
       // skip mode is overridden, when 'position' is specified
       mode &= ~RunMode.Skip;
@@ -80,11 +87,11 @@ export class TestTreeWalker {
     return mode;
   }
 
-  visit(
+  async visit(
     nodes: Array<TestTreeNode | AssertionNode | WhenNode>,
     runMode: RunMode,
     parentResult: DescribeResult | TestResult | undefined,
-  ): void {
+  ): Promise<void> {
     for (const node of nodes) {
       if (this.#cancellationToken?.isCancellationRequested) {
         break;
@@ -92,15 +99,15 @@ export class TestTreeWalker {
 
       switch (node.brand) {
         case TestTreeNodeBrand.Describe:
-          this.#visitDescribe(node, runMode, parentResult as DescribeResult | undefined);
+          await this.#visitDescribe(node, runMode, parentResult as DescribeResult | undefined);
           break;
 
         case TestTreeNodeBrand.Test:
-          this.#visitTest(node, runMode, parentResult as DescribeResult | undefined);
+          await this.#visitTest(node, runMode, parentResult as DescribeResult | undefined);
           break;
 
         case TestTreeNodeBrand.Expect:
-          this.#visitAssertion(node as AssertionNode, runMode, parentResult as TestResult | undefined);
+          await this.#visitAssertion(node as AssertionNode, runMode, parentResult as TestResult | undefined);
           break;
 
         case TestTreeNodeBrand.When:
@@ -110,14 +117,14 @@ export class TestTreeWalker {
     }
   }
 
-  #visitAssertion(assertion: AssertionNode, runMode: RunMode, parentResult: TestResult | undefined) {
-    this.visit(assertion.children, runMode, parentResult);
+  async #visitAssertion(assertion: AssertionNode, runMode: RunMode, parentResult: TestResult | undefined) {
+    await this.visit(assertion.children, runMode, parentResult);
 
     const expectResult = new ExpectResult(assertion, parentResult);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
 
-    runMode = this.#resolveRunMode(runMode, assertion);
+    runMode = await this.#resolveRunMode(runMode, assertion);
 
     if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
       EventEmitter.dispatch(["expect:skip", { result: expectResult }]);
@@ -161,12 +168,12 @@ export class TestTreeWalker {
     }
   }
 
-  #visitDescribe(describe: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  async #visitDescribe(describe: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
     const describeResult = new DescribeResult(describe, parentResult);
 
     EventEmitter.dispatch(["describe:start", { result: describeResult }]);
 
-    runMode = this.#resolveRunMode(runMode, describe);
+    runMode = await this.#resolveRunMode(runMode, describe);
 
     if (
       !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
@@ -174,18 +181,18 @@ export class TestTreeWalker {
     ) {
       this.#onTaskDiagnostics(Diagnostic.fromDiagnostics([...describe.diagnostics]));
     } else {
-      this.visit(describe.children, runMode, describeResult);
+      await this.visit(describe.children, runMode, describeResult);
     }
 
     EventEmitter.dispatch(["describe:end", { result: describeResult }]);
   }
 
-  #visitTest(test: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  async #visitTest(test: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
     const testResult = new TestResult(test, parentResult);
 
     EventEmitter.dispatch(["test:start", { result: testResult }]);
 
-    runMode = this.#resolveRunMode(runMode, test);
+    runMode = await this.#resolveRunMode(runMode, test);
 
     if (runMode & RunMode.Todo) {
       EventEmitter.dispatch(["test:todo", { result: testResult }]);
@@ -205,7 +212,7 @@ export class TestTreeWalker {
       return;
     }
 
-    this.visit(test.children, runMode, testResult);
+    await this.visit(test.children, runMode, testResult);
 
     if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
       EventEmitter.dispatch(["test:skip", { result: testResult }]);

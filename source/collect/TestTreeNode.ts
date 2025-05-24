@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { Directive, type DirectiveRange, type InlineConfig } from "#config";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTree } from "./TestTree.js";
@@ -40,5 +41,19 @@ export class TestTreeNode {
         }
       }
     }
+  }
+
+  getDirectiveRanges(compiler: typeof ts): Array<DirectiveRange> | undefined {
+    return Directive.getDirectiveRanges(compiler, this.node.getSourceFile(), this.node.getFullStart());
+  }
+
+  async getInlineConfig(compiler: typeof ts): Promise<InlineConfig | undefined> {
+    const directiveRanges = this.getDirectiveRanges(compiler);
+
+    if (directiveRanges != null) {
+      return await Directive.getInlineConfig(directiveRanges, this.node.getSourceFile());
+    }
+
+    return;
   }
 }
