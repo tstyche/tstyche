@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { CollectService, type TestTree } from "#collect";
-import type { ResolvedConfig } from "#config";
+import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
@@ -78,7 +78,8 @@ export class TaskRunner {
 
     const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    const inlineConfig = await testTree.getInlineConfig(this.#compiler);
+    const directiveRanges = testTree.getDirectiveRanges(this.#compiler);
+    const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       runMode |= RunMode.Skip;

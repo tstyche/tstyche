@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { Directive, type DirectiveRange, type InlineConfig } from "#config";
+import { Directive, type DirectiveRanges } from "#config";
 import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTreeNode } from "./TestTreeNode.js";
 import type { WhenNode } from "./WhenNode.js";
@@ -15,17 +15,7 @@ export class TestTree {
     this.sourceFile = sourceFile;
   }
 
-  getDirectiveRanges(compiler: typeof ts): Array<DirectiveRange> | undefined {
+  getDirectiveRanges(compiler: typeof ts): DirectiveRanges | undefined {
     return Directive.getDirectiveRanges(compiler, this.sourceFile);
-  }
-
-  async getInlineConfig(compiler: typeof ts): Promise<InlineConfig | undefined> {
-    const directiveRanges = this.getDirectiveRanges(compiler);
-
-    if (directiveRanges != null) {
-      return await Directive.getInlineConfig(directiveRanges, this.sourceFile);
-    }
-
-    return;
   }
 }

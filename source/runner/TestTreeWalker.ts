@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { type AssertionNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags } from "#collect";
-import type { ResolvedConfig } from "#config";
+import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
@@ -50,7 +50,8 @@ export class TestTreeWalker {
   }
 
   async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
-    const inlineConfig = await node.getInlineConfig(this.#compiler);
+    const directiveRanges = node.getDirectiveRanges(this.#compiler);
+    const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       mode |= RunMode.Skip;
