@@ -39,7 +39,10 @@ export class AssertionNode extends TestTreeNode {
     }
 
     for (const diagnostic of parent.diagnostics) {
-      if (diagnosticBelongsToNode(diagnostic, this.source)) {
+      if (
+        diagnosticBelongsToNode(diagnostic, this.source) ||
+        (this.target != null && diagnosticBelongsToNode(diagnostic, this.target))
+      ) {
         this.diagnostics.add(diagnostic);
         parent.diagnostics.delete(diagnostic);
       }
