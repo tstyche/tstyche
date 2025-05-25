@@ -5,7 +5,7 @@
 [![install-size][install-size-badge]][install-size-url]
 [![coverage][coverage-badge]][coverage-url]
 
-The Essential Type Testing Tool.
+Everything You Need for Type Testing.
 
 ---
 
