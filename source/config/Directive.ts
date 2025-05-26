@@ -20,22 +20,20 @@ export interface DirectiveRange {
   argument?: TextRange;
 }
 
+export type DirectiveRanges = Array<DirectiveRange> & { sourceFile: ts.SourceFile };
+
 export class Directive {
   static #commentSeparatorRegex = /--+/;
   static #directiveRegex = /^(\/\/\s*@tstyche)(\s*|-)?(\S*)?(\s*)?(.*)?/i;
 
-  static getDirectiveRanges(
-    compiler: typeof ts,
-    sourceFile: ts.SourceFile,
-    position = 0,
-  ): Array<DirectiveRange> | undefined {
+  static getDirectiveRanges(compiler: typeof ts, sourceFile: ts.SourceFile, position = 0): DirectiveRanges | undefined {
     const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
 
     if (!comments || comments.length === 0) {
       return;
     }
 
-    const ranges: Array<DirectiveRange> = [];
+    const ranges: DirectiveRanges = Object.assign([], { sourceFile });
 
     for (const comment of comments) {
       if (comment.kind !== compiler.SyntaxKind.SingleLineCommentTrivia) {
@@ -52,11 +50,15 @@ export class Directive {
     return ranges;
   }
 
-  static async getInlineConfig(ranges: Array<DirectiveRange>, sourceFile: ts.SourceFile): Promise<InlineConfig> {
+  static async getInlineConfig(ranges: DirectiveRanges | undefined): Promise<InlineConfig | undefined> {
+    if (!ranges) {
+      return;
+    }
+
     const inlineConfig: InlineConfig = {};
 
     for (const range of ranges) {
-      await Directive.#parse(inlineConfig, sourceFile, range);
+      await Directive.#parse(inlineConfig, ranges.sourceFile, range);
     }
 
     return inlineConfig;

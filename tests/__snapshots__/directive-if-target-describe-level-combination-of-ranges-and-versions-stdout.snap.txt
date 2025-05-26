@@ -1,0 +1,47 @@
+adds TypeScript 5.2.2 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.2.2
+uses TypeScript 5.2.2 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  is skipped?
+    + is string?
+
+adds TypeScript 5.3.3 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.3.3
+uses TypeScript 5.3.3 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  is skipped?
+    - skip is string?
+
+adds TypeScript 5.4.5 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.4.5
+uses TypeScript 5.4.5 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  is skipped?
+    - skip is string?
+
+adds TypeScript 5.5.4 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.5.4
+uses TypeScript 5.5.4 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  is skipped?
+    - skip is string?
+
+adds TypeScript 5.6.3 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.6.3
+uses TypeScript 5.6.3 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  is skipped?
+    + is string?
+
+adds TypeScript 5.7.3 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.7.3
+uses TypeScript 5.7.3 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  is skipped?
+    + is string?
+
+Targets:    6 passed, 6 total
+Test files: 6 passed, 6 total
+Tests:      3 skipped, 3 passed, 6 total
+Assertions: 3 skipped, 3 passed, 6 total
+Duration:   <<timestamp>>
