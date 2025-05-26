@@ -1,0 +1,10 @@
+Error: Unexpected token.
+
+  2 |   'failFast': true,
+  3 | }
+  4 | unexpected
+    | ~
+  5 | 
+
+      at ./tstyche.config.json:4:1
+

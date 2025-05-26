@@ -209,6 +209,17 @@ export class ConfigParser {
       });
 
       this.#onDiagnostics(diagnostic);
+
+      return;
+    }
+
+    const unexpectedToken = this.#jsonScanner.readToken(/\S/);
+
+    if (unexpectedToken.text != null) {
+      const text = ConfigDiagnosticText.unexpected("token");
+      const diagnostic = Diagnostic.error(text, unexpectedToken.origin);
+
+      this.#onDiagnostics(diagnostic);
     }
   }
 

@@ -130,6 +130,7 @@ await test("'tstyche.config.json' file", async (t) => {
     /* test */ "**/__typetests__/*.test.ts"
   ]
 }
+// test
 `;
 
     await writeFixture(fixtureUrl, {
