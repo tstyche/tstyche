@@ -4,6 +4,12 @@ import { Version } from "#version";
 export class Target {
   static #rangeRegex = /^[<>]=?\d\.\d( [<>]=?\d\.\d)?$/;
 
+  // TODO must be called form 'Options.resolve()'
+  //      - that does not work now, because 'target' is an array,
+  //      but it must be a string in semver style: '1.2.7 || >=1.2.9 <2.0.0'
+  //      - 'Target.expand()' should be able to know the location
+  //      and that will allow reporting empty ranges: "There are no versions matching the range."
+
   static async expand(queries: Array<string>): Promise<Array<string>> {
     const include: Array<string> = [];
 
