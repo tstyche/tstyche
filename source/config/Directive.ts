@@ -122,6 +122,7 @@ export class Directive {
         }
         return;
 
+      case "broken":
       case "template":
         if (ranges.argument?.text != null) {
           const text = DirectiveDiagnosticText.doesNotTakeArgument(ranges.directive.text);
@@ -130,7 +131,7 @@ export class Directive {
           Directive.#onDiagnostics(Diagnostic.error(text, origin));
         }
 
-        inlineConfig.template = true;
+        inlineConfig[ranges.directive?.text] = true;
         return;
     }
 

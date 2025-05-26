@@ -8,9 +8,14 @@ export class DiagnosticOrigin {
   sourceFile: SourceFile | ts.SourceFile;
   start: number;
 
-  constructor(start: number, end: number, sourceFile: SourceFile | ts.SourceFile, assertion?: AssertionNode) {
+  constructor(
+    start: number,
+    end: number | undefined,
+    sourceFile: SourceFile | ts.SourceFile,
+    assertion?: AssertionNode,
+  ) {
     this.start = start;
-    this.end = end;
+    this.end = end ?? start + 1;
     this.sourceFile = sourceFile;
     this.assertion = assertion;
   }

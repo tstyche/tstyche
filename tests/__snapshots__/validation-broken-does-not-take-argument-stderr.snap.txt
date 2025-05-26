@@ -1,0 +1,11 @@
+Error: Directive 'broken' does not take an argument.
+
+  1 | import { expect } from "tstyche";
+  2 | 
+  3 | // @tstyche broken true
+    |             ~~~~~~
+  4 | expect<string>().type.toBe<number>();
+  5 | 
+
+      at ./__typetests__/sample.tst.ts:3:13
+
