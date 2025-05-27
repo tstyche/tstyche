@@ -1,9 +1,9 @@
-Error: Directive 'broken' does not take an argument.
+Error: Directive 'fixme' does not take an argument.
 
   1 | import { expect } from "tstyche";
   2 | 
-  3 | // @tstyche broken true
-    |             ~~~~~~
+  3 | // @tstyche fixme asap
+    |             ~~~~~
   4 | expect<string>().type.toBe<number>();
   5 | 
 

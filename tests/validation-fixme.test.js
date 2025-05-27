@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("'// @tstyche broken' directive", async (t) => {
+await test("'// @tstyche fixme' directive", async (t) => {
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -15,7 +15,7 @@ await test("'// @tstyche broken' directive", async (t) => {
   await t.test("does not take an argument", async () => {
     const testFileText = `import { expect } from "tstyche";
 
-// @tstyche broken true
+// @tstyche fixme asap
 expect<string>().type.toBe<number>();
 `;
 

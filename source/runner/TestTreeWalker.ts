@@ -54,25 +54,22 @@ export class TestTreeWalker {
     assertion: AssertionNode,
     onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
   ) {
-    const brokenDirective = assertion
+    const fixmeDirective = assertion
       .getDirectiveRanges(this.#compiler)
-      ?.find((range) => range.directive?.text === "broken");
+      ?.find((range) => range.directive?.text === "fixme");
 
-    let text: Array<string>;
+    const text = [RunnerDiagnosticText.assertionWasSupposedToFail()];
     let origin: DiagnosticOrigin | undefined;
 
-    if (brokenDirective != null) {
-      text = [
-        RunnerDiagnosticText.assertionSupposedTo("be broken"),
-        RunnerDiagnosticText.considerRemoving("'// @tstyche broken' directive"),
-      ];
+    if (fixmeDirective != null) {
+      text.push(RunnerDiagnosticText.considerRemoving("'// @tstyche fixme' directive"));
       origin = new DiagnosticOrigin(
-        brokenDirective.namespace.start,
-        brokenDirective.directive?.end,
+        fixmeDirective.namespace.start,
+        fixmeDirective.directive?.end,
         assertion.node.getSourceFile(),
       );
     } else {
-      text = [RunnerDiagnosticText.assertionSupposedTo("fail"), RunnerDiagnosticText.considerRemoving("'.fail' flag")];
+      text.push(RunnerDiagnosticText.considerRemoving("'.fail' flag"));
       origin = DiagnosticOrigin.fromNode((assertion.node.expression as ts.PropertyAccessExpression).name);
     }
 
@@ -82,8 +79,8 @@ export class TestTreeWalker {
   async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
     const inlineConfig = await Directive.getInlineConfig(node.getDirectiveRanges(this.#compiler));
 
-    if (inlineConfig?.broken || node.flags & TestTreeNodeFlags.Fail) {
-      mode |= RunMode.Broken;
+    if (inlineConfig?.fixme || node.flags & TestTreeNodeFlags.Fail) {
+      mode |= RunMode.Fail;
     }
 
     if (
@@ -180,12 +177,12 @@ export class TestTreeWalker {
     }
 
     if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
-      if (runMode & RunMode.Broken) {
+      if (runMode & RunMode.Fail) {
         this.#onBrokenRunModeDiagnostics(assertion, onExpectDiagnostics);
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       }
-    } else if (runMode & RunMode.Broken) {
+    } else if (runMode & RunMode.Fail) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);

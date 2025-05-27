@@ -122,7 +122,7 @@ export class Directive {
         }
         return;
 
-      case "broken":
+      case "fixme":
       case "template":
         if (ranges.argument?.text != null) {
           const text = DirectiveDiagnosticText.doesNotTakeArgument(ranges.directive.text);

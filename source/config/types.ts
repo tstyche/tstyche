@@ -7,7 +7,7 @@ export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
 export type OptionValue = Array<OptionValue> | string | number | boolean | null | undefined;
 
 export interface InlineConfig {
-  broken?: boolean;
+  fixme?: boolean;
   if?: { target?: Array<string> };
   template?: boolean;
 }

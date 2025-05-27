@@ -3,7 +3,7 @@ export class RunnerDiagnosticText {
     return `Consider removing the ${target}.`;
   }
 
-  static assertionSupposedTo(action: string): string {
-    return `The assertion was supposed to ${action}, but it passed.`;
+  static assertionWasSupposedToFail(): string {
+    return "The assertion was supposed to fail, but it passed.";
   }
 }
