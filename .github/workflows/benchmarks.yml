@@ -20,7 +20,7 @@ jobs:
         run: cargo install --locked hyperfine
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@v4
+      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
         with:
           node-version: lts
       - run: yarn install
