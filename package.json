@@ -82,8 +82,11 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@4.9.1",
   "engines": {
     "node": ">=20.9"
+  },
+  "volta": {
+    "node": "22.16.0",
+    "yarn": "4.9.1"
   }
 }
