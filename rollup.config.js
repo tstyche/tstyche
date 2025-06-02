@@ -55,13 +55,15 @@ function tidyJs() {
 
 /** @returns {import("rollup").Plugin} */
 function tidyDts() {
+  const reactEntry = "react.d.ts";
   const tstycheEntry = "tstyche.d.ts";
+  const dtsNames = ["index"];
 
   return {
     name: "tidy-dts",
 
     renderChunk(code, chunkInfo) {
-      if (chunkInfo.fileName === tstycheEntry) {
+      if (chunkInfo.fileName === reactEntry || chunkInfo.fileName === tstycheEntry) {
         const magicString = new MagicString(code);
 
         magicString.replaceAll("import", "import type");
@@ -78,40 +80,17 @@ function tidyDts() {
 
       return null;
     },
+
+    async writeBundle() {
+      for (const dtsName of dtsNames) {
+        await fs.copyFile(path.resolve(output.dir, `${dtsName}.d.ts`), path.join(output.dir, `${dtsName}.d.cts`));
+      }
+    },
   };
 }
 
 /** @type {Array<import("rollup").RollupOptions>} */
 const config = [
-  {
-    external: [/^node:/],
-    input: {
-      index: "./source/types.ts",
-      tstyche: "./source/tstyche.ts",
-    },
-    output,
-    plugins: [
-      clean(),
-      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ tsconfig }),
-      dts({ tsconfig }),
-      tidyDts(),
-    ],
-  },
-
-  {
-    input: "./source/types.ts",
-    output: {
-      file: "./build/index.d.cts",
-      format: "cjs",
-    },
-    plugins: [
-      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ tsconfig }),
-      dts({ tsconfig }),
-    ],
-  },
-
   {
     external: [/^node:/, "./tstyche.js"],
     input: {
@@ -121,6 +100,7 @@ const config = [
     },
     output,
     plugins: [
+      clean(),
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript({ compilerOptions: { removeComments: true }, tsconfig }),
       tidyJs(),
@@ -136,6 +116,21 @@ const config = [
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript({ compilerOptions: { removeComments: true }, tsconfig }),
+    ],
+  },
+
+  {
+    input: {
+      index: "./source/types.ts",
+      react: "./source/react.ts",
+      tstyche: "./source/tstyche.ts",
+    },
+    output,
+    plugins: [
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      typescript({ tsconfig }),
+      dts({ tsconfig }),
+      tidyDts(),
     ],
   },
 ];
