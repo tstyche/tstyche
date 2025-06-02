@@ -1,5 +1,48 @@
 # Changelog
 
+## [4.0.0] - 2025-06-02
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+
+## Added
+
+- **New!**  Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
+- **New!** Add template test file support ([#468](https://github.com/tstyche/tstyche/pull/468), [#469](https://github.com/tstyche/tstyche/pull/469), [#470](https://github.com/tstyche/tstyche/pull/470))
+- **New!** Add the `when()` utility and the `.isCalledWith()` action ([#460](https://github.com/tstyche/tstyche/pull/460), [#466](https://github.com/tstyche/tstyche/pull/466), [#480](https://github.com/tstyche/tstyche/pull/480))
+- **New!** Add the `.toBeConstructableWith()` matcher ([#451](https://github.com/tstyche/tstyche/pull/451), [#456](https://github.com/tstyche/tstyche/pull/456), [#457](https://github.com/tstyche/tstyche/pull/457), [#479](https://github.com/tstyche/tstyche/pull/479), [#483](https://github.com/tstyche/tstyche/pull/483))
+- **New!** Add the `.toBeCallableWith()` matcher ([#447](https://github.com/tstyche/tstyche/pull/447), [#448](https://github.com/tstyche/tstyche/pull/448), [#449](https://github.com/tstyche/tstyche/pull/449), [#453](https://github.com/tstyche/tstyche/pull/453), [#456](https://github.com/tstyche/tstyche/pull/456), [#457](https://github.com/tstyche/tstyche/pull/457), [#479](https://github.com/tstyche/tstyche/pull/479), [#483](https://github.com/tstyche/tstyche/pull/483))
+- **New!** Add the `.toBeApplicable` matcher ([#100](https://github.com/tstyche/tstyche/pull/100))
+- Add `collect:*` events ([#411](https://github.com/tstyche/tstyche/pull/411))
+
+### Fixed
+
+- Handle unexpected trailing tokens in JSON ([#496](https://github.com/tstyche/tstyche/pull/496))
+- Allow skipping target type errors ([#495](https://github.com/tstyche/tstyche/pull/495))
+- Allow adding notes to the directive comments ([#492](https://github.com/tstyche/tstyche/pull/492))
+- Do not typecheck already seen test files ([#475](https://github.com/tstyche/tstyche/pull/475))
+- Always use default compiler options when file is not included ([#473](https://github.com/tstyche/tstyche/pull/473))
+- Do not reverse diagnostics of the ability layer ([#446](https://github.com/tstyche/tstyche/pull/446))
+
+### Changed
+
+- **Breaking!** Move test tree validation logic to the `Collect` class ([#471](https://github.com/tstyche/tstyche/pull/471))
+- **Breaking!** Remove config details from summary and `Result` ([#459](https://github.com/tstyche/tstyche/pull/459))
+- **Breaking!** Always take `compiler` as the first constructor argument ([#445](https://github.com/tstyche/tstyche/pull/445))
+- **Breaking!** Remove primitive type matchers ([#442](https://github.com/tstyche/tstyche/pull/442))
+- **Breaking!** Exclude whitespace when comparing diagnostic messages ([#427](https://github.com/tstyche/tstyche/pull/427))
+- **Breaking!** Add the `minorVersions` property to store manifest ([#425](https://github.com/tstyche/tstyche/pull/425))
+- **Breaking!** Make default compiler options strict ([#424](https://github.com/tstyche/tstyche/pull/424))
+- **Breaking!** Drop support for TypeScript `<=4.6` ([#423](https://github.com/tstyche/tstyche/pull/423), [#476](https://github.com/tstyche/tstyche/pull/476))
+- **Breaking!** Enable the `rejectAnyType` and `rejectNeverType` options by default ([#422](https://github.com/tstyche/tstyche/pull/422))
+- **Breaking!** Enable the `checkSourceFiles` option by default ([#421](https://github.com/tstyche/tstyche/pull/421))
+- **Breaking!** Require passing `resolvedConfig` to `ExpectService` constructor ([#420](https://github.com/tstyche/tstyche/pull/420))
+- **Breaking!** Rename `AssertionNode` and `TestTreeNode` classes ([#419](https://github.com/tstyche/tstyche/pull/419))
+- **Breaking!** Drop support for Node.js 18 ([#418](https://github.com/tstyche/tstyche/pull/418))
+- **Breaking!** Rename the `--fetch` command line option ([#417](https://github.com/tstyche/tstyche/pull/417))
+- **Breaking!** Remove the `.toMatch()` matcher ([#416](https://github.com/tstyche/tstyche/pull/416))
+- **Breaking!** Remove `Store.getSupportedTags()` method ([#415](https://github.com/tstyche/tstyche/pull/415))
+- **Breaking!** Remove `Version.isVersionTag()` method ([#414](https://github.com/tstyche/tstyche/pull/414))
+
 ## [4.0.0-rc.1] - 2025-05-25
 
 ## Added
@@ -8,7 +51,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## Added
 
-- **New!**  Add the `// @tstyche if <conditions>` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
+- **New!**  Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
 
 ### Fixed
 
@@ -41,7 +84,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ### Changed
 
-- Move test tree validation logic to the `Collect` class ([#471](https://github.com/tstyche/tstyche/pull/471))
+- **Breaking!** Move test tree validation logic to the `Collect` class ([#471](https://github.com/tstyche/tstyche/pull/471))
 
 ## [4.0.0-beta.8] - 2025-05-05
 
@@ -76,7 +119,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ### Fixed
 
-- Allow passing property access expressions to the `.toBeCallableWith()` and `.toBeConstructableWith()` matchers (#457)
+- Allow passing property access expressions to the `.toBeCallableWith()` and `.toBeConstructableWith()` matchers ([#457](https://github.com/tstyche/tstyche/pull/457))
 
 ## [4.0.0-beta.5] - 2025-04-15
 
@@ -142,7 +185,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 - **Breaking!** Remove primitive type matchers ([#442](https://github.com/tstyche/tstyche/pull/442))
 - **Breaking!** Exclude whitespace when comparing diagnostic messages ([#427](https://github.com/tstyche/tstyche/pull/427))
-- **Breaking!** Make add the `minorVersions` property to store manifest ([#425](https://github.com/tstyche/tstyche/pull/425))
+- **Breaking!** Add the `minorVersions` property to store manifest ([#425](https://github.com/tstyche/tstyche/pull/425))
 - **Breaking!** Make default compiler options strict ([#424](https://github.com/tstyche/tstyche/pull/424))
 - **Breaking!** Drop support for TypeScript `4.x` ([#423](https://github.com/tstyche/tstyche/pull/423))
 - **Breaking!** Enable the `rejectAnyType` and `rejectNeverType` options by default ([#422](https://github.com/tstyche/tstyche/pull/422))
@@ -691,6 +734,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0
 [4.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-rc.1
 [4.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-rc.0
 [4.0.0-beta.10]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-beta.10
