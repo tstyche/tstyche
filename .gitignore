@@ -1,8 +1,7 @@
 .DS_Store
 .generated
 .idea
-.yarn/*
-!.yarn/releases
+.yarn
 build
 coverage
 node_modules
