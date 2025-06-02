@@ -11,6 +11,7 @@ import { Version } from "#version";
 import { WhenService } from "#when";
 import type { WhenNode } from "../collect/WhenNode.js";
 import { RunMode } from "./RunMode.enum.js";
+import { RunnerDiagnosticText } from "./RunnerDiagnosticText.js";
 
 interface TestTreeWalkerOptions {
   cancellationToken: CancellationToken | undefined;
@@ -49,15 +50,36 @@ export class TestTreeWalker {
     this.#whenService = new WhenService(reject, onTaskDiagnostics);
   }
 
-  async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
-    const directiveRanges = node.getDirectiveRanges(this.#compiler);
-    const inlineConfig = await Directive.getInlineConfig(directiveRanges);
+  #onBrokenRunModeDiagnostics(
+    assertion: AssertionNode,
+    onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
+  ) {
+    const fixmeDirective = assertion
+      .getDirectiveRanges(this.#compiler)
+      ?.find((range) => range.directive?.text === "fixme");
 
-    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
-      mode |= RunMode.Skip;
+    const text = [RunnerDiagnosticText.assertionWasSupposedToFail()];
+    let origin: DiagnosticOrigin | undefined;
+
+    if (fixmeDirective != null) {
+      text.push(RunnerDiagnosticText.considerRemoving("'// @tstyche fixme' directive"));
+      origin = new DiagnosticOrigin(
+        fixmeDirective.namespace.start,
+        fixmeDirective.directive?.end,
+        assertion.node.getSourceFile(),
+      );
+    } else {
+      text.push(RunnerDiagnosticText.considerRemoving("'.fail' flag"));
+      origin = DiagnosticOrigin.fromNode((assertion.node.expression as ts.PropertyAccessExpression).name);
     }
 
-    if (node.flags & TestTreeNodeFlags.Fail) {
+    onDiagnostics(Diagnostic.error(text, origin));
+  }
+
+  async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
+    const inlineConfig = await Directive.getInlineConfig(node.getDirectiveRanges(this.#compiler));
+
+    if (inlineConfig?.fixme || node.flags & TestTreeNodeFlags.Fail) {
       mode |= RunMode.Fail;
     }
 
@@ -70,7 +92,9 @@ export class TestTreeWalker {
 
     if (
       node.flags & TestTreeNodeFlags.Skip ||
-      (this.#resolvedConfig.skip != null && node.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
+      (this.#resolvedConfig.skip != null &&
+        node.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase())) ||
+      (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target))
     ) {
       mode |= RunMode.Skip;
     }
@@ -154,11 +178,7 @@ export class TestTreeWalker {
 
     if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
       if (runMode & RunMode.Fail) {
-        const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
-        // TODO consider adding '.failNode' property to 'assertion'
-        const origin = DiagnosticOrigin.fromNode((assertion.node.expression as ts.PropertyAccessExpression).name);
-
-        onExpectDiagnostics(Diagnostic.error(text, origin));
+        this.#onBrokenRunModeDiagnostics(assertion, onExpectDiagnostics);
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       }
