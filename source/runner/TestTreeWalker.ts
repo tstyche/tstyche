@@ -54,7 +54,7 @@ export class TestTreeWalker {
     const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
-      mode |= RunMode.Skip;
+      mode |= RunMode.Void;
     }
 
     if (node.flags & TestTreeNodeFlags.Fail) {
@@ -121,11 +121,15 @@ export class TestTreeWalker {
   async #visitAssertion(assertion: AssertionNode, runMode: RunMode, parentResult: TestResult | undefined) {
     await this.visit(assertion.children, runMode, parentResult);
 
+    runMode = await this.#resolveRunMode(runMode, assertion);
+
+    if (runMode & RunMode.Void) {
+      return;
+    }
+
     const expectResult = new ExpectResult(assertion, parentResult);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
-
-    runMode = await this.#resolveRunMode(runMode, assertion);
 
     if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
       EventEmitter.dispatch(["expect:skip", { result: expectResult }]);
@@ -170,11 +174,15 @@ export class TestTreeWalker {
   }
 
   async #visitDescribe(describe: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
+    runMode = await this.#resolveRunMode(runMode, describe);
+
+    if (runMode & RunMode.Void) {
+      return;
+    }
+
     const describeResult = new DescribeResult(describe, parentResult);
 
     EventEmitter.dispatch(["describe:start", { result: describeResult }]);
-
-    runMode = await this.#resolveRunMode(runMode, describe);
 
     if (
       !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
@@ -189,11 +197,15 @@ export class TestTreeWalker {
   }
 
   async #visitTest(test: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
+    runMode = await this.#resolveRunMode(runMode, test);
+
+    if (runMode & RunMode.Void) {
+      return;
+    }
+
     const testResult = new TestResult(test, parentResult);
 
     EventEmitter.dispatch(["test:start", { result: testResult }]);
-
-    runMode = await this.#resolveRunMode(runMode, test);
 
     if (runMode & RunMode.Todo) {
       EventEmitter.dispatch(["test:todo", { result: testResult }]);
