@@ -1,0 +1,36 @@
+Error: The 'Target' type argument must be omitted or have at least one call signature.
+
+   6 |     expect<string>().type.not.toHaveCallSignatures();
+   7 | 
+   8 |     expect(Date).type.toHaveCallSignatures<{}>(); // fail
+     |                                            ~~
+   9 |     expect(Date).type.toHaveCallSignatures<{ new (): Date }>(); // fail
+  10 |     expect<string>().type.not.toHaveCallSignatures<{}>(); // fail
+  11 |   });
+
+       at ./__typetests__/toHaveCallSignatures.tst.ts:8:44
+
+Error: The 'Target' type argument must be omitted or have at least one call signature.
+
+   7 | 
+   8 |     expect(Date).type.toHaveCallSignatures<{}>(); // fail
+   9 |     expect(Date).type.toHaveCallSignatures<{ new (): Date }>(); // fail
+     |                                            ~~~~~~~~~~~~~~~~
+  10 |     expect<string>().type.not.toHaveCallSignatures<{}>(); // fail
+  11 |   });
+  12 | });
+
+       at ./__typetests__/toHaveCallSignatures.tst.ts:9:44
+
+Error: The 'Target' type argument must be omitted or have at least one call signature.
+
+   8 |     expect(Date).type.toHaveCallSignatures<{}>(); // fail
+   9 |     expect(Date).type.toHaveCallSignatures<{ new (): Date }>(); // fail
+  10 |     expect<string>().type.not.toHaveCallSignatures<{}>(); // fail
+     |                                                    ~~
+  11 |   });
+  12 | });
+  13 | 
+
+       at ./__typetests__/toHaveCallSignatures.tst.ts:10:52
+

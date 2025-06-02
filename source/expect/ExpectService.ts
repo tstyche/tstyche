@@ -12,6 +12,7 @@ import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToBeConstructableWith } from "./ToBeConstructableWith.js";
+import { ToHaveCallSignatures } from "./ToHaveCallSignatures.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult, TypeChecker } from "./types.js";
@@ -28,6 +29,7 @@ export class ExpectService {
   private toBeAssignableWith: ToBeAssignableWith;
   private toBeCallableWith: ToBeCallableWith;
   private toBeConstructableWith: ToBeConstructableWith;
+  private toHaveCallSignatures: ToHaveCallSignatures;
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
@@ -43,6 +45,7 @@ export class ExpectService {
     this.toBeAssignableWith = new ToBeAssignableWith();
     this.toBeCallableWith = new ToBeCallableWith(compiler);
     this.toBeConstructableWith = new ToBeConstructableWith(compiler);
+    this.toHaveCallSignatures = new ToHaveCallSignatures(compiler, typeChecker);
     this.toHaveProperty = new ToHaveProperty(compiler);
     this.toRaiseError = new ToRaiseError(compiler);
   }
@@ -107,6 +110,9 @@ export class ExpectService {
       case "toRaiseError":
         // biome-ignore lint/style/noNonNullAssertion: collect logic makes sure that 'target' is defined
         return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target!, onDiagnostics);
+
+      case "toHaveCallSignatures":
+        return this.toHaveCallSignatures.match(matchWorker, assertion.source[0], assertion.target?.[0], onDiagnostics);
 
       case "toHaveProperty":
         if (!argumentIsProvided("key", assertion.target?.[0], assertion.matcherNameNode.name, onDiagnostics)) {

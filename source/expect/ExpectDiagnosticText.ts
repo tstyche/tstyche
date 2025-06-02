@@ -117,6 +117,10 @@ export class ExpectDiagnosticText {
     return `Type '${typeText}' requires property '${propertyNameText}'.`;
   }
 
+  static typeArgumentMustBeOmitted(argumentNameText: string, signatureKindText: string): string {
+    return `The '${argumentNameText}' type argument must be omitted or have at least one ${signatureKindText} signature.`;
+  }
+
   static typesOfPropertyAreNotCompatible(propertyNameText: string): string {
     return `Types of property '${propertyNameText}' are not compatible.`;
   }
