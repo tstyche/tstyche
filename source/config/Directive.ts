@@ -74,7 +74,7 @@ export class Directive {
       return;
     }
 
-    const ranges: DirectiveRange = {
+    const range: DirectiveRange = {
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 
@@ -82,21 +82,21 @@ export class Directive {
     const directiveText = found?.[3];
 
     if (directiveText != null && directiveText.length > 0) {
-      const start = ranges.namespace.end + (directiveSeparatorText?.length ?? 0);
+      const start = range.namespace.end + (directiveSeparatorText?.length ?? 0);
 
-      ranges.directive = { start, end: start + directiveText.length, text: directiveText };
+      range.directive = { start, end: start + directiveText.length, text: directiveText };
     }
 
     const argumentSeparatorText = found?.[4];
     const argumentText = found?.[5]?.trimEnd();
 
-    if (ranges.directive != null && argumentText != null && argumentText.length > 0) {
-      const start = ranges.directive.end + (argumentSeparatorText?.length ?? 0);
+    if (range.directive != null && argumentText != null && argumentText.length > 0) {
+      const start = range.directive.end + (argumentSeparatorText?.length ?? 0);
 
-      ranges.argument = { start, end: start + argumentText.length, text: argumentText };
+      range.argument = { start, end: start + argumentText.length, text: argumentText };
     }
 
-    return ranges;
+    return range;
   }
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {
