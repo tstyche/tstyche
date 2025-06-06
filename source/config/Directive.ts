@@ -108,8 +108,8 @@ export class Directive {
       case "if":
         {
           if (!ranges.argument?.text) {
-            const text = DirectiveDiagnosticText.requiresArgument(ranges.directive.text);
-            const origin = new DiagnosticOrigin(ranges.directive.start, ranges.directive.end, sourceFile);
+            const text = DirectiveDiagnosticText.requiresArgument();
+            const origin = new DiagnosticOrigin(ranges.namespace.start, ranges.directive.end, sourceFile);
 
             Directive.#onDiagnostics(Diagnostic.error(text, origin));
 
@@ -124,8 +124,8 @@ export class Directive {
 
       case "template":
         if (ranges.argument?.text != null) {
-          const text = DirectiveDiagnosticText.doesNotTakeArgument(ranges.directive.text);
-          const origin = new DiagnosticOrigin(ranges.directive.start, ranges.directive.end, sourceFile);
+          const text = DirectiveDiagnosticText.doesNotTakeArgument();
+          const origin = new DiagnosticOrigin(ranges.argument.start, ranges.argument.end, sourceFile);
 
           Directive.#onDiagnostics(Diagnostic.error(text, origin));
         }
