@@ -81,19 +81,19 @@ export class Directive {
     const directiveSeparatorText = found?.[2];
     const directiveText = found?.[3];
 
-    if (directiveText != null && directiveText.length > 0) {
-      const start = range.namespace.end + (directiveSeparatorText?.length ?? 0);
+    if (typeof directiveText === "string" && typeof directiveSeparatorText === "string") {
+      const start = range.namespace.end + directiveSeparatorText.length;
 
       range.directive = { start, end: start + directiveText.length, text: directiveText };
-    }
 
-    const argumentSeparatorText = found?.[4];
-    const argumentText = found?.[5]?.trimEnd();
+      const argumentSeparatorText = found?.[4];
+      const argumentText = found?.[5]?.trimEnd();
 
-    if (range.directive != null && argumentText != null && argumentText.length > 0) {
-      const start = range.directive.end + (argumentSeparatorText?.length ?? 0);
+      if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
+        const start = range.directive.end + argumentSeparatorText.length;
 
-      range.argument = { start, end: start + argumentText.length, text: argumentText };
+        range.argument = { start, end: start + argumentText.length, text: argumentText };
+      }
     }
 
     return range;
