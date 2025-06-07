@@ -3,7 +3,7 @@
  * @property {(_workspace: never, packageConfig: Record<string, unknown>) => void} beforeWorkspacePacking
  */
 
-const deleteKeys = ["files", "scripts", "devDependencies", "volta"];
+const deleteKeys = ["files", "scripts", "devDependencies", "packageManager", "volta"];
 
 module.exports = {
   name: "tidy-package-json",
