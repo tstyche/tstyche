@@ -17,7 +17,7 @@ import type { SuppressedError, SuppressedErrors } from "./types.js";
 export class CollectService {
   #abilityLayer: AbilityLayer;
   #compiler: typeof ts;
-  #expectErrorRegex = /^( *)(\/\/\s*@ts-expect-error)(:? *)(.*)?$/gim;
+  #expectErrorRegex = /^( *)(\/\/ *@ts-expect-error)(!?)(:? *)(.*)?$/gim;
   #identifierLookup: IdentifierLookup;
   #resolvedConfig: ResolvedConfig;
 
@@ -32,14 +32,14 @@ export class CollectService {
   #collectSuppressedErrors(sourceFile: ts.SourceFile) {
     const ranges: SuppressedErrors = Object.assign([], { sourceFile });
 
-    for (const match of sourceFile.getText().matchAll(this.#expectErrorRegex)) {
+    for (const match of sourceFile.text.matchAll(this.#expectErrorRegex)) {
       const offsetText = match?.[1];
-
       const directiveText = match?.[2];
-      const argumentSeparatorText = match?.[3];
+      const ignoreText = match?.[3];
+      const argumentSeparatorText = match?.[4];
       const argumentText = match?.[4]?.trimEnd();
 
-      if (typeof offsetText !== "string" || !directiveText || argumentText?.startsWith("!")) {
+      if (typeof offsetText !== "string" || !directiveText || ignoreText === "!") {
         continue;
       }
 
