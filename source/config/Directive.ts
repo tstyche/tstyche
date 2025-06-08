@@ -81,19 +81,19 @@ export class Directive {
     const directiveSeparatorText = found?.[2];
     const directiveText = found?.[3];
 
-    if (directiveText != null && directiveText.length > 0) {
-      const start = range.namespace.end + (directiveSeparatorText?.length ?? 0);
+    if (typeof directiveText === "string" && typeof directiveSeparatorText === "string") {
+      const start = range.namespace.end + directiveSeparatorText.length;
 
       range.directive = { start, end: start + directiveText.length, text: directiveText };
-    }
 
-    const argumentSeparatorText = found?.[4];
-    const argumentText = found?.[5]?.trimEnd();
+      const argumentSeparatorText = found?.[4];
+      const argumentText = found?.[5]?.trimEnd();
 
-    if (range.directive != null && argumentText != null && argumentText.length > 0) {
-      const start = range.directive.end + (argumentSeparatorText?.length ?? 0);
+      if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
+        const start = range.directive.end + argumentSeparatorText.length;
 
-      range.argument = { start, end: start + argumentText.length, text: argumentText };
+        range.argument = { start, end: start + argumentText.length, text: argumentText };
+      }
     }
 
     return range;
@@ -108,8 +108,8 @@ export class Directive {
       case "if":
         {
           if (!ranges.argument?.text) {
-            const text = DirectiveDiagnosticText.requiresArgument(ranges.directive.text);
-            const origin = new DiagnosticOrigin(ranges.directive.start, ranges.directive.end, sourceFile);
+            const text = DirectiveDiagnosticText.requiresArgument();
+            const origin = new DiagnosticOrigin(ranges.namespace.start, ranges.directive.end, sourceFile);
 
             Directive.#onDiagnostics(Diagnostic.error(text, origin));
 
@@ -124,8 +124,8 @@ export class Directive {
 
       case "template":
         if (ranges.argument?.text != null) {
-          const text = DirectiveDiagnosticText.doesNotTakeArgument(ranges.directive.text);
-          const origin = new DiagnosticOrigin(ranges.directive.start, ranges.directive.end, sourceFile);
+          const text = DirectiveDiagnosticText.doesNotTakeArgument();
+          const origin = new DiagnosticOrigin(ranges.argument.start, ranges.argument.end, sourceFile);
 
           Directive.#onDiagnostics(Diagnostic.error(text, origin));
         }
