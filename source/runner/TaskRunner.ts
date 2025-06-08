@@ -8,6 +8,7 @@ import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
+import { SuppressedErrorService } from "#suppressed";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
@@ -17,8 +18,9 @@ import { TestTreeWalker } from "./TestTreeWalker.js";
 export class TaskRunner {
   #collectService: CollectService;
   #compiler: typeof ts;
-  #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
+  #resolvedConfig: ResolvedConfig;
+  #suppressedErrorService = new SuppressedErrorService();
 
   constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
@@ -85,6 +87,10 @@ export class TaskRunner {
       runMode |= RunMode.Skip;
     }
 
+    // TODO bail out early when 'RunMode.Skip'
+
+    // TODO check suppressed errors here
+
     if (inlineConfig?.template) {
       // TODO testTree.children must be not allowed in template files
 
@@ -133,6 +139,10 @@ export class TaskRunner {
     const onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>> = (diagnostics) => {
       this.#onDiagnostics(diagnostics, taskResult);
     };
+
+    if (facts.testTree?.suppressedErrors != null) {
+      this.#suppressedErrorService.match(facts.testTree.suppressedErrors, onTaskDiagnostics);
+    }
 
     const testTreeWalker = new TestTreeWalker(
       this.#compiler,

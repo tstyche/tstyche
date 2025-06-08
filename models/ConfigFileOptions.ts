@@ -9,6 +9,10 @@ export interface ConfigFileOptions {
      */
     checkSourceFiles?: boolean;
     /**
+     * Check error messages provided with the '// @ts-expect-error' directives.
+     */
+    checkSuppressedErrors?: boolean;
+    /**
      * Stop running tests after the first failed assertion.
      */
     failFast?: boolean;

@@ -1,10 +1,11 @@
 import type ts from "typescript";
-import type { AssertionNode } from "#collect";
+import type { AssertionNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { diagnosticBelongsToNode } from "#diagnostic";
+import { diagnosticBelongsToNode, isDiagnosticWithLocation } from "#diagnostic";
 import type { ProjectService } from "#project";
 import type { WhenNode } from "./WhenNode.js";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
+import type { SuppressedError } from "./types.js";
 
 interface TextRange {
   start: number;
@@ -18,6 +19,7 @@ export class AbilityLayer {
   #nodes: Array<AssertionNode | WhenNode> = [];
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
+  #suppressedErrors: Map<number, SuppressedError> | undefined;
   #text = "";
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
@@ -64,12 +66,14 @@ export class AbilityLayer {
   }
 
   close(): void {
-    if (this.#nodes.length > 0) {
+    if (this.#nodes.length > 0 || this.#suppressedErrors != null) {
       this.#projectService.openFile(this.#filePath, this.#text, this.#resolvedConfig.rootPath);
 
       const languageService = this.#projectService.getLanguageService(this.#filePath);
 
       const diagnostics = new Set(languageService?.getSemanticDiagnostics(this.#filePath));
+
+      // TODO only run this if there are nodes
 
       for (const node of this.#nodes.reverse()) {
         for (const diagnostic of diagnostics) {
@@ -84,10 +88,40 @@ export class AbilityLayer {
           }
         }
       }
+
+      // TODO only run this if there are suppressedErrors
+
+      for (const diagnostic of diagnostics) {
+        if (!isDiagnosticWithLocation(diagnostic)) {
+          continue;
+        }
+
+        const { file, start } = diagnostic;
+
+        const lineMap = file.getLineStarts();
+        let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
+
+        while (line >= 0) {
+          const suppressedError = this.#suppressedErrors?.get(line);
+
+          if (suppressedError != null) {
+            suppressedError.diagnostic = diagnostic;
+            break;
+          }
+
+          const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
+          if (lineText !== "" && !lineText.startsWith("//")) {
+            break;
+          }
+
+          line--;
+        }
+      }
     }
 
     this.#filePath = "";
     this.#nodes = [];
+    this.#suppressedErrors = undefined;
     this.#text = "";
   }
 
@@ -162,6 +196,25 @@ export class AbilityLayer {
         ]);
 
         break;
+    }
+  }
+
+  handleSuppressedErrors(testTree: TestTree): void {
+    if (!testTree.suppressedErrors) {
+      return;
+    }
+
+    this.#suppressedErrors = new Map();
+
+    for (const suppressedError of testTree.suppressedErrors) {
+      const { start, end } = suppressedError.directive;
+      const rangeText = this.#getErasedRangeText({ start: start + 2, end });
+
+      this.#text = `${this.#text.slice(0, start + 2)}${rangeText}${this.#text.slice(end)}`;
+
+      const { line } = testTree.sourceFile.getLineAndCharacterOfPosition(start);
+
+      this.#suppressedErrors.set(line, suppressedError);
     }
   }
 

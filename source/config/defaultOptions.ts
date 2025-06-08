@@ -4,6 +4,7 @@ import type { ConfigFileOptions } from "./types.js";
 
 export const defaultOptions: Required<ConfigFileOptions> = {
   checkSourceFiles: true,
+  checkSuppressedErrors: false,
   failFast: false,
   plugins: [],
   rejectAnyType: true,

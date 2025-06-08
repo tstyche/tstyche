@@ -1,6 +1,6 @@
 export { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 export { Config } from "./Config.js";
-export { Directive, type DirectiveRange, type DirectiveRanges } from "./Directive.js";
+export { Directive, type DirectiveRange, type DirectiveRanges, type TextRange } from "./Directive.js";
 export { OptionBrand } from "./OptionBrand.enum.js";
 export { type ItemDefinition, type OptionDefinition, Options } from "./Options.js";
 export { OptionGroup } from "./OptionGroup.enum.js";

@@ -12,17 +12,53 @@ import { TestTreeNode } from "./TestTreeNode.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 import { WhenNode } from "./WhenNode.js";
+import type { SuppressedError, SuppressedErrors } from "./types.js";
 
 export class CollectService {
   #abilityLayer: AbilityLayer;
   #compiler: typeof ts;
+  #expectErrorRegex = /^( *)(\/\/\s*@ts-expect-error)(:? *)(.*)?$/gim;
   #identifierLookup: IdentifierLookup;
+  #resolvedConfig: ResolvedConfig;
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#resolvedConfig = resolvedConfig;
 
     this.#abilityLayer = new AbilityLayer(compiler, projectService, resolvedConfig);
     this.#identifierLookup = new IdentifierLookup(compiler);
+  }
+
+  #collectSuppressedErrors(sourceFile: ts.SourceFile) {
+    const ranges: SuppressedErrors = Object.assign([], { sourceFile });
+
+    for (const match of sourceFile.getText().matchAll(this.#expectErrorRegex)) {
+      const offsetText = match?.[1];
+
+      const directiveText = match?.[2];
+      const argumentSeparatorText = match?.[3];
+      const argumentText = match?.[4]?.trimEnd();
+
+      if (typeof offsetText !== "string" || !directiveText || argumentText?.startsWith("!")) {
+        continue;
+      }
+
+      const start = match.index + offsetText.length;
+
+      const range: SuppressedError = {
+        directive: { start, end: start + directiveText.length, text: directiveText },
+      };
+
+      if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
+        const start = range.directive.end + argumentSeparatorText.length;
+
+        range.argument = { start, end: start + argumentText.length, text: argumentText };
+      }
+
+      ranges.push(range);
+    }
+
+    return ranges;
   }
 
   #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode, testTree: TestTree) {
@@ -155,6 +191,12 @@ export class CollectService {
 
     this.#abilityLayer.open(sourceFile);
     this.#identifierLookup.open();
+
+    if (this.#resolvedConfig.checkSuppressedErrors) {
+      testTree.suppressedErrors = this.#collectSuppressedErrors(sourceFile);
+
+      this.#abilityLayer.handleSuppressedErrors(testTree);
+    }
 
     this.#collectTestTreeNodes(sourceFile, testTree, testTree);
 

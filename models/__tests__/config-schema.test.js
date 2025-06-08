@@ -39,6 +39,10 @@ test("config-schema.json", async (t) => {
         testCase: "'checkSourceFiles' option",
       },
       {
+        fixtureFileName: "valid-checkSuppressedErrors.json",
+        testCase: "'checkSuppressedErrors' option",
+      },
+      {
         fixtureFileName: "valid-failFast.json",
         testCase: "'failFast' option",
       },
@@ -91,6 +95,10 @@ test("config-schema.json", async (t) => {
       {
         fixtureFileName: "invalid-checkSourceFiles.json",
         testCase: "value of 'checkSourceFiles' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-checkSuppressedErrors.json",
+        testCase: "value of 'checkSuppressedErrors' option must be of type boolean",
       },
       {
         fixtureFileName: "invalid-failFast.json",
