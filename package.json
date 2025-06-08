@@ -35,7 +35,6 @@
     "build/*"
   ],
   "scripts": {
-    "bench": "./benchmarks/tstyche.bench.sh",
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
     "check": "yarn check:spelling && yarn check:types",
@@ -85,9 +84,5 @@
   "packageManager": "yarn@4.9.2",
   "engines": {
     "node": ">=20.9"
-  },
-  "volta": {
-    "node": "22.16.0",
-    "yarn": "4.9.2"
   }
 }
