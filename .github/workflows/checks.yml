@@ -24,9 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-        with:
-          node-version: lts
+      - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
       - run: yarn install
       - run: yarn build --sourcemap
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -43,9 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-        with:
-          node-version: lts
+      - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -63,9 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-        with:
-          node-version: lts
+      - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -82,9 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-        with:
-          node-version: lts
+      - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -103,21 +95,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['20.9', '20.x', '22.x', '24.x']
+        node-version: ['20.9', '20', '22', '24']
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-        with:
-          node-version: ${{ matrix.node-version }}
+        uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: build-${{ github.sha }}
           path: build
-      - run: yarn test
+      - run: mise exec node@${{ matrix.node-version }} -- yarn test
 
   test-os:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -133,9 +123,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
+      - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
+        # TODO remove after Windows support is added to the 'mise-yarn' plugin
         with:
-          node-version: lts
+          experimental: true
+          mise_toml: |
+            [tools]
+            node = 'lts'
+            [hooks]
+            postinstall = 'corepack enable'
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -157,9 +153,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
+      - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
+        # TODO remove after Windows support is added to the 'mise-yarn' plugin
         with:
-          node-version: lts
+          experimental: true
+          mise_toml: |
+            [tools]
+            node = 'lts'
+            [hooks]
+            postinstall = 'corepack enable'
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -187,9 +189,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
-        with:
-          node-version: lts
+      - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
