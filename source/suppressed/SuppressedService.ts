@@ -1,7 +1,8 @@
 import type { SuppressedErrors } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
+import { SuppressedDiagnosticText } from "./SuppressedDiagnosticText.js";
 
-export class SuppressedErrorService {
+export class SuppressedService {
   match(suppressedErrors: SuppressedErrors, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
     for (const suppressedError of suppressedErrors) {
       if (!suppressedError.diagnostic) {
@@ -33,8 +34,20 @@ export class SuppressedErrorService {
       }
 
       if (!messageText.includes(suppressedError.argument.text)) {
-        console.log("wrong message!");
-        console.log("wrong message!");
+        const text = [SuppressedDiagnosticText.messageDidNotMatch()];
+
+        const origin = new DiagnosticOrigin(
+          suppressedError.argument.start,
+          suppressedError.argument.end,
+          suppressedErrors.sourceFile,
+        );
+
+        const related = [
+          Diagnostic.error(SuppressedDiagnosticText.raisedError()),
+          ...Diagnostic.fromDiagnostics([suppressedError.diagnostic], suppressedErrors.sourceFile),
+        ];
+
+        onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
       }
     }
   }

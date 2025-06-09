@@ -75,7 +75,7 @@ export class AbilityLayer {
 
       // TODO only run this if there are nodes
 
-      for (const node of this.#nodes.reverse()) {
+      for (const node of this.#nodes.toReversed()) {
         for (const diagnostic of diagnostics) {
           if (diagnosticBelongsToNode(diagnostic, "matcherNode" in node ? node.matcherNode : node.actionNode)) {
             if (!node.abilityDiagnostics) {

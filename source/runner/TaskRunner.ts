@@ -8,7 +8,7 @@ import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
-import { SuppressedErrorService } from "#suppressed";
+import { SuppressedService } from "#suppressed";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
@@ -20,7 +20,7 @@ export class TaskRunner {
   #compiler: typeof ts;
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
-  #suppressedErrorService = new SuppressedErrorService();
+  #suppressedService = new SuppressedService();
 
   constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
@@ -141,7 +141,7 @@ export class TaskRunner {
     };
 
     if (facts.testTree?.suppressedErrors != null) {
-      this.#suppressedErrorService.match(facts.testTree.suppressedErrors, onTaskDiagnostics);
+      this.#suppressedService.match(facts.testTree.suppressedErrors, onTaskDiagnostics);
     }
 
     const testTreeWalker = new TestTreeWalker(

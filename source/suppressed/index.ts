@@ -1,1 +1,1 @@
-export { SuppressedErrorService } from "./SuppressedErrorService.js";
+export { SuppressedService } from "./SuppressedService.js";

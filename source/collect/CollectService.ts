@@ -37,7 +37,7 @@ export class CollectService {
       const directiveText = match?.[2];
       const ignoreText = match?.[3];
       const argumentSeparatorText = match?.[4];
-      const argumentText = match?.[4]?.trimEnd();
+      const argumentText = match?.[5]?.split(/--+/)[0]?.trimEnd();
 
       if (typeof offsetText !== "string" || !directiveText || ignoreText === "!") {
         continue;

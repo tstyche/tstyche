@@ -39,13 +39,17 @@ export class Diagnostic {
     return new Diagnostic([this.text, text].flat(), this.category, origin ?? this.origin);
   }
 
-  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>): Array<Diagnostic> {
+  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>, sourceFile?: ts.SourceFile): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
       if (diagnostic.file != null && diagnostic.start != null && diagnostic.length != null) {
-        origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
+        origin = new DiagnosticOrigin(
+          diagnostic.start,
+          diagnostic.start + diagnostic.length,
+          sourceFile ?? diagnostic.file,
+        );
       }
 
       let related: Array<Diagnostic> | undefined;
