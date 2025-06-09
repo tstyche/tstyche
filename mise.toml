@@ -1,0 +1,9 @@
+[tools]
+hyperfine = "1.19.0"
+node = "latest"
+
+[hooks]
+postinstall = "corepack enable" # TODO remove after Windows support is added to the 'mise-yarn' plugin
+
+[settings]
+experimental = true

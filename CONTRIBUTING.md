@@ -4,9 +4,9 @@ Pull requests and suggestions are welcome! Before submitting new features or beh
 
 ## Prerequisites
 
-To be able to work with this repository, you will need the latest LTS version of Node.js and the latest version of Yarn. We use Volta to get both of them set up correctly.
+To be able to work with this repository, you will need the latest LTS version of Node.js and the latest version of Yarn. We use `mise` to get both of them set up correctly.
 
-To install Volta, follow [their instructions](https://docs.volta.sh/guide/getting-started). Next, tell Yarn to install the dependencies:
+To install `mise`, follow [their instructions](https://mise.jdx.dev/getting-started.html). Next, tell Yarn to install the dependencies:
 
 ```shell
 yarn install
@@ -22,12 +22,12 @@ Running `yarn tstyche` in this repository just works. Thanks to Yarn, we can imp
 yarn tstyche callbacks
 ```
 
-### Why Volta?
+### Why `mise`?
 
-Its `run` command simplifies running TSTyche using the specific Node.js version. That is useful while working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
+Its `exec` command simplifies running TSTyche using the specific Node.js version. That is useful while working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
 
 ```shell
-volta run --node 24 yarn tstyche template
+mise exec node@24 -- yarn tstyche template
 ```
 
 ## Development
