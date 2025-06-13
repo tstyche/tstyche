@@ -13,9 +13,7 @@
       "!**/.yarn/**",
       "!**/build/**",
       "!**/coverage/**",
-      "!**/models/CommandLineOptions.ts",
       "!**/models/config-schema.json",
-      "!**/models/ConfigFileOptions.ts",
       "!**/cspell.config.json"
     ]
   },

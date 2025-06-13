@@ -1097,6 +1097,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"code-block-writer@npm:13.0.3":
+  version: 13.0.3
+  resolution: "code-block-writer@npm:13.0.3"
+  checksum: 10c0/87db97b37583f71cfd7eced8bf3f0a0a0ca53af912751a734372b36c08cd27f3e8a4878ec05591c0cd9ae11bea8add1423e132d660edd86aab952656dd41fd66
+  languageName: node
+  linkType: hard
+
 "color-convert@npm:^2.0.1":
   version: 2.0.1
   resolution: "color-convert@npm:2.0.1"
@@ -2414,6 +2421,7 @@ __metadata:
     "@types/node": "npm:22.15.31"
     "@types/react": "npm:19.1.8"
     ajv: "npm:8.17.1"
+    code-block-writer: "npm:13.0.3"
     cspell: "npm:9.0.2"
     magic-string: "npm:0.30.17"
     monocart-coverage-reports: "npm:2.12.6"
