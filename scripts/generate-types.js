@@ -44,12 +44,12 @@ for (const [identifier, optionDefinitions] of interfacesToWrite) {
   writer
     .write(`export interface ${identifier}`)
     .block(() => {
-      for (const [key, optionDefinition] of optionDefinitions) {
+      for (const [key, definition] of optionDefinitions) {
         if (key.startsWith("$")) {
           continue;
         }
 
-        writer.writeLine(`${key}?: ${getTypeText(optionDefinition)};`);
+        writer.writeLine(`${key}?: ${getTypeText(definition)};`);
       }
     })
     .blankLine();
@@ -57,11 +57,10 @@ for (const [identifier, optionDefinitions] of interfacesToWrite) {
 
 writer.writeLine("// #endregion");
 
-const typesFileUrl = new URL("../source/config/types.ts", import.meta.url);
-
-const fileText = await fs.readFile(typesFileUrl, { encoding: "utf8" });
+const fileUrl = new URL("../source/config/types.ts", import.meta.url);
+const fileText = await fs.readFile(fileUrl, { encoding: "utf8" });
 const updatedFileText = fileText.replace(/\/\/ #region[\s\S]*?\/\/ #endregion\n/, writer.toString());
 
-await fs.writeFile(typesFileUrl, updatedFileText);
+await fs.writeFile(fileUrl, updatedFileText);
 
-process.stdout.write(`Type declarations were written to: '${typesFileUrl.toString()}'\n`);
+process.stdout.write(`Type declarations were written to: '${fileUrl.toString()}'\n`);
