@@ -1,4 +1,0 @@
-{
-  "$schema": "../../config-schema.json",
-  "target": ["latest", "latest"]
-}

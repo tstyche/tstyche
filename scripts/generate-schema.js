@@ -84,7 +84,7 @@ for (const [key, optionDefinition] of configFileOptions) {
   );
 }
 
-const schemaFileUrl = new URL("../models/config-schema.json", import.meta.url);
+const schemaFileUrl = new URL("../schemas/config.json", import.meta.url);
 
 await fs.writeFile(schemaFileUrl, `${JSON.stringify(jsonSchema, null, 2)}\n`);
 

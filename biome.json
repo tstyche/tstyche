@@ -13,7 +13,7 @@
       "!**/.yarn/**",
       "!**/build/**",
       "!**/coverage/**",
-      "!**/models/config-schema.json",
+      "!**/schemas/config.json",
       "!**/cspell.config.json"
     ]
   },
