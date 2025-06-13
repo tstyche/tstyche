@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import path from "node:path";
+import process from "node:process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import * as tstyche from "tstyche/tstyche";

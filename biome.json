@@ -16,9 +16,7 @@
       "!**/models/CommandLineOptions.ts",
       "!**/models/config-schema.json",
       "!**/models/ConfigFileOptions.ts",
-      "!**/node_modules/**",
-      "!**/cspell.config.json",
-      "!**/package.json"
+      "!**/cspell.config.json"
     ]
   },
 
@@ -36,8 +34,6 @@
 
       "complexity": {
         "noUselessStringConcat": "error",
-        "noUselessUndefinedInitialization": "error",
-        "useDateNow": "error",
 
         "noBannedTypes": "off",
         "noStaticOnlyClass": "off",
@@ -47,20 +43,26 @@
       "correctness": {
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
-        "noUnusedFunctionParameters": "error",
-        "noUnusedImports": "error",
-        "noUnusedPrivateClassMembers": "error",
-        "noUnusedVariables": "error",
-        "useImportExtensions": "error",
+        "useImportExtensions": "error"
+      },
 
-        "useJsxKeyInIterable": "off"
+      "nursery": {
+        "noFloatingPromises": "error",
+        "noProcessGlobal": "error",
+        "noTsIgnore": "error",
+        "useIndexOf": "error"
       },
 
       "style": {
         "noImplicitBoolean": "error",
+        "noInferrableTypes": "error",
         "noNegationElse": "error",
+        "noNonNullAssertion": "error",
         "noParameterProperties": "error",
+        "noUselessElse": "error",
         "noYodaExpression": "error",
+        "useAsConstAssertion": "error",
+        "useAtIndex": "error",
         "useBlockStatements": "error",
         "useCollapsedElseIf": "error",
         "useConsistentArrayType": {
@@ -70,20 +72,16 @@
           }
         },
         "useConsistentBuiltinInstantiation": "error",
-        "useExplicitLengthCheck": "error",
-        "useNamingConvention": "error",
-        "useForOf": "error",
-        "useShorthandAssign": "error",
-        "useThrowNewError": "error",
-        "useAsConstAssertion": "error",
         "useDefaultParameterLast": "error",
-        "useSelfClosingElements": "error",
-        "useSingleVarDeclarator": "error",
+        "useExplicitLengthCheck": "error",
+        "useForOf": "error",
+        "useNamingConvention": "error",
         "useNumberNamespace": "error",
-        "noInferrableTypes": "error",
-        "noUselessElse": "error",
-
-        "noParameterAssign": "off"
+        "useSelfClosingElements": "error",
+        "useShorthandAssign": "error",
+        "useSingleVarDeclarator": "error",
+        "useThrowNewError": "error",
+        "useTrimStartEnd": "error"
       },
 
       "suspicious": {
@@ -94,8 +92,6 @@
           }
         },
         "noEvolvingTypes": "error",
-        "noMisplacedAssertion": "error",
-        "noSkippedTests": "error",
         "useAwait": "error",
         "useErrorMessage": "error",
         "useNumberToFixedDigitsArgument": "error",
@@ -142,17 +138,6 @@
     },
 
     {
-      "includes": ["**/tests/__utilities__/assert.js"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noMisplacedAssertion": "off"
-          }
-        }
-      }
-    },
-
-    {
       "includes": ["**/*.tst.ts", "**/*.tst.tsx"],
       "linter": {
         "rules": {
@@ -173,14 +158,6 @@
         "rules": {
           "complexity": {
             "useArrowFunction": "off"
-          },
-          "style": {
-            "useEnumInitializers": "off",
-            "noUnusedTemplateLiteral": "off"
-          },
-          "suspicious": {
-            "noFocusedTests": "off",
-            "noSkippedTests": "off"
           }
         }
       }
