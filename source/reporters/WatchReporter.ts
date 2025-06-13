@@ -1,4 +1,4 @@
-import { OutputService, diagnosticText, waitingForFileChangesText, watchUsageText } from "#output";
+import { diagnosticText, OutputService, waitingForFileChangesText, watchUsageText } from "#output";
 import { BaseReporter } from "./BaseReporter.js";
 import type { ReporterEvent } from "./types.js";
 

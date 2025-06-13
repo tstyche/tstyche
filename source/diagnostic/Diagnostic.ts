@@ -16,10 +16,7 @@ export class Diagnostic {
     this.origin = origin;
   }
 
-  add(options: {
-    code?: string | undefined;
-    related?: Array<Diagnostic> | undefined;
-  }): this {
+  add(options: { code?: string | undefined; related?: Array<Diagnostic> | undefined }): this {
     if (options.code != null) {
       this.code = options.code;
     }

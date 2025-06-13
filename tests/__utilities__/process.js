@@ -81,7 +81,7 @@ export class Process {
   }
 
   /** @type {() => Promise<Output>} */
-  async waitForIdle() {
+  waitForIdle() {
     return new Promise((resolve) => {
       this.#idleTimeout = setTimeout(() => {
         resolve(this.#output);
@@ -90,7 +90,7 @@ export class Process {
   }
 
   /** @type {(chunk: string) => Promise<void>} */
-  async write(chunk) {
+  write(chunk) {
     return new Promise((resolve, reject) => {
       this.#subprocess.stdin.write(chunk, (error) => {
         if (error != null) {

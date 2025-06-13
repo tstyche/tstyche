@@ -3,8 +3,8 @@ import type { AssertionNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { ProjectService } from "#project";
-import type { WhenNode } from "./WhenNode.js";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
+import type { WhenNode } from "./WhenNode.js";
 
 interface TextRange {
   start: number;

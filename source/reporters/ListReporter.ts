@@ -1,5 +1,5 @@
 import { environmentOptions } from "#environment";
-import { OutputService, addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
+import { addsPackageText, diagnosticText, OutputService, taskStatusText, usesCompilerText } from "#output";
 import { BaseReporter } from "./BaseReporter.js";
 import { FileView } from "./FileView.js";
 import type { ReporterEvent } from "./types.js";

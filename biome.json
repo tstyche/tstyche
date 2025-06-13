@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.0.0-beta.6/schema.json",
 
   "json": {
     "parser": {
@@ -8,22 +8,24 @@
   },
 
   "files": {
-    "ignore": [
-      ".yarn/**",
-      "build/**",
-      "coverage/**",
-      "models/CommandLineOptions.ts",
-      "models/config-schema.json",
-      "models/ConfigFileOptions.ts",
-      "node_modules/**",
-      "cspell.config.json",
-      "package.json"
+    "includes": [
+      "**",
+      "!**/.yarn/**",
+      "!**/build/**",
+      "!**/coverage/**",
+      "!**/models/CommandLineOptions.ts",
+      "!**/models/config-schema.json",
+      "!**/models/ConfigFileOptions.ts",
+      "!**/node_modules/**",
+      "!**/cspell.config.json",
+      "!**/package.json"
     ]
   },
 
   "formatter": {
     "enabled": true,
-    "useEditorconfig": true
+    "useEditorconfig": true,
+    "lineWidth": 120
   },
 
   "linter": {
@@ -73,6 +75,13 @@
         "useForOf": "error",
         "useShorthandAssign": "error",
         "useThrowNewError": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "error",
 
         "noParameterAssign": "off"
       },
@@ -96,13 +105,11 @@
     }
   },
 
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
 
   "overrides": [
     {
-      "include": ["examples/*"],
+      "includes": ["**/examples/*"],
       "linter": {
         "rules": {
           "correctness": {
@@ -113,7 +120,7 @@
     },
 
     {
-      "include": ["source/handlers/ResultHandler.ts"],
+      "includes": ["**/source/handlers/ResultHandler.ts"],
       "linter": {
         "rules": {
           "style": {
@@ -124,7 +131,7 @@
     },
 
     {
-      "include": ["source/types.ts"],
+      "includes": ["**/source/types.ts"],
       "linter": {
         "rules": {
           "correctness": {
@@ -135,7 +142,7 @@
     },
 
     {
-      "include": ["tests/__utilities__/assert.js"],
+      "includes": ["**/tests/__utilities__/assert.js"],
       "linter": {
         "rules": {
           "suspicious": {
@@ -146,7 +153,7 @@
     },
 
     {
-      "include": ["**/*.tst.ts", "**/*.tst.tsx"],
+      "includes": ["**/*.tst.ts", "**/*.tst.tsx"],
       "linter": {
         "rules": {
           "correctness": {
@@ -161,7 +168,7 @@
     },
 
     {
-      "include": ["**/__fixtures__/**/*.tst.ts"],
+      "includes": ["**/__fixtures__/**/*.tst.ts"],
       "linter": {
         "rules": {
           "complexity": {

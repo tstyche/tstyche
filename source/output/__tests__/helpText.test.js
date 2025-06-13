@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
 import prettyAnsi from "pretty-ansi";
-import { OptionBrand, Scribbler, helpText } from "tstyche/tstyche";
+import { helpText, OptionBrand, Scribbler } from "tstyche/tstyche";
 
 /**
  * @type {Map<string, import("tstyche/tstyche").OptionDefinition>}
