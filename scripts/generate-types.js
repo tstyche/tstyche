@@ -1,5 +1,4 @@
 import fs from "node:fs/promises";
-import process from "node:process";
 import CodeBlockWriter from "code-block-writer";
 import * as tstyche from "tstyche/tstyche";
 
@@ -63,4 +62,4 @@ const updatedFileText = fileText.replace(/\/\/ #region[\s\S]*?\/\/ #endregion\n/
 
 await fs.writeFile(fileUrl, updatedFileText);
 
-process.stdout.write(`Type declarations were written to: '${fileUrl.toString()}'\n`);
+console.info(`Type declarations were written to: '${fileUrl.toString()}'`);
