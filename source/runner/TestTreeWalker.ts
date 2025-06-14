@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { type AssertionNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags } from "#collect";
+import { type AssertionNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -9,7 +9,6 @@ import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { WhenService } from "#when";
-import type { WhenNode } from "../collect/WhenNode.js";
 import { RunMode } from "./RunMode.enum.js";
 
 interface TestTreeWalkerOptions {

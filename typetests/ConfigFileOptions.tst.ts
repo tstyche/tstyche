@@ -5,6 +5,7 @@ describe("ConfigFileOptions", () => {
   test("all options", () => {
     expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({
       checkSourceFiles: true,
+      checkSuppressedErrors: true,
       failFast: true,
       plugins: ["./tstyche-plugin.js"],
       rejectAnyType: true,
@@ -24,6 +25,12 @@ describe("ConfigFileOptions", () => {
   test("'checkSourceFiles' option", () => {
     expect<Pick<tstyche.ConfigFileOptions, "checkSourceFiles">>().type.toBe<{
       checkSourceFiles?: boolean;
+    }>();
+  });
+
+  test("'checkSuppressedErrors' option", () => {
+    expect<Pick<tstyche.ConfigFileOptions, "checkSuppressedErrors">>().type.toBe<{
+      checkSuppressedErrors?: boolean;
     }>();
   });
 
