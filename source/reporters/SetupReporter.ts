@@ -1,5 +1,5 @@
 import { DiagnosticCategory } from "#diagnostic";
-import { OutputService, addsPackageText, diagnosticText } from "#output";
+import { addsPackageText, diagnosticText, OutputService } from "#output";
 import type { ReporterEvent } from "./types.js";
 
 export class SetupReporter {

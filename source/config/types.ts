@@ -1,8 +1,40 @@
-import type { CommandLineOptions } from "../../models/CommandLineOptions.js";
-import type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
+// #region -- Generated code, to update run: yarn build && yarn generate
 
-export type { ConfigFileOptions } from "../../models/ConfigFileOptions.js";
-export type { CommandLineOptions } from "../../models/CommandLineOptions.js";
+export interface CommandLineOptions {
+  config?: string;
+  failFast?: boolean;
+  fetch?: boolean;
+  help?: boolean;
+  list?: boolean;
+  listFiles?: boolean;
+  only?: string;
+  plugins?: Array<string>;
+  prune?: boolean;
+  reporters?: Array<string>;
+  showConfig?: boolean;
+  skip?: string;
+  target?: Array<string>;
+  tsconfig?: string;
+  update?: boolean;
+  version?: boolean;
+  watch?: boolean;
+}
+
+export interface ConfigFileOptions {
+  checkSourceFiles?: boolean;
+  checkSuppressedErrors?: boolean;
+  failFast?: boolean;
+  plugins?: Array<string>;
+  rejectAnyType?: boolean;
+  rejectNeverType?: boolean;
+  reporters?: Array<string>;
+  rootPath?: string;
+  target?: Array<string>;
+  testFileMatch?: Array<string>;
+  tsconfig?: string;
+}
+
+// #endregion
 
 export type OptionValue = Array<OptionValue> | string | number | boolean | null | undefined;
 
@@ -14,12 +46,6 @@ export interface InlineConfig {
 export interface ResolvedConfig
   extends Omit<CommandLineOptions, "config" | keyof ConfigFileOptions>,
     Required<ConfigFileOptions> {
-  /**
-   * The path to a TSTyche configuration file.
-   */
   configFilePath: string;
-  /**
-   * Only run test files with matching path.
-   */
   pathMatch: Array<string>;
 }

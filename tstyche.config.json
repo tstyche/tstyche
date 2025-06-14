@@ -1,5 +1,4 @@
 {
-  "$schema": "./models/config-schema.json",
-  "checkSuppressedErrors": true,
+  "$schema": "./schemas/config.json",
   "testFileMatch": ["examples/*.t*st.*", "tests/*.test.*", "typetests/*.tst.*"]
 }

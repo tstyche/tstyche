@@ -1,4 +1,4 @@
-import { type FSWatcher, existsSync, watch } from "node:fs";
+import { existsSync, type FSWatcher, watch } from "node:fs";
 import { Path } from "#path";
 
 export type WatchHandler = (filePath: string) => void;

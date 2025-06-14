@@ -2,14 +2,14 @@ import { Config, OptionGroup, Options, type ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
-import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
+import { formattedText, helpText, OutputService, waitingForFileChangesText } from "#output";
 import { type Plugin, PluginService } from "#plugins";
 import { SetupReporter } from "#reporters";
 import { Runner } from "#runner";
 import { Select } from "#select";
 import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
-import { FileWatcher, type WatchHandler, Watcher } from "#watch";
+import { FileWatcher, Watcher, type WatchHandler } from "#watch";
 
 export class Cli {
   #eventEmitter = new EventEmitter();

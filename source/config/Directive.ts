@@ -23,8 +23,7 @@ export interface DirectiveRange {
 export type DirectiveRanges = Array<DirectiveRange> & { sourceFile: ts.SourceFile };
 
 export class Directive {
-  static #commentSeparatorRegex = /--+/;
-  static #directiveRegex = /^(\/\/\s*@tstyche)(\s*|-)?(\S*)?(\s*)?(.*)?/i;
+  static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
 
   static getDirectiveRanges(compiler: typeof ts, sourceFile: ts.SourceFile, position = 0): DirectiveRanges | undefined {
     const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
@@ -65,10 +64,10 @@ export class Directive {
   }
 
   static #getRange(sourceFile: ts.SourceFile, comment: ts.CommentRange) {
-    const [text] = sourceFile.text.substring(comment.pos, comment.end).split(Directive.#commentSeparatorRegex);
-    const found = text?.match(Directive.#directiveRegex);
+    const [text] = sourceFile.text.substring(comment.pos, comment.end).split(/--+/);
+    const match = text?.match(Directive.#directiveRegex);
 
-    const namespaceText = found?.[1];
+    const namespaceText = match?.[1];
 
     if (!namespaceText) {
       return;
@@ -78,16 +77,16 @@ export class Directive {
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 
-    const directiveSeparatorText = found?.[2];
-    const directiveText = found?.[3];
+    const directiveSeparatorText = match?.[2];
+    const directiveText = match?.[3];
 
     if (typeof directiveText === "string" && typeof directiveSeparatorText === "string") {
       const start = range.namespace.end + directiveSeparatorText.length;
 
       range.directive = { start, end: start + directiveText.length, text: directiveText };
 
-      const argumentSeparatorText = found?.[4];
-      const argumentText = found?.[5]?.trimEnd();
+      const argumentSeparatorText = match?.[4];
+      const argumentText = match?.[5]?.trimEnd();
 
       if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
         const start = range.directive.end + argumentSeparatorText.length;

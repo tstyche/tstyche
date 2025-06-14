@@ -1,4 +1,0 @@
-[tools]
-hyperfine = "1.19.0"
-node = "lts"
-yarn = "latest"

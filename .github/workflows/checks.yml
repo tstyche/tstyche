@@ -124,12 +124,12 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
-        # TODO remove after Windows support is added to the 'mise-yarn' plugin
+        # TODO remove this override after Windows support is added to the 'mise-yarn' plugin
         with:
-          experimental: true
           mise_toml: |
-            [tools]
-            node = 'lts'
+            [settings]
+            disable_tools = ['yarn']
+            experimental = true
             [hooks]
             postinstall = 'corepack enable'
       - run: yarn install
@@ -156,10 +156,10 @@ jobs:
       - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
         # TODO remove after Windows support is added to the 'mise-yarn' plugin
         with:
-          experimental: true
           mise_toml: |
-            [tools]
-            node = 'lts'
+            [settings]
+            disable_tools = ['yarn']
+            experimental = true
             [hooks]
             postinstall = 'corepack enable'
       - run: yarn install

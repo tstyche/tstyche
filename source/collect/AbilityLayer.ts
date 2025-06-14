@@ -1,11 +1,12 @@
 import type ts from "typescript";
-import type { AssertionNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { diagnosticBelongsToNode, isDiagnosticWithLocation } from "#diagnostic";
 import type { ProjectService } from "#project";
-import type { WhenNode } from "./WhenNode.js";
+import type { AssertionNode } from "./AssertionNode.js";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
+import type { TestTree } from "./TestTree.js";
 import type { SuppressedError } from "./types.js";
+import type { WhenNode } from "./WhenNode.js";
 
 interface TextRange {
   start: number;
