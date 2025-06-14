@@ -11,8 +11,8 @@ import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
-import { WhenNode } from "./WhenNode.js";
 import type { SuppressedError, SuppressedErrors } from "./types.js";
+import { WhenNode } from "./WhenNode.js";
 
 export class CollectService {
   #abilityLayer: AbilityLayer;
