@@ -55,7 +55,7 @@ export class SuppressedService {
       }
 
       if (!messageText.includes(suppressedError.argument.text)) {
-        const text = [SuppressedDiagnosticText.messageDidNotMatch()];
+        const text = ["The diagnostic message did not match."];
 
         const origin = new DiagnosticOrigin(
           suppressedError.argument.start,
