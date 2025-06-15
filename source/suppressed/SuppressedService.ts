@@ -11,11 +11,7 @@ export class SuppressedService {
       }
 
       if (!suppressedError.argument?.text) {
-        const text = [
-          "Directive requires an argument.",
-          "Add a fragment of the expected error message after the directive.",
-          "To ignore the directive, append a '!' character after it.",
-        ];
+        const text = SuppressedDiagnosticText.directiveRequires();
 
         const origin = new DiagnosticOrigin(
           suppressedError.directive.start,
@@ -34,7 +30,7 @@ export class SuppressedService {
       ];
 
       if (suppressedError.diagnostics.length > 1) {
-        const text = ["Only a single error can be suppressed."];
+        const text = [SuppressedDiagnosticText.onlySingleError()];
 
         const origin = new DiagnosticOrigin(
           suppressedError.directive.start,
@@ -55,7 +51,7 @@ export class SuppressedService {
       }
 
       if (!messageText.includes(suppressedError.argument.text)) {
-        const text = ["The diagnostic message did not match."];
+        const text = [SuppressedDiagnosticText.messageDidNotMatch()];
 
         const origin = new DiagnosticOrigin(
           suppressedError.argument.start,
