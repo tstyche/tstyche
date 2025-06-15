@@ -1,0 +1,72 @@
+Error: The diagnostic message did not match.
+
+  1 | // @ts-expect-error Does not work
+    |                     ~~~~~~~~~~~~~
+  2 | console.log(add);
+  3 | 
+  4 | // @ts-expect-error: Does not work
+
+      at ./__typetests__/sample.tst.ts:1:21
+
+    The raised error:
+
+    Cannot find name 'add'. ts(2304)
+
+      1 | // @ts-expect-error Does not work
+      2 | console.log(add);
+        |             ~~~
+      3 | 
+      4 | // @ts-expect-error: Does not work
+      5 | console.log(add);
+
+          at ./__typetests__/sample.tst.ts:2:13
+
+Error: The diagnostic message did not match.
+
+  2 | console.log(add);
+  3 | 
+  4 | // @ts-expect-error: Does not work
+    |                      ~~~~~~~~~~~~~
+  5 | console.log(add);
+  6 | 
+  7 | // @ts-expect-error Does not work -- Only one error raised
+
+      at ./__typetests__/sample.tst.ts:4:22
+
+    The raised error:
+
+    Cannot find name 'add'. ts(2304)
+
+      3 | 
+      4 | // @ts-expect-error: Does not work
+      5 | console.log(add);
+        |             ~~~
+      6 | 
+      7 | // @ts-expect-error Does not work -- Only one error raised
+      8 | console.log(add);
+
+          at ./__typetests__/sample.tst.ts:5:13
+
+Error: The diagnostic message did not match.
+
+  5 | console.log(add);
+  6 | 
+  7 | // @ts-expect-error Does not work -- Only one error raised
+    |                     ~~~~~~~~~~~~~
+  8 | console.log(add);
+  9 | 
+
+      at ./__typetests__/sample.tst.ts:7:21
+
+    The raised error:
+
+    Cannot find name 'add'. ts(2304)
+
+      6 | 
+      7 | // @ts-expect-error Does not work -- Only one error raised
+      8 | console.log(add);
+        |             ~~~
+      9 | 
+
+          at ./__typetests__/sample.tst.ts:8:13
+

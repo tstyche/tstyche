@@ -33,7 +33,69 @@ console.log(add);
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-stdout`,
+      fileName: `${testFileName}-matches-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when message does not match", async () => {
+    const testFileText = `// @ts-expect-error Does not work
+console.log(add);
+
+// @ts-expect-error: Does not work
+console.log(add);
+
+// @ts-expect-error Does not work -- Only one error raised
+console.log(add);
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/sample.tst.ts"]: testFileText,
+      ["tstyche.config.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-does-not-match-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-does-not-match-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when check is disabled", async () => {
+    const testFileText = `// @ts-expect-error!
+console.log(add);
+
+// @ts-expect-error! Does not work
+console.log(add);
+
+// @ts-expect-error! Does not work
+console.log(add);
+
+// @ts-expect-error! Does not work -- Only one error raised
+console.log(add);
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/sample.tst.ts"]: testFileText,
+      ["tstyche.config.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-disabled-stdout`,
       testFileUrl: import.meta.url,
     });
 
