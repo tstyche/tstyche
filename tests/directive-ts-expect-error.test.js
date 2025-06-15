@@ -40,6 +40,37 @@ console.log(add);
     assert.equal(exitCode, 0);
   });
 
+  await t.test("when a blank line occurs in-between", async () => {
+    const testFileText = `// @ts-expect-error Cannot find name 'add'
+
+console.log(add);
+
+// @ts-expect-error: Cannot find name 'add'
+
+console.log(add);
+
+// @ts-expect-error Cannot find name 'add' -- Only one error raised
+
+console.log(add);
+`;
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/sample.tst.ts"]: testFileText,
+      ["tstyche.config.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-blank-line-in-between-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("when message does not match", async () => {
     const testFileText = `// @ts-expect-error Does not work
 console.log(add);
