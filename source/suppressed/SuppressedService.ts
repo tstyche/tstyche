@@ -24,8 +24,14 @@ export class SuppressedService {
         );
 
         onDiagnostics([Diagnostic.error(text, origin)]);
+
         continue;
       }
+
+      const related = [
+        Diagnostic.error(SuppressedDiagnosticText.suppressedError(suppressedError.diagnostics.length)),
+        ...Diagnostic.fromDiagnostics(suppressedError.diagnostics, suppressedErrors.sourceFile),
+      ];
 
       if (suppressedError.diagnostics.length > 1) {
         const text = ["Only a single error can be suppressed."];
@@ -36,12 +42,8 @@ export class SuppressedService {
           suppressedErrors.sourceFile,
         );
 
-        const related = [
-          Diagnostic.error(SuppressedDiagnosticText.suppressedError(suppressedError.diagnostics.length)),
-          ...Diagnostic.fromDiagnostics(suppressedError.diagnostics, suppressedErrors.sourceFile),
-        ];
-
         onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
+
         continue;
       }
 
@@ -60,11 +62,6 @@ export class SuppressedService {
           suppressedError.argument.end,
           suppressedErrors.sourceFile,
         );
-
-        const related = [
-          Diagnostic.error(SuppressedDiagnosticText.suppressedError()),
-          ...Diagnostic.fromDiagnostics(suppressedError.diagnostics, suppressedErrors.sourceFile),
-        ];
 
         onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
       }
