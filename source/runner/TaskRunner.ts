@@ -8,6 +8,7 @@ import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
 import { ProjectService } from "#project";
 import { TaskResult } from "#result";
+import { SuppressedService } from "#suppressed";
 import type { Task } from "#task";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
@@ -17,8 +18,9 @@ import { TestTreeWalker } from "./TestTreeWalker.js";
 export class TaskRunner {
   #collectService: CollectService;
   #compiler: typeof ts;
-  #resolvedConfig: ResolvedConfig;
   #projectService: ProjectService;
+  #resolvedConfig: ResolvedConfig;
+  #suppressedService = new SuppressedService();
 
   constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
@@ -83,6 +85,12 @@ export class TaskRunner {
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       runMode |= RunMode.Skip;
+    }
+
+    if (testTree.suppressedErrors != null) {
+      this.#suppressedService.match(testTree.suppressedErrors, (diagnostics) => {
+        this.#onDiagnostics(diagnostics, taskResult);
+      });
     }
 
     if (inlineConfig?.template) {

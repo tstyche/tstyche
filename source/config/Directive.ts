@@ -8,7 +8,7 @@ import { OptionGroup } from "./OptionGroup.enum.js";
 import { Target } from "./Target.js";
 import type { InlineConfig, OptionValue } from "./types.js";
 
-interface TextRange {
+export interface TextRange {
   start: number;
   end: number;
   text: string;

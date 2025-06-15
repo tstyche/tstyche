@@ -6,6 +6,11 @@
       "description": "Enable type error reporting for source files.",
       "type": "boolean"
     },
+    "checkSuppressedErrors": {
+      "default": false,
+      "description": "Check error messages provided with the '// @ts-expect-error' directives.",
+      "type": "boolean"
+    },
     "failFast": {
       "default": false,
       "description": "Stop running tests after the first failed assertion.",
