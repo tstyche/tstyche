@@ -1,0 +1,18 @@
+Error: The diagnostic message did not match.
+
+  1 | // @ts-expect-error Does not work
+    |                     ~~~~~~~~~~~~~
+  2 | console.log(add);
+
+      at ./__typetests__/sample.tst.ts:1:21
+
+    The raised error:
+
+    Cannot find name 'add'. ts(2304)
+
+      1 | // @ts-expect-error Does not work
+      2 | console.log(add);
+        |             ~~~
+
+          at ./__typetests__/sample.tst.ts:2:13
+
