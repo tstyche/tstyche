@@ -106,7 +106,7 @@ export class AbilityLayer {
           const suppressedError = this.#suppressedErrors?.get(line);
 
           if (suppressedError != null) {
-            suppressedError.diagnostic = diagnostic;
+            suppressedError.diagnostics.push(diagnostic);
             break;
           }
 

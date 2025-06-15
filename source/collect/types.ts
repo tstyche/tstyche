@@ -4,7 +4,7 @@ import type { TextRange } from "#config";
 export interface SuppressedError {
   directive: TextRange;
   argument?: TextRange;
-  diagnostic?: ts.Diagnostic;
+  diagnostics: Array<ts.Diagnostic>;
 }
 
 export type SuppressedErrors = Array<SuppressedError> & { sourceFile: ts.SourceFile };

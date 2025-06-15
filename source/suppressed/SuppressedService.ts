@@ -5,11 +5,6 @@ import { SuppressedDiagnosticText } from "./SuppressedDiagnosticText.js";
 export class SuppressedService {
   match(suppressedErrors: SuppressedErrors, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
     for (const suppressedError of suppressedErrors) {
-      if (!suppressedError.diagnostic) {
-        // must be already reported by the compiler
-        continue;
-      }
-
       if (!suppressedError.argument?.text) {
         const text = [
           "Directive requires an argument.",
@@ -27,7 +22,26 @@ export class SuppressedService {
         continue;
       }
 
-      let messageText = getDiagnosticMessageText(suppressedError.diagnostic);
+      if (suppressedError.diagnostics.length > 1) {
+        const text = ["Only a single error can be suppressed."];
+
+        const origin = new DiagnosticOrigin(
+          suppressedError.directive.start,
+          suppressedError.directive.end,
+          suppressedErrors.sourceFile,
+        );
+
+        const related = [
+          Diagnostic.error(SuppressedDiagnosticText.suppressedError(suppressedError.diagnostics.length)),
+          ...Diagnostic.fromDiagnostics(suppressedError.diagnostics, suppressedErrors.sourceFile),
+        ];
+
+        onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
+        continue;
+      }
+
+      // biome-ignore lint/style/noNonNullAssertion: the logic above makes sure there is only one diagnostic
+      let messageText = getDiagnosticMessageText(suppressedError.diagnostics[0]!);
 
       if (Array.isArray(messageText)) {
         messageText = messageText.join("\n");
@@ -43,8 +57,8 @@ export class SuppressedService {
         );
 
         const related = [
-          Diagnostic.error(SuppressedDiagnosticText.raisedError()),
-          ...Diagnostic.fromDiagnostics([suppressedError.diagnostic], suppressedErrors.sourceFile),
+          Diagnostic.error(SuppressedDiagnosticText.suppressedError()),
+          ...Diagnostic.fromDiagnostics(suppressedError.diagnostics, suppressedErrors.sourceFile),
         ];
 
         onDiagnostics([Diagnostic.error(text, origin).add({ related })]);

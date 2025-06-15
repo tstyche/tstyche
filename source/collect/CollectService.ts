@@ -47,6 +47,7 @@ export class CollectService {
 
       const range: SuppressedError = {
         directive: { start, end: start + directiveText.length, text: directiveText },
+        diagnostics: [],
       };
 
       if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
