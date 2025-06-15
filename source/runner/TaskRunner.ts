@@ -87,9 +87,11 @@ export class TaskRunner {
       runMode |= RunMode.Skip;
     }
 
-    // TODO bail out early when 'RunMode.Skip'
-
-    // TODO check suppressed errors here
+    if (testTree.suppressedErrors != null) {
+      this.#suppressedService.match(testTree.suppressedErrors, (diagnostics) => {
+        this.#onDiagnostics(diagnostics, taskResult);
+      });
+    }
 
     if (inlineConfig?.template) {
       // TODO testTree.children must be not allowed in template files
@@ -139,10 +141,6 @@ export class TaskRunner {
     const onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>> = (diagnostics) => {
       this.#onDiagnostics(diagnostics, taskResult);
     };
-
-    if (facts.testTree?.suppressedErrors != null) {
-      this.#suppressedService.match(facts.testTree.suppressedErrors, onTaskDiagnostics);
-    }
 
     const testTreeWalker = new TestTreeWalker(
       this.#compiler,
