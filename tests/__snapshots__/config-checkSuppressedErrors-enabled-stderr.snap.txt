@@ -6,7 +6,7 @@ Error: The diagnostic message did not match.
 
       at ./__typetests__/sample.tst.ts:1:21
 
-    The raised error:
+    The suppressed error:
 
     Cannot find name 'add'. ts(2304)
 
