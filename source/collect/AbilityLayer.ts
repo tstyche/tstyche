@@ -16,17 +16,51 @@ interface TextRange {
 
 export class AbilityLayer {
   #compiler: typeof ts;
+  #expectErrorRegex = /^( *)(\/\/ *@ts-expect-error)(!?)(:? *)(.*)?$/gim;
   #filePath = "";
   #nodes: Array<AssertionNode | WhenNode> = [];
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
-  #suppressedErrors: Map<number, SuppressedError> | undefined;
+  #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
   #text = "";
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#projectService = projectService;
     this.#resolvedConfig = resolvedConfig;
+  }
+
+  #collectSuppressedErrors() {
+    const ranges: Array<SuppressedError> = [];
+
+    for (const match of this.#text.matchAll(this.#expectErrorRegex)) {
+      const offsetText = match?.[1];
+      const directiveText = match?.[2];
+      const ignoreText = match?.[3];
+      const argumentSeparatorText = match?.[4];
+      const argumentText = match?.[5]?.split(/--+/)[0]?.trimEnd();
+
+      if (typeof offsetText !== "string" || !directiveText || ignoreText === "!") {
+        continue;
+      }
+
+      const start = match.index + offsetText.length;
+
+      const range: SuppressedError = {
+        directive: { start, end: start + directiveText.length, text: directiveText },
+        diagnostics: [],
+      };
+
+      if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
+        const start = range.directive.end + argumentSeparatorText.length;
+
+        range.argument = { start, end: start + argumentText.length, text: argumentText };
+      }
+
+      ranges.push(range);
+    }
+
+    return ranges;
   }
 
   #getErasedRangeText(range: TextRange) {
@@ -67,7 +101,7 @@ export class AbilityLayer {
   }
 
   close(): void {
-    if (this.#nodes.length > 0 || this.#suppressedErrors != null) {
+    if (this.#nodes.length > 0 || this.#suppressedErrorsMap != null) {
       this.#projectService.openFile(this.#filePath, this.#text, this.#resolvedConfig.rootPath);
 
       const languageService = this.#projectService.getLanguageService(this.#filePath);
@@ -103,7 +137,7 @@ export class AbilityLayer {
         let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
 
         while (line >= 0) {
-          const suppressedError = this.#suppressedErrors?.get(line);
+          const suppressedError = this.#suppressedErrorsMap?.get(line);
 
           if (suppressedError != null) {
             suppressedError.diagnostics.push(diagnostic);
@@ -122,7 +156,7 @@ export class AbilityLayer {
 
     this.#filePath = "";
     this.#nodes = [];
-    this.#suppressedErrors = undefined;
+    this.#suppressedErrorsMap = undefined;
     this.#text = "";
   }
 
@@ -200,27 +234,33 @@ export class AbilityLayer {
     }
   }
 
-  handleSuppressedErrors(testTree: TestTree): void {
-    if (!testTree.suppressedErrors) {
-      return;
+  #handleSuppressedErrors(testTree: TestTree) {
+    const suppressedErrors = this.#collectSuppressedErrors();
+
+    if (this.#resolvedConfig.checkSuppressedErrors) {
+      testTree.suppressedErrors = Object.assign(suppressedErrors, { sourceFile: testTree.sourceFile });
+
+      this.#suppressedErrorsMap = new Map();
     }
 
-    this.#suppressedErrors = new Map();
-
-    for (const suppressedError of testTree.suppressedErrors) {
+    for (const suppressedError of suppressedErrors) {
       const { start, end } = suppressedError.directive;
       const rangeText = this.#getErasedRangeText({ start: start + 2, end });
 
       this.#text = `${this.#text.slice(0, start + 2)}${rangeText}${this.#text.slice(end)}`;
 
-      const { line } = testTree.sourceFile.getLineAndCharacterOfPosition(start);
+      if (this.#suppressedErrorsMap != null) {
+        const { line } = testTree.sourceFile.getLineAndCharacterOfPosition(start);
 
-      this.#suppressedErrors.set(line, suppressedError);
+        this.#suppressedErrorsMap.set(line, suppressedError);
+      }
     }
   }
 
-  open(sourceFile: ts.SourceFile): void {
-    this.#filePath = sourceFile.fileName;
-    this.#text = sourceFile.text;
+  open(testTree: TestTree): void {
+    this.#filePath = testTree.sourceFile.fileName;
+    this.#text = testTree.sourceFile.text;
+
+    this.#handleSuppressedErrors(testTree);
   }
 }
