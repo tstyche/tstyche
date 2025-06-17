@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.2] - 2025-06-17
+
+### Fixed
+
+- Always erase the `// @ts-expect-error` directives in the ability layer ([#513](https://github.com/tstyche/tstyche/pull/513))
+
 ## [4.0.1] - 2025-06-14
 
 ### Fixed
@@ -740,6 +746,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.0.2]: https://github.com/tstyche/tstyche/releases/tag/v4.0.2
 [4.0.1]: https://github.com/tstyche/tstyche/releases/tag/v4.0.1
 [4.0.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0
 [4.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0-rc.1
