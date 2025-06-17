@@ -1,0 +1,36 @@
+Error: Expected 0 arguments, but got 1.
+
+  17 | 
+  18 |   // @ts-expect-error
+  19 |   expect(getPersonConstructor(true)).type.toBeConstructableWith("abc"); // fail
+     |                               ~~~~
+  20 | 
+  21 |   // @ts-expect-error
+  22 |   expect(getPersonConstructor(true)).type.toBeConstructableWith(123); // fail
+
+       at ./__typetests__/toBeCallableWith.tst.ts:19:31 ❭ handles '// @ts-expect-error' directive
+
+Error: Expected 0 arguments, but got 1.
+
+  20 | 
+  21 |   // @ts-expect-error
+  22 |   expect(getPersonConstructor(true)).type.toBeConstructableWith(123); // fail
+     |                               ~~~~
+  23 | });
+  24 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:22:31 ❭ handles '// @ts-expect-error' directive
+
+Error: Expression is not constructable with the given argument.
+
+Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  20 | 
+  21 |   // @ts-expect-error
+  22 |   expect(getPersonConstructor(true)).type.toBeConstructableWith(123); // fail
+     |                                                                 ~~~
+  23 | });
+  24 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:22:65 ❭ handles '// @ts-expect-error' directive
+
