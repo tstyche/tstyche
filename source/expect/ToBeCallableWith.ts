@@ -41,20 +41,21 @@ export class ToBeCallableWith {
 
     if (matchWorker.assertion.abilityDiagnostics) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
-        const text = [
-          ExpectDiagnosticText.isNotCallable(isExpression, targetText),
-          getDiagnosticMessageText(diagnostic),
-        ];
-
         let origin: DiagnosticOrigin;
+        const text: Array<string | Array<string>> = [];
 
-        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNodes)) {
+        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, sourceNode)) {
           origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), sourceNode.getSourceFile());
+
+          text.push(getDiagnosticMessageText(diagnostic));
         } else {
-          origin =
-            targetNodes.length > 0
-              ? DiagnosticOrigin.fromNodes(targetNodes)
-              : DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+          if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNodes)) {
+            origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), sourceNode.getSourceFile());
+          } else {
+            origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+          }
+
+          text.push(ExpectDiagnosticText.isNotCallable(isExpression, targetText), getDiagnosticMessageText(diagnostic));
         }
 
         let related: Array<Diagnostic> | undefined;

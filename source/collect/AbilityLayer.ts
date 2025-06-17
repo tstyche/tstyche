@@ -1,9 +1,11 @@
 import type ts from "typescript";
+import type { SourceFile } from "typescript";
 import type { AssertionNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { ProjectService } from "#project";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
+import type { SuppressedError } from "./types.js";
 import type { WhenNode } from "./WhenNode.js";
 
 interface TextRange {
@@ -14,6 +16,7 @@ interface TextRange {
 
 export class AbilityLayer {
   #compiler: typeof ts;
+  #expectErrorRegex = /^( *)(\/\/ *@ts-expect-error)(!?)(:? *)(.*)?$/gim;
   #filePath = "";
   #nodes: Array<AssertionNode | WhenNode> = [];
   #projectService: ProjectService;
@@ -24,6 +27,39 @@ export class AbilityLayer {
     this.#compiler = compiler;
     this.#projectService = projectService;
     this.#resolvedConfig = resolvedConfig;
+  }
+
+  #collectSuppressedErrors() {
+    const ranges: Array<SuppressedError> = [];
+
+    for (const match of this.#text.matchAll(this.#expectErrorRegex)) {
+      const offsetText = match?.[1];
+      const directiveText = match?.[2];
+      const ignoreText = match?.[3];
+      const argumentSeparatorText = match?.[4];
+      const argumentText = match?.[5]?.split(/--+/)[0]?.trimEnd();
+
+      if (typeof offsetText !== "string" || !directiveText || ignoreText === "!") {
+        continue;
+      }
+
+      const start = match.index + offsetText.length;
+
+      const range: SuppressedError = {
+        directive: { start, end: start + directiveText.length, text: directiveText },
+        diagnostics: [],
+      };
+
+      if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
+        const start = range.directive.end + argumentSeparatorText.length;
+
+        range.argument = { start, end: start + argumentText.length, text: argumentText };
+      }
+
+      ranges.push(range);
+    }
+
+    return ranges;
   }
 
   #getErasedRangeText(range: TextRange) {
@@ -165,8 +201,21 @@ export class AbilityLayer {
     }
   }
 
-  open(sourceFile: ts.SourceFile): void {
+  #handleSuppressedErrors() {
+    const suppressedErrors = this.#collectSuppressedErrors();
+
+    for (const suppressedError of suppressedErrors) {
+      const { start, end } = suppressedError.directive;
+      const rangeText = this.#getErasedRangeText({ start: start + 2, end });
+
+      this.#text = `${this.#text.slice(0, start + 2)}${rangeText}${this.#text.slice(end)}`;
+    }
+  }
+
+  open(sourceFile: SourceFile): void {
     this.#filePath = sourceFile.fileName;
     this.#text = sourceFile.text;
+
+    this.#handleSuppressedErrors();
   }
 }
