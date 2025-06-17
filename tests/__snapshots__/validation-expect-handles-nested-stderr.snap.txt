@@ -55,7 +55,7 @@ Error: Type 'number' is not the same as type 'string'.
   18 | }).type.toBe<void>();
   19 | 
 
-       at ./__typetests__/handles-nested.tst.ts:17:30 ❭ 
+       at ./__typetests__/handles-nested.tst.ts:17:30
 
 Error: Type '() => void' is not the same as type 'void'.
 
