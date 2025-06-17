@@ -45,12 +45,22 @@ export class ToBeCallableWith {
         const text: Array<string | Array<string>> = [];
 
         if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, sourceNode)) {
-          origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), sourceNode.getSourceFile());
+          origin = new DiagnosticOrigin(
+            diagnostic.start,
+            getTextSpanEnd(diagnostic),
+            sourceNode.getSourceFile(),
+            matchWorker.assertion,
+          );
 
           text.push(getDiagnosticMessageText(diagnostic));
         } else {
           if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNodes)) {
-            origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), sourceNode.getSourceFile());
+            origin = new DiagnosticOrigin(
+              diagnostic.start,
+              getTextSpanEnd(diagnostic),
+              sourceNode.getSourceFile(),
+              matchWorker.assertion,
+            );
           } else {
             origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
           }
@@ -61,7 +71,7 @@ export class ToBeCallableWith {
         let related: Array<Diagnostic> | undefined;
 
         if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation, sourceNode.getSourceFile());
         }
 
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));

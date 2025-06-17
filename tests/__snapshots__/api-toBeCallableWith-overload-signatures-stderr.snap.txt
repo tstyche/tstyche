@@ -150,5 +150,5 @@ Expected 1-3 arguments, but got 4.
   53 | });
   54 | 
 
-       at ./__typetests__/overload-signatures.tst.ts:51:53
+       at ./__typetests__/overload-signatures.tst.ts:51:53 ❭ when target is an expression ❭ is not callable with the given arguments
 

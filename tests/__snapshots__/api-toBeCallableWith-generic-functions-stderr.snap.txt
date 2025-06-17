@@ -96,7 +96,7 @@ Type 'string' is not assignable to type 'number'.
   46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
   47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:44:44
+       at ./__typetests__/generic-functions.tst.ts:44:44 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -110,7 +110,7 @@ Type 'string' is not assignable to type 'number'.
   46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
   47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:44:49
+       at ./__typetests__/generic-functions.tst.ts:44:49 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -124,7 +124,7 @@ Argument of type 'number[]' is not assignable to parameter of type '"zero"'.
   49 |     expect(getLonger).type.not.toBeCallableWith(1, 2);
   50 |     expect(getLonger).type.toBeCallableWith(1, 2); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:47:53
+       at ./__typetests__/generic-functions.tst.ts:47:53 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -138,5 +138,5 @@ Argument of type 'number' is not assignable to parameter of type '{ length: numb
   52 | });
   53 | 
 
-       at ./__typetests__/generic-functions.tst.ts:50:45
+       at ./__typetests__/generic-functions.tst.ts:50:45 ❭ when target is an expression ❭ is not callable with the given arguments
 

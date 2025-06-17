@@ -211,7 +211,7 @@ Type 'string' is not assignable to type 'boolean'.
   64 |     expect(leading).type.not.toBeCallableWith(...["one", "two"]);
   65 |     expect(leading).type.toBeCallableWith(...["one", "two"]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:62:43
+       at ./__typetests__/rest-parameters.tst.ts:62:43 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -227,7 +227,7 @@ Type 'string' is not assignable to type 'boolean'.
   67 |     expect(leading).type.not.toBeCallableWith(3, 4, true);
   68 |     expect(leading).type.toBeCallableWith(3, 4, true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:65:43
+       at ./__typetests__/rest-parameters.tst.ts:65:43 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -243,7 +243,7 @@ Type 'number' is not assignable to type 'string'.
   70 |     expect(leading).type.not.toBeCallableWith(...[3, 4], true);
   71 |     expect(leading).type.toBeCallableWith(...[3, 4], true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:68:43
+       at ./__typetests__/rest-parameters.tst.ts:68:43 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -259,7 +259,7 @@ Type 'number' is not assignable to type 'string'.
   73 |     expect(middle).type.not.toBeCallableWith("one", 2, 3);
   74 |     expect(middle).type.toBeCallableWith("one", 2, 3); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:71:43
+       at ./__typetests__/rest-parameters.tst.ts:71:43 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -275,7 +275,7 @@ Type 'number' is not assignable to type 'boolean'.
   76 |     expect(middle).type.not.toBeCallableWith(...["one", 2, 3]);
   77 |     expect(middle).type.toBeCallableWith(...["one", 2, 3]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:74:49
+       at ./__typetests__/rest-parameters.tst.ts:74:49 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -291,7 +291,7 @@ Type 'number' is not assignable to type 'boolean'.
   79 |     expect(middle).type.not.toBeCallableWith("one", "two", "three", true);
   80 |     expect(middle).type.toBeCallableWith("one", "two", "three", true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:77:42
+       at ./__typetests__/rest-parameters.tst.ts:77:42 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -307,7 +307,7 @@ Type 'string' is not assignable to type 'number'.
   82 |     expect(middle).type.not.toBeCallableWith(...["one", "two", "three", true]);
   83 |     expect(middle).type.toBeCallableWith(...["one", "two", "three", true]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:80:49
+       at ./__typetests__/rest-parameters.tst.ts:80:49 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -323,7 +323,7 @@ Type 'string' is not assignable to type 'number'.
   85 |     expect(trailing).type.not.toBeCallableWith("ten", "eleven");
   86 |     expect(trailing).type.toBeCallableWith("ten", "eleven"); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:83:42
+       at ./__typetests__/rest-parameters.tst.ts:83:42 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -337,7 +337,7 @@ Argument of type 'string' is not assignable to parameter of type 'boolean'.
   88 |     expect(trailing).type.not.toBeCallableWith(...["ten", "eleven"]);
   89 |     expect(trailing).type.toBeCallableWith(...["ten", "eleven"]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:86:44
+       at ./__typetests__/rest-parameters.tst.ts:86:44 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -351,7 +351,7 @@ Argument of type 'string' is not assignable to parameter of type 'boolean'.
   91 |     expect(trailing).type.not.toBeCallableWith(false, 10, 11);
   92 |     expect(trailing).type.toBeCallableWith(false, 10, 11); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:89:44
+       at ./__typetests__/rest-parameters.tst.ts:89:44 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -365,7 +365,7 @@ Argument of type 'number' is not assignable to parameter of type 'string'.
   94 |     expect(trailing).type.not.toBeCallableWith(false, ...[10, 11]);
   95 |     expect(trailing).type.toBeCallableWith(false, ...[10, 11]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:92:51
+       at ./__typetests__/rest-parameters.tst.ts:92:51 ❭ when target is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -379,5 +379,5 @@ Argument of type 'number' is not assignable to parameter of type 'string'.
   97 | });
   98 | 
 
-       at ./__typetests__/rest-parameters.tst.ts:95:51
+       at ./__typetests__/rest-parameters.tst.ts:95:51 ❭ when target is an expression ❭ is not callable with the given arguments
 
