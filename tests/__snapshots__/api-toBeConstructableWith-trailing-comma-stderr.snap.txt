@@ -29,11 +29,11 @@ Expected 2 arguments, but got 1.
   21 |   expect(
   22 |     Pair,
   23 |   ).type.toBeConstructableWith("nope"); // fail
-     |                                ~~~~~~
+     |          ~~~~~~~~~~~~~~~~~~~~~
   24 | });
   25 | 
 
-       at ./__typetests__/toBeConstructableWith.tst.ts:23:32
+       at ./__typetests__/toBeConstructableWith.tst.ts:23:10 ❭ Pair
 
     An argument for 'right' was not provided. ts(6210)
 

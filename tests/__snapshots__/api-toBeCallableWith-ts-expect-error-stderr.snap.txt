@@ -1,0 +1,36 @@
+Error: Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  10 | 
+  11 |   // @ts-expect-error
+  12 |   expect(concat(1)).type.toBeCallableWith("two"); // fail
+     |                 ~
+  13 | 
+  14 |   // @ts-expect-error
+  15 |   expect(concat(3)).type.toBeCallableWith(4); // fail
+
+       at ./__typetests__/toBeCallableWith.tst.ts:12:17 ❭ handles '// @ts-expect-error' directive
+
+Error: Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  13 | 
+  14 |   // @ts-expect-error
+  15 |   expect(concat(3)).type.toBeCallableWith(4); // fail
+     |                 ~
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:15:17 ❭ handles '// @ts-expect-error' directive
+
+Error: Expression is not callable with the given argument.
+
+Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  13 | 
+  14 |   // @ts-expect-error
+  15 |   expect(concat(3)).type.toBeCallableWith(4); // fail
+     |                                           ~
+  16 | });
+  17 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:15:43 ❭ handles '// @ts-expect-error' directive
+

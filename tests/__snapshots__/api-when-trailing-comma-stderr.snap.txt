@@ -22,7 +22,7 @@ Argument of type '"required"' is not assignable to parameter of type '"valid"'.
   14 |     pipe,
   15 |   ).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("nope")); // fail
 
-       at ./__typetests__/when.tst.ts:12:70
+       at ./__typetests__/when.tst.ts:12:70 ❭ pick
 
 Error: Expression is not callable with the given argument.
 
@@ -35,5 +35,5 @@ Argument of type '"nope"' is not assignable to parameter of type '"valid"'.
   16 | });
   17 | 
 
-       at ./__typetests__/when.tst.ts:15:70
+       at ./__typetests__/when.tst.ts:15:70 ❭ pick
 
