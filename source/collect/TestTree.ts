@@ -2,6 +2,7 @@ import type ts from "typescript";
 import { Directive, type DirectiveRanges } from "#config";
 import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTreeNode } from "./TestTreeNode.js";
+import type { SuppressedErrors } from "./types.js";
 import type { WhenNode } from "./WhenNode.js";
 
 export class TestTree {
@@ -9,6 +10,7 @@ export class TestTree {
   diagnostics: Set<ts.Diagnostic>;
   hasOnly = false;
   sourceFile: ts.SourceFile;
+  suppressedErrors: SuppressedErrors | undefined;
 
   constructor(diagnostics: Set<ts.Diagnostic>, sourceFile: ts.SourceFile) {
     this.diagnostics = diagnostics;

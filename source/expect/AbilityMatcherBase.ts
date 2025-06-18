@@ -41,7 +41,7 @@ export abstract class AbilityMatcherBase {
 
     const diagnostics: Array<Diagnostic> = [];
 
-    if (matchWorker.assertion.abilityDiagnostics) {
+    if (matchWorker.assertion.abilityDiagnostics.size > 0) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         let origin: DiagnosticOrigin;
         const text: Array<string | Array<string>> = [];

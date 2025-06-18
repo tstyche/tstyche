@@ -8,7 +8,7 @@ import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 export class WhenNode extends TestTreeNode {
   actionNode: ts.CallExpression;
   actionNameNode: ts.PropertyAccessExpression;
-  abilityDiagnostics: Set<ts.Diagnostic> | undefined;
+  abilityDiagnostics = new Set<ts.Diagnostic>();
   target: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>;
 
   constructor(

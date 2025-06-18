@@ -56,7 +56,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
 
     return {
       explain: () => this.explain(matchWorker, sourceNode, targetNodes),
-      isMatch: !matchWorker.assertion.abilityDiagnostics,
+      isMatch: matchWorker.assertion.abilityDiagnostics.size === 0,
     };
   }
 }

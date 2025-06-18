@@ -153,7 +153,7 @@ export class CollectService {
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);
 
-    this.#abilityLayer.open(sourceFile);
+    this.#abilityLayer.open(testTree);
     this.#identifierLookup.open();
 
     this.#collectTestTreeNodes(sourceFile, testTree, testTree);

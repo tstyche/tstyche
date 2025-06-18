@@ -22,6 +22,7 @@ export interface CommandLineOptions {
 
 export interface ConfigFileOptions {
   checkSourceFiles?: boolean;
+  checkSuppressedErrors?: boolean;
   failFast?: boolean;
   plugins?: Array<string>;
   rejectAnyType?: boolean;

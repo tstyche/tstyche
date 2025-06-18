@@ -1,10 +1,10 @@
 import type ts from "typescript";
-import type { SourceFile } from "typescript";
-import type { AssertionNode } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { diagnosticBelongsToNode } from "#diagnostic";
+import { diagnosticBelongsToNode, isDiagnosticWithLocation } from "#diagnostic";
 import type { ProjectService } from "#project";
+import type { AssertionNode } from "./AssertionNode.js";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
+import type { TestTree } from "./TestTree.js";
 import type { SuppressedError } from "./types.js";
 import type { WhenNode } from "./WhenNode.js";
 
@@ -21,12 +21,38 @@ export class AbilityLayer {
   #nodes: Array<AssertionNode | WhenNode> = [];
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
+  #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
   #text = "";
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#projectService = projectService;
     this.#resolvedConfig = resolvedConfig;
+  }
+
+  #addRanges(node: AssertionNode | WhenNode, ranges: Array<TextRange>): void {
+    this.#nodes.push(node);
+
+    for (const range of ranges) {
+      const rangeText =
+        range.replacement != null
+          ? `${range.replacement}${this.#getErasedRangeText(range).slice(range.replacement.length)}`
+          : this.#getErasedRangeText(range);
+
+      this.#text = `${this.#text.slice(0, range.start)}${rangeText}${this.#text.slice(range.end)}`;
+    }
+  }
+
+  #belongsToNode(diagnostic: ts.Diagnostic) {
+    for (const node of this.#nodes) {
+      if (diagnosticBelongsToNode(diagnostic, "matcherNode" in node ? node.matcherNode : node.actionNode)) {
+        node.abilityDiagnostics.add(diagnostic);
+
+        return true;
+      }
+    }
+
+    return false;
   }
 
   #collectSuppressedErrors() {
@@ -62,6 +88,38 @@ export class AbilityLayer {
     return ranges;
   }
 
+  close(): void {
+    if (this.#nodes.length > 0 || this.#suppressedErrorsMap != null) {
+      this.#projectService.openFile(this.#filePath, this.#text, this.#resolvedConfig.rootPath);
+
+      const languageService = this.#projectService.getLanguageService(this.#filePath);
+      const diagnostics = languageService?.getSemanticDiagnostics(this.#filePath);
+
+      if (diagnostics != null) {
+        this.#nodes.reverse();
+
+        for (const diagnostic of diagnostics) {
+          if (this.#belongsToNode(diagnostic)) {
+            continue;
+          }
+
+          this.#isSuppressed(diagnostic);
+        }
+      }
+    }
+
+    this.#filePath = "";
+    this.#nodes = [];
+    this.#suppressedErrorsMap = undefined;
+    this.#text = "";
+  }
+
+  #eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>, parent: AssertionNode | WhenNode) {
+    if (node.hasTrailingComma) {
+      this.#addRanges(parent, [{ start: node.end - 1, end: node.end }]);
+    }
+  }
+
   #getErasedRangeText(range: TextRange) {
     if (this.#text.indexOf("\n", range.start) >= range.end) {
       return " ".repeat(range.end - range.start);
@@ -84,76 +142,6 @@ export class AbilityLayer {
     }
 
     return text.join("");
-  }
-
-  #addRanges(node: AssertionNode | WhenNode, ranges: Array<TextRange>): void {
-    this.#nodes.push(node);
-
-    for (const range of ranges) {
-      const rangeText =
-        range.replacement != null
-          ? `${range.replacement}${this.#getErasedRangeText(range).slice(range.replacement.length)}`
-          : this.#getErasedRangeText(range);
-
-      this.#text = `${this.#text.slice(0, range.start)}${rangeText}${this.#text.slice(range.end)}`;
-    }
-  }
-
-  close(): void {
-    if (this.#nodes.length > 0) {
-      this.#projectService.openFile(this.#filePath, this.#text, this.#resolvedConfig.rootPath);
-
-      const languageService = this.#projectService.getLanguageService(this.#filePath);
-
-      const diagnostics = new Set(languageService?.getSemanticDiagnostics(this.#filePath));
-
-      for (const node of this.#nodes.reverse()) {
-        for (const diagnostic of diagnostics) {
-          if (diagnosticBelongsToNode(diagnostic, "matcherNode" in node ? node.matcherNode : node.actionNode)) {
-            if (!node.abilityDiagnostics) {
-              node.abilityDiagnostics = new Set();
-            }
-
-            node.abilityDiagnostics.add(diagnostic);
-
-            diagnostics.delete(diagnostic);
-          }
-        }
-      }
-    }
-
-    this.#filePath = "";
-    this.#nodes = [];
-    this.#text = "";
-  }
-
-  #eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>, parent: AssertionNode | WhenNode) {
-    if (node.hasTrailingComma) {
-      this.#addRanges(parent, [{ start: node.end - 1, end: node.end }]);
-    }
-  }
-
-  handleWhen(whenNode: WhenNode): void {
-    const whenStart = whenNode.node.getStart();
-    const whenExpressionEnd = whenNode.node.expression.getEnd();
-    const whenEnd = whenNode.node.getEnd();
-    const actionNameEnd = whenNode.actionNameNode.getEnd();
-
-    switch (whenNode.actionNameNode.name.text) {
-      case "isCalledWith":
-        this.#eraseTrailingComma(whenNode.target, whenNode);
-
-        this.#addRanges(whenNode, [
-          {
-            start: whenStart,
-            end: whenExpressionEnd,
-            replacement: nodeIsChildOfExpressionStatement(this.#compiler, whenNode.actionNode) ? ";" : "",
-          },
-          { start: whenEnd, end: actionNameEnd },
-        ]);
-
-        break;
-    }
   }
 
   handleAssertion(assertionNode: AssertionNode): void {
@@ -201,21 +189,83 @@ export class AbilityLayer {
     }
   }
 
-  #handleSuppressedErrors() {
+  #handleSuppressedErrors(testTree: TestTree) {
     const suppressedErrors = this.#collectSuppressedErrors();
+
+    if (this.#resolvedConfig.checkSuppressedErrors) {
+      testTree.suppressedErrors = Object.assign(suppressedErrors, { sourceFile: testTree.sourceFile });
+
+      this.#suppressedErrorsMap = new Map();
+    }
 
     for (const suppressedError of suppressedErrors) {
       const { start, end } = suppressedError.directive;
       const rangeText = this.#getErasedRangeText({ start: start + 2, end });
 
       this.#text = `${this.#text.slice(0, start + 2)}${rangeText}${this.#text.slice(end)}`;
+
+      if (this.#suppressedErrorsMap != null) {
+        const { line } = testTree.sourceFile.getLineAndCharacterOfPosition(start);
+
+        this.#suppressedErrorsMap.set(line, suppressedError);
+      }
     }
   }
 
-  open(sourceFile: SourceFile): void {
-    this.#filePath = sourceFile.fileName;
-    this.#text = sourceFile.text;
+  handleWhen(whenNode: WhenNode): void {
+    const whenStart = whenNode.node.getStart();
+    const whenExpressionEnd = whenNode.node.expression.getEnd();
+    const whenEnd = whenNode.node.getEnd();
+    const actionNameEnd = whenNode.actionNameNode.getEnd();
 
-    this.#handleSuppressedErrors();
+    switch (whenNode.actionNameNode.name.text) {
+      case "isCalledWith":
+        this.#eraseTrailingComma(whenNode.target, whenNode);
+
+        this.#addRanges(whenNode, [
+          {
+            start: whenStart,
+            end: whenExpressionEnd,
+            replacement: nodeIsChildOfExpressionStatement(this.#compiler, whenNode.actionNode) ? ";" : "",
+          },
+          { start: whenEnd, end: actionNameEnd },
+        ]);
+
+        break;
+    }
+  }
+
+  #isSuppressed(diagnostic: ts.Diagnostic) {
+    if (!isDiagnosticWithLocation(diagnostic)) {
+      return;
+    }
+
+    const { file, start } = diagnostic;
+
+    const lineMap = file.getLineStarts();
+    let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
+
+    while (line >= 0) {
+      const suppressedError = this.#suppressedErrorsMap?.get(line);
+
+      if (suppressedError != null) {
+        suppressedError.diagnostics.push(diagnostic);
+        break;
+      }
+
+      const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
+      if (lineText !== "" && !lineText.startsWith("//")) {
+        break;
+      }
+
+      line--;
+    }
+  }
+
+  open(testTree: TestTree): void {
+    this.#filePath = testTree.sourceFile.fileName;
+    this.#text = testTree.sourceFile.text;
+
+    this.#handleSuppressedErrors(testTree);
   }
 }
