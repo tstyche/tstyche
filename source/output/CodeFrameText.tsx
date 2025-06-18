@@ -12,7 +12,10 @@ function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
   const text: Array<string> = [];
 
   while ("name" in ancestor) {
-    text.push(ancestor.name);
+    if (ancestor.name !== "") {
+      text.push(ancestor.name);
+    }
+
     ancestor = ancestor.parent;
   }
 

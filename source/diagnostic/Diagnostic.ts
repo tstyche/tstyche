@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
-import { getDiagnosticMessageText } from "./helpers.js";
+import { getDiagnosticMessageText, getTextSpanEnd, isDiagnosticWithLocation } from "./helpers.js";
 
 export class Diagnostic {
   category: DiagnosticCategory;
@@ -41,18 +41,14 @@ export class Diagnostic {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
-      if (diagnostic.file != null && diagnostic.start != null && diagnostic.length != null) {
-        origin = new DiagnosticOrigin(
-          diagnostic.start,
-          diagnostic.start + diagnostic.length,
-          sourceFile ?? diagnostic.file,
-        );
+      if (isDiagnosticWithLocation(diagnostic)) {
+        origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), sourceFile ?? diagnostic.file);
       }
 
       let related: Array<Diagnostic> | undefined;
 
       if (diagnostic.relatedInformation != null) {
-        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation, sourceFile);
       }
 
       const text = getDiagnosticMessageText(diagnostic);

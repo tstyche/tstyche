@@ -82,6 +82,10 @@ export class ProjectService {
       defaultCompilerOptions.verbatimModuleSyntax = true;
     }
 
+    if (Version.isSatisfiedWith(this.#compiler.version, "5.6")) {
+      defaultCompilerOptions.noUncheckedSideEffectImports = true;
+    }
+
     return defaultCompilerOptions;
   }
 
