@@ -113,10 +113,6 @@ export class AbilityLayer {
       for (const node of this.#nodes.toReversed()) {
         for (const diagnostic of diagnostics) {
           if (diagnosticBelongsToNode(diagnostic, "matcherNode" in node ? node.matcherNode : node.actionNode)) {
-            if (!node.abilityDiagnostics) {
-              node.abilityDiagnostics = new Set();
-            }
-
             node.abilityDiagnostics.add(diagnostic);
 
             diagnostics.delete(diagnostic);

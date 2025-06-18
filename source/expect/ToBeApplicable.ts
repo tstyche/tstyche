@@ -53,7 +53,7 @@ export class ToBeApplicable {
 
     const diagnostics: Array<Diagnostic> = [];
 
-    if (matchWorker.assertion.abilityDiagnostics) {
+    if (matchWorker.assertion.abilityDiagnostics.size > 0) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [ExpectDiagnosticText.cannotBeApplied(targetText), getDiagnosticMessageText(diagnostic)];
 
@@ -95,7 +95,7 @@ export class ToBeApplicable {
 
     return {
       explain: () => this.#explain(matchWorker, sourceNode),
-      isMatch: !matchWorker.assertion.abilityDiagnostics,
+      isMatch: matchWorker.assertion.abilityDiagnostics.size === 0,
     };
   }
 }
