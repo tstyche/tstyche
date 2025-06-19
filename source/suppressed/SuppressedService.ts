@@ -5,8 +5,8 @@ import { SuppressedDiagnosticText } from "./SuppressedDiagnosticText.js";
 export class SuppressedService {
   match(suppressedErrors: SuppressedErrors, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
     for (const suppressedError of suppressedErrors) {
-      if (suppressedError.diagnostics.length === 0) {
-        // must be already reported by the compiler
+      if (suppressedError.diagnostics.length === 0 || suppressedError.ignore) {
+        // directive is unused or ignored
         continue;
       }
 

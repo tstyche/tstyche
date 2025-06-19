@@ -65,7 +65,7 @@ export class AbilityLayer {
       const argumentSeparatorText = match?.[4];
       const argumentText = match?.[5]?.split(/--+/)[0]?.trimEnd();
 
-      if (typeof offsetText !== "string" || !directiveText || ignoreText === "!") {
+      if (typeof offsetText !== "string" || !directiveText) {
         continue;
       }
 
@@ -73,6 +73,7 @@ export class AbilityLayer {
 
       const range: SuppressedError = {
         directive: { start, end: start + directiveText.length, text: directiveText },
+        ignore: ignoreText === "!",
         diagnostics: [],
       };
 
