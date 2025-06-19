@@ -48,7 +48,7 @@ export class Diagnostic {
       let related: Array<Diagnostic> | undefined;
 
       if (diagnostic.relatedInformation != null) {
-        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation, sourceFile);
+        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
       }
 
       const text = getDiagnosticMessageText(diagnostic);

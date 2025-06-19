@@ -6,8 +6,8 @@ test("is string?", () => {
 });
 
 test("is not supported?", () => {
-  // @ts-expect-error
+  // @ts-expect-error!
   expect<string>().type.toBeSupported();
-  // @ts-expect-error
+  // @ts-expect-error!
   expect<number>().type.not.toBeSupported();
 });

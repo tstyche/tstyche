@@ -8,9 +8,9 @@ const isRejectedText = `import { describe, expect, test } from "tstyche";
 
 describe("argument for 'source'", () => {
   test("rejects the 'any' type", () => {
-    // @ts-expect-error missing import test
+    // @ts-expect-error! Missing import
     expect(getResult("sample")).type.toBe<Result<string>>(); // rejected
-    // @ts-expect-error missing import test
+    // @ts-expect-error! Missing import
     expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
   });
 
@@ -50,9 +50,9 @@ describe("type argument for 'Source'", () => {
 
 describe("argument for 'target'", () => {
   test("rejects the 'any' type", () => {
-    // @ts-expect-error missing import test
+    // @ts-expect-error! Missing import
     expect<string>().type.toBeAssignableWith(getResult("sample")); // rejected
-    // @ts-expect-error missing import test
+    // @ts-expect-error! Missing import
     expect<number>().type.not.toBe(getResult(123)); // rejected
   });
 
