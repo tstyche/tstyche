@@ -55,6 +55,33 @@ export class AbilityLayer {
     return false;
   }
 
+  #belongsToDirective(diagnostic: ts.Diagnostic) {
+    if (!isDiagnosticWithLocation(diagnostic)) {
+      return;
+    }
+
+    const { file, start } = diagnostic;
+
+    const lineMap = file.getLineStarts();
+    let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
+
+    while (line >= 0) {
+      const suppressedError = this.#suppressedErrorsMap?.get(line);
+
+      if (suppressedError != null) {
+        suppressedError.diagnostics.push(diagnostic);
+        break;
+      }
+
+      const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
+      if (lineText !== "" && !lineText.startsWith("//")) {
+        break;
+      }
+
+      line--;
+    }
+  }
+
   #collectSuppressedErrors() {
     const ranges: Array<SuppressedError> = [];
 
@@ -104,7 +131,7 @@ export class AbilityLayer {
             continue;
           }
 
-          this.#isSuppressed(diagnostic);
+          this.#belongsToDirective(diagnostic);
         }
       }
     }
@@ -233,33 +260,6 @@ export class AbilityLayer {
         ]);
 
         break;
-    }
-  }
-
-  #isSuppressed(diagnostic: ts.Diagnostic) {
-    if (!isDiagnosticWithLocation(diagnostic)) {
-      return;
-    }
-
-    const { file, start } = diagnostic;
-
-    const lineMap = file.getLineStarts();
-    let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
-
-    while (line >= 0) {
-      const suppressedError = this.#suppressedErrorsMap?.get(line);
-
-      if (suppressedError != null) {
-        suppressedError.diagnostics.push(diagnostic);
-        break;
-      }
-
-      const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
-      if (lineText !== "" && !lineText.startsWith("//")) {
-        break;
-      }
-
-      line--;
     }
   }
 
