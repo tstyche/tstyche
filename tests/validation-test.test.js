@@ -11,13 +11,13 @@ await test("test", async (t) => {
   await t.test("handles nested 'describe' or 'test'", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-handles-nested-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-handles-nested-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-handles-nested-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-handles-nested-stdout`,
       testFileUrl: import.meta.url,
     });
 

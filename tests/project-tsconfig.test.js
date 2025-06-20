@@ -46,12 +46,13 @@ test("'useUnknownInCatchVariables': false", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-sets-default-compiler-options`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

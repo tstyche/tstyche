@@ -19,13 +19,13 @@ await test("toBeCallableWith", async (t) => {
   await t.test("parameter arity", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["parameter-arity.tst.ts"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-parameter-arity-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-parameter-arity-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-parameter-arity-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-parameter-arity-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -35,13 +35,13 @@ await test("toBeCallableWith", async (t) => {
   await t.test("generic functions", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["generic-functions.tst.ts"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-generic-functions-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-generic-functions-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-generic-functions-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-generic-functions-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -51,13 +51,13 @@ await test("toBeCallableWith", async (t) => {
   await t.test("overload signatures", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overload-signatures.tst.ts"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-overload-signatures-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-overload-signatures-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-overload-signatures-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overload-signatures-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -67,13 +67,13 @@ await test("toBeCallableWith", async (t) => {
   await t.test("rest parameters", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["rest-parameters.tst.ts"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-rest-parameters-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-rest-parameters-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-rest-parameters-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-rest-parameters-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -110,12 +110,12 @@ test("pickLonger()", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-missing-semicolons-stdout`,
       testFileUrl: import.meta.url,
     });
-
-    assert.equal(stderr, "");
 
     assert.equal(exitCode, 0);
   });
@@ -151,13 +151,13 @@ test("handles trailing comma?", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-trailing-comma-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-trailing-comma-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-trailing-comma-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-trailing-comma-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -195,13 +195,13 @@ test("handles '// @ts-expect-error' directive", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-ts-expect-error-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-ts-expect-error-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-ts-expect-error-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-ts-expect-error-stdout`,
       testFileUrl: import.meta.url,
     });
 

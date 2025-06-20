@@ -45,12 +45,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-default-patterns-typetests-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -70,12 +71,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-default-patterns-tst-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   });
@@ -98,12 +100,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -126,12 +129,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-with-all-extensions-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -147,12 +151,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-start-with-dot-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -172,12 +177,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-dot-paths-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -196,12 +202,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-node_modules-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -219,12 +226,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-symbolic-links`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -241,12 +249,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-empty-list-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   });
@@ -269,12 +278,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-question-mark-matches-any-single-character`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -291,12 +301,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-question-mark-does-not-match-path-separators`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -314,12 +325,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-question-mark-does-not-select-dot-paths`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -336,12 +348,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-question-mark-does-not-select-node_modules-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   });
@@ -364,12 +377,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-single-asterisk-matches-zero-or-more-characters`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -387,12 +401,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-single-asterisk-does-not-match-path-separators`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -410,12 +425,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-single-asterisk-does-not-select-dot-paths`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -432,12 +448,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-single-asterisk-does-not-select-node_modules-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   });
@@ -465,12 +482,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-double-asterisk-matches-zero-or-more-characters`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -489,12 +507,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-double-asterisk-does-not-select-dot-paths`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -512,12 +531,13 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-double-asterisk-does-not-select-node_modules-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   });

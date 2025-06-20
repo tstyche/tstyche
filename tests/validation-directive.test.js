@@ -11,13 +11,13 @@ await test("directive", async (t) => {
   await t.test("handles not supported directives", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["directive-not-supported"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-handles-not-supported-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-handles-not-supported-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-handles-not-supported-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-handles-not-supported-stdout`,
       testFileUrl: import.meta.url,
     });
 

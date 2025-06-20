@@ -25,13 +25,12 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-cannot-start-with-slash`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -43,13 +42,12 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-cannot-start-with-dot-dot-slash`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -66,13 +64,12 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -88,13 +85,12 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-list-item-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

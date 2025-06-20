@@ -46,12 +46,13 @@ test("internal is string?", () => {
     const args = ["--only", "external"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-test-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -80,12 +81,13 @@ test("internal is string?", () => {
     const args = ["--only", "external"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-describe-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -112,12 +114,13 @@ test("internal is string?", () => {
     const args = ["--only", "external"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-test-skip-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -144,12 +147,13 @@ test("internal is string?", () => {
     const args = ["--only", "external", "--skip", "number"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -176,12 +180,13 @@ test("internal is string?", () => {
     const args = ["dummy", "--only", "external"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -208,12 +213,13 @@ test("internal is string?", () => {
     const args = ["--only", "external", "dummy"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

@@ -17,13 +17,13 @@ await test("toBeAssignableWith", async (t) => {
   await t.test("toBeAssignableWith", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
       testFileUrl: import.meta.url,
     });
 

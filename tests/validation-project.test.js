@@ -36,13 +36,13 @@ await test("TSConfig", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-tsconfig-errors-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-tsconfig-errors-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-tsconfig-errors-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-tsconfig-errors-stdout`,
       testFileUrl: import.meta.url,
     });
 

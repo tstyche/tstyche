@@ -17,11 +17,12 @@ await test("'rootPath' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(normalizeOutput(stdout), {
       rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-rootPath",
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -40,12 +41,13 @@ await test("'rootPath' configuration file option", async (t) => {
       "--showConfig",
     ]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(normalizeOutput(stdout), {
       configFilePath: "<<basePath>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
       rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-rootPath/config",
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -64,12 +66,13 @@ await test("'rootPath' configuration file option", async (t) => {
       "--showConfig",
     ]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(normalizeOutput(stdout), {
       configFilePath: "<<basePath>>/tests/__fixtures__/.generated/config-rootPath/config/tstyche.json",
       rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-rootPath",
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

@@ -23,12 +23,12 @@ await test("'tstyche' command", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--check", "--quick", "-t"]);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-unknown-options-stderr`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });
@@ -40,12 +40,12 @@ await test("'tstyche' command", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-no-test-files-stderr`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });
@@ -57,12 +57,12 @@ await test("'tstyche' command", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["sample"]);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-no-test-files-selected-stderr`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });

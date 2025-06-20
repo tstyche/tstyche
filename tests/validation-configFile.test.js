@@ -31,12 +31,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-unknown-options`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });
@@ -53,12 +53,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });
@@ -76,12 +76,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-handles-tabs`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });
@@ -95,12 +95,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-handles-crlf`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });
@@ -115,12 +115,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-      assert.equal(stdout, "");
-
       await assert.matchSnapshot(stderr, {
         fileName: `${testFileName}-syntax-errors-root-brace`,
         testFileUrl: import.meta.url,
       });
+
+      assert.equal(stdout, "");
 
       assert.equal(exitCode, 1);
     });
@@ -137,12 +137,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-      assert.equal(stdout, "");
-
       await assert.matchSnapshot(stderr, {
         fileName: `${testFileName}-syntax-errors-option-name`,
         testFileUrl: import.meta.url,
       });
+
+      assert.equal(stdout, "");
 
       assert.equal(exitCode, 1);
     });
@@ -160,12 +160,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-      assert.equal(stdout, "");
-
       await assert.matchSnapshot(stderr, {
         fileName: `${testFileName}-syntax-errors-unquoted-values`,
         testFileUrl: import.meta.url,
       });
+
+      assert.equal(stdout, "");
 
       assert.equal(exitCode, 1);
     });
@@ -181,12 +181,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-      assert.equal(stdout, "");
-
       await assert.matchSnapshot(stderr, {
         fileName: `${testFileName}-syntax-errors-closing-brace`,
         testFileUrl: import.meta.url,
       });
+
+      assert.equal(stdout, "");
 
       assert.equal(exitCode, 1);
     });
@@ -204,12 +204,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-      assert.equal(stdout, "");
-
       await assert.matchSnapshot(stderr, {
         fileName: `${testFileName}-syntax-errors-opening-bracket`,
         testFileUrl: import.meta.url,
       });
+
+      assert.equal(stdout, "");
 
       assert.equal(exitCode, 1);
     });
@@ -227,12 +227,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-      assert.equal(stdout, "");
-
       await assert.matchSnapshot(stderr, {
         fileName: `${testFileName}-syntax-errors-closing-bracket`,
         testFileUrl: import.meta.url,
       });
+
+      assert.equal(stdout, "");
 
       assert.equal(exitCode, 1);
     });
@@ -250,12 +250,12 @@ unexpected
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-      assert.equal(stdout, "");
-
       await assert.matchSnapshot(stderr, {
         fileName: `${testFileName}-syntax-unexpected-trailing-token`,
         testFileUrl: import.meta.url,
       });
+
+      assert.equal(stdout, "");
 
       assert.equal(exitCode, 1);
     });
@@ -272,8 +272,6 @@ await test("'--config' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config"]);
 
-    assert.equal(stdout, "");
-
     assert.equal(
       stderr,
       [
@@ -284,6 +282,8 @@ await test("'--config' command line option", async (t) => {
         "",
       ].join("\n"),
     );
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });
