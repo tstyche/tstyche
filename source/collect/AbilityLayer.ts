@@ -5,6 +5,7 @@ import type { ProjectService } from "#project";
 import type { AssertionNode } from "./AssertionNode.js";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
 import type { TestTree } from "./TestTree.js";
+import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { SuppressedError } from "./types.js";
 import type { WhenNode } from "./WhenNode.js";
 
@@ -43,9 +44,27 @@ export class AbilityLayer {
     }
   }
 
-  #belongsToNode(diagnostic: ts.Diagnostic) {
+  #belongsToNode(node: AssertionNode | WhenNode, diagnostic: ts.Diagnostic) {
+    switch (node.brand) {
+      case TestTreeNodeBrand.Expect:
+        return (
+          diagnosticBelongsToNode(diagnostic, (node as AssertionNode).matcherNode) &&
+          !diagnosticBelongsToNode(diagnostic, (node as AssertionNode).source)
+        );
+
+      case TestTreeNodeBrand.When:
+        return (
+          diagnosticBelongsToNode(diagnostic, (node as WhenNode).actionNode) &&
+          !diagnosticBelongsToNode(diagnostic, (node as WhenNode).target)
+        );
+    }
+
+    return false;
+  }
+
+  #mapToNodes(diagnostic: ts.Diagnostic) {
     for (const node of this.#nodes) {
-      if (diagnosticBelongsToNode(diagnostic, "matcherNode" in node ? node.matcherNode : node.actionNode)) {
+      if (this.#belongsToNode(node, diagnostic)) {
         node.abilityDiagnostics.add(diagnostic);
 
         return true;
@@ -55,7 +74,7 @@ export class AbilityLayer {
     return false;
   }
 
-  #belongsToDirective(diagnostic: ts.Diagnostic) {
+  #mapToDirectives(diagnostic: ts.Diagnostic) {
     if (!isDiagnosticWithLocation(diagnostic)) {
       return;
     }
@@ -127,11 +146,11 @@ export class AbilityLayer {
         this.#nodes.reverse();
 
         for (const diagnostic of diagnostics) {
-          if (this.#belongsToNode(diagnostic)) {
+          if (this.#mapToNodes(diagnostic)) {
             continue;
           }
 
-          this.#belongsToDirective(diagnostic);
+          this.#mapToDirectives(diagnostic);
         }
       }
     }

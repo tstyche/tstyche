@@ -43,37 +43,25 @@ export abstract class AbilityMatcherBase {
 
     if (matchWorker.assertion.abilityDiagnostics.size > 0) {
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
-        let origin: DiagnosticOrigin;
-        const text: Array<string | Array<string>> = [];
+        const text = [this.explainNotText(isExpression, targetText), getDiagnosticMessageText(diagnostic)];
 
-        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, sourceNode)) {
+        let origin: DiagnosticOrigin;
+
+        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNodes)) {
           origin = new DiagnosticOrigin(
             diagnostic.start,
             getTextSpanEnd(diagnostic),
             sourceNode.getSourceFile(),
             matchWorker.assertion,
           );
-
-          text.push(getDiagnosticMessageText(diagnostic));
         } else {
-          if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNodes)) {
-            origin = new DiagnosticOrigin(
-              diagnostic.start,
-              getTextSpanEnd(diagnostic),
-              sourceNode.getSourceFile(),
-              matchWorker.assertion,
-            );
-          } else {
-            origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
-          }
-
-          text.push(this.explainNotText(isExpression, targetText), getDiagnosticMessageText(diagnostic));
+          origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
         }
 
         let related: Array<Diagnostic> | undefined;
 
         if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation, sourceNode.getSourceFile());
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
         }
 
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
