@@ -3,7 +3,7 @@ export class SuppressedDiagnosticText {
     return [
       "Directive requires an argument.",
       "Add a fragment of the expected error message after the directive.",
-      "To ignore the directive, append a '!' character after it.",
+      "To ignore the directive, append the '!' character after it.",
     ];
   }
 
