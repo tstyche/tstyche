@@ -1,0 +1,17 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toHaveCallSignatures.tst.ts
+  when source is a type
+    when target is omitted
+      × has call signatures
+      × does NOT have call signatures
+  when source is an expression
+    when target is omitted
+      × has call signatures
+      × does NOT have call signatures
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      4 failed, 4 total
+Assertions: 6 failed, 6 passed, 12 total
+Duration:   <<timestamp>>
