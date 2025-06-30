@@ -334,16 +334,16 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-en-gb-mit@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "@cspell/dict-en-gb-mit@npm:3.1.1"
-  checksum: 10c0/cbb379e0013911cdd7caea6a46e0b2d1081da8ac9ea56d805d55e96f29cfb0a5e9e355b1c64ca1546d8f2a10a7c1f5a7372097bdcd97a8583b55f076a094e9d8
+  version: 3.1.2
+  resolution: "@cspell/dict-en-gb-mit@npm:3.1.2"
+  checksum: 10c0/91fbae9f2a40da317ad3b29a2f21c56467e5aaae5509fe2949a11ae2a54e2392942d461dfaca5a1e1009c30d8e0f1ec7338b6b4a9936b52de9b90fee27c7ff64
   languageName: node
   linkType: hard
 
 "@cspell/dict-en_us@npm:^4.4.11":
-  version: 4.4.11
-  resolution: "@cspell/dict-en_us@npm:4.4.11"
-  checksum: 10c0/6e26e65ff10102ad1c65d1d7d8e20ec879a65e62bdbf72fd90edccb343ece122720c16b65bd5eebd49e58c689aa67058f11eccd1cdce0f4ca952b2366ac52e71
+  version: 4.4.12
+  resolution: "@cspell/dict-en_us@npm:4.4.12"
+  checksum: 10c0/07be86111bcf3da24490191320505023f5a2853352f1ac8ba141577f648df462cbfaf100aecb3452a81c7740f010735477106e0e436b23e6b6d12d7e72f3c7c6
   languageName: node
   linkType: hard
 
@@ -514,9 +514,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.2.7":
-  version: 5.2.7
-  resolution: "@cspell/dict-npm@npm:5.2.7"
-  checksum: 10c0/b33f24f4aebbeb9548e660bed24ea81f72b0136f04c7bb730d2b05b9aa463cd5004e2c87daf64dd691bf4c2f4af813314fe4fa25b0a30f6f633aa33c25225db1
+  version: 5.2.8
+  resolution: "@cspell/dict-npm@npm:5.2.8"
+  checksum: 10c0/82750319260300e0fca1445e51bdb722ad0c80afdba4df098a37e8ad66f240513cb348279013e5808fdbcc5515d5b82272c895ccc214f2d28984d961839f5ae9
   languageName: node
   linkType: hard
 
@@ -586,9 +586,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "@cspell/dict-software-terms@npm:5.1.1"
-  checksum: 10c0/e1467548852e58bb7850f5493cc284c2d2e52583ca115ebcd5a5a0027038b414634bff20306b773187e0ed3da21b96cba87c0d208672d62861d157ce72d782f7
+  version: 5.1.2
+  resolution: "@cspell/dict-software-terms@npm:5.1.2"
+  checksum: 10c0/959af4d079303bb28b5584eb439f71844bb5aad208f03157f4fe18b6b1d27283a9dde6393a2c2cee0038b01fa3174e03294bb922cbaced8f960a00068f81a025
   languageName: node
   linkType: hard
 
@@ -689,9 +689,9 @@ __metadata:
   linkType: hard
 
 "@jridgewell/sourcemap-codec@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@jridgewell/sourcemap-codec@npm:1.5.0"
-  checksum: 10c0/2eb864f276eb1096c3c11da3e9bb518f6d9fc0023c78344cdc037abadc725172c70314bdb360f2d4b7bffec7f5d657ce006816bc5d4ecb35e61b66132db00c18
+  version: 1.5.1
+  resolution: "@jridgewell/sourcemap-codec@npm:1.5.1"
+  checksum: 10c0/e06b12ef3d58e988635511199da1e4f4870ea6561727b1265f3cd0e91e4b1d0efbfa12670bc83e00412da132b69ce943f292f1295246c099763646ba549cd957
   languageName: node
   linkType: hard
 
