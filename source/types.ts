@@ -138,6 +138,10 @@ interface Matchers {
    */
   toBeConstructableWith: (...target: Array<unknown>) => void;
   /**
+   * Checks if the source type has given signatures.
+   */
+  toHaveCallSignatures: <Target>() => void;
+  /**
    * Checks if a property key exists on the source type.
    */
   toHaveProperty: (key: string | number | symbol) => void;
