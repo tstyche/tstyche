@@ -3,7 +3,7 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import { GlobPattern } from "./GlobPattern.js";
+import { GlobService } from "./GlobService.js";
 import { SelectDiagnosticText } from "./SelectDiagnosticText.js";
 
 interface FileSystemEntryMeta {
@@ -52,8 +52,8 @@ export class Select {
 
     if (!matchPatterns) {
       matchPatterns = {
-        includedDirectory: GlobPattern.toRegex(globPatterns, "directories"),
-        includedFile: GlobPattern.toRegex(globPatterns, "files"),
+        includedDirectory: GlobService.toRegex(globPatterns, "directories"),
+        includedFile: GlobService.toRegex(globPatterns, "files"),
       };
 
       Select.#patternsCache.set(globPatterns, matchPatterns);
