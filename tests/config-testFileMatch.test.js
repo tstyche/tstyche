@@ -541,4 +541,129 @@ await test("'testFileMatch' configuration file option", async (t) => {
       assert.equal(exitCode, 0);
     });
   });
+
+  await t.test("brace expansion", async (t) => {
+    await t.test("single braces", async () => {
+      const config = {
+        testFileMatch: ["tests/*.{ts,tsx}"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["tests/isNumber.ts"]: isNumberTestText,
+        ["tests/isString.tsx"]: isStringTestText,
+        ["tests/sample.js"]: "",
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stderr, "");
+
+      await assert.matchSnapshot(normalizeOutput(stdout), {
+        fileName: `${testFileName}-single-braces-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 0);
+    });
+
+    await t.test("multiple braces", async () => {
+      const config = {
+        testFileMatch: ["{one,two}/*.{ts,tsx}"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["one/isNumber.tsx"]: isNumberTestText,
+        ["one/isString.ts"]: isStringTestText,
+        ["one/sample.js"]: "",
+        ["two/isNumber.tsx"]: isNumberTestText,
+        ["two/isString.ts"]: isStringTestText,
+        ["two/sample.js"]: "",
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stderr, "");
+
+      await assert.matchSnapshot(normalizeOutput(stdout), {
+        fileName: `${testFileName}-multiple-braces-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 0);
+    });
+
+    await t.test("nested braces", async () => {
+      const config = {
+        testFileMatch: ["tests/*.{js,ts{,x}}"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["tests/isNumber.tsx"]: isNumberTestText,
+        ["tests/isString.ts"]: isStringTestText,
+        ["tests/sample.js"]: "",
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stderr, "");
+
+      await assert.matchSnapshot(normalizeOutput(stdout), {
+        fileName: `${testFileName}-nested-braces-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 0);
+    });
+
+    await t.test("when missing the closing brace", async () => {
+      const config = {
+        testFileMatch: ["tests/*.{ts,tsx"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["tests/isNumber.tsx"]: isNumberTestText,
+        ["tests/isString.ts"]: isStringTestText,
+        ["tests/sample.js"]: "",
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      await assert.matchSnapshot(normalizeOutput(stderr), {
+        fileName: `${testFileName}-closing-brace-missing-stderr`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(stdout, "");
+
+      assert.equal(exitCode, 1);
+    });
+
+    await t.test("when nested braces is missing the closing brace", async () => {
+      const config = {
+        testFileMatch: ["tests/*.{js,ts{,x}"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["tests/isNumber.tsx"]: isNumberTestText,
+        ["tests/isString.ts"]: isStringTestText,
+        ["tests/sample.js"]: "",
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      await assert.matchSnapshot(normalizeOutput(stderr), {
+        fileName: `${testFileName}-nested-closing-brace-missing-stderr`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(stdout, "");
+
+      assert.equal(exitCode, 1);
+    });
+  });
 });
