@@ -618,6 +618,31 @@ await test("'testFileMatch' configuration file option", async (t) => {
       assert.equal(exitCode, 0);
     });
 
+    await t.test("braces that span several segments of a path", async () => {
+      const config = {
+        testFileMatch: ["{one/,two/}*.ts"],
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["one/isNumber.tsx"]: isNumberTestText,
+        ["one/isString.ts"]: isStringTestText,
+        ["two/isNumber.tsx"]: isNumberTestText,
+        ["two/isString.ts"]: isStringTestText,
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      assert.equal(stderr, "");
+
+      await assert.matchSnapshot(normalizeOutput(stdout), {
+        fileName: `${testFileName}-braces-span-several-segments-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 0);
+    });
+
     await t.test("when missing the closing brace", async () => {
       const config = {
         testFileMatch: ["tests/*.{ts,tsx"],
