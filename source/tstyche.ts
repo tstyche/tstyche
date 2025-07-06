@@ -6,6 +6,7 @@ export * from "#ensure";
 export * from "#environment";
 export * from "#events";
 export * from "#expect";
+export * from "#glob";
 export * from "#handlers";
 export * from "#input";
 export * from "#output";
