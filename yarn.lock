@@ -514,9 +514,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.2.9":
-  version: 5.2.9
-  resolution: "@cspell/dict-npm@npm:5.2.9"
-  checksum: 10c0/dada4658753cc0a104e09ad5c6d6794094e67c7829d6d594d6c0cc2a1ca290976afba54f8385ea548b2835f8319bcb41a010a23cdc0d0cf88a455be34af8f720
+  version: 5.2.10
+  resolution: "@cspell/dict-npm@npm:5.2.10"
+  checksum: 10c0/5e3f429960db89e8d20c07b2e5404f9118cebb3ac68a8ba3b949fb3682dea04ffddaac65fea70dd363e48a7b60050ba2c215f796c82fdc4d22c7b45f7ab2e3c8
   languageName: node
   linkType: hard
 
@@ -689,9 +689,9 @@ __metadata:
   linkType: hard
 
 "@jridgewell/sourcemap-codec@npm:^1.5.0":
-  version: 1.5.1
-  resolution: "@jridgewell/sourcemap-codec@npm:1.5.1"
-  checksum: 10c0/e06b12ef3d58e988635511199da1e4f4870ea6561727b1265f3cd0e91e4b1d0efbfa12670bc83e00412da132b69ce943f292f1295246c099763646ba549cd957
+  version: 1.5.4
+  resolution: "@jridgewell/sourcemap-codec@npm:1.5.4"
+  checksum: 10c0/c5aab3e6362a8dd94ad80ab90845730c825fc4c8d9cf07ebca7a2eb8a832d155d62558800fc41d42785f989ddbb21db6df004d1786e8ecb65e428ab8dff71309
   languageName: node
   linkType: hard
 
@@ -932,11 +932,11 @@ __metadata:
   linkType: hard
 
 "acorn-loose@npm:^8.5.0":
-  version: 8.5.1
-  resolution: "acorn-loose@npm:8.5.1"
+  version: 8.5.2
+  resolution: "acorn-loose@npm:8.5.2"
   dependencies:
-    acorn: "npm:^8.14.0"
-  checksum: 10c0/f3aee342516bc8b2a9094ebe83c7a90b54d6fd24ff0e1bcee36ca18aa3aa199579784e7ca9dff522608322e82749086f4e161635040897306e8959f1cf67bc6e
+    acorn: "npm:^8.15.0"
+  checksum: 10c0/169a85ad2df888586fe6eda2af9ff8fbcca7174ce83d00632cea5fffa73476218012af91be0cd6b68e4df6183baffa463506fd2ab54800903378140e679302fd
   languageName: node
   linkType: hard
 
@@ -949,7 +949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.11.0, acorn@npm:^8.14.0, acorn@npm:^8.14.1":
+"acorn@npm:^8.11.0, acorn@npm:^8.14.1, acorn@npm:^8.15.0":
   version: 8.15.0
   resolution: "acorn@npm:8.15.0"
   bin:
