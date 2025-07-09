@@ -1,4 +1,6 @@
-export class GlobPattern {
+import { Braces } from "./Braces.js";
+
+export class Glob {
   // escaping any non-word and non-whitespace character sounds inefficient, but this is future proof
   static #reservedCharacterRegex = /[^\w\s/]/g;
 
@@ -27,10 +29,7 @@ export class GlobPattern {
 
       resultPattern += "\\/";
 
-      const segmentPattern = segment.replace(
-        GlobPattern.#reservedCharacterRegex,
-        GlobPattern.#replaceReservedCharacter,
-      );
+      const segmentPattern = segment.replace(Glob.#reservedCharacterRegex, Glob.#replaceReservedCharacter);
 
       // no need to exclude 'node_modules' when a segment has no wildcards
       if (segmentPattern !== segment) {
@@ -59,7 +58,10 @@ export class GlobPattern {
   }
 
   static toRegex(patterns: Array<string>, target: "directories" | "files"): RegExp {
-    const patternText = patterns.map((pattern) => `(${GlobPattern.#parse(pattern, target)})`).join("|");
+    const patternText = patterns
+      .flatMap((pattern) => Braces.expand(pattern))
+      .map((pattern) => `(${Glob.#parse(pattern, target)})`)
+      .join("|");
 
     return new RegExp(`^(${patternText})$`);
   }

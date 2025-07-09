@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0] - 2025-06-26
+
+## Added
+
+- **New!** Check errors hidden by `// @ts-expect-error` ([#511](https://github.com/tstyche/tstyche/pull/511), [#516](https://github.com/tstyche/tstyche/pull/516))
+- Enable `noUncheckedSideEffectImports` in default compiler options ([#514](https://github.com/tstyche/tstyche/pull/514))
+
 ## [4.0.2] - 2025-06-17
 
 ### Fixed
@@ -746,6 +753,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.1.0]: https://github.com/tstyche/tstyche/releases/tag/v4.1.0
 [4.0.2]: https://github.com/tstyche/tstyche/releases/tag/v4.0.2
 [4.0.1]: https://github.com/tstyche/tstyche/releases/tag/v4.0.1
 [4.0.0]: https://github.com/tstyche/tstyche/releases/tag/v4.0.0
