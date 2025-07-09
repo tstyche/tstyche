@@ -52,6 +52,10 @@ export class ConfigDiagnosticText {
     ];
   }
 
+  static unexpected(element: string): string {
+    return `Unexpected ${element}.`;
+  }
+
   static unknownOption(optionName: string): string {
     return `Unknown option '${optionName}'.`;
   }

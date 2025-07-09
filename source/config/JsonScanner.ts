@@ -86,15 +86,17 @@ export class JsonScanner {
     return this.#sourceFile.text.charAt(this.#position++);
   }
 
-  readToken(token: string): JsonNode {
+  readToken(token: string | RegExp): JsonNode {
     this.#skipTrivia();
 
     this.#previousPosition = this.#position;
 
-    if (this.#peekCharacter() === token) {
+    const character = this.#peekCharacter();
+
+    if (typeof token === "string" ? token === character : token.test(character)) {
       this.#position++;
 
-      return new JsonNode(token, this.#getOrigin());
+      return new JsonNode(character, this.#getOrigin());
     }
 
     return new JsonNode(undefined, this.#getOrigin());

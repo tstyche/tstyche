@@ -31,8 +31,8 @@ await test("store", async (t) => {
 
     assert.pathExists(packageUrl);
 
-    assert.match(stdout, /^adds TypeScript 5.2.2/);
     assert.equal(stderr, "");
+    assert.match(stdout, /^adds TypeScript 5.2.2/);
     assert.equal(exitCode, 0);
   });
 
@@ -51,8 +51,8 @@ await test("store", async (t) => {
 
     assert.pathExists(packageUrl);
 
-    assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(stderr, "");
+    assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(exitCode, 0);
   });
 

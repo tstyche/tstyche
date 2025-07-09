@@ -71,7 +71,7 @@ await test("'// @tstyche template' directive", async (t) => {
   await t.test("when specified with a note", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/template.tst.ts"]: getTemplateTestText(
-        "// @tstyche template -- For documentation, see: https://tstyche.org/guide/template-test-files.",
+        "// @tstyche template -- For documentation, see: https://tstyche.org/guides/template-test-files",
       ),
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
@@ -119,7 +119,7 @@ await test("'// @tstyche template' directive", async (t) => {
   await t.test("when specified in kebab case with a note", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/template.tst.ts"]: getTemplateTestText(
-        "//@tstyche-template --- For documentation, see: https://tstyche.org/guide/template-test-files.",
+        "//@tstyche-template --- For documentation, see: https://tstyche.org/guides/template-test-files",
       ),
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
@@ -143,7 +143,7 @@ await test("'// @tstyche template' directive", async (t) => {
 
   await t.test("when preceded with a comment", async () => {
     const prolog = `/**
- * @file For documentation, see: https://tstyche.org/guide/template-test-files.
+ * @file For documentation, see: https://tstyche.org/guides/template-test-files
  */
 
 //@tstyche template`;

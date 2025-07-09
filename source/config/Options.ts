@@ -49,6 +49,13 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.Boolean,
+      description: "Check errors silenced by '// @ts-expect-error' directives.",
+      group: OptionGroup.ConfigFile,
+      name: "checkSuppressedErrors",
+    },
+
+    {
       brand: OptionBrand.String,
       description: "The path to a TSTyche configuration file.",
       group: OptionGroup.CommandLine,

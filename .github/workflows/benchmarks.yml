@@ -16,18 +16,11 @@ jobs:
     name: Benchmarks
     runs-on: ubuntu-latest
     steps:
-      - name: Install hyperfine
-        run: cargo install --locked hyperfine
-
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          check-latest: true
-          node-version: lts/*
-      - run: corepack enable
+      - uses: jdx/mise-action@5cb1df66ed5e1fb3c670ea0b62fd17a76979826a # v2
       - run: yarn install
       - run: yarn build
-      - run: yarn bench
+      - run: mise bench
 
       - uses: bencherdev/bencher@main
       - name: Run bencher

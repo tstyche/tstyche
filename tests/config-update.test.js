@@ -43,8 +43,8 @@ await test("'--update' command line option", async (t) => {
 
       assert.pathExists(storeUrl);
 
-      assert.equal(stdout, "");
       assert.equal(stderr, "");
+      assert.equal(stdout, "");
       assert.equal(exitCode, 0);
     });
   }
@@ -68,8 +68,8 @@ await test("'--update' command line option", async (t) => {
 
     assert.notEqual(newStoreManifestText, oldStoreManifest);
 
-    assert.equal(stdout, "");
     assert.equal(stderr, "");
+    assert.equal(stdout, "");
     assert.equal(exitCode, 0);
   });
 });

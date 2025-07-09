@@ -27,7 +27,7 @@
     "build/**/*",
     "coverage/**/*",
     "examples/**/*",
-    "models/**/*",
+    "schemas/**/*",
     "source/**/*",
     "tests/**/*",
     "typetests/**/*"

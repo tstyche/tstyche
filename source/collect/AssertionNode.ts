@@ -6,7 +6,7 @@ import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
 export class AssertionNode extends TestTreeNode {
-  abilityDiagnostics: Set<ts.Diagnostic> | undefined;
+  abilityDiagnostics = new Set<ts.Diagnostic>();
   isNot: boolean;
   matcherNode: ts.CallExpression | ts.Decorator;
   matcherNameNode: ts.PropertyAccessExpression;
@@ -39,7 +39,10 @@ export class AssertionNode extends TestTreeNode {
     }
 
     for (const diagnostic of parent.diagnostics) {
-      if (diagnosticBelongsToNode(diagnostic, this.source)) {
+      if (
+        diagnosticBelongsToNode(diagnostic, this.source) ||
+        (this.target != null && diagnosticBelongsToNode(diagnostic, this.target))
+      ) {
         this.diagnostics.add(diagnostic);
         parent.diagnostics.delete(diagnostic);
       }

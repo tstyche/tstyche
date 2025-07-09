@@ -11,13 +11,13 @@ await test("when", async (t) => {
   await t.test("argument validation", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["when"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-argument-validation-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-argument-validation-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-argument-validation-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-argument-validation-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -27,13 +27,13 @@ await test("when", async (t) => {
   await t.test("handles nested 'describe' or 'test'", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-nested"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-handles-nested-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-handles-nested-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-handles-nested-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-handles-nested-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -43,13 +43,13 @@ await test("when", async (t) => {
   await t.test("handles not supported action", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["action-not-supported"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-action-not-supported-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-action-not-supported-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-action-not-supported-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-action-not-supported-stdout`,
       testFileUrl: import.meta.url,
     });
 

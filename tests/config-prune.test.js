@@ -52,8 +52,8 @@ await test("'--prune' command line option", async (t) => {
 
       assert.pathDoesNotExist(storeUrl);
 
-      assert.equal(stdout, "");
       assert.equal(stderr, "");
+      assert.equal(stdout, "");
       assert.equal(exitCode, 0);
     });
   }
@@ -65,8 +65,8 @@ await test("'--prune' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--prune"]);
 
-    assert.equal(stdout, "");
     assert.equal(stderr, "");
+    assert.equal(stdout, "");
     assert.equal(exitCode, 0);
   });
 });

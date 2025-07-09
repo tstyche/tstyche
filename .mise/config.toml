@@ -1,0 +1,4 @@
+[tools]
+hyperfine = "latest"
+node = "lts"
+yarn = "latest"

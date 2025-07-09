@@ -8,7 +8,7 @@ import { Task } from "#task";
 import { CancellationReason, type CancellationToken } from "#token";
 import { Debounce, type ResolveHandler } from "./Debounce.js";
 import { FileWatcher } from "./FileWatcher.js";
-import { type WatchHandler, Watcher } from "./Watcher.js";
+import { Watcher, type WatchHandler } from "./Watcher.js";
 
 export class WatchService {
   #changedTestFiles = new Map<string, Task>();

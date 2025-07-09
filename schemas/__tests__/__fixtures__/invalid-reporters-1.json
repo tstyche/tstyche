@@ -1,0 +1,4 @@
+{
+  "$schema": "../../config.json",
+  "reporters": [true]
+}

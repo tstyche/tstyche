@@ -1,0 +1,10 @@
+uses TypeScript <<version>>
+
+pass ./tests/isNumber.ts
+pass ./tests/isString.tsx
+
+Targets:    1 passed, 1 total
+Test files: 2 passed, 2 total
+Tests:      2 passed, 2 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>

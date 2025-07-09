@@ -5,7 +5,7 @@ import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
-import { Process, isWindows } from "./__utilities__/process.js";
+import { isWindows, Process } from "./__utilities__/process.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -111,12 +111,13 @@ await test("watch", async (t) => {
 
         const { exitCode, stderr, stdout } = await process.waitForExit();
 
+        assert.equal(stderr, "");
+
         await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
           fileName: `${testFileName}-exit-stdout`,
           testFileUrl: import.meta.url,
         });
 
-        assert.equal(stderr, "");
         assert.equal(exitCode, 0);
       });
     }
@@ -154,12 +155,13 @@ await test("watch", async (t) => {
 
         const { exitCode, stderr, stdout } = await process.waitForExit();
 
+        assert.equal(stderr, "");
+
         await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
           fileName: `${testFileName}-run-all-stdout`,
           testFileUrl: import.meta.url,
         });
 
-        assert.equal(stderr, "");
         assert.equal(exitCode, 0);
       });
     }
@@ -216,13 +218,13 @@ await test("watch", async (t) => {
 
         const fileAdded = await process.waitForIdle();
 
-        await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stdout)), {
-          fileName: `${testFileName}-signal-sent-stdout`,
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stderr)), {
+          fileName: `${testFileName}-signal-sent-stderr`,
           testFileUrl: import.meta.url,
         });
 
-        await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stderr)), {
-          fileName: `${testFileName}-signal-sent-stderr`,
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stdout)), {
+          fileName: `${testFileName}-signal-sent-stdout`,
           testFileUrl: import.meta.url,
         });
 
@@ -261,13 +263,13 @@ await test("watch", async (t) => {
 
       const fileAdded = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stdout)), {
-        fileName: `${testFileName}-single-test-file-is-added-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stderr)), {
+        fileName: `${testFileName}-single-test-file-is-added-stderr`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stderr)), {
-        fileName: `${testFileName}-single-test-file-is-added-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileAdded.stdout)), {
+        fileName: `${testFileName}-single-test-file-is-added-stdout`,
         testFileUrl: import.meta.url,
       });
 
@@ -291,13 +293,13 @@ await test("watch", async (t) => {
 
       const filesAdded = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesAdded.stdout)), {
-        fileName: `${testFileName}-multiple-test-files-are-added-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesAdded.stderr)), {
+        fileName: `${testFileName}-multiple-test-files-are-added-stderr`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesAdded.stderr)), {
-        fileName: `${testFileName}-multiple-test-files-are-added-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesAdded.stdout)), {
+        fileName: `${testFileName}-multiple-test-files-are-added-stdout`,
         testFileUrl: import.meta.url,
       });
 
@@ -320,13 +322,13 @@ await test("watch", async (t) => {
 
       const fileChanged = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileChanged.stdout)), {
-        fileName: `${testFileName}-single-test-file-is-changed-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileChanged.stderr)), {
+        fileName: `${testFileName}-single-test-file-is-changed-stderr`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileChanged.stderr)), {
-        fileName: `${testFileName}-single-test-file-is-changed-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(fileChanged.stdout)), {
+        fileName: `${testFileName}-single-test-file-is-changed-stdout`,
         testFileUrl: import.meta.url,
       });
 
@@ -350,13 +352,13 @@ await test("watch", async (t) => {
 
       const filesChanged = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stdout)), {
-        fileName: `${testFileName}-multiple-test-files-are-changed-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stderr)), {
+        fileName: `${testFileName}-multiple-test-files-are-changed-stderr`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stderr)), {
-        fileName: `${testFileName}-multiple-test-files-are-changed-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stdout)), {
+        fileName: `${testFileName}-multiple-test-files-are-changed-stdout`,
         testFileUrl: import.meta.url,
       });
 
@@ -502,13 +504,13 @@ await test("watch", async (t) => {
 
       const filesChanged = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stdout)), {
-        fileName: `${testFileName}-failFast-option-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stderr)), {
+        fileName: `${testFileName}-failFast-option-stderr`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stderr)), {
-        fileName: `${testFileName}-failFast-option-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(filesChanged.stdout)), {
+        fileName: `${testFileName}-failFast-option-stdout`,
         testFileUrl: import.meta.url,
       });
 
@@ -547,12 +549,12 @@ await test("watch", async (t) => {
 
       const configFileAdded = await process.waitForIdle();
 
+      assert.equal(configFileAdded.stderr, "");
+
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileAdded.stdout)), {
         fileName: `${testFileName}-config-file-is-added-stdout`,
         testFileUrl: import.meta.url,
       });
-
-      assert.equal(configFileAdded.stderr, "");
 
       await process.write("x");
 
@@ -580,12 +582,12 @@ await test("watch", async (t) => {
 
       const configFileChanged = await process.waitForIdle();
 
+      assert.equal(configFileChanged.stderr, "");
+
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileChanged.stdout)), {
         fileName: `${testFileName}-config-file-is-changed-stdout`,
         testFileUrl: import.meta.url,
       });
-
-      assert.equal(configFileChanged.stderr, "");
 
       await process.write("x");
 
@@ -634,13 +636,13 @@ await test("watch", async (t) => {
 
       const configFileError = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileError.stdout)), {
-        fileName: `${testFileName}-config-file-has-an-error-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileError.stderr)), {
+        fileName: `${testFileName}-config-file-has-an-error-stderr`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileError.stderr)), {
-        fileName: `${testFileName}-config-file-has-an-error-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileError.stdout)), {
+        fileName: `${testFileName}-config-file-has-an-error-stdout`,
         testFileUrl: import.meta.url,
       });
 
@@ -686,13 +688,13 @@ await test("watch", async (t) => {
 
       const noTestFilesSelected = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesSelected.stdout)), {
-        fileName: `${testFileName}-no-test-files-selected-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesSelected.stderr)), {
+        fileName: `${testFileName}-no-test-files-selected-stderr`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesSelected.stderr)), {
-        fileName: `${testFileName}-no-test-files-selected-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesSelected.stdout)), {
+        fileName: `${testFileName}-no-test-files-selected-stdout`,
         testFileUrl: import.meta.url,
       });
 
@@ -719,13 +721,13 @@ await test("watch", async (t) => {
 
       const noTestFilesLeft = await process.waitForIdle();
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesLeft.stdout)), {
-        fileName: `${testFileName}-no-test-files-left-stdout`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesLeft.stderr)), {
+        fileName: `${testFileName}-no-test-files-left-stderr`,
         testFileUrl: import.meta.url,
       });
 
-      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesLeft.stderr)), {
-        fileName: `${testFileName}-no-test-files-left-stderr`,
+      await assert.matchSnapshot(prettyAnsi(normalizeOutput(noTestFilesLeft.stdout)), {
+        fileName: `${testFileName}-no-test-files-left-stdout`,
         testFileUrl: import.meta.url,
       });
 
@@ -752,12 +754,12 @@ await test("watch", async (t) => {
 
       const configFileRemoved = await process.waitForIdle();
 
+      assert.equal(configFileRemoved.stderr, "");
+
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileRemoved.stdout)), {
         fileName: `${testFileName}-config-file-is-removed-stdout`,
         testFileUrl: import.meta.url,
       });
-
-      assert.equal(configFileRemoved.stderr, "");
 
       await process.write("x");
 
@@ -786,12 +788,12 @@ await test("watch", async (t) => {
 
       const configFileChanged = await process.waitForIdle();
 
+      assert.equal(configFileChanged.stderr, "");
+
       await assert.matchSnapshot(prettyAnsi(normalizeOutput(configFileChanged.stdout)), {
         fileName: `${testFileName}-config-option-stdout`,
         testFileUrl: import.meta.url,
       });
-
-      assert.equal(configFileChanged.stderr, "");
 
       await process.write("x");
 

@@ -17,11 +17,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       failFast: false,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -36,11 +37,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       failFast: true,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -53,8 +55,8 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    assert.doesNotMatch(stdout, /schema/);
     assert.equal(stderr, "");
+    assert.doesNotMatch(stdout, /schema/);
     assert.equal(exitCode, 0);
   });
 
@@ -71,11 +73,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       failFast: false,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -91,11 +94,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       failFast: false,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -111,11 +115,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       testFileMatch: [],
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -130,6 +135,7 @@ await test("'tstyche.config.json' file", async (t) => {
     /* test */ "**/__typetests__/*.test.ts"
   ]
 }
+// test
 `;
 
     await writeFixture(fixtureUrl, {
@@ -138,13 +144,14 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       failFast: true,
       target: ["current"],
       testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -160,11 +167,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(normalizeOutput(stdout), {
       failFast: true,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -180,11 +188,12 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(normalizeOutput(stdout), {
       failFast: true,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -201,12 +210,13 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(normalizeOutput(stdout), {
       rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile",
       testFileMatch: ["**/*.tst.*"],
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -223,12 +233,13 @@ await test("'tstyche.config.json' file", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       failFast: true,
       testFileMatch: ["**/*.tst.*"],
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });
@@ -253,12 +264,13 @@ await test("'--config' command line option", async (t) => {
       "--showConfig",
     ]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(normalizeOutput(stdout), {
       configFilePath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile/config/tstyche.json",
       rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile",
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

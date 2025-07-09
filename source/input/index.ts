@@ -1,1 +1,1 @@
-export { InputService, type InputHandler } from "./InputService.js";
+export { type InputHandler, InputService } from "./InputService.js";

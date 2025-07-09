@@ -4,10 +4,10 @@ The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
   4 |   test("rejects the 'any' type", () => {
-  5 |     // @ts-expect-error missing import test
+  5 |     // @ts-expect-error! Missing import
   6 |     expect(getResult("sample")).type.toBe<Result<string>>(); // rejected
     |            ~~~~~~~~~~~~~~~~~~~
-  7 |     // @ts-expect-error missing import test
+  7 |     // @ts-expect-error! Missing import
   8 |     expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
   9 |   });
 
@@ -19,7 +19,7 @@ The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
    6 |     expect(getResult("sample")).type.toBe<Result<string>>(); // rejected
-   7 |     // @ts-expect-error missing import test
+   7 |     // @ts-expect-error! Missing import
    8 |     expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
      |            ~~~~~~~~~~~~~~
    9 |   });
@@ -79,10 +79,10 @@ The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
   46 |   test("rejects the 'any' type", () => {
-  47 |     // @ts-expect-error missing import test
+  47 |     // @ts-expect-error! Missing import
   48 |     expect<string>().type.toBeAssignableWith(getResult("sample")); // rejected
      |                                              ~~~~~~~~~~~~~~~~~~~
-  49 |     // @ts-expect-error missing import test
+  49 |     // @ts-expect-error! Missing import
   50 |     expect<number>().type.not.toBe(getResult(123)); // rejected
   51 |   });
 
@@ -94,7 +94,7 @@ The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
   48 |     expect<string>().type.toBeAssignableWith(getResult("sample")); // rejected
-  49 |     // @ts-expect-error missing import test
+  49 |     // @ts-expect-error! Missing import
   50 |     expect<number>().type.not.toBe(getResult(123)); // rejected
      |                                    ~~~~~~~~~~~~~~
   51 |   });

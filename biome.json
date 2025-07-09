@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
 
   "json": {
     "parser": {
@@ -8,22 +8,21 @@
   },
 
   "files": {
-    "ignore": [
-      ".yarn/**",
-      "build/**",
-      "coverage/**",
-      "models/CommandLineOptions.ts",
-      "models/config-schema.json",
-      "models/ConfigFileOptions.ts",
-      "node_modules/**",
-      "cspell.config.json",
-      "package.json"
+    "includes": [
+      "**",
+      "!**/.yarn/**",
+      "!**/build/**",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/schemas/config.json",
+      "!**/cspell.config.json"
     ]
   },
 
   "formatter": {
     "enabled": true,
-    "useEditorconfig": true
+    "useEditorconfig": true,
+    "lineWidth": 120
   },
 
   "linter": {
@@ -34,8 +33,6 @@
 
       "complexity": {
         "noUselessStringConcat": "error",
-        "noUselessUndefinedInitialization": "error",
-        "useDateNow": "error",
 
         "noBannedTypes": "off",
         "noStaticOnlyClass": "off",
@@ -45,20 +42,26 @@
       "correctness": {
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
-        "noUnusedFunctionParameters": "error",
-        "noUnusedImports": "error",
-        "noUnusedPrivateClassMembers": "error",
-        "noUnusedVariables": "error",
-        "useImportExtensions": "error",
+        "useImportExtensions": "error"
+      },
 
-        "useJsxKeyInIterable": "off"
+      "nursery": {
+        "noFloatingPromises": "error",
+        "noProcessGlobal": "error",
+        "noTsIgnore": "error",
+        "useIndexOf": "error"
       },
 
       "style": {
         "noImplicitBoolean": "error",
+        "noInferrableTypes": "error",
         "noNegationElse": "error",
+        "noNonNullAssertion": "error",
         "noParameterProperties": "error",
+        "noUselessElse": "error",
         "noYodaExpression": "error",
+        "useAsConstAssertion": "error",
+        "useAtIndex": "error",
         "useBlockStatements": "error",
         "useCollapsedElseIf": "error",
         "useConsistentArrayType": {
@@ -68,13 +71,16 @@
           }
         },
         "useConsistentBuiltinInstantiation": "error",
+        "useDefaultParameterLast": "error",
         "useExplicitLengthCheck": "error",
-        "useNamingConvention": "error",
         "useForOf": "error",
+        "useNamingConvention": "error",
+        "useNumberNamespace": "error",
+        "useSelfClosingElements": "error",
         "useShorthandAssign": "error",
+        "useSingleVarDeclarator": "error",
         "useThrowNewError": "error",
-
-        "noParameterAssign": "off"
+        "useTrimStartEnd": "error"
       },
 
       "suspicious": {
@@ -85,8 +91,6 @@
           }
         },
         "noEvolvingTypes": "error",
-        "noMisplacedAssertion": "error",
-        "noSkippedTests": "error",
         "useAwait": "error",
         "useErrorMessage": "error",
         "useNumberToFixedDigitsArgument": "error",
@@ -96,13 +100,11 @@
     }
   },
 
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
 
   "overrides": [
     {
-      "include": ["examples/*"],
+      "includes": ["**/examples/*"],
       "linter": {
         "rules": {
           "correctness": {
@@ -113,7 +115,7 @@
     },
 
     {
-      "include": ["source/handlers/ResultHandler.ts"],
+      "includes": ["**/source/handlers/ResultHandler.ts"],
       "linter": {
         "rules": {
           "style": {
@@ -124,7 +126,7 @@
     },
 
     {
-      "include": ["source/types.ts"],
+      "includes": ["**/source/types.ts"],
       "linter": {
         "rules": {
           "correctness": {
@@ -135,18 +137,7 @@
     },
 
     {
-      "include": ["tests/__utilities__/assert.js"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noMisplacedAssertion": "off"
-          }
-        }
-      }
-    },
-
-    {
-      "include": ["**/*.tst.ts", "**/*.tst.tsx"],
+      "includes": ["**/*.tst.ts", "**/*.tst.tsx"],
       "linter": {
         "rules": {
           "correctness": {
@@ -161,19 +152,11 @@
     },
 
     {
-      "include": ["**/__fixtures__/**/*.tst.ts"],
+      "includes": ["**/__fixtures__/**/*.tst.ts"],
       "linter": {
         "rules": {
           "complexity": {
             "useArrowFunction": "off"
-          },
-          "style": {
-            "useEnumInitializers": "off",
-            "noUnusedTemplateLiteral": "off"
-          },
-          "suspicious": {
-            "noFocusedTests": "off",
-            "noSkippedTests": "off"
           }
         }
       }

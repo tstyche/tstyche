@@ -11,13 +11,13 @@ await test("CommonJS", async (t) => {
   await t.test("supports CJS syntax", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["cjs-syntax"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-cjs-syntax-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-cjs-syntax-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-cjs-syntax-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-cjs-syntax-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -27,13 +27,13 @@ await test("CommonJS", async (t) => {
   await t.test("supports ESM syntax", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["esm-syntax"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-esm-syntax-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-esm-syntax-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-esm-syntax-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-esm-syntax-stdout`,
       testFileUrl: import.meta.url,
     });
 

@@ -16,11 +16,12 @@ await test("'--plugins' command line option", async (t) => {
       "--showConfig",
     ]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       failFast: true,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -33,12 +34,13 @@ await test("'--plugins' command line option", async (t) => {
       "--showConfig",
     ]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       failFast: true,
       testFileMatch: [],
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

@@ -1,0 +1,23 @@
+adds TypeScript 5.5.4 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.5.4
+uses TypeScript 5.5.4 with ./tsconfig.json
+
+pass ./__typetests__/isNumber.tst.ts
+pass ./__typetests__/isString.tst.ts
+
+adds TypeScript 5.6.3 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.6.3
+uses TypeScript 5.6.3 with ./tsconfig.json
+
+pass ./__typetests__/isNumber.tst.ts
+pass ./__typetests__/isString.tst.ts
+
+adds TypeScript 5.7.3 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.7.3
+uses TypeScript 5.7.3 with ./tsconfig.json
+
+pass ./__typetests__/isNumber.tst.ts
+pass ./__typetests__/isString.tst.ts
+
+Targets:    3 passed, 3 total
+Test files: 6 passed, 6 total
+Tests:      6 passed, 6 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>

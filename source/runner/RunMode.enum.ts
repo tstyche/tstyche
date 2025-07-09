@@ -4,4 +4,5 @@ export const enum RunMode {
   Only = 1 << 1,
   Skip = 1 << 2,
   Todo = 1 << 3,
+  Void = 1 << 4,
 }

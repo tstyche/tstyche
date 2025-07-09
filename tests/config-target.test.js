@@ -38,12 +38,13 @@ await test("'--target' command line option", async (t) => {
     const args = ["--target", "5.2"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -56,12 +57,13 @@ await test("'--target' command line option", async (t) => {
     const args = ["--target", "5.0,5.3.2,current"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -73,9 +75,8 @@ await test("'--target' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">5.1"', "--showConfig"]);
 
-    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4",\n {4}"5\.5"/);
-
     assert.equal(stderr, "");
+    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4",\n {4}"5\.5"/);
     assert.equal(exitCode, 0);
   });
 
@@ -87,12 +88,13 @@ await test("'--target' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.3 <5.5"']);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-upper-bound-version-range-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -104,9 +106,8 @@ await test("'--target' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.4 <8.2"', "--showConfig"]);
 
-    assert.match(stdout, /"target": \[\n {4}"5\.4",\n {4}"5\.5",\n {4}"5\.6",\n {4}"5\.7"/);
-
     assert.equal(stderr, "");
+    assert.match(stdout, /"target": \[\n {4}"5\.4",\n {4}"5\.5",\n {4}"5\.6",\n {4}"5\.7"/);
     assert.equal(exitCode, 0);
   });
 
@@ -119,9 +120,8 @@ await test("'--target' command line option", async (t) => {
     const args = ["--target", '">=5.2 <=5.3, 5.4.2, >5.5"', "--showConfig"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4\.2",\n {4}"5\.6"/);
-
     assert.equal(stderr, "");
+    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4\.2",\n {4}"5\.6"/);
     assert.equal(exitCode, 0);
   });
 
@@ -134,12 +134,13 @@ await test("'--target' command line option", async (t) => {
     const args = ["--target", "current"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -156,12 +157,13 @@ await test("'--target' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"]);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-overrides-target-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -174,12 +176,13 @@ await test("'--target' command line option", async (t) => {
     const args = ["isNumber", "--target", "current"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -192,12 +195,13 @@ await test("'--target' command line option", async (t) => {
     const args = ["--target", "current", "isString"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });
@@ -220,12 +224,13 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-target-5.4-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -242,12 +247,13 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-target-5.0-5.3.2-current-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -264,9 +270,8 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4",\n {4}"5\.5"/);
-
     assert.equal(stderr, "");
+    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4",\n {4}"5\.5"/);
     assert.equal(exitCode, 0);
   });
 
@@ -283,12 +288,13 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-upper-bound-version-range-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -305,9 +311,8 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    assert.match(stdout, /"target": \[\n {4}"5\.4",\n {4}"5\.5",\n {4}"5\.6",\n {4}"5\.7"/);
-
     assert.equal(stderr, "");
+    assert.match(stdout, /"target": \[\n {4}"5\.4",\n {4}"5\.5",\n {4}"5\.6",\n {4}"5\.7"/);
     assert.equal(exitCode, 0);
   });
 
@@ -324,9 +329,8 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
-    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4\.2",\n {4}"5\.6"/);
-
     assert.equal(stderr, "");
+    assert.match(stdout, /"target": \[\n {4}"5\.2",\n {4}"5\.3",\n {4}"5\.4\.2",\n {4}"5\.6"/);
     assert.equal(exitCode, 0);
   });
 
@@ -343,12 +347,13 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-target-current-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

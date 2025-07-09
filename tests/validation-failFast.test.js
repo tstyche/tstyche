@@ -23,12 +23,12 @@ await test("'failFast' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });

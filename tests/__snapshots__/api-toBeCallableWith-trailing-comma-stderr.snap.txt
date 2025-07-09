@@ -22,7 +22,7 @@ Argument of type 'number' is not assignable to parameter of type '{ length: numb
   15 |     isSameLength  ,
   16 |   ).type.toBeCallableWith("zero", [123]); // fail
 
-       at ./__typetests__/toBeCallableWith.tst.ts:13:27
+       at ./__typetests__/toBeCallableWith.tst.ts:13:27 ❭ handles trailing comma?
 
 Error: Expression is not callable with the given arguments.
 
@@ -35,5 +35,5 @@ Argument of type 'number[]' is not assignable to parameter of type 'string'.
   17 | });
   18 | 
 
-       at ./__typetests__/toBeCallableWith.tst.ts:16:35
+       at ./__typetests__/toBeCallableWith.tst.ts:16:35 ❭ handles trailing comma?
 

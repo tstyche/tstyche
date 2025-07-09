@@ -41,7 +41,7 @@ export class WhenService {
         return;
     }
 
-    if (when.abilityDiagnostics != null && when.abilityDiagnostics.size > 0) {
+    if (when.abilityDiagnostics.size > 0) {
       const diagnostics: Array<Diagnostic> = [];
 
       for (const diagnostic of when.abilityDiagnostics) {

@@ -35,13 +35,13 @@ await test("'--failFast' command line option", async (t) => {
     const args = ["--failFast"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-${args.join("-")}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -57,13 +57,13 @@ await test("'--failFast' command line option", async (t) => {
     const args = ["--failFast", "true"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-${args.join("-")}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -79,13 +79,13 @@ await test("'--failFast' command line option", async (t) => {
     const args = ["--failFast", "false"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-${args.join("-")}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -101,13 +101,13 @@ await test("'--failFast' command line option", async (t) => {
     const args = ["--failFast", "isNumber", "--failFast", "false"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-${args.join("-")}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -123,13 +123,13 @@ await test("'--failFast' command line option", async (t) => {
     const args = ["isNumber", "--failFast"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-${args.join("-")}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -145,13 +145,13 @@ await test("'--failFast' command line option", async (t) => {
     const args = ["--failFast", "isString"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-${args.join("-")}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-${args.join("-")}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -171,13 +171,13 @@ await test("'--failFast' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--failFast", "false"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-overrides-failFast-true-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-overrides-failFast-true-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-overrides-failFast-true-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overrides-failFast-true-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -197,13 +197,13 @@ await test("'--failFast' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--failFast"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-overrides-failFast-false-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-overrides-failFast-false-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-overrides-failFast-false-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overrides-failFast-false-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -229,13 +229,13 @@ await test("'failFast' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-failFast-true-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-failFast-true-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-failFast-true-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-failFast-true-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -255,13 +255,13 @@ await test("'failFast' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-failFast-false-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-failFast-false-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-failFast-false-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-failFast-false-stdout`,
       testFileUrl: import.meta.url,
     });
 

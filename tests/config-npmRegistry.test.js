@@ -24,11 +24,12 @@ await test("'TSTYCHE_NPM_REGISTRY' environment variable", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       npmRegistry: "https://registry.npmjs.org",
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -43,9 +44,8 @@ await test("'TSTYCHE_NPM_REGISTRY' environment variable", async (t) => {
       },
     });
 
-    assert.match(stdout, /^adds TypeScript 5.4.5/);
-
     assert.equal(stderr, "");
+    assert.match(stdout, /^adds TypeScript 5.4.5/);
     assert.equal(exitCode, 0);
   });
 });

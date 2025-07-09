@@ -59,8 +59,6 @@ await test("'--target' command line option", async (t) => {
   await t.test("when not valid range is specified", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.2 >=5.4"']);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: The specified range '5.2 >=5.4' is not valid.",
       "",
@@ -71,6 +69,7 @@ await test("'--target' command line option", async (t) => {
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -78,8 +77,6 @@ await test("'--target' command line option", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
       env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
     });
-
-    assert.equal(stdout, "");
 
     const expected = [
       "Error: Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.",
@@ -91,6 +88,7 @@ await test("'--target' command line option", async (t) => {
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });
@@ -113,13 +111,12 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -136,13 +133,12 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-list-item-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -159,13 +155,12 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-not-supported-version-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -182,13 +177,12 @@ await test("'target' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-not-valid-range-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -206,13 +200,12 @@ await test("'target' configuration file option", async (t) => {
       env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
     });
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-typescript-not-installed-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });
