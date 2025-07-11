@@ -48,20 +48,24 @@ export class ToBeApplicable {
     return text;
   }
 
-  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode) {
+  #explain(matchWorker: MatchWorker) {
     const targetText = this.#resolveTargetText(matchWorker.assertion.matcherNode.parent);
 
     const diagnostics: Array<Diagnostic> = [];
 
     if (matchWorker.assertion.abilityDiagnostics.size > 0) {
+      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+
       for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
         const text = [ExpectDiagnosticText.cannotBeApplied(targetText), getDiagnosticMessageText(diagnostic)];
 
-        // TODO related diagnostics?
+        let related: Array<Diagnostic> | undefined;
 
-        const origin = DiagnosticOrigin.fromNode(sourceNode);
+        if (diagnostic.relatedInformation != null) {
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+        }
 
-        diagnostics.push(Diagnostic.error(text.flat(), origin));
+        diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
       }
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
@@ -94,7 +98,7 @@ export class ToBeApplicable {
     }
 
     return {
-      explain: () => this.#explain(matchWorker, sourceNode),
+      explain: () => this.#explain(matchWorker),
       isMatch: matchWorker.assertion.abilityDiagnostics.size === 0,
     };
   }
