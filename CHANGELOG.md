@@ -4,7 +4,7 @@
 
 ## Added
 
-- Add support for glob brace expansion ([#523](https://github.com/tstyche/tstyche/pull/523), [#524](https://github.com/tstyche/tstyche/pull/524))
+- **New!** Add support for glob brace expansion ([#523](https://github.com/tstyche/tstyche/pull/523), [#524](https://github.com/tstyche/tstyche/pull/524))
 
 ## [4.1.0] - 2025-06-26
 
