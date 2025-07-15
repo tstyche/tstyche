@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.0] - 2025-07-15
+
+## Added
+
+- Add support for glob brace expansion ([#523](https://github.com/tstyche/tstyche/pull/523), [#524](https://github.com/tstyche/tstyche/pull/524))
+
 ## [4.1.0] - 2025-06-26
 
 ## Added
@@ -753,6 +759,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[4.2.0]: https://github.com/tstyche/tstyche/releases/tag/v4.2.0
 [4.1.0]: https://github.com/tstyche/tstyche/releases/tag/v4.1.0
 [4.0.2]: https://github.com/tstyche/tstyche/releases/tag/v4.0.2
 [4.0.1]: https://github.com/tstyche/tstyche/releases/tag/v4.0.1
