@@ -77,6 +77,17 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.List,
+      description: "The list of glob patterns matching the fixture files.",
+      group: OptionGroup.ConfigFile,
+      items: {
+        brand: OptionBrand.String,
+        name: "fixtureFileMatch",
+      },
+      name: "fixtureFileMatch",
+    },
+
+    {
       brand: OptionBrand.BareTrue,
       description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,

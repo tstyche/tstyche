@@ -77,6 +77,12 @@ export class Select {
     return matchPatterns.includedFile.test(filePath);
   }
 
+  static isFixtureFile(filePath: string, resolvedConfig: ResolvedConfig): boolean {
+    const matchPatterns = Select.#getMatchPatterns(resolvedConfig.fixtureFileMatch);
+
+    return Select.#isFileIncluded(Path.relative(resolvedConfig.rootPath, filePath), matchPatterns, resolvedConfig);
+  }
+
   static isTestFile(filePath: string, resolvedConfig: ResolvedConfig): boolean {
     const matchPatterns = Select.#getMatchPatterns(resolvedConfig.testFileMatch);
 
