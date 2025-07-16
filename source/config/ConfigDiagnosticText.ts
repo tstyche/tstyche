@@ -17,6 +17,13 @@ export class ConfigDiagnosticText {
     return `The specified path '${filePath}' does not exist.`;
   }
 
+  static fileMatchPatternCannotStartWith(optionName: string, segment: string): Array<string> {
+    return [
+      `A '${optionName}' pattern cannot start with '${segment}'.`,
+      "The files are only collected within the 'rootPath' directory.",
+    ];
+  }
+
   static inspectSupportedVersions(): string {
     return "Use the '--list' command line option to inspect the list of supported versions.";
   }
@@ -43,13 +50,6 @@ export class ConfigDiagnosticText {
 
   static seen(element: string): string {
     return `The ${element} was seen here.`;
-  }
-
-  static testFileMatchCannotStartWith(segment: string): Array<string> {
-    return [
-      `A test file match pattern cannot start with '${segment}'.`,
-      "The test files are only collected within the 'rootPath' directory.",
-    ];
   }
 
   static unexpected(element: string): string {

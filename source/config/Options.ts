@@ -360,10 +360,16 @@ export class Options {
         break;
       }
 
+      case "fixtureFileMatch":
       case "testFileMatch":
         for (const segment of ["/", "../"]) {
           if (optionValue.startsWith(segment)) {
-            onDiagnostics(Diagnostic.error(ConfigDiagnosticText.testFileMatchCannotStartWith(segment), origin));
+            onDiagnostics(
+              Diagnostic.error(
+                ConfigDiagnosticText.fileMatchPatternCannotStartWith(canonicalOptionName, segment),
+                origin,
+              ),
+            );
           }
         }
         break;
