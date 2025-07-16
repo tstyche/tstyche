@@ -24,6 +24,7 @@ export interface ConfigFileOptions {
   checkSourceFiles?: boolean;
   checkSuppressedErrors?: boolean;
   failFast?: boolean;
+  fixtureFileMatch?: Array<string>;
   plugins?: Array<string>;
   rejectAnyType?: boolean;
   rejectNeverType?: boolean;

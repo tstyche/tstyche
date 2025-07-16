@@ -16,6 +16,18 @@
       "description": "Stop running tests after the first failed assertion.",
       "type": "boolean"
     },
+    "fixtureFileMatch": {
+      "default": [
+        "**/__fixtures__/*.{ts,tsx}",
+        "**/fixtures/*.{ts,tsx}"
+      ],
+      "description": "The list of glob patterns matching the fixture files.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
     "plugins": {
       "default": [],
       "description": "The list of plugins to use.",

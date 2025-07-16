@@ -1,0 +1,4 @@
+{
+  "$schema": "../../config.json",
+  "fixtureFileMatch": ["fixtures/*.ts", "**/__fixtures__/**/*"]
+}

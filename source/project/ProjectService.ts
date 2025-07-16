@@ -167,7 +167,7 @@ export class ProjectService {
       ]);
     }
 
-    if (this.#resolvedConfig.checkSourceFiles && !this.#seenTestFiles.has(filePath)) {
+    if (!this.#seenTestFiles.has(filePath)) {
       this.#seenTestFiles.add(filePath);
 
       const languageService = this.getLanguageService(filePath);
@@ -185,11 +185,15 @@ export class ProjectService {
           return false;
         }
 
+        if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+          return true;
+        }
+
         if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
           return false;
         }
 
-        return true;
+        return this.#resolvedConfig.checkSourceFiles;
       });
 
       const diagnostics: Array<ts.Diagnostic> = [];

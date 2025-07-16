@@ -48,6 +48,10 @@ test("config schema", async (t) => {
         testCase: "'failFast' option",
       },
       {
+        fixtureFileName: "valid-fixtureFileMatch.json",
+        testCase: "'fixtureFileMatch' option",
+      },
+      {
         fixtureFileName: "valid-plugins.json",
         testCase: "'plugins' option",
       },
@@ -103,6 +107,18 @@ test("config schema", async (t) => {
       {
         fixtureFileName: "invalid-failFast.json",
         testCase: "value of 'failFast' option must be of type boolean",
+      },
+      {
+        fixtureFileName: "invalid-fixtureFileMatch-1.json",
+        testCase: "item of 'fixtureFileMatch' option must be of type string",
+      },
+      {
+        fixtureFileName: "invalid-fixtureFileMatch-2.json",
+        testCase: "items of 'fixtureFileMatch' option must NOT be identical",
+      },
+      {
+        fixtureFileName: "invalid-fixtureFileMatch-3.json",
+        testCase: "value of 'fixtureFileMatch' option must be of type Array",
       },
       {
         fixtureFileName: "invalid-plugins-1.json",
