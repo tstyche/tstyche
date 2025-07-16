@@ -119,5 +119,36 @@ await test("'fixtureFileMatch' configuration file option", async (t) => {
 
       assert.equal(exitCode, 1);
     });
+
+    await t.test("when 'checkSourceFiles' is disabled", async () => {
+      const config = {
+        checkSourceFiles: false,
+      };
+
+      await writeFixture(fixtureUrl, {
+        ["__typetests__/__fixtures__/a.ts"]: fixtureWithAnErrorText,
+        ["__typetests__/fixtures/b.ts"]: fixtureWithAnErrorText,
+        ["__typetests__/isString.test.ts"]: isStringTestText,
+        ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["typetests/__fixtures__/a.ts"]: fixtureWithAnErrorText,
+        ["typetests/fixtures/b.ts"]: fixtureWithAnErrorText,
+        ["typetests/isString.test.ts"]: isStringTestText,
+      });
+
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+      await assert.matchSnapshot(normalizeOutput(stderr), {
+        fileName: `${testFileName}-when-checkSourceFiles-disabled-stderr`,
+        testFileUrl: import.meta.url,
+      });
+
+      await assert.matchSnapshot(normalizeOutput(stdout), {
+        fileName: `${testFileName}-when-checkSourceFiles-disabled-stdout`,
+        testFileUrl: import.meta.url,
+      });
+
+      assert.equal(exitCode, 1);
+    });
   });
 });
