@@ -174,12 +174,17 @@ const concat =
 
 test("handles '// @ts-expect-error' directive", () => {
   expect(concat("one")).type.toBeCallableWith("two");
+  expect(concat("one")).type.not.toBeCallableWith();
 
-  // @ts-expect-error
-  expect(concat(1)).type.toBeCallableWith("two"); // fail
+  // @ts-expect-error!
+  expect(concat(1)).type.toBeCallableWith("two");
+  // @ts-expect-error!
+  expect(concat(2)).type.not.toBeCallableWith("two"); // fail
 
-  // @ts-expect-error
-  expect(concat(3)).type.toBeCallableWith(4); // fail
+  // @ts-expect-error!
+  expect(concat(3)).type.not.toBeCallableWith();
+  // @ts-expect-error!
+  expect(concat(3)).type.toBeCallableWith(); // fail
 });
 `;
 
