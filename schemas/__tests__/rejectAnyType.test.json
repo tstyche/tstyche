@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'rejectAnyType' option",
+      "valid": true,
+      "data": {
+        "rejectAnyType": false
+      }
+    },
+    {
+      "description": "value of the 'rejectAnyType' option must be of type boolean",
+      "valid": false,
+      "data": {
+        "rejectAnyType": "always"
+      }
+    }
+  ]
+}

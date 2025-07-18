@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'failFast' option",
+      "valid": true,
+      "data": {
+        "failFast": true
+      }
+    },
+    {
+      "description": "value of the 'failFast' option must be of type boolean",
+      "valid": false,
+      "data": {
+        "failFast": "never"
+      }
+    }
+  ]
+}
