@@ -4,7 +4,7 @@
 
 ## Added
 
-- **New!** Add the 'fixtureFileMatch' configuration option ([#534](https://github.com/tstyche/tstyche/pull/534))
+- **New!** Add the `fixtureFileMatch` configuration option ([#534](https://github.com/tstyche/tstyche/pull/534))
 
 ## [4.2.0] - 2025-07-15
 
