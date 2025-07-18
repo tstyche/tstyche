@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'rejectNeverType' option",
+      "valid": true,
+      "data": {
+        "rejectNeverType": false
+      }
+    },
+    {
+      "description": "value of the 'rejectNeverType' option must be of type boolean",
+      "valid": false,
+      "data": {
+        "rejectNeverType": "yes"
+      }
+    }
+  ]
+}

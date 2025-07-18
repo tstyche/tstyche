@@ -55,15 +55,16 @@
     "test:e2e:serial": "yarn test:run tests/*.test.js --include feature",
     "test:examples": "NODE_OPTIONS='--experimental-strip-types' tstyche examples",
     "test:run": "rm -rf ./tests/__fixtures__/.generated && yarn node ./tests/__utilities__/runner.js",
+    "test:schemas": "jsonschema test schemas/__tests__/ --resolve schemas/config.json",
     "test:types": "tstyche typetests",
     "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.1",
     "@rollup/plugin-typescript": "12.1.4",
+    "@sourcemeta/jsonschema": "10.0.0",
     "@types/node": "22.16.4",
     "@types/react": "19.1.8",
-    "ajv": "8.17.1",
     "code-block-writer": "13.0.3",
     "cspell": "9.1.5",
     "magic-string": "0.30.17",

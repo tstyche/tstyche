@@ -1,0 +1,33 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'fixtureFileMatch' option",
+      "valid": true,
+      "data": {
+        "fixtureFileMatch": ["fixtures/*.ts", "**/__fixtures__/**/*"]
+      }
+    },
+    {
+      "description": "items of the 'fixtureFileMatch' option must be of type string",
+      "valid": false,
+      "data": {
+        "fixtureFileMatch": [true]
+      }
+    },
+    {
+      "description": "items of the 'fixtureFileMatch' option must NOT be identical",
+      "valid": false,
+      "data": {
+        "fixtureFileMatch": ["fixtures/*.ts", "fixtures/*.ts"]
+      }
+    },
+    {
+      "description": "value of the 'fixtureFileMatch' option must be of type Array",
+      "valid": false,
+      "data": {
+        "fixtureFileMatch": "fixtures/*"
+      }
+    }
+  ]
+}
