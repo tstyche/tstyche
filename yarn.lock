@@ -2401,7 +2401,7 @@ __metadata:
     rollup: "npm:4.45.1"
     rollup-plugin-dts: "npm:6.2.1"
     tslib: "npm:2.8.1"
-    typescript: "npm:5.9.0-dev.20250718"
+    typescript: "npm:5.9.0-dev.20250719"
   peerDependencies:
     typescript: ">=4.7"
   peerDependenciesMeta:
@@ -2412,23 +2412,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"typescript@npm:5.9.0-dev.20250718":
-  version: 5.9.0-dev.20250718
-  resolution: "typescript@npm:5.9.0-dev.20250718"
+"typescript@npm:5.9.0-dev.20250719":
+  version: 5.9.0-dev.20250719
+  resolution: "typescript@npm:5.9.0-dev.20250719"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/65637dabd84aa0f9696656a77d07ef6d143856085eea23a094ca0092e49ee2858016f4817ca7dd795baa0ce04db0d5a585ba12979e8d586af0cf0256ccbcff10
+  checksum: 10c0/d91bf77b682009996fa7d7763e5e71aa6ccbe5c87bc2b04447ef5fcfa934947604ec5531ff96f27d90ed7c9ccab918c6f7b5c0c87aea8df38283b05182408e7c
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.9.0-dev.20250718#optional!builtin<compat/typescript>":
-  version: 5.9.0-dev.20250718
-  resolution: "typescript@patch:typescript@npm%3A5.9.0-dev.20250718#optional!builtin<compat/typescript>::version=5.9.0-dev.20250718&hash=5786d5"
+"typescript@patch:typescript@npm%3A5.9.0-dev.20250719#optional!builtin<compat/typescript>":
+  version: 5.9.0-dev.20250719
+  resolution: "typescript@patch:typescript@npm%3A5.9.0-dev.20250719#optional!builtin<compat/typescript>::version=5.9.0-dev.20250719&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/f680e00bb9e574ed84f390130731e3f7235d04b24c03b557acde80d69ae9debf0674cfb8fb74a850c6cd75babe869864e6fd6dd494a5ae3f96d5a2ebef30f24b
+  checksum: 10c0/6c2da9b995bc9e40ffb7b57abae8ebb82e47ee628247bfaf3078332751bd8031607afd77f0a34feb5f4af7d3a333f6fac688ddb6465d99bb4c85d35f16d509f4
   languageName: node
   linkType: hard
 
