@@ -55,7 +55,7 @@
     "test:e2e:serial": "yarn test:run tests/*.test.js --include feature",
     "test:examples": "NODE_OPTIONS='--experimental-strip-types' tstyche examples",
     "test:run": "rm -rf ./tests/__fixtures__/.generated && yarn node ./tests/__utilities__/runner.js",
-    "test:schemas": "jsonschema test schemas/__tests__/ --resolve schemas/config.json",
+    "test:schemas": "jsonschema test schemas/__tests__/*.test.json --resolve ./schemas/config.json",
     "test:types": "tstyche typetests",
     "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
   },
