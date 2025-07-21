@@ -899,16 +899,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sourcemeta/jsonschema@npm:10.0.0":
-  version: 10.0.0
-  resolution: "@sourcemeta/jsonschema@npm:10.0.0"
-  bin:
-    jsonschema: cli.js
-  checksum: 10c0/f807c024c03689c473cf0d319faa1e29c45071c74c7710c8d2555a8c95b51f9d905d72f69e12fccbf7eceb98eb56ac4c46349fbf94aaf2343cb70506652c87bb
-  conditions: (os=darwin | os=linux | os=win32) & (cpu=x64 | cpu=arm64)
-  languageName: node
-  linkType: hard
-
 "@types/estree@npm:1.0.8, @types/estree@npm:^1.0.0":
   version: 1.0.8
   resolution: "@types/estree@npm:1.0.8"
@@ -2355,7 +2345,6 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:2.1.1"
     "@rollup/plugin-typescript": "npm:12.1.4"
-    "@sourcemeta/jsonschema": "npm:10.0.0"
     "@types/node": "npm:22.16.5"
     "@types/react": "npm:19.1.8"
     code-block-writer: "npm:13.0.3"

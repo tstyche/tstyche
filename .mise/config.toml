@@ -1,4 +1,8 @@
 [tools]
-hyperfine = "latest"
+hyperfine = "1.19.0"
+jsonschema = "10.0.0"
 node = "lts"
 yarn = "latest"
+
+[tasks."test:schemas"]
+run = "jsonschema test schemas/__tests__/*.test.json --resolve ./schemas/config.json"

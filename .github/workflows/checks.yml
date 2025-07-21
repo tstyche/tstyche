@@ -77,8 +77,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: jdx/mise-action@bfb9fa0b029db830a8c570757cee683df207a6c5 # v2
-      - run: yarn install
-      - run: yarn test:schemas
+      - run: mise test:schemas
 
   test-types:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
