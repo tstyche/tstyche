@@ -71,7 +71,7 @@
     "rollup": "4.45.1",
     "rollup-plugin-dts": "6.2.1",
     "tslib": "2.8.1",
-    "typescript": "5.9.0-dev.20250720"
+    "typescript": "5.9.0-dev.20250721"
   },
   "peerDependencies": {
     "typescript": ">=4.7"
