@@ -136,14 +136,6 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: jdx/mise-action@bfb9fa0b029db830a8c570757cee683df207a6c5 # v2
-        # TODO remove this override after Windows support is added to the 'mise-yarn' plugin
-        with:
-          mise_toml: |
-            [settings]
-            disable_tools = ['yarn']
-            experimental = true
-            [hooks]
-            postinstall = 'corepack enable'
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
@@ -166,14 +158,6 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: jdx/mise-action@bfb9fa0b029db830a8c570757cee683df207a6c5 # v2
-        # TODO remove after Windows support is added to the 'mise-yarn' plugin
-        with:
-          mise_toml: |
-            [settings]
-            disable_tools = ['yarn']
-            experimental = true
-            [hooks]
-            postinstall = 'corepack enable'
       - run: yarn install
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
