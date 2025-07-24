@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: jdx/mise-action@bfb9fa0b029db830a8c570757cee683df207a6c5 # v2
+      - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
       - run: yarn install
       - run: yarn build
       - run: mise bench
