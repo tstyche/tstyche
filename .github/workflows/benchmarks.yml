@@ -20,7 +20,7 @@ jobs:
       - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
       - run: yarn install
       - run: yarn build
-      - run: mise bench
+      - run: mise run bench
 
       - uses: bencherdev/bencher@main
       - name: Run bencher
