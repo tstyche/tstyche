@@ -42,7 +42,9 @@
       "correctness": {
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
-        "useImportExtensions": "error"
+        "useImportExtensions": "error",
+
+        "noUnusedPrivateClassMembers": "off"
       },
 
       "nursery": {
