@@ -906,12 +906,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.16.5":
-  version: 22.16.5
-  resolution: "@types/node@npm:22.16.5"
+"@types/node@npm:22.17.0":
+  version: 22.17.0
+  resolution: "@types/node@npm:22.17.0"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/93a245e96a01f4a6aa38475000070292a9299e17b95bc1fc8180c652fb3a62f9b3b9ec0b78f9fc6a78b9274d3dfce456e80c7bb68b5357c8f7dbf581df4408c1
+  checksum: 10c0/e1c603b660d3de3243dfc02ded5d40623ff3f36315ffbdd8cdc81bc2c5a8da172035879d437b72e9fa61ca01827f28e9c2b0c32898f411a8e9ba0a5efac0b4ca
   languageName: node
   linkType: hard
 
@@ -2345,7 +2345,7 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:2.1.3"
     "@rollup/plugin-typescript": "npm:12.1.4"
-    "@types/node": "npm:22.16.5"
+    "@types/node": "npm:22.17.0"
     "@types/react": "npm:19.1.9"
     code-block-writer: "npm:13.0.3"
     cspell: "npm:9.2.0"
