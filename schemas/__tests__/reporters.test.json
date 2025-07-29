@@ -1,0 +1,33 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'reporters' option",
+      "valid": true,
+      "data": {
+        "reporters": ["./tstyche-reporter.js"]
+      }
+    },
+    {
+      "description": "items of the 'reporters' option must be of type string",
+      "valid": false,
+      "data": {
+        "reporters": [true]
+      }
+    },
+    {
+      "description": "items of the 'reporters' option must NOT be identical",
+      "valid": false,
+      "data": {
+        "reporters": ["./tstyche-reporter.js", "./tstyche-reporter.js"]
+      }
+    },
+    {
+      "description": "value of the 'reporters' option must be of type Array",
+      "valid": false,
+      "data": {
+        "reporters": "./tstyche-reporter.js"
+      }
+    }
+  ]
+}

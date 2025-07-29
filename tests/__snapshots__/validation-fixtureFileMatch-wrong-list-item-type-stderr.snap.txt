@@ -1,0 +1,12 @@
+Error: Item of the 'fixtureFileMatch' list must be of type string.
+
+  2 |   "fixtureFileMatch": [
+  3 |     "fixtures/*",
+  4 |     false,
+    |     ~~~~~
+  5 |     "**/__fixtures__/*.ts"
+  6 |   ]
+  7 | }
+
+      at ./tstyche.config.json:4:5
+

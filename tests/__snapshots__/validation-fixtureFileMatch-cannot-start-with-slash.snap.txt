@@ -1,11 +1,11 @@
-Error: A 'testFileMatch' pattern cannot start with '/'.
+Error: A 'fixtureFileMatch' pattern cannot start with '/'.
 
 The files are only collected within the 'rootPath' directory.
 
   1 | {
-  2 |   "testFileMatch": [
-  3 |     "/feature"
-    |     ~~~~~~~~~~
+  2 |   "fixtureFileMatch": [
+  3 |     "/fixtures"
+    |     ~~~~~~~~~~~
   4 |   ]
   5 | }
   6 | 

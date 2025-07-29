@@ -1,6 +1,6 @@
 {
   "name": "tstyche",
-  "version": "4.1.0",
+  "version": "4.3.0",
   "description": "Everything You Need for Type Testing.",
   "keywords": [
     "typescript",
@@ -61,18 +61,17 @@
   "devDependencies": {
     "@biomejs/biome": "2.1.1",
     "@rollup/plugin-typescript": "12.1.4",
-    "@types/node": "22.16.3",
+    "@types/node": "22.16.5",
     "@types/react": "19.1.8",
-    "ajv": "8.17.1",
     "code-block-writer": "13.0.3",
-    "cspell": "9.1.3",
+    "cspell": "9.2.0",
     "magic-string": "0.30.17",
     "monocart-coverage-reports": "2.12.6",
     "pretty-ansi": "3.0.0",
-    "rollup": "4.44.2",
+    "rollup": "4.46.1",
     "rollup-plugin-dts": "6.2.1",
     "tslib": "2.8.1",
-    "typescript": "5.9.0-dev.20250710"
+    "typescript": "5.9.1-rc"
   },
   "peerDependencies": {
     "typescript": ">=4.7"
