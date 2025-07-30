@@ -234,9 +234,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-aws@npm:^4.0.12":
-  version: 4.0.12
-  resolution: "@cspell/dict-aws@npm:4.0.12"
-  checksum: 10c0/1efccb99d550c71a032c2edaa2d5a978935fac5af7613f66a1004d1f2a054801fdb9973503e406ce22e1f1e767400e7e37722f7321a774ed744b9f72a95d52ac
+  version: 4.0.14
+  resolution: "@cspell/dict-aws@npm:4.0.14"
+  checksum: 10c0/ff45f50ac9ab416c1c5710ff839f1c7a7d32bb5682234fdaab521b8e61ea2e72364fd9278d696d93251746bf9a8877dd15c4274d3b3727aa9451cea6d57624cb
   languageName: node
   linkType: hard
 
@@ -250,9 +250,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-companies@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "@cspell/dict-companies@npm:3.2.2"
-  checksum: 10c0/6f744680a8963387fe33405ef61326ca0feaf9694bc3c4a604df844a1a591b46b1b18f154c183fbff87de10d150fa482018f460fb2c2f09ba1bd030c9e5e99e0
+  version: 3.2.3
+  resolution: "@cspell/dict-companies@npm:3.2.3"
+  checksum: 10c0/25373418b32b0a9cb1e6606dbd8ae5b4d67a401a1c89df2f59e3091204a1580ab1aecafa6d92e8393405d433b0be3a067cbc1f751e53a0d92b7dfe62441cf5f9
   languageName: node
   linkType: hard
 
@@ -306,9 +306,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-docker@npm:^1.1.15":
-  version: 1.1.15
-  resolution: "@cspell/dict-docker@npm:1.1.15"
-  checksum: 10c0/ab5b304d55b20d6dbed0f379fe8c84f5d31761a53ed20ec9d56b89ab9deb1b3f7db89e1ff1c359210c3e47ac844ff62592ef0399daef7980694da1609dfac82d
+  version: 1.1.16
+  resolution: "@cspell/dict-docker@npm:1.1.16"
+  checksum: 10c0/0e2c211da4a8d6e23311bc41c4041bf447c5c7a4ab84afe3a0229d11fc0af19ec1f6f8fcfd9c6b6793b538a81026d3957e86f3999baba973520ffe84a9420014
   languageName: node
   linkType: hard
 
@@ -514,9 +514,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.2.12":
-  version: 5.2.12
-  resolution: "@cspell/dict-npm@npm:5.2.12"
-  checksum: 10c0/0db2e35f08f70b83c14261b0ed5fa9a7ea3aa6875f4979665dde9ad0f55b54b718008b5c6dd4dda6789a4870b9c75e62abcd94026173a912bffc6d54de4f4484
+  version: 5.2.13
+  resolution: "@cspell/dict-npm@npm:5.2.13"
+  checksum: 10c0/231c4411684295440129911b88276e0a9b8bf7061525cffa61229aabd5843c89f49a7932e10826c8c43c1ee6a23ab9a7a2c13a040b37bbfbd4ff6b5d60add052
   languageName: node
   linkType: hard
 
@@ -586,9 +586,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^5.1.4":
-  version: 5.1.4
-  resolution: "@cspell/dict-software-terms@npm:5.1.4"
-  checksum: 10c0/025a7a584c64b5359f32c8d12d5c80f8cfe8522b9b6fc9753e17dcd439d557e32f063a4500246887bc767d548f60456967580aadc8effd17a134b9587178b8d6
+  version: 5.1.5
+  resolution: "@cspell/dict-software-terms@npm:5.1.5"
+  checksum: 10c0/ba79784ae3a41d450f790df323db7d7cc29137583b303148fe9f1c3785f8da6a0c4bded836e86bd647c6f85975495b3442a18f4dae74ee80cf08d21f3f1109fe
   languageName: node
   linkType: hard
 
@@ -1893,8 +1893,8 @@ __metadata:
   linkType: hard
 
 "node-gyp@npm:latest":
-  version: 11.2.0
-  resolution: "node-gyp@npm:11.2.0"
+  version: 11.3.0
+  resolution: "node-gyp@npm:11.3.0"
   dependencies:
     env-paths: "npm:^2.2.0"
     exponential-backoff: "npm:^3.1.1"
@@ -1908,7 +1908,7 @@ __metadata:
     which: "npm:^5.0.0"
   bin:
     node-gyp: bin/node-gyp.js
-  checksum: 10c0/bd8d8c76b06be761239b0c8680f655f6a6e90b48e44d43415b11c16f7e8c15be346fba0cbf71588c7cdfb52c419d928a7d3db353afc1d952d19756237d8f10b9
+  checksum: 10c0/5f4ad5a729386f7b50096efd4934b06c071dbfbc7d7d541a66d6959a7dccd62f53ff3dc95fffb60bf99d8da1270e23769f82246fcaa6c5645a70c967ae9a3398
   languageName: node
   linkType: hard
 
