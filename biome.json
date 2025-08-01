@@ -15,7 +15,7 @@
       "!**/coverage/**",
       "!**/node_modules/**",
       "!**/schemas/config.json",
-      "!**/cspell.config.json"
+      "!**/cspell.json"
     ]
   },
 

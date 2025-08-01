@@ -38,7 +38,7 @@
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
     "check": "yarn check:spelling && yarn check:types",
-    "check:spelling": "cspell --config cspell.config.json --quiet",
+    "check:spelling": "cspell --config cspell.json --quiet",
     "check:types": "tsc --noEmit --project tsconfig.json",
     "format": "biome format --write",
     "generate": "yarn generate:schema && yarn generate:types",
