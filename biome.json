@@ -102,7 +102,12 @@
     }
   },
 
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "recommended": true
+    }
+  },
 
   "overrides": [
     {
