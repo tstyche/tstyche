@@ -10,15 +10,3 @@ Error: Compiler option 'strict' requires a value of type boolean. ts(5024)
 
       at ./tsconfig.json:4:15
 
-Error: Compiler option 'strict' requires a value of type boolean. ts(5024)
-
-  2 |   "compilerOptions": {
-  3 |     "noEmitOnError": true,
-  4 |     "strict": "yes",
-    |               ~~~~~
-  5 |     "strictNullChecks": true
-  6 |   },
-  7 |   "extends": "../../tsconfig.json",
-
-      at ./tsconfig.json:4:15
-
