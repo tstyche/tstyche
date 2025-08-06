@@ -7,7 +7,7 @@
       "type": "boolean"
     },
     "checkSuppressedErrors": {
-      "default": false,
+      "default": true,
       "description": "Check errors silenced by '// @ts-expect-error' directives.",
       "type": "boolean"
     },
