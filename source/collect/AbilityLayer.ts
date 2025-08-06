@@ -221,8 +221,7 @@ export class AbilityLayer {
     const suppressedErrors = this.#collectSuppressedErrors();
 
     if (this.#resolvedConfig.checkSuppressedErrors) {
-      testTree.suppressedErrors = Object.assign(suppressedErrors, { sourceFile: testTree.sourceFile });
-
+      testTree.suppressedErrors = suppressedErrors;
       this.#suppressedErrorsMap = new Map();
     }
 

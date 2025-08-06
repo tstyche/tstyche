@@ -87,11 +87,9 @@ export class TaskRunner {
       runMode |= RunMode.Skip;
     }
 
-    if (testTree.suppressedErrors != null) {
-      this.#suppressedService.match(testTree.suppressedErrors, (diagnostics) => {
-        this.#onDiagnostics(diagnostics, taskResult);
-      });
-    }
+    this.#suppressedService.match(testTree, (diagnostics) => {
+      this.#onDiagnostics(diagnostics, taskResult);
+    });
 
     if (inlineConfig?.template) {
       // TODO testTree.children must be not allowed in template files
