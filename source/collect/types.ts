@@ -7,5 +7,3 @@ export interface SuppressedError {
   argument?: TextRange;
   diagnostics: Array<ts.Diagnostic>;
 }
-
-export type SuppressedErrors = Array<SuppressedError> & { sourceFile: ts.SourceFile };
