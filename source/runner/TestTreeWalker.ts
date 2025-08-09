@@ -22,7 +22,7 @@ export class TestTreeWalker {
   #compiler: typeof ts;
   #expectService: ExpectService;
   #hasOnly: boolean;
-  #onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
+  #onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
   #whenService: WhenService;
@@ -31,12 +31,12 @@ export class TestTreeWalker {
     compiler: typeof ts,
     typeChecker: TypeChecker,
     resolvedConfig: ResolvedConfig,
-    onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
+    onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
     options: TestTreeWalkerOptions,
   ) {
     this.#compiler = compiler;
     this.#resolvedConfig = resolvedConfig;
-    this.#onTaskDiagnostics = onTaskDiagnostics;
+    this.#onFileDiagnostics = onFileDiagnostics;
 
     this.#cancellationToken = options.cancellationToken;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
@@ -45,7 +45,7 @@ export class TestTreeWalker {
     const reject = new Reject(compiler, typeChecker, resolvedConfig);
 
     this.#expectService = new ExpectService(compiler, typeChecker, reject);
-    this.#whenService = new WhenService(reject, onTaskDiagnostics);
+    this.#whenService = new WhenService(reject, onFileDiagnostics);
   }
 
   async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
@@ -187,7 +187,7 @@ export class TestTreeWalker {
       !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
       describe.diagnostics.size > 0
     ) {
-      this.#onTaskDiagnostics(Diagnostic.fromDiagnostics([...describe.diagnostics]));
+      this.#onFileDiagnostics(Diagnostic.fromDiagnostics([...describe.diagnostics]));
     } else {
       await this.visit(describe.children, runMode, describeResult);
     }

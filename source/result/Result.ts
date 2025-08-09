@@ -1,4 +1,4 @@
-import type { Task } from "#task";
+import type { FileLocation } from "#file";
 import { ResultCount } from "./ResultCount.js";
 import { ResultTiming } from "./ResultTiming.js";
 import type { TargetResult } from "./TargetResult.js";
@@ -6,13 +6,13 @@ import type { TargetResult } from "./TargetResult.js";
 export class Result {
   expectCount = new ResultCount();
   fileCount = new ResultCount();
+  files: Array<FileLocation>;
   results: Array<TargetResult> = [];
   targetCount = new ResultCount();
-  tasks: Array<Task>;
   testCount = new ResultCount();
   timing = new ResultTiming();
 
-  constructor(tasks: Array<Task>) {
-    this.tasks = tasks;
+  constructor(files: Array<FileLocation>) {
+    this.files = files;
   }
 }

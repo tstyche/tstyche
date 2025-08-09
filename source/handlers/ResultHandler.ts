@@ -3,21 +3,21 @@ import type { Event, EventHandler } from "#events";
 import {
   type DescribeResult,
   type ExpectResult,
+  type FileResult,
   ProjectResult,
   type Result,
   ResultStatus,
   type TargetResult,
-  type TaskResult,
   type TestResult,
 } from "#result";
 
 export class ResultHandler implements EventHandler {
   #describeResult: DescribeResult | undefined;
   #expectResult: ExpectResult | undefined;
+  #fileResult: FileResult | undefined;
   #projectResult: ProjectResult | undefined;
   #result: Result | undefined;
   #targetResult: TargetResult | undefined;
-  #taskResult: TaskResult | undefined;
   #testResult: TestResult | undefined;
 
   on([event, payload]: Event): void {
@@ -75,44 +75,44 @@ export class ResultHandler implements EventHandler {
         this.#projectResult!.diagnostics.push(...payload.diagnostics);
         break;
 
-      case "task:start":
+      case "file:start":
         this.#projectResult!.results.push(payload.result);
 
-        this.#taskResult = payload.result;
-        this.#taskResult.timing.start = Date.now();
+        this.#fileResult = payload.result;
+        this.#fileResult.timing.start = Date.now();
         break;
 
-      case "task:error":
+      case "file:error":
       case "directive:error":
       case "collect:error":
         this.#targetResult!.status = ResultStatus.Failed;
-        this.#taskResult!.status = ResultStatus.Failed;
-        this.#taskResult!.diagnostics.push(...payload.diagnostics);
+        this.#fileResult!.status = ResultStatus.Failed;
+        this.#fileResult!.diagnostics.push(...payload.diagnostics);
         break;
 
-      case "task:end":
+      case "file:end":
         if (
-          this.#taskResult!.status === ResultStatus.Failed ||
-          this.#taskResult!.expectCount.failed > 0 ||
-          this.#taskResult!.testCount.failed > 0
+          this.#fileResult!.status === ResultStatus.Failed ||
+          this.#fileResult!.expectCount.failed > 0 ||
+          this.#fileResult!.testCount.failed > 0
         ) {
           this.#result!.fileCount.failed++;
           this.#targetResult!.status = ResultStatus.Failed;
-          this.#taskResult!.status = ResultStatus.Failed;
+          this.#fileResult!.status = ResultStatus.Failed;
         } else {
           this.#result!.fileCount.passed++;
-          this.#taskResult!.status = ResultStatus.Passed;
+          this.#fileResult!.status = ResultStatus.Passed;
         }
 
-        this.#taskResult!.timing.end = Date.now();
-        this.#taskResult = undefined;
+        this.#fileResult!.timing.end = Date.now();
+        this.#fileResult = undefined;
         break;
 
       case "describe:start":
         if (this.#describeResult) {
           this.#describeResult.results.push(payload.result);
         } else {
-          this.#taskResult!.results.push(payload.result);
+          this.#fileResult!.results.push(payload.result);
         }
 
         this.#describeResult = payload.result;
@@ -128,7 +128,7 @@ export class ResultHandler implements EventHandler {
         if (this.#describeResult) {
           this.#describeResult.results.push(payload.result);
         } else {
-          this.#taskResult!.results.push(payload.result);
+          this.#fileResult!.results.push(payload.result);
         }
 
         this.#testResult = payload.result;
@@ -137,7 +137,7 @@ export class ResultHandler implements EventHandler {
 
       case "test:error":
         this.#result!.testCount.failed++;
-        this.#taskResult!.testCount.failed++;
+        this.#fileResult!.testCount.failed++;
 
         this.#testResult!.status = ResultStatus.Failed;
         this.#testResult!.diagnostics.push(...payload.diagnostics);
@@ -147,7 +147,7 @@ export class ResultHandler implements EventHandler {
 
       case "test:fail":
         this.#result!.testCount.failed++;
-        this.#taskResult!.testCount.failed++;
+        this.#fileResult!.testCount.failed++;
 
         this.#testResult!.status = ResultStatus.Failed;
         this.#testResult!.timing.end = Date.now();
@@ -156,7 +156,7 @@ export class ResultHandler implements EventHandler {
 
       case "test:pass":
         this.#result!.testCount.passed++;
-        this.#taskResult!.testCount.passed++;
+        this.#fileResult!.testCount.passed++;
 
         this.#testResult!.status = ResultStatus.Passed;
         this.#testResult!.timing.end = Date.now();
@@ -165,7 +165,7 @@ export class ResultHandler implements EventHandler {
 
       case "test:skip":
         this.#result!.testCount.skipped++;
-        this.#taskResult!.testCount.skipped++;
+        this.#fileResult!.testCount.skipped++;
 
         this.#testResult!.status = ResultStatus.Skipped;
         this.#testResult!.timing.end = Date.now();
@@ -174,7 +174,7 @@ export class ResultHandler implements EventHandler {
 
       case "test:todo":
         this.#result!.testCount.todo++;
-        this.#taskResult!.testCount.todo++;
+        this.#fileResult!.testCount.todo++;
 
         this.#testResult!.status = ResultStatus.Todo;
         this.#testResult!.timing.end = Date.now();
@@ -185,7 +185,7 @@ export class ResultHandler implements EventHandler {
         if (this.#testResult) {
           this.#testResult.results.push(payload.result);
         } else {
-          this.#taskResult!.results.push(payload.result);
+          this.#fileResult!.results.push(payload.result);
         }
 
         this.#expectResult = payload.result;
@@ -194,7 +194,7 @@ export class ResultHandler implements EventHandler {
 
       case "expect:error":
         this.#result!.expectCount.failed++;
-        this.#taskResult!.expectCount.failed++;
+        this.#fileResult!.expectCount.failed++;
 
         if (this.#testResult) {
           this.#testResult.expectCount.failed++;
@@ -208,7 +208,7 @@ export class ResultHandler implements EventHandler {
 
       case "expect:fail":
         this.#result!.expectCount.failed++;
-        this.#taskResult!.expectCount.failed++;
+        this.#fileResult!.expectCount.failed++;
 
         if (this.#testResult) {
           this.#testResult.expectCount.failed++;
@@ -221,7 +221,7 @@ export class ResultHandler implements EventHandler {
 
       case "expect:pass":
         this.#result!.expectCount.passed++;
-        this.#taskResult!.expectCount.passed++;
+        this.#fileResult!.expectCount.passed++;
 
         if (this.#testResult) {
           this.#testResult.expectCount.passed++;
@@ -234,7 +234,7 @@ export class ResultHandler implements EventHandler {
 
       case "expect:skip":
         this.#result!.expectCount.skipped++;
-        this.#taskResult!.expectCount.skipped++;
+        this.#fileResult!.expectCount.skipped++;
 
         if (this.#testResult) {
           this.#testResult.expectCount.skipped++;

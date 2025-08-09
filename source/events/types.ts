@@ -1,6 +1,6 @@
 import type { AssertionNode, TestTree, TestTreeNode, WhenNode } from "#collect";
 import type { Diagnostic } from "#diagnostic";
-import type { DescribeResult, ExpectResult, Result, TargetResult, TaskResult, TestResult } from "#result";
+import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, TestResult } from "#result";
 
 export interface EventHandler {
   on: (event: Event) => void;
@@ -17,9 +17,9 @@ export type Event =
   | ["target:end", { result: TargetResult }]
   | ["project:uses", { compilerVersion: string; projectConfigFilePath: string | undefined }]
   | ["project:error", { diagnostics: Array<Diagnostic> }]
-  | ["task:start", { result: TaskResult }]
-  | ["task:error", { diagnostics: Array<Diagnostic>; result: TaskResult }]
-  | ["task:end", { result: TaskResult }]
+  | ["file:start", { result: FileResult }]
+  | ["file:error", { diagnostics: Array<Diagnostic>; result: FileResult }]
+  | ["file:end", { result: FileResult }]
   | ["directive:error", { diagnostics: Array<Diagnostic> }]
   | ["collect:start", { tree: TestTree }]
   | ["collect:error", { diagnostics: Array<Diagnostic> }]

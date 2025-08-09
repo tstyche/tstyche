@@ -6,16 +6,16 @@ import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { TypeChecker } from "#expect";
+import type { FileLocation } from "#file";
 import { ProjectService } from "#project";
-import { TaskResult } from "#result";
+import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
-import type { Task } from "#task";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { RunMode } from "./RunMode.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
-export class TaskRunner {
+export class FileRunner {
   #collectService: CollectService;
   #compiler: typeof ts;
   #projectService: ProjectService;
@@ -30,49 +30,49 @@ export class TaskRunner {
     this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
   }
 
-  #onDiagnostics(this: void, diagnostics: Array<Diagnostic>, result: TaskResult) {
-    EventEmitter.dispatch(["task:error", { diagnostics, result }]);
+  #onDiagnostics(this: void, diagnostics: Array<Diagnostic>, result: FileResult) {
+    EventEmitter.dispatch(["file:error", { diagnostics, result }]);
   }
 
-  async run(task: Task, cancellationToken: CancellationToken): Promise<void> {
+  async run(file: FileLocation, cancellationToken: CancellationToken): Promise<void> {
     if (cancellationToken.isCancellationRequested) {
       return;
     }
 
-    this.#projectService.openFile(task.filePath, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
+    this.#projectService.openFile(file.path, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
 
-    const taskResult = new TaskResult(task);
+    const fileResult = new FileResult(file);
 
-    EventEmitter.dispatch(["task:start", { result: taskResult }]);
+    EventEmitter.dispatch(["file:start", { result: fileResult }]);
 
-    await this.#run(task, taskResult, cancellationToken);
+    await this.#run(file, fileResult, cancellationToken);
 
-    EventEmitter.dispatch(["task:end", { result: taskResult }]);
+    EventEmitter.dispatch(["file:end", { result: fileResult }]);
 
-    this.#projectService.closeFile(task.filePath);
+    this.#projectService.closeFile(file.path);
   }
 
-  async #resolveTaskFacts(
-    task: Task,
-    taskResult: TaskResult,
+  async #resolveFileFacts(
+    file: FileLocation,
+    fileResult: FileResult,
     runMode = RunMode.Normal,
   ): Promise<{ runMode: RunMode; testTree: TestTree; typeChecker: TypeChecker } | undefined> {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
-    const languageService = this.#projectService.getLanguageService(task.filePath);
+    const languageService = this.#projectService.getLanguageService(file.path);
 
-    const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(task.filePath);
+    const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(file.path);
 
     if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
-      this.#onDiagnostics(Diagnostic.fromDiagnostics(syntacticDiagnostics), taskResult);
+      this.#onDiagnostics(Diagnostic.fromDiagnostics(syntacticDiagnostics), fileResult);
 
       return;
     }
 
-    const semanticDiagnostics = languageService?.getSemanticDiagnostics(task.filePath);
+    const semanticDiagnostics = languageService?.getSemanticDiagnostics(file.path);
     const program = languageService?.getProgram();
     const typeChecker = program?.getTypeChecker() as TypeChecker;
-    const sourceFile = program?.getSourceFile(task.filePath);
+    const sourceFile = program?.getSourceFile(file.path);
 
     if (!sourceFile) {
       return;
@@ -88,43 +88,43 @@ export class TaskRunner {
     }
 
     this.#suppressedService.match(testTree, (diagnostics) => {
-      this.#onDiagnostics(diagnostics, taskResult);
+      this.#onDiagnostics(diagnostics, fileResult);
     });
 
     if (inlineConfig?.template) {
       // TODO testTree.children must be not allowed in template files
 
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
-        this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), taskResult);
+        this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), fileResult);
 
         return;
       }
 
-      const moduleSpecifier = pathToFileURL(task.filePath).toString();
+      const moduleSpecifier = pathToFileURL(file.path).toString();
       const testText = (await import(moduleSpecifier))?.default;
 
       if (typeof testText !== "string") {
-        this.#onDiagnostics([Diagnostic.error("A template test file must export a string.")], taskResult);
+        this.#onDiagnostics([Diagnostic.error("A template test file must export a string.")], fileResult);
 
         return;
       }
 
-      this.#projectService.openFile(task.filePath, testText, this.#resolvedConfig.rootPath);
+      this.#projectService.openFile(file.path, testText, this.#resolvedConfig.rootPath);
 
-      return this.#resolveTaskFacts(task, taskResult, runMode);
+      return this.#resolveFileFacts(file, fileResult, runMode);
     }
 
     return { runMode, testTree, typeChecker };
   }
 
-  async #run(task: Task, taskResult: TaskResult, cancellationToken: CancellationToken) {
-    if (!existsSync(task.filePath)) {
-      this.#onDiagnostics([Diagnostic.error(`Test file '${task.filePath}' does not exist.`)], taskResult);
+  async #run(file: FileLocation, taskResult: FileResult, cancellationToken: CancellationToken) {
+    if (!existsSync(file.path)) {
+      this.#onDiagnostics([Diagnostic.error(`Test file '${file.path}' does not exist.`)], taskResult);
 
       return;
     }
 
-    const facts = await this.#resolveTaskFacts(task, taskResult);
+    const facts = await this.#resolveFileFacts(file, taskResult);
 
     if (!facts) {
       return;
@@ -148,7 +148,7 @@ export class TaskRunner {
       {
         cancellationToken,
         hasOnly: facts.testTree.hasOnly,
-        position: task.position,
+        position: file.position,
       },
     );
 

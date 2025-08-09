@@ -10,8 +10,8 @@ const customReporterText = `export default class CustomReporter {
       console.info("Hello from custom reporter one!");
       console.info("");
 
-      for (const task of payload.result.tasks) {
-        console.info(task.filePath);
+      for (const file of payload.result.files) {
+        console.info(file.path);
       }
 
       console.info("");
