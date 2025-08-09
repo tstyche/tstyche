@@ -13,8 +13,8 @@ export default class CustomReporter {
     if (event === "run:start") {
       console.info("Hello from custom reporter!");
 
-      for (const task of payload.result.tasks) {
-        console.info(task.filePath);
+      for (const file of payload.result.files) {
+        console.info(file.path);
       }
     }
   }
