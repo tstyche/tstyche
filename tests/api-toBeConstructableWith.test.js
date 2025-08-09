@@ -200,12 +200,17 @@ function getPersonConstructor() {
 
 test("handles '// @ts-expect-error' directive", () => {
   expect(getPersonConstructor()).type.toBeConstructableWith("abc");
+  expect(getPersonConstructor()).type.not.toBeConstructableWith();
 
-  // @ts-expect-error
-  expect(getPersonConstructor(true)).type.toBeConstructableWith("abc"); // fail
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.toBeConstructableWith("abc");
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.not.toBeConstructableWith("abc"); // fail
 
-  // @ts-expect-error
-  expect(getPersonConstructor(true)).type.toBeConstructableWith(123); // fail
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.not.toBeConstructableWith();
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.toBeConstructableWith(); // fail
 });
 `;
 
