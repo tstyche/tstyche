@@ -2,6 +2,7 @@ import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
 import { diagnosticBelongsToNode, isDiagnosticWithLocation } from "#diagnostic";
 import type { ProjectService } from "#project";
+import { SourceService } from "#source";
 import type { AssertionNode } from "./AssertionNode.js";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
 import type { TestTree } from "./TestTree.js";
@@ -135,8 +136,10 @@ export class AbilityLayer {
     return ranges;
   }
 
-  close(): void {
+  close(testTree: TestTree): void {
     if (this.#nodes.length > 0 || this.#suppressedErrorsMap != null) {
+      SourceService.set(testTree.sourceFile);
+
       this.#projectService.openFile(this.#filePath, this.#text, this.#resolvedConfig.rootPath);
 
       const languageService = this.#projectService.getLanguageService(this.#filePath);

@@ -1,7 +1,8 @@
 import type { TestTree, TestTreeNode } from "#collect";
-import { DiagnosticCategory, type DiagnosticOrigin } from "#diagnostic";
+import { DiagnosticCategory, type DiagnosticOrigin, type SourceFile } from "#diagnostic";
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
+import { SourceService } from "#source";
 import type { CodeFrameOptions } from "./types.js";
 
 interface BreadcrumbsTextProps {
@@ -70,12 +71,16 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
   const linesBelow = options?.linesBelow ?? 3;
   const showBreadcrumbs = options?.showBreadcrumbs ?? true;
 
-  const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
+  const sourceFile = SourceService.get(diagnosticOrigin.sourceFile);
 
-  const { character: firstMarkedLineCharacter, line: firstMarkedLine } =
-    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
-  const { character: lastMarkedLineCharacter, line: lastMarkedLine } =
-    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
+  const lineMap = sourceFile.getLineStarts();
+
+  const { character: firstMarkedLineCharacter, line: firstMarkedLine } = sourceFile.getLineAndCharacterOfPosition(
+    diagnosticOrigin.start,
+  );
+  const { character: lastMarkedLineCharacter, line: lastMarkedLine } = sourceFile.getLineAndCharacterOfPosition(
+    diagnosticOrigin.end,
+  );
 
   const firstLine = Math.max(firstMarkedLine - linesAbove, 0);
   const lastLine = Math.min(lastMarkedLine + linesBelow, lineMap.length - 1);
@@ -97,9 +102,9 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   for (let index = firstLine; index <= lastLine; index++) {
     const lineStart = lineMap[index];
-    const lineEnd = index === lineMap.length - 1 ? diagnosticOrigin.sourceFile.text.length : lineMap[index + 1];
+    const lineEnd = index === lineMap.length - 1 ? sourceFile.text.length : lineMap[index + 1];
 
-    const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
+    const lineText = sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
     if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeFrame.push(

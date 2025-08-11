@@ -19,6 +19,7 @@ export * from "#result";
 export * from "#runner";
 export * from "#scribbler";
 export * from "#select";
+export * from "#source";
 export * from "#store";
 export * from "#suppressed";
 export * from "#task";
