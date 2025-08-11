@@ -117,34 +117,34 @@ export class FileRunner {
     return { runMode, testTree, typeChecker };
   }
 
-  async #run(file: FileLocation, taskResult: FileResult, cancellationToken: CancellationToken) {
+  async #run(file: FileLocation, fileResult: FileResult, cancellationToken: CancellationToken) {
     if (!existsSync(file.path)) {
-      this.#onDiagnostics([Diagnostic.error(`Test file '${file.path}' does not exist.`)], taskResult);
+      this.#onDiagnostics([Diagnostic.error(`Test file '${file.path}' does not exist.`)], fileResult);
 
       return;
     }
 
-    const facts = await this.#resolveFileFacts(file, taskResult);
+    const facts = await this.#resolveFileFacts(file, fileResult);
 
     if (!facts) {
       return;
     }
 
     if (facts.testTree.diagnostics.size > 0) {
-      this.#onDiagnostics(Diagnostic.fromDiagnostics([...facts.testTree.diagnostics]), taskResult);
+      this.#onDiagnostics(Diagnostic.fromDiagnostics([...facts.testTree.diagnostics]), fileResult);
 
       return;
     }
 
-    const onTaskDiagnostics: DiagnosticsHandler<Array<Diagnostic>> = (diagnostics) => {
-      this.#onDiagnostics(diagnostics, taskResult);
+    const onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>> = (diagnostics) => {
+      this.#onDiagnostics(diagnostics, fileResult);
     };
 
     const testTreeWalker = new TestTreeWalker(
       this.#compiler,
       facts.typeChecker,
       this.#resolvedConfig,
-      onTaskDiagnostics,
+      onFileDiagnostics,
       {
         cancellationToken,
         hasOnly: facts.testTree.hasOnly,
