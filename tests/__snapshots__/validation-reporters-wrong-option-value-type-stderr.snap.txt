@@ -1,4 +1,4 @@
-Error: Option 'reporters' requires a value of type list.
+Error: Value for the 'reporters' option must be a list.
 
   1 | {
   2 |   "reporters": "./tstyche-reporter.js",

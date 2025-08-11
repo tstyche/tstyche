@@ -277,7 +277,7 @@ await test("'--config' command line option", async (t) => {
       [
         "Error: Option '--config' expects a value.",
         "",
-        "Option '--config' requires a value of type string.",
+        "Value for the '--config' option must be a string.",
         "",
         "",
       ].join("\n"),

@@ -28,7 +28,7 @@ await test("'--plugins' command line option", async (t) => {
     const expected = [
       "Error: Option '--plugins' expects a value.",
       "",
-      "Option '--plugins' requires a value of type list.",
+      "Value for the '--plugins' option must be a list.",
       "",
       "",
     ].join("\n");

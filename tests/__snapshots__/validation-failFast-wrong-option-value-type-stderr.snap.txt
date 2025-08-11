@@ -1,4 +1,4 @@
-Error: Option 'failFast' requires a value of type boolean.
+Error: Value for the 'failFast' option must be a boolean.
 
   1 | {
   2 |   "failFast": "never",
