@@ -1,5 +1,6 @@
 import type ts from "typescript";
-import { DiagnosticOrigin, type SourceFile } from "#diagnostic";
+import { DiagnosticOrigin } from "#diagnostic";
+import type { SourceFile } from "#source";
 import { JsonNode } from "./JsonNode.js";
 
 export interface JsonScannerOptions {

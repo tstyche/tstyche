@@ -1,10 +1,10 @@
 import type ts from "typescript";
-import type { SourceFile } from "#diagnostic";
+import type { SourceFile } from "#source";
 
 export class SourceService {
-  static #files = new Map<string, ts.SourceFile | SourceFile>();
+  static #files = new Map<string, SourceFile | ts.SourceFile>();
 
-  static get(source: ts.SourceFile | SourceFile) {
+  static get(source: SourceFile | ts.SourceFile) {
     const file = SourceService.#files.get(source.fileName);
 
     if (file != null) {
@@ -14,7 +14,7 @@ export class SourceService {
     return source;
   }
 
-  static set(source: ts.SourceFile | SourceFile) {
+  static set(source: SourceFile | ts.SourceFile) {
     SourceService.#files.set(source.fileName, source);
   }
 }

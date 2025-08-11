@@ -1,8 +1,9 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { type Diagnostic, SourceFile } from "#diagnostic";
+import type { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
+import { SourceFile } from "#source";
 import { CommandLineParser } from "./CommandLineParser.js";
 import { ConfigParser } from "./ConfigParser.js";
 import { defaultOptions } from "./defaultOptions.js";

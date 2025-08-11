@@ -1,5 +1,5 @@
 import type { TestTree, TestTreeNode } from "#collect";
-import { DiagnosticCategory, type DiagnosticOrigin, type SourceFile } from "#diagnostic";
+import { DiagnosticCategory, type DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 import { SourceService } from "#source";

@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { AssertionNode } from "#collect";
-import type { SourceFile } from "./SourceFile.js";
+import type { SourceFile } from "#source";
 
 export class DiagnosticOrigin {
   assertion: AssertionNode | undefined;
