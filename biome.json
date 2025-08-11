@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.4/schema.json",
 
   "json": {
     "parser": {
@@ -15,7 +15,7 @@
       "!**/coverage/**",
       "!**/node_modules/**",
       "!**/schemas/config.json",
-      "!**/cspell.config.json"
+      "!**/cspell.json"
     ]
   },
 
@@ -42,7 +42,9 @@
       "correctness": {
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
-        "useImportExtensions": "error"
+        "useImportExtensions": "error",
+
+        "noUnusedPrivateClassMembers": "off"
       },
 
       "nursery": {
@@ -100,7 +102,12 @@
     }
   },
 
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "recommended": true
+    }
+  },
 
   "overrides": [
     {

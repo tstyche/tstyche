@@ -34,7 +34,7 @@ export class ConfigParser {
   #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {
     const text = isListItem
       ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
-      : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand);
+      : ConfigDiagnosticText.optionValueMustBe(optionDefinition.name, optionDefinition.brand);
 
     this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
   }

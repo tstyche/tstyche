@@ -1,4 +1,4 @@
-Error: Option 'fixtureFileMatch' requires a value of type list.
+Error: Value for the 'fixtureFileMatch' option must be a list.
 
   1 | {
   2 |   "fixtureFileMatch": "fixtures",

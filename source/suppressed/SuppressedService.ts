@@ -1,10 +1,14 @@
-import type { SuppressedErrors } from "#collect";
+import type { TestTree } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import { SuppressedDiagnosticText } from "./SuppressedDiagnosticText.js";
 
 export class SuppressedService {
-  match(suppressedErrors: SuppressedErrors, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
-    for (const suppressedError of suppressedErrors) {
+  match(testTree: TestTree, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
+    if (!testTree.suppressedErrors) {
+      return;
+    }
+
+    for (const suppressedError of testTree.suppressedErrors) {
       if (suppressedError.diagnostics.length === 0 || suppressedError.ignore) {
         // directive is unused or ignored
         continue;
@@ -16,7 +20,7 @@ export class SuppressedService {
         const origin = new DiagnosticOrigin(
           suppressedError.directive.start,
           suppressedError.directive.end,
-          suppressedErrors.sourceFile,
+          testTree.sourceFile,
         );
 
         onDiagnostics([Diagnostic.error(text, origin)]);
@@ -35,7 +39,7 @@ export class SuppressedService {
         const origin = new DiagnosticOrigin(
           suppressedError.directive.start,
           suppressedError.directive.end,
-          suppressedErrors.sourceFile,
+          testTree.sourceFile,
         );
 
         onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
@@ -56,7 +60,7 @@ export class SuppressedService {
         const origin = new DiagnosticOrigin(
           suppressedError.argument.start,
           suppressedError.argument.end,
-          suppressedErrors.sourceFile,
+          testTree.sourceFile,
         );
 
         onDiagnostics([Diagnostic.error(text, origin).add({ related })]);

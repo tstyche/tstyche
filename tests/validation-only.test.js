@@ -18,7 +18,7 @@ await test("'--only' command line option", async (t) => {
 
     assert.equal(
       stderr,
-      ["Error: Option '--only' expects a value.", "", "Option '--only' requires a value of type string.", "", ""].join(
+      ["Error: Option '--only' expects a value.", "", "Value for the '--only' option must be a string.", "", ""].join(
         "\n",
       ),
     );

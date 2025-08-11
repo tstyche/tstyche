@@ -1,4 +1,4 @@
-Error: Option 'failFast' requires a value of type boolean.
+Error: Value for the 'failFast' option must be a boolean.
 
   1 | {
   2 |   "failFast": "no",
@@ -9,7 +9,7 @@ Error: Option 'failFast' requires a value of type boolean.
 
       at ./tstyche.config.json:2:15
 
-Error: Option 'failFast' requires a value of type boolean.
+Error: Value for the 'failFast' option must be a boolean.
 
   1 | {
   2 |   "failFast": "yes",
@@ -20,7 +20,7 @@ Error: Option 'failFast' requires a value of type boolean.
 
       at ./tstyche.config.json:2:15
 
-Error: Option 'failFast' requires a value of type boolean.
+Error: Value for the 'failFast' option must be a boolean.
 
   1 | {
   2 |   "failFast": "ok",

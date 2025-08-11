@@ -1,4 +1,4 @@
-Error: Option 'failFast' requires a value of type boolean.
+Error: Value for the 'failFast' option must be a boolean.
 
   1 | {
   2 |   "failFast": "always",
@@ -9,7 +9,7 @@ Error: Option 'failFast' requires a value of type boolean.
 
       at ./tstyche.config.json:2:15
 
-Error: Option 'rootPath' requires a value of type string.
+Error: Value for the 'rootPath' option must be a string.
 
   1 | {
   2 |   "failFast": "always",

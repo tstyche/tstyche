@@ -32,6 +32,10 @@ export class ConfigDiagnosticText {
     return `The specified module '${specifier}' was not found.`;
   }
 
+  static optionValueMustBe(optionName: string, optionBrand: OptionBrand): string {
+    return `Value for the '${optionName}' option must be a ${optionBrand}.`;
+  }
+
   static rangeIsNotValid(value: string): string {
     return `The specified range '${value}' is not valid.`;
   }
@@ -42,10 +46,6 @@ export class ConfigDiagnosticText {
       "To set an upper bound, the intersection of two ranges can be used.",
       "Examples: '>=5.5', '>=5.0 <5.3'.",
     ];
-  }
-
-  static requiresValueType(optionName: string, optionBrand: OptionBrand): string {
-    return `Option '${optionName}' requires a value of type ${optionBrand}.`;
   }
 
   static seen(element: string): string {
@@ -76,7 +76,7 @@ export class ConfigDiagnosticText {
       }
     }
 
-    return [ConfigDiagnosticText.requiresValueType(optionName, optionBrand)];
+    return [ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand)];
   }
 
   static versionIsNotSupported(value: string): string {

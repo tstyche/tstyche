@@ -28,7 +28,7 @@ await test("'--tsconfig' command line option", async (t) => {
     const expected = [
       "Error: Option '--tsconfig' expects a value.",
       "",
-      "Option '--tsconfig' requires a value of type string.",
+      "Value for the '--tsconfig' option must be a string.",
       "",
       "",
     ].join("\n");

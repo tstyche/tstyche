@@ -1,4 +1,4 @@
-Error: Option 'target' requires a value of type list.
+Error: Value for the 'target' option must be a list.
 
   1 | {
   2 |   "target": "current",

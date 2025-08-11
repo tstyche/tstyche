@@ -158,13 +158,13 @@ export class ProjectService {
         "project:uses",
         { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
       ]);
-    }
 
-    if (configFileErrors && configFileErrors.length > 0) {
-      EventEmitter.dispatch([
-        "project:error",
-        { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>) },
-      ]);
+      if (configFileErrors && configFileErrors.length > 0) {
+        EventEmitter.dispatch([
+          "project:error",
+          { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>) },
+        ]);
+      }
     }
 
     if (!this.#seenTestFiles.has(filePath)) {

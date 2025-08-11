@@ -1,7 +1,7 @@
+import type { FileLocation } from "#file";
 import { Path } from "#path";
-import { ResultStatus, type TaskResultStatus } from "#result";
+import { type FileResultStatus, ResultStatus } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
-import type { Task } from "#task";
 
 interface FileNameTextProps {
   filePath: string;
@@ -22,7 +22,7 @@ function FileNameText({ filePath }: FileNameTextProps) {
   );
 }
 
-export function taskStatusText(status: TaskResultStatus, task: Task): ScribblerJsx.Element {
+export function fileStatusText(status: FileResultStatus, file: FileLocation): ScribblerJsx.Element {
   let statusColor: Color;
   let statusText: string;
 
@@ -45,7 +45,7 @@ export function taskStatusText(status: TaskResultStatus, task: Task): ScribblerJ
 
   return (
     <Line>
-      <Text color={statusColor}>{statusText}</Text> <FileNameText filePath={task.filePath} />
+      <Text color={statusColor}>{statusText}</Text> <FileNameText filePath={file.path} />
     </Line>
   );
 }

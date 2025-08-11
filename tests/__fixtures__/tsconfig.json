@@ -3,6 +3,8 @@
   "compilerOptions": {
     "exactOptionalPropertyTypes": false,
     "noEmit": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "types": []
   },
   "include": ["**/*"],
