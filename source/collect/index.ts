@@ -1,5 +1,5 @@
-export { AssertionNode } from "./AssertionNode.js";
 export { CollectService } from "./CollectService.js";
+export { ExpectNode } from "./ExpectNode.js";
 export { nodeBelongsToArgumentList } from "./helpers.js";
 export { TestTree } from "./TestTree.js";
 export { TestTreeNode } from "./TestTreeNode.js";

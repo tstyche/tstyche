@@ -23,11 +23,11 @@ export class ToAcceptProps {
     return signatures.reduce<Array<Diagnostic>>((accumulator, signature, index) => {
       let diagnostic: Diagnostic | undefined;
 
-      const introText = matchWorker.assertion.isNot
+      const introText = matchWorker.assertionNode.isNot
         ? ExpectDiagnosticText.acceptsProps(isExpression)
         : ExpectDiagnosticText.doesNotAcceptProps(isExpression);
 
-      const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
+      const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertionNode);
 
       if (signatures.length > 1) {
         const signatureText = this.#typeChecker.signatureToString(signature, sourceNode);
@@ -44,7 +44,7 @@ export class ToAcceptProps {
 
       const { diagnostics, isMatch } = this.#explainProperties(matchWorker, signature, targetNode, diagnostic);
 
-      if (matchWorker.assertion.isNot ? isMatch : !isMatch) {
+      if (matchWorker.assertionNode.isNot ? isMatch : !isMatch) {
         accumulator.push(...diagnostics);
       }
 
@@ -202,7 +202,7 @@ export class ToAcceptProps {
       let accumulator: Array<Diagnostic> = [];
 
       const isMatch = sourceType.types.some((sourceType) => {
-        const text = matchWorker.assertion.isNot
+        const text = matchWorker.assertionNode.isNot
           ? ExpectDiagnosticText.isAssignableWith(sourceTypeText, targetTypeText)
           : ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText);
 

@@ -145,8 +145,8 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   let breadcrumbs: ScribblerJsx.Element | undefined;
 
-  if (showBreadcrumbs && diagnosticOrigin.assertion != null) {
-    breadcrumbs = <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parent} />;
+  if (showBreadcrumbs && diagnosticOrigin.assertionNode != null) {
+    breadcrumbs = <BreadcrumbsText ancestor={diagnosticOrigin.assertionNode.parent} />;
   }
 
   const location = (

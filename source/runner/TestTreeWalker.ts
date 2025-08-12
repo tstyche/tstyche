@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { type AssertionNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
+import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -88,7 +88,7 @@ export class TestTreeWalker {
   }
 
   async visit(
-    nodes: Array<TestTreeNode | AssertionNode | WhenNode>,
+    nodes: Array<TestTreeNode | ExpectNode | WhenNode>,
     runMode: RunMode,
     parentResult: DescribeResult | TestResult | undefined,
   ): Promise<void> {
@@ -107,7 +107,7 @@ export class TestTreeWalker {
           break;
 
         case TestTreeNodeBrand.Expect:
-          await this.#visitAssertion(node as AssertionNode, runMode, parentResult as TestResult | undefined);
+          await this.#visitAssertion(node as ExpectNode, runMode, parentResult as TestResult | undefined);
           break;
 
         case TestTreeNodeBrand.When:
@@ -117,16 +117,16 @@ export class TestTreeWalker {
     }
   }
 
-  async #visitAssertion(assertion: AssertionNode, runMode: RunMode, parentResult: TestResult | undefined) {
-    await this.visit(assertion.children, runMode, parentResult);
+  async #visitAssertion(assertionNode: ExpectNode, runMode: RunMode, parentResult: TestResult | undefined) {
+    await this.visit(assertionNode.children, runMode, parentResult);
 
-    runMode = await this.#resolveRunMode(runMode, assertion);
+    runMode = await this.#resolveRunMode(runMode, assertionNode);
 
     if (runMode & RunMode.Void) {
       return;
     }
 
-    const expectResult = new ExpectResult(assertion, parentResult);
+    const expectResult = new ExpectResult(assertionNode, parentResult);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
 
@@ -143,23 +143,23 @@ export class TestTreeWalker {
       ]);
     };
 
-    if (assertion.diagnostics.size > 0 && assertion.matcherNameNode.name.text !== "toRaiseError") {
-      onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertion.diagnostics]));
+    if (assertionNode.diagnostics.size > 0 && assertionNode.matcherNameNode.name.text !== "toRaiseError") {
+      onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertionNode.diagnostics]));
 
       return;
     }
 
-    const matchResult = this.#expectService.match(assertion, onExpectDiagnostics);
+    const matchResult = this.#expectService.match(assertionNode, onExpectDiagnostics);
 
     if (!matchResult) {
       return;
     }
 
-    if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
+    if (assertionNode.isNot ? !matchResult.isMatch : matchResult.isMatch) {
       if (runMode & RunMode.Fail) {
         const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
         // TODO consider adding '.failNode' property to 'assertion'
-        const origin = DiagnosticOrigin.fromNode((assertion.node.expression as ts.PropertyAccessExpression).name);
+        const origin = DiagnosticOrigin.fromNode((assertionNode.node.expression as ts.PropertyAccessExpression).name);
 
         onExpectDiagnostics(Diagnostic.error(text, origin));
       } else {

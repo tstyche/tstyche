@@ -3,7 +3,7 @@ import type { ResolvedConfig } from "#config";
 import { diagnosticBelongsToNode, isDiagnosticWithLocation } from "#diagnostic";
 import type { ProjectService } from "#project";
 import { SourceService } from "#source";
-import type { AssertionNode } from "./AssertionNode.js";
+import type { ExpectNode } from "./ExpectNode.js";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
 import type { TestTree } from "./TestTree.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
@@ -20,7 +20,7 @@ export class AbilityLayer {
   #compiler: typeof ts;
   #expectErrorRegex = /^(\s*)(\/\/ *@ts-expect-error)(!?)(:? *)(.*)?$/gim;
   #filePath = "";
-  #nodes: Array<AssertionNode | WhenNode> = [];
+  #nodes: Array<ExpectNode | WhenNode> = [];
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
   #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
@@ -32,7 +32,7 @@ export class AbilityLayer {
     this.#resolvedConfig = resolvedConfig;
   }
 
-  #addRanges(node: AssertionNode | WhenNode, ranges: Array<TextRange>): void {
+  #addRanges(node: ExpectNode | WhenNode, ranges: Array<TextRange>): void {
     this.#nodes.push(node);
 
     for (const range of ranges) {
@@ -45,12 +45,12 @@ export class AbilityLayer {
     }
   }
 
-  #belongsToNode(node: AssertionNode | WhenNode, diagnostic: ts.Diagnostic) {
+  #belongsToNode(node: ExpectNode | WhenNode, diagnostic: ts.Diagnostic) {
     switch (node.brand) {
       case TestTreeNodeBrand.Expect:
         return (
-          diagnosticBelongsToNode(diagnostic, (node as AssertionNode).matcherNode) &&
-          !diagnosticBelongsToNode(diagnostic, (node as AssertionNode).source)
+          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).matcherNode) &&
+          !diagnosticBelongsToNode(diagnostic, (node as ExpectNode).source)
         );
 
       case TestTreeNodeBrand.When:
@@ -164,7 +164,7 @@ export class AbilityLayer {
     this.#text = "";
   }
 
-  #eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>, parent: AssertionNode | WhenNode) {
+  #eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>, parent: ExpectNode | WhenNode) {
     if (node.hasTrailingComma) {
       this.#addRanges(parent, [{ start: node.end - 1, end: node.end }]);
     }
@@ -194,7 +194,7 @@ export class AbilityLayer {
     return text.join("");
   }
 
-  handleAssertion(assertionNode: AssertionNode): void {
+  handleAssertion(assertionNode: ExpectNode): void {
     const expectStart = assertionNode.node.getStart();
     const expectExpressionEnd = assertionNode.node.expression.getEnd();
     const expectEnd = assertionNode.node.getEnd();

@@ -41,8 +41,8 @@ export abstract class AbilityMatcherBase {
 
     const diagnostics: Array<Diagnostic> = [];
 
-    if (matchWorker.assertion.abilityDiagnostics.size > 0) {
-      for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
+    if (matchWorker.assertionNode.abilityDiagnostics.size > 0) {
+      for (const diagnostic of matchWorker.assertionNode.abilityDiagnostics) {
         const text = [this.explainNotText(isExpression, targetText), getDiagnosticMessageText(diagnostic)];
 
         let origin: DiagnosticOrigin;
@@ -52,10 +52,10 @@ export abstract class AbilityMatcherBase {
             diagnostic.start,
             getTextSpanEnd(diagnostic),
             sourceNode.getSourceFile(),
-            matchWorker.assertion,
+            matchWorker.assertionNode,
           );
         } else {
-          origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+          origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
         }
 
         let related: Array<Diagnostic> | undefined;
@@ -67,7 +67,7 @@ export abstract class AbilityMatcherBase {
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
       }
     } else {
-      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
 
       diagnostics.push(Diagnostic.error(this.explainText(isExpression, targetText), origin));
     }
