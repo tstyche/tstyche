@@ -5,7 +5,13 @@ import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const testFileText = `// @ts-expect-error Does not work
-console.log(add);`;
+console.log(add);
+
+  // @ts-expect-error Should handle leading spaces
+  console.log(spaces);
+
+\t// @ts-expect-error Should handle leading tabs
+\tconsole.log(tabs);`;
 
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });

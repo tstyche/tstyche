@@ -23,7 +23,7 @@ export interface DirectiveRange {
 export type DirectiveRanges = Array<DirectiveRange> & { sourceFile: ts.SourceFile };
 
 export class Directive {
-  static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
+  static #directiveRegex = /^(\/\/\s*@tstyche)(\s*|-)?(\S*)?(\s*)?(.*)?/i;
 
   static getDirectiveRanges(compiler: typeof ts, sourceFile: ts.SourceFile, position = 0): DirectiveRanges | undefined {
     const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
