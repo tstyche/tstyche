@@ -1,8 +1,8 @@
 import { expect } from "tstyche";
 
-// Object literals may only specify known properties
-expect.fail<{ timeout?: number }>().type.toBeAssignableWith({ silent: true, timeout: 800 });
-expect.fail({ silent: true, timeout: 800 }).type.toBeAssignableTo<{ timeout?: number }>();
+// // Object literals may only specify known properties
+// expect.fail<{ timeout?: number }>().type.toBeAssignableWith({ silent: true, timeout: 800 });
+// expect.fail({ silent: true, timeout: 800 }).type.toBeAssignableTo<{ timeout?: number }>();
 
 // But object types are allowed to have excess properties
 expect<{ timeout?: number }>().type.toBeAssignableWith<{ silent: true; timeout: 800 }>();

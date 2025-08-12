@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
 import { Reject } from "#reject";
@@ -54,10 +54,6 @@ export class TestTreeWalker {
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       mode |= RunMode.Void;
-    }
-
-    if (node.flags & TestTreeNodeFlags.Fail) {
-      mode |= RunMode.Fail;
     }
 
     if (
@@ -156,16 +152,6 @@ export class TestTreeWalker {
     }
 
     if (assertionNode.isNot ? !matchResult.isMatch : matchResult.isMatch) {
-      if (runMode & RunMode.Fail) {
-        const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
-        // TODO consider adding '.failNode' property to 'assertion'
-        const origin = DiagnosticOrigin.fromNode((assertionNode.node.expression as ts.PropertyAccessExpression).name);
-
-        onExpectDiagnostics(Diagnostic.error(text, origin));
-      } else {
-        EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
-      }
-    } else if (runMode & RunMode.Fail) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);

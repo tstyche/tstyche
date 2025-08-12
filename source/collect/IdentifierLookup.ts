@@ -78,10 +78,6 @@ export class IdentifierLookup {
       }
 
       switch (expression.name.getText()) {
-        case "fail":
-          flags |= TestTreeNodeFlags.Fail;
-          break;
-
         case "only":
           flags |= TestTreeNodeFlags.Only;
           break;
