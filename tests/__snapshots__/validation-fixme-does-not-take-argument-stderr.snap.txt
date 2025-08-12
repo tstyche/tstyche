@@ -1,11 +1,21 @@
-Error: Directive 'fixme' does not take an argument.
+Error: Directive does not take an argument.
 
   1 | import { expect } from "tstyche";
   2 | 
   3 | // @tstyche fixme asap
-    |             ~~~~~
+    |                   ~~~~
   4 | expect<string>().type.toBe<number>();
   5 | 
 
-      at ./__typetests__/sample.tst.ts:3:13
+      at ./__typetests__/sample.tst.ts:3:19
+
+Error: Type 'string' is not the same as type 'number'.
+
+  2 | 
+  3 | // @tstyche fixme asap
+  4 | expect<string>().type.toBe<number>();
+    |                            ~~~~~~
+  5 | 
+
+      at ./__typetests__/sample.tst.ts:4:28
 

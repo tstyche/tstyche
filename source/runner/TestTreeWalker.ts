@@ -67,9 +67,6 @@ export class TestTreeWalker {
         fixmeDirective.namespace.end,
         assertionNode.node.getSourceFile(),
       );
-    } else {
-      text.push(RunnerDiagnosticText.considerRemoving("'.fail' flag"));
-      origin = DiagnosticOrigin.fromNode((assertionNode.node.expression as ts.PropertyAccessExpression).name);
     }
 
     onDiagnostics(Diagnostic.error(text, origin));
@@ -78,8 +75,8 @@ export class TestTreeWalker {
   async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
     const inlineConfig = await Directive.getInlineConfig(node.getDirectiveRanges(this.#compiler));
 
-    if (inlineConfig?.fixme || node.flags & TestTreeNodeFlags.Fail) {
-      mode |= RunMode.Fail;
+    if (inlineConfig?.fixme) {
+      mode |= RunMode.FixMe;
     }
 
     if (
@@ -180,12 +177,12 @@ export class TestTreeWalker {
     }
 
     if (assertionNode.isNot ? !matchResult.isMatch : matchResult.isMatch) {
-      if (runMode & RunMode.Fail) {
+      if (runMode & RunMode.FixMe) {
         this.#onBrokenRunModeDiagnostics(assertionNode, onExpectDiagnostics);
       } else {
         EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
       }
-    } else if (runMode & RunMode.Fail) {
+    } else if (runMode & RunMode.FixMe) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);
