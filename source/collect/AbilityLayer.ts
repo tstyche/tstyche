@@ -16,7 +16,7 @@ interface TextRange {
 
 export class AbilityLayer {
   #compiler: typeof ts;
-  #expectErrorRegex = /^(\s*)(\/\/\s*@ts-expect-error)(!?)(:?\s*)(.*)?$/gim;
+  #expectErrorRegex = /^(\s*)(\/\/ *@ts-expect-error)(!?)(:? *)(.*)?$/gim;
   #filePath = "";
   #nodes: Array<AssertionNode | WhenNode> = [];
   #projectService: ProjectService;
