@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
 import { Reject } from "#reject";
@@ -10,7 +10,6 @@ import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { WhenService } from "#when";
 import { RunMode } from "./RunMode.enum.js";
-import { RunnerDiagnosticText } from "./RunnerDiagnosticText.js";
 
 interface TestTreeWalkerOptions {
   cancellationToken: CancellationToken | undefined;
@@ -49,35 +48,8 @@ export class TestTreeWalker {
     this.#whenService = new WhenService(reject, onFileDiagnostics);
   }
 
-  #onBrokenRunModeDiagnostics(
-    assertionNode: ExpectNode,
-    onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
-  ) {
-    const fixmeDirective = assertionNode
-      .getDirectiveRanges(this.#compiler)
-      ?.find((range) => range.directive?.text === "fixme");
-
-    const text = [RunnerDiagnosticText.assertionWasSupposedToFail()];
-    let origin: DiagnosticOrigin | undefined;
-
-    if (fixmeDirective != null) {
-      text.push(RunnerDiagnosticText.considerRemoving("'// @tstyche fixme' directive"));
-      origin = new DiagnosticOrigin(
-        fixmeDirective.namespace.start,
-        fixmeDirective.namespace.end,
-        assertionNode.node.getSourceFile(),
-      );
-    }
-
-    onDiagnostics(Diagnostic.error(text, origin));
-  }
-
   async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
     const inlineConfig = await Directive.getInlineConfig(node.getDirectiveRanges(this.#compiler));
-
-    if (inlineConfig?.fixme) {
-      mode |= RunMode.FixMe;
-    }
 
     if (
       node.flags & TestTreeNodeFlags.Only ||
@@ -177,12 +149,6 @@ export class TestTreeWalker {
     }
 
     if (assertionNode.isNot ? !matchResult.isMatch : matchResult.isMatch) {
-      if (runMode & RunMode.FixMe) {
-        this.#onBrokenRunModeDiagnostics(assertionNode, onExpectDiagnostics);
-      } else {
-        EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
-      }
-    } else if (runMode & RunMode.FixMe) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);
