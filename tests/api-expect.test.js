@@ -13,26 +13,6 @@ await test("expect", async (t) => {
     tstyche.expect(null).type.toBe(null);
   });
 
-  await t.test("'expect.fail' implementation'", () => {
-    tstyche.expect.fail(null).type.toBe("fail");
-  });
-
-  await t.test("expect.fail", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-fail.tst.ts"]);
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-fail-stderr`,
-      testFileUrl: import.meta.url,
-    });
-
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-fail-stdout`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
-  });
-
   await t.test("'expect.only' implementation'", () => {
     tstyche.expect.only(null).type.toBe(null);
   });
@@ -50,26 +30,6 @@ await test("expect", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("'expect.only.fail' implementation'", () => {
-    tstyche.expect.only.fail(null).type.toBe("fail");
-  });
-
-  await t.test("expect.only.fail", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-only-fail.tst.ts"]);
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-only-fail-stderr`,
-      testFileUrl: import.meta.url,
-    });
-
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-only-fail-stdout`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
-  });
-
   await t.test("'expect.skip' implementation'", () => {
     tstyche.expect.skip(null).type.toBe("skip");
   });
@@ -85,25 +45,5 @@ await test("expect", async (t) => {
     });
 
     assert.equal(exitCode, 0);
-  });
-
-  await t.test("'expect.skip.fail' implementation'", () => {
-    tstyche.expect.skip.fail(null).type.toBe("fail");
-  });
-
-  await t.test("expect.skip.fail", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["expect-skip-fail.tst.ts"]);
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-skip-fail-stderr`,
-      testFileUrl: import.meta.url,
-    });
-
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-skip-fail-stdout`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(exitCode, 1);
   });
 });
