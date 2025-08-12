@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import type { AssertionNode } from "#collect";
+import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { argumentIsProvided, argumentOrTypeArgumentIsProvided } from "#ensure";
 import type { Reject } from "#reject";
@@ -48,31 +48,31 @@ export class ExpectService {
   }
 
   match(
-    assertion: AssertionNode,
+    assertionNode: ExpectNode,
     onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const matcherNameText = assertion.matcherNameNode.name.text;
+    const matcherNameText = assertionNode.matcherNameNode.name.text;
 
     if (
       !argumentOrTypeArgumentIsProvided(
         "source",
         "Source",
-        assertion.source[0],
-        assertion.node.expression,
+        assertionNode.source[0],
+        assertionNode.node.expression,
         onDiagnostics,
       )
     ) {
       return;
     }
 
-    const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertion);
+    const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertionNode);
 
     if (
-      !(matcherNameText === "toRaiseError" && assertion.isNot === false) &&
+      !(matcherNameText === "toRaiseError" && assertionNode.isNot === false) &&
       this.#reject.argumentType(
         [
-          ["source", assertion.source[0]],
-          ["target", assertion.target?.[0]],
+          ["source", assertionNode.source[0]],
+          ["target", assertionNode.target?.[0]],
         ],
         onDiagnostics,
       )
@@ -89,42 +89,47 @@ export class ExpectService {
           !argumentOrTypeArgumentIsProvided(
             "target",
             "Target",
-            assertion.target?.[0],
-            assertion.matcherNameNode.name,
+            assertionNode.target?.[0],
+            assertionNode.matcherNameNode.name,
             onDiagnostics,
           )
         ) {
           return;
         }
 
-        return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
+        return this[matcherNameText].match(
+          matchWorker,
+          assertionNode.source[0],
+          assertionNode.target[0],
+          onDiagnostics,
+        );
 
       case "toBeApplicable":
-        return this.toBeApplicable.match(matchWorker, assertion.source[0], onDiagnostics);
+        return this.toBeApplicable.match(matchWorker, assertionNode.source[0], onDiagnostics);
 
       case "toBeCallableWith":
       case "toBeConstructableWith":
       case "toRaiseError":
         // biome-ignore lint/style/noNonNullAssertion: collect logic makes sure that 'target' is defined
-        return this[matcherNameText].match(matchWorker, assertion.source[0], assertion.target!, onDiagnostics);
+        return this[matcherNameText].match(matchWorker, assertionNode.source[0], assertionNode.target!, onDiagnostics);
 
       case "toHaveProperty":
-        if (!argumentIsProvided("key", assertion.target?.[0], assertion.matcherNameNode.name, onDiagnostics)) {
+        if (!argumentIsProvided("key", assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)) {
           return;
         }
 
-        return this.toHaveProperty.match(matchWorker, assertion.source[0], assertion.target[0], onDiagnostics);
+        return this.toHaveProperty.match(matchWorker, assertionNode.source[0], assertionNode.target[0], onDiagnostics);
 
       default:
-        this.#onMatcherIsNotSupported(matcherNameText, assertion, onDiagnostics);
+        this.#onMatcherIsNotSupported(matcherNameText, assertionNode, onDiagnostics);
     }
 
     return;
   }
 
-  #onMatcherIsNotSupported(matcherNameText: string, assertion: AssertionNode, onDiagnostics: DiagnosticsHandler) {
+  #onMatcherIsNotSupported(matcherNameText: string, assertionNode: ExpectNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
-    const origin = DiagnosticOrigin.fromNode(assertion.matcherNameNode.name);
+    const origin = DiagnosticOrigin.fromNode(assertionNode.matcherNameNode.name);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }

@@ -1,4 +1,4 @@
-import type { AssertionNode, TestTree, TestTreeNode, WhenNode } from "#collect";
+import type { ExpectNode, TestTree, TestTreeNode, WhenNode } from "#collect";
 import type { Diagnostic } from "#diagnostic";
 import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, TestResult } from "#result";
 
@@ -23,7 +23,7 @@ export type Event =
   | ["directive:error", { diagnostics: Array<Diagnostic> }]
   | ["collect:start", { tree: TestTree }]
   | ["collect:error", { diagnostics: Array<Diagnostic> }]
-  | ["collect:node", { node: TestTreeNode | AssertionNode | WhenNode }]
+  | ["collect:node", { node: TestTreeNode | ExpectNode | WhenNode }]
   | ["collect:end", { tree: TestTree }]
   | ["describe:start", { result: DescribeResult }]
   | ["describe:end", { result: DescribeResult }]

@@ -5,7 +5,7 @@ import { TestTreeNode } from "./TestTreeNode.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
-export class AssertionNode extends TestTreeNode {
+export class ExpectNode extends TestTreeNode {
   abilityDiagnostics = new Set<ts.Diagnostic>();
   isNot: boolean;
   matcherNode: ts.CallExpression | ts.Decorator;

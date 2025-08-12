@@ -4,8 +4,8 @@ import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { ProjectService } from "#project";
 import { AbilityLayer } from "./AbilityLayer.js";
-import { AssertionNode } from "./AssertionNode.js";
 import { CollectDiagnosticText } from "./CollectDiagnosticText.js";
+import { ExpectNode } from "./ExpectNode.js";
 import { IdentifierLookup, type TestTreeNodeMeta } from "./IdentifierLookup.js";
 import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
@@ -67,7 +67,7 @@ export class CollectService {
             return;
           }
 
-          const assertionNode = new AssertionNode(
+          const assertionNode = new ExpectNode(
             this.#compiler,
             meta.brand,
             node,
@@ -238,7 +238,7 @@ export class CollectService {
     EventEmitter.dispatch(["collect:error", { diagnostics: [diagnostic] }]);
   }
 
-  #onNode(node: TestTreeNode | AssertionNode | WhenNode, parent: TestTree | TestTreeNode, testTree: TestTree) {
+  #onNode(node: TestTreeNode | ExpectNode | WhenNode, parent: TestTree | TestTreeNode, testTree: TestTree) {
     parent.children.push(node);
 
     if (node.flags & TestTreeNodeFlags.Only) {

@@ -1,19 +1,19 @@
 import type ts from "typescript";
-import type { AssertionNode } from "#collect";
+import type { ExpectNode } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
 import { Relation } from "./Relation.enum.js";
 import type { TypeChecker } from "./types.js";
 
 export class MatchWorker {
-  assertion: AssertionNode;
+  assertionNode: ExpectNode;
   #compiler: typeof ts;
   #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
   typeChecker: TypeChecker;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertion: AssertionNode) {
+  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertionNode: ExpectNode) {
     this.#compiler = compiler;
     this.typeChecker = typeChecker;
-    this.assertion = assertion;
+    this.assertionNode = assertionNode;
   }
 
   checkHasApplicableIndexType(sourceNode: ts.Node, targetNode: ts.Node): boolean {
@@ -119,10 +119,10 @@ export class MatchWorker {
       symbol.valueDeclaration.getStart() >= enclosingNode.getStart() &&
       symbol.valueDeclaration.getEnd() <= enclosingNode.getEnd()
     ) {
-      return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name, this.assertion);
+      return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name, this.assertionNode);
     }
 
-    return DiagnosticOrigin.fromNode(enclosingNode, this.assertion);
+    return DiagnosticOrigin.fromNode(enclosingNode, this.assertionNode);
   }
 
   #simplifyType(type: ts.Type): ts.Type {
