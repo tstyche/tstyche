@@ -1,66 +1,51 @@
 Error: The diagnostic message did not match.
 
-  18 | expect(pluralLocal).type.toBeCallableWith({});
-  19 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
-  20 | // @ts-expect-error This directive must be visible
+  16 | 
+  17 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
+  18 | // @ts-expect-error This directive must be visible
      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  21 | pluralLocal();
-  22 | 
+  19 | pluralLocal();
+  20 | 
 
-       at ./__typetests__/related-diagnostics.tst.ts:20:21
+       at ./__typetests__/related-diagnostics.tst.ts:18:21
 
     The suppressed error:
 
     Expected 1 arguments, but got 0. ts(2554)
 
-      19 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
-      20 | // @ts-expect-error This directive must be visible
-      21 | pluralLocal();
+      17 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
+      18 | // @ts-expect-error This directive must be visible
+      19 | pluralLocal();
          | ~~~~~~~~~~~
-      22 | 
+      20 | 
 
-           at ./__typetests__/related-diagnostics.tst.ts:21:1
+           at ./__typetests__/related-diagnostics.tst.ts:19:1
 
         An argument for 'options' was not provided. ts(6210)
 
-          12 | }
-          13 | 
-          14 | declare function pluralLocal(options: PluralOptions): void;
+          11 | }
+          12 | 
+          13 | declare function pluralLocal(options: PluralOptions): void;
              |                              ~~~~~~~~~~~~~~~~~~~~~~
-          15 | 
-          16 | expect(pluralLocal).type.toBeCallableWith({ count: 10, text: "Sample" });
-          17 | 
+          14 | 
+          15 | expect(pluralLocal).type.toBeCallableWith({ count: 10, text: "Sample" });
+          16 | 
 
-               at ./__typetests__/related-diagnostics.tst.ts:14:30
-
-Error: Expression is not callable with the given argument.
-
-Argument of type '{}' is not assignable to parameter of type 'PluralOptions'.
-Type '{}' is missing the following properties from type 'PluralOptions': count, text
-
-  4 | expect(pluralExternal).type.toBeCallableWith({ count: 10, text: "Sample" });
-  5 | 
-  6 | expect(pluralExternal).type.toBeCallableWith({});
-    |                                              ~~
-  7 | expect(pluralExternal).type.toBeCallableWith({ count: 100, text: false });
-  8 | 
-  9 | interface PluralOptions {
-
-      at ./__typetests__/related-diagnostics.tst.ts:6:46
+               at ./__typetests__/related-diagnostics.tst.ts:13:30
 
 Error: Expression is not callable with the given argument.
 
 Type 'boolean' is not assignable to type 'string'.
 
-   5 | 
-   6 | expect(pluralExternal).type.toBeCallableWith({});
-   7 | expect(pluralExternal).type.toBeCallableWith({ count: 100, text: false });
-     |                                                            ~~~~
-   8 | 
-   9 | interface PluralOptions {
-  10 |   count: number;
+  4 | expect(pluralExternal).type.toBeCallableWith({ count: 10, text: "Sample" });
+  5 | 
+  6 | expect(pluralExternal).type.toBeCallableWith({ count: 100, text: false });
+    |                                                            ~~~~
+  7 | 
+  8 | interface PluralOptions {
+  9 |   count: number;
 
-       at ./__typetests__/related-diagnostics.tst.ts:7:60
+      at ./__typetests__/related-diagnostics.tst.ts:6:60
 
     The expected type comes from property 'text' which is declared here on type 'PluralOptions' ts(6500)
 
@@ -76,42 +61,27 @@ Type 'boolean' is not assignable to type 'string'.
 
 Error: Expression is not callable with the given argument.
 
-Argument of type '{}' is not assignable to parameter of type 'PluralOptions'.
-Type '{}' is missing the following properties from type 'PluralOptions': count, text
-
-  16 | expect(pluralLocal).type.toBeCallableWith({ count: 10, text: "Sample" });
-  17 | 
-  18 | expect(pluralLocal).type.toBeCallableWith({});
-     |                                           ~~
-  19 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
-  20 | // @ts-expect-error This directive must be visible
-  21 | pluralLocal();
-
-       at ./__typetests__/related-diagnostics.tst.ts:18:43
-
-Error: Expression is not callable with the given argument.
-
 Type 'boolean' is not assignable to type 'string'.
 
-  17 | 
-  18 | expect(pluralLocal).type.toBeCallableWith({});
-  19 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
+  15 | expect(pluralLocal).type.toBeCallableWith({ count: 10, text: "Sample" });
+  16 | 
+  17 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
      |                                                         ~~~~
-  20 | // @ts-expect-error This directive must be visible
-  21 | pluralLocal();
-  22 | 
+  18 | // @ts-expect-error This directive must be visible
+  19 | pluralLocal();
+  20 | 
 
-       at ./__typetests__/related-diagnostics.tst.ts:19:57
+       at ./__typetests__/related-diagnostics.tst.ts:17:57
 
     The expected type comes from property 'text' which is declared here on type 'PluralOptions' ts(6500)
 
-       9 | interface PluralOptions {
-      10 |   count: number;
-      11 |   text: string;
+       8 | interface PluralOptions {
+       9 |   count: number;
+      10 |   text: string;
          |   ~~~~
-      12 | }
-      13 | 
-      14 | declare function pluralLocal(options: PluralOptions): void;
+      11 | }
+      12 | 
+      13 | declare function pluralLocal(options: PluralOptions): void;
 
-           at ./__typetests__/related-diagnostics.tst.ts:11:3
+           at ./__typetests__/related-diagnostics.tst.ts:10:3
 

@@ -85,6 +85,22 @@ await test("toBeConstructableWith", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("related diagnostics", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["related-diagnostics.tst.ts"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-related-diagnostics-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-related-diagnostics-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("handles missing semicolons", async (t) => {
     const toBeConstructableWithText = `import { expect, test } from "tstyche"
 
