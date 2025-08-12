@@ -1,5 +1,4 @@
 import type ts from "typescript";
-import { Directive, type DirectiveRanges } from "#config";
 import type { AssertionNode } from "./AssertionNode.js";
 import type { TestTreeNode } from "./TestTreeNode.js";
 import type { SuppressedError } from "./types.js";
@@ -15,9 +14,5 @@ export class TestTree {
   constructor(diagnostics: Set<ts.Diagnostic>, sourceFile: ts.SourceFile) {
     this.diagnostics = diagnostics;
     this.sourceFile = sourceFile;
-  }
-
-  getDirectiveRanges(compiler: typeof ts): DirectiveRanges | undefined {
-    return Directive.getDirectiveRanges(compiler, this.sourceFile);
   }
 }

@@ -78,22 +78,14 @@ export class FileRunner {
       return;
     }
 
-    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
-
-    const directiveRanges = testTree.getDirectiveRanges(this.#compiler);
+    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, sourceFile);
     const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       runMode |= RunMode.Skip;
     }
 
-    this.#suppressedService.match(testTree, (diagnostics) => {
-      this.#onDiagnostics(diagnostics, fileResult);
-    });
-
     if (inlineConfig?.template) {
-      // TODO testTree.children must be not allowed in template files
-
       if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), fileResult);
 
@@ -113,6 +105,12 @@ export class FileRunner {
 
       return this.#resolveFileFacts(file, fileResult, runMode);
     }
+
+    const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
+
+    this.#suppressedService.match(testTree, (diagnostics) => {
+      this.#onDiagnostics(diagnostics, fileResult);
+    });
 
     return { runMode, testTree, typeChecker };
   }

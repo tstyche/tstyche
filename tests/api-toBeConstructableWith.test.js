@@ -85,6 +85,22 @@ await test("toBeConstructableWith", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("related diagnostics", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["related-diagnostics.tst.ts"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-related-diagnostics-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-related-diagnostics-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("handles missing semicolons", async (t) => {
     const toBeConstructableWithText = `import { expect, test } from "tstyche"
 
@@ -200,12 +216,17 @@ function getPersonConstructor() {
 
 test("handles '// @ts-expect-error' directive", () => {
   expect(getPersonConstructor()).type.toBeConstructableWith("abc");
+  expect(getPersonConstructor()).type.not.toBeConstructableWith();
 
-  // @ts-expect-error
-  expect(getPersonConstructor(true)).type.toBeConstructableWith("abc"); // fail
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.toBeConstructableWith("abc");
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.not.toBeConstructableWith("abc"); // fail
 
-  // @ts-expect-error
-  expect(getPersonConstructor(true)).type.toBeConstructableWith(123); // fail
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.not.toBeConstructableWith();
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.toBeConstructableWith(); // fail
 });
 `;
 

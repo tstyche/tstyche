@@ -7,12 +7,12 @@ Type 'Second' is missing the following properties from type 'Base': #a, #b, samp
   58 | 
   59 |     // fail
   60 |     @(expect(classDecorator).type.toBeApplicable)
-     |              ~~~~~~~~~~~~~~
+     |                                   ~~~~~~~~~~~~~~
   61 |     class Second {
   62 |       // ...
   63 |     }
 
-       at ./__typetests__/toBeApplicable.tst.ts:60:14
+       at ./__typetests__/toBeApplicable.tst.ts:60:35 ❭ source expression ❭ is applicable to class
 
 Error: The decorator function cannot be applied to this class.
 
@@ -23,12 +23,12 @@ Target signature provides too few arguments. Expected 2 or more, but got 0.
   58 | 
   59 |     // fail
   60 |     @(expect(classDecorator).type.toBeApplicable)
-     |              ~~~~~~~~~~~~~~
+     |                                   ~~~~~~~~~~~~~~
   61 |     class Second {
   62 |       // ...
   63 |     }
 
-       at ./__typetests__/toBeApplicable.tst.ts:60:14
+       at ./__typetests__/toBeApplicable.tst.ts:60:35 ❭ source expression ❭ is applicable to class
 
 Error: The decorator function can be applied to this class.
 
@@ -62,12 +62,12 @@ Argument of type '() => void' is not assignable to parameter of type 'undefined'
    99 | 
   100 |       // fail
   101 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
-      |                ~~~~~~~~~~~~~~
+      |                                     ~~~~~~~~~~~~~~
   102 |         // ...
   103 |       }
   104 |     }
 
-        at ./__typetests__/toBeApplicable.tst.ts:101:16
+        at ./__typetests__/toBeApplicable.tst.ts:101:37 ❭ source expression ❭ is NOT applicable to method
 
 Error: The decorator function cannot be applied to this method.
 
@@ -78,12 +78,12 @@ Target signature provides too few arguments. Expected 1 or more, but got 0.
    99 | 
   100 |       // fail
   101 |       @(expect(fieldDecorator).type.toBeApplicable) two(): void {
-      |                ~~~~~~~~~~~~~~
+      |                                     ~~~~~~~~~~~~~~
   102 |         // ...
   103 |       }
   104 |     }
 
-        at ./__typetests__/toBeApplicable.tst.ts:101:16
+        at ./__typetests__/toBeApplicable.tst.ts:101:37 ❭ source expression ❭ is NOT applicable to method
 
 Error: The decorator function can be applied to this field.
 
@@ -105,12 +105,12 @@ Argument of type 'undefined' is not assignable to parameter of type '(this: Base
   121 | 
   122 |       // fail
   123 |       @(expect(methodDecorator).type.toBeApplicable) two = 2;
-      |                ~~~~~~~~~~~~~~~
+      |                                      ~~~~~~~~~~~~~~
   124 |     }
   125 |   });
   126 | 
 
-        at ./__typetests__/toBeApplicable.tst.ts:123:16
+        at ./__typetests__/toBeApplicable.tst.ts:123:38 ❭ source expression ❭ is NOT applicable to field
 
 Error: The decorator function cannot be applied to this field.
 
@@ -122,12 +122,12 @@ Type 'Sample' is missing the following properties from type 'Base': #a, #b, samp
   121 | 
   122 |       // fail
   123 |       @(expect(methodDecorator).type.toBeApplicable) two = 2;
-      |                ~~~~~~~~~~~~~~~
+      |                                      ~~~~~~~~~~~~~~
   124 |     }
   125 |   });
   126 | 
 
-        at ./__typetests__/toBeApplicable.tst.ts:123:16
+        at ./__typetests__/toBeApplicable.tst.ts:123:38 ❭ source expression ❭ is NOT applicable to field
 
 Error: The decorator function cannot be applied to this getter.
 
@@ -141,12 +141,12 @@ Type 'Base' is missing the following properties from type 'Sample': x, y
   127 |   test("is applicable to getter", () => {
   128 |     class Sample {
   129 |       @(expect(getterDecorator).type.toBeApplicable)
-      |                ~~~~~~~~~~~~~~~
+      |                                      ~~~~~~~~~~~~~~
   130 |       get x() {
   131 |         return "sample";
   132 |       }
 
-        at ./__typetests__/toBeApplicable.tst.ts:129:16
+        at ./__typetests__/toBeApplicable.tst.ts:129:38 ❭ source expression ❭ is applicable to getter
 
 Error: The decorator function cannot be applied to this getter.
 
@@ -157,12 +157,12 @@ Type 'boolean' is not assignable to type 'string'.
   147 | 
   148 |       // fail
   149 |       @(expect(getterDecorator).type.toBeApplicable) get y() {
-      |                ~~~~~~~~~~~~~~~
+      |                                      ~~~~~~~~~~~~~~
   150 |         return true;
   151 |       }
   152 |     }
 
-        at ./__typetests__/toBeApplicable.tst.ts:149:16
+        at ./__typetests__/toBeApplicable.tst.ts:149:38 ❭ source expression ❭ is NOT applicable to getter
 
 Error: The decorator function cannot be applied to this getter.
 
@@ -174,12 +174,12 @@ Type 'string' is not assignable to type 'boolean'.
   147 | 
   148 |       // fail
   149 |       @(expect(getterDecorator).type.toBeApplicable) get y() {
-      |                ~~~~~~~~~~~~~~~
+      |                                      ~~~~~~~~~~~~~~
   150 |         return true;
   151 |       }
   152 |     }
 
-        at ./__typetests__/toBeApplicable.tst.ts:149:16
+        at ./__typetests__/toBeApplicable.tst.ts:149:38 ❭ source expression ❭ is NOT applicable to getter
 
 Error: The decorator function cannot be applied to this setter.
 
@@ -193,12 +193,12 @@ Type 'Base' is missing the following properties from type 'Sample': #value, x, y
   157 |       #value = "";
   158 | 
   159 |       @(expect(setterDecorator).type.toBeApplicable)
-      |                ~~~~~~~~~~~~~~~
+      |                                      ~~~~~~~~~~~~~~
   160 |       set x(value: string) {
   161 |         this.#value = value;
   162 |       }
 
-        at ./__typetests__/toBeApplicable.tst.ts:159:16
+        at ./__typetests__/toBeApplicable.tst.ts:159:38 ❭ source expression ❭ is applicable to setter
 
 Error: The decorator function cannot be applied to this setter.
 
@@ -210,12 +210,12 @@ Type 'string' is not assignable to type 'number'.
   179 | 
   180 |       // fail
   181 |       @(expect(setterDecorator).type.toBeApplicable) set y(value: number) {
-      |                ~~~~~~~~~~~~~~~
+      |                                      ~~~~~~~~~~~~~~
   182 |         this.#value = value;
   183 |       }
   184 |     }
 
-        at ./__typetests__/toBeApplicable.tst.ts:181:16
+        at ./__typetests__/toBeApplicable.tst.ts:181:38 ❭ source expression ❭ is NOT applicable to setter
 
 Error: The decorator function cannot be applied to this setter.
 
@@ -227,12 +227,12 @@ Type 'number' is not assignable to type 'string'.
   179 | 
   180 |       // fail
   181 |       @(expect(setterDecorator).type.toBeApplicable) set y(value: number) {
-      |                ~~~~~~~~~~~~~~~
+      |                                      ~~~~~~~~~~~~~~
   182 |         this.#value = value;
   183 |       }
   184 |     }
 
-        at ./__typetests__/toBeApplicable.tst.ts:181:16
+        at ./__typetests__/toBeApplicable.tst.ts:181:38 ❭ source expression ❭ is NOT applicable to setter
 
 Error: The decorator function cannot be applied to this accessor.
 
@@ -243,12 +243,12 @@ Type 'Sample' is missing the following properties from type 'Base': #a, #b, samp
   187 |   test("is applicable to accessor", () => {
   188 |     class Sample {
   189 |       @(expect(accessorDecorator).type.toBeApplicable)
-      |                ~~~~~~~~~~~~~~~~~
+      |                                        ~~~~~~~~~~~~~~
   190 |       accessor nine = 9;
   191 | 
   192 |       // fail
 
-        at ./__typetests__/toBeApplicable.tst.ts:189:16
+        at ./__typetests__/toBeApplicable.tst.ts:189:40 ❭ source expression ❭ is applicable to accessor
 
 Error: The decorator function cannot be applied to this accessor.
 
@@ -259,12 +259,12 @@ Type 'Base' is missing the following properties from type 'Sample': nine, ten
   187 |   test("is applicable to accessor", () => {
   188 |     class Sample {
   189 |       @(expect(accessorDecorator).type.toBeApplicable)
-      |                ~~~~~~~~~~~~~~~~~
+      |                                        ~~~~~~~~~~~~~~
   190 |       accessor nine = 9;
   191 | 
   192 |       // fail
 
-        at ./__typetests__/toBeApplicable.tst.ts:189:16
+        at ./__typetests__/toBeApplicable.tst.ts:189:40 ❭ source expression ❭ is applicable to accessor
 
 Error: The decorator function cannot be applied to this accessor.
 
@@ -275,12 +275,12 @@ Type 'Sample' is missing the following properties from type 'Base': #a, #b, samp
   201 | 
   202 |       // fail
   203 |       @(expect(accessorDecorator).type.toBeApplicable) accessor no = false;
-      |                ~~~~~~~~~~~~~~~~~
+      |                                        ~~~~~~~~~~~~~~
   204 |     }
   205 |   });
   206 | 
 
-        at ./__typetests__/toBeApplicable.tst.ts:203:16
+        at ./__typetests__/toBeApplicable.tst.ts:203:40 ❭ source expression ❭ is NOT applicable to accessor
 
 Error: The decorator function cannot be applied to this accessor.
 
@@ -291,12 +291,12 @@ Type 'Base' is missing the following properties from type 'Sample': yes, no
   201 | 
   202 |       // fail
   203 |       @(expect(accessorDecorator).type.toBeApplicable) accessor no = false;
-      |                ~~~~~~~~~~~~~~~~~
+      |                                        ~~~~~~~~~~~~~~
   204 |     }
   205 |   });
   206 | 
 
-        at ./__typetests__/toBeApplicable.tst.ts:203:16
+        at ./__typetests__/toBeApplicable.tst.ts:203:40 ❭ source expression ❭ is NOT applicable to accessor
 
 Error: The decorator function can be applied to this method.
 
@@ -322,10 +322,10 @@ Type 'true' is not assignable to type 'false'.
   227 | 
   228 |       // fail
   229 |       @(expect(publicOnly).type.toBeApplicable) #two(): void {
-      |                ~~~~~~~~~~
+      |                                 ~~~~~~~~~~~~~~
   230 |         // ...
   231 |       }
   232 |     }
 
-        at ./__typetests__/toBeApplicable.tst.ts:229:16
+        at ./__typetests__/toBeApplicable.tst.ts:229:33 ❭ source expression ❭ is NOT applicable to public members only
 

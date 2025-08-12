@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import type { AssertionNode } from "#collect";
-import type { SourceFile } from "./SourceFile.js";
+import { type SourceFile, SourceService } from "#source";
 
 export class DiagnosticOrigin {
   assertion: AssertionNode | undefined;
@@ -11,7 +11,7 @@ export class DiagnosticOrigin {
   constructor(start: number, end: number, sourceFile: SourceFile | ts.SourceFile, assertion?: AssertionNode) {
     this.start = start;
     this.end = end;
-    this.sourceFile = sourceFile;
+    this.sourceFile = SourceService.get(sourceFile);
     this.assertion = assertion;
   }
 

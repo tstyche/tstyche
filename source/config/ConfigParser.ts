@@ -1,6 +1,7 @@
 import type ts from "typescript";
-import { Diagnostic, type DiagnosticsHandler, type SourceFile } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { Path } from "#path";
+import type { SourceFile } from "#source";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { JsonNode } from "./JsonNode.js";
 import type { JsonScanner } from "./JsonScanner.js";

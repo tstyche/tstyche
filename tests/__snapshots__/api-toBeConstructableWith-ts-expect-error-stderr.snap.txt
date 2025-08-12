@@ -1,36 +1,37 @@
-Error: Expected 0 arguments, but got 1.
+Error: Expression is constructable with the given argument.
 
-  17 | 
-  18 |   // @ts-expect-error
-  19 |   expect(getPersonConstructor(true)).type.toBeConstructableWith("abc"); // fail
-     |                               ~~~~
-  20 | 
-  21 |   // @ts-expect-error
-  22 |   expect(getPersonConstructor(true)).type.toBeConstructableWith(123); // fail
+  20 |   expect(getPersonConstructor(true)).type.toBeConstructableWith("abc");
+  21 |   // @ts-expect-error!
+  22 |   expect(getPersonConstructor(true)).type.not.toBeConstructableWith("abc"); // fail
+     |                                               ~~~~~~~~~~~~~~~~~~~~~
+  23 | 
+  24 |   // @ts-expect-error!
+  25 |   expect(getPersonConstructor(true)).type.not.toBeConstructableWith();
 
-       at ./__typetests__/toBeCallableWith.tst.ts:19:31 ❭ handles '// @ts-expect-error' directive
+       at ./__typetests__/toBeCallableWith.tst.ts:22:47 ❭ handles '// @ts-expect-error' directive
 
-Error: Expected 0 arguments, but got 1.
+Error: Expression is not constructable without arguments.
 
-  20 | 
-  21 |   // @ts-expect-error
-  22 |   expect(getPersonConstructor(true)).type.toBeConstructableWith(123); // fail
-     |                               ~~~~
-  23 | });
-  24 | 
+Expected 1 arguments, but got 0.
 
-       at ./__typetests__/toBeCallableWith.tst.ts:22:31 ❭ handles '// @ts-expect-error' directive
+  25 |   expect(getPersonConstructor(true)).type.not.toBeConstructableWith();
+  26 |   // @ts-expect-error!
+  27 |   expect(getPersonConstructor(true)).type.toBeConstructableWith(); // fail
+     |                                           ~~~~~~~~~~~~~~~~~~~~~
+  28 | });
+  29 | 
 
-Error: Expression is not constructable with the given argument.
+       at ./__typetests__/toBeCallableWith.tst.ts:27:43 ❭ handles '// @ts-expect-error' directive
 
-Argument of type 'number' is not assignable to parameter of type 'string'.
+    An argument for 'name' was not provided. ts(6210)
 
-  20 | 
-  21 |   // @ts-expect-error
-  22 |   expect(getPersonConstructor(true)).type.toBeConstructableWith(123); // fail
-     |                                                                 ~~~
-  23 | });
-  24 | 
+      4 |   _name: string;
+      5 | 
+      6 |   constructor(name: string) {
+        |               ~~~~~~~~~~~~
+      7 |     this._name = name;
+      8 |   }
+      9 | }
 
-       at ./__typetests__/toBeCallableWith.tst.ts:22:65 ❭ handles '// @ts-expect-error' directive
+          at ./__typetests__/toBeCallableWith.tst.ts:6:15
 

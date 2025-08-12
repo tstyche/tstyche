@@ -7,5 +7,4 @@ export {
   getTextSpanEnd,
   isDiagnosticWithLocation,
 } from "./helpers.js";
-export { SourceFile } from "./SourceFile.js";
 export type { DiagnosticsHandler } from "./types.js";

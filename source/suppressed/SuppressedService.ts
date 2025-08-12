@@ -30,7 +30,7 @@ export class SuppressedService {
 
       const related = [
         Diagnostic.error(SuppressedDiagnosticText.suppressedError(suppressedError.diagnostics.length)),
-        ...Diagnostic.fromDiagnostics(suppressedError.diagnostics, testTree.sourceFile),
+        ...Diagnostic.fromDiagnostics(suppressedError.diagnostics),
       ];
 
       if (suppressedError.diagnostics.length > 1) {

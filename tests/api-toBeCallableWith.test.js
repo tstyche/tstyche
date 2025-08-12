@@ -80,6 +80,22 @@ await test("toBeCallableWith", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("related diagnostics", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["related-diagnostics.tst.ts"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-related-diagnostics-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-related-diagnostics-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("handles missing semicolons", async (t) => {
     const toBeCallableWithText = `import { expect, test } from "tstyche"
 
@@ -174,12 +190,17 @@ const concat =
 
 test("handles '// @ts-expect-error' directive", () => {
   expect(concat("one")).type.toBeCallableWith("two");
+  expect(concat("one")).type.not.toBeCallableWith();
 
-  // @ts-expect-error
-  expect(concat(1)).type.toBeCallableWith("two"); // fail
+  // @ts-expect-error!
+  expect(concat(1)).type.toBeCallableWith("two");
+  // @ts-expect-error!
+  expect(concat(2)).type.not.toBeCallableWith("two"); // fail
 
-  // @ts-expect-error
-  expect(concat(3)).type.toBeCallableWith(4); // fail
+  // @ts-expect-error!
+  expect(concat(3)).type.not.toBeCallableWith();
+  // @ts-expect-error!
+  expect(concat(3)).type.toBeCallableWith(); // fail
 });
 `;
 
