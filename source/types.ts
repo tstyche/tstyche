@@ -172,20 +172,6 @@ interface Expect {
    * @param source - The expression against which type the assertion is made.
    */
   (source: unknown): Modifier;
-  fail: {
-    /**
-     * Mark an assertion as supposed to fail.
-     *
-     * @template Source - The type against which the assertion is made.
-     */
-    <Source>(): Modifier;
-    /**
-     * Mark an assertion as supposed to fail.
-     *
-     * @param source - The expression against which type the assertion is made.
-     */
-    (source: unknown): Modifier;
-  };
   /**
    * Marks an assertion as focused.
    */
@@ -202,20 +188,6 @@ interface Expect {
      * @param source - The expression against which type the assertion is made.
      */
     (source: unknown): Modifier;
-    fail: {
-      /**
-       * Mark an assertion as supposed to fail.
-       *
-       * @template Source - The type against which the assertion is made.
-       */
-      <Source>(): Modifier;
-      /**
-       * Mark an assertion as supposed to fail.
-       *
-       * @param source - The expression against which type the assertion is made.
-       */
-      (source: unknown): Modifier;
-    };
   };
   /**
    * Marks an assertion as skipped.
@@ -233,20 +205,6 @@ interface Expect {
      * @param source - The expression against which type the assertion is made.
      */
     (source: unknown): Modifier;
-    fail: {
-      /**
-       * Marks an assertion as supposed to fail.
-       *
-       * @template Source - The type against which the assertion is made.
-       */
-      <Source>(): Modifier;
-      /**
-       * Marks an assertion as supposed to fail.
-       *
-       * @param source - The expression against which type the assertion is made.
-       */
-      (source: unknown): Modifier;
-    };
   };
 }
 
