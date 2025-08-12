@@ -54,6 +54,8 @@ await test("'--fetch' command line option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+      assert.equal(stderr, "");
+
       assert.equal(
         normalizeOutput(stdout),
         [
@@ -62,7 +64,6 @@ await test("'--fetch' command line option", async (t) => {
         ].join("\n"),
       );
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   }
@@ -78,6 +79,8 @@ await test("'--fetch' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch"]);
 
+    assert.equal(stderr, "");
+
     assert.equal(
       normalizeOutput(stdout),
       [
@@ -87,7 +90,6 @@ await test("'--fetch' command line option", async (t) => {
       ].join("\n"),
     );
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -102,8 +104,8 @@ await test("'--fetch' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch"]);
 
-    assert.equal(stdout, "");
     assert.equal(stderr, "");
+    assert.equal(stdout, "");
     assert.equal(exitCode, 0);
   });
 
@@ -118,8 +120,8 @@ await test("'--fetch' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", "current"]);
 
-    assert.equal(stdout, "");
     assert.equal(stderr, "");
+    assert.equal(stdout, "");
     assert.equal(exitCode, 0);
   });
 });

@@ -1,78 +1,14 @@
 import type ts from "typescript";
 import { nodeBelongsToArgumentList } from "#collect";
-import {
-  Diagnostic,
-  DiagnosticOrigin,
-  type DiagnosticsHandler,
-  diagnosticBelongsToNode,
-  getDiagnosticMessageText,
-  getTextSpanEnd,
-  isDiagnosticWithLocation,
-} from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
-export class ToBeConstructableWith {
-  #compiler: typeof ts;
-
-  constructor(compiler: typeof ts) {
-    this.#compiler = compiler;
-  }
-
-  #resolveTargetText(nodes: ts.NodeArray<ArgumentNode>) {
-    if (nodes.length === 0) {
-      return "without arguments";
-    }
-
-    if (nodes.length === 1 && nodes[0]?.kind === this.#compiler.SyntaxKind.SpreadElement) {
-      return "with the given arguments";
-    }
-
-    return `with the given argument${nodes.length === 1 ? "" : "s"}`;
-  }
-
-  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
-    const isExpression = nodeBelongsToArgumentList(this.#compiler, sourceNode);
-
-    const targetText = this.#resolveTargetText(targetNodes);
-
-    const diagnostics: Array<Diagnostic> = [];
-
-    if (matchWorker.assertion.abilityDiagnostics) {
-      for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
-        const text = [
-          ExpectDiagnosticText.isNotConstructable(isExpression, targetText),
-          getDiagnosticMessageText(diagnostic),
-        ];
-
-        let origin: DiagnosticOrigin;
-
-        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNodes)) {
-          origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), sourceNode.getSourceFile());
-        } else {
-          origin =
-            targetNodes.length > 0
-              ? DiagnosticOrigin.fromNodes(targetNodes)
-              : DiagnosticOrigin.fromAssertion(matchWorker.assertion);
-        }
-
-        let related: Array<Diagnostic> | undefined;
-
-        if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
-        }
-
-        diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
-      }
-    } else {
-      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
-
-      diagnostics.push(Diagnostic.error(ExpectDiagnosticText.isConstructable(isExpression, targetText), origin));
-    }
-
-    return diagnostics;
-  }
+export class ToBeConstructableWith extends AbilityMatcherBase {
+  explainText = ExpectDiagnosticText.isConstructable;
+  explainNotText = ExpectDiagnosticText.isNotConstructable;
 
   match(
     matchWorker: MatchWorker,
@@ -82,15 +18,15 @@ export class ToBeConstructableWith {
   ): MatchResult | undefined {
     let type: ts.Type | undefined;
 
-    if (this.#compiler.isCallExpression(sourceNode)) {
+    if (this.compiler.isCallExpression(sourceNode)) {
       type = matchWorker.typeChecker.getResolvedSignature(sourceNode)?.getReturnType();
     }
 
     if (
       // allows instantiation expressions
-      this.#compiler.isExpressionWithTypeArguments(sourceNode) ||
-      this.#compiler.isIdentifier(sourceNode) ||
-      this.#compiler.isPropertyAccessExpression(sourceNode)
+      this.compiler.isExpressionWithTypeArguments(sourceNode) ||
+      this.compiler.isIdentifier(sourceNode) ||
+      this.compiler.isPropertyAccessExpression(sourceNode)
     ) {
       type = matchWorker.getType(sourceNode);
     }
@@ -98,7 +34,7 @@ export class ToBeConstructableWith {
     if (!type || type.getConstructSignatures().length === 0) {
       const text: Array<string> = [];
 
-      if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+      if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
         text.push(ExpectDiagnosticText.argumentMustBe("source", "a constructable expression"));
       } else {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a constructable type"));
@@ -116,8 +52,8 @@ export class ToBeConstructableWith {
     }
 
     return {
-      explain: () => this.#explain(matchWorker, sourceNode, targetNodes),
-      isMatch: !matchWorker.assertion.abilityDiagnostics,
+      explain: () => this.explain(matchWorker, sourceNode, targetNodes),
+      isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
     };
   }
 }

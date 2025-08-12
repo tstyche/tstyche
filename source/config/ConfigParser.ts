@@ -1,6 +1,7 @@
 import type ts from "typescript";
-import { Diagnostic, type DiagnosticsHandler, type SourceFile } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { Path } from "#path";
+import type { SourceFile } from "#source";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import type { JsonNode } from "./JsonNode.js";
 import type { JsonScanner } from "./JsonScanner.js";
@@ -34,7 +35,7 @@ export class ConfigParser {
   #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {
     const text = isListItem
       ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
-      : ConfigDiagnosticText.requiresValueType(optionDefinition.name, optionDefinition.brand);
+      : ConfigDiagnosticText.optionValueMustBe(optionDefinition.name, optionDefinition.brand);
 
     this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
   }

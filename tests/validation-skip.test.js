@@ -16,15 +16,14 @@ await test("'--skip' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--skip"]);
 
-    assert.equal(stdout, "");
-
     assert.equal(
       stderr,
-      ["Error: Option '--skip' expects a value.", "", "Option '--skip' requires a value of type string.", "", ""].join(
+      ["Error: Option '--skip' expects a value.", "", "Value for the '--skip' option must be a string.", "", ""].join(
         "\n",
       ),
     );
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

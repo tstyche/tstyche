@@ -1,4 +1,4 @@
-Error: Option 'testFileMatch' requires a value of type list.
+Error: Value for the 'testFileMatch' option must be a list.
 
   1 | {
   2 |   "testFileMatch": "feature",

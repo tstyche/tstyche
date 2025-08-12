@@ -16,14 +16,14 @@ await test("'--only' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--only"]);
 
-    assert.equal(stdout, "");
-
     assert.equal(
       stderr,
-      ["Error: Option '--only' expects a value.", "", "Option '--only' requires a value of type string.", "", ""].join(
+      ["Error: Option '--only' expects a value.", "", "Value for the '--only' option must be a string.", "", ""].join(
         "\n",
       ),
     );
+
+    assert.equal(stdout, "");
 
     assert.equal(exitCode, 1);
   });

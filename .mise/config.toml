@@ -1,0 +1,8 @@
+[tools]
+hyperfine = "1.19.0"
+jsonschema = "11.0.0"
+node = "22.18.0"
+yarn = "4.9.2"
+
+[tasks."test:schemas"]
+run = "jsonschema test schemas/__tests__/*.test.json --resolve ./schemas/config.json"

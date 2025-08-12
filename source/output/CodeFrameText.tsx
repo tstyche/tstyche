@@ -12,7 +12,10 @@ function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
   const text: Array<string> = [];
 
   while ("name" in ancestor) {
-    text.push(ancestor.name);
+    if (ancestor.name !== "") {
+      text.push(ancestor.name);
+    }
+
     ancestor = ancestor.parent;
   }
 
@@ -142,8 +145,8 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   let breadcrumbs: ScribblerJsx.Element | undefined;
 
-  if (showBreadcrumbs && diagnosticOrigin.assertion != null) {
-    breadcrumbs = <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parent} />;
+  if (showBreadcrumbs && diagnosticOrigin.assertionNode != null) {
+    breadcrumbs = <BreadcrumbsText ancestor={diagnosticOrigin.assertionNode.parent} />;
   }
 
   const location = (

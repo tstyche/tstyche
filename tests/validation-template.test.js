@@ -118,13 +118,13 @@ export { testText };
       env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
     });
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-missing-export-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-missing-export-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-missing-export-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-missing-export-stdout`,
       testFileUrl: import.meta.url,
     });
 

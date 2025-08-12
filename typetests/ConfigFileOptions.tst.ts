@@ -5,7 +5,9 @@ describe("ConfigFileOptions", () => {
   test("all options", () => {
     expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({
       checkSourceFiles: true,
+      checkSuppressedErrors: true,
       failFast: true,
+      fixtureFileMatch: ["**/tests/types/fixtures/**/*"],
       plugins: ["./tstyche-plugin.js"],
       rejectAnyType: true,
       rejectNeverType: true,
@@ -27,9 +29,21 @@ describe("ConfigFileOptions", () => {
     }>();
   });
 
+  test("'checkSuppressedErrors' option", () => {
+    expect<Pick<tstyche.ConfigFileOptions, "checkSuppressedErrors">>().type.toBe<{
+      checkSuppressedErrors?: boolean;
+    }>();
+  });
+
   test("'failFast' option", () => {
     expect<Pick<tstyche.ConfigFileOptions, "failFast">>().type.toBe<{
       failFast?: boolean;
+    }>();
+  });
+
+  test("'fixtureFileMatch' option", () => {
+    expect<Pick<tstyche.ConfigFileOptions, "fixtureFileMatch">>().type.toBe<{
+      fixtureFileMatch?: Array<string>;
     }>();
   });
 

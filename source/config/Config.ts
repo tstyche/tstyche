@@ -1,14 +1,15 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { type Diagnostic, SourceFile } from "#diagnostic";
+import type { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
+import { SourceFile } from "#source";
 import { CommandLineParser } from "./CommandLineParser.js";
 import { ConfigParser } from "./ConfigParser.js";
+import { defaultOptions } from "./defaultOptions.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import { Target } from "./Target.js";
-import { defaultOptions } from "./defaultOptions.js";
 import type { CommandLineOptions, ConfigFileOptions, OptionValue, ResolvedConfig } from "./types.js";
 
 export class Config {
@@ -86,7 +87,6 @@ export class Config {
     };
 
     if ("config" in resolvedConfig) {
-      // biome-ignore lint/performance/noDelete: must clean up
       delete resolvedConfig.config;
     }
 

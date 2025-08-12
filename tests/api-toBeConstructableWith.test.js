@@ -24,13 +24,13 @@ await test("toBeConstructableWith", async (t) => {
   await t.test("parameter arity", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["parameter-arity.tst.ts"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-parameter-arity-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-parameter-arity-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-parameter-arity-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-parameter-arity-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -40,13 +40,13 @@ await test("toBeConstructableWith", async (t) => {
   await t.test("generic classes", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["generic-classes.tst.ts"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-generic-classes-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-generic-classes-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-generic-classes-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-generic-classes-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -56,13 +56,13 @@ await test("toBeConstructableWith", async (t) => {
   await t.test("overload signatures", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overload-signatures.tst.ts"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-overload-signatures-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-overload-signatures-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-overload-signatures-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overload-signatures-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -72,13 +72,29 @@ await test("toBeConstructableWith", async (t) => {
   await t.test("rest parameters", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["rest-parameters.tst.ts"]);
 
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-rest-parameters-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-rest-parameters-stdout`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("related diagnostics", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["related-diagnostics.tst.ts"]);
+
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-rest-parameters-stderr`,
+      fileName: `${testFileName}-related-diagnostics-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-related-diagnostics-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -122,12 +138,12 @@ test("Pair", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-missing-semicolons-stdout`,
       testFileUrl: import.meta.url,
     });
-
-    assert.equal(stderr, "");
 
     assert.equal(exitCode, 0);
   });
@@ -170,13 +186,69 @@ test("Pair", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-trailing-comma-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-trailing-comma-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-trailing-comma-stderr`,
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("handles '// @ts-expect-error' directive", async (t) => {
+    const toBeConstructableWithText = `import { expect, test } from "tstyche";
+
+class Person {
+  _name: string;
+
+  constructor(name: string) {
+    this._name = name;
+  }
+}
+
+function getPersonConstructor() {
+  return Person;
+}
+
+test("handles '// @ts-expect-error' directive", () => {
+  expect(getPersonConstructor()).type.toBeConstructableWith("abc");
+  expect(getPersonConstructor()).type.not.toBeConstructableWith();
+
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.toBeConstructableWith("abc");
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.not.toBeConstructableWith("abc"); // fail
+
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.not.toBeConstructableWith();
+  // @ts-expect-error!
+  expect(getPersonConstructor(true)).type.toBeConstructableWith(); // fail
+});
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toBeCallableWith.tst.ts"]: toBeConstructableWithText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-ts-expect-error-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-ts-expect-error-stdout`,
       testFileUrl: import.meta.url,
     });
 

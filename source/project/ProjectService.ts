@@ -82,6 +82,10 @@ export class ProjectService {
       defaultCompilerOptions.verbatimModuleSyntax = true;
     }
 
+    if (Version.isSatisfiedWith(this.#compiler.version, "5.6")) {
+      defaultCompilerOptions.noUncheckedSideEffectImports = true;
+    }
+
     return defaultCompilerOptions;
   }
 
@@ -154,16 +158,16 @@ export class ProjectService {
         "project:uses",
         { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
       ]);
+
+      if (configFileErrors && configFileErrors.length > 0) {
+        EventEmitter.dispatch([
+          "project:error",
+          { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>) },
+        ]);
+      }
     }
 
-    if (configFileErrors && configFileErrors.length > 0) {
-      EventEmitter.dispatch([
-        "project:error",
-        { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>) },
-      ]);
-    }
-
-    if (this.#resolvedConfig.checkSourceFiles && !this.#seenTestFiles.has(filePath)) {
+    if (!this.#seenTestFiles.has(filePath)) {
       this.#seenTestFiles.add(filePath);
 
       const languageService = this.getLanguageService(filePath);
@@ -181,11 +185,15 @@ export class ProjectService {
           return false;
         }
 
+        if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+          return true;
+        }
+
         if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
           return false;
         }
 
-        return true;
+        return this.#resolvedConfig.checkSourceFiles;
       });
 
       const diagnostics: Array<ts.Diagnostic> = [];

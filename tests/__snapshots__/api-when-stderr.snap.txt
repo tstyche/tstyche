@@ -22,7 +22,7 @@ Argument of type '"required"' is not assignable to parameter of type '"valid"'.
   14 | 
   15 |   test("argument type is not assignable to parameter type?", () => {
 
-       at ./__typetests__/when.tst.ts:12:81
+       at ./__typetests__/when.tst.ts:12:81 ❭ when target is an expression ❭ is called with?
 
 Error: Argument of type 'boolean' is not assignable to parameter of type '(source: { valid: boolean; }) => { valid: boolean; }'.
 

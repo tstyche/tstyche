@@ -205,6 +205,8 @@ await test("store", async (t) => {
           "Warning: Failed to update metadata of the 'typescript' package from 'https://registry.npmjs.org'.",
           "",
           `The resolution of the '${target}' tag may be outdated.`,
+          "",
+          "",
         ].join("\n");
 
         assert.match(stderr, new RegExp(`^${expected}`));

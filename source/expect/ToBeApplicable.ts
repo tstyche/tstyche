@@ -48,23 +48,27 @@ export class ToBeApplicable {
     return text;
   }
 
-  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode) {
-    const targetText = this.#resolveTargetText(matchWorker.assertion.matcherNode.parent);
+  #explain(matchWorker: MatchWorker) {
+    const targetText = this.#resolveTargetText(matchWorker.assertionNode.matcherNode.parent);
 
     const diagnostics: Array<Diagnostic> = [];
 
-    if (matchWorker.assertion.abilityDiagnostics) {
-      for (const diagnostic of matchWorker.assertion.abilityDiagnostics) {
+    if (matchWorker.assertionNode.abilityDiagnostics.size > 0) {
+      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
+
+      for (const diagnostic of matchWorker.assertionNode.abilityDiagnostics) {
         const text = [ExpectDiagnosticText.cannotBeApplied(targetText), getDiagnosticMessageText(diagnostic)];
 
-        // TODO related diagnostics?
+        let related: Array<Diagnostic> | undefined;
 
-        const origin = DiagnosticOrigin.fromNode(sourceNode);
+        if (diagnostic.relatedInformation != null) {
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+        }
 
-        diagnostics.push(Diagnostic.error(text.flat(), origin));
+        diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
       }
     } else {
-      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
 
       diagnostics.push(Diagnostic.error(ExpectDiagnosticText.canBeApplied(targetText), origin));
     }
@@ -94,8 +98,8 @@ export class ToBeApplicable {
     }
 
     return {
-      explain: () => this.#explain(matchWorker, sourceNode),
-      isMatch: !matchWorker.assertion.abilityDiagnostics,
+      explain: () => this.#explain(matchWorker),
+      isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
     };
   }
 }

@@ -17,12 +17,23 @@ export class ConfigDiagnosticText {
     return `The specified path '${filePath}' does not exist.`;
   }
 
+  static fileMatchPatternCannotStartWith(optionName: string, segment: string): Array<string> {
+    return [
+      `A '${optionName}' pattern cannot start with '${segment}'.`,
+      "The files are only collected within the 'rootPath' directory.",
+    ];
+  }
+
   static inspectSupportedVersions(): string {
     return "Use the '--list' command line option to inspect the list of supported versions.";
   }
 
   static moduleWasNotFound(specifier: string): string {
     return `The specified module '${specifier}' was not found.`;
+  }
+
+  static optionValueMustBe(optionName: string, optionBrand: OptionBrand): string {
+    return `Value for the '${optionName}' option must be a ${optionBrand}.`;
   }
 
   static rangeIsNotValid(value: string): string {
@@ -37,19 +48,8 @@ export class ConfigDiagnosticText {
     ];
   }
 
-  static requiresValueType(optionName: string, optionBrand: OptionBrand): string {
-    return `Option '${optionName}' requires a value of type ${optionBrand}.`;
-  }
-
   static seen(element: string): string {
     return `The ${element} was seen here.`;
-  }
-
-  static testFileMatchCannotStartWith(segment: string): Array<string> {
-    return [
-      `A test file match pattern cannot start with '${segment}'.`,
-      "The test files are only collected within the 'rootPath' directory.",
-    ];
   }
 
   static unexpected(element: string): string {
@@ -76,7 +76,7 @@ export class ConfigDiagnosticText {
       }
     }
 
-    return [ConfigDiagnosticText.requiresValueType(optionName, optionBrand)];
+    return [ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand)];
   }
 
   static versionIsNotSupported(value: string): string {

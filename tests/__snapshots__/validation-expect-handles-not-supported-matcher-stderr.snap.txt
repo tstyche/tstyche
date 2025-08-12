@@ -1,10 +1,10 @@
 Error: The '.toBeSupported()' matcher is not supported.
 
    8 | test("is not supported?", () => {
-   9 |   // @ts-expect-error
+   9 |   // @ts-expect-error!
   10 |   expect<string>().type.toBeSupported();
      |                         ~~~~~~~~~~~~~
-  11 |   // @ts-expect-error
+  11 |   // @ts-expect-error!
   12 |   expect<number>().type.not.toBeSupported();
   13 | });
 
@@ -13,7 +13,7 @@ Error: The '.toBeSupported()' matcher is not supported.
 Error: The '.toBeSupported()' matcher is not supported.
 
   10 |   expect<string>().type.toBeSupported();
-  11 |   // @ts-expect-error
+  11 |   // @ts-expect-error!
   12 |   expect<number>().type.not.toBeSupported();
      |                             ~~~~~~~~~~~~~
   13 | });

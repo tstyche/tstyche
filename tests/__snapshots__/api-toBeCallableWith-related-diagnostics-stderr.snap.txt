@@ -1,0 +1,87 @@
+Error: The diagnostic message did not match.
+
+  16 | 
+  17 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
+  18 | // @ts-expect-error This directive must be visible
+     |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  19 | pluralLocal();
+  20 | 
+
+       at ./__typetests__/related-diagnostics.tst.ts:18:21
+
+    The suppressed error:
+
+    Expected 1 arguments, but got 0. ts(2554)
+
+      17 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
+      18 | // @ts-expect-error This directive must be visible
+      19 | pluralLocal();
+         | ~~~~~~~~~~~
+      20 | 
+
+           at ./__typetests__/related-diagnostics.tst.ts:19:1
+
+        An argument for 'options' was not provided. ts(6210)
+
+          11 | }
+          12 | 
+          13 | declare function pluralLocal(options: PluralOptions): void;
+             |                              ~~~~~~~~~~~~~~~~~~~~~~
+          14 | 
+          15 | expect(pluralLocal).type.toBeCallableWith({ count: 10, text: "Sample" });
+          16 | 
+
+               at ./__typetests__/related-diagnostics.tst.ts:13:30
+
+Error: Expression is not callable with the given argument.
+
+Type 'boolean' is not assignable to type 'string'.
+
+  4 | expect(pluralExternal).type.toBeCallableWith({ count: 10, text: "Sample" });
+  5 | 
+  6 | expect(pluralExternal).type.toBeCallableWith({ count: 100, text: false });
+    |                                                            ~~~~
+  7 | 
+  8 | interface PluralOptions {
+  9 |   count: number;
+
+      at ./__typetests__/related-diagnostics.tst.ts:6:60
+
+    The expected type comes from property 'text' which is declared here on type 'PluralOptions' ts(6500)
+
+      1 | export interface PluralOptions {
+      2 |   count: number;
+      3 |   text: string;
+        |   ~~~~
+      4 | }
+      5 | 
+      6 | export declare function plural(options: PluralOptions): void;
+
+          at ./__typetests__/plural.ts:3:3
+
+Error: Expression is not callable with the given argument.
+
+Type 'boolean' is not assignable to type 'string'.
+
+  15 | expect(pluralLocal).type.toBeCallableWith({ count: 10, text: "Sample" });
+  16 | 
+  17 | expect(pluralLocal).type.toBeCallableWith({ count: 100, text: false });
+     |                                                         ~~~~
+  18 | // @ts-expect-error This directive must be visible
+  19 | pluralLocal();
+  20 | 
+
+       at ./__typetests__/related-diagnostics.tst.ts:17:57
+
+    The expected type comes from property 'text' which is declared here on type 'PluralOptions' ts(6500)
+
+       8 | interface PluralOptions {
+       9 |   count: number;
+      10 |   text: string;
+         |   ~~~~
+      11 | }
+      12 | 
+      13 | declare function pluralLocal(options: PluralOptions): void;
+
+           at ./__typetests__/related-diagnostics.tst.ts:10:3
+

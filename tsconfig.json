@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
-    "allowUnusedLabels": false,
     "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "strict": true,
 
     "module": "node16",
@@ -27,7 +30,7 @@
     "build/**/*",
     "coverage/**/*",
     "examples/**/*",
-    "models/**/*",
+    "schemas/**/*",
     "source/**/*",
     "tests/**/*",
     "typetests/**/*"

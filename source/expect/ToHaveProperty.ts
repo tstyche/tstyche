@@ -25,9 +25,9 @@ export class ToHaveProperty {
       propertyNameText = `[${this.#compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
     }
 
-    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
+    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertionNode);
 
-    return matchWorker.assertion.isNot
+    return matchWorker.assertionNode.isNot
       ? [Diagnostic.error(ExpectDiagnosticText.hasProperty(sourceTypeText, propertyNameText), origin)]
       : [Diagnostic.error(ExpectDiagnosticText.doesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
   }

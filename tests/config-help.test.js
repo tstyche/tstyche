@@ -44,12 +44,13 @@ await test("'--help' command line option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+      assert.equal(stderr, "");
+
       await assert.matchSnapshot(stdout.replace(version, "<<version>>"), {
         fileName: `${testFileName}-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   }

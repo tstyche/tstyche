@@ -1,0 +1,33 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'testFileMatch' option",
+      "valid": true,
+      "data": {
+        "testFileMatch": ["examples/*.test.ts", "**/__typetests__/*.test.ts"]
+      }
+    },
+    {
+      "description": "items of the 'testFileMatch' option must be of type string",
+      "valid": false,
+      "data": {
+        "testFileMatch": [true]
+      }
+    },
+    {
+      "description": "items of the 'testFileMatch' option must NOT be identical",
+      "valid": false,
+      "data": {
+        "testFileMatch": ["examples/*.test.ts", "examples/*.test.ts"]
+      }
+    },
+    {
+      "description": "value of the 'testFileMatch' option must be of type Array",
+      "valid": false,
+      "data": {
+        "testFileMatch": "examples/*"
+      }
+    }
+  ]
+}

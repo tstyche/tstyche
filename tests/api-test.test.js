@@ -24,12 +24,13 @@ await test("test", async (t) => {
   await t.test("test.only", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["only"]);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-only-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -42,12 +43,13 @@ await test("test", async (t) => {
   await t.test("test.skip", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["skip"]);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-skip-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -61,12 +63,13 @@ await test("test", async (t) => {
   await t.test("test.todo", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["todo"]);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-todo-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

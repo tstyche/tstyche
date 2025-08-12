@@ -1,5 +1,5 @@
 import { Path } from "#path";
-import { type WatchHandler, Watcher } from "./Watcher.js";
+import { Watcher, type WatchHandler } from "./Watcher.js";
 
 export type FileWatchHandler = () => void;
 

@@ -24,13 +24,13 @@ await test("when", async (t) => {
   await t.test("when", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -63,12 +63,12 @@ test("pick", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-missing-semicolons-stdout`,
       testFileUrl: import.meta.url,
     });
-
-    assert.equal(stderr, "");
 
     assert.equal(exitCode, 0);
   });
@@ -103,13 +103,13 @@ test("pick", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-trailing-comma-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-trailing-comma-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-trailing-comma-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-trailing-comma-stdout`,
       testFileUrl: import.meta.url,
     });
 

@@ -24,13 +24,13 @@ await test("toAcceptProps", async (t) => {
   await t.test("function components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["function-components"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-function-components-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-function-components-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-function-components-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-function-components-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -40,13 +40,13 @@ await test("toAcceptProps", async (t) => {
   await t.test("class components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["class-components"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-class-components-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-class-components-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-class-components-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-class-components-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -56,13 +56,13 @@ await test("toAcceptProps", async (t) => {
   await t.test("overloaded components", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overloaded-components"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-overloaded-components-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-overloaded-components-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-overloaded-components-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-overloaded-components-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -72,13 +72,13 @@ await test("toAcceptProps", async (t) => {
   await t.test("special cases", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["special-cases"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-special-cases-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-special-cases-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-special-cases-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-special-cases-stdout`,
       testFileUrl: import.meta.url,
     });
 

@@ -11,13 +11,13 @@ await test("type errors", async (t) => {
   await t.test("handles top level type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["top-level"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-top-level-errors-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-top-level-errors-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-top-level-errors-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-top-level-errors-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -27,13 +27,13 @@ await test("type errors", async (t) => {
   await t.test("handles describe level type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["describe-level"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-describe-level-errors-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-describe-level-errors-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-describe-level-errors-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-describe-level-errors-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -43,13 +43,13 @@ await test("type errors", async (t) => {
   await t.test("handles test level type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["test-level"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-test-level-errors-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-test-level-errors-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-test-level-errors-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-test-level-errors-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -59,13 +59,13 @@ await test("type errors", async (t) => {
   await t.test("handles matcher level type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["matcher-level"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-matcher-level-errors-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-matcher-level-errors-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-matcher-level-errors-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-matcher-level-errors-stdout`,
       testFileUrl: import.meta.url,
     });
 

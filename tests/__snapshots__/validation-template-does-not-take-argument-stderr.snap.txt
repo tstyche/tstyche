@@ -1,12 +1,12 @@
-Error: Directive 'template' does not take an argument.
+Error: Directive does not take an argument.
 
   1 | // @tstyche template nope
-    |             ~~~~~~~~
+    |                      ~~~~
   2 | 
   3 | let testText = `import { expect, test } from "tstyche";
   4 | `;
 
-      at ./__typetests__/sample.tst.ts:1:13
+      at ./__typetests__/sample.tst.ts:1:22
 
 Error: Type 'string' is not the same as type 'number'.
 

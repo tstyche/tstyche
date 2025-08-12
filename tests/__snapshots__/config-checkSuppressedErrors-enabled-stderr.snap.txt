@@ -1,0 +1,70 @@
+Error: The diagnostic message did not match.
+
+  1 | // @ts-expect-error Does not work
+    |                     ~~~~~~~~~~~~~
+  2 | console.log(add);
+  3 | 
+  4 |   // @ts-expect-error Should handle leading spaces
+
+      at ./__typetests__/sample.tst.ts:1:21
+
+    The suppressed error:
+
+    Cannot find name 'add'. ts(2304)
+
+      1 | // @ts-expect-error Does not work
+      2 | console.log(add);
+        |             ~~~
+      3 | 
+      4 |   // @ts-expect-error Should handle leading spaces
+      5 |   console.log(spaces);
+
+          at ./__typetests__/sample.tst.ts:2:13
+
+Error: The diagnostic message did not match.
+
+  2 | console.log(add);
+  3 | 
+  4 |   // @ts-expect-error Should handle leading spaces
+    |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  5 |   console.log(spaces);
+  6 | 
+  7 |  // @ts-expect-error Should handle leading tabs
+
+      at ./__typetests__/sample.tst.ts:4:23
+
+    The suppressed error:
+
+    Cannot find name 'spaces'. ts(2304)
+
+      3 | 
+      4 |   // @ts-expect-error Should handle leading spaces
+      5 |   console.log(spaces);
+        |               ~~~~~~
+      6 | 
+      7 |  // @ts-expect-error Should handle leading tabs
+      8 |  console.log(tabs);
+
+          at ./__typetests__/sample.tst.ts:5:15
+
+Error: The diagnostic message did not match.
+
+  5 |   console.log(spaces);
+  6 | 
+  7 |  // @ts-expect-error Should handle leading tabs
+    |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  8 |  console.log(tabs);
+
+      at ./__typetests__/sample.tst.ts:7:22
+
+    The suppressed error:
+
+    Cannot find name 'tabs'. ts(2304)
+
+      6 | 
+      7 |  // @ts-expect-error Should handle leading tabs
+      8 |  console.log(tabs);
+        |              ~~~~
+
+          at ./__typetests__/sample.tst.ts:8:14
+

@@ -49,6 +49,13 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.Boolean,
+      description: "Check errors silenced by '// @ts-expect-error' directives.",
+      group: OptionGroup.ConfigFile,
+      name: "checkSuppressedErrors",
+    },
+
+    {
       brand: OptionBrand.String,
       description: "The path to a TSTyche configuration file.",
       group: OptionGroup.CommandLine,
@@ -67,6 +74,17 @@ export class Options {
       description: "Fetch the specified versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "fetch",
+    },
+
+    {
+      brand: OptionBrand.List,
+      description: "The list of glob patterns matching the fixture files.",
+      group: OptionGroup.ConfigFile,
+      items: {
+        brand: OptionBrand.String,
+        name: "fixtureFileMatch",
+      },
+      name: "fixtureFileMatch",
     },
 
     {
@@ -342,10 +360,16 @@ export class Options {
         break;
       }
 
+      case "fixtureFileMatch":
       case "testFileMatch":
         for (const segment of ["/", "../"]) {
           if (optionValue.startsWith(segment)) {
-            onDiagnostics(Diagnostic.error(ConfigDiagnosticText.testFileMatchCannotStartWith(segment), origin));
+            onDiagnostics(
+              Diagnostic.error(
+                ConfigDiagnosticText.fileMatchPatternCannotStartWith(canonicalOptionName, segment),
+                origin,
+              ),
+            );
           }
         }
         break;

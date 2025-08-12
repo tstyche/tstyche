@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
 import prettyAnsi from "pretty-ansi";
-import { Diagnostic, Scribbler, diagnosticText } from "tstyche/tstyche";
+import { Diagnostic, diagnosticText, Scribbler } from "tstyche/tstyche";
 
 const scribbler = new Scribbler();
 

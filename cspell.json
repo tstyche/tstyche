@@ -1,0 +1,26 @@
+{
+  "dictionaries": [
+    "node",
+    "npm",
+    "typescript"
+  ],
+  "files": [
+    "*.js",
+    "*.json",
+    "*.md",
+    "benchmarks/**/*",
+    "examples/**/*",
+    "schemas/**/*",
+    "scripts/**/*",
+    "source/**/*",
+    "tests/**/*"
+  ],
+  "words": [
+    "codacy",
+    "findup",
+    "jsxs",
+    "monocart",
+    "tsserverlibrary",
+    "typetests"
+  ]
+}

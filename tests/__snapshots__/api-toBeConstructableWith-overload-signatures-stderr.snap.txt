@@ -22,7 +22,7 @@ Expected 1-2 arguments, but got 3.
   35 | 
   36 |     expect(Test).type.toBeConstructableWith("one", () => {});
 
-       at ./__typetests__/overload-signatures.tst.ts:33:52
+       at ./__typetests__/overload-signatures.tst.ts:33:52 ❭ when target is an expression ❭ is constructable with the given arguments
 
 Error: Expression is not constructable with the given arguments.
 
@@ -37,7 +37,7 @@ Type 'void' is not assignable to type 'Promise<unknown>'.
   38 | 
   39 |     expect(Test).type.toBeConstructableWith("two", () => Promise.resolve());
 
-       at ./__typetests__/overload-signatures.tst.ts:36:52
+       at ./__typetests__/overload-signatures.tst.ts:36:52 ❭ when target is an expression ❭ is constructable with the given arguments
 
     The call would have succeeded against this implementation, but implementation signatures of overloads are not externally visible. ts(2793)
 
@@ -122,12 +122,12 @@ Expected 2 arguments, but got 1.
   51 |   test("is not constructable with the given argument", () => {
   52 |     expect(Test).type.not.toBeConstructableWith("nope");
   53 |     expect(Test).type.toBeConstructableWith("nope"); // fail: Expected 2 arguments, but got 1.
-     |                                             ~~~~~~
+     |                       ~~~~~~~~~~~~~~~~~~~~~
   54 |   });
   55 | 
   56 |   test("is not constructable with the given arguments", () => {
 
-       at ./__typetests__/overload-signatures.tst.ts:53:45
+       at ./__typetests__/overload-signatures.tst.ts:53:23 ❭ when target is an expression ❭ is not constructable with the given argument
 
     An argument for 'cb' was not provided. ts(6210)
 
@@ -165,5 +165,5 @@ Expected 1-2 arguments, but got 4.
   63 | });
   64 | 
 
-       at ./__typetests__/overload-signatures.tst.ts:61:52
+       at ./__typetests__/overload-signatures.tst.ts:61:52 ❭ when target is an expression ❭ is not constructable with the given arguments
 

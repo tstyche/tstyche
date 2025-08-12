@@ -37,21 +37,29 @@ To organize, debug and plan tests TSTyche has:
 
 ## Assertions
 
-The assertions can be used to write type tests (like in the above example) or mixed in your functional tests:
+The assertions can be used to write type tests (like in the above example) or mixed in your unit tests:
 
 ```ts
 import assert from "node:assert";
 import test from "node:test";
 import * as tstyche from "tstyche";
 
-function secondItem<T>(target: Array<T>): T | undefined {
-  return target[1];
+function toMilliseconds(value: number) {
+  if (typeof value === "number" && !Number.isNaN(value)) {
+    return value * 1000;
+  }
+
+  throw new Error("Not a number");
 }
 
-test("handles numbers", () => {
-  assert.strictEqual(secondItem([1, 2, 3]), 2);
+test("toMilliseconds", () => {
+  const sample = toMilliseconds(10);
 
-  tstyche.expect(secondItem([1, 2, 3])).type.toBe<number | undefined>();
+  assert.equal(sample, 10_000);
+  tstyche.expect(sample).type.toBe<number>();
+
+  // Will pass as a type test and not throw at runtime
+  tstyche.expect(toMilliseconds).type.not.toBeCallableWith("20");
 });
 ```
 
@@ -62,8 +70,7 @@ Here is the list of all matchers:
 - `.toBeApplicable` ensures that the decorator function can be applied,
 - `.toBeCallableWith()` checks whether a function is callable with the given arguments,
 - `.toBeConstructableWith()` checks whether a class is constructable with the given arguments,
-- `.toHaveProperty()` looks up keys on an object type,
-- `.toRaiseError()` captures the message or code of a type error.
+- `.toHaveProperty()` looks up keys on an object type.
 
 ## Runner
 

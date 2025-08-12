@@ -1,4 +1,4 @@
-Error: Option 'tsconfig' requires a value of type string.
+Error: Value for the 'tsconfig' option must be a string.
 
   1 | {
   2 |   "tsconfig": 123

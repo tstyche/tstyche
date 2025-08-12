@@ -44,8 +44,8 @@ await test("'--update' command line option", async (t) => {
       "",
     ].join("\n");
 
-    assert.equal(stdout, "");
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -76,8 +76,8 @@ await test("'--update' command line option", async (t) => {
       "",
     ].join("\n");
 
-    assert.equal(stdout, "");
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -112,8 +112,8 @@ await test("'--update' command line option", async (t) => {
       "",
     ].join("\n");
 
-    assert.equal(stdout, "");
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

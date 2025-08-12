@@ -24,13 +24,12 @@ await test("'rootPath' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--config", "./config/tstyche.json"]);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-path-does-not-exist`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -46,13 +45,12 @@ await test("'rootPath' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

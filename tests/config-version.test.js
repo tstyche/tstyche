@@ -42,8 +42,8 @@ await test("'--version' command line option", async (t) => {
     await t.test(testCase, async () => {
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
-      assert.equal(stdout, `${version}\n`);
       assert.equal(stderr, "");
+      assert.equal(stdout, `${version}\n`);
       assert.equal(exitCode, 0);
     });
   }

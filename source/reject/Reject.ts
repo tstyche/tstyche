@@ -2,8 +2,8 @@ import type ts from "typescript";
 import { nodeBelongsToArgumentList } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { RejectDiagnosticText } from "./RejectDiagnosticText.js";
 import { capitalize } from "./helpers.js";
+import { RejectDiagnosticText } from "./RejectDiagnosticText.js";
 
 export class Reject {
   #compiler: typeof ts;

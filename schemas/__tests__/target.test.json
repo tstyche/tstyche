@@ -1,0 +1,33 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'target' option",
+      "valid": true,
+      "data": {
+        "target": ["5.2", ">=5.0 <5.3", "5.4.2", ">=5.5", "beta", "latest", "next", "rc"]
+      }
+    },
+    {
+      "description": "items of the 'target' option must be of type string",
+      "valid": false,
+      "data": {
+        "target": [5.0]
+      }
+    },
+    {
+      "description": "items of the 'target' option must NOT be identical",
+      "valid": false,
+      "data": {
+        "target": ["latest", "latest"]
+      }
+    },
+    {
+      "description": "value of the 'target' option must be of type Array",
+      "valid": false,
+      "data": {
+        "target": "5.0"
+      }
+    }
+  ]
+}

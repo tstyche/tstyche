@@ -15,38 +15,38 @@ export class ToRaiseError {
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
     const isExpression = nodeBelongsToArgumentList(this.#compiler, sourceNode);
 
-    const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertion);
+    const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
 
-    if (matchWorker.assertion.diagnostics.size === 0) {
+    if (matchWorker.assertionNode.diagnostics.size === 0) {
       const text = ExpectDiagnosticText.didNotRaiseError(isExpression);
 
       return [Diagnostic.error(text, origin)];
     }
 
-    if (matchWorker.assertion.diagnostics.size !== targetNodes.length) {
-      const count = matchWorker.assertion.diagnostics.size;
+    if (matchWorker.assertionNode.diagnostics.size !== targetNodes.length) {
+      const count = matchWorker.assertionNode.diagnostics.size;
 
       const text = ExpectDiagnosticText.raisedError(isExpression, count, targetNodes.length);
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
-        ...Diagnostic.fromDiagnostics([...matchWorker.assertion.diagnostics]),
+        ...Diagnostic.fromDiagnostics([...matchWorker.assertionNode.diagnostics]),
       ];
 
       return [Diagnostic.error(text, origin).add({ related })];
     }
 
-    return [...matchWorker.assertion.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
+    return [...matchWorker.assertionNode.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
       const targetNode = targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral;
 
       const isMatch = this.#matchExpectedError(diagnostic, targetNode);
 
-      if (matchWorker.assertion.isNot ? isMatch : !isMatch) {
-        const text = matchWorker.assertion.isNot
+      if (matchWorker.assertionNode.isNot ? isMatch : !isMatch) {
+        const text = matchWorker.assertionNode.isNot
           ? ExpectDiagnosticText.raisedMatchingError(isExpression)
           : ExpectDiagnosticText.didNotRaiseMatchingError(isExpression);
 
-        const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
+        const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertionNode);
 
         const related = [
           Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
@@ -94,11 +94,11 @@ export class ToRaiseError {
     let isMatch: boolean | undefined;
 
     if (targetNodes.length === 0) {
-      isMatch = matchWorker.assertion.diagnostics.size > 0;
+      isMatch = matchWorker.assertionNode.diagnostics.size > 0;
     } else {
       isMatch =
-        matchWorker.assertion.diagnostics.size === targetNodes.length &&
-        [...matchWorker.assertion.diagnostics].every((diagnostic, index) =>
+        matchWorker.assertionNode.diagnostics.size === targetNodes.length &&
+        [...matchWorker.assertionNode.diagnostics].every((diagnostic, index) =>
           this.#matchExpectedError(
             diagnostic,
             targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral | ts.RegularExpressionLiteral,

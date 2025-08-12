@@ -11,13 +11,13 @@ await test("describe", async (t) => {
   await t.test("handles 'expect' nested within 'describe'", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-handles-expect-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-handles-expect-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-handles-expect-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-handles-expect-stdout`,
       testFileUrl: import.meta.url,
     });
 
