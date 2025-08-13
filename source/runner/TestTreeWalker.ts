@@ -49,7 +49,12 @@ export class TestTreeWalker {
   }
 
   async #resolveRunMode(mode: RunMode, node: TestTreeNode) {
-    const inlineConfig = await Directive.getInlineConfig(node.getDirectiveRanges(this.#compiler));
+    const directiveRanges = node.getDirectiveRanges(this.#compiler);
+    const inlineConfig = await Directive.getInlineConfig(directiveRanges);
+
+    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
+      mode |= RunMode.Void;
+    }
 
     if (
       node.flags & TestTreeNodeFlags.Only ||
@@ -60,9 +65,7 @@ export class TestTreeWalker {
 
     if (
       node.flags & TestTreeNodeFlags.Skip ||
-      (this.#resolvedConfig.skip != null &&
-        node.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase())) ||
-      (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target))
+      (this.#resolvedConfig.skip != null && node.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
     ) {
       mode |= RunMode.Skip;
     }
