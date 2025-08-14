@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.1.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
 
   "json": {
     "parser": {
@@ -10,10 +10,10 @@
   "files": {
     "includes": [
       "**",
-      "!**/.yarn/**",
-      "!**/build/**",
-      "!**/coverage/**",
-      "!**/node_modules/**",
+      "!**/.yarn",
+      "!**/build",
+      "!**/coverage",
+      "!**/node_modules",
       "!**/schemas/config.json",
       "!**/cspell.json"
     ]
@@ -32,6 +32,7 @@
       "recommended": true,
 
       "complexity": {
+        "useIndexOf": "error",
         "noUselessStringConcat": "error",
 
         "noBannedTypes": "off",
@@ -40,6 +41,7 @@
       },
 
       "correctness": {
+        "noProcessGlobal": "error",
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
         "useImportExtensions": "error",
@@ -48,10 +50,7 @@
       },
 
       "nursery": {
-        "noFloatingPromises": "error",
-        "noProcessGlobal": "error",
-        "noTsIgnore": "error",
-        "useIndexOf": "error"
+        "noFloatingPromises": "error"
       },
 
       "style": {
@@ -93,6 +92,7 @@
           }
         },
         "noEvolvingTypes": "error",
+        "noTsIgnore": "error",
         "useAwait": "error",
         "useErrorMessage": "error",
         "useNumberToFixedDigitsArgument": "error",
