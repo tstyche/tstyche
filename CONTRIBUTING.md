@@ -27,7 +27,7 @@ yarn tstyche callbacks
 Its `exec` command simplifies running TSTyche using the specific Node.js version. That is useful while working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
 
 ```shell
-mise exec node@24 -- yarn tstyche template
+mise exec node@22 -- yarn tstyche template
 ```
 
 ## Development
