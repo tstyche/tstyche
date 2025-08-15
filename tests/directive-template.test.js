@@ -51,9 +51,7 @@ await test("'// @tstyche template' directive", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-stderr`,
@@ -76,9 +74,7 @@ await test("'// @tstyche template' directive", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-stderr`,
@@ -99,9 +95,7 @@ await test("'// @tstyche template' directive", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-stderr`,
@@ -124,9 +118,7 @@ await test("'// @tstyche template' directive", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-stderr`,
@@ -153,9 +145,7 @@ await test("'// @tstyche template' directive", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-stderr`,
@@ -179,9 +169,7 @@ await test("'// @tstyche template' directive", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"'], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-used-with-tstyche-if-stderr`,
@@ -219,9 +207,7 @@ export default testText;
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"'], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.5 <5.8"']);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-test-text-with-tstyche-if-stderr`,
