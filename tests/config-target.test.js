@@ -131,8 +131,7 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", '"*"'];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"*"']);
 
     assert.equal(stderr, "");
 
@@ -140,6 +139,22 @@ await test("'--target' command line option", async (t) => {
       fileName: `${testFileName}-target-asterisk-stdout`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when '*' is specified, but TypeScript is not installed", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"*"'], {
+      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
+    });
+
+    assert.equal(stderr, "");
+    assert.match(stdout, /^adds TypeScript/);
 
     assert.equal(exitCode, 0);
   });
@@ -353,6 +368,27 @@ await test("'target' configuration file option", async (t) => {
       fileName: `${testFileName}-target-asterisk-stdout`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when '*' is specified, but TypeScript is not installed", async () => {
+    const config = {
+      target: ["*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
+      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
+    });
+
+    assert.equal(stderr, "");
+    assert.match(stdout, /^adds TypeScript/);
 
     assert.equal(exitCode, 0);
   });
