@@ -34,8 +34,8 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
   const jsonSchemaDefinition = {};
 
   if (defaultValue != null) {
-    if (optionDefinition.name === "rootPath" && typeof defaultValue === "string") {
-      defaultValue = tstyche.Path.relative("", defaultValue);
+    if (optionDefinition.name === "rootPath") {
+      defaultValue = "./";
     }
 
     jsonSchemaDefinition.default = defaultValue;
