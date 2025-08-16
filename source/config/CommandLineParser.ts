@@ -84,7 +84,7 @@ export class CommandLineParser {
           const optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== "") // trailing commas are allowed, e.g. "--target 5.0,current,"
+            .filter((value) => value !== "") // trailing commas are allowed, e.g. "--target 5.0,5.3.2,"
             .map((value) => Options.resolve(optionName, value));
 
           for (const optionValue of optionValues) {
