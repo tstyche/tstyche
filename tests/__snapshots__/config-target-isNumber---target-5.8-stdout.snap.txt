@@ -1,4 +1,5 @@
-uses TypeScript <<version>>
+adds TypeScript 5.8.3 to <<basePath>>/tests/__fixtures__/.generated/config-target/.store/typescript@5.8.3
+uses TypeScript 5.8.3
 
 pass ./__typetests__/isNumber.tst.ts
   + is number?

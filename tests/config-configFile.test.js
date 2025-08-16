@@ -128,7 +128,7 @@ await test("'tstyche.config.json' file", async (t) => {
     const configText = `{
   /* test */
   "failFast": true,
-  /* test */ "target": ["current"],
+  /* test */ "target": ["next"],
   // test
   "testFileMatch": /* test */ [
     "examples/**/*.test.ts" /* test */,
@@ -148,7 +148,7 @@ await test("'tstyche.config.json' file", async (t) => {
 
     assert.matchObject(stdout, {
       failFast: true,
-      target: ["current"],
+      target: ["next"],
       testFileMatch: ["examples/**/*.test.ts", "**/__typetests__/*.test.ts"],
     });
 

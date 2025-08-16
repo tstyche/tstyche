@@ -138,12 +138,12 @@ await test("TypeScript 4.x", async (t) => {
   const testCases = ["4.7.2", ...versions];
 
   for (const version of testCases) {
-    await t.test(`uses TypeScript ${version} as current target`, async () => {
+    await t.test(`uses TypeScript ${version} as the target`, async () => {
       await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
 
       const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
         env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
       });
 
@@ -182,12 +182,12 @@ await test("TypeScript 5.x", async (t) => {
   const testCases = ["5.0.2", ...versions];
 
   for (const version of testCases) {
-    await t.test(`uses TypeScript ${version} as current target`, async () => {
+    await t.test(`uses TypeScript ${version} as the target`, async () => {
       await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
 
       const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
         env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
       });
 

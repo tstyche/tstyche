@@ -73,7 +73,7 @@ await test("store", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when target is 'current', store manifest is not generated", async () => {
+  await t.test("when target is '*', store manifest is not generated", async () => {
     const storeManifestUrl = new URL("./.store/store-manifest.json", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -82,7 +82,7 @@ await test("store", async (t) => {
 
     assert.pathDoesNotExist(storeManifestUrl);
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "current"]);
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "'*'"]);
 
     assert.pathDoesNotExist(storeManifestUrl);
 

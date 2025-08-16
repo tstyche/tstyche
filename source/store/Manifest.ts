@@ -54,6 +54,10 @@ export class Manifest {
   }
 
   resolve(tag: string): string | undefined {
+    if (tag === "*") {
+      return this.resolutions["latest"];
+    }
+
     if (this.versions.includes(tag)) {
       return tag;
     }

@@ -36,7 +36,7 @@ export class Store {
   }
 
   static async fetch(tag: string): Promise<void> {
-    if (tag === "current") {
+    if (tag === "*" && environmentOptions.typescriptModule != null) {
       return;
     }
 
@@ -62,7 +62,7 @@ export class Store {
 
     let modulePath: string | undefined;
 
-    if (tag === "current" && environmentOptions.typescriptModule != null) {
+    if (tag === "*" && environmentOptions.typescriptModule != null) {
       modulePath = fileURLToPath(environmentOptions.typescriptModule);
     } else {
       await Store.open();
@@ -138,7 +138,7 @@ export class Store {
     Store.manifest = await Store.#manifestService.open();
 
     if (Store.manifest != null) {
-      Store.#supportedTags = [...Object.keys(Store.manifest.resolutions), ...Store.manifest.versions, "current"].sort();
+      Store.#supportedTags = [...Object.keys(Store.manifest.resolutions), ...Store.manifest.versions];
     }
   }
 
@@ -151,8 +151,8 @@ export class Store {
   }
 
   static async validateTag(tag: string): Promise<boolean | undefined> {
-    if (tag === "current") {
-      return environmentOptions.typescriptModule != null;
+    if (tag === "*") {
+      return true;
     }
 
     await Store.open();

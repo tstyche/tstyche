@@ -72,25 +72,6 @@ await test("'--target' command line option", async (t) => {
     assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
-
-  await t.test("when 'current' is specified, but TypeScript is not installed", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
-    });
-
-    const expected = [
-      "Error: Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.",
-      "",
-      "Value for the '--target' option must be a string or a comma separated list.",
-      "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3, 5.4.2, >=5.5''.",
-      "Use the '--list' command line option to inspect the list of supported versions.",
-      "\n",
-    ].join("\n");
-
-    assert.equal(stderr, expected);
-    assert.equal(stdout, "");
-    assert.equal(exitCode, 1);
-  });
 });
 
 await test("'target' configuration file option", async (t) => {
@@ -100,7 +81,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when option value is not a list", async () => {
     const config = {
-      target: "current",
+      target: "latest",
       testFileMatch: ["examples/*.test.*"],
     };
 
@@ -179,29 +160,6 @@ await test("'target' configuration file option", async (t) => {
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-not-valid-range-stderr`,
-      testFileUrl: import.meta.url,
-    });
-
-    assert.equal(stdout, "");
-    assert.equal(exitCode, 1);
-  });
-
-  await t.test("when 'current' is specified, but TypeScript is not installed", async () => {
-    const config = {
-      target: ["current"],
-    };
-
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-    });
-
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
-    });
-
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-typescript-not-installed-stderr`,
       testFileUrl: import.meta.url,
     });
 

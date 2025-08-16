@@ -1,0 +1,17 @@
+adds TypeScript 5.3.2 to <<basePath>>/tests/__fixtures__/.generated/config-target/.store/typescript@5.3.2
+uses TypeScript 5.3.2 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+adds TypeScript 5.8.3 to <<basePath>>/tests/__fixtures__/.generated/config-target/.store/typescript@5.8.3
+uses TypeScript 5.8.3 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    2 passed, 2 total
+Test files: 2 passed, 2 total
+Tests:      2 passed, 2 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>
