@@ -51,8 +51,8 @@ function OptionDescriptionText({ text }: OptionDescriptionTextProps) {
 function CommandLineUsageText() {
   const usage: Array<[commandText: string, descriptionText: string]> = [
     ["tstyche", "Run all tests."],
-    ["tstyche path/to/first.test.ts", "Only run the test files with matching path."],
-    ["tstyche --target 5.3,5.6.2,current", "Test on all specified versions of TypeScript."],
+    ["tstyche query-params", "Only run the matching test file."],
+    ["tstyche --target '5.3, 5.5.2, >=5.7'", "Test against specific versions of TypeScript."],
   ];
 
   const usageText = usage.map(([commandText, descriptionText]) => (
