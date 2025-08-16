@@ -131,7 +131,7 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", "'*'"];
+    const args = ["--target", '"*"'];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     assert.equal(stderr, "");

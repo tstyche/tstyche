@@ -82,7 +82,7 @@ await test("store", async (t) => {
 
     assert.pathDoesNotExist(storeManifestUrl);
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "'*'"]);
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", '"*"']);
 
     assert.pathDoesNotExist(storeManifestUrl);
 

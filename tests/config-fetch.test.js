@@ -118,7 +118,7 @@ await test("'--fetch' command line option", async (t) => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", "'*'"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", '"*"']);
 
     assert.equal(stderr, "");
     assert.equal(stdout, "");
