@@ -64,19 +64,6 @@ export class ConfigDiagnosticText {
     return `Unknown option '${optionName}'.`;
   }
 
-  static usage(optionName: string, optionBrand: OptionBrand): Array<string> {
-    switch (optionName) {
-      case "--target": {
-        return [
-          "Value for the '--target' option must be a range of TypeScript versions.",
-          "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3 || 5.4.2 || >=5.5''.",
-        ];
-      }
-    }
-
-    return [ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand)];
-  }
-
   static versionIsNotSupported(value: string): string {
     return `TypeScript version '${value}' is not supported.`;
   }

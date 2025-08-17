@@ -347,16 +347,13 @@ export class Options {
         }
 
         if ((await Store.validateTag(optionValue)) === false) {
-          onDiagnostics(
-            Diagnostic.error(
-              [
-                ConfigDiagnosticText.versionIsNotSupported(optionValue),
-                ...ConfigDiagnosticText.usage(optionName, optionBrand),
-                ConfigDiagnosticText.inspectSupportedVersions(),
-              ],
-              origin,
-            ),
-          );
+          const text = [
+            ConfigDiagnosticText.versionIsNotSupported(optionValue),
+            ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand),
+            ConfigDiagnosticText.inspectSupportedVersions(),
+          ];
+
+          onDiagnostics(Diagnostic.error(text, origin));
         }
 
         break;

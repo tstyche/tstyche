@@ -29,8 +29,7 @@ await test("'--target' command line option", async (t) => {
     const expected = [
       "Error: Option '--target' expects a value.",
       "",
-      "Value for the '--target' option must be a range of TypeScript versions.",
-      "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3 || 5.4.2 || >=5.5''.",
+      "Value for the '--target' option must be a string.",
       "\n",
     ].join("\n");
 

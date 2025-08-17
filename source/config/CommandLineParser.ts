@@ -24,7 +24,7 @@ export class CommandLineParser {
   #onExpectsValue(optionName: string, optionBrand: OptionBrand) {
     const text = [
       ConfigDiagnosticText.expectsValue(optionName),
-      ...ConfigDiagnosticText.usage(optionName, optionBrand),
+      ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand),
     ];
 
     this.#onDiagnostics(Diagnostic.error(text));
