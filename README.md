@@ -74,7 +74,7 @@ Here is the list of all matchers:
 
 ## Runner
 
-The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and pass them through a range of TypeScript versions:
+The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and to run the tests against specific versions of TypeScript:
 
 ```shell
 tstyche query-params --only multiple --target '>=5.0 <5.3'
