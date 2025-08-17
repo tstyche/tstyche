@@ -52,7 +52,7 @@ function CommandLineUsageText() {
   const usage: Array<[commandText: string, descriptionText: string]> = [
     ["tstyche", "Run all tests."],
     ["tstyche query-params", "Only run the matching test file."],
-    ["tstyche --target '5.3, 5.5.2, >=5.7'", "Test against specific versions of TypeScript."],
+    ["tstyche --target '5.3 || 5.5.2 || >=5.7'", "Test against specific versions of TypeScript."],
   ];
 
   const usageText = usage.map(([commandText, descriptionText]) => (
@@ -82,6 +82,10 @@ function CommandLineOptionHintText({ definition }: CommandLineOptionHintTextProp
     return <Text>{`${definition.brand} of ${definition.items.brand}s`}</Text>;
   }
 
+  if (definition.brand === OptionBrand.SemverRange) {
+    return <Text>{"string"}</Text>;
+  }
+
   return <Text>{definition.brand}</Text>;
 }
 
@@ -94,7 +98,7 @@ function CommandLineOptionsText({ optionDefinitions }: CommandLineOptionsTextPro
   const optionsText = definitions.map((definition) => {
     let hint: ScribblerJsx.Element | undefined;
 
-    if (definition.brand !== OptionBrand.BareTrue) {
+    if (definition.brand !== OptionBrand.LiteralTrue) {
       hint = <CommandLineOptionHintText definition={definition} />;
     }
 

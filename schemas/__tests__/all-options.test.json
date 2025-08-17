@@ -14,7 +14,7 @@
         "rejectNeverType": true,
         "reporters": ["./tstyche-reporter.js"],
         "rootPath": "../",
-        "target": ["5.1", "5.5.2", "beta", "latest", "next", "rc"],
+        "target": ">=5.2 <=5.3 || 5.4.2 || >5.5",
         "testFileMatch": ["examples/*.test.ts", "**/__typetests__/*.test.ts"],
         "tsconfig": "./tsconfig.test.json"
       }

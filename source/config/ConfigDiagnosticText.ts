@@ -1,4 +1,4 @@
-import type { OptionBrand } from "./OptionBrand.enum.js";
+import { OptionBrand } from "./OptionBrand.enum.js";
 
 export class ConfigDiagnosticText {
   static expected(element: string): string {
@@ -33,6 +33,10 @@ export class ConfigDiagnosticText {
   }
 
   static optionValueMustBe(optionName: string, optionBrand: OptionBrand): string {
+    if (optionBrand === OptionBrand.SemverRange) {
+      optionBrand = OptionBrand.String;
+    }
+
     return `Value for the '${optionName}' option must be a ${optionBrand}.`;
   }
 
@@ -61,18 +65,12 @@ export class ConfigDiagnosticText {
   }
 
   static usage(optionName: string, optionBrand: OptionBrand): Array<string> {
-    switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
-      case "target": {
-        const text: Array<string> = [];
-
-        if (optionName.startsWith("--")) {
-          text.push(
-            "Value for the '--target' option must be a string or a comma separated list.",
-            "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3, 5.4.2, >=5.5''.",
-          );
-        }
-
-        return text;
+    switch (optionName) {
+      case "--target": {
+        return [
+          "Value for the '--target' option must be a range of TypeScript versions.",
+          "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3 || 5.4.2 || >=5.5''.",
+        ];
       }
     }
 

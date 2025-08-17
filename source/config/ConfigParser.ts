@@ -8,6 +8,7 @@ import type { JsonScanner } from "./JsonScanner.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import type { OptionGroup } from "./OptionGroup.enum.js";
 import { type ItemDefinition, type OptionDefinition, Options } from "./Options.js";
+import { Target } from "./Target.js";
 import type { OptionValue } from "./types.js";
 
 export class ConfigParser {
@@ -76,6 +77,20 @@ export class ConfigParser {
           this.#onDiagnostics,
           jsonNode.origin,
         );
+
+        break;
+      }
+
+      case OptionBrand.SemverRange: {
+        jsonNode = this.#jsonScanner.read();
+        optionValue = jsonNode.getValue();
+
+        if (typeof optionValue !== "string") {
+          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+          break;
+        }
+
+        optionValue = await Target.expand(optionValue);
 
         break;
       }

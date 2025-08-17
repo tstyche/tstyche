@@ -106,8 +106,8 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
     await t.test(testCase, async (t) => {
       await t.test("when single matching target is specified", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: ["5.6"] }`),
-          ["__typetests__/isNumber.tst.ts"]: util.format(isNumberTestText, `// @tstyche if { target: ["5.6.2"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: "5.6" }`),
+          ["__typetests__/isNumber.tst.ts"]: util.format(isNumberTestText, `// @tstyche if { target: "5.6.2" }`),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
 
@@ -125,8 +125,8 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
       await t.test("when single NOT matching target is specified", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: ["5.4"] }`),
-          ["__typetests__/isNumber.tst.ts"]: util.format(isNumberTestText, `// @tstyche if { target: ["5.4.2"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: "5.4" }`),
+          ["__typetests__/isNumber.tst.ts"]: util.format(isNumberTestText, `// @tstyche if { target: "5.4.2" }`),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
 
@@ -144,10 +144,10 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
       await t.test("when multiple matching target is specified", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: ["5.6", "5.7"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: "5.6 || 5.7" }`),
           ["__typetests__/isNumber.tst.ts"]: util.format(
             isNumberTestText,
-            `// @tstyche if { target: ["5.6.2", "5.7.2"] }`,
+            `// @tstyche if { target: "5.6.2 || 5.7.2" }`,
           ),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
@@ -166,10 +166,10 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
       await t.test("when multiple NOT matching target is specified", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: ["5.3", "5.4"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: "5.3 || 5.4" }`),
           ["__typetests__/isNumber.tst.ts"]: util.format(
             isNumberTestText,
-            `// @tstyche if { target: ["5.3.2", "5.4.2"] }`,
+            `// @tstyche if { target: "5.3.2 || 5.4.2" }`,
           ),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
@@ -188,7 +188,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
       await t.test("when matching version range is specified", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: [">=5.6"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: ">=5.6" }`),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
 
@@ -206,7 +206,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
       await t.test("when partly matching version range is specified", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: [">=5.4"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: ">=5.4" }`),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
 
@@ -224,7 +224,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
       await t.test("when version range with an upper bound is specified", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: [">=5.6 <5.7"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: ">=5.6 <5.7" }`),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
 
@@ -242,7 +242,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
       await t.test("when NOT matching version range is specified", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: [">=5.4 <5.5"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `// @tstyche if { target: ">=5.4 <5.5" }`),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
 
@@ -262,7 +262,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/isString.tst.ts"]: util.format(
             isStringTestText,
-            `// @tstyche if { target: [">=5.0 <5.3", "5.4.2", ">5.5"] }`,
+            `// @tstyche if { target: ">=5.0 <5.3 || 5.4.2 || >5.5" }`,
           ),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
@@ -283,7 +283,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/isString.tst.ts"]: util.format(
             isStringTestText,
-            `// @tstyche if { target: ["5.6"] } -- For lower versions, the inferred type is 'unknown'.`,
+            `// @tstyche if { target: "5.6" } -- For lower versions, the inferred type is 'unknown'.`,
           ),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
@@ -302,7 +302,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
 
       await t.test("when specified in kebab case", async () => {
         await writeFixture(fixtureUrl, {
-          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `//@tstyche-if { target: ["5.6"] }`),
+          ["__typetests__/isString.tst.ts"]: util.format(isStringTestText, `//@tstyche-if { target: "5.6" }`),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });
 
@@ -322,7 +322,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/isString.tst.ts"]: util.format(
             isStringTestText,
-            `//@tstyche-if { target: ["5.6"] } --- For lower versions, the inferred type is 'unknown'.`,
+            `//@tstyche-if { target: "5.6" } --- For lower versions, the inferred type is 'unknown'.`,
           ),
           ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
         });

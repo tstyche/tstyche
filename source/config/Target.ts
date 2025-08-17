@@ -6,11 +6,14 @@ export class Target {
 
   // TODO must be called form 'Options.resolve()'
   //      - that does not work now, because 'target' is an array,
-  //      but it must be a string in semver style: '1.2.7 || >=1.2.9 <2.0.0'
+  //      but it must be a string in semver style: '1.2.7 || >=1.2 <2.0'
   //      - 'Target.expand()' should be able to know the location
   //      and that will allow reporting empty ranges: "There are no versions matching the range."
 
-  static async expand(queries: Array<string>): Promise<Array<string>> {
+  //      should take 'onDiagnostics' to be able to report errors
+
+  static async expand(range: string): Promise<Array<string>> {
+    const queries = range.split(/ *\|\| */);
     const include: Array<string> = [];
 
     for (const query of queries) {

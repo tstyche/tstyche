@@ -9,7 +9,6 @@ import { ConfigParser } from "./ConfigParser.js";
 import { defaultOptions } from "./defaultOptions.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import { Target } from "./Target.js";
 import type { CommandLineOptions, ConfigFileOptions, OptionValue, ResolvedConfig } from "./types.js";
 
 export class Config {
@@ -30,10 +29,6 @@ export class Config {
     );
 
     await commandLineParser.parse(commandLine);
-
-    if (commandLineOptions.target != null) {
-      commandLineOptions.target = await Target.expand(commandLineOptions.target);
-    }
 
     return { commandLineOptions, pathMatch };
   }
@@ -63,10 +58,6 @@ export class Config {
       );
 
       await configFileParser.parse();
-
-      if (configFileOptions.target != null) {
-        configFileOptions.target = await Target.expand(configFileOptions.target);
-      }
     }
 
     return { configFileOptions, configFilePath };

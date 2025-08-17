@@ -18,6 +18,16 @@ const sampleCommandLineOptionDefinitions = new Map([
   ],
 
   [
+    "sampleSemverRange",
+    {
+      brand: OptionBrand.SemverRange,
+      description: "A sample option of semver-range type.",
+      group: 2,
+      name: "sampleSemverRange",
+    },
+  ],
+
+  [
     "sampleNumber",
     {
       brand: OptionBrand.Number,
@@ -38,12 +48,12 @@ const sampleCommandLineOptionDefinitions = new Map([
   ],
 
   [
-    "sampleTrue",
+    "sampleLiteralTrue",
     {
-      brand: OptionBrand.BareTrue,
-      description: "A sample option of true type.",
+      brand: OptionBrand.LiteralTrue,
+      description: "A sample option of literal-true type.",
       group: 2,
-      name: "sampleTrue",
+      name: "sampleLiteralTrue",
     },
   ],
 
@@ -81,7 +91,7 @@ test("helpText", async (t) => {
         "  <blue>tstyche query-params</>",
         "  Only run the matching test file.",
         "",
-        "  <blue>tstyche --target '5.3, 5.5.2, >=5.7'</>",
+        "  <blue>tstyche --target '5.3 || 5.5.2 || >=5.7'</>",
         "  Test against specific versions of TypeScript.",
         "",
         "",
@@ -90,14 +100,17 @@ test("helpText", async (t) => {
         "  <blue>--sampleString</>  <gray>string</>",
         "  A sample option of string type.",
         "",
+        "  <blue>--sampleSemverRange</>  <gray>string</>",
+        "  A sample option of semver-range type.",
+        "",
         "  <blue>--sampleNumber</>  <gray>number</>",
         "  A sample option of number type.",
         "",
         "  <blue>--sampleBoolean</>  <gray>boolean</>",
         "  A sample option of boolean type.",
         "",
-        "  <blue>--sampleTrue</>",
-        "  A sample option of true type.",
+        "  <blue>--sampleLiteralTrue</>",
+        "  A sample option of literal-true type.",
         "",
         "  <blue>--sampleListOfString</>  <gray>list of strings</>",
         "  A sample option of list of strings type.",

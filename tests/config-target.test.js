@@ -54,13 +54,12 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", "5.3.2,5.8"];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.3.2 || 5.8"']);
 
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      fileName: `${testFileName}-target-5.3.2-5.8-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -117,7 +116,7 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", '">=5.2 <=5.3, 5.4.2, >5.5"', "--showConfig"];
+    const args = ["--target", '">=5.2 <=5.3 || 5.4.2 || >5.5"', "--showConfig"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     assert.equal(stderr, "");
@@ -161,7 +160,7 @@ await test("'--target' command line option", async (t) => {
 
   await t.test("when 'target' configuration file option is specified", async () => {
     const config = {
-      target: [">=5.4"],
+      target: ">=5.4",
     };
 
     await writeFixture(fixtureUrl, {
@@ -228,7 +227,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when single target is specified", async () => {
     const config = {
-      target: ["5.4"],
+      target: "5.4",
     };
 
     await writeFixture(fixtureUrl, {
@@ -251,7 +250,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when multiple targets are specified", async () => {
     const config = {
-      target: ["5.3.2", "5.8"],
+      target: "5.3.2 || 5.8",
     };
 
     await writeFixture(fixtureUrl, {
@@ -274,7 +273,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when version range is specified", async () => {
     const config = {
-      target: [">5.1"],
+      target: ">5.1",
     };
 
     await writeFixture(fixtureUrl, {
@@ -292,7 +291,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when version range with an upper bound is specified", async () => {
     const config = {
-      target: [">=5.3 <5.5"],
+      target: ">=5.3 <5.5",
     };
 
     await writeFixture(fixtureUrl, {
@@ -315,7 +314,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when range with not supported version is specified", async () => {
     const config = {
-      target: [">=5.4 <8.2"],
+      target: ">=5.4 <8.2",
     };
 
     await writeFixture(fixtureUrl, {
@@ -333,7 +332,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when combination of ranges and versions is specified", async () => {
     const config = {
-      target: [">=5.2 <=5.3", "5.4.2", ">5.5"],
+      target: ">=5.2 <=5.3 || 5.4.2 || >5.5",
     };
 
     await writeFixture(fixtureUrl, {
@@ -351,7 +350,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when '*' is specified", async () => {
     const config = {
-      target: ["*"],
+      target: "*",
     };
 
     await writeFixture(fixtureUrl, {
@@ -374,7 +373,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when '*' is specified, but TypeScript is not installed", async () => {
     const config = {
-      target: ["*"],
+      target: "*",
     };
 
     await writeFixture(fixtureUrl, {

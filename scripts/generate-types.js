@@ -18,11 +18,14 @@ const interfacesToWrite = [
 function getTypeText(definition) {
   switch (definition.brand) {
     case tstyche.OptionBrand.Boolean:
-    case tstyche.OptionBrand.BareTrue:
+    case tstyche.OptionBrand.LiteralTrue:
       return "boolean";
 
     case tstyche.OptionBrand.List:
       return `Array<${getTypeText(definition.items)}>`;
+
+    case tstyche.OptionBrand.SemverRange:
+      return "Array<string>";
 
     case tstyche.OptionBrand.Number:
       return "number";

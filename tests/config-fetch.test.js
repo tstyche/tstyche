@@ -44,7 +44,7 @@ await test("'--fetch' command line option", async (t) => {
 
   for (const { args, testCase } of testCases) {
     await t.test(testCase, async () => {
-      const config = { target: ["5.0", "latest"] };
+      const config = { target: "5.0 || latest" };
 
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -69,7 +69,7 @@ await test("'--fetch' command line option", async (t) => {
   }
 
   await t.test("when 'target' configuration option is specified", async () => {
-    const config = { target: ["5.2", "5.6"] };
+    const config = { target: "5.2 || 5.6" };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -94,7 +94,7 @@ await test("'--fetch' command line option", async (t) => {
   });
 
   await t.test("when '*' target specified in the configuration file", async () => {
-    const config = { target: ["*"] };
+    const config = { target: "*" };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -110,7 +110,7 @@ await test("'--fetch' command line option", async (t) => {
   });
 
   await t.test("when '*' target specified in the command", async () => {
-    const config = { target: ["5.0", "latest"] };
+    const config = { target: "5.0 || latest" };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,

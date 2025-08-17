@@ -4,6 +4,7 @@ import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import { type OptionDefinition, Options } from "./Options.js";
+import { Target } from "./Target.js";
 import type { OptionValue } from "./types.js";
 
 export class CommandLineParser {
@@ -63,7 +64,7 @@ export class CommandLineParser {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
-      case OptionBrand.BareTrue:
+      case OptionBrand.LiteralTrue:
         await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = true;
@@ -84,7 +85,7 @@ export class CommandLineParser {
           const optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== "") // trailing commas are allowed, e.g. "--target 5.0,5.3.2,"
+            .filter((value) => value !== "") // trailing commas are allowed, e.g. '--reporters list,summary,'
             .map((value) => Options.resolve(optionName, value));
 
           for (const optionValue of optionValues) {
@@ -106,6 +107,17 @@ export class CommandLineParser {
           await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
 
           this.#commandLineOptions[optionDefinition.name] = optionValue;
+
+          index++;
+          break;
+        }
+
+        this.#onExpectsValue(optionName, optionDefinition.brand);
+        break;
+
+      case OptionBrand.SemverRange:
+        if (optionValue !== "") {
+          this.#commandLineOptions[optionDefinition.name] = await Target.expand(optionValue);
 
           index++;
           break;
