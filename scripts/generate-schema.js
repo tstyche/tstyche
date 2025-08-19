@@ -65,9 +65,6 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
       break;
 
     case tstyche.OptionBrand.String:
-      jsonSchemaDefinition.type = "string";
-      break;
-
     case tstyche.OptionBrand.SemverRange:
       jsonSchemaDefinition.type = "string";
       break;
