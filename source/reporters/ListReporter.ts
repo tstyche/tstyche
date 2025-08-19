@@ -1,5 +1,6 @@
 import { environmentOptions } from "#environment";
 import { addsPackageText, diagnosticText, fileStatusText, OutputService, usesCompilerText } from "#output";
+import { ResultStatusFlags } from "#result";
 import { BaseReporter } from "./BaseReporter.js";
 import { FileView } from "./FileView.js";
 import type { ReporterEvent } from "./types.js";
@@ -104,19 +105,19 @@ export class ListReporter extends BaseReporter {
 
       case "test:skip":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("skip", payload.result.test.name);
+          this.#fileView.addTest(ResultStatusFlags.Skipped, payload.result.test.name);
         }
         break;
 
       case "test:todo":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("todo", payload.result.test.name);
+          this.#fileView.addTest(ResultStatusFlags.Todo, payload.result.test.name);
         }
         break;
 
       case "test:error":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("fail", payload.result.test.name);
+          this.#fileView.addTest(ResultStatusFlags.Failed, payload.result.test.name);
         }
 
         for (const diagnostic of payload.diagnostics) {
@@ -126,13 +127,13 @@ export class ListReporter extends BaseReporter {
 
       case "test:fail":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("fail", payload.result.test.name);
+          this.#fileView.addTest(ResultStatusFlags.Failed, payload.result.test.name);
         }
         break;
 
       case "test:pass":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("pass", payload.result.test.name);
+          this.#fileView.addTest(ResultStatusFlags.Passed, payload.result.test.name);
         }
         break;
 

@@ -1,14 +1,14 @@
 import type { FileLocation } from "#file";
 import type { ProjectResult } from "./ProjectResult.js";
-import { ResultStatus } from "./ResultStatus.enum.js";
+import { ResultStatusFlags } from "./ResultStatusFlags.enum.js";
 import { ResultTiming } from "./ResultTiming.js";
 
-export type TargetResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed;
+export type TargetResultStatusFlags = ResultStatusFlags.Runs | ResultStatusFlags.Passed | ResultStatusFlags.Failed;
 
 export class TargetResult {
   files: Array<FileLocation>;
   results = new Map<string | undefined, ProjectResult>();
-  status: TargetResultStatus = ResultStatus.Runs;
+  status: TargetResultStatusFlags = ResultStatusFlags.Runs;
   target: string;
   timing = new ResultTiming();
 
