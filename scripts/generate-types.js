@@ -18,7 +18,7 @@ const interfacesToWrite = [
 function getTypeText(definition) {
   switch (definition.brand) {
     case tstyche.OptionBrand.Boolean:
-    case tstyche.OptionBrand.LiteralTrue:
+    case tstyche.OptionBrand.True:
       return "boolean";
 
     case tstyche.OptionBrand.List:

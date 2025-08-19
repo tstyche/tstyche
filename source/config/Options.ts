@@ -16,12 +16,7 @@ interface BaseOptionDefinition {
 }
 
 interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
-  brand:
-    | OptionBrand.String
-    | OptionBrand.SemverRange
-    | OptionBrand.Number
-    | OptionBrand.Boolean
-    | OptionBrand.LiteralTrue;
+  brand: OptionBrand.String | OptionBrand.SemverRange | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.True;
 }
 
 export interface ItemDefinition {
@@ -74,7 +69,7 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Fetch the specified versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "fetch",
@@ -92,21 +87,21 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,
       name: "help",
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Print the list of supported versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "list",
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Print the list of the selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",
@@ -131,7 +126,7 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Remove all installed versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "prune",
@@ -170,7 +165,7 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Print the resolved configuration and exit.",
       group: OptionGroup.CommandLine,
       name: "showConfig",
@@ -209,21 +204,21 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Fetch the 'typescript' package metadata from the registry and exit.",
       group: OptionGroup.CommandLine,
       name: "update",
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Print the version number and exit.",
       group: OptionGroup.CommandLine,
       name: "version",
     },
 
     {
-      brand: OptionBrand.LiteralTrue,
+      brand: OptionBrand.True,
       description: "Watch for changes and rerun related test files.",
       group: OptionGroup.CommandLine,
       name: "watch",

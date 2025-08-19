@@ -98,7 +98,7 @@ function CommandLineOptionsText({ optionDefinitions }: CommandLineOptionsTextPro
   const optionsText = definitions.map((definition) => {
     let hint: ScribblerJsx.Element | undefined;
 
-    if (definition.brand !== OptionBrand.LiteralTrue) {
+    if (definition.brand !== OptionBrand.True) {
       hint = <CommandLineOptionHintText definition={definition} />;
     }
 

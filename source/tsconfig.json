@@ -9,6 +9,9 @@
       "#*": ["./*/index.js"]
     },
 
+    "preserveConstEnums": true,
+    "verbatimModuleSyntax": false, // otherwise const enums are not inlined, unfortunately
+
     "jsx": "react-jsx",
     "jsxImportSource": "#scribbler",
 

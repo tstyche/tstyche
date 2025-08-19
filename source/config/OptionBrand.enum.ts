@@ -1,8 +1,8 @@
 export const enum OptionBrand {
   String = "string",
-  SemverRange = "semver-range",
+  SemverRange = "range",
   Number = "number",
   Boolean = "boolean",
-  LiteralTrue = "literal-true",
+  True = "true",
   List = "list",
 }

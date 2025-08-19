@@ -50,8 +50,8 @@ const sampleCommandLineOptionDefinitions = new Map([
   [
     "sampleLiteralTrue",
     {
-      brand: OptionBrand.LiteralTrue,
-      description: "A sample option of literal-true type.",
+      brand: OptionBrand.True,
+      description: "A sample option of true type.",
       group: 2,
       name: "sampleLiteralTrue",
     },
