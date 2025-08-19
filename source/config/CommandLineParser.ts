@@ -63,7 +63,7 @@ export class CommandLineParser {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
-      case OptionBrand.BareTrue:
+      case OptionBrand.True:
         await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = true;
