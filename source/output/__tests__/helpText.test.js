@@ -21,7 +21,7 @@ const sampleCommandLineOptionDefinitions = new Map([
     "sampleSemverRange",
     {
       brand: OptionBrand.SemverRange,
-      description: "A sample option of semver-range type.",
+      description: "A sample option of range type.",
       group: 2,
       name: "sampleSemverRange",
     },
@@ -48,12 +48,12 @@ const sampleCommandLineOptionDefinitions = new Map([
   ],
 
   [
-    "sampleLiteralTrue",
+    "sampleTrue",
     {
       brand: OptionBrand.True,
       description: "A sample option of true type.",
       group: 2,
-      name: "sampleLiteralTrue",
+      name: "sampleTrue",
     },
   ],
 
@@ -101,7 +101,7 @@ test("helpText", async (t) => {
         "  A sample option of string type.",
         "",
         "  <blue>--sampleSemverRange</>  <gray>string</>",
-        "  A sample option of semver-range type.",
+        "  A sample option of range type.",
         "",
         "  <blue>--sampleNumber</>  <gray>number</>",
         "  A sample option of number type.",
@@ -109,8 +109,8 @@ test("helpText", async (t) => {
         "  <blue>--sampleBoolean</>  <gray>boolean</>",
         "  A sample option of boolean type.",
         "",
-        "  <blue>--sampleLiteralTrue</>",
-        "  A sample option of literal-true type.",
+        "  <blue>--sampleTrue</>",
+        "  A sample option of true type.",
         "",
         "  <blue>--sampleListOfString</>  <gray>list of strings</>",
         "  A sample option of list of strings type.",
