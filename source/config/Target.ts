@@ -1,10 +1,16 @@
+import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { Store } from "#store";
 import { Version } from "#version";
+import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 
 export class Target {
   static #rangeRegex = /^[<>]=?\d\.\d( [<>]=?\d\.\d)?$/;
 
-  static async expand(range: string): Promise<Array<string>> {
+  static async expand(
+    range: string,
+    onDiagnostics: DiagnosticsHandler,
+    origin?: DiagnosticOrigin,
+  ): Promise<Array<string>> {
     if (Target.isRange(range)) {
       await Store.open();
 
@@ -13,6 +19,15 @@ export class Target {
 
         for (const comparator of range.split(" ")) {
           versions = Target.#filter(comparator.trim(), versions);
+
+          if (versions.length === 0) {
+            const text = [
+              ConfigDiagnosticText.rangeDoesNotMatchSupported(range),
+              ConfigDiagnosticText.inspectSupportedVersions(),
+            ];
+
+            onDiagnostics(Diagnostic.error(text, origin));
+          }
         }
 
         return versions;

@@ -76,35 +76,23 @@ export class ConfigParser {
       }
 
       case OptionBrand.SemverRange: {
-        jsonNode = this.#jsonScanner.read();
-        optionValue = jsonNode.getValue();
+        optionValue = [];
 
-        if (typeof optionValue !== "string") {
+        jsonNode = this.#jsonScanner.read();
+        const ranges = jsonNode.getValue();
+
+        if (typeof ranges !== "string") {
           this.#onRequiresValue(optionDefinition.name, OptionBrand.String, jsonNode, isListItem);
           break;
         }
 
-        const optionValues: Array<string> = [];
-        const ranges = Target.split(optionValue);
-
-        for (const range of ranges) {
+        for (const range of Target.split(ranges)) {
           await Options.validate(optionDefinition.name, range, this.#onDiagnostics, jsonNode.origin);
 
-          const versions = await Target.expand(range);
+          const versions = await Target.expand(range, this.#onDiagnostics, jsonNode.origin);
 
-          if (versions.length > 0) {
-            optionValues.push(...versions);
-          } else {
-            const text = [
-              ConfigDiagnosticText.rangeDoesNotMatchSupported(optionValue),
-              ConfigDiagnosticText.inspectSupportedVersions(),
-            ];
-
-            this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
-          }
+          optionValue.push(...versions);
         }
-
-        optionValue = optionValues;
 
         break;
       }
