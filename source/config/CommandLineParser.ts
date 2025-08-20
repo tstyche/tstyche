@@ -117,7 +117,27 @@ export class CommandLineParser {
 
       case OptionBrand.SemverRange:
         if (optionValue !== "") {
-          this.#commandLineOptions[optionDefinition.name] = await Target.expand(optionValue);
+          const optionValues: Array<string> = [];
+          const ranges = Target.split(optionValue);
+
+          for (const range of ranges) {
+            await Options.validate(optionName, range, this.#onDiagnostics);
+
+            const versions = await Target.expand(range);
+
+            if (versions.length > 0) {
+              optionValues.push(...versions);
+            } else {
+              const text = [
+                ConfigDiagnosticText.rangeDoesNotMatchSupported(optionValue),
+                ConfigDiagnosticText.inspectSupportedVersions(),
+              ];
+
+              this.#onDiagnostics(Diagnostic.error(text));
+            }
+          }
+
+          this.#commandLineOptions[optionDefinition.name] = optionValues;
 
           index++;
           break;

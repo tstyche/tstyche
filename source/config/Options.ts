@@ -7,6 +7,7 @@ import { Store } from "#store";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
+import { Target } from "./Target.js";
 
 interface BaseOptionDefinition {
   brand: OptionBrand;
@@ -326,16 +327,11 @@ export class Options {
       case "target": {
         // maybe a range?
         if (/[<>=]/.test(optionValue)) {
-          // TODO must use some 'Target.isQuery()'
+          if (!Target.isRange(optionValue)) {
+            const text = [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()];
 
-          // if (!Target.isRange(optionValue)) {
-          //   onDiagnostics(
-          //     Diagnostic.error(
-          //       [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()],
-          //       origin,
-          //     ),
-          //   );
-          // }
+            onDiagnostics(Diagnostic.error(text, origin));
+          }
 
           break;
         }

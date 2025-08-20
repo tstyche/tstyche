@@ -4,39 +4,22 @@ import { Version } from "#version";
 export class Target {
   static #rangeRegex = /^[<>]=?\d\.\d( [<>]=?\d\.\d)?$/;
 
-  // TODO must be called form 'Options.resolve()'
-  //      - that does not work now, because 'target' is an array,
-  //      but it must be a string in semver style: '1.2.7 || >=1.2 <2.0'
-  //      - 'Target.expand()' should be able to know the location
-  //      and that will allow reporting empty ranges: "There are no versions matching the range."
-
-  //      should take 'onDiagnostics' to be able to report errors
-
   static async expand(range: string): Promise<Array<string>> {
-    const queries = range.split(/ *\|\| */);
-    const include: Array<string> = [];
-
-    for (const query of queries) {
-      if (!Target.isRange(query)) {
-        include.push(query);
-
-        continue;
-      }
-
+    if (Target.isRange(range)) {
       await Store.open();
 
       if (Store.manifest != null) {
         let versions = [...Store.manifest.minorVersions];
 
-        for (const comparator of query.split(" ")) {
-          versions = Target.#filter(comparator, versions);
+        for (const comparator of range.split(" ")) {
+          versions = Target.#filter(comparator.trim(), versions);
         }
 
-        include.push(...versions);
+        return versions;
       }
     }
 
-    return include;
+    return [range];
   }
 
   static #filter(comparator: string, versions: Array<string>): Array<string> {
@@ -63,5 +46,9 @@ export class Target {
 
   static isRange(query: string) {
     return Target.#rangeRegex.test(query);
+  }
+
+  static split(range: string) {
+    return range.split(/ *\|\| */);
   }
 }

@@ -40,11 +40,15 @@ export class ConfigDiagnosticText {
     return `The specified range '${value}' is not valid.`;
   }
 
+  static rangeDoesNotMatchSupported(value: string): string {
+    return `The specified range '${value}' does not match any supported TypeScript versions.`;
+  }
+
   static rangeUsage(): Array<string> {
     return [
-      "A range must be specified using an operator and a minor version.",
-      "To set an upper bound, the intersection of two ranges can be used.",
-      "Examples: '>=5.5', '>=5.0 <5.3'.",
+      "A range must be specified using an operator and a minor version: '>=5.5'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
+      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
     ];
   }
 
@@ -61,7 +65,7 @@ export class ConfigDiagnosticText {
   }
 
   static versionIsNotSupported(value: string): string {
-    return `TypeScript version '${value}' is not supported.`;
+    return `The TypeScript version '${value}' is not supported.`;
   }
 
   static watchCannotBeEnabled(): string {

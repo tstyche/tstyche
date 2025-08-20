@@ -1,10 +1,10 @@
-Error: The TypeScript version 'new' is not supported.
+Error: The specified range '>=4.4 <4.7' does not match any supported TypeScript versions.
 
 Use the '--list' command line option to inspect the list of supported versions.
 
   1 | {
-  2 |   "target": "new",
-    |             ~~~~~
+  2 |   "target": ">=4.4 <4.7",
+    |             ~~~~~~~~~~~~
   3 |   "testFileMatch": [
   4 |     "examples/*.tst.*"
   5 |   ]

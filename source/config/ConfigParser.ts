@@ -84,7 +84,27 @@ export class ConfigParser {
           break;
         }
 
-        optionValue = await Target.expand(optionValue);
+        const optionValues: Array<string> = [];
+        const ranges = Target.split(optionValue);
+
+        for (const range of ranges) {
+          await Options.validate(optionDefinition.name, range, this.#onDiagnostics, jsonNode.origin);
+
+          const versions = await Target.expand(range);
+
+          if (versions.length > 0) {
+            optionValues.push(...versions);
+          } else {
+            const text = [
+              ConfigDiagnosticText.rangeDoesNotMatchSupported(optionValue),
+              ConfigDiagnosticText.inspectSupportedVersions(),
+            ];
+
+            this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
+          }
+        }
+
+        optionValue = optionValues;
 
         break;
       }

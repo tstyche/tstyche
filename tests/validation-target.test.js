@@ -37,40 +37,86 @@ await test("'--target' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  // await t.test("when not supported version is specified", async () => {
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "new"]);
+  await t.test("when there are no supported TypeScript versions matching the range", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=4.4 <4.7"']);
 
-  //   assert.equal(stdout, "");
+    const expected = [
+      "Error: The specified range '>=4.4 <4.7' does not match any supported TypeScript versions.",
+      "",
+      "Use the '--list' command line option to inspect the list of supported versions.",
+      "\n",
+    ].join("\n");
 
-  //   const expected = [
-  //     "Error: TypeScript version 'new' is not supported.",
-  //     "",
-  //     "Value for the '--target' option must be a string.",
-  //     "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3 || 5.4.2 || >=5.5''.",
-  //     "Use the '--list' command line option to inspect the list of supported versions.",
-  //     "\n",
-  //   ].join("\n");
+    assert.equal(stderr, expected);
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
 
-  //   assert.equal(stderr, expected);
-  //   assert.equal(exitCode, 1);
-  // });
+  await t.test("when not supported version is specified", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "new"]);
 
-  // await t.test("when not valid range is specified", async () => {
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.2 >=5.4"']);
+    assert.equal(stdout, "");
 
-  //   const expected = [
-  //     "Error: The specified range '5.2 >=5.4' is not valid.",
-  //     "",
-  //     "A range must be specified using an operator and a minor version.",
-  //     "To set an upper bound, the intersection of two ranges can be used.",
-  //     "Examples: '>=5.5', '>=5.0 <5.3'.",
-  //     "\n",
-  //   ].join("\n");
+    const expected = [
+      "Error: The TypeScript version 'new' is not supported.",
+      "",
+      "Use the '--list' command line option to inspect the list of supported versions.",
+      "\n",
+    ].join("\n");
 
-  //   assert.equal(stderr, expected);
-  //   assert.equal(stdout, "");
-  //   assert.equal(exitCode, 1);
-  // });
+    assert.equal(stderr, expected);
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when not supported version is specified within a union", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.2 <=5.3 || new"']);
+
+    assert.equal(stdout, "");
+
+    const expected = [
+      "Error: The TypeScript version 'new' is not supported.",
+      "",
+      "Use the '--list' command line option to inspect the list of supported versions.",
+      "\n",
+    ].join("\n");
+
+    assert.equal(stderr, expected);
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when not valid range is specified", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.2 >=5.4"']);
+
+    const expected = [
+      "Error: The specified range '5.2 >=5.4' is not valid.",
+      "",
+      "A range must be specified using an operator and a minor version: '>=5.5'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
+      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
+      "\n",
+    ].join("\n");
+
+    assert.equal(stderr, expected);
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when not valid range is specified within a union", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.2 || 5.3 >5.5"']);
+
+    const expected = [
+      "Error: The specified range '5.3 >5.5' is not valid.",
+      "",
+      "A range must be specified using an operator and a minor version: '>=5.5'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
+      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
+      "\n",
+    ].join("\n");
+
+    assert.equal(stderr, expected);
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
 });
 
 await test("'target' configuration file option", async (t) => {
@@ -100,47 +146,113 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  // await t.test("when not supported version is specified", async () => {
-  //   const config = {
-  //     target: "new",
-  //     testFileMatch: ["examples/*.tst.*"],
-  //   };
+  await t.test("when there are no supported TypeScript versions matching the range", async () => {
+    const config = {
+      target: ">=4.4 <4.7",
+      testFileMatch: ["examples/*.tst.*"],
+    };
 
-  //   await writeFixture(fixtureUrl, {
-  //     ["__typetests__/dummy.test.ts"]: isStringTestText,
-  //     ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-  //   });
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
 
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  //   await assert.matchSnapshot(stderr, {
-  //     fileName: `${testFileName}-not-supported-version-stderr`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-no-supported-versions-matching-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   assert.equal(stdout, "");
-  //   assert.equal(exitCode, 1);
-  // });
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
 
-  // await t.test("when not valid range is specified", async () => {
-  //   const config = {
-  //     target: ["5.2 >=5.4"],
-  //     testFileMatch: ["examples/*.tst.*"],
-  //   };
+  await t.test("when not supported version is specified", async () => {
+    const config = {
+      target: "new",
+      testFileMatch: ["examples/*.tst.*"],
+    };
 
-  //   await writeFixture(fixtureUrl, {
-  //     ["__typetests__/dummy.test.ts"]: isStringTestText,
-  //     ["tstyche.config.json"]: JSON.stringify(config, null, 2),
-  //   });
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
 
-  //   const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-  //   await assert.matchSnapshot(stderr, {
-  //     fileName: `${testFileName}-not-valid-range-stderr`,
-  //     testFileUrl: import.meta.url,
-  //   });
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-not-supported-version-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
-  //   assert.equal(stdout, "");
-  //   assert.equal(exitCode, 1);
-  // });
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when not supported version is specified within a union", async () => {
+    const config = {
+      target: ">=5.2 <=5.3 || new",
+      testFileMatch: ["examples/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-not-supported-version-within-union-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when not valid range is specified", async () => {
+    const config = {
+      target: "5.2 >=5.4",
+      testFileMatch: ["examples/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-not-valid-range-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when not valid range is specified within a union", async () => {
+    const config = {
+      target: ">=5.2 || 5.3 >5.5",
+      testFileMatch: ["examples/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-not-valid-range-within-union-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
 });
