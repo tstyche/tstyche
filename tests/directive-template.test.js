@@ -162,7 +162,7 @@ await test("'// @tstyche template' directive", async (t) => {
 
   await t.test("when used together with '// @tstyche if <conditions>'", async () => {
     const prolog = `//@tstyche template
-//@tstyche if { target: ["5.6"] }`;
+//@tstyche if { target: "5.6" }`;
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/template.tst.ts"]: getTemplateTestText(prolog),
@@ -187,7 +187,7 @@ await test("'// @tstyche template' directive", async (t) => {
   await t.test("when '// @tstyche if <conditions>' is specified in the test text", async () => {
     const templateTestText = `// @tstyche template
 
-let testText = \`// @tstyche if { target: ["5.6"] }
+let testText = \`// @tstyche if { target: "5.6" }
 
 import { expect, test } from "tstyche";
 \`;

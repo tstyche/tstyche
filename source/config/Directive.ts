@@ -5,7 +5,6 @@ import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import { Target } from "./Target.js";
 import type { InlineConfig, OptionValue } from "./types.js";
 
 export interface TextRange {
@@ -153,10 +152,6 @@ export class Directive {
     );
 
     await configParser.parse();
-
-    if ("target" in inlineOptions) {
-      inlineOptions["target"] = await Target.expand(inlineOptions["target"] as Array<string>);
-    }
 
     return inlineOptions;
   }

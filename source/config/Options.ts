@@ -17,7 +17,7 @@ interface BaseOptionDefinition {
 }
 
 interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
-  brand: OptionBrand.String | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.True;
+  brand: OptionBrand.String | OptionBrand.SemverRange | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.True;
 }
 
 export interface ItemDefinition {
@@ -180,13 +180,9 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.List,
-      description: "The list of TypeScript versions to be tested on.",
+      brand: OptionBrand.SemverRange,
+      description: "The range of TypeScript versions to be tested against.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
-      items: {
-        brand: OptionBrand.String,
-        name: "target",
-      },
       name: "target",
     },
 
@@ -293,7 +289,6 @@ export class Options {
   static async validate(
     optionName: string,
     optionValue: string,
-    optionBrand: OptionBrand,
     onDiagnostics: DiagnosticsHandler,
     origin?: DiagnosticOrigin,
   ): Promise<void> {
@@ -333,28 +328,21 @@ export class Options {
         // maybe a range?
         if (/[<>=]/.test(optionValue)) {
           if (!Target.isRange(optionValue)) {
-            onDiagnostics(
-              Diagnostic.error(
-                [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()],
-                origin,
-              ),
-            );
+            const text = [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()];
+
+            onDiagnostics(Diagnostic.error(text, origin));
           }
 
           break;
         }
 
         if ((await Store.validateTag(optionValue)) === false) {
-          onDiagnostics(
-            Diagnostic.error(
-              [
-                ConfigDiagnosticText.versionIsNotSupported(optionValue),
-                ...ConfigDiagnosticText.usage(optionName, optionBrand),
-                ConfigDiagnosticText.inspectSupportedVersions(),
-              ],
-              origin,
-            ),
-          );
+          const text = [
+            ConfigDiagnosticText.versionIsNotSupported(optionValue),
+            ConfigDiagnosticText.inspectSupportedVersions(),
+          ];
+
+          onDiagnostics(Diagnostic.error(text, origin));
         }
 
         break;

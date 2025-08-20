@@ -71,7 +71,7 @@ test("is string?", () => {
   });
 
   await t.test("when closing brace is missing", async () => {
-    const testFileText = `// @tstyche if { target: ["5.2"]
+    const testFileText = `// @tstyche if { target: "5.2"
 
 import { expect, test } from "tstyche";
 
@@ -100,7 +100,7 @@ test("is string?", () => {
   });
 
   await t.test("when unexpected trailing token is encountered", async () => {
-    const testFileText = `// @tstyche if { target: ["5.2"] } unexpected
+    const testFileText = `// @tstyche if { target: "5.2" } unexpected
 
 import { expect, test } from "tstyche";
 

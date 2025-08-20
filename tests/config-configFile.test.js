@@ -128,7 +128,7 @@ await test("'tstyche.config.json' file", async (t) => {
     const configText = `{
   /* test */
   "failFast": true,
-  /* test */ "target": ["next"],
+  /* test */ "target": "next",
   // test
   "testFileMatch": /* test */ [
     "examples/**/*.test.ts" /* test */,

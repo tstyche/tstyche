@@ -24,6 +24,9 @@ function getTypeText(definition) {
     case tstyche.OptionBrand.List:
       return `Array<${getTypeText(definition.items)}>`;
 
+    case tstyche.OptionBrand.SemverRange:
+      return "Array<string>";
+
     case tstyche.OptionBrand.Number:
       return "number";
 
