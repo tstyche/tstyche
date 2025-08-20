@@ -65,13 +65,13 @@ export class CommandLineParser {
 
     switch (optionDefinition.brand) {
       case OptionBrand.True:
-        await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
+        await Options.validate(optionName, optionValue, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = true;
         break;
 
       case OptionBrand.Boolean:
-        await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
+        await Options.validate(optionName, optionValue, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 
@@ -89,7 +89,7 @@ export class CommandLineParser {
             .map((value) => Options.resolve(optionName, value));
 
           for (const optionValue of optionValues) {
-            await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
+            await Options.validate(optionName, optionValue, this.#onDiagnostics);
           }
 
           this.#commandLineOptions[optionDefinition.name] = optionValues;
@@ -104,7 +104,7 @@ export class CommandLineParser {
         if (optionValue !== "") {
           optionValue = Options.resolve(optionName, optionValue);
 
-          await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
+          await Options.validate(optionName, optionValue, this.#onDiagnostics);
 
           this.#commandLineOptions[optionDefinition.name] = optionValue;
 
@@ -123,7 +123,7 @@ export class CommandLineParser {
           break;
         }
 
-        this.#onExpectsValue(optionName, optionDefinition.brand);
+        this.#onExpectsValue(optionName, OptionBrand.String);
         break;
     }
 

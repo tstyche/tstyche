@@ -33,10 +33,10 @@ export class ConfigParser {
     this.#options = Options.for(optionGroup);
   }
 
-  #onRequiresValue(optionDefinition: OptionDefinition | ItemDefinition, jsonNode: JsonNode, isListItem: boolean) {
+  #onRequiresValue(optionName: string, optionBrand: OptionBrand, jsonNode: JsonNode, isListItem: boolean) {
     const text = isListItem
-      ? ConfigDiagnosticText.expectsListItemType(optionDefinition.name, optionDefinition.brand)
-      : ConfigDiagnosticText.optionValueMustBe(optionDefinition.name, optionDefinition.brand);
+      ? ConfigDiagnosticText.expectsListItemType(optionName, optionBrand)
+      : ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand);
 
     this.#onDiagnostics(Diagnostic.error(text, jsonNode.origin));
   }
@@ -51,7 +51,7 @@ export class ConfigParser {
         optionValue = jsonNode.getValue();
 
         if (typeof optionValue !== "boolean") {
-          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+          this.#onRequiresValue(optionDefinition.name, optionDefinition.brand, jsonNode, isListItem);
           break;
         }
 
@@ -63,20 +63,14 @@ export class ConfigParser {
         optionValue = jsonNode.getValue();
 
         if (typeof optionValue !== "string") {
-          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+          this.#onRequiresValue(optionDefinition.name, optionDefinition.brand, jsonNode, isListItem);
           break;
         }
 
         const rootPath = Path.dirname(this.#sourceFile.fileName);
         optionValue = Options.resolve(optionDefinition.name, optionValue, rootPath);
 
-        await Options.validate(
-          optionDefinition.name,
-          optionValue,
-          optionDefinition.brand,
-          this.#onDiagnostics,
-          jsonNode.origin,
-        );
+        await Options.validate(optionDefinition.name, optionValue, this.#onDiagnostics, jsonNode.origin);
 
         break;
       }
@@ -86,7 +80,7 @@ export class ConfigParser {
         optionValue = jsonNode.getValue();
 
         if (typeof optionValue !== "string") {
-          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+          this.#onRequiresValue(optionDefinition.name, OptionBrand.String, jsonNode, isListItem);
           break;
         }
 
@@ -103,7 +97,7 @@ export class ConfigParser {
         if (!leftBracketToken.text) {
           jsonNode = this.#jsonScanner.read();
 
-          this.#onRequiresValue(optionDefinition, jsonNode, isListItem);
+          this.#onRequiresValue(optionDefinition.name, optionDefinition.brand, jsonNode, isListItem);
 
           break;
         }

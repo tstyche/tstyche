@@ -288,7 +288,6 @@ export class Options {
   static async validate(
     optionName: string,
     optionValue: string,
-    optionBrand: OptionBrand,
     onDiagnostics: DiagnosticsHandler,
     origin?: DiagnosticOrigin,
   ): Promise<void> {
@@ -344,7 +343,6 @@ export class Options {
         if ((await Store.validateTag(optionValue)) === false) {
           const text = [
             ConfigDiagnosticText.versionIsNotSupported(optionValue),
-            ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand),
             ConfigDiagnosticText.inspectSupportedVersions(),
           ];
 

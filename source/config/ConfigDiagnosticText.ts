@@ -1,4 +1,4 @@
-import { OptionBrand } from "./OptionBrand.enum.js";
+import type { OptionBrand } from "./OptionBrand.enum.js";
 
 export class ConfigDiagnosticText {
   static expected(element: string): string {
@@ -33,10 +33,6 @@ export class ConfigDiagnosticText {
   }
 
   static optionValueMustBe(optionName: string, optionBrand: OptionBrand): string {
-    if (optionBrand === OptionBrand.SemverRange) {
-      optionBrand = OptionBrand.String;
-    }
-
     return `Value for the '${optionName}' option must be a ${optionBrand}.`;
   }
 
