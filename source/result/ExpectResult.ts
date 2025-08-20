@@ -1,7 +1,7 @@
 import type { ExpectNode } from "#collect";
 import type { InlineConfig } from "#config";
 import type { Diagnostic } from "#diagnostic";
-import { ResultStatus } from "./ResultStatus.enum.js";
+import { ResultStatusFlags } from "./ResultStatusFlags.enum.js";
 import { ResultTiming } from "./ResultTiming.js";
 import type { TestResult } from "./TestResult.js";
 
@@ -10,7 +10,7 @@ export class ExpectResult {
   diagnostics: Array<Diagnostic> = [];
   inlineConfig: InlineConfig | undefined;
   parent: TestResult | undefined;
-  status: ResultStatus = ResultStatus.Runs;
+  status: ResultStatusFlags = ResultStatusFlags.Runs;
   timing = new ResultTiming();
 
   constructor(assertionNode: ExpectNode, parent?: TestResult, inlineConfig?: InlineConfig) {

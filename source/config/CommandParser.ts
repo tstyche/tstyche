@@ -4,9 +4,10 @@ import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import { type OptionDefinition, Options } from "./Options.js";
+import { Target } from "./Target.js";
 import type { OptionValue } from "./types.js";
 
-export class CommandLineParser {
+export class CommandParser {
   #commandLineOptions: Record<string, OptionValue>;
   #onDiagnostics: DiagnosticsHandler;
   #options: Map<string, OptionDefinition>;
@@ -23,7 +24,7 @@ export class CommandLineParser {
   #onExpectsValue(optionName: string, optionBrand: OptionBrand) {
     const text = [
       ConfigDiagnosticText.expectsValue(optionName),
-      ...ConfigDiagnosticText.usage(optionName, optionBrand),
+      ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand),
     ];
 
     this.#onDiagnostics(Diagnostic.error(text));
@@ -63,14 +64,14 @@ export class CommandLineParser {
     let optionValue = this.#resolveOptionValue(commandLineArgs[index]);
 
     switch (optionDefinition.brand) {
-      case OptionBrand.BareTrue:
-        await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
+      case OptionBrand.True:
+        await Options.validate(optionName, optionValue, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = true;
         break;
 
       case OptionBrand.Boolean:
-        await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
+        await Options.validate(optionName, optionValue, this.#onDiagnostics);
 
         this.#commandLineOptions[optionDefinition.name] = optionValue !== "false";
 
@@ -84,11 +85,11 @@ export class CommandLineParser {
           const optionValues = optionValue
             .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== "") // trailing commas are allowed, e.g. "--target 5.0,current,"
+            .filter((value) => value !== "") // trailing commas are allowed, e.g. '--reporters list,summary,'
             .map((value) => Options.resolve(optionName, value));
 
           for (const optionValue of optionValues) {
-            await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
+            await Options.validate(optionName, optionValue, this.#onDiagnostics);
           }
 
           this.#commandLineOptions[optionDefinition.name] = optionValues;
@@ -103,7 +104,7 @@ export class CommandLineParser {
         if (optionValue !== "") {
           optionValue = Options.resolve(optionName, optionValue);
 
-          await Options.validate(optionName, optionValue, optionDefinition.brand, this.#onDiagnostics);
+          await Options.validate(optionName, optionValue, this.#onDiagnostics);
 
           this.#commandLineOptions[optionDefinition.name] = optionValue;
 
@@ -112,6 +113,37 @@ export class CommandLineParser {
         }
 
         this.#onExpectsValue(optionName, optionDefinition.brand);
+        break;
+
+      case OptionBrand.SemverRange:
+        if (optionValue !== "") {
+          const optionValues: Array<string> = [];
+          const ranges = Target.split(optionValue);
+
+          for (const range of ranges) {
+            await Options.validate(optionName, range, this.#onDiagnostics);
+
+            const versions = await Target.expand(range);
+
+            if (versions.length > 0) {
+              optionValues.push(...versions);
+            } else {
+              const text = [
+                ConfigDiagnosticText.rangeDoesNotMatchSupported(optionValue),
+                ConfigDiagnosticText.inspectSupportedVersions(),
+              ];
+
+              this.#onDiagnostics(Diagnostic.error(text));
+            }
+          }
+
+          this.#commandLineOptions[optionDefinition.name] = optionValues;
+
+          index++;
+          break;
+        }
+
+        this.#onExpectsValue(optionName, OptionBrand.String);
         break;
     }
 

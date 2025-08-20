@@ -12,7 +12,7 @@ import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
-import { RunMode } from "./RunMode.enum.js";
+import { RunModeFlags } from "./RunModeFlags.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
 export class FileRunner {
@@ -55,8 +55,8 @@ export class FileRunner {
   async #resolveFileFacts(
     file: FileLocation,
     fileResult: FileResult,
-    runMode = RunMode.Normal,
-  ): Promise<{ runMode: RunMode; testTree: TestTree; typeChecker: TypeChecker } | undefined> {
+    runModeFlags: RunModeFlags,
+  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; typeChecker: TypeChecker } | undefined> {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
     const languageService = this.#projectService.getLanguageService(file.path);
@@ -82,7 +82,7 @@ export class FileRunner {
     const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
-      runMode |= RunMode.Skip;
+      runModeFlags |= RunModeFlags.Skip;
     }
 
     if (inlineConfig?.template) {
@@ -103,7 +103,7 @@ export class FileRunner {
 
       this.#projectService.openFile(file.path, testText, this.#resolvedConfig.rootPath);
 
-      return this.#resolveFileFacts(file, fileResult, runMode);
+      return this.#resolveFileFacts(file, fileResult, runModeFlags);
     }
 
     const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
@@ -112,7 +112,7 @@ export class FileRunner {
       this.#onDiagnostics(diagnostics, fileResult);
     });
 
-    return { runMode, testTree, typeChecker };
+    return { runModeFlags, testTree, typeChecker };
   }
 
   async #run(file: FileLocation, fileResult: FileResult, cancellationToken: CancellationToken) {
@@ -122,7 +122,7 @@ export class FileRunner {
       return;
     }
 
-    const facts = await this.#resolveFileFacts(file, fileResult);
+    const facts = await this.#resolveFileFacts(file, fileResult, RunModeFlags.None);
 
     if (!facts) {
       return;
@@ -150,6 +150,6 @@ export class FileRunner {
       },
     );
 
-    await testTreeWalker.visit(facts.testTree.children, facts.runMode, /* parentResult */ undefined);
+    await testTreeWalker.visit(facts.testTree.children, facts.runModeFlags, /* parentResult */ undefined);
   }
 }

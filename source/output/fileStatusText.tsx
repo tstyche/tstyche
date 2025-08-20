@@ -1,6 +1,6 @@
 import type { FileLocation } from "#file";
 import { Path } from "#path";
-import { type FileResultStatus, ResultStatus } from "#result";
+import { type FileResultStatusFlags, ResultStatusFlags } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
 interface FileNameTextProps {
@@ -22,22 +22,22 @@ function FileNameText({ filePath }: FileNameTextProps) {
   );
 }
 
-export function fileStatusText(status: FileResultStatus, file: FileLocation): ScribblerJsx.Element {
+export function fileStatusText(status: FileResultStatusFlags, file: FileLocation): ScribblerJsx.Element {
   let statusColor: Color;
   let statusText: string;
 
   switch (status) {
-    case ResultStatus.Runs:
+    case ResultStatusFlags.Runs:
       statusColor = Color.Yellow;
       statusText = "runs";
       break;
 
-    case ResultStatus.Passed:
+    case ResultStatusFlags.Passed:
       statusColor = Color.Green;
       statusText = "pass";
       break;
 
-    case ResultStatus.Failed:
+    case ResultStatusFlags.Failed:
       statusColor = Color.Red;
       statusText = "fail";
       break;

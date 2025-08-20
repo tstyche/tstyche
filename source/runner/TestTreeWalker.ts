@@ -9,7 +9,7 @@ import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { WhenService } from "#when";
-import { RunMode } from "./RunMode.enum.js";
+import { RunModeFlags } from "./RunModeFlags.enum.js";
 
 interface TestTreeWalkerOptions {
   cancellationToken: CancellationToken | undefined;
@@ -53,41 +53,41 @@ export class TestTreeWalker {
     return await Directive.getInlineConfig(directiveRanges);
   }
 
-  #resolveRunMode(mode: RunMode, node: TestTreeNode, inlineConfig: InlineConfig | undefined) {
+  #resolveRunMode(flags: RunModeFlags, node: TestTreeNode, inlineConfig: InlineConfig | undefined) {
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
-      mode |= RunMode.Void;
+      flags |= RunModeFlags.Void;
     }
 
     if (
       node.flags & TestTreeNodeFlags.Only ||
       (this.#resolvedConfig.only != null && node.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
     ) {
-      mode |= RunMode.Only;
+      flags |= RunModeFlags.Only;
     }
 
     if (
       node.flags & TestTreeNodeFlags.Skip ||
       (this.#resolvedConfig.skip != null && node.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
     ) {
-      mode |= RunMode.Skip;
+      flags |= RunModeFlags.Skip;
     }
 
     if (node.flags & TestTreeNodeFlags.Todo) {
-      mode |= RunMode.Todo;
+      flags |= RunModeFlags.Todo;
     }
 
     if (this.#position != null && node.node.getStart() === this.#position) {
-      mode |= RunMode.Only;
+      flags |= RunModeFlags.Only;
       // skip mode is overridden, when 'position' is specified
-      mode &= ~RunMode.Skip;
+      flags &= ~RunModeFlags.Skip;
     }
 
-    return mode;
+    return flags;
   }
 
   async visit(
     nodes: Array<TestTreeNode | ExpectNode | WhenNode>,
-    runMode: RunMode,
+    runModeFlags: RunModeFlags,
     parentResult: DescribeResult | TestResult | undefined,
   ): Promise<void> {
     for (const node of nodes) {
@@ -97,15 +97,15 @@ export class TestTreeWalker {
 
       switch (node.brand) {
         case TestTreeNodeBrand.Describe:
-          await this.#visitDescribe(node, runMode, parentResult as DescribeResult | undefined);
+          await this.#visitDescribe(node, runModeFlags, parentResult as DescribeResult | undefined);
           break;
 
         case TestTreeNodeBrand.Test:
-          await this.#visitTest(node, runMode, parentResult as DescribeResult | undefined);
+          await this.#visitTest(node, runModeFlags, parentResult as DescribeResult | undefined);
           break;
 
         case TestTreeNodeBrand.Expect:
-          await this.#visitExpect(node as ExpectNode, runMode, parentResult as TestResult | undefined);
+          await this.#visitExpect(node as ExpectNode, runModeFlags, parentResult as TestResult | undefined);
           break;
 
         case TestTreeNodeBrand.When:
@@ -115,14 +115,14 @@ export class TestTreeWalker {
     }
   }
 
-  async #visitExpect(expect: ExpectNode, runMode: RunMode, parentResult: TestResult | undefined) {
-    await this.visit(expect.children, runMode, parentResult);
+  async #visitExpect(expect: ExpectNode, runModeFlags: RunModeFlags, parentResult: TestResult | undefined) {
+    await this.visit(expect.children, runModeFlags, parentResult);
 
     const inlineConfig = await this.#getInlineConfig(expect);
 
-    runMode = this.#resolveRunMode(runMode, expect, inlineConfig);
+    runModeFlags = this.#resolveRunMode(runModeFlags, expect, inlineConfig);
 
-    if (runMode & RunMode.Void) {
+    if (runModeFlags & RunModeFlags.Void) {
       return;
     }
 
@@ -132,7 +132,7 @@ export class TestTreeWalker {
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
 
-    if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
+    if (runModeFlags & RunModeFlags.Skip || (this.#hasOnly && !(runModeFlags & RunModeFlags.Only))) {
       EventEmitter.dispatch(["expect:skip", { result: expectResult }]);
 
       return;
@@ -164,12 +164,12 @@ export class TestTreeWalker {
     }
   }
 
-  async #visitDescribe(describe: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  async #visitDescribe(describe: TestTreeNode, runModeFlags: RunModeFlags, parentResult: DescribeResult | undefined) {
     const inlineConfig = await this.#getInlineConfig(describe);
 
-    runMode = this.#resolveRunMode(runMode, describe, inlineConfig);
+    runModeFlags = this.#resolveRunMode(runModeFlags, describe, inlineConfig);
 
-    if (runMode & RunMode.Void) {
+    if (runModeFlags & RunModeFlags.Void) {
       return;
     }
 
@@ -178,23 +178,27 @@ export class TestTreeWalker {
     EventEmitter.dispatch(["describe:start", { result: describeResult }]);
 
     if (
-      !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
+      !(
+        runModeFlags & RunModeFlags.Skip ||
+        (this.#hasOnly && !(runModeFlags & RunModeFlags.Only)) ||
+        runModeFlags & RunModeFlags.Todo
+      ) &&
       describe.diagnostics.size > 0
     ) {
       this.#onFileDiagnostics(Diagnostic.fromDiagnostics([...describe.diagnostics]));
     } else {
-      await this.visit(describe.children, runMode, describeResult);
+      await this.visit(describe.children, runModeFlags, describeResult);
     }
 
     EventEmitter.dispatch(["describe:end", { result: describeResult }]);
   }
 
-  async #visitTest(test: TestTreeNode, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  async #visitTest(test: TestTreeNode, runModeFlags: RunModeFlags, parentResult: DescribeResult | undefined) {
     const inlineConfig = await this.#getInlineConfig(test);
 
-    runMode = this.#resolveRunMode(runMode, test, inlineConfig);
+    runModeFlags = this.#resolveRunMode(runModeFlags, test, inlineConfig);
 
-    if (runMode & RunMode.Void) {
+    if (runModeFlags & RunModeFlags.Void) {
       return;
     }
 
@@ -202,13 +206,16 @@ export class TestTreeWalker {
 
     EventEmitter.dispatch(["test:start", { result: testResult }]);
 
-    if (runMode & RunMode.Todo) {
+    if (runModeFlags & RunModeFlags.Todo) {
       EventEmitter.dispatch(["test:todo", { result: testResult }]);
 
       return;
     }
 
-    if (!(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) && test.diagnostics.size > 0) {
+    if (
+      !(runModeFlags & RunModeFlags.Skip || (this.#hasOnly && !(runModeFlags & RunModeFlags.Only))) &&
+      test.diagnostics.size > 0
+    ) {
       EventEmitter.dispatch([
         "test:error",
         { diagnostics: Diagnostic.fromDiagnostics([...test.diagnostics]), result: testResult },
@@ -217,9 +224,9 @@ export class TestTreeWalker {
       return;
     }
 
-    await this.visit(test.children, runMode, testResult);
+    await this.visit(test.children, runModeFlags, testResult);
 
-    if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
+    if (runModeFlags & RunModeFlags.Skip || (this.#hasOnly && !(runModeFlags & RunModeFlags.Only))) {
       EventEmitter.dispatch(["test:skip", { result: testResult }]);
 
       return;

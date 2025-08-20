@@ -54,13 +54,12 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", "5.0,5.3.2,current"];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.3.2 || 5.8"']);
 
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      fileName: `${testFileName}-target-5.3.2-5.8-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -117,7 +116,7 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", '">=5.2 <=5.3, 5.4.2, >5.5"', "--showConfig"];
+    const args = ["--target", '">=5.2 <=5.3 || 5.4.2 || >5.5"', "--showConfig"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     assert.equal(stderr, "");
@@ -125,28 +124,43 @@ await test("'--target' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when 'current' tag is specified", async () => {
+  await t.test("when '*' is specified", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const args = ["--target", "current"];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"*"']);
 
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-${args.join("-")}-stdout`,
+      fileName: `${testFileName}-target-asterisk-stdout`,
       testFileUrl: import.meta.url,
     });
 
     assert.equal(exitCode, 0);
   });
 
+  await t.test("when '*' is specified, but TypeScript is not installed", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"*"'], {
+      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
+    });
+
+    assert.equal(stderr, "");
+    assert.match(stdout, /^adds TypeScript/);
+
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("when 'target' configuration file option is specified", async () => {
     const config = {
-      target: ["5.4", "current"],
+      target: ">=5.4",
     };
 
     await writeFixture(fixtureUrl, {
@@ -155,7 +169,7 @@ await test("'--target' command line option", async (t) => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.8"]);
 
     assert.equal(stderr, "");
 
@@ -173,7 +187,7 @@ await test("'--target' command line option", async (t) => {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const args = ["isNumber", "--target", "current"];
+    const args = ["isNumber", "--target", "5.8"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     assert.equal(stderr, "");
@@ -192,7 +206,7 @@ await test("'--target' command line option", async (t) => {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
     });
 
-    const args = ["--target", "current", "isString"];
+    const args = ["--target", "5.6", "isString"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
     assert.equal(stderr, "");
@@ -213,7 +227,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when single target is specified", async () => {
     const config = {
-      target: ["5.4"],
+      target: "5.4",
     };
 
     await writeFixture(fixtureUrl, {
@@ -236,7 +250,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when multiple targets are specified", async () => {
     const config = {
-      target: ["5.0", "5.3.2", "current"],
+      target: "5.3.2 || 5.8",
     };
 
     await writeFixture(fixtureUrl, {
@@ -250,7 +264,7 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-target-5.0-5.3.2-current-stdout`,
+      fileName: `${testFileName}-target-5.3.2-5.8-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -259,7 +273,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when version range is specified", async () => {
     const config = {
-      target: [">5.1"],
+      target: ">5.1",
     };
 
     await writeFixture(fixtureUrl, {
@@ -277,7 +291,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when version range with an upper bound is specified", async () => {
     const config = {
-      target: [">=5.3 <5.5"],
+      target: ">=5.3 <5.5",
     };
 
     await writeFixture(fixtureUrl, {
@@ -300,7 +314,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when range with not supported version is specified", async () => {
     const config = {
-      target: [">=5.4 <8.2"],
+      target: ">=5.4 <8.2",
     };
 
     await writeFixture(fixtureUrl, {
@@ -318,7 +332,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when combination of ranges and versions is specified", async () => {
     const config = {
-      target: [">=5.2 <=5.3", "5.4.2", ">5.5"],
+      target: ">=5.2 <=5.3 || 5.4.2 || >5.5",
     };
 
     await writeFixture(fixtureUrl, {
@@ -334,9 +348,9 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when 'current' tag is specified", async () => {
+  await t.test("when '*' is specified", async () => {
     const config = {
-      target: ["current"],
+      target: "*",
     };
 
     await writeFixture(fixtureUrl, {
@@ -350,9 +364,30 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-target-current-stdout`,
+      fileName: `${testFileName}-target-asterisk-stdout`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when '*' is specified, but TypeScript is not installed", async () => {
+    const config = {
+      target: "*",
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
+      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
+    });
+
+    assert.equal(stderr, "");
+    assert.match(stdout, /^adds TypeScript/);
 
     assert.equal(exitCode, 0);
   });

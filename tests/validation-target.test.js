@@ -24,35 +24,60 @@ await test("'--target' command line option", async (t) => {
   await t.test("when option value is missing", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: Option '--target' expects a value.",
       "",
-      "Value for the '--target' option must be a string or a comma separated list.",
-      "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3, 5.4.2, >=5.5''.",
+      "Value for the '--target' option must be a string.",
       "\n",
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when there are no supported TypeScript versions matching the range", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=4.4 <4.7"']);
+
+    const expected = [
+      "Error: The specified range '>=4.4 <4.7' does not match any supported TypeScript versions.",
+      "",
+      "Use the '--list' command line option to inspect the list of supported versions.",
+      "\n",
+    ].join("\n");
+
+    assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
   await t.test("when not supported version is specified", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "new"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
-      "Error: TypeScript version 'new' is not supported.",
+      "Error: The TypeScript version 'new' is not supported.",
       "",
-      "Value for the '--target' option must be a string or a comma separated list.",
-      "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3, 5.4.2, >=5.5''.",
       "Use the '--list' command line option to inspect the list of supported versions.",
       "\n",
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when not supported version is specified within a union", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.2 <=5.3 || new"']);
+
+    const expected = [
+      "Error: The TypeScript version 'new' is not supported.",
+      "",
+      "Use the '--list' command line option to inspect the list of supported versions.",
+      "\n",
+    ].join("\n");
+
+    assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -62,9 +87,9 @@ await test("'--target' command line option", async (t) => {
     const expected = [
       "Error: The specified range '5.2 >=5.4' is not valid.",
       "",
-      "A range must be specified using an operator and a minor version.",
-      "To set an upper bound, the intersection of two ranges can be used.",
-      "Examples: '>=5.5', '>=5.0 <5.3'.",
+      "A range must be specified using an operator and a minor version: '>=5.5'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
+      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
       "\n",
     ].join("\n");
 
@@ -73,17 +98,15 @@ await test("'--target' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when 'current' is specified, but TypeScript is not installed", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
-    });
+  await t.test("when not valid range is specified within a union", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.2 || 5.3 >5.5"']);
 
     const expected = [
-      "Error: Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.",
+      "Error: The specified range '5.3 >5.5' is not valid.",
       "",
-      "Value for the '--target' option must be a string or a comma separated list.",
-      "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3, 5.4.2, >=5.5''.",
-      "Use the '--list' command line option to inspect the list of supported versions.",
+      "A range must be specified using an operator and a minor version: '>=5.5'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
+      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
       "\n",
     ].join("\n");
 
@@ -98,9 +121,9 @@ await test("'target' configuration file option", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("when option value is not a list", async () => {
+  await t.test("when option value is not a string", async () => {
     const config = {
-      target: "current",
+      target: ["latest"],
       testFileMatch: ["examples/*.test.*"],
     };
 
@@ -120,10 +143,10 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when item of the list is not a string", async () => {
+  await t.test("when there are no supported TypeScript versions matching the range", async () => {
     const config = {
-      target: ["5.2", 5.4, "latest"],
-      testFileMatch: ["examples/*.test.*"],
+      target: ">=4.4 <4.7",
+      testFileMatch: ["examples/*.tst.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -134,7 +157,7 @@ await test("'target' configuration file option", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-wrong-list-item-type-stderr`,
+      fileName: `${testFileName}-no-supported-versions-matching-stderr`,
       testFileUrl: import.meta.url,
     });
 
@@ -144,7 +167,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when not supported version is specified", async () => {
     const config = {
-      target: ["new"],
+      target: "new",
       testFileMatch: ["examples/*.tst.*"],
     };
 
@@ -164,9 +187,31 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("when not supported version is specified within a union", async () => {
+    const config = {
+      target: ">=5.2 <=5.3 || new",
+      testFileMatch: ["examples/*.tst.*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-not-supported-version-within-union-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("when not valid range is specified", async () => {
     const config = {
-      target: ["5.2 >=5.4"],
+      target: "5.2 >=5.4",
       testFileMatch: ["examples/*.tst.*"],
     };
 
@@ -186,9 +231,10 @@ await test("'target' configuration file option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when 'current' is specified, but TypeScript is not installed", async () => {
+  await t.test("when not valid range is specified within a union", async () => {
     const config = {
-      target: ["current"],
+      target: ">=5.2 || 5.3 >5.5",
+      testFileMatch: ["examples/*.tst.*"],
     };
 
     await writeFixture(fixtureUrl, {
@@ -196,12 +242,10 @@ await test("'target' configuration file option", async (t) => {
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-typescript-not-installed-stderr`,
+      fileName: `${testFileName}-not-valid-range-within-union-stderr`,
       testFileUrl: import.meta.url,
     });
 

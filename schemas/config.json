@@ -65,15 +65,9 @@
       "type": "string"
     },
     "target": {
-      "default": [
-        "current"
-      ],
-      "description": "The list of TypeScript versions to be tested on.",
-      "items": {
-        "type": "string"
-      },
-      "type": "array",
-      "uniqueItems": true
+      "default": "*",
+      "description": "The range of TypeScript versions to be tested against.",
+      "type": "string"
     },
     "testFileMatch": {
       "default": [

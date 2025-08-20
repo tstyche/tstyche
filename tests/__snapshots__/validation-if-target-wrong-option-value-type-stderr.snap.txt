@@ -1,7 +1,7 @@
-Error: Value for the 'target' option must be a list.
+Error: Value for the 'target' option must be a string.
 
-  1 | // @tstyche if { target: "5.2" }
-    |                          ~~~~~
+  1 | // @tstyche if { target: ["5.2"] }
+    |                          ~~~~~~~
   2 | 
   3 | import { expect, test } from "tstyche";
   4 | 

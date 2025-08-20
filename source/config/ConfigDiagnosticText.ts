@@ -40,11 +40,15 @@ export class ConfigDiagnosticText {
     return `The specified range '${value}' is not valid.`;
   }
 
+  static rangeDoesNotMatchSupported(value: string): string {
+    return `The specified range '${value}' does not match any supported TypeScript versions.`;
+  }
+
   static rangeUsage(): Array<string> {
     return [
-      "A range must be specified using an operator and a minor version.",
-      "To set an upper bound, the intersection of two ranges can be used.",
-      "Examples: '>=5.5', '>=5.0 <5.3'.",
+      "A range must be specified using an operator and a minor version: '>=5.5'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
+      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
     ];
   }
 
@@ -60,31 +64,8 @@ export class ConfigDiagnosticText {
     return `Unknown option '${optionName}'.`;
   }
 
-  static usage(optionName: string, optionBrand: OptionBrand): Array<string> {
-    switch (optionName.startsWith("--") ? optionName.slice(2) : optionName) {
-      case "target": {
-        const text: Array<string> = [];
-
-        if (optionName.startsWith("--")) {
-          text.push(
-            "Value for the '--target' option must be a string or a comma separated list.",
-            "Examples: '--target 5.2', '--target next', '--target '>=5.0 <5.3, 5.4.2, >=5.5''.",
-          );
-        }
-
-        return text;
-      }
-    }
-
-    return [ConfigDiagnosticText.optionValueMustBe(optionName, optionBrand)];
-  }
-
   static versionIsNotSupported(value: string): string {
-    if (value === "current") {
-      return "Cannot use 'current' as a target. Failed to resolve the installed TypeScript module.";
-    }
-
-    return `TypeScript version '${value}' is not supported.`;
+    return `The TypeScript version '${value}' is not supported.`;
   }
 
   static watchCannotBeEnabled(): string {

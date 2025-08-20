@@ -18,6 +18,16 @@ const sampleCommandLineOptionDefinitions = new Map([
   ],
 
   [
+    "sampleSemverRange",
+    {
+      brand: OptionBrand.SemverRange,
+      description: "A sample option of range type.",
+      group: 2,
+      name: "sampleSemverRange",
+    },
+  ],
+
+  [
     "sampleNumber",
     {
       brand: OptionBrand.Number,
@@ -40,7 +50,7 @@ const sampleCommandLineOptionDefinitions = new Map([
   [
     "sampleTrue",
     {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
       description: "A sample option of true type.",
       group: 2,
       name: "sampleTrue",
@@ -78,17 +88,20 @@ test("helpText", async (t) => {
         "  <blue>tstyche</>",
         "  Run all tests.",
         "",
-        "  <blue>tstyche path/to/first.test.ts</>",
-        "  Only run the test files with matching path.",
+        "  <blue>tstyche query-params</>",
+        "  Only run the matching test file.",
         "",
-        "  <blue>tstyche --target 5.3,5.6.2,current</>",
-        "  Test on all specified versions of TypeScript.",
+        "  <blue>tstyche --target '5.3 || 5.5.2 || >=5.7'</>",
+        "  Test against specific versions of TypeScript.",
         "",
         "",
         "Command Line Options",
         "",
         "  <blue>--sampleString</>  <gray>string</>",
         "  A sample option of string type.",
+        "",
+        "  <blue>--sampleSemverRange</>  <gray>string</>",
+        "  A sample option of range type.",
         "",
         "  <blue>--sampleNumber</>  <gray>number</>",
         "  A sample option of number type.",

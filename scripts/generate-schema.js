@@ -34,8 +34,11 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
   const jsonSchemaDefinition = {};
 
   if (defaultValue != null) {
-    if (optionDefinition.name === "rootPath" && typeof defaultValue === "string") {
-      defaultValue = tstyche.Path.relative("", defaultValue);
+    if (optionDefinition.name === "rootPath") {
+      defaultValue = "./";
+    }
+    if (optionDefinition.name === "target") {
+      defaultValue = "*";
     }
 
     jsonSchemaDefinition.default = defaultValue;
@@ -62,6 +65,7 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
       break;
 
     case tstyche.OptionBrand.String:
+    case tstyche.OptionBrand.SemverRange:
       jsonSchemaDefinition.type = "string";
       break;
   }
