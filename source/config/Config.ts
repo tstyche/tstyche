@@ -4,7 +4,7 @@ import type { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { SourceFile } from "#source";
-import { CommandLineParser } from "./CommandLineParser.js";
+import { CommandParser } from "./CommandParser.js";
 import { ConfigParser } from "./ConfigParser.js";
 import { defaultOptions } from "./defaultOptions.js";
 import { JsonScanner } from "./JsonScanner.js";
@@ -22,7 +22,7 @@ export class Config {
     const commandLineOptions: CommandLineOptions = {};
     const pathMatch: Array<string> = [];
 
-    const commandLineParser = new CommandLineParser(
+    const commandLineParser = new CommandParser(
       commandLineOptions as Record<string, OptionValue>,
       pathMatch,
       Config.#onDiagnostics,

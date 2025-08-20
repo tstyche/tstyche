@@ -7,7 +7,7 @@ import { type OptionDefinition, Options } from "./Options.js";
 import { Target } from "./Target.js";
 import type { OptionValue } from "./types.js";
 
-export class CommandLineParser {
+export class CommandParser {
   #commandLineOptions: Record<string, OptionValue>;
   #onDiagnostics: DiagnosticsHandler;
   #options: Map<string, OptionDefinition>;
