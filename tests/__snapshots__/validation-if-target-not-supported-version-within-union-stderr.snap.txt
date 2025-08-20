@@ -2,8 +2,8 @@ Error: The TypeScript version 'new' is not supported.
 
 Use the '--list' command line option to inspect the list of supported versions.
 
-  1 | // @tstyche if { target: "new" }
-    |                          ~~~~~
+  1 | // @tstyche if { target: ">=5.2 <=5.3 || new" }
+    |                          ~~~~~~~~~~~~~~~~~~~~
   2 | 
   3 |   import { expect, test } from "tstyche";
   4 | 

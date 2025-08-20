@@ -24,8 +24,6 @@ await test("'--target' command line option", async (t) => {
   await t.test("when option value is missing", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: Option '--target' expects a value.",
       "",
@@ -34,6 +32,7 @@ await test("'--target' command line option", async (t) => {
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -55,8 +54,6 @@ await test("'--target' command line option", async (t) => {
   await t.test("when not supported version is specified", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "new"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: The TypeScript version 'new' is not supported.",
       "",
@@ -65,14 +62,13 @@ await test("'--target' command line option", async (t) => {
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
   await t.test("when not supported version is specified within a union", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.2 <=5.3 || new"']);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: The TypeScript version 'new' is not supported.",
       "",
@@ -81,6 +77,7 @@ await test("'--target' command line option", async (t) => {
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 

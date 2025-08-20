@@ -1,9 +1,9 @@
-Error: The TypeScript version 'new' is not supported.
+Error: The specified range '>=4.4 <4.7' does not match any supported TypeScript versions.
 
 Use the '--list' command line option to inspect the list of supported versions.
 
-  1 | // @tstyche if { target: "new" }
-    |                          ~~~~~
+  1 | // @tstyche if { target: ">=4.4 <4.7" }
+    |                          ~~~~~~~~~~~~
   2 | 
   3 |   import { expect, test } from "tstyche";
   4 | 
