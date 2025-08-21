@@ -4,5 +4,5 @@ jsonschema = "11.2.0"
 node = "22.18.0"
 yarn = "4.9.3"
 
-[tasks."test:schemas"]
-run = "jsonschema test schemas/__tests__/*.test.json --resolve ./schemas/config.json"
+[tasks."test:schema"]
+run = "jsonschema test schema/__tests__/*.test.json --resolve ./schema/config.json"

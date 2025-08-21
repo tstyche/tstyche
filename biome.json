@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+  "$schema": "https://biomejs.dev/schema/2.2.0/schema.json",
 
   "json": {
     "parser": {
@@ -14,7 +14,7 @@
       "!**/build",
       "!**/coverage",
       "!**/node_modules",
-      "!**/schemas/config.json",
+      "!**/schema/config.json",
       "!**/cspell.json"
     ]
   },

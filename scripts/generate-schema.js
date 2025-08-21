@@ -21,8 +21,8 @@ import * as tstyche from "tstyche/tstyche";
 /** @type {JsonSchema} */
 const jsonSchema = {
   $schema: "http://json-schema.org/draft-07/schema#",
-  properties: {},
   type: "object",
+  properties: {},
 };
 
 /**
@@ -32,6 +32,10 @@ const jsonSchema = {
 function createJsonSchemaDefinition(optionDefinition, defaultValue) {
   /** @type {JsonSchemaDefinition} */
   const jsonSchemaDefinition = {};
+
+  if ("description" in optionDefinition) {
+    jsonSchemaDefinition.description = optionDefinition.description;
+  }
 
   if (defaultValue != null) {
     if (optionDefinition.name === "rootPath") {
@@ -44,20 +48,15 @@ function createJsonSchemaDefinition(optionDefinition, defaultValue) {
     jsonSchemaDefinition.default = defaultValue;
   }
 
-  if ("description" in optionDefinition) {
-    jsonSchemaDefinition.description = optionDefinition.description;
-  }
-
   switch (optionDefinition.brand) {
     case tstyche.OptionBrand.Boolean:
       jsonSchemaDefinition.type = "boolean";
       break;
 
     case tstyche.OptionBrand.List:
-      jsonSchemaDefinition.items = createJsonSchemaDefinition(optionDefinition.items);
-
       jsonSchemaDefinition.type = "array";
       jsonSchemaDefinition.uniqueItems = true;
+      jsonSchemaDefinition.items = createJsonSchemaDefinition(optionDefinition.items);
       break;
 
     case tstyche.OptionBrand.Number:
@@ -87,7 +86,7 @@ for (const [key, optionDefinition] of configFileOptions) {
   );
 }
 
-const schemaFileUrl = new URL("../schemas/config.json", import.meta.url);
+const schemaFileUrl = new URL("../schema/config.json", import.meta.url);
 
 await fs.writeFile(schemaFileUrl, `${JSON.stringify(jsonSchema, null, 2)}\n`);
 
