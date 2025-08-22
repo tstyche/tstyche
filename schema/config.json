@@ -2,6 +2,11 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
+    "checkDeclarationFiles": {
+      "description": "Check declaration files for type errors.",
+      "default": true,
+      "type": "boolean"
+    },
     "checkSuppressedErrors": {
       "description": "Check errors silenced by '// @ts-expect-error' directives.",
       "default": true,

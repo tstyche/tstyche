@@ -5,6 +5,7 @@
       "description": "all options",
       "valid": true,
       "data": {
+        "checkDeclarationFiles": true,
         "checkSuppressedErrors": true,
         "failFast": true,
         "fixtureFileMatch": ["fixtures/*.ts", "**/__fixtures__/**/*"],

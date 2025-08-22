@@ -95,6 +95,12 @@ export class ProjectService {
       /* ensureProject */ true,
     );
 
+    const compilerOptions = project?.getCompilerOptions();
+
+    if (this.#resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
+      project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
+    }
+
     return project;
   }
 
@@ -177,6 +183,10 @@ export class ProjectService {
       const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
         if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
           return false;
+        }
+
+        if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+          return true;
         }
 
         if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
