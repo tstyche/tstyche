@@ -43,13 +43,6 @@ export class Options {
 
     {
       brand: OptionBrand.Boolean,
-      description: "Enable type error reporting for source files.",
-      group: OptionGroup.ConfigFile,
-      name: "checkSourceFiles",
-    },
-
-    {
-      brand: OptionBrand.Boolean,
       description: "Check errors silenced by '// @ts-expect-error' directives.",
       group: OptionGroup.ConfigFile,
       name: "checkSuppressedErrors",
