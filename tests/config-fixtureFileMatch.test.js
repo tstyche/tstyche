@@ -107,17 +107,14 @@ await test("'fixtureFileMatch' configuration file option", async (t) => {
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-      await assert.matchSnapshot(normalizeOutput(stderr), {
-        fileName: `${testFileName}-specified-patterns-empty-list-stderr`,
-        testFileUrl: import.meta.url,
-      });
+      assert.equal(stderr, "");
 
       await assert.matchSnapshot(normalizeOutput(stdout), {
         fileName: `${testFileName}-specified-patterns-empty-list-stdout`,
         testFileUrl: import.meta.url,
       });
 
-      assert.equal(exitCode, 1);
+      assert.equal(exitCode, 0);
     });
   });
 });
