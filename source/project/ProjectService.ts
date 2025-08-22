@@ -95,12 +95,6 @@ export class ProjectService {
       /* ensureProject */ true,
     );
 
-    const compilerOptions = project?.getCompilerOptions();
-
-    if (this.#resolvedConfig.checkSourceFiles && compilerOptions?.skipLibCheck) {
-      project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
-    }
-
     return project;
   }
 
@@ -193,7 +187,7 @@ export class ProjectService {
           return false;
         }
 
-        return this.#resolvedConfig.checkSourceFiles;
+        return false;
       });
 
       const diagnostics: Array<ts.Diagnostic> = [];
