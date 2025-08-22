@@ -1,56 +1,53 @@
 Error: 'const' modifier can only appear on a type parameter of a function, method or class ts(1277)
 
-   5 | }
-   6 | 
-   7 | export type ParseKeys<const Context extends {}> = Context;
-     |                       ~~~~~
-   8 | 
-   9 | false();
-  10 | 
+  4 |   }
+  5 | }
+  6 | export type ParseKeys<const Context extends {}> = Context;
+    |                       ~~~~~
+  7 | false();
+  8 | 
 
-       at ./__typetests__/ambient.d.ts:7:23
+      at ./__typetests__/ambient.d.ts:6:23
 
 Error: Statements are not allowed in ambient contexts. ts(1036)
 
-   7 | export type ParseKeys<const Context extends {}> = Context;
-   8 | 
-   9 | false();
-     | ~~~~~
-  10 | 
+  5 | }
+  6 | export type ParseKeys<const Context extends {}> = Context;
+  7 | false();
+    | ~~~~~
+  8 | 
 
-       at ./__typetests__/ambient.d.ts:9:1
+      at ./__typetests__/ambient.d.ts:7:1
 
 Error: This expression is not callable. ts(2349)
 
 Type 'Boolean' has no call signatures.
 
-   7 | export type ParseKeys<const Context extends {}> = Context;
-   8 | 
-   9 | false();
-     | ~~~~~
-  10 | 
+  5 | }
+  6 | export type ParseKeys<const Context extends {}> = Context;
+  7 | false();
+    | ~~~~~
+  8 | 
 
-       at ./__typetests__/ambient.d.ts:9:1
+      at ./__typetests__/ambient.d.ts:7:1
 
 Error: Statements are not allowed in ambient contexts. ts(1036)
 
   1 | export declare function concat(a: string, b: string): string;
-  2 | 
-  3 | false();
+  2 | false();
     | ~~~~~
-  4 | 
+  3 | 
 
-      at ./__typetests__/concat.d.ts:3:1
+      at ./__typetests__/concat.d.ts:2:1
 
 Error: This expression is not callable. ts(2349)
 
 Type 'Boolean' has no call signatures.
 
   1 | export declare function concat(a: string, b: string): string;
-  2 | 
-  3 | false();
+  2 | false();
     | ~~~~~
-  4 | 
+  3 | 
 
-      at ./__typetests__/concat.d.ts:3:1
+      at ./__typetests__/concat.d.ts:2:1
 
