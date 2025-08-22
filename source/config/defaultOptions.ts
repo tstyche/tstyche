@@ -2,7 +2,6 @@ import { Path } from "#path";
 import type { ConfigFileOptions } from "./types.js";
 
 export const defaultOptions: Required<ConfigFileOptions> = {
-  checkSourceFiles: true,
   checkDeclarationFiles: true,
   checkSuppressedErrors: true,
   failFast: false,

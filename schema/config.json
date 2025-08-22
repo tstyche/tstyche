@@ -7,11 +7,6 @@
       "default": true,
       "type": "boolean"
     },
-    "checkSourceFiles": {
-      "description": "Enable type error reporting for source files.",
-      "default": true,
-      "type": "boolean"
-    },
     "checkSuppressedErrors": {
       "description": "Check errors silenced by '// @ts-expect-error' directives.",
       "default": true,

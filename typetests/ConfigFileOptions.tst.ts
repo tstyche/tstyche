@@ -5,7 +5,6 @@ describe("ConfigFileOptions", () => {
   test("all options", () => {
     expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({
       checkDeclarationFiles: true,
-      checkSourceFiles: true,
       checkSuppressedErrors: true,
       failFast: true,
       fixtureFileMatch: ["**/tests/types/fixtures/**/*"],
@@ -27,12 +26,6 @@ describe("ConfigFileOptions", () => {
   test("'checkDeclarationFiles' option", () => {
     expect<Pick<tstyche.ConfigFileOptions, "checkDeclarationFiles">>().type.toBe<{
       checkDeclarationFiles?: boolean;
-    }>();
-  });
-
-  test("'checkSourceFiles' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "checkSourceFiles">>().type.toBe<{
-      checkSourceFiles?: boolean;
     }>();
   });
 

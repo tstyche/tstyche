@@ -6,7 +6,6 @@
       "valid": true,
       "data": {
         "checkDeclarationFiles": true,
-        "checkSourceFiles": true,
         "checkSuppressedErrors": true,
         "failFast": true,
         "fixtureFileMatch": ["fixtures/*.ts", "**/__fixtures__/**/*"],

@@ -64,7 +64,6 @@ await test("'checkDeclarationFiles' config file option", async (t) => {
   await t.test("when enabled", async () => {
     const config = {
       checkDeclarationFiles: true,
-      checkSourceFiles: false,
     };
 
     await writeFixture(fixtureUrl, {
@@ -96,7 +95,6 @@ await test("'checkDeclarationFiles' config file option", async (t) => {
   await t.test("when disabled", async () => {
     const config = {
       checkDeclarationFiles: false,
-      checkSourceFiles: false,
     };
 
     await writeFixture(fixtureUrl, {
