@@ -43,6 +43,13 @@ export class Options {
 
     {
       brand: OptionBrand.Boolean,
+      description: "Check declaration files for type errors.",
+      group: OptionGroup.ConfigFile,
+      name: "checkDeclarationFiles",
+    },
+
+    {
+      brand: OptionBrand.Boolean,
       description: "Enable type error reporting for source files.",
       group: OptionGroup.ConfigFile,
       name: "checkSourceFiles",
