@@ -9,21 +9,23 @@ const ambientFileText = `declare module "ambient-example" {
     test: boolean;
   }
 }
-
 export type ParseKeys<const Context extends {}> = Context;
-
 false();
 `;
 
-const isSampleTestText = `import { expect, test } from "tstyche";
+const declarationFileText = `export declare function concat(a: string, b: string): string;
+false();
+`;
+
+const sourceFileText = `export type Sample = { a: string };
+false();
+`;
+
+const isSampleTestText = `import { expect } from "tstyche";
+import { concat } from "./concat.js";
 import { type Sample } from "./Sample.js";
-
+expect(concat("a", "b")).type.toBe<string>();
 expect<Sample>().type.toBe<{ a: string }>();
-`;
-
-const importedFileText = `export type Sample = { a: string };
-
-false();
 `;
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -41,7 +43,7 @@ test("is number?", () => {
 const tsconfig = {
   extends: "../../tsconfig.json",
   compilerOptions: {
-    skipLibCheck: true, // must be ignored, if 'checkSourceFiles' is enabled
+    skipLibCheck: true, // must be ignored, if 'checkDeclarationFiles' is enabled
   },
   include: ["**/*"],
 };
@@ -49,22 +51,23 @@ const tsconfig = {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("'checkSourceFiles' config file option", async (t) => {
+await test("'checkDeclarationFiles' config file option", async (t) => {
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
   await t.test("when enabled", async () => {
     const config = {
-      checkSourceFiles: true,
+      checkDeclarationFiles: true,
     };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/ambient.d.ts"]: ambientFileText,
+      ["__typetests__/concat.d.ts"]: declarationFileText,
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isSample.test.ts"]: isSampleTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
-      ["__typetests__/Sample.ts"]: importedFileText,
+      ["__typetests__/Sample.ts"]: sourceFileText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });
@@ -86,15 +89,16 @@ await test("'checkSourceFiles' config file option", async (t) => {
 
   await t.test("when disabled", async () => {
     const config = {
-      checkSourceFiles: false,
+      checkDeclarationFiles: false,
     };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/ambient.d.ts"]: ambientFileText,
+      ["__typetests__/concat.d.ts"]: declarationFileText,
       ["__typetests__/isNumber.test.ts"]: isNumberTestText,
       ["__typetests__/isSample.test.ts"]: isSampleTestText,
       ["__typetests__/isString.test.ts"]: isStringTestText,
-      ["__typetests__/Sample.ts"]: importedFileText,
+      ["__typetests__/Sample.ts"]: sourceFileText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tstyche.config.json"]: JSON.stringify(config, null, 2),
     });

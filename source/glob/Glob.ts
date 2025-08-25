@@ -1,6 +1,7 @@
 import { Braces } from "./Braces.js";
 
 export class Glob {
+  // TODO use 'RegExp.escape()' after dropping support for Node.js 22
   // escaping any non-word and non-whitespace character sounds inefficient, but this is future proof
   static #reservedCharacterRegex = /[^\w\s/]/g;
 

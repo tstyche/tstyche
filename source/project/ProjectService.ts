@@ -65,8 +65,6 @@ export class ProjectService {
 
   #getDefaultCompilerOptions() {
     const defaultCompilerOptions: ts.server.protocol.CompilerOptions = {
-      allowJs: true,
-      checkJs: true,
       exactOptionalPropertyTypes: true,
       jsx: this.#compiler.JsxEmit.Preserve,
       module: this.#compiler.ModuleKind.NodeNext,
@@ -97,7 +95,7 @@ export class ProjectService {
 
     const compilerOptions = project?.getCompilerOptions();
 
-    if (this.#resolvedConfig.checkSourceFiles && compilerOptions?.skipLibCheck) {
+    if (this.#resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
       project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
     }
 
@@ -185,6 +183,10 @@ export class ProjectService {
           return false;
         }
 
+        if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+          return true;
+        }
+
         if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
           return true;
         }
@@ -193,7 +195,7 @@ export class ProjectService {
           return false;
         }
 
-        return this.#resolvedConfig.checkSourceFiles;
+        return false;
       });
 
       const diagnostics: Array<ts.Diagnostic> = [];

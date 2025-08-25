@@ -10,7 +10,7 @@
     "*.md",
     "benchmarks/**/*",
     "examples/**/*",
-    "schemas/**/*",
+    "schema/**/*",
     "scripts/**/*",
     "source/**/*",
     "tests/**/*"

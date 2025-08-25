@@ -21,7 +21,7 @@ export interface CommandLineOptions {
 }
 
 export interface ConfigFileOptions {
-  checkSourceFiles?: boolean;
+  checkDeclarationFiles?: boolean;
   checkSuppressedErrors?: boolean;
   failFast?: boolean;
   fixtureFileMatch?: Array<string>;

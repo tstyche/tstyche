@@ -14,7 +14,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref_name != 'main' }}
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
       - run: yarn install
       - run: yarn build --sourcemap
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -32,52 +32,60 @@ jobs:
           name: build-${{ github.sha }}
           path: build
 
-  check:
+  check-quality:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Check
+    name: Check Quality
     needs:
       - build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
       - run: yarn install
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
-        with:
-          name: build-${{ github.sha }}
-          path: build
-      - run: yarn check:spelling
-      - run: yarn check:types
-
-  quality:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
-
-    name: Code Quality
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
-      - run: yarn install
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
-        with:
-          name: build-${{ github.sha }}
-          path: build
       - run: yarn biome ci --error-on-warnings
 
-  test-schemas:
+  check-spelling:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Test Schemas
+    name: Check Spelling
     needs:
       - build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
-      - run: mise run test:schemas
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
+      - run: yarn install
+      - run: yarn check:spelling
+
+  check-types:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
+    name: Check Types
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
+      - run: yarn install
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: build-${{ github.sha }}
+          path: build
+      - run: yarn check:types
+
+  test-schema:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+
+    name: Test Schema
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
+      - run: mise run test:schema
 
   test-types:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -88,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
       - run: yarn install
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
@@ -113,7 +121,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
+        uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
       - run: yarn install
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
@@ -135,7 +143,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
       - run: yarn install
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
@@ -157,7 +165,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
       - run: yarn install
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
@@ -185,7 +193,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - uses: jdx/mise-action@ca0c5fc9c8a8386dae8ba5d37608a083a307991c # v3
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3
       - run: yarn install
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
