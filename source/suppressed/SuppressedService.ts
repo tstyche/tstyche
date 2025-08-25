@@ -19,14 +19,14 @@ export class SuppressedService {
         ...Diagnostic.fromDiagnostics(suppressedError.diagnostics),
       ];
 
+      const origin = new DiagnosticOrigin(
+        suppressedError.directive.start,
+        suppressedError.directive.end,
+        testTree.sourceFile,
+      );
+
       if (!suppressedError.argument?.text) {
         const text = SuppressedDiagnosticText.directiveRequires();
-
-        const origin = new DiagnosticOrigin(
-          suppressedError.directive.start,
-          suppressedError.directive.end,
-          testTree.sourceFile,
-        );
 
         onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
 
@@ -35,12 +35,6 @@ export class SuppressedService {
 
       if (suppressedError.diagnostics.length > 1) {
         const text = [SuppressedDiagnosticText.onlySingleError()];
-
-        const origin = new DiagnosticOrigin(
-          suppressedError.directive.start,
-          suppressedError.directive.end,
-          testTree.sourceFile,
-        );
 
         onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
 
