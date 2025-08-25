@@ -1,70 +1,102 @@
-Error: The diagnostic message did not match.
+Error: Directive requires an argument.
 
-  1 | // @ts-expect-error Does not work
-    |                     ~~~~~~~~~~~~~
-  2 | console.log(add);
-  3 | 
-  4 |   // @ts-expect-error Should handle leading spaces
+Add a fragment of the expected error message after the directive.
+To ignore the directive, append the '!' character after it.
 
-      at ./__typetests__/sample.tst.ts:1:21
+   6 | a = true;
+   7 | 
+   8 | // @ts-expect-error
+     | ~~~~~~~~~~~~~~~~~~~
+   9 | console.log(add);
+  10 | 
+  11 | // @ts-expect-error Does not work
+
+       at ./__typetests__/sample.tst.ts:8:1
 
     The suppressed error:
 
     Cannot find name 'add'. ts(2304)
 
-      1 | // @ts-expect-error Does not work
-      2 | console.log(add);
-        |             ~~~
-      3 | 
-      4 |   // @ts-expect-error Should handle leading spaces
-      5 |   console.log(spaces);
+       7 | 
+       8 | // @ts-expect-error
+       9 | console.log(add);
+         |             ~~~
+      10 | 
+      11 | // @ts-expect-error Does not work
+      12 | console.log(add);
 
-          at ./__typetests__/sample.tst.ts:2:13
+           at ./__typetests__/sample.tst.ts:9:13
 
 Error: The diagnostic message did not match.
 
-  2 | console.log(add);
-  3 | 
-  4 |   // @ts-expect-error Should handle leading spaces
-    |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  5 |   console.log(spaces);
-  6 | 
-  7 |  // @ts-expect-error Should handle leading tabs
+   9 | console.log(add);
+  10 | 
+  11 | // @ts-expect-error Does not work
+     |                     ~~~~~~~~~~~~~
+  12 | console.log(add);
+  13 | 
+  14 |   // @ts-expect-error Should handle leading spaces
 
-      at ./__typetests__/sample.tst.ts:4:23
+       at ./__typetests__/sample.tst.ts:11:21
+
+    The suppressed error:
+
+    Cannot find name 'add'. ts(2304)
+
+      10 | 
+      11 | // @ts-expect-error Does not work
+      12 | console.log(add);
+         |             ~~~
+      13 | 
+      14 |   // @ts-expect-error Should handle leading spaces
+      15 |   console.log(spaces);
+
+           at ./__typetests__/sample.tst.ts:12:13
+
+Error: The diagnostic message did not match.
+
+  12 | console.log(add);
+  13 | 
+  14 |   // @ts-expect-error Should handle leading spaces
+     |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  15 |   console.log(spaces);
+  16 | 
+  17 |  // @ts-expect-error Should handle leading tabs
+
+       at ./__typetests__/sample.tst.ts:14:23
 
     The suppressed error:
 
     Cannot find name 'spaces'. ts(2304)
 
-      3 | 
-      4 |   // @ts-expect-error Should handle leading spaces
-      5 |   console.log(spaces);
-        |               ~~~~~~
-      6 | 
-      7 |  // @ts-expect-error Should handle leading tabs
-      8 |  console.log(tabs);
+      13 | 
+      14 |   // @ts-expect-error Should handle leading spaces
+      15 |   console.log(spaces);
+         |               ~~~~~~
+      16 | 
+      17 |  // @ts-expect-error Should handle leading tabs
+      18 |  console.log(tabs);
 
-          at ./__typetests__/sample.tst.ts:5:15
+           at ./__typetests__/sample.tst.ts:15:15
 
 Error: The diagnostic message did not match.
 
-  5 |   console.log(spaces);
-  6 | 
-  7 |  // @ts-expect-error Should handle leading tabs
-    |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
-  8 |  console.log(tabs);
+  15 |   console.log(spaces);
+  16 | 
+  17 |  // @ts-expect-error Should handle leading tabs
+     |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  18 |  console.log(tabs);
 
-      at ./__typetests__/sample.tst.ts:7:22
+       at ./__typetests__/sample.tst.ts:17:22
 
     The suppressed error:
 
     Cannot find name 'tabs'. ts(2304)
 
-      6 | 
-      7 |  // @ts-expect-error Should handle leading tabs
-      8 |  console.log(tabs);
-        |              ~~~~
+      16 | 
+      17 |  // @ts-expect-error Should handle leading tabs
+      18 |  console.log(tabs);
+         |              ~~~~
 
-          at ./__typetests__/sample.tst.ts:8:14
+           at ./__typetests__/sample.tst.ts:18:14
 

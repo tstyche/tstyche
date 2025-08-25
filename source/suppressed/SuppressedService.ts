@@ -14,6 +14,11 @@ export class SuppressedService {
         continue;
       }
 
+      const related = [
+        Diagnostic.error(SuppressedDiagnosticText.suppressedError(suppressedError.diagnostics.length)),
+        ...Diagnostic.fromDiagnostics(suppressedError.diagnostics),
+      ];
+
       if (!suppressedError.argument?.text) {
         const text = SuppressedDiagnosticText.directiveRequires();
 
@@ -23,15 +28,10 @@ export class SuppressedService {
           testTree.sourceFile,
         );
 
-        onDiagnostics([Diagnostic.error(text, origin)]);
+        onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
 
         continue;
       }
-
-      const related = [
-        Diagnostic.error(SuppressedDiagnosticText.suppressedError(suppressedError.diagnostics.length)),
-        ...Diagnostic.fromDiagnostics(suppressedError.diagnostics),
-      ];
 
       if (suppressedError.diagnostics.length > 1) {
         const text = [SuppressedDiagnosticText.onlySingleError()];
@@ -54,7 +54,7 @@ export class SuppressedService {
         messageText = messageText.join("\n");
       }
 
-      if (!messageText.includes(suppressedError.argument.text)) {
+      if (!this.#matchMessage(messageText, suppressedError.argument.text)) {
         const text = [SuppressedDiagnosticText.messageDidNotMatch()];
 
         const origin = new DiagnosticOrigin(
@@ -66,5 +66,23 @@ export class SuppressedService {
         onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
       }
     }
+  }
+
+  #matchMessage(source: string, target: string) {
+    if (target.includes("...")) {
+      let position = 0;
+
+      for (const segment of target.split("...")) {
+        position = source.indexOf(segment, position);
+
+        if (position === -1) {
+          break;
+        }
+      }
+
+      return position > 0;
+    }
+
+    return source.includes(target);
   }
 }
