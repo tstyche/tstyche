@@ -10,6 +10,12 @@ const testFileText = `let a: Promise<string>;
 a = 123;
 // @ts-expect-error Type 'boolean' is not assignable to type 'Promise<...>' -- Allows messages to be truncated
 a = true;
+// @ts-expect-error Type '...' is not assignable to type 'Promise<string>'
+a = true;
+// @ts-expect-error Type 'boolean' is not assignable to type 'Array<...>'
+a = true;
+// @ts-expect-error Type 'Promise<...>' is not assignable to type type 'Promise<string>'
+a = true;
 
 // @ts-expect-error
 console.log(add);
