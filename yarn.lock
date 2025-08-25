@@ -257,9 +257,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-cpp@npm:^6.0.9":
-  version: 6.0.9
-  resolution: "@cspell/dict-cpp@npm:6.0.9"
-  checksum: 10c0/1e9bccb890f9e8edda482faf8925764172084f6ee7b611b7b5a4c4adfb18c0f6ef0e8bcb2ccaa31486e222489be0b0b17a0bf8d842451b40f1d9959d80877e11
+  version: 6.0.10
+  resolution: "@cspell/dict-cpp@npm:6.0.10"
+  checksum: 10c0/bbbf958f1b61809e02d6af970ab0121a4f5a0619dabe19bf1dcb0535b615f171bc9f01e22e8c3437b4ca49f14fa3e999ff880233076cfc4e6a85267fe738c8cf
   languageName: node
   linkType: hard
 
@@ -688,7 +688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:^1.5.0, @jridgewell/sourcemap-codec@npm:^1.5.5":
+"@jridgewell/sourcemap-codec@npm:^1.5.5":
   version: 1.5.5
   resolution: "@jridgewell/sourcemap-codec@npm:1.5.5"
   checksum: 10c0/f9e538f302b63c0ebc06eecb1dd9918dd4289ed36147a0ddce35d6ea4d7ebbda243cda7b2213b6a5e1d8087a298d5cf630fb2bd39329cdecb82017023f6081a0
@@ -1708,21 +1708,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:0.30.18":
+"magic-string@npm:0.30.18, magic-string@npm:^0.30.17":
   version: 0.30.18
   resolution: "magic-string@npm:0.30.18"
   dependencies:
     "@jridgewell/sourcemap-codec": "npm:^1.5.5"
   checksum: 10c0/80fba01e13ce1f5c474a0498a5aa462fa158eb56567310747089a0033e432d83a2021ee2c109ac116010cd9dcf90a5231d89fbe3858165f73c00a50a74dbefcd
-  languageName: node
-  linkType: hard
-
-"magic-string@npm:^0.30.17":
-  version: 0.30.17
-  resolution: "magic-string@npm:0.30.17"
-  dependencies:
-    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
-  checksum: 10c0/16826e415d04b88378f200fe022b53e638e3838b9e496edda6c0e086d7753a44a6ed187adc72d19f3623810589bf139af1a315541cd6a26ae0771a0193eaf7b8
   languageName: node
   linkType: hard
 
