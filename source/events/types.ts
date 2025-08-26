@@ -36,6 +36,6 @@ export type Event =
   | ["expect:start", { result: ExpectResult }]
   | ["expect:error", { diagnostics: Array<Diagnostic>; result: ExpectResult }]
   | ["expect:fail", { diagnostics: Array<Diagnostic>; result: ExpectResult }]
-  | ["expect:pass", { result: ExpectResult }]
+  | ["expect:pass", { diagnostics: Array<Diagnostic>; result: ExpectResult }]
   | ["expect:skip", { result: ExpectResult }]
   | ["watch:error", { diagnostics: Array<Diagnostic> }];

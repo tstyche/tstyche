@@ -3,5 +3,6 @@ export const enum ResultStatusFlags {
   Passed = 1 << 1,
   Failed = 1 << 2,
   Skipped = 1 << 3,
-  Todo = 1 << 4,
+  Fixme = 1 << 4,
+  Todo = 1 << 5,
 }

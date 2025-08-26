@@ -127,7 +127,11 @@ export class ListReporter extends BaseReporter {
 
       case "test:fail":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest(ResultStatusFlags.Failed, payload.result.test.name);
+          if (payload.result.status === ResultStatusFlags.Fixme) {
+            this.#fileView.addTest(ResultStatusFlags.Fixme, payload.result.test.name);
+          } else {
+            this.#fileView.addTest(ResultStatusFlags.Failed, payload.result.test.name);
+          }
         }
         break;
 
@@ -137,8 +141,13 @@ export class ListReporter extends BaseReporter {
         }
         break;
 
+      case "expect:pass":
       case "expect:error":
       case "expect:fail":
+        if (payload.result.status === ResultStatusFlags.Fixme) {
+          break;
+        }
+
         for (const diagnostic of payload.diagnostics) {
           this.#fileView.addMessage(diagnosticText(diagnostic));
         }

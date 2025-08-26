@@ -23,8 +23,25 @@ export type DirectiveRanges = Array<DirectiveRange> & { sourceFile: ts.SourceFil
 
 export class Directive {
   static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
+  static #rangeCache = new WeakMap<ts.Node, DirectiveRanges>();
 
-  static getDirectiveRanges(compiler: typeof ts, sourceFile: ts.SourceFile, position = 0): DirectiveRanges | undefined {
+  static findDirectiveRange(node: ts.Node, directiveText: string): DirectiveRange | undefined {
+    const directiveRanges = Directive.#rangeCache.get(node);
+
+    return directiveRanges?.find((range) => range.directive?.text === directiveText);
+  }
+
+  static getDirectiveRanges(compiler: typeof ts, node: ts.Node): DirectiveRanges | undefined {
+    let sourceFile: ts.SourceFile;
+    let position = 0;
+
+    if (compiler.isSourceFile(node)) {
+      sourceFile = node;
+    } else {
+      sourceFile = node.getSourceFile();
+      position = node.getFullStart();
+    }
+
     const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
 
     if (!comments || comments.length === 0) {
@@ -44,6 +61,8 @@ export class Directive {
         ranges.push(range);
       }
     }
+
+    Directive.#rangeCache.set(node, ranges);
 
     return ranges;
   }

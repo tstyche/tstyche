@@ -9,16 +9,6 @@ export function testNameText(
   let statusColor: Color;
   let statusText: string;
 
-  // TODO
-
-  // // ResultStatusFlags.Passed | ResultStatusFlags.Fixme
-  // statusColor = Color.Red;
-  // statusText = "× fixme"; // it passed, consider removing '@tstyche fixme'
-
-  // // ResultStatusFlags.Failed | ResultStatusFlags.Fixme
-  // statusColor = Color.Yellow;
-  // statusText = "- fixme"; // it failed, but should be working at some point
-
   switch (status) {
     case ResultStatusFlags.Passed:
       statusColor = Color.Green;
@@ -28,6 +18,11 @@ export function testNameText(
     case ResultStatusFlags.Failed:
       statusColor = Color.Red;
       statusText = "×";
+      break;
+
+    case ResultStatusFlags.Fixme:
+      statusColor = Color.Yellow;
+      statusText = "- fixme";
       break;
 
     case ResultStatusFlags.Skipped:

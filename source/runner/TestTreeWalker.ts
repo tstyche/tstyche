@@ -48,8 +48,8 @@ export class TestTreeWalker {
     this.#whenService = new WhenService(reject, onFileDiagnostics);
   }
 
-  async #getInlineConfig(node: TestTreeNode) {
-    const directiveRanges = node.getDirectiveRanges(this.#compiler);
+  async #getInlineConfig({ node }: { node: ts.Node }) {
+    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, node);
     return await Directive.getInlineConfig(directiveRanges);
   }
 
@@ -126,8 +126,6 @@ export class TestTreeWalker {
       return;
     }
 
-    // TODO the 'ResultHandler' should look at the 'inlineConfig?.fixme'
-
     const expectResult = new ExpectResult(expect, parentResult, inlineConfig);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
@@ -158,7 +156,7 @@ export class TestTreeWalker {
     }
 
     if (expect.isNot ? !matchResult.isMatch : matchResult.isMatch) {
-      EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
+      EventEmitter.dispatch(["expect:pass", { diagnostics: [], result: expectResult }]);
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);
     }

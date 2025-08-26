@@ -8,7 +8,7 @@ export type TargetResultStatusFlags = ResultStatusFlags.Runs | ResultStatusFlags
 export class TargetResult {
   files: Array<FileLocation>;
   results = new Map<string | undefined, ProjectResult>();
-  status: TargetResultStatusFlags = ResultStatusFlags.Runs;
+  status: ResultStatusFlags = ResultStatusFlags.Runs;
   target: string;
   timing = new ResultTiming();
 
