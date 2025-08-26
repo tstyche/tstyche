@@ -103,7 +103,7 @@ export class TestTreeWalker {
           break;
 
         case TestTreeNodeBrand.Expect:
-          await this.#visitAssertion(node as ExpectNode, runModeFlags, parentResult as TestResult | undefined);
+          await this.#visitExpect(node as ExpectNode, runModeFlags, parentResult as TestResult | undefined);
           break;
 
         case TestTreeNodeBrand.When:
@@ -113,16 +113,16 @@ export class TestTreeWalker {
     }
   }
 
-  async #visitAssertion(assertionNode: ExpectNode, runModeFlags: RunModeFlags, parentResult: TestResult | undefined) {
-    await this.visit(assertionNode.children, runModeFlags, parentResult);
+  async #visitExpect(expect: ExpectNode, runModeFlags: RunModeFlags, parentResult: TestResult | undefined) {
+    await this.visit(expect.children, runModeFlags, parentResult);
 
-    runModeFlags = await this.#resolveRunMode(runModeFlags, assertionNode);
+    runModeFlags = await this.#resolveRunMode(runModeFlags, expect);
 
     if (runModeFlags & RunModeFlags.Void) {
       return;
     }
 
-    const expectResult = new ExpectResult(assertionNode, parentResult);
+    const expectResult = new ExpectResult(expect, parentResult);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
 
@@ -139,19 +139,19 @@ export class TestTreeWalker {
       ]);
     };
 
-    if (assertionNode.diagnostics.size > 0 && assertionNode.matcherNameNode.name.text !== "toRaiseError") {
-      onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertionNode.diagnostics]));
+    if (expect.diagnostics.size > 0 && expect.matcherNameNode.name.text !== "toRaiseError") {
+      onExpectDiagnostics(Diagnostic.fromDiagnostics([...expect.diagnostics]));
 
       return;
     }
 
-    const matchResult = this.#expectService.match(assertionNode, onExpectDiagnostics);
+    const matchResult = this.#expectService.match(expect, onExpectDiagnostics);
 
     if (!matchResult) {
       return;
     }
 
-    if (assertionNode.isNot ? !matchResult.isMatch : matchResult.isMatch) {
+    if (expect.isNot ? !matchResult.isMatch : matchResult.isMatch) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);

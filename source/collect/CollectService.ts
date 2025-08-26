@@ -67,7 +67,7 @@ export class CollectService {
             return;
           }
 
-          const assertionNode = new ExpectNode(
+          const expectNode = new ExpectNode(
             this.#compiler,
             meta.brand,
             node,
@@ -79,13 +79,13 @@ export class CollectService {
             notNode,
           );
 
-          this.#abilityLayer.handleAssertion(assertionNode);
+          this.#abilityLayer.handleExpect(expectNode);
 
           this.#compiler.forEachChild(node, (node) => {
-            this.#collectTestTreeNodes(node, assertionNode, testTree);
+            this.#collectTestTreeNodes(node, expectNode, testTree);
           });
 
-          this.#onNode(assertionNode, parent, testTree);
+          this.#onNode(expectNode, parent, testTree);
 
           return;
         }

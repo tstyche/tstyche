@@ -194,15 +194,15 @@ export class AbilityLayer {
     return text.join("");
   }
 
-  handleAssertion(assertionNode: ExpectNode): void {
-    const expectStart = assertionNode.node.getStart();
-    const expectExpressionEnd = assertionNode.node.expression.getEnd();
-    const expectEnd = assertionNode.node.getEnd();
-    const matcherNameEnd = assertionNode.matcherNameNode.getEnd();
+  handleExpect(expect: ExpectNode): void {
+    const expectStart = expect.node.getStart();
+    const expectExpressionEnd = expect.node.expression.getEnd();
+    const expectEnd = expect.node.getEnd();
+    const matcherNameEnd = expect.matcherNameNode.getEnd();
 
-    switch (assertionNode.matcherNameNode.name.text) {
+    switch (expect.matcherNameNode.name.text) {
       case "toBeApplicable":
-        this.#addRanges(assertionNode, [
+        this.#addRanges(expect, [
           { start: expectStart, end: expectExpressionEnd },
           { start: expectEnd, end: matcherNameEnd },
         ]);
@@ -210,13 +210,13 @@ export class AbilityLayer {
         break;
 
       case "toBeCallableWith":
-        this.#eraseTrailingComma(assertionNode.source, assertionNode);
+        this.#eraseTrailingComma(expect.source, expect);
 
-        this.#addRanges(assertionNode, [
+        this.#addRanges(expect, [
           {
             start: expectStart,
             end: expectExpressionEnd,
-            replacement: nodeIsChildOfExpressionStatement(this.#compiler, assertionNode.matcherNode) ? ";" : "",
+            replacement: nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
           },
           { start: expectEnd, end: matcherNameEnd },
         ]);
@@ -224,13 +224,13 @@ export class AbilityLayer {
         break;
 
       case "toBeConstructableWith":
-        this.#eraseTrailingComma(assertionNode.source, assertionNode);
+        this.#eraseTrailingComma(expect.source, expect);
 
-        this.#addRanges(assertionNode, [
+        this.#addRanges(expect, [
           {
             start: expectStart,
             end: expectExpressionEnd,
-            replacement: nodeIsChildOfExpressionStatement(this.#compiler, assertionNode.matcherNode) ? "; new" : "new",
+            replacement: nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
           },
           { start: expectEnd, end: matcherNameEnd },
         ]);
