@@ -9,6 +9,7 @@ import {
   ProjectResult,
   type Result,
   type ResultCount,
+  ResultDiagnosticText,
   ResultStatusFlags,
   type ResultTiming,
   type TargetResult,
@@ -41,10 +42,7 @@ export class ResultHandler implements EventHandler {
 
     this.#fileResult!.status = ResultStatusFlags.Failed;
 
-    const text = [
-      "The assertion was supposed to fail, but it passed.",
-      "Consider removing the '// @tstyche fixme' directive.",
-    ];
+    const text = [ResultDiagnosticText.wasSupposedToFail("assertion"), ResultDiagnosticText.considerRemoving()];
 
     const origin = new DiagnosticOrigin(
       fixmeDirective.namespace.start,

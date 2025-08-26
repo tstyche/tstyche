@@ -4,6 +4,7 @@ export { FileResult, type FileResultStatusFlags } from "./FileResult.js";
 export { ProjectResult } from "./ProjectResult.js";
 export { Result } from "./Result.js";
 export { ResultCount } from "./ResultCount.js";
+export { ResultDiagnosticText } from "./ResultDiagnosticText.js";
 export { ResultStatusFlags } from "./ResultStatusFlags.enum.js";
 export { ResultTiming } from "./ResultTiming.js";
 export { TargetResult, type TargetResultStatusFlags } from "./TargetResult.js";
