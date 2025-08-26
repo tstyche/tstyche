@@ -1,4 +1,5 @@
-import { Directive, type InlineConfig } from "#config";
+import type ts from "typescript";
+import { Directive } from "#config";
 import { Diagnostic, DiagnosticCategory, DiagnosticOrigin } from "#diagnostic";
 import type { Event, EventHandler } from "#events";
 import {
@@ -32,7 +33,7 @@ export class ResultHandler implements EventHandler {
   // - 'describe:end' can also mark the test file as failing and add diagnostics
 
   #handlePassingFixme(diagnostics: Array<Diagnostic>, result: ExpectResult) {
-    const fixmeDirective = Directive.findDirectiveRange(result.assertionNode.node, "fixme");
+    const fixmeDirective = Directive.findDirectiveRange(result.expect.node, "fixme");
 
     if (!fixmeDirective) {
       return;
@@ -48,14 +49,14 @@ export class ResultHandler implements EventHandler {
     const origin = new DiagnosticOrigin(
       fixmeDirective.namespace.start,
       fixmeDirective.directive!.end,
-      result.assertionNode.node.getSourceFile(),
+      result.expect.node.getSourceFile(),
     );
 
     diagnostics.push(Diagnostic.error(text, origin));
   }
 
-  #hasFixme(result: { inlineConfig?: InlineConfig | undefined }) {
-    return result?.inlineConfig?.fixme === true;
+  #hasFixme({ node }: { node: ts.Node }) {
+    return Directive.findDirectiveRange(node, "fixme") != null;
   }
 
   on([event, payload]: Event): void {
@@ -178,9 +179,9 @@ export class ResultHandler implements EventHandler {
       case "test:fail":
         this.#onEnd(
           this.#testResult,
-          this.#hasFixme(payload.result) ? ResultStatusFlags.Fixme : ResultStatusFlags.Failed,
+          this.#hasFixme(payload.result.test) ? ResultStatusFlags.Fixme : ResultStatusFlags.Failed,
           [this.#fileResult?.testCount, this.#result?.testCount],
-          this.#hasFixme(payload.result) ? "fixme" : "failed",
+          this.#hasFixme(payload.result.test) ? "fixme" : "failed",
         );
         break;
 
@@ -236,9 +237,9 @@ export class ResultHandler implements EventHandler {
       case "expect:fail":
         this.#onEnd(
           this.#expectResult,
-          this.#hasFixme(payload.result) ? ResultStatusFlags.Fixme : ResultStatusFlags.Failed,
+          this.#hasFixme(payload.result.expect) ? ResultStatusFlags.Fixme : ResultStatusFlags.Failed,
           [this.#result?.expectCount, this.#fileResult?.expectCount, this.#testResult?.expectCount],
-          this.#hasFixme(payload.result) ? "fixme" : "failed",
+          this.#hasFixme(payload.result.expect) ? "fixme" : "failed",
         );
         break;
 

@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
-import { Directive, type InlineConfig, type ResolvedConfig } from "#config";
+import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
@@ -48,12 +48,10 @@ export class TestTreeWalker {
     this.#whenService = new WhenService(reject, onFileDiagnostics);
   }
 
-  async #getInlineConfig({ node }: { node: ts.Node }) {
-    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, node);
-    return await Directive.getInlineConfig(directiveRanges);
-  }
+  async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
+    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, node.node);
+    const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
-  #resolveRunMode(flags: RunModeFlags, node: TestTreeNode, inlineConfig: InlineConfig | undefined) {
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       flags |= RunModeFlags.Void;
     }
@@ -118,15 +116,13 @@ export class TestTreeWalker {
   async #visitExpect(expect: ExpectNode, runModeFlags: RunModeFlags, parentResult: TestResult | undefined) {
     await this.visit(expect.children, runModeFlags, parentResult);
 
-    const inlineConfig = await this.#getInlineConfig(expect);
-
-    runModeFlags = this.#resolveRunMode(runModeFlags, expect, inlineConfig);
+    runModeFlags = await this.#resolveRunMode(runModeFlags, expect);
 
     if (runModeFlags & RunModeFlags.Void) {
       return;
     }
 
-    const expectResult = new ExpectResult(expect, parentResult, inlineConfig);
+    const expectResult = new ExpectResult(expect, parentResult);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
 
@@ -163,15 +159,13 @@ export class TestTreeWalker {
   }
 
   async #visitDescribe(describe: TestTreeNode, runModeFlags: RunModeFlags, parentResult: DescribeResult | undefined) {
-    const inlineConfig = await this.#getInlineConfig(describe);
-
-    runModeFlags = this.#resolveRunMode(runModeFlags, describe, inlineConfig);
+    runModeFlags = await this.#resolveRunMode(runModeFlags, describe);
 
     if (runModeFlags & RunModeFlags.Void) {
       return;
     }
 
-    const describeResult = new DescribeResult(describe, parentResult, inlineConfig);
+    const describeResult = new DescribeResult(describe, parentResult);
 
     EventEmitter.dispatch(["describe:start", { result: describeResult }]);
 
@@ -192,15 +186,13 @@ export class TestTreeWalker {
   }
 
   async #visitTest(test: TestTreeNode, runModeFlags: RunModeFlags, parentResult: DescribeResult | undefined) {
-    const inlineConfig = await this.#getInlineConfig(test);
-
-    runModeFlags = this.#resolveRunMode(runModeFlags, test, inlineConfig);
+    runModeFlags = await this.#resolveRunMode(runModeFlags, test);
 
     if (runModeFlags & RunModeFlags.Void) {
       return;
     }
 
-    const testResult = new TestResult(test, parentResult, inlineConfig);
+    const testResult = new TestResult(test, parentResult);
 
     EventEmitter.dispatch(["test:start", { result: testResult }]);
 
