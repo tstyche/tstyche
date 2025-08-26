@@ -1,5 +1,4 @@
 import { describeNameText, fileViewText, testNameText } from "#output";
-import type { ResultStatusFlags } from "#result";
 import type { ScribblerJsx } from "#scribbler";
 
 export class FileView {
@@ -15,7 +14,7 @@ export class FileView {
     this.#messages.push(message);
   }
 
-  addTest(status: Exclude<ResultStatusFlags, ResultStatusFlags.Runs>, name: string): void {
+  addTest(status: "fail" | "pass" | "skip" | "todo", name: string): void {
     this.#lines.push(testNameText(status, name, this.#indent));
   }
 

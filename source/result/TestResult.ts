@@ -3,7 +3,7 @@ import type { Diagnostic } from "#diagnostic";
 import type { DescribeResult } from "./DescribeResult.js";
 import type { ExpectResult } from "./ExpectResult.js";
 import { ResultCount } from "./ResultCount.js";
-import { ResultStatusFlags } from "./ResultStatusFlags.enum.js";
+import { ResultStatus } from "./ResultStatus.enum.js";
 import { ResultTiming } from "./ResultTiming.js";
 
 export class TestResult {
@@ -11,7 +11,7 @@ export class TestResult {
   expectCount = new ResultCount();
   parent: DescribeResult | undefined;
   results: Array<ExpectResult> = [];
-  status: ResultStatusFlags = ResultStatusFlags.Runs;
+  status: ResultStatus = ResultStatus.Runs;
   test: TestTreeNode;
   timing = new ResultTiming();
 

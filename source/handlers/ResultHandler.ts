@@ -6,7 +6,7 @@ import {
   type FileResult,
   ProjectResult,
   type Result,
-  ResultStatusFlags,
+  ResultStatus,
   type TargetResult,
   type TestResult,
 } from "#result";
@@ -40,11 +40,11 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "target:end":
-        if (this.#targetResult!.status === ResultStatusFlags.Failed) {
+        if (this.#targetResult!.status === ResultStatus.Failed) {
           this.#result!.targetCount.failed++;
         } else {
           this.#result!.targetCount.passed++;
-          this.#targetResult!.status = ResultStatusFlags.Passed;
+          this.#targetResult!.status = ResultStatus.Passed;
         }
 
         this.#targetResult!.timing.end = Date.now();
@@ -53,7 +53,7 @@ export class ResultHandler implements EventHandler {
 
       case "store:error":
         if (payload.diagnostics.some(({ category }) => category === DiagnosticCategory.Error)) {
-          this.#targetResult!.status = ResultStatusFlags.Failed;
+          this.#targetResult!.status = ResultStatus.Failed;
         }
         break;
 
@@ -71,7 +71,7 @@ export class ResultHandler implements EventHandler {
       }
 
       case "project:error":
-        this.#targetResult!.status = ResultStatusFlags.Failed;
+        this.#targetResult!.status = ResultStatus.Failed;
         this.#projectResult!.diagnostics.push(...payload.diagnostics);
         break;
 
@@ -85,23 +85,23 @@ export class ResultHandler implements EventHandler {
       case "file:error":
       case "directive:error":
       case "collect:error":
-        this.#targetResult!.status = ResultStatusFlags.Failed;
-        this.#fileResult!.status = ResultStatusFlags.Failed;
+        this.#targetResult!.status = ResultStatus.Failed;
+        this.#fileResult!.status = ResultStatus.Failed;
         this.#fileResult!.diagnostics.push(...payload.diagnostics);
         break;
 
       case "file:end":
         if (
-          this.#fileResult!.status === ResultStatusFlags.Failed ||
+          this.#fileResult!.status === ResultStatus.Failed ||
           this.#fileResult!.expectCount.failed > 0 ||
           this.#fileResult!.testCount.failed > 0
         ) {
           this.#result!.fileCount.failed++;
-          this.#targetResult!.status = ResultStatusFlags.Failed;
-          this.#fileResult!.status = ResultStatusFlags.Failed;
+          this.#targetResult!.status = ResultStatus.Failed;
+          this.#fileResult!.status = ResultStatus.Failed;
         } else {
           this.#result!.fileCount.passed++;
-          this.#fileResult!.status = ResultStatusFlags.Passed;
+          this.#fileResult!.status = ResultStatus.Passed;
         }
 
         this.#fileResult!.timing.end = Date.now();
@@ -139,7 +139,7 @@ export class ResultHandler implements EventHandler {
         this.#result!.testCount.failed++;
         this.#fileResult!.testCount.failed++;
 
-        this.#testResult!.status = ResultStatusFlags.Failed;
+        this.#testResult!.status = ResultStatus.Failed;
         this.#testResult!.diagnostics.push(...payload.diagnostics);
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
@@ -149,7 +149,7 @@ export class ResultHandler implements EventHandler {
         this.#result!.testCount.failed++;
         this.#fileResult!.testCount.failed++;
 
-        this.#testResult!.status = ResultStatusFlags.Failed;
+        this.#testResult!.status = ResultStatus.Failed;
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
@@ -158,7 +158,7 @@ export class ResultHandler implements EventHandler {
         this.#result!.testCount.passed++;
         this.#fileResult!.testCount.passed++;
 
-        this.#testResult!.status = ResultStatusFlags.Passed;
+        this.#testResult!.status = ResultStatus.Passed;
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
@@ -167,7 +167,7 @@ export class ResultHandler implements EventHandler {
         this.#result!.testCount.skipped++;
         this.#fileResult!.testCount.skipped++;
 
-        this.#testResult!.status = ResultStatusFlags.Skipped;
+        this.#testResult!.status = ResultStatus.Skipped;
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
@@ -176,7 +176,7 @@ export class ResultHandler implements EventHandler {
         this.#result!.testCount.todo++;
         this.#fileResult!.testCount.todo++;
 
-        this.#testResult!.status = ResultStatusFlags.Todo;
+        this.#testResult!.status = ResultStatus.Todo;
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
@@ -200,7 +200,7 @@ export class ResultHandler implements EventHandler {
           this.#testResult.expectCount.failed++;
         }
 
-        this.#expectResult!.status = ResultStatusFlags.Failed;
+        this.#expectResult!.status = ResultStatus.Failed;
         this.#expectResult!.diagnostics.push(...payload.diagnostics);
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
@@ -214,7 +214,7 @@ export class ResultHandler implements EventHandler {
           this.#testResult.expectCount.failed++;
         }
 
-        this.#expectResult!.status = ResultStatusFlags.Failed;
+        this.#expectResult!.status = ResultStatus.Failed;
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
         break;
@@ -227,7 +227,7 @@ export class ResultHandler implements EventHandler {
           this.#testResult.expectCount.passed++;
         }
 
-        this.#expectResult!.status = ResultStatusFlags.Passed;
+        this.#expectResult!.status = ResultStatus.Passed;
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
         break;
@@ -240,7 +240,7 @@ export class ResultHandler implements EventHandler {
           this.#testResult.expectCount.skipped++;
         }
 
-        this.#expectResult!.status = ResultStatusFlags.Skipped;
+        this.#expectResult!.status = ResultStatus.Skipped;
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
         break;
