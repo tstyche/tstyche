@@ -6,6 +6,6 @@ export class ResultCount {
   todo = 0;
 
   get total(): number {
-    return this.failed + this.passed + this.skipped + this.todo;
+    return this.failed + this.passed + this.skipped + this.fixme + this.todo;
   }
 }
