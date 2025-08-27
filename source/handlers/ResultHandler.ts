@@ -172,6 +172,15 @@ export class ResultHandler implements EventHandler {
         this.#testResult = undefined;
         break;
 
+      case "test:fixme":
+        this.#result!.testCount.fixme++;
+        this.#fileResult!.testCount.fixme++;
+
+        this.#testResult!.status = ResultStatus.Fixme;
+        this.#testResult!.timing.end = Date.now();
+        this.#testResult = undefined;
+        break;
+
       case "test:todo":
         this.#result!.testCount.todo++;
         this.#fileResult!.testCount.todo++;
@@ -241,6 +250,19 @@ export class ResultHandler implements EventHandler {
         }
 
         this.#expectResult!.status = ResultStatus.Skipped;
+        this.#expectResult!.timing.end = Date.now();
+        this.#expectResult = undefined;
+        break;
+
+      case "expect:fixme":
+        this.#result!.expectCount.fixme++;
+        this.#fileResult!.expectCount.fixme++;
+
+        if (this.#testResult) {
+          this.#testResult.expectCount.fixme++;
+        }
+
+        this.#expectResult!.status = ResultStatus.Fixme;
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
         break;

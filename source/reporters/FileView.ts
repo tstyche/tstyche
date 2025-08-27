@@ -14,7 +14,7 @@ export class FileView {
     this.#messages.push(message);
   }
 
-  addTest(status: "fail" | "pass" | "skip" | "todo", name: string): void {
+  addTest(status: "fail" | "pass" | "skip" | "fixme" | "todo", name: string): void {
     this.#lines.push(testNameText(status, name, this.#indent));
   }
 

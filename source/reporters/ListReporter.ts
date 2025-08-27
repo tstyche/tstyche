@@ -108,6 +108,12 @@ export class ListReporter extends BaseReporter {
         }
         break;
 
+      case "test:fixme":
+        if (this.#isFileViewExpanded) {
+          this.#fileView.addTest("fixme", payload.result.test.name);
+        }
+        break;
+
       case "test:todo":
         if (this.#isFileViewExpanded) {
           this.#fileView.addTest("todo", payload.result.test.name);

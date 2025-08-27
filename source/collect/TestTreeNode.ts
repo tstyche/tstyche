@@ -1,5 +1,4 @@
 import type ts from "typescript";
-import { Directive, type DirectiveRanges } from "#config";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { ExpectNode } from "./ExpectNode.js";
 import type { TestTree } from "./TestTree.js";
@@ -41,9 +40,5 @@ export class TestTreeNode {
         }
       }
     }
-  }
-
-  getDirectiveRanges(compiler: typeof ts): DirectiveRanges | undefined {
-    return Directive.getDirectiveRanges(compiler, this.node.getSourceFile(), this.node.getFullStart());
   }
 }

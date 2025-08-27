@@ -32,10 +32,12 @@ export type Event =
   | ["test:fail", { result: TestResult }]
   | ["test:pass", { result: TestResult }]
   | ["test:skip", { result: TestResult }]
+  | ["test:fixme", { result: TestResult }]
   | ["test:todo", { result: TestResult }]
   | ["expect:start", { result: ExpectResult }]
   | ["expect:error", { diagnostics: Array<Diagnostic>; result: ExpectResult }]
   | ["expect:fail", { diagnostics: Array<Diagnostic>; result: ExpectResult }]
   | ["expect:pass", { result: ExpectResult }]
   | ["expect:skip", { result: ExpectResult }]
+  | ["expect:fixme", { result: ExpectResult }]
   | ["watch:error", { diagnostics: Array<Diagnostic> }];
