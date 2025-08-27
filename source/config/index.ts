@@ -9,7 +9,6 @@ export type {
   CommandLineOptions,
   ConfigFileOptions,
   DirectiveRange,
-  DirectiveRangeWithParent,
   InlineConfig,
   ResolvedConfig,
   TextRange,

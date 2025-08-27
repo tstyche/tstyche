@@ -6,26 +6,16 @@ import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import type { DirectiveRange, DirectiveRangeWithParent, InlineConfig, OptionValue } from "./types.js";
+import type { DirectiveRange, InlineConfig, OptionValue } from "./types.js";
 
 export class Directive {
   static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
   static #rangeCache = new WeakMap<ts.Node, Array<DirectiveRange>>();
 
-  static getDirectiveRange(
-    compiler: typeof ts,
-    node: TestTreeNode,
-    directiveText: string,
-  ): DirectiveRangeWithParent | undefined {
+  static getDirectiveRange(compiler: typeof ts, node: TestTreeNode, directiveText: string): DirectiveRange | undefined {
     const directiveRanges = Directive.getDirectiveRanges(compiler, node.node);
 
-    const range = directiveRanges?.find((range) => range.directive?.text === directiveText);
-
-    if (!range) {
-      return;
-    }
-
-    return { ...range, parent: node };
+    return directiveRanges?.find((range) => range.directive?.text === directiveText);
   }
 
   static getDirectiveRanges(compiler: typeof ts, node: ts.Node): Array<DirectiveRange> | undefined {

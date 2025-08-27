@@ -119,7 +119,7 @@ export class TestTreeWalker {
       }
 
       if (directiveRange) {
-        FixmeService.end(directiveRange, this.#onFileDiagnostics);
+        FixmeService.end(directiveRange, node, this.#onFileDiagnostics);
       }
     }
   }

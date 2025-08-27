@@ -67,7 +67,3 @@ export interface DirectiveRange {
   directive?: TextRange;
   argument?: TextRange;
 }
-
-export interface DirectiveRangeWithParent extends DirectiveRange {
-  parent: TestTreeNode;
-}
