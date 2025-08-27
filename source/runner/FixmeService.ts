@@ -3,35 +3,33 @@ import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnost
 import { FixmeDiagnosticText } from "./FixmeDiagnosticText.js";
 
 export class FixmeService {
-  static #info = new Map<DirectiveRange, { isFixed: boolean }>();
+  static #rangeFacts = new Map<DirectiveRange, { hasFailing: boolean }>();
 
   static async start(directiveRange: DirectiveRange): Promise<void> {
     const inlineConfig = await Directive.getInlineConfig(directiveRange);
 
     if (inlineConfig?.fixme === true) {
-      FixmeService.#info.set(directiveRange, { isFixed: false });
+      FixmeService.#rangeFacts.set(directiveRange, { hasFailing: false });
     }
   }
 
   static isFixme(isPass: boolean): boolean {
-    if (FixmeService.#info.size === 0) {
-      return false;
-    }
-
-    if (isPass) {
-      for (const info of FixmeService.#info.values()) {
-        info.isFixed = true;
+    if (!isPass && FixmeService.#rangeFacts.size > 0) {
+      for (const info of FixmeService.#rangeFacts.values()) {
+        info.hasFailing = true;
       }
+
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   static end(directiveRange: DirectiveRange, onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
-    const fixmeInfo = FixmeService.#info.get(directiveRange);
+    const fixmeInfo = FixmeService.#rangeFacts.get(directiveRange);
 
     if (fixmeInfo != null) {
-      if (fixmeInfo.isFixed) {
+      if (!fixmeInfo.hasFailing) {
         const text = [FixmeDiagnosticText.wasSupposedToFail("assertion"), FixmeDiagnosticText.considerRemoving()];
 
         const origin = new DiagnosticOrigin(
@@ -44,7 +42,7 @@ export class FixmeService {
         onFileDiagnostics([Diagnostic.error(text, origin)]);
       }
 
-      FixmeService.#info.delete(directiveRange);
+      FixmeService.#rangeFacts.delete(directiveRange);
     }
   }
 }
