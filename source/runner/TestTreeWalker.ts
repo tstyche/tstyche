@@ -246,7 +246,7 @@ export class TestTreeWalker {
 
     const isPass = testResult.expectCount.failed === 0;
 
-    if (FixmeService.isFixme(isPass)) {
+    if (FixmeService.isFixme(isPass) || testResult.expectCount.fixme !== 0) {
       EventEmitter.dispatch(["test:fixme", { result: testResult }]);
 
       return;
