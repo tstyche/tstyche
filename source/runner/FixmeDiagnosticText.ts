@@ -4,6 +4,6 @@ export class FixmeDiagnosticText {
   }
 
   static wasSupposedToFail(target: string): string {
-    return `The ${target} was supposed to fail, but it passed.`;
+    return `The '${target}()' was supposed to fail, but it passed.`;
   }
 }

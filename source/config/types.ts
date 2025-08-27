@@ -1,3 +1,6 @@
+import type ts from "typescript";
+import type { TestTreeNode } from "#collect";
+
 // #region -- Generated code, to update run: yarn build && yarn generate
 
 export interface CommandLineOptions {
@@ -50,4 +53,21 @@ export interface ResolvedConfig
     Required<ConfigFileOptions> {
   configFilePath: string;
   pathMatch: Array<string>;
+}
+
+export interface TextRange {
+  start: number;
+  end: number;
+  text: string;
+}
+
+export interface DirectiveRange {
+  sourceFile: ts.SourceFile;
+  namespace: TextRange;
+  directive?: TextRange;
+  argument?: TextRange;
+}
+
+export interface DirectiveRangeWithParent extends DirectiveRange {
+  parent: TestTreeNode;
 }

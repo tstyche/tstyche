@@ -1,33 +1,31 @@
 import type ts from "typescript";
+import type { TestTreeNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import type { InlineConfig, OptionValue } from "./types.js";
-
-export interface TextRange {
-  start: number;
-  end: number;
-  text: string;
-}
-
-export interface DirectiveRange {
-  sourceFile: ts.SourceFile;
-  namespace: TextRange;
-  directive?: TextRange;
-  argument?: TextRange;
-}
+import type { DirectiveRange, DirectiveRangeWithParent, InlineConfig, OptionValue } from "./types.js";
 
 export class Directive {
   static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
   static #rangeCache = new WeakMap<ts.Node, Array<DirectiveRange>>();
 
-  static getDirectiveRange(compiler: typeof ts, node: ts.Node, directiveText: string): DirectiveRange | undefined {
-    const directiveRanges = Directive.getDirectiveRanges(compiler, node);
+  static getDirectiveRange(
+    compiler: typeof ts,
+    node: TestTreeNode,
+    directiveText: string,
+  ): DirectiveRangeWithParent | undefined {
+    const directiveRanges = Directive.getDirectiveRanges(compiler, node.node);
 
-    return directiveRanges?.find((range) => range.directive?.text === directiveText);
+    const range = directiveRanges?.find((range) => range.directive?.text === directiveText);
+
+    if (!range) {
+      return;
+    }
+
+    return { ...range, parent: node };
   }
 
   static getDirectiveRanges(compiler: typeof ts, node: ts.Node): Array<DirectiveRange> | undefined {

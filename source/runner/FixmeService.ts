@@ -1,11 +1,11 @@
-import { Directive, type DirectiveRange } from "#config";
+import { Directive, type DirectiveRangeWithParent } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { FixmeDiagnosticText } from "./FixmeDiagnosticText.js";
 
 export class FixmeService {
-  static #directiveFacts = new Map<DirectiveRange, { hasFailing: boolean }>();
+  static #directiveFacts = new Map<DirectiveRangeWithParent, { hasFailing: boolean }>();
 
-  static async start(directiveRange: DirectiveRange): Promise<void> {
+  static async start(directiveRange: DirectiveRangeWithParent): Promise<void> {
     const inlineConfig = await Directive.getInlineConfig(directiveRange);
 
     if (inlineConfig?.fixme === true) {
@@ -25,12 +25,14 @@ export class FixmeService {
     return false;
   }
 
-  static end(directiveRange: DirectiveRange, onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
+  static end(directiveRange: DirectiveRangeWithParent, onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
     const fixmeInfo = FixmeService.#directiveFacts.get(directiveRange);
 
     if (fixmeInfo != null) {
       if (!fixmeInfo.hasFailing) {
-        const text = [FixmeDiagnosticText.wasSupposedToFail("assertion"), FixmeDiagnosticText.considerRemoving()];
+        const targetText = directiveRange.parent.node.expression.getText();
+
+        const text = [FixmeDiagnosticText.wasSupposedToFail(targetText), FixmeDiagnosticText.considerRemoving()];
 
         const origin = new DiagnosticOrigin(
           directiveRange.namespace.start,

@@ -50,7 +50,7 @@ export class TestTreeWalker {
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
-    const directiveRange = Directive.getDirectiveRange(this.#compiler, node.node, "if");
+    const directiveRange = Directive.getDirectiveRange(this.#compiler, node, "if");
     const inlineConfig = await Directive.getInlineConfig(directiveRange);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
@@ -94,7 +94,7 @@ export class TestTreeWalker {
         break;
       }
 
-      const directiveRange = Directive.getDirectiveRange(this.#compiler, node.node, "fixme");
+      const directiveRange = Directive.getDirectiveRange(this.#compiler, node, "fixme");
 
       if (directiveRange) {
         FixmeService.start(directiveRange);
