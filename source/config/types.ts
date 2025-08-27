@@ -1,5 +1,4 @@
 import type ts from "typescript";
-import type { TestTreeNode } from "#collect";
 
 // #region -- Generated code, to update run: yarn build && yarn generate
 

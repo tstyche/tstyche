@@ -50,8 +50,8 @@ export class TestTreeWalker {
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
-    const directiveRange = Directive.getDirectiveRange(this.#compiler, node, "if");
-    const inlineConfig = await Directive.getInlineConfig(directiveRange);
+    const ifDirective = Directive.getDirectiveRange(this.#compiler, node, "if");
+    const inlineConfig = await Directive.getInlineConfig(ifDirective);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       flags |= RunModeFlags.Void;
@@ -94,10 +94,10 @@ export class TestTreeWalker {
         break;
       }
 
-      const directiveRange = Directive.getDirectiveRange(this.#compiler, node, "fixme");
+      const fixmeDirective = Directive.getDirectiveRange(this.#compiler, node, "fixme");
 
-      if (directiveRange) {
-        FixmeService.start(directiveRange);
+      if (fixmeDirective) {
+        FixmeService.start(fixmeDirective);
       }
 
       switch (node.brand) {
@@ -118,8 +118,8 @@ export class TestTreeWalker {
           break;
       }
 
-      if (directiveRange) {
-        FixmeService.end(directiveRange, node, this.#onFileDiagnostics);
+      if (fixmeDirective) {
+        FixmeService.end(fixmeDirective, node, this.#onFileDiagnostics);
       }
     }
   }
