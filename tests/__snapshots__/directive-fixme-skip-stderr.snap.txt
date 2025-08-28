@@ -1,0 +1,14 @@
+Error: The 'expect()' was supposed to fail, but it passed.
+
+Consider removing the '// @tstyche fixme' directive.
+
+  14 |     // @tstyche fixme -- This should work, see: #265
+  15 |     expect<never>().type.toBe<string>();
+  16 |     // @tstyche fixme -- Consider removing the directive
+     |     ~~~~~~~~~~~~~~~~~
+  17 |     expect<string>().type.toBe<string>();
+  18 |   })
+  19 |   .type.toBe<void>();
+
+       at ./__typetests__/directive-fixme-skip.tst.ts:16:5
+

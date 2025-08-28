@@ -13,6 +13,8 @@ expect
     expect<number>().type.toBe<number>();
     // @tstyche fixme -- This should work, see: #265
     expect<never>().type.toBe<string>();
+    // @tstyche fixme -- Consider removing the directive
+    expect<string>().type.toBe<string>();
   })
   .type.toBe<void>();
 

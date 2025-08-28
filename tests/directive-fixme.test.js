@@ -37,6 +37,6 @@ await test("'// @tstyche fixme' directive", async (t) => {
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(exitCode, 0);
+    assert.equal(exitCode, 1);
   });
 });
