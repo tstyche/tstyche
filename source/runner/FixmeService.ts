@@ -26,6 +26,14 @@ export class FixmeService {
     return false;
   }
 
+  static isFixmeHelper(): boolean {
+    if (FixmeService.#directiveFacts.size > 0) {
+      return Array.from(FixmeService.#directiveFacts.values()).some(({ hasFailing }) => hasFailing === true);
+    }
+
+    return false;
+  }
+
   static end(
     directive: DirectiveRange,
     owner: TestTreeNode,

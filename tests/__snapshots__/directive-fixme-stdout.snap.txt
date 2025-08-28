@@ -1,14 +1,13 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/directive-fixme.tst.ts
-  - fixme is number?
-  + is NOT fixme?
+  + is number?
   - fixme is fixme?
-  is describe?
-    - fixme is string?
+  - fixme is fixme?
+  + is number?
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      3 fixme, 1 passed, 4 total
+Tests:      2 fixme, 2 passed, 4 total
 Assertions: 5 fixme, 13 passed, 18 total
 Duration:   <<timestamp>>
