@@ -12,8 +12,12 @@ export class Directive {
   static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
   static #rangeCache = new WeakMap<ts.Node, Array<DirectiveRange>>();
 
-  static getDirectiveRange(compiler: typeof ts, node: TestTreeNode, directiveText: string): DirectiveRange | undefined {
-    const directiveRanges = Directive.getDirectiveRanges(compiler, node.node);
+  static getDirectiveRange(
+    compiler: typeof ts,
+    owner: TestTreeNode,
+    directiveText: string,
+  ): DirectiveRange | undefined {
+    const directiveRanges = Directive.getDirectiveRanges(compiler, owner.node);
 
     return directiveRanges?.find((range) => range.directive?.text === directiveText);
   }
