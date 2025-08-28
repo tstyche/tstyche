@@ -97,7 +97,7 @@ export class TestTreeWalker {
       const fixmeDirective = Directive.getDirectiveRange(this.#compiler, node, "fixme");
 
       if (fixmeDirective) {
-        FixmeService.start(fixmeDirective);
+        FixmeService.start(fixmeDirective, node);
       }
 
       switch (node.brand) {
@@ -246,7 +246,7 @@ export class TestTreeWalker {
 
     const isPass = testResult.expectCount.failed === 0;
 
-    if (FixmeService.isFixmeHelper()) {
+    if (FixmeService.isFixmeHelper(test)) {
       EventEmitter.dispatch(["test:fixme", { result: testResult }]);
 
       return;

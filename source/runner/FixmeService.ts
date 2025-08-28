@@ -7,16 +7,17 @@ interface TrackedRange {
   hasFailing?: boolean;
   previous: TrackedRange | undefined;
   directive: DirectiveRange;
+  owner: TestTreeNode;
 }
 
 export class FixmeService {
   static #currentRange: TrackedRange | undefined;
 
-  static async start(directive: DirectiveRange): Promise<void> {
+  static async start(directive: DirectiveRange, owner: TestTreeNode): Promise<void> {
     const inlineConfig = await Directive.getInlineConfig(directive);
 
     if (inlineConfig?.fixme === true) {
-      FixmeService.#currentRange = { previous: FixmeService.#currentRange, directive };
+      FixmeService.#currentRange = { previous: FixmeService.#currentRange, directive, owner };
     }
   }
 
@@ -34,12 +35,8 @@ export class FixmeService {
     return false;
   }
 
-  static isFixmeHelper(): boolean {
-    if (FixmeService.#currentRange != null) {
-      return FixmeService.#currentRange.hasFailing === true;
-    }
-
-    return false;
+  static isFixmeHelper(owner: TestTreeNode): boolean {
+    return owner === FixmeService.#currentRange?.owner && FixmeService.#currentRange.hasFailing === true;
   }
 
   static end(
@@ -47,7 +44,7 @@ export class FixmeService {
     owner: TestTreeNode,
     onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): void {
-    if (FixmeService.#currentRange != null) {
+    if (owner === FixmeService.#currentRange?.owner) {
       if (FixmeService.#currentRange.hasFailing !== true) {
         const targetText = owner.node.expression.getText();
 
