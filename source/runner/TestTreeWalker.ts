@@ -164,7 +164,7 @@ export class TestTreeWalker {
 
     const isPass = expect.isNot ? !matchResult.isMatch : matchResult.isMatch;
 
-    if (FixmeService.isFixme(isPass)) {
+    if (FixmeService.isFixme(expect, isPass)) {
       EventEmitter.dispatch(["expect:fixme", { result: expectResult }]);
 
       return;

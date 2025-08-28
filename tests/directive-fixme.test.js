@@ -23,4 +23,20 @@ await test("'// @tstyche fixme' directive", async (t) => {
 
     assert.equal(exitCode, 1);
   });
+
+  await t.test("when specified with '.skip'", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["directive-fixme-skip.tst.ts"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-skip-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-skip-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
 });

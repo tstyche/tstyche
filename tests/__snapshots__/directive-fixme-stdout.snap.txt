@@ -22,5 +22,5 @@ fail ./__typetests__/directive-fixme.tst.ts
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      4 fixme, 10 passed, 14 total
-Assertions: 11 fixme, 24 passed, 35 total
+Assertions: 12 fixme, 24 passed, 36 total
 Duration:   <<timestamp>>
