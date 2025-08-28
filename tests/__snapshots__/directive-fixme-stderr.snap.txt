@@ -16,22 +16,22 @@ Error: The 'expect()' was supposed to fail, but it passed.
 
 Consider removing the '// @tstyche fixme' directive.
 
-  14 | 
-  15 | test("is number?", () => {
-  16 |   // @tstyche fixme -- Consider removing the directive
+  15 | // @tstyche fixme
+  16 | test("is fixme?", () => {
+  17 |   // @tstyche fixme -- Consider removing the directive
      |   ~~~~~~~~~~~~~~~~~
-  17 |   expect<number>().type.toBe<number>();
-  18 | 
-  19 |   // @tstyche fixme
+  18 |   expect<number>().type.toBe<number>();
+  19 | 
+  20 |   expect<never>().type.toBe<number>(); // silenced fail
 
-       at ./__typetests__/directive-fixme.tst.ts:16:3
+       at ./__typetests__/directive-fixme.tst.ts:17:3
 
 Error: The 'expect()' was supposed to fail, but it passed.
 
 Consider removing the '// @tstyche fixme' directive.
 
-  24 | // @tstyche fixme
-  25 | test("is fixme?", () => {
+  24 | // @tstyche fixme -- Consider removing the directive
+  25 | test("is number?", () => {
   26 |   // @tstyche fixme -- Consider removing the directive
      |   ~~~~~~~~~~~~~~~~~
   27 |   expect<number>().type.toBe<number>();
@@ -40,31 +40,17 @@ Consider removing the '// @tstyche fixme' directive.
 
        at ./__typetests__/directive-fixme.tst.ts:26:3
 
-Error: The 'expect()' was supposed to fail, but it passed.
-
-Consider removing the '// @tstyche fixme' directive.
-
-  41 | test("is number?", () => {
-  42 |   expect<number>().type.toBe<number>();
-  43 |   // @tstyche fixme -- Consider removing the directive
-     |   ~~~~~~~~~~~~~~~~~
-  44 |   expect<number>().type.toBe<number>();
-  45 | });
-  46 | 
-
-       at ./__typetests__/directive-fixme.tst.ts:43:3
-
 Error: The 'test()' was supposed to fail, but it passed.
 
 Consider removing the '// @tstyche fixme' directive.
 
-  38 | });
-  39 | 
-  40 | // @tstyche fixme -- Consider removing the directive
+  22 | });
+  23 | 
+  24 | // @tstyche fixme -- Consider removing the directive
      | ~~~~~~~~~~~~~~~~~
-  41 | test("is number?", () => {
-  42 |   expect<number>().type.toBe<number>();
-  43 |   // @tstyche fixme -- Consider removing the directive
+  25 | test("is number?", () => {
+  26 |   // @tstyche fixme -- Consider removing the directive
+  27 |   expect<number>().type.toBe<number>();
 
-       at ./__typetests__/directive-fixme.tst.ts:40:1
+       at ./__typetests__/directive-fixme.tst.ts:24:1
 

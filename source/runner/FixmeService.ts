@@ -3,32 +3,40 @@ import { Directive, type DirectiveRange } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { FixmeDiagnosticText } from "./FixmeDiagnosticText.js";
 
+interface TrackedRange {
+  hasFailing?: boolean;
+  previous: TrackedRange | undefined;
+  directive: DirectiveRange;
+}
+
 export class FixmeService {
-  static #directiveFacts = new Map<DirectiveRange, { hasFailing: boolean }>();
+  static #currentRange: TrackedRange | undefined;
 
   static async start(directive: DirectiveRange): Promise<void> {
     const inlineConfig = await Directive.getInlineConfig(directive);
 
     if (inlineConfig?.fixme === true) {
-      FixmeService.#directiveFacts.set(directive, { hasFailing: false });
+      FixmeService.#currentRange = { previous: FixmeService.#currentRange, directive };
     }
   }
 
   static isFixme(isPass: boolean): boolean {
-    if (FixmeService.#directiveFacts.size > 0 && !isPass) {
-      for (const info of FixmeService.#directiveFacts.values()) {
-        info.hasFailing = true;
+    if (FixmeService.#currentRange != null) {
+      if (!isPass) {
+        FixmeService.#currentRange.hasFailing = true;
+
+        return true;
       }
 
-      return true;
+      FixmeService.#currentRange.hasFailing ?? false;
     }
 
     return false;
   }
 
   static isFixmeHelper(): boolean {
-    if (FixmeService.#directiveFacts.size > 0) {
-      return Array.from(FixmeService.#directiveFacts.values()).some(({ hasFailing }) => hasFailing === true);
+    if (FixmeService.#currentRange != null) {
+      return FixmeService.#currentRange.hasFailing === true;
     }
 
     return false;
@@ -39,10 +47,8 @@ export class FixmeService {
     owner: TestTreeNode,
     onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): void {
-    const fixmeInfo = FixmeService.#directiveFacts.get(directive);
-
-    if (fixmeInfo != null) {
-      if (!fixmeInfo.hasFailing) {
+    if (FixmeService.#currentRange != null) {
+      if (FixmeService.#currentRange.hasFailing !== true) {
         const targetText = owner.node.expression.getText();
 
         const text = [FixmeDiagnosticText.wasSupposedToFail(targetText), FixmeDiagnosticText.considerRemoving()];
@@ -57,7 +63,7 @@ export class FixmeService {
         onFileDiagnostics([Diagnostic.error(text, origin)]);
       }
 
-      FixmeService.#directiveFacts.delete(directive);
+      FixmeService.#currentRange = FixmeService.#currentRange?.previous;
     }
   }
 }
