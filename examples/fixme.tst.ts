@@ -10,7 +10,8 @@ expect(test(() => Promise.resolve())).type.toBe<Promise<void>>();
 it("() => unknown", () => {
   expect(test(() => {})).type.toBe<void>();
 });
-// @tstyche fixme -- This should work, see: #265
+
+// @tstyche fixme -- Known bug, see: #345
 it("() => Promise<unknown>", () => {
   expect(test(() => Promise.resolve())).type.toBe<Promise<void>>();
 });
