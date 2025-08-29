@@ -39,4 +39,20 @@ await test("'// @tstyche fixme' directive", async (t) => {
 
     assert.equal(exitCode, 1);
   });
+
+  await t.test("when specified with '.only'", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["directive-fixme-only.tst.ts"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-only-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-only-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });
