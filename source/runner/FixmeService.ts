@@ -4,50 +4,52 @@ import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnost
 import { FixmeDiagnosticText } from "./FixmeDiagnosticText.js";
 
 interface TrackedRange {
-  isFail?: boolean | undefined;
-  previous?: TrackedRange | undefined;
   directive: DirectiveRange;
   owner: TestTreeNode;
+  previous?: TrackedRange | undefined;
+  isFail?: boolean | undefined;
 }
 
 export class FixmeService {
-  static #currentExpect: TrackedRange | undefined;
-  static #currentRange: TrackedRange | undefined;
+  static #expectRange: TrackedRange | undefined;
+  static #range: TrackedRange | undefined;
 
   static async start(directive: DirectiveRange, owner: TestTreeNode): Promise<void> {
     const inlineConfig = await Directive.getInlineConfig(directive);
 
     if (inlineConfig?.fixme === true) {
       if (owner.brand === TestTreeNodeBrand.Expect) {
-        FixmeService.#currentExpect = { previous: FixmeService.#currentExpect, directive, owner };
+        FixmeService.#expectRange = { directive, owner, previous: FixmeService.#expectRange };
       } else {
-        FixmeService.#currentRange = { previous: FixmeService.#currentRange, directive, owner };
+        FixmeService.#range = { directive, owner, previous: FixmeService.#range };
       }
     }
   }
 
   static isFixme(owner: TestTreeNode, isPass: boolean): boolean {
-    if (owner === FixmeService.#currentExpect?.owner) {
-      FixmeService.#currentExpect.isFail = !isPass;
+    if (owner.brand !== TestTreeNodeBrand.Expect) {
+      return owner === FixmeService.#range?.owner && FixmeService.#range.isFail === true;
+    }
+
+    // handles own fixme 'expect()' failures
+    if (owner === FixmeService.#expectRange?.owner) {
+      FixmeService.#expectRange.isFail = !isPass;
 
       return !isPass;
     }
 
-    if (FixmeService.#currentRange != null) {
+    // otherwise the failures propagate to the parent
+    if (FixmeService.#range != null) {
       if (!isPass) {
-        FixmeService.#currentRange.isFail = true;
+        FixmeService.#range.isFail = true;
 
         return true;
       }
 
-      FixmeService.#currentRange.isFail ??= false;
+      FixmeService.#range.isFail ??= false;
     }
 
     return false;
-  }
-
-  static isFixmeHelper(owner: TestTreeNode): boolean {
-    return owner === FixmeService.#currentRange?.owner && FixmeService.#currentRange.isFail === true;
   }
 
   static end(
@@ -57,14 +59,14 @@ export class FixmeService {
   ): void {
     let isFail: boolean | undefined;
 
-    if (owner === FixmeService.#currentExpect?.owner) {
-      isFail = FixmeService.#currentExpect.isFail;
-      FixmeService.#currentExpect = FixmeService.#currentExpect?.previous;
+    if (owner === FixmeService.#expectRange?.owner) {
+      isFail = FixmeService.#expectRange.isFail;
+      FixmeService.#expectRange = FixmeService.#expectRange?.previous;
     }
 
-    if (owner === FixmeService.#currentRange?.owner) {
-      isFail = FixmeService.#currentRange?.isFail;
-      FixmeService.#currentRange = FixmeService.#currentRange?.previous;
+    if (owner === FixmeService.#range?.owner) {
+      isFail = FixmeService.#range?.isFail;
+      FixmeService.#range = FixmeService.#range?.previous;
     }
 
     if (isFail === false) {
