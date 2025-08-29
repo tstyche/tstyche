@@ -1,5 +1,35 @@
 # Changelog
 
+## [5.0.0-beta.0] - 2025-08-29
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
+
+### Added
+
+- **New!** Add the `// @tstyche fixme` directive ([#574](https://github.com/tstyche/tstyche/pull/574))
+- **New!** Allow suppressed error messages to be truncated with `...` ([#573](https://github.com/tstyche/tstyche/pull/573))
+- **New!** Add the `checkDeclarationFiles` configuration option ([#569](https://github.com/tstyche/tstyche/pull/569))
+
+### Fixed
+
+- Handle leading tabs when collecting directives ([#558](https://github.com/tstyche/tstyche/pull/558))
+- Map the ability diagnostics more precise ([#525](https://github.com/tstyche/tstyche/pull/525))
+
+### Changed
+
+- **Breaking!** Remove `allowJs` and `checkJs` from default compiler options ([#571](https://github.com/tstyche/tstyche/pull/571))
+- **Breaking!** Remove the `checkSourceFiles` configuration option ([#570](https://github.com/tstyche/tstyche/pull/570))
+- **Breaking!** Rename `OptionBrand.True` ([#565](https://github.com/tstyche/tstyche/pull/565))
+- **Breaking!** Change the `target` option to accept only a semver string value ([#562](https://github.com/tstyche/tstyche/pull/562))
+- **Breaking!** Change the default `target` value to `"*"` ([#561](https://github.com/tstyche/tstyche/pull/561))
+- **Breaking!** Remove the `.fail` run mode flag ([#560](https://github.com/tstyche/tstyche/pull/560))
+- **Breaking!** Rename the `ExpectNode` ([#559](https://github.com/tstyche/tstyche/pull/559))
+- **Breaking!** Rename the `FileLocation` class ([#554](https://github.com/tstyche/tstyche/pull/554))
+- **Breaking!** Drop support for few older Node.js 20 versions ([#552](https://github.com/tstyche/tstyche/pull/552))
+- **Breaking!** Enable the `checkSuppressedErrors` option by default ([#551](https://github.com/tstyche/tstyche/pull/551))
+- **Breaking!** Pass `testTree` to `SuppressedService#match()` ([#550](https://github.com/tstyche/tstyche/pull/550))
+- Read tarball content from the stream ([#546](https://github.com/tstyche/tstyche/pull/546))
+
 ## [4.3.0] - 2025-07-16
 
 ## Added
@@ -765,6 +795,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[5.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.0
 [4.3.0]: https://github.com/tstyche/tstyche/releases/tag/v4.3.0
 [4.2.0]: https://github.com/tstyche/tstyche/releases/tag/v4.2.0
 [4.1.0]: https://github.com/tstyche/tstyche/releases/tag/v4.1.0
