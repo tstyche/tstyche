@@ -1,0 +1,43 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/directive-fixme-only.tst.ts
+  - skip is skip?
+  - fixme is fixme?
+  - skip is skip?
+  + is number?
+  - skip is skip?
+  + is number?
+  is skip?
+    - skip is skip?
+    - skip is skip?
+    - skip is skip?
+    - skip is skip?
+    - skip is skip?
+  is fixme?
+    + is number?
+    + is number?
+    + is number?
+    - fixme is fixme?
+    + is number?
+  is skip?
+    - skip is skip?
+    - skip is skip?
+    - skip is skip?
+  is describe?
+    + is number?
+    - fixme is fixme?
+    + is number?
+  is skip?
+    - skip is skip?
+    - skip is skip?
+    - skip is skip?
+  is describe?
+    + is number?
+    + is number?
+    - fixme is fixme?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      4 fixme, 14 skipped, 10 passed, 28 total
+Assertions: 11 fixme, 33 skipped, 24 passed, 68 total
+Duration:   <<timestamp>>

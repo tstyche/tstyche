@@ -9,6 +9,7 @@ import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
 import { WhenService } from "#when";
+import { FixmeService } from "./FixmeService.js";
 import { RunModeFlags } from "./RunModeFlags.enum.js";
 
 interface TestTreeWalkerOptions {
@@ -49,8 +50,8 @@ export class TestTreeWalker {
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
-    const directiveRanges = node.getDirectiveRanges(this.#compiler);
-    const inlineConfig = await Directive.getInlineConfig(directiveRanges);
+    const ifDirective = Directive.getDirectiveRange(this.#compiler, node, "if");
+    const inlineConfig = await Directive.getInlineConfig(ifDirective);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
       flags |= RunModeFlags.Void;
@@ -93,6 +94,12 @@ export class TestTreeWalker {
         break;
       }
 
+      const fixmeDirective = Directive.getDirectiveRange(this.#compiler, node, "fixme");
+
+      if (fixmeDirective) {
+        FixmeService.start(fixmeDirective, node);
+      }
+
       switch (node.brand) {
         case TestTreeNodeBrand.Describe:
           await this.#visitDescribe(node, runModeFlags, parentResult as DescribeResult | undefined);
@@ -109,6 +116,10 @@ export class TestTreeWalker {
         case TestTreeNodeBrand.When:
           this.#visitWhen(node as WhenNode);
           break;
+      }
+
+      if (fixmeDirective) {
+        FixmeService.end(fixmeDirective, node, this.#onFileDiagnostics);
       }
     }
   }
@@ -151,7 +162,15 @@ export class TestTreeWalker {
       return;
     }
 
-    if (expect.isNot ? !matchResult.isMatch : matchResult.isMatch) {
+    const isPass = expect.isNot ? !matchResult.isMatch : matchResult.isMatch;
+
+    if (FixmeService.isFixme(expect, isPass)) {
+      EventEmitter.dispatch(["expect:fixme", { result: expectResult }]);
+
+      return;
+    }
+
+    if (isPass) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);
@@ -225,10 +244,18 @@ export class TestTreeWalker {
       return;
     }
 
-    if (testResult.expectCount.failed > 0) {
-      EventEmitter.dispatch(["test:fail", { result: testResult }]);
-    } else {
+    const isPass = testResult.expectCount.failed === 0;
+
+    if (FixmeService.isFixme(test, isPass)) {
+      EventEmitter.dispatch(["test:fixme", { result: testResult }]);
+
+      return;
+    }
+
+    if (isPass) {
       EventEmitter.dispatch(["test:pass", { result: testResult }]);
+    } else {
+      EventEmitter.dispatch(["test:fail", { result: testResult }]);
     }
   }
 

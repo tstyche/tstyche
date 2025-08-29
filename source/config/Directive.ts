@@ -1,37 +1,51 @@
 import type ts from "typescript";
+import type { TestTreeNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import type { InlineConfig, OptionValue } from "./types.js";
-
-export interface TextRange {
-  start: number;
-  end: number;
-  text: string;
-}
-
-export interface DirectiveRange {
-  namespace: TextRange;
-  directive?: TextRange;
-  argument?: TextRange;
-}
-
-export type DirectiveRanges = Array<DirectiveRange> & { sourceFile: ts.SourceFile };
+import type { DirectiveRange, InlineConfig, OptionValue } from "./types.js";
 
 export class Directive {
   static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
+  static #rangeCache = new WeakMap<ts.Node, Array<DirectiveRange>>();
 
-  static getDirectiveRanges(compiler: typeof ts, sourceFile: ts.SourceFile, position = 0): DirectiveRanges | undefined {
+  static getDirectiveRange(
+    compiler: typeof ts,
+    owner: TestTreeNode,
+    directiveText: string,
+  ): DirectiveRange | undefined {
+    const directiveRanges = Directive.getDirectiveRanges(compiler, owner.node);
+
+    return directiveRanges?.find((range) => range.directive?.text === directiveText);
+  }
+
+  static getDirectiveRanges(compiler: typeof ts, node: ts.Node): Array<DirectiveRange> | undefined {
+    let ranges = Directive.#rangeCache.get(node);
+
+    if (ranges != null) {
+      return ranges;
+    }
+
+    let sourceFile: ts.SourceFile;
+    let position = 0;
+
+    if (compiler.isSourceFile(node)) {
+      sourceFile = node;
+    } else {
+      sourceFile = node.getSourceFile();
+      position = node.getFullStart();
+    }
+
     const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
 
     if (!comments || comments.length === 0) {
       return;
     }
 
-    const ranges: DirectiveRanges = Object.assign([], { sourceFile });
+    ranges = [];
 
     for (const comment of comments) {
       if (comment.kind !== compiler.SyntaxKind.SingleLineCommentTrivia) {
@@ -45,18 +59,24 @@ export class Directive {
       }
     }
 
+    Directive.#rangeCache.set(node, ranges);
+
     return ranges;
   }
 
-  static async getInlineConfig(ranges: DirectiveRanges | undefined): Promise<InlineConfig | undefined> {
+  static async getInlineConfig(
+    ranges: Array<DirectiveRange> | DirectiveRange | undefined,
+  ): Promise<InlineConfig | undefined> {
     if (!ranges) {
       return;
     }
 
+    ranges = Array.isArray(ranges) ? ranges : [ranges];
+
     const inlineConfig: InlineConfig = {};
 
     for (const range of ranges) {
-      await Directive.#parse(inlineConfig, ranges.sourceFile, range);
+      await Directive.#parse(inlineConfig, range);
     }
 
     return inlineConfig;
@@ -73,6 +93,7 @@ export class Directive {
     }
 
     const range: DirectiveRange = {
+      sourceFile,
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 
@@ -101,41 +122,42 @@ export class Directive {
     EventEmitter.dispatch(["directive:error", { diagnostics: [diagnostic] }]);
   }
 
-  static async #parse(inlineConfig: InlineConfig, sourceFile: ts.SourceFile, ranges: DirectiveRange) {
-    switch (ranges.directive?.text) {
+  static async #parse(inlineConfig: InlineConfig, range: DirectiveRange) {
+    switch (range.directive?.text) {
       case "if":
         {
-          if (!ranges.argument?.text) {
+          if (!range.argument?.text) {
             const text = DirectiveDiagnosticText.requiresArgument();
-            const origin = new DiagnosticOrigin(ranges.namespace.start, ranges.directive.end, sourceFile);
+            const origin = new DiagnosticOrigin(range.namespace.start, range.directive.end, range.sourceFile);
 
             Directive.#onDiagnostics(Diagnostic.error(text, origin));
 
             return;
           }
 
-          const value = await Directive.#parseJson(sourceFile, ranges.argument.start, ranges.argument.end);
+          const value = await Directive.#parseJson(range.sourceFile, range.argument.start, range.argument.end);
 
           inlineConfig.if = value;
         }
         return;
 
+      case "fixme":
       case "template":
-        if (ranges.argument?.text != null) {
+        if (range.argument?.text != null) {
           const text = DirectiveDiagnosticText.doesNotTakeArgument();
-          const origin = new DiagnosticOrigin(ranges.argument.start, ranges.argument.end, sourceFile);
+          const origin = new DiagnosticOrigin(range.argument.start, range.argument.end, range.sourceFile);
 
           Directive.#onDiagnostics(Diagnostic.error(text, origin));
         }
 
-        inlineConfig.template = true;
+        inlineConfig[range.directive?.text] = true;
         return;
     }
 
-    const target = ranges?.directive ?? ranges.namespace;
+    const target = range?.directive ?? range.namespace;
 
     const text = DirectiveDiagnosticText.isNotSupported(target.text);
-    const origin = new DiagnosticOrigin(target.start, target.end, sourceFile);
+    const origin = new DiagnosticOrigin(target.start, target.end, range.sourceFile);
 
     Directive.#onDiagnostics(Diagnostic.error(text, origin));
   }

@@ -42,6 +42,18 @@ test("testNameText", async (t) => {
     assert.strictEqual(prettyAnsi(text), ["      <yellow>- skip</> <gray>sample test name</>", ""].join("\n"));
   });
 
+  await t.test("formats fixme test name text", () => {
+    const text = scribbler.render(testNameText("fixme", "sample test name"));
+
+    assert.strictEqual(prettyAnsi(text), ["  <yellow>- fixme</> <gray>sample test name</>", ""].join("\n"));
+  });
+
+  await t.test("formats fixme test name text with indent", () => {
+    const text = scribbler.render(testNameText("fixme", "sample test name", 2));
+
+    assert.strictEqual(prettyAnsi(text), ["      <yellow>- fixme</> <gray>sample test name</>", ""].join("\n"));
+  });
+
   await t.test("formats todo test name text", () => {
     const text = scribbler.render(testNameText("todo", "sample test name"));
 

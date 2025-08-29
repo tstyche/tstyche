@@ -1,3 +1,5 @@
+import type ts from "typescript";
+
 // #region -- Generated code, to update run: yarn build && yarn generate
 
 export interface CommandLineOptions {
@@ -40,6 +42,7 @@ export interface ConfigFileOptions {
 export type OptionValue = Array<OptionValue> | string | number | boolean | null | undefined;
 
 export interface InlineConfig {
+  fixme?: boolean;
   if?: { target?: Array<string> };
   template?: boolean;
 }
@@ -49,4 +52,17 @@ export interface ResolvedConfig
     Required<ConfigFileOptions> {
   configFilePath: string;
   pathMatch: Array<string>;
+}
+
+export interface TextRange {
+  start: number;
+  end: number;
+  text: string;
+}
+
+export interface DirectiveRange {
+  sourceFile: ts.SourceFile;
+  namespace: TextRange;
+  directive?: TextRange;
+  argument?: TextRange;
 }

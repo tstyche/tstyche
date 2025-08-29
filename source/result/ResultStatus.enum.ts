@@ -3,5 +3,6 @@ export const enum ResultStatus {
   Passed = "passed",
   Failed = "failed",
   Skipped = "skipped",
+  Fixme = "fixme",
   Todo = "todo",
 }

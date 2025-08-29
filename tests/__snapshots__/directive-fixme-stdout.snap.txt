@@ -1,0 +1,26 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/directive-fixme.tst.ts
+  - fixme is fixme?
+  + is number?
+  + is number?
+  is fixme?
+    + is number?
+    + is number?
+    + is number?
+    - fixme is fixme?
+    + is number?
+  is describe?
+    + is number?
+    - fixme is fixme?
+    + is number?
+  is describe?
+    + is number?
+    + is number?
+    - fixme is fixme?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      4 fixme, 10 passed, 14 total
+Assertions: 12 fixme, 25 passed, 37 total
+Duration:   <<timestamp>>

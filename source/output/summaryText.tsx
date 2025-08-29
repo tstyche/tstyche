@@ -17,18 +17,25 @@ function RowText({ label, text }: RowTextProps) {
 
 interface CountTextProps {
   failed: number;
+  fixme: number;
   passed: number;
   skipped: number;
   todo: number;
   total: number;
 }
 
-function CountText({ failed, passed, skipped, todo, total }: CountTextProps) {
+function CountText({ failed, fixme, passed, skipped, todo, total }: CountTextProps) {
   return (
     <Text>
       {failed > 0 ? (
         <Text>
           <Text color={Color.Red}>{failed} failed</Text>
+          <Text>{", "}</Text>
+        </Text>
+      ) : undefined}
+      {fixme > 0 ? (
+        <Text>
+          <Text color={Color.Yellow}>{fixme} fixme</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
@@ -82,6 +89,7 @@ export function summaryText({
       text={
         <CountText
           failed={targetCount.failed}
+          fixme={targetCount.fixme}
           passed={targetCount.passed}
           skipped={targetCount.skipped}
           todo={targetCount.todo}
@@ -97,6 +105,7 @@ export function summaryText({
       text={
         <CountText
           failed={fileCount.failed}
+          fixme={fileCount.fixme}
           passed={fileCount.passed}
           skipped={fileCount.skipped}
           todo={fileCount.todo}
@@ -112,6 +121,7 @@ export function summaryText({
       text={
         <CountText
           failed={testCount.failed}
+          fixme={testCount.fixme}
           passed={testCount.passed}
           skipped={testCount.skipped}
           todo={testCount.todo}
@@ -127,6 +137,7 @@ export function summaryText({
       text={
         <CountText
           failed={expectCount.failed}
+          fixme={expectCount.fixme}
           passed={expectCount.passed}
           skipped={expectCount.skipped}
           todo={expectCount.todo}
