@@ -49,8 +49,8 @@ export class AbilityLayer {
     switch (node.brand) {
       case TestTreeNodeBrand.Expect:
         return (
-          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).matcherNode) &&
-          !diagnosticBelongsToNode(diagnostic, (node as ExpectNode).source)
+          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).matcherNode) ||
+          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).source)
         );
 
       case TestTreeNodeBrand.When:
@@ -75,9 +75,9 @@ export class AbilityLayer {
     return false;
   }
 
-  #mapToDirectives(diagnostic: ts.Diagnostic) {
+  #mapToDirectives(diagnostic: ts.Diagnostic): boolean {
     if (!isDiagnosticWithLocation(diagnostic)) {
-      return;
+      return false;
     }
 
     const { file, start } = diagnostic;
@@ -90,7 +90,7 @@ export class AbilityLayer {
 
       if (suppressedError != null) {
         suppressedError.diagnostics.push(diagnostic);
-        break;
+        return true;
       }
 
       const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
@@ -100,6 +100,8 @@ export class AbilityLayer {
 
       line--;
     }
+
+    return false;
   }
 
   #collectSuppressedErrors() {
@@ -149,11 +151,7 @@ export class AbilityLayer {
         this.#nodes.reverse();
 
         for (const diagnostic of diagnostics) {
-          if (this.#mapToNodes(diagnostic)) {
-            continue;
-          }
-
-          this.#mapToDirectives(diagnostic);
+          this.#mapToDirectives(diagnostic) || this.#mapToNodes(diagnostic);
         }
       }
     }

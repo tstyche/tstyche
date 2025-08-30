@@ -199,7 +199,7 @@ test("Pair", () => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles '// @ts-expect-error' directive", async (t) => {
+  await t.test("respects '// @ts-expect-error' directive", async (t) => {
     const toBeConstructableWithText = `import { expect, test } from "tstyche";
 
 class Person {
@@ -219,14 +219,18 @@ test("handles '// @ts-expect-error' directive", () => {
   expect(getPersonConstructor()).type.not.toBeConstructableWith();
 
   // @ts-expect-error!
-  expect(getPersonConstructor(true)).type.toBeConstructableWith("abc");
+  new (getPersonConstructor(false))("abc");
   // @ts-expect-error!
-  expect(getPersonConstructor(true)).type.not.toBeConstructableWith("abc"); // fail
+  expect(getPersonConstructor(false)).type.toBeConstructableWith("abc");
+  // @ts-expect-error!
+  expect(getPersonConstructor(false)).type.not.toBeConstructableWith("abc"); // fail
 
   // @ts-expect-error!
-  expect(getPersonConstructor(true)).type.not.toBeConstructableWith();
+  new (getPersonConstructor(false))();
   // @ts-expect-error!
-  expect(getPersonConstructor(true)).type.toBeConstructableWith(); // fail
+  expect(getPersonConstructor(false)).type.toBeConstructableWith();
+  // @ts-expect-error!
+  expect(getPersonConstructor(false)).type.not.toBeConstructableWith(); // fail
 });
 `;
 
