@@ -180,7 +180,7 @@ test("handles trailing comma?", () => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles '// @ts-expect-error' directive", async (t) => {
+  await t.test("respects '// @ts-expect-error' directive", async (t) => {
     const toBeCallableWithText = `import { expect, test } from "tstyche";
 
 const concat =
@@ -188,19 +188,23 @@ const concat =
   (second: string): string =>
     first + second;
 
-test("handles '// @ts-expect-error' directive", () => {
+test("respects '// @ts-expect-error' directive", () => {
   expect(concat("one")).type.toBeCallableWith("two");
   expect(concat("one")).type.not.toBeCallableWith();
 
+  // @ts-expect-error!
+  concat(1)("two");
   // @ts-expect-error!
   expect(concat(1)).type.toBeCallableWith("two");
   // @ts-expect-error!
   expect(concat(2)).type.not.toBeCallableWith("two"); // fail
 
   // @ts-expect-error!
-  expect(concat(3)).type.not.toBeCallableWith();
+  concat(3)();
   // @ts-expect-error!
-  expect(concat(3)).type.toBeCallableWith(); // fail
+  expect(concat(3)).type.toBeCallableWith();
+  // @ts-expect-error!
+  expect(concat(3)).type.not.toBeCallableWith(); // fail
 });
 `;
 
