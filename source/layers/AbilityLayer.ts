@@ -1,14 +1,12 @@
 import type ts from "typescript";
+import type { ExpectNode, TestTree, WhenNode } from "#collect";
+import { TestTreeNodeBrand } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { diagnosticBelongsToNode, isDiagnosticWithLocation } from "#diagnostic";
 import type { ProjectService } from "#project";
 import { SourceService } from "#source";
-import type { ExpectNode } from "./ExpectNode.js";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
-import type { TestTree } from "./TestTree.js";
-import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { SuppressedError } from "./types.js";
-import type { WhenNode } from "./WhenNode.js";
 
 interface TextRange {
   start: number;
