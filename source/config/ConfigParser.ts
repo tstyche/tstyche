@@ -1,10 +1,9 @@
 import type ts from "typescript";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
+import type { JsonNode, JsonScanner } from "#json";
 import { Path } from "#path";
 import type { SourceFile } from "#source";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
-import type { JsonNode } from "./JsonNode.js";
-import type { JsonScanner } from "./JsonScanner.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import type { OptionGroup } from "./OptionGroup.enum.js";
 import { type ItemDefinition, type OptionDefinition, Options } from "./Options.js";

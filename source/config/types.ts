@@ -39,7 +39,7 @@ export interface ConfigFileOptions {
 
 // #endregion
 
-export type OptionValue = Array<OptionValue> | string | number | boolean | null | undefined;
+export type { OptionValue } from "#json";
 
 export interface InlineConfig {
   fixme?: boolean;

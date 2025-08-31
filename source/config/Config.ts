@@ -2,12 +2,12 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { JsonScanner } from "#json";
 import { Path } from "#path";
 import { SourceFile } from "#source";
 import { CommandParser } from "./CommandParser.js";
 import { ConfigParser } from "./ConfigParser.js";
 import { defaultOptions } from "./defaultOptions.js";
-import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import type { CommandLineOptions, ConfigFileOptions, OptionValue, ResolvedConfig } from "./types.js";
 

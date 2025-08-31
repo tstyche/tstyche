@@ -5,5 +5,4 @@ export { TestTree } from "./TestTree.js";
 export { TestTreeNode } from "./TestTreeNode.js";
 export { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 export { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
-export type { SuppressedError } from "./types.js";
 export { WhenNode } from "./WhenNode.js";

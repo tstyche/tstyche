@@ -2,9 +2,9 @@ import type ts from "typescript";
 import type { TestTreeNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { JsonScanner } from "#json";
 import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
-import { JsonScanner } from "./JsonScanner.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
 import type { DirectiveRange, InlineConfig, OptionValue } from "./types.js";
 
