@@ -174,7 +174,7 @@ jobs:
       - run: yarn test:e2e
         env:
           NODE_V8_COVERAGE: coverage/v8-coverage
-      - run: node ./scripts/report-coverage.js
+      - run: node ./scripts/report-coverage.ts
         env:
           FORCE_COLOR: true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -204,10 +204,10 @@ jobs:
           merge-multiple: true
           path: coverage
           pattern: coverage-*
-      - run: node ./scripts/report-coverage.js --merge
+      - run: node ./scripts/report-coverage.ts --merge
         env:
           FORCE_COLOR: true
-      - run: node ./scripts/upload-coverage.js
+      - run: node ./scripts/upload-coverage.ts
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
           COMMIT_SHA: ${{ github.sha }}

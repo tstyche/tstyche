@@ -4,5 +4,13 @@ jsonschema = "11.5.0"
 node = "22.19.0"
 yarn = "4.9.4"
 
+
+[tasks."generate:schema"]
+run = "node ./scripts/generate-schema.ts"
+[tasks."generate:types"]
+run = "node ./scripts/generate-types.ts"
+[tasks.generate]
+depends = ["generate:*"]
+
 [tasks."test:schema"]
 run = "jsonschema test schema/__tests__/*.test.json --resolve ./schema/config.json"

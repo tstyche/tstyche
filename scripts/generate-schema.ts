@@ -1,37 +1,32 @@
 import fs from "node:fs/promises";
 import * as tstyche from "tstyche/tstyche";
 
-/**
- * @typedef {object} JsonSchemaDefinition
- * @property {boolean} [additionalProperties]
- * @property {unknown} [default]
- * @property {string} [description]
- * @property {JsonSchemaDefinition} [items]
- * @property {string | Array<string>} type
- * @property {boolean} [uniqueItems]
- */
+interface JsonSchemaDefinition {
+  additionalProperties?: boolean;
+  default?: unknown;
+  description?: string;
+  items?: JsonSchemaDefinition;
+  type?: string | Array<string>;
+  uniqueItems?: boolean;
+}
 
-/**
- * @typedef {object} JsonSchema
- * @property {string} $schema
- * @property {Record<string, JsonSchemaDefinition>} properties
- * @property {string} type
- */
+interface JsonSchema {
+  $schema: string;
+  properties: Record<string, JsonSchemaDefinition>;
+  type: string;
+}
 
-/** @type {JsonSchema} */
-const jsonSchema = {
+const jsonSchema: JsonSchema = {
   $schema: "http://json-schema.org/draft-07/schema#",
   type: "object",
   properties: {},
 };
 
-/**
- * @param {tstyche.OptionDefinition | tstyche.ItemDefinition} optionDefinition
- * @param {unknown} [defaultValue]
- */
-function createJsonSchemaDefinition(optionDefinition, defaultValue) {
-  /** @type {JsonSchemaDefinition} */
-  const jsonSchemaDefinition = {};
+function createJsonSchemaDefinition(
+  optionDefinition: tstyche.OptionDefinition | tstyche.ItemDefinition,
+  defaultValue?: unknown,
+) {
+  const jsonSchemaDefinition: JsonSchemaDefinition = {};
 
   if ("description" in optionDefinition) {
     jsonSchemaDefinition.description = optionDefinition.description;

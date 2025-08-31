@@ -1,6 +1,6 @@
 import type ts from "typescript";
 
-// #region -- Generated code, to update run: yarn build && yarn generate
+// #region -- Generated code, to update run: yarn build && mise run generate
 
 export interface CommandLineOptions {
   config?: string;

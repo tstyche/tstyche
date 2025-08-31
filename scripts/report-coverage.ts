@@ -1,5 +1,5 @@
 import process from "node:process";
-import { CoverageReport } from "monocart-coverage-reports";
+import { CoverageReport, type CoverageReportOptions } from "monocart-coverage-reports";
 
 const isCi = Boolean(process.env["CI"]);
 
@@ -11,8 +11,7 @@ function resolveReportTarget() {
   return "local";
 }
 
-/** @type {import("monocart-coverage-reports").CoverageReportOptions} */
-const config = {
+const config: CoverageReportOptions = {
   clean: true,
   cleanCache: true,
 

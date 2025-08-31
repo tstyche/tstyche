@@ -1,18 +1,16 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import typescript from "@rollup/plugin-typescript";
 import MagicString from "magic-string";
+import type { Plugin, RollupOptions } from "rollup";
 import dts from "rollup-plugin-dts";
+import packageConfig from "../package.json" with { type: "json" };
 
 const output = { dir: "./build" };
+const tsconfig = fileURLToPath(new URL("../source/tsconfig.json", import.meta.url));
 
-const tsconfig = "./source/tsconfig.json";
-
-const packageConfigText = await fs.readFile(new URL("./package.json", import.meta.url), { encoding: "utf8" });
-const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
-
-/** @returns {import("rollup").Plugin} */
-function clean() {
+function clean(): Plugin {
   return {
     name: "clean",
 
@@ -22,8 +20,7 @@ function clean() {
   };
 }
 
-/** @returns {import("rollup").Plugin} */
-function tidyJs() {
+function tidyJs(): Plugin {
   const binEntry = "bin.js";
   const tstycheEntry = "tstyche.js";
 
@@ -34,7 +31,7 @@ function tidyJs() {
       if (chunkInfo.fileName === tstycheEntry) {
         const magicString = new MagicString(code);
 
-        magicString.replaceAll("__version__", version);
+        magicString.replaceAll("__version__", packageConfig.version);
 
         return {
           code: magicString.toString(),
@@ -53,8 +50,7 @@ function tidyJs() {
   };
 }
 
-/** @returns {import("rollup").Plugin} */
-function tidyDts() {
+function tidyDts(): Plugin {
   const tstycheEntry = "tstyche.d.ts";
 
   return {
@@ -68,7 +64,7 @@ function tidyDts() {
 
         magicString.replaceAll("const enum", "enum");
 
-        magicString.replaceAll("__version__", version);
+        magicString.replaceAll("__version__", packageConfig.version);
 
         return {
           code: magicString.toString(),
@@ -81,8 +77,7 @@ function tidyDts() {
   };
 }
 
-/** @type {Array<import("rollup").RollupOptions>} */
-const config = [
+const config: Array<RollupOptions> = [
   {
     external: [/^node:/],
     input: {
