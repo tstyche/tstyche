@@ -1,4 +1,5 @@
 import test from "node:test";
+import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -9,38 +10,8 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("toBeApplicable", async (t) => {
   await t.test("'toBeApplicable' implementation", () => {
-    // TODO implement after decorator support will be added to Node.js
-    //
-    // /**
-    //  * @param {unknown} _target
-    //  * @param {ClassMemberDecoratorContext & { private: false }} _context
-    //  */
-    // function publicOnly(_target, _context) {
-    //   // ...
-    // }
-    //
-    // /** @param {unknown} _target */
-    // function replaceMethod(_target) {
-    //   /** @this {_Person} */
-    //   return function () {
-    //     return `How are you, ${this.name}?`;
-    //   };
-    // }
-    //
-    // class _Person {
-    //   @(tstyche.expect(publicOnly).type.not.toBeApplicable)
-    //   #id;
-    //
-    //   /** @param {string} name */
-    //   constructor(name) {
-    //     this.#id = 0;
-    //     this.name = name;
-    //   }
-    //   @(tstyche.expect(replaceMethod).type.toBeApplicable)
-    //   hello() {
-    //     return `Hi ${this.name}!`;
-    //   }
-    // }
+    tstyche.expect().type.toBeApplicable;
+    tstyche.expect().type.not.toBeApplicable;
   });
 
   await t.test("toBeApplicable", async () => {

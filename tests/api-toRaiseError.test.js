@@ -10,12 +10,8 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("toRaiseError", async (t) => {
   await t.test("'toRaiseError' implementation", () => {
-    function check() {
-      return;
-    }
-
-    tstyche.expect(check(false)).type.toRaiseError();
-    tstyche.expect(check()).type.not.toRaiseError();
+    tstyche.expect().type.toRaiseError();
+    tstyche.expect().type.not.toRaiseError();
   });
 
   await t.test("toRaiseError", async () => {

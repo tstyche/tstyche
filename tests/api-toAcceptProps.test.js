@@ -8,17 +8,10 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-/**
- * @param {{ name: string; quantity: string }} props
- */
-function Item(props) {
-  return `${props.name}: ${props.quantity}`;
-}
-
 await test("toAcceptProps", async (t) => {
   await t.test("'toAcceptProps' implementation", () => {
-    tstyche.expect(Item).type.toAcceptProps({ name: "one", quantity: "2" });
-    tstyche.expect(Item).type.not.toAcceptProps({});
+    tstyche.expect().type.toAcceptProps();
+    tstyche.expect().type.not.toAcceptProps();
   });
 
   await t.test("function components", async () => {

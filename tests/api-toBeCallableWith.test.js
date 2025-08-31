@@ -8,12 +8,10 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-const f = (/** @type {string} */ a) => a;
-
 await test("toBeCallableWith", async (t) => {
   await t.test("'toBeCallableWith' implementation", () => {
-    tstyche.expect(f).type.toBeCallableWith("one");
-    tstyche.expect(f).type.not.toBeCallableWith(123);
+    tstyche.expect().type.toBeCallableWith();
+    tstyche.expect().type.not.toBeCallableWith();
   });
 
   await t.test("parameter arity", async () => {

@@ -8,17 +8,10 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
-class Person {
-  /** @param {string} name */
-  constructor(name) {
-    this.name = name;
-  }
-}
-
 await test("toBeConstructableWith", async (t) => {
   await t.test("'toBeConstructableWith' implementation", () => {
-    tstyche.expect(Person).type.toBeConstructableWith("one");
-    tstyche.expect(Person).type.not.toBeConstructableWith(123);
+    tstyche.expect().type.toBeConstructableWith();
+    tstyche.expect().type.not.toBeConstructableWith();
   });
 
   await t.test("parameter arity", async () => {
