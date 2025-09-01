@@ -17,15 +17,10 @@ function RowText({ label, text }: RowTextProps) {
 
 interface CountsTextProps {
   counts: ResultCounts;
+  total: number;
 }
 
-function CountsText({ counts }: CountsTextProps) {
-  const countsTotal = total(counts);
-
-  if (countsTotal === 0) {
-    return null;
-  }
-
+function CountsText({ counts, total }: CountsTextProps) {
   return (
     <Text>
       {counts.failed > 0 ? (
@@ -58,7 +53,7 @@ function CountsText({ counts }: CountsTextProps) {
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      <Text>{countsTotal} total</Text>
+      <Text>{total} total</Text>
     </Text>
   );
 }
@@ -69,6 +64,7 @@ interface DurationTextProps {
 
 function DurationText({ timing }: DurationTextProps) {
   const seconds = duration(timing) / 1000;
+
   return <Text>{`${Math.round(seconds * 10) / 10}s`}</Text>;
 }
 
@@ -87,10 +83,28 @@ export function summaryText({
   assertionCounts,
   timing,
 }: SummaryTextOptions): ScribblerJsx.Element {
-  const targetCountsText = <RowText label="Targets" text={<CountsText counts={targetCounts} />} />;
-  const fileCountsText = <RowText label="Test files" text={<CountsText counts={fileCounts} />} />;
-  const testCountsText = <RowText label="Tests" text={<CountsText counts={testCounts} />} />;
-  const assertionCountsText = <RowText label="Assertions" text={<CountsText counts={assertionCounts} />} />;
+  const targetCountsTotal = total(targetCounts);
+  const targetCountsText = (
+    <RowText label="Targets" text={<CountsText counts={targetCounts} total={targetCountsTotal} />} />
+  );
+
+  const fileCountsTotal = total(fileCounts);
+  const fileCountsText = (
+    <RowText label="Test files" text={<CountsText counts={fileCounts} total={fileCountsTotal} />} />
+  );
+
+  const testCountsTotal = total(testCounts);
+  const testCountsText =
+    testCountsTotal > 0 ? (
+      <RowText label="Tests" text={<CountsText counts={testCounts} total={testCountsTotal} />} />
+    ) : undefined;
+
+  const assertionCountsTotal = total(assertionCounts);
+  const assertionCountsText =
+    assertionCountsTotal > 0 ? (
+      <RowText label="Assertions" text={<CountsText counts={assertionCounts} total={assertionCountsTotal} />} />
+    ) : undefined;
+
   const durationText = <RowText label="Duration" text={<DurationText timing={timing} />} />;
 
   return (
