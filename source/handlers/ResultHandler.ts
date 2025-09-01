@@ -93,7 +93,7 @@ export class ResultHandler implements EventHandler {
       case "file:end":
         if (
           this.#fileResult!.status === ResultStatus.Failed ||
-          this.#fileResult!.expectCount.failed > 0 ||
+          this.#fileResult!.assertionCount.failed > 0 ||
           this.#fileResult!.testCount.failed > 0
         ) {
           this.#result!.fileCount.failed++;
@@ -202,11 +202,11 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "expect:error":
-        this.#result!.expectCount.failed++;
-        this.#fileResult!.expectCount.failed++;
+        this.#result!.assertionCount.failed++;
+        this.#fileResult!.assertionCount.failed++;
 
         if (this.#testResult) {
-          this.#testResult.expectCount.failed++;
+          this.#testResult.assertionCount.failed++;
         }
 
         this.#expectResult!.status = ResultStatus.Failed;
@@ -216,11 +216,11 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "expect:fail":
-        this.#result!.expectCount.failed++;
-        this.#fileResult!.expectCount.failed++;
+        this.#result!.assertionCount.failed++;
+        this.#fileResult!.assertionCount.failed++;
 
         if (this.#testResult) {
-          this.#testResult.expectCount.failed++;
+          this.#testResult.assertionCount.failed++;
         }
 
         this.#expectResult!.status = ResultStatus.Failed;
@@ -229,11 +229,11 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "expect:pass":
-        this.#result!.expectCount.passed++;
-        this.#fileResult!.expectCount.passed++;
+        this.#result!.assertionCount.passed++;
+        this.#fileResult!.assertionCount.passed++;
 
         if (this.#testResult) {
-          this.#testResult.expectCount.passed++;
+          this.#testResult.assertionCount.passed++;
         }
 
         this.#expectResult!.status = ResultStatus.Passed;
@@ -242,11 +242,11 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "expect:skip":
-        this.#result!.expectCount.skipped++;
-        this.#fileResult!.expectCount.skipped++;
+        this.#result!.assertionCount.skipped++;
+        this.#fileResult!.assertionCount.skipped++;
 
         if (this.#testResult) {
-          this.#testResult.expectCount.skipped++;
+          this.#testResult.assertionCount.skipped++;
         }
 
         this.#expectResult!.status = ResultStatus.Skipped;
@@ -255,11 +255,11 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "expect:fixme":
-        this.#result!.expectCount.fixme++;
-        this.#fileResult!.expectCount.fixme++;
+        this.#result!.assertionCount.fixme++;
+        this.#fileResult!.assertionCount.fixme++;
 
         if (this.#testResult) {
-          this.#testResult.expectCount.fixme++;
+          this.#testResult.assertionCount.fixme++;
         }
 
         this.#expectResult!.status = ResultStatus.Fixme;

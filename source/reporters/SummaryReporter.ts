@@ -12,7 +12,7 @@ export class SummaryReporter extends BaseReporter {
       OutputService.writeMessage(
         summaryText({
           duration: payload.result.timing.duration,
-          expectCount: payload.result.expectCount,
+          assertionCount: payload.result.assertionCount,
           fileCount: payload.result.fileCount,
           targetCount: payload.result.targetCount,
           testCount: payload.result.testCount,

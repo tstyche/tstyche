@@ -4,7 +4,7 @@ import { ResultTiming } from "./ResultTiming.js";
 import type { TargetResult } from "./TargetResult.js";
 
 export class Result {
-  expectCount = new ResultCount();
+  assertionCount = new ResultCount();
   fileCount = new ResultCount();
   files: Array<FileLocation>;
   results: Array<TargetResult> = [];

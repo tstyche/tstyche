@@ -11,7 +11,7 @@ export type FileResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultS
 
 export class FileResult {
   diagnostics: Array<Diagnostic> = [];
-  expectCount = new ResultCount();
+  assertionCount = new ResultCount();
   file: FileLocation;
   results: Array<DescribeResult | TestResult | ExpectResult> = [];
   status: FileResultStatus = ResultStatus.Runs;

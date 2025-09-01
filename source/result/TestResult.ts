@@ -8,7 +8,7 @@ import { ResultTiming } from "./ResultTiming.js";
 
 export class TestResult {
   diagnostics: Array<Diagnostic> = [];
-  expectCount = new ResultCount();
+  assertionCount = new ResultCount();
   parent: DescribeResult | undefined;
   results: Array<ExpectResult> = [];
   status: ResultStatus = ResultStatus.Runs;

@@ -72,13 +72,13 @@ function DurationText({ seconds }: DurationTextProps) {
 
 export function summaryText({
   duration,
-  expectCount,
+  assertionCount,
   fileCount,
   targetCount,
   testCount,
 }: {
   duration: number;
-  expectCount: ResultCount;
+  assertionCount: ResultCount;
   fileCount: ResultCount;
   targetCount: ResultCount;
   testCount: ResultCount;
@@ -136,12 +136,12 @@ export function summaryText({
       label="Assertions"
       text={
         <CountText
-          failed={expectCount.failed}
-          fixme={expectCount.fixme}
-          passed={expectCount.passed}
-          skipped={expectCount.skipped}
-          todo={expectCount.todo}
-          total={expectCount.total}
+          failed={assertionCount.failed}
+          fixme={assertionCount.fixme}
+          passed={assertionCount.passed}
+          skipped={assertionCount.skipped}
+          todo={assertionCount.todo}
+          total={assertionCount.total}
         />
       }
     />
@@ -152,7 +152,7 @@ export function summaryText({
       {targetCountText}
       {fileCountText}
       {testCount.total > 0 ? testCountText : undefined}
-      {expectCount.total > 0 ? assertionCountText : undefined}
+      {assertionCount.total > 0 ? assertionCountText : undefined}
       <RowText label="Duration" text={<DurationText seconds={duration / 1000} />} />
     </Text>
   );
