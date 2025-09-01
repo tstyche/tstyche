@@ -1,15 +1,15 @@
 import type { FileLocation } from "#file";
-import { ResultCount } from "./ResultCount.js";
+import { ResultCounts } from "./ResultCounts.js";
 import { ResultTiming } from "./ResultTiming.js";
 import type { TargetResult } from "./TargetResult.js";
 
 export class Result {
-  assertionCount = new ResultCount();
-  fileCount = new ResultCount();
+  assertionCounts = new ResultCounts();
+  fileCounts = new ResultCounts();
   files: Array<FileLocation>;
   results: Array<TargetResult> = [];
-  targetCount = new ResultCount();
-  testCount = new ResultCount();
+  targetCounts = new ResultCounts();
+  testCounts = new ResultCounts();
   timing = new ResultTiming();
 
   constructor(files: Array<FileLocation>) {
