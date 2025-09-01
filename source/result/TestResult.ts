@@ -1,12 +1,12 @@
 import type { TestTreeNode } from "#collect";
 import type { DescribeResult } from "./DescribeResult.js";
 import type { ExpectResult } from "./ExpectResult.js";
-import { ResultCount } from "./ResultCount.js";
+import { ResultCounts } from "./ResultCounts.js";
 import { ResultStatus } from "./ResultStatus.enum.js";
 import { ResultTiming } from "./ResultTiming.js";
 
 export class TestResult {
-  assertionCount = new ResultCount();
+  assertionCounts = new ResultCounts();
   parent: DescribeResult | undefined;
   results: Array<ExpectResult> = [];
   status: ResultStatus = ResultStatus.Runs;

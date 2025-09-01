@@ -1,4 +1,4 @@
-import type { ResultCount } from "#result";
+import { duration, type ResultCounts, type ResultTiming, total } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
 interface RowTextProps {
@@ -15,145 +15,91 @@ function RowText({ label, text }: RowTextProps) {
   );
 }
 
-interface CountTextProps {
-  failed: number;
-  fixme: number;
-  passed: number;
-  skipped: number;
-  todo: number;
-  total: number;
+interface CountsTextProps {
+  counts: ResultCounts;
 }
 
-function CountText({ failed, fixme, passed, skipped, todo, total }: CountTextProps) {
+function CountsText({ counts }: CountsTextProps) {
+  const countsTotal = total(counts);
+
+  if (countsTotal === 0) {
+    return null;
+  }
+
   return (
     <Text>
-      {failed > 0 ? (
+      {counts.failed > 0 ? (
         <Text>
-          <Text color={Color.Red}>{failed} failed</Text>
+          <Text color={Color.Red}>{counts.failed} failed</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      {fixme > 0 ? (
+      {counts.fixme > 0 ? (
         <Text>
-          <Text color={Color.Yellow}>{fixme} fixme</Text>
+          <Text color={Color.Yellow}>{counts.fixme} fixme</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      {skipped > 0 ? (
+      {counts.skipped > 0 ? (
         <Text>
-          <Text color={Color.Yellow}>{skipped} skipped</Text>
+          <Text color={Color.Yellow}>{counts.skipped} skipped</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      {todo > 0 ? (
+      {counts.todo > 0 ? (
         <Text>
-          <Text color={Color.Magenta}>{todo} todo</Text>
+          <Text color={Color.Magenta}>{counts.todo} todo</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      {passed > 0 ? (
+      {counts.passed > 0 ? (
         <Text>
-          <Text color={Color.Green}>{passed} passed</Text>
+          <Text color={Color.Green}>{counts.passed} passed</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      <Text>{total} total</Text>
+      <Text>{countsTotal} total</Text>
     </Text>
   );
 }
 
 interface DurationTextProps {
-  seconds: number;
+  timing: ResultTiming;
 }
 
-function DurationText({ seconds }: DurationTextProps) {
+function DurationText({ timing }: DurationTextProps) {
+  const seconds = duration(timing) / 1000;
   return <Text>{`${Math.round(seconds * 10) / 10}s`}</Text>;
 }
 
+interface SummaryTextOptions {
+  targetCounts: ResultCounts;
+  fileCounts: ResultCounts;
+  testCounts: ResultCounts;
+  assertionCounts: ResultCounts;
+  timing: ResultTiming;
+}
+
 export function summaryText({
-  duration,
-  assertionCount,
-  fileCount,
-  targetCount,
-  testCount,
-}: {
-  duration: number;
-  assertionCount: ResultCount;
-  fileCount: ResultCount;
-  targetCount: ResultCount;
-  testCount: ResultCount;
-}): ScribblerJsx.Element {
-  const targetCountText = (
-    <RowText
-      label="Targets"
-      text={
-        <CountText
-          failed={targetCount.failed}
-          fixme={targetCount.fixme}
-          passed={targetCount.passed}
-          skipped={targetCount.skipped}
-          todo={targetCount.todo}
-          total={targetCount.total}
-        />
-      }
-    />
-  );
-
-  const fileCountText = (
-    <RowText
-      label="Test files"
-      text={
-        <CountText
-          failed={fileCount.failed}
-          fixme={fileCount.fixme}
-          passed={fileCount.passed}
-          skipped={fileCount.skipped}
-          todo={fileCount.todo}
-          total={fileCount.total}
-        />
-      }
-    />
-  );
-
-  const testCountText = (
-    <RowText
-      label="Tests"
-      text={
-        <CountText
-          failed={testCount.failed}
-          fixme={testCount.fixme}
-          passed={testCount.passed}
-          skipped={testCount.skipped}
-          todo={testCount.todo}
-          total={testCount.total}
-        />
-      }
-    />
-  );
-
-  const assertionCountText = (
-    <RowText
-      label="Assertions"
-      text={
-        <CountText
-          failed={assertionCount.failed}
-          fixme={assertionCount.fixme}
-          passed={assertionCount.passed}
-          skipped={assertionCount.skipped}
-          todo={assertionCount.todo}
-          total={assertionCount.total}
-        />
-      }
-    />
-  );
+  targetCounts,
+  fileCounts,
+  testCounts,
+  assertionCounts,
+  timing,
+}: SummaryTextOptions): ScribblerJsx.Element {
+  const targetCountsText = <RowText label="Targets" text={<CountsText counts={targetCounts} />} />;
+  const fileCountsText = <RowText label="Test files" text={<CountsText counts={fileCounts} />} />;
+  const testCountsText = <RowText label="Tests" text={<CountsText counts={testCounts} />} />;
+  const assertionCountsText = <RowText label="Assertions" text={<CountsText counts={assertionCounts} />} />;
+  const durationText = <RowText label="Duration" text={<DurationText timing={timing} />} />;
 
   return (
     <Text>
-      {targetCountText}
-      {fileCountText}
-      {testCount.total > 0 ? testCountText : undefined}
-      {assertionCount.total > 0 ? assertionCountText : undefined}
-      <RowText label="Duration" text={<DurationText seconds={duration / 1000} />} />
+      {targetCountsText}
+      {fileCountsText}
+      {testCountsText}
+      {assertionCountsText}
+      {durationText}
     </Text>
   );
 }

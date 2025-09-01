@@ -11,11 +11,11 @@ export class SummaryReporter extends BaseReporter {
     if (event === "run:end") {
       OutputService.writeMessage(
         summaryText({
-          duration: payload.result.timing.duration,
-          assertionCount: payload.result.assertionCount,
-          fileCount: payload.result.fileCount,
-          targetCount: payload.result.targetCount,
-          testCount: payload.result.testCount,
+          targetCounts: payload.result.targetCounts,
+          fileCounts: payload.result.fileCounts,
+          testCounts: payload.result.testCounts,
+          assertionCounts: payload.result.assertionCounts,
+          timing: payload.result.timing,
         }),
       );
     }
