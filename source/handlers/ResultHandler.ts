@@ -72,7 +72,6 @@ export class ResultHandler implements EventHandler {
 
       case "project:error":
         this.#targetResult!.status = ResultStatus.Failed;
-        this.#projectResult!.diagnostics.push(...payload.diagnostics);
         break;
 
       case "file:start":
@@ -87,7 +86,6 @@ export class ResultHandler implements EventHandler {
       case "collect:error":
         this.#targetResult!.status = ResultStatus.Failed;
         this.#fileResult!.status = ResultStatus.Failed;
-        this.#fileResult!.diagnostics.push(...payload.diagnostics);
         break;
 
       case "file:end":
@@ -140,7 +138,6 @@ export class ResultHandler implements EventHandler {
         this.#fileResult!.testCount.failed++;
 
         this.#testResult!.status = ResultStatus.Failed;
-        this.#testResult!.diagnostics.push(...payload.diagnostics);
         this.#testResult!.timing.end = Date.now();
         this.#testResult = undefined;
         break;
@@ -210,7 +207,6 @@ export class ResultHandler implements EventHandler {
         }
 
         this.#expectResult!.status = ResultStatus.Failed;
-        this.#expectResult!.diagnostics.push(...payload.diagnostics);
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
         break;
