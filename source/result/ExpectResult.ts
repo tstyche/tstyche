@@ -1,13 +1,13 @@
 import type { ExpectNode } from "#collect";
+import { createResultTiming } from "./helpers.js";
 import { ResultStatus } from "./ResultStatus.enum.js";
-import { ResultTiming } from "./ResultTiming.js";
 import type { TestResult } from "./TestResult.js";
 
 export class ExpectResult {
   expect: ExpectNode;
   parent: TestResult | undefined;
   status: ResultStatus = ResultStatus.Runs;
-  timing = new ResultTiming();
+  timing = createResultTiming();
 
   constructor(expect: ExpectNode, parent?: TestResult) {
     this.expect = expect;

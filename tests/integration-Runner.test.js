@@ -80,9 +80,9 @@ await test("Runner", async (t) => {
       await t.test(testCase, async () => {
         await runner.run(testFiles);
 
-        assert.deepEqual(result?.assertionCounts, { failed: 2, passed: 3, skipped: 3, fixme: 0, todo: 0 });
-        assert.deepEqual(result?.fileCounts, { failed: 2, passed: 0, skipped: 0, fixme: 0, todo: 0 });
+        assert.deepEqual(result?.fileCounts, { failed: 2, passed: 0 });
         assert.deepEqual(result?.testCounts, { failed: 2, passed: 2, skipped: 1, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 2, passed: 3, skipped: 3, fixme: 0, todo: 0 });
       });
     }
   });
@@ -120,9 +120,9 @@ await test("Runner", async (t) => {
 
         await runner.run(files);
 
-        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 2, skipped: 3, fixme: 0, todo: 0 });
-        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
+        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0 });
         assert.deepEqual(result?.testCounts, { failed: 1, passed: 1, skipped: 1, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 2, skipped: 3, fixme: 0, todo: 0 });
       });
     }
 
@@ -133,9 +133,9 @@ await test("Runner", async (t) => {
 
         await runner.run([file]);
 
-        assert.deepEqual(result?.assertionCounts, { failed: 0, passed: 1, skipped: 5, fixme: 0, todo: 0 });
-        assert.deepEqual(result?.fileCounts, { failed: 0, passed: 1, skipped: 0, fixme: 0, todo: 0 });
+        assert.deepEqual(result?.fileCounts, { failed: 0, passed: 1 });
         assert.deepEqual(result?.testCounts, { failed: 0, passed: 0, skipped: 3, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 0, passed: 1, skipped: 5, fixme: 0, todo: 0 });
       });
     }
 
@@ -146,9 +146,9 @@ await test("Runner", async (t) => {
 
         await runner.run([file]);
 
-        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 0, skipped: 5, fixme: 0, todo: 0 });
-        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
+        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0 });
         assert.deepEqual(result?.testCounts, { failed: 0, passed: 0, skipped: 3, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 0, skipped: 5, fixme: 0, todo: 0 });
       });
     }
 
@@ -159,9 +159,9 @@ await test("Runner", async (t) => {
 
         await runner.run([file]);
 
-        assert.deepEqual(result?.assertionCounts, { failed: 0, passed: 1, skipped: 5, fixme: 0, todo: 0 });
-        assert.deepEqual(result?.fileCounts, { failed: 0, passed: 1, skipped: 0, fixme: 0, todo: 0 });
+        assert.deepEqual(result?.fileCounts, { failed: 0, passed: 1 });
         assert.deepEqual(result?.testCounts, { failed: 0, passed: 1, skipped: 2, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 0, passed: 1, skipped: 5, fixme: 0, todo: 0 });
       });
     }
 
@@ -172,9 +172,9 @@ await test("Runner", async (t) => {
 
         await runner.run([file]);
 
-        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 1, skipped: 4, fixme: 0, todo: 0 });
-        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
+        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0 });
         assert.deepEqual(result?.testCounts, { failed: 1, passed: 0, skipped: 2, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 1, skipped: 4, fixme: 0, todo: 0 });
       });
     }
   });
@@ -201,9 +201,9 @@ await test("Runner", async (t) => {
 
       await runner.run(testFiles);
 
-      assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
-      assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
+      assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0 });
       assert.deepEqual(result?.testCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
+      assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
     });
   });
 });
