@@ -4,4 +4,5 @@ fail ./__typetests__/sample.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
+Suppressed: 6 failed, 3 matched, 9 total
 Duration:   <<timestamp>>

@@ -134,14 +134,6 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "test:error":
-        this.#result!.testCounts.failed++;
-        this.#fileResult!.testCounts.failed++;
-
-        this.#testResult!.status = ResultStatus.Failed;
-        this.#testResult!.timing.end = Date.now();
-        this.#testResult = undefined;
-        break;
-
       case "test:fail":
         this.#result!.testCounts.failed++;
         this.#fileResult!.testCounts.failed++;
@@ -199,18 +191,6 @@ export class ResultHandler implements EventHandler {
         break;
 
       case "expect:error":
-        this.#result!.assertionCounts.failed++;
-        this.#fileResult!.assertionCounts.failed++;
-
-        if (this.#testResult) {
-          this.#testResult.assertionCounts.failed++;
-        }
-
-        this.#expectResult!.status = ResultStatus.Failed;
-        this.#expectResult!.timing.end = Date.now();
-        this.#expectResult = undefined;
-        break;
-
       case "expect:fail":
         this.#result!.assertionCounts.failed++;
         this.#fileResult!.assertionCounts.failed++;
@@ -261,6 +241,24 @@ export class ResultHandler implements EventHandler {
         this.#expectResult!.status = ResultStatus.Fixme;
         this.#expectResult!.timing.end = Date.now();
         this.#expectResult = undefined;
+        break;
+
+      case "suppressed:error":
+        this.#result!.suppressedCounts.failed++;
+        this.#fileResult!.suppressedCounts.failed++;
+
+        this.#targetResult!.status = ResultStatus.Failed;
+        this.#fileResult!.status = ResultStatus.Failed;
+        break;
+
+      case "suppressed:match":
+        this.#result!.suppressedCounts.matched++;
+        this.#fileResult!.suppressedCounts.matched++;
+        break;
+
+      case "suppressed:ignore":
+        this.#result!.suppressedCounts.ignored++;
+        this.#fileResult!.suppressedCounts.ignored++;
         break;
     }
   }

@@ -36,7 +36,13 @@ export type AssertionCounts = {
   [K in Exclude<AssertionResultStatus, ResultStatus.Runs>]: number;
 };
 
-export type ResultCounts = AssertionCounts | TestCounts | FileCounts | TargetCounts;
+export type SuppressedResultStatus = ResultStatus.Matched | ResultStatus.Failed | ResultStatus.Ignored;
+
+export type SuppressedCounts = {
+  [K in SuppressedResultStatus]: number;
+};
+
+export type ResultCounts = TargetCounts | FileCounts | TestCounts | AssertionCounts | SuppressedCounts;
 
 export interface ResultTiming {
   start: number;

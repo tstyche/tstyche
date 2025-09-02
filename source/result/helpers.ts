@@ -1,4 +1,4 @@
-import type { AssertionCounts, FileCounts, ResultTiming, TargetCounts, TestCounts } from "./types.js";
+import type { AssertionCounts, FileCounts, ResultTiming, SuppressedCounts, TargetCounts, TestCounts } from "./types.js";
 
 function createObjectFromKeys<T extends string, U>(keys: Array<T>, defaultValue: U): Record<T, U> {
   return Object.fromEntries(keys.map((key) => [key, defaultValue])) as Record<T, U>;
@@ -18,6 +18,10 @@ export function createTestCounts(): TestCounts {
 
 export function createAssertionCounts(): AssertionCounts {
   return createObjectFromKeys(["failed", "passed", "fixme", "skipped", "todo"], 0);
+}
+
+export function createSuppressedCounts(): SuppressedCounts {
+  return createObjectFromKeys(["failed", "matched", "ignored"], 0);
 }
 
 export function createResultTiming(): ResultTiming {

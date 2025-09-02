@@ -3,6 +3,7 @@ import {
   createAssertionCounts,
   createFileCounts,
   createResultTiming,
+  createSuppressedCounts,
   createTargetCounts,
   createTestCounts,
 } from "./helpers.js";
@@ -13,6 +14,7 @@ export class Result {
   fileCounts = createFileCounts();
   files: Array<FileLocation>;
   results: Array<TargetResult> = [];
+  suppressedCounts = createSuppressedCounts();
   targetCounts = createTargetCounts();
   testCounts = createTestCounts();
   timing = createResultTiming();

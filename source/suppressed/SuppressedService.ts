@@ -1,16 +1,26 @@
 import type { TestTree } from "#collect";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
+import { Diagnostic, DiagnosticOrigin, getDiagnosticMessageText } from "#diagnostic";
+import { EventEmitter } from "#events";
+import { SuppressedResult } from "#result";
 import { SuppressedDiagnosticText } from "./SuppressedDiagnosticText.js";
 
 export class SuppressedService {
-  match(testTree: TestTree, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
+  match(testTree: TestTree): void {
     if (!testTree.suppressedErrors) {
       return;
     }
 
     for (const suppressedError of testTree.suppressedErrors) {
-      if (suppressedError.diagnostics.length === 0 || suppressedError.ignore) {
-        // directive is unused or ignored
+      const suppressedResult = new SuppressedResult(suppressedError);
+
+      if (suppressedError.diagnostics.length === 0) {
+        // directive is unused
+        continue;
+      }
+
+      if (suppressedError.ignore) {
+        EventEmitter.dispatch(["suppressed:ignore", { result: suppressedResult }]);
+
         continue;
       }
 
@@ -28,15 +38,15 @@ export class SuppressedService {
       if (!suppressedError.argument?.text) {
         const text = SuppressedDiagnosticText.directiveRequires();
 
-        onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
+        this.#onDiagnostics(Diagnostic.error(text, origin).add({ related }), suppressedResult);
 
         continue;
       }
 
       if (suppressedError.diagnostics.length > 1) {
-        const text = [SuppressedDiagnosticText.onlySingleError()];
+        const text = SuppressedDiagnosticText.onlySingleError();
 
-        onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
+        this.#onDiagnostics(Diagnostic.error(text, origin).add({ related }), suppressedResult);
 
         continue;
       }
@@ -49,7 +59,7 @@ export class SuppressedService {
       }
 
       if (!this.#matchMessage(messageText, suppressedError.argument.text)) {
-        const text = [SuppressedDiagnosticText.messageDidNotMatch()];
+        const text = SuppressedDiagnosticText.messageDidNotMatch();
 
         const origin = new DiagnosticOrigin(
           suppressedError.argument.start,
@@ -57,8 +67,12 @@ export class SuppressedService {
           testTree.sourceFile,
         );
 
-        onDiagnostics([Diagnostic.error(text, origin).add({ related })]);
+        this.#onDiagnostics(Diagnostic.error(text, origin).add({ related }), suppressedResult);
+
+        continue;
       }
+
+      EventEmitter.dispatch(["suppressed:match", { result: suppressedResult }]);
     }
   }
 
@@ -78,5 +92,9 @@ export class SuppressedService {
     }
 
     return source.includes(target);
+  }
+
+  #onDiagnostics(this: void, diagnostic: Diagnostic, result: SuppressedResult) {
+    EventEmitter.dispatch(["suppressed:error", { diagnostics: [diagnostic], result }]);
   }
 }
