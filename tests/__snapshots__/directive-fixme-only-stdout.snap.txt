@@ -38,6 +38,6 @@ fail ./__typetests__/directive-fixme-only.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      4 fixme, 14 skipped, 10 passed, 28 total
-Assertions: 11 fixme, 33 skipped, 24 passed, 68 total
+Tests:      10 passed, 4 fixme, 14 skipped, 28 total
+Assertions: 24 passed, 11 fixme, 33 skipped, 68 total
 Duration:   <<timestamp>>

@@ -1,33 +1,40 @@
 import type { ResultStatus } from "./ResultStatus.enum.js";
 
-export type FileResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed;
 export type TargetResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed;
 
-export interface TargetCounts {
-  passed: number;
-  failed: number;
-}
+export type TargetCounts = {
+  [K in Exclude<TargetResultStatus, ResultStatus.Runs>]: number;
+};
 
-export interface FileCounts {
-  passed: number;
-  failed: number;
-}
+export type FileResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed;
 
-export interface TestCounts {
-  passed: number;
-  failed: number;
-  skipped: number;
-  fixme: number;
-  todo: number;
-}
+export type FileCounts = {
+  [K in Exclude<FileResultStatus, ResultStatus.Runs>]: number;
+};
 
-export interface AssertionCounts {
-  passed: number;
-  failed: number;
-  skipped: number;
-  fixme: number;
-  todo: number;
-}
+export type TestResultStatus =
+  | ResultStatus.Runs
+  | ResultStatus.Passed
+  | ResultStatus.Failed
+  | ResultStatus.Skipped
+  | ResultStatus.Fixme
+  | ResultStatus.Todo;
+
+export type TestCounts = {
+  [K in Exclude<TestResultStatus, ResultStatus.Runs>]: number;
+};
+
+export type AssertionResultStatus =
+  | ResultStatus.Runs
+  | ResultStatus.Passed
+  | ResultStatus.Failed
+  | ResultStatus.Skipped
+  | ResultStatus.Fixme
+  | ResultStatus.Todo;
+
+export type AssertionCounts = {
+  [K in Exclude<AssertionResultStatus, ResultStatus.Runs>]: number;
+};
 
 export type ResultCounts = AssertionCounts | TestCounts | FileCounts | TargetCounts;
 

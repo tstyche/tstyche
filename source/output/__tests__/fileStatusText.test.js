@@ -9,10 +9,10 @@ const sampleFile = new FileLocation(sampleFileUrl);
 const scribbler = new Scribbler();
 
 test("fileStatusText", async (t) => {
-  await t.test("formats failing file status text", () => {
-    const text = scribbler.render(fileStatusText(ResultStatus.Failed, sampleFile));
+  await t.test("formats running file status text", () => {
+    const text = scribbler.render(fileStatusText(ResultStatus.Runs, sampleFile));
 
-    assert.strictEqual(prettyAnsi(text), ["<red>fail</> <gray>./path/to/</>sample.test.ts", ""].join("\n"));
+    assert.strictEqual(prettyAnsi(text), ["<yellow>runs</> <gray>./path/to/</>sample.test.ts", ""].join("\n"));
   });
 
   await t.test("formats passing file status text", () => {
@@ -21,9 +21,9 @@ test("fileStatusText", async (t) => {
     assert.strictEqual(prettyAnsi(text), ["<green>pass</> <gray>./path/to/</>sample.test.ts", ""].join("\n"));
   });
 
-  await t.test("formats running file status text", () => {
-    const text = scribbler.render(fileStatusText(ResultStatus.Runs, sampleFile));
+  await t.test("formats failing file status text", () => {
+    const text = scribbler.render(fileStatusText(ResultStatus.Failed, sampleFile));
 
-    assert.strictEqual(prettyAnsi(text), ["<yellow>runs</> <gray>./path/to/</>sample.test.ts", ""].join("\n"));
+    assert.strictEqual(prettyAnsi(text), ["<red>fail</> <gray>./path/to/</>sample.test.ts", ""].join("\n"));
   });
 });

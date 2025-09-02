@@ -9,6 +9,6 @@ pass ./__typetests__/test-only.tst.ts
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      2 skipped, 1 todo, 2 passed, 5 total
-Assertions: 2 skipped, 2 passed, 4 total
+Tests:      2 passed, 2 skipped, 1 todo, 5 total
+Assertions: 2 passed, 2 skipped, 4 total
 Duration:   <<timestamp>>

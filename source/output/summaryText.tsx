@@ -1,5 +1,6 @@
-import { duration, type ResultCounts, type ResultTiming, total } from "#result";
-import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
+import type { ResultCounts, ResultStatus, ResultTiming } from "#result";
+import { Line, type ScribblerJsx, Text } from "#scribbler";
+import { duration, getStatusColor, total } from "./helpers.js";
 
 interface RowTextProps {
   label: string;
@@ -21,39 +22,31 @@ interface CountsTextProps {
 }
 
 function CountsText({ counts, total }: CountsTextProps) {
+  const countsText = Object.entries(counts).map(([status, count]) => {
+    return (
+      <Text>
+        {count > 0 ? (
+          <Text>
+            <Text color={getStatusColor(status as ResultStatus)}>
+              {count} {status}
+            </Text>
+            <Text>{", "}</Text>
+          </Text>
+        ) : undefined}
+      </Text>
+    );
+  });
+
+  const totalText = (
+    <Text>
+      {total} {"total"}
+    </Text>
+  );
+
   return (
     <Text>
-      {counts.failed > 0 ? (
-        <Text>
-          <Text color={Color.Red}>{counts.failed} failed</Text>
-          <Text>{", "}</Text>
-        </Text>
-      ) : undefined}
-      {"fixme" in counts && counts.fixme > 0 ? (
-        <Text>
-          <Text color={Color.Yellow}>{counts.fixme} fixme</Text>
-          <Text>{", "}</Text>
-        </Text>
-      ) : undefined}
-      {"skipped" in counts && counts.skipped > 0 ? (
-        <Text>
-          <Text color={Color.Yellow}>{counts.skipped} skipped</Text>
-          <Text>{", "}</Text>
-        </Text>
-      ) : undefined}
-      {"todo" in counts && counts.todo > 0 ? (
-        <Text>
-          <Text color={Color.Magenta}>{counts.todo} todo</Text>
-          <Text>{", "}</Text>
-        </Text>
-      ) : undefined}
-      {counts.passed > 0 ? (
-        <Text>
-          <Text color={Color.Green}>{counts.passed} passed</Text>
-          <Text>{", "}</Text>
-        </Text>
-      ) : undefined}
-      <Text>{total} total</Text>
+      {countsText}
+      {totalText}
     </Text>
   );
 }

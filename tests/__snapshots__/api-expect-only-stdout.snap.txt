@@ -11,6 +11,6 @@ pass ./__typetests__/expect-only.tst.ts
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      3 skipped, 1 todo, 1 passed, 5 total
-Assertions: 6 skipped, 4 passed, 10 total
+Tests:      1 passed, 3 skipped, 1 todo, 5 total
+Assertions: 4 passed, 6 skipped, 10 total
 Duration:   <<timestamp>>

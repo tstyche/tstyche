@@ -18,6 +18,6 @@ pass ./__typetests__/isString.tst.ts
 
 Targets:    3 passed, 3 total
 Test files: 6 passed, 6 total
-Tests:      4 skipped, 2 passed, 6 total
-Assertions: 4 skipped, 2 passed, 6 total
+Tests:      2 passed, 4 skipped, 6 total
+Assertions: 2 passed, 4 skipped, 6 total
 Duration:   <<timestamp>>
