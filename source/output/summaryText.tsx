@@ -29,19 +29,19 @@ function CountsText({ counts, total }: CountsTextProps) {
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      {counts.fixme > 0 ? (
+      {"fixme" in counts && counts.fixme > 0 ? (
         <Text>
           <Text color={Color.Yellow}>{counts.fixme} fixme</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      {counts.skipped > 0 ? (
+      {"skipped" in counts && counts.skipped > 0 ? (
         <Text>
           <Text color={Color.Yellow}>{counts.skipped} skipped</Text>
           <Text>{", "}</Text>
         </Text>
       ) : undefined}
-      {counts.todo > 0 ? (
+      {"todo" in counts && counts.todo > 0 ? (
         <Text>
           <Text color={Color.Magenta}>{counts.todo} todo</Text>
           <Text>{", "}</Text>
