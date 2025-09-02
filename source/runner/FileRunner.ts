@@ -108,9 +108,7 @@ export class FileRunner {
 
     const testTree = this.#collectService.createTestTree(sourceFile, semanticDiagnostics);
 
-    this.#suppressedService.match(testTree, (diagnostics) => {
-      this.#onDiagnostics(diagnostics, fileResult);
-    });
+    this.#suppressedService.match(testTree);
 
     return { runModeFlags, testTree, typeChecker };
   }

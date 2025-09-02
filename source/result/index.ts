@@ -4,6 +4,7 @@ export { FileResult } from "./FileResult.js";
 export { ProjectResult } from "./ProjectResult.js";
 export { Result } from "./Result.js";
 export { ResultStatus } from "./ResultStatus.enum.js";
+export { SuppressedResult } from "./SuppressedResult.js";
 export { TargetResult } from "./TargetResult.js";
 export { TestResult } from "./TestResult.js";
 export type {
@@ -13,6 +14,8 @@ export type {
   FileResultStatus,
   ResultCounts,
   ResultTiming,
+  SuppressedCounts,
+  SuppressedResultStatus,
   TargetCounts,
   TargetResultStatus,
   TestCounts,

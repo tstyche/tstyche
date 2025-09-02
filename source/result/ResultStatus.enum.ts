@@ -1,8 +1,10 @@
 export const enum ResultStatus {
   Runs = "runs",
   Passed = "passed",
+  Matched = "matched",
   Failed = "failed",
-  Skipped = "skipped",
   Fixme = "fixme",
+  Skipped = "skipped",
+  Ignored = "ignored",
   Todo = "todo",
 }

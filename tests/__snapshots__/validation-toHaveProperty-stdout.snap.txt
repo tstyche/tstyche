@@ -14,4 +14,5 @@ Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      5 failed, 5 total
 Assertions: 8 failed, 1 passed, 9 total
+Suppressed: 2 ignored, 2 total
 Duration:   <<timestamp>>

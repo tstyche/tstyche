@@ -15,6 +15,7 @@ export class SummaryReporter extends BaseReporter {
           fileCounts: payload.result.fileCounts,
           testCounts: payload.result.testCounts,
           assertionCounts: payload.result.assertionCounts,
+          suppressedCounts: payload.result.suppressedCounts,
           timing: payload.result.timing,
         }),
       );

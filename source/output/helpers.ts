@@ -7,13 +7,15 @@ export function getStatusColor(status: ResultStatus): Color {
       return Color.Yellow;
 
     case ResultStatus.Passed:
+    case ResultStatus.Matched:
       return Color.Green;
 
     case ResultStatus.Failed:
       return Color.Red;
 
-    case ResultStatus.Skipped:
     case ResultStatus.Fixme:
+    case ResultStatus.Skipped:
+    case ResultStatus.Ignored:
       return Color.Yellow;
 
     case ResultStatus.Todo:

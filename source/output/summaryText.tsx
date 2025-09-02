@@ -1,4 +1,4 @@
-import type { ResultCounts, ResultStatus, ResultTiming } from "#result";
+import type { ResultCounts, ResultStatus, ResultTiming, SuppressedCounts } from "#result";
 import { Line, type ScribblerJsx, Text } from "#scribbler";
 import { duration, getStatusColor, total } from "./helpers.js";
 
@@ -66,6 +66,7 @@ interface SummaryTextOptions {
   fileCounts: ResultCounts;
   testCounts: ResultCounts;
   assertionCounts: ResultCounts;
+  suppressedCounts: SuppressedCounts;
   timing: ResultTiming;
 }
 
@@ -74,6 +75,7 @@ export function summaryText({
   fileCounts,
   testCounts,
   assertionCounts,
+  suppressedCounts,
   timing,
 }: SummaryTextOptions): ScribblerJsx.Element {
   const targetCountsTotal = total(targetCounts);
@@ -98,6 +100,12 @@ export function summaryText({
       <RowText label="Assertions" text={<CountsText counts={assertionCounts} total={assertionCountsTotal} />} />
     ) : undefined;
 
+  const suppressedCountsTotal = total(suppressedCounts);
+  const suppressedCountsText =
+    suppressedCountsTotal > 0 ? (
+      <RowText label="Suppressed" text={<CountsText counts={suppressedCounts} total={suppressedCountsTotal} />} />
+    ) : undefined;
+
   const durationText = <RowText label="Duration" text={<DurationText timing={timing} />} />;
 
   return (
@@ -106,6 +114,7 @@ export function summaryText({
       {fileCountsText}
       {testCountsText}
       {assertionCountsText}
+      {suppressedCountsText}
       {durationText}
     </Text>
   );

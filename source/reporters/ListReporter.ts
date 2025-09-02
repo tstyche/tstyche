@@ -69,6 +69,7 @@ export class ListReporter extends BaseReporter {
       case "file:error":
       case "directive:error":
       case "collect:error":
+      case "suppressed:error":
         for (const diagnostic of payload.diagnostics) {
           this.#fileView.addMessage(diagnosticText(diagnostic));
         }

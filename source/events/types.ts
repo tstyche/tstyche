@@ -1,6 +1,14 @@
 import type { ExpectNode, TestTree, TestTreeNode, WhenNode } from "#collect";
 import type { Diagnostic } from "#diagnostic";
-import type { DescribeResult, ExpectResult, FileResult, Result, TargetResult, TestResult } from "#result";
+import type {
+  DescribeResult,
+  ExpectResult,
+  FileResult,
+  Result,
+  SuppressedResult,
+  TargetResult,
+  TestResult,
+} from "#result";
 
 export interface EventHandler {
   on: (event: Event) => void;
@@ -40,4 +48,7 @@ export type Event =
   | ["expect:pass", { result: ExpectResult }]
   | ["expect:skip", { result: ExpectResult }]
   | ["expect:fixme", { result: ExpectResult }]
+  | ["suppressed:error", { diagnostics: Array<Diagnostic>; result: SuppressedResult }]
+  | ["suppressed:match", { result: SuppressedResult }]
+  | ["suppressed:ignore", { result: SuppressedResult }]
   | ["watch:error", { diagnostics: Array<Diagnostic> }];
