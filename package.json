@@ -22,6 +22,10 @@
   "type": "module",
   "exports": {
     ".": {
+      "types@4.x": {
+        "import": "./build/4.x/index.d.ts",
+        "require": "./build/4.x/index.d.cts"
+      },
       "import": "./build/index.js",
       "require": "./build/index.cjs"
     },
@@ -30,6 +34,13 @@
   },
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
+  "typesVersions": {
+    "4.x": {
+      "build/*": [
+        "./build/4.x/*"
+      ]
+    }
+  },
   "bin": "./build/bin.js",
   "files": [
     "build/*"
