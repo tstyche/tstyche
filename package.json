@@ -43,7 +43,7 @@
   },
   "bin": "./build/bin.js",
   "files": [
-    "build/*"
+    "build/**/*"
   ],
   "scripts": {
     "build": "rollup --config ./scripts/rollup.ts",
