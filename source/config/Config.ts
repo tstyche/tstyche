@@ -2,9 +2,8 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { JsonScanner } from "#json";
+import { JsonScanner, JsonSourceFile } from "#json";
 import { Path } from "#path";
-import { SourceFile } from "#source";
 import { CommandParser } from "./CommandParser.js";
 import { ConfigParser } from "./ConfigParser.js";
 import { defaultOptions } from "./defaultOptions.js";
@@ -47,7 +46,7 @@ export class Config {
         encoding: "utf8",
       });
 
-      const sourceFile = new SourceFile(configFilePath, configFileText);
+      const sourceFile = new JsonSourceFile(configFilePath, configFileText);
 
       const configFileParser = new ConfigParser(
         configFileOptions as Record<string, OptionValue>,

@@ -1,4 +1,4 @@
-export class SourceFile {
+export class JsonSourceFile {
   fileName: string;
   #lineMap: Array<number>;
   text: string;

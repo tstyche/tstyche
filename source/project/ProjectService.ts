@@ -4,6 +4,7 @@ import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { Select } from "#select";
+import { SourceService } from "#source";
 import { Version } from "#version";
 
 export class ProjectService {
@@ -61,6 +62,7 @@ export class ProjectService {
 
   closeFile(filePath: string): void {
     this.#service.closeClientFile(filePath);
+    SourceService.delete(filePath);
   }
 
   #getDefaultCompilerOptions() {

@@ -1,10 +1,14 @@
 import type ts from "typescript";
-import type { SourceFile } from "#source";
+import type { JsonSourceFile } from "#json";
 
 export class SourceService {
-  static #files = new Map<string, SourceFile | ts.SourceFile>();
+  static #files = new Map<string, ts.SourceFile | JsonSourceFile>();
 
-  static get(source: SourceFile | ts.SourceFile) {
+  static delete(filePath: string) {
+    SourceService.#files.delete(filePath);
+  }
+
+  static get(source: ts.SourceFile | JsonSourceFile) {
     const file = SourceService.#files.get(source.fileName);
 
     if (file != null) {
@@ -14,7 +18,7 @@ export class SourceService {
     return source;
   }
 
-  static set(source: SourceFile | ts.SourceFile) {
+  static set(source: ts.SourceFile | JsonSourceFile) {
     SourceService.#files.set(source.fileName, source);
   }
 }
