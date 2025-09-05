@@ -138,7 +138,7 @@ export class AbilityLayer {
     if (this.#nodes.length > 0 || this.#suppressedErrorsMap != null) {
       SourceService.set(testTree.sourceFile);
 
-      this.#projectService.openFile(this.#filePath, this.#text, this.#resolvedConfig.rootPath);
+      this.#projectService.openFile(this.#filePath, this.#text);
 
       const languageService = this.#projectService.getLanguageService(this.#filePath);
       const diagnostics = languageService?.getSemanticDiagnostics(this.#filePath);

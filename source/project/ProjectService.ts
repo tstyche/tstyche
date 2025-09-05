@@ -127,7 +127,7 @@ export class ProjectService {
     return fileNames.includes(filePath);
   }
 
-  openFile(filePath: string, sourceText?: string | undefined, projectRootPath?: string | undefined): void {
+  openFile(filePath: string, sourceText?: string): void {
     switch (this.#resolvedConfig.tsconfig) {
       case "findup":
         break;
@@ -148,7 +148,7 @@ export class ProjectService {
       filePath,
       sourceText,
       /* scriptKind */ undefined,
-      projectRootPath,
+      this.#resolvedConfig.rootPath,
     );
 
     if (configFileName !== this.#lastSeenProject) {

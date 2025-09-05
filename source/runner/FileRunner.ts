@@ -39,7 +39,7 @@ export class FileRunner {
       return;
     }
 
-    this.#projectService.openFile(file.path, /* sourceText */ undefined, this.#resolvedConfig.rootPath);
+    this.#projectService.openFile(file.path);
 
     const fileResult = new FileResult(file);
 
@@ -101,7 +101,7 @@ export class FileRunner {
         return;
       }
 
-      this.#projectService.openFile(file.path, testText, this.#resolvedConfig.rootPath);
+      this.#projectService.openFile(file.path, testText);
 
       return this.#resolveFileFacts(file, fileResult, runModeFlags);
     }
