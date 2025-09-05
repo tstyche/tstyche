@@ -1,4 +1,4 @@
-import { expect } from "tstyche";
+import { expect, test } from "tstyche";
 
 function makeDate(timestamp: number): Date;
 function makeDate(m: number, d: number, y: number): Date;
@@ -10,9 +10,25 @@ function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
   return new Date(mOrTimestamp);
 }
 
-expect(makeDate(12345678)).type.toBe<Date>;
-expect(makeDate(4, 5, 6)).type.toBe<Date>;
+test("makeDate", () => {
+  expect(makeDate(12345678)).type.toBe<Date>;
+  expect(makeDate(4, 5, 6)).type.toBe<Date>;
 
-expect(makeDate).type.not.toBeCallableWith();
-expect(makeDate).type.not.toBeCallableWith(2, 3);
-expect(makeDate).type.not.toBeCallableWith(7, 8, 9, 10);
+  expect(makeDate).type.not.toBeCallableWith();
+  expect(makeDate).type.not.toBeCallableWith(2, 3);
+  expect(makeDate).type.not.toBeCallableWith(7, 8, 9, 10);
+});
+
+function getValueWithDefault(): "default";
+function getValueWithDefault<T>(arg: T): T;
+function getValueWithDefault<T>(arg?: T): T | "default" {
+  return arg ?? "default";
+}
+
+test("getValueWithDefault", () => {
+  expect(getValueWithDefault()).type.toBe<"default">();
+
+  expect(getValueWithDefault(123)).type.toBe<123>();
+  expect(getValueWithDefault("abc")).type.toBe<"abc">();
+  expect(getValueWithDefault(true)).type.toBe<true>();
+});
