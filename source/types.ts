@@ -163,13 +163,13 @@ interface Expect {
   /**
    * Builds an assertion.
    *
-   * @template Source - The type against which the assertion is made.
+   * @template Source - The type which is checked.
    */
   <Source>(): Modifier;
   /**
    * Builds an assertion.
    *
-   * @param source - The expression against which type the assertion is made.
+   * @param source - The expression whose type is checked.
    */
   (source: unknown): Modifier;
   /**
@@ -179,13 +179,13 @@ interface Expect {
     /**
      * Marks an assertion as focused.
      *
-     * @template Source - The type against which the assertion is made.
+     * @template Source - The type which is checked.
      */
     <Source>(): Modifier;
     /**
      * Marks an assertion as focused.
      *
-     * @param source - The expression against which type the assertion is made.
+     * @param source - The expression whose type is checked.
      */
     (source: unknown): Modifier;
   };
@@ -196,13 +196,13 @@ interface Expect {
     /**
      * Marks an assertion as skipped.
      *
-     * @template Source - The type against which the assertion is made.
+     * @template Source - The type which is checked.
      */
     <Source>(): Modifier;
     /**
      * Marks an assertion as skipped.
      *
-     * @param source - The expression against which type the assertion is made.
+     * @param source - The expression whose type is checked.
      */
     (source: unknown): Modifier;
   };
