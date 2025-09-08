@@ -73,7 +73,7 @@
     "@types/react": "19.1.12",
     "code-block-writer": "13.0.3",
     "cspell": "9.2.1",
-    "magic-string": "0.30.18",
+    "magic-string": "0.30.19",
     "monocart-coverage-reports": "2.12.6",
     "pretty-ansi": "3.0.0",
     "rollup": "4.50.1",

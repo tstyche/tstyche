@@ -1715,7 +1715,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:0.30.18, magic-string@npm:^0.30.17":
+"magic-string@npm:0.30.19":
+  version: 0.30.19
+  resolution: "magic-string@npm:0.30.19"
+  dependencies:
+    "@jridgewell/sourcemap-codec": "npm:^1.5.5"
+  checksum: 10c0/db23fd2e2ee98a1aeb88a4cdb2353137fcf05819b883c856dd79e4c7dfb25151e2a5a4d5dbd88add5e30ed8ae5c51bcf4accbc6becb75249d924ec7b4fbcae27
+  languageName: node
+  linkType: hard
+
+"magic-string@npm:^0.30.17":
   version: 0.30.18
   resolution: "magic-string@npm:0.30.18"
   dependencies:
@@ -2342,7 +2351,7 @@ __metadata:
     "@types/react": "npm:19.1.12"
     code-block-writer: "npm:13.0.3"
     cspell: "npm:9.2.1"
-    magic-string: "npm:0.30.18"
+    magic-string: "npm:0.30.19"
     monocart-coverage-reports: "npm:2.12.6"
     pretty-ansi: "npm:3.0.0"
     rollup: "npm:4.50.1"
