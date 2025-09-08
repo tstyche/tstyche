@@ -150,7 +150,7 @@ Error: Type '{ a?: number | undefined; }' is the same as type '{ a?: number | un
      |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~
   62 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
   63 | 
-  64 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  64 |   expect<{ a?: number }>().type.not.toBeAssignableFrom<{ a?: number | undefined }>();
 
        at ./__typetests__/toBe.tst.ts:61:42 ❭ exact optional property types
 
@@ -161,16 +161,16 @@ Error: Type '{ a?: number | undefined; }' is the same as type '{ a?: number | un
   62 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
      |                                                      ~~~~~~~~~~~~~~
   63 | 
-  64 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  64 |   expect<{ a?: number }>().type.not.toBeAssignableFrom<{ a?: number | undefined }>();
   65 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
 
        at ./__typetests__/toBe.tst.ts:62:54 ❭ exact optional property types
 
-Error: Type '{ a?: number | undefined; }' is assignable with type '{ a?: number | undefined; }'.
+Error: Type '{ a?: number | undefined; }' is assignable from type '{ a?: number | undefined; }'.
 
   62 |   expect<{ a?: number | undefined }>().type.not.toBe<{ a?: number }>();
   63 | 
-  64 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  64 |   expect<{ a?: number }>().type.not.toBeAssignableFrom<{ a?: number | undefined }>();
      |                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~
   65 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
   66 | });
@@ -181,7 +181,7 @@ Error: Type '{ a?: number | undefined; }' is assignable with type '{ a?: number 
 Error: Type '{ a?: number | undefined; }' is assignable to type '{ a?: number | undefined; }'.
 
   63 | 
-  64 |   expect<{ a?: number }>().type.not.toBeAssignableWith<{ a?: number | undefined }>();
+  64 |   expect<{ a?: number }>().type.not.toBeAssignableFrom<{ a?: number | undefined }>();
   65 |   expect<{ a?: number | undefined }>().type.not.toBeAssignableTo<{ a?: number }>();
      |                                                                  ~~~~~~~~~~~~~~
   66 | });

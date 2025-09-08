@@ -2,23 +2,23 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
   3 | describe("argument for 'source'", () => {
   4 |   test("must be provided", () => {
-  5 |     expect().type.toBeAssignableWith<{ test: void }>();
+  5 |     expect().type.toBeAssignableFrom<{ test: void }>();
     |     ~~~~~~
   6 |   });
   7 | });
   8 | 
 
-      at ./__typetests__/toBeAssignableWith.tst.ts:5:5
+      at ./__typetests__/toBeAssignableFrom.tst.ts:5:5
 
 Error: An argument for 'target' or type argument for 'Target' must be provided.
 
    9 | describe("argument for 'target'", () => {
   10 |   test("must be provided", () => {
-  11 |     expect<{ test: void }>().type.toBeAssignableWith();
+  11 |     expect<{ test: void }>().type.toBeAssignableFrom();
      |                                   ~~~~~~~~~~~~~~~~~~
   12 |   });
   13 | });
   14 | 
 
-       at ./__typetests__/toBeAssignableWith.tst.ts:11:35
+       at ./__typetests__/toBeAssignableFrom.tst.ts:11:35
 

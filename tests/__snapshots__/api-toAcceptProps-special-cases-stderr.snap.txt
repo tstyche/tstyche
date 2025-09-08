@@ -1,6 +1,6 @@
 Error: Component accepts props of the given type.
 
-Type '{ one: string; }' is assignable with type '{ one: string; }'.
+Type '{ one: string; }' is assignable from type '{ one: string; }'.
 
    8 | 
    9 |     expect(Default).type.toAcceptProps({ one: "sample" });
@@ -14,7 +14,7 @@ Type '{ one: string; }' is assignable with type '{ one: string; }'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; }' is not assignable with type '{}'.
+Type '{ one: string; }' is not assignable from type '{}'.
 Type '{ one: string; }' requires property 'one'.
 
   11 | 
@@ -44,7 +44,7 @@ Type '{ one: string; }' does not have property 'two'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; }' is not assignable with type '{ two: boolean; }'.
+Type '{ one: string; }' is not assignable from type '{ two: boolean; }'.
 Type '{ one: string; }' requires property 'one'.
 
   14 | 
@@ -59,9 +59,9 @@ Type '{ one: string; }' requires property 'one'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ one: string; }' is not assignable with type '{ one: boolean; }'.
+Type '{ one: string; }' is not assignable from type '{ one: boolean; }'.
 Types of property 'one' are not compatible.
-Type 'string' is not assignable with type 'boolean'.
+Type 'string' is not assignable from type 'boolean'.
 
   17 | 
   18 |     expect(Default).type.not.toAcceptProps({ one: false });
@@ -75,8 +75,8 @@ Type 'string' is not assignable with type 'boolean'.
 
 Error: Component accepts props of the given type.
 
-Type 'One | Other' is assignable with type '{ one: string; }'.
-Type 'One' is assignable with type '{ one: string; }'.
+Type 'One | Other' is assignable from type '{ one: string; }'.
+Type 'One' is assignable from type '{ one: string; }'.
 
   33 | 
   34 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Pass" });
@@ -90,8 +90,8 @@ Type 'One' is assignable with type '{ one: string; }'.
 
 Error: Component accepts props of the given type.
 
-Type 'One | Other' is assignable with type '{ two: string; }'.
-Type 'Other' is assignable with type '{ two: string; }'.
+Type 'One | Other' is assignable from type '{ two: string; }'.
+Type 'Other' is assignable from type '{ two: string; }'.
 
   36 | 
   37 |     expect(OneOrTheOther).type.toAcceptProps({ two: "Pass" });
@@ -105,10 +105,10 @@ Type 'Other' is assignable with type '{ two: string; }'.
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable with type '{ one: string; two: string; }'.
-Type 'One' is not assignable with type '{ one: string; two: string; }'.
+Type 'One | Other' is not assignable from type '{ one: string; two: string; }'.
+Type 'One' is not assignable from type '{ one: string; two: string; }'.
 Types of property 'two' are not compatible.
-Type 'undefined' is not assignable with type 'string'.
+Type 'undefined' is not assignable from type 'string'.
 
   39 | 
   40 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
@@ -122,10 +122,10 @@ Type 'undefined' is not assignable with type 'string'.
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable with type '{ one: string; two: string; }'.
-Type 'Other' is not assignable with type '{ one: string; two: string; }'.
+Type 'One | Other' is not assignable from type '{ one: string; two: string; }'.
+Type 'Other' is not assignable from type '{ one: string; two: string; }'.
 Types of property 'one' are not compatible.
-Type 'undefined' is not assignable with type 'string'.
+Type 'undefined' is not assignable from type 'string'.
 
   39 | 
   40 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
@@ -139,8 +139,8 @@ Type 'undefined' is not assignable with type 'string'.
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable with type '{}'.
-Type 'One' is not assignable with type '{}'.
+Type 'One | Other' is not assignable from type '{}'.
+Type 'One' is not assignable from type '{}'.
 Type 'One' requires property 'one'.
 
   42 | 
@@ -155,8 +155,8 @@ Type 'One' requires property 'one'.
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable with type '{}'.
-Type 'Other' is not assignable with type '{}'.
+Type 'One | Other' is not assignable from type '{}'.
+Type 'Other' is not assignable from type '{}'.
 Type 'Other' requires property 'two'.
 
   42 | 
@@ -171,7 +171,7 @@ Type 'Other' requires property 'two'.
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable with type '{ three: boolean; }'.
+Type 'One | Other' is not assignable from type '{ three: boolean; }'.
 Type 'One' is not compatible with type '{ three: boolean; }'.
 Type 'One' does not have property 'three'.
 
@@ -187,8 +187,8 @@ Type 'One' does not have property 'three'.
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable with type '{ three: boolean; }'.
-Type 'One' is not assignable with type '{ three: boolean; }'.
+Type 'One | Other' is not assignable from type '{ three: boolean; }'.
+Type 'One' is not assignable from type '{ three: boolean; }'.
 Type 'One' requires property 'one'.
 
   45 | 
@@ -203,7 +203,7 @@ Type 'One' requires property 'one'.
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable with type '{ three: boolean; }'.
+Type 'One | Other' is not assignable from type '{ three: boolean; }'.
 Type 'Other' is not compatible with type '{ three: boolean; }'.
 Type 'Other' does not have property 'three'.
 
@@ -219,8 +219,8 @@ Type 'Other' does not have property 'three'.
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable with type '{ three: boolean; }'.
-Type 'Other' is not assignable with type '{ three: boolean; }'.
+Type 'One | Other' is not assignable from type '{ three: boolean; }'.
+Type 'Other' is not assignable from type '{ three: boolean; }'.
 Type 'Other' requires property 'two'.
 
   45 | 

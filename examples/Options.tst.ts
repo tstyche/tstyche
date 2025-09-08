@@ -6,9 +6,9 @@ interface Options {
 }
 
 test("is assignable?", () => {
-  expect<Options>().type.toBeAssignableWith({});
+  expect<Options>().type.toBeAssignableFrom({});
 
-  expect<Options>().type.toBeAssignableWith({
+  expect<Options>().type.toBeAssignableFrom({
     locale: ["en" as const, "de" as const],
     root: "./",
   });

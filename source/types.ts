@@ -104,6 +104,19 @@ interface Matchers {
    */
   toBeApplicable: (target: unknown, context: DecoratorContext) => void;
   /**
+   * Checks if the source type is assignable from the target type.
+   */
+  toBeAssignableFrom: {
+    /**
+     * Checks if the source type is assignable from the target type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the source type is assignable from type of the target expression.
+     */
+    (target: unknown): void;
+  };
+  /**
    * Checks if the source type is assignable to the target type.
    */
   toBeAssignableTo: {
@@ -113,19 +126,6 @@ interface Matchers {
     <Target>(): void;
     /**
      * Checks if the source type is assignable to type of the target expression.
-     */
-    (target: unknown): void;
-  };
-  /**
-   * Checks if the source type is assignable with the target type.
-   */
-  toBeAssignableWith: {
-    /**
-     * Checks if the source type is assignable with the target type.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type is assignable with type of the target expression.
      */
     (target: unknown): void;
   };

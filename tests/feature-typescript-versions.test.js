@@ -55,16 +55,16 @@ test("is assignable to?", () => {
   expect(new Set([123, "abc"])).type.not.toBeAssignableTo<Set<number>>();
 });`;
 
-const toBeAssignableWithTestText = `import { expect, test } from "tstyche";
+const toBeAssignableFromTestText = `import { expect, test } from "tstyche";
 
 type Awaitable<T> = T | PromiseLike<T>;
 
-test("is assignable with?", () => {
-  expect<Awaitable<string>>().type.toBeAssignableWith("abc");
-  expect<Awaitable<string>>().type.toBeAssignableWith(Promise.resolve("abc"));
+test("is assignable from?", () => {
+  expect<Awaitable<string>>().type.toBeAssignableFrom("abc");
+  expect<Awaitable<string>>().type.toBeAssignableFrom(Promise.resolve("abc"));
 
-  expect<Awaitable<string>>().type.not.toBeAssignableWith(123);
-  expect<Awaitable<string>>().type.not.toBeAssignableWith(Promise.resolve(123));
+  expect<Awaitable<string>>().type.not.toBeAssignableFrom(123);
+  expect<Awaitable<string>>().type.not.toBeAssignableFrom(Promise.resolve(123));
 });`;
 
 const toBeTestText = `import { expect, test } from "tstyche";
@@ -120,7 +120,7 @@ await test("TypeScript 4.x", async (t) => {
     ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
     ["__typetests__/toBe.test.ts"]: toBeTestText,
     ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
-    ["__typetests__/toBeAssignableWith.test.ts"]: toBeAssignableWithTestText,
+    ["__typetests__/toBeAssignableFrom.test.ts"]: toBeAssignableFromTestText,
     ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
     ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
   });
@@ -164,7 +164,7 @@ await test("TypeScript 5.x", async (t) => {
     ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
     ["__typetests__/toBe.test.ts"]: toBeTestText,
     ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
-    ["__typetests__/toBeAssignableWith.test.ts"]: toBeAssignableWithTestText,
+    ["__typetests__/toBeAssignableFrom.test.ts"]: toBeAssignableFromTestText,
     ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
     ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
   });

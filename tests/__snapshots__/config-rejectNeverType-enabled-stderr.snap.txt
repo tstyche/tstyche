@@ -7,7 +7,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
   4 |   test("rejects the 'never' type", () => {
   5 |     expect({} as never).type.not.toBe<string>(); // rejected
     |            ~~~~~~~~~~~
-  6 |     expect({} as never).type.not.toBeAssignableWith<number>(); // rejected
+  6 |     expect({} as never).type.not.toBeAssignableFrom<number>(); // rejected
   7 |   });
   8 | 
 
@@ -20,7 +20,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
   4 |   test("rejects the 'never' type", () => {
   5 |     expect({} as never).type.not.toBe<string>(); // rejected
-  6 |     expect({} as never).type.not.toBeAssignableWith<number>(); // rejected
+  6 |     expect({} as never).type.not.toBeAssignableFrom<number>(); // rejected
     |            ~~~~~~~~~~~
   7 |   });
   8 | 
@@ -80,7 +80,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
   43 | describe("argument for 'target'", () => {
   44 |   test("rejects the 'never' type", () => {
-  45 |     expect<string>().type.toBeAssignableWith({} as never); // rejected
+  45 |     expect<string>().type.toBeAssignableFrom({} as never); // rejected
      |                                              ~~~~~~~~~~~
   46 |     expect<number>().type.not.toBe({} as never); // rejected
   47 |   });
@@ -94,7 +94,7 @@ The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
 
   44 |   test("rejects the 'never' type", () => {
-  45 |     expect<string>().type.toBeAssignableWith({} as never); // rejected
+  45 |     expect<string>().type.toBeAssignableFrom({} as never); // rejected
   46 |     expect<number>().type.not.toBe({} as never); // rejected
      |                                    ~~~~~~~~~~~
   47 |   });
@@ -109,7 +109,7 @@ The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
 
   57 | 
-  58 |     expect<{ a: boolean }>().type.toBeAssignableWith<never>();
+  58 |     expect<{ a: boolean }>().type.toBeAssignableFrom<never>();
   59 |     expect<{ a: boolean }>().type.not.toBe<Never>(); // rejected
      |                                            ~~~~~
   60 |   });

@@ -3,9 +3,9 @@ import type { MatchWorker } from "./MatchWorker.js";
 import { RelationMatcherBase } from "./RelationMatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
-export class ToBeAssignableWith extends RelationMatcherBase {
-  explainText = ExpectDiagnosticText.isAssignableWith;
-  explainNotText = ExpectDiagnosticText.isNotAssignableWith;
+export class ToBeAssignableFrom extends RelationMatcherBase {
+  explainText = ExpectDiagnosticText.isAssignableFrom;
+  explainNotText = ExpectDiagnosticText.isNotAssignableFrom;
 
   match(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode): MatchResult {
     return {

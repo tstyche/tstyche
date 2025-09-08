@@ -1,6 +1,6 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeAssignableWith.tst.ts
+fail ./__typetests__/toBeAssignableFrom.tst.ts
   source type
     × is assignable target expression?
     × is NOT assignable target expression?

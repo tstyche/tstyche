@@ -11,7 +11,7 @@ describe("argument for 'source'", () => {
     // @ts-expect-error! Missing import
     expect(getResult("sample")).type.toBe<Result<string>>(); // rejected
     // @ts-expect-error! Missing import
-    expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
+    expect(getResult(123)).type.toBeAssignableFrom<Result<number>>(); // rejected
   });
 
   test("allows '.toBe<any>()'", () => {
@@ -51,7 +51,7 @@ describe("type argument for 'Source'", () => {
 describe("argument for 'target'", () => {
   test("rejects the 'any' type", () => {
     // @ts-expect-error! Missing import
-    expect<string>().type.toBeAssignableWith(getResult("sample")); // rejected
+    expect<string>().type.toBeAssignableFrom(getResult("sample")); // rejected
     // @ts-expect-error! Missing import
     expect<number>().type.not.toBe(getResult(123)); // rejected
   });
