@@ -3,7 +3,7 @@ import type * as tstyche from "tstyche/tstyche";
 
 describe("ConfigFileOptions", () => {
   test("all options", () => {
-    expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({
+    expect<tstyche.ConfigFileOptions>().type.toBeAssignableFrom({
       checkDeclarationFiles: true,
       checkSuppressedErrors: true,
       failFast: true,
@@ -20,7 +20,7 @@ describe("ConfigFileOptions", () => {
   });
 
   test("all options are optional", () => {
-    expect<tstyche.ConfigFileOptions>().type.toBeAssignableWith({});
+    expect<tstyche.ConfigFileOptions>().type.toBeAssignableFrom({});
   });
 
   test("'checkDeclarationFiles' option", () => {

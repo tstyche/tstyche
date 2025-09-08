@@ -1,6 +1,6 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/toBeAssignableWith.tst.ts
+fail ./__typetests__/toBeAssignableFrom.tst.ts
   argument for 'source'
     × must be provided
   argument for 'target'

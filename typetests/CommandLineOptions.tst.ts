@@ -3,7 +3,7 @@ import type * as tstyche from "tstyche/tstyche";
 
 describe("CommandLineOptions", () => {
   test("all options", () => {
-    expect<tstyche.CommandLineOptions>().type.toBeAssignableWith({
+    expect<tstyche.CommandLineOptions>().type.toBeAssignableFrom({
       config: "./config/tstyche.json",
       failFast: true,
       fetch: true,
@@ -25,7 +25,7 @@ describe("CommandLineOptions", () => {
   });
 
   test("all options are optional", () => {
-    expect<tstyche.CommandLineOptions>().type.toBeAssignableWith({});
+    expect<tstyche.CommandLineOptions>().type.toBeAssignableFrom({});
   });
 
   test("'config' option", () => {

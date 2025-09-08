@@ -140,7 +140,7 @@ export class ToAcceptProps {
 
         if (this.#isOptionalProperty(targetProperty) && !this.#isOptionalProperty(sourceProperty)) {
           const text = [
-            ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText),
             ExpectDiagnosticText.requiresProperty(sourceTypeText, targetPropertyName),
           ];
 
@@ -159,9 +159,9 @@ export class ToAcceptProps {
           const sourcePropertyTypeText = this.#typeChecker.typeToString(sourcePropertyType);
 
           const text = [
-            ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText),
             ExpectDiagnosticText.typesOfPropertyAreNotCompatible(targetPropertyName),
-            ExpectDiagnosticText.isNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
+            ExpectDiagnosticText.isNotAssignableFrom(sourcePropertyTypeText, targetPropertyTypeText),
           ];
 
           const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
@@ -178,7 +178,7 @@ export class ToAcceptProps {
 
           if (!targetProperty && !this.#isOptionalProperty(sourceProperty)) {
             const text = [
-              ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText),
+              ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText),
               ExpectDiagnosticText.requiresProperty(sourceTypeText, sourcePropertyName),
             ];
 
@@ -188,7 +188,7 @@ export class ToAcceptProps {
       }
 
       if (diagnostics.length === 0) {
-        const text = ExpectDiagnosticText.isAssignableWith(sourceTypeText, targetTypeText);
+        const text = ExpectDiagnosticText.isAssignableFrom(sourceTypeText, targetTypeText);
 
         diagnostics.push(diagnostic.extendWith(text));
 
@@ -203,8 +203,8 @@ export class ToAcceptProps {
 
       const isMatch = sourceType.types.some((sourceType) => {
         const text = matchWorker.assertionNode.isNot
-          ? ExpectDiagnosticText.isAssignableWith(sourceTypeText, targetTypeText)
-          : ExpectDiagnosticText.isNotAssignableWith(sourceTypeText, targetTypeText);
+          ? ExpectDiagnosticText.isAssignableFrom(sourceTypeText, targetTypeText)
+          : ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText);
 
         const { diagnostics, isMatch } = explain(sourceType, targetType, diagnostic.extendWith(text));
 

@@ -8,8 +8,8 @@ import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
 import { ToBeApplicable } from "./ToBeApplicable.js";
+import { ToBeAssignableFrom } from "./ToBeAssignableFrom.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
-import { ToBeAssignableWith } from "./ToBeAssignableWith.js";
 import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToBeConstructableWith } from "./ToBeConstructableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
@@ -24,8 +24,8 @@ export class ExpectService {
   private toAcceptProps: ToAcceptProps;
   private toBe: ToBe;
   private toBeApplicable: ToBeApplicable;
+  private toBeAssignableFrom: ToBeAssignableFrom;
   private toBeAssignableTo: ToBeAssignableTo;
-  private toBeAssignableWith: ToBeAssignableWith;
   private toBeCallableWith: ToBeCallableWith;
   private toBeConstructableWith: ToBeConstructableWith;
   private toHaveProperty: ToHaveProperty;
@@ -39,8 +39,8 @@ export class ExpectService {
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
     this.toBe = new ToBe();
     this.toBeApplicable = new ToBeApplicable(compiler);
+    this.toBeAssignableFrom = new ToBeAssignableFrom();
     this.toBeAssignableTo = new ToBeAssignableTo();
-    this.toBeAssignableWith = new ToBeAssignableWith();
     this.toBeCallableWith = new ToBeCallableWith(compiler);
     this.toBeConstructableWith = new ToBeConstructableWith(compiler);
     this.toHaveProperty = new ToHaveProperty(compiler);
@@ -83,8 +83,8 @@ export class ExpectService {
     switch (matcherNameText) {
       case "toAcceptProps":
       case "toBe":
+      case "toBeAssignableFrom":
       case "toBeAssignableTo":
-      case "toBeAssignableWith":
         if (
           !argumentOrTypeArgumentIsProvided(
             "target",

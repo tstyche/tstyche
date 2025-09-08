@@ -9,7 +9,7 @@ const isRejectedText = `import { describe, expect, test } from "tstyche";
 describe("argument for 'source'", () => {
   test("rejects the 'never' type", () => {
     expect({} as never).type.not.toBe<string>(); // rejected
-    expect({} as never).type.not.toBeAssignableWith<number>(); // rejected
+    expect({} as never).type.not.toBeAssignableFrom<number>(); // rejected
   });
 
   test("allows '.toBe<never>()'", () => {
@@ -48,7 +48,7 @@ describe("type argument for 'Source'", () => {
 
 describe("argument for 'target'", () => {
   test("rejects the 'never' type", () => {
-    expect<string>().type.toBeAssignableWith({} as never); // rejected
+    expect<string>().type.toBeAssignableFrom({} as never); // rejected
     expect<number>().type.not.toBe({} as never); // rejected
   });
 
@@ -61,7 +61,7 @@ describe("type argument for 'Target'", () => {
   test("allows only explicit 'never'", () => {
     type Never = never;
 
-    expect<{ a: boolean }>().type.toBeAssignableWith<never>();
+    expect<{ a: boolean }>().type.toBeAssignableFrom<never>();
     expect<{ a: boolean }>().type.not.toBe<Never>(); // rejected
   });
 

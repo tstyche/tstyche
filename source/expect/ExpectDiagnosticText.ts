@@ -93,12 +93,12 @@ export class ExpectDiagnosticText {
     return `Type '${sourceTypeText}' is not assignable to type '${targetTypeText}'.`;
   }
 
-  static isAssignableWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is assignable with type '${targetTypeText}'.`;
+  static isAssignableFrom(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is assignable from type '${targetTypeText}'.`;
   }
 
-  static isNotAssignableWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not assignable with type '${targetTypeText}'.`;
+  static isNotAssignableFrom(sourceTypeText: string, targetTypeText: string): string {
+    return `Type '${sourceTypeText}' is not assignable from type '${targetTypeText}'.`;
   }
 
   static isTheSame(sourceTypeText: string, targetTypeText: string): string {
