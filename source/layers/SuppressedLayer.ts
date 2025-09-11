@@ -7,12 +7,14 @@ import type { SuppressedError } from "./types.js";
 
 export class SuppressedLayer {
   #compiler: typeof ts;
+  #editor: SourceTextEditor;
   #expectErrorRegex = /^(\s*)(\/\/ *@ts-expect-error)(!?)(:? *)(.*)?$/gim;
   #resolvedConfig: ResolvedConfig;
   #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
 
-  constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts, editor: SourceTextEditor, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#editor = editor;
     this.#resolvedConfig = resolvedConfig;
   }
 
@@ -85,8 +87,8 @@ export class SuppressedLayer {
     }
   }
 
-  open(tree: TestTree, editor: SourceTextEditor): void {
-    const suppressedErrors = this.#collectSuppressedErrors(editor.getText());
+  open(tree: TestTree): void {
+    const suppressedErrors = this.#collectSuppressedErrors(this.#editor.getText());
 
     if (this.#resolvedConfig.checkSuppressedErrors) {
       tree.suppressedErrors = suppressedErrors;
@@ -96,7 +98,7 @@ export class SuppressedLayer {
     for (const suppressedError of suppressedErrors) {
       const { start, end } = suppressedError.directive;
 
-      editor.replaceRange(start + 2, end);
+      this.#editor.replaceRange(start + 2, end);
 
       if (this.#suppressedErrorsMap != null) {
         const { line } = tree.sourceFile.getLineAndCharacterOfPosition(start);

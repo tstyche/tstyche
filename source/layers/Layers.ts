@@ -16,8 +16,8 @@ export class Layers {
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#projectService = projectService;
 
-    this.#abilityLayer = new AbilityLayer();
-    this.#suppressedLayer = new SuppressedLayer(compiler, resolvedConfig);
+    this.#abilityLayer = new AbilityLayer(compiler, this.#editor);
+    this.#suppressedLayer = new SuppressedLayer(compiler, this.#editor, resolvedConfig);
   }
 
   close(): void {
@@ -78,7 +78,7 @@ export class Layers {
 
   open(tree: TestTree): void {
     this.#editor.open(tree.sourceFile);
-    this.#suppressedLayer.open(tree, this.#editor);
+    this.#suppressedLayer.open(tree);
 
     this.#suppressedDiagnostics = this.#getNewDiagnostics(this.#editor.getFilePath(), this.#editor.getText());
 
@@ -88,11 +88,11 @@ export class Layers {
   visit(node: ExpectNode | WhenNode): void {
     switch (node.brand) {
       case TestTreeNodeBrand.Expect:
-        this.#abilityLayer.visitExpect(node as ExpectNode, this.#editor);
+        this.#abilityLayer.visitExpect(node as ExpectNode);
         break;
 
       case TestTreeNodeBrand.When:
-        this.#abilityLayer.visitWhen(node as WhenNode, this.#editor);
+        this.#abilityLayer.visitWhen(node as WhenNode);
         break;
     }
   }

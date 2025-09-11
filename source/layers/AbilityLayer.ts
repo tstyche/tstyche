@@ -2,10 +2,18 @@ import type ts from "typescript";
 import type { ExpectNode, WhenNode } from "#collect";
 import { TestTreeNodeBrand } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
+import { nodeIsChildOfExpressionStatement } from "./helpers.js";
 import type { SourceTextEditor } from "./SourceTextEditor.js";
 
 export class AbilityLayer {
+  #compiler: typeof ts;
+  #editor: SourceTextEditor;
   #nodes: Array<ExpectNode | WhenNode> = [];
+
+  constructor(compiler: typeof ts, editor: SourceTextEditor) {
+    this.#compiler = compiler;
+    this.#editor = editor;
+  }
 
   #belongsToNode(node: ExpectNode | WhenNode, diagnostic: ts.Diagnostic) {
     switch (node.brand) {
@@ -47,7 +55,7 @@ export class AbilityLayer {
     this.#nodes = [];
   }
 
-  visitExpect(expect: ExpectNode, editor: SourceTextEditor): void {
+  visitExpect(expect: ExpectNode): void {
     const expectStart = expect.node.getStart();
     const expectExpressionEnd = expect.node.expression.getEnd();
     const expectEnd = expect.node.getEnd();
@@ -57,7 +65,7 @@ export class AbilityLayer {
       case "toBeApplicable":
         this.#nodes.push(expect);
 
-        editor.replaceRanges([
+        this.#editor.replaceRanges([
           [expectStart, expectExpressionEnd],
           [expectEnd, matcherNameEnd],
         ]);
@@ -67,10 +75,14 @@ export class AbilityLayer {
       case "toBeCallableWith":
         this.#nodes.push(expect);
 
-        editor.eraseTrailingComma(expect.source);
+        this.#editor.eraseTrailingComma(expect.source);
 
-        editor.replaceRanges([
-          [expectStart, expectExpressionEnd, ";"],
+        this.#editor.replaceRanges([
+          [
+            expectStart,
+            expectExpressionEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+          ],
           [expectEnd, matcherNameEnd],
         ]);
 
@@ -79,10 +91,14 @@ export class AbilityLayer {
       case "toBeConstructableWith":
         this.#nodes.push(expect);
 
-        editor.eraseTrailingComma(expect.source);
+        this.#editor.eraseTrailingComma(expect.source);
 
-        editor.replaceRanges([
-          [expectStart, expectExpressionEnd, "; new"],
+        this.#editor.replaceRanges([
+          [
+            expectStart,
+            expectExpressionEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
+          ],
           [expectEnd, matcherNameEnd],
         ]);
 
@@ -90,7 +106,7 @@ export class AbilityLayer {
     }
   }
 
-  visitWhen(when: WhenNode, editor: SourceTextEditor): void {
+  visitWhen(when: WhenNode): void {
     const whenStart = when.node.getStart();
     const whenExpressionEnd = when.node.expression.getEnd();
     const whenEnd = when.node.getEnd();
@@ -100,11 +116,10 @@ export class AbilityLayer {
       case "isCalledWith":
         this.#nodes.push(when);
 
-        editor.eraseTrailingComma(when.target);
+        this.#editor.eraseTrailingComma(when.target);
 
-        editor.replaceRanges([
-          [whenStart, whenExpressionEnd, ";"],
-          // [whenStart, whenExpressionEnd, nodeIsChildOfExpressionStatement(this.#compiler, when.actionNode) ? ";" : ""],
+        this.#editor.replaceRanges([
+          [whenStart, whenExpressionEnd, nodeIsChildOfExpressionStatement(this.#compiler, when.actionNode) ? ";" : ""],
           [whenEnd, actionNameEnd],
         ]);
 
