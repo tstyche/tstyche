@@ -1,15 +1,27 @@
 import type ts from "typescript";
+import { SourceService } from "#source";
 
 export class SourceTextEditor {
-  #filePath: string;
-  // #sourceFile: ts.SourceFile;
-  #text: string;
+  #filePath = "";
+  #sourceFile: ts.SourceFile | undefined;
+  #text = "";
 
-  constructor(sourceFile: ts.SourceFile) {
-    // this.#sourceFile = sourceFile;
+  open(sourceFile: ts.SourceFile) {
+    this.#sourceFile = sourceFile;
 
     this.#filePath = sourceFile.fileName;
     this.#text = sourceFile.text;
+  }
+
+  close() {
+    if (this.#sourceFile != null) {
+      SourceService.set(this.#sourceFile);
+
+      this.#sourceFile = undefined;
+    }
+
+    this.#filePath = "";
+    this.#text = "";
   }
 
   eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>): void {
@@ -64,10 +76,4 @@ export class SourceTextEditor {
       this.replaceRange(start, end, replacement);
     }
   }
-
-  // insert(position, text) {
-  // }
-
-  // getSourceMap() {
-  // }
 }

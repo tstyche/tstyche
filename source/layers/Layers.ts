@@ -8,56 +8,81 @@ import { SuppressedLayer } from "./SuppressedLayer.js";
 
 export class Layers {
   #abilityLayer: AbilityLayer;
-  #editor!: SourceTextEditor;
+  #editor = new SourceTextEditor();
   #projectService: ProjectService;
+  #suppressedDiagnostics: Array<ts.Diagnostic> | undefined;
   #suppressedLayer: SuppressedLayer;
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#projectService = projectService;
 
-    this.#abilityLayer = new AbilityLayer(compiler);
+    this.#abilityLayer = new AbilityLayer();
     this.#suppressedLayer = new SuppressedLayer(compiler, resolvedConfig);
   }
 
-  close(tree: TestTree): void {
-    const abilityDiagnostics = this.#getNewDiagnostics(this.#editor.getFilePath(), this.#editor.getText());
+  close(): void {
+    const abilityDiagnostics = this.#getNewDiagnostics(
+      this.#editor.getFilePath(),
+      this.#editor.getText(),
+      this.#suppressedDiagnostics,
+    );
 
-    this.#abilityLayer.close(tree, abilityDiagnostics);
+    this.#suppressedDiagnostics = undefined;
 
-    // TODO
-    // this.#editor = undefined;
+    this.#abilityLayer.close(abilityDiagnostics);
+    this.#editor.close();
+  }
 
-    // this.#editor.close() and this.#editor.open(), perhaps?
+  #isSameDiagnostic(d1: ts.Diagnostic, d2: ts.Diagnostic) {
+    function isSameMessageText(t1: string | ts.DiagnosticMessageChain, t2: string | ts.DiagnosticMessageChain) {
+      if (typeof t1 === "string" && typeof t2 === "string") {
+        return t1 === d2.messageText;
+      }
+
+      if (typeof t1 !== "string" && typeof t2 !== "string") {
+        return t1.messageText === t2.messageText;
+      }
+
+      return false;
+    }
+
+    return (
+      d1.file?.fileName === d2.file?.fileName &&
+      d1.start === d2.start &&
+      d1.length === d2.length &&
+      d1.code === d2.code &&
+      isSameMessageText(d1.messageText, d2.messageText)
+    );
   }
 
   // TODO could be moved to 'ProjectService'
   #getNewDiagnostics(
     filePath: string,
     sourceText: string,
-    _seenDiagnostics?: Array<ts.Diagnostic>,
+    seenDiagnostics?: Array<ts.Diagnostic>,
   ): Array<ts.Diagnostic> | undefined {
     this.#projectService.openFile(filePath, sourceText);
 
     const languageService = this.#projectService.getLanguageService(filePath);
+    const diagnostics = languageService?.getSemanticDiagnostics(filePath);
 
-    const semanticDiagnostics = languageService?.getSemanticDiagnostics(filePath);
-
-    if (semanticDiagnostics != null) {
-      // TODO this should filter out 'seenDiagnostics' and return only fresh ones
-      return semanticDiagnostics;
+    if (seenDiagnostics != null) {
+      return diagnostics?.filter(
+        (newDiagnostic) =>
+          !seenDiagnostics.some((seenDiagnostic) => this.#isSameDiagnostic(newDiagnostic, seenDiagnostic)),
+      );
     }
 
-    return;
+    return diagnostics;
   }
 
   open(tree: TestTree): void {
-    this.#editor = new SourceTextEditor(tree.sourceFile);
-
+    this.#editor.open(tree.sourceFile);
     this.#suppressedLayer.open(tree, this.#editor);
 
-    const suppressedDiagnostics = this.#getNewDiagnostics(this.#editor.getFilePath(), this.#editor.getText());
+    this.#suppressedDiagnostics = this.#getNewDiagnostics(this.#editor.getFilePath(), this.#editor.getText());
 
-    this.#suppressedLayer.close(suppressedDiagnostics);
+    this.#suppressedLayer.close(this.#suppressedDiagnostics);
   }
 
   visit(node: ExpectNode | WhenNode): void {

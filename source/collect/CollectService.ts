@@ -158,7 +158,7 @@ export class CollectService {
 
     this.#collectTestTreeNodes(sourceFile, testTree, testTree);
 
-    this.#layers.close(testTree);
+    this.#layers.close();
 
     EventEmitter.dispatch(["collect:end", { tree: testTree }]);
 

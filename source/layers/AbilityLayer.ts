@@ -1,18 +1,11 @@
 import type ts from "typescript";
-import type { ExpectNode, TestTree, WhenNode } from "#collect";
+import type { ExpectNode, WhenNode } from "#collect";
 import { TestTreeNodeBrand } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import { SourceService } from "#source";
-import { nodeIsChildOfExpressionStatement } from "./helpers.js";
 import type { SourceTextEditor } from "./SourceTextEditor.js";
 
 export class AbilityLayer {
-  #compiler: typeof ts;
   #nodes: Array<ExpectNode | WhenNode> = [];
-
-  constructor(compiler: typeof ts) {
-    this.#compiler = compiler;
-  }
 
   #belongsToNode(node: ExpectNode | WhenNode, diagnostic: ts.Diagnostic) {
     switch (node.brand) {
@@ -40,10 +33,8 @@ export class AbilityLayer {
     }
   }
 
-  close(tree: TestTree, diagnostics: Array<ts.Diagnostic> | undefined): void {
+  close(diagnostics: Array<ts.Diagnostic> | undefined): void {
     if (this.#nodes.length > 0) {
-      SourceService.set(tree.sourceFile);
-
       if (diagnostics != null) {
         this.#nodes.reverse();
 
@@ -79,11 +70,7 @@ export class AbilityLayer {
         editor.eraseTrailingComma(expect.source);
 
         editor.replaceRanges([
-          [
-            expectStart,
-            expectExpressionEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
-          ],
+          [expectStart, expectExpressionEnd, ";"],
           [expectEnd, matcherNameEnd],
         ]);
 
@@ -95,11 +82,7 @@ export class AbilityLayer {
         editor.eraseTrailingComma(expect.source);
 
         editor.replaceRanges([
-          [
-            expectStart,
-            expectExpressionEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
-          ],
+          [expectStart, expectExpressionEnd, "; new"],
           [expectEnd, matcherNameEnd],
         ]);
 
@@ -120,7 +103,8 @@ export class AbilityLayer {
         editor.eraseTrailingComma(when.target);
 
         editor.replaceRanges([
-          [whenStart, whenExpressionEnd, nodeIsChildOfExpressionStatement(this.#compiler, when.actionNode) ? ";" : ""],
+          [whenStart, whenExpressionEnd, ";"],
+          // [whenStart, whenExpressionEnd, nodeIsChildOfExpressionStatement(this.#compiler, when.actionNode) ? ";" : ""],
           [whenEnd, actionNameEnd],
         ]);
 
