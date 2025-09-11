@@ -1,54 +1,25 @@
 import type ts from "typescript";
 import type { ExpectNode, TestTree, WhenNode } from "#collect";
 import { TestTreeNodeBrand } from "#collect";
-import type { ResolvedConfig } from "#config";
-import { diagnosticBelongsToNode, isDiagnosticWithLocation } from "#diagnostic";
-import type { ProjectService } from "#project";
+import { diagnosticBelongsToNode } from "#diagnostic";
 import { SourceService } from "#source";
 import { nodeIsChildOfExpressionStatement } from "./helpers.js";
-import type { SuppressedError } from "./types.js";
-
-interface TextRange {
-  start: number;
-  end: number;
-  replacement?: string;
-}
+import type { SourceTextEditor } from "./SourceTextEditor.js";
 
 export class AbilityLayer {
   #compiler: typeof ts;
-  #expectErrorRegex = /^(\s*)(\/\/ *@ts-expect-error)(!?)(:? *)(.*)?$/gim;
-  #filePath = "";
   #nodes: Array<ExpectNode | WhenNode> = [];
-  #projectService: ProjectService;
-  #resolvedConfig: ResolvedConfig;
-  #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
-  #text = "";
 
-  constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts) {
     this.#compiler = compiler;
-    this.#projectService = projectService;
-    this.#resolvedConfig = resolvedConfig;
-  }
-
-  #addRanges(node: ExpectNode | WhenNode, ranges: Array<TextRange>): void {
-    this.#nodes.push(node);
-
-    for (const range of ranges) {
-      const rangeText =
-        range.replacement != null
-          ? `${range.replacement}${this.#getErasedRangeText(range).slice(range.replacement.length)}`
-          : this.#getErasedRangeText(range);
-
-      this.#text = `${this.#text.slice(0, range.start)}${rangeText}${this.#text.slice(range.end)}`;
-    }
   }
 
   #belongsToNode(node: ExpectNode | WhenNode, diagnostic: ts.Diagnostic) {
     switch (node.brand) {
       case TestTreeNodeBrand.Expect:
         return (
-          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).matcherNode) &&
-          !diagnosticBelongsToNode(diagnostic, (node as ExpectNode).source)
+          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).matcherNode) ||
+          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).source)
         );
 
       case TestTreeNodeBrand.When:
@@ -65,134 +36,27 @@ export class AbilityLayer {
     for (const node of this.#nodes) {
       if (this.#belongsToNode(node, diagnostic)) {
         node.abilityDiagnostics.add(diagnostic);
-
-        return true;
       }
-    }
-
-    return false;
-  }
-
-  #mapToDirectives(diagnostic: ts.Diagnostic) {
-    if (!isDiagnosticWithLocation(diagnostic)) {
-      return;
-    }
-
-    const { file, start } = diagnostic;
-
-    const lineMap = file.getLineStarts();
-    let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
-
-    while (line >= 0) {
-      const suppressedError = this.#suppressedErrorsMap?.get(line);
-
-      if (suppressedError != null) {
-        suppressedError.diagnostics.push(diagnostic);
-        break;
-      }
-
-      const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
-      if (lineText !== "" && !lineText.startsWith("//")) {
-        break;
-      }
-
-      line--;
     }
   }
 
-  #collectSuppressedErrors() {
-    const ranges: Array<SuppressedError> = [];
-
-    for (const match of this.#text.matchAll(this.#expectErrorRegex)) {
-      const offsetText = match?.[1];
-      const directiveText = match?.[2];
-      const ignoreText = match?.[3];
-      const argumentSeparatorText = match?.[4];
-      const argumentText = match?.[5]?.split(/--+/)[0]?.trimEnd();
-
-      if (typeof offsetText !== "string" || !directiveText) {
-        continue;
-      }
-
-      const start = match.index + offsetText.length;
-
-      const range: SuppressedError = {
-        directive: { start, end: start + directiveText.length, text: directiveText },
-        ignore: ignoreText === "!",
-        diagnostics: [],
-      };
-
-      if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
-        const start = range.directive.end + argumentSeparatorText.length;
-
-        range.argument = { start, end: start + argumentText.length, text: argumentText };
-      }
-
-      ranges.push(range);
-    }
-
-    return ranges;
-  }
-
-  close(testTree: TestTree): void {
-    if (this.#nodes.length > 0 || this.#suppressedErrorsMap != null) {
-      SourceService.set(testTree.sourceFile);
-
-      this.#projectService.openFile(this.#filePath, this.#text);
-
-      const languageService = this.#projectService.getLanguageService(this.#filePath);
-      const diagnostics = languageService?.getSemanticDiagnostics(this.#filePath);
+  close(tree: TestTree, diagnostics: Array<ts.Diagnostic> | undefined): void {
+    if (this.#nodes.length > 0) {
+      SourceService.set(tree.sourceFile);
 
       if (diagnostics != null) {
         this.#nodes.reverse();
 
         for (const diagnostic of diagnostics) {
-          if (this.#mapToNodes(diagnostic)) {
-            continue;
-          }
-
-          this.#mapToDirectives(diagnostic);
+          this.#mapToNodes(diagnostic);
         }
       }
     }
 
-    this.#filePath = "";
     this.#nodes = [];
-    this.#suppressedErrorsMap = undefined;
-    this.#text = "";
   }
 
-  #eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>, parent: ExpectNode | WhenNode) {
-    if (node.hasTrailingComma) {
-      this.#addRanges(parent, [{ start: node.end - 1, end: node.end }]);
-    }
-  }
-
-  #getErasedRangeText(range: TextRange) {
-    if (this.#text.indexOf("\n", range.start) >= range.end) {
-      return " ".repeat(range.end - range.start);
-    }
-
-    const text: Array<string> = [];
-
-    for (let index = range.start; index < range.end; index++) {
-      const character = this.#text.charAt(index);
-
-      switch (character) {
-        case "\n":
-        case "\r":
-          text.push(character);
-          break;
-
-        default:
-          text.push(" ");
-      }
-    }
-
-    return text.join("");
-  }
-
-  handleExpect(expect: ExpectNode): void {
+  visitExpect(expect: ExpectNode, editor: SourceTextEditor): void {
     const expectStart = expect.node.getStart();
     const expectExpressionEnd = expect.node.expression.getEnd();
     const expectEnd = expect.node.getEnd();
@@ -200,92 +64,67 @@ export class AbilityLayer {
 
     switch (expect.matcherNameNode.name.text) {
       case "toBeApplicable":
-        this.#addRanges(expect, [
-          { start: expectStart, end: expectExpressionEnd },
-          { start: expectEnd, end: matcherNameEnd },
+        this.#nodes.push(expect);
+
+        editor.replaceRanges([
+          [expectStart, expectExpressionEnd],
+          [expectEnd, matcherNameEnd],
         ]);
 
         break;
 
       case "toBeCallableWith":
-        this.#eraseTrailingComma(expect.source, expect);
+        this.#nodes.push(expect);
 
-        this.#addRanges(expect, [
-          {
-            start: expectStart,
-            end: expectExpressionEnd,
-            replacement: nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
-          },
-          { start: expectEnd, end: matcherNameEnd },
+        editor.eraseTrailingComma(expect.source);
+
+        editor.replaceRanges([
+          [
+            expectStart,
+            expectExpressionEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+          ],
+          [expectEnd, matcherNameEnd],
         ]);
 
         break;
 
       case "toBeConstructableWith":
-        this.#eraseTrailingComma(expect.source, expect);
+        this.#nodes.push(expect);
 
-        this.#addRanges(expect, [
-          {
-            start: expectStart,
-            end: expectExpressionEnd,
-            replacement: nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
-          },
-          { start: expectEnd, end: matcherNameEnd },
+        editor.eraseTrailingComma(expect.source);
+
+        editor.replaceRanges([
+          [
+            expectStart,
+            expectExpressionEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
+          ],
+          [expectEnd, matcherNameEnd],
         ]);
 
         break;
     }
   }
 
-  #handleSuppressedErrors(testTree: TestTree) {
-    const suppressedErrors = this.#collectSuppressedErrors();
+  visitWhen(when: WhenNode, editor: SourceTextEditor): void {
+    const whenStart = when.node.getStart();
+    const whenExpressionEnd = when.node.expression.getEnd();
+    const whenEnd = when.node.getEnd();
+    const actionNameEnd = when.actionNameNode.getEnd();
 
-    if (this.#resolvedConfig.checkSuppressedErrors) {
-      testTree.suppressedErrors = suppressedErrors;
-      this.#suppressedErrorsMap = new Map();
-    }
-
-    for (const suppressedError of suppressedErrors) {
-      const { start, end } = suppressedError.directive;
-      const rangeText = this.#getErasedRangeText({ start: start + 2, end });
-
-      this.#text = `${this.#text.slice(0, start + 2)}${rangeText}${this.#text.slice(end)}`;
-
-      if (this.#suppressedErrorsMap != null) {
-        const { line } = testTree.sourceFile.getLineAndCharacterOfPosition(start);
-
-        this.#suppressedErrorsMap.set(line, suppressedError);
-      }
-    }
-  }
-
-  handleWhen(whenNode: WhenNode): void {
-    const whenStart = whenNode.node.getStart();
-    const whenExpressionEnd = whenNode.node.expression.getEnd();
-    const whenEnd = whenNode.node.getEnd();
-    const actionNameEnd = whenNode.actionNameNode.getEnd();
-
-    switch (whenNode.actionNameNode.name.text) {
+    switch (when.actionNameNode.name.text) {
       case "isCalledWith":
-        this.#eraseTrailingComma(whenNode.target, whenNode);
+        this.#nodes.push(when);
 
-        this.#addRanges(whenNode, [
-          {
-            start: whenStart,
-            end: whenExpressionEnd,
-            replacement: nodeIsChildOfExpressionStatement(this.#compiler, whenNode.actionNode) ? ";" : "",
-          },
-          { start: whenEnd, end: actionNameEnd },
+        editor.eraseTrailingComma(when.target);
+
+        editor.replaceRanges([
+          [whenStart, whenExpressionEnd, nodeIsChildOfExpressionStatement(this.#compiler, when.actionNode) ? ";" : ""],
+          [whenEnd, actionNameEnd],
         ]);
 
         break;
     }
-  }
-
-  open(testTree: TestTree): void {
-    this.#filePath = testTree.sourceFile.fileName;
-    this.#text = testTree.sourceFile.text;
-
-    this.#handleSuppressedErrors(testTree);
   }
 }
