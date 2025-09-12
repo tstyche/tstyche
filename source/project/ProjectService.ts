@@ -104,6 +104,23 @@ export class ProjectService {
     return project;
   }
 
+  getDiagnostics(
+    filePath: string,
+    sourceText: string,
+    shouldInclude?: (diagnostic: ts.Diagnostic) => boolean,
+  ): Array<ts.Diagnostic> | undefined {
+    this.openFile(filePath, sourceText);
+
+    const languageService = this.getLanguageService(filePath);
+    const diagnostics = languageService?.getSemanticDiagnostics(filePath);
+
+    if (diagnostics != null && shouldInclude != null) {
+      return diagnostics.filter(shouldInclude);
+    }
+
+    return diagnostics;
+  }
+
   getLanguageService(filePath: string): ts.LanguageService | undefined {
     const project = this.getDefaultProject(filePath);
 
