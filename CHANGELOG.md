@@ -1,5 +1,26 @@
 # Changelog
 
+## [5.0.0-beta.1] - 2025-09-12
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
+
+### Added
+
+- **New!**  Report counts of checked suppressed errors ([#584](https://github.com/tstyche/tstyche/pull/584))
+
+### Fixed
+
+- Provide correct declaration file for TypeScript 4.x ([#586](https://github.com/tstyche/tstyche/pull/586))
+
+### Changed
+
+- Add the `Layers` class ([#589](https://github.com/tstyche/tstyche/pull/589))
+- **Breaking!** Rename the `.toBeAssignableWith()` matcher to `.toBeAssignableFrom()` ([#588](https://github.com/tstyche/tstyche/pull/588))
+- **Breaking!** Export `ResultCounts` and `ResultTiming` as types only ([#583](https://github.com/tstyche/tstyche/pull/583))
+- **Breaking!** Remove getters from `ResultCounts` and `ResultTiming` ([#582](https://github.com/tstyche/tstyche/pull/582))
+- **Breaking!** Remove the `*Result.diagnostics` property ([#581](https://github.com/tstyche/tstyche/pull/581))
+- **Breaking!** Do not export internals ([#578](https://github.com/tstyche/tstyche/pull/578))
+
 ## [5.0.0-beta.0] - 2025-08-29
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
@@ -795,6 +816,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[5.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.1
 [5.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.0
 [4.3.0]: https://github.com/tstyche/tstyche/releases/tag/v4.3.0
 [4.2.0]: https://github.com/tstyche/tstyche/releases/tag/v4.2.0
