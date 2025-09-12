@@ -53,37 +53,39 @@ export class SuppressedLayer {
   }
 
   close(diagnostics: Array<ts.Diagnostic> | undefined): void {
-    if (!diagnostics || !this.#suppressedErrorsMap) {
-      this.#suppressedErrorsMap = undefined;
+    if (diagnostics != null && this.#suppressedErrorsMap != null) {
+      for (const diagnostic of diagnostics) {
+        this.#mapToDirectives(diagnostic);
+      }
+    }
 
+    this.#suppressedErrorsMap = undefined;
+  }
+
+  #mapToDirectives(diagnostic: ts.Diagnostic) {
+    if (!isDiagnosticWithLocation(diagnostic)) {
       return;
     }
 
-    for (const diagnostic of diagnostics) {
-      if (!isDiagnosticWithLocation(diagnostic)) {
-        return;
+    const { file, start } = diagnostic;
+
+    const lineMap = file.getLineStarts();
+    let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
+
+    while (line >= 0) {
+      const suppressedError = this.#suppressedErrorsMap?.get(line);
+
+      if (suppressedError != null) {
+        suppressedError.diagnostics.push(diagnostic);
+        break;
       }
 
-      const { file, start } = diagnostic;
-
-      const lineMap = file.getLineStarts();
-      let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
-
-      while (line >= 0) {
-        const suppressedError = this.#suppressedErrorsMap.get(line);
-
-        if (suppressedError != null) {
-          suppressedError.diagnostics.push(diagnostic);
-          break;
-        }
-
-        const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
-        if (lineText !== "" && !lineText.startsWith("//")) {
-          break;
-        }
-
-        line--;
+      const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
+      if (lineText !== "" && !lineText.startsWith("//")) {
+        break;
       }
+
+      line--;
     }
   }
 

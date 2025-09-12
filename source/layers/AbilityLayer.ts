@@ -33,26 +33,24 @@ export class AbilityLayer {
     return false;
   }
 
+  close(diagnostics: Array<ts.Diagnostic> | undefined): void {
+    if (diagnostics != null && this.#nodes.length > 0) {
+      this.#nodes.reverse();
+
+      for (const diagnostic of diagnostics) {
+        this.#mapToNodes(diagnostic);
+      }
+    }
+
+    this.#nodes = [];
+  }
+
   #mapToNodes(diagnostic: ts.Diagnostic) {
     for (const node of this.#nodes) {
       if (this.#belongsToNode(node, diagnostic)) {
         node.abilityDiagnostics.add(diagnostic);
       }
     }
-  }
-
-  close(diagnostics: Array<ts.Diagnostic> | undefined): void {
-    if (this.#nodes.length > 0) {
-      if (diagnostics != null) {
-        this.#nodes.reverse();
-
-        for (const diagnostic of diagnostics) {
-          this.#mapToNodes(diagnostic);
-        }
-      }
-    }
-
-    this.#nodes = [];
   }
 
   visitExpect(expect: ExpectNode): void {
