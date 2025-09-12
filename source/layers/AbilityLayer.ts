@@ -49,6 +49,8 @@ export class AbilityLayer {
     for (const node of this.#nodes) {
       if (this.#belongsToNode(node, diagnostic)) {
         node.abilityDiagnostics.add(diagnostic);
+
+        break;
       }
     }
   }
