@@ -2,7 +2,7 @@ import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { AbilityLayer } from "#layers";
+import { Layers } from "#layers";
 import type { ProjectService } from "#project";
 import { CollectDiagnosticText } from "./CollectDiagnosticText.js";
 import { ExpectNode } from "./ExpectNode.js";
@@ -14,14 +14,14 @@ import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 import { WhenNode } from "./WhenNode.js";
 
 export class CollectService {
-  #abilityLayer: AbilityLayer;
+  #layers: Layers;
   #compiler: typeof ts;
   #identifierLookup: IdentifierLookup;
 
   constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
 
-    this.#abilityLayer = new AbilityLayer(compiler, projectService, resolvedConfig);
+    this.#layers = new Layers(compiler, projectService, resolvedConfig);
     this.#identifierLookup = new IdentifierLookup(compiler);
   }
 
@@ -79,7 +79,7 @@ export class CollectService {
             notNode,
           );
 
-          this.#abilityLayer.handleExpect(expectNode);
+          this.#layers.visit(expectNode);
 
           this.#compiler.forEachChild(node, (node) => {
             this.#collectTestTreeNodes(node, expectNode, testTree);
@@ -128,7 +128,7 @@ export class CollectService {
             actionNameNode,
           );
 
-          this.#abilityLayer.handleWhen(whenNode);
+          this.#layers.visit(whenNode);
 
           this.#onNode(whenNode, parent, testTree);
 
@@ -153,12 +153,12 @@ export class CollectService {
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);
 
-    this.#abilityLayer.open(testTree);
+    this.#layers.open(testTree);
     this.#identifierLookup.open();
 
     this.#collectTestTreeNodes(sourceFile, testTree, testTree);
 
-    this.#abilityLayer.close(testTree);
+    this.#layers.close();
 
     EventEmitter.dispatch(["collect:end", { tree: testTree }]);
 
