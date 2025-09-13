@@ -24,16 +24,32 @@ await test("expect", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles not supported matcher", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["matcher-not-supported"]);
+  await t.test("not supported matcher", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["not-supported-matcher"]);
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-handles-not-supported-matcher-stderr`,
+      fileName: `${testFileName}-not-supported-matcher-stderr`,
       testFileUrl: import.meta.url,
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-handles-not-supported-matcher-stdout`,
+      fileName: `${testFileName}-not-supported-matcher-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("assertion chain", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["assertion-chain"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-assertion-chain-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-assertion-chain-stdout`,
       testFileUrl: import.meta.url,
     });
 

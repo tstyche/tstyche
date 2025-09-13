@@ -40,16 +40,32 @@ await test("when", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles not supported action", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["action-not-supported"]);
+  await t.test("not supported action", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["not-supported-action"]);
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-action-not-supported-stderr`,
+      fileName: `${testFileName}-not-supported-action-stderr`,
       testFileUrl: import.meta.url,
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-action-not-supported-stdout`,
+      fileName: `${testFileName}-not-supported-action-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("action chain", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["action-chain"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-action-chain-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-action-chain-stdout`,
       testFileUrl: import.meta.url,
     });
 
