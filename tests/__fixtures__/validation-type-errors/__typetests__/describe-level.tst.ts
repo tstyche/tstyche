@@ -1,17 +1,21 @@
 import { describe, expect, test } from "tstyche";
 
+let a: string;
+
 test("is string?", () => {
   expect<string>().type.toBe<string>();
 });
 
 describe.skip("skipped type error?", () => {
+  a = 123;
+
   test("with type error", () => {
-    expect<string>().toBe<string>();
+    expect<string>().type.toBe<string>();
   });
 });
 
 describe("reported type error?", () => {
-  test("with type error");
+  a = false;
 
   test("looks at this test?", () => {
     expect<number>().type.toBe<number>();
