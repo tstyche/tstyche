@@ -11,8 +11,8 @@ function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
 }
 
 test("makeDate", () => {
-  expect(makeDate(12345678)).type.toBe<Date>;
-  expect(makeDate(4, 5, 6)).type.toBe<Date>;
+  expect(makeDate(12345678)).type.toBe<Date>();
+  expect(makeDate(4, 5, 6)).type.toBe<Date>();
 
   expect(makeDate).type.not.toBeCallableWith();
   expect(makeDate).type.not.toBeCallableWith(2, 3);
