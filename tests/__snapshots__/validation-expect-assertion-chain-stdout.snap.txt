@@ -1,0 +1,12 @@
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/assertion-chain.tst.ts
+  + must be followed by the '.type' modifier
+  + the final element must be a matcher
+  + must be called with an argument
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      3 passed, 3 total
+Assertions: 3 passed, 3 total
+Duration:   <<timestamp>>

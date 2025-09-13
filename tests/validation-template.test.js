@@ -253,11 +253,14 @@ export default testText;
     const testFileText = `// @tstyche template
 
 let testText = \`import { expect, test } from "tstyche";
+
+let a: string;
 \`;
 
 for (const target of ["string", "number"]) {
   testText += \`test("is \${target} a string?", () => {
-  expect<string>().toBe<\${target}>();
+  a = 123;
+  expect<string>().type.toBe<\${target}>();
 });
 \`;
 }

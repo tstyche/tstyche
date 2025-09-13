@@ -1,0 +1,12 @@
+Error: The action must be called with an argument.
+
+  2 | 
+  3 | test("must be called with an argument", () => {
+  4 |   when().isCalledWith;
+    |   ~~~~~~~~~~~~~~~~~~~
+  5 | 
+  6 |   expect<string>().type.toBe<string>();
+  7 | });
+
+      at ./__typetests__/action-chain.tst.ts:4:3
+

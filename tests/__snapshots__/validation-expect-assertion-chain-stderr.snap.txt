@@ -1,0 +1,48 @@
+Error: 'expect()' must be followed by the '.type' modifier.
+
+  2 | 
+  3 | test("must be followed by the '.type' modifier", () => {
+  4 |   expect();
+    |   ~~~~~~~~
+  5 | 
+  6 |   expect<string>().type.toBe<string>();
+  7 | });
+
+      at ./__typetests__/assertion-chain.tst.ts:4:3
+
+Error: The final element in the assertion chain must be a matcher.
+
+   8 | 
+   9 | test("the final element must be a matcher", () => {
+  10 |   expect().type;
+     |   ~~~~~~~~~~~~~
+  11 |   expect().type.not;
+  12 | 
+  13 |   expect<string>().type.toBe<string>();
+
+       at ./__typetests__/assertion-chain.tst.ts:10:3
+
+Error: The final element in the assertion chain must be a matcher.
+
+   9 | test("the final element must be a matcher", () => {
+  10 |   expect().type;
+  11 |   expect().type.not;
+     |   ~~~~~~~~~~~~~~~~~
+  12 | 
+  13 |   expect<string>().type.toBe<string>();
+  14 | });
+
+       at ./__typetests__/assertion-chain.tst.ts:11:3
+
+Error: The matcher must be called with an argument.
+
+  15 | 
+  16 | test("must be called with an argument", () => {
+  17 |   expect().type.not.toBe;
+     |   ~~~~~~~~~~~~~~~~~~~~~~
+  18 | 
+  19 |   expect<string>().type.toBe<string>();
+  20 | });
+
+       at ./__typetests__/assertion-chain.tst.ts:17:3
+

@@ -50,6 +50,11 @@ export class CollectService {
           const modifierNode = this.#getChainedNode(node, "type");
 
           if (!modifierNode) {
+            const text = "'expect()' must be followed by the '.type' modifier.";
+            const origin = DiagnosticOrigin.fromNode(node);
+
+            this.#onDiagnostics(Diagnostic.error(text, origin));
+
             return;
           }
 
@@ -58,12 +63,22 @@ export class CollectService {
           const matcherNameNode = this.#getChainedNode(notNode ?? modifierNode);
 
           if (!matcherNameNode) {
+            const text = "The final element in the assertion chain must be a matcher.";
+            const origin = DiagnosticOrigin.fromNode(notNode ?? modifierNode);
+
+            this.#onDiagnostics(Diagnostic.error(text, origin));
+
             return;
           }
 
           const matcherNode = this.#getMatcherNode(matcherNameNode);
 
           if (!matcherNode) {
+            const text = "The matcher must be called with an argument.";
+            const origin = DiagnosticOrigin.fromNode(matcherNameNode);
+
+            this.#onDiagnostics(Diagnostic.error(text, origin));
+
             return;
           }
 
@@ -100,8 +115,11 @@ export class CollectService {
           const actionNode = this.#getActionNode(actionNameNode);
 
           if (!actionNode) {
-            // TODO make sure that the 'actionNode' is actually called
-            // "'.isCalledWith()' must be called with an argument."
+            const text = "The action must be called with an argument.";
+            const origin = DiagnosticOrigin.fromNode(actionNameNode);
+
+            this.#onDiagnostics(Diagnostic.error(text, origin));
+
             return;
           }
 

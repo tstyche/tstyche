@@ -1,6 +1,6 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
-fail ./__typetests__/matcher-not-supported.tst.ts
+fail ./__typetests__/not-supported-matcher.tst.ts
   + is string?
   × is not supported?
 
