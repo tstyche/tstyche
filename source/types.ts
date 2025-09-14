@@ -229,11 +229,11 @@ export declare const describe: Describe;
 /**
  * Defines a single test.
  */
-export declare const test: Test;
+export declare const it: Test;
 /**
  * Defines a single test.
  */
-export declare const it: Test;
+export declare const test: Test;
 
 interface Actions {
   /**

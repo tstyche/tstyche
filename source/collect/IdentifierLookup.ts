@@ -10,7 +10,6 @@ export interface Identifiers {
 export interface TestTreeNodeMeta {
   brand: TestTreeNodeBrand;
   flags: TestTreeNodeFlags;
-  identifier: string;
 }
 
 export class IdentifierLookup {
@@ -113,17 +112,19 @@ export class IdentifierLookup {
 
     switch (identifier) {
       case "describe":
-        return { brand: TestTreeNodeBrand.Describe, flags, identifier };
+        return { brand: TestTreeNodeBrand.Describe, flags };
 
       case "it":
+        return { brand: TestTreeNodeBrand.It, flags };
+
       case "test":
-        return { brand: TestTreeNodeBrand.Test, flags, identifier };
+        return { brand: TestTreeNodeBrand.Test, flags };
 
       case "expect":
-        return { brand: TestTreeNodeBrand.Expect, flags, identifier };
+        return { brand: TestTreeNodeBrand.Expect, flags };
 
       case "when":
-        return { brand: TestTreeNodeBrand.When, flags, identifier };
+        return { brand: TestTreeNodeBrand.When, flags };
     }
 
     return;
