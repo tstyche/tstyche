@@ -105,6 +105,7 @@ export class TestTreeWalker {
           await this.#visitDescribe(node, runModeFlags, parentResult as DescribeResult | undefined);
           break;
 
+        case TestTreeNodeBrand.It:
         case TestTreeNodeBrand.Test:
           await this.#visitTest(node, runModeFlags, parentResult as DescribeResult | undefined);
           break;

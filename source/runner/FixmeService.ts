@@ -70,9 +70,7 @@ export class FixmeService {
     }
 
     if (isFail === false) {
-      const targetText = owner.node.expression.getText();
-
-      const text = [FixmeDiagnosticText.wasSupposedToFail(targetText), FixmeDiagnosticText.considerRemoving()];
+      const text = [FixmeDiagnosticText.wasSupposedToFail(owner.brand), FixmeDiagnosticText.considerRemoving()];
 
       const origin = new DiagnosticOrigin(
         directive.namespace.start,

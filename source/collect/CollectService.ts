@@ -34,7 +34,11 @@ export class CollectService {
           return;
         }
 
-        if (meta.brand === TestTreeNodeBrand.Describe || meta.brand === TestTreeNodeBrand.Test) {
+        if (
+          meta.brand === TestTreeNodeBrand.Describe ||
+          meta.brand === TestTreeNodeBrand.It ||
+          meta.brand === TestTreeNodeBrand.Test
+        ) {
           const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
 
           this.#compiler.forEachChild(node, (node) => {
@@ -127,8 +131,12 @@ export class CollectService {
             if (this.#compiler.isCallExpression(node)) {
               const meta = this.#identifierLookup.resolveTestTreeNodeMeta(node);
 
-              if (meta?.brand === TestTreeNodeBrand.Describe || meta?.brand === TestTreeNodeBrand.Test) {
-                const text = CollectDiagnosticText.cannotBeNestedWithin(meta.identifier, "when");
+              if (
+                meta?.brand === TestTreeNodeBrand.Describe ||
+                meta?.brand === TestTreeNodeBrand.It ||
+                meta?.brand === TestTreeNodeBrand.Test
+              ) {
+                const text = CollectDiagnosticText.cannotBeNestedWithin(meta.brand, "when");
                 const origin = DiagnosticOrigin.fromNode(node);
 
                 this.#onDiagnostics(Diagnostic.error(text, origin));
@@ -185,7 +193,7 @@ export class CollectService {
 
   #checkNode(node: ts.Node, meta: TestTreeNodeMeta, parent: TestTree | TestTreeNode) {
     if ("brand" in parent && !this.#isNodeAllowed(meta, parent)) {
-      const text = CollectDiagnosticText.cannotBeNestedWithin(meta.identifier, parent.node.expression.getText());
+      const text = CollectDiagnosticText.cannotBeNestedWithin(meta.brand, parent.brand);
       const origin = DiagnosticOrigin.fromNode(node);
 
       this.#onDiagnostics(Diagnostic.error(text, origin));
@@ -199,8 +207,13 @@ export class CollectService {
   #isNodeAllowed(meta: TestTreeNodeMeta, parent: TestTreeNode) {
     switch (meta.brand) {
       case TestTreeNodeBrand.Describe:
+      case TestTreeNodeBrand.It:
       case TestTreeNodeBrand.Test:
-        if (parent.brand === TestTreeNodeBrand.Test || parent.brand === TestTreeNodeBrand.Expect) {
+        if (
+          parent.brand === TestTreeNodeBrand.It ||
+          parent.brand === TestTreeNodeBrand.Test ||
+          parent.brand === TestTreeNodeBrand.Expect
+        ) {
           return false;
         }
         break;

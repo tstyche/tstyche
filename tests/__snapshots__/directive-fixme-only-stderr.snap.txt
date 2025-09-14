@@ -1,4 +1,4 @@
-Error: The 'expect.only()' was supposed to fail, but it passed.
+Error: The 'expect()' was supposed to fail, but it passed.
 
 Consider removing the '// @tstyche fixme' directive.
 
@@ -12,7 +12,7 @@ Consider removing the '// @tstyche fixme' directive.
 
        at ./__typetests__/directive-fixme-only.tst.ts:9:1
 
-Error: The 'expect.only()' was supposed to fail, but it passed.
+Error: The 'expect()' was supposed to fail, but it passed.
 
 Consider removing the '// @tstyche fixme' directive.
 
@@ -40,7 +40,7 @@ Consider removing the '// @tstyche fixme' directive.
 
        at ./__typetests__/directive-fixme-only.tst.ts:32:3
 
-Error: The 'expect.only()' was supposed to fail, but it passed.
+Error: The 'expect()' was supposed to fail, but it passed.
 
 Consider removing the '// @tstyche fixme' directive.
 
@@ -68,7 +68,7 @@ Consider removing the '// @tstyche fixme' directive.
 
        at ./__typetests__/directive-fixme-only.tst.ts:51:3
 
-Error: The 'test.only()' was supposed to fail, but it passed.
+Error: The 'test()' was supposed to fail, but it passed.
 
 Consider removing the '// @tstyche fixme' directive.
 
@@ -138,7 +138,7 @@ Consider removing the '// @tstyche fixme' directive.
 
         at ./__typetests__/directive-fixme-only.tst.ts:163:3
 
-Error: The 'describe.only()' was supposed to fail, but it passed.
+Error: The 'describe()' was supposed to fail, but it passed.
 
 Consider removing the '// @tstyche fixme' directive.
 
