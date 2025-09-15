@@ -67,7 +67,7 @@ export class CollectService {
           const matcherNameNode = this.#getChainedNode(notNode ?? modifierNode);
 
           if (!matcherNameNode) {
-            const text = "The final element in the assertion chain must be a matcher.";
+            const text = "The final element in the chain must be a matcher.";
             const origin = DiagnosticOrigin.fromNode(notNode ?? modifierNode);
 
             this.#onDiagnostics(Diagnostic.error(text, origin));
@@ -113,6 +113,11 @@ export class CollectService {
           const actionNameNode = this.#getChainedNode(node);
 
           if (!actionNameNode) {
+            const text = "The final element in the chain must be an action.";
+            const origin = DiagnosticOrigin.fromNode(node);
+
+            this.#onDiagnostics(Diagnostic.error(text, origin));
+
             return;
           }
 

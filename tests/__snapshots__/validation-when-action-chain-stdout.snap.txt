@@ -1,10 +1,11 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/action-chain.tst.ts
+  + the final element must be an action
   + must be called with an argument
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      1 passed, 1 total
-Assertions: 1 passed, 1 total
+Tests:      2 passed, 2 total
+Assertions: 2 passed, 2 total
 Duration:   <<timestamp>>

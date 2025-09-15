@@ -10,7 +10,7 @@ Error: 'expect()' must be followed by the '.type' modifier.
 
       at ./__typetests__/assertion-chain.tst.ts:4:3
 
-Error: The final element in the assertion chain must be a matcher.
+Error: The final element in the chain must be a matcher.
 
    8 | 
    9 | test("the final element must be a matcher", () => {
@@ -22,7 +22,7 @@ Error: The final element in the assertion chain must be a matcher.
 
        at ./__typetests__/assertion-chain.tst.ts:10:3
 
-Error: The final element in the assertion chain must be a matcher.
+Error: The final element in the chain must be a matcher.
 
    9 | test("the final element must be a matcher", () => {
   10 |   expect().type;
