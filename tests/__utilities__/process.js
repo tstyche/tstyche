@@ -25,7 +25,7 @@ export class Process {
   #onExit = new Deferred();
   #output = new Output();
 
-  #idleDelay = process.env["CI"] === "true" ? 1600 : 800;
+  #idleDelay = 800;
   /** @type {NodeJS.Timeout | undefined} */
   #idleTimeout;
 
@@ -35,6 +35,14 @@ export class Process {
    * @param {{ env?: Record<string, string | undefined> }} [options]
    */
   constructor(fixtureUrl, args = [], options = {}) {
+    if (process.env["CI"] != null) {
+      this.#idleDelay *= 2; // 1600ms
+    }
+
+    if (process.env["NODE_V8_COVERAGE"] != null) {
+      this.#idleDelay *= 1.5; // 2400ms
+    }
+
     const spawnOptions = {
       cwd: fixtureUrl,
       env: {

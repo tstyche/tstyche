@@ -1,8 +1,6 @@
 import process from "node:process";
 import { CoverageReport, type CoverageReportOptions } from "monocart-coverage-reports";
 
-const isCi = Boolean(process.env["CI"]);
-
 function resolveReportTarget() {
   if (process.env["RUNNER_OS"]) {
     return process.env["RUNNER_OS"].toLowerCase();
@@ -49,9 +47,10 @@ if (process.argv.includes("--merge")) {
 
   config.dataDir = "./coverage/v8-coverage";
 
-  config.reports = isCi
-    ? ["console-details", ["raw", { outputDir: `./raw-coverage-${resolveReportTarget()}` }]]
-    : ["console-details", "v8"];
+  config.reports =
+    process.env["CI"] != null
+      ? ["console-details", ["raw", { outputDir: `./raw-coverage-${resolveReportTarget()}` }]]
+      : ["console-details", "v8"];
 }
 
 const coverageReport = new CoverageReport(config);
