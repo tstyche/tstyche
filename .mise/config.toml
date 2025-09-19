@@ -2,7 +2,7 @@
 hyperfine = "1.19.0"
 jsonschema = "11.5.0"
 node = "22.19.0"
-yarn = "4.10.1"
+yarn = "4.10.2"
 
 
 [tasks."generate:schema"]

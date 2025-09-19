@@ -89,7 +89,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@4.10.1",
+  "packageManager": "yarn@4.10.2",
   "engines": {
     "node": ">=20.12"
   }
