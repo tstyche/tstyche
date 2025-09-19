@@ -24,6 +24,7 @@ export class IdentifierLookup {
   handleImportDeclaration(node: ts.ImportDeclaration): void {
     if (
       this.#moduleSpecifiers.includes(node.moduleSpecifier.getText()) &&
+      // TODO use '.phaseModifier' after dropping support for TypeScript 5.8
       node.importClause?.isTypeOnly !== true &&
       node.importClause?.namedBindings != null
     ) {
