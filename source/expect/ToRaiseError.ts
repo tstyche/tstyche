@@ -1,6 +1,6 @@
 import type ts from "typescript";
-import { nodeBelongsToArgumentList } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
+import { nodeBelongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";

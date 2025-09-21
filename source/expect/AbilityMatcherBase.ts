@@ -1,5 +1,4 @@
 import type ts from "typescript";
-import { nodeBelongsToArgumentList } from "#collect";
 import {
   Diagnostic,
   DiagnosticOrigin,
@@ -9,6 +8,7 @@ import {
   getTextSpanEnd,
   isDiagnosticWithLocation,
 } from "#diagnostic";
+import { nodeBelongsToArgumentList } from "#layers";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 

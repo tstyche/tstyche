@@ -31,6 +31,10 @@ function deepCompareKeys(a: any, b: any, keys: Array<string>): boolean {
   return true;
 }
 
+export function nodeBelongsToArgumentList(compiler: typeof ts, node: ts.Node): boolean {
+  return compiler.isCallExpression(node.parent) && node.parent.arguments.some((argument) => argument === node);
+}
+
 export function nodeIsChildOfExpressionStatement(compiler: typeof ts, node: ts.Node): boolean {
   return compiler.isExpressionStatement(node.parent);
 }
