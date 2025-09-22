@@ -16,23 +16,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
     targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    let type: ts.Type | undefined;
-
-    if (this.compiler.isCallExpression(sourceNode)) {
-      type = matchWorker.typeChecker.getResolvedSignature(sourceNode)?.getReturnType();
-    }
-
-    if (
-      this.compiler.isArrowFunction(sourceNode) ||
-      this.compiler.isFunctionDeclaration(sourceNode) ||
-      this.compiler.isFunctionExpression(sourceNode) ||
-      // allows instantiation expressions
-      this.compiler.isExpressionWithTypeArguments(sourceNode) ||
-      this.compiler.isIdentifier(sourceNode) ||
-      this.compiler.isPropertyAccessExpression(sourceNode)
-    ) {
-      type = matchWorker.getType(sourceNode);
-    }
+    const type = matchWorker.getType(sourceNode);
 
     if (!type || type.getCallSignatures().length === 0) {
       const text: Array<string> = [];

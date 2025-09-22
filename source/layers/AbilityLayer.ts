@@ -2,7 +2,7 @@ import type ts from "typescript";
 import type { ExpectNode, WhenNode } from "#collect";
 import { TestTreeNodeBrand } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import { nodeIsChildOfExpressionStatement } from "./helpers.js";
+import { nodeBelongsToArgumentList, nodeIsChildOfExpressionStatement } from "./helpers.js";
 import type { SourceTextEditor } from "./SourceTextEditor.js";
 
 export class AbilityLayer {
@@ -72,21 +72,42 @@ export class AbilityLayer {
 
         break;
 
-      case "toBeCallableWith":
+      case "toBeCallableWith": {
         this.#nodes.push(expect);
 
-        this.#editor.eraseTrailingComma(expect.source);
+        const sourceNode = expect.source[0];
 
-        this.#editor.replaceRanges([
-          [
-            expectStart,
-            expectExpressionEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
-          ],
-          [expectEnd, matcherNameEnd],
-        ]);
+        if (!sourceNode) {
+          return;
+        }
+
+        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+          this.#editor.eraseTrailingComma(expect.source);
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              expectExpressionEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+            ],
+            [expectEnd, matcherNameEnd],
+          ]);
+        } else {
+          const sourceText = sourceNode.getFullText();
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              matcherNameEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+                ? `;(expect as any as ${sourceText})`
+                : `(expect as any as ${sourceText})`,
+            ],
+          ]);
+        }
 
         break;
+      }
 
       case "toBeConstructableWith":
         this.#nodes.push(expect);
