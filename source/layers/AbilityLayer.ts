@@ -100,8 +100,8 @@ export class AbilityLayer {
               expectStart,
               matcherNameEnd,
               nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
-                ? `;({} as ${sourceText})`
-                : `({} as ${sourceText})`,
+                ? `;(undefined as any as ${sourceText})`
+                : `(undefined as any as ${sourceText})`,
             ],
           ]);
         }
