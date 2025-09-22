@@ -12,4 +12,7 @@ test("FormFieldGetter", () => {
   expect<FormFieldGetter>().type.toBeCallableWith(userForm, "email");
 
   expect<FormFieldGetter>().type.not.toBeCallableWith(userForm, "age");
+
+  expect<FormFieldGetter>().type.not.toBeCallableWith(userForm);
+  expect<FormFieldGetter>().type.not.toBeCallableWith();
 });
