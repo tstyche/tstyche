@@ -72,57 +72,173 @@ Error: An argument for 'source' must be a callable expression.
 
 Error: An argument for 'source' must be a callable expression.
 
-  37 |     expect(() => () => false).type.toBeCallableWith();
-  38 | 
-  39 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
+  38 |     expect({} as () => void).type.toBeCallableWith();
+  39 | 
+  40 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
      |            ~~~~~~~~~~~~~~~~
-  40 | 
-  41 |     expect(Person).type.toBeCallableWith("abc");
-  42 |   });
+  41 | 
+  42 |     expect(Person).type.toBeCallableWith("abc");
+  43 |   });
 
-       at ./__typetests__/toBeCallableWith.tst.ts:39:12
+       at ./__typetests__/toBeCallableWith.tst.ts:40:12
 
 Error: An argument for 'source' must be a callable expression.
 
 Did you mean to use the '.toBeConstructableWith()' matcher?
 
-  39 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
-  40 | 
-  41 |     expect(Person).type.toBeCallableWith("abc");
+  40 |     expect(getPerson("abc")).type.toBeCallableWith("abc");
+  41 | 
+  42 |     expect(Person).type.toBeCallableWith("abc");
      |            ~~~~~~
-  42 |   });
-  43 | 
-  44 |   test("allowed expressions", () => {
+  43 |   });
+  44 | 
+  45 |   test("allowed expressions", () => {
 
-       at ./__typetests__/toBeCallableWith.tst.ts:41:12
+       at ./__typetests__/toBeCallableWith.tst.ts:42:12
 
 Error: An argument for 'source' cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
-  69 | 
-  70 |   test("is rejected type?", () => {
-  71 |     expect("abc" as any).type.toBeCallableWith();
+  70 | 
+  71 |   test("is rejected type?", () => {
+  72 |     expect("abc" as any).type.toBeCallableWith();
      |            ~~~~~~~~~~~~
-  72 |     expect("abc" as never).type.toBeCallableWith();
-  73 |   });
-  74 | });
+  73 |     expect("abc" as never).type.toBeCallableWith();
+  74 |   });
+  75 | });
 
-       at ./__typetests__/toBeCallableWith.tst.ts:71:12
+       at ./__typetests__/toBeCallableWith.tst.ts:72:12
 
 Error: An argument for 'source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
 
-  70 |   test("is rejected type?", () => {
-  71 |     expect("abc" as any).type.toBeCallableWith();
-  72 |     expect("abc" as never).type.toBeCallableWith();
+  71 |   test("is rejected type?", () => {
+  72 |     expect("abc" as any).type.toBeCallableWith();
+  73 |     expect("abc" as never).type.toBeCallableWith();
      |            ~~~~~~~~~~~~~~
-  73 |   });
-  74 | });
-  75 | 
+  74 |   });
+  75 | });
+  76 | 
 
-       at ./__typetests__/toBeCallableWith.tst.ts:72:12
+       at ./__typetests__/toBeCallableWith.tst.ts:73:12
+
+Error: A type argument for 'Source' must be a callable type.
+
+  77 | describe("type argument for 'Source'", () => {
+  78 |   test("must be a callable expression", () => {
+  79 |     expect<string>().type.toBeCallableWith();
+     |            ~~~~~~
+  80 |     expect<number>().type.toBeCallableWith();
+  81 |     expect<boolean>().type.toBeCallableWith();
+  82 |     expect<undefined>().type.toBeCallableWith();
+
+       at ./__typetests__/toBeCallableWith.tst.ts:79:12
+
+Error: A type argument for 'Source' must be a callable type.
+
+  78 |   test("must be a callable expression", () => {
+  79 |     expect<string>().type.toBeCallableWith();
+  80 |     expect<number>().type.toBeCallableWith();
+     |            ~~~~~~
+  81 |     expect<boolean>().type.toBeCallableWith();
+  82 |     expect<undefined>().type.toBeCallableWith();
+  83 |     expect<null>().type.toBeCallableWith();
+
+       at ./__typetests__/toBeCallableWith.tst.ts:80:12
+
+Error: A type argument for 'Source' must be a callable type.
+
+  79 |     expect<string>().type.toBeCallableWith();
+  80 |     expect<number>().type.toBeCallableWith();
+  81 |     expect<boolean>().type.toBeCallableWith();
+     |            ~~~~~~~
+  82 |     expect<undefined>().type.toBeCallableWith();
+  83 |     expect<null>().type.toBeCallableWith();
+  84 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:81:12
+
+Error: A type argument for 'Source' must be a callable type.
+
+  80 |     expect<number>().type.toBeCallableWith();
+  81 |     expect<boolean>().type.toBeCallableWith();
+  82 |     expect<undefined>().type.toBeCallableWith();
+     |            ~~~~~~~~~
+  83 |     expect<null>().type.toBeCallableWith();
+  84 | 
+  85 |     expect<() => undefined>().type.toBeCallableWith();
+
+       at ./__typetests__/toBeCallableWith.tst.ts:82:12
+
+Error: A type argument for 'Source' must be a callable type.
+
+  81 |     expect<boolean>().type.toBeCallableWith();
+  82 |     expect<undefined>().type.toBeCallableWith();
+  83 |     expect<null>().type.toBeCallableWith();
+     |            ~~~~
+  84 | 
+  85 |     expect<() => undefined>().type.toBeCallableWith();
+  86 |     expect<() => void>().type.toBeCallableWith();
+
+       at ./__typetests__/toBeCallableWith.tst.ts:83:12
+
+Error: A type argument for 'Source' must be a callable type.
+
+  91 |     expect<Func>().type.toBeCallableWith("abc");
+  92 | 
+  93 |     expect<Person>().type.toBeCallableWith("abc");
+     |            ~~~~~~
+  94 |     expect<new () => Person>().type.toBeCallableWith("abc");
+  95 |   });
+  96 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:93:12
+
+Error: A type argument for 'Source' must be a callable type.
+
+Did you mean to use the '.toBeConstructableWith()' matcher?
+
+  92 | 
+  93 |     expect<Person>().type.toBeCallableWith("abc");
+  94 |     expect<new () => Person>().type.toBeCallableWith("abc");
+     |            ~~~~~~~~~~~~~~~~
+  95 |   });
+  96 | 
+  97 |   test("is rejected type?", () => {
+
+       at ./__typetests__/toBeCallableWith.tst.ts:94:12
+
+Error: A type argument for 'Source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, pass 'any' as the type argument explicitly.
+
+   99 |     type Never = never;
+  100 | 
+  101 |     expect<Any>().type.toBeCallableWith();
+      |            ~~~
+  102 |     expect<Never>().type.toBeCallableWith();
+  103 |   });
+  104 | });
+
+        at ./__typetests__/toBeCallableWith.tst.ts:101:12
+
+Error: A type argument for 'Source' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, pass 'never' as the type argument explicitly.
+
+  100 | 
+  101 |     expect<Any>().type.toBeCallableWith();
+  102 |     expect<Never>().type.toBeCallableWith();
+      |            ~~~~~
+  103 |   });
+  104 | });
+  105 | 
+
+        at ./__typetests__/toBeCallableWith.tst.ts:102:12
 

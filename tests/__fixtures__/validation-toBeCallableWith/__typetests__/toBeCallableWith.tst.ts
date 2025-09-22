@@ -35,6 +35,7 @@ describe("argument for 'source'", () => {
     expect(() => undefined).type.toBeCallableWith();
     expect(() => {}).type.toBeCallableWith();
     expect(() => () => false).type.toBeCallableWith();
+    expect({} as () => void).type.toBeCallableWith();
 
     expect(getPerson("abc")).type.toBeCallableWith("abc");
 
@@ -70,5 +71,34 @@ describe("argument for 'source'", () => {
   test("is rejected type?", () => {
     expect("abc" as any).type.toBeCallableWith();
     expect("abc" as never).type.toBeCallableWith();
+  });
+});
+
+describe("type argument for 'Source'", () => {
+  test("must be a callable expression", () => {
+    expect<string>().type.toBeCallableWith();
+    expect<number>().type.toBeCallableWith();
+    expect<boolean>().type.toBeCallableWith();
+    expect<undefined>().type.toBeCallableWith();
+    expect<null>().type.toBeCallableWith();
+
+    expect<() => undefined>().type.toBeCallableWith();
+    expect<() => void>().type.toBeCallableWith();
+    expect<() => () => boolean>().type.toBeCallableWith();
+
+    type Func = (arg: string) => void;
+
+    expect<Func>().type.toBeCallableWith("abc");
+
+    expect<Person>().type.toBeCallableWith("abc");
+    expect<new () => Person>().type.toBeCallableWith("abc");
+  });
+
+  test("is rejected type?", () => {
+    type Any = any;
+    type Never = never;
+
+    expect<Any>().type.toBeCallableWith();
+    expect<Never>().type.toBeCallableWith();
   });
 });
