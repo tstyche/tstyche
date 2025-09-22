@@ -16,9 +16,9 @@ export class ToBeCallableWith extends AbilityMatcherBase {
     targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const type = matchWorker.getType(sourceNode);
+    const sourceType = matchWorker.getType(sourceNode);
 
-    if (!type || type.getCallSignatures().length === 0) {
+    if (sourceType.getCallSignatures().length === 0) {
       const text: Array<string> = [];
 
       if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
@@ -27,7 +27,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a callable type"));
       }
 
-      if (type != null && type.getConstructSignatures().length > 0) {
+      if (sourceType.getConstructSignatures().length > 0) {
         text.push(ExpectDiagnosticText.didYouMeanToUse("the '.toBeConstructableWith()' matcher"));
       }
 
