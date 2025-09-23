@@ -1,12 +1,25 @@
 # Changelog
 
+## [5.0.0-beta.2] - 2025-09-23
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
+
+### Added
+
+- **New!** Allow testing of provided types with `.toBeCallableWith()` ([#593](https://github.com/tstyche/tstyche/pull/593))
+- Add `TestTreeNodeBrand.It` member ([#591](https://github.com/tstyche/tstyche/pull/591))
+
+### Fixed
+
+- Add validation for assertion and action chains ([#590](https://github.com/tstyche/tstyche/pull/590))
+
 ## [5.0.0-beta.1] - 2025-09-12
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
 
 ### Added
 
-- **New!**  Report counts of checked suppressed errors ([#584](https://github.com/tstyche/tstyche/pull/584))
+- **New!** Report counts of checked suppressed errors ([#584](https://github.com/tstyche/tstyche/pull/584))
 
 ### Fixed
 
@@ -816,6 +829,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[5.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.2
 [5.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.1
 [5.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.0
 [4.3.0]: https://github.com/tstyche/tstyche/releases/tag/v4.3.0
