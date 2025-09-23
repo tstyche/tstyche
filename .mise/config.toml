@@ -1,6 +1,6 @@
 [tools]
 hyperfine = "1.19.0"
-jsonschema = "11.5.0"
+jsonschema = "11.8.3"
 node = "22.19.0"
 yarn = "4.10.3"
 
