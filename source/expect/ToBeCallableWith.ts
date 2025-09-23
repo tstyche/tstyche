@@ -16,25 +16,9 @@ export class ToBeCallableWith extends AbilityMatcherBase {
     targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    let type: ts.Type | undefined;
+    const sourceType = matchWorker.getType(sourceNode);
 
-    if (this.compiler.isCallExpression(sourceNode)) {
-      type = matchWorker.typeChecker.getResolvedSignature(sourceNode)?.getReturnType();
-    }
-
-    if (
-      this.compiler.isArrowFunction(sourceNode) ||
-      this.compiler.isFunctionDeclaration(sourceNode) ||
-      this.compiler.isFunctionExpression(sourceNode) ||
-      // allows instantiation expressions
-      this.compiler.isExpressionWithTypeArguments(sourceNode) ||
-      this.compiler.isIdentifier(sourceNode) ||
-      this.compiler.isPropertyAccessExpression(sourceNode)
-    ) {
-      type = matchWorker.getType(sourceNode);
-    }
-
-    if (!type || type.getCallSignatures().length === 0) {
+    if (sourceType.getCallSignatures().length === 0) {
       const text: Array<string> = [];
 
       if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
@@ -43,7 +27,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a callable type"));
       }
 
-      if (type != null && type.getConstructSignatures().length > 0) {
+      if (sourceType.getConstructSignatures().length > 0) {
         text.push(ExpectDiagnosticText.didYouMeanToUse("the '.toBeConstructableWith()' matcher"));
       }
 

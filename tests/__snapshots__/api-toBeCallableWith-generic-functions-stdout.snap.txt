@@ -1,7 +1,12 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/generic-functions.tst.ts
-  when target is an expression
+  when source is an expression
+    × is callable with the given argument
+    × is not callable without arguments
+    × is callable with the given arguments
+    × is not callable with the given arguments
+  when source is a type
     × is callable with the given argument
     × is not callable without arguments
     × is callable with the given arguments
@@ -9,6 +14,6 @@ fail ./__typetests__/generic-functions.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      4 failed, 4 total
-Assertions: 9 failed, 9 passed, 18 total
+Tests:      8 failed, 8 total
+Assertions: 18 failed, 18 passed, 36 total
 Duration:   <<timestamp>>

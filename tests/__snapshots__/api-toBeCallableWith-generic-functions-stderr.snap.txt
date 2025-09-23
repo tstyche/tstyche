@@ -8,21 +8,21 @@ Error: Expression is callable with the given argument.
   22 | 
   23 |   test("is not callable without arguments", () => {
 
-       at ./__typetests__/generic-functions.tst.ts:20:32 ❭ when target is an expression ❭ is callable with the given argument
+       at ./__typetests__/generic-functions.tst.ts:20:32 ❭ when source is an expression ❭ is callable with the given argument
 
 Error: Expression is not callable without arguments.
 
 Expected 1 arguments, but got 0.
 
-  22 | 
   23 |   test("is not callable without arguments", () => {
-  24 |     expect(firstItem).type.toBeCallableWith();
+  24 |     expect(firstItem).type.not.toBeCallableWith();
+  25 |     expect(firstItem).type.toBeCallableWith(); // fail: Expected 1 arguments, but got 0.
      |                            ~~~~~~~~~~~~~~~~
-  25 |     expect(firstItem).type.not.toBeCallableWith(); // fail: Expected 1 arguments, but got 0.
   26 |   });
   27 | 
+  28 |   test("is callable with the given arguments", () => {
 
-       at ./__typetests__/generic-functions.tst.ts:24:28 ❭ when target is an expression ❭ is not callable without arguments
+       at ./__typetests__/generic-functions.tst.ts:25:28 ❭ when source is an expression ❭ is not callable without arguments
 
     An argument for 'target' was not provided. ts(6210)
 
@@ -46,7 +46,7 @@ Error: Expression is callable with the given arguments.
   32 |     expect(getLonger).type.toBeCallableWith([1, 2], [1, 2, 3]);
   33 |     expect(getLonger).type.not.toBeCallableWith([1, 2], [1, 2, 3]); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:30:30 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/generic-functions.tst.ts:30:30 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -58,7 +58,7 @@ Error: Expression is callable with the given arguments.
   35 |     expect(getLonger).type.toBeCallableWith("one", "two");
   36 |     expect(getLonger).type.not.toBeCallableWith("one", "two"); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:33:32 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/generic-functions.tst.ts:33:32 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -70,7 +70,7 @@ Error: Expression is callable with the given arguments.
   38 |     expect(getLonger<string | Array<number>>).type.toBeCallableWith("zero", [123]);
   39 |     expect(getLonger<string | Array<number>>).type.not.toBeCallableWith("zero", [123]); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:36:32 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/generic-functions.tst.ts:36:32 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -82,7 +82,7 @@ Error: Expression is callable with the given arguments.
   41 | 
   42 |   test("is not callable with the given arguments", () => {
 
-       at ./__typetests__/generic-functions.tst.ts:39:56 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/generic-functions.tst.ts:39:56 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -96,7 +96,7 @@ Type 'string' is not assignable to type 'number'.
   46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
   47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:44:44 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/generic-functions.tst.ts:44:44 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -110,7 +110,7 @@ Type 'string' is not assignable to type 'number'.
   46 |     expect(getLonger).type.not.toBeCallableWith("zero", [123]);
   47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:44:49 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/generic-functions.tst.ts:44:49 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -124,7 +124,7 @@ Argument of type 'number[]' is not assignable to parameter of type '"zero"'.
   49 |     expect(getLonger).type.not.toBeCallableWith(1, 2);
   50 |     expect(getLonger).type.toBeCallableWith(1, 2); // fail
 
-       at ./__typetests__/generic-functions.tst.ts:47:53 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/generic-functions.tst.ts:47:53 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -138,5 +138,133 @@ Argument of type 'number' is not assignable to parameter of type '{ length: numb
   52 | });
   53 | 
 
-       at ./__typetests__/generic-functions.tst.ts:50:45 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/generic-functions.tst.ts:50:45 ❭ when source is an expression ❭ is not callable with the given arguments
+
+Error: Type is callable with the given argument.
+
+  66 |   test("is callable with the given argument", () => {
+  67 |     expect<Filter>().type.toBeCallableWith("abc");
+  68 |     expect<Filter>().type.not.toBeCallableWith("abc"); // fail
+     |                               ~~~~~~~~~~~~~~~~
+  69 |   });
+  70 | 
+  71 |   test("is not callable without arguments", () => {
+
+       at ./__typetests__/generic-functions.tst.ts:68:31 ❭ when source is a type ❭ is callable with the given argument
+
+Error: Type is not callable without arguments.
+
+Expected 2 arguments, but got 0.
+
+  71 |   test("is not callable without arguments", () => {
+  72 |     expect<FormFieldGetter>().type.not.toBeCallableWith();
+  73 |     expect<FormFieldGetter>().type.toBeCallableWith(); // fail: Expected 2 arguments, but got 0.
+     |                                    ~~~~~~~~~~~~~~~~
+  74 |   });
+  75 | 
+  76 |   test("is callable with the given arguments", () => {
+
+       at ./__typetests__/generic-functions.tst.ts:73:36 ❭ when source is a type ❭ is not callable without arguments
+
+    An argument for 'form' was not provided. ts(6210)
+
+      54 | type Filter = <T>(arg: T) => T;
+      55 | 
+      56 | type FormFieldGetter = <T, K extends keyof T>(form: T, field: K) => T[K];
+         |                                               ~~~~~~~
+      57 | 
+      58 | type LongerOfTwo<T extends { length: number } = Array<unknown>> = (arg1: T, arg2: T) => T;
+      59 | 
+
+           at ./__typetests__/generic-functions.tst.ts:56:47
+
+Error: Type is callable with the given arguments.
+
+  76 |   test("is callable with the given arguments", () => {
+  77 |     expect<FormFieldGetter>().type.toBeCallableWith(userForm, "name");
+  78 |     expect<FormFieldGetter>().type.not.toBeCallableWith(userForm, "name"); // fail
+     |                                        ~~~~~~~~~~~~~~~~
+  79 | 
+  80 |     expect<LongerOfTwo>().type.toBeCallableWith([1, 2], [1, 2, 3]);
+  81 |     expect<LongerOfTwo>().type.not.toBeCallableWith([1, 2], [1, 2, 3]); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:78:40 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  79 | 
+  80 |     expect<LongerOfTwo>().type.toBeCallableWith([1, 2], [1, 2, 3]);
+  81 |     expect<LongerOfTwo>().type.not.toBeCallableWith([1, 2], [1, 2, 3]); // fail
+     |                                    ~~~~~~~~~~~~~~~~
+  82 | 
+  83 |     expect<LongerOfTwo<string>>().type.toBeCallableWith("one", "two");
+  84 |     expect<LongerOfTwo<string>>().type.not.toBeCallableWith("one", "two"); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:81:36 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  82 | 
+  83 |     expect<LongerOfTwo<string>>().type.toBeCallableWith("one", "two");
+  84 |     expect<LongerOfTwo<string>>().type.not.toBeCallableWith("one", "two"); // fail
+     |                                            ~~~~~~~~~~~~~~~~
+  85 | 
+  86 |     expect<LongerOfTwo<string | Array<number>>>().type.toBeCallableWith("zero", [123]);
+  87 |     expect<LongerOfTwo<string | Array<number>>>().type.not.toBeCallableWith("zero", [123]); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:84:44 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  85 | 
+  86 |     expect<LongerOfTwo<string | Array<number>>>().type.toBeCallableWith("zero", [123]);
+  87 |     expect<LongerOfTwo<string | Array<number>>>().type.not.toBeCallableWith("zero", [123]); // fail
+     |                                                            ~~~~~~~~~~~~~~~~
+  88 |   });
+  89 | 
+  90 |   test("is not callable with the given arguments", () => {
+
+       at ./__typetests__/generic-functions.tst.ts:87:60 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '"age"' is not assignable to parameter of type '"name" | "email"'.
+
+  90 |   test("is not callable with the given arguments", () => {
+  91 |     expect<FormFieldGetter>().type.not.toBeCallableWith(userForm, "age");
+  92 |     expect<FormFieldGetter>().type.toBeCallableWith(userForm, "age"); // fail
+     |                                                               ~~~~~
+  93 | 
+  94 |     expect<LongerOfTwo>().type.not.toBeCallableWith("zero", [123]);
+  95 |     expect<LongerOfTwo>().type.toBeCallableWith("zero", [123]); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:92:63 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type 'string' is not assignable to parameter of type 'unknown[]'.
+
+  93 | 
+  94 |     expect<LongerOfTwo>().type.not.toBeCallableWith("zero", [123]);
+  95 |     expect<LongerOfTwo>().type.toBeCallableWith("zero", [123]); // fail
+     |                                                 ~~~~~~
+  96 | 
+  97 |     expect<LongerOfTwo>().type.not.toBeCallableWith(1, 2);
+  98 |     expect<LongerOfTwo>().type.toBeCallableWith(1, 2); // fail
+
+       at ./__typetests__/generic-functions.tst.ts:95:49 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type 'number' is not assignable to parameter of type 'unknown[]'.
+
+   96 | 
+   97 |     expect<LongerOfTwo>().type.not.toBeCallableWith(1, 2);
+   98 |     expect<LongerOfTwo>().type.toBeCallableWith(1, 2); // fail
+      |                                                 ~
+   99 |   });
+  100 | });
+  101 | 
+
+        at ./__typetests__/generic-functions.tst.ts:98:49 ❭ when source is a type ❭ is not callable with the given arguments
 
