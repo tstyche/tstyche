@@ -102,7 +102,7 @@ export class Runner {
 
     EventEmitter.dispatch(["run:end", { result }]);
 
-    if (cancellationToken.reason === CancellationReason.FailFast) {
+    if (cancellationToken.getReason() === CancellationReason.FailFast) {
       cancellationToken.reset();
     }
   }

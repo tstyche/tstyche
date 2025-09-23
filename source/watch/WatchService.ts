@@ -115,7 +115,7 @@ export class WatchService {
       watcher.watch();
     }
 
-    while (!cancellationToken.isCancellationRequested) {
+    while (!cancellationToken.isCancellationRequested()) {
       const testFiles = await debounce.schedule();
 
       if (testFiles.length > 0) {

@@ -64,12 +64,12 @@ export class Cli {
 
     const { commandLineOptions, pathMatch } = await Config.parseCommandLine(commandLine);
 
-    if (cancellationToken.isCancellationRequested) {
+    if (cancellationToken.isCancellationRequested()) {
       return;
     }
 
     do {
-      if (cancellationToken.reason === CancellationReason.ConfigChange) {
+      if (cancellationToken.getReason() === CancellationReason.ConfigChange) {
         cancellationToken.reset();
         exitCodeHandler.resetCode();
 
@@ -88,7 +88,7 @@ export class Cli {
         pathMatch,
       });
 
-      if (cancellationToken.isCancellationRequested) {
+      if (cancellationToken.isCancellationRequested()) {
         if (commandLine.includes("--watch")) {
           await this.#waitForChangedFiles(resolvedConfig, cancellationToken);
         }
@@ -142,7 +142,7 @@ export class Cli {
       await runner.run(testFiles, cancellationToken);
 
       PluginService.removeHandlers();
-    } while (cancellationToken.reason === CancellationReason.ConfigChange);
+    } while (cancellationToken.getReason() === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();
   }

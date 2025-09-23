@@ -90,7 +90,7 @@ export class TestTreeWalker {
     parentResult: DescribeResult | TestResult | undefined,
   ): Promise<void> {
     for (const node of nodes) {
-      if (this.#cancellationToken?.isCancellationRequested) {
+      if (this.#cancellationToken?.isCancellationRequested()) {
         break;
       }
 

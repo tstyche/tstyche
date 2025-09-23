@@ -7,10 +7,6 @@ export class FileView {
   #lines: Array<ScribblerJsx.Element> = [];
   #messages: Array<ScribblerJsx.Element> = [];
 
-  get hasErrors(): boolean {
-    return this.#messages.length > 0;
-  }
-
   addMessage(message: ScribblerJsx.Element): void {
     this.#messages.push(message);
   }
@@ -39,6 +35,10 @@ export class FileView {
   }
 
   getViewText(options?: { appendEmptyLine: boolean }): ScribblerJsx.Element {
-    return fileViewText(this.#lines, options?.appendEmptyLine || this.hasErrors);
+    return fileViewText(this.#lines, options?.appendEmptyLine || this.hasErrors());
+  }
+
+  hasErrors(): boolean {
+    return this.#messages.length > 0;
   }
 }

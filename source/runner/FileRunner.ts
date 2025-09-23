@@ -35,7 +35,7 @@ export class FileRunner {
   }
 
   async run(file: FileLocation, cancellationToken: CancellationToken): Promise<void> {
-    if (cancellationToken.isCancellationRequested) {
+    if (cancellationToken.isCancellationRequested()) {
       return;
     }
 

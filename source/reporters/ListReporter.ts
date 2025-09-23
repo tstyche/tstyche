@@ -13,7 +13,7 @@ export class ListReporter extends BaseReporter {
   #hasReportedUses = false;
   #isFileViewExpanded = false;
 
-  get #isLastFile() {
+  #isLastFile() {
     return this.#fileCount === 0;
   }
 
@@ -82,9 +82,9 @@ export class ListReporter extends BaseReporter {
 
         OutputService.writeMessage(fileStatusText(payload.result.status, payload.result.file));
 
-        OutputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
+        OutputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile() }));
 
-        if (this.#fileView.hasErrors) {
+        if (this.#fileView.hasErrors()) {
           OutputService.writeError(this.#fileView.getMessages());
           this.#hasReportedError = true;
         }
