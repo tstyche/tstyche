@@ -43,6 +43,7 @@ export class ToHaveProperty {
     const sourceType = matchWorker.getType(sourceNode);
 
     if (
+      // TODO disallow enum types, these are not objects
       sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
       !matchWorker.extendsObjectType(sourceType)
     ) {
@@ -59,13 +60,7 @@ export class ToHaveProperty {
 
     const targetType = matchWorker.getType(targetNode);
 
-    let propertyNameText = "";
-
-    if (isStringOrNumberLiteralType(this.#compiler, targetType)) {
-      propertyNameText = targetType.value.toString();
-    } else if (isUniqueSymbolType(this.#compiler, targetType)) {
-      propertyNameText = this.#compiler.unescapeLeadingUnderscores(targetType.escapedName);
-    } else {
+    if (!(isStringOrNumberLiteralType(this.#compiler, targetType) || isUniqueSymbolType(this.#compiler, targetType))) {
       const expectedText = "of type 'string | number | symbol'";
 
       const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
@@ -80,13 +75,9 @@ export class ToHaveProperty {
       return;
     }
 
-    const isMatch =
-      matchWorker.checkHasProperty(sourceNode, propertyNameText) ||
-      matchWorker.checkHasApplicableIndexType(sourceNode, targetNode);
-
     return {
       explain: () => this.#explain(matchWorker, sourceNode, targetNode),
-      isMatch,
+      isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
     };
   }
 }

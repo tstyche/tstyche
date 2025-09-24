@@ -16,9 +16,6 @@ fail ./__typetests__/toHaveProperty.tst.ts
     × does NOT have expected numeric enum property key
     × has expected string enum property key
     × does NOT have expected string enum property key
-  when source is an enum
-    × has expected property key
-    × does NOT have expected property key
   when source is an intersection
     × has expected property key
     × does NOT have expected property key
@@ -38,6 +35,6 @@ fail ./__typetests__/toHaveProperty.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      30 failed, 30 total
-Assertions: 30 failed, 31 passed, 61 total
+Tests:      28 failed, 28 total
+Assertions: 28 failed, 29 passed, 57 total
 Duration:   <<timestamp>>

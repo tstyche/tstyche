@@ -112,7 +112,7 @@ export class Store {
 
     const sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
 
-    const toExpose = ["isApplicableIndexType", "isTypeIdenticalTo"];
+    const toExpose = ["isTypeIdenticalTo"];
 
     const modifiedSourceText = sourceText.replace("return checker;", `return { ...checker, ${toExpose.join(", ")} };`);
 

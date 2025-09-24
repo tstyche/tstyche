@@ -60,6 +60,7 @@ export class AbilityLayer {
     const expectExpressionEnd = expect.node.expression.getEnd();
     const expectEnd = expect.node.getEnd();
     const matcherNameEnd = expect.matcherNameNode.getEnd();
+    const matcherNodeEnd = expect.matcherNode.getEnd();
 
     switch (expect.matcherNameNode.name.text) {
       case "toBeApplicable":
@@ -124,6 +125,46 @@ export class AbilityLayer {
         ]);
 
         break;
+
+      case "toHaveProperty": {
+        this.#nodes.push(expect);
+
+        const sourceNode = expect.source[0];
+        const targetNode = expect.target?.[0];
+
+        if (!sourceNode || !targetNode) {
+          return;
+        }
+
+        const sourceText = sourceNode.getFullText();
+        const targetText = targetNode.getFullText();
+
+        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+          this.#editor.eraseTrailingComma(expect.source);
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              matcherNodeEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+                ? `;(${sourceText})[${targetText}]`
+                : `(${sourceText})[${targetText}]`,
+            ],
+          ]);
+        } else {
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              matcherNodeEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+                ? `;(undefined as any as ${sourceText})[${targetText}]`
+                : `(undefined as any as ${sourceText})[${targetText}]`,
+            ],
+          ]);
+        }
+
+        break;
+      }
     }
   }
 

@@ -9,6 +9,5 @@ export interface MatchResult {
 }
 
 export interface TypeChecker extends ts.TypeChecker {
-  isApplicableIndexType: (source: ts.Type, target: ts.Type) => boolean;
   isTypeIdenticalTo: (source: ts.Type, target: ts.Type) => boolean;
 }

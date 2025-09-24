@@ -129,20 +129,6 @@ describe("when source is a type", () => {
   });
 });
 
-describe("when source is an enum", () => {
-  test("has expected property key", () => {
-    expect<typeof E1>().type.toHaveProperty("A");
-
-    expect<typeof E1>().type.not.toHaveProperty("A");
-  });
-
-  test("does NOT have expected property key", () => {
-    expect<typeof E1>().type.not.toHaveProperty("F");
-
-    expect<typeof E1>().type.toHaveProperty("F");
-  });
-});
-
 describe("when source is an intersection", () => {
   interface Colorful {
     color: string;
