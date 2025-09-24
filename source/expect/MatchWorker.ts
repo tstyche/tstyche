@@ -16,14 +16,6 @@ export class MatchWorker {
     this.assertionNode = assertionNode;
   }
 
-  checkHasProperty(sourceNode: ts.Node, propertyNameText: string): boolean {
-    const sourceType = this.getType(sourceNode);
-
-    return sourceType
-      .getProperties()
-      .some((property) => this.#compiler.unescapeLeadingUnderscores(property.escapedName) === propertyNameText);
-  }
-
   checkIsAssignableTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
     return this.#checkIsRelatedTo(sourceNode, targetNode, Relation.Assignable);
   }
