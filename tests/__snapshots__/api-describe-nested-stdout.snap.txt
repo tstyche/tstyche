@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/api-describe
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/describe-nested.tst.ts

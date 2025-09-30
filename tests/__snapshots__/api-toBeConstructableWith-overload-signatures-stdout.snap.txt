@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/api-toBeConstructableWith
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/overload-signatures.tst.ts

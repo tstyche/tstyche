@@ -3,6 +3,7 @@ import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { FileLocation } from "#file";
 import { CancellationHandler, ResultHandler } from "#handlers";
+import { introText, OutputService } from "#output";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
 import { Store } from "#store";
@@ -61,6 +62,10 @@ export class Runner {
   }
 
   async run(files: Array<string | URL | FileLocation>, cancellationToken = new CancellationToken()): Promise<void> {
+    if (!this.#resolvedConfig.watch) {
+      OutputService.writeMessage(introText(Runner.version, this.#resolvedConfig.rootPath));
+    }
+
     const fileLocations = files.map((file) => (file instanceof FileLocation ? file : new FileLocation(file)));
 
     this.#addHandlers(cancellationToken);

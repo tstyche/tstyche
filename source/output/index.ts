@@ -5,6 +5,7 @@ export { fileStatusText } from "./fileStatusText.js";
 export { fileViewText } from "./fileViewText.js";
 export { formattedText } from "./formattedText.js";
 export { helpText } from "./helpText.js";
+export { introText } from "./introText.js";
 export { OutputService } from "./OutputService.js";
 export { summaryText } from "./summaryText.js";
 export { testNameText } from "./testNameText.js";

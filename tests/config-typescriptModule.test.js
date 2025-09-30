@@ -48,7 +48,7 @@ await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
     });
 
     assert.equal(stderr, "");
-    assert.match(stdout, /^uses TypeScript 5.2.2/);
+    assert.match(stdout, /uses TypeScript 5.2.2/);
     assert.equal(exitCode, 0);
   });
 });

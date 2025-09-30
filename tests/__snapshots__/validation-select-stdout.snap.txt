@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/validation-select
+
 uses TypeScript <<version>>
 
 fail ./__typetests__/toBeNotfound.test.ts

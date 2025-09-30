@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/api-when
+
 uses TypeScript <<version>>
 
 fail ./__typetests__/when.tst.ts

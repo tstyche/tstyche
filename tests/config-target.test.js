@@ -153,7 +153,7 @@ await test("'--target' command line option", async (t) => {
     });
 
     assert.equal(stderr, "");
-    assert.match(stdout, /^adds TypeScript/);
+    assert.match(stdout, /adds TypeScript/);
 
     assert.equal(exitCode, 0);
   });
@@ -387,7 +387,7 @@ await test("'target' configuration file option", async (t) => {
     });
 
     assert.equal(stderr, "");
-    assert.match(stdout, /^adds TypeScript/);
+    assert.match(stdout, /adds TypeScript/);
 
     assert.equal(exitCode, 0);
   });

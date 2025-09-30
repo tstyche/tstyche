@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/validation-if-target
+
 uses TypeScript <<version>>
 
 fail ./__typetests__/sample.tst.ts

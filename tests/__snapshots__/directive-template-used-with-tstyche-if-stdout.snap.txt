@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/directive-template
+
 adds TypeScript 5.5.4 to <<basePath>>/tests/__fixtures__/.generated/directive-template/.store/typescript@5.5.4
 uses TypeScript 5.5.4 with ./tsconfig.json
 
