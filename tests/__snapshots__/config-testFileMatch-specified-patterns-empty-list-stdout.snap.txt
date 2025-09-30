@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
 
 Targets:    1 passed, 1 total
 Test files: 0 total

@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/config-tsconfig
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-tsconfig
 
 uses TypeScript <<version>> with ./tsconfig.test.json
 

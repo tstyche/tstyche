@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/validation-toAcceptProps
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-toAcceptProps
 
 uses TypeScript <<version>> with ./tsconfig.json
 

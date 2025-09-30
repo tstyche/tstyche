@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/api-pick
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-pick
 
 uses TypeScript <<version>> with ./tsconfig.json
 

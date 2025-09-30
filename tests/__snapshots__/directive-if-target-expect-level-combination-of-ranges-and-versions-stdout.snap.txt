@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/directive-if-target
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/directive-if-target
 
 adds TypeScript 5.2.2 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.2.2
 uses TypeScript 5.2.2 with ./tsconfig.json

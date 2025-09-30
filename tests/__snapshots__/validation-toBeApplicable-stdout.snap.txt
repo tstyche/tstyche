@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/validation-toBeApplicable
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-toBeApplicable
 
 uses TypeScript <<version>> with ./tsconfig.json
 

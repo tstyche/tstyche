@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/directive-template
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/directive-template
 
 uses TypeScript <<version>> with ./tsconfig.json
 

@@ -8,7 +8,7 @@ export function prologueText(runnerVersion: string, rootPath: string): Scribbler
         {" TSTyche "}
         {runnerVersion}
         <Text color={Color.Gray}>
-          {" from "}
+          {" at "}
           {rootPath}
         </Text>
       </Line>

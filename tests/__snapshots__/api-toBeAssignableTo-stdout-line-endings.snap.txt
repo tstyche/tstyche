@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/api-toBeAssignableTo
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/api-toBeAssignableTo
 
 uses TypeScript <<version>>
 

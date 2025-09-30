@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/hooks-select
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/hooks-select
 
 uses TypeScript <<version>> with ./tsconfig.json
 

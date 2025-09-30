@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/api-toBeConstructableWith
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/api-toBeConstructableWith
 
 uses TypeScript <<version>>
 

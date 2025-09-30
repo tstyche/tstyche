@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/config-noColor
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-noColor
 
 uses TypeScript <<version>>
 

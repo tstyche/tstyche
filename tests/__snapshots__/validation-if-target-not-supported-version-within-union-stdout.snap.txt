@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/validation-if-target
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/validation-if-target
 
 uses TypeScript <<version>>
 

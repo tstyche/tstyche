@@ -1,4 +1,4 @@
-···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/config-reporters
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-reporters
 
 uses TypeScript <<version>>
 

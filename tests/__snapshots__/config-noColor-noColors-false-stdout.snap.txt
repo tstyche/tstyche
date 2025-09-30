@@ -1,4 +1,4 @@
-<gray>····</> TSTyche <<version>><gray> from <<basePath>>/tests/__fixtures__/.generated/config-noColor</>
+<gray>····</> TSTyche <<version>><gray> at <<basePath>>/tests/__fixtures__/.generated/config-noColor</>
 
 <blue>uses</> TypeScript <<version>>
 
