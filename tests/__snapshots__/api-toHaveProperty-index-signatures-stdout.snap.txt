@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/api-toHaveProperty
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/index-signatures.tst.ts

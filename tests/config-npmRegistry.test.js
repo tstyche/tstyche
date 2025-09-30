@@ -45,7 +45,7 @@ await test("'TSTYCHE_NPM_REGISTRY' environment variable", async (t) => {
     });
 
     assert.equal(stderr, "");
-    assert.match(stdout, /^adds TypeScript 5.4.5/);
+    assert.match(stdout, /adds TypeScript 5.4.5/);
     assert.equal(exitCode, 0);
   });
 });

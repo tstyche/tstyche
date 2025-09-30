@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/config-commandLine
+
 uses TypeScript <<version>>
 
 pass ./__typetests__/isNumber.test.ts

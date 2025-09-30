@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/config-rejectAnyType
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/isRejected.test.ts

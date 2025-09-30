@@ -148,7 +148,7 @@ await test("TypeScript 4.x", async (t) => {
       });
 
       assert.equal(stderr, "");
-      assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
+      assert.match(stdout, new RegExp(`uses TypeScript ${version}\n`));
       assert.equal(exitCode, 0);
     });
   }
@@ -192,7 +192,7 @@ await test("TypeScript 5.x", async (t) => {
       });
 
       assert.equal(stderr, "");
-      assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
+      assert.match(stdout, new RegExp(`uses TypeScript ${version}\n`));
       assert.equal(exitCode, 0);
     });
   }

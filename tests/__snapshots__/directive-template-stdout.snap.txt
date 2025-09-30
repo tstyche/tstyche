@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/.generated/directive-template
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/template.tst.ts

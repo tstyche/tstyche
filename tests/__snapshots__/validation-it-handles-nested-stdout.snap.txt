@@ -1,3 +1,5 @@
+···· TSTyche <<version>> from <<basePath>>/tests/__fixtures__/validation-it
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/handles-nested.tst.ts
