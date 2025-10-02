@@ -44,7 +44,8 @@
         "noProcessGlobal": "error",
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
-        "useImportExtensions": "error"
+
+        "useImportExtensions": "off"
       },
 
       "nursery": {
