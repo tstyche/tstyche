@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schema/2.2.4/schema.json",
+  "$schema": "https://biomejs.dev/schema/2.2.5/schema.json",
 
   "json": {
     "parser": {
@@ -44,7 +44,8 @@
         "noProcessGlobal": "error",
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
-        "useImportExtensions": "error"
+
+        "useImportExtensions": "off"
       },
 
       "nursery": {
