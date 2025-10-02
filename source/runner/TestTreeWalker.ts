@@ -97,7 +97,7 @@ export class TestTreeWalker {
       const fixmeDirective = Directive.getDirectiveRange(this.#compiler, node, "fixme");
 
       if (fixmeDirective) {
-        FixmeService.start(fixmeDirective, node);
+        await FixmeService.start(fixmeDirective, node);
       }
 
       switch (node.brand) {
