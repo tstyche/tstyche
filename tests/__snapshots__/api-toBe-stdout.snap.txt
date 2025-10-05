@@ -5,16 +5,16 @@ uses TypeScript <<version>> with ./tsconfig.json
 fail ./__typetests__/toBe.tst.ts
   × edge cases
   × exact optional property types
-  source type
-    × is the same as target type
-    × is NOT the same as target type
-    × is the same as target expression
-    × is NOT the same as target expression
-  source expression
-    × is the same as target type
-    × is NOT the same as target type
-    × is the same as target expression
-    × is NOT the same as target expression
+  when source is a type
+    × is the same as the target type
+    × is NOT the same as the target type
+    × is the same as type of the target expression
+    × is NOT the same as type of the target expression
+  when source is an expression
+    × is the same as the target type
+    × is NOT the same as the target type
+    × is the same as type of the target expression
+    × is NOT the same as type of the target expression
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total

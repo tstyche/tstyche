@@ -2,11 +2,11 @@ Error: Type '{ a: string; } | { a: string; }' is the same as type '{ a: string; 
 
   18 | 
   19 |   expect<{ a: string } | { a: string }>().type.toBe<{ a: string }>();
-  20 |   expect<{ a: string } | { a: string }>().type.not.toBe<{ a: string }>();
+  20 |   expect<{ a: string } | { a: string }>().type.not.toBe<{ a: string }>(); // fail
      |                                                         ~~~~~~~~~~~~~
   21 | 
   22 |   expect<{ a: string } | { b: string }>().type.not.toBe<{ a: string }>();
-  23 |   expect<{ a: string } | { b: string }>().type.toBe<{ a: string }>();
+  23 |   expect<{ a: string } | { b: string }>().type.toBe<{ a: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:20:57 ❭ edge cases
 
@@ -14,11 +14,11 @@ Error: Type '{ a: string; } | { b: string; }' is not the same as type '{ a: stri
 
   21 | 
   22 |   expect<{ a: string } | { b: string }>().type.not.toBe<{ a: string }>();
-  23 |   expect<{ a: string } | { b: string }>().type.toBe<{ a: string }>();
+  23 |   expect<{ a: string } | { b: string }>().type.toBe<{ a: string }>(); // fail
      |                                                     ~~~~~~~~~~~~~
   24 | 
   25 |   expect<{ a: string } & { a: string }>().type.toBe<{ a: string }>();
-  26 |   expect<{ a: string } & { a: string }>().type.not.toBe<{ a: string }>();
+  26 |   expect<{ a: string } & { a: string }>().type.not.toBe<{ a: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:23:53 ❭ edge cases
 
@@ -26,11 +26,11 @@ Error: Type '{ a: string; } & { a: string; }' is the same as type '{ a: string; 
 
   24 | 
   25 |   expect<{ a: string } & { a: string }>().type.toBe<{ a: string }>();
-  26 |   expect<{ a: string } & { a: string }>().type.not.toBe<{ a: string }>();
+  26 |   expect<{ a: string } & { a: string }>().type.not.toBe<{ a: string }>(); // fail
      |                                                         ~~~~~~~~~~~~~
   27 | 
   28 |   expect<{ a: string } & { b: string }>().type.not.toBe<{ a: string }>();
-  29 |   expect<{ a: string } & { b: string }>().type.toBe<{ a: string }>();
+  29 |   expect<{ a: string } & { b: string }>().type.toBe<{ a: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:26:57 ❭ edge cases
 
@@ -38,11 +38,11 @@ Error: Type '{ a: string; } & { b: string; }' is not the same as type '{ a: stri
 
   27 | 
   28 |   expect<{ a: string } & { b: string }>().type.not.toBe<{ a: string }>();
-  29 |   expect<{ a: string } & { b: string }>().type.toBe<{ a: string }>();
+  29 |   expect<{ a: string } & { b: string }>().type.toBe<{ a: string }>(); // fail
      |                                                     ~~~~~~~~~~~~~
   30 | 
   31 |   expect<(({ a: string } & { a: string }) | { a: string }) & { a: string }>().type.toBe<{ a: string }>();
-  32 |   expect<(({ a: string } & { a: string }) | { a: string }) & { a: string }>().type.not.toBe<{ a: string }>();
+  32 |   expect<(({ a: string } & { a: string }) | { a: string }) & { a: string }>().type.not.toBe<{ a: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:29:53 ❭ edge cases
 
@@ -50,11 +50,11 @@ Error: Type '(({ a: string; } & { a: string; }) | { a: string; }) & { a: string;
 
   30 | 
   31 |   expect<(({ a: string } & { a: string }) | { a: string }) & { a: string }>().type.toBe<{ a: string }>();
-  32 |   expect<(({ a: string } & { a: string }) | { a: string }) & { a: string }>().type.not.toBe<{ a: string }>();
+  32 |   expect<(({ a: string } & { a: string }) | { a: string }) & { a: string }>().type.not.toBe<{ a: string }>(); // fail
      |                                                                                             ~~~~~~~~~~~~~
   33 | 
   34 |   expect<(({ a: string } & { a: string }) | { a: string }) & { b: string }>().type.not.toBe<{ a: string }>();
-  35 |   expect<(({ a: string } & { a: string }) | { a: string }) & { b: string }>().type.toBe<{ a: string }>();
+  35 |   expect<(({ a: string } & { a: string }) | { a: string }) & { b: string }>().type.toBe<{ a: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:32:93 ❭ edge cases
 
@@ -62,11 +62,11 @@ Error: Type '(({ a: string; } & { a: string; }) | { a: string; }) & { b: string;
 
   33 | 
   34 |   expect<(({ a: string } & { a: string }) | { a: string }) & { b: string }>().type.not.toBe<{ a: string }>();
-  35 |   expect<(({ a: string } & { a: string }) | { a: string }) & { b: string }>().type.toBe<{ a: string }>();
+  35 |   expect<(({ a: string } & { a: string }) | { a: string }) & { b: string }>().type.toBe<{ a: string }>(); // fail
      |                                                                                         ~~~~~~~~~~~~~
   36 | 
   37 |   expect<{ a: string }>().type.toBe<{ a: string } | { a: string }>();
-  38 |   expect<{ a: string }>().type.not.toBe<{ a: string } | { a: string }>();
+  38 |   expect<{ a: string }>().type.not.toBe<{ a: string } | { a: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:35:89 ❭ edge cases
 
@@ -74,11 +74,11 @@ Error: Type '{ a: string; }' is the same as type '{ a: string; } | { a: string; 
 
   36 | 
   37 |   expect<{ a: string }>().type.toBe<{ a: string } | { a: string }>();
-  38 |   expect<{ a: string }>().type.not.toBe<{ a: string } | { a: string }>();
+  38 |   expect<{ a: string }>().type.not.toBe<{ a: string } | { a: string }>(); // fail
      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   39 | 
   40 |   expect<{ a: string }>().type.not.toBe<{ a: string } | { b: string }>();
-  41 |   expect<{ a: string }>().type.toBe<{ a: string } | { b: string }>();
+  41 |   expect<{ a: string }>().type.toBe<{ a: string } | { b: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:38:41 ❭ edge cases
 
@@ -86,11 +86,11 @@ Error: Type '{ a: string; }' is not the same as type '{ a: string; } | { b: stri
 
   39 | 
   40 |   expect<{ a: string }>().type.not.toBe<{ a: string } | { b: string }>();
-  41 |   expect<{ a: string }>().type.toBe<{ a: string } | { b: string }>();
+  41 |   expect<{ a: string }>().type.toBe<{ a: string } | { b: string }>(); // fail
      |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   42 | 
   43 |   expect<{ a: string }>().type.toBe<{ a: string } & { a: string }>();
-  44 |   expect<{ a: string }>().type.not.toBe<{ a: string } & { a: string }>();
+  44 |   expect<{ a: string }>().type.not.toBe<{ a: string } & { a: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:41:37 ❭ edge cases
 
@@ -98,11 +98,11 @@ Error: Type '{ a: string; }' is the same as type '{ a: string; } & { a: string; 
 
   42 | 
   43 |   expect<{ a: string }>().type.toBe<{ a: string } & { a: string }>();
-  44 |   expect<{ a: string }>().type.not.toBe<{ a: string } & { a: string }>();
+  44 |   expect<{ a: string }>().type.not.toBe<{ a: string } & { a: string }>(); // fail
      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   45 | 
   46 |   expect<{ a: string }>().type.not.toBe<{ a: string } & { b: string }>();
-  47 |   expect<{ a: string }>().type.toBe<{ a: string } & { b: string }>();
+  47 |   expect<{ a: string }>().type.toBe<{ a: string } & { b: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:44:41 ❭ edge cases
 
@@ -110,11 +110,11 @@ Error: Type '{ a: string; }' is not the same as type '{ a: string; } & { b: stri
 
   45 | 
   46 |   expect<{ a: string }>().type.not.toBe<{ a: string } & { b: string }>();
-  47 |   expect<{ a: string }>().type.toBe<{ a: string } & { b: string }>();
+  47 |   expect<{ a: string }>().type.toBe<{ a: string } & { b: string }>(); // fail
      |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   48 | 
   49 |   expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>();
-  50 |   expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>();
+  50 |   expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:47:37 ❭ edge cases
 
@@ -122,11 +122,11 @@ Error: Type '{ a: string; }' is the same as type '(({ a: string; } & { a: string
 
   48 | 
   49 |   expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>();
-  50 |   expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>();
+  50 |   expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>(); // fail
      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   51 | 
   52 |   expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>();
-  53 |   expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>();
+  53 |   expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>(); // fail
 
        at ./__typetests__/toBe.tst.ts:50:41 ❭ edge cases
 
@@ -134,7 +134,7 @@ Error: Type '{ a: string; }' is not the same as type '(({ a: string; } & { a: st
 
   51 | 
   52 |   expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>();
-  53 |   expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>();
+  53 |   expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>(); // fail
      |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   54 | 
   55 |   expect(Date).type.toBe<typeof Date>();
@@ -186,7 +186,7 @@ Error: Type '{ a?: number | undefined; }' is assignable to type '{ a?: number | 
      |                                                                  ~~~~~~~~~~~~~~
   66 | });
   67 | 
-  68 | describe("source type", () => {
+  68 | describe("when source is a type", () => {
 
        at ./__typetests__/toBe.tst.ts:65:66 ❭ exact optional property types
 
@@ -194,95 +194,95 @@ Error: Type 'Names' is not the same as type '{ first: string; last: string; }'.
 
   71 |     expect<Names>().type.toBe<{ first: string; last?: string }>();
   72 | 
-  73 |     expect<Names>().type.toBe<{ first: string; last: string }>();
+  73 |     expect<Names>().type.toBe<{ first: string; last: string }>(); // fail
      |                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   74 |   });
   75 | 
-  76 |   test("is NOT the same as target type", () => {
+  76 |   test("is NOT the same as the target type", () => {
 
-       at ./__typetests__/toBe.tst.ts:73:31 ❭ source type ❭ is the same as target type
+       at ./__typetests__/toBe.tst.ts:73:31 ❭ when source is a type ❭ is the same as the target type
 
 Error: Type 'Names' is the same as type '{ first: string; last?: string | undefined; }'.
 
   77 |     expect<Names>().type.not.toBe<{ first: string; last: string }>();
   78 | 
-  79 |     expect<Names>().type.not.toBe<{ first: string; last?: string }>();
+  79 |     expect<Names>().type.not.toBe<{ first: string; last?: string }>(); // fail
      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   80 |   });
   81 | 
-  82 |   test("is the same as target expression", () => {
+  82 |   test("is the same as type of the target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:79:35 ❭ source type ❭ is NOT the same as target type
+       at ./__typetests__/toBe.tst.ts:79:35 ❭ when source is a type ❭ is NOT the same as the target type
 
 Error: Type '{ first: string; last: string; }' is not the same as type 'Names'.
 
   84 |     expect<{ first: string; last?: string }>().type.toBe(getNames());
   85 | 
-  86 |     expect<{ first: string; last: string }>().type.toBe(getNames());
+  86 |     expect<{ first: string; last: string }>().type.toBe(getNames()); // fail
      |                                                         ~~~~~~~~~~
   87 |   });
   88 | 
-  89 |   test("is NOT the same as target expression", () => {
+  89 |   test("is NOT the same as type of the target expression", () => {
 
-       at ./__typetests__/toBe.tst.ts:86:57 ❭ source type ❭ is the same as target expression
+       at ./__typetests__/toBe.tst.ts:86:57 ❭ when source is a type ❭ is the same as type of the target expression
 
 Error: Type '{ first: string; last?: string | undefined; }' is the same as type 'Names'.
 
   90 |     expect<{ first: string; last: string }>().type.not.toBe(getNames());
   91 | 
-  92 |     expect<{ first: string; last?: string }>().type.not.toBe(getNames());
+  92 |     expect<{ first: string; last?: string }>().type.not.toBe(getNames()); // fail
      |                                                              ~~~~~~~~~~
   93 |   });
   94 | });
   95 | 
 
-       at ./__typetests__/toBe.tst.ts:92:62 ❭ source type ❭ is NOT the same as target expression
+       at ./__typetests__/toBe.tst.ts:92:62 ❭ when source is a type ❭ is NOT the same as type of the target expression
 
 Error: Type 'Names' is not the same as type '{ first: string; last: string; }'.
 
    99 |     expect(getNames()).type.toBe<Names>();
   100 | 
-  101 |     expect(getNames()).type.toBe<{ first: string; last: string }>();
+  101 |     expect(getNames()).type.toBe<{ first: string; last: string }>(); // fail
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   102 |   });
   103 | 
-  104 |   test("is NOT the same as target type", () => {
+  104 |   test("is NOT the same as the target type", () => {
 
-        at ./__typetests__/toBe.tst.ts:101:34 ❭ source expression ❭ is the same as target type
+        at ./__typetests__/toBe.tst.ts:101:34 ❭ when source is an expression ❭ is the same as the target type
 
 Error: Type 'Names' is the same as type '{ first: string; last?: string | undefined; }'.
 
   105 |     expect(getNames()).type.not.toBe<{ first: string; last: string }>();
   106 | 
-  107 |     expect(getNames()).type.not.toBe<{ first: string; last?: string }>();
+  107 |     expect(getNames()).type.not.toBe<{ first: string; last?: string }>(); // fail
       |                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   108 |   });
   109 | 
-  110 |   test("is the same as target expression", () => {
+  110 |   test("is the same as type of the target expression", () => {
 
-        at ./__typetests__/toBe.tst.ts:107:38 ❭ source expression ❭ is NOT the same as target type
+        at ./__typetests__/toBe.tst.ts:107:38 ❭ when source is an expression ❭ is NOT the same as the target type
 
 Error: Type '{ height: number; }' is not the same as type 'Size'.
 
   111 |     expect({ height: 14, width: 25 }).type.toBe(getSize());
   112 | 
-  113 |     expect({ height: 14 }).type.toBe(getSize());
+  113 |     expect({ height: 14 }).type.toBe(getSize()); // fail
       |                                      ~~~~~~~~~
   114 |   });
   115 | 
-  116 |   test("is NOT the same as target expression", () => {
+  116 |   test("is NOT the same as type of the target expression", () => {
 
-        at ./__typetests__/toBe.tst.ts:113:38 ❭ source expression ❭ is the same as target expression
+        at ./__typetests__/toBe.tst.ts:113:38 ❭ when source is an expression ❭ is the same as type of the target expression
 
 Error: Type '{ height: number; width: number; }' is the same as type 'Size'.
 
   117 |     expect({ height: 14 }).type.not.toBe(getSize());
   118 | 
-  119 |     expect({ height: 14, width: 25 }).type.not.toBe(getSize());
+  119 |     expect({ height: 14, width: 25 }).type.not.toBe(getSize()); // fail
       |                                                     ~~~~~~~~~
   120 |   });
   121 | });
   122 | 
 
-        at ./__typetests__/toBe.tst.ts:119:53 ❭ source expression ❭ is NOT the same as target expression
+        at ./__typetests__/toBe.tst.ts:119:53 ❭ when source is an expression ❭ is NOT the same as type of the target expression
 

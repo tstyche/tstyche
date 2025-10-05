@@ -5,16 +5,16 @@ uses TypeScript <<version>> with ./tsconfig-exact.json
 pass ./__typetests__/toBe.tst.ts
   - skip edge cases
   + exact optional property types
-  source type
-    - skip is the same as target type
-    - skip is NOT the same as target type
-    - skip is the same as target expression
-    - skip is NOT the same as target expression
-  source expression
-    - skip is the same as target type
-    - skip is NOT the same as target type
-    - skip is the same as target expression
-    - skip is NOT the same as target expression
+  when source is a type
+    - skip is the same as the target type
+    - skip is NOT the same as the target type
+    - skip is the same as type of the target expression
+    - skip is NOT the same as type of the target expression
+  when source is an expression
+    - skip is the same as the target type
+    - skip is NOT the same as the target type
+    - skip is the same as type of the target expression
+    - skip is NOT the same as type of the target expression
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
