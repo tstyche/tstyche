@@ -3,16 +3,16 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/toBeAssignableFrom.tst.ts
-  source type
-    × is assignable target expression?
-    × is NOT assignable target expression?
-    × is assignable target type?
-    × is NOT assignable target type?
-  source expression
-    × is assignable target expression?
-    × is NOT assignable target expression?
-    × is assignable target type?
-    × is NOT assignable type?
+  when source is a type
+    × is assignable from type of the target expression
+    × is NOT assignable from type of the target expression
+    × is assignable from the target type
+    × is NOT assignable from the target type
+  when source is an expression
+    × is assignable from type of the target expression.
+    × is NOT assignable from type of the target expression.
+    × is assignable from the target type
+    × is NOT assignable from the target type
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
