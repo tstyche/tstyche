@@ -8,7 +8,7 @@ Error: Expression is callable with the given argument.
   21 | 
   22 |   test("is callable with the given arguments", () => {
 
-       at ./__typetests__/overload-signatures.tst.ts:19:31 ❭ when target is an expression ❭ is callable with the given argument
+       at ./__typetests__/overload-signatures.tst.ts:19:31 ❭ when source is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given arguments.
 
@@ -20,7 +20,7 @@ Error: Expression is callable with the given arguments.
   26 |     expect(t).type.toBeCallableWith("one", () => {});
   27 |     expect(t).type.not.toBeCallableWith("one", () => {}); // fail
 
-       at ./__typetests__/overload-signatures.tst.ts:24:31 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/overload-signatures.tst.ts:24:31 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -32,7 +32,7 @@ Error: Expression is callable with the given arguments.
   29 |     expect(t).type.toBeCallableWith("two", () => Promise.resolve());
   30 |     expect(t).type.not.toBeCallableWith("two", () => Promise.resolve()); // fail
 
-       at ./__typetests__/overload-signatures.tst.ts:27:24 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/overload-signatures.tst.ts:27:24 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -44,7 +44,7 @@ Error: Expression is callable with the given arguments.
   32 | 
   33 |   test("is not callable without arguments", () => {
 
-       at ./__typetests__/overload-signatures.tst.ts:30:24 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/overload-signatures.tst.ts:30:24 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is not callable without arguments.
 
@@ -58,7 +58,7 @@ Expected 1-3 arguments, but got 0.
   37 |     expect(t).type.not.toBeCallableWith();
   38 |     expect(t).type.toBeCallableWith(); // fail: Expected 2 arguments, but got 0.
 
-       at ./__typetests__/overload-signatures.tst.ts:35:27 ❭ when target is an expression ❭ is not callable without arguments
+       at ./__typetests__/overload-signatures.tst.ts:35:27 ❭ when source is an expression ❭ is not callable without arguments
 
     An argument for 'timestamp' was not provided. ts(6210)
 
@@ -84,7 +84,7 @@ Expected 2 arguments, but got 0.
   40 | 
   41 |   test("is not callable with the given argument", () => {
 
-       at ./__typetests__/overload-signatures.tst.ts:38:20 ❭ when target is an expression ❭ is not callable without arguments
+       at ./__typetests__/overload-signatures.tst.ts:38:20 ❭ when source is an expression ❭ is not callable without arguments
 
     An argument for 'name' was not provided. ts(6210)
 
@@ -94,7 +94,7 @@ Expected 2 arguments, but got 0.
          |                    ~~~~~~~~~~~~
       14 | declare function t(name: string, cb: () => unknown): void;
       15 | 
-      16 | describe("when target is an expression", () => {
+      16 | describe("when source is an expression", () => {
 
            at ./__typetests__/overload-signatures.tst.ts:13:20
 
@@ -110,7 +110,7 @@ Expected 2 arguments, but got 1.
   45 | 
   46 |   test("is not callable with the given arguments", () => {
 
-       at ./__typetests__/overload-signatures.tst.ts:43:20 ❭ when target is an expression ❭ is not callable with the given argument
+       at ./__typetests__/overload-signatures.tst.ts:43:20 ❭ when source is an expression ❭ is not callable with the given argument
 
     An argument for 'cb' was not provided. ts(6210)
 
@@ -120,7 +120,7 @@ Expected 2 arguments, but got 1.
          |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
       14 | declare function t(name: string, cb: () => unknown): void;
       15 | 
-      16 | describe("when target is an expression", () => {
+      16 | describe("when source is an expression", () => {
 
            at ./__typetests__/overload-signatures.tst.ts:13:34
 
@@ -136,7 +136,7 @@ No overload expects 2 arguments, but overloads do exist that expect either 1 or 
   50 |     expect(makeDate).type.not.toBeCallableWith(4, 5, 6, 7);
   51 |     expect(makeDate).type.toBeCallableWith(4, 5, 6, 7); // fail: Expected 1-3 arguments, but got 4.
 
-       at ./__typetests__/overload-signatures.tst.ts:48:27 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/overload-signatures.tst.ts:48:27 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -150,5 +150,159 @@ Expected 1-3 arguments, but got 4.
   53 | });
   54 | 
 
-       at ./__typetests__/overload-signatures.tst.ts:51:53 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/overload-signatures.tst.ts:51:53 ❭ when source is an expression ❭ is not callable with the given arguments
+
+Error: Type is callable with the given argument.
+
+  66 |   test("is callable with the given argument", () => {
+  67 |     expect<MakeDateFn>().type.toBeCallableWith(12345678);
+  68 |     expect<MakeDateFn>().type.not.toBeCallableWith(12345678); // fail
+     |                                   ~~~~~~~~~~~~~~~~
+  69 |   });
+  70 | 
+  71 |   test("is callable with the given arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:68:35 ❭ when source is a type ❭ is callable with the given argument
+
+Error: Type is callable with the given arguments.
+
+  71 |   test("is callable with the given arguments", () => {
+  72 |     expect<MakeDateFn>().type.toBeCallableWith(4, 5, 6);
+  73 |     expect<MakeDateFn>().type.not.toBeCallableWith(4, 5, 6); // fail
+     |                                   ~~~~~~~~~~~~~~~~
+  74 | 
+  75 |     expect<TestFn>().type.toBeCallableWith("one", () => {});
+  76 |     expect<TestFn>().type.not.toBeCallableWith("one", () => {}); // fail
+
+       at ./__typetests__/overload-signatures.tst.ts:73:35 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  74 | 
+  75 |     expect<TestFn>().type.toBeCallableWith("one", () => {});
+  76 |     expect<TestFn>().type.not.toBeCallableWith("one", () => {}); // fail
+     |                               ~~~~~~~~~~~~~~~~
+  77 | 
+  78 |     expect<TestFn>().type.toBeCallableWith("two", () => Promise.resolve());
+  79 |     expect<TestFn>().type.not.toBeCallableWith("two", () => Promise.resolve()); // fail
+
+       at ./__typetests__/overload-signatures.tst.ts:76:31 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  77 | 
+  78 |     expect<TestFn>().type.toBeCallableWith("two", () => Promise.resolve());
+  79 |     expect<TestFn>().type.not.toBeCallableWith("two", () => Promise.resolve()); // fail
+     |                               ~~~~~~~~~~~~~~~~
+  80 |   });
+  81 | 
+  82 |   test("is not callable without arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:79:31 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is not callable without arguments.
+
+Expected 1-3 arguments, but got 0.
+
+  82 |   test("is not callable without arguments", () => {
+  83 |     expect<MakeDateFn>().type.not.toBeCallableWith();
+  84 |     expect<MakeDateFn>().type.toBeCallableWith(); // fail: Expected 1-3 arguments, but got 0.
+     |                               ~~~~~~~~~~~~~~~~
+  85 | 
+  86 |     expect<TestFn>().type.not.toBeCallableWith();
+  87 |     expect<TestFn>().type.toBeCallableWith(); // fail: Expected 2 arguments, but got 0.
+
+       at ./__typetests__/overload-signatures.tst.ts:84:31 ❭ when source is a type ❭ is not callable without arguments
+
+    An argument for 'timestamp' was not provided. ts(6210)
+
+      54 | 
+      55 | type MakeDateFn = {
+      56 |   (timestamp: number): Date;
+         |    ~~~~~~~~~~~~~~~~~
+      57 |   (m: number, d: number, y: number): Date;
+      58 | };
+      59 | 
+
+           at ./__typetests__/overload-signatures.tst.ts:56:4
+
+Error: Type is not callable without arguments.
+
+Expected 2 arguments, but got 0.
+
+  85 | 
+  86 |     expect<TestFn>().type.not.toBeCallableWith();
+  87 |     expect<TestFn>().type.toBeCallableWith(); // fail: Expected 2 arguments, but got 0.
+     |                           ~~~~~~~~~~~~~~~~
+  88 |   });
+  89 | 
+  90 |   test("is not callable with the given argument", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:87:27 ❭ when source is a type ❭ is not callable without arguments
+
+    An argument for 'name' was not provided. ts(6210)
+
+      59 | 
+      60 | type TestFn = {
+      61 |   (name: string, cb: () => Promise<unknown>): Promise<void>;
+         |    ~~~~~~~~~~~~
+      62 |   (name: string, cb: () => unknown): void;
+      63 | };
+      64 | 
+
+           at ./__typetests__/overload-signatures.tst.ts:61:4
+
+Error: Type is not callable with the given argument.
+
+Expected 2 arguments, but got 1.
+
+  90 |   test("is not callable with the given argument", () => {
+  91 |     expect<TestFn>().type.not.toBeCallableWith("nope");
+  92 |     expect<TestFn>().type.toBeCallableWith("nope"); // fail: Expected 2 arguments, but got 1.
+     |                           ~~~~~~~~~~~~~~~~
+  93 |   });
+  94 | 
+  95 |   test("is not callable with the given arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:92:27 ❭ when source is a type ❭ is not callable with the given argument
+
+    An argument for 'cb' was not provided. ts(6210)
+
+      59 | 
+      60 | type TestFn = {
+      61 |   (name: string, cb: () => Promise<unknown>): Promise<void>;
+         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+      62 |   (name: string, cb: () => unknown): void;
+      63 | };
+      64 | 
+
+           at ./__typetests__/overload-signatures.tst.ts:61:18
+
+Error: Type is not callable with the given arguments.
+
+No overload expects 2 arguments, but overloads do exist that expect either 1 or 3 arguments.
+
+   95 |   test("is not callable with the given arguments", () => {
+   96 |     expect<MakeDateFn>().type.not.toBeCallableWith(2, 3);
+   97 |     expect<MakeDateFn>().type.toBeCallableWith(2, 3); // fail: No overload expects 2 arguments, but overloads do exist that expect either 1 or 3 arguments.
+      |                               ~~~~~~~~~~~~~~~~
+   98 | 
+   99 |     expect<MakeDateFn>().type.not.toBeCallableWith(4, 5, 6, 7);
+  100 |     expect<MakeDateFn>().type.toBeCallableWith(4, 5, 6, 7); // fail: Expected 1-3 arguments, but got 4.
+
+        at ./__typetests__/overload-signatures.tst.ts:97:31 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Expected 1-3 arguments, but got 4.
+
+   98 | 
+   99 |     expect<MakeDateFn>().type.not.toBeCallableWith(4, 5, 6, 7);
+  100 |     expect<MakeDateFn>().type.toBeCallableWith(4, 5, 6, 7); // fail: Expected 1-3 arguments, but got 4.
+      |                                                         ~
+  101 |   });
+  102 | });
+  103 | 
+
+        at ./__typetests__/overload-signatures.tst.ts:100:57 ❭ when source is a type ❭ is not callable with the given arguments
 

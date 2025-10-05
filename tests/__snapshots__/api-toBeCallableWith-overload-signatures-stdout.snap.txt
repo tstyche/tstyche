@@ -3,7 +3,13 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/overload-signatures.tst.ts
-  when target is an expression
+  when source is an expression
+    × is callable with the given argument
+    × is callable with the given arguments
+    × is not callable without arguments
+    × is not callable with the given argument
+    × is not callable with the given arguments
+  when source is a type
     × is callable with the given argument
     × is callable with the given arguments
     × is not callable without arguments
@@ -12,6 +18,6 @@ fail ./__typetests__/overload-signatures.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      5 failed, 5 total
-Assertions: 9 failed, 9 passed, 18 total
+Tests:      10 failed, 10 total
+Assertions: 18 failed, 18 passed, 36 total
 Duration:   <<timestamp>>

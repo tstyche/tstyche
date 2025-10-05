@@ -8,7 +8,7 @@ Error: Expression is callable with the given argument.
   14 |     expect(leading).type.toBeCallableWith(false);
   15 |     expect(leading).type.not.toBeCallableWith(false); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:12:31 ❭ when target is an expression ❭ is callable with the given argument
+       at ./__typetests__/rest-parameters.tst.ts:12:31 ❭ when source is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -20,7 +20,7 @@ Error: Expression is callable with the given argument.
   17 |     expect(trailing).type.toBeCallableWith(true);
   18 |     expect(trailing).type.not.toBeCallableWith(true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:15:30 ❭ when target is an expression ❭ is callable with the given argument
+       at ./__typetests__/rest-parameters.tst.ts:15:30 ❭ when source is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given argument.
 
@@ -32,7 +32,7 @@ Error: Expression is callable with the given argument.
   20 | 
   21 |   test("is callable with the given arguments", () => {
 
-       at ./__typetests__/rest-parameters.tst.ts:18:31 ❭ when target is an expression ❭ is callable with the given argument
+       at ./__typetests__/rest-parameters.tst.ts:18:31 ❭ when source is an expression ❭ is callable with the given argument
 
 Error: Expression is callable with the given arguments.
 
@@ -44,7 +44,7 @@ Error: Expression is callable with the given arguments.
   25 |     expect(leading).type.toBeCallableWith("one", "two", true);
   26 |     expect(leading).type.not.toBeCallableWith("one", "two", true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:23:31 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:23:31 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -56,7 +56,7 @@ Error: Expression is callable with the given arguments.
   28 |     expect(leading).type.toBeCallableWith(...["one", "two"], true);
   29 |     expect(leading).type.not.toBeCallableWith(...["one", "two"], true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:26:30 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:26:30 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -68,7 +68,7 @@ Error: Expression is callable with the given arguments.
   31 |     expect(middle).type.toBeCallableWith("one", 123, 456, true);
   32 |     expect(middle).type.not.toBeCallableWith("one", 123, 456, true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:29:30 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:29:30 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -80,7 +80,7 @@ Error: Expression is callable with the given arguments.
   34 |     expect(middle).type.toBeCallableWith(...["one", 123, 456, true]);
   35 |     expect(middle).type.not.toBeCallableWith(...["one", 123, 456, true]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:32:29 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:32:29 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -92,7 +92,7 @@ Error: Expression is callable with the given arguments.
   37 |     expect(trailing).type.toBeCallableWith(false, "ten", "eleven");
   38 |     expect(trailing).type.not.toBeCallableWith(false, "ten", "eleven"); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:35:29 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:35:29 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -104,7 +104,7 @@ Error: Expression is callable with the given arguments.
   40 |     expect(trailing).type.toBeCallableWith(false, ...["ten", "eleven"]);
   41 |     expect(trailing).type.not.toBeCallableWith(false, ...["ten", "eleven"]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:38:31 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:38:31 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable with the given arguments.
 
@@ -116,7 +116,7 @@ Error: Expression is callable with the given arguments.
   43 | 
   44 |   test("is callable without arguments", () => {
 
-       at ./__typetests__/rest-parameters.tst.ts:41:31 ❭ when target is an expression ❭ is callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:41:31 ❭ when source is an expression ❭ is callable with the given arguments
 
 Error: Expression is callable without arguments.
 
@@ -128,7 +128,7 @@ Error: Expression is callable without arguments.
   48 | 
   49 |   test("is not callable without arguments", () => {
 
-       at ./__typetests__/rest-parameters.tst.ts:46:31 ❭ when target is an expression ❭ is callable without arguments
+       at ./__typetests__/rest-parameters.tst.ts:46:31 ❭ when source is an expression ❭ is callable without arguments
 
 Error: Expression is not callable without arguments.
 
@@ -143,7 +143,7 @@ Source has 0 element(s) but target requires 1.
   53 |     expect(middle).type.not.toBeCallableWith();
   54 |     expect(middle).type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
 
-       at ./__typetests__/rest-parameters.tst.ts:51:26 ❭ when target is an expression ❭ is not callable without arguments
+       at ./__typetests__/rest-parameters.tst.ts:51:26 ❭ when source is an expression ❭ is not callable without arguments
 
 Error: Expression is not callable without arguments.
 
@@ -157,7 +157,7 @@ Expected at least 1 arguments, but got 0.
   56 |     expect(trailing).type.not.toBeCallableWith();
   57 |     expect(trailing).type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
 
-       at ./__typetests__/rest-parameters.tst.ts:54:25 ❭ when target is an expression ❭ is not callable without arguments
+       at ./__typetests__/rest-parameters.tst.ts:54:25 ❭ when source is an expression ❭ is not callable without arguments
 
     Arguments for the rest parameter 'args' were not provided. ts(6236)
 
@@ -167,7 +167,7 @@ Expected at least 1 arguments, but got 0.
         |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       7 | declare function trailing(x: boolean, ...y: Array<string>): void;
       8 | 
-      9 | describe("when target is an expression", () => {
+      9 | describe("when source is an expression", () => {
 
           at ./__typetests__/rest-parameters.tst.ts:6:25
 
@@ -183,7 +183,7 @@ Expected at least 1 arguments, but got 0.
   59 | 
   60 |   test("is not callable with the given arguments", () => {
 
-       at ./__typetests__/rest-parameters.tst.ts:57:27 ❭ when target is an expression ❭ is not callable without arguments
+       at ./__typetests__/rest-parameters.tst.ts:57:27 ❭ when source is an expression ❭ is not callable without arguments
 
     An argument for 'x' was not provided. ts(6210)
 
@@ -192,7 +192,7 @@ Expected at least 1 arguments, but got 0.
        7 | declare function trailing(x: boolean, ...y: Array<string>): void;
          |                           ~~~~~~~~~~
        8 | 
-       9 | describe("when target is an expression", () => {
+       9 | describe("when source is an expression", () => {
       10 |   test("is callable with the given argument", () => {
 
            at ./__typetests__/rest-parameters.tst.ts:7:27
@@ -211,7 +211,7 @@ Type 'string' is not assignable to type 'boolean'.
   64 |     expect(leading).type.not.toBeCallableWith(...["one", "two"]);
   65 |     expect(leading).type.toBeCallableWith(...["one", "two"]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:62:43 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:62:43 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -227,7 +227,7 @@ Type 'string' is not assignable to type 'boolean'.
   67 |     expect(leading).type.not.toBeCallableWith(3, 4, true);
   68 |     expect(leading).type.toBeCallableWith(3, 4, true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:65:43 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:65:43 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -243,7 +243,7 @@ Type 'number' is not assignable to type 'string'.
   70 |     expect(leading).type.not.toBeCallableWith(...[3, 4], true);
   71 |     expect(leading).type.toBeCallableWith(...[3, 4], true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:68:43 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:68:43 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -259,7 +259,7 @@ Type 'number' is not assignable to type 'string'.
   73 |     expect(middle).type.not.toBeCallableWith("one", 2, 3);
   74 |     expect(middle).type.toBeCallableWith("one", 2, 3); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:71:43 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:71:43 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -275,7 +275,7 @@ Type 'number' is not assignable to type 'boolean'.
   76 |     expect(middle).type.not.toBeCallableWith(...["one", 2, 3]);
   77 |     expect(middle).type.toBeCallableWith(...["one", 2, 3]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:74:49 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:74:49 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -291,7 +291,7 @@ Type 'number' is not assignable to type 'boolean'.
   79 |     expect(middle).type.not.toBeCallableWith("one", "two", "three", true);
   80 |     expect(middle).type.toBeCallableWith("one", "two", "three", true); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:77:42 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:77:42 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -307,7 +307,7 @@ Type 'string' is not assignable to type 'number'.
   82 |     expect(middle).type.not.toBeCallableWith(...["one", "two", "three", true]);
   83 |     expect(middle).type.toBeCallableWith(...["one", "two", "three", true]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:80:49 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:80:49 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -323,7 +323,7 @@ Type 'string' is not assignable to type 'number'.
   85 |     expect(trailing).type.not.toBeCallableWith("ten", "eleven");
   86 |     expect(trailing).type.toBeCallableWith("ten", "eleven"); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:83:42 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:83:42 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -337,7 +337,7 @@ Argument of type 'string' is not assignable to parameter of type 'boolean'.
   88 |     expect(trailing).type.not.toBeCallableWith(...["ten", "eleven"]);
   89 |     expect(trailing).type.toBeCallableWith(...["ten", "eleven"]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:86:44 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:86:44 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -351,7 +351,7 @@ Argument of type 'string' is not assignable to parameter of type 'boolean'.
   91 |     expect(trailing).type.not.toBeCallableWith(false, 10, 11);
   92 |     expect(trailing).type.toBeCallableWith(false, 10, 11); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:89:44 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:89:44 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -365,7 +365,7 @@ Argument of type 'number' is not assignable to parameter of type 'string'.
   94 |     expect(trailing).type.not.toBeCallableWith(false, ...[10, 11]);
   95 |     expect(trailing).type.toBeCallableWith(false, ...[10, 11]); // fail
 
-       at ./__typetests__/rest-parameters.tst.ts:92:51 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:92:51 ❭ when source is an expression ❭ is not callable with the given arguments
 
 Error: Expression is not callable with the given arguments.
 
@@ -379,5 +379,388 @@ Argument of type 'number' is not assignable to parameter of type 'string'.
   97 | });
   98 | 
 
-       at ./__typetests__/rest-parameters.tst.ts:95:51 ❭ when target is an expression ❭ is not callable with the given arguments
+       at ./__typetests__/rest-parameters.tst.ts:95:51 ❭ when source is an expression ❭ is not callable with the given arguments
+
+Error: Type is callable with the given argument.
+
+  106 |   test("is callable with the given argument", () => {
+  107 |     expect<Optional>().type.toBeCallableWith("one");
+  108 |     expect<Optional>().type.not.toBeCallableWith("one"); // fail
+      |                                 ~~~~~~~~~~~~~~~~
+  109 | 
+  110 |     expect<Leading>().type.toBeCallableWith(false);
+  111 |     expect<Leading>().type.not.toBeCallableWith(false); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:108:33 ❭ when source is a type ❭ is callable with the given argument
+
+Error: Type is callable with the given argument.
+
+  109 | 
+  110 |     expect<Leading>().type.toBeCallableWith(false);
+  111 |     expect<Leading>().type.not.toBeCallableWith(false); // fail
+      |                                ~~~~~~~~~~~~~~~~
+  112 | 
+  113 |     expect<Trailing>().type.toBeCallableWith(true);
+  114 |     expect<Trailing>().type.not.toBeCallableWith(true); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:111:32 ❭ when source is a type ❭ is callable with the given argument
+
+Error: Type is callable with the given argument.
+
+  112 | 
+  113 |     expect<Trailing>().type.toBeCallableWith(true);
+  114 |     expect<Trailing>().type.not.toBeCallableWith(true); // fail
+      |                                 ~~~~~~~~~~~~~~~~
+  115 |   });
+  116 | 
+  117 |   test("is callable with the given arguments", () => {
+
+        at ./__typetests__/rest-parameters.tst.ts:114:33 ❭ when source is a type ❭ is callable with the given argument
+
+Error: Type is callable with the given arguments.
+
+  117 |   test("is callable with the given arguments", () => {
+  118 |     expect<Optional>().type.toBeCallableWith("one", 2, true);
+  119 |     expect<Optional>().type.not.toBeCallableWith("one", 2, true); // fail
+      |                                 ~~~~~~~~~~~~~~~~
+  120 | 
+  121 |     expect<Leading>().type.toBeCallableWith("one", "two", true);
+  122 |     expect<Leading>().type.not.toBeCallableWith("one", "two", true); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:119:33 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  120 | 
+  121 |     expect<Leading>().type.toBeCallableWith("one", "two", true);
+  122 |     expect<Leading>().type.not.toBeCallableWith("one", "two", true); // fail
+      |                                ~~~~~~~~~~~~~~~~
+  123 | 
+  124 |     expect<Leading>().type.toBeCallableWith(...["one", "two"], true);
+  125 |     expect<Leading>().type.not.toBeCallableWith(...["one", "two"], true); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:122:32 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  123 | 
+  124 |     expect<Leading>().type.toBeCallableWith(...["one", "two"], true);
+  125 |     expect<Leading>().type.not.toBeCallableWith(...["one", "two"], true); // fail
+      |                                ~~~~~~~~~~~~~~~~
+  126 | 
+  127 |     expect<Middle>().type.toBeCallableWith("one", 123, 456, true);
+  128 |     expect<Middle>().type.not.toBeCallableWith("one", 123, 456, true); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:125:32 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  126 | 
+  127 |     expect<Middle>().type.toBeCallableWith("one", 123, 456, true);
+  128 |     expect<Middle>().type.not.toBeCallableWith("one", 123, 456, true); // fail
+      |                               ~~~~~~~~~~~~~~~~
+  129 | 
+  130 |     expect<Middle>().type.toBeCallableWith(...["one", 123, 456, true]);
+  131 |     expect<Middle>().type.not.toBeCallableWith(...["one", 123, 456, true]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:128:31 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  129 | 
+  130 |     expect<Middle>().type.toBeCallableWith(...["one", 123, 456, true]);
+  131 |     expect<Middle>().type.not.toBeCallableWith(...["one", 123, 456, true]); // fail
+      |                               ~~~~~~~~~~~~~~~~
+  132 | 
+  133 |     expect<Trailing>().type.toBeCallableWith(false, "ten", "eleven");
+  134 |     expect<Trailing>().type.not.toBeCallableWith(false, "ten", "eleven"); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:131:31 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  132 | 
+  133 |     expect<Trailing>().type.toBeCallableWith(false, "ten", "eleven");
+  134 |     expect<Trailing>().type.not.toBeCallableWith(false, "ten", "eleven"); // fail
+      |                                 ~~~~~~~~~~~~~~~~
+  135 | 
+  136 |     expect<Trailing>().type.toBeCallableWith(false, ...["ten", "eleven"]);
+  137 |     expect<Trailing>().type.not.toBeCallableWith(false, ...["ten", "eleven"]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:134:33 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable with the given arguments.
+
+  135 | 
+  136 |     expect<Trailing>().type.toBeCallableWith(false, ...["ten", "eleven"]);
+  137 |     expect<Trailing>().type.not.toBeCallableWith(false, ...["ten", "eleven"]); // fail
+      |                                 ~~~~~~~~~~~~~~~~
+  138 |   });
+  139 | 
+  140 |   test("is callable without arguments", () => {
+
+        at ./__typetests__/rest-parameters.tst.ts:137:33 ❭ when source is a type ❭ is callable with the given arguments
+
+Error: Type is callable without arguments.
+
+  140 |   test("is callable without arguments", () => {
+  141 |     expect<Optional>().type.toBeCallableWith();
+  142 |     expect<Optional>().type.not.toBeCallableWith(); // fail
+      |                                 ~~~~~~~~~~~~~~~~
+  143 |   });
+  144 | 
+  145 |   test("is not callable without arguments", () => {
+
+        at ./__typetests__/rest-parameters.tst.ts:142:33 ❭ when source is a type ❭ is callable without arguments
+
+Error: Type is not callable without arguments.
+
+Argument of type '[]' is not assignable to parameter of type '[...string[], boolean]'.
+Source has 0 element(s) but target requires 1.
+
+  145 |   test("is not callable without arguments", () => {
+  146 |     expect<Leading>().type.not.toBeCallableWith();
+  147 |     expect<Leading>().type.toBeCallableWith(); // fail: Source has 0 element(s) but target requires 1.
+      |                            ~~~~~~~~~~~~~~~~
+  148 | 
+  149 |     expect<Middle>().type.not.toBeCallableWith();
+  150 |     expect<Middle>().type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
+
+        at ./__typetests__/rest-parameters.tst.ts:147:28 ❭ when source is a type ❭ is not callable without arguments
+
+Error: Type is not callable without arguments.
+
+Expected at least 1 arguments, but got 0.
+
+  148 | 
+  149 |     expect<Middle>().type.not.toBeCallableWith();
+  150 |     expect<Middle>().type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
+      |                           ~~~~~~~~~~~~~~~~
+  151 | 
+  152 |     expect<Trailing>().type.not.toBeCallableWith();
+  153 |     expect<Trailing>().type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
+
+        at ./__typetests__/rest-parameters.tst.ts:150:27 ❭ when source is a type ❭ is not callable without arguments
+
+    Arguments for the rest parameter 'args' were not provided. ts(6236)
+
+      100 | 
+      101 | type Leading = (...args: [...Array<string>, boolean]) => void;
+      102 | type Middle = (...args: [string, ...Array<number>, boolean]) => void;
+          |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      103 | type Trailing = (x: boolean, ...y: Array<string>) => void;
+      104 | 
+      105 | describe("when source is a type", () => {
+
+            at ./__typetests__/rest-parameters.tst.ts:102:16
+
+Error: Type is not callable without arguments.
+
+Expected at least 1 arguments, but got 0.
+
+  151 | 
+  152 |     expect<Trailing>().type.not.toBeCallableWith();
+  153 |     expect<Trailing>().type.toBeCallableWith(); // fail: Expected at least 1 arguments, but got 0.
+      |                             ~~~~~~~~~~~~~~~~
+  154 |   });
+  155 | 
+  156 |   test("is not callable with the given arguments", () => {
+
+        at ./__typetests__/rest-parameters.tst.ts:153:29 ❭ when source is a type ❭ is not callable without arguments
+
+    An argument for 'x' was not provided. ts(6210)
+
+      101 | type Leading = (...args: [...Array<string>, boolean]) => void;
+      102 | type Middle = (...args: [string, ...Array<number>, boolean]) => void;
+      103 | type Trailing = (x: boolean, ...y: Array<string>) => void;
+          |                  ~~~~~~~~~~
+      104 | 
+      105 | describe("when source is a type", () => {
+      106 |   test("is callable with the given argument", () => {
+
+            at ./__typetests__/rest-parameters.tst.ts:103:18
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '["one", "two"]' is not assignable to parameter of type '[...string[], boolean]'.
+Type at position 1 in source is not compatible with type at position 1 in target.
+Type 'string' is not assignable to type 'boolean'.
+
+  156 |   test("is not callable with the given arguments", () => {
+  157 |     expect<Leading>().type.not.toBeCallableWith("one", "two");
+  158 |     expect<Leading>().type.toBeCallableWith("one", "two"); // fail
+      |                                             ~~~~~~~~~~~~
+  159 | 
+  160 |     expect<Leading>().type.not.toBeCallableWith(...["one", "two"]);
+  161 |     expect<Leading>().type.toBeCallableWith(...["one", "two"]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:158:45 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '[string, string]' is not assignable to parameter of type '[...string[], boolean]'.
+Type at position 1 in source is not compatible with type at position 1 in target.
+Type 'string' is not assignable to type 'boolean'.
+
+  159 | 
+  160 |     expect<Leading>().type.not.toBeCallableWith(...["one", "two"]);
+  161 |     expect<Leading>().type.toBeCallableWith(...["one", "two"]); // fail
+      |                                             ~~~~~~~~~~~~~~~~~
+  162 | 
+  163 |     expect<Leading>().type.not.toBeCallableWith(3, 4, true);
+  164 |     expect<Leading>().type.toBeCallableWith(3, 4, true); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:161:45 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '[3, 4, true]' is not assignable to parameter of type '[...string[], boolean]'.
+Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
+Type 'number' is not assignable to type 'string'.
+
+  162 | 
+  163 |     expect<Leading>().type.not.toBeCallableWith(3, 4, true);
+  164 |     expect<Leading>().type.toBeCallableWith(3, 4, true); // fail
+      |                                             ~~~~~~~~~~
+  165 | 
+  166 |     expect<Leading>().type.not.toBeCallableWith(...[3, 4], true);
+  167 |     expect<Leading>().type.toBeCallableWith(...[3, 4], true); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:164:45 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '[number, number, true]' is not assignable to parameter of type '[...string[], boolean]'.
+Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
+Type 'number' is not assignable to type 'string'.
+
+  165 | 
+  166 |     expect<Leading>().type.not.toBeCallableWith(...[3, 4], true);
+  167 |     expect<Leading>().type.toBeCallableWith(...[3, 4], true); // fail
+      |                                             ~~~~~~~~~~~~~~~
+  168 | 
+  169 |     expect<Middle>().type.not.toBeCallableWith("one", 2, 3);
+  170 |     expect<Middle>().type.toBeCallableWith("one", 2, 3); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:167:45 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '[2, 3]' is not assignable to parameter of type '[...number[], boolean]'.
+Type at position 1 in source is not compatible with type at position 1 in target.
+Type 'number' is not assignable to type 'boolean'.
+
+  168 | 
+  169 |     expect<Middle>().type.not.toBeCallableWith("one", 2, 3);
+  170 |     expect<Middle>().type.toBeCallableWith("one", 2, 3); // fail
+      |                                                   ~~~~
+  171 | 
+  172 |     expect<Middle>().type.not.toBeCallableWith(...["one", 2, 3]);
+  173 |     expect<Middle>().type.toBeCallableWith(...["one", 2, 3]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:170:51 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '[number, number]' is not assignable to parameter of type '[...number[], boolean]'.
+Type at position 1 in source is not compatible with type at position 1 in target.
+Type 'number' is not assignable to type 'boolean'.
+
+  171 | 
+  172 |     expect<Middle>().type.not.toBeCallableWith(...["one", 2, 3]);
+  173 |     expect<Middle>().type.toBeCallableWith(...["one", 2, 3]); // fail
+      |                                            ~~~~~~~~~~~~~~~~
+  174 | 
+  175 |     expect<Middle>().type.not.toBeCallableWith("one", "two", "three", true);
+  176 |     expect<Middle>().type.toBeCallableWith("one", "two", "three", true); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:173:44 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '["two", "three", true]' is not assignable to parameter of type '[...number[], boolean]'.
+Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
+Type 'string' is not assignable to type 'number'.
+
+  174 | 
+  175 |     expect<Middle>().type.not.toBeCallableWith("one", "two", "three", true);
+  176 |     expect<Middle>().type.toBeCallableWith("one", "two", "three", true); // fail
+      |                                                   ~~~~~~~~~~~~~~~~~~~~
+  177 | 
+  178 |     expect<Middle>().type.not.toBeCallableWith(...["one", "two", "three", true]);
+  179 |     expect<Middle>().type.toBeCallableWith(...["one", "two", "three", true]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:176:51 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type '[string, string, boolean]' is not assignable to parameter of type '[...number[], boolean]'.
+Type at positions 0 through 1 in source is not compatible with type at position 0 in target.
+Type 'string' is not assignable to type 'number'.
+
+  177 | 
+  178 |     expect<Middle>().type.not.toBeCallableWith(...["one", "two", "three", true]);
+  179 |     expect<Middle>().type.toBeCallableWith(...["one", "two", "three", true]); // fail
+      |                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  180 | 
+  181 |     expect<Trailing>().type.not.toBeCallableWith("ten", "eleven");
+  182 |     expect<Trailing>().type.toBeCallableWith("ten", "eleven"); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:179:44 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type 'string' is not assignable to parameter of type 'boolean'.
+
+  180 | 
+  181 |     expect<Trailing>().type.not.toBeCallableWith("ten", "eleven");
+  182 |     expect<Trailing>().type.toBeCallableWith("ten", "eleven"); // fail
+      |                                              ~~~~~
+  183 | 
+  184 |     expect<Trailing>().type.not.toBeCallableWith(...["ten", "eleven"]);
+  185 |     expect<Trailing>().type.toBeCallableWith(...["ten", "eleven"]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:182:46 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type 'string' is not assignable to parameter of type 'boolean'.
+
+  183 | 
+  184 |     expect<Trailing>().type.not.toBeCallableWith(...["ten", "eleven"]);
+  185 |     expect<Trailing>().type.toBeCallableWith(...["ten", "eleven"]); // fail
+      |                                              ~~~~~~~~~~~~~~~~~~~~
+  186 | 
+  187 |     expect<Trailing>().type.not.toBeCallableWith(false, 10, 11);
+  188 |     expect<Trailing>().type.toBeCallableWith(false, 10, 11); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:185:46 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  186 | 
+  187 |     expect<Trailing>().type.not.toBeCallableWith(false, 10, 11);
+  188 |     expect<Trailing>().type.toBeCallableWith(false, 10, 11); // fail
+      |                                                     ~~
+  189 | 
+  190 |     expect<Trailing>().type.not.toBeCallableWith(false, ...[10, 11]);
+  191 |     expect<Trailing>().type.toBeCallableWith(false, ...[10, 11]); // fail
+
+        at ./__typetests__/rest-parameters.tst.ts:188:53 ❭ when source is a type ❭ is not callable with the given arguments
+
+Error: Type is not callable with the given arguments.
+
+Argument of type 'number' is not assignable to parameter of type 'string'.
+
+  189 | 
+  190 |     expect<Trailing>().type.not.toBeCallableWith(false, ...[10, 11]);
+  191 |     expect<Trailing>().type.toBeCallableWith(false, ...[10, 11]); // fail
+      |                                                     ~~~~~~~~~~~
+  192 |   });
+  193 | });
+  194 | 
+
+        at ./__typetests__/rest-parameters.tst.ts:191:53 ❭ when source is a type ❭ is not callable with the given arguments
 
