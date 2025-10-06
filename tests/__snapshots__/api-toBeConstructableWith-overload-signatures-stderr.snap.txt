@@ -153,3 +153,143 @@ Expected 1-2 arguments, but got 3.
 
        at ./__typetests__/overload-signatures.tst.ts:58:52 ❭ when source is an expression ❭ is not constructable with the given arguments
 
+Error: Type is constructable with the given argument.
+
+  73 |   test("is constructable with the given argument", () => {
+  74 |     expect<PointConstructor>().type.toBeConstructableWith("0:0");
+  75 |     expect<PointConstructor>().type.not.toBeConstructableWith("0:0"); // fail
+     |                                         ~~~~~~~~~~~~~~~~~~~~~
+  76 |   });
+  77 | 
+  78 |   test("is constructable with the given arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:75:41 ❭ when source is a type ❭ is constructable with the given argument
+
+Error: Type is constructable with the given arguments.
+
+  78 |   test("is constructable with the given arguments", () => {
+  79 |     expect<PointConstructor>().type.toBeConstructableWith(4, 5);
+  80 |     expect<PointConstructor>().type.not.toBeConstructableWith(4, 5); // fail
+     |                                         ~~~~~~~~~~~~~~~~~~~~~
+  81 | 
+  82 |     expect<TestConstructor>().type.toBeConstructableWith("one", () => {});
+  83 |     expect<TestConstructor>().type.not.toBeConstructableWith("one", () => {}); // fail
+
+       at ./__typetests__/overload-signatures.tst.ts:80:41 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is constructable with the given arguments.
+
+  81 | 
+  82 |     expect<TestConstructor>().type.toBeConstructableWith("one", () => {});
+  83 |     expect<TestConstructor>().type.not.toBeConstructableWith("one", () => {}); // fail
+     |                                        ~~~~~~~~~~~~~~~~~~~~~
+  84 | 
+  85 |     expect<TestConstructor>().type.toBeConstructableWith("two", () => Promise.resolve());
+  86 |     expect<TestConstructor>().type.not.toBeConstructableWith("two", () => Promise.resolve()); // fail
+
+       at ./__typetests__/overload-signatures.tst.ts:83:40 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is constructable with the given arguments.
+
+  84 | 
+  85 |     expect<TestConstructor>().type.toBeConstructableWith("two", () => Promise.resolve());
+  86 |     expect<TestConstructor>().type.not.toBeConstructableWith("two", () => Promise.resolve()); // fail
+     |                                        ~~~~~~~~~~~~~~~~~~~~~
+  87 |   });
+  88 | 
+  89 |   test("is not constructable without arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:86:40 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is not constructable without arguments.
+
+Expected 1-2 arguments, but got 0.
+
+  89 |   test("is not constructable without arguments", () => {
+  90 |     expect<PointConstructor>().type.not.toBeConstructableWith();
+  91 |     expect<PointConstructor>().type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+     |                                     ~~~~~~~~~~~~~~~~~~~~~
+  92 | 
+  93 |     expect<TestConstructor>().type.not.toBeConstructableWith();
+  94 |     expect<TestConstructor>().type.toBeConstructableWith(); // fail: Expected 2 arguments, but got 0.
+
+       at ./__typetests__/overload-signatures.tst.ts:91:37 ❭ when source is a type ❭ is not constructable without arguments
+
+    An argument for 'xy' was not provided. ts(6210)
+
+      62 | type PointConstructor = {
+      63 |   new (x: number, y: number): Point;
+      64 |   new (xy: string): Point;
+         |        ~~~~~~~~~~
+      65 | };
+      66 | 
+      67 | type TestConstructor = {
+
+           at ./__typetests__/overload-signatures.tst.ts:64:8
+
+Error: Type is not constructable without arguments.
+
+Expected 2 arguments, but got 0.
+
+  92 | 
+  93 |     expect<TestConstructor>().type.not.toBeConstructableWith();
+  94 |     expect<TestConstructor>().type.toBeConstructableWith(); // fail: Expected 2 arguments, but got 0.
+     |                                    ~~~~~~~~~~~~~~~~~~~~~
+  95 |   });
+  96 | 
+  97 |   test("is not constructable with the given argument", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:94:36 ❭ when source is a type ❭ is not constructable without arguments
+
+    An argument for 'name' was not provided. ts(6210)
+
+      66 | 
+      67 | type TestConstructor = {
+      68 |   new (name: string, cb: () => Promise<unknown>): Test;
+         |        ~~~~~~~~~~~~
+      69 |   new (name: string, cb: () => unknown): Test;
+      70 | };
+      71 | 
+
+           at ./__typetests__/overload-signatures.tst.ts:68:8
+
+Error: Type is not constructable with the given argument.
+
+Expected 2 arguments, but got 1.
+
+   97 |   test("is not constructable with the given argument", () => {
+   98 |     expect<TestConstructor>().type.not.toBeConstructableWith("nope");
+   99 |     expect<TestConstructor>().type.toBeConstructableWith("nope"); // fail: Expected 2 arguments, but got 1.
+      |                                    ~~~~~~~~~~~~~~~~~~~~~
+  100 |   });
+  101 | 
+  102 |   test("is not constructable with the given arguments", () => {
+
+        at ./__typetests__/overload-signatures.tst.ts:99:36 ❭ when source is a type ❭ is not constructable with the given argument
+
+    An argument for 'cb' was not provided. ts(6210)
+
+      66 | 
+      67 | type TestConstructor = {
+      68 |   new (name: string, cb: () => Promise<unknown>): Test;
+         |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+      69 |   new (name: string, cb: () => unknown): Test;
+      70 | };
+      71 | 
+
+           at ./__typetests__/overload-signatures.tst.ts:68:22
+
+Error: Type is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  102 |   test("is not constructable with the given arguments", () => {
+  103 |     expect<PointConstructor>().type.not.toBeConstructableWith(4, 5, 6);
+  104 |     expect<PointConstructor>().type.toBeConstructableWith(4, 5, 6); // fail: Expected 1-2 arguments, but got 3.
+      |                                                                 ~
+  105 |   });
+  106 | });
+  107 | 
+
+        at ./__typetests__/overload-signatures.tst.ts:104:65 ❭ when source is a type ❭ is not constructable with the given arguments
+
