@@ -77,27 +77,6 @@ function tidyDts(): Plugin {
   };
 }
 
-// TODO remove this plugin and 'package.json' entries after dropping support for TypeScript 4.x
-function downlevelDts(): Plugin {
-  return {
-    name: "downlevel-dts",
-
-    async renderChunk(code, chunkInfo) {
-      if (chunkInfo.fileName.startsWith("index")) {
-        const updatedCode = code.replace(
-          / {4}\/\*\*\n {5}\* Checks if the decorator[\s\S]*DecoratorContext\) => void;\n/,
-          "",
-        );
-
-        await fs.mkdir(path.resolve(output.dir, "4.x"), { recursive: true });
-        await fs.writeFile(path.resolve(output.dir, "4.x", chunkInfo.fileName), updatedCode);
-      }
-
-      return null;
-    },
-  };
-}
-
 const config: Array<RollupOptions> = [
   {
     external: [/^node:/],
@@ -112,7 +91,6 @@ const config: Array<RollupOptions> = [
       typescript({ tsconfig }),
       dts({ tsconfig }),
       tidyDts(),
-      downlevelDts(),
     ],
   },
 
@@ -126,7 +104,6 @@ const config: Array<RollupOptions> = [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript({ tsconfig }),
       dts({ tsconfig }),
-      downlevelDts(),
     ],
   },
 

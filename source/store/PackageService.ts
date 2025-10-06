@@ -32,11 +32,6 @@ export class PackageService {
       const tarReader = new TarReader(stream);
 
       for await (const file of tarReader.extract()) {
-        // TODO remove this check after dropping support for TypeScript 4.8
-        if (!file.name.startsWith("package/")) {
-          continue;
-        }
-
         const filePath = Path.join(targetPath, file.name.replace(/^package\//, ""));
         const directoryPath = Path.dirname(filePath);
 
