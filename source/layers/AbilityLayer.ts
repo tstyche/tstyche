@@ -110,21 +110,42 @@ export class AbilityLayer {
         break;
       }
 
-      case "toBeConstructableWith":
+      case "toBeConstructableWith": {
         this.#nodes.push(expect);
 
-        this.#editor.eraseTrailingComma(expect.source);
+        const sourceNode = expect.source[0];
 
-        this.#editor.replaceRanges([
-          [
-            expectStart,
-            expectExpressionEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
-          ],
-          [expectEnd, matcherNameEnd],
-        ]);
+        if (!sourceNode) {
+          return;
+        }
+
+        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+          this.#editor.eraseTrailingComma(expect.source);
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              expectExpressionEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
+            ],
+            [expectEnd, matcherNameEnd],
+          ]);
+        } else {
+          const sourceText = sourceNode.getFullText();
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              matcherNameEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+                ? `;new (undefined as any as ${sourceText})`
+                : `new (undefined as any as ${sourceText})`,
+            ],
+          ]);
+        }
 
         break;
+      }
 
       case "toHaveProperty": {
         this.#nodes.push(expect);

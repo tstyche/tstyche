@@ -72,6 +72,8 @@ Error: An argument for 'source' must be a constructable expression.
 
 Error: An argument for 'source' must be a constructable expression.
 
+Did you mean to use the '.toBeCallableWith()' matcher?
+
   38 |     expect(null).type.toBeConstructableWith();
   39 | 
   40 |     expect(() => undefined).type.toBeConstructableWith();
@@ -84,6 +86,8 @@ Error: An argument for 'source' must be a constructable expression.
 
 Error: An argument for 'source' must be a constructable expression.
 
+Did you mean to use the '.toBeCallableWith()' matcher?
+
   39 | 
   40 |     expect(() => undefined).type.toBeConstructableWith();
   41 |     expect(() => {}).type.toBeConstructableWith();
@@ -95,6 +99,8 @@ Error: An argument for 'source' must be a constructable expression.
        at ./__typetests__/toBeConstructableWith.tst.ts:41:12
 
 Error: An argument for 'source' must be a constructable expression.
+
+Did you mean to use the '.toBeCallableWith()' matcher?
 
   40 |     expect(() => undefined).type.toBeConstructableWith();
   41 |     expect(() => {}).type.toBeConstructableWith();
@@ -179,28 +185,28 @@ Error: An argument for 'source' cannot be of the 'any' type.
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
 
-  57 | 
-  58 |   test("is rejected type?", () => {
-  59 |     expect("abc" as any).type.toBeConstructableWith();
+  59 | 
+  60 |   test("is rejected type?", () => {
+  61 |     expect("abc" as any).type.toBeConstructableWith();
      |            ~~~~~~~~~~~~
-  60 |     expect("abc" as never).type.toBeConstructableWith();
-  61 |   });
-  62 | });
+  62 |     expect("abc" as never).type.toBeConstructableWith();
+  63 |   });
+  64 | });
 
-       at ./__typetests__/toBeConstructableWith.tst.ts:59:12
+       at ./__typetests__/toBeConstructableWith.tst.ts:61:12
 
 Error: An argument for 'source' cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
 
-  58 |   test("is rejected type?", () => {
-  59 |     expect("abc" as any).type.toBeConstructableWith();
-  60 |     expect("abc" as never).type.toBeConstructableWith();
+  60 |   test("is rejected type?", () => {
+  61 |     expect("abc" as any).type.toBeConstructableWith();
+  62 |     expect("abc" as never).type.toBeConstructableWith();
      |            ~~~~~~~~~~~~~~
-  61 |   });
-  62 | });
-  63 | 
+  63 |   });
+  64 | });
+  65 | 
 
-       at ./__typetests__/toBeConstructableWith.tst.ts:60:12
+       at ./__typetests__/toBeConstructableWith.tst.ts:62:12
 

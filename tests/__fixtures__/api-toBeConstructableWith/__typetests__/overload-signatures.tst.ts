@@ -58,3 +58,49 @@ describe("when source is an expression", () => {
     expect(Point).type.toBeConstructableWith(4, 5, 6); // fail: Expected 1-2 arguments, but got 3.
   });
 });
+
+type PointConstructor = {
+  new (x: number, y: number): Point;
+  new (xy: string): Point;
+};
+
+type TestConstructor = {
+  new (name: string, cb: () => Promise<unknown>): Test;
+  new (name: string, cb: () => unknown): Test;
+};
+
+describe("when source is a type", () => {
+  test("is constructable with the given argument", () => {
+    expect<PointConstructor>().type.toBeConstructableWith("0:0");
+    expect<PointConstructor>().type.not.toBeConstructableWith("0:0"); // fail
+  });
+
+  test("is constructable with the given arguments", () => {
+    expect<PointConstructor>().type.toBeConstructableWith(4, 5);
+    expect<PointConstructor>().type.not.toBeConstructableWith(4, 5); // fail
+
+    expect<TestConstructor>().type.toBeConstructableWith("one", () => {});
+    expect<TestConstructor>().type.not.toBeConstructableWith("one", () => {}); // fail
+
+    expect<TestConstructor>().type.toBeConstructableWith("two", () => Promise.resolve());
+    expect<TestConstructor>().type.not.toBeConstructableWith("two", () => Promise.resolve()); // fail
+  });
+
+  test("is not constructable without arguments", () => {
+    expect<PointConstructor>().type.not.toBeConstructableWith();
+    expect<PointConstructor>().type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+
+    expect<TestConstructor>().type.not.toBeConstructableWith();
+    expect<TestConstructor>().type.toBeConstructableWith(); // fail: Expected 2 arguments, but got 0.
+  });
+
+  test("is not constructable with the given argument", () => {
+    expect<TestConstructor>().type.not.toBeConstructableWith("nope");
+    expect<TestConstructor>().type.toBeConstructableWith("nope"); // fail: Expected 2 arguments, but got 1.
+  });
+
+  test("is not constructable with the given arguments", () => {
+    expect<PointConstructor>().type.not.toBeConstructableWith(4, 5, 6);
+    expect<PointConstructor>().type.toBeConstructableWith(4, 5, 6); // fail: Expected 1-2 arguments, but got 3.
+  });
+});

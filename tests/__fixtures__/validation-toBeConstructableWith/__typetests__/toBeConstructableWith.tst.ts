@@ -52,6 +52,8 @@ describe("argument for 'source'", () => {
   test("allowed expressions", () => {
     expect(getPersonConstructor()).type.toBeConstructableWith("abc");
     expect(Person).type.toBeConstructableWith("abc");
+    expect({} as typeof Person).type.toBeConstructableWith("abc");
+    expect({} as new (name: string) => Person).type.toBeConstructableWith("abc");
     expect(obj.Person).type.toBeConstructableWith("abc");
   });
 
