@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.0.0-beta.3] - 2025-10-06
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
+
+### Added
+
+- **New!** Allow testing of provided types with `.toBeConstructableWith()` ([#603](https://github.com/tstyche/tstyche/pull/603))
+- Print test runner version and root path ([#598](https://github.com/tstyche/tstyche/pull/598))
+
+### Changed
+
+- Implement the `.toHaveProperty()` matcher using the ability layer ([#597](https://github.com/tstyche/tstyche/pull/597))
+
 ## [5.0.0-beta.2] - 2025-09-23
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
@@ -829,6 +842,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[5.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.3
 [5.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.2
 [5.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.1
 [5.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.0
