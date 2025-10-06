@@ -23,15 +23,15 @@ class Test {
   }
 }
 
-describe("when target is an expression", () => {
+describe("when source is an expression", () => {
   test("is constructable with the given argument", () => {
-    expect(Point).type.toBeConstructableWith(3, 4);
-    expect(Point).type.not.toBeConstructableWith(3, 4); // fail
+    expect(Point).type.toBeConstructableWith("0:0");
+    expect(Point).type.not.toBeConstructableWith("0:0"); // fail
   });
 
   test("is constructable with the given arguments", () => {
-    expect(Point).type.toBeConstructableWith(4, 5, 6);
-    expect(Point).type.not.toBeConstructableWith(4, 5, 6); // fail
+    expect(Point).type.toBeConstructableWith(4, 5);
+    expect(Point).type.not.toBeConstructableWith(4, 5); // fail
 
     expect(Test).type.toBeConstructableWith("one", () => {});
     expect(Test).type.not.toBeConstructableWith("one", () => {}); // fail
@@ -42,7 +42,7 @@ describe("when target is an expression", () => {
 
   test("is not constructable without arguments", () => {
     expect(Point).type.not.toBeConstructableWith();
-    expect(Point).type.toBeConstructableWith(); // fail: Expected 1-3 arguments, but got 0.
+    expect(Point).type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
 
     expect(Test).type.not.toBeConstructableWith();
     expect(Test).type.toBeConstructableWith(); // fail: Expected 2 arguments, but got 0.
@@ -54,10 +54,7 @@ describe("when target is an expression", () => {
   });
 
   test("is not constructable with the given arguments", () => {
-    expect(Point).type.not.toBeConstructableWith(2, 3);
-    expect(Point).type.toBeConstructableWith(2, 3); // fail: No overload expects 2 arguments, but overloads do exist that expect either 1 or 3 arguments.
-
-    expect(Point).type.not.toBeConstructableWith(4, 5, 6, 7);
-    expect(Point).type.toBeConstructableWith(4, 5, 6, 7); // fail: Expected 1-3 arguments, but got 4.
+    expect(Point).type.not.toBeConstructableWith(4, 5, 6);
+    expect(Point).type.toBeConstructableWith(4, 5, 6); // fail: Expected 1-2 arguments, but got 3.
   });
 });
