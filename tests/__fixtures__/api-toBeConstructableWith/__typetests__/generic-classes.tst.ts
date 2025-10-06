@@ -16,7 +16,7 @@ class Second<T> {
   }
 }
 
-describe("when target is an expression", () => {
+describe("when source is an expression", () => {
   test("is constructable with the given argument", () => {
     expect(First).type.toBeConstructableWith(["a", "b", "c"]);
     expect(First).type.not.toBeConstructableWith(["a", "b", "c"]); // fail
@@ -41,5 +41,33 @@ describe("when target is an expression", () => {
 
     expect(Second).type.not.toBeConstructableWith(["1", 2], (_n: string) => {});
     expect(Second).type.toBeConstructableWith(["1", 2], (_n: string) => {}); // fail
+  });
+});
+
+type FirstConstructor = new <T>(a: T) => First<T>;
+type SecondConstructor = new <T>(target: Array<T>, callback: (element: T) => void) => Second<T>;
+
+describe("when source is a type", () => {
+  test("is constructable with the given argument", () => {
+    expect<FirstConstructor>().type.toBeConstructableWith(["a", "b", "c"]);
+    expect<FirstConstructor>().type.not.toBeConstructableWith(["a", "b", "c"]); // fail
+  });
+
+  test("is not constructable without arguments", () => {
+    expect<FirstConstructor>().type.toBeConstructableWith();
+    expect<FirstConstructor>().type.not.toBeConstructableWith(); // fail: Expected 1 arguments, but got 0.
+  });
+
+  test("is constructable with the given arguments", () => {
+    expect<SecondConstructor>().type.toBeConstructableWith(["1", "2"], (_n: string) => {});
+    expect<SecondConstructor>().type.not.toBeConstructableWith(["1", "2"], (_n: string) => {}); // fail
+  });
+
+  test("is not constructable with the given arguments", () => {
+    expect<SecondConstructor>().type.not.toBeConstructableWith(["1", "2"], (_n: number) => {});
+    expect<SecondConstructor>().type.toBeConstructableWith(["1", "2"], (_n: number) => {}); // fail
+
+    expect<SecondConstructor>().type.not.toBeConstructableWith(["1", 2], (_n: string) => {});
+    expect<SecondConstructor>().type.toBeConstructableWith(["1", 2], (_n: string) => {}); // fail
   });
 });

@@ -3,7 +3,13 @@
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/rest-parameters.tst.ts
-  when target is an expression
+  when source is an expression
+    × is constructable with the given argument
+    × is constructable with the given arguments
+    × is constructable without arguments
+    × is not constructable without arguments
+    × is not constructable with the given arguments
+  when source is a type
     × is constructable with the given argument
     × is constructable with the given arguments
     × is constructable without arguments
@@ -12,6 +18,6 @@ fail ./__typetests__/rest-parameters.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      5 failed, 5 total
-Assertions: 26 failed, 26 passed, 52 total
+Tests:      10 failed, 10 total
+Assertions: 52 failed, 52 passed, 104 total
 Duration:   <<timestamp>>
