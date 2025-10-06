@@ -110,50 +110,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 const storeUrl = new URL("./.store/", fixtureUrl);
 
-await test("TypeScript 4.x", async (t) => {
-  t.after(async () => {
-    await clearFixture(fixtureUrl);
-  });
-
-  await writeFixture(fixtureUrl, {
-    ["__typetests__/subtype.test.ts"]: `import { omit, pick } from "tstyche"\n${subtypeTestText}`,
-    ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
-    ["__typetests__/toBe.test.ts"]: toBeTestText,
-    ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
-    ["__typetests__/toBeAssignableFrom.test.ts"]: toBeAssignableFromTestText,
-    ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
-    ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
-  });
-
-  await spawnTyche(fixtureUrl, ["--update"]);
-
-  const manifestText = await fs.readFile(new URL("./store-manifest.json", storeUrl), { encoding: "utf8" });
-
-  const { resolutions } = /** @type {{ resolutions: Record<string, string> }} */ (JSON.parse(manifestText));
-
-  const versions = Object.entries(resolutions)
-    .filter((resolution) => resolution[0].startsWith("4"))
-    .map((resolution) => resolution[1]);
-
-  const testCases = ["4.7.2", ...versions];
-
-  for (const version of testCases) {
-    await t.test(`uses TypeScript ${version} as the target`, async () => {
-      await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
-
-      const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-        env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
-      });
-
-      assert.equal(stderr, "");
-      assert.match(stdout, new RegExp(`uses TypeScript ${version}\n`));
-      assert.equal(exitCode, 0);
-    });
-  }
-});
-
 await test("TypeScript 5.x", async (t) => {
   t.after(async () => {
     await clearFixture(fixtureUrl);

@@ -67,6 +67,7 @@ export class ProjectService {
 
   #getDefaultCompilerOptions() {
     const defaultCompilerOptions: ts.server.protocol.CompilerOptions = {
+      allowImportingTsExtensions: true,
       exactOptionalPropertyTypes: true,
       jsx: this.#compiler.JsxEmit.Preserve,
       module: this.#compiler.ModuleKind.NodeNext,
@@ -74,13 +75,9 @@ export class ProjectService {
       noUncheckedIndexedAccess: true,
       resolveJsonModule: true,
       strict: true,
+      verbatimModuleSyntax: true,
       target: this.#compiler.ScriptTarget.ESNext,
     };
-
-    if (Version.isSatisfiedWith(this.#compiler.version, "5.0")) {
-      defaultCompilerOptions.allowImportingTsExtensions = true;
-      defaultCompilerOptions.verbatimModuleSyntax = true;
-    }
 
     if (Version.isSatisfiedWith(this.#compiler.version, "5.6")) {
       defaultCompilerOptions.noUncheckedSideEffectImports = true;
