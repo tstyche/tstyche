@@ -149,7 +149,7 @@ interface Matchers {
 
 interface Modifier {
   /**
-   * Passes the source type to the matcher.
+   * Indicates a type-level assertion.
    */
   type: Matchers & {
     /**
