@@ -1,7 +1,4 @@
 {
-  "$schema": "./models/config-schema.json",
-  "checkSourceFiles": true,
-  "rejectAnyType": true,
-  "rejectNeverType": true,
-  "testFileMatch": ["examples/*.t*st.*", "models/__typetests__/*.tst.*", "tests/*.test.*"]
+  "$schema": "./schema/config.json",
+  "testFileMatch": ["examples/*.{js,ts,tsx}", "typetests/*.tst.*"]
 }

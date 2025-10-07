@@ -1,25 +1,26 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-rejectAnyType
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/isRejected.test.ts
   argument for 'source'
     + rejects the 'any' type
-    + allows '.toBeAny()'
+    + allows '.toBe<any>()'
     + allows '.toRaiseError()', but not '.not.toRaiseError()'
   type argument for 'Source'
     + allows only explicit 'any'
-    + allows '.toBeAny()'
+    + allows '.toBe<any>()'
     + allows '.toRaiseError()', but not '.not.toRaiseError()'
   argument for 'target'
     + rejects the 'any' type
-    + allows '.toBeAny()'
+    + allows '.toBe<any>()'
   type argument for 'Target'
     + allows only explicit 'any'
-    + allows '.toBeAny()'
+    + allows '.toBe<any>()'
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      10 passed, 10 total
 Assertions: 16 passed, 16 total
+Suppressed: 4 ignored, 4 total
 Duration:   <<timestamp>>
-
-Ran all test files.

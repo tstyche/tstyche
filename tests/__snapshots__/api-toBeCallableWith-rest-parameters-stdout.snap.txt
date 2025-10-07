@@ -1,0 +1,23 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBeCallableWith
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/rest-parameters.tst.ts
+  when source is an expression
+    × is callable with the given argument
+    × is callable with the given arguments
+    × is callable without arguments
+    × is not callable without arguments
+    × is not callable with the given arguments
+  when source is a type
+    × is callable with the given argument
+    × is callable with the given arguments
+    × is callable without arguments
+    × is not callable without arguments
+    × is not callable with the given arguments
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      10 failed, 10 total
+Assertions: 52 failed, 52 passed, 104 total
+Duration:   <<timestamp>>

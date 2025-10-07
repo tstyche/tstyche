@@ -28,20 +28,18 @@ export class PackageService {
     if (response?.body != null) {
       const targetPath = `${packagePath}-${Math.random().toString(32).slice(2)}`;
 
-      for await (const file of TarReader.extract(response.body)) {
-        // TODO remove this check after dropping support for TypeScript 4.8
-        if (!file.name.startsWith("package/")) {
-          continue;
-        }
+      const stream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
+      const tarReader = new TarReader(stream);
 
-        const filePath = Path.join(targetPath, file.name.replace("package/", ""));
+      for await (const file of tarReader.extract()) {
+        const filePath = Path.join(targetPath, file.name.replace(/^package\//, ""));
         const directoryPath = Path.dirname(filePath);
 
         if (!existsSync(directoryPath)) {
           await fs.mkdir(directoryPath, { recursive: true });
         }
 
-        await fs.writeFile(filePath, file.contents);
+        await fs.writeFile(filePath, file.content);
       }
 
       await fs.rename(targetPath, packagePath);
@@ -55,7 +53,7 @@ export class PackageService {
   async ensure(packageVersion: string, manifest?: Manifest): Promise<string | undefined> {
     let packagePath: string | undefined = Path.join(this.#storePath, `typescript@${packageVersion}`);
 
-    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToInstalTypeScript(packageVersion));
+    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageVersion));
 
     if (await this.#lockService.isLocked(packagePath, diagnostic)) {
       return;

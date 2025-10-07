@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/project-tsconfig
+
 uses TypeScript <<version>>
 
 pass ./__typetests__/dummy.test.ts
@@ -10,5 +12,3 @@ Test files: 1 passed, 1 total
 Tests:      3 passed, 3 total
 Assertions: 3 passed, 3 total
 Duration:   <<timestamp>>
-
-Ran all test files.

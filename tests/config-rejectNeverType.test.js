@@ -9,11 +9,11 @@ const isRejectedText = `import { describe, expect, test } from "tstyche";
 describe("argument for 'source'", () => {
   test("rejects the 'never' type", () => {
     expect({} as never).type.not.toBe<string>(); // rejected
-    expect({} as never).type.not.toBeAssignableWith<number>(); // rejected
+    expect({} as never).type.not.toBeAssignableFrom<number>(); // rejected
   });
 
-  test("allows '.toBeNever()'", () => {
-    expect({} as never).type.toBeNever();
+  test("allows '.toBe<never>()'", () => {
+    expect({} as never).type.toBe<never>();
   });
 
   test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
@@ -34,8 +34,8 @@ describe("type argument for 'Source'", () => {
     expect<Never>().type.toBeAssignableTo<{ a: number }>(); // rejected
   });
 
-  test("allows '.toBeNever()'", () => {
-    expect<Never>().type.toBeNever();
+  test("allows '.toBe<never>()'", () => {
+    expect<Never>().type.toBe<never>();
   });
 
   test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
@@ -48,12 +48,12 @@ describe("type argument for 'Source'", () => {
 
 describe("argument for 'target'", () => {
   test("rejects the 'never' type", () => {
-    expect<string>().type.toBeAssignableWith({} as never); // rejected
+    expect<string>().type.toBeAssignableFrom({} as never); // rejected
     expect<number>().type.not.toBe({} as never); // rejected
   });
 
-  test("allows '.toBeNever()'", () => {
-    expect({ a: 123 }).type.not.toBeNever();
+  test("allows '.toBe<never>()'", () => {
+    expect({ a: 123 }).type.not.toBe<never>();
   });
 });
 
@@ -61,12 +61,12 @@ describe("type argument for 'Target'", () => {
   test("allows only explicit 'never'", () => {
     type Never = never;
 
-    expect<{ a: boolean }>().type.toBeAssignableWith<never>();
+    expect<{ a: boolean }>().type.toBeAssignableFrom<never>();
     expect<{ a: boolean }>().type.not.toBe<Never>(); // rejected
   });
 
-  test("allows '.toBeNever()'", () => {
-    expect<{ a: boolean }>().type.not.toBeNever();
+  test("allows '.toBe<never>()'", () => {
+    expect<{ a: boolean }>().type.not.toBe<never>();
   });
 });
 `;
@@ -97,13 +97,13 @@ await test("'rejectNeverType' config file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-enabled-stdout`,
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-enabled-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-enabled-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-enabled-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -123,12 +123,13 @@ await test("'rejectNeverType' config file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-disabled-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

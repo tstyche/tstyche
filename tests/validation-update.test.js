@@ -5,7 +5,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -19,7 +19,7 @@ await test("'--update' command line option", async (t) => {
 
   await t.test("when fetch request of metadata fails with 404", async () => {
     const storeManifest = {
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://tstyche.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
@@ -44,14 +44,14 @@ await test("'--update' command line option", async (t) => {
       "",
     ].join("\n");
 
-    assert.equal(stdout, "");
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
   await t.test("when fetch request of metadata times out", async () => {
     const storeManifest = {
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://nothing.tstyche.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
@@ -76,14 +76,14 @@ await test("'--update' command line option", async (t) => {
       "",
     ].join("\n");
 
-    assert.equal(stdout, "");
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
   await t.test("when fetch request of metadata fails", async () => {
     const storeManifest = {
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://nothing.tstyche.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
@@ -112,8 +112,8 @@ await test("'--update' command line option", async (t) => {
       "",
     ].join("\n");
 
-    assert.equal(stdout, "");
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

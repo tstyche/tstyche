@@ -1,5 +1,6 @@
 import { environmentOptions } from "#environment";
-import { OutputService, addsPackageText, diagnosticText, taskStatusText, usesCompilerText } from "#output";
+import { addsPackageText, diagnosticText, fileStatusText, OutputService, usesCompilerText } from "#output";
+import { ResultStatus } from "#result";
 import { BaseReporter } from "./BaseReporter.js";
 import { FileView } from "./FileView.js";
 import type { ReporterEvent } from "./types.js";
@@ -11,26 +12,15 @@ export class ListReporter extends BaseReporter {
   #hasReportedError = false;
   #hasReportedUses = false;
   #isFileViewExpanded = false;
-  #seenDeprecations = new Set<string>();
 
-  get #isLastFile() {
+  #isLastFile() {
     return this.#fileCount === 0;
   }
 
   on([event, payload]: ReporterEvent): void {
     switch (event) {
-      case "deprecation:info": {
-        for (const diagnostic of payload.diagnostics) {
-          if (!this.#seenDeprecations.has(diagnostic.text.toString())) {
-            this.#fileView.addMessage(diagnosticText(diagnostic));
-            this.#seenDeprecations.add(diagnostic.text.toString());
-          }
-        }
-        break;
-      }
-
       case "run:start":
-        this.#isFileViewExpanded = payload.result.tasks.length === 1 && this.resolvedConfig.watch !== true;
+        this.#isFileViewExpanded = payload.result.files.length === 1 && this.resolvedConfig.watch !== true;
         break;
 
       case "store:adds":
@@ -46,7 +36,7 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "target:start":
-        this.#fileCount = payload.result.tasks.length;
+        this.#fileCount = payload.result.files.length;
         this.#hasReportedUses = false;
         break;
 
@@ -67,37 +57,39 @@ export class ListReporter extends BaseReporter {
         }
         break;
 
-      case "task:start":
+      case "file:start":
         if (!environmentOptions.noInteractive) {
-          OutputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
+          OutputService.writeMessage(fileStatusText(payload.result.status, payload.result.file));
         }
 
         this.#fileCount--;
         this.#hasReportedError = false;
         break;
 
-      case "task:error":
+      case "file:error":
+      case "directive:error":
+      case "collect:error":
+      case "suppressed:error":
         for (const diagnostic of payload.diagnostics) {
           this.#fileView.addMessage(diagnosticText(diagnostic));
         }
         break;
 
-      case "task:end":
+      case "file:end":
         if (!environmentOptions.noInteractive) {
           OutputService.eraseLastLine();
         }
 
-        OutputService.writeMessage(taskStatusText(payload.result.status, payload.result.task));
+        OutputService.writeMessage(fileStatusText(payload.result.status, payload.result.file));
 
-        OutputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile }));
+        OutputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile() }));
 
-        if (this.#fileView.hasErrors) {
+        if (this.#fileView.hasErrors()) {
           OutputService.writeError(this.#fileView.getMessages());
           this.#hasReportedError = true;
         }
 
         this.#fileView.clear();
-        this.#seenDeprecations.clear();
         break;
 
       case "describe:start":
@@ -114,19 +106,25 @@ export class ListReporter extends BaseReporter {
 
       case "test:skip":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("skip", payload.result.test.name);
+          this.#fileView.addTest(ResultStatus.Skipped, payload.result.test.name);
+        }
+        break;
+
+      case "test:fixme":
+        if (this.#isFileViewExpanded) {
+          this.#fileView.addTest(ResultStatus.Fixme, payload.result.test.name);
         }
         break;
 
       case "test:todo":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("todo", payload.result.test.name);
+          this.#fileView.addTest(ResultStatus.Todo, payload.result.test.name);
         }
         break;
 
       case "test:error":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("fail", payload.result.test.name);
+          this.#fileView.addTest(ResultStatus.Failed, payload.result.test.name);
         }
 
         for (const diagnostic of payload.diagnostics) {
@@ -136,13 +134,13 @@ export class ListReporter extends BaseReporter {
 
       case "test:fail":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("fail", payload.result.test.name);
+          this.#fileView.addTest(ResultStatus.Failed, payload.result.test.name);
         }
         break;
 
       case "test:pass":
         if (this.#isFileViewExpanded) {
-          this.#fileView.addTest("pass", payload.result.test.name);
+          this.#fileView.addTest(ResultStatus.Passed, payload.result.test.name);
         }
         break;
 

@@ -43,15 +43,15 @@ await test("'--update' command line option", async (t) => {
 
       assert.pathExists(storeUrl);
 
-      assert.equal(stdout, "");
       assert.equal(stderr, "");
+      assert.equal(stdout, "");
       assert.equal(exitCode, 0);
     });
   }
 
   await t.test("updates existing store manifest", async () => {
     const oldStoreManifest = JSON.stringify({
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://registry.npmjs.org",
     });
@@ -68,8 +68,8 @@ await test("'--update' command line option", async (t) => {
 
     assert.notEqual(newStoreManifestText, oldStoreManifest);
 
-    assert.equal(stdout, "");
     assert.equal(stderr, "");
+    assert.equal(stdout, "");
     assert.equal(exitCode, 0);
   });
 });

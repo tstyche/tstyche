@@ -1,0 +1,12 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-directive
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/directive-not-supported.tst.ts
+  + is string?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>

@@ -4,8 +4,8 @@ import { RelationMatcherBase } from "./RelationMatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToBe extends RelationMatcherBase {
-  explainText = ExpectDiagnosticText.typeIsIdenticalTo;
-  explainNotText = ExpectDiagnosticText.typeIsNotIdenticalTo;
+  explainText = ExpectDiagnosticText.isTheSame;
+  explainNotText = ExpectDiagnosticText.isNotTheSame;
 
   match(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode): MatchResult {
     return {

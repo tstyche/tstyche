@@ -1,0 +1,16 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-toBeConstructableWith
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeConstructableWith.tst.ts
+  argument for 'source'
+    × must be provided
+    × must be a constructable expression
+    + allowed expressions
+    × is rejected type?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      3 failed, 1 passed, 4 total
+Assertions: 16 failed, 5 passed, 21 total
+Duration:   <<timestamp>>

@@ -1,0 +1,62 @@
+Error: Expression is callable with the given argument.
+
+   7 |   test("is called with?", () => {
+   8 |     when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("valid"));
+   9 |     when(pipe).isCalledWith({ valid: true }, expect(pick).type.not.toBeCallableWith("valid")); // fail
+     |                                                                    ~~~~~~~~~~~~~~~~
+  10 | 
+  11 |     when(pipe).isCalledWith({ valid: true }, expect(pick).type.not.toBeCallableWith("required"));
+  12 |     when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("required")); // fail
+
+       at ./__typetests__/when.tst.ts:9:68 ❭ when target is an expression ❭ is called with?
+
+Error: Expression is not callable with the given argument.
+
+Argument of type '"required"' is not assignable to parameter of type '"valid"'.
+
+  10 | 
+  11 |     when(pipe).isCalledWith({ valid: true }, expect(pick).type.not.toBeCallableWith("required"));
+  12 |     when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("required")); // fail
+     |                                                                                 ~~~~~~~~~~
+  13 |   });
+  14 | 
+  15 |   test("argument type is not assignable to parameter type?", () => {
+
+       at ./__typetests__/when.tst.ts:12:81 ❭ when target is an expression ❭ is called with?
+
+Error: Argument of type 'boolean' is not assignable to parameter of type '(source: { valid: boolean; }) => { valid: boolean; }'.
+
+  14 | 
+  15 |   test("argument type is not assignable to parameter type?", () => {
+  16 |     when(pipe).isCalledWith({ valid: true }, false, expect(pick).type.toBeCallableWith("valid"));
+     |                                              ~~~~~
+  17 |   });
+  18 | 
+  19 |   test("expected an argument?", () => {
+
+       at ./__typetests__/when.tst.ts:16:46
+
+Error: Expected at least 1 arguments, but got 0.
+
+  18 | 
+  19 |   test("expected an argument?", () => {
+  20 |     when(pipe).isCalledWith();
+     |          ~~~~
+  21 |   });
+  22 | });
+  23 | 
+
+       at ./__typetests__/when.tst.ts:20:10
+
+    An argument for 'source' was not provided. ts(6210)
+
+      1 | import { describe, expect, test, when } from "tstyche";
+      2 | 
+      3 | declare function pipe<T>(source: T, ...target: Array<(source: T) => T>): void;
+        |                          ~~~~~~~~~
+      4 | declare function pick<T, K extends keyof T>(key: K): <K extends keyof T>(object: T) => Pick<T, K>;
+      5 | 
+      6 | describe("when target is an expression", () => {
+
+          at ./__typetests__/when.tst.ts:3:26
+

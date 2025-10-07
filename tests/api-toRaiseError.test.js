@@ -10,24 +10,20 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("toRaiseError", async (t) => {
   await t.test("'toRaiseError' implementation", () => {
-    function check() {
-      return;
-    }
-
-    tstyche.expect(check(false)).type.toRaiseError();
-    tstyche.expect(check()).type.not.toRaiseError();
+    tstyche.expect().type.toRaiseError();
+    tstyche.expect().type.not.toRaiseError();
   });
 
   await t.test("toRaiseError", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["toRaiseError.tst.ts"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -37,13 +33,29 @@ await test("toRaiseError", async (t) => {
   await t.test("toRaiseError(regex)", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["toRaiseError-regex.tst.ts"]);
 
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-regex-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-regex-stdout`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("toRaiseError(multiline)", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["toRaiseError-multiline.tst.ts"]);
+
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-regex-stderr`,
+      fileName: `${testFileName}-multiline-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-multiline-stdout`,
       testFileUrl: import.meta.url,
     });
 

@@ -2,14 +2,14 @@ import { Config, OptionGroup, Options, type ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
-import { OutputService, formattedText, helpText, waitingForFileChangesText } from "#output";
+import { formattedText, helpText, OutputService, waitingForFileChangesText } from "#output";
 import { type Plugin, PluginService } from "#plugins";
 import { SetupReporter } from "#reporters";
 import { Runner } from "#runner";
 import { Select } from "#select";
 import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
-import { FileWatcher, type WatchHandler, Watcher } from "#watch";
+import { FileWatcher, Watcher, type WatchHandler } from "#watch";
 
 export class Cli {
   #eventEmitter = new EventEmitter();
@@ -64,12 +64,12 @@ export class Cli {
 
     const { commandLineOptions, pathMatch } = await Config.parseCommandLine(commandLine);
 
-    if (cancellationToken.isCancellationRequested) {
+    if (cancellationToken.isCancellationRequested()) {
       return;
     }
 
     do {
-      if (cancellationToken.reason === CancellationReason.ConfigChange) {
+      if (cancellationToken.getReason() === CancellationReason.ConfigChange) {
         cancellationToken.reset();
         exitCodeHandler.resetCode();
 
@@ -88,7 +88,7 @@ export class Cli {
         pathMatch,
       });
 
-      if (cancellationToken.isCancellationRequested) {
+      if (cancellationToken.isCancellationRequested()) {
         if (commandLine.includes("--watch")) {
           await this.#waitForChangedFiles(resolvedConfig, cancellationToken);
         }
@@ -107,9 +107,9 @@ export class Cli {
         continue;
       }
 
-      if (commandLine.includes("--install")) {
+      if (commandLine.includes("--fetch")) {
         for (const tag of resolvedConfig.target) {
-          await Store.install(tag);
+          await Store.fetch(tag);
         }
         continue;
       }
@@ -142,7 +142,7 @@ export class Cli {
       await runner.run(testFiles, cancellationToken);
 
       PluginService.removeHandlers();
-    } while (cancellationToken.reason === CancellationReason.ConfigChange);
+    } while (cancellationToken.getReason() === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();
   }

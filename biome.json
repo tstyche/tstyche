@@ -1,23 +1,28 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schema/2.2.5/schema.json",
+
+  "json": {
+    "parser": {
+      "allowComments": true
+    }
+  },
 
   "files": {
-    "ignore": [
-      ".cache/**",
-      ".yarn/**",
-      "build/**",
-      "coverage/**",
-      "models/CommandLineOptions.ts",
-      "models/config-schema.json",
-      "models/ConfigFileOptions.ts",
-      "node_modules/**",
-      "package.json"
+    "includes": [
+      "**",
+      "!**/.yarn",
+      "!**/build",
+      "!**/coverage",
+      "!**/node_modules",
+      "!**/schema/config.json",
+      "!**/cspell.json"
     ]
   },
 
   "formatter": {
     "enabled": true,
-    "useEditorconfig": true
+    "useEditorconfig": true,
+    "lineWidth": 120
   },
 
   "linter": {
@@ -27,9 +32,8 @@
       "recommended": true,
 
       "complexity": {
+        "useIndexOf": "error",
         "noUselessStringConcat": "error",
-        "noUselessUndefinedInitialization": "error",
-        "useDateNow": "error",
 
         "noBannedTypes": "off",
         "noStaticOnlyClass": "off",
@@ -37,22 +41,27 @@
       },
 
       "correctness": {
+        "noProcessGlobal": "error",
         "noUndeclaredDependencies": "error",
         "noUndeclaredVariables": "error",
-        "noUnusedFunctionParameters": "error",
-        "noUnusedImports": "error",
-        "noUnusedPrivateClassMembers": "error",
-        "noUnusedVariables": "error",
-        "useImportExtensions": "error",
 
-        "useJsxKeyInIterable": "off"
+        "useImportExtensions": "off"
+      },
+
+      "nursery": {
+        "noFloatingPromises": "error"
       },
 
       "style": {
         "noImplicitBoolean": "error",
+        "noInferrableTypes": "error",
         "noNegationElse": "error",
+        "noNonNullAssertion": "error",
         "noParameterProperties": "error",
+        "noUselessElse": "error",
         "noYodaExpression": "error",
+        "useAsConstAssertion": "error",
+        "useAtIndex": "error",
         "useBlockStatements": "error",
         "useCollapsedElseIf": "error",
         "useConsistentArrayType": {
@@ -62,13 +71,16 @@
           }
         },
         "useConsistentBuiltinInstantiation": "error",
+        "useDefaultParameterLast": "error",
         "useExplicitLengthCheck": "error",
-        "useNamingConvention": "error",
         "useForOf": "error",
+        "useNamingConvention": "error",
+        "useNumberNamespace": "error",
+        "useSelfClosingElements": "error",
         "useShorthandAssign": "error",
+        "useSingleVarDeclarator": "error",
         "useThrowNewError": "error",
-
-        "noParameterAssign": "off"
+        "useTrimStartEnd": "error"
       },
 
       "suspicious": {
@@ -79,8 +91,7 @@
           }
         },
         "noEvolvingTypes": "error",
-        "noMisplacedAssertion": "error",
-        "noSkippedTests": "error",
+        "noTsIgnore": "error",
         "useAwait": "error",
         "useErrorMessage": "error",
         "useNumberToFixedDigitsArgument": "error",
@@ -90,13 +101,16 @@
     }
   },
 
-  "organizeImports": {
-    "enabled": true
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "recommended": true
+    }
   },
 
   "overrides": [
     {
-      "include": ["source/handlers/ResultHandler.ts", "source/handlers/TestTreeHandler.ts"],
+      "includes": ["**/source/handlers/ResultHandler.ts"],
       "linter": {
         "rules": {
           "style": {
@@ -107,7 +121,7 @@
     },
 
     {
-      "include": ["source/types.ts"],
+      "includes": ["**/source/types.ts"],
       "linter": {
         "rules": {
           "correctness": {
@@ -118,21 +132,11 @@
     },
 
     {
-      "include": ["tests/__utilities__/assert.js"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noMisplacedAssertion": "off"
-          }
-        }
-      }
-    },
-
-    {
-      "include": ["**/*.tst.ts", "**/*.tst.tsx"],
+      "includes": ["**/*.tst.ts", "**/*.tst.tsx"],
       "linter": {
         "rules": {
           "correctness": {
+            "noUnusedFunctionParameters": "off",
             "noUnusedVariables": "off"
           },
           "suspicious": {
@@ -144,19 +148,14 @@
     },
 
     {
-      "include": ["**/__fixtures__/**/*.tst.ts"],
+      "includes": ["**/__fixtures__/**/*.tst.ts"],
       "linter": {
         "rules": {
           "complexity": {
             "useArrowFunction": "off"
           },
-          "style": {
-            "useEnumInitializers": "off",
-            "noUnusedTemplateLiteral": "off"
-          },
-          "suspicious": {
-            "noFocusedTests": "off",
-            "noSkippedTests": "off"
+          "correctness": {
+            "noUnusedPrivateClassMembers": "off"
           }
         }
       }

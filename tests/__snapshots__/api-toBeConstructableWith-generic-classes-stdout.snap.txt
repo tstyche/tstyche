@@ -1,0 +1,21 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBeConstructableWith
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/generic-classes.tst.ts
+  when source is an expression
+    × is constructable with the given argument
+    × is not constructable without arguments
+    × is constructable with the given arguments
+    × is not constructable with the given arguments
+  when source is a type
+    × is constructable with the given argument
+    × is not constructable without arguments
+    × is constructable with the given arguments
+    × is not constructable with the given arguments
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 11 failed, 11 passed, 22 total
+Duration:   <<timestamp>>

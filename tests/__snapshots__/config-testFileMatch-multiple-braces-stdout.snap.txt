@@ -1,0 +1,14 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
+
+uses TypeScript <<version>>
+
+pass ./one/isNumber.tsx
+pass ./one/isString.ts
+pass ./two/isNumber.tsx
+pass ./two/isString.ts
+
+Targets:    1 passed, 1 total
+Test files: 4 passed, 4 total
+Tests:      4 passed, 4 total
+Assertions: 4 passed, 4 total
+Duration:   <<timestamp>>

@@ -1,0 +1,14 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/api-toBeAssignableTo
+
+uses TypeScript <<version>>
+
+pass ./__typetests__/unrelated.tst.ts
+  - skip is skipped?
+  + is callable?
+  + is error?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      2 passed, 1 skipped, 3 total
+Assertions: 3 passed, 3 total
+Duration:   <<timestamp>>

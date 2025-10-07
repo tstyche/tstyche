@@ -1,7 +1,9 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { nodeBelongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
+import { isUnionType } from "./predicates.js";
 import type { ArgumentNode, MatchResult, TypeChecker } from "./types.js";
 
 export class ToAcceptProps {
@@ -14,16 +16,18 @@ export class ToAcceptProps {
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
+    const isExpression = nodeBelongsToArgumentList(this.#compiler, sourceNode);
+
     const signatures = matchWorker.getSignatures(sourceNode);
 
     return signatures.reduce<Array<Diagnostic>>((accumulator, signature, index) => {
       let diagnostic: Diagnostic | undefined;
 
-      const introText = matchWorker.assertion.isNot
-        ? ExpectDiagnosticText.componentAcceptsProps(this.#compiler.isTypeNode(sourceNode))
-        : ExpectDiagnosticText.componentDoesNotAcceptProps(this.#compiler.isTypeNode(sourceNode));
+      const introText = matchWorker.assertionNode.isNot
+        ? ExpectDiagnosticText.acceptsProps(isExpression)
+        : ExpectDiagnosticText.doesNotAcceptProps(isExpression);
 
-      const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
+      const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertionNode);
 
       if (signatures.length > 1) {
         const signatureText = this.#typeChecker.signatureToString(signature, sourceNode);
@@ -40,7 +44,7 @@ export class ToAcceptProps {
 
       const { diagnostics, isMatch } = this.#explainProperties(matchWorker, signature, targetNode, diagnostic);
 
-      if (matchWorker.assertion.isNot ? isMatch : !isMatch) {
+      if (matchWorker.assertionNode.isNot ? isMatch : !isMatch) {
         accumulator.push(...diagnostics);
       }
 
@@ -54,7 +58,7 @@ export class ToAcceptProps {
     );
   }
 
-  #checkProperties(matchWorker: MatchWorker, sourceType: ts.Type | undefined, targetType: ts.Type) {
+  #checkProperties(sourceType: ts.Type | undefined, targetType: ts.Type) {
     const check = (sourceType: ts.Type | undefined, targetType: ts.Type) => {
       for (const targetProperty of targetType.getProperties()) {
         const targetPropertyName = targetProperty.getName();
@@ -92,7 +96,7 @@ export class ToAcceptProps {
       return true;
     };
 
-    if (sourceType != null && matchWorker.isUnionType(sourceType)) {
+    if (sourceType != null && isUnionType(this.#compiler, sourceType)) {
       return sourceType.types.some((sourceType) => check(sourceType, targetType));
     }
 
@@ -123,8 +127,8 @@ export class ToAcceptProps {
 
         if (!sourceProperty) {
           const text = [
-            ExpectDiagnosticText.typeIsNotCompatibleWith(sourceTypeText, targetTypeText),
-            ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, targetPropertyName),
+            ExpectDiagnosticText.isNotCompatibleWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.doesNotHaveProperty(sourceTypeText, targetPropertyName),
           ];
 
           const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
@@ -136,8 +140,8 @@ export class ToAcceptProps {
 
         if (this.#isOptionalProperty(targetProperty) && !this.#isOptionalProperty(sourceProperty)) {
           const text = [
-            ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
-            ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, targetPropertyName),
+            ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.requiresProperty(sourceTypeText, targetPropertyName),
           ];
 
           const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
@@ -155,9 +159,9 @@ export class ToAcceptProps {
           const sourcePropertyTypeText = this.#typeChecker.typeToString(sourcePropertyType);
 
           const text = [
-            ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
+            ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText),
             ExpectDiagnosticText.typesOfPropertyAreNotCompatible(targetPropertyName),
-            ExpectDiagnosticText.typeIsNotAssignableWith(sourcePropertyTypeText, targetPropertyTypeText),
+            ExpectDiagnosticText.isNotAssignableFrom(sourcePropertyTypeText, targetPropertyTypeText),
           ];
 
           const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
@@ -174,8 +178,8 @@ export class ToAcceptProps {
 
           if (!targetProperty && !this.#isOptionalProperty(sourceProperty)) {
             const text = [
-              ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText),
-              ExpectDiagnosticText.typeRequiresProperty(sourceTypeText, sourcePropertyName),
+              ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText),
+              ExpectDiagnosticText.requiresProperty(sourceTypeText, sourcePropertyName),
             ];
 
             diagnostics.push(diagnostic.extendWith(text));
@@ -184,7 +188,7 @@ export class ToAcceptProps {
       }
 
       if (diagnostics.length === 0) {
-        const text = ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText);
+        const text = ExpectDiagnosticText.isAssignableFrom(sourceTypeText, targetTypeText);
 
         diagnostics.push(diagnostic.extendWith(text));
 
@@ -194,13 +198,13 @@ export class ToAcceptProps {
       return { diagnostics, isMatch: false };
     };
 
-    if (sourceType != null && matchWorker.isUnionType(sourceType)) {
+    if (sourceType != null && isUnionType(this.#compiler, sourceType)) {
       let accumulator: Array<Diagnostic> = [];
 
       const isMatch = sourceType.types.some((sourceType) => {
-        const text = matchWorker.assertion.isNot
-          ? ExpectDiagnosticText.typeIsAssignableWith(sourceTypeText, targetTypeText)
-          : ExpectDiagnosticText.typeIsNotAssignableWith(sourceTypeText, targetTypeText);
+        const text = matchWorker.assertionNode.isNot
+          ? ExpectDiagnosticText.isAssignableFrom(sourceTypeText, targetTypeText)
+          : ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText);
 
         const { diagnostics, isMatch } = explain(sourceType, targetType, diagnostic.extendWith(text));
 
@@ -232,9 +236,9 @@ export class ToAcceptProps {
     if (signatures.length === 0) {
       const expectedText = "of a function or class type";
 
-      const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
-        : ExpectDiagnosticText.argumentMustBe("source", expectedText);
+      const text = nodeBelongsToArgumentList(this.#compiler, sourceNode)
+        ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
+        : ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
@@ -243,12 +247,12 @@ export class ToAcceptProps {
 
     const targetType = matchWorker.getType(targetNode);
 
-    if (!matchWorker.isObjectType(targetType)) {
+    if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
       const expectedText = "of an object type";
 
-      const text = this.#compiler.isTypeNode(targetNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText)
-        : ExpectDiagnosticText.argumentMustBe("target", expectedText);
+      const text = nodeBelongsToArgumentList(this.#compiler, targetNode)
+        ? ExpectDiagnosticText.argumentMustBe("target", expectedText)
+        : ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText);
 
       const origin = DiagnosticOrigin.fromNode(targetNode);
 
@@ -264,7 +268,7 @@ export class ToAcceptProps {
     const isMatch = signatures.some((signature) => {
       const sourceType = matchWorker.getParameterType(signature, 0);
 
-      return this.#checkProperties(matchWorker, sourceType, targetType);
+      return this.#checkProperties(sourceType, targetType);
     });
 
     return {

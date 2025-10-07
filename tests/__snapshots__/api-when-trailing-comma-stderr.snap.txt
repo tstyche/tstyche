@@ -1,0 +1,39 @@
+Error: Expression is callable with the given argument.
+
+   7 |   when(
+   8 |     pipe,
+   9 |   ).isCalledWith({ valid: true }, expect(pick).type.not.toBeCallableWith("valid")); // fail
+     |                                                         ~~~~~~~~~~~~~~~~
+  10 |   when(
+  11 |     pipe  ,
+  12 |   ).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("required")); // fail
+
+       at ./__typetests__/when.tst.ts:9:57 ❭ pick
+
+Error: Expression is not callable with the given argument.
+
+Argument of type '"required"' is not assignable to parameter of type '"valid"'.
+
+  10 |   when(
+  11 |     pipe  ,
+  12 |   ).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("required")); // fail
+     |                                                                      ~~~~~~~~~~
+  13 |   when(
+  14 |     pipe,
+  15 |   ).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("nope")); // fail
+
+       at ./__typetests__/when.tst.ts:12:70 ❭ pick
+
+Error: Expression is not callable with the given argument.
+
+Argument of type '"nope"' is not assignable to parameter of type '"valid"'.
+
+  13 |   when(
+  14 |     pipe,
+  15 |   ).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith("nope")); // fail
+     |                                                                      ~~~~~~
+  16 | });
+  17 | 
+
+       at ./__typetests__/when.tst.ts:15:70 ❭ pick
+

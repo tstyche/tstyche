@@ -1,0 +1,12 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/api-when
+
+uses TypeScript <<version>>
+
+fail ./__typetests__/when.tst.ts
+  × pick
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      1 failed, 1 total
+Assertions: 3 failed, 3 total
+Duration:   <<timestamp>>

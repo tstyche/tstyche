@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/validation-select
+
 uses TypeScript <<version>>
 
 fail ./__typetests__/toBeNotfound.test.ts
@@ -9,5 +11,3 @@ Test files: 1 failed, 1 passed, 2 total
 Tests:      1 passed, 1 total
 Assertions: 1 passed, 1 total
 Duration:   <<timestamp>>
-
-Ran all test files.

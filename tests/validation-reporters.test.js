@@ -6,7 +6,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -25,17 +25,16 @@ await test("'--reporters' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: Option '--reporters' expects a value.",
       "",
-      "Option '--reporters' requires a value of type list.",
+      "Value for the '--reporters' option must be a list.",
       "",
       "",
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -46,8 +45,6 @@ await test("'--reporters' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "./tstyche-reporter.js"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: The specified module '<<baseUrl>>/tests/__fixtures__/.generated/validation-reporters/tstyche-reporter.js' was not found.",
       "",
@@ -55,6 +52,7 @@ await test("'--reporters' command line option", async (t) => {
     ].join("\n");
 
     assert.equal(normalizeOutput(stderr), expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -69,11 +67,10 @@ await test("'--reporters' command line option", async (t) => {
       "./tstyche-reporter.js,not-reporter",
     ]);
 
-    assert.equal(stdout, "");
-
     const expected = ["Error: The specified module 'not-reporter' was not found.", "", ""].join("\n");
 
     assert.equal(normalizeOutput(stderr), expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });
@@ -96,13 +93,12 @@ await test("'reporters' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -120,13 +116,12 @@ await test("'reporters' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-list-item-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -144,12 +139,12 @@ await test("'reporters' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-module-is-not-found-stderr`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

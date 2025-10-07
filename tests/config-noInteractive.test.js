@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -26,11 +26,12 @@ await test("'TSTYCHE_NO_INTERACTIVE' environment variable", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       noInteractive: true,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -45,12 +46,13 @@ await test("'TSTYCHE_NO_INTERACTIVE' environment variable", async (t) => {
       },
     });
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-tstycheNoInteractive-true-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -65,12 +67,13 @@ await test("'TSTYCHE_NO_INTERACTIVE' environment variable", async (t) => {
       },
     });
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
       fileName: `${testFileName}-tstycheNoInteractive-false-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

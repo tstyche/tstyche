@@ -1,0 +1,119 @@
+Error: 'describe()' cannot be nested within 'when()'.
+
+   8 | when(pipe).isCalledWith(
+   9 |   { valid: true },
+  10 |   describe("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  11 |     //
+     | ~~~~~~
+  12 |   }),
+     | ~~~~
+  13 | );
+  14 | 
+  15 | when(pipe).isCalledWith(
+
+       at ./__typetests__/handles-nested.tst.ts:10:3
+
+Error: 'it()' cannot be nested within 'when()'.
+
+  15 | when(pipe).isCalledWith(
+  16 |   { valid: true },
+  17 |   it("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  18 |     //
+     | ~~~~~~
+  19 |   }),
+     | ~~~~
+  20 | );
+  21 | 
+  22 | when(pipe).isCalledWith(
+
+       at ./__typetests__/handles-nested.tst.ts:17:3
+
+Error: 'test()' cannot be nested within 'when()'.
+
+  22 | when(pipe).isCalledWith(
+  23 |   { valid: true },
+  24 |   test("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  25 |     //
+     | ~~~~~~
+  26 |   }),
+     | ~~~~
+  27 | );
+  28 | 
+  29 | expect(() => {
+
+       at ./__typetests__/handles-nested.tst.ts:24:3
+
+Error: Argument of type 'void' is not assignable to parameter of type '(source: { valid: boolean; }) => { valid: boolean; }'.
+
+   8 | when(pipe).isCalledWith(
+   9 |   { valid: true },
+  10 |   describe("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  11 |     //
+     | ~~~~~~
+  12 |   }),
+     | ~~~~
+  13 | );
+  14 | 
+  15 | when(pipe).isCalledWith(
+
+       at ./__typetests__/handles-nested.tst.ts:10:3
+
+Error: Argument of type 'void' is not assignable to parameter of type '(source: { valid: boolean; }) => { valid: boolean; }'.
+
+  15 | when(pipe).isCalledWith(
+  16 |   { valid: true },
+  17 |   it("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  18 |     //
+     | ~~~~~~
+  19 |   }),
+     | ~~~~
+  20 | );
+  21 | 
+  22 | when(pipe).isCalledWith(
+
+       at ./__typetests__/handles-nested.tst.ts:17:3
+
+Error: Argument of type 'void' is not assignable to parameter of type '(source: { valid: boolean; }) => { valid: boolean; }'.
+
+  22 | when(pipe).isCalledWith(
+  23 |   { valid: true },
+  24 |   test("cannot be nested", () => {
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  25 |     //
+     | ~~~~~~
+  26 |   }),
+     | ~~~~
+  27 | );
+  28 | 
+  29 | expect(() => {
+
+       at ./__typetests__/handles-nested.tst.ts:24:3
+
+Error: Expression is not callable with the given argument.
+
+Argument of type 'true' is not assignable to parameter of type '"valid"'.
+
+  29 | expect(() => {
+  30 |   // 'when()' or 'expect()' can be nested!
+  31 |   when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith(true));
+     |                                                                               ~~~~
+  32 | }).type.toBe<void>();
+  33 | 
+
+       at ./__typetests__/handles-nested.tst.ts:31:79
+
+Error: Type '() => void' is not the same as type 'void'.
+
+  30 |   // 'when()' or 'expect()' can be nested!
+  31 |   when(pipe).isCalledWith({ valid: true }, expect(pick).type.toBeCallableWith(true));
+  32 | }).type.toBe<void>();
+     |              ~~~~
+  33 | 
+
+       at ./__typetests__/handles-nested.tst.ts:32:14
+

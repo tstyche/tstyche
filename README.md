@@ -5,7 +5,7 @@
 [![install-size][install-size-badge]][install-size-url]
 [![coverage][coverage-badge]][coverage-url]
 
-The Essential Type Testing Tool.
+Everything You Need for Type Testing.
 
 ---
 
@@ -18,14 +18,15 @@ If you are used to test JavaScript, a simple type test file should look familiar
 ```ts
 import { expect, test } from "tstyche";
 
-function firstItem<T>(target: Array<T>): T | undefined {
-  return target[0];
+function isSameLength<T extends { length: number }>(a: T, b: T) {
+  return a.length === b.length;
 }
 
-test("firstItem", () => {
-  expect(firstItem(["a", "b", "c"])).type.toBe<string | undefined>();
+test("isSameLength", () => {
+  expect(isSameLength([1, 2], [1, 2, 3])).type.toBe<boolean>();
+  expect(isSameLength("one", "two")).type.toBe<boolean>();
 
-  expect(firstItem()).type.toRaiseError("Expected 1 argument");
+  expect(isSameLength).type.not.toBeCallableWith(1, 2);
 });
 ```
 
@@ -36,35 +37,44 @@ To organize, debug and plan tests TSTyche has:
 
 ## Assertions
 
-The assertions can be used to write type tests (like in the above example) or mixed in your functional tests:
+The assertions can be used to write type tests (like in the above example) or mixed in your unit tests:
 
 ```ts
 import assert from "node:assert";
 import test from "node:test";
 import * as tstyche from "tstyche";
 
-function secondItem<T>(target: Array<T>): T | undefined {
-  return target[1];
+function toMilliseconds(value: number) {
+  if (typeof value === "number" && !Number.isNaN(value)) {
+    return value * 1000;
+  }
+
+  throw new Error("Not a number");
 }
 
-test("handles numbers", () => {
-  assert.strictEqual(secondItem([1, 2, 3]), 2);
+test("toMilliseconds", () => {
+  const sample = toMilliseconds(10);
 
-  tstyche.expect(secondItem([1, 2, 3])).type.toBe<number | undefined>();
+  assert.equal(sample, 10_000);
+  tstyche.expect(sample).type.toBe<number>();
+
+  // Will pass as a type test and not throw at runtime
+  tstyche.expect(toMilliseconds).type.not.toBeCallableWith("20");
 });
 ```
 
 Here is the list of all matchers:
 
-- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableWith()` compare types or types of expression,
-- `.toAcceptProps()` checks JSX component props type,
-- `.toHaveProperty()` looks up keys on an object type,
-- `.toRaiseError()` captures the type error message or code,
-- `.toBeString()`, `.toBeNumber()`, `.toBeVoid()` and 9 more shorthand checks for primitive types.
+- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableFrom()` compare types or types of expression,
+- `.toAcceptProps()` checks the type of JSX component props,
+- `.toBeApplicable` ensures that the decorator function can be applied,
+- `.toBeCallableWith()` checks whether a function is callable with the given arguments,
+- `.toBeConstructableWith()` checks whether a class is constructable with the given arguments,
+- `.toHaveProperty()` looks up keys on an object type.
 
 ## Runner
 
-The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and pass them through a range of TypeScript versions:
+The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and to run the tests against specific versions of TypeScript:
 
 ```shell
 tstyche query-params --only multiple --target '>=5.0 <5.3'
@@ -74,7 +84,7 @@ This simple! (And it has watch mode too.)
 
 ## Documentation
 
-Visit [https://tstyche.org](https://tstyche.org) to view the full documentation.
+Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 
 ## Feedback
 

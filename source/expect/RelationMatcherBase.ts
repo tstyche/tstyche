@@ -10,11 +10,11 @@ export abstract class RelationMatcherBase {
     const sourceTypeText = matchWorker.getTypeText(sourceNode);
     const targetTypeText = matchWorker.getTypeText(targetNode);
 
-    const text = matchWorker.assertion.isNot
+    const text = matchWorker.assertionNode.isNot
       ? this.explainText(sourceTypeText, targetTypeText)
       : this.explainNotText(sourceTypeText, targetTypeText);
 
-    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
+    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertionNode);
 
     return [Diagnostic.error(text, origin)];
   }

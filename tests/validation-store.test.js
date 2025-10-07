@@ -5,7 +5,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -100,7 +100,7 @@ await test("store", async (t) => {
     });
 
     const expected = [
-      "Error: Failed to install 'typescript@5.1.6'.",
+      "Error: Failed to fetch the 'typescript@5.1.6' package.",
       "",
       "The request timeout of 0.001s was exceeded.",
       "",
@@ -124,7 +124,7 @@ await test("store", async (t) => {
     });
 
     const expected = [
-      "Error: Failed to install 'typescript@5.4.5'.",
+      "Error: Failed to fetch the 'typescript@5.4.5' package.",
       "",
       "Lock wait timeout of 1.5s was exceeded.",
       "",
@@ -175,8 +175,9 @@ await test("store", async (t) => {
     for (const { target, testCase } of testCases) {
       await t.test(testCase, async () => {
         const storeManifest = {
-          $version: "2",
+          $version: "3",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+          minorVersions: ["5.2", "5.3"],
           npmRegistry: "https://registry.npmjs.org",
           resolutions: {
             ["5.2"]: "5.2.2",
@@ -204,6 +205,8 @@ await test("store", async (t) => {
           "Warning: Failed to update metadata of the 'typescript' package from 'https://registry.npmjs.org'.",
           "",
           `The resolution of the '${target}' tag may be outdated.`,
+          "",
+          "",
         ].join("\n");
 
         assert.match(stderr, new RegExp(`^${expected}`));
@@ -230,7 +233,8 @@ await test("store", async (t) => {
     for (const { target, testCase } of testCases) {
       await t.test(testCase, async () => {
         const storeManifest = {
-          $version: "2",
+          $version: "3",
+          minorVersions: ["5.2", "5.3"],
           npmRegistry: "https://registry.npmjs.org",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
           resolutions: {
@@ -266,8 +270,9 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "2",
+        $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        minorVersions: ["5.2", "5.3"],
         npmRegistry: "https://tstyche.org",
         packages: {
           "5.2.2": {
@@ -310,8 +315,9 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "2",
+        $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        minorVersions: ["5.2", "5.3"],
         npmRegistry: "https://registry.npmjs.org",
         packages: {
           "5.2.2": {
@@ -354,8 +360,9 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.2"]);
 
       const storeManifest = {
-        $version: "2",
+        $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
+        minorVersions: ["5.2", "5.3"],
         npmRegistry: "https://nothing.tstyche.org",
         packages: {
           "5.2.2": {

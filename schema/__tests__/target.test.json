@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'target' option",
+      "valid": true,
+      "data": {
+        "target": ">=5.2 <=5.3 || 5.4.2 || >5.5"
+      }
+    },
+    {
+      "description": "items of the 'target' option must be of type string",
+      "valid": false,
+      "data": {
+        "target": 5.8
+      }
+    }
+  ]
+}

@@ -11,36 +11,39 @@ await test("imports", async (t) => {
   await t.test("named imports", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["named"]);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-names-imports`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
   await t.test("aliased imports", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["aliased"]);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-aliased-imports`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
   await t.test("namespace imports", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["namespace"]);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-namespace-imports`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

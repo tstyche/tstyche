@@ -1,0 +1,154 @@
+Error: The diagnostic message did not match.
+
+   7 | // @ts-expect-error Type '...' is not assignable to type 'Promise<string>'
+   8 | a = true;
+   9 | // @ts-expect-error Type 'boolean' is not assignable to type 'Array<...>'
+     |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  10 | a = true;
+  11 | // @ts-expect-error Type 'Promise<...>' is not assignable to type type 'Promise<string>'
+  12 | a = true;
+
+       at ./__typetests__/sample.tst.ts:9:21
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'Promise<string>'. ts(2322)
+
+       8 | a = true;
+       9 | // @ts-expect-error Type 'boolean' is not assignable to type 'Array<...>'
+      10 | a = true;
+         | ~
+      11 | // @ts-expect-error Type 'Promise<...>' is not assignable to type type 'Promise<string>'
+      12 | a = true;
+      13 | 
+
+           at ./__typetests__/sample.tst.ts:10:1
+
+Error: The diagnostic message did not match.
+
+   9 | // @ts-expect-error Type 'boolean' is not assignable to type 'Array<...>'
+  10 | a = true;
+  11 | // @ts-expect-error Type 'Promise<...>' is not assignable to type type 'Promise<string>'
+     |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  12 | a = true;
+  13 | 
+  14 | // @ts-expect-error
+
+       at ./__typetests__/sample.tst.ts:11:21
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'Promise<string>'. ts(2322)
+
+      10 | a = true;
+      11 | // @ts-expect-error Type 'Promise<...>' is not assignable to type type 'Promise<string>'
+      12 | a = true;
+         | ~
+      13 | 
+      14 | // @ts-expect-error
+      15 | console.log(add);
+
+           at ./__typetests__/sample.tst.ts:12:1
+
+Error: Directive requires an argument.
+
+Add a fragment of the expected error message after the directive.
+To ignore the directive, append the '!' character after it.
+
+  12 | a = true;
+  13 | 
+  14 | // @ts-expect-error
+     | ~~~~~~~~~~~~~~~~~~~
+  15 | console.log(add);
+  16 | 
+  17 | // @ts-expect-error Does not work
+
+       at ./__typetests__/sample.tst.ts:14:1
+
+    The suppressed error:
+
+    Cannot find name 'add'. ts(2304)
+
+      13 | 
+      14 | // @ts-expect-error
+      15 | console.log(add);
+         |             ~~~
+      16 | 
+      17 | // @ts-expect-error Does not work
+      18 | console.log(add);
+
+           at ./__typetests__/sample.tst.ts:15:13
+
+Error: The diagnostic message did not match.
+
+  15 | console.log(add);
+  16 | 
+  17 | // @ts-expect-error Does not work
+     |                     ~~~~~~~~~~~~~
+  18 | console.log(add);
+  19 | 
+  20 |   // @ts-expect-error Should handle leading spaces
+
+       at ./__typetests__/sample.tst.ts:17:21
+
+    The suppressed error:
+
+    Cannot find name 'add'. ts(2304)
+
+      16 | 
+      17 | // @ts-expect-error Does not work
+      18 | console.log(add);
+         |             ~~~
+      19 | 
+      20 |   // @ts-expect-error Should handle leading spaces
+      21 |   console.log(spaces);
+
+           at ./__typetests__/sample.tst.ts:18:13
+
+Error: The diagnostic message did not match.
+
+  18 | console.log(add);
+  19 | 
+  20 |   // @ts-expect-error Should handle leading spaces
+     |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  21 |   console.log(spaces);
+  22 | 
+  23 |  // @ts-expect-error Should handle leading tabs
+
+       at ./__typetests__/sample.tst.ts:20:23
+
+    The suppressed error:
+
+    Cannot find name 'spaces'. ts(2304)
+
+      19 | 
+      20 |   // @ts-expect-error Should handle leading spaces
+      21 |   console.log(spaces);
+         |               ~~~~~~
+      22 | 
+      23 |  // @ts-expect-error Should handle leading tabs
+      24 |  console.log(tabs);
+
+           at ./__typetests__/sample.tst.ts:21:15
+
+Error: The diagnostic message did not match.
+
+  21 |   console.log(spaces);
+  22 | 
+  23 |  // @ts-expect-error Should handle leading tabs
+     |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  24 |  console.log(tabs);
+
+       at ./__typetests__/sample.tst.ts:23:22
+
+    The suppressed error:
+
+    Cannot find name 'tabs'. ts(2304)
+
+      22 | 
+      23 |  // @ts-expect-error Should handle leading tabs
+      24 |  console.log(tabs);
+         |              ~~~~
+
+           at ./__typetests__/sample.tst.ts:24:14
+

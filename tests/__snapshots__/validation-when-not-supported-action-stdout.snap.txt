@@ -1,0 +1,11 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-when
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/not-supported-action.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Assertions: 1 failed, 1 total
+Suppressed: 1 ignored, 1 total
+Duration:   <<timestamp>>

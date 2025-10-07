@@ -2,8 +2,8 @@ import fs from "node:fs/promises";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { Glob } from "#glob";
 import { Path } from "#path";
-import { GlobPattern } from "./GlobPattern.js";
 import { SelectDiagnosticText } from "./SelectDiagnosticText.js";
 
 interface FileSystemEntryMeta {
@@ -52,8 +52,8 @@ export class Select {
 
     if (!matchPatterns) {
       matchPatterns = {
-        includedDirectory: GlobPattern.toRegex(globPatterns, "directories"),
-        includedFile: GlobPattern.toRegex(globPatterns, "files"),
+        includedDirectory: Glob.toRegex(globPatterns, "directories"),
+        includedFile: Glob.toRegex(globPatterns, "files"),
       };
 
       Select.#patternsCache.set(globPatterns, matchPatterns);
@@ -77,7 +77,12 @@ export class Select {
     return matchPatterns.includedFile.test(filePath);
   }
 
-  // TODO rename to 'isTestFileIncluded()' and add 'isTestFile()' that ignores 'matchPatterns'
+  static isFixtureFile(filePath: string, resolvedConfig: ResolvedConfig): boolean {
+    const matchPatterns = Select.#getMatchPatterns(resolvedConfig.fixtureFileMatch);
+
+    return Select.#isFileIncluded(Path.relative(resolvedConfig.rootPath, filePath), matchPatterns, resolvedConfig);
+  }
+
   static isTestFile(filePath: string, resolvedConfig: ResolvedConfig): boolean {
     const matchPatterns = Select.#getMatchPatterns(resolvedConfig.testFileMatch);
 

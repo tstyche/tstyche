@@ -1,0 +1,12 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/api-toBeApplicable
+
+uses TypeScript <<version>>
+
+pass ./__typetests__/toBeApplicable.tst.ts
+  + is applicable to setter
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>

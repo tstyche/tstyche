@@ -6,13 +6,13 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
 const isNumberTestText = `import { expect, test } from "tstyche";
 test("is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 `;
 
@@ -33,12 +33,13 @@ await test("'--listFiles' command line option", async (t) => {
     const args = ["--listFiles"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -51,12 +52,13 @@ await test("'--listFiles' command line option", async (t) => {
     const args = ["isNumber", "--listFiles"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -69,12 +71,13 @@ await test("'--listFiles' command line option", async (t) => {
     const args = ["--listFiles", "isString"];
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-${args.join("-")}-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

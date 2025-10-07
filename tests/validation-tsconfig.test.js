@@ -6,7 +6,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -25,17 +25,16 @@ await test("'--tsconfig' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--tsconfig"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: Option '--tsconfig' expects a value.",
       "",
-      "Option '--tsconfig' requires a value of type string.",
+      "Value for the '--tsconfig' option must be a string.",
       "",
       "",
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -46,8 +45,6 @@ await test("'--tsconfig' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--tsconfig", "./not.tsconfig.json"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/validation-tsconfig/not.tsconfig.json' does not exist.",
       "",
@@ -55,6 +52,7 @@ await test("'--tsconfig' command line option", async (t) => {
     ].join("\n");
 
     assert.equal(normalizeOutput(stderr), expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });
@@ -75,13 +73,12 @@ await test("'tsconfig' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-path-does-not-exist`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -96,13 +93,12 @@ await test("'tsconfig' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

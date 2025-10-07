@@ -1,0 +1,96 @@
+Error: Type 'Names' is not assignable from type '{ middle: string; }'.
+
+  12 |     expect<Names>().type.toBeAssignableFrom({ first: "Rose", last: undefined });
+  13 | 
+  14 |     expect<Names>().type.toBeAssignableFrom({ middle: "O." }); // fail
+     |                                             ~~~~~~~~~~~~~~~~
+  15 |   });
+  16 | 
+  17 |   test("is NOT assignable from type of the target expression", () => {
+
+       at ./__typetests__/toBeAssignableFrom.tst.ts:14:45 ❭ when source is a type ❭ is assignable from type of the target expression
+
+Error: Type 'Names' is assignable from type '{ first: string; }'.
+
+  18 |     expect<Names>().type.not.toBeAssignableFrom({ middle: "O." });
+  19 | 
+  20 |     expect<Names>().type.not.toBeAssignableFrom({ first: "Rose" }); // fail
+     |                                                 ~~~~~~~~~~~~~~~~~
+  21 |   });
+  22 | 
+  23 |   test("is assignable from the target type", () => {
+
+       at ./__typetests__/toBeAssignableFrom.tst.ts:20:49 ❭ when source is a type ❭ is NOT assignable from type of the target expression
+
+Error: Type 'Names' is not assignable from type '{ middle: string; }'.
+
+  27 |     expect<Names>().type.toBeAssignableFrom<{ first: string; last?: string }>();
+  28 | 
+  29 |     expect<Names>().type.toBeAssignableFrom<{ middle: string }>(); // fail
+     |                                             ~~~~~~~~~~~~~~~~~~
+  30 |   });
+  31 | 
+  32 |   test("is NOT assignable from the target type", () => {
+
+       at ./__typetests__/toBeAssignableFrom.tst.ts:29:45 ❭ when source is a type ❭ is assignable from the target type
+
+Error: Type 'Names' is assignable from type '{ first: string; }'.
+
+  33 |     expect<Names>().type.not.toBeAssignableFrom<{ middle: string }>();
+  34 | 
+  35 |     expect<Names>().type.not.toBeAssignableFrom<{ first: string }>(); // fail
+     |                                                 ~~~~~~~~~~~~~~~~~
+  36 |   });
+  37 | });
+  38 | 
+
+       at ./__typetests__/toBeAssignableFrom.tst.ts:35:49 ❭ when source is a type ❭ is NOT assignable from the target type
+
+Error: Type '{ first: string; last: string; }' is not assignable from type '{ middle: string; }'.
+
+  41 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableFrom({ first: "Rose", last: "Smith" });
+  42 | 
+  43 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableFrom({ middle: "O." }); // fail
+     |                                                                     ~~~~~~~~~~~~~~~~
+  44 |   });
+  45 | 
+  46 |   test("is NOT assignable from type of the target expression.", () => {
+
+       at ./__typetests__/toBeAssignableFrom.tst.ts:43:69 ❭ when source is an expression ❭ is assignable from type of the target expression.
+
+Error: Type '{ first: string; }' is assignable from type '{ first: string; }'.
+
+  47 |     expect({ first: "Jane", last: "Swan" }).type.not.toBeAssignableFrom({ middle: "O." });
+  48 | 
+  49 |     expect({ first: "Jane" }).type.not.toBeAssignableFrom({ first: "Rose" }); // fail
+     |                                                           ~~~~~~~~~~~~~~~~~
+  50 |   });
+  51 | 
+  52 |   test("is assignable from the target type", () => {
+
+       at ./__typetests__/toBeAssignableFrom.tst.ts:49:59 ❭ when source is an expression ❭ is NOT assignable from type of the target expression.
+
+Error: Type '{ first: string; last: string; }' is not assignable from type '{ middle: string; }'.
+
+  53 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableFrom<{ first: string; last: string }>();
+  54 | 
+  55 |     expect({ first: "Jane", last: "Swan" }).type.toBeAssignableFrom<{ middle: string }>(); // fail
+     |                                                                     ~~~~~~~~~~~~~~~~~~
+  56 |   });
+  57 | 
+  58 |   test("is NOT assignable from the target type", () => {
+
+       at ./__typetests__/toBeAssignableFrom.tst.ts:55:69 ❭ when source is an expression ❭ is assignable from the target type
+
+Error: Type '{ first: string; }' is assignable from type '{ first: string; }'.
+
+  59 |     expect({ first: "Jane", last: "Swan" }).type.not.toBeAssignableFrom<{ middle: string }>();
+  60 | 
+  61 |     expect({ first: "Jane" }).type.not.toBeAssignableFrom<{ first: string }>(); // fail
+     |                                                           ~~~~~~~~~~~~~~~~~
+  62 |   });
+  63 | });
+  64 | 
+
+       at ./__typetests__/toBeAssignableFrom.tst.ts:61:59 ❭ when source is an expression ❭ is NOT assignable from the target type
+

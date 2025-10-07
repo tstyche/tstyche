@@ -1,11 +1,12 @@
-Error: Property 'toBeString' does not exist on type 'Modifier'. ts(2339)
+Error: Type 'boolean' is not assignable to type 'string'. ts(2322)
 
-  10 | 
-  11 | test("reported type error?", () => {
-  12 |   expect<string>().toBeString();
-     |                    ~~~~~~~~~~
-  13 | });
   14 | 
+  15 | test("reported type error?", () => {
+  16 |   a = false;
+     |   ~
+  17 | 
+  18 |   expect<string>().type.toBe<string>();
+  19 | });
 
-       at ./__typetests__/test-level.tst.ts:12:20
+       at ./__typetests__/test-level.tst.ts:16:3
 

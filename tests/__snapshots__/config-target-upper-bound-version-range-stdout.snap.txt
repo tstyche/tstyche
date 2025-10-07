@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-target
+
 adds TypeScript 5.3.3 to <<basePath>>/tests/__fixtures__/.generated/config-target/.store/typescript@5.3.3
 uses TypeScript 5.3.3 with ./tsconfig.json
 
@@ -15,5 +17,3 @@ Test files: 2 passed, 2 total
 Tests:      2 passed, 2 total
 Assertions: 2 passed, 2 total
 Duration:   <<timestamp>>
-
-Ran all test files.

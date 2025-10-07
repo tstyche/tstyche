@@ -7,9 +7,9 @@ import process from "node:process";
  * @param {{ env?: Record<string, string | undefined> }} [options]
  * @returns {Promise<{ exitCode: number | null, stderr: string, stdout: string }>}
  */
-export async function spawnTyche(fixtureUrl, args, options) {
+export function spawnTyche(fixtureUrl, args = [], options = {}) {
   return new Promise((resolve, reject) => {
-    const tstyche = spawn("tstyche", args, {
+    const tstyche = spawn(["tstyche", ...args].join(" "), {
       cwd: fixtureUrl,
       env: {
         ...process.env,

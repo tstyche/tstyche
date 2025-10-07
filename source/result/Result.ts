@@ -1,21 +1,25 @@
-import type { ResolvedConfig } from "#config";
-import type { Task } from "#task";
-import { ResultCount } from "./ResultCount.js";
-import { ResultTiming } from "./ResultTiming.js";
+import type { FileLocation } from "#file";
+import {
+  createAssertionCounts,
+  createFileCounts,
+  createResultTiming,
+  createSuppressedCounts,
+  createTargetCounts,
+  createTestCounts,
+} from "./helpers.js";
 import type { TargetResult } from "./TargetResult.js";
 
 export class Result {
-  expectCount = new ResultCount();
-  fileCount = new ResultCount();
-  resolvedConfig: ResolvedConfig;
+  assertionCounts = createAssertionCounts();
+  fileCounts = createFileCounts();
+  files: Array<FileLocation>;
   results: Array<TargetResult> = [];
-  targetCount = new ResultCount();
-  tasks: Array<Task>;
-  testCount = new ResultCount();
-  timing = new ResultTiming();
+  suppressedCounts = createSuppressedCounts();
+  targetCounts = createTargetCounts();
+  testCounts = createTestCounts();
+  timing = createResultTiming();
 
-  constructor(resolvedConfig: ResolvedConfig, tasks: Array<Task>) {
-    this.resolvedConfig = resolvedConfig;
-    this.tasks = tasks;
+  constructor(files: Array<FileLocation>) {
+    this.files = files;
   }
 }

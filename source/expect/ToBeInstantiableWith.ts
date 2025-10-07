@@ -23,7 +23,7 @@ export class ToBeInstantiableWith {
   ) {
     const sourceTypeText = matchWorker.getTypeText(identifier);
 
-    if (matchWorker.assertion.isNot) {
+    if (matchWorker.assertionNode.isNot) {
       const text =
         typeArgumentCount === 0
           ? "without type arguments"
@@ -77,7 +77,7 @@ export class ToBeInstantiableWith {
       }${typeParameterCount.min} type argument${typeParameterCount.min === 1 ? "" : "s"}`;
     }
 
-    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
+    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertionNode);
 
     return [Diagnostic.error(`Generic type '${sourceTypeText}' ${countText}.`, origin)];
   }

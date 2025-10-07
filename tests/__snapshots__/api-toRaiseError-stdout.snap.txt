@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toRaiseError
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/toRaiseError.tst.ts
@@ -32,5 +34,3 @@ Test files: 1 failed, 1 total
 Tests:      25 failed, 25 total
 Assertions: 25 failed, 19 passed, 44 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'toRaiseError.tst.ts'.

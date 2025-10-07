@@ -87,15 +87,32 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the source type is identical to the target type.
+   * Checks if the source type is the same as the target type.
    */
   toBe: {
     /**
-     * Checks if the source type is identical to the target type.
+     * Checks if the source type is the same as the target type.
      */
     <Target>(): void;
     /**
-     * Checks if the source type is identical to type of the target expression.
+     * Checks if the source type is the same as type of the target expression.
+     */
+    (target: unknown): void;
+  };
+  /**
+   * Checks if the decorator function can be applied.
+   */
+  toBeApplicable: (target: unknown, context: DecoratorContext) => void;
+  /**
+   * Checks if the source type is assignable from the target type.
+   */
+  toBeAssignableFrom: {
+    /**
+     * Checks if the source type is assignable from the target type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the source type is assignable from type of the target expression.
      */
     (target: unknown): void;
   };
@@ -113,105 +130,31 @@ interface Matchers {
     (target: unknown): void;
   };
   /**
-   * Checks if the source type is assignable with the target type.
+   * Checks if the source type is callable with the given arguments.
    */
-  toBeAssignableWith: {
-    /**
-     * Checks if the source type is assignable with the target type.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type is assignable with type of the target expression.
-     */
-    (target: unknown): void;
-  };
+  toBeCallableWith: (...args: Array<unknown>) => void;
+  /**
+   * Checks if the source type is constructable with the given arguments.
+   */
+  toBeConstructableWith: (...args: Array<unknown>) => void;
   /**
    * Checks if the generic type can be instantiated with the given type arguments.
    */
+  // @ts-expect-error 'Target' must be declared like this
   toBeInstantiableWith: <Target extends [...args: Array<unknown>]>() => void;
   /**
    * Checks if a property key exists on the source type.
    */
   toHaveProperty: (key: string | number | symbol) => void;
   /**
-   * Checks if the source type matches the target type.
-   *
-   * @deprecated This matcher will be removed in TSTyche 4. To learn more, visit https://tstyche.org/release-notes/tstyche-3.
-   */
-  toMatch: {
-    /**
-     * Checks if the source type matches the target type.
-     *
-     * @deprecated This matcher will be removed in TSTyche 4. To learn more, visit https://tstyche.org/release-notes/tstyche-3.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type matches type of the target expression.
-     *
-     * @deprecated This matcher will be removed in TSTyche 4. To learn more, visit https://tstyche.org/release-notes/tstyche-3.
-     */
-    (target: unknown): void;
-  };
-  /**
    * Checks if the source type raises an error.
    */
   toRaiseError: (...target: Array<string | number | RegExp>) => void;
 }
 
-interface Matchers {
-  /**
-   * Checks if the source type is `any`.
-   */
-  toBeAny: () => void;
-  /**
-   * Checks if the source type is `bigint`.
-   */
-  toBeBigInt: () => void;
-  /**
-   * Checks if the source type is `boolean`.
-   */
-  toBeBoolean: () => void;
-  /**
-   * Checks if the source type is `never`.
-   */
-  toBeNever: () => void;
-  /**
-   * Checks if the source type is `null`.
-   */
-  toBeNull: () => void;
-  /**
-   * Checks if the source type is `number`.
-   */
-  toBeNumber: () => void;
-  /**
-   * Checks if the source type is `string`.
-   */
-  toBeString: () => void;
-  /**
-   * Checks if the source type is `symbol`.
-   */
-  toBeSymbol: () => void;
-  /**
-   * Checks if the source type is `undefined`.
-   */
-  toBeUndefined: () => void;
-  /**
-   * Checks if the source type is `unique symbol`.
-   */
-  toBeUniqueSymbol: () => void;
-  /**
-   * Checks if the source type is `unknown`.
-   */
-  toBeUnknown: () => void;
-  /**
-   * Checks if the source type is `void`.
-   */
-  toBeVoid: () => void;
-}
-
 interface Modifier {
   /**
-   * Passes the source type to the matcher.
+   * Indicates a type-level assertion.
    */
   type: Matchers & {
     /**
@@ -225,29 +168,15 @@ interface Expect {
   /**
    * Builds an assertion.
    *
-   * @template Source - The type against which the assertion is made.
+   * @template Source - The type which is checked.
    */
   <Source>(): Modifier;
   /**
    * Builds an assertion.
    *
-   * @param source - The expression against which type the assertion is made.
+   * @param source - The expression whose type is checked.
    */
   (source: unknown): Modifier;
-  fail: {
-    /**
-     * Mark an assertion as supposed to fail.
-     *
-     * @template Source - The type against which the assertion is made.
-     */
-    <Source>(): Modifier;
-    /**
-     * Mark an assertion as supposed to fail.
-     *
-     * @param source - The expression against which type the assertion is made.
-     */
-    (source: unknown): Modifier;
-  };
   /**
    * Marks an assertion as focused.
    */
@@ -255,29 +184,15 @@ interface Expect {
     /**
      * Marks an assertion as focused.
      *
-     * @template Source - The type against which the assertion is made.
+     * @template Source - The type which is checked.
      */
     <Source>(): Modifier;
     /**
      * Marks an assertion as focused.
      *
-     * @param source - The expression against which type the assertion is made.
+     * @param source - The expression whose type is checked.
      */
     (source: unknown): Modifier;
-    fail: {
-      /**
-       * Mark an assertion as supposed to fail.
-       *
-       * @template Source - The type against which the assertion is made.
-       */
-      <Source>(): Modifier;
-      /**
-       * Mark an assertion as supposed to fail.
-       *
-       * @param source - The expression against which type the assertion is made.
-       */
-      (source: unknown): Modifier;
-    };
   };
   /**
    * Marks an assertion as skipped.
@@ -286,29 +201,15 @@ interface Expect {
     /**
      * Marks an assertion as skipped.
      *
-     * @template Source - The type against which the assertion is made.
+     * @template Source - The type which is checked.
      */
     <Source>(): Modifier;
     /**
      * Marks an assertion as skipped.
      *
-     * @param source - The expression against which type the assertion is made.
+     * @param source - The expression whose type is checked.
      */
     (source: unknown): Modifier;
-    fail: {
-      /**
-       * Marks an assertion as supposed to fail.
-       *
-       * @template Source - The type against which the assertion is made.
-       */
-      <Source>(): Modifier;
-      /**
-       * Marks an assertion as supposed to fail.
-       *
-       * @param source - The expression against which type the assertion is made.
-       */
-      (source: unknown): Modifier;
-    };
   };
 }
 
@@ -338,8 +239,35 @@ export declare const describe: Describe;
 /**
  * Defines a single test.
  */
-export declare const test: Test;
+export declare const it: Test;
 /**
  * Defines a single test.
  */
-export declare const it: Test;
+export declare const test: Test;
+
+interface Actions {
+  /**
+   * Calls the given function with the provided arguments.
+   */
+  isCalledWith: (...args: Array<unknown>) => void;
+}
+
+interface When {
+  /**
+   * Creates a test plan.
+   *
+   * @template Target - The type upon which an action is performed.
+   */
+  <Target>(): Actions;
+  /**
+   * Creates a test plan.
+   *
+   * @param target - The expression upon which an action is performed.
+   */
+  (target: unknown): Actions;
+}
+
+/**
+ * Creates a test plan.
+ */
+export declare const when: When;

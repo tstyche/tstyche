@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-reporters
+
 Hello from custom reporter one!
 
 <<basePath>>/tests/__fixtures__/.generated/config-reporters/__typetests__/isNumber.tst.ts

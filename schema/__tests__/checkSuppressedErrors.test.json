@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'checkSuppressedErrors' option",
+      "valid": true,
+      "data": {
+        "checkSuppressedErrors": false
+      }
+    },
+    {
+      "description": "value of the 'checkSuppressedErrors' option must be of type boolean",
+      "valid": false,
+      "data": {
+        "checkSuppressedErrors": "yes"
+      }
+    }
+  ]
+}

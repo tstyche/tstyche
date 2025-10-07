@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'tsconfig' option",
+      "valid": true,
+      "data": {
+        "tsconfig": "./tsconfig.test.json"
+      }
+    },
+    {
+      "description": "value of the 'tsconfig' option must be of type string",
+      "valid": false,
+      "data": {
+        "tsconfig": 123
+      }
+    }
+  ]
+}

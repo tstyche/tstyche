@@ -1,11 +1,15 @@
-Error: Option 'target' requires a value of type list.
+Error: Value for the 'target' option must be a string.
 
   1 | {
-  2 |   "target": "current",
-    |             ~~~~~~~~~
-  3 |   "testFileMatch": [
-  4 |     "examples/*.test.*"
-  5 |   ]
+  2 |   "target": [
+    |             ~
+  3 |     "latest"
+    | ~~~~~~~~~~~~
+  4 |   ],
+    | ~~~
+  5 |   "testFileMatch": [
+  6 |     "examples/*.test.*"
+  7 |   ]
 
       at ./tstyche.config.json:2:13
 

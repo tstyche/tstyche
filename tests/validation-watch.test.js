@@ -18,13 +18,12 @@ await test("'--watch' command line option", async (t) => {
       env: { ["CI"]: "true" },
     });
 
-    assert.equal(stdout, "");
-
     assert.equal(
       stderr,
       ["Error: Watch mode cannot be enabled in continuous integration environment.", "", ""].join("\n"),
     );
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

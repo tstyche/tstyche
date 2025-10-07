@@ -1,23 +1,23 @@
-Error: Type is 'number'.
+Error: Type 'number' is the same as type 'number'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is number?", () => {
-  3 |   expect<number>().type.not.toBeNumber();
-    |                             ~~~~~~~~~~
-  4 |   expect<number>().type.not.toBeNumber();
+  3 |   expect<number>().type.not.toBe<number>();
+    |                                  ~~~~~~
+  4 |   expect<number>().type.not.toBe<number>();
   5 | });
   6 | 
 
-      at ./__typetests__/isNumber.tst.ts:3:29 ❭ is number?
+      at ./__typetests__/isNumber.tst.ts:3:34 ❭ is number?
 
-Error: Type is 'number'.
+Error: Type 'number' is the same as type 'number'.
 
   2 | test("is number?", () => {
-  3 |   expect<number>().type.not.toBeNumber();
-  4 |   expect<number>().type.not.toBeNumber();
-    |                             ~~~~~~~~~~
+  3 |   expect<number>().type.not.toBe<number>();
+  4 |   expect<number>().type.not.toBe<number>();
+    |                                  ~~~~~~
   5 | });
   6 | 
 
-      at ./__typetests__/isNumber.tst.ts:4:29 ❭ is number?
+      at ./__typetests__/isNumber.tst.ts:4:34 ❭ is number?
 

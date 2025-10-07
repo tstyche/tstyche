@@ -1,122 +1,144 @@
 import type ts from "typescript";
-import { type Assertion, type TestMember, TestMemberBrand, TestMemberFlags } from "#collect";
-import type { ResolvedConfig } from "#config";
-import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
+import { Directive, type ResolvedConfig } from "#config";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService, type TypeChecker } from "#expect";
-import { DescribeResult, ExpectResult, type TaskResult, TestResult } from "#result";
+import { Reject } from "#reject";
+import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
-import { RunMode } from "./RunMode.enum.js";
+import { Version } from "#version";
+import { WhenService } from "#when";
+import { FixmeService } from "./FixmeService.js";
+import { RunModeFlags } from "./RunModeFlags.enum.js";
 
-interface TestFileWalkerOptions {
+interface TestTreeWalkerOptions {
   cancellationToken: CancellationToken | undefined;
   hasOnly: boolean;
   position: number | undefined;
-  taskResult: TaskResult;
 }
 
 export class TestTreeWalker {
-  #compiler: typeof ts;
   #cancellationToken: CancellationToken | undefined;
+  #compiler: typeof ts;
   #expectService: ExpectService;
   #hasOnly: boolean;
+  #onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
-  #taskResult: TaskResult;
+  #whenService: WhenService;
 
   constructor(
-    resolvedConfig: ResolvedConfig,
     compiler: typeof ts,
     typeChecker: TypeChecker,
-    options: TestFileWalkerOptions,
+    resolvedConfig: ResolvedConfig,
+    onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
+    options: TestTreeWalkerOptions,
   ) {
-    this.#resolvedConfig = resolvedConfig;
     this.#compiler = compiler;
+    this.#resolvedConfig = resolvedConfig;
+    this.#onFileDiagnostics = onFileDiagnostics;
 
     this.#cancellationToken = options.cancellationToken;
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
-    this.#taskResult = options.taskResult;
 
-    this.#expectService = new ExpectService(compiler, typeChecker, this.#resolvedConfig);
+    const reject = new Reject(compiler, typeChecker, resolvedConfig);
+
+    this.#expectService = new ExpectService(compiler, typeChecker, reject);
+    this.#whenService = new WhenService(reject, onFileDiagnostics);
   }
 
-  #resolveRunMode(mode: RunMode, member: TestMember): RunMode {
-    if (member.flags & TestMemberFlags.Fail) {
-      mode |= RunMode.Fail;
+  async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
+    const ifDirective = Directive.getDirectiveRange(this.#compiler, node, "if");
+    const inlineConfig = await Directive.getInlineConfig(ifDirective);
+
+    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
+      flags |= RunModeFlags.Void;
     }
 
     if (
-      member.flags & TestMemberFlags.Only ||
-      (this.#resolvedConfig.only != null && member.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
+      node.flags & TestTreeNodeFlags.Only ||
+      (this.#resolvedConfig.only != null && node.name.toLowerCase().includes(this.#resolvedConfig.only.toLowerCase()))
     ) {
-      mode |= RunMode.Only;
+      flags |= RunModeFlags.Only;
     }
 
     if (
-      member.flags & TestMemberFlags.Skip ||
-      (this.#resolvedConfig.skip != null && member.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
+      node.flags & TestTreeNodeFlags.Skip ||
+      (this.#resolvedConfig.skip != null && node.name.toLowerCase().includes(this.#resolvedConfig.skip.toLowerCase()))
     ) {
-      mode |= RunMode.Skip;
+      flags |= RunModeFlags.Skip;
     }
 
-    if (member.flags & TestMemberFlags.Todo) {
-      mode |= RunMode.Todo;
+    if (node.flags & TestTreeNodeFlags.Todo) {
+      flags |= RunModeFlags.Todo;
     }
 
-    if (this.#position != null && member.node.getStart() === this.#position) {
-      mode |= RunMode.Only;
+    if (this.#position != null && node.node.getStart() === this.#position) {
+      flags |= RunModeFlags.Only;
       // skip mode is overridden, when 'position' is specified
-      mode &= ~RunMode.Skip;
+      flags &= ~RunModeFlags.Skip;
     }
 
-    return mode;
+    return flags;
   }
 
-  visit(
-    members: Array<TestMember | Assertion>,
-    runMode: RunMode,
+  async visit(
+    nodes: Array<TestTreeNode | ExpectNode | WhenNode>,
+    runModeFlags: RunModeFlags,
     parentResult: DescribeResult | TestResult | undefined,
-  ): void {
-    for (const member of members) {
-      if (this.#cancellationToken?.isCancellationRequested) {
+  ): Promise<void> {
+    for (const node of nodes) {
+      if (this.#cancellationToken?.isCancellationRequested()) {
         break;
       }
 
-      const validationError = member.validate();
+      const fixmeDirective = Directive.getDirectiveRange(this.#compiler, node, "fixme");
 
-      if (validationError.length > 0) {
-        EventEmitter.dispatch(["task:error", { diagnostics: validationError, result: this.#taskResult }]);
-
-        break;
+      if (fixmeDirective) {
+        await FixmeService.start(fixmeDirective, node);
       }
 
-      switch (member.brand) {
-        case TestMemberBrand.Describe:
-          this.#visitDescribe(member, runMode, parentResult as DescribeResult | undefined);
+      switch (node.brand) {
+        case TestTreeNodeBrand.Describe:
+          await this.#visitDescribe(node, runModeFlags, parentResult as DescribeResult | undefined);
           break;
 
-        case TestMemberBrand.Test:
-          this.#visitTest(member, runMode, parentResult as DescribeResult | undefined);
+        case TestTreeNodeBrand.It:
+        case TestTreeNodeBrand.Test:
+          await this.#visitTest(node, runModeFlags, parentResult as DescribeResult | undefined);
           break;
 
-        case TestMemberBrand.Expect:
-          this.#visitAssertion(member as Assertion, runMode, parentResult as TestResult | undefined);
+        case TestTreeNodeBrand.Expect:
+          await this.#visitExpect(node as ExpectNode, runModeFlags, parentResult as TestResult | undefined);
           break;
+
+        case TestTreeNodeBrand.When:
+          this.#visitWhen(node as WhenNode);
+          break;
+      }
+
+      if (fixmeDirective) {
+        FixmeService.end(fixmeDirective, node, this.#onFileDiagnostics);
       }
     }
   }
 
-  #visitAssertion(assertion: Assertion, runMode: RunMode, parentResult: TestResult | undefined) {
-    this.visit(assertion.members, runMode, parentResult);
+  async #visitExpect(expect: ExpectNode, runModeFlags: RunModeFlags, parentResult: TestResult | undefined) {
+    await this.visit(expect.children, runModeFlags, parentResult);
 
-    const expectResult = new ExpectResult(assertion, parentResult);
+    runModeFlags = await this.#resolveRunMode(runModeFlags, expect);
+
+    if (runModeFlags & RunModeFlags.Void) {
+      return;
+    }
+
+    const expectResult = new ExpectResult(expect, parentResult);
 
     EventEmitter.dispatch(["expect:start", { result: expectResult }]);
 
-    runMode = this.#resolveRunMode(runMode, assertion);
-
-    if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
+    if (runModeFlags & RunModeFlags.Skip || (this.#hasOnly && !(runModeFlags & RunModeFlags.Only))) {
       EventEmitter.dispatch(["expect:skip", { result: expectResult }]);
 
       return;
@@ -129,74 +151,81 @@ export class TestTreeWalker {
       ]);
     };
 
-    if (assertion.diagnostics.size > 0 && assertion.matcherName.getText() !== "toRaiseError") {
-      onExpectDiagnostics(Diagnostic.fromDiagnostics([...assertion.diagnostics]));
+    if (expect.diagnostics.size > 0 && expect.matcherNameNode.name.text !== "toRaiseError") {
+      onExpectDiagnostics(Diagnostic.fromDiagnostics([...expect.diagnostics]));
 
       return;
     }
 
-    const matchResult = this.#expectService.match(assertion, onExpectDiagnostics);
+    const matchResult = this.#expectService.match(expect, onExpectDiagnostics);
 
     if (!matchResult) {
       return;
     }
 
-    if (assertion.isNot ? !matchResult.isMatch : matchResult.isMatch) {
-      if (runMode & RunMode.Fail) {
-        const text = ["The assertion was supposed to fail, but it passed.", "Consider removing the '.fail' flag."];
-        // TODO consider adding '.failNode' property to 'assertion'
-        const origin = DiagnosticOrigin.fromNode((assertion.node.expression as ts.PropertyAccessExpression).name);
+    const isPass = expect.isNot ? !matchResult.isMatch : matchResult.isMatch;
 
-        onExpectDiagnostics(Diagnostic.error(text, origin));
-      } else {
-        EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
-      }
-    } else if (runMode & RunMode.Fail) {
+    if (FixmeService.isFixme(expect, isPass)) {
+      EventEmitter.dispatch(["expect:fixme", { result: expectResult }]);
+
+      return;
+    }
+
+    if (isPass) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);
     }
   }
 
-  #visitDescribe(describe: TestMember, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  async #visitDescribe(describe: TestTreeNode, runModeFlags: RunModeFlags, parentResult: DescribeResult | undefined) {
+    runModeFlags = await this.#resolveRunMode(runModeFlags, describe);
+
+    if (runModeFlags & RunModeFlags.Void) {
+      return;
+    }
+
     const describeResult = new DescribeResult(describe, parentResult);
 
     EventEmitter.dispatch(["describe:start", { result: describeResult }]);
 
-    runMode = this.#resolveRunMode(runMode, describe);
-
     if (
-      !(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only)) || runMode & RunMode.Todo) &&
+      !(
+        runModeFlags & RunModeFlags.Skip ||
+        (this.#hasOnly && !(runModeFlags & RunModeFlags.Only)) ||
+        runModeFlags & RunModeFlags.Todo
+      ) &&
       describe.diagnostics.size > 0
     ) {
-      EventEmitter.dispatch([
-        "task:error",
-        {
-          diagnostics: Diagnostic.fromDiagnostics([...describe.diagnostics]),
-          result: this.#taskResult,
-        },
-      ]);
+      this.#onFileDiagnostics(Diagnostic.fromDiagnostics([...describe.diagnostics]));
     } else {
-      this.visit(describe.members, runMode, describeResult);
+      await this.visit(describe.children, runModeFlags, describeResult);
     }
 
     EventEmitter.dispatch(["describe:end", { result: describeResult }]);
   }
 
-  #visitTest(test: TestMember, runMode: RunMode, parentResult: DescribeResult | undefined) {
+  async #visitTest(test: TestTreeNode, runModeFlags: RunModeFlags, parentResult: DescribeResult | undefined) {
+    runModeFlags = await this.#resolveRunMode(runModeFlags, test);
+
+    if (runModeFlags & RunModeFlags.Void) {
+      return;
+    }
+
     const testResult = new TestResult(test, parentResult);
 
     EventEmitter.dispatch(["test:start", { result: testResult }]);
 
-    runMode = this.#resolveRunMode(runMode, test);
-
-    if (runMode & RunMode.Todo) {
+    if (runModeFlags & RunModeFlags.Todo) {
       EventEmitter.dispatch(["test:todo", { result: testResult }]);
 
       return;
     }
 
-    if (!(runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) && test.diagnostics.size > 0) {
+    if (
+      !(runModeFlags & RunModeFlags.Skip || (this.#hasOnly && !(runModeFlags & RunModeFlags.Only))) &&
+      test.diagnostics.size > 0
+    ) {
       EventEmitter.dispatch([
         "test:error",
         {
@@ -208,18 +237,30 @@ export class TestTreeWalker {
       return;
     }
 
-    this.visit(test.members, runMode, testResult);
+    await this.visit(test.children, runModeFlags, testResult);
 
-    if (runMode & RunMode.Skip || (this.#hasOnly && !(runMode & RunMode.Only))) {
+    if (runModeFlags & RunModeFlags.Skip || (this.#hasOnly && !(runModeFlags & RunModeFlags.Only))) {
       EventEmitter.dispatch(["test:skip", { result: testResult }]);
 
       return;
     }
 
-    if (testResult.expectCount.failed > 0) {
-      EventEmitter.dispatch(["test:fail", { result: testResult }]);
-    } else {
-      EventEmitter.dispatch(["test:pass", { result: testResult }]);
+    const isPass = testResult.assertionCounts.failed === 0;
+
+    if (FixmeService.isFixme(test, isPass)) {
+      EventEmitter.dispatch(["test:fixme", { result: testResult }]);
+
+      return;
     }
+
+    if (isPass) {
+      EventEmitter.dispatch(["test:pass", { result: testResult }]);
+    } else {
+      EventEmitter.dispatch(["test:fail", { result: testResult }]);
+    }
+  }
+
+  #visitWhen(when: WhenNode) {
+    this.#whenService.action(when);
   }
 }

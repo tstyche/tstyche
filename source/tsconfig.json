@@ -3,16 +3,17 @@
   "compilerOptions": {
     "module": "node16",
     "moduleResolution": "node16",
+
     "paths": {
       "#scribbler/jsx-runtime": ["./scribbler/jsxRuntime.js"],
       "#*": ["./*/index.js"]
     },
 
-    "verbatimModuleSyntax": true,
+    "preserveConstEnums": true,
+    "verbatimModuleSyntax": false, // otherwise const enums are not inlined, unfortunately
 
     "jsx": "react-jsx",
     "jsxImportSource": "#scribbler",
-    "target": "es2023",
 
     "skipLibCheck": false
   },

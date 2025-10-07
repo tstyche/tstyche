@@ -1,18 +1,17 @@
-import type { Assertion } from "#collect";
-import type { Diagnostic } from "#diagnostic";
+import type { ExpectNode } from "#collect";
+import { createResultTiming } from "./helpers.js";
 import { ResultStatus } from "./ResultStatus.enum.js";
-import { ResultTiming } from "./ResultTiming.js";
 import type { TestResult } from "./TestResult.js";
+import type { AssertionResultStatus } from "./types.js";
 
 export class ExpectResult {
-  assertion: Assertion;
-  diagnostics: Array<Diagnostic> = [];
+  expect: ExpectNode;
   parent: TestResult | undefined;
-  status: ResultStatus = ResultStatus.Runs;
-  timing = new ResultTiming();
+  status: AssertionResultStatus = ResultStatus.Runs;
+  timing = createResultTiming();
 
-  constructor(assertion: Assertion, parent?: TestResult) {
-    this.assertion = assertion;
+  constructor(expect: ExpectNode, parent?: TestResult) {
+    this.expect = expect;
     this.parent = parent;
   }
 }

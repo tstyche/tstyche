@@ -1,30 +1,39 @@
+import { ResultStatus, type TestResultStatus } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
-
-interface StatusTextProps {
-  status: "fail" | "pass" | "skip" | "todo";
-}
-
-function StatusText({ status }: StatusTextProps) {
-  switch (status) {
-    case "fail":
-      return <Text color={Color.Red}>×</Text>;
-    case "pass":
-      return <Text color={Color.Green}>+</Text>;
-    case "skip":
-      return <Text color={Color.Yellow}>- skip</Text>;
-    case "todo":
-      return <Text color={Color.Magenta}>- todo</Text>;
-  }
-}
+import { getStatusColor } from "./helpers.js";
 
 export function testNameText(
-  status: "fail" | "pass" | "skip" | "todo",
+  status: Exclude<TestResultStatus, ResultStatus.Runs>,
   name: string,
   indent = 0,
 ): ScribblerJsx.Element {
+  let statusText: string;
+
+  switch (status) {
+    case ResultStatus.Passed:
+      statusText = "+";
+      break;
+
+    case ResultStatus.Failed:
+      statusText = "×";
+      break;
+
+    case ResultStatus.Skipped:
+      statusText = "- skip";
+      break;
+
+    case ResultStatus.Fixme:
+      statusText = "- fixme";
+      break;
+
+    case ResultStatus.Todo:
+      statusText = "- todo";
+      break;
+  }
+
   return (
     <Line indent={indent + 1}>
-      <StatusText status={status} /> <Text color={Color.Gray}>{name}</Text>
+      <Text color={getStatusColor(status)}>{statusText}</Text> <Text color={Color.Gray}>{name}</Text>
     </Line>
   );
 }

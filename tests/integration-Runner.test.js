@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import path from "node:path";
+import process from "node:process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import * as tstyche from "tstyche/tstyche";
@@ -33,10 +34,16 @@ class TestResultReporter {
 
 await test("Runner", async (t) => {
   await t.test("run tests", async (t) => {
+    t.before(() => {
+      eventEmitter.addReporter(new TestResultReporter());
+    });
+
+    t.after(() => {
+      eventEmitter.removeReporters();
+    });
+
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
     const runner = new tstyche.Runner(resolvedConfig);
-
-    eventEmitter.addReporter(new TestResultReporter());
 
     const testCases = [
       {
@@ -73,20 +80,24 @@ await test("Runner", async (t) => {
       await t.test(testCase, async () => {
         await runner.run(testFiles);
 
-        assert.deepEqual(result?.expectCount, { failed: 2, passed: 3, skipped: 3, todo: 0 });
-        assert.deepEqual(result?.fileCount, { failed: 2, passed: 0, skipped: 0, todo: 0 });
-        assert.deepEqual(result?.testCount, { failed: 2, passed: 2, skipped: 1, todo: 1 });
+        assert.deepEqual(result?.fileCounts, { failed: 2, passed: 0 });
+        assert.deepEqual(result?.testCounts, { failed: 2, passed: 2, skipped: 1, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 2, passed: 3, skipped: 3, fixme: 0, todo: 0 });
       });
     }
-
-    eventEmitter.removeReporters();
   });
 
-  await t.test("run tests when test file is 'Task' object", async (t) => {
+  await t.test("run tests when test file is 'FileLocation' object", async (t) => {
+    t.before(() => {
+      eventEmitter.addReporter(new TestResultReporter());
+    });
+
+    t.after(() => {
+      eventEmitter.removeReporters();
+    });
+
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
     const runner = new tstyche.Runner(resolvedConfig);
-
-    eventEmitter.addReporter(new TestResultReporter());
 
     const testCases = [
       {
@@ -105,69 +116,67 @@ await test("Runner", async (t) => {
 
     for (const { testCase, filePath } of testCases) {
       await t.test(testCase, async () => {
-        const testFiles = [new tstyche.Task(filePath)];
+        const files = [new tstyche.FileLocation(filePath)];
 
-        await runner.run(testFiles);
+        await runner.run(files);
 
-        assert.deepEqual(result?.expectCount, { failed: 1, passed: 2, skipped: 3, todo: 0 });
-        assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
-        assert.deepEqual(result?.testCount, { failed: 1, passed: 1, skipped: 1, todo: 1 });
+        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0 });
+        assert.deepEqual(result?.testCounts, { failed: 1, passed: 1, skipped: 1, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 2, skipped: 3, fixme: 0, todo: 0 });
       });
     }
 
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'expect'`, async () => {
         const position = isWindows ? 73 : 70;
-        const task = new tstyche.Task(filePath, position);
+        const file = new tstyche.FileLocation(filePath, position);
 
-        await runner.run([task]);
+        await runner.run([file]);
 
-        assert.deepEqual(result?.expectCount, { failed: 0, passed: 1, skipped: 5, todo: 0 });
-        assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
-        assert.deepEqual(result?.testCount, { failed: 0, passed: 0, skipped: 3, todo: 1 });
+        assert.deepEqual(result?.fileCounts, { failed: 0, passed: 1 });
+        assert.deepEqual(result?.testCounts, { failed: 0, passed: 0, skipped: 3, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 0, passed: 1, skipped: 5, fixme: 0, todo: 0 });
       });
     }
 
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'expect.skip'`, async () => {
-        const position = isWindows ? 273 : 261;
-        const task = new tstyche.Task(filePath, position);
+        const position = isWindows ? 281 : 269;
+        const file = new tstyche.FileLocation(filePath, position);
 
-        await runner.run([task]);
+        await runner.run([file]);
 
-        assert.deepEqual(result?.expectCount, { failed: 1, passed: 0, skipped: 5, todo: 0 });
-        assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
-        assert.deepEqual(result?.testCount, { failed: 0, passed: 0, skipped: 3, todo: 1 });
+        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0 });
+        assert.deepEqual(result?.testCounts, { failed: 0, passed: 0, skipped: 3, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 0, skipped: 5, fixme: 0, todo: 0 });
       });
     }
 
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'test'`, async () => {
         const position = isWindows ? 43 : 41;
-        const task = new tstyche.Task(filePath, position);
+        const file = new tstyche.FileLocation(filePath, position);
 
-        await runner.run([task]);
+        await runner.run([file]);
 
-        assert.deepEqual(result?.expectCount, { failed: 0, passed: 1, skipped: 5, todo: 0 });
-        assert.deepEqual(result?.fileCount, { failed: 0, passed: 1, skipped: 0, todo: 0 });
-        assert.deepEqual(result?.testCount, { failed: 0, passed: 1, skipped: 2, todo: 1 });
+        assert.deepEqual(result?.fileCounts, { failed: 0, passed: 1 });
+        assert.deepEqual(result?.testCounts, { failed: 0, passed: 1, skipped: 2, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 0, passed: 1, skipped: 5, fixme: 0, todo: 0 });
       });
     }
 
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'test.skip'`, async () => {
-        const position = isWindows ? 117 : 111;
-        const task = new tstyche.Task(filePath, position);
+        const position = isWindows ? 119 : 113;
+        const file = new tstyche.FileLocation(filePath, position);
 
-        await runner.run([task]);
+        await runner.run([file]);
 
-        assert.deepEqual(result?.expectCount, { failed: 1, passed: 1, skipped: 4, todo: 0 });
-        assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
-        assert.deepEqual(result?.testCount, { failed: 1, passed: 0, skipped: 2, todo: 1 });
+        assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0 });
+        assert.deepEqual(result?.testCounts, { failed: 1, passed: 0, skipped: 2, fixme: 0, todo: 1 });
+        assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 1, skipped: 4, fixme: 0, todo: 0 });
       });
     }
-
-    eventEmitter.removeReporters();
   });
 
   await t.test("configuration", async (t) => {
@@ -192,9 +201,9 @@ await test("Runner", async (t) => {
 
       await runner.run(testFiles);
 
-      assert.deepEqual(result?.expectCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
-      assert.deepEqual(result?.fileCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
-      assert.deepEqual(result?.testCount, { failed: 1, passed: 0, skipped: 0, todo: 0 });
+      assert.deepEqual(result?.fileCounts, { failed: 1, passed: 0 });
+      assert.deepEqual(result?.testCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
+      assert.deepEqual(result?.assertionCounts, { failed: 1, passed: 0, skipped: 0, fixme: 0, todo: 0 });
     });
   });
 });

@@ -6,7 +6,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -40,13 +40,13 @@ await test("'select' hook", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--plugins", "./plugin.js"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-stdout`,
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
       testFileUrl: import.meta.url,
     });
 

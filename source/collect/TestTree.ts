@@ -1,13 +1,15 @@
 import type ts from "typescript";
-import type { Assertion } from "./Assertion.js";
-import type { TestMember } from "./TestMember.js";
+import type { SuppressedError } from "#layers";
+import type { ExpectNode } from "./ExpectNode.js";
+import type { TestTreeNode } from "./TestTreeNode.js";
+import type { WhenNode } from "./WhenNode.js";
 
 export class TestTree {
+  children: Array<TestTreeNode | ExpectNode | WhenNode> = [];
   diagnostics: Set<ts.Diagnostic>;
   hasOnly = false;
-  // TODO rename to 'children' in TStyche 4
-  members: Array<TestMember | Assertion> = [];
   sourceFile: ts.SourceFile;
+  suppressedErrors: Array<SuppressedError> | undefined;
 
   constructor(diagnostics: Set<ts.Diagnostic>, sourceFile: ts.SourceFile) {
     this.diagnostics = diagnostics;

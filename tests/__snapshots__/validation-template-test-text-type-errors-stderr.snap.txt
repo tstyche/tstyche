@@ -1,0 +1,24 @@
+Error: Type 'number' is not assignable to type 'string'. ts(2322)
+
+  3 | let a: string;
+  4 | test("is string a string?", () => {
+  5 |   a = 123;
+    |   ~
+  6 |   expect<string>().type.toBe<string>();
+  7 | });
+  8 | test("is number a string?", () => {
+
+      at ./__typetests__/sample.tst.ts:5:3
+
+Error: Type 'number' is not assignable to type 'string'. ts(2322)
+
+   7 | });
+   8 | test("is number a string?", () => {
+   9 |   a = 123;
+     |   ~
+  10 |   expect<string>().type.toBe<number>();
+  11 | });
+  12 | 
+
+       at ./__typetests__/sample.tst.ts:9:3
+

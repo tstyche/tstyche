@@ -1,11 +1,11 @@
-Error: Type is 'number'.
+Error: Type 'number' is not the same as type 'string'.
 
   1 | import { expect, test } from "tstyche";
   2 | test("is string?", () => {
-  3 |   expect<number>().type.toBeString();
-    |                         ~~~~~~~~~~
+  3 |   expect<number>().type.toBe<string>();
+    |                              ~~~~~~
   4 | });
   5 | 
 
-      at ./a-feature/__typetests__/isString.test.ts:3:25 ❭ is string?
+      at ./a-feature/__typetests__/isString.test.ts:3:30 ❭ is string?
 

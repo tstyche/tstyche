@@ -9,9 +9,6 @@ export namespace ScribblerJsx {
     props: Record<string, unknown>;
     type: FunctionComponent | number | string;
   }
-  export interface ElementChildrenAttribute {
-    children: ScribblerNode;
-  }
   export interface IntrinsicElements {
     ansi: {
       escapes: Color | Array<Color>;

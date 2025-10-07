@@ -8,14 +8,14 @@ const isRejectedText = `import { describe, expect, test } from "tstyche";
 
 describe("argument for 'source'", () => {
   test("rejects the 'any' type", () => {
-    // @ts-expect-error missing import test
+    // @ts-expect-error! Missing import
     expect(getResult("sample")).type.toBe<Result<string>>(); // rejected
-    // @ts-expect-error missing import test
-    expect(getResult(123)).type.toBeAssignableWith<Result<number>>(); // rejected
+    // @ts-expect-error! Missing import
+    expect(getResult(123)).type.toBeAssignableFrom<Result<number>>(); // rejected
   });
 
-  test("allows '.toBeAny()'", () => {
-    expect({} as any).type.toBeAny();
+  test("allows '.toBe<any>()'", () => {
+    expect({} as any).type.toBe<any>();
   });
 
   test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
@@ -36,8 +36,8 @@ describe("type argument for 'Source'", () => {
     expect<Any>().type.toBeAssignableTo<{ a: number }>(); // rejected
   });
 
-  test("allows '.toBeAny()'", () => {
-    expect<Any>().type.toBeAny();
+  test("allows '.toBe<any>()'", () => {
+    expect<Any>().type.toBe<any>();
   });
 
   test("allows '.toRaiseError()', but not '.not.toRaiseError()'", () => {
@@ -50,14 +50,14 @@ describe("type argument for 'Source'", () => {
 
 describe("argument for 'target'", () => {
   test("rejects the 'any' type", () => {
-    // @ts-expect-error missing import test
-    expect<string>().type.toBeAssignableWith(getResult("sample")); // rejected
-    // @ts-expect-error missing import test
+    // @ts-expect-error! Missing import
+    expect<string>().type.toBeAssignableFrom(getResult("sample")); // rejected
+    // @ts-expect-error! Missing import
     expect<number>().type.not.toBe(getResult(123)); // rejected
   });
 
-  test("allows '.toBeAny()'", () => {
-    expect({ a: 123 }).type.not.toBeAny();
+  test("allows '.toBe<any>()'", () => {
+    expect({ a: 123 }).type.not.toBe<any>();
   });
 });
 
@@ -69,8 +69,8 @@ describe("type argument for 'Target'", () => {
     expect<{ a: boolean }>().type.not.toBe<Any>(); // rejected
   });
 
-  test("allows '.toBeAny()'", () => {
-    expect<{ a: boolean }>().type.not.toBeAny();
+  test("allows '.toBe<any>()'", () => {
+    expect<{ a: boolean }>().type.not.toBe<any>();
   });
 });
 `;
@@ -101,13 +101,13 @@ await test("'rejectAnyType' config file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-enabled-stdout`,
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-enabled-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-enabled-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-enabled-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -127,12 +127,13 @@ await test("'rejectAnyType' config file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-disabled-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

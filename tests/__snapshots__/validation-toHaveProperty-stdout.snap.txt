@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-toHaveProperty
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/toHaveProperty.tst.ts
@@ -14,6 +16,5 @@ Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      5 failed, 5 total
 Assertions: 8 failed, 1 passed, 9 total
+Suppressed: 2 ignored, 2 total
 Duration:   <<timestamp>>
-
-Ran all test files.

@@ -1,0 +1,21 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBeAssignableFrom
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeAssignableFrom.tst.ts
+  when source is a type
+    × is assignable from type of the target expression
+    × is NOT assignable from type of the target expression
+    × is assignable from the target type
+    × is NOT assignable from the target type
+  when source is an expression
+    × is assignable from type of the target expression.
+    × is NOT assignable from type of the target expression.
+    × is assignable from the target type
+    × is NOT assignable from the target type
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      8 failed, 8 total
+Assertions: 8 failed, 13 passed, 21 total
+Duration:   <<timestamp>>

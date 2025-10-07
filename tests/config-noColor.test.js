@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -26,11 +26,12 @@ await test("'TSTYCHE_NO_COLOR' environment variable", async (t) => {
       env: { ["TSTYCHE_NO_COLOR"]: undefined },
     });
 
+    assert.equal(stderr, "");
+
     assert.matchObject(stdout, {
       noColor: false,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -43,12 +44,13 @@ await test("'TSTYCHE_NO_COLOR' environment variable", async (t) => {
       env: { ["TSTYCHE_NO_COLOR"]: "true" },
     });
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-tstycheNoColor-true-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -61,12 +63,13 @@ await test("'TSTYCHE_NO_COLOR' environment variable", async (t) => {
       env: { ["TSTYCHE_NO_COLOR"]: "" },
     });
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
       fileName: `${testFileName}-tstycheNoColor-false-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -82,12 +85,13 @@ await test("'TSTYCHE_NO_COLOR' environment variable", async (t) => {
       },
     });
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-noColors-true-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -103,12 +107,13 @@ await test("'TSTYCHE_NO_COLOR' environment variable", async (t) => {
       },
     });
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
       fileName: `${testFileName}-noColors-false-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -124,12 +129,13 @@ await test("'TSTYCHE_NO_COLOR' environment variable", async (t) => {
       },
     });
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
       fileName: `${testFileName}-tstycheNoColor-false-overrides-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -145,12 +151,13 @@ await test("'TSTYCHE_NO_COLOR' environment variable", async (t) => {
       },
     });
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-tstycheNoColor-true-overrides-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

@@ -1,7 +1,7 @@
 Error: Component accepts props of the given type.
 
 Overload 2 of 2, '(props: SecondProps): React.JSX.Element', gave the following error.
-Type 'SecondProps' is assignable with type '{}'.
+Type 'SecondProps' is assignable from type '{}'.
 
   32 |   test("accepts props of the given type", () => {
   33 |     expect(OverloadFunction).type.toAcceptProps({});
@@ -16,7 +16,7 @@ Type 'SecondProps' is assignable with type '{}'.
 Error: Component accepts props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is assignable with type '{ one: string; two: number; }'.
+Type 'FirstProps' is assignable from type '{ one: string; two: number; }'.
 
   35 | 
   36 |     expect(OverloadFunction).type.toAcceptProps({ one: "sample", two: 123 });
@@ -47,7 +47,7 @@ Type 'FirstProps' does not have property 'enable'.
 Error: Component does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ enable: boolean; }'.
+Type 'FirstProps' is not assignable from type '{ enable: boolean; }'.
 Type 'FirstProps' requires property 'one'.
 
   40 |   test("property does not exist in props type", () => {
@@ -63,7 +63,7 @@ Type 'FirstProps' requires property 'one'.
 Error: Component does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ enable: boolean; }'.
+Type 'FirstProps' is not assignable from type '{ enable: boolean; }'.
 Type 'FirstProps' requires property 'two'.
 
   40 |   test("property does not exist in props type", () => {
@@ -95,9 +95,9 @@ Type 'SecondProps' does not have property 'enable'.
 Error: Component does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ one: boolean; }'.
+Type 'FirstProps' is not assignable from type '{ one: boolean; }'.
 Types of property 'one' are not compatible.
-Type 'string' is not assignable with type 'boolean'.
+Type 'string' is not assignable from type 'boolean'.
 
   45 |   test("property type is not assignable to prop type", () => {
   46 |     expect(OverloadFunction).type.not.toAcceptProps({ one: true });
@@ -112,7 +112,7 @@ Type 'string' is not assignable with type 'boolean'.
 Error: Component does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ one: boolean; }'.
+Type 'FirstProps' is not assignable from type '{ one: boolean; }'.
 Type 'FirstProps' requires property 'two'.
 
   45 |   test("property type is not assignable to prop type", () => {
@@ -128,9 +128,9 @@ Type 'FirstProps' requires property 'two'.
 Error: Component does not accept props of the given type.
 
 Overload 2 of 2, '(props: SecondProps): React.JSX.Element', gave the following error.
-Type 'SecondProps' is not assignable with type '{ one: boolean; }'.
+Type 'SecondProps' is not assignable from type '{ one: boolean; }'.
 Types of property 'one' are not compatible.
-Type 'undefined' is not assignable with type 'boolean'.
+Type 'undefined' is not assignable from type 'boolean'.
 
   45 |   test("property type is not assignable to prop type", () => {
   46 |     expect(OverloadFunction).type.not.toAcceptProps({ one: true });
@@ -145,7 +145,7 @@ Type 'undefined' is not assignable with type 'boolean'.
 Error: Component type accepts props of the given type.
 
 Overload 2 of 2, '(props: SecondProps): React.JSX.Element', gave the following error.
-Type 'SecondProps' is assignable with type '{}'.
+Type 'SecondProps' is assignable from type '{}'.
 
   52 |   test("accepts props of the given type", () => {
   53 |     expect<Overload>().type.toAcceptProps<{}>();
@@ -160,7 +160,7 @@ Type 'SecondProps' is assignable with type '{}'.
 Error: Component type accepts props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is assignable with type '{ one: string; two: number; }'.
+Type 'FirstProps' is assignable from type '{ one: string; two: number; }'.
 
   55 | 
   56 |     expect<Overload>().type.toAcceptProps<{ one: string; two: number }>();
@@ -175,7 +175,7 @@ Type 'FirstProps' is assignable with type '{ one: string; two: number; }'.
 Error: Component type does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ three?: boolean | undefined; }'.
+Type 'FirstProps' is not assignable from type '{ three?: boolean | undefined; }'.
 Type 'FirstProps' requires property 'one'.
 
   60 |   test("property is required in props type", () => {
@@ -191,7 +191,7 @@ Type 'FirstProps' requires property 'one'.
 Error: Component type does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ three?: boolean | undefined; }'.
+Type 'FirstProps' is not assignable from type '{ three?: boolean | undefined; }'.
 Type 'FirstProps' requires property 'two'.
 
   60 |   test("property is required in props type", () => {
@@ -239,7 +239,7 @@ Type 'FirstProps' does not have property 'enable'.
 Error: Component type does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ enable: boolean; }'.
+Type 'FirstProps' is not assignable from type '{ enable: boolean; }'.
 Type 'FirstProps' requires property 'one'.
 
   65 |   test("property does not exist in props type", () => {
@@ -255,7 +255,7 @@ Type 'FirstProps' requires property 'one'.
 Error: Component type does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ enable: boolean; }'.
+Type 'FirstProps' is not assignable from type '{ enable: boolean; }'.
 Type 'FirstProps' requires property 'two'.
 
   65 |   test("property does not exist in props type", () => {
@@ -287,9 +287,9 @@ Type 'SecondProps' does not have property 'enable'.
 Error: Component type does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ one: boolean; }'.
+Type 'FirstProps' is not assignable from type '{ one: boolean; }'.
 Types of property 'one' are not compatible.
-Type 'string' is not assignable with type 'boolean'.
+Type 'string' is not assignable from type 'boolean'.
 
   70 |   test("property type is not assignable to prop type", () => {
   71 |     expect<Overload>().type.not.toAcceptProps<{ one: boolean }>();
@@ -304,7 +304,7 @@ Type 'string' is not assignable with type 'boolean'.
 Error: Component type does not accept props of the given type.
 
 Overload 1 of 2, '(props: FirstProps): React.JSX.Element', gave the following error.
-Type 'FirstProps' is not assignable with type '{ one: boolean; }'.
+Type 'FirstProps' is not assignable from type '{ one: boolean; }'.
 Type 'FirstProps' requires property 'two'.
 
   70 |   test("property type is not assignable to prop type", () => {
@@ -320,9 +320,9 @@ Type 'FirstProps' requires property 'two'.
 Error: Component type does not accept props of the given type.
 
 Overload 2 of 2, '(props: SecondProps): React.JSX.Element', gave the following error.
-Type 'SecondProps' is not assignable with type '{ one: boolean; }'.
+Type 'SecondProps' is not assignable from type '{ one: boolean; }'.
 Types of property 'one' are not compatible.
-Type 'undefined' is not assignable with type 'boolean'.
+Type 'undefined' is not assignable from type 'boolean'.
 
   70 |   test("property type is not assignable to prop type", () => {
   71 |     expect<Overload>().type.not.toAcceptProps<{ one: boolean }>();

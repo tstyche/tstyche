@@ -1,0 +1,8 @@
+Error: Type 'number' is not assignable to type 'string'. ts(2322)
+
+  1 | export const x: string = 10;
+    |              ~
+  2 | 
+
+      at ./type-tests/fixtures/b.ts:1:14
+

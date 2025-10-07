@@ -1,14 +1,13 @@
-Error: TypeScript version 'new' is not supported.
+Error: The TypeScript version 'new' is not supported.
 
 Use the '--list' command line option to inspect the list of supported versions.
 
   1 | {
-  2 |   "target": [
-  3 |     "new"
-    |     ~~~~~
-  4 |   ],
-  5 |   "testFileMatch": [
-  6 |     "examples/*.tst.*"
+  2 |   "target": "new",
+    |             ~~~~~
+  3 |   "testFileMatch": [
+  4 |     "examples/*.tst.*"
+  5 |   ]
 
-      at ./tstyche.config.json:3:5
+      at ./tstyche.config.json:2:13
 

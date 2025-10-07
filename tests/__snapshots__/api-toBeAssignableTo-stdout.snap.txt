@@ -1,21 +1,21 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBeAssignableTo
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/toBeAssignableTo.tst.ts
-  source type
-    × is assignable to target expression?
-    × is NOT assignable to target expression?
-    × is assignable to target type?
-    × is NOT assignable to target type?
-  source expression
-    × is assignable to target expression?
-    × is NOT assignable to target expression?
-    × is assignable to target type?
-    × is NOT assignable to type?
+  when source is a type
+    × is assignable to type of the target expression
+    × is NOT assignable to type of the target expression
+    × is assignable to the target type
+    × is NOT assignable to the target type
+  when source is an expression
+    × is assignable to type of the target expression
+    × is NOT assignable to type of the target expression
+    × is assignable to the target type
+    × is NOT assignable to the target type
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      8 failed, 8 total
 Assertions: 8 failed, 14 passed, 22 total
 Duration:   <<timestamp>>
-
-Ran all test files.

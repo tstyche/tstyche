@@ -1,33 +1,40 @@
+import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { Store } from "#store";
 import { Version } from "#version";
+import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 
 export class Target {
   static #rangeRegex = /^[<>]=?\d\.\d( [<>]=?\d\.\d)?$/;
 
-  static async expand(queries: Array<string>): Promise<Array<string>> {
-    const include: Array<string> = [];
-
-    for (const query of queries) {
-      if (!Target.isRange(query)) {
-        include.push(query);
-
-        continue;
-      }
-
+  static async expand(
+    range: string,
+    onDiagnostics: DiagnosticsHandler,
+    origin?: DiagnosticOrigin,
+  ): Promise<Array<string>> {
+    if (Target.isRange(range)) {
       await Store.open();
 
       if (Store.manifest != null) {
-        let versions = Object.keys(Store.manifest.resolutions).slice(0, -4);
+        let versions = [...Store.manifest.minorVersions];
 
-        for (const comparator of query.split(" ")) {
-          versions = Target.#filter(comparator, versions);
+        for (const comparator of range.split(" ")) {
+          versions = Target.#filter(comparator.trim(), versions);
+
+          if (versions.length === 0) {
+            const text = [
+              ConfigDiagnosticText.rangeDoesNotMatchSupported(range),
+              ConfigDiagnosticText.inspectSupportedVersions(),
+            ];
+
+            onDiagnostics(Diagnostic.error(text, origin));
+          }
         }
 
-        include.push(...versions);
+        return versions;
       }
     }
 
-    return include;
+    return [range];
   }
 
   static #filter(comparator: string, versions: Array<string>): Array<string> {
@@ -54,5 +61,9 @@ export class Target {
 
   static isRange(query: string) {
     return Target.#rangeRegex.test(query);
+  }
+
+  static split(range: string) {
+    return range.split(/ *\|\| */);
   }
 }

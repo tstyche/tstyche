@@ -1,0 +1,295 @@
+Error: Expression is constructable with the given argument.
+
+  27 |   test("is constructable with the given argument", () => {
+  28 |     expect(Point).type.toBeConstructableWith("0:0");
+  29 |     expect(Point).type.not.toBeConstructableWith("0:0"); // fail
+     |                            ~~~~~~~~~~~~~~~~~~~~~
+  30 |   });
+  31 | 
+  32 |   test("is constructable with the given arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:29:28 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given arguments.
+
+  32 |   test("is constructable with the given arguments", () => {
+  33 |     expect(Point).type.toBeConstructableWith(4, 5);
+  34 |     expect(Point).type.not.toBeConstructableWith(4, 5); // fail
+     |                            ~~~~~~~~~~~~~~~~~~~~~
+  35 | 
+  36 |     expect(Test).type.toBeConstructableWith("one", () => {});
+  37 |     expect(Test).type.not.toBeConstructableWith("one", () => {}); // fail
+
+       at ./__typetests__/overload-signatures.tst.ts:34:28 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Argument of type '() => void' is not assignable to parameter of type '() => Promise<unknown>'.
+Type 'void' is not assignable to type 'Promise<unknown>'.
+
+  34 |     expect(Point).type.not.toBeConstructableWith(4, 5); // fail
+  35 | 
+  36 |     expect(Test).type.toBeConstructableWith("one", () => {});
+     |                                                    ~~~~~~~~
+  37 |     expect(Test).type.not.toBeConstructableWith("one", () => {}); // fail
+  38 | 
+  39 |     expect(Test).type.toBeConstructableWith("two", () => Promise.resolve());
+
+       at ./__typetests__/overload-signatures.tst.ts:36:52 ❭ when source is an expression ❭ is constructable with the given arguments
+
+    The call would have succeeded against this implementation, but implementation signatures of overloads are not externally visible. ts(2793)
+
+      18 | 
+      19 |   constructor(name: string, cb: () => Promise<unknown>);
+      20 |   constructor(name: string, cb: () => unknown) {
+         |   ~~~~~~~~~~~
+      21 |     this.name = name;
+      22 |     this.cb = cb;
+      23 |   }
+
+           at ./__typetests__/overload-signatures.tst.ts:20:3
+
+Error: Expression is constructable with the given arguments.
+
+  38 | 
+  39 |     expect(Test).type.toBeConstructableWith("two", () => Promise.resolve());
+  40 |     expect(Test).type.not.toBeConstructableWith("two", () => Promise.resolve()); // fail
+     |                           ~~~~~~~~~~~~~~~~~~~~~
+  41 |   });
+  42 | 
+  43 |   test("is not constructable without arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:40:27 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is not constructable without arguments.
+
+Expected 1-2 arguments, but got 0.
+
+  43 |   test("is not constructable without arguments", () => {
+  44 |     expect(Point).type.not.toBeConstructableWith();
+  45 |     expect(Point).type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+     |                        ~~~~~~~~~~~~~~~~~~~~~
+  46 | 
+  47 |     expect(Test).type.not.toBeConstructableWith();
+  48 |     expect(Test).type.toBeConstructableWith(); // fail: Expected 2 arguments, but got 0.
+
+       at ./__typetests__/overload-signatures.tst.ts:45:24 ❭ when source is an expression ❭ is not constructable without arguments
+
+    An argument for 'xy' was not provided. ts(6210)
+
+       6 | 
+       7 |   constructor(x: number, y: number);
+       8 |   constructor(xy: string);
+         |               ~~~~~~~~~~
+       9 |   constructor(x: string | number, y?: number) {
+      10 |     this.x = x;
+      11 |     this.y = y;
+
+           at ./__typetests__/overload-signatures.tst.ts:8:15
+
+Error: Expression is not constructable without arguments.
+
+Expected 2 arguments, but got 0.
+
+  46 | 
+  47 |     expect(Test).type.not.toBeConstructableWith();
+  48 |     expect(Test).type.toBeConstructableWith(); // fail: Expected 2 arguments, but got 0.
+     |                       ~~~~~~~~~~~~~~~~~~~~~
+  49 |   });
+  50 | 
+  51 |   test("is not constructable with the given argument", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:48:23 ❭ when source is an expression ❭ is not constructable without arguments
+
+    An argument for 'name' was not provided. ts(6210)
+
+      17 |   cb: () => unknown | Promise<unknown>;
+      18 | 
+      19 |   constructor(name: string, cb: () => Promise<unknown>);
+         |               ~~~~~~~~~~~~
+      20 |   constructor(name: string, cb: () => unknown) {
+      21 |     this.name = name;
+      22 |     this.cb = cb;
+
+           at ./__typetests__/overload-signatures.tst.ts:19:15
+
+Error: Expression is not constructable with the given argument.
+
+Expected 2 arguments, but got 1.
+
+  51 |   test("is not constructable with the given argument", () => {
+  52 |     expect(Test).type.not.toBeConstructableWith("nope");
+  53 |     expect(Test).type.toBeConstructableWith("nope"); // fail: Expected 2 arguments, but got 1.
+     |                       ~~~~~~~~~~~~~~~~~~~~~
+  54 |   });
+  55 | 
+  56 |   test("is not constructable with the given arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:53:23 ❭ when source is an expression ❭ is not constructable with the given argument
+
+    An argument for 'cb' was not provided. ts(6210)
+
+      17 |   cb: () => unknown | Promise<unknown>;
+      18 | 
+      19 |   constructor(name: string, cb: () => Promise<unknown>);
+         |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~
+      20 |   constructor(name: string, cb: () => unknown) {
+      21 |     this.name = name;
+      22 |     this.cb = cb;
+
+           at ./__typetests__/overload-signatures.tst.ts:19:29
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  56 |   test("is not constructable with the given arguments", () => {
+  57 |     expect(Point).type.not.toBeConstructableWith(4, 5, 6);
+  58 |     expect(Point).type.toBeConstructableWith(4, 5, 6); // fail: Expected 1-2 arguments, but got 3.
+     |                                                    ~
+  59 |   });
+  60 | });
+  61 | 
+
+       at ./__typetests__/overload-signatures.tst.ts:58:52 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Type is constructable with the given argument.
+
+  73 |   test("is constructable with the given argument", () => {
+  74 |     expect<PointConstructor>().type.toBeConstructableWith("0:0");
+  75 |     expect<PointConstructor>().type.not.toBeConstructableWith("0:0"); // fail
+     |                                         ~~~~~~~~~~~~~~~~~~~~~
+  76 |   });
+  77 | 
+  78 |   test("is constructable with the given arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:75:41 ❭ when source is a type ❭ is constructable with the given argument
+
+Error: Type is constructable with the given arguments.
+
+  78 |   test("is constructable with the given arguments", () => {
+  79 |     expect<PointConstructor>().type.toBeConstructableWith(4, 5);
+  80 |     expect<PointConstructor>().type.not.toBeConstructableWith(4, 5); // fail
+     |                                         ~~~~~~~~~~~~~~~~~~~~~
+  81 | 
+  82 |     expect<TestConstructor>().type.toBeConstructableWith("one", () => {});
+  83 |     expect<TestConstructor>().type.not.toBeConstructableWith("one", () => {}); // fail
+
+       at ./__typetests__/overload-signatures.tst.ts:80:41 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is constructable with the given arguments.
+
+  81 | 
+  82 |     expect<TestConstructor>().type.toBeConstructableWith("one", () => {});
+  83 |     expect<TestConstructor>().type.not.toBeConstructableWith("one", () => {}); // fail
+     |                                        ~~~~~~~~~~~~~~~~~~~~~
+  84 | 
+  85 |     expect<TestConstructor>().type.toBeConstructableWith("two", () => Promise.resolve());
+  86 |     expect<TestConstructor>().type.not.toBeConstructableWith("two", () => Promise.resolve()); // fail
+
+       at ./__typetests__/overload-signatures.tst.ts:83:40 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is constructable with the given arguments.
+
+  84 | 
+  85 |     expect<TestConstructor>().type.toBeConstructableWith("two", () => Promise.resolve());
+  86 |     expect<TestConstructor>().type.not.toBeConstructableWith("two", () => Promise.resolve()); // fail
+     |                                        ~~~~~~~~~~~~~~~~~~~~~
+  87 |   });
+  88 | 
+  89 |   test("is not constructable without arguments", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:86:40 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is not constructable without arguments.
+
+Expected 1-2 arguments, but got 0.
+
+  89 |   test("is not constructable without arguments", () => {
+  90 |     expect<PointConstructor>().type.not.toBeConstructableWith();
+  91 |     expect<PointConstructor>().type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+     |                                     ~~~~~~~~~~~~~~~~~~~~~
+  92 | 
+  93 |     expect<TestConstructor>().type.not.toBeConstructableWith();
+  94 |     expect<TestConstructor>().type.toBeConstructableWith(); // fail: Expected 2 arguments, but got 0.
+
+       at ./__typetests__/overload-signatures.tst.ts:91:37 ❭ when source is a type ❭ is not constructable without arguments
+
+    An argument for 'xy' was not provided. ts(6210)
+
+      62 | type PointConstructor = {
+      63 |   new (x: number, y: number): Point;
+      64 |   new (xy: string): Point;
+         |        ~~~~~~~~~~
+      65 | };
+      66 | 
+      67 | type TestConstructor = {
+
+           at ./__typetests__/overload-signatures.tst.ts:64:8
+
+Error: Type is not constructable without arguments.
+
+Expected 2 arguments, but got 0.
+
+  92 | 
+  93 |     expect<TestConstructor>().type.not.toBeConstructableWith();
+  94 |     expect<TestConstructor>().type.toBeConstructableWith(); // fail: Expected 2 arguments, but got 0.
+     |                                    ~~~~~~~~~~~~~~~~~~~~~
+  95 |   });
+  96 | 
+  97 |   test("is not constructable with the given argument", () => {
+
+       at ./__typetests__/overload-signatures.tst.ts:94:36 ❭ when source is a type ❭ is not constructable without arguments
+
+    An argument for 'name' was not provided. ts(6210)
+
+      66 | 
+      67 | type TestConstructor = {
+      68 |   new (name: string, cb: () => Promise<unknown>): Test;
+         |        ~~~~~~~~~~~~
+      69 |   new (name: string, cb: () => unknown): Test;
+      70 | };
+      71 | 
+
+           at ./__typetests__/overload-signatures.tst.ts:68:8
+
+Error: Type is not constructable with the given argument.
+
+Expected 2 arguments, but got 1.
+
+   97 |   test("is not constructable with the given argument", () => {
+   98 |     expect<TestConstructor>().type.not.toBeConstructableWith("nope");
+   99 |     expect<TestConstructor>().type.toBeConstructableWith("nope"); // fail: Expected 2 arguments, but got 1.
+      |                                    ~~~~~~~~~~~~~~~~~~~~~
+  100 |   });
+  101 | 
+  102 |   test("is not constructable with the given arguments", () => {
+
+        at ./__typetests__/overload-signatures.tst.ts:99:36 ❭ when source is a type ❭ is not constructable with the given argument
+
+    An argument for 'cb' was not provided. ts(6210)
+
+      66 | 
+      67 | type TestConstructor = {
+      68 |   new (name: string, cb: () => Promise<unknown>): Test;
+         |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
+      69 |   new (name: string, cb: () => unknown): Test;
+      70 | };
+      71 | 
+
+           at ./__typetests__/overload-signatures.tst.ts:68:22
+
+Error: Type is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  102 |   test("is not constructable with the given arguments", () => {
+  103 |     expect<PointConstructor>().type.not.toBeConstructableWith(4, 5, 6);
+  104 |     expect<PointConstructor>().type.toBeConstructableWith(4, 5, 6); // fail: Expected 1-2 arguments, but got 3.
+      |                                                                 ~
+  105 |   });
+  106 | });
+  107 | 
+
+        at ./__typetests__/overload-signatures.tst.ts:104:65 ❭ when source is a type ❭ is not constructable with the given arguments
+

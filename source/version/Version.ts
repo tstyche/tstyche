@@ -3,13 +3,12 @@ export class Version {
     return !(source === target) && Version.#satisfies(source, target);
   }
 
-  static isSatisfiedWith(source: string, target: string): boolean {
-    return source === target || Version.#satisfies(source, target);
+  static isIncluded(source: string, range: Array<string>): boolean {
+    return range.some((target) => source.startsWith(target));
   }
 
-  /** @deprecated Name of this method is misleading and it is also not needed. */
-  static isVersionTag(target: string): boolean {
-    return /^\d+/.test(target);
+  static isSatisfiedWith(source: string, target: string): boolean {
+    return source === target || Version.#satisfies(source, target);
   }
 
   static #satisfies(source: string, target: string): boolean {

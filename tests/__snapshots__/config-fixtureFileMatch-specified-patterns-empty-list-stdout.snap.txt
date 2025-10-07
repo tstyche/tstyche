@@ -1,0 +1,12 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-fixtureFileMatch
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isString.test.ts
+pass ./typetests/isString.test.ts
+
+Targets:    1 passed, 1 total
+Test files: 2 passed, 2 total
+Tests:      2 passed, 2 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>

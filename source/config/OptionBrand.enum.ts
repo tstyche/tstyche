@@ -1,7 +1,8 @@
 export const enum OptionBrand {
   String = "string",
+  SemverRange = "range",
   Number = "number",
   Boolean = "boolean",
-  BareTrue = "bareTrue", // a boolean option that does not take a value and when specified is interpreted as 'true'
+  True = "true",
   List = "list",
 }

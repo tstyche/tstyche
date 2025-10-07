@@ -28,14 +28,14 @@ test("'strictFunctionTypes': true", () => {
     return a;
   }
 
-  expect<(a: string | number) => void>().type.not.toBeAssignableWith(y);
+  expect<(a: string | number) => void>().type.not.toBeAssignableFrom(y);
 });
 
 test("'useUnknownInCatchVariables': false", () => {
   try {
     //
   } catch (error) {
-    expect(error).type.toBeAny();
+    expect(error).type.toBe<unknown>();
   }
 });
 `;
@@ -46,12 +46,13 @@ test("'useUnknownInCatchVariables': false", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-sets-default-compiler-options`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

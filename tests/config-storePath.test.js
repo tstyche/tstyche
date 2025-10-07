@@ -1,4 +1,5 @@
 import os from "node:os";
+import process from "node:process";
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
@@ -7,7 +8,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -37,11 +38,12 @@ await test("'TSTYCHE_STORE_PATH' environment variable", async (t) => {
         },
       });
 
+      assert.equal(stderr, "");
+
       assert.matchObject(normalizeOutput(stdout), {
         storePath: `${os.homedir()}/.local/share/TSTyche`,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
 
@@ -57,11 +59,12 @@ await test("'TSTYCHE_STORE_PATH' environment variable", async (t) => {
         },
       });
 
+      assert.equal(stderr, "");
+
       assert.matchObject(normalizeOutput(stdout), {
         storePath: "/.sample-store/TSTyche",
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   });
@@ -84,11 +87,12 @@ await test("'TSTYCHE_STORE_PATH' environment variable", async (t) => {
         },
       });
 
+      assert.equal(stderr, "");
+
       assert.matchObject(normalizeOutput(stdout), {
         storePath: `${os.homedir()}/Library/TSTyche`,
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   });
@@ -111,11 +115,12 @@ await test("'TSTYCHE_STORE_PATH' environment variable", async (t) => {
         },
       });
 
+      assert.equal(stderr, "");
+
       assert.matchObject(normalizeOutput(stdout), {
         storePath: `${process.env["LocalAppData"]}\\TSTyche`.replace(/\\/g, "/"),
       });
 
-      assert.equal(stderr, "");
       assert.equal(exitCode, 0);
     });
   });
@@ -129,7 +134,7 @@ await test("'TSTYCHE_STORE_PATH' environment variable", async (t) => {
 
     assert.pathDoesNotExist(storeUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--install", "--target", "5.2.2"], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", "5.2.2"], {
       env: {
         ["TSTYCHE_STORE_PATH"]: "./dummy-store",
       },
@@ -137,12 +142,13 @@ await test("'TSTYCHE_STORE_PATH' environment variable", async (t) => {
 
     assert.pathExists(storeUrl);
 
+    assert.equal(stderr, "");
+
     assert.equal(
       normalizeOutput(stdout),
       "adds TypeScript 5.2.2 to <<basePath>>/tests/__fixtures__/.generated/config-storePath/dummy-store/typescript@5.2.2\n",
     );
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

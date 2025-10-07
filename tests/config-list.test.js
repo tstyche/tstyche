@@ -6,13 +6,13 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
 const isNumberTestText = `import { expect, test } from "tstyche";
 test("is number?", () => {
-  expect<number>().type.toBeNumber();
+  expect<number>().type.toBe<number>();
 });
 `;
 
@@ -43,8 +43,8 @@ await test("'--list' command line option", async (t) => {
   await t.test("lists tags and versions", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--list"]);
 
-    assert.equal(stdout, expected);
     assert.equal(stderr, "");
+    assert.equal(stdout, expected);
 
     assert.equal(exitCode, 0);
   });
@@ -52,8 +52,8 @@ await test("'--list' command line option", async (t) => {
   await t.test("when search string is specified before the option", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["isNumber", "--list"]);
 
-    assert.equal(stdout, expected);
     assert.equal(stderr, "");
+    assert.equal(stdout, expected);
 
     assert.equal(exitCode, 0);
   });
@@ -61,8 +61,8 @@ await test("'--list' command line option", async (t) => {
   await t.test("when search string is specified after the option", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--list", "isString"]);
 
-    assert.equal(stdout, expected);
     assert.equal(stderr, "");
+    assert.equal(stdout, expected);
 
     assert.equal(exitCode, 0);
   });

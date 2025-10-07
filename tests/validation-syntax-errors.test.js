@@ -17,7 +17,7 @@ test("is syntax error?", () => {
 });
 
 test("is skipped?", () => {
-  expect(one("abc")).type.toBeVoid();
+  expect(one("abc")).type.toBe<void>();
 });
 
 test("is broken?"
@@ -44,13 +44,13 @@ await test("syntax errors", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-syntax-errors-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-syntax-errors-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-syntax-errors-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-syntax-errors-stdout`,
       testFileUrl: import.meta.url,
     });
 

@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import process from "node:process";
 
 export const isWindows = process.platform === "win32";
 
@@ -24,7 +25,7 @@ export class Process {
   #onExit = new Deferred();
   #output = new Output();
 
-  #idleDelay = process.env["CI"] === "true" ? 1600 : 800;
+  #idleDelay = 800;
   /** @type {NodeJS.Timeout | undefined} */
   #idleTimeout;
 
@@ -33,8 +34,16 @@ export class Process {
    * @param {Array<string>} [args]
    * @param {{ env?: Record<string, string | undefined> }} [options]
    */
-  constructor(fixtureUrl, args, options) {
-    this.#subprocess = spawn("tstyche", args, {
+  constructor(fixtureUrl, args = [], options = {}) {
+    if (process.env["CI"] != null) {
+      this.#idleDelay *= 2; // 1600ms
+    }
+
+    if (process.env["NODE_V8_COVERAGE"] != null) {
+      this.#idleDelay *= 1.5; // 2400ms
+    }
+
+    const spawnOptions = {
       cwd: fixtureUrl,
       env: {
         ...process.env,
@@ -43,7 +52,11 @@ export class Process {
         ...options?.env,
       },
       shell: isWindows,
-    });
+    };
+
+    this.#subprocess = isWindows
+      ? spawn(["tstyche", ...args].join(" "), spawnOptions)
+      : spawn("tstyche", args, spawnOptions);
 
     this.#subprocess.stdout.setEncoding("utf8");
 
@@ -76,7 +89,7 @@ export class Process {
   }
 
   /** @type {() => Promise<Output>} */
-  async waitForIdle() {
+  waitForIdle() {
     return new Promise((resolve) => {
       this.#idleTimeout = setTimeout(() => {
         resolve(this.#output);
@@ -85,7 +98,7 @@ export class Process {
   }
 
   /** @type {(chunk: string) => Promise<void>} */
-  async write(chunk) {
+  write(chunk) {
     return new Promise((resolve, reject) => {
       this.#subprocess.stdin.write(chunk, (error) => {
         if (error != null) {

@@ -1,11 +1,12 @@
 .DS_Store
-.cache
 .generated
 .idea
-.yarn
+.yarn/*
+!.yarn/plugins
 build
 coverage
 node_modules
 *.bench.json
 *.iml
 *.log
+*.tsbuildinfo

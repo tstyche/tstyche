@@ -1,0 +1,12 @@
+Error: Type 'string' is not assignable to type 'number'. ts(2322)
+
+  4 | `;
+  5 | 
+  6 | export const a: number = "nine";
+    |              ~
+  7 | 
+  8 | for (const target of ["string", "number"]) {
+  9 |   testText += `test("is ${target} a string?", () => {
+
+      at ./__typetests__/sample.tst.ts:6:14
+

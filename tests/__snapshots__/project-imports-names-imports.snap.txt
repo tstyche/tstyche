@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/project-imports
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/named-import.tst.ts
@@ -11,8 +13,6 @@ pass ./__typetests__/named-import.tst.ts
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      3 skipped, 2 todo, 1 passed, 6 total
-Assertions: 3 skipped, 1 passed, 4 total
+Tests:      1 passed, 3 skipped, 2 todo, 6 total
+Assertions: 1 passed, 3 skipped, 4 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'named'.

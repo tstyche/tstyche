@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-describe
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 pass ./__typetests__/describe-only.tst.ts
@@ -21,8 +23,6 @@ pass ./__typetests__/describe-only.tst.ts
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      6 skipped, 2 todo, 4 passed, 12 total
-Assertions: 6 skipped, 4 passed, 10 total
+Tests:      4 passed, 6 skipped, 2 todo, 12 total
+Assertions: 4 passed, 6 skipped, 10 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'only'.

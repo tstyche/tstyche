@@ -19,12 +19,13 @@ await test("test files", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-empty-file`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -43,12 +44,13 @@ describe("parent", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-empty-describe`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -56,7 +58,7 @@ describe("parent", () => {
     const testText = `import { describe } from "tstyche";
 describe.skip("skipped describe", function () {
   test("is skipped?", () => {
-    expect<void>().type.toBeVoid();
+    expect<void>().type.toBe<void>();
   });
 });
 `;
@@ -67,12 +69,13 @@ describe.skip("skipped describe", function () {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-skipped-describe`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -88,12 +91,13 @@ describe.todo("and this one");
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-todo-describe`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -110,19 +114,20 @@ test("empty test", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-empty-test`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
   await t.test("allows a file to have only skipped test", async () => {
     const testText = `import { describe, expect, test } from "tstyche";
 test.skip("is skipped?", () => {
-  expect<void>().type.toBeVoid();
+  expect<void>().type.toBe<void>();
 });
 `;
 
@@ -132,12 +137,13 @@ test.skip("is skipped?", () => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-skipped-test`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
@@ -153,18 +159,19 @@ test.todo("and this one");
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-todo-test`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 
   await t.test("allows a file to have only expect", async () => {
     const testText = `import { describe, expect, test } from "tstyche";
-expect<number>().type.toBeNumber();
+expect<number>().type.toBe<number>();
 `;
 
     await writeFixture(fixtureUrl, {
@@ -173,12 +180,13 @@ expect<number>().type.toBeNumber();
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
+    assert.equal(stderr, "");
+
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-only-expect`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(stderr, "");
     assert.equal(exitCode, 0);
   });
 });

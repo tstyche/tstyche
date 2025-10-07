@@ -1,4 +1,4 @@
-Error: Option 'plugins' requires a value of type list.
+Error: Value for the 'plugins' option must be a list.
 
   1 | {
   2 |   "plugins": "./tstyche-plugin.js",

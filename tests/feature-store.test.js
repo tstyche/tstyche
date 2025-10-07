@@ -6,7 +6,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -31,8 +31,8 @@ await test("store", async (t) => {
 
     assert.pathExists(packageUrl);
 
-    assert.match(stdout, /^adds TypeScript 5.2.2/);
     assert.equal(stderr, "");
+    assert.match(stdout, /adds TypeScript 5.2.2/);
     assert.equal(exitCode, 0);
   });
 
@@ -51,8 +51,8 @@ await test("store", async (t) => {
 
     assert.pathExists(packageUrl);
 
-    assert.match(stdout, /^uses TypeScript 5.2.2/);
     assert.equal(stderr, "");
+    assert.match(stdout, /uses TypeScript 5.2.2/);
     assert.equal(exitCode, 0);
   });
 
@@ -73,7 +73,7 @@ await test("store", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("when target is 'current', store manifest is not generated", async () => {
+  await t.test("when target is '*', store manifest is not generated", async () => {
     const storeManifestUrl = new URL("./.store/store-manifest.json", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
@@ -82,7 +82,7 @@ await test("store", async (t) => {
 
     assert.pathDoesNotExist(storeManifestUrl);
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "current"]);
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", '"*"']);
 
     assert.pathDoesNotExist(storeManifestUrl);
 
@@ -108,7 +108,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when text is unparsable, store manifest is regenerated", async () => {
-    const storeManifest = '{"$version":"2","last';
+    const storeManifest = '{"$version":"3","last';
 
     await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: storeManifest,
@@ -128,7 +128,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when '$version' is different, store manifest is regenerated", async () => {
-    const storeManifest = { $version: "1" };
+    const storeManifest = { $version: "2" };
 
     await writeFixture(fixtureUrl, {
       [".store/store-manifest.json"]: JSON.stringify(storeManifest),
@@ -141,7 +141,7 @@ await test("store", async (t) => {
       encoding: "utf8",
     });
 
-    assert.matchObject(result, { $version: "2" });
+    assert.matchObject(result, { $version: "3" });
 
     assert.equal(stderr, "");
     assert.equal(exitCode, 0);
@@ -149,7 +149,7 @@ await test("store", async (t) => {
 
   await t.test("when 'npmRegistry' is different, store manifest is regenerated", async () => {
     const storeManifest = {
-      $version: "2",
+      $version: "3",
       npmRegistry: "https://registry.npmjs.org",
     };
 
@@ -176,7 +176,7 @@ await test("store", async (t) => {
 
   await t.test("when is up to date, store manifest is not regenerated", async () => {
     const storeManifest = JSON.stringify({
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
       npmRegistry: "https://registry.npmjs.org",
       packages: {
@@ -212,7 +212,7 @@ await test("store", async (t) => {
 
   await t.test("when is outdated, store manifest is regenerated", async () => {
     const storeManifest = JSON.stringify({
-      $version: "2",
+      $version: "3",
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
       npmRegistry: "https://registry.npmjs.org",
       packages: {

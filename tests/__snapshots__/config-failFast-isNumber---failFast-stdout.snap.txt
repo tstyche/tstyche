@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-failFast
+
 uses TypeScript <<version>>
 
 fail ./__typetests__/isNumber.tst.ts
@@ -8,5 +10,3 @@ Test files: 1 failed, 1 total
 Tests:      1 failed, 1 total
 Assertions: 1 failed, 1 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'isNumber'.

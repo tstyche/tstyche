@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "checkDeclarationFiles": {
+      "description": "Check declaration files for type errors.",
+      "default": true,
+      "type": "boolean"
+    },
+    "checkSuppressedErrors": {
+      "description": "Check errors silenced by '// @ts-expect-error' directives.",
+      "default": true,
+      "type": "boolean"
+    },
+    "failFast": {
+      "description": "Stop running tests after the first failed assertion.",
+      "default": false,
+      "type": "boolean"
+    },
+    "fixtureFileMatch": {
+      "description": "The list of glob patterns matching the fixture files.",
+      "default": [
+        "**/__fixtures__/*.{ts,tsx}",
+        "**/fixtures/*.{ts,tsx}"
+      ],
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "plugins": {
+      "description": "The list of plugins to use.",
+      "default": [],
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "rejectAnyType": {
+      "description": "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
+      "default": true,
+      "type": "boolean"
+    },
+    "rejectNeverType": {
+      "description": "Reject the 'never' type passed as an argument to the 'expect()' function or a matcher.",
+      "default": true,
+      "type": "boolean"
+    },
+    "reporters": {
+      "description": "The list of reporters to use.",
+      "default": [
+        "list",
+        "summary"
+      ],
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "rootPath": {
+      "description": "The path to a directory containing files of a test project.",
+      "default": "./",
+      "type": "string"
+    },
+    "target": {
+      "description": "The range of TypeScript versions to be tested against.",
+      "default": "*",
+      "type": "string"
+    },
+    "testFileMatch": {
+      "description": "The list of glob patterns matching the test files.",
+      "default": [
+        "**/*.tst.*",
+        "**/__typetests__/*.test.*",
+        "**/typetests/*.test.*"
+      ],
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "tsconfig": {
+      "description": "The look up strategy to be used to find the TSConfig file.",
+      "default": "findup",
+      "type": "string"
+    }
+  }
+}

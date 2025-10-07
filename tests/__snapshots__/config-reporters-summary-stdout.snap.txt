@@ -1,7 +1,7 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-reporters
+
 Targets:    1 passed, 1 total
 Test files: 2 passed, 2 total
 Tests:      2 passed, 2 total
 Assertions: 2 passed, 2 total
 Duration:   <<timestamp>>
-
-Ran all test files.

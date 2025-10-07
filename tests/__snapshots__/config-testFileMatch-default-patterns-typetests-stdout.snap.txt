@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
+
 uses TypeScript <<version>>
 
 pass ./__typetests__/isNumber.test.ts
@@ -14,5 +16,3 @@ Test files: 8 passed, 8 total
 Tests:      8 passed, 8 total
 Assertions: 8 passed, 8 total
 Duration:   <<timestamp>>
-
-Ran all test files.

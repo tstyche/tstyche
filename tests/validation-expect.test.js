@@ -11,29 +11,45 @@ await test("expect", async (t) => {
   await t.test("handles nested 'describe' or 'test'", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["handles-nested"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-handles-nested-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-handles-nested-stderr`,
       testFileUrl: import.meta.url,
     });
 
-    await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-handles-nested-stderr`,
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-handles-nested-stdout`,
       testFileUrl: import.meta.url,
     });
 
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles not supported matcher", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["matcher-not-supported"]);
+  await t.test("not supported matcher", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["not-supported-matcher"]);
 
-    await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-handles-not-supported-matcher-stdout`,
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-not-supported-matcher-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-not-supported-matcher-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("assertion chain", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["assertion-chain"]);
+
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-handles-not-supported-matcher-stderr`,
+      fileName: `${testFileName}-assertion-chain-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-assertion-chain-stdout`,
       testFileUrl: import.meta.url,
     });
 

@@ -1,0 +1,11 @@
+Error: Value for the 'fixtureFileMatch' option must be a list.
+
+  1 | {
+  2 |   "fixtureFileMatch": "fixtures",
+    |                       ~~~~~~~~~~
+  3 |   "failFast": true
+  4 | }
+  5 | 
+
+      at ./tstyche.config.json:2:23
+

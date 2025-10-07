@@ -1,35 +1,30 @@
 import type ts from "typescript";
-import { TestMemberBrand } from "./TestMemberBrand.enum.js";
-import { TestMemberFlags } from "./TestMemberFlags.enum.js";
+import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
+import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
 export interface Identifiers {
   namedImports: Record<string, string | undefined>;
   namespace: string | undefined;
 }
 
+export interface TestTreeNodeMeta {
+  brand: TestTreeNodeBrand;
+  flags: TestTreeNodeFlags;
+}
+
 export class IdentifierLookup {
   #compiler: typeof ts;
-  #identifiers: Identifiers;
+  #identifiers!: Identifiers;
   #moduleSpecifiers = ['"tstyche"', "'tstyche'"];
 
-  constructor(compiler: typeof ts, identifiers?: Identifiers) {
+  constructor(compiler: typeof ts) {
     this.#compiler = compiler;
-
-    this.#identifiers = identifiers ?? {
-      namedImports: {
-        describe: undefined,
-        expect: undefined,
-        it: undefined,
-        namespace: undefined,
-        test: undefined,
-      },
-      namespace: undefined,
-    };
   }
 
   handleImportDeclaration(node: ts.ImportDeclaration): void {
     if (
       this.#moduleSpecifiers.includes(node.moduleSpecifier.getText()) &&
+      // TODO use '.phaseModifier' after dropping support for TypeScript 5.8
       node.importClause?.isTypeOnly !== true &&
       node.importClause?.namedBindings != null
     ) {
@@ -59,8 +54,22 @@ export class IdentifierLookup {
     }
   }
 
-  resolveTestMemberMeta(node: ts.CallExpression): { brand: TestMemberBrand; flags: TestMemberFlags } | undefined {
-    let flags = TestMemberFlags.None;
+  open() {
+    this.#identifiers = {
+      namedImports: {
+        describe: undefined,
+        expect: undefined,
+        it: undefined,
+        namespace: undefined,
+        test: undefined,
+        when: undefined,
+      },
+      namespace: undefined,
+    };
+  }
+
+  resolveTestTreeNodeMeta(node: ts.CallExpression): TestTreeNodeMeta | undefined {
+    let flags = TestTreeNodeFlags.None;
     let expression = node.expression;
 
     while (this.#compiler.isPropertyAccessExpression(expression)) {
@@ -69,53 +78,54 @@ export class IdentifierLookup {
       }
 
       switch (expression.name.getText()) {
-        case "fail":
-          flags |= TestMemberFlags.Fail;
-          break;
-
         case "only":
-          flags |= TestMemberFlags.Only;
+          flags |= TestTreeNodeFlags.Only;
           break;
 
         case "skip":
-          flags |= TestMemberFlags.Skip;
+          flags |= TestTreeNodeFlags.Skip;
           break;
 
         case "todo":
-          flags |= TestMemberFlags.Todo;
+          flags |= TestTreeNodeFlags.Todo;
           break;
       }
 
       expression = expression.expression;
     }
 
-    let identifierName: string | undefined;
+    let identifier: string | undefined;
 
     if (
       this.#compiler.isPropertyAccessExpression(expression) &&
       expression.expression.getText() === this.#identifiers.namespace
     ) {
-      identifierName = expression.name.getText();
+      identifier = expression.name.getText();
     } else {
-      identifierName = Object.keys(this.#identifiers.namedImports).find(
+      identifier = Object.keys(this.#identifiers.namedImports).find(
         (key) => this.#identifiers.namedImports[key] === expression.getText(),
       );
     }
 
-    if (!identifierName) {
+    if (!identifier) {
       return;
     }
 
-    switch (identifierName) {
+    switch (identifier) {
       case "describe":
-        return { brand: TestMemberBrand.Describe, flags };
+        return { brand: TestTreeNodeBrand.Describe, flags };
 
       case "it":
+        return { brand: TestTreeNodeBrand.It, flags };
+
       case "test":
-        return { brand: TestMemberBrand.Test, flags };
+        return { brand: TestTreeNodeBrand.Test, flags };
 
       case "expect":
-        return { brand: TestMemberBrand.Expect, flags };
+        return { brand: TestTreeNodeBrand.Expect, flags };
+
+      case "when":
+        return { brand: TestTreeNodeBrand.When, flags };
     }
 
     return;

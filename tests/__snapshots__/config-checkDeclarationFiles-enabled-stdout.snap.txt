@@ -1,0 +1,13 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-checkDeclarationFiles
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/isNumber.test.ts
+pass ./__typetests__/isSample.test.ts
+pass ./__typetests__/isString.test.ts
+
+Targets:    1 failed, 1 total
+Test files: 3 passed, 3 total
+Tests:      2 passed, 2 total
+Assertions: 4 passed, 4 total
+Duration:   <<timestamp>>

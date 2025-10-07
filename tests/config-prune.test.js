@@ -5,7 +5,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -38,7 +38,7 @@ await test("'--prune' command line option", async (t) => {
 
   for (const { args, testCase } of testCases) {
     await t.test(testCase, async () => {
-      const storeManifest = { $version: "2" };
+      const storeManifest = { $version: "3" };
       const storeUrl = new URL("./.store", fixtureUrl);
 
       await writeFixture(fixtureUrl, {
@@ -52,8 +52,8 @@ await test("'--prune' command line option", async (t) => {
 
       assert.pathDoesNotExist(storeUrl);
 
-      assert.equal(stdout, "");
       assert.equal(stderr, "");
+      assert.equal(stdout, "");
       assert.equal(exitCode, 0);
     });
   }
@@ -65,8 +65,8 @@ await test("'--prune' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--prune"]);
 
-    assert.equal(stdout, "");
     assert.equal(stderr, "");
+    assert.equal(stdout, "");
     assert.equal(exitCode, 0);
   });
 });

@@ -1,3 +1,5 @@
+<gray>····</> TSTyche <<version>><gray> at <<basePath>>/tests/__fixtures__/.generated/config-noColor</>
+
 <blue>uses</> TypeScript <<version>>
 
 <green>pass</> <gray>./__typetests__/</>dummy.test.ts
@@ -8,5 +10,3 @@ Test files: <green>1 passed</>, 1 total
 Tests:      <green>1 passed</>, 1 total
 Assertions: <green>1 passed</>, 1 total
 Duration:   <<timestamp>>
-
-<gray>Ran </><gray>all test files.</>

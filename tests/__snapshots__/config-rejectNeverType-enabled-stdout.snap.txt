@@ -1,25 +1,25 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-rejectNeverType
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/isRejected.test.ts
   argument for 'source'
     × rejects the 'never' type
-    + allows '.toBeNever()'
+    + allows '.toBe<never>()'
     × allows '.toRaiseError()', but not '.not.toRaiseError()'
   type argument for 'Source'
     × allows only explicit 'never'
-    + allows '.toBeNever()'
+    + allows '.toBe<never>()'
     × allows '.toRaiseError()', but not '.not.toRaiseError()'
   argument for 'target'
     × rejects the 'never' type
-    + allows '.toBeNever()'
+    + allows '.toBe<never>()'
   type argument for 'Target'
     × allows only explicit 'never'
-    + allows '.toBeNever()'
+    + allows '.toBe<never>()'
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      6 failed, 4 passed, 10 total
 Assertions: 8 failed, 8 passed, 16 total
 Duration:   <<timestamp>>
-
-Ran all test files.

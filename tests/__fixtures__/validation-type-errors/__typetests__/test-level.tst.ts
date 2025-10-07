@@ -1,13 +1,19 @@
 import { expect, test } from "tstyche";
 
+let a: string;
+
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 
 test.skip("skipped type error?", () => {
-  expect<string>().toBeString();
+  a = 123;
+
+  expect<string>().type.toBe<string>();
 });
 
 test("reported type error?", () => {
-  expect<string>().toBeString();
+  a = false;
+
+  expect<string>().type.toBe<string>();
 });

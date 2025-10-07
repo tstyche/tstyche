@@ -1,51 +1,75 @@
-import streamConsumers from "node:stream/consumers";
-
-export type ExtractedFile = {
-  contents: Uint8Array;
-  name: string;
-};
-
 export class TarReader {
-  static #textDecoder = new TextDecoder();
+  #leftover: Uint8Array<ArrayBufferLike> = new Uint8Array(0);
+  #reader: ReadableStreamDefaultReader<Uint8Array>;
+  #textDecoder = new TextDecoder();
 
-  static async *extract(stream: ReadableStream): AsyncIterable<ExtractedFile> {
-    const decompressedStream = stream.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
+  constructor(stream: ReadableStream) {
+    this.#reader = stream.getReader();
+  }
 
-    // TODO consider consuming a stream directly instead of converting it into a buffer
-    const buffer = await streamConsumers.arrayBuffer(decompressedStream);
+  async *extract(): AsyncIterable<{ name: string; content: Uint8Array }> {
+    while (true) {
+      const header = await this.#read(512);
 
-    let offset = 0;
-
-    while (offset < buffer.byteLength - 512) {
-      const name = TarReader.#read(buffer, offset, 100);
-
-      if (name.length === 0) {
+      if (this.#isEndOfArchive(header)) {
         break;
       }
 
-      const size = Number.parseInt(TarReader.#read(buffer, offset + 124, 12), 8);
+      const name = this.#textDecoder.decode(header.subarray(0, 100)).replace(/\0.*$/, "");
+      const sizeOctal = this.#textDecoder.decode(header.subarray(124, 136)).replace(/\0.*$/, "").trim();
+      const size = Number.parseInt(sizeOctal, 8);
+      const content = await this.#read(size);
 
-      const contents = new Uint8Array(buffer, offset + 512, size);
+      yield { name, content };
 
-      yield { name, contents };
+      // Skip padding to next 512 block
+      if (size % 512 !== 0) {
+        const toSkip = 512 - (size % 512);
 
-      offset += 512 + 512 * Math.trunc(size / 512);
-
-      if (size % 512) {
-        offset += 512;
+        await this.#read(toSkip);
       }
     }
   }
 
-  static #read(buffer: ArrayBuffer, byteOffset: number, length: number) {
-    let view = new Uint8Array(buffer, byteOffset, length);
+  #isEndOfArchive(entry: Uint8Array) {
+    return entry.every((byte) => byte === 0);
+  }
 
-    const zeroIndex = view.indexOf(0);
+  async #read(n: number): Promise<Uint8Array> {
+    const result = new Uint8Array(n);
+    let filled = 0;
 
-    if (zeroIndex !== -1) {
-      view = view.subarray(0, zeroIndex);
+    if (this.#leftover.length > 0) {
+      const toCopy = Math.min(this.#leftover.length, n);
+
+      result.set(this.#leftover.subarray(0, toCopy), filled);
+      filled += toCopy;
+      this.#leftover = this.#leftover.subarray(toCopy);
+
+      if (filled === n) {
+        return result;
+      }
     }
 
-    return TarReader.#textDecoder.decode(view);
+    while (filled < n) {
+      const { value, done } = await this.#reader.read();
+
+      if (done) {
+        break;
+      }
+
+      const toCopy = Math.min(value.length, n - filled);
+
+      result.set(value.subarray(0, toCopy), filled);
+      filled += toCopy;
+
+      if (toCopy < value.length) {
+        this.#leftover = value.subarray(toCopy);
+
+        break;
+      }
+    }
+
+    return result.subarray(0, filled);
   }
 }

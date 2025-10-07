@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toHaveProperty
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/index-signatures.tst.ts
@@ -16,5 +18,3 @@ Test files: 1 failed, 1 total
 Tests:      8 failed, 8 total
 Assertions: 20 failed, 20 passed, 40 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'index-signatures.tst.ts'.

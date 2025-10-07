@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-noInteractive
+
 uses TypeScript <<version>>
 
 runs ./__typetests__/dummy.test.ts
@@ -11,5 +13,3 @@ Test files: 1 passed, 1 total
 Tests:      1 passed, 1 total
 Assertions: 1 passed, 1 total
 Duration:   <<timestamp>>
-
-Ran all test files.

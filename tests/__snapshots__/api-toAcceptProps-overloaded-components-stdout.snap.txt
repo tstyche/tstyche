@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toAcceptProps
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/overloaded-components.tst.tsx
@@ -16,5 +18,3 @@ Test files: 1 failed, 1 total
 Tests:      7 failed, 7 total
 Assertions: 9 failed, 9 passed, 18 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'overloaded-components'.

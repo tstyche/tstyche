@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
+
 uses TypeScript <<version>>
 
 pass ./packages/core/typetests/awaitable.test.ts
@@ -12,5 +14,3 @@ Test files: 6 passed, 6 total
 Tests:      6 passed, 6 total
 Assertions: 6 passed, 6 total
 Duration:   <<timestamp>>
-
-Ran all test files.

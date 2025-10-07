@@ -1,14 +1,15 @@
 import type { ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { CancellationHandler, ResultHandler, TestTreeHandler } from "#handlers";
+import { FileLocation } from "#file";
+import { CancellationHandler, ResultHandler } from "#handlers";
+import { OutputService, prologueText } from "#output";
 import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
 import { Store } from "#store";
-import { Task } from "#task";
 import { CancellationReason, CancellationToken } from "#token";
 import { WatchService } from "#watch";
-import { TaskRunner } from "./TaskRunner.js";
+import { FileRunner } from "./FileRunner.js";
 
 type ReporterConstructor = new (resolvedConfig: ResolvedConfig) => Reporter;
 
@@ -24,9 +25,6 @@ export class Runner {
   #addHandlers(cancellationToken: CancellationToken) {
     const resultHandler = new ResultHandler();
     this.#eventEmitter.addHandler(resultHandler);
-
-    const testTreeHandler = new TestTreeHandler();
-    this.#eventEmitter.addHandler(testTreeHandler);
 
     if (this.#resolvedConfig.failFast) {
       const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.FailFast);
@@ -63,40 +61,44 @@ export class Runner {
     }
   }
 
-  async run(testFiles: Array<string | URL | Task>, cancellationToken = new CancellationToken()): Promise<void> {
-    const tasks = testFiles.map((testFile) => (testFile instanceof Task ? testFile : new Task(testFile)));
+  async run(files: Array<string | URL | FileLocation>, cancellationToken = new CancellationToken()): Promise<void> {
+    if (!this.#resolvedConfig.watch) {
+      OutputService.writeMessage(prologueText(Runner.version, this.#resolvedConfig.rootPath));
+    }
+
+    const fileLocations = files.map((file) => (file instanceof FileLocation ? file : new FileLocation(file)));
 
     this.#addHandlers(cancellationToken);
     await this.#addReporters();
 
-    await this.#run(tasks, cancellationToken);
+    await this.#run(fileLocations, cancellationToken);
 
     if (this.#resolvedConfig.watch) {
-      await this.#watch(tasks, cancellationToken);
+      await this.#watch(fileLocations, cancellationToken);
     }
 
     this.#eventEmitter.removeReporters();
     this.#eventEmitter.removeHandlers();
   }
 
-  async #run(tasks: Array<Task>, cancellationToken: CancellationToken) {
-    const result = new Result(this.#resolvedConfig, tasks);
+  async #run(files: Array<FileLocation>, cancellationToken: CancellationToken) {
+    const result = new Result(files);
 
     EventEmitter.dispatch(["run:start", { result }]);
 
     for (const target of this.#resolvedConfig.target) {
-      const targetResult = new TargetResult(target, tasks);
+      const targetResult = new TargetResult(target, files);
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
       const compiler = await Store.load(target);
 
       if (compiler) {
-        // TODO to improve performance, task runners (or even test projects) could be cached in the future
-        const taskRunner = new TaskRunner(this.#resolvedConfig, compiler);
+        // TODO to improve performance, runners (or even test projects) could be cached in the future
+        const fileRunner = new FileRunner(compiler, this.#resolvedConfig);
 
-        for (const task of tasks) {
-          taskRunner.run(task, cancellationToken);
+        for (const file of files) {
+          await fileRunner.run(file, cancellationToken);
         }
       }
 
@@ -105,13 +107,13 @@ export class Runner {
 
     EventEmitter.dispatch(["run:end", { result }]);
 
-    if (cancellationToken.reason === CancellationReason.FailFast) {
+    if (cancellationToken.getReason() === CancellationReason.FailFast) {
       cancellationToken.reset();
     }
   }
 
-  async #watch(testFiles: Array<Task>, cancellationToken: CancellationToken) {
-    const watchService = new WatchService(this.#resolvedConfig, testFiles);
+  async #watch(files: Array<FileLocation>, cancellationToken: CancellationToken) {
+    const watchService = new WatchService(this.#resolvedConfig, files);
 
     for await (const testFiles of watchService.watch(cancellationToken)) {
       await this.#run(testFiles, cancellationToken);

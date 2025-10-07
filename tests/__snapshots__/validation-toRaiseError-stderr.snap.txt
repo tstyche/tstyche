@@ -13,7 +13,7 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 Error: An argument for 'target' must be a string, number or regular expression literal.
 
   14 |   test("must be of type 'string | number'", () => {
-  15 |     // @ts-expect-error testing purpose
+  15 |     // @ts-expect-error!
   16 |     expect(check(123)).type.toRaiseError(true, [2345]);
      |                                          ~~~~
   17 |   });
@@ -25,7 +25,7 @@ Error: An argument for 'target' must be a string, number or regular expression l
 Error: An argument for 'target' must be a string, number or regular expression literal.
 
   14 |   test("must be of type 'string | number'", () => {
-  15 |     // @ts-expect-error testing purpose
+  15 |     // @ts-expect-error!
   16 |     expect(check(123)).type.toRaiseError(true, [2345]);
      |                                                ~~~~~~
   17 |   });

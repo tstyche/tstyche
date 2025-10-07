@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
+import { getDiagnosticMessageText, getTextSpanEnd, isDiagnosticWithLocation } from "./helpers.js";
 
 export class Diagnostic {
   category: DiagnosticCategory;
@@ -15,10 +16,7 @@ export class Diagnostic {
     this.origin = origin;
   }
 
-  add(options: {
-    code?: string | undefined;
-    related?: Array<Diagnostic> | undefined;
-  }): this {
+  add(options: { code?: string | undefined; related?: Array<Diagnostic> | undefined }): this {
     if (options.code != null) {
       this.code = options.code;
     }
@@ -43,8 +41,8 @@ export class Diagnostic {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
-      if (diagnostic.file != null && diagnostic.start != null && diagnostic.length != null) {
-        origin = new DiagnosticOrigin(diagnostic.start, diagnostic.start + diagnostic.length, diagnostic.file);
+      if (isDiagnosticWithLocation(diagnostic)) {
+        origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), diagnostic.file);
       }
 
       let related: Array<Diagnostic> | undefined;
@@ -53,25 +51,10 @@ export class Diagnostic {
         related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
       }
 
-      const text =
-        typeof diagnostic.messageText === "string"
-          ? diagnostic.messageText
-          : Diagnostic.#toMessageText(diagnostic.messageText);
+      const text = getDiagnosticMessageText(diagnostic);
 
       return new Diagnostic(text, DiagnosticCategory.Error, origin).add({ code, related });
     });
-  }
-
-  static #toMessageText(chain: ts.DiagnosticMessageChain): Array<string> {
-    const result = [chain.messageText];
-
-    if (chain.next != null) {
-      for (const nextChain of chain.next) {
-        result.push(...Diagnostic.#toMessageText(nextChain));
-      }
-    }
-
-    return result;
   }
 
   static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {

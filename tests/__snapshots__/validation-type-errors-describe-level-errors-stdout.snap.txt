@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-type-errors
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/describe-level.tst.ts
@@ -9,8 +11,6 @@ fail ./__typetests__/describe-level.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      1 skipped, 2 passed, 3 total
-Assertions: 2 passed, 2 total
+Tests:      2 passed, 1 skipped, 3 total
+Assertions: 2 passed, 1 skipped, 3 total
 Duration:   <<timestamp>>
-
-Ran test files matching 'describe-level'.

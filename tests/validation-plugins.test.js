@@ -6,7 +6,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
-  expect<string>().type.toBeString();
+  expect<string>().type.toBe<string>();
 });
 `;
 
@@ -25,17 +25,16 @@ await test("'--plugins' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--plugins"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: Option '--plugins' expects a value.",
       "",
-      "Option '--plugins' requires a value of type list.",
+      "Value for the '--plugins' option must be a list.",
       "",
       "",
     ].join("\n");
 
     assert.equal(stderr, expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -46,8 +45,6 @@ await test("'--plugins' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--plugins", "./tstyche-plugin.js"]);
 
-    assert.equal(stdout, "");
-
     const expected = [
       "Error: The specified module '<<baseUrl>>/tests/__fixtures__/.generated/validation-plugins/tstyche-plugin.js' was not found.",
       "",
@@ -55,6 +52,7 @@ await test("'--plugins' command line option", async (t) => {
     ].join("\n");
 
     assert.equal(normalizeOutput(stderr), expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -66,11 +64,10 @@ await test("'--plugins' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--plugins", "./tstyche-plugin.js,not-plugin"]);
 
-    assert.equal(stdout, "");
-
     const expected = ["Error: The specified module 'not-plugin' was not found.", "", ""].join("\n");
 
     assert.equal(normalizeOutput(stderr), expected);
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });
@@ -93,13 +90,12 @@ await test("'plugins' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-option-value-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -117,13 +113,12 @@ await test("'plugins' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-wrong-list-item-type-stderr`,
       testFileUrl: import.meta.url,
     });
 
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 
@@ -141,12 +136,12 @@ await test("'plugins' configuration file option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
-    assert.equal(stdout, "");
-
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-module-is-not-found-stderr`,
       testFileUrl: import.meta.url,
     });
+
+    assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
 });

@@ -1,0 +1,196 @@
+Error: Expression is constructable with the given argument.
+
+  20 |   test("is constructable with the given argument", () => {
+  21 |     expect(First).type.toBeConstructableWith(["a", "b", "c"]);
+  22 |     expect(First).type.not.toBeConstructableWith(["a", "b", "c"]); // fail
+     |                            ~~~~~~~~~~~~~~~~~~~~~
+  23 |   });
+  24 | 
+  25 |   test("is not constructable without arguments", () => {
+
+       at ./__typetests__/generic-classes.tst.ts:22:28 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is not constructable without arguments.
+
+Expected 1 arguments, but got 0.
+
+  24 | 
+  25 |   test("is not constructable without arguments", () => {
+  26 |     expect(First).type.toBeConstructableWith();
+     |                        ~~~~~~~~~~~~~~~~~~~~~
+  27 |     expect(First).type.not.toBeConstructableWith(); // fail: Expected 1 arguments, but got 0.
+  28 |   });
+  29 | 
+
+       at ./__typetests__/generic-classes.tst.ts:26:24 ❭ when source is an expression ❭ is not constructable without arguments
+
+    An argument for 'a' was not provided. ts(6210)
+
+      3 | class First<T> {
+      4 |   a: T;
+      5 |   constructor(a: T) {
+        |               ~~~~
+      6 |     this.a = a;
+      7 |   }
+      8 | }
+
+          at ./__typetests__/generic-classes.tst.ts:5:15
+
+Error: Expression is constructable with the given arguments.
+
+  30 |   test("is constructable with the given arguments", () => {
+  31 |     expect(Second).type.toBeConstructableWith(["1", "2"], (_n: string) => {});
+  32 |     expect(Second).type.not.toBeConstructableWith(["1", "2"], (_n: string) => {}); // fail
+     |                             ~~~~~~~~~~~~~~~~~~~~~
+  33 | 
+  34 |     expect(Second<number | string>).type.toBeConstructableWith(["1", 2], (_n: string | number) => {});
+  35 |     expect(Second<number | string>).type.not.toBeConstructableWith(["1", 2], (_n: string | number) => {}); // fail
+
+       at ./__typetests__/generic-classes.tst.ts:32:29 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  33 | 
+  34 |     expect(Second<number | string>).type.toBeConstructableWith(["1", 2], (_n: string | number) => {});
+  35 |     expect(Second<number | string>).type.not.toBeConstructableWith(["1", 2], (_n: string | number) => {}); // fail
+     |                                              ~~~~~~~~~~~~~~~~~~~~~
+  36 |   });
+  37 | 
+  38 |   test("is not constructable with the given arguments", () => {
+
+       at ./__typetests__/generic-classes.tst.ts:35:46 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Type 'string' is not assignable to type 'number'.
+
+  38 |   test("is not constructable with the given arguments", () => {
+  39 |     expect(Second).type.not.toBeConstructableWith(["1", "2"], (_n: number) => {});
+  40 |     expect(Second).type.toBeConstructableWith(["1", "2"], (_n: number) => {}); // fail
+     |                                                ~~~
+  41 | 
+  42 |     expect(Second).type.not.toBeConstructableWith(["1", 2], (_n: string) => {});
+  43 |     expect(Second).type.toBeConstructableWith(["1", 2], (_n: string) => {}); // fail
+
+       at ./__typetests__/generic-classes.tst.ts:40:48 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Type 'string' is not assignable to type 'number'.
+
+  38 |   test("is not constructable with the given arguments", () => {
+  39 |     expect(Second).type.not.toBeConstructableWith(["1", "2"], (_n: number) => {});
+  40 |     expect(Second).type.toBeConstructableWith(["1", "2"], (_n: number) => {}); // fail
+     |                                                     ~~~
+  41 | 
+  42 |     expect(Second).type.not.toBeConstructableWith(["1", 2], (_n: string) => {});
+  43 |     expect(Second).type.toBeConstructableWith(["1", 2], (_n: string) => {}); // fail
+
+       at ./__typetests__/generic-classes.tst.ts:40:53 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Type 'number' is not assignable to type 'string'.
+
+  41 | 
+  42 |     expect(Second).type.not.toBeConstructableWith(["1", 2], (_n: string) => {});
+  43 |     expect(Second).type.toBeConstructableWith(["1", 2], (_n: string) => {}); // fail
+     |                                                     ~
+  44 |   });
+  45 | });
+  46 | 
+
+       at ./__typetests__/generic-classes.tst.ts:43:53 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Type is constructable with the given argument.
+
+  51 |   test("is constructable with the given argument", () => {
+  52 |     expect<FirstConstructor>().type.toBeConstructableWith(["a", "b", "c"]);
+  53 |     expect<FirstConstructor>().type.not.toBeConstructableWith(["a", "b", "c"]); // fail
+     |                                         ~~~~~~~~~~~~~~~~~~~~~
+  54 |   });
+  55 | 
+  56 |   test("is not constructable without arguments", () => {
+
+       at ./__typetests__/generic-classes.tst.ts:53:41 ❭ when source is a type ❭ is constructable with the given argument
+
+Error: Type is not constructable without arguments.
+
+Expected 1 arguments, but got 0.
+
+  55 | 
+  56 |   test("is not constructable without arguments", () => {
+  57 |     expect<FirstConstructor>().type.toBeConstructableWith();
+     |                                     ~~~~~~~~~~~~~~~~~~~~~
+  58 |     expect<FirstConstructor>().type.not.toBeConstructableWith(); // fail: Expected 1 arguments, but got 0.
+  59 |   });
+  60 | 
+
+       at ./__typetests__/generic-classes.tst.ts:57:37 ❭ when source is a type ❭ is not constructable without arguments
+
+    An argument for 'a' was not provided. ts(6210)
+
+      45 | });
+      46 | 
+      47 | type FirstConstructor = new <T>(a: T) => First<T>;
+         |                                 ~~~~
+      48 | type SecondConstructor = new <T>(target: Array<T>, callback: (element: T) => void) => Second<T>;
+      49 | 
+      50 | describe("when source is a type", () => {
+
+           at ./__typetests__/generic-classes.tst.ts:47:33
+
+Error: Type is constructable with the given arguments.
+
+  61 |   test("is constructable with the given arguments", () => {
+  62 |     expect<SecondConstructor>().type.toBeConstructableWith(["1", "2"], (_n: string) => {});
+  63 |     expect<SecondConstructor>().type.not.toBeConstructableWith(["1", "2"], (_n: string) => {}); // fail
+     |                                          ~~~~~~~~~~~~~~~~~~~~~
+  64 |   });
+  65 | 
+  66 |   test("is not constructable with the given arguments", () => {
+
+       at ./__typetests__/generic-classes.tst.ts:63:42 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Type 'string' is not assignable to type 'number'.
+
+  66 |   test("is not constructable with the given arguments", () => {
+  67 |     expect<SecondConstructor>().type.not.toBeConstructableWith(["1", "2"], (_n: number) => {});
+  68 |     expect<SecondConstructor>().type.toBeConstructableWith(["1", "2"], (_n: number) => {}); // fail
+     |                                                             ~~~
+  69 | 
+  70 |     expect<SecondConstructor>().type.not.toBeConstructableWith(["1", 2], (_n: string) => {});
+  71 |     expect<SecondConstructor>().type.toBeConstructableWith(["1", 2], (_n: string) => {}); // fail
+
+       at ./__typetests__/generic-classes.tst.ts:68:61 ❭ when source is a type ❭ is not constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Type 'string' is not assignable to type 'number'.
+
+  66 |   test("is not constructable with the given arguments", () => {
+  67 |     expect<SecondConstructor>().type.not.toBeConstructableWith(["1", "2"], (_n: number) => {});
+  68 |     expect<SecondConstructor>().type.toBeConstructableWith(["1", "2"], (_n: number) => {}); // fail
+     |                                                                  ~~~
+  69 | 
+  70 |     expect<SecondConstructor>().type.not.toBeConstructableWith(["1", 2], (_n: string) => {});
+  71 |     expect<SecondConstructor>().type.toBeConstructableWith(["1", 2], (_n: string) => {}); // fail
+
+       at ./__typetests__/generic-classes.tst.ts:68:66 ❭ when source is a type ❭ is not constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Type 'number' is not assignable to type 'string'.
+
+  69 | 
+  70 |     expect<SecondConstructor>().type.not.toBeConstructableWith(["1", 2], (_n: string) => {});
+  71 |     expect<SecondConstructor>().type.toBeConstructableWith(["1", 2], (_n: string) => {}); // fail
+     |                                                                  ~
+  72 |   });
+  73 | });
+  74 | 
+
+       at ./__typetests__/generic-classes.tst.ts:71:66 ❭ when source is a type ❭ is not constructable with the given arguments
+

@@ -1,0 +1,718 @@
+Error: Expression is constructable without arguments.
+
+  45 |   test("is constructable without arguments", () => {
+  46 |     expect(Zero).type.toBeConstructableWith();
+  47 |     expect(Zero).type.not.toBeConstructableWith(); // fail
+     |                           ~~~~~~~~~~~~~~~~~~~~~
+  48 | 
+  49 |     expect(OptionalFirst).type.toBeConstructableWith();
+  50 |     expect(OptionalFirst).type.not.toBeConstructableWith(); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:47:27 ❭ when source is an expression ❭ is constructable without arguments
+
+Error: Expression is constructable without arguments.
+
+  48 | 
+  49 |     expect(OptionalFirst).type.toBeConstructableWith();
+  50 |     expect(OptionalFirst).type.not.toBeConstructableWith(); // fail
+     |                                    ~~~~~~~~~~~~~~~~~~~~~
+  51 | 
+  52 |     expect(DefaultFirst).type.toBeConstructableWith();
+  53 |     expect(DefaultFirst).type.not.toBeConstructableWith(); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:50:36 ❭ when source is an expression ❭ is constructable without arguments
+
+Error: Expression is constructable without arguments.
+
+  51 | 
+  52 |     expect(DefaultFirst).type.toBeConstructableWith();
+  53 |     expect(DefaultFirst).type.not.toBeConstructableWith(); // fail
+     |                                   ~~~~~~~~~~~~~~~~~~~~~
+  54 |   });
+  55 | 
+  56 |   test("is not constructable without arguments", () => {
+
+       at ./__typetests__/parameter-arity.tst.ts:53:35 ❭ when source is an expression ❭ is constructable without arguments
+
+Error: Expression is not constructable without arguments.
+
+Expected 1 arguments, but got 0.
+
+  56 |   test("is not constructable without arguments", () => {
+  57 |     expect(One).type.not.toBeConstructableWith();
+  58 |     expect(One).type.toBeConstructableWith(); // fail: Expected 1 arguments, but got 0.
+     |                      ~~~~~~~~~~~~~~~~~~~~~
+  59 | 
+  60 |     expect(OptionalSecond).type.not.toBeConstructableWith();
+  61 |     expect(OptionalSecond).type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+
+       at ./__typetests__/parameter-arity.tst.ts:58:22 ❭ when source is an expression ❭ is not constructable without arguments
+
+    An argument for 'a' was not provided. ts(6210)
+
+       5 | class One {
+       6 |   a: string;
+       7 |   constructor(a: string) {
+         |               ~~~~~~~~~
+       8 |     this.a = a;
+       9 |   }
+      10 | }
+
+           at ./__typetests__/parameter-arity.tst.ts:7:15
+
+Error: Expression is not constructable without arguments.
+
+Expected 1-2 arguments, but got 0.
+
+  59 | 
+  60 |     expect(OptionalSecond).type.not.toBeConstructableWith();
+  61 |     expect(OptionalSecond).type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+     |                                 ~~~~~~~~~~~~~~~~~~~~~
+  62 | 
+  63 |     expect(DefaultSecond).type.not.toBeConstructableWith();
+  64 |     expect(DefaultSecond).type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+
+       at ./__typetests__/parameter-arity.tst.ts:61:33 ❭ when source is an expression ❭ is not constructable without arguments
+
+    An argument for 'a' was not provided. ts(6210)
+
+      20 |   a: string;
+      21 |   b: number | undefined;
+      22 |   constructor(a: string, b?: number) {
+         |               ~~~~~~~~~
+      23 |     this.a = a;
+      24 |     this.b = b;
+      25 |   }
+
+           at ./__typetests__/parameter-arity.tst.ts:22:15
+
+Error: Expression is not constructable without arguments.
+
+Expected 1-2 arguments, but got 0.
+
+  62 | 
+  63 |     expect(DefaultSecond).type.not.toBeConstructableWith();
+  64 |     expect(DefaultSecond).type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+     |                                ~~~~~~~~~~~~~~~~~~~~~
+  65 |   });
+  66 | 
+  67 |   test("is constructable with the given argument", () => {
+
+       at ./__typetests__/parameter-arity.tst.ts:64:32 ❭ when source is an expression ❭ is not constructable without arguments
+
+    An argument for 'a' was not provided. ts(6210)
+
+      36 |   a: string;
+      37 |   b: number;
+      38 |   constructor(a: string, b = 123) {
+         |               ~~~~~~~~~
+      39 |     this.a = a;
+      40 |     this.b = b;
+      41 |   }
+
+           at ./__typetests__/parameter-arity.tst.ts:38:15
+
+Error: Expression is constructable with the given argument.
+
+  67 |   test("is constructable with the given argument", () => {
+  68 |     expect(One).type.toBeConstructableWith("one");
+  69 |     expect(One).type.not.toBeConstructableWith("one"); // fail
+     |                          ~~~~~~~~~~~~~~~~~~~~~
+  70 | 
+  71 |     expect(OptionalFirst).type.toBeConstructableWith(undefined);
+  72 |     expect(OptionalFirst).type.not.toBeConstructableWith(undefined); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:69:26 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given argument.
+
+  70 | 
+  71 |     expect(OptionalFirst).type.toBeConstructableWith(undefined);
+  72 |     expect(OptionalFirst).type.not.toBeConstructableWith(undefined); // fail
+     |                                    ~~~~~~~~~~~~~~~~~~~~~
+  73 | 
+  74 |     expect(OptionalFirst).type.toBeConstructableWith("one");
+  75 |     expect(OptionalFirst).type.not.toBeConstructableWith("one"); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:72:36 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given argument.
+
+  73 | 
+  74 |     expect(OptionalFirst).type.toBeConstructableWith("one");
+  75 |     expect(OptionalFirst).type.not.toBeConstructableWith("one"); // fail
+     |                                    ~~~~~~~~~~~~~~~~~~~~~
+  76 | 
+  77 |     expect(OptionalSecond).type.toBeConstructableWith("one");
+  78 |     expect(OptionalSecond).type.not.toBeConstructableWith("one"); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:75:36 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given argument.
+
+  76 | 
+  77 |     expect(OptionalSecond).type.toBeConstructableWith("one");
+  78 |     expect(OptionalSecond).type.not.toBeConstructableWith("one"); // fail
+     |                                     ~~~~~~~~~~~~~~~~~~~~~
+  79 | 
+  80 |     expect(DefaultFirst).type.toBeConstructableWith(undefined);
+  81 |     expect(DefaultFirst).type.not.toBeConstructableWith(undefined); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:78:37 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given argument.
+
+  79 | 
+  80 |     expect(DefaultFirst).type.toBeConstructableWith(undefined);
+  81 |     expect(DefaultFirst).type.not.toBeConstructableWith(undefined); // fail
+     |                                   ~~~~~~~~~~~~~~~~~~~~~
+  82 | 
+  83 |     expect(DefaultFirst).type.toBeConstructableWith("one");
+  84 |     expect(DefaultFirst).type.not.toBeConstructableWith("one"); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:81:35 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given argument.
+
+  82 | 
+  83 |     expect(DefaultFirst).type.toBeConstructableWith("one");
+  84 |     expect(DefaultFirst).type.not.toBeConstructableWith("one"); // fail
+     |                                   ~~~~~~~~~~~~~~~~~~~~~
+  85 | 
+  86 |     expect(DefaultSecond).type.toBeConstructableWith("one");
+  87 |     expect(DefaultSecond).type.not.toBeConstructableWith("one"); // fail
+
+       at ./__typetests__/parameter-arity.tst.ts:84:35 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is constructable with the given argument.
+
+  85 | 
+  86 |     expect(DefaultSecond).type.toBeConstructableWith("one");
+  87 |     expect(DefaultSecond).type.not.toBeConstructableWith("one"); // fail
+     |                                    ~~~~~~~~~~~~~~~~~~~~~
+  88 |   });
+  89 | 
+  90 |   test("is not constructable with the given argument", () => {
+
+       at ./__typetests__/parameter-arity.tst.ts:87:36 ❭ when source is an expression ❭ is constructable with the given argument
+
+Error: Expression is not constructable with the given argument.
+
+Expected 0 arguments, but got 1.
+
+  90 |   test("is not constructable with the given argument", () => {
+  91 |     expect(Zero).type.not.toBeConstructableWith("one");
+  92 |     expect(Zero).type.toBeConstructableWith("one"); // fail: Expected 0 arguments, but got 1.
+     |                                             ~~~~~
+  93 |   });
+  94 | 
+  95 |   test("is constructable with the given arguments", () => {
+
+       at ./__typetests__/parameter-arity.tst.ts:92:45 ❭ when source is an expression ❭ is not constructable with the given argument
+
+Error: Expression is constructable with the given arguments.
+
+   95 |   test("is constructable with the given arguments", () => {
+   96 |     expect(OptionalSecond).type.toBeConstructableWith("one", undefined);
+   97 |     expect(OptionalSecond).type.not.toBeConstructableWith("one", undefined); // fail
+      |                                     ~~~~~~~~~~~~~~~~~~~~~
+   98 | 
+   99 |     expect(OptionalSecond).type.toBeConstructableWith(...["one", undefined]);
+  100 |     expect(OptionalSecond).type.not.toBeConstructableWith(...["one", undefined]); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:97:37 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+   98 | 
+   99 |     expect(OptionalSecond).type.toBeConstructableWith(...["one", undefined]);
+  100 |     expect(OptionalSecond).type.not.toBeConstructableWith(...["one", undefined]); // fail
+      |                                     ~~~~~~~~~~~~~~~~~~~~~
+  101 | 
+  102 |     expect(OptionalSecond).type.toBeConstructableWith("one", 123);
+  103 |     expect(OptionalSecond).type.not.toBeConstructableWith("one", 123); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:100:37 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  101 | 
+  102 |     expect(OptionalSecond).type.toBeConstructableWith("one", 123);
+  103 |     expect(OptionalSecond).type.not.toBeConstructableWith("one", 123); // fail
+      |                                     ~~~~~~~~~~~~~~~~~~~~~
+  104 | 
+  105 |     expect(OptionalSecond).type.toBeConstructableWith(...["one", 123]);
+  106 |     expect(OptionalSecond).type.not.toBeConstructableWith(...["one", 123]); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:103:37 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  104 | 
+  105 |     expect(OptionalSecond).type.toBeConstructableWith(...["one", 123]);
+  106 |     expect(OptionalSecond).type.not.toBeConstructableWith(...["one", 123]); // fail
+      |                                     ~~~~~~~~~~~~~~~~~~~~~
+  107 | 
+  108 |     expect(DefaultSecond).type.toBeConstructableWith("one", undefined);
+  109 |     expect(DefaultSecond).type.not.toBeConstructableWith("one", undefined); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:106:37 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  107 | 
+  108 |     expect(DefaultSecond).type.toBeConstructableWith("one", undefined);
+  109 |     expect(DefaultSecond).type.not.toBeConstructableWith("one", undefined); // fail
+      |                                    ~~~~~~~~~~~~~~~~~~~~~
+  110 | 
+  111 |     expect(DefaultSecond).type.toBeConstructableWith(...["one", undefined]);
+  112 |     expect(DefaultSecond).type.not.toBeConstructableWith(...["one", undefined]); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:109:36 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  110 | 
+  111 |     expect(DefaultSecond).type.toBeConstructableWith(...["one", undefined]);
+  112 |     expect(DefaultSecond).type.not.toBeConstructableWith(...["one", undefined]); // fail
+      |                                    ~~~~~~~~~~~~~~~~~~~~~
+  113 | 
+  114 |     expect(DefaultSecond).type.toBeConstructableWith("one", 123);
+  115 |     expect(DefaultSecond).type.not.toBeConstructableWith("one", 123); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:112:36 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  113 | 
+  114 |     expect(DefaultSecond).type.toBeConstructableWith("one", 123);
+  115 |     expect(DefaultSecond).type.not.toBeConstructableWith("one", 123); // fail
+      |                                    ~~~~~~~~~~~~~~~~~~~~~
+  116 | 
+  117 |     expect(DefaultSecond).type.toBeConstructableWith(...["one", 123]);
+  118 |     expect(DefaultSecond).type.not.toBeConstructableWith(...["one", 123]); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:115:36 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is constructable with the given arguments.
+
+  116 | 
+  117 |     expect(DefaultSecond).type.toBeConstructableWith(...["one", 123]);
+  118 |     expect(DefaultSecond).type.not.toBeConstructableWith(...["one", 123]); // fail
+      |                                    ~~~~~~~~~~~~~~~~~~~~~
+  119 |   });
+  120 | 
+  121 |   test("is not constructable with the given arguments", () => {
+
+        at ./__typetests__/parameter-arity.tst.ts:118:36 ❭ when source is an expression ❭ is constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 1 arguments, but got 2.
+
+  121 |   test("is not constructable with the given arguments", () => {
+  122 |     expect(One).type.not.toBeConstructableWith("one", "two");
+  123 |     expect(One).type.toBeConstructableWith("one", "two"); // fail: Expected 1 arguments, but got 2.
+      |                                                   ~~~~~
+  124 | 
+  125 |     expect(One).type.not.toBeConstructableWith(...["one", "two"]);
+  126 |     expect(One).type.toBeConstructableWith(...["one", "two"]); // fail: Expected 1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:123:51 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 1 arguments, but got 2.
+
+  124 | 
+  125 |     expect(One).type.not.toBeConstructableWith(...["one", "two"]);
+  126 |     expect(One).type.toBeConstructableWith(...["one", "two"]); // fail: Expected 1 arguments, but got 2.
+      |                                            ~~~~~~~~~~~~~~~~~
+  127 | 
+  128 |     expect(OptionalFirst).type.not.toBeConstructableWith("one", "two");
+  129 |     expect(OptionalFirst).type.toBeConstructableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:126:44 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 0-1 arguments, but got 2.
+
+  127 | 
+  128 |     expect(OptionalFirst).type.not.toBeConstructableWith("one", "two");
+  129 |     expect(OptionalFirst).type.toBeConstructableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+      |                                                             ~~~~~
+  130 | 
+  131 |     expect(OptionalFirst).type.not.toBeConstructableWith(...["one", "two"]);
+  132 |     expect(OptionalFirst).type.toBeConstructableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:129:61 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 0-1 arguments, but got 2.
+
+  130 | 
+  131 |     expect(OptionalFirst).type.not.toBeConstructableWith(...["one", "two"]);
+  132 |     expect(OptionalFirst).type.toBeConstructableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+      |                                                      ~~~~~~~~~~~~~~~~~
+  133 | 
+  134 |     expect(OptionalSecond).type.not.toBeConstructableWith("one", 123, true);
+  135 |     expect(OptionalSecond).type.toBeConstructableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+
+        at ./__typetests__/parameter-arity.tst.ts:132:54 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  133 | 
+  134 |     expect(OptionalSecond).type.not.toBeConstructableWith("one", 123, true);
+  135 |     expect(OptionalSecond).type.toBeConstructableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+      |                                                                   ~~~~
+  136 | 
+  137 |     expect(OptionalSecond).type.not.toBeConstructableWith(...["one", 123, true]);
+  138 |     expect(OptionalSecond).type.toBeConstructableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+
+        at ./__typetests__/parameter-arity.tst.ts:135:67 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  136 | 
+  137 |     expect(OptionalSecond).type.not.toBeConstructableWith(...["one", 123, true]);
+  138 |     expect(OptionalSecond).type.toBeConstructableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+      |                                                       ~~~~~~~~~~~~~~~~~~~~~
+  139 | 
+  140 |     expect(DefaultFirst).type.not.toBeConstructableWith("one", "two");
+  141 |     expect(DefaultFirst).type.toBeConstructableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:138:55 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 0-1 arguments, but got 2.
+
+  139 | 
+  140 |     expect(DefaultFirst).type.not.toBeConstructableWith("one", "two");
+  141 |     expect(DefaultFirst).type.toBeConstructableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+      |                                                            ~~~~~
+  142 | 
+  143 |     expect(DefaultFirst).type.not.toBeConstructableWith(...["one", "two"]);
+  144 |     expect(DefaultFirst).type.toBeConstructableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:141:60 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 0-1 arguments, but got 2.
+
+  142 | 
+  143 |     expect(DefaultFirst).type.not.toBeConstructableWith(...["one", "two"]);
+  144 |     expect(DefaultFirst).type.toBeConstructableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+      |                                                     ~~~~~~~~~~~~~~~~~
+  145 | 
+  146 |     expect(DefaultSecond).type.not.toBeConstructableWith("one", 123, true);
+  147 |     expect(DefaultSecond).type.toBeConstructableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+
+        at ./__typetests__/parameter-arity.tst.ts:144:53 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  145 | 
+  146 |     expect(DefaultSecond).type.not.toBeConstructableWith("one", 123, true);
+  147 |     expect(DefaultSecond).type.toBeConstructableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+      |                                                                  ~~~~
+  148 | 
+  149 |     expect(DefaultSecond).type.not.toBeConstructableWith(...["one", 123, true]);
+  150 |     expect(DefaultSecond).type.toBeConstructableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+
+        at ./__typetests__/parameter-arity.tst.ts:147:66 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Expression is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  148 | 
+  149 |     expect(DefaultSecond).type.not.toBeConstructableWith(...["one", 123, true]);
+  150 |     expect(DefaultSecond).type.toBeConstructableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+      |                                                      ~~~~~~~~~~~~~~~~~~~~~
+  151 |   });
+  152 | });
+  153 | 
+
+        at ./__typetests__/parameter-arity.tst.ts:150:54 ❭ when source is an expression ❭ is not constructable with the given arguments
+
+Error: Type is constructable without arguments.
+
+  160 |   test("is constructable without arguments", () => {
+  161 |     expect<ZeroConstructor>().type.toBeConstructableWith();
+  162 |     expect<ZeroConstructor>().type.not.toBeConstructableWith(); // fail
+      |                                        ~~~~~~~~~~~~~~~~~~~~~
+  163 | 
+  164 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith();
+  165 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith(); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:162:40 ❭ when source is a type ❭ is constructable without arguments
+
+Error: Type is constructable without arguments.
+
+  163 | 
+  164 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith();
+  165 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith(); // fail
+      |                                                 ~~~~~~~~~~~~~~~~~~~~~
+  166 |   });
+  167 | 
+  168 |   test("is not constructable without arguments", () => {
+
+        at ./__typetests__/parameter-arity.tst.ts:165:49 ❭ when source is a type ❭ is constructable without arguments
+
+Error: Type is not constructable without arguments.
+
+Expected 1 arguments, but got 0.
+
+  168 |   test("is not constructable without arguments", () => {
+  169 |     expect<OneConstructor>().type.not.toBeConstructableWith();
+  170 |     expect<OneConstructor>().type.toBeConstructableWith(); // fail: Expected 1 arguments, but got 0.
+      |                                   ~~~~~~~~~~~~~~~~~~~~~
+  171 | 
+  172 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith();
+  173 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+
+        at ./__typetests__/parameter-arity.tst.ts:170:35 ❭ when source is a type ❭ is not constructable without arguments
+
+    An argument for 'a' was not provided. ts(6210)
+
+      153 | 
+      154 | type ZeroConstructor = new () => Zero;
+      155 | type OneConstructor = new (a: string) => One;
+          |                            ~~~~~~~~~
+      156 | type OptionalFirstConstructor = new (a?: string) => OptionalFirst;
+      157 | type OptionalSecondConstructor = new (a: string, b?: number) => OptionalSecond;
+      158 | 
+
+            at ./__typetests__/parameter-arity.tst.ts:155:28
+
+Error: Type is not constructable without arguments.
+
+Expected 1-2 arguments, but got 0.
+
+  171 | 
+  172 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith();
+  173 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith(); // fail: Expected 1-2 arguments, but got 0.
+      |                                              ~~~~~~~~~~~~~~~~~~~~~
+  174 |   });
+  175 | 
+  176 |   test("is constructable with the given argument", () => {
+
+        at ./__typetests__/parameter-arity.tst.ts:173:46 ❭ when source is a type ❭ is not constructable without arguments
+
+    An argument for 'a' was not provided. ts(6210)
+
+      155 | type OneConstructor = new (a: string) => One;
+      156 | type OptionalFirstConstructor = new (a?: string) => OptionalFirst;
+      157 | type OptionalSecondConstructor = new (a: string, b?: number) => OptionalSecond;
+          |                                       ~~~~~~~~~
+      158 | 
+      159 | describe("when source is a type", () => {
+      160 |   test("is constructable without arguments", () => {
+
+            at ./__typetests__/parameter-arity.tst.ts:157:39
+
+Error: Type is constructable with the given argument.
+
+  176 |   test("is constructable with the given argument", () => {
+  177 |     expect<OneConstructor>().type.toBeConstructableWith("one");
+  178 |     expect<OneConstructor>().type.not.toBeConstructableWith("one"); // fail
+      |                                       ~~~~~~~~~~~~~~~~~~~~~
+  179 | 
+  180 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith(undefined);
+  181 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith(undefined); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:178:39 ❭ when source is a type ❭ is constructable with the given argument
+
+Error: Type is constructable with the given argument.
+
+  179 | 
+  180 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith(undefined);
+  181 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith(undefined); // fail
+      |                                                 ~~~~~~~~~~~~~~~~~~~~~
+  182 | 
+  183 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith("one");
+  184 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith("one"); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:181:49 ❭ when source is a type ❭ is constructable with the given argument
+
+Error: Type is constructable with the given argument.
+
+  182 | 
+  183 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith("one");
+  184 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith("one"); // fail
+      |                                                 ~~~~~~~~~~~~~~~~~~~~~
+  185 | 
+  186 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith("one");
+  187 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith("one"); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:184:49 ❭ when source is a type ❭ is constructable with the given argument
+
+Error: Type is constructable with the given argument.
+
+  185 | 
+  186 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith("one");
+  187 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith("one"); // fail
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~
+  188 |   });
+  189 | 
+  190 |   test("is not constructable with the given argument", () => {
+
+        at ./__typetests__/parameter-arity.tst.ts:187:50 ❭ when source is a type ❭ is constructable with the given argument
+
+Error: Type is not constructable with the given argument.
+
+Expected 0 arguments, but got 1.
+
+  190 |   test("is not constructable with the given argument", () => {
+  191 |     expect<ZeroConstructor>().type.not.toBeConstructableWith("one");
+  192 |     expect<ZeroConstructor>().type.toBeConstructableWith("one"); // fail: Expected 0 arguments, but got 1.
+      |                                                          ~~~~~
+  193 |   });
+  194 | 
+  195 |   test("is constructable with the given arguments", () => {
+
+        at ./__typetests__/parameter-arity.tst.ts:192:58 ❭ when source is a type ❭ is not constructable with the given argument
+
+Error: Type is constructable with the given arguments.
+
+  195 |   test("is constructable with the given arguments", () => {
+  196 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith("one", undefined);
+  197 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith("one", undefined); // fail
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~
+  198 | 
+  199 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith(...["one", undefined]);
+  200 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith(...["one", undefined]); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:197:50 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is constructable with the given arguments.
+
+  198 | 
+  199 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith(...["one", undefined]);
+  200 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith(...["one", undefined]); // fail
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~
+  201 | 
+  202 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith("one", 123);
+  203 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith("one", 123); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:200:50 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is constructable with the given arguments.
+
+  201 | 
+  202 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith("one", 123);
+  203 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith("one", 123); // fail
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~
+  204 | 
+  205 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith(...["one", 123]);
+  206 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith(...["one", 123]); // fail
+
+        at ./__typetests__/parameter-arity.tst.ts:203:50 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is constructable with the given arguments.
+
+  204 | 
+  205 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith(...["one", 123]);
+  206 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith(...["one", 123]); // fail
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~
+  207 |   });
+  208 | 
+  209 |   test("is not constructable with the given arguments", () => {
+
+        at ./__typetests__/parameter-arity.tst.ts:206:50 ❭ when source is a type ❭ is constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Expected 1 arguments, but got 2.
+
+  209 |   test("is not constructable with the given arguments", () => {
+  210 |     expect<OneConstructor>().type.not.toBeConstructableWith("one", "two");
+  211 |     expect<OneConstructor>().type.toBeConstructableWith("one", "two"); // fail: Expected 1 arguments, but got 2.
+      |                                                                ~~~~~
+  212 | 
+  213 |     expect<OneConstructor>().type.not.toBeConstructableWith(...["one", "two"]);
+  214 |     expect<OneConstructor>().type.toBeConstructableWith(...["one", "two"]); // fail: Expected 1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:211:64 ❭ when source is a type ❭ is not constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Expected 1 arguments, but got 2.
+
+  212 | 
+  213 |     expect<OneConstructor>().type.not.toBeConstructableWith(...["one", "two"]);
+  214 |     expect<OneConstructor>().type.toBeConstructableWith(...["one", "two"]); // fail: Expected 1 arguments, but got 2.
+      |                                                         ~~~~~~~~~~~~~~~~~
+  215 | 
+  216 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith("one", "two");
+  217 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:214:57 ❭ when source is a type ❭ is not constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Expected 0-1 arguments, but got 2.
+
+  215 | 
+  216 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith("one", "two");
+  217 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith("one", "two"); // fail: Expected 0-1 arguments, but got 2.
+      |                                                                          ~~~~~
+  218 | 
+  219 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith(...["one", "two"]);
+  220 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+
+        at ./__typetests__/parameter-arity.tst.ts:217:74 ❭ when source is a type ❭ is not constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Expected 0-1 arguments, but got 2.
+
+  218 | 
+  219 |     expect<OptionalFirstConstructor>().type.not.toBeConstructableWith(...["one", "two"]);
+  220 |     expect<OptionalFirstConstructor>().type.toBeConstructableWith(...["one", "two"]); // fail: Expected 0-1 arguments, but got 2.
+      |                                                                   ~~~~~~~~~~~~~~~~~
+  221 | 
+  222 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith("one", 123, true);
+  223 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+
+        at ./__typetests__/parameter-arity.tst.ts:220:67 ❭ when source is a type ❭ is not constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  221 | 
+  222 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith("one", 123, true);
+  223 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith("one", 123, true); // fail: Expected 1-2 arguments, but got 3.
+      |                                                                                ~~~~
+  224 | 
+  225 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith(...["one", 123, true]);
+  226 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+
+        at ./__typetests__/parameter-arity.tst.ts:223:80 ❭ when source is a type ❭ is not constructable with the given arguments
+
+Error: Type is not constructable with the given arguments.
+
+Expected 1-2 arguments, but got 3.
+
+  224 | 
+  225 |     expect<OptionalSecondConstructor>().type.not.toBeConstructableWith(...["one", 123, true]);
+  226 |     expect<OptionalSecondConstructor>().type.toBeConstructableWith(...["one", 123, true]); // fail: Expected 1-2 arguments, but got 3.
+      |                                                                    ~~~~~~~~~~~~~~~~~~~~~
+  227 |   });
+  228 | });
+  229 | 
+
+        at ./__typetests__/parameter-arity.tst.ts:226:68 ❭ when source is a type ❭ is not constructable with the given arguments
+

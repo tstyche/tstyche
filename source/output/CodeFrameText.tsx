@@ -1,18 +1,21 @@
-import type { TestMember, TestTree } from "#collect";
+import type { TestTree, TestTreeNode } from "#collect";
 import { DiagnosticCategory, type DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 import type { CodeFrameOptions } from "./types.js";
 
 interface BreadcrumbsTextProps {
-  ancestor: TestMember | TestTree;
+  ancestor: TestTreeNode | TestTree;
 }
 
 function BreadcrumbsText({ ancestor }: BreadcrumbsTextProps) {
   const text: Array<string> = [];
 
   while ("name" in ancestor) {
-    text.push(ancestor.name);
+    if (ancestor.name !== "") {
+      text.push(ancestor.name);
+    }
+
     ancestor = ancestor.parent;
   }
 
@@ -142,8 +145,8 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   let breadcrumbs: ScribblerJsx.Element | undefined;
 
-  if (showBreadcrumbs && diagnosticOrigin.assertion != null) {
-    breadcrumbs = <BreadcrumbsText ancestor={diagnosticOrigin.assertion.parent} />;
+  if (showBreadcrumbs && diagnosticOrigin.assertionNode != null) {
+    breadcrumbs = <BreadcrumbsText ancestor={diagnosticOrigin.assertionNode.parent} />;
   }
 
   const location = (

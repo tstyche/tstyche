@@ -1,0 +1,25 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/directive-if-target
+
+adds TypeScript 5.5.4 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.5.4
+uses TypeScript 5.5.4 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  - skip is string?
+
+adds TypeScript 5.6.3 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.6.3
+uses TypeScript 5.6.3 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  - skip is string?
+
+adds TypeScript 5.7.3 to <<basePath>>/tests/__fixtures__/.generated/directive-if-target/.store/typescript@5.7.3
+uses TypeScript 5.7.3 with ./tsconfig.json
+
+pass ./__typetests__/isString.tst.ts
+  - skip is string?
+
+Targets:    3 passed, 3 total
+Test files: 3 passed, 3 total
+Tests:      3 skipped, 3 total
+Assertions: 3 skipped, 3 total
+Duration:   <<timestamp>>

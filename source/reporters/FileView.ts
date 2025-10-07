@@ -1,4 +1,5 @@
 import { describeNameText, fileViewText, testNameText } from "#output";
+import type { ResultStatus, TestResultStatus } from "#result";
 import type { ScribblerJsx } from "#scribbler";
 
 export class FileView {
@@ -6,15 +7,11 @@ export class FileView {
   #lines: Array<ScribblerJsx.Element> = [];
   #messages: Array<ScribblerJsx.Element> = [];
 
-  get hasErrors(): boolean {
-    return this.#messages.length > 0;
-  }
-
   addMessage(message: ScribblerJsx.Element): void {
     this.#messages.push(message);
   }
 
-  addTest(status: "fail" | "pass" | "skip" | "todo", name: string): void {
+  addTest(status: Exclude<TestResultStatus, ResultStatus.Runs>, name: string): void {
     this.#lines.push(testNameText(status, name, this.#indent));
   }
 
@@ -38,6 +35,10 @@ export class FileView {
   }
 
   getViewText(options?: { appendEmptyLine: boolean }): ScribblerJsx.Element {
-    return fileViewText(this.#lines, options?.appendEmptyLine || this.hasErrors);
+    return fileViewText(this.#lines, options?.appendEmptyLine || this.hasErrors());
+  }
+
+  hasErrors(): boolean {
+    return this.#messages.length > 0;
   }
 }

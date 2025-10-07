@@ -17,7 +17,7 @@ interface BaseOptionDefinition {
 }
 
 interface PrimitiveTypeOptionDefinition extends BaseOptionDefinition {
-  brand: OptionBrand.String | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.BareTrue;
+  brand: OptionBrand.String | OptionBrand.SemverRange | OptionBrand.Number | OptionBrand.Boolean | OptionBrand.True;
 }
 
 export interface ItemDefinition {
@@ -43,9 +43,16 @@ export class Options {
 
     {
       brand: OptionBrand.Boolean,
-      description: "Enable type error reporting for source files.",
+      description: "Check declaration files for type errors.",
       group: OptionGroup.ConfigFile,
-      name: "checkSourceFiles",
+      name: "checkDeclarationFiles",
+    },
+
+    {
+      brand: OptionBrand.Boolean,
+      description: "Check errors silenced by '// @ts-expect-error' directives.",
+      group: OptionGroup.ConfigFile,
+      name: "checkSuppressedErrors",
     },
 
     {
@@ -63,28 +70,39 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
+      description: "Fetch the specified versions of the 'typescript' package and exit.",
+      group: OptionGroup.CommandLine,
+      name: "fetch",
+    },
+
+    {
+      brand: OptionBrand.List,
+      description: "The list of glob patterns matching the fixture files.",
+      group: OptionGroup.ConfigFile,
+      items: {
+        brand: OptionBrand.String,
+        name: "fixtureFileMatch",
+      },
+      name: "fixtureFileMatch",
+    },
+
+    {
+      brand: OptionBrand.True,
       description: "Print the list of command line options with brief descriptions and exit.",
       group: OptionGroup.CommandLine,
       name: "help",
     },
 
     {
-      brand: OptionBrand.BareTrue,
-      description: "Install specified versions of the 'typescript' package and exit.",
-      group: OptionGroup.CommandLine,
-      name: "install",
-    },
-
-    {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
       description: "Print the list of supported versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "list",
     },
 
     {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
       description: "Print the list of the selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",
@@ -109,7 +127,7 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
       description: "Remove all installed versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "prune",
@@ -148,7 +166,7 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
       description: "Print the resolved configuration and exit.",
       group: OptionGroup.CommandLine,
       name: "showConfig",
@@ -162,13 +180,9 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.List,
-      description: "The list of TypeScript versions to be tested on.",
-      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
-      items: {
-        brand: OptionBrand.String,
-        name: "target",
-      },
+      brand: OptionBrand.SemverRange,
+      description: "The range of TypeScript versions to be tested against.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
       name: "target",
     },
 
@@ -191,21 +205,21 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
       description: "Fetch the 'typescript' package metadata from the registry and exit.",
       group: OptionGroup.CommandLine,
       name: "update",
     },
 
     {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
       description: "Print the version number and exit.",
       group: OptionGroup.CommandLine,
       name: "version",
     },
 
     {
-      brand: OptionBrand.BareTrue,
+      brand: OptionBrand.True,
       description: "Watch for changes and rerun related test files.",
       group: OptionGroup.CommandLine,
       name: "watch",
@@ -275,7 +289,6 @@ export class Options {
   static async validate(
     optionName: string,
     optionValue: string,
-    optionBrand: OptionBrand,
     onDiagnostics: DiagnosticsHandler,
     origin?: DiagnosticOrigin,
   ): Promise<void> {
@@ -315,37 +328,36 @@ export class Options {
         // maybe a range?
         if (/[<>=]/.test(optionValue)) {
           if (!Target.isRange(optionValue)) {
-            onDiagnostics(
-              Diagnostic.error(
-                [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()],
-                origin,
-              ),
-            );
+            const text = [ConfigDiagnosticText.rangeIsNotValid(optionValue), ...ConfigDiagnosticText.rangeUsage()];
+
+            onDiagnostics(Diagnostic.error(text, origin));
           }
 
           break;
         }
 
         if ((await Store.validateTag(optionValue)) === false) {
-          onDiagnostics(
-            Diagnostic.error(
-              [
-                ConfigDiagnosticText.versionIsNotSupported(optionValue),
-                ...ConfigDiagnosticText.usage(optionName, optionBrand),
-                ConfigDiagnosticText.inspectSupportedVersions(),
-              ],
-              origin,
-            ),
-          );
+          const text = [
+            ConfigDiagnosticText.versionIsNotSupported(optionValue),
+            ConfigDiagnosticText.inspectSupportedVersions(),
+          ];
+
+          onDiagnostics(Diagnostic.error(text, origin));
         }
 
         break;
       }
 
+      case "fixtureFileMatch":
       case "testFileMatch":
         for (const segment of ["/", "../"]) {
           if (optionValue.startsWith(segment)) {
-            onDiagnostics(Diagnostic.error(ConfigDiagnosticText.testFileMatchCannotStartWith(segment), origin));
+            onDiagnostics(
+              Diagnostic.error(
+                ConfigDiagnosticText.fileMatchPatternCannotStartWith(canonicalOptionName, segment),
+                origin,
+              ),
+            );
           }
         }
         break;

@@ -1,7 +1,9 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import { nodeBelongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
+import { isStringOrNumberLiteralType, isUniqueSymbolType } from "./predicates.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToHaveProperty {
@@ -17,17 +19,17 @@ export class ToHaveProperty {
     const targetType = matchWorker.getType(targetNode);
     let propertyNameText: string;
 
-    if (matchWorker.isStringOrNumberLiteralType(targetType)) {
+    if (isStringOrNumberLiteralType(this.#compiler, targetType)) {
       propertyNameText = targetType.value.toString();
     } else {
       propertyNameText = `[${this.#compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
     }
 
-    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertion);
+    const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertionNode);
 
-    return matchWorker.assertion.isNot
-      ? [Diagnostic.error(ExpectDiagnosticText.typeHasProperty(sourceTypeText, propertyNameText), origin)]
-      : [Diagnostic.error(ExpectDiagnosticText.typeDoesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
+    return matchWorker.assertionNode.isNot
+      ? [Diagnostic.error(ExpectDiagnosticText.hasProperty(sourceTypeText, propertyNameText), origin)]
+      : [Diagnostic.error(ExpectDiagnosticText.doesNotHaveProperty(sourceTypeText, propertyNameText), origin)];
   }
 
   match(
@@ -41,14 +43,15 @@ export class ToHaveProperty {
     const sourceType = matchWorker.getType(sourceNode);
 
     if (
+      // TODO disallow enum types, these are not objects
       sourceType.flags & (this.#compiler.TypeFlags.Any | this.#compiler.TypeFlags.Never) ||
       !matchWorker.extendsObjectType(sourceType)
     ) {
       const expectedText = "of an object type";
 
-      const text = this.#compiler.isTypeNode(sourceNode)
-        ? ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText)
-        : ExpectDiagnosticText.argumentMustBe("source", expectedText);
+      const text = nodeBelongsToArgumentList(this.#compiler, sourceNode)
+        ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
+        : ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
@@ -57,13 +60,7 @@ export class ToHaveProperty {
 
     const targetType = matchWorker.getType(targetNode);
 
-    let propertyNameText = "";
-
-    if (matchWorker.isStringOrNumberLiteralType(targetType)) {
-      propertyNameText = targetType.value.toString();
-    } else if (matchWorker.isUniqueSymbolType(targetType)) {
-      propertyNameText = this.#compiler.unescapeLeadingUnderscores(targetType.escapedName);
-    } else {
+    if (!(isStringOrNumberLiteralType(this.#compiler, targetType) || isUniqueSymbolType(this.#compiler, targetType))) {
       const expectedText = "of type 'string | number | symbol'";
 
       const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
@@ -78,13 +75,9 @@ export class ToHaveProperty {
       return;
     }
 
-    const isMatch =
-      matchWorker.checkHasProperty(sourceNode, propertyNameText) ||
-      matchWorker.checkHasApplicableIndexType(sourceNode, targetNode);
-
     return {
       explain: () => this.#explain(matchWorker, sourceNode, targetNode),
-      isMatch,
+      isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
     };
   }
 }

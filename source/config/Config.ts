@@ -1,26 +1,14 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { type Diagnostic, SourceFile } from "#diagnostic";
+import type { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
+import { JsonScanner, JsonSourceFile } from "#json";
 import { Path } from "#path";
-import { CommandLineParser } from "./CommandLineParser.js";
-import { ConfigFileParser } from "./ConfigFileParser.js";
-import { Target } from "./Target.js";
+import { CommandParser } from "./CommandParser.js";
+import { ConfigParser } from "./ConfigParser.js";
 import { defaultOptions } from "./defaultOptions.js";
-import type { CommandLineOptions, ConfigFileOptions, OptionValue } from "./types.js";
-
-export interface ResolvedConfig
-  extends Omit<CommandLineOptions, "config" | keyof ConfigFileOptions>,
-    Required<ConfigFileOptions> {
-  /**
-   * The path to a TSTyche configuration file.
-   */
-  configFilePath: string;
-  /**
-   * Only run test files with matching path.
-   */
-  pathMatch: Array<string>;
-}
+import { OptionGroup } from "./OptionGroup.enum.js";
+import type { CommandLineOptions, ConfigFileOptions, OptionValue, ResolvedConfig } from "./types.js";
 
 export class Config {
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {
@@ -33,17 +21,13 @@ export class Config {
     const commandLineOptions: CommandLineOptions = {};
     const pathMatch: Array<string> = [];
 
-    const commandLineParser = new CommandLineParser(
+    const commandLineParser = new CommandParser(
       commandLineOptions as Record<string, OptionValue>,
       pathMatch,
       Config.#onDiagnostics,
     );
 
     await commandLineParser.parse(commandLine);
-
-    if (commandLineOptions.target != null) {
-      commandLineOptions.target = await Target.expand(commandLineOptions.target);
-    }
 
     return { commandLineOptions, pathMatch };
   }
@@ -62,19 +46,17 @@ export class Config {
         encoding: "utf8",
       });
 
-      const sourceFile = new SourceFile(configFilePath, configFileText);
+      const sourceFile = new JsonSourceFile(configFilePath, configFileText);
 
-      const configFileParser = new ConfigFileParser(
+      const configFileParser = new ConfigParser(
         configFileOptions as Record<string, OptionValue>,
+        OptionGroup.ConfigFile,
         sourceFile,
+        new JsonScanner(sourceFile),
         Config.#onDiagnostics,
       );
 
       await configFileParser.parse();
-
-      if (configFileOptions.target != null) {
-        configFileOptions.target = await Target.expand(configFileOptions.target);
-      }
     }
 
     return { configFileOptions, configFilePath };
@@ -95,7 +77,6 @@ export class Config {
     };
 
     if ("config" in resolvedConfig) {
-      // biome-ignore lint/performance/noDelete: must clean up
       delete resolvedConfig.config;
     }
 

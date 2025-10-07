@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'checkDeclarationFiles' option",
+      "valid": true,
+      "data": {
+        "checkDeclarationFiles": true
+      }
+    },
+    {
+      "description": "value of the 'checkDeclarationFiles' option must be of type boolean",
+      "valid": false,
+      "data": {
+        "checkDeclarationFiles": "skip"
+      }
+    }
+  ]
+}

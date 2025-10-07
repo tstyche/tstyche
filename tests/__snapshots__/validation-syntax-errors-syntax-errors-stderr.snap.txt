@@ -18,7 +18,7 @@ Error: Argument expression expected. ts(1135)
      | ~
   12 | 
   13 | test("is skipped?", () => {
-  14 |   expect(one("abc")).type.toBeVoid();
+  14 |   expect(one("abc")).type.toBe<void>();
 
        at ./__typetests__/dummy.test.ts:11:1
 

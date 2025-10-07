@@ -55,16 +55,16 @@ test("is assignable to?", () => {
   expect(new Set([123, "abc"])).type.not.toBeAssignableTo<Set<number>>();
 });`;
 
-const toBeAssignableWithTestText = `import { expect, test } from "tstyche";
+const toBeAssignableFromTestText = `import { expect, test } from "tstyche";
 
 type Awaitable<T> = T | PromiseLike<T>;
 
-test("is assignable with?", () => {
-  expect<Awaitable<string>>().type.toBeAssignableWith("abc");
-  expect<Awaitable<string>>().type.toBeAssignableWith(Promise.resolve("abc"));
+test("is assignable from?", () => {
+  expect<Awaitable<string>>().type.toBeAssignableFrom("abc");
+  expect<Awaitable<string>>().type.toBeAssignableFrom(Promise.resolve("abc"));
 
-  expect<Awaitable<string>>().type.not.toBeAssignableWith(123);
-  expect<Awaitable<string>>().type.not.toBeAssignableWith(Promise.resolve(123));
+  expect<Awaitable<string>>().type.not.toBeAssignableFrom(123);
+  expect<Awaitable<string>>().type.not.toBeAssignableFrom(Promise.resolve(123));
 });`;
 
 const toBeTestText = `import { expect, test } from "tstyche";
@@ -110,41 +110,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 const storeUrl = new URL("./.store/", fixtureUrl);
 
-await test("TypeScript 4.x", async (t) => {
-  t.after(async () => {
-    await clearFixture(fixtureUrl);
-  });
-
-  await writeFixture(fixtureUrl, {
-    // 'moduleResolution: "node"' does not support self-referencing, but TSTyche needs 'import from "tstyche"' to be able to collect test nodes
-    ["__typetests__/subtype.test.ts"]: `import { omit, pick } from "../../../../../"\n// @ts-expect-error\n${subtypeTestText}`,
-    ["__typetests__/toAcceptProps.test.tsx"]: `// @ts-expect-error\n${toAcceptPropsTestText}`,
-    ["__typetests__/toBe.test.ts"]: `// @ts-expect-error\n${toBeTestText}`,
-    ["__typetests__/toBeAssignableTo.test.ts"]: `// @ts-expect-error\n${toBeAssignableToTestText}`,
-    ["__typetests__/toBeAssignableWith.test.ts"]: `// @ts-expect-error\n${toBeAssignableWithTestText}`,
-    ["__typetests__/toHaveProperty.test.ts"]: `// @ts-expect-error\n${toHavePropertyTestText}`,
-    ["__typetests__/toRaiseError.test.ts"]: `// @ts-expect-error\n${toRaiseErrorTestText}`,
-  });
-
-  const testCases = ["4.0.2", "4.0.8", "4.1.6", "4.2.4", "4.3.5", "4.4.4", "4.5.5", "4.6.4", "4.7.4", "4.8.4", "4.9.5"];
-
-  for (const version of testCases) {
-    await t.test(`uses TypeScript ${version} as current target`, async () => {
-      await spawnTyche(fixtureUrl, ["--install", "--target", version]);
-
-      const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
-
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
-        env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
-      });
-
-      assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
-      assert.equal(stderr, "");
-      assert.equal(exitCode, 0);
-    });
-  }
-});
-
 await test("TypeScript 5.x", async (t) => {
   t.after(async () => {
     await clearFixture(fixtureUrl);
@@ -155,7 +120,7 @@ await test("TypeScript 5.x", async (t) => {
     ["__typetests__/toAcceptProps.test.tsx"]: toAcceptPropsTestText,
     ["__typetests__/toBe.test.ts"]: toBeTestText,
     ["__typetests__/toBeAssignableTo.test.ts"]: toBeAssignableToTestText,
-    ["__typetests__/toBeAssignableWith.test.ts"]: toBeAssignableWithTestText,
+    ["__typetests__/toBeAssignableFrom.test.ts"]: toBeAssignableFromTestText,
     ["__typetests__/toHaveProperty.test.ts"]: toHavePropertyTestText,
     ["__typetests__/toRaiseError.test.ts"]: toRaiseErrorTestText,
   });
@@ -173,17 +138,17 @@ await test("TypeScript 5.x", async (t) => {
   const testCases = ["5.0.2", ...versions];
 
   for (const version of testCases) {
-    await t.test(`uses TypeScript ${version} as current target`, async () => {
-      await spawnTyche(fixtureUrl, ["--install", "--target", version]);
+    await t.test(`uses TypeScript ${version} as the target`, async () => {
+      await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
 
       const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
 
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "current"], {
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
         env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
       });
 
-      assert.match(stdout, new RegExp(`^uses TypeScript ${version}\n`));
       assert.equal(stderr, "");
+      assert.match(stdout, new RegExp(`uses TypeScript ${version}\n`));
       assert.equal(exitCode, 0);
     });
   }

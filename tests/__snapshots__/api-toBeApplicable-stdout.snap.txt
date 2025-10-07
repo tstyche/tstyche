@@ -1,0 +1,26 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBeApplicable
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeApplicable.tst.ts
+  source expression
+    × is applicable to class
+    × is NOT applicable to class
+    × is applicable to method
+    × is NOT applicable to method
+    × is applicable to field
+    × is NOT applicable to field
+    × is applicable to getter
+    × is NOT applicable to getter
+    × is applicable to setter
+    × is NOT applicable to setter
+    × is applicable to accessor
+    × is NOT applicable to accessor
+    × is applicable to public members only
+    × is NOT applicable to public members only
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      14 failed, 14 total
+Assertions: 14 failed, 14 passed, 28 total
+Duration:   <<timestamp>>
