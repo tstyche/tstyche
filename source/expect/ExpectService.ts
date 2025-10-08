@@ -45,7 +45,7 @@ export class ExpectService {
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeCallableWith = new ToBeCallableWith(compiler);
     this.toBeConstructableWith = new ToBeConstructableWith(compiler);
-    this.toBeInstantiableWith = new ToBeInstantiableWith(compiler, typeChecker);
+    this.toBeInstantiableWith = new ToBeInstantiableWith(compiler);
     this.toHaveProperty = new ToHaveProperty(compiler);
     this.toRaiseError = new ToRaiseError(compiler);
   }
@@ -127,7 +127,7 @@ export class ExpectService {
         return this.toBeInstantiableWith.match(
           matchWorker,
           assertionNode.source[0],
-          assertionNode.target[0],
+          assertionNode.target,
           onDiagnostics,
         );
       }

@@ -27,6 +27,14 @@ export class ExpectDiagnosticText {
     return `${isExpression ? "Expression" : "Type"} is not constructable ${targetText}.`;
   }
 
+  static isInstantiable(isExpression: boolean, targetText: string): string {
+    return `${isExpression ? "Expression" : "Type"} is instantiable ${targetText}.`;
+  }
+
+  static isNotInstantiable(isExpression: boolean, targetText: string): string {
+    return `${isExpression ? "Expression" : "Type"} is not instantiable ${targetText}.`;
+  }
+
   static acceptsProps(isExpression: boolean): string {
     return `${isExpression ? "Component" : "Component type"} accepts props of the given type.`;
   }
