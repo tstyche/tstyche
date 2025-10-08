@@ -62,3 +62,33 @@ describe("argument for 'source'", () => {
     expect("abc" as never).type.toBeConstructableWith();
   });
 });
+
+describe("type argument for 'Source'", () => {
+  test("must be a constructable type", () => {
+    expect<string>().type.toBeConstructableWith();
+    expect<number>().type.toBeConstructableWith();
+    expect<boolean>().type.toBeConstructableWith();
+    expect<undefined>().type.toBeConstructableWith();
+    expect<null>().type.toBeConstructableWith();
+
+    expect<() => undefined>().type.toBeConstructableWith();
+    expect<() => void>().type.toBeConstructableWith();
+    expect<() => () => boolean>().type.toBeConstructableWith();
+
+    type Func = (arg: string) => void;
+    expect<Func>().type.toBeCallableWith("abc");
+
+    expect<Person>().type.toBeConstructableWith("abc");
+
+    expect<typeof Person>().type.toBeConstructableWith("abc");
+    expect<new (name: string) => Person>().type.toBeConstructableWith("abc");
+  });
+
+  test("is rejected type?", () => {
+    type Any = any;
+    type Never = never;
+
+    expect<Any>().type.toBeConstructableWith();
+    expect<Never>().type.toBeConstructableWith();
+  });
+});

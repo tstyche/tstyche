@@ -210,3 +210,147 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
        at ./__typetests__/toBeConstructableWith.tst.ts:62:12
 
+Error: A type argument for 'Source' must be a constructable type.
+
+  66 | describe("type argument for 'Source'", () => {
+  67 |   test("must be a constructable type", () => {
+  68 |     expect<string>().type.toBeConstructableWith();
+     |            ~~~~~~
+  69 |     expect<number>().type.toBeConstructableWith();
+  70 |     expect<boolean>().type.toBeConstructableWith();
+  71 |     expect<undefined>().type.toBeConstructableWith();
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:68:12
+
+Error: A type argument for 'Source' must be a constructable type.
+
+  67 |   test("must be a constructable type", () => {
+  68 |     expect<string>().type.toBeConstructableWith();
+  69 |     expect<number>().type.toBeConstructableWith();
+     |            ~~~~~~
+  70 |     expect<boolean>().type.toBeConstructableWith();
+  71 |     expect<undefined>().type.toBeConstructableWith();
+  72 |     expect<null>().type.toBeConstructableWith();
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:69:12
+
+Error: A type argument for 'Source' must be a constructable type.
+
+  68 |     expect<string>().type.toBeConstructableWith();
+  69 |     expect<number>().type.toBeConstructableWith();
+  70 |     expect<boolean>().type.toBeConstructableWith();
+     |            ~~~~~~~
+  71 |     expect<undefined>().type.toBeConstructableWith();
+  72 |     expect<null>().type.toBeConstructableWith();
+  73 | 
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:70:12
+
+Error: A type argument for 'Source' must be a constructable type.
+
+  69 |     expect<number>().type.toBeConstructableWith();
+  70 |     expect<boolean>().type.toBeConstructableWith();
+  71 |     expect<undefined>().type.toBeConstructableWith();
+     |            ~~~~~~~~~
+  72 |     expect<null>().type.toBeConstructableWith();
+  73 | 
+  74 |     expect<() => undefined>().type.toBeConstructableWith();
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:71:12
+
+Error: A type argument for 'Source' must be a constructable type.
+
+  70 |     expect<boolean>().type.toBeConstructableWith();
+  71 |     expect<undefined>().type.toBeConstructableWith();
+  72 |     expect<null>().type.toBeConstructableWith();
+     |            ~~~~
+  73 | 
+  74 |     expect<() => undefined>().type.toBeConstructableWith();
+  75 |     expect<() => void>().type.toBeConstructableWith();
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:72:12
+
+Error: A type argument for 'Source' must be a constructable type.
+
+Did you mean to use the '.toBeCallableWith()' matcher?
+
+  72 |     expect<null>().type.toBeConstructableWith();
+  73 | 
+  74 |     expect<() => undefined>().type.toBeConstructableWith();
+     |            ~~~~~~~~~~~~~~~
+  75 |     expect<() => void>().type.toBeConstructableWith();
+  76 |     expect<() => () => boolean>().type.toBeConstructableWith();
+  77 | 
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:74:12
+
+Error: A type argument for 'Source' must be a constructable type.
+
+Did you mean to use the '.toBeCallableWith()' matcher?
+
+  73 | 
+  74 |     expect<() => undefined>().type.toBeConstructableWith();
+  75 |     expect<() => void>().type.toBeConstructableWith();
+     |            ~~~~~~~~~~
+  76 |     expect<() => () => boolean>().type.toBeConstructableWith();
+  77 | 
+  78 |     type Func = (arg: string) => void;
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:75:12
+
+Error: A type argument for 'Source' must be a constructable type.
+
+Did you mean to use the '.toBeCallableWith()' matcher?
+
+  74 |     expect<() => undefined>().type.toBeConstructableWith();
+  75 |     expect<() => void>().type.toBeConstructableWith();
+  76 |     expect<() => () => boolean>().type.toBeConstructableWith();
+     |            ~~~~~~~~~~~~~~~~~~~
+  77 | 
+  78 |     type Func = (arg: string) => void;
+  79 |     expect<Func>().type.toBeCallableWith("abc");
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:76:12
+
+Error: A type argument for 'Source' must be a constructable type.
+
+  79 |     expect<Func>().type.toBeCallableWith("abc");
+  80 | 
+  81 |     expect<Person>().type.toBeConstructableWith("abc");
+     |            ~~~~~~
+  82 | 
+  83 |     expect<typeof Person>().type.toBeConstructableWith("abc");
+  84 |     expect<new (name: string) => Person>().type.toBeConstructableWith("abc");
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:81:12
+
+Error: A type argument for 'Source' cannot be of the 'any' type.
+
+The 'any' type was rejected because the 'rejectAnyType' option is enabled.
+If this check is necessary, pass 'any' as the type argument explicitly.
+
+  89 |     type Never = never;
+  90 | 
+  91 |     expect<Any>().type.toBeConstructableWith();
+     |            ~~~
+  92 |     expect<Never>().type.toBeConstructableWith();
+  93 |   });
+  94 | });
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:91:12
+
+Error: A type argument for 'Source' cannot be of the 'never' type.
+
+The 'never' type was rejected because the 'rejectNeverType' option is enabled.
+If this check is necessary, pass 'never' as the type argument explicitly.
+
+  90 | 
+  91 |     expect<Any>().type.toBeConstructableWith();
+  92 |     expect<Never>().type.toBeConstructableWith();
+     |            ~~~~~
+  93 |   });
+  94 | });
+  95 | 
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:92:12
+

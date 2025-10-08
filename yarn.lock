@@ -929,12 +929,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:19.2.1":
-  version: 19.2.1
-  resolution: "@types/react@npm:19.2.1"
+"@types/react@npm:19.2.2":
+  version: 19.2.2
+  resolution: "@types/react@npm:19.2.2"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/c44881c275da91156ce02986ab1f59c9724db256f4850d3937c9acea561a6ab1fe1028f7a1fc4da3a2c1bcb00de29e238922e8c6d42a727ef2e6e0cd40b3db9f
+  checksum: 10c0/f830b1204aca4634ce3c6cb3477b5d3d066b80a4dd832a4ee0069acb504b6debd2416548a43a11c1407c12bc60e2dc6cf362934a18fe75fe06a69c0a98cba8ab
   languageName: node
   linkType: hard
 
@@ -2316,7 +2316,7 @@ __metadata:
     "@biomejs/biome": "npm:2.2.5"
     "@rollup/plugin-typescript": "npm:12.1.4"
     "@types/node": "npm:22.18.8"
-    "@types/react": "npm:19.2.1"
+    "@types/react": "npm:19.2.2"
     code-block-writer: "npm:13.0.3"
     cspell: "npm:9.2.1"
     magic-string: "npm:0.30.19"

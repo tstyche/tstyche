@@ -8,9 +8,12 @@ fail ./__typetests__/toBeConstructableWith.tst.ts
     × must be a constructable expression
     + allowed expressions
     × is rejected type?
+  type argument for 'Source'
+    × must be a constructable type
+    × is rejected type?
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      3 failed, 1 passed, 4 total
-Assertions: 16 failed, 5 passed, 21 total
+Tests:      5 failed, 1 passed, 6 total
+Assertions: 27 failed, 8 passed, 35 total
 Duration:   <<timestamp>>

@@ -9,11 +9,11 @@ fail ./__typetests__/toBeCallableWith.tst.ts
     + allowed expressions
     × is rejected type?
   type argument for 'Source'
-    × must be a callable expression
+    × must be a callable type
     × is rejected type?
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      5 failed, 1 passed, 6 total
-Assertions: 19 failed, 18 passed, 37 total
+Assertions: 20 failed, 18 passed, 38 total
 Duration:   <<timestamp>>

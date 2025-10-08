@@ -75,7 +75,7 @@ describe("argument for 'source'", () => {
 });
 
 describe("type argument for 'Source'", () => {
-  test("must be a callable expression", () => {
+  test("must be a callable type", () => {
     expect<string>().type.toBeCallableWith();
     expect<number>().type.toBeCallableWith();
     expect<boolean>().type.toBeCallableWith();
@@ -87,11 +87,11 @@ describe("type argument for 'Source'", () => {
     expect<() => () => boolean>().type.toBeCallableWith();
 
     type Func = (arg: string) => void;
-
     expect<Func>().type.toBeCallableWith("abc");
 
     expect<Person>().type.toBeCallableWith("abc");
-    expect<new () => Person>().type.toBeCallableWith("abc");
+    expect<typeof Person>().type.toBeCallableWith("abc");
+    expect<new (name: string) => Person>().type.toBeCallableWith("abc");
   });
 
   test("is rejected type?", () => {

@@ -129,7 +129,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 Error: A type argument for 'Source' must be a callable type.
 
   77 | describe("type argument for 'Source'", () => {
-  78 |   test("must be a callable expression", () => {
+  78 |   test("must be a callable type", () => {
   79 |     expect<string>().type.toBeCallableWith();
      |            ~~~~~~
   80 |     expect<number>().type.toBeCallableWith();
@@ -140,7 +140,7 @@ Error: A type argument for 'Source' must be a callable type.
 
 Error: A type argument for 'Source' must be a callable type.
 
-  78 |   test("must be a callable expression", () => {
+  78 |   test("must be a callable type", () => {
   79 |     expect<string>().type.toBeCallableWith();
   80 |     expect<number>().type.toBeCallableWith();
      |            ~~~~~~
@@ -188,11 +188,25 @@ Error: A type argument for 'Source' must be a callable type.
 
 Error: A type argument for 'Source' must be a callable type.
 
-  91 |     expect<Func>().type.toBeCallableWith("abc");
-  92 | 
-  93 |     expect<Person>().type.toBeCallableWith("abc");
+  90 |     expect<Func>().type.toBeCallableWith("abc");
+  91 | 
+  92 |     expect<Person>().type.toBeCallableWith("abc");
      |            ~~~~~~
-  94 |     expect<new () => Person>().type.toBeCallableWith("abc");
+  93 |     expect<typeof Person>().type.toBeCallableWith("abc");
+  94 |     expect<new (name: string) => Person>().type.toBeCallableWith("abc");
+  95 |   });
+
+       at ./__typetests__/toBeCallableWith.tst.ts:92:12
+
+Error: A type argument for 'Source' must be a callable type.
+
+Did you mean to use the '.toBeConstructableWith()' matcher?
+
+  91 | 
+  92 |     expect<Person>().type.toBeCallableWith("abc");
+  93 |     expect<typeof Person>().type.toBeCallableWith("abc");
+     |            ~~~~~~~~~~~~~
+  94 |     expect<new (name: string) => Person>().type.toBeCallableWith("abc");
   95 |   });
   96 | 
 
@@ -202,10 +216,10 @@ Error: A type argument for 'Source' must be a callable type.
 
 Did you mean to use the '.toBeConstructableWith()' matcher?
 
-  92 | 
-  93 |     expect<Person>().type.toBeCallableWith("abc");
-  94 |     expect<new () => Person>().type.toBeCallableWith("abc");
-     |            ~~~~~~~~~~~~~~~~
+  92 |     expect<Person>().type.toBeCallableWith("abc");
+  93 |     expect<typeof Person>().type.toBeCallableWith("abc");
+  94 |     expect<new (name: string) => Person>().type.toBeCallableWith("abc");
+     |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   95 |   });
   96 | 
   97 |   test("is rejected type?", () => {
