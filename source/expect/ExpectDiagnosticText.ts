@@ -3,6 +3,10 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
+  static typeArgumentMustBeProvided(typeArgumentNameText: string): string {
+    return `Type argument for '${typeArgumentNameText}' must be provided.`;
+  }
+
   static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
     return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
   }
@@ -21,6 +25,14 @@ export class ExpectDiagnosticText {
 
   static isNotConstructable(isExpression: boolean, targetText: string): string {
     return `${isExpression ? "Expression" : "Type"} is not constructable ${targetText}.`;
+  }
+
+  static isInstantiable(isExpression: boolean, targetText: string): string {
+    return `${isExpression ? "Expression" : "Type"} is instantiable ${targetText}.`;
+  }
+
+  static isNotInstantiable(isExpression: boolean, targetText: string): string {
+    return `${isExpression ? "Expression" : "Type"} is not instantiable ${targetText}.`;
   }
 
   static acceptsProps(isExpression: boolean): string {

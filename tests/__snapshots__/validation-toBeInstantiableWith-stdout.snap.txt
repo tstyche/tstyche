@@ -1,0 +1,26 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-toBeInstantiableWith
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/toBeInstantiableWith.tst.ts
+  argument for 'source'
+    × must be provided
+    × must be a instantiable expression
+    + allowed expressions
+    × is rejected type?
+  type argument for 'Source'
+    × must be a instantiable type
+    + allowed expressions
+    × is rejected type?
+  argument for 'target'
+    - todo must be type argument
+  type argument for 'Target'
+    × must be provided
+    × must be a tuple type
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      7 failed, 2 passed, 1 todo, 10 total
+Assertions: 24 failed, 6 passed, 30 total
+Suppressed: 2 ignored, 2 total
+Duration:   <<timestamp>>
