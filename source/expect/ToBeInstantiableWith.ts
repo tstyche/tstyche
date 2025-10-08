@@ -16,7 +16,8 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const sourceSymbol = matchWorker.getType(sourceNode).getSymbol();
+    const sourceType = matchWorker.getType(sourceNode);
+    const sourceSymbol = sourceType.aliasSymbol ?? sourceType.symbol;
 
     if (
       !sourceSymbol?.declarations?.some(

@@ -23,7 +23,14 @@ class Container<T> {
 
 type None = void;
 
-type Single<T> = [T];
+type Box<T = string> = {
+  toArray: () => Array<T>;
+};
+
+interface Holder<T> {
+  contents: T;
+  getContents: () => T;
+}
 
 describe("argument for 'source'", () => {
   test("must be provided", () => {
@@ -70,9 +77,10 @@ describe("type argument for 'Source'", () => {
   });
 
   test("allowed expressions", () => {
-    // TODO
-    // expect<Single>().type.toBeInstantiableWith<[string]>();
     expect<Container<_>>().type.toBeInstantiableWith<[string]>();
+    expect<Box>().type.toBeInstantiableWith<[string]>();
+    expect<Box<_>>().type.toBeInstantiableWith<[string]>();
+    expect<Holder<_>>().type.toBeInstantiableWith<[string]>();
   });
 
   test("is rejected type?", () => {
