@@ -23,9 +23,7 @@ class Container<T> {
 
 type None = void;
 
-type Box<T = string> = {
-  toArray: () => Array<T>;
-};
+type Box<T = string> = Array<T>;
 
 interface Holder<T> {
   contents: T;
@@ -92,27 +90,20 @@ describe("type argument for 'Source'", () => {
   });
 });
 
-// describe("type argument for 'Source'", () => {
-//   test.todo("must be a generic type", () => {
-//     expect<None>().type.not.toBeInstantiableWith<[]>();
-//     expect<PropertyKey>().type.toBeInstantiableWith<[never]>();
-//   });
-// });
+describe("argument for 'target'", () => {
+  test.todo("must be type argument", () => {
+    // @ts-expect-error!
+    expect<Holder<_>>().type.toBeInstantiableWith(["one"]);
+  });
+});
 
-// describe("argument for 'target'", () => {
-//   test("must be type argument", () => {
-//     // @ts-expect-error!
-//     expect<Single<_>>().type.toBeInstantiableWith(["one"]);
-//   });
-// });
+describe("type argument for 'Target'", () => {
+  test("must be provided", () => {
+    expect<Holder<_>>().type.toBeInstantiableWith();
+  });
 
-// describe("type argument for 'Target'", () => {
-//   test("must be provided", () => {
-//     expect<Single<_>>().type.toBeInstantiableWith<[never]>();
-//   });
-
-//   test("must be a tuple type", () => {
-//     // @ts-expect-error!
-//     expect<Single<_>>().type.toBeInstantiableWith<string>();
-//   });
-// });
+  test("must be a tuple type", () => {
+    // @ts-expect-error!
+    expect<Holder<_>>().type.toBeInstantiableWith<string>();
+  });
+});

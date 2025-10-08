@@ -118,8 +118,11 @@ export class ExpectService {
 
       case "toBeInstantiableWith": {
         if (!assertionNode.target?.[0]) {
-          // TODO
-          // this.#onTargetTypeArgumentMustBeProvided(assertion, onDiagnostics);
+          if (
+            !argumentIsProvided("Target", assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)
+          ) {
+            return;
+          }
 
           return;
         }
@@ -127,7 +130,7 @@ export class ExpectService {
         return this.toBeInstantiableWith.match(
           matchWorker,
           assertionNode.source[0],
-          assertionNode.target,
+          assertionNode.target[0],
           onDiagnostics,
         );
       }
