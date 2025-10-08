@@ -165,31 +165,18 @@ export class ToBeInstantiableWith {
       return;
     }
 
-    const diagnostics: Array<Diagnostic> = [];
     const typeArguments: Array<ts.TypeNode> = [];
 
     for (const element of targetNode.elements) {
-      if (this.#compiler.isNamedTupleMember(element)) {
-        const text = ExpectDiagnosticText.typeArgumentDoesNotAllow("Target", "named element");
-        const origin = DiagnosticOrigin.fromNode(element);
+      // if (this.#compiler.isNamedTupleMember(element)) {
+      // ...
+      // }
 
-        diagnostics.push(Diagnostic.error(text, origin));
-      }
-
-      if (this.#compiler.isRestTypeNode(element)) {
-        const text = ExpectDiagnosticText.typeArgumentDoesNotAllow("Target", "rest element");
-        const origin = DiagnosticOrigin.fromNode(element);
-
-        diagnostics.push(Diagnostic.error(text, origin));
-      }
+      // if (this.#compiler.isRestTypeNode(element)) {
+      // ...
+      // }
 
       typeArguments.push(element);
-    }
-
-    if (diagnostics.length > 0) {
-      onDiagnostics(diagnostics);
-
-      return;
     }
 
     const typeParameters = this.#getEffectiveTypeParameters(identifier);

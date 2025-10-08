@@ -13,7 +13,7 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 Error: Type argument for 'Target' must be provided.
 
   25 |   test("must be type argument", () => {
-  26 |     // @ts-expect-error testing purpose
+  26 |     // @ts-expect-error!
   27 |     expect<Single<_>>().type.toBeInstantiableWith(["one"]);
      |                                                   ~~~~~~~
   28 |   });
@@ -22,75 +22,15 @@ Error: Type argument for 'Target' must be provided.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:27:51
 
-Error: Type argument for 'Target' must be provided.
-
-  31 | describe("type argument for 'Target'", () => {
-  32 |   test("must be provided", () => {
-  33 |     expect<Single<_>>().type.toBeInstantiableWith();
-     |                              ~~~~~~~~~~~~~~~~~~~~
-  34 |   });
-  35 | 
-  36 |   test("must be a tuple type", () => {
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:33:30
-
 Error: A type argument for 'Target' must be of a tuple type.
 
   36 |   test("must be a tuple type", () => {
-  37 |     // @ts-expect-error testing purpose
+  37 |     // @ts-expect-error!
   38 |     expect<Single<_>>().type.toBeInstantiableWith<string>();
      |                                                   ~~~~~~
   39 |   });
-  40 | 
-  41 |   test("named element is not allowed", () => {
+  40 | });
+  41 | 
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:38:51
-
-Error: A named element is not allowed in the 'Target' type argument.
-
-  40 | 
-  41 |   test("named element is not allowed", () => {
-  42 |     expect<Single<_>>().type.toBeInstantiableWith<[a: string, b?: number]>();
-     |                                                    ~~~~~~~~~
-  43 |   });
-  44 | 
-  45 |   test("rest element is not allowed", () => {
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:42:52
-
-Error: A named element is not allowed in the 'Target' type argument.
-
-  40 | 
-  41 |   test("named element is not allowed", () => {
-  42 |     expect<Single<_>>().type.toBeInstantiableWith<[a: string, b?: number]>();
-     |                                                               ~~~~~~~~~~
-  43 |   });
-  44 | 
-  45 |   test("rest element is not allowed", () => {
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:42:63
-
-Error: A rest element is not allowed in the 'Target' type argument.
-
-  44 | 
-  45 |   test("rest element is not allowed", () => {
-  46 |     expect<Single<_>>().type.toBeInstantiableWith<[...Array<string>, ...[number]]>();
-     |                                                    ~~~~~~~~~~~~~~~~
-  47 |   });
-  48 | });
-  49 | 
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:46:52
-
-Error: A rest element is not allowed in the 'Target' type argument.
-
-  44 | 
-  45 |   test("rest element is not allowed", () => {
-  46 |     expect<Single<_>>().type.toBeInstantiableWith<[...Array<string>, ...[number]]>();
-     |                                                                      ~~~~~~~~~~~
-  47 |   });
-  48 | });
-  49 | 
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:46:70
 

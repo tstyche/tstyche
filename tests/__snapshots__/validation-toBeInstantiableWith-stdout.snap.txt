@@ -1,3 +1,5 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-toBeInstantiableWith
+
 uses TypeScript <<version>> with ./tsconfig.json
 
 fail ./__typetests__/toBeInstantiableWith.tst.ts
@@ -9,15 +11,12 @@ fail ./__typetests__/toBeInstantiableWith.tst.ts
   argument for 'target'
     × must be type argument
   type argument for 'Target'
-    × must be provided
+    + must be provided
     × must be a tuple type
-    × named element is not allowed
-    × rest element is not allowed
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      6 failed, 2 todo, 8 total
-Assertions: 6 failed, 6 total
+Tests:      3 failed, 1 passed, 2 todo, 6 total
+Assertions: 3 failed, 3 total
+Suppressed: 2 ignored, 2 total
 Duration:   <<timestamp>>
-
-Ran all test files.

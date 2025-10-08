@@ -3,10 +3,6 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
-  static typeArgumentDoesNotAllow(argumentNameText: string, disallowedText: string): string {
-    return `A ${disallowedText} is not allowed in the '${argumentNameText}' type argument.`;
-  }
-
   static typeArgumentMustBeProvided(typeArgumentNameText: string): string {
     return `Type argument for '${typeArgumentNameText}' must be provided.`;
   }
