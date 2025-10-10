@@ -39,7 +39,7 @@
     "build:watch": "yarn build --sourcemap --watch",
     "check": "yarn check:spelling && yarn check:types",
     "check:spelling": "cspell --config ./cspell.json --quiet",
-    "check:types": "tsc --build --force --noEmit",
+    "check:types": "tsc --build --force --verbose",
     "format": "biome format --write",
     "lint": "biome lint --write",
     "publish": "yarn build && yarn npm publish",
