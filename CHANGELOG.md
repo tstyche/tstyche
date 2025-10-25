@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.0-beta.4] - 2025-10-06
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
+
+### Changed
+
+- **Breaking!** Drop support for TypeScript `4.x` ([#605](https://github.com/tstyche/tstyche/pull/605))
+
 ## [5.0.0-beta.3] - 2025-10-06
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
@@ -842,6 +850,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[5.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.4
 [5.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.3
 [5.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.2
 [5.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.1
