@@ -1,6 +1,6 @@
 [tools]
 hyperfine = "1.19.0"
-jsonschema = "11.11.0"
+jsonschema = "12.0.0"
 node = "22.21.0"
 yarn = "4.10.3"
 
@@ -13,4 +13,4 @@ run = "node ./scripts/generate-types.ts"
 depends = ["generate:*"]
 
 [tasks."test:schema"]
-run = "jsonschema test schema/__tests__/*.test.json --resolve ./schema/config.json"
+run = "jsonschema test schema/__tests__/*.test.json"
