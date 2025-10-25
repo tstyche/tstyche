@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.0.0-beta.4] - 2025-10-06
+## [5.0.0-beta.4] - 2025-10-25
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
 
