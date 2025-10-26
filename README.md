@@ -65,7 +65,7 @@ test("toMilliseconds", () => {
 
 Here is the list of all matchers:
 
-- `.toBe()`, `.toBeAssignableTo()`, `.toBeAssignableFrom()` compare types or types of expression,
+- `.toBe()`, `.toBeAssignableFrom()`, `.toBeAssignableTo()` compare types or types of expression,
 - `.toAcceptProps()` checks the type of JSX component props,
 - `.toBeApplicable` ensures that the decorator function can be applied,
 - `.toBeCallableWith()` checks whether a function is callable with the given arguments,
@@ -77,7 +77,7 @@ Here is the list of all matchers:
 The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and to run the tests against specific versions of TypeScript:
 
 ```shell
-tstyche query-params --only multiple --target '>=5.0 <5.3'
+tstyche query-params --only multiple --target '>=5.6'
 ```
 
 This simple! (And it has watch mode too.)
