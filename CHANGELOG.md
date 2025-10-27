@@ -1,5 +1,48 @@
 # Changelog
 
+## [5.0.0] - 2025-10-26
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
+
+### Added
+
+- **New!** Allow testing of provided types with `.toBeConstructableWith()` ([#603](https://github.com/tstyche/tstyche/pull/603))
+- Print test runner version and root path ([#598](https://github.com/tstyche/tstyche/pull/598))
+- **New!** Allow testing of provided types with `.toBeCallableWith()` ([#593](https://github.com/tstyche/tstyche/pull/593))
+- Add `TestTreeNodeBrand.It` member ([#591](https://github.com/tstyche/tstyche/pull/591))
+- **New!** Report counts of checked suppressed errors ([#584](https://github.com/tstyche/tstyche/pull/584))
+- **New!** Add the `// @tstyche fixme` directive ([#574](https://github.com/tstyche/tstyche/pull/574))
+- **New!** Allow suppressed error messages to be truncated with `...` ([#573](https://github.com/tstyche/tstyche/pull/573))
+- **New!** Add the `checkDeclarationFiles` configuration option ([#569](https://github.com/tstyche/tstyche/pull/569))
+
+### Fixed
+
+- Add validation for assertion and action chains ([#590](https://github.com/tstyche/tstyche/pull/590))
+- Handle leading tabs when collecting directives ([#558](https://github.com/tstyche/tstyche/pull/558))
+- Map the ability diagnostics more precise ([#525](https://github.com/tstyche/tstyche/pull/525))
+
+### Changed
+
+- **Breaking!** Drop support for TypeScript `4.x` ([#605](https://github.com/tstyche/tstyche/pull/605))
+- Implement the `.toHaveProperty()` matcher using the ability layer ([#597](https://github.com/tstyche/tstyche/pull/597))
+- **Breaking!** Rename the `.toBeAssignableWith()` matcher to `.toBeAssignableFrom()` ([#588](https://github.com/tstyche/tstyche/pull/588))
+- **Breaking!** Export `ResultCounts` and `ResultTiming` as types only ([#583](https://github.com/tstyche/tstyche/pull/583))
+- **Breaking!** Remove getters from `ResultCounts` and `ResultTiming` ([#582](https://github.com/tstyche/tstyche/pull/582))
+- **Breaking!** Remove the `*Result.diagnostics` property ([#581](https://github.com/tstyche/tstyche/pull/581))
+- **Breaking!** Do not export internals ([#578](https://github.com/tstyche/tstyche/pull/578))
+- **Breaking!** Remove `allowJs` and `checkJs` from default compiler options ([#571](https://github.com/tstyche/tstyche/pull/571))
+- **Breaking!** Remove the `checkSourceFiles` configuration option ([#570](https://github.com/tstyche/tstyche/pull/570))
+- **Breaking!** Rename `OptionBrand.True` ([#565](https://github.com/tstyche/tstyche/pull/565))
+- **Breaking!** Change the `target` option to accept only a semver string value ([#562](https://github.com/tstyche/tstyche/pull/562))
+- **Breaking!** Change the default `target` value to `"*"` ([#561](https://github.com/tstyche/tstyche/pull/561))
+- **Breaking!** Remove the `.fail` run mode flag ([#560](https://github.com/tstyche/tstyche/pull/560))
+- **Breaking!** Rename the `ExpectNode` ([#559](https://github.com/tstyche/tstyche/pull/559))
+- **Breaking!** Rename the `FileLocation` class ([#554](https://github.com/tstyche/tstyche/pull/554))
+- **Breaking!** Drop support for few older Node.js 20 versions ([#552](https://github.com/tstyche/tstyche/pull/552))
+- **Breaking!** Enable the `checkSuppressedErrors` option by default ([#551](https://github.com/tstyche/tstyche/pull/551))
+- **Breaking!** Pass `testTree` to `SuppressedService#match()` ([#550](https://github.com/tstyche/tstyche/pull/550))
+- Read tarball content from the stream ([#546](https://github.com/tstyche/tstyche/pull/546))
+
 ## [5.0.0-rc.0] - 2025-10-26
 
 _Release candidate based on [5.0.0-beta.4]._
@@ -854,6 +897,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[5.0.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0
 [5.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-rc.0
 [5.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.4
 [5.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-beta.3
