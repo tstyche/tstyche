@@ -86,10 +86,6 @@ This simple! (And it has watch mode too.)
 
 Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 
-## Feedback
-
-If you have any questions or suggestions, [start a discussion](https://github.com/tstyche/tstyche/discussions/new/choose) or [open an issue](https://github.com/tstyche/tstyche/issues/new/choose) on GitHub. Preferring a chat? Join our [Discord server](https://discord.gg/gCSasd3QJq).
-
 ## License
 
 [MIT][license-url] © TSTyche
