@@ -67,6 +67,8 @@ export class ProjectService {
 
   #getDefaultCompilerOptions() {
     const defaultCompilerOptions: ts.server.protocol.CompilerOptions = {
+      allowJs: true,
+      checkJs: true,
       allowImportingTsExtensions: true,
       exactOptionalPropertyTypes: true,
       jsx: this.#compiler.JsxEmit.Preserve,
