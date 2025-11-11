@@ -1,6 +1,6 @@
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
-import { getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
@@ -46,7 +46,11 @@ const packageText = `{
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("JSDoc", async () => {
+await test("JSDoc support", async (t) => {
+  t.after(async () => {
+    await clearFixture(fixtureUrl);
+  });
+
   await writeFixture(fixtureUrl, {
     ["index.js"]: indexText,
     ["index.tst.ts"]: testText,
