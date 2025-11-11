@@ -1,0 +1,23 @@
+Error: The diagnostic message did not match.
+
+   8 | // @ts-expect-error  Property 'message' is missing in type '{}'
+   9 | createBadge({});
+  10 | // @ts-expect-error  Not allowed
+     |                      ~~~~~~~~~~~
+  11 | createBadge("fail");
+  12 | 
+
+       at ./index.tst.ts:10:22
+
+    The suppressed error:
+
+    Argument of type 'string' is not assignable to parameter of type '{ message: string; color?: string | undefined; }'. ts(2345)
+
+       9 | createBadge({});
+      10 | // @ts-expect-error  Not allowed
+      11 | createBadge("fail");
+         |             ~~~~~~
+      12 | 
+
+           at ./index.tst.ts:11:13
+
