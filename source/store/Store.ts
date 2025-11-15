@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import vm from "node:vm";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
@@ -89,7 +89,22 @@ export class Store {
     }
 
     if (modulePath != null) {
-      compilerInstance = await Store.#loadModule(modulePath);
+      const packageConfigText = await fs.readFile(Path.resolve(modulePath, "../../package.json"), { encoding: "utf8" });
+      const { version: packageVersion } = JSON.parse(packageConfigText) as { version: string };
+
+      // TODO remove after dropping support for TypeScript 5.2
+      // project service was moved to 'typescript.js' file since TypeScript 5.3
+      if (!Version.isSatisfiedWith(packageVersion, "5.3")) {
+        modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
+      }
+
+      if (environmentOptions.noPatch) {
+        const moduleSpecifier = pathToFileURL(modulePath).toString();
+
+        compilerInstance = (await import(moduleSpecifier)) as typeof ts;
+      } else {
+        compilerInstance = await Store.#loadPatchedModule(modulePath);
+      }
 
       Store.#compilerInstanceCache.set(tag, compilerInstance);
       Store.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
@@ -98,18 +113,8 @@ export class Store {
     return compilerInstance;
   }
 
-  static async #loadModule(modulePath: string) {
-    const exports = {};
-    const module = { exports };
-
-    const packageConfigText = await fs.readFile(Path.resolve(modulePath, "../../package.json"), { encoding: "utf8" });
-    const { version: packageVersion } = JSON.parse(packageConfigText) as { version: string };
-
-    // project service was moved to 'typescript.js' file since TypeScript 5.3
-    if (!Version.isSatisfiedWith(packageVersion, "5.3")) {
-      modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
-    }
-
+  // TODO rethink or remove 'Store.#compilerInstanceCache' after removing this method
+  static async #loadPatchedModule(modulePath: string) {
     const sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
 
     const compiledWrapper = vm.compileFunction(
@@ -117,6 +122,9 @@ export class Store {
       ["exports", "require", "module", "__filename", "__dirname"],
       { filename: modulePath },
     );
+
+    const exports = {};
+    const module = { exports };
 
     compiledWrapper(exports, createRequire(modulePath), module, modulePath, Path.dirname(modulePath));
 
