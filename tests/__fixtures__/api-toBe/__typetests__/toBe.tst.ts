@@ -14,7 +14,7 @@ declare function getSize(): Size;
 
 test("edge cases", () => {
   expect<any>().type.not.toBe<never>();
-  expect<any>().type.not.toBe<unknown>(); // fail
+  expect<any>().type.not.toBe<unknown>();
 
   expect<{ a: string } | { a: string }>().type.toBe<{ a: string }>();
   expect<{ a: string } | { a: string }>().type.not.toBe<{ a: string }>(); // fail
