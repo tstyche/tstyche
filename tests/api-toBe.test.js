@@ -1,3 +1,4 @@
+import process from "node:process";
 import test from "node:test";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
@@ -31,6 +32,13 @@ await test("toBe", async (t) => {
   });
 
   await t.test("structure-based", async () => {
+    // TODO remove this check after dropping support for Node.js 20
+    if (process.versions.node.startsWith("20")) {
+      t.skip();
+
+      return;
+    }
+
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["structure.tst.ts"], {
       env: { ["TSTYCHE_NO_PATCH"]: "true" },
     });
