@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import vm from "node:vm";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
@@ -99,7 +99,9 @@ export class Store {
       }
 
       if (environmentOptions.noPatch) {
-        compilerInstance = (await import(modulePath)) as typeof ts;
+        const moduleSpecifier = pathToFileURL(modulePath).toString();
+
+        compilerInstance = (await import(moduleSpecifier)) as typeof ts;
       } else {
         compilerInstance = await Store.#loadPatchedModule(modulePath);
       }
