@@ -1,0 +1,55 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBe
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/structure.tst.ts
+  × is any?
+  × is NOT any?
+  × is unknown?
+  × is NOT unknown?
+  × is string?
+  × is NOT string?
+  × is number?
+  × is NOT number?
+  × is bigint?
+  × is NOT bigint?
+  × is boolean?
+  × is NOT boolean?
+  × is symbol?
+  × is NOT symbol?
+  × is object?
+  × is NOT object?
+  × is void?
+  × is NOT void?
+  × is undefined?
+  × is NOT undefined?
+  × is null?
+  × is NOT null?
+  × is never?
+  × is NOT never?
+  × is 'abc'?
+  × is NOT 'abc'?
+  × is 'def'?
+  × is NOT 'def'?
+  × is 123?
+  × is NOT 123?
+  × is 456?
+  × is NOT 456?
+  × is 887n?
+  × is NOT 887n?
+  × is 998n?
+  × is NOT 998n?
+  × is true?
+  × is NOT true?
+  × is false?
+  × is NOT false?
+  × is Array<string>?
+  × is NOT Array<string>?
+  × is number[]?
+  × is NOT number[]?
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      44 failed, 44 total
+Assertions: 484 failed, 484 passed, 968 total
+Duration:   <<timestamp>>

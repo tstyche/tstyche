@@ -19,5 +19,5 @@ pass ./__typetests__/toBe.tst.ts
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
 Tests:      1 passed, 9 skipped, 10 total
-Assertions: 4 passed, 46 skipped, 50 total
+Assertions: 4 passed, 44 skipped, 48 total
 Duration:   <<timestamp>>

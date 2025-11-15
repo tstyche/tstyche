@@ -14,8 +14,8 @@ await test("toBe", async (t) => {
     tstyche.expect("123").type.not.toBe(123);
   });
 
-  await t.test("toBe", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+  await t.test("patch-based", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["toBe.tst.ts"]);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-stderr`,
@@ -30,8 +30,27 @@ await test("toBe", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("structure-based", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["structure.tst.ts"], {
+      env: { ["TSTYCHE_NO_PATCH"]: "true" },
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-structure-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-structure-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("exact optional property types", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "toBe.tst.ts",
       "--only",
       "exact",
       "--tsconfig",
