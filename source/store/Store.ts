@@ -112,12 +112,8 @@ export class Store {
 
     const sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
 
-    const toExpose = ["isTypeIdenticalTo"];
-
-    const modifiedSourceText = sourceText.replace("return checker;", `return { ...checker, ${toExpose.join(", ")} };`);
-
     const compiledWrapper = vm.compileFunction(
-      modifiedSourceText,
+      sourceText.replace("return checker;", "return { ...checker, isTypeIdenticalTo };"),
       ["exports", "require", "module", "__filename", "__dirname"],
       { filename: modulePath },
     );
