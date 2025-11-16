@@ -43,17 +43,39 @@ fail ./__typetests__/structure.tst.ts
   × is NOT true?
   × is false?
   × is NOT false?
-  × is Array<string>?
-  × is NOT Array<string>?
-  × is number[]?
-  × is NOT number[]?
   × is string | number?
   × is NOT string | number?
   × is string | Array<string>?
   × is NOT string | Array<string>?
+  × is string | Array<{ a: string }>?
+  × is NOT string | Array<{ a: string }>?
+  × is { a: string }?
+  × is NOT { a: string }?
+  × is { a?: string }?
+  × is NOT { a?: string }?
+  × is { readonly a: string }?
+  × is NOT { readonly a: string }?
+  × is { readonly a?: string }?
+  × is NOT { readonly a?: string }?
+  × is Array<string>?
+  × is NOT Array<string>?
+  × is number[]?
+  × is NOT number[]?
+  × is Array<{ a: string }>?
+  × is NOT Array<{ a: string }>?
+  × is { a: string }[]?
+  × is NOT { a: string }[]?
+  × is Promise<number>?
+  × is NOT Promise<number>?
+  × is Promise<void>?
+  × is NOT Promise<void>?
+  × is Promise<{ a: string }>?
+  × is NOT Promise<{ a: string }>?
+  × is Promise<Array<{ a: string }>>?
+  × is NOT Promise<Array<{ a: string }>>?
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      48 failed, 48 total
-Assertions: 576 failed, 576 passed, 1152 total
+Tests:      70 failed, 70 total
+Assertions: 1225 failed, 1225 passed, 2450 total
 Duration:   <<timestamp>>

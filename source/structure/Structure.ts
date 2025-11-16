@@ -1,5 +1,13 @@
 import type ts from "typescript";
-import { isFreshLiteralType, isIntersection, isUnion } from "./helpers.js";
+import {
+  isFreshLiteralType,
+  isIntersection,
+  isObjectType,
+  isOptionalProperty,
+  isReadonlyProperty,
+  isTypeReference,
+  isUnion,
+} from "./helpers.js";
 
 export class Structure {
   #compiler: typeof ts;
@@ -18,6 +26,14 @@ export class Structure {
       return this.compareUnions(a, b);
     }
 
+    if (isObjectType(a, this.#compiler) && isObjectType(b, this.#compiler)) {
+      if (isTypeReference(a, this.#compiler) && isTypeReference(b, this.#compiler)) {
+        return this.compareTypeReferences(a, b);
+      }
+
+      return this.compareProperties(a, b);
+    }
+
     return a === b;
   }
 
@@ -29,9 +45,51 @@ export class Structure {
       return false;
     }
 
-    // TODO compare properties
+    for (const aProperty of aProperties) {
+      const aPropertyName = aProperty.getName();
+
+      const bProperty = b.getProperty(aPropertyName);
+
+      if (!bProperty) {
+        return false;
+      }
+
+      if (isOptionalProperty(aProperty, this.#compiler) !== isOptionalProperty(bProperty, this.#compiler)) {
+        return false;
+      }
+
+      if (isReadonlyProperty(aProperty, this.#compiler) !== isReadonlyProperty(bProperty, this.#compiler)) {
+        return false;
+      }
+
+      const aPropertyType = this.#typeChecker.getTypeOfSymbol(aProperty);
+      const bPropertyType = this.#typeChecker.getTypeOfSymbol(bProperty);
+
+      if (!this.compare(aPropertyType, bPropertyType)) {
+        return false;
+      }
+    }
 
     return true;
+  }
+
+  compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean {
+    const aSymbolName = a.symbol.getEscapedName();
+    const bSymbolName = b.symbol.getEscapedName();
+
+    if (aSymbolName !== bSymbolName) {
+      return false;
+    }
+
+    const aTypeArguments = this.#typeChecker.getTypeArguments(a);
+    const bTypeArguments = this.#typeChecker.getTypeArguments(b);
+
+    if (bTypeArguments.length !== aTypeArguments.length) {
+      return false;
+    }
+
+    // biome-ignore lint/style/noNonNullAssertion: length was checked above
+    return aTypeArguments.every((type, index) => this.compare(type, bTypeArguments[index]!));
   }
 
   compareUnions(a: ts.UnionType, b: ts.UnionType): boolean {
