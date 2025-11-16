@@ -39,7 +39,7 @@ export class ExpectService {
     this.#typeChecker = typeChecker;
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
-    this.toBe = environmentOptions.noPatch ? new ToBe() : new LegacyToBe();
+    this.toBe = environmentOptions.noPatch ? new ToBe(compiler, typeChecker) : new LegacyToBe();
     this.toBeApplicable = new ToBeApplicable(compiler);
     this.toBeAssignableFrom = new ToBeAssignableFrom();
     this.toBeAssignableTo = new ToBeAssignableTo();

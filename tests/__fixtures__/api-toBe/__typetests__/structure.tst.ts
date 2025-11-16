@@ -29,6 +29,11 @@ const samples = [
 
   "Array<string>",
   "number[]",
+
+  // unions
+
+  "string | number",
+  "string | Array<string>",
 ];
 
 // TODO

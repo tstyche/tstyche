@@ -1,0 +1,14 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBe
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/enums.tst.ts
+  + is string enum?
+  + is numeric enum?
+  + enum literal is the same as the union of its values
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      3 passed, 3 total
+Assertions: 20 passed, 20 total
+Duration:   <<timestamp>>
