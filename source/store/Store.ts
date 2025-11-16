@@ -101,7 +101,7 @@ export class Store {
       if (environmentOptions.noPatch) {
         const moduleSpecifier = pathToFileURL(modulePath).toString();
 
-        compilerInstance = (await import(moduleSpecifier)) as typeof ts;
+        compilerInstance = (await import(moduleSpecifier)).default as typeof ts;
       } else {
         compilerInstance = await Store.#loadPatchedModule(modulePath);
       }
