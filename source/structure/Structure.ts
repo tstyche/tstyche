@@ -74,10 +74,7 @@ export class Structure {
   }
 
   compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean {
-    const aSymbolName = a.symbol.getEscapedName();
-    const bSymbolName = b.symbol.getEscapedName();
-
-    if (aSymbolName !== bSymbolName) {
+    if (a.target !== b.target) {
       return false;
     }
 
