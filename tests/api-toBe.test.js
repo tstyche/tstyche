@@ -31,7 +31,7 @@ await test("toBe", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("structure-based", async () => {
+  await t.test("structure", async () => {
     // TODO remove this check after dropping support for Node.js 20
     if (process.versions.node.startsWith("20")) {
       t.skip();
@@ -50,6 +50,39 @@ await test("toBe", async (t) => {
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-structure-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("enums", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["enums.tst.ts"], {
+      env: { ["TSTYCHE_NO_PATCH"]: "true" },
+    });
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-enums-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("unions", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["unions.tst.ts"], {
+      env: { ["TSTYCHE_NO_PATCH"]: "true" },
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-unions-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-unions-stdout`,
       testFileUrl: import.meta.url,
     });
 

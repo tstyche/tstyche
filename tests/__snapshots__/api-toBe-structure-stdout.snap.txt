@@ -47,9 +47,13 @@ fail ./__typetests__/structure.tst.ts
   × is NOT Array<string>?
   × is number[]?
   × is NOT number[]?
+  × is string | number?
+  × is NOT string | number?
+  × is string | Array<string>?
+  × is NOT string | Array<string>?
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      44 failed, 44 total
-Assertions: 484 failed, 484 passed, 968 total
+Tests:      48 failed, 48 total
+Assertions: 576 failed, 576 passed, 1152 total
 Duration:   <<timestamp>>

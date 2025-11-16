@@ -1,3 +1,4 @@
+import type ts from "typescript";
 import { Structure } from "#structure";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -5,7 +6,13 @@ import { RelationMatcherBase } from "./RelationMatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToBe extends RelationMatcherBase {
-  #structure = new Structure();
+  #structure: Structure;
+
+  constructor(compiler: typeof ts, typeChecker: ts.TypeChecker) {
+    super();
+
+    this.#structure = new Structure(compiler, typeChecker);
+  }
 
   explainText = ExpectDiagnosticText.isTheSame;
   explainNotText = ExpectDiagnosticText.isNotTheSame;
