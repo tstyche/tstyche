@@ -71,6 +71,24 @@ await test("toBe", async (t) => {
     assert.equal(exitCode, 0);
   });
 
+  await t.test("objects", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["objects.tst.ts"], {
+      env: { ["TSTYCHE_NO_PATCH"]: "true" },
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-objects-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-objects-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("unions", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["unions.tst.ts"], {
       env: { ["TSTYCHE_NO_PATCH"]: "true" },

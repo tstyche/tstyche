@@ -25,22 +25,36 @@ const samples = [
   "true",
   "false",
 
-  // arrays
-
-  "Array<string>",
-  "number[]",
-
   // unions
 
   "string | number",
   "string | Array<string>",
+  "string | Array<{ a: string }>",
+
+  // objects
+
+  "{ a: string }",
+  "{ a?: string }",
+  "{ readonly a: string }",
+  "{ readonly a?: string }",
+
+  // arrays
+
+  "Array<string>",
+  "number[]",
+  "Array<{ a: string }>",
+  "{ a: string }[]",
+
+  // references
+
+  "Promise<number>",
+  "Promise<void>",
+  "Promise<{ a: string }>",
+  "Promise<Array<{ a: string }>>",
 ];
 
 // TODO
-// expect<string>().type.not.toBe<Array<{ a: string }>>();
 // expect<string>().type.not.toBe<[string]>();
-// expect<string>().type.not.toBe<{ a: string }>();
-// expect<string>().type.not.toBe<Promise<string>>();
 
 let testText = `import { expect, test } from "tstyche";
 `;

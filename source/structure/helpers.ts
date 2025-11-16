@@ -12,6 +12,24 @@ export function isObjectType(type: ts.Type, compiler: typeof ts): type is ts.Obj
   return !!(type.flags & compiler.TypeFlags.Object);
 }
 
+export function isOptionalProperty(symbol: ts.Symbol, compiler: typeof ts) {
+  return symbol.declarations?.every(
+    (declaration) => compiler.isPropertySignature(declaration) && declaration.questionToken != null,
+  );
+}
+
+export function isReadonlyProperty(symbol: ts.Symbol, compiler: typeof ts) {
+  return symbol.declarations?.every(
+    (declaration) =>
+      compiler.isPropertySignature(declaration) &&
+      declaration.modifiers?.some((modifier) => modifier.kind === compiler.SyntaxKind.ReadonlyKeyword),
+  );
+}
+
 export function isUnion(type: ts.Type, compiler: typeof ts): type is ts.UnionType {
   return !!(type.flags & compiler.TypeFlags.Union);
+}
+
+export function isTypeReference(type: ts.ObjectType, compiler: typeof ts): type is ts.TypeReference {
+  return !!(type.objectFlags & compiler.ObjectFlags.Reference);
 }
