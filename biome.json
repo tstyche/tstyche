@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schema/2.3.5/schema.json",
+  "$schema": "https://biomejs.dev/schema/2.3.6/schema.json",
 
   "json": {
     "parser": {
