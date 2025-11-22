@@ -17,14 +17,16 @@ const config: CoverageReportOptions = {
     "**/node_modules/**": false,
 
     "**/build/bin.js": true,
+    "**/build/index.js": true,
     "**/build/tstyche.js": true,
   },
 
   sourceFilter: {
     "**/source/tstyche.ts": false,
-    "**/source/**/*.enum.ts": false,
-    "**/source/**/index.ts": false,
-    "**/source/**/types.ts": false,
+    "**/source/types.ts": false,
+    "**/source/*/*.enum.ts": false,
+    "**/source/*/index.ts": false,
+    "**/source/*/types.ts": false,
 
     "**/source/*.ts": true,
     "**/source/*/*.ts": true,
