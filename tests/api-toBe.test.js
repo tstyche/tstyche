@@ -72,17 +72,17 @@ await test("toBe", async (t) => {
   });
 
   await t.test("objects", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["objects.tst.ts"], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["object"], {
       env: { ["TSTYCHE_NO_PATCH"]: "true" },
     });
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-objects-stderr`,
+      fileName: `${testFileName}-object-stderr`,
       testFileUrl: import.meta.url,
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-objects-stdout`,
+      fileName: `${testFileName}-object-stdout`,
       testFileUrl: import.meta.url,
     });
 

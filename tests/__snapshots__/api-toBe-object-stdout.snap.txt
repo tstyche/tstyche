@@ -2,11 +2,12 @@
 
 uses TypeScript <<version>> with ./tsconfig.json
 
+fail ./__typetests__/object-optional.tst.ts
+
 fail ./__typetests__/objects.tst.ts
-  × edge cases
 
 Targets:    1 failed, 1 total
-Test files: 1 failed, 1 total
-Tests:      1 failed, 1 total
-Assertions: 12 failed, 12 passed, 24 total
+Test files: 2 failed, 2 total
+Tests:      3 failed, 3 total
+Assertions: 20 failed, 20 passed, 40 total
 Duration:   <<timestamp>>

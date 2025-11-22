@@ -1,3 +1,98 @@
+Error: Type '{ a?: string | undefined; }' is not the same as type '{ a: string; }'.
+
+  3 | test("is the same?", () => {
+  4 |   expect<{ a?: string }>().type.toBe<{ a?: string }>();
+  5 |   expect<{ a?: string }>().type.toBe<{ a: string }>(); // fail
+    |                                      ~~~~~~~~~~~~~
+  6 | 
+  7 |   expect<{ a: string; b?: number }>().type.toBe<{ a: string; b?: number }>();
+  8 |   expect<{ a: string; b?: number }>().type.toBe<{ a: string; b: number }>(); // fail
+
+      at ./__typetests__/object-optional.tst.ts:5:38 ❭ is the same?
+
+Error: Type '{ a: string; b?: number | undefined; }' is not the same as type '{ a: string; b: number; }'.
+
+   6 | 
+   7 |   expect<{ a: string; b?: number }>().type.toBe<{ a: string; b?: number }>();
+   8 |   expect<{ a: string; b?: number }>().type.toBe<{ a: string; b: number }>(); // fail
+     |                                                 ~~~~~~~~~~~~~~~~~~~~~~~~
+   9 | 
+  10 |   expect<Partial<{ a: string }>>().type.toBe<{ a?: string }>();
+  11 |   expect<Partial<{ a: string }>>().type.toBe<{ a: string }>(); // fail
+
+       at ./__typetests__/object-optional.tst.ts:8:49 ❭ is the same?
+
+Error: Type 'Partial<{ a: string; }>' is not the same as type '{ a: string; }'.
+
+   9 | 
+  10 |   expect<Partial<{ a: string }>>().type.toBe<{ a?: string }>();
+  11 |   expect<Partial<{ a: string }>>().type.toBe<{ a: string }>(); // fail
+     |                                              ~~~~~~~~~~~~~
+  12 | 
+  13 |   expect<Required<{ a?: string }>>().type.toBe<{ a: string }>();
+  14 |   expect<Required<{ a?: string }>>().type.toBe<{ a?: string }>(); // fail
+
+       at ./__typetests__/object-optional.tst.ts:11:46 ❭ is the same?
+
+Error: Type 'Required<{ a?: string | undefined; }>' is not the same as type '{ a?: string | undefined; }'.
+
+  12 | 
+  13 |   expect<Required<{ a?: string }>>().type.toBe<{ a: string }>();
+  14 |   expect<Required<{ a?: string }>>().type.toBe<{ a?: string }>(); // fail
+     |                                                ~~~~~~~~~~~~~~
+  15 | });
+  16 | 
+  17 | test("is NOT the same?", () => {
+
+       at ./__typetests__/object-optional.tst.ts:14:48 ❭ is the same?
+
+Error: Type '{ a?: string | undefined; }' is the same as type '{ a?: string | undefined; }'.
+
+  17 | test("is NOT the same?", () => {
+  18 |   expect<{ a?: string }>().type.not.toBe<{ a: string }>();
+  19 |   expect<{ a?: string }>().type.not.toBe<{ a?: string }>(); // fail
+     |                                          ~~~~~~~~~~~~~~
+  20 | 
+  21 |   expect<{ a: string; b?: number }>().type.not.toBe<{ a: string; b: number }>();
+  22 |   expect<{ a: string; b?: number }>().type.not.toBe<{ a: string; b?: number }>(); // fail
+
+       at ./__typetests__/object-optional.tst.ts:19:42 ❭ is NOT the same?
+
+Error: Type '{ a: string; b?: number | undefined; }' is the same as type '{ a: string; b?: number | undefined; }'.
+
+  20 | 
+  21 |   expect<{ a: string; b?: number }>().type.not.toBe<{ a: string; b: number }>();
+  22 |   expect<{ a: string; b?: number }>().type.not.toBe<{ a: string; b?: number }>(); // fail
+     |                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~
+  23 | 
+  24 |   expect<Partial<{ a: string }>>().type.not.toBe<{ a: string }>();
+  25 |   expect<Partial<{ a: string }>>().type.not.toBe<{ a?: string }>(); // fail
+
+       at ./__typetests__/object-optional.tst.ts:22:53 ❭ is NOT the same?
+
+Error: Type 'Partial<{ a: string; }>' is the same as type '{ a?: string | undefined; }'.
+
+  23 | 
+  24 |   expect<Partial<{ a: string }>>().type.not.toBe<{ a: string }>();
+  25 |   expect<Partial<{ a: string }>>().type.not.toBe<{ a?: string }>(); // fail
+     |                                                  ~~~~~~~~~~~~~~
+  26 | 
+  27 |   expect<Required<{ a?: string }>>().type.not.toBe<{ a?: string }>();
+  28 |   expect<Required<{ a?: string }>>().type.not.toBe<{ a: string }>(); // fail
+
+       at ./__typetests__/object-optional.tst.ts:25:50 ❭ is NOT the same?
+
+Error: Type 'Required<{ a?: string | undefined; }>' is the same as type '{ a: string; }'.
+
+  26 | 
+  27 |   expect<Required<{ a?: string }>>().type.not.toBe<{ a?: string }>();
+  28 |   expect<Required<{ a?: string }>>().type.not.toBe<{ a: string }>(); // fail
+     |                                                    ~~~~~~~~~~~~~
+  29 | });
+  30 | 
+
+       at ./__typetests__/object-optional.tst.ts:28:52 ❭ is NOT the same?
+
 Error: Type '{ a: string; } | { a: string; }' is the same as type '{ a: string; }'.
 
   3 | test("edge cases", () => {

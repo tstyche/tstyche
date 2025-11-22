@@ -12,10 +12,8 @@ export function isObjectType(type: ts.Type, compiler: typeof ts): type is ts.Obj
   return !!(type.flags & compiler.TypeFlags.Object);
 }
 
-export function isOptionalProperty(symbol: ts.Symbol, compiler: typeof ts) {
-  return symbol.declarations?.every(
-    (declaration) => compiler.isPropertySignature(declaration) && declaration.questionToken != null,
-  );
+export function isOptionalProperty(symbol: ts.Symbol, compiler: typeof ts): boolean {
+  return !!(symbol.flags & compiler.SymbolFlags.Optional);
 }
 
 export function isReadonlyProperty(symbol: ts.Symbol, compiler: typeof ts) {
