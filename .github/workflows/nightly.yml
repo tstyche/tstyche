@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
-      - uses: jdx/mise-action@d16887ba50704baed7de72bd1e82e04391e4457a # v3
+      - uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
       - run: yarn install
       - run: yarn build
       - run: yarn dlx --package typescript@next tsc --build --force --verbose
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
-      - uses: jdx/mise-action@d16887ba50704baed7de72bd1e82e04391e4457a # v3
+      - uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
       - run: yarn install
       - run: yarn build
       - run: yarn test:types --target next
