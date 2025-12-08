@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.0.2] - 2025-12-08
+
+### Fixed
+
+- Handle broken symlinks during the lookup of test files ([#633](https://github.com/tstyche/tstyche/pull/633))
+
 ## [5.0.1] - 2025-11-11
 
 ### Fixed
@@ -903,6 +909,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[5.0.2]: https://github.com/tstyche/tstyche/releases/tag/v5.0.2
 [5.0.1]: https://github.com/tstyche/tstyche/releases/tag/v5.0.1
 [5.0.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0
 [5.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0-rc.0
