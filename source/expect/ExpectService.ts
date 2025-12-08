@@ -2,10 +2,8 @@ import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { argumentIsProvided, argumentOrTypeArgumentIsProvided } from "#ensure";
-import { environmentOptions } from "#environment";
 import type { Reject } from "#reject";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import { LegacyToBe } from "./LegacyToBe.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
@@ -24,7 +22,7 @@ export class ExpectService {
   #typeChecker: TypeChecker;
 
   private toAcceptProps: ToAcceptProps;
-  private toBe: LegacyToBe;
+  private toBe: ToBe;
   private toBeApplicable: ToBeApplicable;
   private toBeAssignableFrom: ToBeAssignableFrom;
   private toBeAssignableTo: ToBeAssignableTo;
@@ -39,7 +37,7 @@ export class ExpectService {
     this.#typeChecker = typeChecker;
 
     this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
-    this.toBe = environmentOptions.noPatch ? new ToBe(compiler, typeChecker) : new LegacyToBe();
+    this.toBe = new ToBe();
     this.toBeApplicable = new ToBeApplicable(compiler);
     this.toBeAssignableFrom = new ToBeAssignableFrom();
     this.toBeAssignableTo = new ToBeAssignableTo();

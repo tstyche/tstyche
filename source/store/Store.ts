@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
@@ -98,13 +98,7 @@ export class Store {
         modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
       }
 
-      if (environmentOptions.noPatch) {
-        const moduleSpecifier = pathToFileURL(modulePath).toString();
-
-        compilerInstance = (await import(moduleSpecifier)).default as typeof ts;
-      } else {
-        compilerInstance = await Store.#loadPatchedModule(modulePath);
-      }
+      compilerInstance = await Store.#loadPatchedModule(modulePath);
 
       Store.#compilerInstanceCache.set(tag, compilerInstance);
       Store.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);

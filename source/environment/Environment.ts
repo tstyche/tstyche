@@ -9,7 +9,6 @@ export class Environment {
       isCi: Environment.#resolveIsCi(),
       noColor: Environment.#resolveNoColor(),
       noInteractive: Environment.#resolveNoInteractive(),
-      noPatch: Environment.#resolveNoPatch(),
       npmRegistry: Environment.#resolveNpmRegistry(),
       storePath: Environment.#resolveStorePath(),
       timeout: Environment.#resolveTimeout(),
@@ -43,14 +42,6 @@ export class Environment {
     }
 
     return !process.stdout.isTTY;
-  }
-
-  static #resolveNoPatch() {
-    if (process.env["TSTYCHE_NO_PATCH"] != null) {
-      return process.env["TSTYCHE_NO_PATCH"] !== "";
-    }
-
-    return false;
   }
 
   static #resolveNpmRegistry() {
