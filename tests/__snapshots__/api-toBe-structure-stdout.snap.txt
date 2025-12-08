@@ -1,0 +1,15 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBe
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+pass ./__typetests__/conditional.tst.ts
+pass ./__typetests__/enums.tst.ts
+pass ./__typetests__/mapped.tst.ts
+pass ./__typetests__/references.tst.ts
+pass ./__typetests__/template-literals.tst.ts
+
+Targets:    1 passed, 1 total
+Test files: 5 passed, 5 total
+Tests:      27 passed, 27 total
+Assertions: 136 passed, 136 total
+Duration:   <<timestamp>>

@@ -14,7 +14,7 @@ await test("toBe", async (t) => {
     tstyche.expect("123").type.not.toBe(123);
   });
 
-  await t.test("patch-based", async () => {
+  await t.test("toBe", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["toBe.tst.ts"]);
 
     await assert.matchSnapshot(stderr, {
@@ -28,6 +28,25 @@ await test("toBe", async (t) => {
     });
 
     assert.equal(exitCode, 1);
+  });
+
+  await t.test("structure", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "conditional",
+      "enums",
+      "mapped",
+      "references",
+      "template",
+    ]);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-structure-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
   });
 
   await t.test("exact optional property types", async () => {

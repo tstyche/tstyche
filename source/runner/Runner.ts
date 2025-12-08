@@ -91,7 +91,7 @@ export class Runner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await Store.load(target);
+      const compiler = await Store.load(target, { notPatched: !this.#resolvedConfig.legacyToBe });
 
       if (compiler) {
         // TODO to improve performance, runners (or even test projects) could be cached in the future

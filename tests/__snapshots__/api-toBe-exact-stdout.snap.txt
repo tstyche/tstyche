@@ -3,8 +3,6 @@
 uses TypeScript <<version>> with ./tsconfig-exact.json
 
 pass ./__typetests__/toBe.tst.ts
-  - skip edge cases
-  + exact optional property types
   when source is a type
     - skip is the same as the target type
     - skip is NOT the same as the target type
@@ -15,9 +13,10 @@ pass ./__typetests__/toBe.tst.ts
     - skip is NOT the same as the target type
     - skip is the same as type of the target expression
     - skip is NOT the same as type of the target expression
+  + exact optional property types
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      1 passed, 9 skipped, 10 total
-Assertions: 4 passed, 44 skipped, 48 total
+Tests:      1 passed, 8 skipped, 9 total
+Assertions: 4 passed, 19 skipped, 23 total
 Duration:   <<timestamp>>

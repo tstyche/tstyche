@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import vm from "node:vm";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
@@ -53,7 +53,7 @@ export class Store {
     await Store.#packageService.ensure(version, Store.manifest);
   }
 
-  static async load(tag: string): Promise<typeof ts | undefined> {
+  static async load(tag: string, options?: { notPatched?: boolean }): Promise<typeof ts | undefined> {
     let compilerInstance = Store.#compilerInstanceCache.get(tag);
 
     if (compilerInstance != null) {
@@ -98,7 +98,13 @@ export class Store {
         modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
       }
 
-      compilerInstance = await Store.#loadPatchedModule(modulePath);
+      if (options?.notPatched) {
+        const moduleSpecifier = pathToFileURL(modulePath).toString();
+
+        compilerInstance = (await import(moduleSpecifier)).default as typeof ts;
+      } else {
+        compilerInstance = await Store.#loadPatchedModule(modulePath);
+      }
 
       Store.#compilerInstanceCache.set(tag, compilerInstance);
       Store.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
