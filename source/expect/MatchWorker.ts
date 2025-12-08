@@ -10,9 +10,9 @@ export class MatchWorker {
   #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
   typeChecker: TypeChecker;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertionNode: ExpectNode) {
+  constructor(compiler: typeof ts, program: ts.Program, assertionNode: ExpectNode) {
     this.#compiler = compiler;
-    this.typeChecker = typeChecker;
+    this.typeChecker = program.getTypeChecker() as TypeChecker;
     this.assertionNode = assertionNode;
   }
 

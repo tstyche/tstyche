@@ -3,7 +3,7 @@ import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlag
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { ExpectService, type TypeChecker } from "#expect";
+import { ExpectService } from "#expect";
 import { Reject } from "#reject";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
@@ -30,7 +30,7 @@ export class TestTreeWalker {
 
   constructor(
     compiler: typeof ts,
-    typeChecker: TypeChecker,
+    program: ts.Program,
     resolvedConfig: ResolvedConfig,
     onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
     options: TestTreeWalkerOptions,
@@ -43,9 +43,9 @@ export class TestTreeWalker {
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
 
-    const reject = new Reject(compiler, typeChecker, resolvedConfig);
+    const reject = new Reject(compiler, program, resolvedConfig);
 
-    this.#expectService = new ExpectService(compiler, typeChecker, reject);
+    this.#expectService = new ExpectService(compiler, program, reject, resolvedConfig);
     this.#whenService = new WhenService(reject, onFileDiagnostics);
   }
 

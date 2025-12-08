@@ -22,6 +22,7 @@
     "jsxs",
     "monocart",
     "tsserverlibrary",
-    "typetests"
+    "typetests",
+    "uncapitalize"
   ]
 }

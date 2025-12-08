@@ -22,6 +22,7 @@ const config: CoverageReportOptions = {
   },
 
   sourceFilter: {
+    "**/source/ts-internals.d.ts": false,
     "**/source/tstyche.ts": false,
     "**/source/types.ts": false,
     "**/source/*/*.enum.ts": false,

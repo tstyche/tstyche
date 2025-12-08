@@ -10,9 +10,9 @@ export class Reject {
   #rejectedArgumentTypes = new Set<"any" | "never">();
   #typeChecker: ts.TypeChecker;
 
-  constructor(compiler: typeof ts, typeChecker: ts.TypeChecker, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts, program: ts.Program, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
-    this.#typeChecker = typeChecker;
+    this.#typeChecker = program.getTypeChecker();
 
     if (resolvedConfig?.rejectAnyType) {
       this.#rejectedArgumentTypes.add("any");
