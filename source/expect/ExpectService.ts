@@ -14,12 +14,12 @@ import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToBeConstructableWith } from "./ToBeConstructableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToRaiseError } from "./ToRaiseError.js";
-import type { MatchResult, TypeChecker } from "./types.js";
+import type { MatchResult } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
+  #program: ts.Program;
   #reject: Reject;
-  #typeChecker: TypeChecker;
 
   private toAcceptProps: ToAcceptProps;
   private toBe: ToBe;
@@ -31,12 +31,12 @@ export class ExpectService {
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, reject: Reject) {
+  constructor(compiler: typeof ts, program: ts.Program, reject: Reject) {
     this.#compiler = compiler;
+    this.#program = program;
     this.#reject = reject;
-    this.#typeChecker = typeChecker;
 
-    this.toAcceptProps = new ToAcceptProps(compiler, typeChecker);
+    this.toAcceptProps = new ToAcceptProps(compiler, program);
     this.toBe = new ToBe();
     this.toBeApplicable = new ToBeApplicable(compiler);
     this.toBeAssignableFrom = new ToBeAssignableFrom();
@@ -65,7 +65,7 @@ export class ExpectService {
       return;
     }
 
-    const matchWorker = new MatchWorker(this.#compiler, this.#typeChecker, assertionNode);
+    const matchWorker = new MatchWorker(this.#compiler, this.#program, assertionNode);
 
     if (
       !(matcherNameText === "toRaiseError" && assertionNode.isNot === false) &&
