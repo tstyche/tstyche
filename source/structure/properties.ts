@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { isUnionType } from "./predicates.js";
-import { getDeclarationModifierFlagsFromSymbol, isCheckFlagSet } from "./symbols.js";
+import { isCheckFlagSet } from "./symbols.js";
 
 export function getPropertyType(
   symbol: ts.Symbol,
@@ -36,7 +36,7 @@ export function isReadonlyProperty(symbol: ts.Symbol, compiler: typeof ts): bool
   return !!(
     isCheckFlagSet(symbol, compiler.CheckFlags.Readonly, compiler) ||
     (symbol.flags & compiler.SymbolFlags.Property &&
-      getDeclarationModifierFlagsFromSymbol(symbol, compiler) & compiler.ModifierFlags.Readonly) ||
+      compiler.getDeclarationModifierFlagsFromSymbol(symbol) & compiler.ModifierFlags.Readonly) ||
     (symbol.flags & compiler.SymbolFlags.Accessor && !(symbol.flags & compiler.SymbolFlags.SetAccessor))
   );
 }

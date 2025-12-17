@@ -14,7 +14,7 @@ import {
   isUnionType,
 } from "./predicates.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
-import { getDeclarationModifierFlagsFromSymbol, getTargetSymbol, isSymbolFromDefaultLibrary } from "./symbols.js";
+import { getTargetSymbol, isSymbolFromDefaultLibrary } from "./symbols.js";
 
 export class Structure {
   #compiler: typeof ts;
@@ -187,10 +187,10 @@ export class Structure {
       }
 
       const aAccessibility =
-        getDeclarationModifierFlagsFromSymbol(aProperty, this.#compiler) &
+        this.#compiler.getDeclarationModifierFlagsFromSymbol(aProperty) &
         this.#compiler.ModifierFlags.NonPublicAccessibilityModifier;
       const bAccessibility =
-        getDeclarationModifierFlagsFromSymbol(bProperty, this.#compiler) &
+        this.#compiler.getDeclarationModifierFlagsFromSymbol(bProperty) &
         this.#compiler.ModifierFlags.NonPublicAccessibilityModifier;
 
       if (aAccessibility !== bAccessibility) {
