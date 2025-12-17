@@ -68,7 +68,7 @@ export class Structure {
         isIntersectionType(a, this.#compiler) &&
         isIntersectionType(b, this.#compiler) &&
         a.types.length === b.types.length &&
-        a.types.every((aType, i) => this.compare(aType, b.types.at(i) as ts.Type))
+        a.types.every((aType, i) => this.compare(aType, b.types[i] as ts.Type))
       ) {
         return true;
       }
@@ -277,10 +277,6 @@ export class Structure {
   }
 
   compareSignature(a: ts.Signature, b: ts.Signature): boolean {
-    if (a === b) {
-      return true;
-    }
-
     if (length(a.typeParameters) !== length(b.typeParameters)) {
       return false;
     }
