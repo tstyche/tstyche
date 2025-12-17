@@ -284,6 +284,24 @@ test("inheritance", () => {
   expect<Pick<Derived, "greet">>().type.not.toBe<{ greet(): void }>();
 });
 
+test("abstract", () => {
+  abstract class Base {
+    abstract getName(): string;
+    printName() {
+      // ...
+    }
+  }
+  class Derived extends Base {
+    getName() {
+      return "abc";
+    }
+  }
+
+  expect<Base>().type.toBe<{ getName(): string; printName(): void }>();
+  expect<Derived>().type.toBe<{ getName(): string; printName(): void }>();
+  expect<Base>().type.toBe<Derived>();
+});
+
 test("missing constructor", () => {
   class A {
     x!: string;
