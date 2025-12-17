@@ -79,6 +79,11 @@ test("index signatures", () => {
     readonly [index: number]: string;
   }
 
+  type MultiIndex = {
+    [key: string]: string | number;
+    [key: number]: string;
+  };
+
   expect<StringArray>().type.toBe<{ [index: number]: string }>();
   expect<StringArray>().type.not.toBe<{ [index: string]: string }>();
   expect<StringArray>().type.not.toBe<{ [index: number]: number }>();
@@ -86,6 +91,10 @@ test("index signatures", () => {
   expect<ReadonlyStringArray>().type.toBe<{ readonly [index: number]: string }>();
   expect<ReadonlyStringArray>().type.not.toBe<{ readonly [index: string]: string }>();
   expect<ReadonlyStringArray>().type.not.toBe<{ readonly [index: number]: number }>();
+
+  expect<MultiIndex>().type.toBe<{ [key: string]: string | number; [key: number]: string }>();
+  expect<MultiIndex>().type.not.toBe<{ [key: string]: string | number }>();
+  expect<MultiIndex>().type.not.toBe<{ [key: number]: string }>();
 });
 
 test("symbol keys", () => {

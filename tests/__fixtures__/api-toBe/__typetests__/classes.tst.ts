@@ -137,11 +137,39 @@ test("'protected' fields", () => {
   expect<typeof B>().type.not.toBe<typeof C>();
 });
 
+test("accessors", () => {
+  class A {
+    #x = 0;
+    get x() {
+      return this.#x;
+    }
+  }
+
+  class B {
+    #x = 0;
+    get x() {
+      return this.#x;
+    }
+    set x(value) {
+      this.#x = value;
+    }
+  }
+
+  expect<Pick<A, "x">>().type.toBe<{ readonly x: number }>();
+  expect<Pick<A, "x">>().type.not.toBe<{ x: number }>();
+
+  expect<Pick<B, "x">>().type.toBe<{ x: number }>();
+  expect<Pick<B, "x">>().type.not.toBe<{ readonly x: number }>();
+});
+
 test("inheritance", () => {
   class A {
     x!: string;
   }
   class B extends A {
+    y!: number;
+  }
+  class C extends A {
     y!: number;
   }
 
@@ -150,7 +178,31 @@ test("inheritance", () => {
   expect<B>().type.not.toBe<{ y: number }>();
 
   expect<B>().type.not.toBe<A>();
+  expect<B>().type.toBe<C>();
   expect<typeof B>().type.not.toBe<typeof A>();
+  expect<typeof B>().type.toBe<typeof C>();
+
+  class Base {
+    greet() {
+      // ...
+    }
+  }
+
+  class Derived extends Base {
+    override greet(name?: string | undefined) {
+      if (name === undefined) {
+        super.greet();
+      } else {
+        // ...
+      }
+    }
+  }
+
+  expect<Pick<Base, "greet">>().type.toBe<{ greet(): void }>();
+  expect<Pick<Base, "greet">>().type.not.toBe<{ greet(name?: string | undefined): void }>();
+
+  expect<Pick<Derived, "greet">>().type.toBe<{ greet(name?: string | undefined): void }>();
+  expect<Pick<Derived, "greet">>().type.not.toBe<{ greet(): void }>();
 });
 
 test("missing constructor", () => {
