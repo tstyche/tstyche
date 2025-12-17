@@ -2,7 +2,8 @@ import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
 import { Relation } from "./Relation.enum.js";
-import type { TypeChecker } from "./types.js";
+
+type TypeChecker = ts.TypeChecker & { isTypeIdenticalTo(source: ts.Type, target: ts.Type): boolean };
 
 export class MatchWorker {
   assertionNode: ExpectNode;
@@ -10,9 +11,9 @@ export class MatchWorker {
   #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
   typeChecker: TypeChecker;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker, assertionNode: ExpectNode) {
+  constructor(compiler: typeof ts, program: ts.Program, assertionNode: ExpectNode) {
     this.#compiler = compiler;
-    this.typeChecker = typeChecker;
+    this.typeChecker = program.getTypeChecker() as TypeChecker;
     this.assertionNode = assertionNode;
   }
 

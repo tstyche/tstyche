@@ -4,15 +4,15 @@ import { nodeBelongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import { isUnionType } from "./predicates.js";
-import type { ArgumentNode, MatchResult, TypeChecker } from "./types.js";
+import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToAcceptProps {
   #compiler: typeof ts;
-  #typeChecker: TypeChecker;
+  #typeChecker: ts.TypeChecker;
 
-  constructor(compiler: typeof ts, typeChecker: TypeChecker) {
+  constructor(compiler: typeof ts, program: ts.Program) {
     this.#compiler = compiler;
-    this.#typeChecker = typeChecker;
+    this.#typeChecker = program.getTypeChecker();
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
