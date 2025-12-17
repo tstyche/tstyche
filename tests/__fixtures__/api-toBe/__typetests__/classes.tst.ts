@@ -78,6 +78,34 @@ test("'public' fields", () => {
   expect<typeof A>().type.toBe<typeof B>();
 });
 
+test("'public static' fields", () => {
+  class A {
+    public x!: string;
+    public static y: string;
+  }
+  class B {
+    x!: string;
+    static y: string;
+  }
+  class C {
+    x!: string;
+    static z: string;
+  }
+
+  expect<A>().type.toBe<{ x: string }>();
+  expect<B>().type.toBe<{ x: string }>();
+  expect<C>().type.toBe<{ x: string }>();
+
+  expect<A>().type.toBe<B>();
+
+  expect<Pick<typeof A, "y">>().type.toBe<{ y: string }>();
+  expect<Pick<typeof B, "y">>().type.toBe<{ y: string }>();
+  expect<Pick<typeof C, "z">>().type.toBe<{ z: string }>();
+
+  expect<typeof A>().type.toBe<typeof B>();
+  expect<typeof A>().type.not.toBe<typeof C>();
+});
+
 test("'private' fields", () => {
   class A {
     x!: string;
@@ -112,6 +140,35 @@ test("'private' fields", () => {
   expect<D>().type.not.toBe<B>();
 });
 
+test("'private static' fields", () => {
+  class A {
+    x!: string;
+    public static y: number;
+  }
+  class B {
+    x!: string;
+    private static y: number;
+  }
+  class C {
+    x!: string;
+    private static y: number;
+  }
+  class D {
+    x!: string;
+    static #y: number;
+  }
+
+  expect<A>().type.toBe<{ x: string }>();
+  expect<A>().type.toBe<B>();
+  expect<A>().type.toBe<C>();
+  expect<A>().type.toBe<D>();
+
+  expect<typeof A>().type.not.toBe<typeof B>();
+  expect<typeof A>().type.not.toBe<typeof C>();
+  expect<typeof A>().type.not.toBe<typeof D>();
+  expect<typeof B>().type.not.toBe<typeof C>();
+});
+
 test("'protected' fields", () => {
   class A {
     x!: string;
@@ -134,6 +191,28 @@ test("'protected' fields", () => {
 
   expect<B>().type.not.toBe<A>();
   expect<B>().type.not.toBe<C>();
+  expect<typeof B>().type.not.toBe<typeof C>();
+});
+
+test("'protected static' fields", () => {
+  class A {
+    x!: string;
+    static y: number;
+  }
+  class B {
+    x!: string;
+    protected static y: number;
+  }
+  class C {
+    x!: string;
+    protected static y: number;
+  }
+
+  expect<A>().type.toBe<{ x: string }>();
+  expect<A>().type.toBe<B>();
+  expect<A>().type.toBe<C>();
+
+  expect<typeof A>().type.not.toBe<typeof B>();
   expect<typeof B>().type.not.toBe<typeof C>();
 });
 
