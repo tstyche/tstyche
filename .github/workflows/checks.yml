@@ -102,8 +102,8 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build
-      - run: yarn test:types --target '>=5.0'
-      - run: yarn test:examples --target '>=5.0'
+      - run: yarn test:types --target '>=5.4'
+      - run: yarn test:examples --target '>=5.4'
 
   test-node:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))

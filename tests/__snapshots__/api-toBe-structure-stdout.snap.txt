@@ -1,0 +1,24 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBe
+
+uses TypeScript <<version>> with ./tsconfig-exact.json
+
+pass ./__typetests__/call-signatures.tst.ts
+pass ./__typetests__/classes.tst.ts
+pass ./__typetests__/conditional.tst.ts
+pass ./__typetests__/enums.tst.ts
+pass ./__typetests__/interfaces.tst.ts
+pass ./__typetests__/intersections.tst.ts
+pass ./__typetests__/mapped.tst.ts
+pass ./__typetests__/named-types.tst.ts
+pass ./__typetests__/objects.tst.ts
+pass ./__typetests__/predicates.tst.ts
+pass ./__typetests__/references.tst.ts
+pass ./__typetests__/template-literals.tst.ts
+pass ./__typetests__/tuples.tst.ts
+pass ./__typetests__/unions.tst.ts
+
+Targets:    1 passed, 1 total
+Test files: 14 passed, 14 total
+Tests:      85 passed, 85 total
+Assertions: 558 passed, 558 total
+Duration:   <<timestamp>>

@@ -1,3 +1,4 @@
+import process from "node:process";
 import test from "node:test";
 import * as tstyche from "tstyche";
 import * as assert from "./__utilities__/assert.js";
@@ -14,7 +15,7 @@ await test("toBe", async (t) => {
     tstyche.expect("123").type.not.toBe(123);
   });
 
-  await t.test("patch-based", async () => {
+  await t.test("toBe", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["toBe.tst.ts"]);
 
     await assert.matchSnapshot(stderr, {
@@ -30,11 +31,64 @@ await test("toBe", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("structure smoke", async () => {
+    // TODO remove this check after dropping support for Node.js 20
+    if (process.versions.node.startsWith("20")) {
+      t.skip();
+
+      return;
+    }
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["smoke"]);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-smoke-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("structure", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "call-signatures",
+      "classes",
+      "conditional",
+      "enums",
+      "interfaces",
+      "intersections",
+      "mapped",
+      "named-types",
+      "objects",
+      "predicates",
+      "references",
+      "template-literals",
+      "tuples",
+      "unions",
+
+      "--tsconfig",
+      "./tsconfig-exact.json",
+    ]);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-structure-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("exact optional property types", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
       "toBe.tst.ts",
+
       "--only",
       "exact",
+
       "--tsconfig",
       "./tsconfig-exact.json",
     ]);

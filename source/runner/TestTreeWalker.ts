@@ -45,7 +45,7 @@ export class TestTreeWalker {
 
     const reject = new Reject(compiler, program, resolvedConfig);
 
-    this.#expectService = new ExpectService(compiler, program, reject);
+    this.#expectService = new ExpectService(compiler, program, reject, resolvedConfig);
     this.#whenService = new WhenService(reject, onFileDiagnostics);
   }
 

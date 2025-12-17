@@ -72,7 +72,7 @@ export class FileRunner {
     const program = languageService?.getProgram();
     const sourceFile = program?.getSourceFile(file.path);
 
-    if (!sourceFile || !program) {
+    if (!program || !sourceFile) {
       return;
     }
 
