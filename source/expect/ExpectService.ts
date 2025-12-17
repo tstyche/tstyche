@@ -16,7 +16,7 @@ import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToBeConstructableWith } from "./ToBeConstructableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToRaiseError } from "./ToRaiseError.js";
-import type { MatchResult } from "./types.js";
+import type { MatchResult, MatchResult } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;

@@ -2,7 +2,8 @@ import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { DiagnosticOrigin } from "#diagnostic";
 import { Relation } from "./Relation.enum.js";
-import type { TypeChecker } from "./types.js";
+
+type TypeChecker = ts.TypeChecker & { isTypeIdenticalTo(source: ts.Type, target: ts.Type): boolean };
 
 export class MatchWorker {
   assertionNode: ExpectNode;
