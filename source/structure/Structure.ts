@@ -7,6 +7,7 @@ import {
   isConditionalType,
   isFreshLiteralType,
   isIntersectionType,
+  isNoInferType,
   isObjectType,
   isTupleTypeReference,
   isTypeParameter,
@@ -439,6 +440,10 @@ export class Structure {
   #normalize(type: ts.Type): ts.Type {
     if (isFreshLiteralType(type, this.#compiler)) {
       return type.regularType;
+    }
+
+    if (isNoInferType(type, this.#compiler)) {
+      return type.baseType;
     }
 
     if (isUnionType(type, this.#compiler) || isIntersectionType(type, this.#compiler)) {

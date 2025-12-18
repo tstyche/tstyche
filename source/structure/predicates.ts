@@ -16,6 +16,14 @@ export function isIntersectionType(type: ts.Type, compiler: typeof ts): type is 
   return !!(type.flags & compiler.TypeFlags.Intersection);
 }
 
+export function isNoInferType(type: ts.Type, compiler: typeof ts): type is ts.SubstitutionType {
+  // A 'NoInfer<T>' type is represented as a substitution type with a 'TypeFlags.Unknown' constraint.
+  return !!(
+    type.flags & compiler.TypeFlags.Substitution &&
+    (type as ts.SubstitutionType).constraint.flags & compiler.TypeFlags.Unknown
+  );
+}
+
 export function isObjectType(type: ts.Type, compiler: typeof ts): type is ts.ObjectType {
   return !!(type.flags & compiler.TypeFlags.Object);
 }
