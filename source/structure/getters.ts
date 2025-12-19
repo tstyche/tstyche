@@ -1,5 +1,19 @@
 import type ts from "typescript";
 
+export function getTypeParameterModifiers(typeParameter: ts.TypeParameter, compiler: typeof ts): ts.ModifierFlags {
+  if (!typeParameter.symbol.declarations) {
+    return compiler.ModifierFlags.None;
+  }
+
+  return (
+    typeParameter.symbol.declarations.reduce(
+      (modifiers, declaration) => modifiers | compiler.getEffectiveModifierFlags(declaration),
+      compiler.ModifierFlags.None,
+    ) &
+    (compiler.ModifierFlags.In | compiler.ModifierFlags.Out | compiler.ModifierFlags.Const)
+  );
+}
+
 export function getTargetSymbol(symbol: ts.Symbol, compiler: typeof ts) {
   return isCheckFlagSet(symbol, compiler.CheckFlags.Instantiated, compiler)
     ? (symbol as ts.TransientSymbol).links.target

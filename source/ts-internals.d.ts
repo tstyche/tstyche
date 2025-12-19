@@ -28,4 +28,6 @@ declare module "typescript" {
   }
 
   function getDeclarationModifierFlagsFromSymbol(symbol: Symbol): ModifierFlags;
+
+  function getEffectiveModifierFlags(node: Node): ModifierFlags;
 }

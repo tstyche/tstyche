@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import { ComparisonResult } from "./ComparisonResult.enum.js";
+import { getTargetSymbol, getTypeParameterModifiers, isSymbolFromDefaultLibrary } from "./getters.js";
 import { ensureArray, length } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import {
@@ -16,7 +17,6 @@ import {
   isUnionType,
 } from "./predicates.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
-import { getTargetSymbol, isSymbolFromDefaultLibrary } from "./symbols.js";
 
 export class Structure {
   #compiler: typeof ts;
@@ -392,6 +392,10 @@ export class Structure {
   }
 
   compareTypeParameter(a: ts.TypeParameter, b: ts.TypeParameter): boolean {
+    if (getTypeParameterModifiers(a, this.#compiler) !== getTypeParameterModifiers(b, this.#compiler)) {
+      return false;
+    }
+
     if (
       !this.#compareMaybeNullish(
         this.#typeChecker.getBaseConstraintOfType(a),

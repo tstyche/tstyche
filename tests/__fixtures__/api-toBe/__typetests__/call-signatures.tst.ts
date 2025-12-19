@@ -146,6 +146,30 @@ test("generic type parameters", () => {
   expect(withDefault).type.not.toBe<<T = string>(value: T) => string>();
 });
 
+test("'const' type parameters", () => {
+  function getNames<T extends { names: ReadonlyArray<string> }>(arg: T): T["names"] {
+    return arg.names;
+  }
+
+  function getNamesExactly<const T extends { names: ReadonlyArray<string> }>(arg: T): T["names"] {
+    return arg.names;
+  }
+
+  expect(getNames({ names: ["Alice", "Bob", "Eve"] })).type.toBe<Array<string>>();
+  expect(getNames({ names: ["Alice", "Bob", "Eve"] })).type.not.toBe<readonly ["Alice", "Bob", "Eve"]>();
+
+  expect(getNamesExactly({ names: ["Alice", "Bob", "Eve"] })).type.toBe<readonly ["Alice", "Bob", "Eve"]>();
+  expect(getNamesExactly({ names: ["Alice", "Bob", "Eve"] })).type.not.toBe<Array<string>>();
+
+  expect(getNames).type.toBe<<T extends { names: ReadonlyArray<string> }>(arg: T) => T["names"]>();
+  expect(getNames).type.not.toBe<<const T extends { names: ReadonlyArray<string> }>(arg: T) => T["names"]>();
+
+  expect(getNamesExactly).type.toBe<<const T extends { names: ReadonlyArray<string> }>(arg: T) => T["names"]>();
+  expect(getNamesExactly).type.not.toBe<<T extends { names: ReadonlyArray<string> }>(arg: T) => T["names"]>();
+
+  expect(getNames).type.not.toBe(getNamesExactly);
+});
+
 test("overloads", () => {
   type Sample = {
     (x: string): string;
