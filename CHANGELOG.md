@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.0.0-beta.0] - 2025-12-18
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
+
+### Changed
+
+- **Breaking!** Replace the `.toBe()` matcher logic with structure comparison ([#636](https://github.com/tstyche/tstyche/pull/636), [#638](https://github.com/tstyche/tstyche/pull/638))
+
 ## [5.0.2] - 2025-12-08
 
 ### Fixed
@@ -909,6 +917,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.0
 [5.0.2]: https://github.com/tstyche/tstyche/releases/tag/v5.0.2
 [5.0.1]: https://github.com/tstyche/tstyche/releases/tag/v5.0.1
 [5.0.0]: https://github.com/tstyche/tstyche/releases/tag/v5.0.0
