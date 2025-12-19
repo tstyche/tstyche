@@ -1,6 +1,6 @@
 import type ts from "typescript";
+import { isCheckFlagSet } from "./getters.js";
 import { isUnionType } from "./predicates.js";
-import { isCheckFlagSet } from "./symbols.js";
 
 export function getPropertyType(
   symbol: ts.Symbol,
