@@ -6,6 +6,7 @@ import {
   isClass,
   isConditionalType,
   isFreshLiteralType,
+  isIndexedAccessType,
   isIntersectionType,
   isNoInferType,
   isObjectType,
@@ -114,6 +115,14 @@ export class Structure {
       return false;
     }
 
+    if (isIndexedAccessType(a, this.#compiler) || isIndexedAccessType(b, this.#compiler)) {
+      if (isIndexedAccessType(a, this.#compiler) && isIndexedAccessType(b, this.#compiler)) {
+        return this.compareIndexedAccessType(a, b);
+      }
+
+      return false;
+    }
+
     if (isObjectType(a, this.#compiler) || isObjectType(b, this.#compiler)) {
       if (isObjectType(a, this.#compiler) && isObjectType(b, this.#compiler)) {
         return this.compareObjects(a, b);
@@ -138,6 +147,18 @@ export class Structure {
         this.#typeChecker.getTypeAtLocation(b.root.node.falseType),
       )
     );
+  }
+
+  compareIndexedAccessType(a: ts.IndexedAccessType, b: ts.IndexedAccessType): boolean {
+    if (!this.compare(a.objectType, b.objectType)) {
+      return false;
+    }
+
+    if (!this.compare(a.indexType, b.indexType)) {
+      return false;
+    }
+
+    return true;
   }
 
   compareIndexSignatures(a: ts.Type, b: ts.Type): boolean {
@@ -375,7 +396,12 @@ export class Structure {
       !this.#compareMaybeNullish(
         this.#typeChecker.getBaseConstraintOfType(a),
         this.#typeChecker.getBaseConstraintOfType(b),
-      ) ||
+      )
+    ) {
+      return false;
+    }
+
+    if (
       !this.#compareMaybeNullish(
         this.#typeChecker.getDefaultFromTypeParameter(a),
         this.#typeChecker.getDefaultFromTypeParameter(b),

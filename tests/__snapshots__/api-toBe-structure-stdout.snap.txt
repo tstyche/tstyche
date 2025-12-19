@@ -20,5 +20,5 @@ pass ./__typetests__/unions.tst.ts
 Targets:    1 passed, 1 total
 Test files: 14 passed, 14 total
 Tests:      86 passed, 86 total
-Assertions: 561 passed, 561 total
+Assertions: 564 passed, 564 total
 Duration:   <<timestamp>>

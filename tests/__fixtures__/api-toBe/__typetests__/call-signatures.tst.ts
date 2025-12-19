@@ -241,15 +241,24 @@ test("async function", () => {
 });
 
 test("return type", () => {
-  expect<() => void>().type.toBe<() => void>();
-  expect<() => void>().type.not.toBe<() => never>();
+  type A = () => void;
+  type B = <T>() => T;
+  type C = (a: number) => (b: string) => boolean;
+  type D = <T extends [number, number]>(a: T) => T[number];
 
-  expect<<T>() => T>().type.toBe<<T>() => T>();
-  expect<<T>() => T>().type.not.toBe<() => unknown>();
+  expect<A>().type.toBe<() => void>();
+  expect<A>().type.not.toBe<() => never>();
 
-  expect<(a: number) => (b: string) => boolean>().type.toBe<(a: number) => (b: string) => boolean>();
-  expect<(a: number) => (b: string) => boolean>().type.not.toBe<(a: number) => (b: string) => void>();
-  expect<(a: number) => (b: string) => boolean>().type.not.toBe<(a: number) => () => boolean>();
+  expect<B>().type.toBe<<T>() => T>();
+  expect<B>().type.not.toBe<() => unknown>();
+
+  expect<C>().type.toBe<(a: number) => (b: string) => boolean>();
+  expect<C>().type.not.toBe<(a: number) => (b: string) => void>();
+  expect<C>().type.not.toBe<(a: number) => () => boolean>();
+
+  expect<D>().type.toBe<<T extends [number, number]>(a: T) => T[number]>();
+  expect<D>().type.not.toBe<<T extends [number, number]>(a: T) => T>();
+  expect<D>().type.not.toBe<<T extends [number, number]>(a: T) => number>();
 });
 
 test("property function signature", () => {
