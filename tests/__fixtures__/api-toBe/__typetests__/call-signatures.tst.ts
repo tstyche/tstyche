@@ -257,6 +257,8 @@ test("return type", () => {
   expect<C>().type.not.toBe<(a: number) => () => boolean>();
 
   expect<D>().type.toBe<<T extends [number, number]>(a: T) => T[number]>();
+  expect<D>().type.not.toBe<<T extends [number, number]>(a: T) => Array<number>[number]>();
+  expect<D>().type.not.toBe<<T extends [number, number]>(a: T) => T[0 | 1]>();
   expect<D>().type.not.toBe<<T extends [number, number]>(a: T) => T>();
   expect<D>().type.not.toBe<<T extends [number, number]>(a: T) => number>();
 });
