@@ -48,7 +48,7 @@ export class Structure {
     a = this.#normalize(a);
     b = this.#normalize(b);
 
-    if (a === b) {
+    if (a.id === b.id) {
       return true;
     }
 

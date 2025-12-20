@@ -12,13 +12,19 @@ export function getPropertyType(
 
   if (compilerOptions.exactOptionalPropertyTypes && isOptionalProperty(symbol, compiler)) {
     if (isUnionType(type, compiler)) {
-      type.types = type.types.filter(
+      const filteredType = type.types.filter(
         (type) => !("debugIntrinsicName" in type && type.debugIntrinsicName === "missing"),
       );
 
-      if (type.types.length === 1) {
-        return type.types.at(0) as ts.Type;
+      if (filteredType.length === type.types.length) {
+        return type;
       }
+
+      if (filteredType.length === 1) {
+        return filteredType.at(0) as ts.Type;
+      }
+
+      return { ...type, types: filteredType } as ts.UnionType;
     }
   }
 
