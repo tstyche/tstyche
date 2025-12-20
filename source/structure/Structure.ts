@@ -8,6 +8,7 @@ import {
   isConditionalType,
   isFreshLiteralType,
   isIndexedAccessType,
+  isIndexType,
   isIntersectionType,
   isNoInferType,
   isObjectType,
@@ -99,6 +100,14 @@ export class Structure {
       return false;
     }
 
+    if (isIndexType(a, this.#compiler) || isIndexType(b, this.#compiler)) {
+      if (isIndexType(a, this.#compiler) && isIndexType(b, this.#compiler)) {
+        return this.compare(a.type, b.type);
+      }
+
+      return false;
+    }
+
     if (isTypeParameter(a, this.#compiler) || isTypeParameter(b, this.#compiler)) {
       if (isTypeParameter(a, this.#compiler) && isTypeParameter(b, this.#compiler)) {
         return this.compareTypeParameter(a, b);
@@ -135,18 +144,35 @@ export class Structure {
   }
 
   compareConditionalTypes(a: ts.ConditionalType, b: ts.ConditionalType): boolean {
-    return (
-      this.compare(a.checkType, b.checkType) &&
-      this.compare(a.extendsType, b.extendsType) &&
-      this.compare(
+    if (!this.compare(a.checkType, b.checkType)) {
+      return false;
+    }
+
+    if (!this.compare(a.extendsType, b.extendsType)) {
+      return false;
+    }
+
+    if (
+      !this.compare(
+        // find a way to use 'getTrueTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
         this.#typeChecker.getTypeAtLocation(a.root.node.trueType),
         this.#typeChecker.getTypeAtLocation(b.root.node.trueType),
-      ) &&
-      this.compare(
+      )
+    ) {
+      return false;
+    }
+
+    if (
+      !this.compare(
+        // find a way to use 'getFalseTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
         this.#typeChecker.getTypeAtLocation(a.root.node.falseType),
         this.#typeChecker.getTypeAtLocation(b.root.node.falseType),
       )
-    );
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   compareIndexedAccessType(a: ts.IndexedAccessType, b: ts.IndexedAccessType): boolean {

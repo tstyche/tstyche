@@ -12,6 +12,10 @@ export function isFreshLiteralType(type: ts.Type, compiler: typeof ts): type is 
   return !!(type.flags & compiler.TypeFlags.Freshable) && (type as ts.LiteralType).freshType === type;
 }
 
+export function isIndexType(type: ts.Type, compiler: typeof ts): type is ts.IndexType {
+  return !!(type.flags & compiler.TypeFlags.Index);
+}
+
 export function isIndexedAccessType(type: ts.Type, compiler: typeof ts): type is ts.IndexedAccessType {
   return !!(type.flags & compiler.TypeFlags.IndexedAccess);
 }
