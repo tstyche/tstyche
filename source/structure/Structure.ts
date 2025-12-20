@@ -8,7 +8,6 @@ import {
   isConditionalType,
   isFreshLiteralType,
   isIndexedAccessType,
-  isIndexType,
   isIntersectionType,
   isNoInferType,
   isObjectType,
@@ -100,9 +99,17 @@ export class Structure {
       return false;
     }
 
-    if (isIndexType(a, this.#compiler) || isIndexType(b, this.#compiler)) {
-      if (isIndexType(a, this.#compiler) && isIndexType(b, this.#compiler)) {
-        return this.compare(a.type, b.type);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Index) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Index) {
+        return this.compare((a as ts.IndexType).type, (b as ts.IndexType).type);
+      }
+
+      return false;
+    }
+
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Substitution) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Substitution) {
+        return this.compareSubstitution(a as ts.SubstitutionType, b as ts.SubstitutionType);
       }
 
       return false;
@@ -181,6 +188,18 @@ export class Structure {
     }
 
     if (!this.compare(a.indexType, b.indexType)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  compareSubstitution(a: ts.SubstitutionType, b: ts.SubstitutionType): boolean {
+    if (!this.compare(a.baseType, b.baseType)) {
+      return false;
+    }
+
+    if (!this.compare(a.constraint, b.constraint)) {
       return false;
     }
 
