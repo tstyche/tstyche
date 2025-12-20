@@ -41,6 +41,18 @@ test("branding", () => {
   expect<Brand<number, "id">>().type.toBe<number & { __brand: "id" }>();
 });
 
+test("key lookup", () => {
+  type ValueAtKeyA<T, K extends PropertyKey, FallBack = unknown> = K extends keyof T ? T[K] : FallBack;
+  type ValueAtKeyB<T, K extends string | number, FallBack = unknown> = K extends keyof T ? T[K] : FallBack;
+
+  function get<K extends PropertyKey>(key: K): <T>(a: T) => ValueAtKeyA<T, K> {
+    return (a) => undefined as ValueAtKeyA<typeof a, K>;
+  }
+
+  expect(get("length")).type.toBe<<T>(a: T) => ValueAtKeyA<T, "length">>();
+  expect(get("length")).type.not.toBe<<T>(a: T) => ValueAtKeyB<T, "length">>();
+});
+
 test("recursive", () => {
   type A = {
     a: number;
