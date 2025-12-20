@@ -5,14 +5,11 @@ import { ensureArray, length } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import {
   isClass,
-  isConditionalType,
   isFreshLiteralType,
-  isIndexedAccessType,
   isIntersectionType,
   isNoInferType,
   isObjectType,
   isTupleTypeReference,
-  isTypeParameter,
   isTypeReference,
   isUnionType,
 } from "./predicates.js";
@@ -109,31 +106,31 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Substitution) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Substitution) {
-        return this.compareSubstitution(a as ts.SubstitutionType, b as ts.SubstitutionType);
+        return this.compareSubstitutionTypes(a as ts.SubstitutionType, b as ts.SubstitutionType);
       }
 
       return false;
     }
 
-    if (isTypeParameter(a, this.#compiler) || isTypeParameter(b, this.#compiler)) {
-      if (isTypeParameter(a, this.#compiler) && isTypeParameter(b, this.#compiler)) {
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.TypeParameter) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.TypeParameter) {
         return this.compareTypeParameter(a, b);
       }
 
       return false;
     }
 
-    if (isConditionalType(a, this.#compiler) || isConditionalType(b, this.#compiler)) {
-      if (isConditionalType(a, this.#compiler) && isConditionalType(b, this.#compiler)) {
-        return this.compareConditionalTypes(a, b);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Conditional) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Conditional) {
+        return this.compareConditionalTypes(a as ts.ConditionalType, b as ts.ConditionalType);
       }
 
       return false;
     }
 
-    if (isIndexedAccessType(a, this.#compiler) || isIndexedAccessType(b, this.#compiler)) {
-      if (isIndexedAccessType(a, this.#compiler) && isIndexedAccessType(b, this.#compiler)) {
-        return this.compareIndexedAccessType(a, b);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.IndexedAccess) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.IndexedAccess) {
+        return this.compareIndexedAccessType(a as ts.IndexedAccessType, b as ts.IndexedAccessType);
       }
 
       return false;
@@ -194,7 +191,7 @@ export class Structure {
     return true;
   }
 
-  compareSubstitution(a: ts.SubstitutionType, b: ts.SubstitutionType): boolean {
+  compareSubstitutionTypes(a: ts.SubstitutionType, b: ts.SubstitutionType): boolean {
     if (!this.compare(a.baseType, b.baseType)) {
       return false;
     }
