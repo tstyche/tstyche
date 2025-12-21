@@ -1,6 +1,5 @@
 import type ts from "typescript";
 import { isCheckFlagSet } from "./getters.js";
-import { isUnionType } from "./predicates.js";
 
 export function getPropertyType(
   symbol: ts.Symbol,
@@ -11,12 +10,12 @@ export function getPropertyType(
   const type = typeChecker.getTypeOfSymbol(symbol);
 
   if (compilerOptions.exactOptionalPropertyTypes && isOptionalProperty(symbol, compiler)) {
-    if (isUnionType(type, compiler)) {
-      const filteredType = type.types.filter(
+    if (type.flags & compiler.TypeFlags.Union) {
+      const filteredType = (type as ts.UnionType).types.filter(
         (type) => !("debugIntrinsicName" in type && type.debugIntrinsicName === "missing"),
       );
 
-      if (filteredType.length === type.types.length) {
+      if (filteredType.length === (type as ts.UnionType).types.length) {
         return type;
       }
 

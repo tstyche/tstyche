@@ -3,16 +3,6 @@ import { ComparisonResult } from "./ComparisonResult.enum.js";
 import { getTargetSymbol, getTypeParameterModifiers, isSymbolFromDefaultLibrary } from "./getters.js";
 import { ensureArray, length } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
-import {
-  isClass,
-  isFreshLiteralType,
-  isIntersectionType,
-  isNoInferType,
-  isObjectType,
-  isTupleTypeReference,
-  isTypeReference,
-  isUnionType,
-} from "./predicates.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
 
 export class Structure {
@@ -62,35 +52,34 @@ export class Structure {
       return !!(b.flags & this.#compiler.TypeFlags.Undefined);
     }
 
-    if (isIntersectionType(a, this.#compiler) || isIntersectionType(b, this.#compiler)) {
-      if (
-        isIntersectionType(a, this.#compiler) &&
-        isIntersectionType(b, this.#compiler) &&
-        a.types.length === b.types.length &&
-        a.types.every((aType, i) => this.compare(aType, b.types[i] as ts.Type))
-      ) {
-        return true;
-      }
-
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
       return (
-        this.compareProperties(a, b) &&
-        this.compareSignatures(a, b, this.#compiler.SignatureKind.Call) &&
-        this.compareSignatures(a, b, this.#compiler.SignatureKind.Construct) &&
-        this.compareIndexSignatures(a, b)
+        ((a.flags & b.flags & this.#compiler.TypeFlags.Intersection) !== 0 &&
+          this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) ||
+        (((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) !== 0 &&
+          this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType))
       );
     }
 
-    if (isUnionType(a, this.#compiler) || isUnionType(b, this.#compiler)) {
-      if (isUnionType(a, this.#compiler) && isUnionType(b, this.#compiler)) {
-        return this.compareUnions(a, b);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Union) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Union) {
+        return this.compareUnions(a as ts.UnionType, b as ts.UnionType);
       }
 
       return false;
     }
 
-    if (isTupleTypeReference(a, this.#compiler) || isTupleTypeReference(b, this.#compiler)) {
-      if (isTupleTypeReference(a, this.#compiler) && isTupleTypeReference(b, this.#compiler)) {
-        return this.compareTuples(a, b);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Object) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Object) {
+        return this.compareObjects(a as ts.ObjectType, b as ts.ObjectType);
+      }
+
+      return false;
+    }
+
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.TypeParameter) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.TypeParameter) {
+        return this.compareTypeParameters(a, b);
       }
 
       return false;
@@ -104,17 +93,9 @@ export class Structure {
       return false;
     }
 
-    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Substitution) {
-      if (a.flags & b.flags & this.#compiler.TypeFlags.Substitution) {
-        return this.compareSubstitutionTypes(a as ts.SubstitutionType, b as ts.SubstitutionType);
-      }
-
-      return false;
-    }
-
-    if ((a.flags | b.flags) & this.#compiler.TypeFlags.TypeParameter) {
-      if (a.flags & b.flags & this.#compiler.TypeFlags.TypeParameter) {
-        return this.compareTypeParameter(a, b);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.IndexedAccess) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.IndexedAccess) {
+        return this.compareIndexedAccessTypes(a as ts.IndexedAccessType, b as ts.IndexedAccessType);
       }
 
       return false;
@@ -128,17 +109,9 @@ export class Structure {
       return false;
     }
 
-    if ((a.flags | b.flags) & this.#compiler.TypeFlags.IndexedAccess) {
-      if (a.flags & b.flags & this.#compiler.TypeFlags.IndexedAccess) {
-        return this.compareIndexedAccessType(a as ts.IndexedAccessType, b as ts.IndexedAccessType);
-      }
-
-      return false;
-    }
-
-    if (isObjectType(a, this.#compiler) || isObjectType(b, this.#compiler)) {
-      if (isObjectType(a, this.#compiler) && isObjectType(b, this.#compiler)) {
-        return this.compareObjects(a, b);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Substitution) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Substitution) {
+        return this.compareSubstitutionTypes(a as ts.SubstitutionType, b as ts.SubstitutionType);
       }
 
       return false;
@@ -147,88 +120,110 @@ export class Structure {
     return false;
   }
 
-  compareConditionalTypes(a: ts.ConditionalType, b: ts.ConditionalType): boolean {
-    if (!this.compare(a.checkType, b.checkType)) {
+  compareIntersections(a: ts.IntersectionType, b: ts.IntersectionType): boolean {
+    if (a.types.length !== b.types.length) {
       return false;
     }
 
-    if (!this.compare(a.extendsType, b.extendsType)) {
+    return a.types.every((aType, i) => this.compare(aType, b.types[i] as ts.Type));
+  }
+
+  compareUnions(a: ts.UnionType, b: ts.UnionType): boolean {
+    if (a.types.length !== b.types.length) {
       return false;
     }
 
-    if (
-      !this.compare(
-        // find a way to use 'getTrueTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
-        this.#typeChecker.getTypeAtLocation(a.root.node.trueType),
-        this.#typeChecker.getTypeAtLocation(b.root.node.trueType),
-      )
-    ) {
+    return a.types.every((aType) => b.types.some((bType) => this.compare(aType, bType)));
+  }
+
+  compareObjects(a: ts.ObjectType, b: ts.ObjectType): boolean {
+    if (a.objectFlags & b.objectFlags & this.#compiler.ObjectFlags.Reference) {
+      const isSame = this.compareTypeReferences(a as ts.TypeReference, b as ts.TypeReference);
+
+      if (isSame != null) {
+        return isSame;
+      }
+    }
+
+    return this.compareStructuredTypes(a, b);
+  }
+
+  compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean | undefined {
+    if ((a.target.objectFlags | b.target.objectFlags) & this.#compiler.ObjectFlags.Tuple) {
+      if (a.target.objectFlags & b.target.objectFlags & this.#compiler.ObjectFlags.Tuple) {
+        return this.compareTuples(a as ts.TupleTypeReference, b as ts.TupleTypeReference);
+      }
+
       return false;
     }
 
-    if (
-      !this.compare(
-        // find a way to use 'getFalseTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
-        this.#typeChecker.getTypeAtLocation(a.root.node.falseType),
-        this.#typeChecker.getTypeAtLocation(b.root.node.falseType),
-      )
-    ) {
+    if ((a.objectFlags | b.objectFlags) & this.#compiler.ObjectFlags.Class) {
+      return this.compareStructuredTypes(a, b);
+    }
+
+    if (!this.#compareTypeOfSymbol(a.symbol, b.symbol)) {
+      if (isSymbolFromDefaultLibrary(a.symbol, this.#program) || isSymbolFromDefaultLibrary(b.symbol, this.#program)) {
+        return false;
+      }
+
+      return;
+    }
+
+    if (length(a.typeArguments) !== length(b.typeArguments)) {
       return false;
+    }
+
+    return ensureArray(a.typeArguments).every((type, i) =>
+      // biome-ignore lint/style/noNonNullAssertion: length was checked above
+      this.compare(type, ensureArray(b.typeArguments)[i]!),
+    );
+  }
+
+  compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {
+    if (a.target.readonly !== b.target.readonly) {
+      return false;
+    }
+
+    const aTypeArguments = this.#typeChecker.getTypeArguments(a);
+    const bTypeArguments = this.#typeChecker.getTypeArguments(b);
+
+    if (length(aTypeArguments) !== length(bTypeArguments)) {
+      return false;
+    }
+
+    for (let i = 0; i < aTypeArguments.length; i++) {
+      if (a.target.elementFlags[i] !== b.target.elementFlags[i]) {
+        return false;
+      }
+
+      // biome-ignore lint/style/noNonNullAssertion: length was checked above
+      if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
+        return false;
+      }
     }
 
     return true;
   }
 
-  compareIndexedAccessType(a: ts.IndexedAccessType, b: ts.IndexedAccessType): boolean {
-    if (!this.compare(a.objectType, b.objectType)) {
-      return false;
+  compareStructuredTypes(a: ts.StructuredType, b: ts.StructuredType): boolean {
+    const key = this.#getCacheKey(a, b);
+    const result = this.#resultCache.get(key);
+
+    if (result != null) {
+      return result !== ComparisonResult.Different;
     }
 
-    if (!this.compare(a.indexType, b.indexType)) {
-      return false;
-    }
+    this.#resultCache.set(key, ComparisonResult.Pending);
 
-    return true;
-  }
+    const isSame =
+      this.compareProperties(a, b) &&
+      this.compareSignatures(a, b, this.#compiler.SignatureKind.Call) &&
+      this.compareSignatures(a, b, this.#compiler.SignatureKind.Construct) &&
+      this.compareIndexSignatures(a, b);
 
-  compareSubstitutionTypes(a: ts.SubstitutionType, b: ts.SubstitutionType): boolean {
-    if (!this.compare(a.baseType, b.baseType)) {
-      return false;
-    }
+    this.#resultCache.set(key, isSame ? ComparisonResult.Identical : ComparisonResult.Different);
 
-    if (!this.compare(a.constraint, b.constraint)) {
-      return false;
-    }
-
-    return true;
-  }
-
-  compareIndexSignatures(a: ts.Type, b: ts.Type): boolean {
-    const aSignatures = this.#getIndexSignatures(a);
-    const bSignatures = this.#getIndexSignatures(b);
-
-    if (aSignatures.length !== bSignatures.length) {
-      return false;
-    }
-
-    for (let i = 0; i < aSignatures.length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      if (aSignatures[i]!.isReadonly !== bSignatures[i]!.isReadonly) {
-        return false;
-      }
-
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      if (!this.compare(aSignatures[i]!.keyType, bSignatures[i]!.keyType)) {
-        return false;
-      }
-
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      if (!this.compare(aSignatures[i]!.type, bSignatures[i]!.type)) {
-        return false;
-      }
-    }
-
-    return true;
+    return isSame;
   }
 
   compareProperties(a: ts.Type, b: ts.Type): boolean {
@@ -286,53 +281,17 @@ export class Structure {
     return true;
   }
 
-  compareObjects(a: ts.ObjectType, b: ts.ObjectType): boolean {
-    const key = this.#getCacheKey(a, b);
-    const result = this.#resultCache.get(key);
-
-    if (result != null) {
-      return result !== ComparisonResult.Different;
-    }
-
-    this.#resultCache.set(key, ComparisonResult.Pending);
-
-    if (
-      isTypeReference(a, this.#compiler) &&
-      !isClass(a, this.#compiler) &&
-      isTypeReference(b, this.#compiler) &&
-      !isClass(b, this.#compiler)
-    ) {
-      const isSame = this.compareTypeReferences(a, b);
-
-      if (isSame != null) {
-        this.#resultCache.set(key, isSame ? ComparisonResult.Identical : ComparisonResult.Different);
-
-        return isSame;
-      }
-    }
-
-    const isSame =
-      this.compareProperties(a, b) &&
-      this.compareSignatures(a, b, this.#compiler.SignatureKind.Call) &&
-      this.compareSignatures(a, b, this.#compiler.SignatureKind.Construct) &&
-      this.compareIndexSignatures(a, b);
-
-    this.#resultCache.set(key, isSame ? ComparisonResult.Identical : ComparisonResult.Different);
-
-    return isSame;
-  }
-
   compareSignatures(a: ts.Type, b: ts.Type, kind: ts.SignatureKind): boolean {
     const aSignatures = this.#getSignatures(a, kind);
     const bSignatures = this.#getSignatures(b, kind);
 
-    if (length(aSignatures) !== length(bSignatures)) {
+    if (aSignatures.length !== bSignatures.length) {
       return false;
     }
 
     for (let i = 0; i < aSignatures.length; i++) {
       // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      if (!this.compareSignature(aSignatures[i]!, bSignatures[i]!)) {
+      if (!this.#compareSignature(aSignatures[i]!, bSignatures[i]!)) {
         return false;
       }
     }
@@ -340,7 +299,7 @@ export class Structure {
     return true;
   }
 
-  compareSignature(a: ts.Signature, b: ts.Signature): boolean {
+  #compareSignature(a: ts.Signature, b: ts.Signature): boolean {
     if (length(a.typeParameters) !== length(b.typeParameters)) {
       return false;
     }
@@ -348,7 +307,7 @@ export class Structure {
     if (a.typeParameters != null && b.typeParameters != null) {
       for (let i = 0; i < a.typeParameters.length; i++) {
         // biome-ignore lint/style/noNonNullAssertion: length was checked above
-        if (!this.compareTypeParameter(a.typeParameters[i]!, b.typeParameters[i]!)) {
+        if (!this.compareTypeParameters(a.typeParameters[i]!, b.typeParameters[i]!)) {
           return false;
         }
       }
@@ -407,25 +366,27 @@ export class Structure {
     return true;
   }
 
-  compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {
-    if (a.target.readonly !== b.target.readonly) {
+  compareIndexSignatures(a: ts.Type, b: ts.Type): boolean {
+    const aSignatures = this.#getIndexSignatures(a);
+    const bSignatures = this.#getIndexSignatures(b);
+
+    if (aSignatures.length !== bSignatures.length) {
       return false;
     }
 
-    const aTypeArguments = this.#typeChecker.getTypeArguments(a);
-    const bTypeArguments = this.#typeChecker.getTypeArguments(b);
-
-    if (length(aTypeArguments) !== length(bTypeArguments)) {
-      return false;
-    }
-
-    for (let i = 0; i < aTypeArguments.length; i++) {
-      if (a.target.elementFlags[i] !== b.target.elementFlags[i]) {
+    for (let i = 0; i < aSignatures.length; i++) {
+      // biome-ignore lint/style/noNonNullAssertion: length was checked above
+      if (aSignatures[i]!.isReadonly !== bSignatures[i]!.isReadonly) {
         return false;
       }
 
       // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
+      if (!this.compare(aSignatures[i]!.keyType, bSignatures[i]!.keyType)) {
+        return false;
+      }
+
+      // biome-ignore lint/style/noNonNullAssertion: length was checked above
+      if (!this.compare(aSignatures[i]!.type, bSignatures[i]!.type)) {
         return false;
       }
     }
@@ -433,7 +394,7 @@ export class Structure {
     return true;
   }
 
-  compareTypeParameter(a: ts.TypeParameter, b: ts.TypeParameter): boolean {
+  compareTypeParameters(a: ts.TypeParameter, b: ts.TypeParameter): boolean {
     if (getTypeParameterModifiers(a, this.#compiler) !== getTypeParameterModifiers(b, this.#compiler)) {
       return false;
     }
@@ -459,34 +420,60 @@ export class Structure {
     return true;
   }
 
-  compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean | undefined {
-    if (!this.#compareTypeOfSymbol(a.symbol, b.symbol)) {
-      if (isSymbolFromDefaultLibrary(a.symbol, this.#program) || isSymbolFromDefaultLibrary(b.symbol, this.#program)) {
-        return false;
-      }
-
-      return;
-    }
-
-    if (length(a.typeArguments) !== length(b.typeArguments)) {
+  compareIndexedAccessTypes(a: ts.IndexedAccessType, b: ts.IndexedAccessType): boolean {
+    if (!this.compare(a.objectType, b.objectType)) {
       return false;
     }
 
-    return ensureArray(a.typeArguments).every((type, i) =>
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      this.compare(type, ensureArray(b.typeArguments)[i]!),
-    );
+    if (!this.compare(a.indexType, b.indexType)) {
+      return false;
+    }
+
+    return true;
   }
 
-  compareUnions(a: ts.UnionType, b: ts.UnionType): boolean {
-    if (a.types.length !== b.types.length) {
+  compareConditionalTypes(a: ts.ConditionalType, b: ts.ConditionalType): boolean {
+    if (!this.compare(a.checkType, b.checkType)) {
       return false;
     }
 
-    return (
-      a.types.every((aType) => b.types.some((bType) => this.compare(aType, bType))) &&
-      b.types.every((bType) => a.types.some((aType) => this.compare(bType, aType)))
-    );
+    if (!this.compare(a.extendsType, b.extendsType)) {
+      return false;
+    }
+
+    if (
+      !this.compare(
+        // find a way to use 'getTrueTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
+        this.#typeChecker.getTypeAtLocation(a.root.node.trueType),
+        this.#typeChecker.getTypeAtLocation(b.root.node.trueType),
+      )
+    ) {
+      return false;
+    }
+
+    if (
+      !this.compare(
+        // find a way to use 'getFalseTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
+        this.#typeChecker.getTypeAtLocation(a.root.node.falseType),
+        this.#typeChecker.getTypeAtLocation(b.root.node.falseType),
+      )
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  compareSubstitutionTypes(a: ts.SubstitutionType, b: ts.SubstitutionType): boolean {
+    if (!this.compare(a.baseType, b.baseType)) {
+      return false;
+    }
+
+    if (!this.compare(a.constraint, b.constraint)) {
+      return false;
+    }
+
+    return true;
   }
 
   #getCacheKey(a: ts.Type, b: ts.Type) {
@@ -494,35 +481,39 @@ export class Structure {
   }
 
   #getSignatures(type: ts.Type, kind: ts.SignatureKind): ReadonlyArray<ts.Signature> {
-    if (isIntersectionType(type, this.#compiler)) {
-      return type.types.flatMap((type) => this.#getSignatures(type, kind));
+    if (type.flags & this.#compiler.TypeFlags.Intersection) {
+      return (type as ts.IntersectionType).types.flatMap((type) => this.#getSignatures(type, kind));
     }
 
     return this.#typeChecker.getSignaturesOfType(type, kind);
   }
 
   #getIndexSignatures(type: ts.Type): ReadonlyArray<ts.IndexInfo> {
-    if (isIntersectionType(type, this.#compiler)) {
-      return type.types.flatMap((type) => this.#getIndexSignatures(type));
+    if (type.flags & this.#compiler.TypeFlags.Intersection) {
+      return (type as ts.IntersectionType).types.flatMap((type) => this.#getIndexSignatures(type));
     }
 
     return this.#typeChecker.getIndexInfosOfType(type);
   }
 
   #normalize(type: ts.Type): ts.Type {
-    if (isFreshLiteralType(type, this.#compiler)) {
-      return type.regularType;
+    if (type.flags & this.#compiler.TypeFlags.Freshable && (type as ts.FreshableType).freshType === type) {
+      return (type as ts.FreshableType).regularType;
     }
 
-    if (isNoInferType(type, this.#compiler)) {
-      return type.baseType;
+    if (
+      // A 'NoInfer<T>' type is represented as a substitution type with a 'TypeFlags.Unknown' constraint.
+      type.flags & this.#compiler.TypeFlags.Substitution &&
+      (type as ts.SubstitutionType).constraint.flags & this.#compiler.TypeFlags.Unknown
+    ) {
+      return (type as ts.SubstitutionType).baseType;
     }
 
-    if (isUnionType(type, this.#compiler) || isIntersectionType(type, this.#compiler)) {
+    if (type.flags & this.#compiler.TypeFlags.UnionOrIntersection) {
       // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
-      const candidateType = this.#normalize(type.types[0]!);
+      const candidateType = this.#normalize((type as ts.UnionOrIntersectionType).types[0]!);
 
-      if (type.types.every((type) => this.compare(this.#normalize(type), candidateType))) {
+      if ((type as ts.UnionOrIntersectionType).types.every((t) => this.compare(this.#normalize(t), candidateType))) {
         return candidateType;
       }
     }

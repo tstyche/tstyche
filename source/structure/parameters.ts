@@ -1,5 +1,4 @@
 import type ts from "typescript";
-import { isObjectType, isTupleTypeReference, isTypeReference } from "./predicates.js";
 
 export interface ParameterFacts {
   isRest: boolean;
@@ -32,10 +31,10 @@ export function getParameterFacts(
     // biome-ignore lint/style/noNonNullAssertion: length was checked before
     const restType = typeChecker.getTypeOfSymbol(signature.parameters.at(-1)!);
 
-    if (isTupleTypeReference(restType, compiler)) {
+    if (typeChecker.isTupleType(restType)) {
       const fixedLength = signature.parameters.length - 1;
 
-      return getParameterFactsFromTuple(restType, position - fixedLength, compiler);
+      return getParameterFactsFromTuple(restType as ts.TupleTypeReference, position - fixedLength, compiler);
     }
   }
 
@@ -59,9 +58,13 @@ function getParameterType(
 ) {
   const type = typeChecker.getTypeOfSymbolAtLocation(parameter, signature.declaration as ts.SignatureDeclaration);
 
-  if (isRest && isObjectType(type, compiler) && isTypeReference(type, compiler)) {
+  if (
+    isRest &&
+    type.flags & compiler.TypeFlags.Object &&
+    (type as ts.ObjectType).objectFlags & compiler.ObjectFlags.Reference
+  ) {
     // biome-ignore lint/style/noNonNullAssertion: one parameter must be there
-    return typeChecker.getTypeArguments(type).at(0)!;
+    return typeChecker.getTypeArguments(type as ts.TypeReference).at(0)!;
   }
   return type;
 }
@@ -71,8 +74,8 @@ export function getParameterCount(signature: ts.Signature, compiler: typeof ts, 
     // biome-ignore lint/style/noNonNullAssertion: length was checked before
     const restType = typeChecker.getTypeOfSymbol(signature.parameters.at(-1)!);
 
-    if (isTupleTypeReference(restType, compiler)) {
-      return signature.parameters.length + typeChecker.getTypeArguments(restType).length - 1;
+    if (typeChecker.isTupleType(restType)) {
+      return signature.parameters.length + typeChecker.getTypeArguments(restType as ts.TupleTypeReference).length - 1;
     }
   }
 
