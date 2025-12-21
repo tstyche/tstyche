@@ -4,6 +4,31 @@ export function ensureArray<T>(input: ReadonlyArray<T> | undefined): ReadonlyArr
   return input ?? [];
 }
 
+export function getIndexSignatures(
+  type: ts.Type,
+  compiler: typeof ts,
+  typeChecker: ts.TypeChecker,
+): ReadonlyArray<ts.IndexInfo> {
+  if (type.flags & compiler.TypeFlags.Intersection) {
+    return (type as ts.IntersectionType).types.flatMap((type) => getIndexSignatures(type, compiler, typeChecker));
+  }
+
+  return typeChecker.getIndexInfosOfType(type);
+}
+
+export function getSignatures(
+  type: ts.Type,
+  kind: ts.SignatureKind,
+  compiler: typeof ts,
+  typeChecker: ts.TypeChecker,
+): ReadonlyArray<ts.Signature> {
+  if (type.flags & compiler.TypeFlags.Intersection) {
+    return (type as ts.IntersectionType).types.flatMap((type) => getSignatures(type, kind, compiler, typeChecker));
+  }
+
+  return typeChecker.getSignaturesOfType(type, kind);
+}
+
 export function getTypeParameterModifiers(typeParameter: ts.TypeParameter, compiler: typeof ts): ts.ModifierFlags {
   if (!typeParameter.symbol.declarations) {
     return compiler.ModifierFlags.None;

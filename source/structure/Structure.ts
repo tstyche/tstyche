@@ -1,6 +1,8 @@
 import type ts from "typescript";
 import {
   ensureArray,
+  getIndexSignatures,
+  getSignatures,
   getTargetSymbol,
   getTypeParameterModifiers,
   isSymbolFromDefaultLibrary,
@@ -286,8 +288,8 @@ export class Structure {
   }
 
   compareSignatures(a: ts.Type, b: ts.Type, kind: ts.SignatureKind): boolean {
-    const aSignatures = this.#getSignatures(a, kind);
-    const bSignatures = this.#getSignatures(b, kind);
+    const aSignatures = getSignatures(a, kind, this.#compiler, this.#typeChecker);
+    const bSignatures = getSignatures(b, kind, this.#compiler, this.#typeChecker);
 
     if (aSignatures.length !== bSignatures.length) {
       return false;
@@ -371,8 +373,8 @@ export class Structure {
   }
 
   compareIndexSignatures(a: ts.Type, b: ts.Type): boolean {
-    const aSignatures = this.#getIndexSignatures(a);
-    const bSignatures = this.#getIndexSignatures(b);
+    const aSignatures = getIndexSignatures(a, this.#compiler, this.#typeChecker);
+    const bSignatures = getIndexSignatures(b, this.#compiler, this.#typeChecker);
 
     if (aSignatures.length !== bSignatures.length) {
       return false;
@@ -478,22 +480,6 @@ export class Structure {
     }
 
     return true;
-  }
-
-  #getSignatures(type: ts.Type, kind: ts.SignatureKind): ReadonlyArray<ts.Signature> {
-    if (type.flags & this.#compiler.TypeFlags.Intersection) {
-      return (type as ts.IntersectionType).types.flatMap((type) => this.#getSignatures(type, kind));
-    }
-
-    return this.#typeChecker.getSignaturesOfType(type, kind);
-  }
-
-  #getIndexSignatures(type: ts.Type): ReadonlyArray<ts.IndexInfo> {
-    if (type.flags & this.#compiler.TypeFlags.Intersection) {
-      return (type as ts.IntersectionType).types.flatMap((type) => this.#getIndexSignatures(type));
-    }
-
-    return this.#typeChecker.getIndexInfosOfType(type);
   }
 
   #normalize(type: ts.Type): ts.Type {
