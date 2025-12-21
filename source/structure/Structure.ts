@@ -1,5 +1,4 @@
 import type ts from "typescript";
-import { ComparisonResult } from "./ComparisonResult.enum.js";
 import {
   ensureArray,
   getTargetSymbol,
@@ -9,12 +8,13 @@ import {
 } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
+import { SeenService } from "./SeenService.js";
 
 export class Structure {
   #compiler: typeof ts;
   #compilerOptions: ts.CompilerOptions;
   #program: ts.Program;
-  #resultCache = new Map<string, ComparisonResult>();
+  #seen = new SeenService();
   #typeChecker: ts.TypeChecker;
 
   constructor(compiler: typeof ts, program: ts.Program) {
@@ -62,7 +62,7 @@ export class Structure {
         ((a.flags & b.flags & this.#compiler.TypeFlags.Intersection) !== 0 &&
           this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) ||
         (((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) !== 0 &&
-          this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType))
+          this.#seen.memoized(a, b, () => this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType)))
       );
     }
 
@@ -76,7 +76,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Object) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Object) {
-        return this.compareObjects(a as ts.ObjectType, b as ts.ObjectType);
+        return this.#seen.memoized(a, b, () => this.compareObjects(a as ts.ObjectType, b as ts.ObjectType));
       }
 
       return false;
@@ -211,24 +211,23 @@ export class Structure {
   }
 
   compareStructuredTypes(a: ts.StructuredType, b: ts.StructuredType): boolean {
-    const key = this.#getCacheKey(a, b);
-    const result = this.#resultCache.get(key);
-
-    if (result != null) {
-      return result !== ComparisonResult.Different;
+    if (!this.compareProperties(a, b)) {
+      return false;
     }
 
-    this.#resultCache.set(key, ComparisonResult.Pending);
+    if (!this.compareSignatures(a, b, this.#compiler.SignatureKind.Call)) {
+      return false;
+    }
 
-    const isSame =
-      this.compareProperties(a, b) &&
-      this.compareSignatures(a, b, this.#compiler.SignatureKind.Call) &&
-      this.compareSignatures(a, b, this.#compiler.SignatureKind.Construct) &&
-      this.compareIndexSignatures(a, b);
+    if (!this.compareSignatures(a, b, this.#compiler.SignatureKind.Construct)) {
+      return false;
+    }
 
-    this.#resultCache.set(key, isSame ? ComparisonResult.Identical : ComparisonResult.Different);
+    if (!this.compareIndexSignatures(a, b)) {
+      return false;
+    }
 
-    return isSame;
+    return true;
   }
 
   compareProperties(a: ts.Type, b: ts.Type): boolean {
@@ -479,10 +478,6 @@ export class Structure {
     }
 
     return true;
-  }
-
-  #getCacheKey(a: ts.Type, b: ts.Type) {
-    return [a.id, b.id].sort().join(":");
   }
 
   #getSignatures(type: ts.Type, kind: ts.SignatureKind): ReadonlyArray<ts.Signature> {
