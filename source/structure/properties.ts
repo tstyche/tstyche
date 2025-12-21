@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { isCheckFlagSet } from "./getters.js";
+import { isCheckFlagSet } from "./helpers.js";
 
 export function getPropertyType(
   symbol: ts.Symbol,

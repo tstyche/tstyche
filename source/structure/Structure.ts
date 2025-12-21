@@ -1,7 +1,12 @@
 import type ts from "typescript";
 import { ComparisonResult } from "./ComparisonResult.enum.js";
-import { getTargetSymbol, getTypeParameterModifiers, isSymbolFromDefaultLibrary } from "./getters.js";
-import { ensureArray, length } from "./helpers.js";
+import {
+  ensureArray,
+  getTargetSymbol,
+  getTypeParameterModifiers,
+  isSymbolFromDefaultLibrary,
+  length,
+} from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
 

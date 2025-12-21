@@ -27,7 +27,14 @@ declare module "typescript" {
     /** @internal */ id: unknown;
   }
 
+  interface TypeChecker {
+    /** @internal */ getParameterType(signature: Signature, parameterIndex: number): Type;
+    isTupleType(type: Type): type is TupleTypeReference;
+  }
+
+  /** @internal */
   function getDeclarationModifierFlagsFromSymbol(symbol: Symbol): ModifierFlags;
 
+  /** @internal */
   function getEffectiveModifierFlags(node: Node): ModifierFlags;
 }
