@@ -4,10 +4,6 @@ jsonschema = "13.3.0"
 node = "24.12.0"
 yarn = "4.12.0"
 
-[settings.node]
-# TODO remove at some point
-gpg_verify = false
-
 [tasks."generate:schema"]
 run = "node ./scripts/generate-schema.ts"
 [tasks."generate:types"]
