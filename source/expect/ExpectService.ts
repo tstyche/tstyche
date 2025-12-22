@@ -1,11 +1,9 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
-import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { argumentIsProvided, argumentOrTypeArgumentIsProvided } from "#ensure";
 import type { Reject } from "#reject";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import { LegacyToBe } from "./LegacyToBe.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
@@ -24,7 +22,7 @@ export class ExpectService {
   #reject: Reject;
 
   private toAcceptProps: ToAcceptProps;
-  private toBe: ToBe | LegacyToBe;
+  private toBe: ToBe;
   private toBeApplicable: ToBeApplicable;
   private toBeAssignableFrom: ToBeAssignableFrom;
   private toBeAssignableTo: ToBeAssignableTo;
@@ -33,13 +31,13 @@ export class ExpectService {
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, program: ts.Program, reject: Reject, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts, program: ts.Program, reject: Reject) {
     this.#compiler = compiler;
     this.#program = program;
     this.#reject = reject;
 
     this.toAcceptProps = new ToAcceptProps(compiler, program);
-    this.toBe = resolvedConfig.legacyToBe ? new LegacyToBe() : new ToBe(compiler, program);
+    this.toBe = new ToBe(compiler, program);
     this.toBeApplicable = new ToBeApplicable(compiler);
     this.toBeAssignableFrom = new ToBeAssignableFrom();
     this.toBeAssignableTo = new ToBeAssignableTo();
