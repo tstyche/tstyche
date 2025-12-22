@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.0.0-beta.1] - 2025-12-22
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
+
+### Fixed
+
+- When checking type structure, compare substitution types, index types, `const` type parameters and indexed access types as well ([#642](https://github.com/tstyche/tstyche/pull/642), [#641](https://github.com/tstyche/tstyche/pull/641), [#640]((https://github.com/tstyche/tstyche/pull/640)), [#639]((https://github.com/tstyche/tstyche/pull/639)))
+
 ## [6.0.0-beta.0] - 2025-12-18
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
@@ -917,6 +925,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.1
 [6.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.0
 [5.0.2]: https://github.com/tstyche/tstyche/releases/tag/v5.0.2
 [5.0.1]: https://github.com/tstyche/tstyche/releases/tag/v5.0.1
