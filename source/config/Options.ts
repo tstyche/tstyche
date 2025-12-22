@@ -95,13 +95,6 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.Boolean,
-      description: "Use the patch-based implementation of the '.toBe()' matcher.",
-      group: OptionGroup.ConfigFile,
-      name: "legacyToBe",
-    },
-
-    {
       brand: OptionBrand.True,
       description: "Print the list of supported versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,

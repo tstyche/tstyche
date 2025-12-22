@@ -1,7 +1,5 @@
 import fs from "node:fs/promises";
-import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import vm from "node:vm";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
@@ -16,7 +14,6 @@ import { PackageService } from "./PackageService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 export class Store {
-  static #compilerInstanceCache = new Map<string, typeof ts>();
   static #fetcher: Fetcher;
   static #lockService: LockService;
   static manifest: Manifest | undefined;
@@ -53,13 +50,8 @@ export class Store {
     await Store.#packageService.ensure(version, Store.manifest);
   }
 
-  static async load(tag: string, options?: { notPatched?: boolean }): Promise<typeof ts | undefined> {
-    let compilerInstance = Store.#compilerInstanceCache.get(tag);
-
-    if (compilerInstance != null) {
-      return compilerInstance;
-    }
-
+  static async load(tag: string): Promise<typeof ts | undefined> {
+    let compilerInstance: typeof ts | undefined;
     let modulePath: string | undefined;
 
     if (tag === "*" && environmentOptions.typescriptModule != null) {
@@ -73,12 +65,6 @@ export class Store {
         Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
 
         return;
-      }
-
-      compilerInstance = Store.#compilerInstanceCache.get(version);
-
-      if (compilerInstance != null) {
-        return compilerInstance;
       }
 
       const packagePath = await Store.#packageService.ensure(version, Store.manifest);
@@ -98,37 +84,12 @@ export class Store {
         modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
       }
 
-      if (options?.notPatched) {
-        const moduleSpecifier = pathToFileURL(modulePath).toString();
+      const moduleSpecifier = pathToFileURL(modulePath).toString();
 
-        compilerInstance = (await import(moduleSpecifier)).default as typeof ts;
-      } else {
-        compilerInstance = await Store.#loadPatchedModule(modulePath);
-      }
-
-      Store.#compilerInstanceCache.set(tag, compilerInstance);
-      Store.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
+      compilerInstance = (await import(moduleSpecifier)).default;
     }
 
     return compilerInstance;
-  }
-
-  // TODO rethink or remove 'Store.#compilerInstanceCache' after removing this method
-  static async #loadPatchedModule(modulePath: string) {
-    const sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
-
-    const compiledWrapper = vm.compileFunction(
-      sourceText.replace("return checker;", "return { ...checker, isTypeIdenticalTo };"),
-      ["exports", "require", "module", "__filename", "__dirname"],
-      { filename: modulePath },
-    );
-
-    const exports = {};
-    const module = { exports };
-
-    compiledWrapper(exports, createRequire(modulePath), module, modulePath, Path.dirname(modulePath));
-
-    return module.exports as typeof ts;
   }
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {
