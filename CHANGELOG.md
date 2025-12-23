@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.0.0-beta.2] - 2025-12-23
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
+
+### Changed
+
+- **Breaking!** Drop support for TypeScript `<=5.3` ([#644](https://github.com/tstyche/tstyche/pull/644))
+- **Breaking!** Remove legacy implementation of the `.toBe()` matcher ([#643](https://github.com/tstyche/tstyche/pull/643))
+
 ## [6.0.0-beta.1] - 2025-12-22
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
@@ -925,6 +934,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.2
 [6.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.1
 [6.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.0
 [5.0.2]: https://github.com/tstyche/tstyche/releases/tag/v5.0.2
