@@ -1,6 +1,6 @@
 Error: Unexpected token.
 
-  1 | // @tstyche if { target: "5.2" } unexpected
+  1 | // @tstyche if { target: "5.6" } unexpected
     |                                  ~
   2 | 
   3 | import { expect, test } from "tstyche";

@@ -25,26 +25,26 @@ await test("'--fetch' command line option", async (t) => {
 
   const testCases = [
     {
-      args: ["--fetch", "--target", "5.2"],
+      args: ["--fetch", "--target", "5.6"],
       testCase: "when '--target' command line option is specified",
     },
     {
-      args: ["--fetch", "false", "--target", "5.2"],
+      args: ["--fetch", "false", "--target", "5.6"],
       testCase: "does not take arguments",
     },
     {
-      args: ["feature", "--fetch", "--target", "5.2"],
+      args: ["feature", "--fetch", "--target", "5.6"],
       testCase: "ignores search string specified before the option",
     },
     {
-      args: ["--fetch", "feature", "--target", "5.2"],
+      args: ["--fetch", "feature", "--target", "5.6"],
       testCase: "ignores search string specified after the option",
     },
   ];
 
   for (const { args, testCase } of testCases) {
     await t.test(testCase, async () => {
-      const config = { target: "5.0 || latest" };
+      const config = { target: "5.6 || latest" };
 
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -59,7 +59,7 @@ await test("'--fetch' command line option", async (t) => {
       assert.equal(
         normalizeOutput(stdout),
         [
-          "adds TypeScript 5.2.2 to <<basePath>>/tests/__fixtures__/.generated/config-fetch/.store/typescript@5.2.2",
+          "adds TypeScript 5.6.3 to <<basePath>>/tests/__fixtures__/.generated/config-fetch/.store/typescript@5.6.3",
           "",
         ].join("\n"),
       );
@@ -69,7 +69,7 @@ await test("'--fetch' command line option", async (t) => {
   }
 
   await t.test("when 'target' configuration option is specified", async () => {
-    const config = { target: "5.2 || 5.6" };
+    const config = { target: "5.6 || 5.8" };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -84,8 +84,8 @@ await test("'--fetch' command line option", async (t) => {
     assert.equal(
       normalizeOutput(stdout),
       [
-        "adds TypeScript 5.2.2 to <<basePath>>/tests/__fixtures__/.generated/config-fetch/.store/typescript@5.2.2",
         "adds TypeScript 5.6.3 to <<basePath>>/tests/__fixtures__/.generated/config-fetch/.store/typescript@5.6.3",
+        "adds TypeScript 5.8.3 to <<basePath>>/tests/__fixtures__/.generated/config-fetch/.store/typescript@5.8.3",
         "",
       ].join("\n"),
     );
@@ -110,7 +110,7 @@ await test("'--fetch' command line option", async (t) => {
   });
 
   await t.test("when '*' target specified in the command", async () => {
-    const config = { target: "5.0 || latest" };
+    const config = { target: "5.6 || latest" };
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,

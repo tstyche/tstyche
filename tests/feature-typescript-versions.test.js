@@ -135,7 +135,7 @@ await test("TypeScript 5.x", async (t) => {
     .filter((resolution) => resolution[0].startsWith("5"))
     .map((resolution) => resolution[1]);
 
-  const testCases = ["5.0.2", ...versions];
+  const testCases = ["5.4.2", ...versions];
 
   for (const version of testCases) {
     await t.test(`uses TypeScript ${version} as the target`, async () => {

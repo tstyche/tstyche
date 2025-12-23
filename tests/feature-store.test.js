@@ -19,7 +19,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when 'typescript' package is not installed", async () => {
-    const packageUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
+    const packageUrl = new URL("./.store/typescript@5.8.3", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -27,17 +27,17 @@ await test("store", async (t) => {
 
     assert.pathDoesNotExist(packageUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.8"]);
 
     assert.pathExists(packageUrl);
 
     assert.equal(stderr, "");
-    assert.match(stdout, /adds TypeScript 5.2.2/);
+    assert.match(stdout, /adds TypeScript 5.8.3/);
     assert.equal(exitCode, 0);
   });
 
   await t.test("when 'typescript' package is already installed", async () => {
-    const packageUrl = new URL("./.store/typescript@5.2.2", fixtureUrl);
+    const packageUrl = new URL("./.store/typescript@5.8.3", fixtureUrl);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
@@ -45,14 +45,14 @@ await test("store", async (t) => {
 
     assert.pathDoesNotExist(packageUrl);
 
-    await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    await spawnTyche(fixtureUrl, ["--target", "5.8"]);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", "5.8"]);
 
     assert.pathExists(packageUrl);
 
     assert.equal(stderr, "");
-    assert.match(stdout, /uses TypeScript 5.2.2/);
+    assert.match(stdout, /uses TypeScript 5.8.3/);
     assert.equal(exitCode, 0);
   });
 
@@ -99,7 +99,7 @@ await test("store", async (t) => {
 
     assert.pathDoesNotExist(storeManifestUrl);
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"]);
 
     assert.pathExists(storeManifestUrl);
 
@@ -115,7 +115,7 @@ await test("store", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"]);
 
     const result = await fs.readFile(new URL("./.store/store-manifest.json", fixtureUrl), {
       encoding: "utf8",
@@ -135,7 +135,7 @@ await test("store", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"]);
 
     const result = await fs.readFile(new URL("./.store/store-manifest.json", fixtureUrl), {
       encoding: "utf8",
@@ -158,7 +158,7 @@ await test("store", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
         ["TSTYCHE_NPM_REGISTRY"]: "https://registry.yarnpkg.com",
       },
@@ -180,17 +180,17 @@ await test("store", async (t) => {
       lastUpdated: Date.now() - 60 * 60 * 1000, // 2 hours
       npmRegistry: "https://registry.npmjs.org",
       packages: {
-        "5.0.3": {
-          integrity: "sha512-xv8mOEDnigb/tN9PSMTwSEqAnUvkoXMQlicOb0IUVDBSQCgBSaAAROUZYy2IcUy5qU6XajK5jjjO7TMWqBTKZA==",
-          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.0.3.tgz",
+        "5.8.2": {
+          integrity: "sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.8.2.tgz",
         },
-        "5.0.4": {
-          integrity: "sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==",
-          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.0.4.tgz",
+        "5.8.3": {
+          integrity: "sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.8.3.tgz",
         },
       },
-      resolutions: {},
-      versions: ["5.0.2", "5.0.3", "5.0.4"],
+      resolutions: { ["5.8"]: "5.8.3" },
+      versions: ["5.8.2", "5.8.3"],
     });
 
     await writeFixture(fixtureUrl, {
@@ -198,7 +198,7 @@ await test("store", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.0.2"]);
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8.3"]);
 
     const result = await fs.readFile(new URL("./.store/store-manifest.json", fixtureUrl), {
       encoding: "utf8",
@@ -216,17 +216,17 @@ await test("store", async (t) => {
       lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
       npmRegistry: "https://registry.npmjs.org",
       packages: {
-        "5.0.3": {
-          integrity: "sha512-xv8mOEDnigb/tN9PSMTwSEqAnUvkoXMQlicOb0IUVDBSQCgBSaAAROUZYy2IcUy5qU6XajK5jjjO7TMWqBTKZA==",
-          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.0.3.tgz",
+        "5.8.2": {
+          integrity: "sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.8.2.tgz",
         },
-        "5.0.4": {
-          integrity: "sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==",
-          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.0.4.tgz",
+        "5.8.3": {
+          integrity: "sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-5.8.3.tgz",
         },
       },
-      resolutions: {},
-      versions: ["5.0.2", "5.0.3", "5.0.4"],
+      resolutions: { ["5.8"]: "5.8.3" },
+      versions: ["5.8.2", "5.8.3"],
     });
 
     await writeFixture(fixtureUrl, {
@@ -234,7 +234,7 @@ await test("store", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"]);
 
     const result = await fs.readFile(new URL("./.store/store-manifest.json", fixtureUrl), {
       encoding: "utf8",
