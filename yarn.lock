@@ -2180,7 +2180,7 @@ __metadata:
     tslib: "npm:2.8.1"
     typescript: "npm:5.9.3"
   peerDependencies:
-    typescript: ">=5.0"
+    typescript: ">=5.4"
   peerDependenciesMeta:
     typescript:
       optional: true

@@ -91,7 +91,7 @@ test("helpText", async (t) => {
         "  <blue>tstyche query-params</>",
         "  Only run the matching test file.",
         "",
-        "  <blue>tstyche --target '5.3 || 5.5.2 || >=5.7'</>",
+        "  <blue>tstyche --target '5.4 || 5.6.2 || >=5.8'</>",
         "  Test against specific versions of TypeScript.",
         "",
         "",

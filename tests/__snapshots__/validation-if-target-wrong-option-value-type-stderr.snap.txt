@@ -1,6 +1,6 @@
 Error: Value for the 'target' option must be a string.
 
-  1 | // @tstyche if { target: ["5.2"] }
+  1 | // @tstyche if { target: ["5.6"] }
     |                          ~~~~~~~
   2 | 
   3 | import { expect, test } from "tstyche";

@@ -37,9 +37,9 @@ await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    await spawnTyche(fixtureUrl, ["--fetch", "--target", "5.2.2"]);
+    await spawnTyche(fixtureUrl, ["--fetch", "--target", "5.8.2"]);
 
-    const typescriptModule = new URL("./.store/typescript@5.2.2/lib/typescript.js", fixtureUrl).toString();
+    const typescriptModule = new URL("./.store/typescript@5.8.2/lib/typescript.js", fixtureUrl).toString();
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {
@@ -48,7 +48,7 @@ await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
     });
 
     assert.equal(stderr, "");
-    assert.match(stdout, /uses TypeScript 5.2.2/);
+    assert.match(stdout, /uses TypeScript 5.8.2/);
     assert.equal(exitCode, 0);
   });
 });

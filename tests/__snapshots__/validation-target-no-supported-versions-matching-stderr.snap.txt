@@ -1,9 +1,9 @@
-Error: The specified range '>=4.4 <4.7' does not match any supported TypeScript versions.
+Error: The specified range '>=5.0 <5.4' does not match any supported TypeScript versions.
 
 Use the '--list' command line option to inspect the list of supported versions.
 
   1 | {
-  2 |   "target": ">=4.4 <4.7",
+  2 |   "target": ">=5.0 <5.4",
     |             ~~~~~~~~~~~~
   3 |   "testFileMatch": [
   4 |     "examples/*.tst.*"

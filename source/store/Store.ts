@@ -1,10 +1,8 @@
-import fs from "node:fs/promises";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { Path } from "#path";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
@@ -51,11 +49,10 @@ export class Store {
   }
 
   static async load(tag: string): Promise<typeof ts | undefined> {
-    let compilerInstance: typeof ts | undefined;
-    let modulePath: string | undefined;
+    let resolvedModule: string | undefined;
 
     if (tag === "*" && environmentOptions.typescriptModule != null) {
-      modulePath = fileURLToPath(environmentOptions.typescriptModule);
+      resolvedModule = environmentOptions.typescriptModule;
     } else {
       await Store.open();
 
@@ -70,26 +67,15 @@ export class Store {
       const packagePath = await Store.#packageService.ensure(version, Store.manifest);
 
       if (packagePath != null) {
-        modulePath = Path.join(packagePath, "lib", "typescript.js");
+        resolvedModule = pathToFileURL(`${packagePath}/lib/typescript.js`).toString();
       }
     }
 
-    if (modulePath != null) {
-      const packageConfigText = await fs.readFile(Path.resolve(modulePath, "../../package.json"), { encoding: "utf8" });
-      const { version: packageVersion } = JSON.parse(packageConfigText) as { version: string };
-
-      // TODO remove after dropping support for TypeScript 5.2
-      // project service was moved to 'typescript.js' file since TypeScript 5.3
-      if (!Version.isSatisfiedWith(packageVersion, "5.3")) {
-        modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
-      }
-
-      const moduleSpecifier = pathToFileURL(modulePath).toString();
-
-      compilerInstance = (await import(moduleSpecifier)).default;
+    if (resolvedModule != null) {
+      return (await import(resolvedModule)).default;
     }
 
-    return compilerInstance;
+    return;
   }
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {

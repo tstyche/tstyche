@@ -1,8 +1,8 @@
-Error: The specified range '>=4.4 <4.7' does not match any supported TypeScript versions.
+Error: The specified range '>=5.0 <5.4' does not match any supported TypeScript versions.
 
 Use the '--list' command line option to inspect the list of supported versions.
 
-  1 | // @tstyche if { target: ">=4.4 <4.7" }
+  1 | // @tstyche if { target: ">=5.0 <5.4" }
     |                          ~~~~~~~~~~~~
   2 | 
   3 |   import { expect, test } from "tstyche";
