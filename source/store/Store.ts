@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
@@ -66,7 +67,7 @@ export class Store {
       const packagePath = await Store.#packageService.ensure(version, Store.manifest);
 
       if (packagePath != null) {
-        resolvedModule = import.meta.resolve(`${packagePath}/lib/typescript.js`);
+        resolvedModule = pathToFileURL(`${packagePath}/lib/typescript.js`).toString();
       }
     }
 
