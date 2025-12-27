@@ -29,19 +29,6 @@
         "type": "string"
       }
     },
-    "legacyToBe": {
-      "description": "Use the patch-based implementation of the '.toBe()' matcher.",
-      "type": "boolean"
-    },
-    "plugins": {
-      "description": "The list of plugins to use.",
-      "default": [],
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string"
-      }
-    },
     "rejectAnyType": {
       "description": "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
       "default": true,

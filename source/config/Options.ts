@@ -116,17 +116,6 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.List,
-      description: "The list of plugins to use.",
-      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
-      items: {
-        brand: OptionBrand.String,
-        name: "plugins",
-      },
-      name: "plugins",
-    },
-
-    {
       brand: OptionBrand.True,
       description: "Remove all installed versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
@@ -264,7 +253,6 @@ export class Options {
         optionValue = Path.resolve(rootPath, optionValue);
         break;
 
-      case "plugins":
       case "reporters":
         if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
           break;
@@ -310,7 +298,6 @@ export class Options {
 
         break;
 
-      case "plugins":
       case "reporters":
         if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
           break;

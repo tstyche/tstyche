@@ -6,7 +6,6 @@ export * from "#events";
 export * from "#file";
 export * from "#output";
 export * from "#path";
-export * from "#plugins";
 export * from "#reporters";
 export * from "#result";
 export * from "#runner";

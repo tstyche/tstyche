@@ -33,9 +33,6 @@ Command Line Options
   --only  string
   Only run tests with matching name.
 
-  --plugins  list of strings
-  The list of plugins to use.
-
   --prune
   Remove all installed versions of the 'typescript' package and exit.
 

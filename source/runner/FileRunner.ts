@@ -1,4 +1,3 @@
-import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { CollectService, type TestTree } from "#collect";
@@ -112,12 +111,6 @@ export class FileRunner {
   }
 
   async #run(file: FileLocation, fileResult: FileResult, cancellationToken: CancellationToken) {
-    if (!existsSync(file.path)) {
-      this.#onDiagnostics([Diagnostic.error(`Test file '${file.path}' does not exist.`)], fileResult);
-
-      return;
-    }
-
     const facts = await this.#resolveFileFacts(file, fileResult, RunModeFlags.None);
 
     if (!facts) {

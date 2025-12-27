@@ -10,7 +10,6 @@ export interface CommandLineOptions {
   list?: boolean;
   listFiles?: boolean;
   only?: string;
-  plugins?: Array<string>;
   prune?: boolean;
   reporters?: Array<string>;
   showConfig?: boolean;
@@ -27,7 +26,6 @@ export interface ConfigFileOptions {
   checkSuppressedErrors?: boolean;
   failFast?: boolean;
   fixtureFileMatch?: Array<string>;
-  plugins?: Array<string>;
   rejectAnyType?: boolean;
   rejectNeverType?: boolean;
   reporters?: Array<string>;
