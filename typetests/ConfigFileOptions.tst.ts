@@ -8,7 +8,6 @@ describe("ConfigFileOptions", () => {
       checkSuppressedErrors: true,
       failFast: true,
       fixtureFileMatch: ["**/tests/types/fixtures/**/*"],
-      plugins: ["./tstyche-plugin.js"],
       rejectAnyType: true,
       rejectNeverType: true,
       reporters: ["./tstyche-reporter.js"],
@@ -44,12 +43,6 @@ describe("ConfigFileOptions", () => {
   test("'fixtureFileMatch' option", () => {
     expect<Pick<tstyche.ConfigFileOptions, "fixtureFileMatch">>().type.toBe<{
       fixtureFileMatch?: Array<string>;
-    }>();
-  });
-
-  test("'plugins' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "plugins">>().type.toBe<{
-      plugins?: Array<string>;
     }>();
   });
 

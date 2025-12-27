@@ -3,7 +3,6 @@ import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
 import { formattedText, helpText, OutputService, waitingForFileChangesText } from "#output";
-import { type Plugin, PluginService } from "#plugins";
 import { SetupReporter } from "#reporters";
 import { Runner } from "#runner";
 import { Select } from "#select";
@@ -81,7 +80,7 @@ export class Cli {
 
       const { configFileOptions, configFilePath } = await Config.parseConfigFile(commandLineOptions.config);
 
-      let resolvedConfig = Config.resolve({
+      const resolvedConfig = Config.resolve({
         configFileOptions,
         configFilePath,
         commandLineOptions,
@@ -95,13 +94,6 @@ export class Cli {
         continue;
       }
 
-      for (const pluginSpecifier of resolvedConfig.plugins) {
-        const plugin: Plugin = (await import(pluginSpecifier)).default;
-        PluginService.addHandler(plugin);
-      }
-
-      resolvedConfig = await PluginService.call("config", resolvedConfig, /* context */ {});
-
       if (commandLine.includes("--showConfig")) {
         OutputService.writeMessage(formattedText({ ...resolvedConfig, ...environmentOptions }));
         continue;
@@ -114,7 +106,7 @@ export class Cli {
         continue;
       }
 
-      let testFiles: Array<string | URL> = [];
+      let testFiles: Array<string> = [];
 
       if (resolvedConfig.testFileMatch.length > 0) {
         testFiles = await Select.selectFiles(resolvedConfig);
@@ -127,8 +119,6 @@ export class Cli {
         }
       }
 
-      testFiles = await PluginService.call("select", testFiles as Array<string>, { resolvedConfig });
-
       if (commandLine.includes("--listFiles")) {
         OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
         continue;
@@ -140,8 +130,6 @@ export class Cli {
       const runner = new Runner(resolvedConfig);
 
       await runner.run(testFiles, cancellationToken);
-
-      PluginService.removeHandlers();
     } while (cancellationToken.getReason() === CancellationReason.ConfigChange);
 
     this.#eventEmitter.removeHandlers();

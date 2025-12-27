@@ -6,7 +6,6 @@ export const defaultOptions: Required<ConfigFileOptions> = {
   checkSuppressedErrors: true,
   failFast: false,
   fixtureFileMatch: ["**/__fixtures__/*.{ts,tsx}", "**/fixtures/*.{ts,tsx}"],
-  plugins: [],
   rejectAnyType: true,
   rejectNeverType: true,
   reporters: ["list", "summary"],
