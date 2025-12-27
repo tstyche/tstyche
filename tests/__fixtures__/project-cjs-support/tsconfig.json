@@ -1,7 +1,11 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "moduleResolution": "node10",
+    "paths": {
+      "tstyche": ["../../../"]
+    }
   },
   "include": ["**/*"]
 }
