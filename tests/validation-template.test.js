@@ -32,9 +32,7 @@ export default testText;
       ["__typetests__/sample.tst.ts"]: testFileText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-does-not-take-argument-stderr`,
@@ -69,9 +67,7 @@ export default () => testText;
       ["__typetests__/sample.tst.ts"]: testFileText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-must-export-a-string-stdout`,
@@ -106,9 +102,7 @@ export { testText };
       ["__typetests__/sample.tst.ts"]: testFileText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-missing-export-stderr`,
@@ -139,9 +133,7 @@ export default getTestText(;
       ["__typetests__/sample.tst.ts"]: testFileText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-test-file-syntax-errors-stderr`,
@@ -178,9 +170,7 @@ export default testText;
       ["__typetests__/sample.tst.ts"]: testFileText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-test-file-type-errors-stderr`,
@@ -224,9 +214,7 @@ export default testText;
       ["__typetests__/sample.tst.ts"]: testFileText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-test-text-syntax-errors-stderr`,
@@ -264,9 +252,7 @@ export default testText;
       ["__typetests__/sample.tst.ts"]: testFileText,
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["NODE_OPTIONS"]: "--experimental-strip-types --no-warnings" },
-    });
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-test-text-type-errors-stderr`,

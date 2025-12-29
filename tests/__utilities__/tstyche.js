@@ -9,14 +9,22 @@ import process from "node:process";
  */
 export function spawnTyche(fixtureUrl, args = [], options = {}) {
   return new Promise((resolve, reject) => {
+    /** @type {NodeJS.ProcessEnv} */
+    const env = {
+      ...process.env,
+      ["TSTYCHE_NO_COLOR"]: "true",
+      ["TSTYCHE_STORE_PATH"]: "./.store",
+      ...options?.env,
+    };
+
+    // TODO remove this after dropping support for Node.js 22.18
+    if (process.versions.node.startsWith("22.12")) {
+      env["NODE_OPTIONS"] = "--experimental-strip-types --no-warnings";
+    }
+
     const tstyche = spawn(["tstyche", ...args].join(" "), {
       cwd: fixtureUrl,
-      env: {
-        ...process.env,
-        ["TSTYCHE_NO_COLOR"]: "true",
-        ["TSTYCHE_STORE_PATH"]: "./.store",
-        ...options?.env,
-      },
+      env,
       shell: true,
     });
 
