@@ -7,7 +7,7 @@ import type { Plugin, RollupOptions } from "rollup";
 import dts from "rollup-plugin-dts";
 import packageConfig from "../package.json" with { type: "json" };
 
-const output = { dir: "./build" };
+const output = { dir: "./dist" };
 const tsconfig = fileURLToPath(new URL("../source/tsconfig.json", import.meta.url));
 
 function clean(): Plugin {
@@ -95,19 +95,6 @@ const config: Array<RollupOptions> = [
   },
 
   {
-    input: "./source/types.ts",
-    output: {
-      file: "./build/index.d.cts",
-      format: "cjs",
-    },
-    plugins: [
-      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ tsconfig }),
-      dts({ tsconfig }),
-    ],
-  },
-
-  {
     external: [/^node:/, "./tstyche.js"],
     input: {
       bin: "./source/bin.ts",
@@ -119,18 +106,6 @@ const config: Array<RollupOptions> = [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript({ compilerOptions: { removeComments: true }, tsconfig }),
       tidyJs(),
-    ],
-  },
-
-  {
-    input: "./source/index.ts",
-    output: {
-      file: "./build/index.cjs",
-      format: "cjs",
-    },
-    plugins: [
-      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true }, tsconfig }),
     ],
   },
 ];

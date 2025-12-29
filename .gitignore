@@ -3,8 +3,8 @@
 .idea
 .yarn/*
 !.yarn/plugins
-build
 coverage
+dist
 node_modules
 *.bench.json
 *.iml
