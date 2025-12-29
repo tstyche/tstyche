@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.0.0-beta.3] - 2025-12-29
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
+
+### Changed
+
+- **Breaking!** Remove CommonJS entry point ([#647](https://github.com/tstyche/tstyche/pull/647))
+- **Breaking!** Drop support for Node.js 20 ([#646](https://github.com/tstyche/tstyche/pull/646))
+- **Breaking!** Remove support for TSTyche plugins ([#645](https://github.com/tstyche/tstyche/pull/645))
+
 ## [6.0.0-beta.2] - 2025-12-23
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
@@ -934,6 +944,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.3
 [6.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.2
 [6.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.1
 [6.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.0
