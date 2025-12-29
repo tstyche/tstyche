@@ -29,8 +29,8 @@ jobs:
       - run: yarn build --sourcemap
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: build-${{ github.sha }}
-          path: build
+          name: dist-${{ github.sha }}
+          path: dist
 
   check-quality:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -71,8 +71,8 @@ jobs:
       - run: yarn install
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: build-${{ github.sha }}
-          path: build
+          name: dist-${{ github.sha }}
+          path: dist
       - run: yarn check:types
 
   test-schema:
@@ -100,8 +100,8 @@ jobs:
       - run: yarn install
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: build-${{ github.sha }}
-          path: build
+          name: dist-${{ github.sha }}
+          path: dist
       - run: yarn test:types --target '>=5.4'
       - run: yarn test:examples --target '>=5.4'
 
@@ -124,8 +124,8 @@ jobs:
       - run: yarn install
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: build-${{ github.sha }}
-          path: build
+          name: dist-${{ github.sha }}
+          path: dist
       - run: mise exec node@${{ matrix.node-version }} -- yarn test
 
   test-os:
@@ -146,8 +146,8 @@ jobs:
       - run: yarn install
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: build-${{ github.sha }}
-          path: build
+          name: dist-${{ github.sha }}
+          path: dist
       - run: yarn test
 
   coverage-collect:
@@ -168,8 +168,8 @@ jobs:
       - run: yarn install
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: build-${{ github.sha }}
-          path: build
+          name: dist-${{ github.sha }}
+          path: dist
       - run: yarn test:e2e
         env:
           NODE_V8_COVERAGE: coverage/v8-coverage
@@ -196,8 +196,8 @@ jobs:
       - run: yarn install
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: build-${{ github.sha }}
-          path: build
+          name: dist-${{ github.sha }}
+          path: dist
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
           merge-multiple: true

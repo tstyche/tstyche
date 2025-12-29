@@ -11,8 +11,8 @@
     "includes": [
       "**",
       "!**/.yarn",
-      "!**/build",
       "!**/coverage",
+      "!**/dist",
       "!**/node_modules",
       "!**/schema/config.json",
       "!**/cspell.json"
