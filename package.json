@@ -28,7 +28,7 @@
   "main": "./dist/index.js",
   "bin": "./dist/bin.js",
   "files": [
-    "build/**/*"
+    "dist/**/*"
   ],
   "scripts": {
     "build": "rollup --config ./scripts/rollup.ts",
