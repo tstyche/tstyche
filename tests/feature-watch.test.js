@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import process from "node:process";
 import test from "node:test";
 import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
@@ -46,13 +45,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("watch", async (t) => {
-  // TODO remove this check after dropping support for Node.js 20
-  if (process.versions.node.startsWith("20.12") && process.platform === "linux") {
-    t.skip();
-
-    return;
-  }
-
   await t.test("interactive input", async (t) => {
     t.afterEach(async () => {
       await clearFixture(fixtureUrl);

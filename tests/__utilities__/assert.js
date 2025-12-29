@@ -5,7 +5,7 @@ import process from "node:process";
 
 export { doesNotMatch, equal, match, notEqual } from "node:assert/strict";
 
-// TODO Consider 'assert.partialDeepStrictEqual()' after dropping support for Node.js 20
+// TODO Consider 'assert.partialDeepStrictEqual()' after dropping support for Node.js 22
 
 /**
  * @param {Record<string, unknown> | string} source

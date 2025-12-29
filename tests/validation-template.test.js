@@ -1,4 +1,3 @@
-import process from "node:process";
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
@@ -9,13 +8,6 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("'// @tstyche template' directive", async (t) => {
-  // TODO remove this check after dropping support for Node.js 20
-  if (process.versions.node.startsWith("20")) {
-    t.skip();
-
-    return;
-  }
-
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });

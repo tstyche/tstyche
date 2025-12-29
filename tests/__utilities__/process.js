@@ -3,16 +3,6 @@ import process from "node:process";
 
 export const isWindows = process.platform === "win32";
 
-// TODO use 'Promise.withResolvers()' after dropping support for Node.js 20
-class Deferred {
-  constructor() {
-    this.promise = new Promise((resolve, reject) => {
-      this.reject = reject;
-      this.resolve = resolve;
-    });
-  }
-}
-
 class Output {
   stderr = "";
   stdout = "";
@@ -22,7 +12,8 @@ export class Process {
   /** @type {import("node:child_process").ChildProcessWithoutNullStreams} */
   #subprocess;
 
-  #onExit = new Deferred();
+  /** @type {PromiseWithResolvers<{ exitCode: number | null, stderr: string, stdout: string }>} */
+  #onExit = Promise.withResolvers();
   #output = new Output();
 
   #idleDelay = 800;
@@ -84,6 +75,7 @@ export class Process {
     this.#subprocess.kill(signal);
   }
 
+  /** @type {() => void} */
   resetOutput() {
     this.#output = new Output();
   }
