@@ -8,6 +8,7 @@ test("edge cases", () => {
   expect<A>().type.not.toBe<<T>(a: T) => T extends [infer U] ? U : unknown>();
   expect<A>().type.not.toBe<<T>(a: T) => T extends infer U ? U : unknown>();
   expect<A>().type.not.toBe<<T>(a: T) => T extends Array<infer U> ? U : never>();
+  expect<A>().type.not.toBe<<T>(a: T) => unknown>();
 });
 
 test("inferred", () => {
