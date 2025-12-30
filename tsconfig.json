@@ -13,8 +13,7 @@
     "strict": true,
 
     "module": "nodenext",
-    "moduleResolution": "node16",
-    "rootDir": "./",
+    "moduleResolution": "nodenext",
     "types": ["node"],
 
     "noEmit": true,
