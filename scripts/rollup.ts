@@ -95,6 +95,19 @@ const config: Array<RollupOptions> = [
   },
 
   {
+    input: "./source/types.ts",
+    output: {
+      file: "./dist/index.d.cts",
+      format: "cjs",
+    },
+    plugins: [
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      typescript({ tsconfig }),
+      dts({ tsconfig }),
+    ],
+  },
+
+  {
     external: [/^node:/, "./tstyche.js"],
     input: {
       bin: "./source/bin.ts",
@@ -106,6 +119,18 @@ const config: Array<RollupOptions> = [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript({ compilerOptions: { removeComments: true }, tsconfig }),
       tidyJs(),
+    ],
+  },
+
+  {
+    input: "./source/index.ts",
+    output: {
+      file: "./dist/index.cjs",
+      format: "cjs",
+    },
+    plugins: [
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      typescript({ compilerOptions: { removeComments: true }, tsconfig }),
     ],
   },
 ];

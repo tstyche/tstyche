@@ -21,11 +21,15 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./dist/index.js",
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
     "./tstyche": "./dist/tstyche.js",
     "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "bin": "./dist/bin.js",
   "files": [
     "dist/**/*"
