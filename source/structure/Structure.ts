@@ -124,6 +124,14 @@ export class Structure {
       return false;
     }
 
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.TemplateLiteral) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.TemplateLiteral) {
+        return this.compareTemplateLiteralTypes(a as ts.TemplateLiteralType, b as ts.TemplateLiteralType);
+      }
+
+      return false;
+    }
+
     return false;
   }
 
@@ -482,13 +490,32 @@ export class Structure {
     return true;
   }
 
+  compareTemplateLiteralTypes(a: ts.TemplateLiteralType, b: ts.TemplateLiteralType): boolean {
+    // 'texts' always has one element more than 'types'
+    if (a.texts.length !== b.texts.length) {
+      return false;
+    }
+
+    for (let i = 0; i < a.texts.length; i++) {
+      if (a.texts[i] !== b.texts[i]) {
+        return false;
+      }
+
+      if (!this.#compareMaybeNullish(a.types[i], b.types[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   #normalize(type: ts.Type): ts.Type {
     if (type.flags & this.#compiler.TypeFlags.Freshable && (type as ts.FreshableType).freshType === type) {
       return (type as ts.FreshableType).regularType;
     }
 
     if (
-      // A 'NoInfer<T>' type is represented as a substitution type with a 'TypeFlags.Unknown' constraint.
+      // A 'NoInfer<T>' type is represented as a substitution type with a 'TypeFlags.Unknown' constraint
       type.flags & this.#compiler.TypeFlags.Substitution &&
       (type as ts.SubstitutionType).constraint.flags & this.#compiler.TypeFlags.Unknown
     ) {
