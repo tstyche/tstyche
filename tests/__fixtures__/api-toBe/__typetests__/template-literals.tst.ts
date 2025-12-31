@@ -14,6 +14,7 @@ test("signatures", () => {
   expect<B>().type.not.toBe<<T extends string>() => string>();
 
   expect<A>().type.not.toBe<B>();
+  expect<B>().type.not.toBe<A>();
 
   expect<C>().type.toBe<<T extends string>() => `a-${T}-${T}`>();
   expect<C>().type.not.toBe<<T extends number>() => `a-${T}-${T}`>();
