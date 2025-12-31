@@ -514,14 +514,6 @@ export class Structure {
       return (type as ts.FreshableType).regularType;
     }
 
-    if (
-      // A 'NoInfer<T>' type is represented as a substitution type with a 'TypeFlags.Unknown' constraint
-      type.flags & this.#compiler.TypeFlags.Substitution &&
-      (type as ts.SubstitutionType).constraint.flags & this.#compiler.TypeFlags.Unknown
-    ) {
-      return (type as ts.SubstitutionType).baseType;
-    }
-
     if (type.flags & this.#compiler.TypeFlags.UnionOrIntersection) {
       // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
       const candidateType = this.#normalize((type as ts.UnionOrIntersectionType).types[0]!);
