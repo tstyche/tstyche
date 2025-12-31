@@ -21,12 +21,6 @@ test("edge cases", () => {
   expect<{ a: toArrayString }>().type.toBe<{ a: toArray<string> }>();
 });
 
-test("NoInfer", () => {
-  expect<{ a: string }>().type.toBe<NoInfer<{ a: string }>>();
-  expect<Array<{ a: string }>>().type.toBe<NoInfer<Array<{ a: string }>>>();
-  expect<<T>(value: T) => T>().type.toBe<<T>(value: NoInfer<T>) => T>();
-});
-
 test("Array", () => {
   type A = Array<string>;
   type B = Array<{ b: number }>;
