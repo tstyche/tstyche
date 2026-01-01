@@ -1,19 +1,33 @@
 import { expect, test } from "tstyche";
 
 test("signatures", () => {
-  type A = <T extends string>() => Capitalize<T>;
-  type B = <T extends string>() => Uncapitalize<T>;
-  type C = <T extends "length" | "width">() => Capitalize<T>;
+  type A = <T extends string>(a: T) => Capitalize<T>;
+  type B = <T extends string>(a: T) => Uncapitalize<T>;
+  type C = <T extends "length" | "width">(a: T) => Capitalize<T>;
 
-  expect<A>().type.toBe<<T extends string>() => Capitalize<T>>();
-  expect<A>().type.toBe<<T extends string>() => Capitalize<T>>();
-  expect<C>().type.toBe<<T extends "length" | "width">() => Capitalize<T>>();
+  expect<A>().type.toBe<<T extends string>(a: T) => Capitalize<T>>();
+  expect<A>().type.not.toBe<<T extends string>(a: T) => Uncapitalize<T>>();
+  expect<A>().type.not.toBe<<T extends string>(a: T) => T>();
+  expect<A>().type.not.toBe<<T extends string>(a: T) => string>();
+
+  expect<B>().type.toBe<<T extends string>(a: T) => Uncapitalize<T>>();
+  expect<B>().type.not.toBe<<T extends string>(a: T) => Capitalize<T>>();
+  expect<B>().type.not.toBe<<T extends string>(a: T) => T>();
+  expect<B>().type.not.toBe<<T extends string>(a: T) => string>();
+
+  expect<C>().type.toBe<<T extends "length" | "width">(a: T) => Capitalize<T>>();
+  expect<C>().type.not.toBe<<T extends "length" | "width">(a: T) => Uncapitalize<T>>();
+  expect<C>().type.not.toBe<<T extends "length" | "width">(a: T) => T>();
+  expect<C>().type.not.toBe<<T extends "length" | "width">(a: T) => "length" | "width">();
 
   expect<A>().type.not.toBe<B>();
   expect<A>().type.not.toBe<C>();
 
   expect<B>().type.not.toBe<A>();
   expect<B>().type.not.toBe<C>();
+
+  expect<C>().type.not.toBe<A>();
+  expect<C>().type.not.toBe<B>();
 });
 
 test("unions", () => {
