@@ -1,12 +1,12 @@
 import type ts from "typescript";
 import {
-  ensureArray,
   getIndexSignatures,
   getSignatures,
   getTargetSymbol,
+  getThisTypeOfSignature,
   getTypeParameterModifiers,
+  getTypeParametersOfSignature,
   isSymbolFromDefaultLibrary,
-  length,
 } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
@@ -32,13 +32,6 @@ export class Structure {
     }
 
     return !a && !b;
-  }
-
-  #compareTypeOfSymbol(a: ts.Symbol | undefined, b: ts.Symbol | undefined) {
-    const aTypeOfSymbol = a && this.#typeChecker.getTypeOfSymbol(a);
-    const bTypeOfSymbol = b && this.#typeChecker.getTypeOfSymbol(b);
-
-    return this.#compareMaybeNullish(aTypeOfSymbol, bTypeOfSymbol);
   }
 
   compare(a: ts.Type, b: ts.Type): boolean {
@@ -184,7 +177,7 @@ export class Structure {
       return this.compareStructuredTypes(a, b);
     }
 
-    if (!this.#compareTypeOfSymbol(a.symbol, b.symbol)) {
+    if (a.symbol !== b.symbol) {
       if (isSymbolFromDefaultLibrary(a.symbol, this.#program) || isSymbolFromDefaultLibrary(b.symbol, this.#program)) {
         return false;
       }
@@ -192,13 +185,16 @@ export class Structure {
       return;
     }
 
-    if (length(a.typeArguments) !== length(b.typeArguments)) {
+    const aTypeArguments = this.#typeChecker.getTypeArguments(a);
+    const bTypeArguments = this.#typeChecker.getTypeArguments(b);
+
+    if (aTypeArguments.length !== bTypeArguments.length) {
       return false;
     }
 
-    return ensureArray(a.typeArguments).every((type, i) =>
+    return aTypeArguments.every((type, i) =>
       // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      this.compare(type, ensureArray(b.typeArguments)[i]!),
+      this.compare(type, bTypeArguments[i]!),
     );
   }
 
@@ -210,7 +206,7 @@ export class Structure {
     const aTypeArguments = this.#typeChecker.getTypeArguments(a);
     const bTypeArguments = this.#typeChecker.getTypeArguments(b);
 
-    if (length(aTypeArguments) !== length(bTypeArguments)) {
+    if (aTypeArguments.length !== bTypeArguments.length) {
       return false;
     }
 
@@ -322,20 +318,26 @@ export class Structure {
   }
 
   #compareSignature(a: ts.Signature, b: ts.Signature): boolean {
-    if (length(a.typeParameters) !== length(b.typeParameters)) {
+    const aTypeParameters = getTypeParametersOfSignature(a);
+    const bTypeParameters = getTypeParametersOfSignature(b);
+
+    if (aTypeParameters.length !== bTypeParameters.length) {
       return false;
     }
 
-    if (a.typeParameters != null && b.typeParameters != null) {
-      for (let i = 0; i < a.typeParameters.length; i++) {
-        // biome-ignore lint/style/noNonNullAssertion: length was checked above
-        if (!this.compareTypeParameters(a.typeParameters[i]!, b.typeParameters[i]!)) {
-          return false;
-        }
+    for (let i = 0; i < aTypeParameters.length; i++) {
+      // biome-ignore lint/style/noNonNullAssertion: length was checked above
+      if (!this.compareTypeParameters(aTypeParameters[i]!, bTypeParameters[i]!)) {
+        return false;
       }
     }
 
-    if (!this.#compareTypeOfSymbol(a.thisParameter, b.thisParameter)) {
+    if (
+      !this.#compareMaybeNullish(
+        getThisTypeOfSignature(a, this.#typeChecker),
+        getThisTypeOfSignature(b, this.#typeChecker),
+      )
+    ) {
       return false;
     }
 
