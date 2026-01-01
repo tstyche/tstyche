@@ -56,6 +56,7 @@ await test("toBe", async (t) => {
       "objects",
       "predicates",
       "references",
+      "string-mapping",
       "substitution",
       "template-literals",
       "tuples",

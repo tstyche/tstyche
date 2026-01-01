@@ -132,6 +132,14 @@ export class Structure {
       return false;
     }
 
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.StringMapping) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.StringMapping) {
+        return this.compareStringMappingTypes(a as ts.StringMappingType, b as ts.StringMappingType);
+      }
+
+      return false;
+    }
+
     return false;
   }
 
@@ -504,6 +512,18 @@ export class Structure {
       if (!this.#compareMaybeNullish(a.types[i], b.types[i])) {
         return false;
       }
+    }
+
+    return true;
+  }
+
+  compareStringMappingTypes(a: ts.StringMappingType, b: ts.StringMappingType): boolean {
+    if (a.symbol !== b.symbol) {
+      return false;
+    }
+
+    if (!this.compare(a.type, b.type)) {
+      return false;
     }
 
     return true;
