@@ -1,12 +1,19 @@
 # Changelog
 
+## [6.0.0-beta.4] - 2026-01-01
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
+
+### Fixed
+
+- When checking type structure, compare template literal types and treat `NoInfer` as substitution type ([#649](https://github.com/tstyche/tstyche/pull/649), [#648](https://github.com/tstyche/tstyche/pull/648))
+
 ## [6.0.0-beta.3] - 2025-12-29
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
 
 ### Changed
 
-- **Breaking!** Remove CommonJS entry point ([#647](https://github.com/tstyche/tstyche/pull/647))
 - **Breaking!** Drop support for Node.js 20 ([#646](https://github.com/tstyche/tstyche/pull/646))
 - **Breaking!** Remove support for TSTyche plugins ([#645](https://github.com/tstyche/tstyche/pull/645))
 
@@ -25,7 +32,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ### Fixed
 
-- When checking type structure, compare substitution types, index types, `const` type parameters and indexed access types as well ([#642](https://github.com/tstyche/tstyche/pull/642), [#641](https://github.com/tstyche/tstyche/pull/641), [#640]((https://github.com/tstyche/tstyche/pull/640)), [#639]((https://github.com/tstyche/tstyche/pull/639)))
+- When checking type structure, compare substitution types, index types, `const` type parameters and indexed access types as well ([#642](https://github.com/tstyche/tstyche/pull/642), [#641](https://github.com/tstyche/tstyche/pull/641), [#640](https://github.com/tstyche/tstyche/pull/640), [#639](https://github.com/tstyche/tstyche/pull/639))
 
 ## [6.0.0-beta.0] - 2025-12-18
 
@@ -944,6 +951,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.4
 [6.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.3
 [6.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.2
 [6.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.1
