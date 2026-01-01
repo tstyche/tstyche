@@ -1,12 +1,8 @@
-import fs from "node:fs/promises";
-import { createRequire } from "node:module";
-import { fileURLToPath } from "node:url";
-import vm from "node:vm";
+import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { Path } from "#path";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
@@ -16,7 +12,6 @@ import { PackageService } from "./PackageService.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 export class Store {
-  static #compilerInstanceCache = new Map<string, typeof ts>();
   static #fetcher: Fetcher;
   static #lockService: LockService;
   static manifest: Manifest | undefined;
@@ -54,16 +49,10 @@ export class Store {
   }
 
   static async load(tag: string): Promise<typeof ts | undefined> {
-    let compilerInstance = Store.#compilerInstanceCache.get(tag);
-
-    if (compilerInstance != null) {
-      return compilerInstance;
-    }
-
-    let modulePath: string | undefined;
+    let resolvedModule: string | undefined;
 
     if (tag === "*" && environmentOptions.typescriptModule != null) {
-      modulePath = fileURLToPath(environmentOptions.typescriptModule);
+      resolvedModule = environmentOptions.typescriptModule;
     } else {
       await Store.open();
 
@@ -75,56 +64,18 @@ export class Store {
         return;
       }
 
-      compilerInstance = Store.#compilerInstanceCache.get(version);
-
-      if (compilerInstance != null) {
-        return compilerInstance;
-      }
-
       const packagePath = await Store.#packageService.ensure(version, Store.manifest);
 
       if (packagePath != null) {
-        modulePath = Path.join(packagePath, "lib", "typescript.js");
+        resolvedModule = pathToFileURL(`${packagePath}/lib/typescript.js`).toString();
       }
     }
 
-    if (modulePath != null) {
-      compilerInstance = await Store.#loadModule(modulePath);
-
-      Store.#compilerInstanceCache.set(tag, compilerInstance);
-      Store.#compilerInstanceCache.set(compilerInstance.version, compilerInstance);
+    if (resolvedModule != null) {
+      return (await import(resolvedModule)).default;
     }
 
-    return compilerInstance;
-  }
-
-  static async #loadModule(modulePath: string) {
-    const exports = {};
-    const module = { exports };
-
-    const packageConfigText = await fs.readFile(Path.resolve(modulePath, "../../package.json"), { encoding: "utf8" });
-    const { version: packageVersion } = JSON.parse(packageConfigText) as { version: string };
-
-    // project service was moved to 'typescript.js' file since TypeScript 5.3
-    if (!Version.isSatisfiedWith(packageVersion, "5.3")) {
-      modulePath = Path.resolve(modulePath, "../tsserverlibrary.js");
-    }
-
-    const sourceText = await fs.readFile(modulePath, { encoding: "utf8" });
-
-    const toExpose = ["isTypeIdenticalTo"];
-
-    const modifiedSourceText = sourceText.replace("return checker;", `return { ...checker, ${toExpose.join(", ")} };`);
-
-    const compiledWrapper = vm.compileFunction(
-      modifiedSourceText,
-      ["exports", "require", "module", "__filename", "__dirname"],
-      { filename: modulePath },
-    );
-
-    compiledWrapper(exports, createRequire(modulePath), module, modulePath, Path.dirname(modulePath));
-
-    return module.exports as typeof ts;
+    return;
   }
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {

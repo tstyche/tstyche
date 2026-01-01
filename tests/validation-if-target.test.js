@@ -13,7 +13,7 @@ await test("'// @tstyche if { target: <range> }' directive", async (t) => {
   });
 
   await t.test("when option value is not a string", async () => {
-    const testFileText = `// @tstyche if { target: ["5.2"] }
+    const testFileText = `// @tstyche if { target: ["5.6"] }
 
 import { expect, test } from "tstyche";
 
@@ -42,7 +42,7 @@ test("is string?", () => {
   });
 
   await t.test("when there are no supported TypeScript versions matching the range", async () => {
-    const testFileText = `// @tstyche if { target: ">=4.4 <4.7" }
+    const testFileText = `// @tstyche if { target: ">=5.0 <5.4" }
 
   import { expect, test } from "tstyche";
 
@@ -100,7 +100,7 @@ test("is string?", () => {
   });
 
   await t.test("when not supported version is specified within a union", async () => {
-    const testFileText = `// @tstyche if { target: ">=5.2 <=5.3 || new" }
+    const testFileText = `// @tstyche if { target: ">=5.4 <=5.6 || new" }
 
   import { expect, test } from "tstyche";
 
@@ -129,7 +129,7 @@ test("is string?", () => {
   });
 
   await t.test("when not valid range is specified", async () => {
-    const testFileText = `// @tstyche if { target: "5.2 >=5.4" }
+    const testFileText = `// @tstyche if { target: "5.4 >=5.6" }
 
   import { expect, test } from "tstyche";
 
@@ -158,7 +158,7 @@ test("is string?", () => {
   });
 
   await t.test("when not valid range is specified within a union", async () => {
-    const testFileText = `// @tstyche if { target: ">=5.2 || 5.3 >5.5" }
+    const testFileText = `// @tstyche if { target: ">=5.4 || 5.6 >5.8" }
 
   import { expect, test } from "tstyche";
 

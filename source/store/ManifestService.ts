@@ -61,7 +61,7 @@ export class ManifestService {
     const packageMetadata = (await response.json()) as PackageMetadata;
 
     for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
-      if (!tag.includes("-") && Version.isSatisfiedWith(tag, "5.0.2")) {
+      if (!tag.includes("-") && Version.isSatisfiedWith(tag, "5.4.2")) {
         versions.push(tag);
 
         packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };

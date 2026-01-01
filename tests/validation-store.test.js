@@ -22,7 +22,7 @@ await test("store", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
         ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org",
       },
@@ -45,7 +45,7 @@ await test("store", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
         ["TSTYCHE_TIMEOUT"]: "0.001",
       },
@@ -68,7 +68,7 @@ await test("store", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
         ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
       },
@@ -93,14 +93,14 @@ await test("store", async (t) => {
 
     await spawnTyche(fixtureUrl, ["--update"]);
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.1"], {
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.6"], {
       env: {
         ["TSTYCHE_TIMEOUT"]: "0.001",
       },
     });
 
     const expected = [
-      "Error: Failed to fetch the 'typescript@5.1.6' package.",
+      "Error: Failed to fetch the 'typescript@5.6.3' package.",
       "",
       "The request timeout of 0.001s was exceeded.",
       "",
@@ -138,15 +138,15 @@ await test("store", async (t) => {
   await t.test("warns if resolution of a tag may be outdated", async (t) => {
     const testCases = [
       {
-        target: "5.3.4",
+        target: "5.9.2",
         testCase: "when a patch version higher than 'latest' is requested",
       },
       {
-        target: "5.3",
+        target: "5.8",
         testCase: "when a minor version equal to 'latest' is requested",
       },
       {
-        target: "5.4",
+        target: "5.9",
         testCase: "when a minor version higher than 'latest' is requested",
       },
       {
@@ -177,17 +177,17 @@ await test("store", async (t) => {
         const storeManifest = {
           $version: "3",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
-          minorVersions: ["5.2", "5.3"],
+          minorVersions: ["5.7", "5.8"],
           npmRegistry: "https://registry.npmjs.org",
           resolutions: {
-            ["5.2"]: "5.2.2",
-            ["5.3"]: "5.3.3",
-            beta: "5.3.0-beta",
-            latest: "5.3.3",
-            next: "5.4.0-dev.20240112",
-            rc: "5.3.1-rc",
+            ["5.7"]: "5.7.2",
+            ["5.8"]: "5.8.3",
+            beta: "5.8.0-beta",
+            latest: "5.8.3",
+            next: "5.8.0-dev.20250218",
+            rc: "5.9.1-rc",
           },
-          versions: ["5.3.2", "5.3.3"],
+          versions: ["5.8.2", "5.8.3"],
         };
 
         await writeFixture(fixtureUrl, {
@@ -217,15 +217,15 @@ await test("store", async (t) => {
   await t.test("does not warn if resolution of a tag may be outdated", async (t) => {
     const testCases = [
       {
-        target: "5.3.3",
+        target: "5.9.3",
         testCase: "when a patch version equal to 'latest' is requested",
       },
       {
-        target: "5.2.2",
+        target: "5.8.2",
         testCase: "when a patch version lower than 'latest' is requested",
       },
       {
-        target: "5.2",
+        target: "5.8",
         testCase: "when a minor version lower than 'latest' is requested",
       },
     ];
@@ -234,14 +234,14 @@ await test("store", async (t) => {
       await t.test(testCase, async () => {
         const storeManifest = {
           $version: "3",
-          minorVersions: ["5.2", "5.3"],
+          minorVersions: ["5.8", "5.9"],
           npmRegistry: "https://registry.npmjs.org",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
           resolutions: {
-            ["5.2"]: "5.2.2",
-            ["5.3"]: "5.3.3",
+            ["5.8"]: "5.8.2",
+            ["5.9"]: "5.9.3",
           },
-          versions: ["5.2.2", "5.3.2", "5.3.3"],
+          versions: ["5.8.2", "5.9.2", "5.9.3"],
         };
 
         await writeFixture(fixtureUrl, {
@@ -267,37 +267,37 @@ await test("store", async (t) => {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
 
-      await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+      await spawnTyche(fixtureUrl, ["--target", "5.8.2"]);
 
       const storeManifest = {
         $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
-        minorVersions: ["5.2", "5.3"],
+        minorVersions: ["5.8", "5.9"],
         npmRegistry: "https://tstyche.org",
         packages: {
-          "5.2.2": {
+          "5.8.2": {
             integrity:
-              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
+              "sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.8.2.tgz",
           },
-          "5.3.3": {
+          "5.9.3": {
             integrity:
-              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+              "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz",
           },
         },
         resolutions: {
-          ["5.2"]: "5.2.2",
-          ["5.3"]: "5.3.3",
+          ["5.8"]: "5.8.2",
+          ["5.9"]: "5.9.3",
         },
-        versions: ["5.2.2", "5.3.2", "5.3.3"],
+        versions: ["5.8.2", "5.9.2", "5.9.3"],
       };
 
       await writeFixture(fixtureUrl, {
         [".store/store-manifest.json"]: JSON.stringify(storeManifest),
       });
 
-      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
         env: {
           ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org",
         },
@@ -312,37 +312,37 @@ await test("store", async (t) => {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
 
-      await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+      await spawnTyche(fixtureUrl, ["--target", "5.8.2"]);
 
       const storeManifest = {
         $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
-        minorVersions: ["5.2", "5.3"],
+        minorVersions: ["5.8", "5.9"],
         npmRegistry: "https://registry.npmjs.org",
         packages: {
-          "5.2.2": {
+          "5.8.2": {
             integrity:
-              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
+              "sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.8.2.tgz",
           },
-          "5.3.3": {
+          "5.9.3": {
             integrity:
-              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+              "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz",
           },
         },
         resolutions: {
-          ["5.2"]: "5.2.2",
-          ["5.3"]: "5.3.3",
+          ["5.8"]: "5.8.2",
+          ["5.9"]: "5.9.3",
         },
-        versions: ["5.2.2", "5.3.2", "5.3.3"],
+        versions: ["5.8.2", "5.9.2", "5.9.3"],
       };
 
       await writeFixture(fixtureUrl, {
         [".store/store-manifest.json"]: JSON.stringify(storeManifest),
       });
 
-      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
         env: {
           ["TSTYCHE_TIMEOUT"]: "0.001",
         },
@@ -357,37 +357,37 @@ await test("store", async (t) => {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
       });
 
-      await spawnTyche(fixtureUrl, ["--target", "5.2"]);
+      await spawnTyche(fixtureUrl, ["--target", "5.8.2"]);
 
       const storeManifest = {
         $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
-        minorVersions: ["5.2", "5.3"],
+        minorVersions: ["5.8", "5.9"],
         npmRegistry: "https://nothing.tstyche.org",
         packages: {
-          "5.2.2": {
+          "5.8.2": {
             integrity:
-              "sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz",
+              "sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.8.2.tgz",
           },
-          "5.3.3": {
+          "5.9.3": {
             integrity:
-              "sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==",
-            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz",
+              "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+            tarball: "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz",
           },
         },
         resolutions: {
-          ["5.2"]: "5.2.2",
-          ["5.3"]: "5.3.3",
+          ["5.8"]: "5.8.2",
+          ["5.9"]: "5.9.3",
         },
-        versions: ["5.2.2", "5.3.2", "5.3.3"],
+        versions: ["5.8.2", "5.9.2", "5.9.3"],
       };
 
       await writeFixture(fixtureUrl, {
         [".store/store-manifest.json"]: JSON.stringify(storeManifest),
       });
 
-      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.2"], {
+      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
         env: {
           ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
         },

@@ -12,9 +12,8 @@
     "noUnusedParameters": true,
     "strict": true,
 
-    "module": "node16",
-    "moduleResolution": "node16",
-    "rootDir": "./",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "types": ["node"],
 
     "noEmit": true,

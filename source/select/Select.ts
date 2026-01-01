@@ -30,14 +30,18 @@ export class Select {
       for (const entry of entries) {
         let entryMeta: FileSystemEntryMeta = entry;
 
-        if (entry.isSymbolicLink()) {
-          entryMeta = await fs.stat([targetPath, entry.name].join("/"));
-        }
+        try {
+          if (entry.isSymbolicLink()) {
+            entryMeta = await fs.stat([targetPath, entry.name].join("/"));
+          }
 
-        if (entryMeta.isDirectory()) {
-          directories.push(entry.name);
-        } else if (entryMeta.isFile()) {
-          files.push(entry.name);
+          if (entryMeta.isDirectory()) {
+            directories.push(entry.name);
+          } else if (entryMeta.isFile()) {
+            files.push(entry.name);
+          }
+        } catch {
+          // continue regardless of error
         }
       }
     } catch {

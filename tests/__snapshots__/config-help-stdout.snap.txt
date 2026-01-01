@@ -6,7 +6,7 @@ The TSTyche Type Test Runner  <<version>>
   tstyche query-params
   Only run the matching test file.
 
-  tstyche --target '5.3 || 5.5.2 || >=5.7'
+  tstyche --target '5.4 || 5.6.2 || >=5.8'
   Test against specific versions of TypeScript.
 
 
@@ -32,9 +32,6 @@ Command Line Options
 
   --only  string
   Only run tests with matching name.
-
-  --plugins  list of strings
-  The list of plugins to use.
 
   --prune
   Remove all installed versions of the 'typescript' package and exit.

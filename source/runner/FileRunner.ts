@@ -1,11 +1,9 @@
-import { existsSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { CollectService, type TestTree } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
-import type { TypeChecker } from "#expect";
 import type { FileLocation } from "#file";
 import { ProjectService } from "#project";
 import { FileResult } from "#result";
@@ -56,7 +54,7 @@ export class FileRunner {
     file: FileLocation,
     fileResult: FileResult,
     runModeFlags: RunModeFlags,
-  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; typeChecker: TypeChecker } | undefined> {
+  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts.Program } | undefined> {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
     const languageService = this.#projectService.getLanguageService(file.path);
@@ -71,10 +69,9 @@ export class FileRunner {
 
     const semanticDiagnostics = languageService?.getSemanticDiagnostics(file.path);
     const program = languageService?.getProgram();
-    const typeChecker = program?.getTypeChecker() as TypeChecker;
     const sourceFile = program?.getSourceFile(file.path);
 
-    if (!sourceFile) {
+    if (!program || !sourceFile) {
       return;
     }
 
@@ -110,16 +107,10 @@ export class FileRunner {
 
     this.#suppressedService.match(testTree);
 
-    return { runModeFlags, testTree, typeChecker };
+    return { runModeFlags, testTree, program };
   }
 
   async #run(file: FileLocation, fileResult: FileResult, cancellationToken: CancellationToken) {
-    if (!existsSync(file.path)) {
-      this.#onDiagnostics([Diagnostic.error(`Test file '${file.path}' does not exist.`)], fileResult);
-
-      return;
-    }
-
     const facts = await this.#resolveFileFacts(file, fileResult, RunModeFlags.None);
 
     if (!facts) {
@@ -136,17 +127,11 @@ export class FileRunner {
       this.#onDiagnostics(diagnostics, fileResult);
     };
 
-    const testTreeWalker = new TestTreeWalker(
-      this.#compiler,
-      facts.typeChecker,
-      this.#resolvedConfig,
-      onFileDiagnostics,
-      {
-        cancellationToken,
-        hasOnly: facts.testTree.hasOnly,
-        position: file.position,
-      },
-    );
+    const testTreeWalker = new TestTreeWalker(this.#compiler, facts.program, this.#resolvedConfig, onFileDiagnostics, {
+      cancellationToken,
+      hasOnly: facts.testTree.hasOnly,
+      position: file.position,
+    });
 
     await testTreeWalker.visit(facts.testTree.children, facts.runModeFlags, /* parentResult */ undefined);
   }

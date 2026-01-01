@@ -1,0 +1,10 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/project-jsdoc-support
+
+uses TypeScript <<version>>
+
+fail ./index.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Suppressed: 1 failed, 2 matched, 3 total
+Duration:   <<timestamp>>

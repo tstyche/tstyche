@@ -7,7 +7,7 @@ import type { Plugin, RollupOptions } from "rollup";
 import dts from "rollup-plugin-dts";
 import packageConfig from "../package.json" with { type: "json" };
 
-const output = { dir: "./build" };
+const output = { dir: "./dist" };
 const tsconfig = fileURLToPath(new URL("../source/tsconfig.json", import.meta.url));
 
 function clean(): Plugin {
@@ -97,7 +97,7 @@ const config: Array<RollupOptions> = [
   {
     input: "./source/types.ts",
     output: {
-      file: "./build/index.d.cts",
+      file: "./dist/index.d.cts",
       format: "cjs",
     },
     plugins: [
@@ -125,7 +125,7 @@ const config: Array<RollupOptions> = [
   {
     input: "./source/index.ts",
     output: {
-      file: "./build/index.cjs",
+      file: "./dist/index.cjs",
       format: "cjs",
     },
     plugins: [

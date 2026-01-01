@@ -46,9 +46,9 @@ export class ConfigDiagnosticText {
 
   static rangeUsage(): Array<string> {
     return [
-      "A range must be specified using an operator and a minor version: '>=5.5'.",
-      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
-      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
+      "A range must be specified using an operator and a minor version: '>=5.8'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.4 <5.6'.",
+      "Use the '||' operator to join ranges into a union: '>=5.4 <5.6 || 5.6.2 || >=5.8'.",
     ];
   }
 

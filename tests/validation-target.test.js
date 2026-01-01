@@ -37,10 +37,10 @@ await test("'--target' command line option", async (t) => {
   });
 
   await t.test("when there are no supported TypeScript versions matching the range", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=4.4 <4.7"']);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.0 <5.4"']);
 
     const expected = [
-      "Error: The specified range '>=4.4 <4.7' does not match any supported TypeScript versions.",
+      "Error: The specified range '>=5.0 <5.4' does not match any supported TypeScript versions.",
       "",
       "Use the '--list' command line option to inspect the list of supported versions.",
       "\n",
@@ -67,7 +67,7 @@ await test("'--target' command line option", async (t) => {
   });
 
   await t.test("when not supported version is specified within a union", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.2 <=5.3 || new"']);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.6 <=5.8 || new"']);
 
     const expected = [
       "Error: The TypeScript version 'new' is not supported.",
@@ -82,14 +82,14 @@ await test("'--target' command line option", async (t) => {
   });
 
   await t.test("when not valid range is specified", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.2 >=5.4"']);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"5.6 >=5.8"']);
 
     const expected = [
-      "Error: The specified range '5.2 >=5.4' is not valid.",
+      "Error: The specified range '5.6 >=5.8' is not valid.",
       "",
-      "A range must be specified using an operator and a minor version: '>=5.5'.",
-      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
-      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
+      "A range must be specified using an operator and a minor version: '>=5.8'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.4 <5.6'.",
+      "Use the '||' operator to join ranges into a union: '>=5.4 <5.6 || 5.6.2 || >=5.8'.",
       "\n",
     ].join("\n");
 
@@ -99,14 +99,14 @@ await test("'--target' command line option", async (t) => {
   });
 
   await t.test("when not valid range is specified within a union", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.2 || 5.3 >5.5"']);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '">=5.4 || 5.5 >5.7"']);
 
     const expected = [
-      "Error: The specified range '5.3 >5.5' is not valid.",
+      "Error: The specified range '5.5 >5.7' is not valid.",
       "",
-      "A range must be specified using an operator and a minor version: '>=5.5'.",
-      "To set an upper bound, use the intersection of two ranges: '>=5.0 <5.3'.",
-      "Use the '||' operator to join ranges into a union: '>=5.2 <=5.3 || 5.4.2 || >5.5'.",
+      "A range must be specified using an operator and a minor version: '>=5.8'.",
+      "To set an upper bound, use the intersection of two ranges: '>=5.4 <5.6'.",
+      "Use the '||' operator to join ranges into a union: '>=5.4 <5.6 || 5.6.2 || >=5.8'.",
       "\n",
     ].join("\n");
 
@@ -145,7 +145,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when there are no supported TypeScript versions matching the range", async () => {
     const config = {
-      target: ">=4.4 <4.7",
+      target: ">=5.0 <5.4",
       testFileMatch: ["examples/*.tst.*"],
     };
 
@@ -189,7 +189,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when not supported version is specified within a union", async () => {
     const config = {
-      target: ">=5.2 <=5.3 || new",
+      target: ">=5.6 <=5.8 || new",
       testFileMatch: ["examples/*.tst.*"],
     };
 
@@ -211,7 +211,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when not valid range is specified", async () => {
     const config = {
-      target: "5.2 >=5.4",
+      target: "5.6 >=5.8",
       testFileMatch: ["examples/*.tst.*"],
     };
 
@@ -233,7 +233,7 @@ await test("'target' configuration file option", async (t) => {
 
   await t.test("when not valid range is specified within a union", async () => {
     const config = {
-      target: ">=5.2 || 5.3 >5.5",
+      target: ">=5.4 || 5.5 >5.7",
       testFileMatch: ["examples/*.tst.*"],
     };
 

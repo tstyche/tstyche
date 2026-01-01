@@ -134,7 +134,7 @@ await test("'TSTYCHE_STORE_PATH' environment variable", async (t) => {
 
     assert.pathDoesNotExist(storeUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", "5.2.2"], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", "5.8.2"], {
       env: {
         ["TSTYCHE_STORE_PATH"]: "./dummy-store",
       },
@@ -146,7 +146,7 @@ await test("'TSTYCHE_STORE_PATH' environment variable", async (t) => {
 
     assert.equal(
       normalizeOutput(stdout),
-      "adds TypeScript 5.2.2 to <<basePath>>/tests/__fixtures__/.generated/config-storePath/dummy-store/typescript@5.2.2\n",
+      "adds TypeScript 5.8.2 to <<basePath>>/tests/__fixtures__/.generated/config-storePath/dummy-store/typescript@5.8.2\n",
     );
 
     assert.equal(exitCode, 0);
