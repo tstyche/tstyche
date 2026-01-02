@@ -88,3 +88,59 @@ test("mapped types", () => {
   expect<Flags>().type.toBe<{ enabled: boolean; featureA: boolean; featureB: boolean }>();
   expect<Flags>().type.toBe<{ enabled: boolean } & { featureA: boolean } & { featureB: boolean }>();
 });
+
+test("type parameter", () => {
+  type A = <T>() => T & {};
+  type B = <T>() => NonNullable<T>;
+
+  expect<A>().type.toBe<<T>() => T & {}>();
+  expect<A>().type.not.toBe<<T>() => T>();
+
+  expect<B>().type.toBe<<T>() => NonNullable<T>>();
+  expect<B>().type.not.toBe<<T>() => T>();
+
+  expect<A>().type.toBe<B>();
+  expect<B>().type.toBe<A>();
+});
+
+test("indexed access", () => {
+  type A = <T>(a: Partial<T>[keyof T] & {}) => void;
+  type B = <T>(a: NonNullable<Partial<T>[keyof T]>) => void;
+
+  expect<A>().type.toBe<<T>(a: Partial<T>[keyof T] & {}) => void>();
+  expect<A>().type.not.toBe<<T>(a: Partial<T>[keyof T]) => void>();
+
+  expect<B>().type.toBe<<T>(a: NonNullable<Partial<T>[keyof T]>) => void>();
+  expect<B>().type.not.toBe<<T>(a: Partial<T>[keyof T]) => void>();
+
+  expect<A>().type.toBe<B>();
+  expect<B>().type.toBe<A>();
+});
+
+test("conditional", () => {
+  type A = <T>() => Extract<T, { kind: "circle" }> & {};
+  type B = <T>() => NonNullable<Extract<T, { kind: "circle" }>>;
+
+  expect<A>().type.toBe<<T>() => Extract<T, { kind: "circle" }> & {}>();
+  expect<A>().type.not.toBe<<T>() => Extract<T, { kind: "circle" }>>();
+
+  expect<B>().type.toBe<<T>() => NonNullable<Extract<T, { kind: "circle" }>>>();
+  expect<B>().type.not.toBe<<T>() => Extract<T, { kind: "circle" }>>();
+
+  expect<A>().type.toBe<B>();
+  expect<B>().type.toBe<A>();
+});
+
+test("substitution", () => {
+  type A = <T>(a: NoInfer<T> & {}) => void;
+  type B = <T>(a: NonNullable<NoInfer<T>>) => void;
+
+  expect<A>().type.toBe<<T>(a: NoInfer<T> & {}) => void>();
+  expect<A>().type.not.toBe<<T>(a: NoInfer<T>) => void>();
+
+  expect<B>().type.toBe<<T>(a: NonNullable<NoInfer<T>>) => void>();
+  expect<B>().type.not.toBe<<T>(a: NoInfer<T>) => void>();
+
+  expect<A>().type.toBe<B>();
+  expect<B>().type.toBe<A>();
+});

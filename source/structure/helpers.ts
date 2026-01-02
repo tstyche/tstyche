@@ -1,5 +1,12 @@
 import type ts from "typescript";
 
+export function containsInstantiableType(target: ts.Type, compiler: typeof ts): boolean {
+  return (
+    "types" in target &&
+    (target as ts.IntersectionType).types.some((type) => type.flags & compiler.TypeFlags.InstantiableNonPrimitive)
+  );
+}
+
 export function getIndexSignatures(
   type: ts.Type,
   compiler: typeof ts,
