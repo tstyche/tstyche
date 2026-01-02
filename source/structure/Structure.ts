@@ -1,5 +1,6 @@
 import type ts from "typescript";
 import {
+  containsInstantiableType,
   getIndexSignatures,
   getSignatures,
   getTargetSymbol,
@@ -53,12 +54,23 @@ export class Structure {
     }
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
-      return (
-        ((a.flags & b.flags & this.#compiler.TypeFlags.Intersection) !== 0 &&
-          this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) ||
-        (((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) !== 0 &&
-          this.#seen.memoized(a, b, () => this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType)))
-      );
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Intersection) {
+        if (this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) {
+          return true;
+        }
+      }
+
+      if (containsInstantiableType(a, this.#compiler) || containsInstantiableType(b, this.#compiler)) {
+        return false;
+      }
+
+      if ((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) {
+        return this.#seen.memoized(a, b, () =>
+          this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType),
+        );
+      }
+
+      return false;
     }
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Union) {
