@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.0.0-beta.6] - 2026-01-03
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
+
+### Fixed
+
+- When checking type structure, handle intersections with instantiable types ([#651](https://github.com/tstyche/tstyche/pull/651))
+
 ## [6.0.0-beta.5] - 2026-01-02
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
@@ -959,6 +967,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.6
 [6.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.5
 [6.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.4
 [6.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.3
