@@ -15,7 +15,7 @@ TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `t
 
 If you are used to test JavaScript, a simple type test file should look familiar:
 
-```ts twoslash
+```ts
 import { expect, test } from "tstyche";
 
 function isSameLength<T extends { length: number }>(a: T, b: T) {
@@ -39,7 +39,7 @@ To organize, debug and plan tests TSTyche has:
 
 The `expect`-style assertions can check either the inferred type of an expression (as in the example above) or the type directly:
 
-```ts twoslash
+```ts
 import { expect } from "tstyche";
 
 type AsyncProps<T> = {
@@ -76,8 +76,6 @@ And there is even more what TSTyche can do:
 - check messages of errors silenced by `// @ts-expect-error`,
 - generate type tests from a data table,
 - run tests in watch mode.
-
-For the details, see the [Walkthrough](./get-started/walkthrough.mdx) page.
 
 ## Documentation
 
