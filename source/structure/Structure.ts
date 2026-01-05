@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import {
-  containsInstantiableType,
+  containsInstantiable,
   getIndexSignatures,
   getSignatures,
   getTargetSymbol,
@@ -60,7 +60,7 @@ export class Structure {
         }
       }
 
-      if (containsInstantiableType(a, this.#compiler) || containsInstantiableType(b, this.#compiler)) {
+      if (containsInstantiable(a, this.#compiler) || containsInstantiable(b, this.#compiler)) {
         return false;
       }
 

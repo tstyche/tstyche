@@ -30,6 +30,13 @@ const samples = [
   "string | number",
   "string | Array<string>",
   "string | Array<{ a: string }>",
+  "{ a: string } | { b: string }",
+  "{ a: string } | { b: number }",
+
+  // intersections
+
+  "{ a: string } & { b: string }",
+  "{ a: string } & { b: number }",
 
   // objects
 
@@ -65,6 +72,15 @@ const samples = [
   "Promise<{ a: string }>",
   "Promise<Array<{ a: string }>>",
   "Promise<ReadonlyArray<{ a: string }>>",
+
+  // signatures
+
+  "() => void",
+  "<T>() => T",
+  "<T>(a: T) => T",
+  "<T>(this: void) => T",
+  "<const T>(a: T) => T",
+  "<T>(a: NoInfer<T>) => T",
 ];
 
 let testText = `import { expect, test } from "tstyche";
