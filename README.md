@@ -9,7 +9,7 @@ Everything You Need for Type Testing.
 
 ---
 
-TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `test()` helpers, `expect`-style assertions and a mighty test runner.
+TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `test()` helpers, `expect` style assertions and a mighty test runner.
 
 ## Helpers
 
@@ -37,7 +37,7 @@ To organize, debug and plan tests TSTyche has:
 
 ## Assertions
 
-The `expect`-style assertions can check either the inferred type of an expression (as in the example above) or the type directly:
+The `expect` style assertions can check either the inferred type of an expression (as in the example above) or a type directly:
 
 ```ts
 import { expect } from "tstyche";
