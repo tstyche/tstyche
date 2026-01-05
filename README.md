@@ -9,13 +9,13 @@ Everything You Need for Type Testing.
 
 ---
 
-TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `test()` helpers, `expect` style assertions and a mighty test runner.
+TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `test()` helpers, `expect`-style assertions and a mighty test runner.
 
 ## Helpers
 
 If you are used to test JavaScript, a simple type test file should look familiar:
 
-```ts
+```ts twoslash
 import { expect, test } from "tstyche";
 
 function isSameLength<T extends { length: number }>(a: T, b: T) {
@@ -37,35 +37,26 @@ To organize, debug and plan tests TSTyche has:
 
 ## Assertions
 
-The assertions can be used to write type tests (like in the above example) or mixed in your unit tests:
+The `expect`-style assertions can check either the inferred type of an expression (as in the example above) or the type directly:
 
-```ts
-import assert from "node:assert";
-import test from "node:test";
-import * as tstyche from "tstyche";
+```ts twoslash
+import { expect } from "tstyche";
 
-function toMilliseconds(value: number) {
-  if (typeof value === "number" && !Number.isNaN(value)) {
-    return value * 1000;
-  }
+type AsyncProps<T> = {
+  [K in keyof T]+?: Promise<T[K]> | T[K];
+};
 
-  throw new Error("Not a number");
-}
+type WithLoading<T> = T & { loading: boolean };
 
-test("toMilliseconds", () => {
-  const sample = toMilliseconds(10);
-
-  assert.equal(sample, 10_000);
-  tstyche.expect(sample).type.toBe<number>();
-
-  // Will pass as a type test and not throw at runtime
-  tstyche.expect(toMilliseconds).type.not.toBeCallableWith("20");
-});
+expect<WithLoading<AsyncProps<{ id: string }>>>().type.toBe<{
+  id?: Promise<string> | string;
+  loading: boolean;
+}>();
 ```
 
 Here is the list of all matchers:
 
-- `.toBe()`, `.toBeAssignableFrom()`, `.toBeAssignableTo()` compare types or types of expression,
+- `.toBe()`, `.toBeAssignableFrom()`, `.toBeAssignableTo()` compare types or type of expressions,
 - `.toAcceptProps()` checks the type of JSX component props,
 - `.toBeApplicable` ensures that the decorator function can be applied,
 - `.toBeCallableWith()` checks whether a function is callable with the given arguments,
@@ -80,7 +71,13 @@ The `tstyche` command is the heart of TSTyche. For example, it can select test f
 tstyche query-params --only multiple --target '>=5.6'
 ```
 
-This simple! (And it has watch mode too.)
+And there is even more what TSTyche can do:
+
+- check messages of errors silenced by `// @ts-expect-error`,
+- generate type tests from a data table,
+- run tests in watch mode.
+
+For the details, see the [Walkthrough](./get-started/walkthrough.mdx) page.
 
 ## Documentation
 
