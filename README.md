@@ -77,8 +77,6 @@ And there is even more what TSTyche can do:
 - generate type tests from a data table,
 - run tests in watch mode.
 
-For the details, see the [Walkthrough](./get-started/walkthrough.mdx) page.
-
 ## Documentation
 
 Visit [tstyche.org](https://tstyche.org) to view the full documentation.
