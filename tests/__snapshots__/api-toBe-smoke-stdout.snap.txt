@@ -115,13 +115,9 @@ pass ./__typetests__/smoke.tst.ts
   + is NOT <const T>(a: T) => T?
   + is <T>(a: NoInfer<T>) => T?
   + is NOT <T>(a: NoInfer<T>) => T?
-  + is <T>() => keyof T?
-  + is NOT <T>() => keyof T?
-  + is <T>() => keyof T & {}?
-  + is NOT <T>() => keyof T & {}?
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      116 passed, 116 total
-Assertions: 3364 passed, 3364 total
+Tests:      112 passed, 112 total
+Assertions: 3136 passed, 3136 total
 Duration:   <<timestamp>>
