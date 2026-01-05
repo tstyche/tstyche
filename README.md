@@ -13,7 +13,7 @@ TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `t
 
 ## Helpers
 
-If you are used to test JavaScript, a simple type test file should look familiar:
+If you are used to testing, a simple type test file should look familiar:
 
 ```ts
 import { expect, test } from "tstyche";
@@ -30,7 +30,7 @@ test("isSameLength", () => {
 });
 ```
 
-To organize, debug and plan tests TSTyche has:
+To group and organize tests, TSTyche has:
 
 - `test()`, `it()` and `describe()` helpers,
 - with `.only`, `.skip` and `.todo` run mode flags.
