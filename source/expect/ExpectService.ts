@@ -12,6 +12,7 @@ import { ToBeAssignableFrom } from "./ToBeAssignableFrom.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToBeConstructableWith } from "./ToBeConstructableWith.js";
+import { ToBeInstantiableWith } from "./ToBeInstantiableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult } from "./types.js";
@@ -28,6 +29,7 @@ export class ExpectService {
   private toBeAssignableTo: ToBeAssignableTo;
   private toBeCallableWith: ToBeCallableWith;
   private toBeConstructableWith: ToBeConstructableWith;
+  private toBeInstantiableWith: ToBeInstantiableWith;
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
@@ -43,6 +45,7 @@ export class ExpectService {
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeCallableWith = new ToBeCallableWith(compiler);
     this.toBeConstructableWith = new ToBeConstructableWith(compiler);
+    this.toBeInstantiableWith = new ToBeInstantiableWith(compiler);
     this.toHaveProperty = new ToHaveProperty(compiler);
     this.toRaiseError = new ToRaiseError(compiler);
   }
@@ -112,6 +115,25 @@ export class ExpectService {
       case "toRaiseError":
         // biome-ignore lint/style/noNonNullAssertion: collect logic makes sure that 'target' is defined
         return this[matcherNameText].match(matchWorker, assertionNode.source[0], assertionNode.target!, onDiagnostics);
+
+      case "toBeInstantiableWith": {
+        if (!assertionNode.target?.[0]) {
+          if (
+            !argumentIsProvided("Target", assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)
+          ) {
+            return;
+          }
+
+          return;
+        }
+
+        return this.toBeInstantiableWith.match(
+          matchWorker,
+          assertionNode.source[0],
+          assertionNode.target[0],
+          onDiagnostics,
+        );
+      }
 
       case "toHaveProperty":
         if (!argumentIsProvided("key", assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)) {

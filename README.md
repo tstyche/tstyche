@@ -40,18 +40,20 @@ To organize, debug and plan tests TSTyche has:
 The `expect`-style assertions can check either the inferred type of an expression (as in the example above) or the type directly:
 
 ```ts twoslash
-import { expect } from "tstyche";
+import { type _, expect } from "tstyche";
 
 type AsyncProps<T> = {
   [K in keyof T]+?: Promise<T[K]> | T[K];
 };
 
-type WithLoading<T> = T & { loading: boolean };
+type WithLoading<T extends object> = T & { loading: boolean };
 
 expect<WithLoading<AsyncProps<{ id: string }>>>().type.toBe<{
   id?: Promise<string> | string;
   loading: boolean;
 }>();
+
+expect<WithLoading<_>>().type.not.toBeInstantiableWith<[string]>();
 ```
 
 Here is the list of all matchers:

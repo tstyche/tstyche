@@ -22,22 +22,25 @@ export abstract class AbilityMatcherBase {
     this.compiler = compiler;
   }
 
-  #resolveTargetText(nodes: ts.NodeArray<ArgumentNode>) {
-    if (nodes.length === 0) {
+  #resolveTargetText(nodes: ArgumentNode | ts.NodeArray<ArgumentNode>) {
+    if (Array.isArray(nodes) && nodes.length === 0) {
       return "without arguments";
     }
 
-    if (nodes.length === 1 && nodes[0]?.kind === this.compiler.SyntaxKind.SpreadElement) {
+    if (
+      Array.isArray(nodes) &&
+      (nodes.length > 1 || (nodes.length === 1 && nodes[0]?.kind === this.compiler.SyntaxKind.SpreadElement))
+    ) {
       return "with the given arguments";
     }
 
-    return `with the given argument${nodes.length === 1 ? "" : "s"}`;
+    return `with the given argument`;
   }
 
-  explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
+  explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode | ts.NodeArray<ArgumentNode>) {
     const isExpression = nodeBelongsToArgumentList(this.compiler, sourceNode);
 
-    const targetText = this.#resolveTargetText(targetNodes);
+    const targetText = this.#resolveTargetText(targetNode);
 
     const diagnostics: Array<Diagnostic> = [];
 
@@ -47,7 +50,7 @@ export abstract class AbilityMatcherBase {
 
         let origin: DiagnosticOrigin;
 
-        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNodes)) {
+        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNode)) {
           origin = new DiagnosticOrigin(
             diagnostic.start,
             getTextSpanEnd(diagnostic),
@@ -78,7 +81,7 @@ export abstract class AbilityMatcherBase {
   abstract match(
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
-    targetNodes: ts.NodeArray<ArgumentNode>,
+    targetNodes: ArgumentNode | ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined;
 }
