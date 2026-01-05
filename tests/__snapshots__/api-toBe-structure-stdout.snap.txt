@@ -13,13 +13,14 @@ pass ./__typetests__/named-types.tst.ts
 pass ./__typetests__/objects.tst.ts
 pass ./__typetests__/predicates.tst.ts
 pass ./__typetests__/references.tst.ts
+pass ./__typetests__/string-mapping.tst.ts
 pass ./__typetests__/substitution.tst.ts
 pass ./__typetests__/template-literals.tst.ts
 pass ./__typetests__/tuples.tst.ts
 pass ./__typetests__/unions.tst.ts
 
 Targets:    1 passed, 1 total
-Test files: 15 passed, 15 total
-Tests:      90 passed, 90 total
-Assertions: 604 passed, 604 total
+Test files: 16 passed, 16 total
+Tests:      98 passed, 98 total
+Assertions: 652 passed, 652 total
 Duration:   <<timestamp>>

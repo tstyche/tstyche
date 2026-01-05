@@ -1,7 +1,10 @@
 import type ts from "typescript";
 
-export function ensureArray<T>(input: ReadonlyArray<T> | undefined): ReadonlyArray<T> {
-  return input ?? [];
+export function containsInstantiable(target: ts.Type, compiler: typeof ts): boolean {
+  return (
+    "types" in target &&
+    (target as ts.Type & { types: Array<ts.Type> }).types.some((type) => type.flags & compiler.TypeFlags.Instantiable)
+  );
 }
 
 export function getIndexSignatures(
@@ -29,6 +32,14 @@ export function getSignatures(
   return typeChecker.getSignaturesOfType(type, kind);
 }
 
+export function getThisTypeOfSignature(signature: ts.Signature, typeChecker: ts.TypeChecker): ts.Type | undefined {
+  return signature.thisParameter && typeChecker.getTypeOfSymbol(signature.thisParameter);
+}
+
+export function getTypeParametersOfSignature(signature: ts.Signature): ReadonlyArray<ts.TypeParameter> {
+  return signature.typeParameters ?? [];
+}
+
 export function getTypeParameterModifiers(typeParameter: ts.TypeParameter, compiler: typeof ts): ts.ModifierFlags {
   if (!typeParameter.symbol.declarations) {
     return compiler.ModifierFlags.None;
@@ -43,7 +54,7 @@ export function getTypeParameterModifiers(typeParameter: ts.TypeParameter, compi
   );
 }
 
-export function getTargetSymbol(symbol: ts.Symbol, compiler: typeof ts) {
+export function getTargetSymbol(symbol: ts.Symbol, compiler: typeof ts): ts.Symbol | undefined {
   return isCheckFlagSet(symbol, compiler.CheckFlags.Instantiated, compiler)
     ? (symbol as ts.TransientSymbol).links.target
     : symbol;
@@ -55,8 +66,4 @@ export function isCheckFlagSet(symbol: ts.Symbol, flag: ts.CheckFlags, compiler:
 
 export function isSymbolFromDefaultLibrary(symbol: ts.Symbol, program: ts.Program): boolean {
   return !!symbol.declarations?.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile()));
-}
-
-export function length(array: ReadonlyArray<unknown> | undefined): number {
-  return array?.length ?? 0;
 }

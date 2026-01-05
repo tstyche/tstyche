@@ -1,12 +1,13 @@
 import type ts from "typescript";
 import {
-  ensureArray,
+  containsInstantiable,
   getIndexSignatures,
   getSignatures,
   getTargetSymbol,
+  getThisTypeOfSignature,
   getTypeParameterModifiers,
+  getTypeParametersOfSignature,
   isSymbolFromDefaultLibrary,
-  length,
 } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
@@ -34,13 +35,6 @@ export class Structure {
     return !a && !b;
   }
 
-  #compareTypeOfSymbol(a: ts.Symbol | undefined, b: ts.Symbol | undefined) {
-    const aTypeOfSymbol = a && this.#typeChecker.getTypeOfSymbol(a);
-    const bTypeOfSymbol = b && this.#typeChecker.getTypeOfSymbol(b);
-
-    return this.#compareMaybeNullish(aTypeOfSymbol, bTypeOfSymbol);
-  }
-
   compare(a: ts.Type, b: ts.Type): boolean {
     a = this.#normalize(a);
     b = this.#normalize(b);
@@ -60,12 +54,23 @@ export class Structure {
     }
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
-      return (
-        ((a.flags & b.flags & this.#compiler.TypeFlags.Intersection) !== 0 &&
-          this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) ||
-        (((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) !== 0 &&
-          this.#seen.memoized(a, b, () => this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType)))
-      );
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Intersection) {
+        if (this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) {
+          return true;
+        }
+      }
+
+      if (containsInstantiable(a, this.#compiler) || containsInstantiable(b, this.#compiler)) {
+        return false;
+      }
+
+      if ((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) {
+        return this.#seen.memoized(a, b, () =>
+          this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType),
+        );
+      }
+
+      return false;
     }
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Union) {
@@ -132,6 +137,14 @@ export class Structure {
       return false;
     }
 
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.StringMapping) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.StringMapping) {
+        return this.compareStringMappingTypes(a as ts.StringMappingType, b as ts.StringMappingType);
+      }
+
+      return false;
+    }
+
     return false;
   }
 
@@ -176,7 +189,7 @@ export class Structure {
       return this.compareStructuredTypes(a, b);
     }
 
-    if (!this.#compareTypeOfSymbol(a.symbol, b.symbol)) {
+    if (a.symbol !== b.symbol) {
       if (isSymbolFromDefaultLibrary(a.symbol, this.#program) || isSymbolFromDefaultLibrary(b.symbol, this.#program)) {
         return false;
       }
@@ -184,13 +197,16 @@ export class Structure {
       return;
     }
 
-    if (length(a.typeArguments) !== length(b.typeArguments)) {
+    const aTypeArguments = this.#typeChecker.getTypeArguments(a);
+    const bTypeArguments = this.#typeChecker.getTypeArguments(b);
+
+    if (aTypeArguments.length !== bTypeArguments.length) {
       return false;
     }
 
-    return ensureArray(a.typeArguments).every((type, i) =>
+    return aTypeArguments.every((type, i) =>
       // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      this.compare(type, ensureArray(b.typeArguments)[i]!),
+      this.compare(type, bTypeArguments[i]!),
     );
   }
 
@@ -202,7 +218,7 @@ export class Structure {
     const aTypeArguments = this.#typeChecker.getTypeArguments(a);
     const bTypeArguments = this.#typeChecker.getTypeArguments(b);
 
-    if (length(aTypeArguments) !== length(bTypeArguments)) {
+    if (aTypeArguments.length !== bTypeArguments.length) {
       return false;
     }
 
@@ -314,20 +330,26 @@ export class Structure {
   }
 
   #compareSignature(a: ts.Signature, b: ts.Signature): boolean {
-    if (length(a.typeParameters) !== length(b.typeParameters)) {
+    const aTypeParameters = getTypeParametersOfSignature(a);
+    const bTypeParameters = getTypeParametersOfSignature(b);
+
+    if (aTypeParameters.length !== bTypeParameters.length) {
       return false;
     }
 
-    if (a.typeParameters != null && b.typeParameters != null) {
-      for (let i = 0; i < a.typeParameters.length; i++) {
-        // biome-ignore lint/style/noNonNullAssertion: length was checked above
-        if (!this.compareTypeParameters(a.typeParameters[i]!, b.typeParameters[i]!)) {
-          return false;
-        }
+    for (let i = 0; i < aTypeParameters.length; i++) {
+      // biome-ignore lint/style/noNonNullAssertion: length was checked above
+      if (!this.compareTypeParameters(aTypeParameters[i]!, bTypeParameters[i]!)) {
+        return false;
       }
     }
 
-    if (!this.#compareTypeOfSymbol(a.thisParameter, b.thisParameter)) {
+    if (
+      !this.#compareMaybeNullish(
+        getThisTypeOfSignature(a, this.#typeChecker),
+        getThisTypeOfSignature(b, this.#typeChecker),
+      )
+    ) {
       return false;
     }
 
@@ -504,6 +526,18 @@ export class Structure {
       if (!this.#compareMaybeNullish(a.types[i], b.types[i])) {
         return false;
       }
+    }
+
+    return true;
+  }
+
+  compareStringMappingTypes(a: ts.StringMappingType, b: ts.StringMappingType): boolean {
+    if (a.symbol !== b.symbol) {
+      return false;
+    }
+
+    if (!this.compare(a.type, b.type)) {
+      return false;
     }
 
     return true;

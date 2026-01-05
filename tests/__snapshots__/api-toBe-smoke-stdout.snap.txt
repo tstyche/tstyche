@@ -49,6 +49,14 @@ pass ./__typetests__/smoke.tst.ts
   + is NOT string | Array<string>?
   + is string | Array<{ a: string }>?
   + is NOT string | Array<{ a: string }>?
+  + is { a: string } | { b: string }?
+  + is NOT { a: string } | { b: string }?
+  + is { a: string } | { b: number }?
+  + is NOT { a: string } | { b: number }?
+  + is { a: string } & { b: string }?
+  + is NOT { a: string } & { b: string }?
+  + is { a: string } & { b: number }?
+  + is NOT { a: string } & { b: number }?
   + is { a: string }?
   + is NOT { a: string }?
   + is { a?: string }?
@@ -95,9 +103,21 @@ pass ./__typetests__/smoke.tst.ts
   + is NOT Promise<Array<{ a: string }>>?
   + is Promise<ReadonlyArray<{ a: string }>>?
   + is NOT Promise<ReadonlyArray<{ a: string }>>?
+  + is () => void?
+  + is NOT () => void?
+  + is <T>() => T?
+  + is NOT <T>() => T?
+  + is <T>(a: T) => T?
+  + is NOT <T>(a: T) => T?
+  + is <T>(this: void) => T?
+  + is NOT <T>(this: void) => T?
+  + is <const T>(a: T) => T?
+  + is NOT <const T>(a: T) => T?
+  + is <T>(a: NoInfer<T>) => T?
+  + is NOT <T>(a: NoInfer<T>) => T?
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      92 passed, 92 total
-Assertions: 2116 passed, 2116 total
+Tests:      112 passed, 112 total
+Assertions: 3136 passed, 3136 total
 Duration:   <<timestamp>>
