@@ -5,20 +5,19 @@
     "typescript"
   ],
   "files": [
-    "*.js",
     "*.json",
     "*.md",
-    "benchmarks/**/*",
     "examples/**/*",
     "schema/**/*",
     "scripts/**/*",
     "source/**/*",
-    "tests/**/*"
+    "tests/**/*",
+    "typetests/**/*"
   ],
   "words": [
     "codacy",
     "findup",
-    "Freshable",
+    "freshable",
     "jsxs",
     "monocart",
     "tsserverlibrary",
