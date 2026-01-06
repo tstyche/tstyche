@@ -550,9 +550,9 @@ export class Structure {
 
     if (type.flags & this.#compiler.TypeFlags.UnionOrIntersection) {
       // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
-      const candidateType = this.#normalize((type as ts.UnionOrIntersectionType).types[0]!);
+      const candidateType = (type as ts.UnionOrIntersectionType).types[0]!;
 
-      if ((type as ts.UnionOrIntersectionType).types.every((t) => this.compare(this.#normalize(t), candidateType))) {
+      if ((type as ts.UnionOrIntersectionType).types.every((t) => this.compare(t, candidateType))) {
         return candidateType;
       }
     }
