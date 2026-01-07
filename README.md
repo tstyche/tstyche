@@ -13,7 +13,7 @@ TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `t
 
 ## Helpers
 
-If you are used to testing, a simple type test file should look familiar:
+If you are used to testing, a type test should look familiar:
 
 ```ts
 import { expect, test } from "tstyche";
