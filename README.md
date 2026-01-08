@@ -43,13 +43,13 @@ The `expect` style assertions can check either the inferred type of an expressio
 import { expect } from "tstyche";
 
 type AsyncProps<T> = {
-  [K in keyof T]+?: Promise<T[K]> | T[K];
+  [K in keyof T]+?: T[K] | Promise<T[K]>;
 };
 
 type WithLoading<T> = T & { loading: boolean };
 
-expect<WithLoading<AsyncProps<{ id: string }>>>().type.toBe<{
-  id?: Promise<string> | string;
+expect<WithLoading<AsyncProps<{ query: string }>>>().type.toBe<{
+  query?: string | Promise<string>;
   loading: boolean;
 }>();
 ```
@@ -77,6 +77,12 @@ And there is even more what TSTyche can do:
 - generate type tests from a data table,
 - run tests in watch mode.
 
+## Try It Out
+
+You can run TSTyche online on StackBlitz:
+
+[![Open in StackBlitz][starter-badge]][starter-url]
+
 ## Documentation
 
 Visit [tstyche.org](https://tstyche.org) to view the full documentation.
@@ -93,3 +99,5 @@ Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 [install-size-url]: https://packagephobia.com/result?p=tstyche
 [coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
 [coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
+[starter-badge]: https://developer.stackblitz.com/img/open_in_stackblitz.svg
+[starter-url]: https://stackblitz.com/fork/github/tstyche/tstyche-starter?file=README.md&title=TSTyche%20Starter%20Project&view=editor
