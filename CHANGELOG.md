@@ -1,11 +1,13 @@
 # Changelog
 
-## [6.0.0] - 2026-01-09
+## [6.0.0] - 2026-01-08
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
 
 ### Changed
 
+- **Breaking!** Drop support for Node.js 20 ([#646](https://github.com/tstyche/tstyche/pull/646))
+- **Breaking!** Remove support for TSTyche plugins ([#645](https://github.com/tstyche/tstyche/pull/645))
 - **Breaking!** Drop support for TypeScript `<=5.3` ([#644](https://github.com/tstyche/tstyche/pull/644))
 - **Breaking!** Remove legacy implementation of the `.toBe()` matcher ([#643](https://github.com/tstyche/tstyche/pull/643))
 - **Breaking!** Replace the `.toBe()` matcher logic with structure comparison ([#636](https://github.com/tstyche/tstyche/pull/636), [#638](https://github.com/tstyche/tstyche/pull/638), [#639](https://github.com/tstyche/tstyche/pull/639), [#640](https://github.com/tstyche/tstyche/pull/640), [#641](https://github.com/tstyche/tstyche/pull/641), [#642](https://github.com/tstyche/tstyche/pull/642), [#648](https://github.com/tstyche/tstyche/pull/648), [#649](https://github.com/tstyche/tstyche/pull/649), [#650](https://github.com/tstyche/tstyche/pull/650), [#651](https://github.com/tstyche/tstyche/pull/651), [#652](https://github.com/tstyche/tstyche/pull/652))
