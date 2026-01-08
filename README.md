@@ -65,21 +65,21 @@ Here is the list of all matchers:
 
 ## Runner
 
-The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and to run the tests against specific versions of TypeScript:
+The `tstyche` command is the heart of TSTyche. It allows you to select test files by path, filter tests by name and run them against specific versions of TypeScript:
 
 ```shell
 tstyche query-params --only multiple --target '>=5.6'
 ```
 
-And there is even more what TSTyche can do:
+It is that simple! Actually, TSTyche does even more:
 
-- check messages of errors silenced by `// @ts-expect-error`,
-- generate type tests from a data table,
-- run tests in watch mode.
+- checks messages of errors suppressed by `// @ts-expect-error`,
+- generates type tests from a data table,
+- runs tests in watch mode.
 
 ## Try It Out
 
-You can run TSTyche online on StackBlitz:
+Try TSTyche online on StackBlitz:
 
 [![Open in StackBlitz][starter-badge]][starter-url]
 
