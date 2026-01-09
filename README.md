@@ -100,4 +100,4 @@ Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 [coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
 [coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
 [starter-badge]: https://developer.stackblitz.com/img/open_in_stackblitz.svg
-[starter-url]: https://stackblitz.com/fork/github/tstyche/tstyche-starter?file=README.md&title=TSTyche%20Starter%20Project&view=editor
+[starter-url]: https://tstyche.org/new
