@@ -17,6 +17,13 @@ test("objects", () => {
 
   expect<{ a: string }>().type.toBe<{ a: string } | { a: string }>();
   expect<{ a: string }>().type.not.toBe<{ a: string } | { b: string }>();
+
+  expect<{ a: string } | { a: string; b: number } | { a: string; b: number }>().type.toBe<
+    { a: string } | { a: string; b: number }
+  >();
+  expect<{ a: string } | { a: string; b: number }>().type.toBe<
+    { a: string } | { a: string; b: number } | { a: string; b: number }
+  >();
 });
 
 test("call signatures", () => {
