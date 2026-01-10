@@ -63,7 +63,3 @@ export function getTargetSymbol(symbol: ts.Symbol, compiler: typeof ts): ts.Symb
 export function isCheckFlagSet(symbol: ts.Symbol, flag: ts.CheckFlags, compiler: typeof ts): boolean {
   return !!(symbol.flags & compiler.SymbolFlags.Transient && (symbol as ts.TransientSymbol).links.checkFlags & flag);
 }
-
-export function isSymbolFromDefaultLibrary(symbol: ts.Symbol, program: ts.Program): boolean {
-  return !!symbol.declarations?.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile()));
-}

@@ -48,8 +48,10 @@ const samples = [
   // arrays
 
   "Array<string>",
+  "Array<Array<string>>",
   "number[]",
   "ReadonlyArray<string>",
+  "ReadonlyArray<ReadonlyArray<string>>",
   "Array<{ a: string }>",
   "{ a: number }[]",
   "ReadonlyArray<{ a: string }>",
