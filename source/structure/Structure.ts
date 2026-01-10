@@ -8,7 +8,6 @@ import {
   getThisTypeOfSignature,
   getTypeParameterModifiers,
   getTypeParametersOfSignature,
-  isSymbolFromDefaultLibrary,
 } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
@@ -16,7 +15,6 @@ import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./prope
 export class Structure {
   #compiler: typeof ts;
   #compilerOptions: ts.CompilerOptions;
-  #program: ts.Program;
   #typeChecker: ts.TypeChecker;
 
   #deduplicateCache = new WeakMap<ts.Type, Array<ts.Type>>();
@@ -25,7 +23,6 @@ export class Structure {
   constructor(compiler: typeof ts, program: ts.Program) {
     this.#compiler = compiler;
     this.#compilerOptions = program.getCompilerOptions();
-    this.#program = program;
     this.#typeChecker = program.getTypeChecker();
   }
 
@@ -172,17 +169,15 @@ export class Structure {
 
   compareObjects(a: ts.ObjectType, b: ts.ObjectType): boolean {
     if (a.objectFlags & b.objectFlags & this.#compiler.ObjectFlags.Reference) {
-      const isSame = this.compareTypeReferences(a as ts.TypeReference, b as ts.TypeReference);
-
-      if (isSame != null) {
-        return isSame;
+      if (!((a.objectFlags | b.objectFlags) & this.#compiler.ObjectFlags.ClassOrInterface)) {
+        return this.compareTypeReferences(a as ts.TypeReference, b as ts.TypeReference);
       }
     }
 
     return this.compareStructuredTypes(a, b);
   }
 
-  compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean | undefined {
+  compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean {
     if ((a.target.objectFlags | b.target.objectFlags) & this.#compiler.ObjectFlags.Tuple) {
       if (a.target.objectFlags & b.target.objectFlags & this.#compiler.ObjectFlags.Tuple) {
         return this.compareTuples(a as ts.TupleTypeReference, b as ts.TupleTypeReference);
@@ -191,16 +186,8 @@ export class Structure {
       return false;
     }
 
-    if ((a.objectFlags | b.objectFlags) & this.#compiler.ObjectFlags.Class) {
+    if (!this.compare(a.target, b.target)) {
       return this.compareStructuredTypes(a, b);
-    }
-
-    if (a.symbol !== b.symbol) {
-      if (isSymbolFromDefaultLibrary(a.symbol, this.#program) || isSymbolFromDefaultLibrary(b.symbol, this.#program)) {
-        return false;
-      }
-
-      return;
     }
 
     const aTypeArguments = this.#typeChecker.getTypeArguments(a);
@@ -210,10 +197,14 @@ export class Structure {
       return false;
     }
 
-    return aTypeArguments.every((type, i) =>
+    for (let i = 0; i < aTypeArguments.length; i++) {
       // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      this.compare(type, bTypeArguments[i]!),
-    );
+      if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {

@@ -67,10 +67,14 @@ pass ./__typetests__/smoke.tst.ts
   + is NOT { readonly a?: string }?
   + is Array<string>?
   + is NOT Array<string>?
+  + is Array<Array<string>>?
+  + is NOT Array<Array<string>>?
   + is number[]?
   + is NOT number[]?
   + is ReadonlyArray<string>?
   + is NOT ReadonlyArray<string>?
+  + is ReadonlyArray<ReadonlyArray<string>>?
+  + is NOT ReadonlyArray<ReadonlyArray<string>>?
   + is Array<{ a: string }>?
   + is NOT Array<{ a: string }>?
   + is { a: number }[]?
@@ -118,6 +122,6 @@ pass ./__typetests__/smoke.tst.ts
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      112 passed, 112 total
-Assertions: 3136 passed, 3136 total
+Tests:      116 passed, 116 total
+Assertions: 3364 passed, 3364 total
 Duration:   <<timestamp>>

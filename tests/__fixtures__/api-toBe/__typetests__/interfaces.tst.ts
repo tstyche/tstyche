@@ -25,21 +25,30 @@ test("edge cases", () => {
 });
 
 test("recursive types", () => {
-  interface A<T> {
-    value: T;
-    left: B<T> | null;
-    right: B<T> | null;
+  interface Alpha<K, V> {
+    // biome-ignore lint/style/useNamingConvention: test
+    merge<KC, VC>(...collections: Array<Iterable<[KC, VC]>>): Alpha<K | KC, Exclude<V, VC> | VC>;
+    merge<C>(...collections: Array<{ [key: string]: C }>): Alpha<K | string, Exclude<V, C> | C>;
+
+    sort(comparator?: (value: V) => boolean): this & Bravo<K, V>;
+    sortBy<C>(
+      comparatorValueMapper: (value: V, key: K, iter: this) => C,
+      comparator?: (valueA: C, valueB: C) => number,
+    ): this & Bravo<K, V>;
   }
 
-  type B<T> = {
-    value: T;
-    left: A<T> | null;
-    right: A<T> | null;
-  };
+  interface Bravo<K, V> extends Alpha<K, V> {
+    // biome-ignore lint/style/useNamingConvention: test
+    merge<KC, VC>(...collections: Array<Iterable<[KC, VC]>>): Bravo<K | KC, Exclude<V, VC> | VC>;
+    merge<C>(...collections: Array<{ [key: string]: C }>): Bravo<K | string, Exclude<V, C> | C>;
+  }
 
-  expect<A<number>>().type.toBe<B<number>>();
-  expect<B<number>>().type.toBe<A<number>>();
+  expect<Alpha<string, string>>().type.toBe<Bravo<string, string>>();
+  expect<Bravo<string, string>>().type.toBe<Alpha<string, string>>();
 
-  expect<A<null>>().type.toBe<B<null>>();
-  expect<B<null>>().type.toBe<A<null>>();
+  expect<Alpha<string, number>>().type.toBe<Bravo<string, number>>();
+  expect<Bravo<string, number>>().type.toBe<Alpha<string, number>>();
+
+  expect<Alpha<string, string>>().type.not.toBe<Bravo<string, number>>();
+  expect<Bravo<string, string>>().type.not.toBe<Alpha<string, number>>();
 });
