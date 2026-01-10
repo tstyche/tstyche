@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { ComparisonResult } from "./ComparisonResult.enum.js";
 import {
   containsInstantiable,
   getIndexSignatures,
@@ -10,13 +11,14 @@ import {
 } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
-import { SeenService } from "./SeenService.js";
 
 export class Structure {
   #compiler: typeof ts;
   #compilerOptions: ts.CompilerOptions;
-  #seen = new SeenService();
   #typeChecker: ts.TypeChecker;
+
+  #deduplicateCache = new WeakMap<ts.Type, Array<ts.Type>>();
+  #memoizeCache = new Map<string, ComparisonResult>();
 
   constructor(compiler: typeof ts, program: ts.Program) {
     this.#compiler = compiler;
@@ -62,9 +64,7 @@ export class Structure {
       }
 
       if ((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) {
-        return this.#seen.memoized(a, b, () =>
-          this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType),
-        );
+        return this.#memoize(a, b, () => this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType));
       }
 
       return false;
@@ -80,7 +80,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Object) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Object) {
-        return this.#seen.memoized(a, b, () => this.compareObjects(a as ts.ObjectType, b as ts.ObjectType));
+        return this.#memoize(a, b, () => this.compareObjects(a as ts.ObjectType, b as ts.ObjectType));
       }
 
       return false;
@@ -146,19 +146,25 @@ export class Structure {
   }
 
   compareIntersections(a: ts.IntersectionType, b: ts.IntersectionType): boolean {
-    if (a.types.length !== b.types.length) {
+    const aTypes = this.#deduplicate(a);
+    const bTypes = this.#deduplicate(b);
+
+    if (aTypes.length !== bTypes.length) {
       return false;
     }
 
-    return a.types.every((aType, i) => this.compare(aType, b.types[i] as ts.Type));
+    return aTypes.every((aType, i) => this.compare(aType, bTypes[i] as ts.Type));
   }
 
   compareUnions(a: ts.UnionType, b: ts.UnionType): boolean {
-    if (a.types.length !== b.types.length) {
+    const aTypes = this.#deduplicate(a);
+    const bTypes = this.#deduplicate(b);
+
+    if (aTypes.length !== bTypes.length) {
       return false;
     }
 
-    return a.types.every((aType) => b.types.some((bType) => this.compare(aType, bType)));
+    return aTypes.every((aType) => bTypes.some((bType) => this.compare(aType, bType)));
   }
 
   compareObjects(a: ts.ObjectType, b: ts.ObjectType): boolean {
@@ -534,17 +540,53 @@ export class Structure {
     return true;
   }
 
+  #deduplicate(target: ts.UnionOrIntersectionType): Array<ts.Type> {
+    let result = this.#deduplicateCache.get(target);
+
+    if (result) {
+      return result;
+    }
+
+    result = target.types.slice(0, 1);
+
+    for (let i = 1; i < target.types.length; i++) {
+      if (!result.some((existing) => this.compare(existing, target.types[i] as ts.Type))) {
+        result.push(target.types[i] as ts.Type);
+      }
+    }
+
+    this.#deduplicateCache.set(target, result);
+
+    return result;
+  }
+
+  #memoize(a: ts.Type, b: ts.Type, compare: () => boolean): boolean {
+    const key = [a.id, b.id].sort().join(":");
+    const result = this.#memoizeCache.get(key);
+
+    if (result !== undefined) {
+      return result !== ComparisonResult.Different;
+    }
+
+    this.#memoizeCache.set(key, ComparisonResult.Pending);
+
+    const isSame = compare();
+
+    this.#memoizeCache.set(key, isSame ? ComparisonResult.Identical : ComparisonResult.Different);
+
+    return isSame;
+  }
+
   #normalize(type: ts.Type): ts.Type {
     if (type.flags & this.#compiler.TypeFlags.Freshable && (type as ts.FreshableType).freshType === type) {
       return (type as ts.FreshableType).regularType;
     }
 
     if (type.flags & this.#compiler.TypeFlags.UnionOrIntersection) {
-      // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
-      const candidateType = (type as ts.UnionOrIntersectionType).types[0]!;
+      const parts = this.#deduplicate(type as ts.UnionOrIntersectionType);
 
-      if ((type as ts.UnionOrIntersectionType).types.every((t) => this.compare(t, candidateType))) {
-        return candidateType;
+      if (parts.length === 1) {
+        return parts.at(0) as ts.Type;
       }
     }
 

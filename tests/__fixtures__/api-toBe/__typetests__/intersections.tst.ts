@@ -40,6 +40,10 @@ test("objects", () => {
   expect<{ a: { b: string } & { c: number } }>().type.toBe<{ a: { b: string; c: number } }>();
   expect<{ a: { b: string } & { c: number } }>().type.not.toBe<{ a: { b: string } }>();
 
+  expect<({ a: string } | { b: number }) & ({ a: string } | { b: number })>().type.toBe<
+    { a: string } | { a: string; b: number } | { b: number }
+  >();
+
   expect<() => () => () => () => string>().type.not.toBe<() => () => () => () => number>();
   expect<() => () => () => { a: string } & { b: number }>().type.toBe<() => () => () => { a: string; b: number }>();
 });
