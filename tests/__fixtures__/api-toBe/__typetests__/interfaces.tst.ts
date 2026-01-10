@@ -29,9 +29,15 @@ test("recursive types", () => {
     // biome-ignore lint/style/useNamingConvention: test
     merge<KC, VC>(...collections: Array<Iterable<[KC, VC]>>): Alpha<K | KC, Exclude<V, VC> | VC>;
     merge<C>(...collections: Array<{ [key: string]: C }>): Alpha<K | string, Exclude<V, C> | C>;
+
+    sort(comparator?: (value: V) => boolean): this & Bravo<K, V>;
+    sortBy<C>(
+      comparatorValueMapper: (value: V, key: K, iter: this) => C,
+      comparator?: (valueA: C, valueB: C) => number,
+    ): this & Bravo<K, V>;
   }
 
-  interface Bravo<K, V> {
+  interface Bravo<K, V> extends Alpha<K, V> {
     // biome-ignore lint/style/useNamingConvention: test
     merge<KC, VC>(...collections: Array<Iterable<[KC, VC]>>): Bravo<K | KC, Exclude<V, VC> | VC>;
     merge<C>(...collections: Array<{ [key: string]: C }>): Bravo<K | string, Exclude<V, C> | C>;
