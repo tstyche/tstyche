@@ -1,5 +1,11 @@
 # Changelog
 
+## [6.0.1] - 2026-01-10
+
+### Fixed
+
+- When checking type structure, compare `target` type of type references ([#653](https://github.com/tstyche/tstyche/pull/653))
+
 ## [6.0.0] - 2026-01-08
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
@@ -983,6 +989,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.1
 [6.0.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0
 [6.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-rc.0
 [6.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.6
