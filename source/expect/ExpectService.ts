@@ -110,7 +110,6 @@ export class ExpectService {
       case "toBeCallableWith":
       case "toBeConstructableWith":
       case "toRaiseError":
-        // biome-ignore lint/style/noNonNullAssertion: collect logic makes sure that 'target' is defined
         return this[matcherNameText].match(matchWorker, assertionNode.source[0], assertionNode.target!, onDiagnostics);
 
       case "toHaveProperty":

@@ -72,12 +72,7 @@ export class FixmeService {
     if (isFail === false) {
       const text = [FixmeDiagnosticText.wasSupposedToFail(owner.brand), FixmeDiagnosticText.considerRemoving()];
 
-      const origin = new DiagnosticOrigin(
-        directive.namespace.start,
-        // biome-ignore lint/style/noNonNullAssertion: this is correct for 'fixme' directives
-        directive.directive!.end,
-        directive.sourceFile,
-      );
+      const origin = new DiagnosticOrigin(directive.namespace.start, directive.directive!.end, directive.sourceFile);
 
       onFileDiagnostics([Diagnostic.error(text, origin)]);
     }

@@ -56,7 +56,6 @@
         "noImplicitBoolean": "error",
         "noInferrableTypes": "error",
         "noNegationElse": "error",
-        "noNonNullAssertion": "error",
         "noParameterProperties": "error",
         "noUselessElse": "error",
         "noYodaExpression": "error",
@@ -80,7 +79,9 @@
         "useShorthandAssign": "error",
         "useSingleVarDeclarator": "error",
         "useThrowNewError": "error",
-        "useTrimStartEnd": "error"
+        "useTrimStartEnd": "error",
+
+        "noNonNullAssertion": "off"
       },
 
       "suspicious": {
@@ -109,17 +110,6 @@
   },
 
   "overrides": [
-    {
-      "includes": ["**/source/handlers/ResultHandler.ts"],
-      "linter": {
-        "rules": {
-          "style": {
-            "noNonNullAssertion": "off"
-          }
-        }
-      }
-    },
-
     {
       "includes": ["**/source/types.ts"],
       "linter": {

@@ -153,7 +153,7 @@ export class Structure {
       return false;
     }
 
-    return aTypes.every((aType, i) => this.compare(aType, bTypes[i] as ts.Type));
+    return aTypes.every((aType, i) => this.compare(aType, bTypes[i]!));
   }
 
   compareUnions(a: ts.UnionType, b: ts.UnionType): boolean {
@@ -198,7 +198,6 @@ export class Structure {
     }
 
     for (let i = 0; i < aTypeArguments.length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
         return false;
       }
@@ -224,7 +223,6 @@ export class Structure {
         return false;
       }
 
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
         return false;
       }
@@ -317,7 +315,6 @@ export class Structure {
     }
 
     for (let i = 0; i < aSignatures.length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.#compareSignature(aSignatures[i]!, bSignatures[i]!)) {
         return false;
       }
@@ -335,7 +332,6 @@ export class Structure {
     }
 
     for (let i = 0; i < aTypeParameters.length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.compareTypeParameters(aTypeParameters[i]!, bTypeParameters[i]!)) {
         return false;
       }
@@ -408,17 +404,14 @@ export class Structure {
     }
 
     for (let i = 0; i < aSignatures.length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (aSignatures[i]!.isReadonly !== bSignatures[i]!.isReadonly) {
         return false;
       }
 
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.compare(aSignatures[i]!.keyType, bSignatures[i]!.keyType)) {
         return false;
       }
 
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.compare(aSignatures[i]!.type, bSignatures[i]!.type)) {
         return false;
       }
@@ -476,7 +469,7 @@ export class Structure {
 
     if (
       !this.compare(
-        // find a way to use 'getTrueTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
+        // TODO find a way to use 'getTrueTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
         this.#typeChecker.getTypeAtLocation(a.root.node.trueType),
         this.#typeChecker.getTypeAtLocation(b.root.node.trueType),
       )
@@ -486,7 +479,7 @@ export class Structure {
 
     if (
       !this.compare(
-        // find a way to use 'getFalseTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
+        // TODO find a way to use 'getFalseTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
         this.#typeChecker.getTypeAtLocation(a.root.node.falseType),
         this.#typeChecker.getTypeAtLocation(b.root.node.falseType),
       )
@@ -550,8 +543,8 @@ export class Structure {
     result = target.types.slice(0, 1);
 
     for (let i = 1; i < target.types.length; i++) {
-      if (!result.some((existing) => this.compare(existing, target.types[i] as ts.Type))) {
-        result.push(target.types[i] as ts.Type);
+      if (!result.some((existing) => this.compare(existing, target.types[i]!))) {
+        result.push(target.types[i]!);
       }
     }
 
@@ -586,7 +579,7 @@ export class Structure {
       const parts = this.#deduplicate(type as ts.UnionOrIntersectionType);
 
       if (parts.length === 1) {
-        return parts.at(0) as ts.Type;
+        return parts.at(0)!;
       }
     }
 

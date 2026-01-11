@@ -20,7 +20,7 @@ export function getPropertyType(
       }
 
       if (filteredType.length === 1) {
-        return filteredType.at(0) as ts.Type;
+        return filteredType.at(0)!;
       }
 
       return { ...type, types: filteredType } as ts.UnionType;
