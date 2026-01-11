@@ -1,6 +1,6 @@
 ···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBe
 
-uses TypeScript <<version>> with ./tsconfig.json
+uses TypeScript <<version>> with ./tsconfig-exact.json
 
 pass ./__typetests__/smoke.tst.ts
   + is any?
@@ -51,20 +51,30 @@ pass ./__typetests__/smoke.tst.ts
   + is NOT string | Array<{ a: string }>?
   + is { a: string } | { b: string }?
   + is NOT { a: string } | { b: string }?
-  + is { a: string } | { b: number }?
-  + is NOT { a: string } | { b: number }?
-  + is { a: string } & { b: string }?
-  + is NOT { a: string } & { b: string }?
-  + is { a: string } & { b: number }?
-  + is NOT { a: string } & { b: number }?
-  + is { a: string }?
-  + is NOT { a: string }?
+  + is { a: string } | { b: number },{ a: string } | { b: number } | { b: number }?
+  + is NOT { a: string } | { b: number },{ a: string } | { b: number } | { b: number }?
+  + is ({ a: string } | { b: number }) & ({ a: string } | { b: number }),{ a: string } | { a: string; b: number } | { b: number }?
+  + is NOT ({ a: string } | { b: number }) & ({ a: string } | { b: number }),{ a: string } | { a: string; b: number } | { b: number }?
+  + is { a: string } & { b: string },{ a: string; b: string }?
+  + is NOT { a: string } & { b: string },{ a: string; b: string }?
+  + is { a: string } & { b: number },{ a: string } & { a: string } & { b: number }?
+  + is NOT { a: string } & { b: number },{ a: string } & { a: string } & { b: number }?
+  + is ((a: string) => string) & ((b: number) => number),{ (a: string): string; (b: number): number }?
+  + is NOT ((a: string) => string) & ((b: number) => number),{ (a: string): string; (b: number): number }?
+  + is ((b: number) => number) & ((a: string) => string)?
+  + is NOT ((b: number) => number) & ((a: string) => string)?
+  + is { a: string },{ a: string } | { a: string },{ a: string } & { a: string }?
+  + is NOT { a: string },{ a: string } | { a: string },{ a: string } & { a: string }?
   + is { a?: string }?
   + is NOT { a?: string }?
+  + is { a?: string | undefined }?
+  + is NOT { a?: string | undefined }?
   + is { readonly a: string }?
   + is NOT { readonly a: string }?
   + is { readonly a?: string }?
   + is NOT { readonly a?: string }?
+  + is { readonly a?: string | undefined }?
+  + is NOT { readonly a?: string | undefined }?
   + is Array<string>?
   + is NOT Array<string>?
   + is Array<Array<string>>?
@@ -122,6 +132,6 @@ pass ./__typetests__/smoke.tst.ts
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Tests:      116 passed, 116 total
-Assertions: 3364 passed, 3364 total
+Tests:      126 passed, 126 total
+Assertions: 4900 passed, 4900 total
 Duration:   <<timestamp>>

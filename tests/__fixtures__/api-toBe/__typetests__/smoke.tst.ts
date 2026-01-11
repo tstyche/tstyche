@@ -31,19 +31,27 @@ const samples = [
   "string | Array<string>",
   "string | Array<{ a: string }>",
   "{ a: string } | { b: string }",
-  "{ a: string } | { b: number }",
+  ["{ a: string } | { b: number }", "{ a: string } | { b: number } | { b: number }"],
+  [
+    "({ a: string } | { b: number }) & ({ a: string } | { b: number })",
+    "{ a: string } | { a: string; b: number } | { b: number }",
+  ],
 
   // intersections
 
-  "{ a: string } & { b: string }",
-  "{ a: string } & { b: number }",
+  ["{ a: string } & { b: string }", "{ a: string; b: string }"],
+  ["{ a: string } & { b: number }", "{ a: string } & { a: string } & { b: number }"],
+  ["((a: string) => string) & ((b: number) => number)", "{ (a: string): string; (b: number): number }"],
+  "((b: number) => number) & ((a: string) => string)",
 
   // objects
 
-  "{ a: string }",
+  ["{ a: string }", "{ a: string } | { a: string }", "{ a: string } & { a: string }"],
   "{ a?: string }",
+  "{ a?: string | undefined }",
   "{ readonly a: string }",
   "{ readonly a?: string }",
+  "{ readonly a?: string | undefined }",
 
   // arrays
 
@@ -88,29 +96,41 @@ const samples = [
 let testText = `import { expect, test } from "tstyche";
 `;
 
-for (const sourceType of samples) {
+for (const source of samples) {
   testText += `
-test("is ${sourceType}?", () => {
-  expect<${sourceType}>().type.toBe<${sourceType}>();
-
+test("is ${source}?", () => {
 `;
+
+  const sourceTypes = Array.isArray(source) ? source : [source];
+
+  for (const sourceType of sourceTypes) {
+    for (const targetType of sourceTypes) {
+      testText += `  expect<${sourceType}>().type.toBe<${targetType}>();
+`;
+    }
+  }
 
   testText += `});
 
-test("is NOT ${sourceType}?", () => {
+test("is NOT ${source}?", () => {
 `;
 
-  for (const targetType of samples) {
-    if (targetType === sourceType) {
+  for (const target of samples) {
+    if (target === source) {
       continue;
     }
 
-    testText += `  expect<${sourceType}>().type.not.toBe<${targetType}>();
+    const targetTypes = Array.isArray(target) ? target : [target];
+
+    for (const targetType of targetTypes) {
+      for (const sourceType of sourceTypes) {
+        testText += `  expect<${sourceType}>().type.not.toBe<${targetType}>();
 `;
+      }
+    }
   }
 
-  testText += `
-});
+  testText += `});
 `;
 }
 

@@ -31,7 +31,7 @@ await test("toBe", async (t) => {
   });
 
   await t.test("structure smoke", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["smoke"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["smoke", "--tsconfig", "./tsconfig-exact.json"]);
 
     assert.equal(stderr, "");
 
