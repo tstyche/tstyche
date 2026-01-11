@@ -1,5 +1,11 @@
 # Changelog
 
+## [6.0.2] - 2026-01-11
+
+### Fixed
+
+- When checking type structure, deduplicate complex unions and intersections ([#654](https://github.com/tstyche/tstyche/pull/654))
+
 ## [6.0.1] - 2026-01-10
 
 ### Fixed
@@ -989,6 +995,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.2]: https://github.com/tstyche/tstyche/releases/tag/v6.0.2
 [6.0.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.1
 [6.0.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0
 [6.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-rc.0
