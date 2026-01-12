@@ -515,9 +515,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.2.25":
-  version: 5.2.28
-  resolution: "@cspell/dict-npm@npm:5.2.28"
-  checksum: 10c0/64afa15424744642b13475f1b969c0abc5fd64fc05fdb5172efd7e00f6d715f018d343e720e45aa521c5042f125501c2f6b2cd65bccdf8e529f5a7bee6a2390b
+  version: 5.2.29
+  resolution: "@cspell/dict-npm@npm:5.2.29"
+  checksum: 10c0/dbcfef8058994615e5190f091bb8e229e263ebaadf54cb4af5bd91334776f4400ef9315eab8f392db8bc478c81d5088f57388ea3307d4edad8d85d560f2d5be6
   languageName: node
   linkType: hard
 
@@ -566,9 +566,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-rust@npm:^4.0.12":
-  version: 4.1.0
-  resolution: "@cspell/dict-rust@npm:4.1.0"
-  checksum: 10c0/a935ab736615ffcee653fe078d14ee4a2a146f718c1c40169df9d0c9aebf877dc36c62037deb8ebb1684cbb9339ffbb7a948f7c48be301e2e43cbd46ee1c21df
+  version: 4.1.1
+  resolution: "@cspell/dict-rust@npm:4.1.1"
+  checksum: 10c0/dc6639ea408fc0a8ff6dfa003fc0b8d7b9b1957375e70e32885effe86bbd8a2509cc0dbc3c91b619b91f9deb211f1ff3fa7856daa5f2dbfdf043edd3633c5de2
   languageName: node
   linkType: hard
 
@@ -587,9 +587,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^5.1.15":
-  version: 5.1.19
-  resolution: "@cspell/dict-software-terms@npm:5.1.19"
-  checksum: 10c0/7eb9707dbb69866540f61d58454166ac7567917ea26f892419f476f4375664dc6a21fb08af145dbbdf8e60c94955f1737e8c8414d603c284f58252aef126b0b8
+  version: 5.1.20
+  resolution: "@cspell/dict-software-terms@npm:5.1.20"
+  checksum: 10c0/ff7513919d842bdb804965852d35aded3a2e32b3535637d7e9ec57fce66ddf69af57d20947bb3db358abe2d0d8e5d0feee029e3e14d1fb66b235d519d5133115
   languageName: node
   linkType: hard
 
