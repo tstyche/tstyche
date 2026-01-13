@@ -10,13 +10,19 @@ export class Diagnostic {
   related: Array<Diagnostic> | undefined;
   text: string | Array<string>;
 
-  constructor(text: string | Array<string>, category: DiagnosticCategory, origin?: DiagnosticOrigin) {
+  constructor(
+    text: string | Array<string>,
+    category: DiagnosticCategory,
+    origin?: DiagnosticOrigin,
+    related?: Array<Diagnostic>,
+  ) {
     this.text = text;
     this.category = category;
     this.origin = origin;
+    this.related = related;
   }
 
-  add(options: { code?: string | undefined; related?: Array<Diagnostic> | undefined }): this {
+  add(options: { code?: string | undefined; related?: Array<Diagnostic> | undefined }): Diagnostic {
     if (options.code != null) {
       this.code = options.code;
     }
@@ -55,6 +61,12 @@ export class Diagnostic {
 
       return new Diagnostic(text, DiagnosticCategory.Error, origin).add({ code, related });
     });
+  }
+
+  with(options: { category?: DiagnosticCategory | undefined }): Diagnostic {
+    const category = options?.category ?? this.category;
+
+    return new Diagnostic(this.text, category, this.origin, this.related);
   }
 
   static warning(text: string | Array<string>, origin?: DiagnosticOrigin): Diagnostic {

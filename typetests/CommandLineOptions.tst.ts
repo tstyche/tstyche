@@ -5,6 +5,7 @@ describe("CommandLineOptions", () => {
   test("all options", () => {
     expect<tstyche.CommandLineOptions>().type.toBeAssignableFrom({
       config: "./config/tstyche.json",
+      explainCause: true,
       failFast: true,
       fetch: true,
       help: true,
@@ -15,7 +16,7 @@ describe("CommandLineOptions", () => {
       prune: true,
       showConfig: true,
       skip: "internal",
-      target: ["5.0" as const, "5.4" as const, "latest" as const],
+      target: ["5.4" as const, "5.8" as const, "latest" as const],
       tsconfig: "./tsconfig.test.json",
       update: true,
       version: true,
@@ -30,6 +31,12 @@ describe("CommandLineOptions", () => {
   test("'config' option", () => {
     expect<Pick<tstyche.CommandLineOptions, "config">>().type.toBe<{
       config?: string;
+    }>();
+  });
+
+  test("'explainCause' option", () => {
+    expect<Pick<tstyche.CommandLineOptions, "explainCause">>().type.toBe<{
+      explainCause?: boolean;
     }>();
   });
 

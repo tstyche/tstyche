@@ -48,6 +48,8 @@ export type Event =
   | ["expect:pass", { result: ExpectResult }]
   | ["expect:skip", { result: ExpectResult }]
   | ["expect:fixme", { result: ExpectResult }]
+  | ["cause:explain", { diagnostics: Array<Diagnostic> }]
+  // TODO add "cause:error", "cause:match"
   | ["suppressed:error", { diagnostics: Array<Diagnostic>; result: SuppressedResult }]
   | ["suppressed:match", { result: SuppressedResult }]
   | ["suppressed:ignore", { result: SuppressedResult }]

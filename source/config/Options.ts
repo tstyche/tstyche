@@ -63,6 +63,13 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.True,
+      description: "Explain the cause of passing negated assertions.",
+      group: OptionGroup.CommandLine,
+      name: "explainCause",
+    },
+
+    {
       brand: OptionBrand.Boolean,
       description: "Stop running tests after the first failed assertion.",
       group: OptionGroup.ConfigFile | OptionGroup.CommandLine,
