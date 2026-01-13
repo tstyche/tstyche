@@ -15,6 +15,9 @@ Command Line Options
   --config  string
   The path to a TSTyche configuration file.
 
+  --explainCause
+  Explain the cause of passing negated assertions.
+
   --failFast  boolean
   Stop running tests after the first failed assertion.
 
