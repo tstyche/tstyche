@@ -1,15 +1,17 @@
 import { expect } from "tstyche";
 
-declare function getIndexOf<T extends string>(target: ReadonlyArray<T>, item: NoInfer<T>): number;
+declare function getIndexOf<T extends string>(target: Array<T>, item: NoInfer<T>): number;
 
 expect(getIndexOf).type.not.toBeCallableWith(
-  ["one", "two", "three"],
-  // @tstyche cause  Argument of type '"four"' is not assignable to parameter of type '"one" | "two" | "three"'.
-  "four",
+  ["apple", "pear"],
+  // @tstyche cause  Argument of type '"lemon"' is not assignable to parameter of type '"apple" | "pear"'.
+  "lemon",
 );
 
-getIndexOf(
-  ["one", "two", "three"],
-  // @ts-expect-error  Argument of type '"four"' is not assignable to parameter of type '"one" | "two" | "three"'.
-  "four",
+const colors = ["red", "green"] as const;
+
+expect(getIndexOf).type.not.toBeCallableWith(
+  // @tstyche cause  The type 'readonly ["red", "green"]' ... cannot be assigned to the mutable type 'string[]'.
+  colors,
+  "green",
 );
