@@ -4,6 +4,7 @@ import type ts from "typescript";
 
 export interface CommandLineOptions {
   config?: string;
+  explainCause?: boolean;
   failFast?: boolean;
   fetch?: boolean;
   help?: boolean;
