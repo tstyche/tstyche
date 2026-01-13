@@ -8,10 +8,11 @@ expect(getIndexOf).type.not.toBeCallableWith(
   "lemon",
 );
 
-const colors = ["red", "green"] as const;
+const fruits = ["apple", "pear"] as const;
 
 expect(getIndexOf).type.not.toBeCallableWith(
-  // @tstyche cause  The type 'readonly ["red", "green"]' ... cannot be assigned to the mutable type 'string[]'.
-  colors,
-  "green",
+  // If 'NoInfer' marker is removed from the signature, only the above assertion would fail.
+  // This assertion would pass with or without 'NoInfer', due to 'fruits' being of an incompatible type.
+  fruits,
+  "lemon",
 );
