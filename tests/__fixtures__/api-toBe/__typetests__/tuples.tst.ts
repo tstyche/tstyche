@@ -105,6 +105,29 @@ test("generic tuples", () => {
 
   expect<MaxMinDiameter>().type.toBe<[max: number, min: number, diameter: number]>();
   expect<MaxMinDiameter>().type.not.toBe<[max: number, ...min: Array<number>]>();
+
+  type A = <T>() => [T];
+  type B = <T extends string>() => [T];
+  type C = <T extends number>() => [T];
+
+  expect<A>().type.toBe<<T>() => [T]>();
+  expect<A>().type.not.toBe<() => [any]>();
+  expect<A>().type.not.toBe<() => [unknown]>();
+  expect<A>().type.not.toBe<() => []>();
+  expect<A>().type.not.toBe<B>();
+  expect<A>().type.not.toBe<C>();
+
+  expect<B>().type.toBe<<T extends string>() => [T]>();
+  expect<B>().type.not.toBe<() => [string]>();
+  expect<B>().type.not.toBe<() => []>();
+  expect<B>().type.not.toBe<A>();
+  expect<B>().type.not.toBe<C>();
+
+  expect<C>().type.toBe<<T extends number>() => [T]>();
+  expect<C>().type.not.toBe<() => [number]>();
+  expect<C>().type.not.toBe<() => []>();
+  expect<C>().type.not.toBe<A>();
+  expect<C>().type.not.toBe<B>();
 });
 
 test("additional properties", () => {

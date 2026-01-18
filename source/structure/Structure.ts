@@ -78,6 +78,14 @@ export class Structure {
       return false;
     }
 
+    if (this.#typeChecker.isTupleType(a) || this.#typeChecker.isTupleType(b)) {
+      if (this.#typeChecker.isTupleType(a) && this.#typeChecker.isTupleType(b)) {
+        return this.#memoize(a, b, () => this.compareTuples(a, b));
+      }
+
+      return false;
+    }
+
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Object) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Object) {
         return this.#memoize(a, b, () => this.compareObjects(a as ts.ObjectType, b as ts.ObjectType));
@@ -178,14 +186,6 @@ export class Structure {
   }
 
   compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean {
-    if ((a.target.objectFlags | b.target.objectFlags) & this.#compiler.ObjectFlags.Tuple) {
-      if (a.target.objectFlags & b.target.objectFlags & this.#compiler.ObjectFlags.Tuple) {
-        return this.compareTuples(a as ts.TupleTypeReference, b as ts.TupleTypeReference);
-      }
-
-      return false;
-    }
-
     if (!this.compare(a.target, b.target)) {
       return this.compareStructuredTypes(a, b);
     }
