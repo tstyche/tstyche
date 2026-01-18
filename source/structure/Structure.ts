@@ -7,7 +7,6 @@ import {
   getTargetSymbol,
   getThisTypeOfSignature,
   getTypeParameterModifiers,
-  getTypeParametersOfSignature,
 } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
@@ -186,24 +185,24 @@ export class Structure {
   }
 
   compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean {
-    if (!this.compare(a.target, b.target)) {
-      return this.compareStructuredTypes(a, b);
-    }
+    if (this.compare(a.target, b.target)) {
+      const aTypeArguments = this.#typeChecker.getTypeArguments(a);
+      const bTypeArguments = this.#typeChecker.getTypeArguments(b);
 
-    const aTypeArguments = this.#typeChecker.getTypeArguments(a);
-    const bTypeArguments = this.#typeChecker.getTypeArguments(b);
-
-    if (aTypeArguments.length !== bTypeArguments.length) {
-      return false;
-    }
-
-    for (let i = 0; i < aTypeArguments.length; i++) {
-      if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
+      if (aTypeArguments.length !== bTypeArguments.length) {
         return false;
       }
+
+      for (let i = 0; i < aTypeArguments.length; i++) {
+        if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
+          return false;
+        }
+      }
+
+      return true;
     }
 
-    return true;
+    return this.compareStructuredTypes(a, b);
   }
 
   compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {
@@ -324,19 +323,6 @@ export class Structure {
   }
 
   #compareSignature(a: ts.Signature, b: ts.Signature): boolean {
-    const aTypeParameters = getTypeParametersOfSignature(a);
-    const bTypeParameters = getTypeParametersOfSignature(b);
-
-    if (aTypeParameters.length !== bTypeParameters.length) {
-      return false;
-    }
-
-    for (let i = 0; i < aTypeParameters.length; i++) {
-      if (!this.compareTypeParameters(aTypeParameters[i]!, bTypeParameters[i]!)) {
-        return false;
-      }
-    }
-
     if (
       !this.#compareMaybeNullish(
         getThisTypeOfSignature(a, this.#typeChecker),

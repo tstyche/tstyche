@@ -36,10 +36,6 @@ export function getThisTypeOfSignature(signature: ts.Signature, typeChecker: ts.
   return signature.thisParameter && typeChecker.getTypeOfSymbol(signature.thisParameter);
 }
 
-export function getTypeParametersOfSignature(signature: ts.Signature): ReadonlyArray<ts.TypeParameter> {
-  return signature.typeParameters ?? [];
-}
-
 export function getTypeParameterModifiers(typeParameter: ts.TypeParameter, compiler: typeof ts): ts.ModifierFlags {
   if (!typeParameter.symbol.declarations) {
     return compiler.ModifierFlags.None;
