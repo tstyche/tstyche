@@ -343,6 +343,10 @@ export class Structure {
     const aTypePredicate = this.#typeChecker.getTypePredicateOfSignature(a);
     const bTypePredicate = this.#typeChecker.getTypePredicateOfSignature(b);
 
+    if (aTypePredicate?.parameterIndex !== bTypePredicate?.parameterIndex) {
+      return false;
+    }
+
     if (
       aTypePredicate?.kind !== bTypePredicate?.kind ||
       !this.#compareMaybeNullish(aTypePredicate?.type, bTypePredicate?.type)
