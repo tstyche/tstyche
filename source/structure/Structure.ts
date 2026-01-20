@@ -37,20 +37,22 @@ export class Structure {
     a = this.#normalize(a);
     b = this.#normalize(b);
 
-    if (a.id === b.id) {
-      return true;
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.StructuredType) {
+      return this.#memoize(a, b, () => this.compareStructured(a as ts.StructuredType, b as ts.StructuredType));
     }
 
-    if (a.flags & this.#compiler.TypeFlags.Any) {
-      return !!(b.flags & this.#compiler.TypeFlags.Any);
-    }
-    if (a.flags & this.#compiler.TypeFlags.Never) {
-      return !!(b.flags & this.#compiler.TypeFlags.Never);
-    }
-    if (a.flags & this.#compiler.TypeFlags.Undefined) {
-      return !!(b.flags & this.#compiler.TypeFlags.Undefined);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Instantiable) {
+      return this.#memoize(a, b, () => this.compareInstantiable(a as ts.InstantiableType, b as ts.InstantiableType));
     }
 
+    if ((a.flags | b.flags) & (this.#compiler.TypeFlags.Literal | this.#compiler.TypeFlags.UniqueESSymbol)) {
+      return a === b;
+    }
+
+    return !!(a.flags & b.flags);
+  }
+
+  compareStructured(a: ts.StructuredType, b: ts.StructuredType): boolean {
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Intersection) {
         if (this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) {
@@ -63,7 +65,7 @@ export class Structure {
       }
 
       if ((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) {
-        return this.#memoize(a, b, () => this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType));
+        return this.compareStructures(a, b);
       }
 
       return false;
@@ -79,7 +81,7 @@ export class Structure {
 
     if (this.#typeChecker.isTupleType(a) || this.#typeChecker.isTupleType(b)) {
       if (this.#typeChecker.isTupleType(a) && this.#typeChecker.isTupleType(b)) {
-        return this.#memoize(a, b, () => this.compareTuples(a, b));
+        return this.compareTuples(a, b);
       }
 
       return false;
@@ -87,23 +89,17 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Object) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Object) {
-        return this.#memoize(a, b, () => this.compareObjects(a as ts.ObjectType, b as ts.ObjectType));
+        return this.compareObjects(a as ts.ObjectType, b as ts.ObjectType);
       }
-
-      return false;
     }
 
+    return false;
+  }
+
+  compareInstantiable(a: ts.InstantiableType, b: ts.InstantiableType): boolean {
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.TypeParameter) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.TypeParameter) {
-        return this.compareTypeParameters(a, b);
-      }
-
-      return false;
-    }
-
-    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Index) {
-      if (a.flags & b.flags & this.#compiler.TypeFlags.Index) {
-        return this.compare((a as ts.IndexType).type, (b as ts.IndexType).type);
+        return this.compareTypeParameters(a as ts.TypeParameter, b as ts.TypeParameter);
       }
 
       return false;
@@ -133,6 +129,14 @@ export class Structure {
       return false;
     }
 
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Index) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Index) {
+        return this.compare((a as ts.IndexType).type, (b as ts.IndexType).type);
+      }
+
+      return false;
+    }
+
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.TemplateLiteral) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.TemplateLiteral) {
         return this.compareTemplateLiteralTypes(a as ts.TemplateLiteralType, b as ts.TemplateLiteralType);
@@ -145,8 +149,6 @@ export class Structure {
       if (a.flags & b.flags & this.#compiler.TypeFlags.StringMapping) {
         return this.compareStringMappingTypes(a as ts.StringMappingType, b as ts.StringMappingType);
       }
-
-      return false;
     }
 
     return false;
@@ -181,7 +183,7 @@ export class Structure {
       }
     }
 
-    return this.compareStructuredTypes(a, b);
+    return this.compareStructures(a, b);
   }
 
   compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean {
@@ -202,7 +204,7 @@ export class Structure {
       return true;
     }
 
-    return this.compareStructuredTypes(a, b);
+    return this.compareStructures(a, b);
   }
 
   compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {
@@ -230,7 +232,7 @@ export class Structure {
     return true;
   }
 
-  compareStructuredTypes(a: ts.StructuredType, b: ts.StructuredType): boolean {
+  compareStructures(a: ts.StructuredType, b: ts.StructuredType): boolean {
     if (!this.compareProperties(a, b)) {
       return false;
     }
@@ -314,70 +316,55 @@ export class Structure {
     }
 
     for (let i = 0; i < aSignatures.length; i++) {
-      if (!this.#compareSignature(aSignatures[i]!, bSignatures[i]!)) {
-        return false;
-      }
-    }
+      const aThisType = getThisTypeOfSignature(aSignatures[i]!, this.#typeChecker);
+      const bThisType = getThisTypeOfSignature(bSignatures[i]!, this.#typeChecker);
 
-    return true;
-  }
-
-  #compareSignature(a: ts.Signature, b: ts.Signature): boolean {
-    if (
-      !this.#compareMaybeNullish(
-        getThisTypeOfSignature(a, this.#typeChecker),
-        getThisTypeOfSignature(b, this.#typeChecker),
-      )
-    ) {
-      return false;
-    }
-
-    if (!this.compareParameters(a, b)) {
-      return false;
-    }
-
-    if (!this.compare(this.#typeChecker.getReturnTypeOfSignature(a), this.#typeChecker.getReturnTypeOfSignature(b))) {
-      return false;
-    }
-
-    const aTypePredicate = this.#typeChecker.getTypePredicateOfSignature(a);
-    const bTypePredicate = this.#typeChecker.getTypePredicateOfSignature(b);
-
-    if (aTypePredicate?.parameterIndex !== bTypePredicate?.parameterIndex) {
-      return false;
-    }
-
-    if (
-      aTypePredicate?.kind !== bTypePredicate?.kind ||
-      !this.#compareMaybeNullish(aTypePredicate?.type, bTypePredicate?.type)
-    ) {
-      return false;
-    }
-
-    return true;
-  }
-
-  compareParameters(a: ts.Signature, b: ts.Signature): boolean {
-    const aParametersCount = getParameterCount(a, this.#compiler, this.#typeChecker);
-    const bParametersCount = getParameterCount(b, this.#compiler, this.#typeChecker);
-
-    if (aParametersCount !== bParametersCount) {
-      return false;
-    }
-
-    for (let i = 0; i < aParametersCount; i++) {
-      const aParameter = getParameterFacts(a, i, this.#compiler, this.#typeChecker);
-      const bParameter = getParameterFacts(b, i, this.#compiler, this.#typeChecker);
-
-      if (aParameter.isOptional !== bParameter.isOptional) {
+      if (!this.#compareMaybeNullish(aThisType, bThisType)) {
         return false;
       }
 
-      if (aParameter.isRest !== bParameter.isRest) {
+      const aParametersCount = getParameterCount(aSignatures[i]!, this.#compiler, this.#typeChecker);
+      const bParametersCount = getParameterCount(bSignatures[i]!, this.#compiler, this.#typeChecker);
+
+      if (aParametersCount !== bParametersCount) {
         return false;
       }
 
-      if (!this.compare(aParameter.getType(this.#typeChecker), bParameter.getType(this.#typeChecker))) {
+      for (let j = 0; j < aParametersCount; j++) {
+        const aParameter = getParameterFacts(aSignatures[i]!, j, this.#compiler, this.#typeChecker);
+        const bParameter = getParameterFacts(bSignatures[i]!, j, this.#compiler, this.#typeChecker);
+
+        if (aParameter.isOptional !== bParameter.isOptional) {
+          return false;
+        }
+
+        if (aParameter.isRest !== bParameter.isRest) {
+          return false;
+        }
+
+        if (!this.compare(aParameter.getType(this.#typeChecker), bParameter.getType(this.#typeChecker))) {
+          return false;
+        }
+      }
+
+      const aReturnType = this.#typeChecker.getReturnTypeOfSignature(aSignatures[i]!);
+      const bReturnType = this.#typeChecker.getReturnTypeOfSignature(bSignatures[i]!);
+
+      if (!this.compare(aReturnType, bReturnType)) {
+        return false;
+      }
+
+      const aTypePredicate = this.#typeChecker.getTypePredicateOfSignature(aSignatures[i]!);
+      const bTypePredicate = this.#typeChecker.getTypePredicateOfSignature(bSignatures[i]!);
+
+      if (aTypePredicate?.parameterIndex !== bTypePredicate?.parameterIndex) {
+        return false;
+      }
+
+      if (
+        aTypePredicate?.kind !== bTypePredicate?.kind ||
+        !this.#compareMaybeNullish(aTypePredicate?.type, bTypePredicate?.type)
+      ) {
         return false;
       }
     }
