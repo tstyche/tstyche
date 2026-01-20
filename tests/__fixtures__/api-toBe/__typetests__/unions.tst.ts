@@ -9,6 +9,9 @@ test("edge cases", () => {
 
   expect<string | never>().type.toBe<string>();
   expect<{ a: string } | never>().type.toBe<{ a: string }>();
+
+  expect<boolean>().type.toBe<true | false>();
+  expect<true | false>().type.toBe<boolean>();
 });
 
 test("objects", () => {
