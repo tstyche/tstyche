@@ -37,35 +37,43 @@ export class Structure {
     a = this.#normalize(a);
     b = this.#normalize(b);
 
+    if (a === b) {
+      return true;
+    }
+
+    if (a.flags & this.#compiler.TypeFlags.Any) {
+      return !!(b.flags & this.#compiler.TypeFlags.Any);
+    }
+    if (a.flags & this.#compiler.TypeFlags.Never) {
+      return !!(b.flags & this.#compiler.TypeFlags.Never);
+    }
+    if (a.flags & this.#compiler.TypeFlags.Undefined) {
+      return !!(b.flags & this.#compiler.TypeFlags.Undefined);
+    }
+
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.StructuredType) {
-      return this.#memoize(a, b, () => this.compareStructured(a as ts.StructuredType, b as ts.StructuredType));
+      if (a.flags & this.#compiler.TypeFlags.StructuredType && b.flags & this.#compiler.TypeFlags.StructuredType) {
+        return this.#memoize(a, b, () => this.compareStructured(a as ts.StructuredType, b as ts.StructuredType));
+      }
+
+      return false;
     }
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Instantiable) {
-      return this.#memoize(a, b, () => this.compareInstantiable(a as ts.InstantiableType, b as ts.InstantiableType));
+      if (a.flags & this.#compiler.TypeFlags.Instantiable && b.flags & this.#compiler.TypeFlags.Instantiable) {
+        return this.#memoize(a, b, () => this.compareInstantiable(a as ts.InstantiableType, b as ts.InstantiableType));
+      }
+
+      return false;
     }
 
-    if ((a.flags | b.flags) & (this.#compiler.TypeFlags.Literal | this.#compiler.TypeFlags.UniqueESSymbol)) {
-      return a === b;
-    }
-
-    return !!(a.flags & b.flags);
+    return false;
   }
 
   compareStructured(a: ts.StructuredType, b: ts.StructuredType): boolean {
-    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
-      if (a.flags & b.flags & this.#compiler.TypeFlags.Intersection) {
-        if (this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) {
-          return true;
-        }
-      }
-
-      if (containsInstantiable(a, this.#compiler) || containsInstantiable(b, this.#compiler)) {
-        return false;
-      }
-
-      if ((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) {
-        return this.compareStructures(a, b);
+    if (this.#typeChecker.isTupleType(a) || this.#typeChecker.isTupleType(b)) {
+      if (this.#typeChecker.isTupleType(a) && this.#typeChecker.isTupleType(b)) {
+        return this.compareTuples(a, b);
       }
 
       return false;
@@ -79,12 +87,16 @@ export class Structure {
       return false;
     }
 
-    if (this.#typeChecker.isTupleType(a) || this.#typeChecker.isTupleType(b)) {
-      if (this.#typeChecker.isTupleType(a) && this.#typeChecker.isTupleType(b)) {
-        return this.compareTuples(a, b);
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Intersection) {
+        if (this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) {
+          return true;
+        }
       }
 
-      return false;
+      if (containsInstantiable(a, this.#compiler) || containsInstantiable(b, this.#compiler)) {
+        return false;
+      }
     }
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Object) {
@@ -93,7 +105,7 @@ export class Structure {
       }
     }
 
-    return false;
+    return this.compareStructures(a, b);
   }
 
   compareInstantiable(a: ts.InstantiableType, b: ts.InstantiableType): boolean {
