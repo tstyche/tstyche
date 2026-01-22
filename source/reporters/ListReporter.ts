@@ -146,6 +146,7 @@ export class ListReporter extends BaseReporter {
 
       case "expect:error":
       case "expect:fail":
+      case "cause:explain":
         for (const diagnostic of payload.diagnostics) {
           this.#fileView.addMessage(diagnosticText(diagnostic));
         }

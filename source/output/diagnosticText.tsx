@@ -4,11 +4,12 @@ import { CodeFrameText } from "./CodeFrameText.js";
 import type { CodeFrameOptions } from "./types.js";
 
 interface DiagnosticTextProps {
-  codeFrameOptions?: CodeFrameOptions;
   diagnostic: Diagnostic;
+  highlightColor: Color;
+  options?: CodeFrameOptions | undefined;
 }
 
-function DiagnosticText({ codeFrameOptions, diagnostic }: DiagnosticTextProps) {
+function DiagnosticText({ diagnostic, highlightColor, options }: DiagnosticTextProps) {
   const code = diagnostic.code ? <Text color={Color.Gray}> {diagnostic.code}</Text> : undefined;
 
   const text = Array.isArray(diagnostic.text) ? diagnostic.text : [diagnostic.text];
@@ -23,16 +24,14 @@ function DiagnosticText({ codeFrameOptions, diagnostic }: DiagnosticTextProps) {
     </Text>
   ));
 
-  const related = diagnostic.related?.map((relatedDiagnostic) => <DiagnosticText diagnostic={relatedDiagnostic} />);
+  const related = diagnostic.related?.map((relatedDiagnostic) => (
+    <DiagnosticText diagnostic={relatedDiagnostic} highlightColor={highlightColor} options={options} />
+  ));
 
   const codeFrame = diagnostic.origin ? (
     <Text>
       <Line />
-      <CodeFrameText
-        diagnosticCategory={diagnostic.category}
-        diagnosticOrigin={diagnostic.origin}
-        options={codeFrameOptions}
-      />
+      <CodeFrameText diagnosticOrigin={diagnostic.origin} highlightColor={highlightColor} options={options} />
     </Text>
   ) : undefined;
 
@@ -46,23 +45,31 @@ function DiagnosticText({ codeFrameOptions, diagnostic }: DiagnosticTextProps) {
   );
 }
 
-export function diagnosticText(diagnostic: Diagnostic, codeFrameOptions: CodeFrameOptions = {}): ScribblerJsx.Element {
-  let prefix: ScribblerJsx.Element | undefined;
+export function diagnosticText(diagnostic: Diagnostic, options: CodeFrameOptions = {}): ScribblerJsx.Element {
+  let highlightColor: Color;
+  let prefix: ScribblerJsx.Element;
 
   switch (diagnostic.category) {
     case DiagnosticCategory.Error:
-      prefix = <Text color={Color.Red}>{"Error: "}</Text>;
+      highlightColor = Color.Red;
+      prefix = <Text color={highlightColor}>{"Error: "}</Text>;
+      break;
+
+    case DiagnosticCategory.Cause:
+      highlightColor = Color.Yellow;
+      prefix = <Text color={highlightColor}>{"Cause: "}</Text>;
       break;
 
     case DiagnosticCategory.Warning:
-      prefix = <Text color={Color.Yellow}>{"Warning: "}</Text>;
+      highlightColor = Color.Yellow;
+      prefix = <Text color={highlightColor}>{"Warning: "}</Text>;
       break;
   }
 
   return (
     <Text>
       {prefix}
-      <DiagnosticText codeFrameOptions={codeFrameOptions} diagnostic={diagnostic} />
+      <DiagnosticText diagnostic={diagnostic} highlightColor={highlightColor} options={options} />
     </Text>
   );
 }

@@ -1,5 +1,5 @@
 import type { TestTree, TestTreeNode } from "#collect";
-import { DiagnosticCategory, type DiagnosticOrigin } from "#diagnostic";
+import type { DiagnosticOrigin } from "#diagnostic";
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 import type { CodeFrameOptions } from "./types.js";
@@ -60,12 +60,12 @@ function SquiggleLineText({ gutterWidth, indentWidth = 0, squiggleColor, squiggl
 }
 
 interface CodeFrameTextProps {
-  diagnosticCategory: DiagnosticCategory;
   diagnosticOrigin: DiagnosticOrigin;
+  highlightColor: Color;
   options?: CodeFrameOptions | undefined;
 }
 
-export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }: CodeFrameTextProps) {
+export function CodeFrameText({ diagnosticOrigin, highlightColor, options }: CodeFrameTextProps) {
   const linesAbove = options?.linesAbove ?? 2;
   const linesBelow = options?.linesBelow ?? 3;
   const showBreadcrumbs = options?.showBreadcrumbs ?? true;
@@ -80,18 +80,6 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
   const firstLine = Math.max(firstMarkedLine - linesAbove, 0);
   const lastLine = Math.min(lastMarkedLine + linesBelow, lineMap.length - 1);
   const gutterWidth = (lastLine + 1).toString().length + 2;
-
-  let highlightColor: Color;
-
-  switch (diagnosticCategory) {
-    case DiagnosticCategory.Error:
-      highlightColor = Color.Red;
-      break;
-
-    case DiagnosticCategory.Warning:
-      highlightColor = Color.Yellow;
-      break;
-  }
 
   const codeFrame: Array<ScribblerJsx.Element> = [];
 

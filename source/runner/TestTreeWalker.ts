@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
-import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, DiagnosticCategory, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService } from "#expect";
 import { Reject } from "#reject";
@@ -173,6 +173,14 @@ export class TestTreeWalker {
 
     if (isPass) {
       EventEmitter.dispatch(["expect:pass", { result: expectResult }]);
+
+      if (this.#resolvedConfig.explainCause && expect.isNot) {
+        const diagnostics = matchResult
+          .explain()
+          .map((diagnostic) => diagnostic.with({ category: DiagnosticCategory.Cause }));
+
+        EventEmitter.dispatch(["cause:explain", { diagnostics }]);
+      }
     } else {
       EventEmitter.dispatch(["expect:fail", { diagnostics: matchResult.explain(), result: expectResult }]);
     }
