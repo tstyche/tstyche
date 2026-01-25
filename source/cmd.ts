@@ -23,7 +23,7 @@ class StatusHandler implements EventHandler {
 }
 
 /**
- * Runs TSTyche in the same process, writing real-time test results or error messages to the `stderr` and `stdout` streams.
+ * Runs TSTyche in the same process, writing error messages and test results to the `stderr` and `stdout` streams in real-time.
  *
  * @returns A promise that rejects if the test run fails and resolves otherwise.
  */
