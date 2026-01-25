@@ -20,18 +20,17 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("'--quiet' command line option", async (t) => {
-  t.afterEach(async () => {
+  await writeFixture(fixtureUrl, {
+    ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+    ["__typetests__/isString.tst.ts"]: isStringTestText,
+  });
+
+  t.after(async () => {
     await clearFixture(fixtureUrl);
   });
 
   await t.test("silences test runner output", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
-      ["__typetests__/isString.tst.ts"]: isStringTestText,
-    });
-
-    const args = ["--quiet"];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--quiet"]);
 
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-stderr`,
@@ -44,13 +43,7 @@ await test("'--quiet' command line option", async (t) => {
   });
 
   await t.test("when search string is specified before the option", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
-      ["__typetests__/isString.tst.ts"]: isStringTestText,
-    });
-
-    const args = ["isNumber", "--quiet"];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["isNumber", "--quiet"]);
 
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-stderr`,
@@ -63,17 +56,24 @@ await test("'--quiet' command line option", async (t) => {
   });
 
   await t.test("when search string is specified after the option", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
-      ["__typetests__/isString.tst.ts"]: isStringTestText,
-    });
-
-    const args = ["--quiet", "isString"];
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--quiet", "isString"]);
 
     assert.equal(stderr, "");
     assert.equal(stdout, "");
 
     assert.equal(exitCode, 0);
   });
+
+  const testCases = ["--help", "--list", "--listFiles", "--showConfig", "--version"];
+
+  for (const testCase of testCases) {
+    await t.test(`when specified with '${testCase}'`, async () => {
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [testCase]);
+
+      assert.equal(stderr, "");
+      assert.notEqual(stdout, "");
+
+      assert.equal(exitCode, 0);
+    });
+  }
 });
