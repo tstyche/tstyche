@@ -23,9 +23,9 @@ class StatusHandler implements EventHandler {
 }
 
 /**
- * Runs TSTyche in the same process, writing error messages and test results to the `stderr` and `stdout` streams in real-time.
+ * Runs TSTyche in the same process, streaming error messages and test results to the `stderr` and `stdout` in real-time.
  *
- * @returns A promise that rejects if the test run fails and resolves otherwise.
+ * @returns A promise that resolves if the test run is successful and rejects if it fails.
  */
 
 export default async function tstyche(template: TemplateStringsArray, ...substitutions: Array<string>): Promise<void> {
