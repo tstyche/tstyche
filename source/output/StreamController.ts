@@ -1,25 +1,22 @@
 import type { WriteStream } from "node:tty";
 
 export class StreamController {
-  #stream: WriteStream | undefined;
-  #originalStream: WriteStream;
+  #isEnabled = true;
+  #stream: WriteStream;
 
   constructor(stream: WriteStream) {
     this.#stream = stream;
-    this.#originalStream = stream;
   }
 
   disable(): void {
-    this.#stream = undefined;
+    this.#isEnabled = false;
   }
 
   enable(): void {
-    if (!this.#stream) {
-      this.#stream = this.#originalStream;
-    }
+    this.#isEnabled = true;
   }
 
   write(text: string): void {
-    this.#stream?.write(text);
+    this.#isEnabled && this.#stream.write(text);
   }
 }
