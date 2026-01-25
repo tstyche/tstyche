@@ -16,7 +16,7 @@ export class Config {
   }
 
   static async parseCommandLine(
-    commandLine: Array<string>,
+    commandLine: ReadonlyArray<string>,
   ): Promise<{ commandLineOptions: CommandLineOptions; pathMatch: Array<string> }> {
     const commandLineOptions: CommandLineOptions = {};
     const pathMatch: Array<string> = [];

@@ -30,7 +30,7 @@ export class CommandParser {
     this.#onDiagnostics(Diagnostic.error(text));
   }
 
-  async parse(commandLineArgs: Array<string>): Promise<void> {
+  async parse(commandLineArgs: ReadonlyArray<string>): Promise<void> {
     let index = 0;
     let arg = commandLineArgs[index];
 
@@ -56,7 +56,7 @@ export class CommandParser {
   }
 
   async #parseOptionValue(
-    commandLineArgs: Array<string>,
+    commandLineArgs: ReadonlyArray<string>,
     index: number,
     optionName: string,
     optionDefinition: OptionDefinition,
