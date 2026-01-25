@@ -11,8 +11,9 @@ describe("CommandLineOptions", () => {
       list: true,
       listFiles: true,
       only: "external",
-      reporters: ["./tstyche-reporter.js"],
       prune: true,
+      quiet: true,
+      reporters: ["./tstyche-reporter.js"],
       showConfig: true,
       skip: "internal",
       target: ["5.0" as const, "5.4" as const, "latest" as const],
@@ -72,6 +73,12 @@ describe("CommandLineOptions", () => {
   test("'prune' option", () => {
     expect<Pick<tstyche.CommandLineOptions, "prune">>().type.toBe<{
       prune?: boolean;
+    }>();
+  });
+
+  test("'quiet' option", () => {
+    expect<Pick<tstyche.CommandLineOptions, "quiet">>().type.toBe<{
+      quiet?: boolean;
     }>();
   });
 

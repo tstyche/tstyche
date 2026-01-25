@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
@@ -62,6 +63,10 @@ export class Runner {
   }
 
   async run(files: Array<string | URL | FileLocation>, cancellationToken = new CancellationToken()): Promise<void> {
+    if (this.#resolvedConfig.quiet) {
+      OutputService.outputStream = undefined;
+    }
+
     if (!this.#resolvedConfig.watch) {
       OutputService.writeMessage(prologueText(Runner.version, this.#resolvedConfig.rootPath));
     }
@@ -79,6 +84,10 @@ export class Runner {
 
     this.#eventEmitter.removeReporters();
     this.#eventEmitter.removeHandlers();
+
+    if (this.#resolvedConfig.quiet) {
+      OutputService.outputStream = process.stdout;
+    }
   }
 
   async #run(files: Array<FileLocation>, cancellationToken: CancellationToken) {

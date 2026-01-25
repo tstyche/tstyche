@@ -11,6 +11,7 @@ export interface CommandLineOptions {
   listFiles?: boolean;
   only?: string;
   prune?: boolean;
+  quiet?: boolean;
   reporters?: Array<string>;
   showConfig?: boolean;
   skip?: string;
