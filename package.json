@@ -25,7 +25,7 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./cmd": "./dist/cmd.js",
+    "./tag": "./dist/tag.js",
     "./tstyche": "./dist/tstyche.js",
     "./package.json": "./package.json"
   },
