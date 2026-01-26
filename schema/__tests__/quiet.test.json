@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'quiet' option",
+      "valid": true,
+      "data": {
+        "quiet": true
+      }
+    },
+    {
+      "description": "value of the 'quiet' option must be of type boolean",
+      "valid": false,
+      "data": {
+        "quiet": "never"
+      }
+    }
+  ]
+}

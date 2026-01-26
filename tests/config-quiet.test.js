@@ -42,6 +42,32 @@ await test("'--quiet' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("when 'true' is specified as a value", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--quiet", "true"]);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stdout, "");
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when 'false' is specified as a value", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--quiet", "false"]);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.notEqual(stdout, "");
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("when search string is specified before the option", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["isNumber", "--quiet"]);
 
@@ -68,7 +94,7 @@ await test("'--quiet' command line option", async (t) => {
 
   for (const testCase of testCases) {
     await t.test(`when specified with '${testCase}'`, async () => {
-      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [testCase]);
+      const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [testCase, "--quiet"]);
 
       assert.equal(stderr, "");
       assert.notEqual(stdout, "");
@@ -76,4 +102,99 @@ await test("'--quiet' command line option", async (t) => {
       assert.equal(exitCode, 0);
     });
   }
+
+  await t.test("overrides configuration file option, when set to 'false'", async () => {
+    const config = {
+      quiet: true,
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--quiet", "false"]);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.notEqual(stdout, "");
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("overrides configuration file option, when set to 'true'", async () => {
+    const config = {
+      quiet: false,
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--quiet"]);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stdout, "");
+
+    assert.equal(exitCode, 1);
+  });
+});
+
+await test("'quiet' configuration file option", async (t) => {
+  await writeFixture(fixtureUrl, {
+    ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+    ["__typetests__/isString.tst.ts"]: isStringTestText,
+  });
+
+  t.after(async () => {
+    await clearFixture(fixtureUrl);
+  });
+
+  await t.test("silences test runner output", async () => {
+    const config = {
+      quiet: true,
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(stdout, "");
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("does not silence test runner output", async () => {
+    const config = {
+      quiet: false,
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.notEqual(stdout, "");
+
+    assert.equal(exitCode, 1);
+  });
 });

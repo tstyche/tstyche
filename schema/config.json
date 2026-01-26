@@ -29,6 +29,10 @@
         "type": "string"
       }
     },
+    "quiet": {
+      "description": "Silence all test runner output except errors and warnings.",
+      "type": "boolean"
+    },
     "rejectAnyType": {
       "description": "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
       "default": true,

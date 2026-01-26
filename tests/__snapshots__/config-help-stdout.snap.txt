@@ -36,7 +36,7 @@ Command Line Options
   --prune
   Remove all installed versions of the 'typescript' package and exit.
 
-  --quiet
+  --quiet  boolean
   Silence all test runner output except errors and warnings.
 
   --reporters  list of strings

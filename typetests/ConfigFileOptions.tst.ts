@@ -1,13 +1,14 @@
 import { describe, expect, test } from "tstyche";
-import type * as tstyche from "tstyche/tstyche";
+import type { ConfigFileOptions } from "tstyche/tstyche";
 
 describe("ConfigFileOptions", () => {
   test("all options", () => {
-    expect<tstyche.ConfigFileOptions>().type.toBeAssignableFrom({
+    expect<ConfigFileOptions>().type.toBeAssignableFrom({
       checkDeclarationFiles: true,
       checkSuppressedErrors: true,
       failFast: true,
       fixtureFileMatch: ["**/tests/types/fixtures/**/*"],
+      quiet: true,
       rejectAnyType: true,
       rejectNeverType: true,
       reporters: ["./tstyche-reporter.js"],
@@ -19,71 +20,77 @@ describe("ConfigFileOptions", () => {
   });
 
   test("all options are optional", () => {
-    expect<tstyche.ConfigFileOptions>().type.toBeAssignableFrom({});
+    expect<ConfigFileOptions>().type.toBeAssignableFrom({});
   });
 
   test("'checkDeclarationFiles' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "checkDeclarationFiles">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "checkDeclarationFiles">>().type.toBe<{
       checkDeclarationFiles?: boolean;
     }>();
   });
 
   test("'checkSuppressedErrors' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "checkSuppressedErrors">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "checkSuppressedErrors">>().type.toBe<{
       checkSuppressedErrors?: boolean;
     }>();
   });
 
   test("'failFast' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "failFast">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "failFast">>().type.toBe<{
       failFast?: boolean;
     }>();
   });
 
   test("'fixtureFileMatch' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "fixtureFileMatch">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "fixtureFileMatch">>().type.toBe<{
       fixtureFileMatch?: Array<string>;
     }>();
   });
 
+  test("'quiet' option", () => {
+    expect<Pick<ConfigFileOptions, "quiet">>().type.toBe<{
+      quiet?: boolean;
+    }>();
+  });
+
   test("'rejectAnyType' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "rejectAnyType">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "rejectAnyType">>().type.toBe<{
       rejectAnyType?: boolean;
     }>();
   });
 
   test("'rejectNeverType' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "rejectNeverType">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "rejectNeverType">>().type.toBe<{
       rejectNeverType?: boolean;
     }>();
   });
 
   test("'reporters' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "reporters">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "reporters">>().type.toBe<{
       reporters?: Array<string>;
     }>();
   });
 
   test("'rootPath' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "rootPath">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "rootPath">>().type.toBe<{
       rootPath?: string;
     }>();
   });
 
   test("'target' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "target">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "target">>().type.toBe<{
       target?: Array<string>;
     }>();
   });
 
   test("'testFileMatch' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "testFileMatch">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "testFileMatch">>().type.toBe<{
       testFileMatch?: Array<string>;
     }>();
   });
 
   test("'tsconfig' option", () => {
-    expect<Pick<tstyche.ConfigFileOptions, "tsconfig">>().type.toBe<{
+    expect<Pick<ConfigFileOptions, "tsconfig">>().type.toBe<{
       tsconfig?: string;
     }>();
   });

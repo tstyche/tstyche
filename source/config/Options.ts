@@ -123,9 +123,9 @@ export class Options {
     },
 
     {
-      brand: OptionBrand.True,
+      brand: OptionBrand.Boolean,
       description: "Silence all test runner output except errors and warnings.",
-      group: OptionGroup.CommandLine,
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       name: "quiet",
     },
 
