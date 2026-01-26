@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.3] - 2026-01-26
+
+### Fixed
+
+- When checking type structure, take into account predicate parameter position ([#661](https://github.com/tstyche/tstyche/pull/661))
+- When checking type structure, ignore unused type parameters in call signatures ([#659](https://github.com/tstyche/tstyche/pull/659))
+
 ## [6.0.2] - 2026-01-11
 
 ### Fixed
@@ -995,6 +1002,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.0.3]: https://github.com/tstyche/tstyche/releases/tag/v6.0.3
 [6.0.2]: https://github.com/tstyche/tstyche/releases/tag/v6.0.2
 [6.0.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.1
 [6.0.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0
