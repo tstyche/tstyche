@@ -62,6 +62,10 @@ export class Runner {
   }
 
   async run(files: Array<string | URL | FileLocation>, cancellationToken = new CancellationToken()): Promise<void> {
+    if (this.#resolvedConfig.quiet) {
+      OutputService.outputStream.disable();
+    }
+
     if (!this.#resolvedConfig.watch) {
       OutputService.writeMessage(prologueText(Runner.version, this.#resolvedConfig.rootPath));
     }
@@ -79,6 +83,10 @@ export class Runner {
 
     this.#eventEmitter.removeReporters();
     this.#eventEmitter.removeHandlers();
+
+    if (this.#resolvedConfig.quiet) {
+      OutputService.outputStream.enable();
+    }
   }
 
   async #run(files: Array<FileLocation>, cancellationToken: CancellationToken) {

@@ -1,0 +1,11 @@
+Error: Type 'number' is the same as type 'number'.
+
+  1 | import { expect, test } from "tstyche";
+  2 | test("is number?", () => {
+  3 |   expect<number>().type.not.toBe<number>();
+    |                                  ~~~~~~
+  4 | });
+  5 | 
+
+      at ./__typetests__/isNumber.tst.ts:3:34 ❭ is number?
+
