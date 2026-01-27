@@ -10,15 +10,24 @@ import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 import { FileWatcher, Watcher, type WatchHandler } from "#watch";
 
+export interface CliOptions {
+  noErrorExitCode?: boolean;
+}
+
 export class Cli {
   #eventEmitter = new EventEmitter();
+  #noErrorExitCode: boolean;
 
-  async run(commandLine: Array<string>, cancellationToken = new CancellationToken()): Promise<void> {
+  constructor(options?: CliOptions) {
+    this.#noErrorExitCode = options?.noErrorExitCode ?? false;
+  }
+
+  async run(commandLine: ReadonlyArray<string>, cancellationToken = new CancellationToken()): Promise<void> {
     const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
     this.#eventEmitter.addHandler(cancellationHandler);
 
     const exitCodeHandler = new ExitCodeHandler();
-    this.#eventEmitter.addHandler(exitCodeHandler);
+    !this.#noErrorExitCode && this.#eventEmitter.addHandler(exitCodeHandler);
 
     const setupReporter = new SetupReporter();
     this.#eventEmitter.addReporter(setupReporter);

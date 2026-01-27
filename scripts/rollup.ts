@@ -81,6 +81,7 @@ const config: Array<RollupOptions> = [
   {
     external: [/^node:/],
     input: {
+      tag: "./source/tag.ts",
       index: "./source/types.ts",
       tstyche: "./source/tstyche.ts",
     },
@@ -111,6 +112,7 @@ const config: Array<RollupOptions> = [
     external: [/^node:/, "./tstyche.js"],
     input: {
       bin: "./source/bin.ts",
+      tag: "./source/tag.ts",
       index: "./source/index.ts",
       tstyche: "./source/tstyche.ts",
     },
