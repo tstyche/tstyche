@@ -124,6 +124,13 @@ export class Options {
 
     {
       brand: OptionBrand.Boolean,
+      description: "Silence all test runner output except errors and warnings.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      name: "quiet",
+    },
+
+    {
+      brand: OptionBrand.Boolean,
       description: "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
       group: OptionGroup.ConfigFile,
       name: "rejectAnyType",

@@ -9,6 +9,7 @@
         "checkSuppressedErrors": true,
         "failFast": true,
         "fixtureFileMatch": ["fixtures/*.ts", "**/__fixtures__/**/*"],
+        "quiet": true,
         "rejectAnyType": true,
         "rejectNeverType": true,
         "reporters": ["./tstyche-reporter.js"],

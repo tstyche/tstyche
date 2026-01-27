@@ -11,6 +11,7 @@ export interface CommandLineOptions {
   listFiles?: boolean;
   only?: string;
   prune?: boolean;
+  quiet?: boolean;
   reporters?: Array<string>;
   showConfig?: boolean;
   skip?: string;
@@ -26,6 +27,7 @@ export interface ConfigFileOptions {
   checkSuppressedErrors?: boolean;
   failFast?: boolean;
   fixtureFileMatch?: Array<string>;
+  quiet?: boolean;
   rejectAnyType?: boolean;
   rejectNeverType?: boolean;
   reporters?: Array<string>;
