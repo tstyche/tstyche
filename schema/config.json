@@ -31,6 +31,7 @@
     },
     "quiet": {
       "description": "Silence all test runner output except errors and warnings.",
+      "default": false,
       "type": "boolean"
     },
     "rejectAnyType": {
