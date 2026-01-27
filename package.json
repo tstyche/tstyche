@@ -54,7 +54,7 @@
     "test:examples": "tstyche examples",
     "test:run": "rm -rf ./tests/__fixtures__/.generated && yarn node ./tests/__utilities__/runner.js",
     "test:types": "tstyche typetests",
-    "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
+    "test:unit": "yarn test:run source/**/__tests__/*.test.js --parallel"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.12",
