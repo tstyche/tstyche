@@ -1,0 +1,22 @@
+<red>Error: </>Type 'number' is not the same as type 'string'.
+
+<gray>  1</><gray> | </>import { expect, test } from "tstyche";
+<gray>  2</><gray> | </>test("is number?", () => {
+<red>  3</><gray> | </>  expect<number>().type.toBe<string>();
+   <gray> | </>                             <red>~~~~~~</>
+<gray>  4</><gray> | </>});
+<gray>  5</><gray> | </>
+
+     <gray> at </><cyan>./__typetests__/isNumber.test.ts</><gray>:3:30</><gray> ❭ is number?</>
+
+<<baseUrl>>/dist/tag.js:30
+            reject(new Error("TSTyche test run failed. Check the output above for details."));
+                   ^
+
+Error: TSTyche test run failed. Check the output above for details.
+    at <<baseUrl>>/dist/tag.js:30:20
+    at new Promise (<anonymous>)
+    at tstyche (<<baseUrl>>/dist/tag.js:28:12)
+    at async <gray><<baseUrl>>/tests/__fixtures__/.generated/integration-tag/</color>__tests__/fail.test.js:2:1
+
+Node.js v24.13.0
