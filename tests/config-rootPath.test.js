@@ -52,13 +52,9 @@ await test("'--rootPath' command line option", async (t) => {
       ["temp/empty"]: undefined,
     });
 
-    const rootUrl = new URL("./temp", fixtureUrl);
+    const rootUrl = new URL("./temp", fixtureUrl).toString();
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
-      "--rootPath",
-      rootUrl.toString(),
-      "--showConfig",
-    ]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--rootPath", rootUrl, "--showConfig"]);
 
     assert.equal(stderr, "");
 
