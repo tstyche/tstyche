@@ -11,7 +11,7 @@ export class FileLocation {
   }
 
   #toPath(file: string | URL) {
-    if (typeof file === "string" && !file.startsWith("file:")) {
+    if (typeof file === "string" && !URL.canParse(file)) {
       return file;
     }
 

@@ -37,12 +37,12 @@ export function getTestFileName(testFileUrl) {
 
 /**
  * @param {URL} fixtureUrl
- * @param {Record<string, string>} [files]
+ * @param {Record<string, string | undefined> | undefined} [files]
  */
 export async function writeFixture(fixtureUrl, files) {
   await fs.mkdir(fixtureUrl, { recursive: true });
 
-  if (files == null) {
+  if (!files) {
     return;
   }
 

@@ -13,6 +13,7 @@ export interface CommandLineOptions {
   prune?: boolean;
   quiet?: boolean;
   reporters?: Array<string>;
+  rootPath?: string;
   showConfig?: boolean;
   skip?: string;
   target?: Array<string>;

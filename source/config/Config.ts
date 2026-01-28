@@ -34,11 +34,12 @@ export class Config {
 
   static async parseConfigFile(
     filePath?: string,
+    rootPath?: string,
   ): Promise<{ configFileOptions: ConfigFileOptions; configFilePath: string }> {
-    const configFilePath = Config.resolveConfigFilePath(filePath);
+    const configFilePath = Config.resolveConfigFilePath(filePath, rootPath);
 
     const configFileOptions: ConfigFileOptions = {
-      rootPath: Path.dirname(configFilePath),
+      rootPath: rootPath ?? Path.dirname(configFilePath),
     };
 
     if (existsSync(configFilePath)) {
@@ -83,7 +84,11 @@ export class Config {
     return resolvedConfig;
   }
 
-  static resolveConfigFilePath(filePath?: string): string {
-    return filePath != null ? Path.resolve(filePath) : Path.resolve("./tstyche.config.json");
+  static resolveConfigFilePath(filePath?: string, rootPath = "."): string {
+    if (filePath != null) {
+      return Path.resolve(filePath);
+    }
+
+    return Path.resolve(rootPath, "./tstyche.config.json");
   }
 }

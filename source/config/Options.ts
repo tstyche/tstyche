@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { Path } from "#path";
@@ -157,7 +157,7 @@ export class Options {
     {
       brand: OptionBrand.String,
       description: "The path to a directory containing files of a test project.",
-      group: OptionGroup.ConfigFile,
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       name: "rootPath",
     },
 
@@ -257,6 +257,10 @@ export class Options {
           break;
         }
 
+        if (URL.canParse(optionValue)) {
+          optionValue = fileURLToPath(optionValue);
+        }
+
         optionValue = Path.resolve(rootPath, optionValue);
         break;
 
@@ -310,7 +314,7 @@ export class Options {
           break;
         }
 
-        if (optionValue.startsWith("file:") && existsSync(new URL(optionValue))) {
+        if (URL.canParse(optionValue) && existsSync(new URL(optionValue))) {
           break;
         }
 
