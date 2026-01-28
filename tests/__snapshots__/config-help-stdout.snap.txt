@@ -42,6 +42,9 @@ Command Line Options
   --reporters  list of strings
   The list of reporters to use.
 
+  --rootPath  string
+  The path to a directory containing files of a test project.
+
   --showConfig
   Print the resolved configuration and exit.
 

@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { Path } from "#path";
@@ -157,7 +157,7 @@ export class Options {
     {
       brand: OptionBrand.String,
       description: "The path to a directory containing files of a test project.",
-      group: OptionGroup.ConfigFile,
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       name: "rootPath",
     },
 
@@ -255,6 +255,10 @@ export class Options {
       case "tsconfig":
         if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {
           break;
+        }
+
+        if (optionValue.startsWith("file:")) {
+          optionValue = fileURLToPath(optionValue);
         }
 
         optionValue = Path.resolve(rootPath, optionValue);

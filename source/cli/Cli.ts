@@ -87,7 +87,10 @@ export class Cli {
         this.#eventEmitter.addReporter(setupReporter);
       }
 
-      const { configFileOptions, configFilePath } = await Config.parseConfigFile(commandLineOptions.config);
+      const { configFileOptions, configFilePath } = await Config.parseConfigFile(
+        commandLineOptions.config,
+        commandLineOptions.rootPath,
+      );
 
       const resolvedConfig = Config.resolve({
         configFileOptions,
