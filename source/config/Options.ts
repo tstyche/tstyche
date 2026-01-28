@@ -257,7 +257,7 @@ export class Options {
           break;
         }
 
-        if (URL.canParse(optionValue)) {
+        if (optionValue.startsWith("file:")) {
           optionValue = fileURLToPath(optionValue);
         }
 
@@ -314,7 +314,7 @@ export class Options {
           break;
         }
 
-        if (URL.canParse(optionValue) && existsSync(new URL(optionValue))) {
+        if (optionValue.startsWith("file:") && existsSync(new URL(optionValue))) {
           break;
         }
 
