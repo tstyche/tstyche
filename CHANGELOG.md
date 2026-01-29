@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.1.0] - 2026-01-29
+
+### Added
+
+- Add the `--root` command line option ([#668](https://github.com/tstyche/tstyche/pull/668), [#669](https://github.com/tstyche/tstyche/pull/669))
+- Add the `--quiet` command line option ([#666](https://github.com/tstyche/tstyche/pull/666))
+- Add the `tstyche/tag` entry point ([#665](https://github.com/tstyche/tstyche/pull/665))
+
 ## [6.0.3] - 2026-01-26
 
 ### Fixed
@@ -1002,6 +1010,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.1.0]: https://github.com/tstyche/tstyche/releases/tag/v6.1.0
 [6.0.3]: https://github.com/tstyche/tstyche/releases/tag/v6.0.3
 [6.0.2]: https://github.com/tstyche/tstyche/releases/tag/v6.0.2
 [6.0.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.1
