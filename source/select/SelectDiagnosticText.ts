@@ -3,7 +3,7 @@ import type { ResolvedConfig } from "#config";
 export class SelectDiagnosticText {
   static #pathSelectOptions(resolvedConfig: ResolvedConfig): Array<string> {
     const text = [
-      `Root path:       ${resolvedConfig.rootPath}`,
+      `Root directory:  ${resolvedConfig.rootPath}`,
       `Test file match: ${resolvedConfig.testFileMatch.join(", ")}`,
     ];
 

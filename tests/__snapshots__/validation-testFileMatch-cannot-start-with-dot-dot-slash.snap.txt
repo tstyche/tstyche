@@ -1,6 +1,6 @@
 Error: A 'testFileMatch' pattern cannot start with '../'.
 
-The files are only collected within the 'rootPath' directory.
+The files are only collected within the root directory.
 
   1 | {
   2 |   "testFileMatch": [
