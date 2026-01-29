@@ -89,7 +89,7 @@ export class Cli {
 
       const { configFileOptions, configFilePath } = await Config.parseConfigFile(
         commandLineOptions.config,
-        commandLineOptions.rootPath,
+        commandLineOptions.root,
       );
 
       const resolvedConfig = Config.resolve({

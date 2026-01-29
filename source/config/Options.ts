@@ -157,7 +157,14 @@ export class Options {
     {
       brand: OptionBrand.String,
       description: "The path to a directory containing files of a test project.",
-      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      group: OptionGroup.CommandLine,
+      name: "root",
+    },
+
+    {
+      brand: OptionBrand.String,
+      description: "The path to a directory containing files of a test project.",
+      group: OptionGroup.ConfigFile,
       name: "rootPath",
     },
 
@@ -251,6 +258,7 @@ export class Options {
 
     switch (canonicalOptionName) {
       case "config":
+      case "root":
       case "rootPath":
       case "tsconfig":
         if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {
@@ -295,6 +303,7 @@ export class Options {
 
     switch (canonicalOptionName) {
       case "config":
+      case "root":
       case "rootPath":
       case "tsconfig":
         if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {

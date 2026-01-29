@@ -7,44 +7,6 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("'--rootPath' command line option", async (t) => {
-  await writeFixture(fixtureUrl);
-
-  t.after(async () => {
-    await clearFixture(fixtureUrl);
-  });
-
-  await t.test("when option value is missing", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--rootPath"]);
-
-    const expected = [
-      "Error: Option '--rootPath' expects a value.",
-      "",
-      "Value for the '--rootPath' option must be a string.",
-      "",
-      "",
-    ].join("\n");
-
-    assert.equal(stderr, expected);
-    assert.equal(stdout, "");
-    assert.equal(exitCode, 1);
-  });
-
-  await t.test("when specified path does not exist", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--rootPath", "../nope"]);
-
-    const expected = [
-      "Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/nope' does not exist.",
-      "",
-      "",
-    ].join("\n");
-
-    assert.equal(normalizeOutput(stderr), expected);
-    assert.equal(stdout, "");
-    assert.equal(exitCode, 1);
-  });
-});
-
 await test("'rootPath' configuration file option", async (t) => {
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);

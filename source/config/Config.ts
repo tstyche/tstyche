@@ -33,10 +33,11 @@ export class Config {
   }
 
   static async parseConfigFile(
-    filePath?: string,
+    configPath?: string,
+    // TODO set default 'rootPath = "."' here and use 'rootPath' to resolve 'configFilePath', but not vice versa
     rootPath?: string,
   ): Promise<{ configFileOptions: ConfigFileOptions; configFilePath: string }> {
-    const configFilePath = Config.resolveConfigFilePath(filePath, rootPath);
+    const configFilePath = Config.resolveConfigFilePath(configPath, rootPath);
 
     const configFileOptions: ConfigFileOptions = {
       rootPath: rootPath ?? Path.dirname(configFilePath),
@@ -80,13 +81,16 @@ export class Config {
     if ("config" in resolvedConfig) {
       delete resolvedConfig.config;
     }
+    if ("root" in resolvedConfig) {
+      delete resolvedConfig.root;
+    }
 
     return resolvedConfig;
   }
 
-  static resolveConfigFilePath(filePath?: string, rootPath = "."): string {
-    if (filePath != null) {
-      return Path.resolve(filePath);
+  static resolveConfigFilePath(configPath?: string, rootPath = "."): string {
+    if (configPath != null) {
+      return Path.resolve(configPath);
     }
 
     return Path.resolve(rootPath, "./tstyche.config.json");

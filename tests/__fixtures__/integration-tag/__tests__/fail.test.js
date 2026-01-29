@@ -5,5 +5,5 @@ import { getFixtureUrl } from "./getFixtureUrl.js";
 const fixtureUrl = getFixtureUrl(import.meta);
 
 await assert.rejects(async () => {
-  await tstyche`isNumber --quiet --rootPath ${fixtureUrl}`;
+  await tstyche`isNumber --quiet --root ${fixtureUrl}`;
 }, "Error: TSTyche test run failed. Check the output above for details.");
