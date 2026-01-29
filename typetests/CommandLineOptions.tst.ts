@@ -14,6 +14,7 @@ describe("CommandLineOptions", () => {
       prune: true,
       quiet: true,
       reporters: ["./tstyche-reporter.js"],
+      root: "./example",
       showConfig: true,
       skip: "internal",
       target: ["5.0" as const, "5.4" as const, "latest" as const],
@@ -85,6 +86,12 @@ describe("CommandLineOptions", () => {
   test("'reporters' option", () => {
     expect<Pick<CommandLineOptions, "reporters">>().type.toBe<{
       reporters?: Array<string>;
+    }>();
+  });
+
+  test("'root' option", () => {
+    expect<Pick<CommandLineOptions, "root">>().type.toBe<{
+      root?: string;
     }>();
   });
 

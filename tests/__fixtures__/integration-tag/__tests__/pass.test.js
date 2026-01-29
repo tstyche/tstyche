@@ -3,4 +3,4 @@ import { getFixtureUrl } from "./getFixtureUrl.js";
 
 const fixtureUrl = getFixtureUrl(import.meta);
 
-await tstyche`isString --quiet --rootPath ${fixtureUrl}`;
+await tstyche`isString --quiet --root ${fixtureUrl}`;
