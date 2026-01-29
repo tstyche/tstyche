@@ -56,11 +56,6 @@
         "type": "string"
       }
     },
-    "rootPath": {
-      "description": "The path to a directory containing files of a test project.",
-      "default": "./",
-      "type": "string"
-    },
     "target": {
       "description": "The range of TypeScript versions to be tested against.",
       "default": "*",

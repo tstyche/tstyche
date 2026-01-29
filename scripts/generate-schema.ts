@@ -33,9 +33,6 @@ function createJsonSchemaDefinition(
   }
 
   if (defaultValue != null) {
-    if (optionDefinition.name === "rootPath") {
-      defaultValue = "./";
-    }
     if (optionDefinition.name === "target") {
       defaultValue = "*";
     }
