@@ -199,13 +199,14 @@ await test("'tstyche.config.json' file", async (t) => {
 
   await t.test("allows single quoted option values", async () => {
     const configText = `{
-  'rootPath': './',
-  'testFileMatch': ['**/*.tst.*']
-}
+  'testFileMatch': ['**/*.tst.*'],
+  'tsconfig': './tsconfig.test.json'
+  }
 `;
 
     await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: configText,
+      ["tsconfig.test.json"]: "{}",
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -213,8 +214,8 @@ await test("'tstyche.config.json' file", async (t) => {
     assert.equal(stderr, "");
 
     assert.matchObject(normalizeOutput(stdout), {
-      rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile",
       testFileMatch: ["**/*.tst.*"],
+      tsconfig: "<<basePath>>/tests/__fixtures__/.generated/config-configFile/tsconfig.test.json",
     });
 
     assert.equal(exitCode, 0);
@@ -250,9 +251,7 @@ await test("'--config' command line option", async (t) => {
   });
 
   await t.test("when specified, reads configuration file from the location", async () => {
-    const config = {
-      rootPath: "../",
-    };
+    const config = { failFast: true };
 
     await writeFixture(fixtureUrl, {
       ["config/tstyche.json"]: JSON.stringify(config, null, 2),
@@ -268,7 +267,7 @@ await test("'--config' command line option", async (t) => {
 
     assert.matchObject(normalizeOutput(stdout), {
       configFilePath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile/config/tstyche.json",
-      rootPath: "<<basePath>>/tests/__fixtures__/.generated/config-configFile",
+      failFast: true,
     });
 
     assert.equal(exitCode, 0);

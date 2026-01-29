@@ -13,7 +13,7 @@ await test("'--root' command line option", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("sets root path of a test project", async () => {
+  await t.test("sets root of a test project", async () => {
     await writeFixture(fixtureUrl, {
       ["temp/empty"]: undefined,
     });

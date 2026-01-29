@@ -44,7 +44,7 @@ await test("'tstyche.config.json' file", async (t) => {
   await t.test("handles option values of wrong type", async () => {
     const config = {
       failFast: "always",
-      rootPath: true,
+      target: true,
     };
 
     await writeFixture(fixtureUrl, {
@@ -66,7 +66,7 @@ await test("'tstyche.config.json' file", async (t) => {
   await t.test("handles indentation tabs", async () => {
     const configText = `{
 \t"failFast": "always",
-\t"rootPath": true
+\t"target": true
 }
 `;
 
@@ -87,7 +87,7 @@ await test("'tstyche.config.json' file", async (t) => {
   });
 
   await t.test("handles 'crlf' line endings", async () => {
-    const configText = `{\r\n  "failFast": "always",\r\n  "rootPath": true\r\n}\r\n`;
+    const configText = `{\r\n  "failFast": "always",\r\n  "target": true\r\n}\r\n`;
 
     await writeFixture(fixtureUrl, {
       ["tstyche.config.json"]: configText,
@@ -149,7 +149,7 @@ await test("'tstyche.config.json' file", async (t) => {
 
     await t.test("when option values are unquoted", async () => {
       const configText = `{
-    rootPath: ./,
+    target: *,
     testFileMatch: [**/*.tst.*]
   }
   `;
