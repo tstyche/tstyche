@@ -63,7 +63,7 @@
     "@types/react": "19.2.9",
     "cleaner-spec-reporter": "1.0.3",
     "code-block-writer": "13.0.3",
-    "cspell": "9.6.1",
+    "cspell": "9.6.2",
     "magic-string": "0.30.21",
     "monocart-coverage-reports": "2.12.9",
     "pretty-ansi": "3.0.0",
