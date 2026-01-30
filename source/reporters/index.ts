@@ -1,4 +1,5 @@
 export { BaseReporter } from "./BaseReporter.js";
+export { DotReporter } from "./DotReporter.js";
 export { ListReporter } from "./ListReporter.js";
 export { SetupReporter } from "./SetupReporter.js";
 export { SummaryReporter } from "./SummaryReporter.js";

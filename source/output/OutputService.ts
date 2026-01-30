@@ -9,6 +9,8 @@ export class OutputService {
   static #isClear = false;
   static #scribbler = new Scribbler();
 
+  static #newLine = OutputService.#scribbler.getNewLine();
+
   static clearTerminal(): void {
     if (!OutputService.#isClear) {
       // Erases all visible output, clears all lines saved in the scroll-back buffer
@@ -23,7 +25,7 @@ export class OutputService {
     OutputService.outputStream.write("\u001B[1A\u001B[0K");
   }
 
-  static #writeTo(stream: StreamController, element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
+  static #write(stream: StreamController, element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
     const elements = Array.isArray(element) ? element : [element];
 
     for (const element of elements) {
@@ -33,15 +35,19 @@ export class OutputService {
     OutputService.#isClear = false;
   }
 
+  static writeBlankLine(count = 1): void {
+    OutputService.outputStream.write(OutputService.#newLine.repeat(count));
+  }
+
   static writeError(element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
-    OutputService.#writeTo(OutputService.errorStream, element);
+    OutputService.#write(OutputService.errorStream, element);
   }
 
   static writeMessage(element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
-    OutputService.#writeTo(OutputService.outputStream, element);
+    OutputService.#write(OutputService.outputStream, element);
   }
 
   static writeWarning(element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {
-    OutputService.#writeTo(OutputService.errorStream, element);
+    OutputService.#write(OutputService.errorStream, element);
   }
 }
