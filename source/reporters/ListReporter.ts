@@ -11,16 +11,13 @@ export class ListReporter extends BaseReporter {
   #hasReportedAdds = false;
   #hasReportedError = false;
   #hasReportedUses = false;
-  #isFileViewExpanded = false;
-
-  #isLastFile() {
-    return this.#fileCount === 0;
-  }
+  #isVerbose = false;
 
   on([event, payload]: ReporterEvent): void {
     switch (event) {
       case "run:start":
-        this.#isFileViewExpanded = payload.result.files.length === 1 && this.resolvedConfig.watch !== true;
+        this.#isVerbose =
+          this.resolvedConfig.verbose || (payload.result.files.length === 1 && this.resolvedConfig.watch !== true);
         break;
 
       case "store:adds":
@@ -82,7 +79,11 @@ export class ListReporter extends BaseReporter {
 
         OutputService.writeMessage(fileStatusText(payload.result.status, payload.result.file));
 
-        OutputService.writeMessage(this.#fileView.getViewText({ appendEmptyLine: this.#isLastFile() }));
+        OutputService.writeMessage(this.#fileView.getViewText());
+
+        if (this.#isVerbose || this.#fileCount === 0 || this.#fileView.hasErrors()) {
+          OutputService.writeBlankLine();
+        }
 
         if (this.#fileView.hasErrors()) {
           OutputService.writeError(this.#fileView.getMessages());
@@ -93,37 +94,37 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "describe:start":
-        if (this.#isFileViewExpanded) {
+        if (this.#isVerbose) {
           this.#fileView.beginDescribe(payload.result.describe.name);
         }
         break;
 
       case "describe:end":
-        if (this.#isFileViewExpanded) {
+        if (this.#isVerbose) {
           this.#fileView.endDescribe();
         }
         break;
 
       case "test:skip":
-        if (this.#isFileViewExpanded) {
+        if (this.#isVerbose) {
           this.#fileView.addTest(ResultStatus.Skipped, payload.result.test.name);
         }
         break;
 
       case "test:fixme":
-        if (this.#isFileViewExpanded) {
+        if (this.#isVerbose) {
           this.#fileView.addTest(ResultStatus.Fixme, payload.result.test.name);
         }
         break;
 
       case "test:todo":
-        if (this.#isFileViewExpanded) {
+        if (this.#isVerbose) {
           this.#fileView.addTest(ResultStatus.Todo, payload.result.test.name);
         }
         break;
 
       case "test:error":
-        if (this.#isFileViewExpanded) {
+        if (this.#isVerbose) {
           this.#fileView.addTest(ResultStatus.Failed, payload.result.test.name);
         }
 
@@ -133,13 +134,13 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "test:fail":
-        if (this.#isFileViewExpanded) {
+        if (this.#isVerbose) {
           this.#fileView.addTest(ResultStatus.Failed, payload.result.test.name);
         }
         break;
 
       case "test:pass":
-        if (this.#isFileViewExpanded) {
+        if (this.#isVerbose) {
           this.#fileView.addTest(ResultStatus.Passed, payload.result.test.name);
         }
         break;

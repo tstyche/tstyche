@@ -215,6 +215,13 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.Boolean,
+      description: "Enable detailed logging.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      name: "verbose",
+    },
+
+    {
       brand: OptionBrand.True,
       description: "Print the version number and exit.",
       group: OptionGroup.CommandLine,
