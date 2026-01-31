@@ -34,7 +34,7 @@ export class FileView {
     return this.#messages;
   }
 
-  getViewText(): Array<ScribblerJsx.Element> {
+  getView(): Array<ScribblerJsx.Element> {
     return this.#lines;
   }
 

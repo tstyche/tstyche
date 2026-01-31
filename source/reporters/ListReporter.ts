@@ -79,7 +79,7 @@ export class ListReporter extends BaseReporter {
 
         OutputService.writeMessage(fileStatusText(payload.result.status, payload.result.file));
 
-        OutputService.writeMessage(this.#fileView.getViewText());
+        OutputService.writeMessage(this.#fileView.getView());
 
         if (this.#isVerbose || this.#fileCount === 0 || this.#fileView.hasErrors()) {
           OutputService.writeBlankLine();
