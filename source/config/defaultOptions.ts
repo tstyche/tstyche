@@ -14,4 +14,5 @@ export const defaultOptions: Required<ConfigFileOptions> = {
   target: ["*"],
   testFileMatch: ["**/*.tst.*", "**/__typetests__/*.test.*", "**/typetests/*.test.*"],
   tsconfig: "findup",
+  verbose: false,
 };

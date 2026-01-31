@@ -7,9 +7,8 @@ export class OutputService {
   static outputStream = new StreamController(process.stdout);
 
   static #isClear = false;
-  static #scribbler = new Scribbler();
-
-  static #newLine = OutputService.#scribbler.getNewLine();
+  static #newLine = "\n";
+  static #scribbler = new Scribbler({ newLine: OutputService.#newLine });
 
   static clearTerminal(): void {
     if (!OutputService.#isClear) {

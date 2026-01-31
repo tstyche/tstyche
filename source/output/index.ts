@@ -3,7 +3,6 @@ export { describeNameText } from "./describeNameText.js";
 export { diagnosticText } from "./diagnosticText.js";
 export { dotStatusText } from "./dotStatusText.js";
 export { fileStatusText } from "./fileStatusText.js";
-export { fileViewText } from "./fileViewText.js";
 export { formattedText } from "./formattedText.js";
 export { helpText } from "./helpText.js";
 export { OutputService } from "./OutputService.js";

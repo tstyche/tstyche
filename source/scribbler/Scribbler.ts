@@ -21,10 +21,6 @@ export class Scribbler {
     return ["\u001B[", Array.isArray(attributes) ? attributes.join(";") : attributes, "m"].join("");
   }
 
-  getNewLine(): string {
-    return this.#newLine;
-  }
-
   #indentEachLine(lines: string, level: number) {
     if (level === 0) {
       return lines;
