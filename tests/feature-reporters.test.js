@@ -144,7 +144,7 @@ await test("reporters", async (t) => {
           "--reporters",
           reporter,
           "--target",
-          "'5.6 || 5.8'",
+          '"5.6 || 5.8"',
         ]);
 
         assert.equal(stderr, "");
