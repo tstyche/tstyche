@@ -56,7 +56,7 @@ describe("ConfigFileOptions", () => {
 
   test("'rejectAnyType' option", () => {
     expect<Pick<ConfigFileOptions, "rejectAnyType">>().type.toBe<{
-      rejectAnyType?: string;
+      rejectAnyType?: boolean;
     }>();
   });
 
@@ -98,7 +98,7 @@ describe("ConfigFileOptions", () => {
 
   test("'verbose' option", () => {
     expect<Pick<ConfigFileOptions, "verbose">>().type.toBe<{
-      verbose?: string;
+      verbose?: boolean;
     }>();
   });
 });
