@@ -83,6 +83,11 @@
       "description": "The look up strategy to be used to find the TSConfig file.",
       "default": "findup",
       "type": "string"
+    },
+    "verbose": {
+      "description": "Enable detailed logging.",
+      "default": false,
+      "type": "boolean"
     }
   }
 }

@@ -1,4 +1,4 @@
-import { describeNameText, fileViewText, testNameText } from "#output";
+import { describeNameText, testNameText } from "#output";
 import type { ResultStatus, TestResultStatus } from "#result";
 import type { ScribblerJsx } from "#scribbler";
 
@@ -34,8 +34,8 @@ export class FileView {
     return this.#messages;
   }
 
-  getViewText(options?: { appendEmptyLine: boolean }): ScribblerJsx.Element {
-    return fileViewText(this.#lines, options?.appendEmptyLine || this.hasErrors());
+  getView(): Array<ScribblerJsx.Element> {
+    return this.#lines;
   }
 
   hasErrors(): boolean {
