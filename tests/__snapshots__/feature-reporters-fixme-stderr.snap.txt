@@ -1,0 +1,13 @@
+Error: The 'test()' was supposed to fail, but it passed.
+
+Consider removing the '// @tstyche fixme' directive.
+
+  1 | import { expect, test } from "tstyche";
+  2 | // @tstyche fixme
+    | ~~~~~~~~~~~~~~~~~
+  3 | test("is string?", () => {
+  4 |   expect<string>().type.toBe<string>();
+  5 | });
+
+      at ./__typetests__/feature.tst.ts:2:1
+
