@@ -174,7 +174,7 @@ await test("'reporters' configuration option", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("'list' reporter", async () => {
+  await t.test("'dot' reporter", async () => {
     const config = {
       reporters: ["dot"],
     };
