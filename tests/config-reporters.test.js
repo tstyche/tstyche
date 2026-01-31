@@ -40,6 +40,24 @@ await test("'--reporters' command line option", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
+  await t.test("'dot' reporter", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "dot"]);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-dot-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("'list' reporter", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
@@ -70,6 +88,24 @@ await test("'--reporters' command line option", async (t) => {
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-summary-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("'dot' with 'summary'", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", "dot,summary"]);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-dot-with-summary-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -140,6 +176,29 @@ await test("'reporters' configuration option", async (t) => {
 
   await t.test("'list' reporter", async () => {
     const config = {
+      reporters: ["dot"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-dot-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("'list' reporter", async () => {
+    const config = {
       reporters: ["list"],
     };
 
@@ -178,6 +237,29 @@ await test("'reporters' configuration option", async (t) => {
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-summary-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("'dot' with 'summary'", async () => {
+    const config = {
+      reporters: ["dot", "summary"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["__typetests__/isString.tst.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-dot-with-summary-stdout`,
       testFileUrl: import.meta.url,
     });
 
