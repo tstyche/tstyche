@@ -59,7 +59,7 @@ await test("reporters", async (t) => {
         await clearFixture(fixtureUrl);
       });
 
-      await t.test("single passing test file", async () => {
+      await t.test("single passing file", async () => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/feature.tst.ts"]: passingTestText,
         });
@@ -76,7 +76,7 @@ await test("reporters", async (t) => {
         assert.equal(exitCode, 0);
       });
 
-      await t.test("single failing test file", async () => {
+      await t.test("single failing file", async () => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/feature.tst.ts"]: failingTestText,
         });
@@ -96,7 +96,7 @@ await test("reporters", async (t) => {
         assert.equal(exitCode, 1);
       });
 
-      await t.test("multiple passing test files", async () => {
+      await t.test("multiple passing files", async () => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/a-feature.tst.ts"]: passingTestText,
           ["__typetests__/b-feature.tst.ts"]: passingTestText,
@@ -114,7 +114,7 @@ await test("reporters", async (t) => {
         assert.equal(exitCode, 0);
       });
 
-      await t.test("multiple failing test files", async () => {
+      await t.test("multiple failing files", async () => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/a-feature.tst.ts"]: failingTestText,
           ["__typetests__/b-feature.tst.ts"]: failingTestText,
@@ -135,7 +135,29 @@ await test("reporters", async (t) => {
         assert.equal(exitCode, 1);
       });
 
-      await t.test("'// @tstyche fixme' test case", async () => {
+      await t.test("multiple targets", async () => {
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/feature.tst.ts"]: passingTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+          "--reporters",
+          reporter,
+          "--target",
+          "'5.6 || 5.8'",
+        ]);
+
+        assert.equal(stderr, "");
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-multiple-targets-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 0);
+      });
+
+      await t.test("'// @tstyche fixme' test cases", async () => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/feature.tst.ts"]: fixmeTestText,
         });
@@ -155,7 +177,7 @@ await test("reporters", async (t) => {
         assert.equal(exitCode, 1);
       });
 
-      await t.test("'.skip' test case", async () => {
+      await t.test("'.skip' test cases", async () => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/feature.tst.ts"]: skipTestText,
         });
@@ -172,7 +194,7 @@ await test("reporters", async (t) => {
         assert.equal(exitCode, 0);
       });
 
-      await t.test("'.todo' test case", async () => {
+      await t.test("'.todo' test cases", async () => {
         await writeFixture(fixtureUrl, {
           ["__typetests__/feature.tst.ts"]: todoTestText,
         });
