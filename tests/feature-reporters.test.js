@@ -210,6 +210,41 @@ await test("reporters", async (t) => {
 
         assert.equal(exitCode, 0);
       });
+
+      await t.test("when '--quiet' is specified", async () => {
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/a-feature.tst.ts"]: failingTestText,
+          ["__typetests__/b-feature.tst.ts"]: passingTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter, "--quiet"]);
+
+        await assert.matchSnapshot(normalizeOutput(stderr), {
+          fileName: `${testFileName}-quiet-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(stdout, "");
+        assert.equal(exitCode, 1);
+      });
+
+      await t.test("when '--verbose' is specified", async () => {
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/a-feature.tst.ts"]: passingTestText,
+          ["__typetests__/b-feature.tst.ts"]: passingTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter, "--verbose"]);
+
+        assert.equal(stderr, "");
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-verbose-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 0);
+      });
     });
   }
 });

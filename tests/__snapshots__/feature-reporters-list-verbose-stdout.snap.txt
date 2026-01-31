@@ -1,0 +1,12 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/feature-reporters
+
+uses TypeScript <<version>>
+
+pass ./__typetests__/a-feature.tst.ts
+  + is string?
+  + is number?
+
+pass ./__typetests__/b-feature.tst.ts
+  + is string?
+  + is number?
+
