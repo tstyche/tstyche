@@ -1,4 +1,5 @@
 import type { Diagnostic } from "#diagnostic";
+import { environmentOptions } from "#environment";
 import { addsPackageText, diagnosticText, dotText, OutputService, usesCompilerText } from "#output";
 import { ResultStatus } from "#result";
 import { BaseReporter } from "./BaseReporter.js";
@@ -23,7 +24,10 @@ export class DotReporter extends BaseReporter {
 
       case "project:uses":
         if (this.#hasReportedAdds) {
-          OutputService.eraseLastLine();
+          if (!environmentOptions.noInteractive) {
+            OutputService.eraseLastLine();
+          }
+
           this.#hasReportedAdds = false;
         }
 
