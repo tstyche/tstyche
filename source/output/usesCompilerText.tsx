@@ -4,8 +4,12 @@ import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 export function usesCompilerText(
   compilerVersion: string,
   projectConfigFilePath: string | undefined,
-  options?: { prependEmptyLine: boolean },
+  options?: { prependEmptyLine?: boolean; short?: boolean },
 ): ScribblerJsx.Element {
+  if (options?.short) {
+    return <Text color={Color.Blue}>{compilerVersion}</Text>;
+  }
+
   let projectConfigPathText: ScribblerJsx.Element | undefined;
 
   if (projectConfigFilePath != null) {

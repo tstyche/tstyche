@@ -1,7 +1,7 @@
 import { ResultStatus } from "#result";
 import { Color, type ScribblerJsx, Text } from "#scribbler";
 
-export function dotStatusText(status: ResultStatus.Passed | ResultStatus.Failed): ScribblerJsx.Element {
+export function dotText(status: ResultStatus.Passed | ResultStatus.Failed): ScribblerJsx.Element {
   let statusColor: Color | undefined;
   let statusText: string;
 

@@ -1,16 +1,18 @@
 import type { Diagnostic } from "#diagnostic";
-import { addsPackageText, diagnosticText, dotStatusText, OutputService, usesCompilerText } from "#output";
+import { addsPackageText, diagnosticText, dotText, OutputService, usesCompilerText } from "#output";
 import { ResultStatus } from "#result";
 import { BaseReporter } from "./BaseReporter.js";
 import type { ReporterEvent } from "./types.js";
 
 export class DotReporter extends BaseReporter {
   #diagnostics: Array<Diagnostic> = [];
+  #hasReportedAdds = false;
 
   on([event, payload]: ReporterEvent): void {
     switch (event) {
       case "store:adds":
-        OutputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
+        OutputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath, { short: true }));
+        this.#hasReportedAdds = true;
         break;
 
       case "store:error":
@@ -20,8 +22,15 @@ export class DotReporter extends BaseReporter {
         break;
 
       case "project:uses":
+        if (this.#hasReportedAdds) {
+          OutputService.eraseLastLine();
+          this.#hasReportedAdds = false;
+        }
+
         if (this.resolvedConfig.target.length > 1) {
-          OutputService.writeMessage(usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath));
+          OutputService.writeMessage(
+            usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, { short: true }),
+          );
         }
         break;
 
@@ -35,6 +44,7 @@ export class DotReporter extends BaseReporter {
         this.#diagnostics = [];
         break;
 
+      case "project:error":
       case "file:error":
       case "directive:error":
       case "collect:error":
@@ -43,16 +53,16 @@ export class DotReporter extends BaseReporter {
         break;
 
       case "test:error":
-        OutputService.writeMessage(dotStatusText(ResultStatus.Failed));
+        OutputService.writeMessage(dotText(ResultStatus.Failed));
         this.#diagnostics.push(...payload.diagnostics);
         break;
 
       case "test:fail":
-        OutputService.writeMessage(dotStatusText(ResultStatus.Failed));
+        OutputService.writeMessage(dotText(ResultStatus.Failed));
         break;
 
       case "test:pass":
-        OutputService.writeMessage(dotStatusText(ResultStatus.Passed));
+        OutputService.writeMessage(dotText(ResultStatus.Passed));
         break;
 
       case "expect:error":

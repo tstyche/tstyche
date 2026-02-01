@@ -9,7 +9,7 @@ const sampleProjectConfigFilePath = path.resolve("path", "to", "tsconfig.json");
 const scribbler = new Scribbler();
 
 test("usesCompilerText", async (t) => {
-  await t.test("formats uses compiler text", () => {
+  await t.test("formats uses text", () => {
     const text = scribbler.render(usesCompilerText("5.3.4", sampleProjectConfigFilePath));
 
     assert.strictEqual(
@@ -18,7 +18,7 @@ test("usesCompilerText", async (t) => {
     );
   });
 
-  await t.test("formats uses compiler text with empty line prepended", () => {
+  await t.test("formats uses text with empty line prepended", () => {
     const text = scribbler.render(usesCompilerText("5.3.4", sampleProjectConfigFilePath, { prependEmptyLine: true }));
 
     assert.strictEqual(
@@ -27,9 +27,15 @@ test("usesCompilerText", async (t) => {
     );
   });
 
-  await t.test("formats uses compiler text without project config file path", () => {
+  await t.test("formats uses text without project config file path", () => {
     const text = scribbler.render(usesCompilerText("5.3.4", undefined));
 
     assert.strictEqual(prettyAnsi(text), ["<blue>uses</> TypeScript 5.3.4", "", ""].join("\n"));
+  });
+
+  await t.test("formats uses short text", () => {
+    const text = scribbler.render(usesCompilerText("5.3.4", sampleProjectConfigFilePath, { short: true }));
+
+    assert.strictEqual(prettyAnsi(text), "<blue>5.3.4</>");
   });
 });
