@@ -1,0 +1,7 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/feature-reporters
+
+uses TypeScript <<version>>
+
+fail ./__typetests__/dummy.test.ts
+  × reported type error?
+

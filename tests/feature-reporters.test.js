@@ -1,4 +1,5 @@
 import test from "node:test";
+import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -244,6 +245,244 @@ await test("reporters", async (t) => {
         });
 
         assert.equal(exitCode, 0);
+      });
+
+      await t.test("when interactive elements are enabled", async () => {
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: passingTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(
+          fixtureUrl,
+          ["--reporters", reporter, "--target", '"5.6 || 5.8"'],
+          { env: { ["TSTYCHE_NO_INTERACTIVE"]: "" } },
+        );
+
+        assert.equal(stderr, "");
+
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(stdout)), {
+          fileName: `${testFileName}-${reporter}-interactive-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 0);
+      });
+
+      await t.test("handles 'store:error' event", async () => {
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: passingTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(
+          fixtureUrl,
+          ["--reporters", reporter, "--target", "5.8"],
+          { env: { ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org" } },
+        );
+
+        await assert.matchSnapshot(prettyAnsi(normalizeOutput(stderr)), {
+          fileName: `${testFileName}-store-error-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(stdout, "");
+        assert.equal(exitCode, 1);
+      });
+
+      await t.test("handles 'project:error' event", async () => {
+        const tsconfig = {
+          compilerOptions: {
+            strict: "yes",
+          },
+          extends: "../../tsconfig.json",
+          include: ["**/*"],
+        };
+
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: passingTestText,
+          ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter]);
+
+        await assert.matchSnapshot(stderr, {
+          fileName: `${testFileName}-project-error-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-project-error-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 1);
+      });
+
+      await t.test("handles 'file:error' event", async () => {
+        const errorTestText = `import { test } from "tstyche";
+
+declare function one(a: string): void;
+
+test("is syntax error?", () => {
+  one(
+});
+
+test("is broken?"
+`;
+
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: errorTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter]);
+
+        await assert.matchSnapshot(stderr, {
+          fileName: `${testFileName}-file-error-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-file-error-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 1);
+      });
+
+      await t.test("handles 'directive:error' event", async () => {
+        const errorTestText = `import { expect } from "tstyche";
+
+// @tstyche fixme asap
+expect<string>().type.toBe<number>();
+`;
+
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: errorTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter]);
+
+        await assert.matchSnapshot(stderr, {
+          fileName: `${testFileName}-directive-error-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-directive-error-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 1);
+      });
+
+      await t.test("handles 'collect:error' event", async () => {
+        const errorTestText = `import { expect, test } from "tstyche";
+
+test("is string?", () => {
+  test("nested 'test()' is handled?", () => {
+    expect<never>().type.toBe<never>();
+  });
+});
+`;
+
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: errorTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter]);
+
+        await assert.matchSnapshot(stderr, {
+          fileName: `${testFileName}-collect-error-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-collect-error-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 1);
+      });
+
+      await t.test("handles 'suppressed:error' event", async () => {
+        const errorTestText = `// @ts-expect-error
+const x: string = 0;
+`;
+
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: errorTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter]);
+
+        await assert.matchSnapshot(stderr, {
+          fileName: `${testFileName}-suppressed-error-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-suppressed-error-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 1);
+      });
+
+      await t.test("handles 'test:error' event", async () => {
+        const errorTestText = `import { expect, test } from "tstyche";
+
+test("reported type error?", () => {
+  a = false;
+
+  expect<string>().type.toBe<string>();
+});
+`;
+
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: errorTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter]);
+
+        await assert.matchSnapshot(stderr, {
+          fileName: `${testFileName}-test-error-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-test-error-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 1);
+      });
+
+      await t.test("handles 'expect:error' event", async () => {
+        const errorTestText = `import { expect, test } from "tstyche";
+
+declare const one: () => void;
+
+test("has assertion type error?", () => {
+  expect(one("fail")).type.toBe<void>();
+});
+`;
+
+        await writeFixture(fixtureUrl, {
+          ["__typetests__/dummy.test.ts"]: errorTestText,
+        });
+
+        const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--reporters", reporter]);
+
+        await assert.matchSnapshot(stderr, {
+          fileName: `${testFileName}-expect-error-stderr`,
+          testFileUrl: import.meta.url,
+        });
+
+        await assert.matchSnapshot(normalizeOutput(stdout), {
+          fileName: `${testFileName}-${reporter}-expect-error-stdout`,
+          testFileUrl: import.meta.url,
+        });
+
+        assert.equal(exitCode, 1);
       });
     });
   }

@@ -1,0 +1,11 @@
+Error: Directive does not take an argument.
+
+  1 | import { expect } from "tstyche";
+  2 | 
+  3 | // @tstyche fixme asap
+    |                   ~~~~
+  4 | expect<string>().type.toBe<number>();
+  5 | 
+
+      at ./__typetests__/dummy.test.ts:3:19
+

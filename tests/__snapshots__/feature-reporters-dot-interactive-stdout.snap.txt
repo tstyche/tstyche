@@ -1,0 +1,12 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/feature-reporters
+
+5.6.3
+<moveCursorUpBy1Row>
+<eraseLineEnd>
+5.6.3··
+
+5.8.3
+<moveCursorUpBy1Row>
+<eraseLineEnd>
+5.8.3··
+
