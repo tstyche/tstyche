@@ -1,19 +1,13 @@
 import { ResultStatus } from "#result";
 import { Color, type ScribblerJsx, Text } from "#scribbler";
 
-export function dotText(status: ResultStatus.Passed | ResultStatus.Failed): ScribblerJsx.Element {
+export function dotText(status: ResultStatus): ScribblerJsx.Element {
   let statusColor: Color | undefined;
-  let statusText: string;
+  let statusText = "·";
 
-  switch (status) {
-    case ResultStatus.Passed:
-      statusText = "·";
-      break;
-
-    case ResultStatus.Failed:
-      statusColor = Color.Red;
-      statusText = "×";
-      break;
+  if (status === ResultStatus.Failed) {
+    statusColor = Color.Red;
+    statusText = "×";
   }
 
   return <Text color={statusColor}>{statusText}</Text>;

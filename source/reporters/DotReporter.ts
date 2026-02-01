@@ -1,14 +1,13 @@
 import type { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { addsPackageText, diagnosticText, dotText, OutputService, usesCompilerText } from "#output";
-import { ResultStatus } from "#result";
 import { BaseReporter } from "./BaseReporter.js";
 import type { ReporterEvent } from "./types.js";
 
 export class DotReporter extends BaseReporter {
   #diagnostics: Array<Diagnostic> = [];
   #hasReportedAdds = false;
-  #hasReportedTest = false;
+  #hasReportedFile = false;
 
   on([event, payload]: ReporterEvent): void {
     switch (event) {
@@ -40,7 +39,7 @@ export class DotReporter extends BaseReporter {
         break;
 
       case "target:end":
-        if (this.#hasReportedTest) {
+        if (this.#hasReportedFile) {
           OutputService.writeBlankLine(2);
         }
 
@@ -48,35 +47,24 @@ export class DotReporter extends BaseReporter {
           OutputService.writeError(diagnosticText(diagnostic));
         }
 
-        this.#hasReportedTest = false;
+        this.#hasReportedFile = false;
         this.#diagnostics = [];
+        break;
+
+      case "file:start":
+        this.#hasReportedFile = true;
+        break;
+
+      case "file:end":
+        OutputService.writeMessage(dotText(payload.result.status));
         break;
 
       case "project:error":
       case "file:error":
       case "directive:error":
       case "collect:error":
-      case "suppressed:error":
-        this.#diagnostics.push(...payload.diagnostics);
-        break;
-
-      case "test:start":
-        this.#hasReportedTest = true;
-        break;
-
       case "test:error":
-        OutputService.writeMessage(dotText(ResultStatus.Failed));
-        this.#diagnostics.push(...payload.diagnostics);
-        break;
-
-      case "test:fail":
-        OutputService.writeMessage(dotText(ResultStatus.Failed));
-        break;
-
-      case "test:pass":
-        OutputService.writeMessage(dotText(ResultStatus.Passed));
-        break;
-
+      case "suppressed:error":
       case "expect:error":
       case "expect:fail":
         this.#diagnostics.push(...payload.diagnostics);
