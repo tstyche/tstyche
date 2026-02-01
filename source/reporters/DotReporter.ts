@@ -7,7 +7,6 @@ import type { ReporterEvent } from "./types.js";
 export class DotReporter extends BaseReporter {
   #diagnostics: Array<Diagnostic> = [];
   #hasReportedAdds = false;
-  #hasReportedFile = false;
 
   on([event, payload]: ReporterEvent): void {
     switch (event) {
@@ -39,20 +38,13 @@ export class DotReporter extends BaseReporter {
         break;
 
       case "target:end":
-        if (this.#hasReportedFile) {
-          OutputService.writeBlankLine(2);
-        }
+        OutputService.writeBlankLine(2);
 
         for (const diagnostic of this.#diagnostics) {
           OutputService.writeError(diagnosticText(diagnostic));
         }
 
-        this.#hasReportedFile = false;
         this.#diagnostics = [];
-        break;
-
-      case "file:start":
-        this.#hasReportedFile = true;
         break;
 
       case "file:end":
