@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.2.0] - 2026-02-01
+
+### Added
+
+- Add the `verbose` configuration option and `--verbose` command line option ([#676](https://github.com/tstyche/tstyche/pull/676))
+- Add the `dot` reporter ([#675](https://github.com/tstyche/tstyche/pull/675))
+
 ## [6.1.0] - 2026-01-29
 
 ### Added
@@ -1010,6 +1017,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[6.2.0]: https://github.com/tstyche/tstyche/releases/tag/v6.2.0
 [6.1.0]: https://github.com/tstyche/tstyche/releases/tag/v6.1.0
 [6.0.3]: https://github.com/tstyche/tstyche/releases/tag/v6.0.3
 [6.0.2]: https://github.com/tstyche/tstyche/releases/tag/v6.0.2
