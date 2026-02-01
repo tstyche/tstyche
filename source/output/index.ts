@@ -1,6 +1,7 @@
 export { addsPackageText } from "./addsPackageText.js";
 export { describeNameText } from "./describeNameText.js";
 export { diagnosticText } from "./diagnosticText.js";
+export { dotText } from "./dotText.js";
 export { fileStatusText } from "./fileStatusText.js";
 export { formattedText } from "./formattedText.js";
 export { helpText } from "./helpText.js";

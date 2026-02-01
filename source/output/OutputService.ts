@@ -34,8 +34,8 @@ export class OutputService {
     OutputService.#isClear = false;
   }
 
-  static writeBlankLine(): void {
-    OutputService.outputStream.write(OutputService.#newLine);
+  static writeBlankLine(count = 1): void {
+    OutputService.outputStream.write(OutputService.#newLine.repeat(count));
   }
 
   static writeError(element: ScribblerJsx.Element | Array<ScribblerJsx.Element>): void {

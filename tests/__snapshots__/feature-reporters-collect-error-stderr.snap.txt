@@ -1,0 +1,15 @@
+Error: 'test()' cannot be nested within 'test()'.
+
+  2 | 
+  3 | test("is string?", () => {
+  4 |   test("nested 'test()' is handled?", () => {
+    |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  5 |     expect<never>().type.toBe<never>();
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  6 |   });
+    | ~~~~
+  7 | });
+  8 | 
+
+      at ./__typetests__/dummy.test.ts:4:3
+

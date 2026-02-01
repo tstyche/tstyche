@@ -253,7 +253,7 @@ export class Options {
   }
 
   static #isBuiltinReporter(optionValue: string) {
-    return ["list", "summary"].includes(optionValue);
+    return ["dot", "list", "summary"].includes(optionValue);
   }
 
   static #isLookupStrategy(optionValue: string) {

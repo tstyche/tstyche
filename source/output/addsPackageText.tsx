@@ -1,6 +1,18 @@
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-export function addsPackageText(packageVersion: string, packagePath: string): ScribblerJsx.Element {
+export function addsPackageText(
+  packageVersion: string,
+  packagePath: string,
+  options?: { short?: boolean },
+): ScribblerJsx.Element {
+  if (options?.short) {
+    return (
+      <Line>
+        <Text color={Color.Gray}>{packageVersion}</Text>
+      </Line>
+    );
+  }
+
   return (
     <Line>
       <Text color={Color.Gray}>{"adds"}</Text>
