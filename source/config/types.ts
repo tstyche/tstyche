@@ -33,7 +33,6 @@ export interface ConfigFileOptions {
   rejectAnyType?: boolean;
   rejectNeverType?: boolean;
   reporters?: Array<string>;
-  rootPath?: string;
   target?: Array<string>;
   testFileMatch?: Array<string>;
   tsconfig?: string;
@@ -51,10 +50,11 @@ export interface InlineConfig {
 }
 
 export interface ResolvedConfig
-  extends Omit<CommandLineOptions, "config" | keyof ConfigFileOptions>,
+  extends Omit<CommandLineOptions, "config" | "root" | keyof ConfigFileOptions>,
     Required<ConfigFileOptions> {
   configFilePath: string;
   pathMatch: Array<string>;
+  rootPath: string;
 }
 
 export interface TextRange {

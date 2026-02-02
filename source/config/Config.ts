@@ -33,15 +33,11 @@ export class Config {
   }
 
   static async parseConfigFile(
-    configPath?: string,
-    // TODO set default 'rootPath = "."' here and use 'rootPath' to resolve 'configFilePath', but not vice versa
-    rootPath?: string,
-  ): Promise<{ configFileOptions: ConfigFileOptions; configFilePath: string }> {
+    configPath?: string | undefined,
+    rootPath?: string | undefined,
+  ): Promise<{ configFileOptions: ConfigFileOptions }> {
+    const configFileOptions: ConfigFileOptions = {};
     const configFilePath = Config.resolveConfigFilePath(configPath, rootPath);
-
-    const configFileOptions: ConfigFileOptions = {
-      rootPath: rootPath ?? Path.dirname(configFilePath),
-    };
 
     if (existsSync(configFilePath)) {
       const configFileText = await fs.readFile(configFilePath, {
@@ -61,18 +57,21 @@ export class Config {
       await configFileParser.parse();
     }
 
-    return { configFileOptions, configFilePath };
+    return { configFileOptions };
   }
 
   static resolve(options?: {
     configFileOptions?: ConfigFileOptions;
-    configFilePath?: string;
-    commandLineOptions?: Omit<CommandLineOptions, "config">;
+    commandLineOptions?: CommandLineOptions;
     pathMatch?: Array<string>;
   }): ResolvedConfig {
     const resolvedConfig = {
-      configFilePath: Config.resolveConfigFilePath(options?.configFilePath),
+      configFilePath: Config.resolveConfigFilePath(
+        options?.commandLineOptions?.config,
+        options?.commandLineOptions?.root,
+      ),
       pathMatch: options?.pathMatch ?? [],
+      rootPath: Config.resolveRootPath(options?.commandLineOptions?.root),
       ...defaultOptions,
       ...options?.configFileOptions,
       ...options?.commandLineOptions,
@@ -88,11 +87,13 @@ export class Config {
     return resolvedConfig;
   }
 
-  static resolveConfigFilePath(configPath?: string, rootPath = "."): string {
-    if (configPath != null) {
-      return Path.resolve(configPath);
-    }
+  static resolveConfigFilePath(configPath?: string | undefined, rootPath?: string | undefined): string {
+    return configPath != null
+      ? Path.resolve(configPath)
+      : Path.resolve(Config.resolveRootPath(rootPath), "./tstyche.config.json");
+  }
 
-    return Path.resolve(rootPath, "./tstyche.config.json");
+  static resolveRootPath(rootPath?: string | undefined): string {
+    return Path.resolve(rootPath ?? ".");
   }
 }
