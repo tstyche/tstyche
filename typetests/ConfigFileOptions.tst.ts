@@ -12,7 +12,6 @@ describe("ConfigFileOptions", () => {
       rejectAnyType: true,
       rejectNeverType: true,
       reporters: ["./tstyche-reporter.js"],
-      rootPath: "../",
       target: ["5.0" as const, "5.4" as const, "latest" as const],
       testFileMatch: ["**/tests/types/**/*"],
       tsconfig: "./tsconfig.test.json",
@@ -69,12 +68,6 @@ describe("ConfigFileOptions", () => {
   test("'reporters' option", () => {
     expect<Pick<ConfigFileOptions, "reporters">>().type.toBe<{
       reporters?: Array<string>;
-    }>();
-  });
-
-  test("'rootPath' option", () => {
-    expect<Pick<ConfigFileOptions, "rootPath">>().type.toBe<{
-      rootPath?: string;
     }>();
   });
 
