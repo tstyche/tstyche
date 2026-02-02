@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+      - 7.x
       - renovate/**
   pull_request:
     branches:
