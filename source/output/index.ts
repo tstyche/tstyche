@@ -1,4 +1,4 @@
-export { addsPackageText } from "./addsPackageText.js";
+export { addsText } from "./addsText.js";
 export { describeNameText } from "./describeNameText.js";
 export { diagnosticText } from "./diagnosticText.js";
 export { dotText } from "./dotText.js";
