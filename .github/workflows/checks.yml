@@ -102,8 +102,12 @@ jobs:
         with:
           name: dist-${{ github.sha }}
           path: dist
-      - run: yarn test:types --target '>=5.4'
-      - run: yarn test:examples --target '>=5.4'
+
+      - name: Get TypeScript Target
+        run: echo "tstyche_target=$(jq -r '.peerDependencies.typescript' ./package.json)" >> "$GITHUB_ENV"
+
+      - run: yarn test:types --target '${{ env.tstyche_target }}'
+      - run: yarn test:examples --target '${{ env.tstyche_target }}'
 
   test-node:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
