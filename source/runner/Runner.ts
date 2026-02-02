@@ -4,7 +4,7 @@ import { EventEmitter } from "#events";
 import { FileLocation } from "#file";
 import { CancellationHandler, ResultHandler } from "#handlers";
 import { OutputService, prologueText } from "#output";
-import { ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
+import { DotReporter, ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
 import { Result, TargetResult } from "#result";
 import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
@@ -40,15 +40,18 @@ export class Runner {
 
     for (const reporter of this.#resolvedConfig.reporters) {
       switch (reporter) {
+        case "dot": {
+          this.#eventEmitter.addReporter(new DotReporter(this.#resolvedConfig));
+          break;
+        }
+
         case "list": {
-          const listReporter = new ListReporter(this.#resolvedConfig);
-          this.#eventEmitter.addReporter(listReporter);
+          this.#eventEmitter.addReporter(new ListReporter(this.#resolvedConfig));
           break;
         }
 
         case "summary": {
-          const summaryReporter = new SummaryReporter(this.#resolvedConfig);
-          this.#eventEmitter.addReporter(summaryReporter);
+          this.#eventEmitter.addReporter(new SummaryReporter(this.#resolvedConfig));
           break;
         }
 

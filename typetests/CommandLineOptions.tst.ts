@@ -20,6 +20,7 @@ describe("CommandLineOptions", () => {
       target: ["5.0" as const, "5.4" as const, "latest" as const],
       tsconfig: "./tsconfig.test.json",
       update: true,
+      verbose: true,
       version: true,
       watch: true,
     });
@@ -122,6 +123,12 @@ describe("CommandLineOptions", () => {
   test("'update' option", () => {
     expect<Pick<CommandLineOptions, "update">>().type.toBe<{
       update?: boolean;
+    }>();
+  });
+
+  test("'verbose' option", () => {
+    expect<Pick<CommandLineOptions, "verbose">>().type.toBe<{
+      verbose?: boolean;
     }>();
   });
 

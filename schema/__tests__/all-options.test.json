@@ -15,7 +15,8 @@
         "reporters": ["./tstyche-reporter.js"],
         "target": ">=5.2 <=5.3 || 5.4.2 || >5.5",
         "testFileMatch": ["examples/*.test.ts", "**/__typetests__/*.test.ts"],
-        "tsconfig": "./tsconfig.test.json"
+        "tsconfig": "./tsconfig.test.json",
+        "verbose": true
       }
     }
   ]

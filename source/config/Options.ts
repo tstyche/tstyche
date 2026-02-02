@@ -208,6 +208,13 @@ export class Options {
     },
 
     {
+      brand: OptionBrand.Boolean,
+      description: "Enable detailed logging.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      name: "verbose",
+    },
+
+    {
       brand: OptionBrand.True,
       description: "Print the version number and exit.",
       group: OptionGroup.CommandLine,
@@ -239,7 +246,7 @@ export class Options {
   }
 
   static #isBuiltinReporter(optionValue: string) {
-    return ["list", "summary"].includes(optionValue);
+    return ["dot", "list", "summary"].includes(optionValue);
   }
 
   static #isLookupStrategy(optionValue: string) {

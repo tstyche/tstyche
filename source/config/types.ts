@@ -19,6 +19,7 @@ export interface CommandLineOptions {
   target?: Array<string>;
   tsconfig?: string;
   update?: boolean;
+  verbose?: boolean;
   version?: boolean;
   watch?: boolean;
 }
@@ -35,6 +36,7 @@ export interface ConfigFileOptions {
   target?: Array<string>;
   testFileMatch?: Array<string>;
   tsconfig?: string;
+  verbose?: boolean;
 }
 
 // #endregion
