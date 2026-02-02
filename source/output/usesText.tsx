@@ -1,10 +1,10 @@
 import { Path } from "#path";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-export function usesCompilerText(
+export function usesText(
   compilerVersion: string,
   projectConfigFilePath: string | undefined,
-  options?: { prependEmptyLine?: boolean; short?: boolean },
+  options?: { short?: boolean },
 ): ScribblerJsx.Element {
   if (options?.short) {
     return <Text color={Color.Blue}>{compilerVersion}</Text>;
@@ -23,7 +23,6 @@ export function usesCompilerText(
 
   return (
     <Text>
-      {options?.prependEmptyLine ? <Line /> : undefined}
       <Line>
         <Text color={Color.Blue}>{"uses"}</Text>
         {" TypeScript "}
