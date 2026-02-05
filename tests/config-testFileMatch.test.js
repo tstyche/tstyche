@@ -123,6 +123,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
         ["__typetests__/isString.tst.ts"]: isStringTestText,
+        ["__typetests__/config.json"]: JSON.stringify(tsconfig),
         ["__typetests__/tsconfig.json"]: JSON.stringify(tsconfig),
         ["tstyche.config.json"]: JSON.stringify(config, null, 2),
       });

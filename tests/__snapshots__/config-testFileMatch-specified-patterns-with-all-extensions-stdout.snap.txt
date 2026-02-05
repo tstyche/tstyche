@@ -1,13 +1,13 @@
 ···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
 
+uses TypeScript <<version>>
+
+pass ./__typetests__/config.json
+
 uses TypeScript <<version>> with ./__typetests__/tsconfig.json
 
 pass ./__typetests__/isNumber.tst.ts
 pass ./__typetests__/isString.tst.ts
-
-uses TypeScript <<version>>
-
-pass ./__typetests__/tsconfig.json
 
 Targets:    1 passed, 1 total
 Test files: 3 passed, 3 total
