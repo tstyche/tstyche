@@ -31,7 +31,10 @@ await test("'--compilerOptions' command line option", async (t) => {
   });
 
   await t.test("merges provided compiler options", async () => {
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--compilerOptions", "'{ lib: [\"es2020\"] }'"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "--compilerOptions",
+      '"{ lib: [\\"es2020\\"] }"',
+    ]);
 
     await assert.matchSnapshot(normalizeOutput(stderr), {
       fileName: `${testFileName}-stderr`,
