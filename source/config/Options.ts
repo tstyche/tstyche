@@ -57,6 +57,13 @@ export class Options {
 
     {
       brand: OptionBrand.String,
+      description: "Merge the provided options into the project's compiler options.",
+      group: OptionGroup.CommandLine,
+      name: "compilerOptions",
+    },
+
+    {
+      brand: OptionBrand.String,
       description: "The path to a TSTyche configuration file.",
       group: OptionGroup.CommandLine,
       name: "config",

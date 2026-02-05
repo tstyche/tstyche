@@ -5,6 +5,7 @@ export function usesCompilerText(
   compilerVersion: string,
   projectConfigFilePath: string | undefined,
   options?: { prependEmptyLine?: boolean; short?: boolean },
+  mergeCompilerOptions?: string | undefined,
 ): ScribblerJsx.Element {
   if (options?.short) {
     return <Text color={Color.Blue}>{compilerVersion}</Text>;
@@ -21,6 +22,18 @@ export function usesCompilerText(
     );
   }
 
+  let mergeCompilerOptionsText: ScribblerJsx.Element | undefined;
+
+  if (mergeCompilerOptions != null) {
+    mergeCompilerOptionsText = (
+      <Text color={Color.Gray}>
+        {" and merges '"}
+        {mergeCompilerOptions}
+        {"'"}
+      </Text>
+    );
+  }
+
   return (
     <Text>
       {options?.prependEmptyLine ? <Line /> : undefined}
@@ -29,6 +42,7 @@ export function usesCompilerText(
         {" TypeScript "}
         {compilerVersion}
         {projectConfigPathText}
+        {mergeCompilerOptionsText}
       </Line>
       <Line />
     </Text>

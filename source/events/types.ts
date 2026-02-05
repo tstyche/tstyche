@@ -23,7 +23,14 @@ export type Event =
   | ["store:error", { diagnostics: Array<Diagnostic> }]
   | ["target:start", { result: TargetResult }]
   | ["target:end", { result: TargetResult }]
-  | ["project:uses", { compilerVersion: string; projectConfigFilePath: string | undefined }]
+  | [
+      "project:uses",
+      {
+        compilerVersion: string;
+        projectConfigFilePath: string | undefined;
+        mergeCompilerOptions: string | undefined;
+      },
+    ]
   | ["project:error", { diagnostics: Array<Diagnostic> }]
   | ["file:start", { result: FileResult }]
   | ["file:error", { diagnostics: Array<Diagnostic>; result: FileResult }]

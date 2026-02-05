@@ -12,6 +12,7 @@ export class ProjectService {
   #lastSeenProject: string | undefined = "";
   #resolvedConfig: ResolvedConfig;
   #seenPrograms = new WeakSet<ts.Program>();
+  #seenProjects = new WeakSet<ts.server.Project>();
   #seenTestFiles = new Set<string>();
   #service: ts.server.ProjectService;
 
@@ -94,11 +95,39 @@ export class ProjectService {
       /* ensureProject */ true,
     );
 
-    const compilerOptions = project?.getCompilerOptions();
-
-    if (this.#resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
-      project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
+    if (!project || this.#seenProjects.has(project)) {
+      return project;
     }
+
+    let mergeCompilerOptions: ts.CompilerOptions = {};
+
+    if (this.#resolvedConfig.compilerOptions != null) {
+      const jsonConfig = this.#compiler.parseConfigFileTextToJson("__virtual__", this.#resolvedConfig.compilerOptions);
+
+      // TODO  cache the result?
+
+      // TODO  handle errors
+      // if (jsonConfig.error.length > 0) {
+      // }
+
+      const parsedConfig = this.#compiler.convertCompilerOptionsFromJson(jsonConfig.config, Path.resolve("."));
+
+      // TODO  handle errors
+      // if (parsedConfig.errors.length > 0) {
+      // }
+
+      mergeCompilerOptions = parsedConfig.options;
+    }
+
+    if (this.#resolvedConfig.checkDeclarationFiles) {
+      mergeCompilerOptions.skipLibCheck = false;
+    }
+
+    if (Object.keys(mergeCompilerOptions).length > 0) {
+      project.setCompilerOptions({ ...project.getCompilerOptions(), ...mergeCompilerOptions });
+    }
+
+    this.#seenProjects.add(project);
 
     return project;
   }
@@ -172,7 +201,11 @@ export class ProjectService {
 
       EventEmitter.dispatch([
         "project:uses",
-        { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
+        {
+          compilerVersion: this.#compiler.version,
+          projectConfigFilePath: configFileName,
+          mergeCompilerOptions: this.#resolvedConfig.compilerOptions,
+        },
       ]);
 
       if (configFileErrors && configFileErrors.length > 0) {

@@ -12,6 +12,9 @@ The TSTyche Type Test Runner  <<version>>
 
 Command Line Options
 
+  --compilerOptions  string
+  Merge the provided options into the project's compiler options.
+
   --config  string
   The path to a TSTyche configuration file.
 
