@@ -32,7 +32,9 @@ export class DotReporter extends BaseReporter {
 
         if (this.resolvedConfig.target.length > 1) {
           OutputService.writeMessage(
-            usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, { short: true }),
+            usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, payload.mergeCompilerOptions, {
+              short: true,
+            }),
           );
         }
         break;
