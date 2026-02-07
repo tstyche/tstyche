@@ -10,7 +10,7 @@ const scribbler = new Scribbler();
 
 test("usesCompilerText", async (t) => {
   await t.test("formats uses text", () => {
-    const text = scribbler.render(usesCompilerText("5.3.4", sampleProjectConfigFilePath));
+    const text = scribbler.render(usesCompilerText("5.3.4", sampleProjectConfigFilePath, undefined));
 
     assert.strictEqual(
       prettyAnsi(text),
@@ -19,7 +19,9 @@ test("usesCompilerText", async (t) => {
   });
 
   await t.test("formats uses text with empty line prepended", () => {
-    const text = scribbler.render(usesCompilerText("5.3.4", sampleProjectConfigFilePath, { prependEmptyLine: true }));
+    const text = scribbler.render(
+      usesCompilerText("5.3.4", sampleProjectConfigFilePath, undefined, { prependEmptyLine: true }),
+    );
 
     assert.strictEqual(
       prettyAnsi(text),
@@ -28,13 +30,13 @@ test("usesCompilerText", async (t) => {
   });
 
   await t.test("formats uses text without project config file path", () => {
-    const text = scribbler.render(usesCompilerText("5.3.4", undefined));
+    const text = scribbler.render(usesCompilerText("5.3.4", undefined, undefined));
 
     assert.strictEqual(prettyAnsi(text), ["<blue>uses</> TypeScript 5.3.4", "", ""].join("\n"));
   });
 
   await t.test("formats uses short text", () => {
-    const text = scribbler.render(usesCompilerText("5.3.4", sampleProjectConfigFilePath, { short: true }));
+    const text = scribbler.render(usesCompilerText("5.3.4", sampleProjectConfigFilePath, undefined, { short: true }));
 
     assert.strictEqual(prettyAnsi(text), "<blue>5.3.4</>");
   });
