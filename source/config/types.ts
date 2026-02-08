@@ -28,6 +28,7 @@ export interface CommandLineOptions {
 export interface ConfigFileOptions {
   checkDeclarationFiles?: boolean;
   checkSuppressedErrors?: boolean;
+  compilerOptions?: string;
   failFast?: boolean;
   fixtureFileMatch?: Array<string>;
   quiet?: boolean;

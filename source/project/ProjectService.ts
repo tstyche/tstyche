@@ -101,7 +101,7 @@ export class ProjectService {
 
     let mergeCompilerOptions: ts.CompilerOptions = {};
 
-    if (this.#resolvedConfig.compilerOptions != null) {
+    if (this.#resolvedConfig.compilerOptions !== "") {
       const jsonConfig = this.#compiler.parseConfigFileTextToJson("__virtual__", this.#resolvedConfig.compilerOptions);
 
       // TODO  cache the result?

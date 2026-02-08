@@ -4,6 +4,7 @@ import type { ConfigFileOptions } from "./types.js";
 export const defaultOptions: Required<ConfigFileOptions> = {
   checkDeclarationFiles: true,
   checkSuppressedErrors: true,
+  compilerOptions: "",
   failFast: false,
   fixtureFileMatch: ["**/__fixtures__/*.{ts,tsx}", "**/fixtures/*.{ts,tsx}"],
   quiet: false,

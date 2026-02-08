@@ -57,8 +57,8 @@ export class Options {
 
     {
       brand: OptionBrand.String,
-      description: "Merge the provided options into the project's compiler options.",
-      group: OptionGroup.CommandLine,
+      description: "The JSON string to merge into compiler options.",
+      group: OptionGroup.ConfigFile | OptionGroup.CommandLine,
       name: "compilerOptions",
     },
 
@@ -191,7 +191,7 @@ export class Options {
 
     {
       brand: OptionBrand.SemverRange,
-      description: "The range of TypeScript versions to be tested against.",
+      description: "The range of TypeScript versions to test against.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
       name: "target",
     },

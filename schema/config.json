@@ -12,6 +12,11 @@
       "default": true,
       "type": "boolean"
     },
+    "compilerOptions": {
+      "description": "The JSON string to merge into compiler options.",
+      "default": "",
+      "type": "string"
+    },
     "failFast": {
       "description": "Stop running tests after the first failed assertion.",
       "default": false,
@@ -62,7 +67,7 @@
       "type": "string"
     },
     "target": {
-      "description": "The range of TypeScript versions to be tested against.",
+      "description": "The range of TypeScript versions to test against.",
       "default": "*",
       "type": "string"
     },
