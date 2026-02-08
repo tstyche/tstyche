@@ -11,5 +11,7 @@ export type {
   DirectiveRange,
   InlineConfig,
   ResolvedConfig,
+  TaskList,
+  TaskOptions,
   TextRange,
 } from "./types.js";

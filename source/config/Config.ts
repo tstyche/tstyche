@@ -8,7 +8,9 @@ import { CommandParser } from "./CommandParser.js";
 import { ConfigParser } from "./ConfigParser.js";
 import { defaultOptions } from "./defaultOptions.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
-import type { CommandLineOptions, ConfigFileOptions, OptionValue, ResolvedConfig } from "./types.js";
+import { Options } from "./Options.js";
+import { Target } from "./Target.js";
+import type { CommandLineOptions, ConfigFileOptions, OptionValue, ResolvedConfig, TaskOptions } from "./types.js";
 
 export class Config {
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {
@@ -95,5 +97,37 @@ export class Config {
 
   static resolveRootPath(rootPath?: string | undefined): string {
     return Path.resolve(rootPath ?? ".");
+  }
+
+  static async resolveTask(taskOptions: TaskOptions, resolvedConfig: ResolvedConfig): Promise<ResolvedConfig> {
+    const resolvedTask: Record<string, unknown> = {};
+
+    for (const key in taskOptions) {
+      const optionValue = taskOptions[key as keyof TaskOptions];
+
+      if (optionValue != null) {
+        switch (key) {
+          case "checkDeclarationFiles":
+          case "checkSuppressedErrors":
+          case "compilerOptions":
+            resolvedTask[key] = optionValue;
+            break;
+
+          case "target":
+            await Options.validate("target", optionValue as string, Config.#onDiagnostics);
+
+            resolvedTask[key] = await Target.expand(optionValue as string, Config.#onDiagnostics);
+            break;
+
+          case "tsconfig":
+            await Options.validate("tsconfig", optionValue as string, Config.#onDiagnostics);
+
+            resolvedTask[key] = Options.resolve("tsconfig", optionValue as string);
+            break;
+        }
+      }
+    }
+
+    return { ...resolvedConfig, ...resolvedTask };
   }
 }
