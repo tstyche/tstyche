@@ -9,6 +9,7 @@ export interface CommandLineOptions {
   help?: boolean;
   list?: boolean;
   listFiles?: boolean;
+  listTasks?: boolean;
   only?: string;
   prune?: boolean;
   quiet?: boolean;
@@ -17,6 +18,7 @@ export interface CommandLineOptions {
   showConfig?: boolean;
   skip?: string;
   target?: Array<string>;
+  taskProvider?: string;
   tsconfig?: string;
   update?: boolean;
   verbose?: boolean;
@@ -37,6 +39,13 @@ export interface ConfigFileOptions {
   testFileMatch?: Array<string>;
   tsconfig?: string;
   verbose?: boolean;
+}
+
+export interface TaskOptions {
+  checkDeclarationFiles?: boolean;
+  checkSuppressedErrors?: boolean;
+  target?: string;
+  tsconfig?: string;
 }
 
 // #endregion
@@ -69,3 +78,5 @@ export interface DirectiveRange {
   directive?: TextRange;
   argument?: TextRange;
 }
+
+export type TaskList = Array<TaskOptions>;

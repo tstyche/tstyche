@@ -4,26 +4,34 @@ import * as tstyche from "tstyche/tstyche";
 
 const commandLineOptions = tstyche.Options.for(tstyche.OptionGroup.CommandLine);
 const configFileOptions = tstyche.Options.for(tstyche.OptionGroup.ConfigFile);
+const taskOptions = tstyche.Options.for(tstyche.OptionGroup.Task);
 
 const interfacesToWrite: Array<[string, Map<string, tstyche.OptionDefinition>]> = [
   ["CommandLineOptions", commandLineOptions],
   ["ConfigFileOptions", configFileOptions],
+  ["TaskOptions", taskOptions],
 ];
 
-function getTypeText(definition: tstyche.OptionDefinition | tstyche.ItemDefinition): string {
+function getTypeText(
+  definition: tstyche.OptionDefinition | tstyche.ItemDefinition,
+  options?: { isTaskOptions: boolean },
+): string {
   switch (definition.brand) {
     case tstyche.OptionBrand.Boolean:
     case tstyche.OptionBrand.True:
       return "boolean";
 
     case tstyche.OptionBrand.List:
-      return `Array<${getTypeText(definition.items)}>`;
-
-    case tstyche.OptionBrand.SemverRange:
-      return "Array<string>";
+      return `Array<${getTypeText(definition.items, options)}>`;
 
     case tstyche.OptionBrand.Number:
       return "number";
+
+    case tstyche.OptionBrand.SemverRange:
+      if (options?.isTaskOptions) {
+        return "string";
+      }
+      return "Array<string>";
 
     case tstyche.OptionBrand.String:
       return "string";
@@ -46,7 +54,7 @@ for (const [identifier, optionDefinitions] of interfacesToWrite) {
           continue;
         }
 
-        writer.writeLine(`${key}?: ${getTypeText(definition)};`);
+        writer.writeLine(`${key}?: ${getTypeText(definition, { isTaskOptions: identifier === "TaskOptions" })};`);
       }
     })
     .blankLine();

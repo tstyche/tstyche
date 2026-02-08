@@ -57,7 +57,7 @@
       }
     },
     "target": {
-      "description": "The range of TypeScript versions to be tested against.",
+      "description": "The range of TypeScript versions to test against.",
       "default": "*",
       "type": "string"
     },
