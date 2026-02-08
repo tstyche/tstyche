@@ -131,6 +131,10 @@ export class Select {
     }
 
     for (const fileName of entries.files) {
+      if (fileName === "tsconfig.json") {
+        continue;
+      }
+
       const filePath = [currentPath, fileName].join("/");
 
       if (Select.#isFileIncluded(filePath, matchPatterns, resolvedConfig)) {

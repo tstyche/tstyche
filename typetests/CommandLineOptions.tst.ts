@@ -5,6 +5,7 @@ describe("CommandLineOptions", () => {
   test("all options", () => {
     expect<CommandLineOptions>().type.toBeAssignableFrom({
       config: "./config/json",
+      compilerOptions: '{ "lib": ["esnext"] }',
       failFast: true,
       fetch: true,
       help: true,
@@ -28,6 +29,12 @@ describe("CommandLineOptions", () => {
 
   test("all options are optional", () => {
     expect<CommandLineOptions>().type.toBeAssignableFrom({});
+  });
+
+  test("'compilerOptions' option", () => {
+    expect<Pick<CommandLineOptions, "compilerOptions">>().type.toBe<{
+      compilerOptions?: string;
+    }>();
   });
 
   test("'config' option", () => {

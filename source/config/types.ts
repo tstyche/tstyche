@@ -3,6 +3,7 @@ import type ts from "typescript";
 // #region -- Generated code, to update run: yarn build && mise run generate
 
 export interface CommandLineOptions {
+  compilerOptions?: string;
   config?: string;
   failFast?: boolean;
   fetch?: boolean;
@@ -27,6 +28,7 @@ export interface CommandLineOptions {
 export interface ConfigFileOptions {
   checkDeclarationFiles?: boolean;
   checkSuppressedErrors?: boolean;
+  compilerOptions?: string;
   failFast?: boolean;
   fixtureFileMatch?: Array<string>;
   quiet?: boolean;

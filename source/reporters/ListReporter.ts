@@ -39,7 +39,7 @@ export class ListReporter extends BaseReporter {
 
       case "project:uses":
         OutputService.writeMessage(
-          usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, {
+          usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, payload.mergeCompilerOptions, {
             prependEmptyLine: this.#hasReportedUses && !this.#hasReportedAdds && !this.#hasReportedError,
           }),
         );

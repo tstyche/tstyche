@@ -57,6 +57,13 @@ export class Options {
 
     {
       brand: OptionBrand.String,
+      description: "The JSON string to merge into compiler options.",
+      group: OptionGroup.ConfigFile | OptionGroup.CommandLine,
+      name: "compilerOptions",
+    },
+
+    {
+      brand: OptionBrand.String,
       description: "The path to a TSTyche configuration file.",
       group: OptionGroup.CommandLine,
       name: "config",
@@ -103,7 +110,7 @@ export class Options {
 
     {
       brand: OptionBrand.True,
-      description: "Print the list of the selected test files and exit.",
+      description: "Print the list of selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",
     },
@@ -184,7 +191,7 @@ export class Options {
 
     {
       brand: OptionBrand.SemverRange,
-      description: "The range of TypeScript versions to be tested against.",
+      description: "The range of TypeScript versions to test against.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
       name: "target",
     },

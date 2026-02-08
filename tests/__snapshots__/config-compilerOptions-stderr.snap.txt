@@ -1,0 +1,20 @@
+Error: Type 'number[]' does not have property 'at'.
+
+  1 | import { expect } from "tstyche";
+  2 | expect([1, 2, 3]).type.toHaveProperty("at");
+    |                                       ~~~~
+  3 | expect([1, 2, 3]).type.toHaveProperty("with");
+  4 | 
+
+      at ./__typetests__/hasProperty.tst.ts:2:39
+
+Error: Type 'number[]' does not have property 'with'.
+
+  1 | import { expect } from "tstyche";
+  2 | expect([1, 2, 3]).type.toHaveProperty("at");
+  3 | expect([1, 2, 3]).type.toHaveProperty("with");
+    |                                       ~~~~~~
+  4 | 
+
+      at ./__typetests__/hasProperty.tst.ts:3:39
+
