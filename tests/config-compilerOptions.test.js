@@ -65,3 +65,56 @@ await test("'--compilerOptions' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 });
+
+await test("'compilerOptions' configuration file option", async (t) => {
+  t.afterEach(async () => {
+    await clearFixture(fixtureUrl);
+  });
+
+  await t.test("merges provided compiler options", async () => {
+    const config = {
+      compilerOptions: '{ lib: ["es2020"] }',
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/hasProperty.tst.ts"]: hasPropertyTestText,
+      ["__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("smoke: when 'compilerOptions' is not set", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/hasProperty.tst.ts"]: hasPropertyTestText,
+      ["__typetests__/tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-smoke-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-smoke-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+});

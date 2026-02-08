@@ -24,7 +24,7 @@ export function usesCompilerText(
 
   let mergeCompilerOptionsText: ScribblerJsx.Element | undefined;
 
-  if (mergeCompilerOptions != null) {
+  if (mergeCompilerOptions !== "") {
     mergeCompilerOptionsText = (
       <Text color={Color.Gray}>
         {" and merges '"}
