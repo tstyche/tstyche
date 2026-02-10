@@ -55,7 +55,7 @@ Command Line Options
   The range of TypeScript versions to test against.
 
   --tsconfig  string
-  The look up strategy to be used to find the TSConfig file.
+  The TSConfig to load.
 
   --update
   Fetch the 'typescript' package metadata from the registry and exit.

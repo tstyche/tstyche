@@ -80,7 +80,7 @@
       }
     },
     "tsconfig": {
-      "description": "The look up strategy to be used to find the TSConfig file.",
+      "description": "The TSConfig to load.",
       "default": "findup",
       "type": "string"
     },

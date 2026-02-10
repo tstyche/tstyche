@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import type { ResolvedConfig } from "#config";
+import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
@@ -9,15 +9,21 @@ import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
+  #host: ts.server.ServerHost;
   #lastSeenProject: string | undefined = "";
   #resolvedConfig: ResolvedConfig;
   #seenPrograms = new WeakSet<ts.Program>();
   #seenTestFiles = new Set<string>();
   #service: ts.server.ProjectService;
+  #syntheticConfigFilePath: string | undefined;
 
   constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#resolvedConfig = resolvedConfig;
+
+    if (Options.isJsonString(resolvedConfig.tsconfig)) {
+      this.#syntheticConfigFilePath = Path.resolve(resolvedConfig.rootPath, "synthetic.tsconfig.json");
+    }
 
     const noop = () => undefined;
 
@@ -37,8 +43,8 @@ export class ProjectService {
       close: noop,
     };
 
-    const host: ts.server.ServerHost = {
-      ...this.#compiler.sys,
+    this.#host = {
+      ...compiler.sys,
       clearImmediate,
       clearTimeout,
       setImmediate,
@@ -47,10 +53,18 @@ export class ProjectService {
       watchFile: () => noopWatcher,
     };
 
+    if (this.#syntheticConfigFilePath != null) {
+      this.#host.readFile = this.#getProxyReadFile(
+        compiler.sys.readFile,
+        this.#syntheticConfigFilePath,
+        resolvedConfig.tsconfig,
+      );
+    }
+
     this.#service = new this.#compiler.server.ProjectService({
       allowLocalPluginLoads: true,
       cancellationToken: this.#compiler.server.nullCancellationToken,
-      host,
+      host: this.#host,
       logger: noopLogger,
       session: undefined,
       useInferredProjectPerProjectRoot: true,
@@ -126,18 +140,33 @@ export class ProjectService {
     return project?.getLanguageService(/* ensureSynchronized */ true);
   }
 
-  #isFileIncluded(filePath: string) {
-    const configSourceFile = this.#compiler.readJsonConfigFile(
-      this.#resolvedConfig.tsconfig,
-      this.#compiler.sys.readFile,
-    );
+  #getProxyReadFile(
+    readFile: (path: string) => string | undefined,
+    syntheticConfigFilePath: string,
+    syntheticConfigText: string,
+  ) {
+    const proxyReadFile = new Proxy(readFile, {
+      apply(target, thisArg, args) {
+        if (args[0] === syntheticConfigFilePath) {
+          return syntheticConfigText;
+        }
+
+        return Reflect.apply(target, thisArg, args);
+      },
+    });
+
+    return proxyReadFile;
+  }
+
+  #isFileIncluded(filePath: string, tsconfigFilePath: string) {
+    const configSourceFile = this.#compiler.readJsonConfigFile(tsconfigFilePath, this.#host.readFile);
 
     const { fileNames } = this.#compiler.parseJsonSourceFileConfigFileContent(
       configSourceFile,
-      this.#compiler.sys,
-      Path.dirname(this.#resolvedConfig.tsconfig),
+      this.#host,
+      Path.dirname(tsconfigFilePath),
       undefined,
-      this.#resolvedConfig.tsconfig,
+      tsconfigFilePath,
     );
 
     return fileNames.includes(filePath);
@@ -154,11 +183,14 @@ export class ProjectService {
         this.#service.getConfigFileNameForFile = () => undefined;
         break;
 
-      default:
+      default: {
+        const tsconfigFilePath = this.#syntheticConfigFilePath ?? this.#resolvedConfig.tsconfig;
+
         // @ts-expect-error: overriding private method
-        this.#service.getConfigFileNameForFile = this.#isFileIncluded(filePath)
-          ? () => this.#resolvedConfig.tsconfig
+        this.#service.getConfigFileNameForFile = this.#isFileIncluded(filePath, tsconfigFilePath)
+          ? () => tsconfigFilePath
           : () => undefined;
+      }
     }
 
     const { configFileErrors, configFileName } = this.#service.openClientFile(
@@ -173,8 +205,13 @@ export class ProjectService {
 
       EventEmitter.dispatch([
         "project:uses",
-        { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
+        {
+          compilerVersion: this.#compiler.version,
+          projectConfigFilePath: this.#syntheticConfigFilePath ? undefined : configFileName,
+        },
       ]);
+
+      // TODO diagnostics should not include synthetic path
 
       if (configFileErrors && configFileErrors.length > 0) {
         EventEmitter.dispatch([
