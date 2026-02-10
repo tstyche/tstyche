@@ -1,5 +1,6 @@
 import type { ExpectNode, TestTree, TestTreeNode, WhenNode } from "#collect";
 import type { Diagnostic } from "#diagnostic";
+import type { ProjectConfig } from "#project";
 import type {
   DescribeResult,
   ExpectResult,
@@ -23,7 +24,7 @@ export type Event =
   | ["store:error", { diagnostics: Array<Diagnostic> }]
   | ["target:start", { result: TargetResult }]
   | ["target:end", { result: TargetResult }]
-  | ["project:uses", { compilerVersion: string; projectConfigFilePath: string | undefined }]
+  | ["project:uses", { compilerVersion: string; projectConfig: ProjectConfig }]
   | ["project:error", { diagnostics: Array<Diagnostic> }]
   | ["file:start", { result: FileResult }]
   | ["file:error", { diagnostics: Array<Diagnostic>; result: FileResult }]

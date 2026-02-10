@@ -1,6 +1,6 @@
 ···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
 
-uses TypeScript <<version>>
+uses TypeScript <<version>> with baseline TSConfig
 
 pass ./.generated/isString.tst.ts
 pass ./_nested/.generated/isNumber.tst.ts

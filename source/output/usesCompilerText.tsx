@@ -1,24 +1,42 @@
 import { Path } from "#path";
+import { type ProjectConfig, ProjectConfigKind } from "#project";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
 export function usesCompilerText(
   compilerVersion: string,
-  projectConfigFilePath: string | undefined,
+  projectConfig: ProjectConfig,
   options?: { prependEmptyLine?: boolean; short?: boolean },
 ): ScribblerJsx.Element {
   if (options?.short) {
     return <Text color={Color.Blue}>{compilerVersion}</Text>;
   }
 
-  let projectConfigPathText: ScribblerJsx.Element | undefined;
+  let projectConfigText: ScribblerJsx.Element | undefined;
 
-  if (projectConfigFilePath != null) {
-    projectConfigPathText = (
-      <Text color={Color.Gray}>
-        {" with "}
-        {Path.relative("", projectConfigFilePath)}
-      </Text>
-    );
+  switch (projectConfig.kind) {
+    case ProjectConfigKind.Discovered:
+    case ProjectConfigKind.Provided:
+      projectConfigText = (
+        <Text color={Color.Gray}>
+          {" with "}
+          {Path.relative("", projectConfig.specifier)}
+        </Text>
+      );
+      break;
+
+    case ProjectConfigKind.Default:
+      projectConfigText = (
+        <Text color={Color.Gray}>
+          {" with "}
+          {projectConfig.specifier}
+          {" TSConfig"}
+        </Text>
+      );
+      break;
+
+    case ProjectConfigKind.Synthetic:
+      projectConfigText = <Text color={Color.Gray}>{" with inline TSConfig"}</Text>;
+      break;
   }
 
   return (
@@ -28,7 +46,7 @@ export function usesCompilerText(
         <Text color={Color.Blue}>{"uses"}</Text>
         {" TypeScript "}
         {compilerVersion}
-        {projectConfigPathText}
+        {projectConfigText}
       </Line>
       <Line />
     </Text>

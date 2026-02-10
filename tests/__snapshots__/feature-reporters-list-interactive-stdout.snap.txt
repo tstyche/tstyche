@@ -1,7 +1,7 @@
 ···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/feature-reporters
 
 adds TypeScript 5.6.3 to <<basePath>>/tests/__fixtures__/.generated/feature-reporters/.store/typescript@5.6.3
-uses TypeScript 5.6.3
+uses TypeScript 5.6.3 with baseline TSConfig
 
 runs ./__typetests__/dummy.test.ts
 <moveCursorUpBy1Row>
@@ -11,7 +11,7 @@ pass ./__typetests__/dummy.test.ts
   + is number?
 
 adds TypeScript 5.8.3 to <<basePath>>/tests/__fixtures__/.generated/feature-reporters/.store/typescript@5.8.3
-uses TypeScript 5.8.3
+uses TypeScript 5.8.3 with baseline TSConfig
 
 runs ./__typetests__/dummy.test.ts
 <moveCursorUpBy1Row>
