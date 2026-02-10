@@ -22,7 +22,10 @@ export class ProjectService {
     this.#resolvedConfig = resolvedConfig;
 
     if (Options.isJsonString(resolvedConfig.tsconfig)) {
-      this.#syntheticConfigFilePath = Path.resolve(resolvedConfig.rootPath, "synthetic.tsconfig.json");
+      this.#syntheticConfigFilePath = Path.resolve(
+        resolvedConfig.rootPath,
+        `${Math.random().toString(32).slice(2)}.tsconfig.json`,
+      );
     }
 
     const noop = () => undefined;
