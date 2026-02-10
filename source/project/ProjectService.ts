@@ -148,6 +148,7 @@ export class ProjectService {
       case "findup":
         break;
 
+      case "baseline":
       case "ignore":
         // @ts-expect-error: overriding private method
         this.#service.getConfigFileNameForFile = () => undefined;
