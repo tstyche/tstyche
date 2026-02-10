@@ -257,7 +257,7 @@ export class Options {
   }
 
   static #isLookupStrategy(optionValue: string) {
-    return ["findup", "ignore"].includes(optionValue);
+    return ["findup", "baseline", "ignore"].includes(optionValue);
   }
 
   static resolve(optionName: string, optionValue: string, rootPath = "."): string {

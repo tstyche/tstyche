@@ -48,19 +48,19 @@ await test("'--tsconfig' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("ignores 'tsconfig.json'", async () => {
+  await t.test("uses baseline TSConfig", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--tsconfig", "ignore"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--tsconfig", "baseline"]);
 
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-ignore-stdout`,
+      fileName: `${testFileName}-baseline-stdout`,
       testFileUrl: import.meta.url,
     });
 
@@ -109,7 +109,7 @@ await test("'--tsconfig' command line option", async (t) => {
 
   await t.test("overrides configuration file option", async () => {
     const config = {
-      tsconfig: "ignore",
+      tsconfig: "baseline",
     };
 
     await writeFixture(fixtureUrl, {
@@ -161,9 +161,9 @@ await test("'tsconfig' configuration file option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("ignores 'tsconfig.json'", async () => {
+  await t.test("uses baseline TSConfig", async () => {
     const config = {
-      tsconfig: "ignore",
+      tsconfig: "baseline",
     };
 
     await writeFixture(fixtureUrl, {
@@ -178,7 +178,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-ignore-stdout`,
+      fileName: `${testFileName}-baseline-stdout`,
       testFileUrl: import.meta.url,
     });
 
