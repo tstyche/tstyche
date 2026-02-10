@@ -57,11 +57,8 @@ export class ProjectService {
     };
 
     if (this.#syntheticConfigFilePath != null) {
-      this.#host.readFile = this.#getProxyReadFile(
-        compiler.sys.readFile,
-        this.#syntheticConfigFilePath,
-        resolvedConfig.tsconfig,
-      );
+      this.#host.readFile = (path) =>
+        path === this.#syntheticConfigFilePath ? resolvedConfig.tsconfig : compiler.sys.readFile(path);
     }
 
     this.#service = new this.#compiler.server.ProjectService({
@@ -141,24 +138,6 @@ export class ProjectService {
     const project = this.getDefaultProject(filePath);
 
     return project?.getLanguageService(/* ensureSynchronized */ true);
-  }
-
-  #getProxyReadFile(
-    readFile: (path: string) => string | undefined,
-    syntheticConfigFilePath: string,
-    syntheticConfigText: string,
-  ) {
-    const proxyReadFile = new Proxy(readFile, {
-      apply(target, thisArg, args) {
-        if (args[0] === syntheticConfigFilePath) {
-          return syntheticConfigText;
-        }
-
-        return Reflect.apply(target, thisArg, args);
-      },
-    });
-
-    return proxyReadFile;
   }
 
   #isFileIncluded(filePath: string, tsconfigFilePath: string) {
