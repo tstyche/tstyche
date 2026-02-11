@@ -764,7 +764,7 @@ await test("watch", async (t) => {
       fs.mkdirSync(new URL("config", fixtureUrl));
       fs.writeFileSync(
         new URL("config/tstyche.json", fixtureUrl),
-        JSON.stringify({ rootPath: "../", testFileMatch: ["**/isNumber.*"] }, null, 2),
+        JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
       const process = new Process(fixtureUrl, ["--config", "config/tstyche.json", "--watch"], {
@@ -775,7 +775,7 @@ await test("watch", async (t) => {
 
       fs.writeFileSync(
         new URL("config/tstyche.json", fixtureUrl),
-        JSON.stringify({ rootPath: "../", testFileMatch: ["**/isString.*"] }, null, 2),
+        JSON.stringify({ testFileMatch: ["**/isString.*"] }, null, 2),
       );
 
       const configFileChanged = await process.waitForIdle();
