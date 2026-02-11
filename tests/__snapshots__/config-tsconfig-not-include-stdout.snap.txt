@@ -1,6 +1,6 @@
 ···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-tsconfig
 
-uses TypeScript <<version>> with ./tsconfig.test.json
+uses TypeScript <<version>> with baseline TSConfig
 
 pass ./__typetests__/isNumber.tst.ts
 pass ./__typetests__/isString.tst.ts

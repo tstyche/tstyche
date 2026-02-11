@@ -137,21 +137,21 @@ export class ProjectService {
   }
 
   #isFileIncluded(filePath: string) {
-    const configSourceFile = this.#compiler.readJsonConfigFile(this.#projectConfig.specifier!, this.#host.readFile);
+    const configSourceFile = this.#compiler.readJsonConfigFile(this.#projectConfig.specifier, this.#host.readFile);
 
     const { fileNames } = this.#compiler.parseJsonSourceFileConfigFileContent(
       configSourceFile,
       this.#host,
-      Path.dirname(this.#projectConfig.specifier!),
+      Path.dirname(this.#projectConfig.specifier),
       undefined,
-      this.#projectConfig.specifier!,
+      this.#projectConfig.specifier,
     );
 
     return fileNames.includes(filePath);
   }
 
-  #resolveProjectConfig(specifier: string | undefined): ProjectConfig {
-    if (!specifier || specifier === "baseline" || specifier === "ignore") {
+  #resolveProjectConfig(specifier: string): ProjectConfig {
+    if (specifier === "baseline" || specifier === "ignore") {
       return { kind: ProjectConfigKind.Default, specifier: "baseline" };
     }
 
@@ -197,9 +197,9 @@ export class ProjectService {
       this.#lastSeenProject = configFileName;
 
       const projectConfig =
-        this.#projectConfig.kind === ProjectConfigKind.Discovered
-          ? this.#resolveProjectConfig(configFileName)
-          : this.#projectConfig;
+        configFileName != null
+          ? { ...this.#projectConfig, specifier: configFileName }
+          : { kind: ProjectConfigKind.Default, specifier: "baseline" };
 
       EventEmitter.dispatch(["project:uses", { compilerVersion: this.#compiler.version, projectConfig }]);
 
