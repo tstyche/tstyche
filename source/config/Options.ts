@@ -195,7 +195,7 @@ export class Options {
 
     {
       brand: OptionBrand.String,
-      description: "The look up strategy to be used to find the TSConfig file.",
+      description: "The TSConfig to load.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       name: "tsconfig",
     },
@@ -253,6 +253,10 @@ export class Options {
     return ["findup", "baseline", "ignore"].includes(optionValue);
   }
 
+  static isJsonString(text: string): boolean {
+    return text.startsWith("{");
+  }
+
   static resolve(optionName: string, optionValue: string, rootPath = "."): string {
     const canonicalOptionName = Options.#getCanonicalOptionName(optionName);
 
@@ -260,7 +264,10 @@ export class Options {
       case "config":
       case "root":
       case "tsconfig":
-        if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {
+        if (
+          canonicalOptionName === "tsconfig" &&
+          (Options.#isLookupStrategy(optionValue) || Options.isJsonString(optionValue))
+        ) {
           break;
         }
 
@@ -304,7 +311,10 @@ export class Options {
       case "config":
       case "root":
       case "tsconfig":
-        if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {
+        if (
+          canonicalOptionName === "tsconfig" &&
+          (Options.#isLookupStrategy(optionValue) || Options.isJsonString(optionValue))
+        ) {
           break;
         }
 

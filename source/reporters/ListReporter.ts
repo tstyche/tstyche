@@ -42,7 +42,7 @@ export class ListReporter extends BaseReporter {
           OutputService.writeBlankLine();
         }
 
-        OutputService.writeMessage(usesText(payload.compilerVersion, payload.projectConfigFilePath));
+        OutputService.writeMessage(usesText(payload.compilerVersion, payload.projectConfig));
 
         this.#hasReportedAdds = false;
         this.#hasReportedUses = true;

@@ -16,6 +16,11 @@ test("is number?", () => {
 });
 `;
 
+const hasPropertyTestText = `import { expect } from "tstyche";
+expect([1, 2, 3]).type.toHaveProperty("at");
+expect([1, 2, 3]).type.toHaveProperty("with");
+`;
+
 const tsconfig = {
   extends: "../../tsconfig.json",
   include: ["**/*"],
@@ -29,7 +34,7 @@ await test("'--tsconfig' command line option", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("finds the nearest 'tsconfig.json'", async () => {
+  await t.test("discovers the nearest 'tsconfig.json'", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -67,7 +72,7 @@ await test("'--tsconfig' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("loads specified 'tsconfig.json'", async () => {
+  await t.test("uses specified 'tsconfig.json'", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -87,7 +92,7 @@ await test("'--tsconfig' command line option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("uses default compiler options when file is not included in specified 'tsconfig.json'", async () => {
+  await t.test("uses baseline TSConfig when file is not included in specified 'tsconfig.json'", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
@@ -100,11 +105,35 @@ await test("'--tsconfig' command line option", async (t) => {
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-not-include-stdout`,
+      fileName: `${testFileName}-not-included-stdout`,
       testFileUrl: import.meta.url,
     });
 
     assert.equal(exitCode, 0);
+  });
+
+  await t.test("uses inline TSConfig", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/hasProperty.tst.ts"]: hasPropertyTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "--tsconfig",
+      '"{\\"extends\\":\\"./tsconfig.json\\",\\"compilerOptions\\":{\\"lib\\":[\\"es2020\\"]},\\"include\\":[\\"**/*\\"]}"',
+    ]);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-inline-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-inline-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 
   await t.test("overrides configuration file option", async () => {
@@ -137,7 +166,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("finds the nearest 'tsconfig.json'", async () => {
+  await t.test("discovers the nearest 'tsconfig.json'", async () => {
     const config = {
       tsconfig: "findup",
     };
@@ -185,7 +214,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("loads specified 'tsconfig.json'", async () => {
+  await t.test("uses specified 'tsconfig.json'", async () => {
     const config = {
       tsconfig: "./tsconfig.test.json",
     };
@@ -210,7 +239,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     assert.equal(exitCode, 0);
   });
 
-  await t.test("uses default compiler options when file is not included in specified 'tsconfig.json'", async () => {
+  await t.test("uses baseline TSConfig when file is not included in specified 'tsconfig.json'", async () => {
     const config = {
       tsconfig: "./tsconfig.test.json",
     };
@@ -228,10 +257,36 @@ await test("'tsconfig' configuration file option", async (t) => {
     assert.equal(stderr, "");
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-not-include-stdout`,
+      fileName: `${testFileName}-not-included-stdout`,
       testFileUrl: import.meta.url,
     });
 
     assert.equal(exitCode, 0);
+  });
+
+  await t.test("uses inline TSConfig", async () => {
+    const config = {
+      tsconfig: '{"extends":"./tsconfig.json","compilerOptions":{"lib":["es2020"]},"include":["**/*"]}',
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/hasProperty.tst.ts"]: hasPropertyTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-inline-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-inline-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 });
