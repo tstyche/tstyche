@@ -250,7 +250,7 @@ export class Options {
   }
 
   static #isLookupStrategy(optionValue: string) {
-    return ["findup", "baseline", "ignore"].includes(optionValue);
+    return ["findup", "baseline"].includes(optionValue);
   }
 
   static isJsonString(text: string): boolean {
