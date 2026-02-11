@@ -1,5 +1,5 @@
 import { environmentOptions } from "#environment";
-import { addsPackageText, diagnosticText, fileStatusText, OutputService, usesCompilerText } from "#output";
+import { addsText, diagnosticText, fileStatusText, OutputService, usesText } from "#output";
 import { ResultStatus } from "#result";
 import { BaseReporter } from "./BaseReporter.js";
 import { FileView } from "./FileView.js";
@@ -21,7 +21,7 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "store:adds":
-        OutputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
+        OutputService.writeMessage(addsText(payload.packageVersion, payload.packagePath));
 
         this.#hasReportedAdds = true;
         break;
@@ -38,11 +38,11 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "project:uses":
-        OutputService.writeMessage(
-          usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, {
-            prependEmptyLine: this.#hasReportedUses && !this.#hasReportedAdds && !this.#hasReportedError,
-          }),
-        );
+        if (this.#hasReportedUses && !(this.#hasReportedAdds || this.#hasReportedError)) {
+          OutputService.writeBlankLine();
+        }
+
+        OutputService.writeMessage(usesText(payload.compilerVersion, payload.projectConfigFilePath));
 
         this.#hasReportedAdds = false;
         this.#hasReportedUses = true;

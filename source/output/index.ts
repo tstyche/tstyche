@@ -1,4 +1,4 @@
-export { addsPackageText } from "./addsPackageText.js";
+export { addsText } from "./addsText.js";
 export { describeNameText } from "./describeNameText.js";
 export { diagnosticText } from "./diagnosticText.js";
 export { dotText } from "./dotText.js";
@@ -11,6 +11,6 @@ export { StreamController } from "./StreamController.js";
 export { summaryText } from "./summaryText.js";
 export { testNameText } from "./testNameText.js";
 export type { CodeFrameOptions } from "./types.js";
-export { usesCompilerText } from "./usesCompilerText.js";
+export { usesText } from "./usesText.js";
 export { waitingForFileChangesText } from "./waitingForFileChangesText.js";
 export { watchUsageText } from "./watchUsageText.js";

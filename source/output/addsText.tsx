@@ -1,6 +1,6 @@
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
-export function addsPackageText(
+export function addsText(
   packageVersion: string,
   packagePath: string,
   options?: { short?: boolean },

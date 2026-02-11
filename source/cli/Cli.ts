@@ -87,17 +87,9 @@ export class Cli {
         this.#eventEmitter.addReporter(setupReporter);
       }
 
-      const { configFileOptions, configFilePath } = await Config.parseConfigFile(
-        commandLineOptions.config,
-        commandLineOptions.root,
-      );
+      const { configFileOptions } = await Config.parseConfigFile(commandLineOptions?.config, commandLineOptions?.root);
 
-      const resolvedConfig = Config.resolve({
-        configFileOptions,
-        configFilePath,
-        commandLineOptions,
-        pathMatch,
-      });
+      const resolvedConfig = Config.resolve({ configFileOptions, commandLineOptions, pathMatch });
 
       if (cancellationToken.isCancellationRequested()) {
         if (commandLine.includes("--watch")) {

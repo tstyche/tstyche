@@ -1,6 +1,6 @@
 import type { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
-import { addsPackageText, diagnosticText, dotText, OutputService, usesCompilerText } from "#output";
+import { addsText, diagnosticText, dotText, OutputService, usesText } from "#output";
 import { BaseReporter } from "./BaseReporter.js";
 import type { ReporterEvent } from "./types.js";
 
@@ -11,7 +11,7 @@ export class DotReporter extends BaseReporter {
   on([event, payload]: ReporterEvent): void {
     switch (event) {
       case "store:adds":
-        OutputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath, { short: true }));
+        OutputService.writeMessage(addsText(payload.packageVersion, payload.packagePath, { short: true }));
         this.#hasReportedAdds = true;
         break;
 
@@ -31,9 +31,7 @@ export class DotReporter extends BaseReporter {
         }
 
         if (this.resolvedConfig.target.length > 1) {
-          OutputService.writeMessage(
-            usesCompilerText(payload.compilerVersion, payload.projectConfigFilePath, { short: true }),
-          );
+          OutputService.writeMessage(usesText(payload.compilerVersion, payload.projectConfigFilePath, { short: true }));
         }
         break;
 
