@@ -103,7 +103,7 @@ export class Options {
 
     {
       brand: OptionBrand.True,
-      description: "Print the list of the selected test files and exit.",
+      description: "Print the list of selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",
     },
@@ -177,7 +177,7 @@ export class Options {
 
     {
       brand: OptionBrand.SemverRange,
-      description: "The range of TypeScript versions to be tested against.",
+      description: "The range of TypeScript versions to test against.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
       name: "target",
     },
@@ -250,7 +250,7 @@ export class Options {
   }
 
   static #isLookupStrategy(optionValue: string) {
-    return ["findup", "ignore"].includes(optionValue);
+    return ["findup", "baseline", "ignore"].includes(optionValue);
   }
 
   static resolve(optionName: string, optionValue: string, rootPath = "."): string {

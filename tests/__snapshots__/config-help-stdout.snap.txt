@@ -28,7 +28,7 @@ Command Line Options
   Print the list of supported versions of the 'typescript' package and exit.
 
   --listFiles
-  Print the list of the selected test files and exit.
+  Print the list of selected test files and exit.
 
   --only  string
   Only run tests with matching name.
@@ -52,7 +52,7 @@ Command Line Options
   Skip tests with matching name.
 
   --target  string
-  The range of TypeScript versions to be tested against.
+  The range of TypeScript versions to test against.
 
   --tsconfig  string
   The look up strategy to be used to find the TSConfig file.

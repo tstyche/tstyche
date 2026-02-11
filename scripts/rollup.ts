@@ -22,24 +22,19 @@ function clean(): Plugin {
 
 function tidyJs(): Plugin {
   const binEntry = "bin.js";
-  const tstycheEntry = "tstyche.js";
 
   return {
     name: "tidy-js",
 
-    renderChunk(code, chunkInfo) {
-      if (chunkInfo.fileName === tstycheEntry) {
-        const magicString = new MagicString(code);
+    renderChunk(code) {
+      const magicString = new MagicString(code);
 
-        magicString.replaceAll("__version__", packageConfig.version);
+      magicString.replaceAll("__version__", packageConfig.version);
 
-        return {
-          code: magicString.toString(),
-          map: magicString.generateMap({ hires: true }),
-        };
-      }
-
-      return null;
+      return {
+        code: magicString.toString(),
+        map: magicString.generateMap({ hires: true }),
+      };
     },
 
     async writeBundle() {
@@ -51,35 +46,29 @@ function tidyJs(): Plugin {
 }
 
 function tidyDts(): Plugin {
-  const tstycheEntry = "tstyche.d.ts";
-
   return {
     name: "tidy-dts",
 
-    renderChunk(code, chunkInfo) {
-      if (chunkInfo.fileName === tstycheEntry) {
-        const magicString = new MagicString(code);
+    renderChunk(code) {
+      const magicString = new MagicString(code);
 
-        magicString.replaceAll("import", "import type");
+      magicString.replaceAll("import", "import type");
 
-        magicString.replaceAll("const enum", "enum");
+      magicString.replaceAll("const enum", "enum");
 
-        magicString.replaceAll("__version__", packageConfig.version);
+      magicString.replaceAll("__version__", packageConfig.version);
 
-        return {
-          code: magicString.toString(),
-          map: magicString.generateMap({ hires: true }),
-        };
-      }
-
-      return null;
+      return {
+        code: magicString.toString(),
+        map: magicString.generateMap({ hires: true }),
+      };
     },
   };
 }
 
 const config: Array<RollupOptions> = [
   {
-    external: [/^node:/],
+    external: [/^node:/, "./tstyche.js"],
     input: {
       tag: "./source/tag.ts",
       index: "./source/types.ts",
