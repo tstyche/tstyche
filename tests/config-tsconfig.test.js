@@ -265,8 +265,6 @@ await test("'tsconfig' configuration file option", async (t) => {
   });
 
   await t.test("uses inline TSConfig", async () => {
-    // '"{\\"extends\\":\\"./tsconfig.json\\",\\"compilerOptions\\":{\\"lib\\":[\\"es2020\\"]},\\"include\\":[\\"**/*\\"]}"',
-
     const config = {
       tsconfig: '{"extends":"./tsconfig.json","compilerOptions":{"lib":["es2020"]},"include":["**/*"]}',
     };

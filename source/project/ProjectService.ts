@@ -203,8 +203,6 @@ export class ProjectService {
 
       EventEmitter.dispatch(["project:uses", { compilerVersion: this.#compiler.version, projectConfig }]);
 
-      // TODO diagnostics should not include synthetic path
-
       if (configFileErrors && configFileErrors.length > 0) {
         EventEmitter.dispatch([
           "project:error",

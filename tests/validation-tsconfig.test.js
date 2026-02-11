@@ -10,6 +10,11 @@ test("is string?", () => {
 });
 `;
 
+const tsconfig = {
+  extends: "../../tsconfig.json",
+  include: ["**/*"],
+};
+
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
@@ -53,6 +58,31 @@ await test("'--tsconfig' command line option", async (t) => {
 
     assert.equal(normalizeOutput(stderr), expected);
     assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when inline config has an error", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, [
+      "--tsconfig",
+      '"{\\"extends\\":\\"./tsconfig.json\\",\\"compilerOptions\\":{\\"lib\\":[\\"es2020\\"}}"',
+    ]);
+
+    const expected = [
+      "Error: ',' expected. ts(1005)",
+      "",
+      `  1 | {"extends":"./tsconfig.json","compilerOptions":{"lib":\\["es2020"}}`,
+      "    |                                                                ~",
+      "",
+      "",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+
     assert.equal(exitCode, 1);
   });
 });
@@ -99,6 +129,33 @@ await test("'tsconfig' configuration file option", async (t) => {
     });
 
     assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when inline config has an error", async () => {
+    const config = {
+      tsconfig: '{"extends":"./tsconfig.json","compilerOptions":{"lib":["es2020"}}',
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl);
+
+    const expected = [
+      "Error: ',' expected. ts(1005)",
+      "",
+      `  1 | {"extends":"./tsconfig.json","compilerOptions":{"lib":\\["es2020"}}`,
+      "    |                                                                ~",
+      "",
+      "",
+    ].join("\n");
+
+    assert.match(stderr, new RegExp(`^${expected}`));
+
     assert.equal(exitCode, 1);
   });
 });
