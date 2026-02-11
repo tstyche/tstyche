@@ -72,16 +72,13 @@ await test("'--tsconfig' command line option", async (t) => {
       '"{\\"extends\\":\\"./tsconfig.json\\",\\"compilerOptions\\":{\\"lib\\":[\\"es2020\\"}}"',
     ]);
 
-    const expected = [
-      "Error: ',' expected. ts(1005)",
-      "",
-      `  1 | {"extends":"./tsconfig.json","compilerOptions":{"lib":\\["es2020"}}`,
-      "    |                                                                ~",
-      "",
-      "",
-    ].join("\n");
-
-    assert.match(stderr, new RegExp(`^${expected}`));
+    await assert.matchSnapshot(
+      normalizeOutput(stderr).replace(/(\w{11})\.tsconfig\.json/, "<<synthetic>>.tsconfig.json"),
+      {
+        fileName: `${testFileName}-inline-config-error`,
+        testFileUrl: import.meta.url,
+      },
+    );
 
     assert.equal(exitCode, 1);
   });
@@ -145,16 +142,13 @@ await test("'tsconfig' configuration file option", async (t) => {
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
-    const expected = [
-      "Error: ',' expected. ts(1005)",
-      "",
-      `  1 | {"extends":"./tsconfig.json","compilerOptions":{"lib":\\["es2020"}}`,
-      "    |                                                                ~",
-      "",
-      "",
-    ].join("\n");
-
-    assert.match(stderr, new RegExp(`^${expected}`));
+    await assert.matchSnapshot(
+      normalizeOutput(stderr).replace(/(\w{11})\.tsconfig\.json/, "<<synthetic>>.tsconfig.json"),
+      {
+        fileName: `${testFileName}-inline-config-error`,
+        testFileUrl: import.meta.url,
+      },
+    );
 
     assert.equal(exitCode, 1);
   });
