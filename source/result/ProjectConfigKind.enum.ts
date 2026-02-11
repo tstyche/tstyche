@@ -1,6 +1,6 @@
 export const enum ProjectConfigKind {
   Discovered,
-  Default,
   Provided,
+  Default,
   Synthetic,
 }

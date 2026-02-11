@@ -1,5 +1,5 @@
-import type { ProjectConfig } from "#project";
 import type { FileResult } from "./FileResult.js";
+import type { ProjectConfig } from "./types.js";
 
 export class ProjectResult {
   compilerVersion: string;

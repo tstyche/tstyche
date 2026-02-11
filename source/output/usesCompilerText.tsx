@@ -1,5 +1,5 @@
 import { Path } from "#path";
-import { type ProjectConfig, ProjectConfigKind } from "#project";
+import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
 
 export function usesCompilerText(

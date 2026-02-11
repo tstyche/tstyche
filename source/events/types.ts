@@ -1,10 +1,10 @@
 import type { ExpectNode, TestTree, TestTreeNode, WhenNode } from "#collect";
 import type { Diagnostic } from "#diagnostic";
-import type { ProjectConfig } from "#project";
 import type {
   DescribeResult,
   ExpectResult,
   FileResult,
+  ProjectConfig,
   Result,
   SuppressedResult,
   TargetResult,

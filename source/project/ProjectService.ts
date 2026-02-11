@@ -3,11 +3,10 @@ import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
+import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
 import { SourceService } from "#source";
 import { Version } from "#version";
-import { ProjectConfigKind } from "./ProjectConfigKind.enum.js";
-import type { ProjectConfig } from "./types.js";
 
 export class ProjectService {
   #compiler: typeof ts;
@@ -180,12 +179,11 @@ export class ProjectService {
         this.#service.getConfigFileNameForFile = () => undefined;
         break;
 
-      default: {
+      default:
         // @ts-expect-error: overriding private method
         this.#service.getConfigFileNameForFile = this.#isFileIncluded(filePath)
           ? () => this.#projectConfig.specifier
           : () => undefined;
-      }
     }
 
     const { configFileErrors, configFileName } = this.#service.openClientFile(
