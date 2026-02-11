@@ -151,7 +151,7 @@ export class ProjectService {
   }
 
   #resolveProjectConfig(specifier: string): ProjectConfig {
-    if (specifier === "baseline" || specifier === "ignore") {
+    if (specifier === "baseline") {
       return { kind: ProjectConfigKind.Default, specifier: "baseline" };
     }
 
