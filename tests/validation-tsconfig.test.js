@@ -73,7 +73,7 @@ await test("'--tsconfig' command line option", async (t) => {
     ]);
 
     await assert.matchSnapshot(
-      normalizeOutput(stderr).replace(/(\w{11})\.tsconfig\.json/, "<<synthetic>>.tsconfig.json"),
+      normalizeOutput(stderr).replace(/\.\/(\w*)\.tsconfig\.json/, "./<<synthetic>>.tsconfig.json"),
       {
         fileName: `${testFileName}-inline-config-error`,
         testFileUrl: import.meta.url,
@@ -143,7 +143,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(
-      normalizeOutput(stderr).replace(/(\w{11})\.tsconfig\.json/, "<<synthetic>>.tsconfig.json"),
+      normalizeOutput(stderr).replace(/\.\/(\w*)\.tsconfig\.json/, "./<<synthetic>>.tsconfig.json"),
       {
         fileName: `${testFileName}-inline-config-error`,
         testFileUrl: import.meta.url,
