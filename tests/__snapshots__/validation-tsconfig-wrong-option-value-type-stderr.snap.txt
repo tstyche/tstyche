@@ -6,5 +6,5 @@ Error: Value for the 'tsconfig' option must be a string.
   3 | }
   4 | 
 
-      at ./tstyche.config.json:2:15
+      at ./tstyche.json:2:15
 

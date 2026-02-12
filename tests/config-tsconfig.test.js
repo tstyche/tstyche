@@ -145,7 +145,7 @@ await test("'--tsconfig' command line option", async (t) => {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--tsconfig", "findup"]);
@@ -175,7 +175,7 @@ await test("'tsconfig' configuration file option", async (t) => {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -199,7 +199,7 @@ await test("'tsconfig' configuration file option", async (t) => {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -224,7 +224,7 @@ await test("'tsconfig' configuration file option", async (t) => {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tsconfig.test.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -249,7 +249,7 @@ await test("'tsconfig' configuration file option", async (t) => {
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
       ["tsconfig.test.json"]: JSON.stringify({ extends: "../../tsconfig.json", include: ["src/**/*"] }, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -272,7 +272,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/hasProperty.tst.ts"]: hasPropertyTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

@@ -7,7 +7,7 @@ Error: Value for the 'target' option must be a string.
   4 |   }
   5 | 
 
-      at ./tstyche.config.json:2:13
+      at ./tstyche.json:2:13
 
 Error: Item of the 'testFileMatch' list must be of type string.
 
@@ -19,5 +19,5 @@ Error: Item of the 'testFileMatch' list must be of type string.
   5 | 
   6 | 
 
-      at ./tstyche.config.json:3:21
+      at ./tstyche.json:3:21
 

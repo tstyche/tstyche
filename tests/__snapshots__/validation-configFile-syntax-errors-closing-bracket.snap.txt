@@ -6,7 +6,7 @@ Error: Expected closing ']'.
     | ~
   5 | 
 
-      at ./tstyche.config.json:4:1
+      at ./tstyche.json:4:1
 
     The opening '[' was seen here.
 
@@ -17,5 +17,5 @@ Error: Expected closing ']'.
       4 | }
       5 | 
 
-          at ./tstyche.config.json:3:20
+          at ./tstyche.json:3:20
 

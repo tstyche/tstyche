@@ -94,7 +94,7 @@ await test("'--verbose' command line option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--verbose", "false"]);
@@ -115,7 +115,7 @@ await test("'--verbose' command line option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--verbose"]);
@@ -148,7 +148,7 @@ await test("'verbose' configuration file option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -169,7 +169,7 @@ await test("'verbose' configuration file option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

@@ -535,7 +535,7 @@ await test("watch", async (t) => {
       await process.waitForIdle();
 
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
@@ -557,7 +557,7 @@ await test("watch", async (t) => {
 
     await t.test("when config file is changed", async () => {
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
@@ -568,7 +568,7 @@ await test("watch", async (t) => {
       await process.waitForIdle();
 
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isString.*"] }, null, 2),
       );
 
@@ -590,7 +590,7 @@ await test("watch", async (t) => {
 
     await t.test("when config file has an error", async () => {
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ failFast: "no", testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
@@ -601,28 +601,28 @@ await test("watch", async (t) => {
       await process.waitForIdle();
 
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ failFast: false, testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
       await process.waitForIdle();
 
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ failFast: "yes", testFileMatch: ["**/isString.*"] }, null, 2),
       );
 
       await process.waitForIdle();
 
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ failFast: "ok", testFileMatch: ["**/isString.*"] }, null, 2),
       );
 
       await process.waitForIdle();
 
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ failFast: true, testFileMatch: ["**/isString.*"] }, null, 2),
       );
 
@@ -647,7 +647,7 @@ await test("watch", async (t) => {
 
     await t.test("when no test files are selected", async () => {
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isVoid.*"] }, null, 2),
       );
 
@@ -663,14 +663,14 @@ await test("watch", async (t) => {
       await process.waitForIdle();
 
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
       await process.waitForIdle();
 
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isVoid.*"] }, null, 2),
       );
 
@@ -732,7 +732,7 @@ await test("watch", async (t) => {
 
     await t.test("when config file is removed", async () => {
       fs.writeFileSync(
-        new URL("tstyche.config.json", fixtureUrl),
+        new URL("tstyche.json", fixtureUrl),
         JSON.stringify({ testFileMatch: ["**/isNumber.*"] }, null, 2),
       );
 
@@ -742,7 +742,7 @@ await test("watch", async (t) => {
 
       await process.waitForIdle();
 
-      fs.rmSync(new URL("tstyche.config.json", fixtureUrl));
+      fs.rmSync(new URL("tstyche.json", fixtureUrl));
 
       const configFileRemoved = await process.waitForIdle();
 

@@ -109,7 +109,7 @@ await test("'--quiet' command line option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--quiet", "false"]);
@@ -130,7 +130,7 @@ await test("'--quiet' command line option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--quiet"]);
@@ -162,7 +162,7 @@ await test("'quiet' configuration file option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -183,7 +183,7 @@ await test("'quiet' configuration file option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
