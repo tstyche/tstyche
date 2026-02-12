@@ -109,7 +109,7 @@ export class Cli {
         this.#eventEmitter.addReporter(setupReporter);
       }
 
-      const { configFileOptions } = await Config.parseConfigFile(commandLineOptions?.config, commandLineOptions?.root);
+      const { configFileOptions } = await Config.parseConfigFile(commandLineOptions.config, commandLineOptions.root);
 
       const resolvedConfig = Config.resolve({ configFileOptions, commandLineOptions, pathMatch });
 
@@ -146,7 +146,7 @@ export class Cli {
       }
 
       if (commandLine.includes("--listFiles")) {
-        OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
+        OutputService.writeMessage(formattedText(testFiles));
         continue;
       }
 

@@ -40,7 +40,7 @@ export class Process {
         ...process.env,
         ["TSTYCHE_NO_COLOR"]: "true",
         ["TSTYCHE_STORE_PATH"]: "./.store",
-        ...options?.env,
+        ...options.env,
       },
       shell: isWindows,
     };

@@ -40,11 +40,7 @@ export default async function tstyche(template: TemplateStringsArray, ...substit
 
   eventEmitter.removeHandler(statusHandler);
 
-  return new Promise((resolve, reject) => {
-    if (statusHandler.hasError()) {
-      reject(new Error("TSTyche test run failed. Check the output above for details."));
-    }
-
-    resolve();
-  });
+  if (statusHandler.hasError()) {
+    throw new Error("TSTyche test run failed. Check the output above for details.");
+  }
 }

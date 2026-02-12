@@ -279,7 +279,7 @@ export class Options {
         break;
 
       case "reporters":
-        if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
+        if (Options.#isBuiltinReporter(optionValue)) {
           break;
         }
 
@@ -327,7 +327,7 @@ export class Options {
         break;
 
       case "reporters":
-        if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
+        if (Options.#isBuiltinReporter(optionValue)) {
           break;
         }
 
