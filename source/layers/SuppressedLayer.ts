@@ -22,11 +22,11 @@ export class SuppressedLayer {
     const ranges: Array<SuppressedError> = [];
 
     for (const match of text.matchAll(this.#expectErrorRegex)) {
-      const offsetText = match?.[1];
-      const directiveText = match?.[2];
-      const ignoreText = match?.[3];
-      const argumentSeparatorText = match?.[4];
-      const argumentText = match?.[5]?.split(/--+/)[0]?.trimEnd();
+      const offsetText = match[1];
+      const directiveText = match[2];
+      const ignoreText = match[3];
+      const argumentSeparatorText = match[4];
+      const argumentText = match[5]?.split(/--+/)[0]?.trimEnd();
 
       if (typeof offsetText !== "string" || !directiveText) {
         continue;

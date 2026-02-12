@@ -1,20 +1,26 @@
+import { existsSync } from "node:fs";
+import fs from "node:fs/promises";
 import { Config, OptionGroup, Options, type ResolvedConfig } from "#config";
+import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { CancellationHandler, ExitCodeHandler } from "#handlers";
-import { formattedText, helpText, OutputService, waitingForFileChangesText } from "#output";
+import { diagnosticText, formattedText, helpText, OutputService, waitingForFileChangesText } from "#output";
+import { Path } from "#path";
 import { SetupReporter } from "#reporters";
 import { Runner } from "#runner";
 import { Select } from "#select";
 import { Store } from "#store";
 import { CancellationReason, CancellationToken } from "#token";
 import { FileWatcher, Watcher, type WatchHandler } from "#watch";
+import { CliDiagnosticText } from "./CliDIagnosticText.js";
 
 export interface CliOptions {
   noErrorExitCode?: boolean;
 }
 
 export class Cli {
+  #deferredDiagnostics: Diagnostic | undefined;
   #eventEmitter = new EventEmitter();
   #noErrorExitCode: boolean;
 
@@ -76,6 +82,22 @@ export class Cli {
       return;
     }
 
+    if (!commandLineOptions.config) {
+      const oldConfigFilePath = Path.resolve(Config.resolveRootPath(commandLineOptions.root), "./tstyche.config.json");
+
+      if (existsSync(oldConfigFilePath) && !environmentOptions.isCi) {
+        const newConfigFilePath = Path.resolve(
+          Config.resolveConfigFilePath(/* configPath */ undefined, commandLineOptions.root),
+        );
+
+        await fs.rename(oldConfigFilePath, newConfigFilePath);
+
+        this.#deferredDiagnostics = Diagnostic.warning(
+          CliDiagnosticText.configLocationChanged(oldConfigFilePath, newConfigFilePath),
+        );
+      }
+    }
+
     do {
       if (cancellationToken.getReason() === CancellationReason.ConfigChange) {
         cancellationToken.reset();
@@ -87,7 +109,7 @@ export class Cli {
         this.#eventEmitter.addReporter(setupReporter);
       }
 
-      const { configFileOptions } = await Config.parseConfigFile(commandLineOptions?.config, commandLineOptions?.root);
+      const { configFileOptions } = await Config.parseConfigFile(commandLineOptions.config, commandLineOptions.root);
 
       const resolvedConfig = Config.resolve({ configFileOptions, commandLineOptions, pathMatch });
 
@@ -124,7 +146,7 @@ export class Cli {
       }
 
       if (commandLine.includes("--listFiles")) {
-        OutputService.writeMessage(formattedText(testFiles.map((testFile) => testFile.toString())));
+        OutputService.writeMessage(formattedText(testFiles));
         continue;
       }
 
@@ -135,6 +157,11 @@ export class Cli {
 
       await runner.run(testFiles, cancellationToken);
     } while (cancellationToken.getReason() === CancellationReason.ConfigChange);
+
+    if (this.#deferredDiagnostics != null) {
+      OutputService.writeBlankLine();
+      OutputService.writeWarning(diagnosticText(this.#deferredDiagnostics));
+    }
 
     this.#eventEmitter.removeHandlers();
   }

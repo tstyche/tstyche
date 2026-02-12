@@ -18,7 +18,7 @@ export class JsonNode {
     }
 
     if (/^['"]/.test(this.text)) {
-      return this.text.slice(1, -1);
+      return this.text.slice(1, -1).replaceAll("\\", "");
     }
 
     if (options?.expectsIdentifier) {

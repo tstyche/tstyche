@@ -7,7 +7,7 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("'tstyche.config.json' file", async (t) => {
+await test("'tstyche.json' file", async (t) => {
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -32,7 +32,7 @@ await test("'tstyche.config.json' file", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -50,7 +50,7 @@ await test("'tstyche.config.json' file", async (t) => {
     const config = { $schema: "https://tstyche.org/schemas/config.json" };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -68,7 +68,7 @@ await test("'tstyche.config.json' file", async (t) => {
 `;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      ["tstyche.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -89,7 +89,7 @@ await test("'tstyche.config.json' file", async (t) => {
 `;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      ["tstyche.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -110,7 +110,7 @@ await test("'tstyche.config.json' file", async (t) => {
 `;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      ["tstyche.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -139,7 +139,7 @@ await test("'tstyche.config.json' file", async (t) => {
 `;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      ["tstyche.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -162,7 +162,7 @@ await test("'tstyche.config.json' file", async (t) => {
 `;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      ["tstyche.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -183,7 +183,7 @@ await test("'tstyche.config.json' file", async (t) => {
 `;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      ["tstyche.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
@@ -205,7 +205,7 @@ await test("'tstyche.config.json' file", async (t) => {
 `;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      ["tstyche.json"]: configText,
       ["tsconfig.test.json"]: "{}",
     });
 
@@ -229,7 +229,7 @@ await test("'tstyche.config.json' file", async (t) => {
 `;
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: configText,
+      ["tstyche.json"]: configText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);

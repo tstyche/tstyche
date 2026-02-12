@@ -39,7 +39,7 @@ export class JsonSourceFile {
   getLineAndCharacterOfPosition(position: number): { line: number; character: number } {
     const line = this.#lineMap.findLastIndex((line) => line <= position);
 
-    const character = position - (this.#lineMap[line] as number);
+    const character = position - this.#lineMap[line]!;
 
     return { line, character };
   }

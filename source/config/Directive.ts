@@ -97,16 +97,16 @@ export class Directive {
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 
-    const directiveSeparatorText = match?.[2];
-    const directiveText = match?.[3];
+    const directiveSeparatorText = match[2];
+    const directiveText = match[3];
 
     if (typeof directiveText === "string" && typeof directiveSeparatorText === "string") {
       const start = range.namespace.end + directiveSeparatorText.length;
 
       range.directive = { start, end: start + directiveText.length, text: directiveText };
 
-      const argumentSeparatorText = match?.[4];
-      const argumentText = match?.[5]?.trimEnd();
+      const argumentSeparatorText = match[4];
+      const argumentText = match[5]?.trimEnd();
 
       if (typeof argumentSeparatorText === "string" && typeof argumentText === "string") {
         const start = range.directive.end + argumentSeparatorText.length;
@@ -150,11 +150,11 @@ export class Directive {
           Directive.#onDiagnostics(Diagnostic.error(text, origin));
         }
 
-        inlineConfig[range.directive?.text] = true;
+        inlineConfig[range.directive.text] = true;
         return;
     }
 
-    const target = range?.directive ?? range.namespace;
+    const target = range.directive ?? range.namespace;
 
     const text = DirectiveDiagnosticText.isNotSupported(target.text);
     const origin = new DiagnosticOrigin(target.start, target.end, range.sourceFile);
@@ -166,7 +166,7 @@ export class Directive {
     const inlineOptions: Record<string, OptionValue> = {};
 
     const configParser = new ConfigParser(
-      inlineOptions as Record<string, OptionValue>,
+      inlineOptions,
       OptionGroup.InlineConditions,
       sourceFile,
       new JsonScanner(sourceFile, { start, end }),

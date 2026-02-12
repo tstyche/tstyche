@@ -1,5 +1,20 @@
 # Changelog
 
+## [7.0.0-beta.0] - 2026-02-11
+
+### Added
+
+- Enable passing JSON string for `tsconfig` configuration ([#688](https://github.com/tstyche/tstyche/pull/688))
+- Add the `baseline` option for `tsconfig` configuration ([#687](https://github.com/tstyche/tstyche/pull/687))
+
+### Changed
+
+- **Breaking!** Change the default configuration file location to `./tstyche.json` ([#692](https://github.com/tstyche/tstyche/pull/692))
+- **Breaking!** Remove the `ignore` option for `tsconfig` configuration ([#691](https://github.com/tstyche/tstyche/pull/691))
+- **Breaking!** rename `usesText()` component ([#678](https://github.com/tstyche/tstyche/pull/678))
+- **Breaking!** rename `addsText()` component ([#677](https://github.com/tstyche/tstyche/pull/677))
+- **Breaking!** Remove the `rootPath` configuration option ([#673](https://github.com/tstyche/tstyche/pull/673))
+
 ## [6.2.0] - 2026-02-01
 
 ### Added

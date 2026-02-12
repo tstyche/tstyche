@@ -9,5 +9,5 @@ Use the '--list' command line option to inspect the list of supported versions.
   4 |     "examples/*.tst.*"
   5 |   ]
 
-      at ./tstyche.config.json:2:13
+      at ./tstyche.json:2:13
 

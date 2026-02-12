@@ -61,12 +61,12 @@ export class FixmeService {
 
     if (owner === FixmeService.#expectRange?.owner) {
       isFail = FixmeService.#expectRange.isFail;
-      FixmeService.#expectRange = FixmeService.#expectRange?.previous;
+      FixmeService.#expectRange = FixmeService.#expectRange.previous;
     }
 
     if (owner === FixmeService.#range?.owner) {
-      isFail = FixmeService.#range?.isFail;
-      FixmeService.#range = FixmeService.#range?.previous;
+      isFail = FixmeService.#range.isFail;
+      FixmeService.#range = FixmeService.#range.previous;
     }
 
     if (isFail === false) {

@@ -80,6 +80,6 @@ for (const [key, optionDefinition] of configFileOptions) {
 
 const schemaFileUrl = new URL("../schema/config.json", import.meta.url);
 
-await fs.writeFile(schemaFileUrl, `${JSON.stringify(jsonSchema, null, 2)}`);
+await fs.writeFile(schemaFileUrl, `${JSON.stringify(jsonSchema, null, 2)}\n`);
 
 console.info(`Schema was written to: '${schemaFileUrl.toString()}'`);
