@@ -10,6 +10,11 @@ test("is string?", () => {
 });
 `;
 
+const tsconfig = {
+  extends: "../../tsconfig.json",
+  include: ["**/*"],
+};
+
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
@@ -55,6 +60,28 @@ await test("'--tsconfig' command line option", async (t) => {
     assert.equal(stdout, "");
     assert.equal(exitCode, 1);
   });
+
+  await t.test("when inline config has an error", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, [
+      "--tsconfig",
+      '"{\\"extends\\":\\"./tsconfig.json\\",\\"compilerOptions\\":{\\"lib\\":[\\"es2020\\"}}"',
+    ]);
+
+    await assert.matchSnapshot(
+      normalizeOutput(stderr).replace(/\.\/(\w*)\.tsconfig\.json/, "./<<synthetic>>.tsconfig.json"),
+      {
+        fileName: `${testFileName}-inline-config-error`,
+        testFileUrl: import.meta.url,
+      },
+    );
+
+    assert.equal(exitCode, 1);
+  });
 });
 
 await test("'tsconfig' configuration file option", async (t) => {
@@ -68,7 +95,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -88,7 +115,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -99,6 +126,30 @@ await test("'tsconfig' configuration file option", async (t) => {
     });
 
     assert.equal(stdout, "");
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when inline config has an error", async () => {
+    const config = {
+      tsconfig: '{"extends":"./tsconfig.json","compilerOptions":{"lib":["es2020"}}',
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(
+      normalizeOutput(stderr).replace(/\.\/(\w*)\.tsconfig\.json/, "./<<synthetic>>.tsconfig.json"),
+      {
+        fileName: `${testFileName}-inline-config-error`,
+        testFileUrl: import.meta.url,
+      },
+    );
+
     assert.equal(exitCode, 1);
   });
 });

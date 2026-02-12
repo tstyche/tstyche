@@ -25,7 +25,7 @@ console.log(add);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/sample.tst.ts"]: testFileText,
-      ["tstyche.config.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
+      ["tstyche.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -56,7 +56,7 @@ console.log(add);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/sample.tst.ts"]: testFileText,
-      ["tstyche.config.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
+      ["tstyche.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -84,7 +84,7 @@ console.log(add);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/sample.tst.ts"]: testFileText,
-      ["tstyche.config.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
+      ["tstyche.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -118,7 +118,7 @@ console.log(add);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/sample.tst.ts"]: testFileText,
-      ["tstyche.config.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
+      ["tstyche.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -146,7 +146,7 @@ console.log(add); console.log(add);
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/sample.tst.ts"]: testFileText,
-      ["tstyche.config.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
+      ["tstyche.json"]: JSON.stringify({ checkSuppressedErrors: true }, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

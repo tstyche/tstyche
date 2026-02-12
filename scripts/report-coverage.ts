@@ -18,6 +18,7 @@ const config: CoverageReportOptions = {
 
     "**/dist/bin.js": true,
     "**/dist/index.js": true,
+    "**/dist/tag.js": true,
     "**/dist/tstyche.js": true,
   },
 

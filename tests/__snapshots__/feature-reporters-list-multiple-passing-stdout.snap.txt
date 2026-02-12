@@ -1,0 +1,7 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/feature-reporters
+
+uses TypeScript <<version>> with baseline TSConfig
+
+pass ./__typetests__/a-feature.tst.ts
+pass ./__typetests__/b-feature.tst.ts
+

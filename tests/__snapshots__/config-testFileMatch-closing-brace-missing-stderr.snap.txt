@@ -1,5 +1,5 @@
 Error: No test files were selected using current configuration.
 
-Root path:       <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
+Root directory:  <<basePath>>/tests/__fixtures__/.generated/config-testFileMatch
 Test file match: tests/*.{ts,tsx
 

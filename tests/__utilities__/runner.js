@@ -1,7 +1,7 @@
 import process from "node:process";
 import { run } from "node:test";
-import reporters from "node:test/reporters";
 import { parseArgs } from "node:util";
+import { TestReporter } from "cleaner-spec-reporter";
 
 let {
   positionals: testFiles,
@@ -37,5 +37,5 @@ run({ argv: options, concurrency: parallel, files: testFiles, only })
   .on("test:fail", () => {
     process.exitCode = 1;
   })
-  .compose(new reporters.spec())
+  .compose(new TestReporter())
   .pipe(process.stdout);

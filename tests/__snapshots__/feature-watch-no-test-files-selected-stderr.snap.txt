@@ -1,10 +1,10 @@
 Error: No test files were selected using current configuration.
 
-Root path:       <<basePath>>/tests/__fixtures__/.generated/feature-watch
+Root directory:  <<basePath>>/tests/__fixtures__/.generated/feature-watch
 Test file match: **/isVoid.*
 
 Error: No test files were selected using current configuration.
 
-Root path:       <<basePath>>/tests/__fixtures__/.generated/feature-watch
+Root directory:  <<basePath>>/tests/__fixtures__/.generated/feature-watch
 Test file match: **/isVoid.*
 

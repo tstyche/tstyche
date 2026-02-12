@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { Path } from "#path";
@@ -110,7 +110,7 @@ export class Options {
 
     {
       brand: OptionBrand.True,
-      description: "Print the list of the selected test files and exit.",
+      description: "Print the list of selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",
     },
@@ -127,6 +127,13 @@ export class Options {
       description: "Remove all installed versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "prune",
+    },
+
+    {
+      brand: OptionBrand.Boolean,
+      description: "Silence all test runner output except errors and warnings.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      name: "quiet",
     },
 
     {
@@ -157,8 +164,8 @@ export class Options {
     {
       brand: OptionBrand.String,
       description: "The path to a directory containing files of a test project.",
-      group: OptionGroup.ConfigFile,
-      name: "rootPath",
+      group: OptionGroup.CommandLine,
+      name: "root",
     },
 
     {
@@ -177,7 +184,7 @@ export class Options {
 
     {
       brand: OptionBrand.SemverRange,
-      description: "The range of TypeScript versions to be tested against.",
+      description: "The range of TypeScript versions to test against.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
       name: "target",
     },
@@ -195,7 +202,7 @@ export class Options {
 
     {
       brand: OptionBrand.String,
-      description: "The look up strategy to be used to find the TSConfig file.",
+      description: "The TSConfig to load.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
       name: "tsconfig",
     },
@@ -205,6 +212,13 @@ export class Options {
       description: "Fetch the 'typescript' package metadata from the registry and exit.",
       group: OptionGroup.CommandLine,
       name: "update",
+    },
+
+    {
+      brand: OptionBrand.Boolean,
+      description: "Enable detailed logging.",
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      name: "verbose",
     },
 
     {
@@ -239,35 +253,46 @@ export class Options {
   }
 
   static #isBuiltinReporter(optionValue: string) {
-    return ["list", "summary"].includes(optionValue);
+    return ["dot", "list", "summary"].includes(optionValue);
   }
 
   static #isLookupStrategy(optionValue: string) {
-    return ["findup", "ignore"].includes(optionValue);
+    return ["findup", "baseline"].includes(optionValue);
   }
 
-  static resolve(optionName: string, optionValue: string, rootPath = "."): string {
+  static isJsonString(text: string): boolean {
+    return text.startsWith("{");
+  }
+
+  static resolve(optionName: string, optionValue: string, basePath = "."): string {
     const canonicalOptionName = Options.#getCanonicalOptionName(optionName);
 
     switch (canonicalOptionName) {
       case "config":
-      case "rootPath":
+      case "root":
       case "tsconfig":
-        if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {
+        if (
+          canonicalOptionName === "tsconfig" &&
+          (Options.#isLookupStrategy(optionValue) || Options.isJsonString(optionValue))
+        ) {
           break;
         }
 
-        optionValue = Path.resolve(rootPath, optionValue);
+        if (optionValue.startsWith("file:")) {
+          optionValue = fileURLToPath(optionValue);
+        }
+
+        optionValue = Path.resolve(basePath, optionValue);
         break;
 
       case "reporters":
-        if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
+        if (Options.#isBuiltinReporter(optionValue)) {
           break;
         }
 
         try {
           if (optionValue.startsWith(".")) {
-            optionValue = pathToFileURL(Path.relative(".", Path.resolve(rootPath, optionValue))).toString();
+            optionValue = pathToFileURL(Path.relative(".", Path.resolve(basePath, optionValue))).toString();
           } else {
             optionValue = import.meta.resolve(optionValue);
           }
@@ -291,9 +316,12 @@ export class Options {
 
     switch (canonicalOptionName) {
       case "config":
-      case "rootPath":
+      case "root":
       case "tsconfig":
-        if (canonicalOptionName === "tsconfig" && Options.#isLookupStrategy(optionValue)) {
+        if (
+          canonicalOptionName === "tsconfig" &&
+          (Options.#isLookupStrategy(optionValue) || Options.isJsonString(optionValue))
+        ) {
           break;
         }
 
@@ -306,7 +334,7 @@ export class Options {
         break;
 
       case "reporters":
-        if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
+        if (Options.#isBuiltinReporter(optionValue)) {
           break;
         }
 

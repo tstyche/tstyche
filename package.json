@@ -1,6 +1,6 @@
 {
   "name": "tstyche",
-  "version": "6.0.2",
+  "version": "7.0.0-beta.0",
   "description": "Everything You Need for Type Testing.",
   "keywords": [
     "typescript",
@@ -25,6 +25,7 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./tag": "./dist/tag.js",
     "./tstyche": "./dist/tstyche.js",
     "./package.json": "./package.json"
   },
@@ -53,22 +54,23 @@
     "test:examples": "tstyche examples",
     "test:run": "rm -rf ./tests/__fixtures__/.generated && yarn node ./tests/__utilities__/runner.js",
     "test:types": "tstyche typetests",
-    "test:unit": "yarn test:run **/__tests__/*.test.js --parallel"
+    "test:unit": "yarn test:run source/**/__tests__/*.test.js --parallel"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.11",
+    "@biomejs/biome": "2.3.14",
     "@rollup/plugin-typescript": "12.3.0",
-    "@types/node": "24.10.6",
-    "@types/react": "19.2.7",
+    "@types/node": "24.10.12",
+    "@types/react": "19.2.13",
+    "cleaner-spec-reporter": "1.0.3",
     "code-block-writer": "13.0.3",
-    "cspell": "9.4.0",
+    "cspell": "9.6.4",
     "magic-string": "0.30.21",
     "monocart-coverage-reports": "2.12.9",
     "pretty-ansi": "3.0.0",
-    "rollup": "4.55.1",
+    "rollup": "4.57.1",
     "rollup-plugin-dts": "6.3.0",
     "tslib": "2.8.1",
-    "typescript": "5.9.3"
+    "typescript": "6.0.0-beta"
   },
   "peerDependencies": {
     "typescript": ">=5.4"

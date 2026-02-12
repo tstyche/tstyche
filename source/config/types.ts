@@ -12,12 +12,15 @@ export interface CommandLineOptions {
   listFiles?: boolean;
   only?: string;
   prune?: boolean;
+  quiet?: boolean;
   reporters?: Array<string>;
+  root?: string;
   showConfig?: boolean;
   skip?: string;
   target?: Array<string>;
   tsconfig?: string;
   update?: boolean;
+  verbose?: boolean;
   version?: boolean;
   watch?: boolean;
 }
@@ -27,13 +30,14 @@ export interface ConfigFileOptions {
   checkSuppressedErrors?: boolean;
   failFast?: boolean;
   fixtureFileMatch?: Array<string>;
+  quiet?: boolean;
   rejectAnyType?: boolean;
   rejectNeverType?: boolean;
   reporters?: Array<string>;
-  rootPath?: string;
   target?: Array<string>;
   testFileMatch?: Array<string>;
   tsconfig?: string;
+  verbose?: boolean;
 }
 
 // #endregion
@@ -47,10 +51,11 @@ export interface InlineConfig {
 }
 
 export interface ResolvedConfig
-  extends Omit<CommandLineOptions, "config" | keyof ConfigFileOptions>,
+  extends Omit<CommandLineOptions, "config" | "root" | keyof ConfigFileOptions>,
     Required<ConfigFileOptions> {
   configFilePath: string;
   pathMatch: Array<string>;
+  rootPath: string;
 }
 
 export interface TextRange {

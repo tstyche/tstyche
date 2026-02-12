@@ -52,3 +52,22 @@ test("recursive types", () => {
   expect<Alpha<string, string>>().type.not.toBe<Bravo<string, number>>();
   expect<Bravo<string, string>>().type.not.toBe<Alpha<string, number>>();
 });
+
+test("unused type parameters", () => {
+  // biome-ignore lint/suspicious/noEmptyInterface: test
+  interface A<T> {}
+  // biome-ignore lint/suspicious/noEmptyInterface: test
+  interface B {}
+  interface C<T> {
+    x: T;
+  }
+
+  expect<A<string>>().type.toBe<{}>();
+  // @tstyche fixme -- This should work, but it doesn't
+  expect<A<string>>().type.toBe<A<number>>();
+  expect<A<string>>().type.not.toBe<C<string>>();
+
+  expect<B>().type.toBe<{}>();
+  expect<B>().type.toBe<A<string>>();
+  expect<B>().type.not.toBe<C<string>>();
+});

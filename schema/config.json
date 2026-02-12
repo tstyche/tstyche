@@ -29,6 +29,11 @@
         "type": "string"
       }
     },
+    "quiet": {
+      "description": "Silence all test runner output except errors and warnings.",
+      "default": false,
+      "type": "boolean"
+    },
     "rejectAnyType": {
       "description": "Reject the 'any' type passed as an argument to the 'expect()' function or a matcher.",
       "default": true,
@@ -51,13 +56,8 @@
         "type": "string"
       }
     },
-    "rootPath": {
-      "description": "The path to a directory containing files of a test project.",
-      "default": "./",
-      "type": "string"
-    },
     "target": {
-      "description": "The range of TypeScript versions to be tested against.",
+      "description": "The range of TypeScript versions to test against.",
       "default": "*",
       "type": "string"
     },
@@ -75,9 +75,14 @@
       }
     },
     "tsconfig": {
-      "description": "The look up strategy to be used to find the TSConfig file.",
+      "description": "The TSConfig to load.",
       "default": "findup",
       "type": "string"
+    },
+    "verbose": {
+      "description": "Enable detailed logging.",
+      "default": false,
+      "type": "boolean"
     }
   }
 }

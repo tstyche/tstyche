@@ -1,0 +1,11 @@
+<red>Error: </>Type 'number' is not the same as type 'string'.
+
+<gray>  2</><gray> | </>
+<gray>  3</><gray> | </>test("is number?", () => {
+<red>  4</><gray> | </>  expect<number>().type.toBe<string>();
+   <gray> | </>                             <red>~~~~~~</>
+<gray>  5</><gray> | </>});
+<gray>  6</><gray> | </>
+
+     <gray> at </><cyan>./__typetests__/isNumber.test.ts</><gray>:4:30</><gray> ❭ is number?</>
+

@@ -20,7 +20,7 @@ export class ConfigDiagnosticText {
   static fileMatchPatternCannotStartWith(optionName: string, segment: string): Array<string> {
     return [
       `A '${optionName}' pattern cannot start with '${segment}'.`,
-      "The files are only collected within the 'rootPath' directory.",
+      "The files are only collected within the root directory.",
     ];
   }
 

@@ -1,0 +1,4 @@
+Error: Failed to fetch metadata of the 'typescript' package from 'https://tstyche.org'.
+
+The request failed with status code 404.
+

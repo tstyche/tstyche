@@ -8,7 +8,7 @@ Error: The specified module 'not-reporter' was not found.
   6 |   ],
   7 |   "testFileMatch": [
 
-      at ./tstyche.config.json:4:5
+      at ./tstyche.json:4:5
 
 Error: The specified module '<<baseUrl>>/tests/__fixtures__/.generated/validation-reporters/not-reporter.js' was not found.
 
@@ -20,5 +20,5 @@ Error: The specified module '<<baseUrl>>/tests/__fixtures__/.generated/validatio
   7 |   "testFileMatch": [
   8 |     "examples/*.tst.*"
 
-      at ./tstyche.config.json:5:5
+      at ./tstyche.json:5:5
 

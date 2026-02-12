@@ -1,0 +1,12 @@
+Error: Cannot find name 'a'. ts(2304)
+
+  2 | 
+  3 | test("reported type error?", () => {
+  4 |   a = false;
+    |   ~
+  5 | 
+  6 |   expect<string>().type.toBe<string>();
+  7 | });
+
+      at ./__typetests__/dummy.test.ts:4:3
+
