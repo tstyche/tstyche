@@ -98,6 +98,18 @@ Type 'string' is not assignable to type 'number'.
 
        at ./__typetests__/generic-functions.tst.ts:44:44 ❭ when source is an expression ❭ is not callable with the given arguments
 
+    The expected type comes from this index signature. ts(6501)
+
+      1506 |     reduceRight<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U, initialValue: U): U;
+      1507 | 
+      1508 |     [n: number]: T;
+           |     ~~~~~~~~~~~~~~~
+      1509 | }
+      1510 | 
+      1511 | interface ArrayConstructor {
+
+             at ../../../node_modules/typescript/lib/lib.es5.d.ts:1508:5
+
 Error: Expression is not callable with the given arguments.
 
 Type 'string' is not assignable to type 'number'.
@@ -111,6 +123,18 @@ Type 'string' is not assignable to type 'number'.
   47 |     expect(getLonger).type.toBeCallableWith("zero", [123]); // fail
 
        at ./__typetests__/generic-functions.tst.ts:44:49 ❭ when source is an expression ❭ is not callable with the given arguments
+
+    The expected type comes from this index signature. ts(6501)
+
+      1506 |     reduceRight<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U, initialValue: U): U;
+      1507 | 
+      1508 |     [n: number]: T;
+           |     ~~~~~~~~~~~~~~~
+      1509 | }
+      1510 | 
+      1511 | interface ArrayConstructor {
+
+             at ../../../node_modules/typescript/lib/lib.es5.d.ts:1508:5
 
 Error: Expression is not callable with the given arguments.
 
