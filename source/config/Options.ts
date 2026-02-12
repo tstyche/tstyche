@@ -44,14 +44,14 @@ export class Options {
     {
       brand: OptionBrand.Boolean,
       description: "Check declaration files for type errors.",
-      group: OptionGroup.ConfigFile,
+      group: OptionGroup.ConfigFile | OptionGroup.Task,
       name: "checkDeclarationFiles",
     },
 
     {
       brand: OptionBrand.Boolean,
       description: "Check errors silenced by '// @ts-expect-error' directives.",
-      group: OptionGroup.ConfigFile,
+      group: OptionGroup.ConfigFile | OptionGroup.Task,
       name: "checkSuppressedErrors",
     },
 
@@ -106,6 +106,13 @@ export class Options {
       description: "Print the list of selected test files and exit.",
       group: OptionGroup.CommandLine,
       name: "listFiles",
+    },
+
+    {
+      brand: OptionBrand.True,
+      description: "Print the list of resolved task configurations and exit.",
+      group: OptionGroup.CommandLine,
+      name: "listTasks",
     },
 
     {
@@ -178,8 +185,15 @@ export class Options {
     {
       brand: OptionBrand.SemverRange,
       description: "The range of TypeScript versions to test against.",
-      group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions | OptionGroup.Task,
       name: "target",
+    },
+
+    {
+      brand: OptionBrand.String,
+      description: "The task provider to use.",
+      group: OptionGroup.CommandLine,
+      name: "taskProvider",
     },
 
     {
@@ -196,7 +210,7 @@ export class Options {
     {
       brand: OptionBrand.String,
       description: "The TSConfig to load.",
-      group: OptionGroup.CommandLine | OptionGroup.ConfigFile,
+      group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.Task,
       name: "tsconfig",
     },
 
@@ -279,7 +293,8 @@ export class Options {
         break;
 
       case "reporters":
-        if (Options.#isBuiltinReporter(optionValue)) {
+      case "taskProvider":
+        if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
           break;
         }
 
@@ -327,7 +342,8 @@ export class Options {
         break;
 
       case "reporters":
-        if (Options.#isBuiltinReporter(optionValue)) {
+      case "taskProvider":
+        if (canonicalOptionName === "reporters" && Options.#isBuiltinReporter(optionValue)) {
           break;
         }
 

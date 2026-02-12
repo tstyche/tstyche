@@ -1,4 +1,4 @@
-import type { ResolvedConfig } from "#config";
+import { Config, type ResolvedConfig, type TaskList } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
 import { FileLocation } from "#file";
@@ -97,23 +97,36 @@ export class Runner {
 
     EventEmitter.dispatch(["run:start", { result }]);
 
-    for (const target of this.#resolvedConfig.target) {
-      const targetResult = new TargetResult(target, files);
+    const taskList: TaskList = this.#resolvedConfig.taskProvider
+      ? (await import(this.#resolvedConfig.taskProvider)).default
+      : [{}];
 
-      EventEmitter.dispatch(["target:start", { result: targetResult }]);
+    for (const taskOptions of taskList) {
+      const taskConfig = await Config.resolveTask(taskOptions, this.#resolvedConfig);
 
-      const compiler = await Store.load(target);
+      // TODO
+      //   - bail if parsing fails
 
-      if (compiler) {
-        // TODO to improve performance, runners (or even test projects) could be cached in the future
-        const fileRunner = new FileRunner(compiler, this.#resolvedConfig);
+      // TODO
+      //   - implement '--listTasks' for debugging
 
-        for (const file of files) {
-          await fileRunner.run(file, cancellationToken);
+      for (const target of taskConfig.target) {
+        const targetResult = new TargetResult(target, files);
+
+        EventEmitter.dispatch(["target:start", { result: targetResult }]);
+
+        const compiler = await Store.load(target);
+
+        if (compiler) {
+          const fileRunner = new FileRunner(compiler, taskConfig as ResolvedConfig);
+
+          for (const file of files) {
+            await fileRunner.run(file, cancellationToken);
+          }
         }
-      }
 
-      EventEmitter.dispatch(["target:end", { result: targetResult }]);
+        EventEmitter.dispatch(["target:end", { result: targetResult }]);
+      }
     }
 
     EventEmitter.dispatch(["run:end", { result }]);

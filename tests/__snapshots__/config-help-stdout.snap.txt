@@ -30,6 +30,9 @@ Command Line Options
   --listFiles
   Print the list of selected test files and exit.
 
+  --listTasks
+  Print the list of resolved task configurations and exit.
+
   --only  string
   Only run tests with matching name.
 
@@ -53,6 +56,9 @@ Command Line Options
 
   --target  string
   The range of TypeScript versions to test against.
+
+  --taskProvider  string
+  The task provider to use.
 
   --tsconfig  string
   The TSConfig to load.
