@@ -257,7 +257,7 @@ export class Options {
     return text.startsWith("{");
   }
 
-  static resolve(optionName: string, optionValue: string, rootPath = "."): string {
+  static resolve(optionName: string, optionValue: string, basePath = "."): string {
     const canonicalOptionName = Options.#getCanonicalOptionName(optionName);
 
     switch (canonicalOptionName) {
@@ -275,7 +275,7 @@ export class Options {
           optionValue = fileURLToPath(optionValue);
         }
 
-        optionValue = Path.resolve(rootPath, optionValue);
+        optionValue = Path.resolve(basePath, optionValue);
         break;
 
       case "reporters":
@@ -285,7 +285,7 @@ export class Options {
 
         try {
           if (optionValue.startsWith(".")) {
-            optionValue = pathToFileURL(Path.relative(".", Path.resolve(rootPath, optionValue))).toString();
+            optionValue = pathToFileURL(Path.relative(".", Path.resolve(basePath, optionValue))).toString();
           } else {
             optionValue = import.meta.resolve(optionValue);
           }
