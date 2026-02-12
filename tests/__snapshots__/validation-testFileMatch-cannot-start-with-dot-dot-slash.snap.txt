@@ -10,5 +10,5 @@ The files are only collected within the root directory.
   5 | }
   6 | 
 
-      at ./tstyche.config.json:3:5
+      at ./tstyche.json:3:5
 

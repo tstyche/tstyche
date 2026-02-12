@@ -6,5 +6,5 @@ Error: Expected '{'.
   3 |     "failFast": true
   4 |   }
 
-      at ./tstyche.config.json:1:1
+      at ./tstyche.json:1:1
 

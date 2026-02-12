@@ -90,7 +90,7 @@ export class Config {
   static resolveConfigFilePath(configPath?: string | undefined, rootPath?: string | undefined): string {
     return configPath != null
       ? Path.resolve(configPath)
-      : Path.resolve(Config.resolveRootPath(rootPath), "./tstyche.config.json");
+      : Path.resolve(Config.resolveRootPath(rootPath), "./tstyche.json");
   }
 
   static resolveRootPath(rootPath?: string | undefined): string {

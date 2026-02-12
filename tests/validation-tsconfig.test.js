@@ -95,7 +95,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -115,7 +115,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     };
 
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -136,7 +136,7 @@ await test("'tsconfig' configuration file option", async (t) => {
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 

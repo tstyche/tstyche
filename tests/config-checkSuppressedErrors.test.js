@@ -44,7 +44,7 @@ await test("'checkSuppressedErrors' config file option", async (t) => {
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/sample.tst.ts"]: testFileText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -69,7 +69,7 @@ await test("'checkSuppressedErrors' config file option", async (t) => {
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/sample.tst.ts"]: testFileText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

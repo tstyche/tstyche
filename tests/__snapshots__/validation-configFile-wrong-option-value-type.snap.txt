@@ -7,7 +7,7 @@ Error: Value for the 'failFast' option must be a boolean.
   4 | }
   5 | 
 
-      at ./tstyche.config.json:2:15
+      at ./tstyche.json:2:15
 
 Error: Value for the 'target' option must be a string.
 
@@ -18,5 +18,5 @@ Error: Value for the 'target' option must be a string.
   4 | }
   5 | 
 
-      at ./tstyche.config.json:3:13
+      at ./tstyche.json:3:13
 

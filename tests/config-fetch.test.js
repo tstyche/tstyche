@@ -49,7 +49,7 @@ await test("'--fetch' command line option", async (t) => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/dummy.test.ts"]: isStringTestText,
         ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
@@ -74,7 +74,7 @@ await test("'--fetch' command line option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch"]);
@@ -99,7 +99,7 @@ await test("'--fetch' command line option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch"]);
@@ -115,7 +115,7 @@ await test("'--fetch' command line option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", '"*"']);

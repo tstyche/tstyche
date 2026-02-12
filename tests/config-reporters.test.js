@@ -182,7 +182,7 @@ await test("'reporters' configuration option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -205,7 +205,7 @@ await test("'reporters' configuration option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -228,7 +228,7 @@ await test("'reporters' configuration option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -251,7 +251,7 @@ await test("'reporters' configuration option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -274,7 +274,7 @@ await test("'reporters' configuration option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -298,7 +298,7 @@ await test("'reporters' configuration option", async (t) => {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["custom-reporter.js"]: customReporterText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -322,7 +322,7 @@ await test("'reporters' configuration option", async (t) => {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
       ["__typetests__/isString.tst.ts"]: isStringTestText,
       ["custom-reporter.js"]: customReporterText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
