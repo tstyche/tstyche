@@ -5,6 +5,7 @@ describe("CommandLineOptions", () => {
   test("all options", () => {
     expect<CommandLineOptions>().type.toBeAssignableFrom({
       config: "./config/json",
+      explainCause: true,
       failFast: true,
       fetch: true,
       help: true,
@@ -33,6 +34,12 @@ describe("CommandLineOptions", () => {
   test("'config' option", () => {
     expect<Pick<CommandLineOptions, "config">>().type.toBe<{
       config?: string;
+    }>();
+  });
+
+  test("'explainCause' option", () => {
+    expect<Pick<CommandLineOptions, "explainCause">>().type.toBe<{
+      explainCause?: boolean;
     }>();
   });
 
