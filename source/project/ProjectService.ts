@@ -107,7 +107,7 @@ export class ProjectService {
     const compilerOptions = project?.getCompilerOptions();
 
     if (this.#resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
-      project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
+      project?.setCompilerOptions({ ...compilerOptions, declaration: true, skipLibCheck: false });
     }
 
     return project;
@@ -224,6 +224,14 @@ export class ProjectService {
 
       this.#seenPrograms.add(program);
 
+      const programDiagnostics = languageService?.getCompilerOptionsDiagnostics();
+
+      if (programDiagnostics != null && programDiagnostics.length > 0) {
+        EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(programDiagnostics) }]);
+
+        return;
+      }
+
       const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
         if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
           return false;
@@ -247,7 +255,11 @@ export class ProjectService {
       const diagnostics: Array<ts.Diagnostic> = [];
 
       for (const sourceFile of sourceFilesToCheck) {
-        diagnostics.push(...program.getSyntacticDiagnostics(sourceFile), ...program.getSemanticDiagnostics(sourceFile));
+        diagnostics.push(
+          ...program.getSyntacticDiagnostics(sourceFile),
+          ...program.getSemanticDiagnostics(sourceFile),
+          ...program.getDeclarationDiagnostics(sourceFile),
+        );
       }
 
       if (diagnostics.length > 0) {

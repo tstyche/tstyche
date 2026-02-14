@@ -8,6 +8,8 @@ import type { ReporterEvent } from "./types.js";
 export class ListReporter extends BaseReporter {
   #fileCount = 0;
   #fileView = new FileView();
+  // TODO replace '#hasReported*' with '#lastReported'
+  // #lastReported: "adds" | "error" | "uses" | undefined;
   #hasReportedAdds = false;
   #hasReportedError = false;
   #hasReportedUses = false;
@@ -49,6 +51,10 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "project:error":
+        if (payload.diagnostics.length > 0 && !this.#hasReportedUses) {
+          OutputService.writeBlankLine();
+        }
+
         for (const diagnostic of payload.diagnostics) {
           OutputService.writeError(diagnosticText(diagnostic));
         }
@@ -60,6 +66,7 @@ export class ListReporter extends BaseReporter {
         }
 
         this.#fileCount--;
+        this.#hasReportedUses = false;
         this.#hasReportedError = false;
         break;
 
