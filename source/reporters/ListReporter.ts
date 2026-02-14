@@ -8,8 +8,6 @@ import type { ReporterEvent } from "./types.js";
 export class ListReporter extends BaseReporter {
   #fileCount = 0;
   #fileView = new FileView();
-  // TODO replace '#hasReported*' with '#lastReported'
-  // #lastReported: "adds" | "error" | "uses" | undefined;
   #hasReportedAdds = false;
   #hasReportedError = false;
   #hasReportedUses = false;
