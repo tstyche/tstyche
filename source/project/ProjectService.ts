@@ -108,7 +108,7 @@ export class ProjectService {
     const compilerOptions = project?.getCompilerOptions();
 
     if (this.#resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
-      project?.setCompilerOptions({ ...compilerOptions, emitDeclarationOnly: true, skipLibCheck: false });
+      project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
     }
 
     return project;
