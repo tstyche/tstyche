@@ -12,7 +12,7 @@ describe("ConfigFileOptions", () => {
       rejectAnyType: true,
       rejectNeverType: true,
       reporters: ["./tstyche-reporter.js"],
-      target: ["5.0" as const, "5.4" as const, "latest" as const],
+      target: ["5.4" as const, "5.8" as const, "latest" as const],
       testFileMatch: ["**/tests/types/**/*"],
       tsconfig: "./tsconfig.test.json",
       verbose: true,

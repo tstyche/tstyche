@@ -17,7 +17,7 @@ describe("CommandLineOptions", () => {
       root: "./example",
       showConfig: true,
       skip: "internal",
-      target: ["5.0" as const, "5.4" as const, "latest" as const],
+      target: ["5.4" as const, "5.8" as const, "latest" as const],
       tsconfig: "./tsconfig.test.json",
       update: true,
       verbose: true,
