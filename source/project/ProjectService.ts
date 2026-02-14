@@ -14,7 +14,7 @@ export class ProjectService {
   #lastSeenProject: string | undefined = "";
   #projectConfig: ProjectConfig;
   #resolvedConfig: ResolvedConfig;
-  #seenPrograms = new WeakSet<ts.Program>();
+  #seenProjects = new Set<string | undefined>();
   #seenTestFiles = new Set<string>();
   #service: ts.server.ProjectService;
 
@@ -84,6 +84,7 @@ export class ProjectService {
       jsx: this.#compiler.JsxEmit.Preserve,
       module: this.#compiler.ModuleKind.NodeNext,
       moduleResolution: this.#compiler.ModuleResolutionKind.NodeNext,
+      noEmit: true,
       noUncheckedIndexedAccess: true,
       resolveJsonModule: true,
       strict: true,
@@ -218,11 +219,11 @@ export class ProjectService {
 
       const program = languageService?.getProgram();
 
-      if (!program || this.#seenPrograms.has(program)) {
+      if (!program || this.#seenProjects.has(configFileName)) {
         return;
       }
 
-      this.#seenPrograms.add(program);
+      this.#seenProjects.add(configFileName);
 
       const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
         if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
@@ -244,10 +245,14 @@ export class ProjectService {
         return false;
       });
 
-      const diagnostics: Array<ts.Diagnostic> = [];
+      const diagnostics = [...program.getOptionsDiagnostics()];
 
       for (const sourceFile of sourceFilesToCheck) {
-        diagnostics.push(...program.getSyntacticDiagnostics(sourceFile), ...program.getSemanticDiagnostics(sourceFile));
+        diagnostics.push(
+          ...program.getSyntacticDiagnostics(sourceFile),
+          ...program.getSemanticDiagnostics(sourceFile),
+          ...program.getDeclarationDiagnostics(sourceFile),
+        );
       }
 
       if (diagnostics.length > 0) {

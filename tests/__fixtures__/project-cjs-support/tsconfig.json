@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node10",
+    "moduleResolution": "bundler",
     "paths": {
       "tstyche": ["../../../"]
     }

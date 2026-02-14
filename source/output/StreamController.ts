@@ -1,4 +1,6 @@
-import type { WriteStream } from "node:tty";
+export interface WriteStream {
+  write(text: string): void;
+}
 
 export class StreamController {
   #isEnabled = true;

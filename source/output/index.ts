@@ -7,7 +7,7 @@ export { formattedText } from "./formattedText.js";
 export { helpText } from "./helpText.js";
 export { OutputService } from "./OutputService.js";
 export { prologueText } from "./prologueText.js";
-export { StreamController } from "./StreamController.js";
+export { StreamController, type WriteStream } from "./StreamController.js";
 export { summaryText } from "./summaryText.js";
 export { testNameText } from "./testNameText.js";
 export type { CodeFrameOptions } from "./types.js";
