@@ -73,9 +73,31 @@ await test("'--tsconfig' command line option", async (t) => {
     ]);
 
     await assert.matchSnapshot(
-      normalizeOutput(stderr).replace(/\.\/(\w*)\.tsconfig\.json/, "./<<synthetic>>.tsconfig.json"),
+      normalizeOutput(stderr).replaceAll(/\.\/(\w*)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
       {
         fileName: `${testFileName}-inline-config-error`,
+        testFileUrl: import.meta.url,
+      },
+    );
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when inline config has incompatible options", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, [
+      "--tsconfig",
+      '"{\\"extends\\":\\"./tsconfig.json\\",\\"compilerOptions\\":{\\"module\\":\\"node18\\",\\"moduleResolution\\":\\"bundler\\"}}"',
+    ]);
+
+    await assert.matchSnapshot(
+      normalizeOutput(stderr).replaceAll(/\.\/(\w*)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
+      {
+        fileName: `${testFileName}-inline-config-incompatible`,
         testFileUrl: import.meta.url,
       },
     );
@@ -136,16 +158,40 @@ await test("'tsconfig' configuration file option", async (t) => {
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche.json"]: JSON.stringify(config, null, 2),
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(
-      normalizeOutput(stderr).replace(/\.\/(\w*)\.tsconfig\.json/, "./<<synthetic>>.tsconfig.json"),
+      normalizeOutput(stderr).replaceAll(/\.\/(\w*)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
       {
         fileName: `${testFileName}-inline-config-error`,
+        testFileUrl: import.meta.url,
+      },
+    );
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when inline config has incompatible options", async () => {
+    const config = {
+      tsconfig: '{"extends":"./tsconfig.json","compilerOptions":{"module":"node18","moduleResolution":"bundler"}}',
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(
+      normalizeOutput(stderr).replaceAll(/\.\/(\w*)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
+      {
+        fileName: `${testFileName}-inline-config-incompatible`,
         testFileUrl: import.meta.url,
       },
     );

@@ -18,7 +18,7 @@ await test("TSConfig", async (t) => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("when TSConfig file has errors", async () => {
+  await t.test("when TSConfig has errors", async () => {
     const tsconfig = {
       compilerOptions: {
         noEmitOnError: true,
@@ -43,6 +43,36 @@ await test("TSConfig", async (t) => {
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-tsconfig-errors-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("when inline config has incompatible options", async () => {
+    const tsconfig = {
+      compilerOptions: {
+        module: "node18",
+        moduleResolution: "bundler",
+      },
+      extends: "../../tsconfig.json",
+      include: ["**/*"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/dummy.tst.ts"]: isStringTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-tsconfig-incompatible-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-tsconfig-incompatible-stdout`,
       testFileUrl: import.meta.url,
     });
 
