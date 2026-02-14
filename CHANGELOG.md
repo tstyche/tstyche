@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.0.0-beta.1] - 2026-02-14
+
+### Fixed
+
+- Report incompatible TSConfig options ([#693](https://github.com/tstyche/tstyche/pull/693))
+
 ## [7.0.0-beta.0] - 2026-02-11
 
 ### Added
@@ -1032,6 +1038,8 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.1
+[7.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.0
 [6.2.0]: https://github.com/tstyche/tstyche/releases/tag/v6.2.0
 [6.1.0]: https://github.com/tstyche/tstyche/releases/tag/v6.1.0
 [6.0.3]: https://github.com/tstyche/tstyche/releases/tag/v6.0.3
