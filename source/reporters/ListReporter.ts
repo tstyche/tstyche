@@ -51,10 +51,6 @@ export class ListReporter extends BaseReporter {
         break;
 
       case "project:error":
-        if (payload.diagnostics.length > 0 && !this.#hasReportedUses) {
-          OutputService.writeBlankLine();
-        }
-
         for (const diagnostic of payload.diagnostics) {
           OutputService.writeError(diagnosticText(diagnostic));
         }
@@ -66,7 +62,6 @@ export class ListReporter extends BaseReporter {
         }
 
         this.#fileCount--;
-        this.#hasReportedUses = false;
         this.#hasReportedError = false;
         break;
 
