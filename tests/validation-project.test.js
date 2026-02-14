@@ -49,7 +49,7 @@ await test("TSConfig", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when TSConfig has conflicts between options", async () => {
+  await t.test("when inline config has incompatible options", async () => {
     const tsconfig = {
       compilerOptions: {
         module: "node18",
@@ -67,12 +67,12 @@ await test("TSConfig", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-tsconfig-conflicts-stderr`,
+      fileName: `${testFileName}-tsconfig-incompatible-stderr`,
       testFileUrl: import.meta.url,
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-tsconfig-conflicts-stdout`,
+      fileName: `${testFileName}-tsconfig-incompatible-stdout`,
       testFileUrl: import.meta.url,
     });
 
