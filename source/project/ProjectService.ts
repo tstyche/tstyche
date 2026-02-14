@@ -14,7 +14,7 @@ export class ProjectService {
   #lastSeenProject: string | undefined = "";
   #projectConfig: ProjectConfig;
   #resolvedConfig: ResolvedConfig;
-  #seenPrograms = new WeakSet<ts.Program>();
+  #seenPrograms = new Set<ts.Program>();
   #seenTestFiles = new Set<string>();
   #service: ts.server.ProjectService;
 
@@ -224,14 +224,6 @@ export class ProjectService {
 
       this.#seenPrograms.add(program);
 
-      const programDiagnostics = languageService?.getCompilerOptionsDiagnostics();
-
-      if (programDiagnostics != null && programDiagnostics.length > 0) {
-        EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(programDiagnostics) }]);
-
-        return;
-      }
-
       const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
         if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
           return false;
@@ -252,7 +244,7 @@ export class ProjectService {
         return false;
       });
 
-      const diagnostics: Array<ts.Diagnostic> = [];
+      const diagnostics = [...program.getOptionsDiagnostics()];
 
       for (const sourceFile of sourceFilesToCheck) {
         diagnostics.push(
