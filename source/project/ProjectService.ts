@@ -84,6 +84,7 @@ export class ProjectService {
       jsx: this.#compiler.JsxEmit.Preserve,
       module: this.#compiler.ModuleKind.NodeNext,
       moduleResolution: this.#compiler.ModuleResolutionKind.NodeNext,
+      noEmit: true,
       noUncheckedIndexedAccess: true,
       resolveJsonModule: true,
       strict: true,
@@ -107,7 +108,7 @@ export class ProjectService {
     const compilerOptions = project?.getCompilerOptions();
 
     if (this.#resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
-      project?.setCompilerOptions({ ...compilerOptions, declaration: true, skipLibCheck: false });
+      project?.setCompilerOptions({ ...compilerOptions, emitDeclarationOnly: true, skipLibCheck: false });
     }
 
     return project;
