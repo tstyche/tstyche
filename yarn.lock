@@ -330,9 +330,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-dotnet@npm:^5.0.11":
-  version: 5.0.11
-  resolution: "@cspell/dict-dotnet@npm:5.0.11"
-  checksum: 10c0/02f13fade5845dc444ce71d20af52add1c4755191d2bd99b17706eba27d7ef52e5e09122a48ff560eb81e06c4da73ffa680bc599d04d2c79ababf92ac0cf96e8
+  version: 5.0.12
+  resolution: "@cspell/dict-dotnet@npm:5.0.12"
+  checksum: 10c0/19edcc32fdaff42de7ca993a3a682897e1e92fcd127be79ed6612685ede92d52232bbe9273712eb21c2cfc7daf11f0bcabedbea5d4fe5d3990cfbc65da0914e2
   languageName: node
   linkType: hard
 
@@ -531,9 +531,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-npm@npm:^5.2.32":
-  version: 5.2.33
-  resolution: "@cspell/dict-npm@npm:5.2.33"
-  checksum: 10c0/10b516c521edd6a3b6cc470a031a503e9eb786d4ac7e455745208a15a1a320d006c89eb36715d3f8c2e4d91700cb81788897e16e8bf95e171ea1e3a83971f593
+  version: 5.2.34
+  resolution: "@cspell/dict-npm@npm:5.2.34"
+  checksum: 10c0/f2db62cec8b32cbaf717117aaaaa3047c06c3998ed5cab4328efc1c494b328012682371ecb9c11273eb4732ab77d9b090c5b9f6f0dd22c9a51209ce0dbf877db
   languageName: node
   linkType: hard
 
@@ -603,9 +603,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^5.1.20":
-  version: 5.1.20
-  resolution: "@cspell/dict-software-terms@npm:5.1.20"
-  checksum: 10c0/ff7513919d842bdb804965852d35aded3a2e32b3535637d7e9ec57fce66ddf69af57d20947bb3db358abe2d0d8e5d0feee029e3e14d1fb66b235d519d5133115
+  version: 5.1.21
+  resolution: "@cspell/dict-software-terms@npm:5.1.21"
+  checksum: 10c0/b0392d2cc6f88ac466ba45d87d3b06b81856090a6816cabe903eedc7b69bf28e31ee7ebaa083e917fde34e6c5c4daa342faa80e41be4cc191749b3319e76b468
   languageName: node
   linkType: hard
 
@@ -696,19 +696,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@isaacs/balanced-match@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@isaacs/balanced-match@npm:4.0.1"
-  checksum: 10c0/7da011805b259ec5c955f01cee903da72ad97c5e6f01ca96197267d3f33103d5b2f8a1af192140f3aa64526c593c8d098ae366c2b11f7f17645d12387c2fd420
-  languageName: node
-  linkType: hard
-
-"@isaacs/brace-expansion@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "@isaacs/brace-expansion@npm:5.0.1"
-  dependencies:
-    "@isaacs/balanced-match": "npm:^4.0.1"
-  checksum: 10c0/e5d67c7bbf1f17b88132a35bc638af306d48acbb72810d48fa6e6edd8ab375854773108e8bf70f021f7ef6a8273455a6d1f0c3b5aa2aff06ce7894049ab77fb8
+"@isaacs/cliui@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@isaacs/cliui@npm:9.0.0"
+  checksum: 10c0/971063b7296419f85053dacd0a0285dcadaa3dfc139228b23e016c1a9848121ad4aa5e7fcca7522062014e1eb6239a7424188b9f2cba893a79c90aae5710319c
   languageName: node
   linkType: hard
 
@@ -1037,6 +1028,24 @@ __metadata:
   version: 1.0.3
   resolution: "array-timsort@npm:1.0.3"
   checksum: 10c0/bd3a1707b621947265c89867e67c9102b9b9f4c50f5b3974220112290d8b60d26ce60595edec5deed3325207b759d70b758bed3cd310b5ddadb835657ffb6d12
+  languageName: node
+  linkType: hard
+
+"balanced-match@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "balanced-match@npm:4.0.2"
+  dependencies:
+    jackspeak: "npm:^4.2.3"
+  checksum: 10c0/493eee4bece3f8b270cea8d3d6d1122ce008dd6b0d5aca8a3f1e623be6897be18c926018eadc454bd719bb7cc46d939c39fa2a05fff86b30f65382f020f6926d
+  languageName: node
+  linkType: hard
+
+"brace-expansion@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "brace-expansion@npm:5.0.2"
+  dependencies:
+    balanced-match: "npm:^4.0.2"
+  checksum: 10c0/60c765e5df6fc0ceca3d5703202ae6779db61f28ea3bf93a04dbf0d50c22ef8e4644e09d0459c827077cd2d09ba8f199a04d92c36419fcf874601a5565013174
   languageName: node
   linkType: hard
 
@@ -1467,13 +1476,13 @@ __metadata:
   linkType: hard
 
 "glob@npm:^13.0.0":
-  version: 13.0.1
-  resolution: "glob@npm:13.0.1"
+  version: 13.0.3
+  resolution: "glob@npm:13.0.3"
   dependencies:
-    minimatch: "npm:^10.1.2"
+    minimatch: "npm:^10.2.0"
     minipass: "npm:^7.1.2"
     path-scurry: "npm:^2.0.0"
-  checksum: 10c0/af7b863dec8dff74f61d7d6e53104e1f6bbdd482157a196cade8ed857481e876ec35181b38a059b2a7b93ea3b08248f4ff0792fef6dc91814fd5097a716f48e4
+  checksum: 10c0/333dc5c40ca0e50400465d8f5c45aa7cdd32580c4d1a4c502dfb4fb9c469a936b8e0c6bbd09cd6353fd05982e48d7f79e819159a36fb3e0a41ee722607bc11a9
   languageName: node
   linkType: hard
 
@@ -1613,10 +1622,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isexe@npm:^3.1.1":
-  version: 3.1.4
-  resolution: "isexe@npm:3.1.4"
-  checksum: 10c0/6e1f78dd794118d263319c27c26a339eda6855b43e11e1a9013cb68578ce0396b74f11ea635e52b9466fb48a60abe70f3c9faf682f67988be092cf89b7c0dc1c
+"isexe@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "isexe@npm:4.0.0"
+  checksum: 10c0/5884815115bceac452877659a9c7726382531592f43dc29e5d48b7c4100661aed54018cb90bd36cb2eaeba521092570769167acbb95c18d39afdccbcca06c5ce
   languageName: node
   linkType: hard
 
@@ -1648,6 +1657,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jackspeak@npm:^4.2.3":
+  version: 4.2.3
+  resolution: "jackspeak@npm:4.2.3"
+  dependencies:
+    "@isaacs/cliui": "npm:^9.0.0"
+  checksum: 10c0/b5c0c414f1607c2aa0597f4bf2c03b8443897fccd5fd3c2b3e4f77d556b2bc7c3d3413828ba91e0789f6fb40ad90242f7f89fb20aee9e9d705bc1681f7564f67
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -1656,9 +1674,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^11.0.0, lru-cache@npm:^11.1.0, lru-cache@npm:^11.2.1":
-  version: 11.2.5
-  resolution: "lru-cache@npm:11.2.5"
-  checksum: 10c0/cc98958d25dddf1c8a8cbdc49588bd3b24450e8dfa78f32168fd188a20d4a0331c7406d0f3250c86a46619ee288056fd7a1195e8df56dc8a9592397f4fbd8e1d
+  version: 11.2.6
+  resolution: "lru-cache@npm:11.2.6"
+  checksum: 10c0/73bbffb298760e71b2bfe8ebc16a311c6a60ceddbba919cfedfd8635c2d125fbfb5a39b71818200e67973b11f8d59c5a9e31d6f90722e340e90393663a66e5cd
   languageName: node
   linkType: hard
 
@@ -1706,12 +1724,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.1.2":
-  version: 10.1.2
-  resolution: "minimatch@npm:10.1.2"
+"minimatch@npm:^10.2.0":
+  version: 10.2.0
+  resolution: "minimatch@npm:10.2.0"
   dependencies:
-    "@isaacs/brace-expansion": "npm:^5.0.1"
-  checksum: 10c0/0cccef3622201703de6ecf9d772c0be1d5513dcc038ed9feb866c20cf798243e678ac35605dac3f1a054650c28037486713fe9e9a34b184b9097959114daf086
+    brace-expansion: "npm:^5.0.2"
+  checksum: 10c0/256e72812bb99a86cdc788bf46a4da3f6e139db9123e20ed85a6795b93fdc0b76468ac511eb5535a023adb02a53fd598f971e990d0ca3bd6de6d41ea0199def1
   languageName: node
   linkType: hard
 
@@ -2180,11 +2198,11 @@ __metadata:
   linkType: hard
 
 "ssri@npm:^13.0.0":
-  version: 13.0.0
-  resolution: "ssri@npm:13.0.0"
+  version: 13.0.1
+  resolution: "ssri@npm:13.0.1"
   dependencies:
     minipass: "npm:^7.0.3"
-  checksum: 10c0/405f3a531cd98b013cecb355d63555dca42fd12c7bc6671738aaa9a82882ff41cdf0ef9a2b734ca4f9a760338f114c29d01d9238a65db3ccac27929bd6e6d4b2
+  checksum: 10c0/cf6408a18676c57ff2ed06b8a20dc64bb3e748e5c7e095332e6aecaa2b8422b1e94a739a8453bf65156a8a47afe23757ba4ab52d3ea3b62322dc40875763e17a
   languageName: node
   linkType: hard
 
@@ -2205,15 +2223,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.5.4":
-  version: 7.5.7
-  resolution: "tar@npm:7.5.7"
+  version: 7.5.8
+  resolution: "tar@npm:7.5.8"
   dependencies:
     "@isaacs/fs-minipass": "npm:^4.0.0"
     chownr: "npm:^3.0.0"
     minipass: "npm:^7.1.2"
     minizlib: "npm:^3.1.0"
     yallist: "npm:^5.0.0"
-  checksum: 10c0/51f261afc437e1112c3e7919478d6176ea83f7f7727864d8c2cce10f0b03a631d1911644a567348c3063c45abdae39718ba97abb073d22aa3538b9a53ae1e31c
+  checksum: 10c0/8569db1b49f5d72084cbdcad9d2b39fcc115993186455aa052c1da0a2739b20e2d94af6a23609fc25d3ae63c9fed8b159f3b1d16b699e9ef25e3b8464603d153
   languageName: node
   linkType: hard
 
@@ -2333,13 +2351,13 @@ __metadata:
   linkType: hard
 
 "which@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "which@npm:6.0.0"
+  version: 6.0.1
+  resolution: "which@npm:6.0.1"
   dependencies:
-    isexe: "npm:^3.1.1"
+    isexe: "npm:^4.0.0"
   bin:
     node-which: bin/which.js
-  checksum: 10c0/fe9d6463fe44a76232bb6e3b3181922c87510a5b250a98f1e43a69c99c079b3f42ddeca7e03d3e5f2241bf2d334f5a7657cfa868b97c109f3870625842f4cc15
+  checksum: 10c0/7e710e54ea36d2d6183bee2f9caa27a3b47b9baf8dee55a199b736fcf85eab3b9df7556fca3d02b50af7f3dfba5ea3a45644189836df06267df457e354da66d5
   languageName: node
   linkType: hard
 
