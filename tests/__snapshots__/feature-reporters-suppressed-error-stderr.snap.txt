@@ -4,11 +4,11 @@ Add a fragment of the expected error message after the directive.
 To ignore the directive, append the '!' character after it.
 
   1 | // @ts-expect-error
-    | ~~~~~~~~~~~~~~~~~~~
+    |    ~~~~~~~~~~~~~~~~
   2 | const x: string = 0;
   3 | 
 
-      at ./__typetests__/dummy.test.ts:1:1
+      at ./__typetests__/dummy.test.ts:1:4
 
     The suppressed error:
 
