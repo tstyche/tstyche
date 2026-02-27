@@ -73,7 +73,7 @@ tstyche query-params --only multiple --target '>=5.6'
 
 It is that simple! Actually, TSTyche does even more:
 
-- checks messages of errors suppressed by `// @ts-expect-error`,
+- checks messages of errors suppressed by `@ts-expect-error` directives,
 - generates type tests from a data table,
 - runs tests in watch mode.
 
