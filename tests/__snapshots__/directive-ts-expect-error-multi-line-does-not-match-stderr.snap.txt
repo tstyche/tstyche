@@ -1,0 +1,309 @@
+Error: The diagnostic message did not match.
+
+  2 | 
+  3 | /**
+  4 | @ts-expect-error Does not work */
+    |                  ~~~~~~~~~~~~~
+  5 | texts.push(100);
+  6 | 
+  7 | /**
+
+      at ./__typetests__/sample.tst.ts:4:18
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      3 | /**
+      4 | @ts-expect-error Does not work */
+      5 | texts.push(100);
+        |            ~~~
+      6 | 
+      7 | /**
+      8 | @ts-expect-error: Does not work */
+
+          at ./__typetests__/sample.tst.ts:5:12
+
+Error: The diagnostic message did not match.
+
+   6 | 
+   7 | /**
+   8 | @ts-expect-error: Does not work */
+     |                   ~~~~~~~~~~~~~
+   9 | texts.push(100);
+  10 | 
+  11 | /**
+
+       at ./__typetests__/sample.tst.ts:8:19
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+       7 | /**
+       8 | @ts-expect-error: Does not work */
+       9 | texts.push(100);
+         |            ~~~
+      10 | 
+      11 | /**
+      12 | @ts-expect-error Does not work -- Only one error raised */
+
+           at ./__typetests__/sample.tst.ts:9:12
+
+Error: The diagnostic message did not match.
+
+  10 | 
+  11 | /**
+  12 | @ts-expect-error Does not work -- Only one error raised */
+     |                  ~~~~~~~~~~~~~
+  13 | texts.push(100);
+  14 | 
+  15 | /**
+
+       at ./__typetests__/sample.tst.ts:12:18
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      11 | /**
+      12 | @ts-expect-error Does not work -- Only one error raised */
+      13 | texts.push(100);
+         |            ~~~
+      14 | 
+      15 | /**
+      16 | // @ts-expect-error Does not work */
+
+           at ./__typetests__/sample.tst.ts:13:12
+
+Error: The diagnostic message did not match.
+
+  14 | 
+  15 | /**
+  16 | // @ts-expect-error Does not work */
+     |                     ~~~~~~~~~~~~~
+  17 | texts.push(100);
+  18 | 
+  19 | /**
+
+       at ./__typetests__/sample.tst.ts:16:21
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      15 | /**
+      16 | // @ts-expect-error Does not work */
+      17 | texts.push(100);
+         |            ~~~
+      18 | 
+      19 | /**
+      20 | // @ts-expect-error: Does not work */
+
+           at ./__typetests__/sample.tst.ts:17:12
+
+Error: The diagnostic message did not match.
+
+  18 | 
+  19 | /**
+  20 | // @ts-expect-error: Does not work */
+     |                      ~~~~~~~~~~~~~
+  21 | texts.push(100);
+  22 | 
+  23 | /**
+
+       at ./__typetests__/sample.tst.ts:20:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      19 | /**
+      20 | // @ts-expect-error: Does not work */
+      21 | texts.push(100);
+         |            ~~~
+      22 | 
+      23 | /**
+      24 | // @ts-expect-error Does not work -- Only one error raised */
+
+           at ./__typetests__/sample.tst.ts:21:12
+
+Error: The diagnostic message did not match.
+
+  22 | 
+  23 | /**
+  24 | // @ts-expect-error Does not work -- Only one error raised */
+     |                     ~~~~~~~~~~~~~
+  25 | texts.push(100);
+  26 | 
+  27 | /**
+
+       at ./__typetests__/sample.tst.ts:24:21
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      23 | /**
+      24 | // @ts-expect-error Does not work -- Only one error raised */
+      25 | texts.push(100);
+         |            ~~~
+      26 | 
+      27 | /**
+      28 |  * @ts-expect-error Does not work */
+
+           at ./__typetests__/sample.tst.ts:25:12
+
+Error: The diagnostic message did not match.
+
+  26 | 
+  27 | /**
+  28 |  * @ts-expect-error Does not work */
+     |                     ~~~~~~~~~~~~~
+  29 | texts.push(100);
+  30 | 
+  31 | /**
+
+       at ./__typetests__/sample.tst.ts:28:21
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      27 | /**
+      28 |  * @ts-expect-error Does not work */
+      29 | texts.push(100);
+         |            ~~~
+      30 | 
+      31 | /**
+      32 |  * @ts-expect-error: Does not work */
+
+           at ./__typetests__/sample.tst.ts:29:12
+
+Error: The diagnostic message did not match.
+
+  30 | 
+  31 | /**
+  32 |  * @ts-expect-error: Does not work */
+     |                      ~~~~~~~~~~~~~
+  33 | texts.push(100);
+  34 | 
+  35 | /**
+
+       at ./__typetests__/sample.tst.ts:32:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      31 | /**
+      32 |  * @ts-expect-error: Does not work */
+      33 | texts.push(100);
+         |            ~~~
+      34 | 
+      35 | /**
+      36 |  * @ts-expect-error Does not work -- Only one error raised  */
+
+           at ./__typetests__/sample.tst.ts:33:12
+
+Error: The diagnostic message did not match.
+
+  34 | 
+  35 | /**
+  36 |  * @ts-expect-error Does not work -- Only one error raised  */
+     |                     ~~~~~~~~~~~~~
+  37 | texts.push(100);
+  38 | 
+  39 | /*@ts-expect-error Does not work*/
+
+       at ./__typetests__/sample.tst.ts:36:21
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      35 | /**
+      36 |  * @ts-expect-error Does not work -- Only one error raised  */
+      37 | texts.push(100);
+         |            ~~~
+      38 | 
+      39 | /*@ts-expect-error Does not work*/
+      40 | texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:37:12
+
+Error: The diagnostic message did not match.
+
+  37 | texts.push(100);
+  38 | 
+  39 | /*@ts-expect-error Does not work*/
+     |                    ~~~~~~~~~~~~~
+  40 | texts.push(100);
+  41 | 
+  42 | /*@ts-expect-error: Does not work*/
+
+       at ./__typetests__/sample.tst.ts:39:20
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      38 | 
+      39 | /*@ts-expect-error Does not work*/
+      40 | texts.push(100);
+         |            ~~~
+      41 | 
+      42 | /*@ts-expect-error: Does not work*/
+      43 | texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:40:12
+
+Error: The diagnostic message did not match.
+
+  40 | texts.push(100);
+  41 | 
+  42 | /*@ts-expect-error: Does not work*/
+     |                     ~~~~~~~~~~~~~
+  43 | texts.push(100);
+  44 | 
+  45 | /*@ts-expect-error Does not work -- Only one error raised */
+
+       at ./__typetests__/sample.tst.ts:42:21
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      41 | 
+      42 | /*@ts-expect-error: Does not work*/
+      43 | texts.push(100);
+         |            ~~~
+      44 | 
+      45 | /*@ts-expect-error Does not work -- Only one error raised */
+      46 | texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:43:12
+
+Error: The diagnostic message did not match.
+
+  43 | texts.push(100);
+  44 | 
+  45 | /*@ts-expect-error Does not work -- Only one error raised */
+     |                    ~~~~~~~~~~~~~
+  46 | texts.push(100);
+  47 | 
+
+       at ./__typetests__/sample.tst.ts:45:20
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      44 | 
+      45 | /*@ts-expect-error Does not work -- Only one error raised */
+      46 | texts.push(100);
+         |            ~~~
+      47 | 
+
+           at ./__typetests__/sample.tst.ts:46:12
+

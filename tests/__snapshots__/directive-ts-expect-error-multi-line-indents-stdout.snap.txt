@@ -1,4 +1,4 @@
-···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-checkSuppressedErrors
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/directive-ts-expect-error
 
 uses TypeScript <<version>> with baseline TSConfig
 
@@ -6,5 +6,5 @@ fail ./__typetests__/sample.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Suppressed: 4 failed, 2 matched, 6 total
+Suppressed: 24 failed, 24 total
 Duration:   <<timestamp>>

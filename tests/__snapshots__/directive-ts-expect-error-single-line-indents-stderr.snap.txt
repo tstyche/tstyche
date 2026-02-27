@@ -1,46 +1,150 @@
 Error: The diagnostic message did not match.
 
-  1 |   // @ts-expect-error Should handle leading spaces
-    |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  2 |   console.log(spaces);
+  1 |   // @ts-expect-error Does not work
+    |                       ~~~~~~~~~~~~~
+  2 |   console.log(add);
   3 | 
-  4 |  // @ts-expect-error Should handle leading tabs
+  4 |   // @ts-expect-error: Does not work
 
       at ./__typetests__/sample.tst.ts:1:23
 
     The suppressed error:
 
-    Cannot find name 'spaces'. ts(2304)
+    Cannot find name 'add'. ts(2304)
 
-      1 |   // @ts-expect-error Should handle leading spaces
-      2 |   console.log(spaces);
-        |               ~~~~~~
+      1 |   // @ts-expect-error Does not work
+      2 |   console.log(add);
+        |               ~~~
       3 | 
-      4 |  // @ts-expect-error Should handle leading tabs
-      5 |  console.log(tabs);
+      4 |   // @ts-expect-error: Does not work
+      5 |   console.log(add);
 
           at ./__typetests__/sample.tst.ts:2:15
 
 Error: The diagnostic message did not match.
 
-  2 |   console.log(spaces);
+  2 |   console.log(add);
   3 | 
-  4 |  // @ts-expect-error Should handle leading tabs
-    |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~
-  5 |  console.log(tabs);
+  4 |   // @ts-expect-error: Does not work
+    |                        ~~~~~~~~~~~~~
+  5 |   console.log(add);
   6 | 
+  7 |   // @ts-expect-error Does not work -- Should handle indentation
 
-      at ./__typetests__/sample.tst.ts:4:22
+      at ./__typetests__/sample.tst.ts:4:24
 
     The suppressed error:
 
-    Cannot find name 'tabs'. ts(2304)
+    Cannot find name 'add'. ts(2304)
 
       3 | 
-      4 |  // @ts-expect-error Should handle leading tabs
-      5 |  console.log(tabs);
-        |              ~~~~
+      4 |   // @ts-expect-error: Does not work
+      5 |   console.log(add);
+        |               ~~~
       6 | 
+      7 |   // @ts-expect-error Does not work -- Should handle indentation
+      8 |   console.log(add);
 
-          at ./__typetests__/sample.tst.ts:5:14
+          at ./__typetests__/sample.tst.ts:5:15
+
+Error: The diagnostic message did not match.
+
+   5 |   console.log(add);
+   6 | 
+   7 |   // @ts-expect-error Does not work -- Should handle indentation
+     |                       ~~~~~~~~~~~~~
+   8 |   console.log(add);
+   9 | 
+  10 |  // @ts-expect-error Does not work
+
+       at ./__typetests__/sample.tst.ts:7:23
+
+    The suppressed error:
+
+    Cannot find name 'add'. ts(2304)
+
+       6 | 
+       7 |   // @ts-expect-error Does not work -- Should handle indentation
+       8 |   console.log(add);
+         |               ~~~
+       9 | 
+      10 |  // @ts-expect-error Does not work
+      11 |  console.log(add);
+
+           at ./__typetests__/sample.tst.ts:8:15
+
+Error: The diagnostic message did not match.
+
+   8 |   console.log(add);
+   9 | 
+  10 |  // @ts-expect-error Does not work
+     |                      ~~~~~~~~~~~~~
+  11 |  console.log(add);
+  12 | 
+  13 |  // @ts-expect-error: Does not work
+
+       at ./__typetests__/sample.tst.ts:10:22
+
+    The suppressed error:
+
+    Cannot find name 'add'. ts(2304)
+
+       9 | 
+      10 |  // @ts-expect-error Does not work
+      11 |  console.log(add);
+         |              ~~~
+      12 | 
+      13 |  // @ts-expect-error: Does not work
+      14 |  console.log(add);
+
+           at ./__typetests__/sample.tst.ts:11:14
+
+Error: The diagnostic message did not match.
+
+  11 |  console.log(add);
+  12 | 
+  13 |  // @ts-expect-error: Does not work
+     |                       ~~~~~~~~~~~~~
+  14 |  console.log(add);
+  15 | 
+  16 |  // @ts-expect-error Does not work -- Should handle indentation
+
+       at ./__typetests__/sample.tst.ts:13:23
+
+    The suppressed error:
+
+    Cannot find name 'add'. ts(2304)
+
+      12 | 
+      13 |  // @ts-expect-error: Does not work
+      14 |  console.log(add);
+         |              ~~~
+      15 | 
+      16 |  // @ts-expect-error Does not work -- Should handle indentation
+      17 |  console.log(add);
+
+           at ./__typetests__/sample.tst.ts:14:14
+
+Error: The diagnostic message did not match.
+
+  14 |  console.log(add);
+  15 | 
+  16 |  // @ts-expect-error Does not work -- Should handle indentation
+     |                      ~~~~~~~~~~~~~
+  17 |  console.log(add);
+  18 | 
+
+       at ./__typetests__/sample.tst.ts:16:22
+
+    The suppressed error:
+
+    Cannot find name 'add'. ts(2304)
+
+      15 | 
+      16 |  // @ts-expect-error Does not work -- Should handle indentation
+      17 |  console.log(add);
+         |              ~~~
+      18 | 
+
+           at ./__typetests__/sample.tst.ts:17:14
 

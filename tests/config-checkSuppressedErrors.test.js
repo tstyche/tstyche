@@ -12,6 +12,15 @@ console.log(add);
 
 // @ts-expect-error Cannot find name 'add'
 console.log(add);
+
+/* @ts-expect-error */
+console.log(add);
+
+/* @ts-expect-error Does not work */
+console.log(add);
+
+/* @ts-expect-error Cannot find name 'add' */
+console.log(add);
 `;
 
 const testFileName = getTestFileName(import.meta.url);

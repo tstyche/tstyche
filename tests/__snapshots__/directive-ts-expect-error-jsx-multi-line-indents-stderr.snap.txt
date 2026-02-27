@@ -1,0 +1,431 @@
+Error: The diagnostic message did not match.
+
+   5 | <>
+   6 |  {/*
+   7 |    @ts-expect-error Does not work */}
+     |                     ~~~~~~~~~~~~~
+   8 |  <ProfileCard userName={true} />
+   9 | 
+  10 |  {/*
+
+       at ./__typetests__/sample.tst.tsx:7:21
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+       6 |  {/*
+       7 |    @ts-expect-error Does not work */}
+       8 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+       9 | 
+      10 |  {/*
+      11 |    @ts-expect-error: Does not work */}
+
+           at ./__typetests__/sample.tst.tsx:8:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+   9 | 
+  10 |  {/*
+  11 |    @ts-expect-error: Does not work */}
+     |                      ~~~~~~~~~~~~~
+  12 |  <ProfileCard userName={true} />
+  13 | 
+  14 |  {/*
+
+       at ./__typetests__/sample.tst.tsx:11:22
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      10 |  {/*
+      11 |    @ts-expect-error: Does not work */}
+      12 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      13 | 
+      14 |  {/*
+      15 |    @ts-expect-error Does not work -- Only one error raised */}
+
+           at ./__typetests__/sample.tst.tsx:12:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  13 | 
+  14 |  {/*
+  15 |    @ts-expect-error Does not work -- Only one error raised */}
+     |                     ~~~~~~~~~~~~~
+  16 |  <ProfileCard userName={true} />
+  17 | 
+  18 |  {/*
+
+       at ./__typetests__/sample.tst.tsx:15:21
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      14 |  {/*
+      15 |    @ts-expect-error Does not work -- Only one error raised */}
+      16 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      17 | 
+      18 |  {/*
+      19 |    // @ts-expect-error Does not work */}
+
+           at ./__typetests__/sample.tst.tsx:16:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  17 | 
+  18 |  {/*
+  19 |    // @ts-expect-error Does not work */}
+     |                        ~~~~~~~~~~~~~
+  20 |  <ProfileCard userName={true} />
+  21 | 
+  22 |  {/*
+
+       at ./__typetests__/sample.tst.tsx:19:24
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      18 |  {/*
+      19 |    // @ts-expect-error Does not work */}
+      20 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      21 | 
+      22 |  {/*
+      23 |    // @ts-expect-error: Does not work */}
+
+           at ./__typetests__/sample.tst.tsx:20:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  21 | 
+  22 |  {/*
+  23 |    // @ts-expect-error: Does not work */}
+     |                         ~~~~~~~~~~~~~
+  24 |  <ProfileCard userName={true} />
+  25 | 
+  26 |  {/*
+
+       at ./__typetests__/sample.tst.tsx:23:25
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      22 |  {/*
+      23 |    // @ts-expect-error: Does not work */}
+      24 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      25 | 
+      26 |  {/*
+      27 |    // @ts-expect-error Does not work -- Only one error raised */}
+
+           at ./__typetests__/sample.tst.tsx:24:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  25 | 
+  26 |  {/*
+  27 |    // @ts-expect-error Does not work -- Only one error raised */}
+     |                        ~~~~~~~~~~~~~
+  28 |  <ProfileCard userName={true} />
+  29 | 
+  30 |  {/*
+
+       at ./__typetests__/sample.tst.tsx:27:24
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      26 |  {/*
+      27 |    // @ts-expect-error Does not work -- Only one error raised */}
+      28 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      29 | 
+      30 |  {/*
+      31 |   * @ts-expect-error Does not work */}
+
+           at ./__typetests__/sample.tst.tsx:28:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  29 | 
+  30 |  {/*
+  31 |   * @ts-expect-error Does not work */}
+     |                      ~~~~~~~~~~~~~
+  32 |  <ProfileCard userName={true} />
+  33 | 
+  34 |  {/*
+
+       at ./__typetests__/sample.tst.tsx:31:22
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      30 |  {/*
+      31 |   * @ts-expect-error Does not work */}
+      32 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      33 | 
+      34 |  {/*
+      35 |   * @ts-expect-error: Does not work */}
+
+           at ./__typetests__/sample.tst.tsx:32:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  33 | 
+  34 |  {/*
+  35 |   * @ts-expect-error: Does not work */}
+     |                       ~~~~~~~~~~~~~
+  36 |  <ProfileCard userName={true} />
+  37 | 
+  38 |  {/*
+
+       at ./__typetests__/sample.tst.tsx:35:23
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      34 |  {/*
+      35 |   * @ts-expect-error: Does not work */}
+      36 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      37 | 
+      38 |  {/*
+      39 |   * @ts-expect-error Does not work -- Only one error raised */}
+
+           at ./__typetests__/sample.tst.tsx:36:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  37 | 
+  38 |  {/*
+  39 |   * @ts-expect-error Does not work -- Only one error raised */}
+     |                      ~~~~~~~~~~~~~
+  40 |  <ProfileCard userName={true} />
+  41 | 
+  42 |  {/*@ts-expect-error Does not work*/}
+
+       at ./__typetests__/sample.tst.tsx:39:22
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      38 |  {/*
+      39 |   * @ts-expect-error Does not work -- Only one error raised */}
+      40 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      41 | 
+      42 |  {/*@ts-expect-error Does not work*/}
+      43 |  <ProfileCard userName={true} />
+
+           at ./__typetests__/sample.tst.tsx:40:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  40 |  <ProfileCard userName={true} />
+  41 | 
+  42 |  {/*@ts-expect-error Does not work*/}
+     |                      ~~~~~~~~~~~~~
+  43 |  <ProfileCard userName={true} />
+  44 | 
+  45 |  {/*@ts-expect-error: Does not work*/}
+
+       at ./__typetests__/sample.tst.tsx:42:22
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      41 | 
+      42 |  {/*@ts-expect-error Does not work*/}
+      43 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      44 | 
+      45 |  {/*@ts-expect-error: Does not work*/}
+      46 |  <ProfileCard userName={true} />
+
+           at ./__typetests__/sample.tst.tsx:43:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  43 |  <ProfileCard userName={true} />
+  44 | 
+  45 |  {/*@ts-expect-error: Does not work*/}
+     |                       ~~~~~~~~~~~~~
+  46 |  <ProfileCard userName={true} />
+  47 | 
+  48 |  {/*@ts-expect-error Does not work -- Only one error raised*/}
+
+       at ./__typetests__/sample.tst.tsx:45:23
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      44 | 
+      45 |  {/*@ts-expect-error: Does not work*/}
+      46 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      47 | 
+      48 |  {/*@ts-expect-error Does not work -- Only one error raised*/}
+      49 |  <ProfileCard userName={true} />
+
+           at ./__typetests__/sample.tst.tsx:46:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+
+Error: The diagnostic message did not match.
+
+  46 |  <ProfileCard userName={true} />
+  47 | 
+  48 |  {/*@ts-expect-error Does not work -- Only one error raised*/}
+     |                      ~~~~~~~~~~~~~
+  49 |  <ProfileCard userName={true} />
+  50 | </>;
+  51 | 
+
+       at ./__typetests__/sample.tst.tsx:48:22
+
+    The suppressed error:
+
+    Type 'boolean' is not assignable to type 'string'. ts(2322)
+
+      47 | 
+      48 |  {/*@ts-expect-error Does not work -- Only one error raised*/}
+      49 |  <ProfileCard userName={true} />
+         |               ~~~~~~~~
+      50 | </>;
+      51 | 
+
+           at ./__typetests__/sample.tst.tsx:49:15
+
+        The expected type comes from property 'userName' which is declared here on type '{ userName: string; }' ts(6500)
+
+          1 | function ProfileCard(props: { userName: string }) {
+            |                               ~~~~~~~~
+          2 |   return <>{props.userName}</>;
+          3 | }
+          4 | 
+
+              at ./__typetests__/sample.tst.tsx:1:31
+

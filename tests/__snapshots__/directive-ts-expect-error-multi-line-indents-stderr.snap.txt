@@ -1,0 +1,621 @@
+Error: The diagnostic message did not match.
+
+  2 | 
+  3 |   /**
+  4 |   @ts-expect-error Does not work */
+    |                    ~~~~~~~~~~~~~
+  5 |   texts.push(100);
+  6 | 
+  7 |   /**
+
+      at ./__typetests__/sample.tst.ts:4:20
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      3 |   /**
+      4 |   @ts-expect-error Does not work */
+      5 |   texts.push(100);
+        |              ~~~
+      6 | 
+      7 |   /**
+      8 |   @ts-expect-error: Does not work */
+
+          at ./__typetests__/sample.tst.ts:5:14
+
+Error: The diagnostic message did not match.
+
+   6 | 
+   7 |   /**
+   8 |   @ts-expect-error: Does not work */
+     |                     ~~~~~~~~~~~~~
+   9 |   texts.push(100);
+  10 | 
+  11 |   /**
+
+       at ./__typetests__/sample.tst.ts:8:21
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+       7 |   /**
+       8 |   @ts-expect-error: Does not work */
+       9 |   texts.push(100);
+         |              ~~~
+      10 | 
+      11 |   /**
+      12 |   @ts-expect-error Does not work -- Should handle indentation */
+
+           at ./__typetests__/sample.tst.ts:9:14
+
+Error: The diagnostic message did not match.
+
+  10 | 
+  11 |   /**
+  12 |   @ts-expect-error Does not work -- Should handle indentation */
+     |                    ~~~~~~~~~~~~~
+  13 |   texts.push(100);
+  14 | 
+  15 |  /**
+
+       at ./__typetests__/sample.tst.ts:12:20
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      11 |   /**
+      12 |   @ts-expect-error Does not work -- Should handle indentation */
+      13 |   texts.push(100);
+         |              ~~~
+      14 | 
+      15 |  /**
+      16 |  @ts-expect-error Does not work */
+
+           at ./__typetests__/sample.tst.ts:13:14
+
+Error: The diagnostic message did not match.
+
+  14 | 
+  15 |  /**
+  16 |  @ts-expect-error Does not work */
+     |                   ~~~~~~~~~~~~~
+  17 |  texts.push(100);
+  18 | 
+  19 |  /**
+
+       at ./__typetests__/sample.tst.ts:16:19
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      15 |  /**
+      16 |  @ts-expect-error Does not work */
+      17 |  texts.push(100);
+         |             ~~~
+      18 | 
+      19 |  /**
+      20 |  @ts-expect-error: Does not work */
+
+           at ./__typetests__/sample.tst.ts:17:13
+
+Error: The diagnostic message did not match.
+
+  18 | 
+  19 |  /**
+  20 |  @ts-expect-error: Does not work */
+     |                    ~~~~~~~~~~~~~
+  21 |  texts.push(100);
+  22 | 
+  23 |  /**
+
+       at ./__typetests__/sample.tst.ts:20:20
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      19 |  /**
+      20 |  @ts-expect-error: Does not work */
+      21 |  texts.push(100);
+         |             ~~~
+      22 | 
+      23 |  /**
+      24 |  @ts-expect-error Does not work -- Should handle indentation */
+
+           at ./__typetests__/sample.tst.ts:21:13
+
+Error: The diagnostic message did not match.
+
+  22 | 
+  23 |  /**
+  24 |  @ts-expect-error Does not work -- Should handle indentation */
+     |                   ~~~~~~~~~~~~~
+  25 |  texts.push(100);
+  26 | 
+  27 |   /**
+
+       at ./__typetests__/sample.tst.ts:24:19
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      23 |  /**
+      24 |  @ts-expect-error Does not work -- Should handle indentation */
+      25 |  texts.push(100);
+         |             ~~~
+      26 | 
+      27 |   /**
+      28 |   // @ts-expect-error Does not work */
+
+           at ./__typetests__/sample.tst.ts:25:13
+
+Error: The diagnostic message did not match.
+
+  26 | 
+  27 |   /**
+  28 |   // @ts-expect-error Does not work */
+     |                       ~~~~~~~~~~~~~
+  29 |   texts.push(100);
+  30 | 
+  31 |   /**
+
+       at ./__typetests__/sample.tst.ts:28:23
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      27 |   /**
+      28 |   // @ts-expect-error Does not work */
+      29 |   texts.push(100);
+         |              ~~~
+      30 | 
+      31 |   /**
+      32 |   // @ts-expect-error: Does not work */
+
+           at ./__typetests__/sample.tst.ts:29:14
+
+Error: The diagnostic message did not match.
+
+  30 | 
+  31 |   /**
+  32 |   // @ts-expect-error: Does not work */
+     |                        ~~~~~~~~~~~~~
+  33 |   texts.push(100);
+  34 | 
+  35 |   /**
+
+       at ./__typetests__/sample.tst.ts:32:24
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      31 |   /**
+      32 |   // @ts-expect-error: Does not work */
+      33 |   texts.push(100);
+         |              ~~~
+      34 | 
+      35 |   /**
+      36 |   // @ts-expect-error Does not work -- Should handle indentation */
+
+           at ./__typetests__/sample.tst.ts:33:14
+
+Error: The diagnostic message did not match.
+
+  34 | 
+  35 |   /**
+  36 |   // @ts-expect-error Does not work -- Should handle indentation */
+     |                       ~~~~~~~~~~~~~
+  37 |   texts.push(100);
+  38 | 
+  39 |  /**
+
+       at ./__typetests__/sample.tst.ts:36:23
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      35 |   /**
+      36 |   // @ts-expect-error Does not work -- Should handle indentation */
+      37 |   texts.push(100);
+         |              ~~~
+      38 | 
+      39 |  /**
+      40 |  // @ts-expect-error Does not work */
+
+           at ./__typetests__/sample.tst.ts:37:14
+
+Error: The diagnostic message did not match.
+
+  38 | 
+  39 |  /**
+  40 |  // @ts-expect-error Does not work */
+     |                      ~~~~~~~~~~~~~
+  41 |  texts.push(100);
+  42 | 
+  43 |  /**
+
+       at ./__typetests__/sample.tst.ts:40:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      39 |  /**
+      40 |  // @ts-expect-error Does not work */
+      41 |  texts.push(100);
+         |             ~~~
+      42 | 
+      43 |  /**
+      44 |  // @ts-expect-error: Does not work */
+
+           at ./__typetests__/sample.tst.ts:41:13
+
+Error: The diagnostic message did not match.
+
+  42 | 
+  43 |  /**
+  44 |  // @ts-expect-error: Does not work */
+     |                       ~~~~~~~~~~~~~
+  45 |  texts.push(100);
+  46 | 
+  47 |  /**
+
+       at ./__typetests__/sample.tst.ts:44:23
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      43 |  /**
+      44 |  // @ts-expect-error: Does not work */
+      45 |  texts.push(100);
+         |             ~~~
+      46 | 
+      47 |  /**
+      48 |  // @ts-expect-error Does not work -- Should handle indentation */
+
+           at ./__typetests__/sample.tst.ts:45:13
+
+Error: The diagnostic message did not match.
+
+  46 | 
+  47 |  /**
+  48 |  // @ts-expect-error Does not work -- Should handle indentation */
+     |                      ~~~~~~~~~~~~~
+  49 |  texts.push(100);
+  50 | 
+  51 |   /**
+
+       at ./__typetests__/sample.tst.ts:48:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      47 |  /**
+      48 |  // @ts-expect-error Does not work -- Should handle indentation */
+      49 |  texts.push(100);
+         |             ~~~
+      50 | 
+      51 |   /**
+      52 |    * @ts-expect-error Does not work */
+
+           at ./__typetests__/sample.tst.ts:49:13
+
+Error: The diagnostic message did not match.
+
+  50 | 
+  51 |   /**
+  52 |    * @ts-expect-error Does not work */
+     |                       ~~~~~~~~~~~~~
+  53 |   texts.push(100);
+  54 | 
+  55 |   /**
+
+       at ./__typetests__/sample.tst.ts:52:23
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      51 |   /**
+      52 |    * @ts-expect-error Does not work */
+      53 |   texts.push(100);
+         |              ~~~
+      54 | 
+      55 |   /**
+      56 |    * @ts-expect-error: Does not work */
+
+           at ./__typetests__/sample.tst.ts:53:14
+
+Error: The diagnostic message did not match.
+
+  54 | 
+  55 |   /**
+  56 |    * @ts-expect-error: Does not work */
+     |                        ~~~~~~~~~~~~~
+  57 |   texts.push(100);
+  58 | 
+  59 |   /**
+
+       at ./__typetests__/sample.tst.ts:56:24
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      55 |   /**
+      56 |    * @ts-expect-error: Does not work */
+      57 |   texts.push(100);
+         |              ~~~
+      58 | 
+      59 |   /**
+      60 |    * @ts-expect-error Does not work -- Should handle indentation  */
+
+           at ./__typetests__/sample.tst.ts:57:14
+
+Error: The diagnostic message did not match.
+
+  58 | 
+  59 |   /**
+  60 |    * @ts-expect-error Does not work -- Should handle indentation  */
+     |                       ~~~~~~~~~~~~~
+  61 |   texts.push(100);
+  62 | 
+  63 |  /**
+
+       at ./__typetests__/sample.tst.ts:60:23
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      59 |   /**
+      60 |    * @ts-expect-error Does not work -- Should handle indentation  */
+      61 |   texts.push(100);
+         |              ~~~
+      62 | 
+      63 |  /**
+      64 |   * @ts-expect-error Does not work */
+
+           at ./__typetests__/sample.tst.ts:61:14
+
+Error: The diagnostic message did not match.
+
+  62 | 
+  63 |  /**
+  64 |   * @ts-expect-error Does not work */
+     |                      ~~~~~~~~~~~~~
+  65 |  texts.push(100);
+  66 | 
+  67 |  /**
+
+       at ./__typetests__/sample.tst.ts:64:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      63 |  /**
+      64 |   * @ts-expect-error Does not work */
+      65 |  texts.push(100);
+         |             ~~~
+      66 | 
+      67 |  /**
+      68 |   * @ts-expect-error: Does not work */
+
+           at ./__typetests__/sample.tst.ts:65:13
+
+Error: The diagnostic message did not match.
+
+  66 | 
+  67 |  /**
+  68 |   * @ts-expect-error: Does not work */
+     |                       ~~~~~~~~~~~~~
+  69 |  texts.push(100);
+  70 | 
+  71 |  /**
+
+       at ./__typetests__/sample.tst.ts:68:23
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      67 |  /**
+      68 |   * @ts-expect-error: Does not work */
+      69 |  texts.push(100);
+         |             ~~~
+      70 | 
+      71 |  /**
+      72 |   * @ts-expect-error Does not work -- Should handle indentation  */
+
+           at ./__typetests__/sample.tst.ts:69:13
+
+Error: The diagnostic message did not match.
+
+  70 | 
+  71 |  /**
+  72 |   * @ts-expect-error Does not work -- Should handle indentation  */
+     |                      ~~~~~~~~~~~~~
+  73 |  texts.push(100);
+  74 | 
+  75 |   /*@ts-expect-error Does not work*/
+
+       at ./__typetests__/sample.tst.ts:72:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      71 |  /**
+      72 |   * @ts-expect-error Does not work -- Should handle indentation  */
+      73 |  texts.push(100);
+         |             ~~~
+      74 | 
+      75 |   /*@ts-expect-error Does not work*/
+      76 |   texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:73:13
+
+Error: The diagnostic message did not match.
+
+  73 |  texts.push(100);
+  74 | 
+  75 |   /*@ts-expect-error Does not work*/
+     |                      ~~~~~~~~~~~~~
+  76 |   texts.push(100);
+  77 | 
+  78 |   /*@ts-expect-error: Does not work*/
+
+       at ./__typetests__/sample.tst.ts:75:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      74 | 
+      75 |   /*@ts-expect-error Does not work*/
+      76 |   texts.push(100);
+         |              ~~~
+      77 | 
+      78 |   /*@ts-expect-error: Does not work*/
+      79 |   texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:76:14
+
+Error: The diagnostic message did not match.
+
+  76 |   texts.push(100);
+  77 | 
+  78 |   /*@ts-expect-error: Does not work*/
+     |                       ~~~~~~~~~~~~~
+  79 |   texts.push(100);
+  80 | 
+  81 |   /*@ts-expect-error Does not work -- Should handle indentation */
+
+       at ./__typetests__/sample.tst.ts:78:23
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      77 | 
+      78 |   /*@ts-expect-error: Does not work*/
+      79 |   texts.push(100);
+         |              ~~~
+      80 | 
+      81 |   /*@ts-expect-error Does not work -- Should handle indentation */
+      82 |   texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:79:14
+
+Error: The diagnostic message did not match.
+
+  79 |   texts.push(100);
+  80 | 
+  81 |   /*@ts-expect-error Does not work -- Should handle indentation */
+     |                      ~~~~~~~~~~~~~
+  82 |   texts.push(100);
+  83 | 
+  84 |  /*@ts-expect-error Does not work*/
+
+       at ./__typetests__/sample.tst.ts:81:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      80 | 
+      81 |   /*@ts-expect-error Does not work -- Should handle indentation */
+      82 |   texts.push(100);
+         |              ~~~
+      83 | 
+      84 |  /*@ts-expect-error Does not work*/
+      85 |  texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:82:14
+
+Error: The diagnostic message did not match.
+
+  82 |   texts.push(100);
+  83 | 
+  84 |  /*@ts-expect-error Does not work*/
+     |                     ~~~~~~~~~~~~~
+  85 |  texts.push(100);
+  86 | 
+  87 |  /*@ts-expect-error: Does not work*/
+
+       at ./__typetests__/sample.tst.ts:84:21
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      83 | 
+      84 |  /*@ts-expect-error Does not work*/
+      85 |  texts.push(100);
+         |             ~~~
+      86 | 
+      87 |  /*@ts-expect-error: Does not work*/
+      88 |  texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:85:13
+
+Error: The diagnostic message did not match.
+
+  85 |  texts.push(100);
+  86 | 
+  87 |  /*@ts-expect-error: Does not work*/
+     |                      ~~~~~~~~~~~~~
+  88 |  texts.push(100);
+  89 | 
+  90 |  /*@ts-expect-error Does not work -- Should handle indentation */
+
+       at ./__typetests__/sample.tst.ts:87:22
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      86 | 
+      87 |  /*@ts-expect-error: Does not work*/
+      88 |  texts.push(100);
+         |             ~~~
+      89 | 
+      90 |  /*@ts-expect-error Does not work -- Should handle indentation */
+      91 |  texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:88:13
+
+Error: The diagnostic message did not match.
+
+  88 |  texts.push(100);
+  89 | 
+  90 |  /*@ts-expect-error Does not work -- Should handle indentation */
+     |                     ~~~~~~~~~~~~~
+  91 |  texts.push(100);
+  92 | 
+
+       at ./__typetests__/sample.tst.ts:90:21
+
+    The suppressed error:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      89 | 
+      90 |  /*@ts-expect-error Does not work -- Should handle indentation */
+      91 |  texts.push(100);
+         |             ~~~
+      92 | 
+
+           at ./__typetests__/sample.tst.ts:91:13
+

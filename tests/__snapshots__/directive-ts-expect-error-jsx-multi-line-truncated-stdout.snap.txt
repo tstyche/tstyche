@@ -2,9 +2,9 @@
 
 uses TypeScript <<version>> with baseline TSConfig
 
-pass ./__typetests__/sample.tst.ts
+pass ./__typetests__/sample.tst.tsx
 
 Targets:    1 passed, 1 total
 Test files: 1 passed, 1 total
-Suppressed: 3 matched, 3 total
+Suppressed: 8 matched, 8 total
 Duration:   <<timestamp>>
