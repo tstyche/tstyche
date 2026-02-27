@@ -1,5 +1,5 @@
 import { describe, expect, test } from "tstyche";
-import type { CommandLineOptions } from "tstyche/tstyche";
+import type { CommandLineOptions } from "tstyche/api";
 
 describe("CommandLineOptions", () => {
   test("all options", () => {

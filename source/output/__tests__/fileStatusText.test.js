@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
 import prettyAnsi from "pretty-ansi";
-import { FileLocation, fileStatusText, ResultStatus, Scribbler } from "tstyche/tstyche";
+import { FileLocation, fileStatusText, ResultStatus, Scribbler } from "tstyche/api";
 
 const sampleFileUrl = new URL("../../../path/to/sample.test.ts", import.meta.url);
 const sampleFile = new FileLocation(sampleFileUrl);

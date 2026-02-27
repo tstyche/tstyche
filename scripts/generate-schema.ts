@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import * as tstyche from "tstyche/tstyche";
+import * as tstyche from "tstyche/api";
 
 interface JsonSchemaDefinition {
   additionalProperties?: boolean;
