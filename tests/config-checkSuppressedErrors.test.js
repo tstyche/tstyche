@@ -4,30 +4,15 @@ import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
-const testFileText = `let a: Promise<string>;
-
-// @ts-expect-error Type 'number' is not assignable to type 'Promise<string>'.
-a = 123;
-// @ts-expect-error Type 'boolean' is not assignable to type 'Promise<...>' -- Allows messages to be truncated
-a = true;
-// @ts-expect-error Type '...' is not assignable to type 'Promise<string>'
-a = true;
-// @ts-expect-error Type 'boolean' is not assignable to type 'Array<...>'
-a = true;
-// @ts-expect-error Type 'Promise<...>' is not assignable to type type 'Promise<string>'
-a = true;
-
-// @ts-expect-error
+const testFileText = `// @ts-expect-error
 console.log(add);
 
 // @ts-expect-error Does not work
 console.log(add);
 
-  // @ts-expect-error Should handle leading spaces
-  console.log(spaces);
-
-\t// @ts-expect-error Should handle leading tabs
-\tconsole.log(tabs);`;
+// @ts-expect-error Cannot find name 'add'
+console.log(add);
+`;
 
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });

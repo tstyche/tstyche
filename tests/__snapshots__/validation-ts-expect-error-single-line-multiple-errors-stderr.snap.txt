@@ -1,12 +1,12 @@
 Error: Only a single error can be suppressed.
 
   1 | // @ts-expect-error Cannot find name 'add'
-    | ~~~~~~~~~~~~~~~~~~~
+    |    ~~~~~~~~~~~~~~~~
   2 | console.log(add); console.log(add);
   3 | 
   4 | // @ts-expect-error: Cannot find name 'add'
 
-      at ./__typetests__/sample.tst.ts:1:1
+      at ./__typetests__/sample.tst.ts:1:4
 
     The suppressed errors:
 
@@ -37,12 +37,12 @@ Error: Only a single error can be suppressed.
   2 | console.log(add); console.log(add);
   3 | 
   4 | // @ts-expect-error: Cannot find name 'add'
-    | ~~~~~~~~~~~~~~~~~~~
+    |    ~~~~~~~~~~~~~~~~
   5 | console.log(add); console.log(add);
   6 | 
   7 | // @ts-expect-error Cannot find name 'add' -- Only one error raised
 
-      at ./__typetests__/sample.tst.ts:4:1
+      at ./__typetests__/sample.tst.ts:4:4
 
     The suppressed errors:
 
@@ -75,11 +75,11 @@ Error: Only a single error can be suppressed.
   5 | console.log(add); console.log(add);
   6 | 
   7 | // @ts-expect-error Cannot find name 'add' -- Only one error raised
-    | ~~~~~~~~~~~~~~~~~~~
+    |    ~~~~~~~~~~~~~~~~
   8 | console.log(add); console.log(add);
   9 | 
 
-      at ./__typetests__/sample.tst.ts:7:1
+      at ./__typetests__/sample.tst.ts:7:4
 
     The suppressed errors:
 
