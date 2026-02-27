@@ -1,5 +1,5 @@
 import { describe, expect, test } from "tstyche";
-import type { ConfigFileOptions } from "tstyche/tstyche";
+import type { ConfigFileOptions } from "tstyche/api";
 
 describe("ConfigFileOptions", () => {
   test("all options", () => {

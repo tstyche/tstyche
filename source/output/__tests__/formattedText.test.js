@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import { formattedText, Scribbler } from "tstyche/tstyche";
+import { formattedText, Scribbler } from "tstyche/api";
 
 const scribbler = new Scribbler();
 

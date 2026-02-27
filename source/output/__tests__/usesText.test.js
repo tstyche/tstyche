@@ -2,7 +2,7 @@ import assert from "node:assert";
 import path from "node:path";
 import test from "node:test";
 import prettyAnsi from "pretty-ansi";
-import { ProjectConfigKind, Scribbler, usesText } from "tstyche/tstyche";
+import { ProjectConfigKind, Scribbler, usesText } from "tstyche/api";
 
 const scribbler = new Scribbler();
 

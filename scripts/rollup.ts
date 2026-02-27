@@ -68,11 +68,11 @@ function tidyDts(): Plugin {
 
 const config: Array<RollupOptions> = [
   {
-    external: [/^node:/, "./tstyche.js"],
+    external: [/^node:/, "./api.js"],
     input: {
-      tag: "./source/tag.ts",
+      api: "./source/api.ts",
       index: "./source/types.ts",
-      tstyche: "./source/tstyche.ts",
+      tag: "./source/tag.ts",
     },
     output,
     plugins: [
@@ -98,12 +98,12 @@ const config: Array<RollupOptions> = [
   },
 
   {
-    external: [/^node:/, "./tstyche.js"],
+    external: [/^node:/, "./api.js"],
     input: {
+      api: "./source/api.ts",
       bin: "./source/bin.ts",
-      tag: "./source/tag.ts",
       index: "./source/index.ts",
-      tstyche: "./source/tstyche.ts",
+      tag: "./source/tag.ts",
     },
     output,
     plugins: [

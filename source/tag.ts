@@ -1,4 +1,4 @@
-import { CancellationToken, Cli, DiagnosticCategory, type Event, EventEmitter, type EventHandler } from "./tstyche.js";
+import { CancellationToken, Cli, DiagnosticCategory, type Event, EventEmitter, type EventHandler } from "./api.js";
 
 class StatusHandler implements EventHandler {
   #hasError = false;
