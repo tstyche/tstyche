@@ -1,5 +1,15 @@
 # Changelog
 
+## [7.0.0-beta.2] - 2026-02-27
+
+### Added
+
+- Enable checking `@ts-expect-error` directives in multi-line comments ([#696](https://github.com/tstyche/tstyche/pull/696))
+
+### Changed
+
+- **Breaking!** Rename `tstyche/tstyche` entry point to `tstyche/api` ([#697](https://github.com/tstyche/tstyche/pull/697))
+
 ## [7.0.0-beta.1] - 2026-02-14
 
 ### Fixed
@@ -1038,6 +1048,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.2
 [7.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.1
 [7.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.0
 [6.2.0]: https://github.com/tstyche/tstyche/releases/tag/v6.2.0
