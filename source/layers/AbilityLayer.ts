@@ -166,7 +166,7 @@ export class AbilityLayer {
               expectExpressionEnd,
               nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
             ],
-            [expectEnd, matcherNameEnd],
+            [expectEnd, matcherNodeEnd],
           ]);
         } else {
           const sourceText = this.#compiler.isTypeReferenceNode(sourceNode)
