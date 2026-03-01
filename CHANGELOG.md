@@ -1,5 +1,82 @@
 # Changelog
 
+## [7.0.0-beta.2] - 2026-02-27
+
+### Added
+
+- Enable checking `@ts-expect-error` directives in multi-line comments ([#696](https://github.com/tstyche/tstyche/pull/696))
+
+### Changed
+
+- **Breaking!** Rename `tstyche/tstyche` entry point to `tstyche/api` ([#697](https://github.com/tstyche/tstyche/pull/697))
+
+## [7.0.0-beta.1] - 2026-02-14
+
+### Fixed
+
+- Report incompatible TSConfig options ([#693](https://github.com/tstyche/tstyche/pull/693))
+
+## [7.0.0-beta.0] - 2026-02-11
+
+### Added
+
+- Enable passing JSON string for `tsconfig` configuration ([#688](https://github.com/tstyche/tstyche/pull/688))
+- Add the `baseline` option for `tsconfig` configuration ([#687](https://github.com/tstyche/tstyche/pull/687))
+
+### Changed
+
+- **Breaking!** Change the default configuration file location to `./tstyche.json` ([#692](https://github.com/tstyche/tstyche/pull/692))
+- **Breaking!** Remove the `ignore` option for `tsconfig` configuration ([#691](https://github.com/tstyche/tstyche/pull/691))
+- **Breaking!** rename `usesText()` component ([#678](https://github.com/tstyche/tstyche/pull/678))
+- **Breaking!** rename `addsText()` component ([#677](https://github.com/tstyche/tstyche/pull/677))
+- **Breaking!** Remove the `rootPath` configuration option ([#673](https://github.com/tstyche/tstyche/pull/673))
+
+## [6.2.0] - 2026-02-01
+
+### Added
+
+- Add the `verbose` configuration option and `--verbose` command line option ([#676](https://github.com/tstyche/tstyche/pull/676))
+- Add the `dot` reporter ([#675](https://github.com/tstyche/tstyche/pull/675))
+
+## [6.1.0] - 2026-01-29
+
+### Added
+
+- Add the `--root` command line option ([#668](https://github.com/tstyche/tstyche/pull/668), [#669](https://github.com/tstyche/tstyche/pull/669))
+- Add the `--quiet` command line option ([#666](https://github.com/tstyche/tstyche/pull/666))
+- Add the `tstyche/tag` entry point ([#665](https://github.com/tstyche/tstyche/pull/665))
+
+## [6.0.3] - 2026-01-26
+
+### Fixed
+
+- When checking type structure, take into account predicate parameter position ([#661](https://github.com/tstyche/tstyche/pull/661))
+- When checking type structure, ignore unused type parameters in call signatures ([#659](https://github.com/tstyche/tstyche/pull/659))
+
+## [6.0.2] - 2026-01-11
+
+### Fixed
+
+- When checking type structure, deduplicate complex unions and intersections ([#654](https://github.com/tstyche/tstyche/pull/654))
+
+## [6.0.1] - 2026-01-10
+
+### Fixed
+
+- When checking type structure, compare `target` type of type references ([#653](https://github.com/tstyche/tstyche/pull/653))
+
+## [6.0.0] - 2026-01-08
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
+
+### Changed
+
+- **Breaking!** Drop support for Node.js 20 ([#646](https://github.com/tstyche/tstyche/pull/646))
+- **Breaking!** Remove support for TSTyche plugins ([#645](https://github.com/tstyche/tstyche/pull/645))
+- **Breaking!** Drop support for TypeScript `<=5.3` ([#644](https://github.com/tstyche/tstyche/pull/644))
+- **Breaking!** Remove legacy implementation of the `.toBe()` matcher ([#643](https://github.com/tstyche/tstyche/pull/643))
+- **Breaking!** Replace the `.toBe()` matcher logic with structure comparison ([#636](https://github.com/tstyche/tstyche/pull/636), [#638](https://github.com/tstyche/tstyche/pull/638), [#639](https://github.com/tstyche/tstyche/pull/639), [#640](https://github.com/tstyche/tstyche/pull/640), [#641](https://github.com/tstyche/tstyche/pull/641), [#642](https://github.com/tstyche/tstyche/pull/642), [#648](https://github.com/tstyche/tstyche/pull/648), [#649](https://github.com/tstyche/tstyche/pull/649), [#650](https://github.com/tstyche/tstyche/pull/650), [#651](https://github.com/tstyche/tstyche/pull/651), [#652](https://github.com/tstyche/tstyche/pull/652))
+
 ## [6.0.0-rc.0] - 2026-01-04
 
 _Release candidate based on [6.0.0-beta.6]._
@@ -971,6 +1048,15 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.2
+[7.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.1
+[7.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.0
+[6.2.0]: https://github.com/tstyche/tstyche/releases/tag/v6.2.0
+[6.1.0]: https://github.com/tstyche/tstyche/releases/tag/v6.1.0
+[6.0.3]: https://github.com/tstyche/tstyche/releases/tag/v6.0.3
+[6.0.2]: https://github.com/tstyche/tstyche/releases/tag/v6.0.2
+[6.0.1]: https://github.com/tstyche/tstyche/releases/tag/v6.0.1
+[6.0.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0
 [6.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-rc.0
 [6.0.0-beta.6]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.6
 [6.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v6.0.0-beta.5

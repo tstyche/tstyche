@@ -1,4 +1,7 @@
+import type { ProjectConfigKind } from "./ProjectConfigKind.enum.js";
 import type { ResultStatus } from "./ResultStatus.enum.js";
+
+export type ProjectConfig = { kind: ProjectConfigKind; specifier: string };
 
 export type TargetResultStatus = ResultStatus.Runs | ResultStatus.Passed | ResultStatus.Failed;
 

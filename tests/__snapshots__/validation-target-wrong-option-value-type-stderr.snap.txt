@@ -11,5 +11,5 @@ Error: Value for the 'target' option must be a string.
   6 |     "examples/*.test.*"
   7 |   ]
 
-      at ./tstyche.config.json:2:13
+      at ./tstyche.json:2:13
 

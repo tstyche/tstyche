@@ -12,11 +12,8 @@ function getParameterFactsFromTuple(
   compiler: typeof ts,
 ): ParameterFacts {
   return {
-    // biome-ignore lint/style/noNonNullAssertion: length was checked before
     isOptional: !!(type.target.elementFlags[position]! & compiler.ElementFlags.Optional),
-    // biome-ignore lint/style/noNonNullAssertion: length was checked before
     isRest: !!(type.target.elementFlags[position]! & compiler.ElementFlags.Rest),
-    // biome-ignore lint/style/noNonNullAssertion: length was checked before
     getType: (typeChecker) => typeChecker.getTypeArguments(type)[position]!,
   };
 }
@@ -28,7 +25,6 @@ export function getParameterFacts(
   typeChecker: ts.TypeChecker,
 ): ParameterFacts {
   if (parameterIndex >= signature.parameters.length - 1 && compiler.hasRestParameter(signature.getDeclaration())) {
-    // biome-ignore lint/style/noNonNullAssertion: length was checked before
     const restType = typeChecker.getTypeOfSymbol(signature.parameters.at(-1)!);
 
     if (typeChecker.isTupleType(restType)) {
@@ -38,7 +34,6 @@ export function getParameterFacts(
     }
   }
 
-  // biome-ignore lint/style/noNonNullAssertion: length was checked before
   const parameter = signature.parameters[parameterIndex]!;
 
   return {
@@ -50,7 +45,6 @@ export function getParameterFacts(
 
 export function getParameterCount(signature: ts.Signature, compiler: typeof ts, typeChecker: ts.TypeChecker): number {
   if (signature.declaration != null && compiler.hasRestParameter(signature.declaration)) {
-    // biome-ignore lint/style/noNonNullAssertion: length was checked before
     const restType = typeChecker.getTypeOfSymbol(signature.parameters.at(-1)!);
 
     if (typeChecker.isTupleType(restType)) {

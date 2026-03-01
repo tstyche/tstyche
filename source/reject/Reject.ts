@@ -14,10 +14,10 @@ export class Reject {
     this.#compiler = compiler;
     this.#typeChecker = program.getTypeChecker();
 
-    if (resolvedConfig?.rejectAnyType) {
+    if (resolvedConfig.rejectAnyType) {
       this.#rejectedArgumentTypes.add("any");
     }
-    if (resolvedConfig?.rejectNeverType) {
+    if (resolvedConfig.rejectNeverType) {
       this.#rejectedArgumentTypes.add("never");
     }
   }

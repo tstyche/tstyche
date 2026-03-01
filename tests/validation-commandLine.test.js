@@ -35,7 +35,7 @@ await test("'tstyche' command", async (t) => {
 
   await t.test("when no test files are present", async () => {
     await writeFixture(fixtureUrl, {
-      ["tstyche.config.json"]: "{}",
+      ["tstyche.json"]: "{}",
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

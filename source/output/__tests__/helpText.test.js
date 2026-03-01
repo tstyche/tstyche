@@ -1,10 +1,10 @@
 import assert from "node:assert";
 import test from "node:test";
 import prettyAnsi from "pretty-ansi";
-import { helpText, OptionBrand, Scribbler } from "tstyche/tstyche";
+import { helpText, OptionBrand, Scribbler } from "tstyche/api";
 
 /**
- * @type {Map<string, import("tstyche/tstyche").OptionDefinition>}
+ * @type {Map<string, import("tstyche/api").OptionDefinition>}
  */
 const sampleCommandLineOptionDefinitions = new Map([
   [

@@ -1,0 +1,11 @@
+Error: Type 'string' is not the same as type 'number'.
+
+  4 | });
+  5 | test("is number?", () => {
+  6 |   expect<string>().type.toBe<number>();
+    |                              ~~~~~~
+  7 | });
+  8 | 
+
+      at ./__typetests__/feature.tst.ts:6:30 ❭ is number?
+

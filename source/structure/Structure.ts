@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import { ComparisonResult } from "./ComparisonResult.enum.js";
 import {
   containsInstantiable,
   getIndexSignatures,
@@ -6,24 +7,21 @@ import {
   getTargetSymbol,
   getThisTypeOfSignature,
   getTypeParameterModifiers,
-  getTypeParametersOfSignature,
-  isSymbolFromDefaultLibrary,
 } from "./helpers.js";
 import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
-import { SeenService } from "./SeenService.js";
 
 export class Structure {
   #compiler: typeof ts;
   #compilerOptions: ts.CompilerOptions;
-  #program: ts.Program;
-  #seen = new SeenService();
   #typeChecker: ts.TypeChecker;
+
+  #deduplicateCache = new WeakMap<ts.Type, Array<ts.Type>>();
+  #memoizeCache = new Map<string, ComparisonResult>();
 
   constructor(compiler: typeof ts, program: ts.Program) {
     this.#compiler = compiler;
     this.#compilerOptions = program.getCompilerOptions();
-    this.#program = program;
     this.#typeChecker = program.getTypeChecker();
   }
 
@@ -39,7 +37,7 @@ export class Structure {
     a = this.#normalize(a);
     b = this.#normalize(b);
 
-    if (a.id === b.id) {
+    if (a === b) {
       return true;
     }
 
@@ -53,21 +51,29 @@ export class Structure {
       return !!(b.flags & this.#compiler.TypeFlags.Undefined);
     }
 
-    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
-      if (a.flags & b.flags & this.#compiler.TypeFlags.Intersection) {
-        if (this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) {
-          return true;
-        }
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.StructuredType) {
+      if (a.flags & this.#compiler.TypeFlags.StructuredType && b.flags & this.#compiler.TypeFlags.StructuredType) {
+        return this.#memoize(a, b, () => this.compareStructured(a as ts.StructuredType, b as ts.StructuredType));
       }
 
-      if (containsInstantiable(a, this.#compiler) || containsInstantiable(b, this.#compiler)) {
-        return false;
+      return false;
+    }
+
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Instantiable) {
+      if (a.flags & this.#compiler.TypeFlags.Instantiable && b.flags & this.#compiler.TypeFlags.Instantiable) {
+        return this.#memoize(a, b, () => this.compareInstantiable(a as ts.InstantiableType, b as ts.InstantiableType));
       }
 
-      if ((a.flags & b.flags) | this.#compiler.TypeFlags.StructuredType) {
-        return this.#seen.memoized(a, b, () =>
-          this.compareStructuredTypes(a as ts.StructuredType, b as ts.StructuredType),
-        );
+      return false;
+    }
+
+    return false;
+  }
+
+  compareStructured(a: ts.StructuredType, b: ts.StructuredType): boolean {
+    if (this.#typeChecker.isTupleType(a) || this.#typeChecker.isTupleType(b)) {
+      if (this.#typeChecker.isTupleType(a) && this.#typeChecker.isTupleType(b)) {
+        return this.compareTuples(a, b);
       }
 
       return false;
@@ -81,25 +87,31 @@ export class Structure {
       return false;
     }
 
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Intersection) {
+        if (this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) {
+          return true;
+        }
+      }
+
+      if (containsInstantiable(a, this.#compiler) || containsInstantiable(b, this.#compiler)) {
+        return false;
+      }
+    }
+
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Object) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Object) {
-        return this.#seen.memoized(a, b, () => this.compareObjects(a as ts.ObjectType, b as ts.ObjectType));
+        return this.compareObjects(a as ts.ObjectType, b as ts.ObjectType);
       }
-
-      return false;
     }
 
+    return this.compareStructures(a, b);
+  }
+
+  compareInstantiable(a: ts.InstantiableType, b: ts.InstantiableType): boolean {
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.TypeParameter) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.TypeParameter) {
-        return this.compareTypeParameters(a, b);
-      }
-
-      return false;
-    }
-
-    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Index) {
-      if (a.flags & b.flags & this.#compiler.TypeFlags.Index) {
-        return this.compare((a as ts.IndexType).type, (b as ts.IndexType).type);
+        return this.compareTypeParameters(a as ts.TypeParameter, b as ts.TypeParameter);
       }
 
       return false;
@@ -129,6 +141,14 @@ export class Structure {
       return false;
     }
 
+    if ((a.flags | b.flags) & this.#compiler.TypeFlags.Index) {
+      if (a.flags & b.flags & this.#compiler.TypeFlags.Index) {
+        return this.compare((a as ts.IndexType).type, (b as ts.IndexType).type);
+      }
+
+      return false;
+    }
+
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.TemplateLiteral) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.TemplateLiteral) {
         return this.compareTemplateLiteralTypes(a as ts.TemplateLiteralType, b as ts.TemplateLiteralType);
@@ -141,73 +161,62 @@ export class Structure {
       if (a.flags & b.flags & this.#compiler.TypeFlags.StringMapping) {
         return this.compareStringMappingTypes(a as ts.StringMappingType, b as ts.StringMappingType);
       }
-
-      return false;
     }
 
     return false;
   }
 
   compareIntersections(a: ts.IntersectionType, b: ts.IntersectionType): boolean {
-    if (a.types.length !== b.types.length) {
+    const aTypes = this.#deduplicate(a);
+    const bTypes = this.#deduplicate(b);
+
+    if (aTypes.length !== bTypes.length) {
       return false;
     }
 
-    return a.types.every((aType, i) => this.compare(aType, b.types[i] as ts.Type));
+    return aTypes.every((aType, i) => this.compare(aType, bTypes[i]!));
   }
 
   compareUnions(a: ts.UnionType, b: ts.UnionType): boolean {
-    if (a.types.length !== b.types.length) {
+    const aTypes = this.#deduplicate(a);
+    const bTypes = this.#deduplicate(b);
+
+    if (aTypes.length !== bTypes.length) {
       return false;
     }
 
-    return a.types.every((aType) => b.types.some((bType) => this.compare(aType, bType)));
+    return aTypes.every((aType) => bTypes.some((bType) => this.compare(aType, bType)));
   }
 
   compareObjects(a: ts.ObjectType, b: ts.ObjectType): boolean {
     if (a.objectFlags & b.objectFlags & this.#compiler.ObjectFlags.Reference) {
-      const isSame = this.compareTypeReferences(a as ts.TypeReference, b as ts.TypeReference);
-
-      if (isSame != null) {
-        return isSame;
+      if (!((a.objectFlags | b.objectFlags) & this.#compiler.ObjectFlags.ClassOrInterface)) {
+        return this.compareTypeReferences(a as ts.TypeReference, b as ts.TypeReference);
       }
     }
 
-    return this.compareStructuredTypes(a, b);
+    return this.compareStructures(a, b);
   }
 
-  compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean | undefined {
-    if ((a.target.objectFlags | b.target.objectFlags) & this.#compiler.ObjectFlags.Tuple) {
-      if (a.target.objectFlags & b.target.objectFlags & this.#compiler.ObjectFlags.Tuple) {
-        return this.compareTuples(a as ts.TupleTypeReference, b as ts.TupleTypeReference);
-      }
+  compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean {
+    if (this.compare(a.target, b.target)) {
+      const aTypeArguments = this.#typeChecker.getTypeArguments(a);
+      const bTypeArguments = this.#typeChecker.getTypeArguments(b);
 
-      return false;
-    }
-
-    if ((a.objectFlags | b.objectFlags) & this.#compiler.ObjectFlags.Class) {
-      return this.compareStructuredTypes(a, b);
-    }
-
-    if (a.symbol !== b.symbol) {
-      if (isSymbolFromDefaultLibrary(a.symbol, this.#program) || isSymbolFromDefaultLibrary(b.symbol, this.#program)) {
+      if (aTypeArguments.length !== bTypeArguments.length) {
         return false;
       }
 
-      return;
+      for (let i = 0; i < aTypeArguments.length; i++) {
+        if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
+          return false;
+        }
+      }
+
+      return true;
     }
 
-    const aTypeArguments = this.#typeChecker.getTypeArguments(a);
-    const bTypeArguments = this.#typeChecker.getTypeArguments(b);
-
-    if (aTypeArguments.length !== bTypeArguments.length) {
-      return false;
-    }
-
-    return aTypeArguments.every((type, i) =>
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      this.compare(type, bTypeArguments[i]!),
-    );
+    return this.compareStructures(a, b);
   }
 
   compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {
@@ -227,7 +236,6 @@ export class Structure {
         return false;
       }
 
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
         return false;
       }
@@ -236,7 +244,7 @@ export class Structure {
     return true;
   }
 
-  compareStructuredTypes(a: ts.StructuredType, b: ts.StructuredType): boolean {
+  compareStructures(a: ts.StructuredType, b: ts.StructuredType): boolean {
     if (!this.compareProperties(a, b)) {
       return false;
     }
@@ -320,81 +328,55 @@ export class Structure {
     }
 
     for (let i = 0; i < aSignatures.length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      if (!this.#compareSignature(aSignatures[i]!, bSignatures[i]!)) {
-        return false;
-      }
-    }
+      const aThisType = getThisTypeOfSignature(aSignatures[i]!, this.#typeChecker);
+      const bThisType = getThisTypeOfSignature(bSignatures[i]!, this.#typeChecker);
 
-    return true;
-  }
-
-  #compareSignature(a: ts.Signature, b: ts.Signature): boolean {
-    const aTypeParameters = getTypeParametersOfSignature(a);
-    const bTypeParameters = getTypeParametersOfSignature(b);
-
-    if (aTypeParameters.length !== bTypeParameters.length) {
-      return false;
-    }
-
-    for (let i = 0; i < aTypeParameters.length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
-      if (!this.compareTypeParameters(aTypeParameters[i]!, bTypeParameters[i]!)) {
-        return false;
-      }
-    }
-
-    if (
-      !this.#compareMaybeNullish(
-        getThisTypeOfSignature(a, this.#typeChecker),
-        getThisTypeOfSignature(b, this.#typeChecker),
-      )
-    ) {
-      return false;
-    }
-
-    if (!this.compareParameters(a, b)) {
-      return false;
-    }
-
-    if (!this.compare(this.#typeChecker.getReturnTypeOfSignature(a), this.#typeChecker.getReturnTypeOfSignature(b))) {
-      return false;
-    }
-
-    const aTypePredicate = this.#typeChecker.getTypePredicateOfSignature(a);
-    const bTypePredicate = this.#typeChecker.getTypePredicateOfSignature(b);
-
-    if (
-      aTypePredicate?.kind !== bTypePredicate?.kind ||
-      !this.#compareMaybeNullish(aTypePredicate?.type, bTypePredicate?.type)
-    ) {
-      return false;
-    }
-
-    return true;
-  }
-
-  compareParameters(a: ts.Signature, b: ts.Signature): boolean {
-    const aParametersCount = getParameterCount(a, this.#compiler, this.#typeChecker);
-    const bParametersCount = getParameterCount(b, this.#compiler, this.#typeChecker);
-
-    if (aParametersCount !== bParametersCount) {
-      return false;
-    }
-
-    for (let i = 0; i < aParametersCount; i++) {
-      const aParameter = getParameterFacts(a, i, this.#compiler, this.#typeChecker);
-      const bParameter = getParameterFacts(b, i, this.#compiler, this.#typeChecker);
-
-      if (aParameter.isOptional !== bParameter.isOptional) {
+      if (!this.#compareMaybeNullish(aThisType, bThisType)) {
         return false;
       }
 
-      if (aParameter.isRest !== bParameter.isRest) {
+      const aParametersCount = getParameterCount(aSignatures[i]!, this.#compiler, this.#typeChecker);
+      const bParametersCount = getParameterCount(bSignatures[i]!, this.#compiler, this.#typeChecker);
+
+      if (aParametersCount !== bParametersCount) {
         return false;
       }
 
-      if (!this.compare(aParameter.getType(this.#typeChecker), bParameter.getType(this.#typeChecker))) {
+      for (let j = 0; j < aParametersCount; j++) {
+        const aParameter = getParameterFacts(aSignatures[i]!, j, this.#compiler, this.#typeChecker);
+        const bParameter = getParameterFacts(bSignatures[i]!, j, this.#compiler, this.#typeChecker);
+
+        if (aParameter.isOptional !== bParameter.isOptional) {
+          return false;
+        }
+
+        if (aParameter.isRest !== bParameter.isRest) {
+          return false;
+        }
+
+        if (!this.compare(aParameter.getType(this.#typeChecker), bParameter.getType(this.#typeChecker))) {
+          return false;
+        }
+      }
+
+      const aReturnType = this.#typeChecker.getReturnTypeOfSignature(aSignatures[i]!);
+      const bReturnType = this.#typeChecker.getReturnTypeOfSignature(bSignatures[i]!);
+
+      if (!this.compare(aReturnType, bReturnType)) {
+        return false;
+      }
+
+      const aTypePredicate = this.#typeChecker.getTypePredicateOfSignature(aSignatures[i]!);
+      const bTypePredicate = this.#typeChecker.getTypePredicateOfSignature(bSignatures[i]!);
+
+      if (aTypePredicate?.parameterIndex !== bTypePredicate?.parameterIndex) {
+        return false;
+      }
+
+      if (
+        aTypePredicate?.kind !== bTypePredicate?.kind ||
+        !this.#compareMaybeNullish(aTypePredicate?.type, bTypePredicate?.type)
+      ) {
         return false;
       }
     }
@@ -411,17 +393,14 @@ export class Structure {
     }
 
     for (let i = 0; i < aSignatures.length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (aSignatures[i]!.isReadonly !== bSignatures[i]!.isReadonly) {
         return false;
       }
 
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.compare(aSignatures[i]!.keyType, bSignatures[i]!.keyType)) {
         return false;
       }
 
-      // biome-ignore lint/style/noNonNullAssertion: length was checked above
       if (!this.compare(aSignatures[i]!.type, bSignatures[i]!.type)) {
         return false;
       }
@@ -479,7 +458,7 @@ export class Structure {
 
     if (
       !this.compare(
-        // find a way to use 'getTrueTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
+        // TODO find a way to use 'getTrueTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
         this.#typeChecker.getTypeAtLocation(a.root.node.trueType),
         this.#typeChecker.getTypeAtLocation(b.root.node.trueType),
       )
@@ -489,7 +468,7 @@ export class Structure {
 
     if (
       !this.compare(
-        // find a way to use 'getFalseTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
+        // TODO find a way to use 'getFalseTypeFromConditionalType()' in the future, it gets already resolved or instantiates a type
         this.#typeChecker.getTypeAtLocation(a.root.node.falseType),
         this.#typeChecker.getTypeAtLocation(b.root.node.falseType),
       )
@@ -543,17 +522,53 @@ export class Structure {
     return true;
   }
 
+  #deduplicate(target: ts.UnionOrIntersectionType): Array<ts.Type> {
+    let result = this.#deduplicateCache.get(target);
+
+    if (result) {
+      return result;
+    }
+
+    result = target.types.slice(0, 1);
+
+    for (let i = 1; i < target.types.length; i++) {
+      if (!result.some((existing) => this.compare(existing, target.types[i]!))) {
+        result.push(target.types[i]!);
+      }
+    }
+
+    this.#deduplicateCache.set(target, result);
+
+    return result;
+  }
+
+  #memoize(a: ts.Type, b: ts.Type, compare: () => boolean): boolean {
+    const key = [a.id, b.id].sort().join(":");
+    const result = this.#memoizeCache.get(key);
+
+    if (result !== undefined) {
+      return result !== ComparisonResult.Different;
+    }
+
+    this.#memoizeCache.set(key, ComparisonResult.Pending);
+
+    const isSame = compare();
+
+    this.#memoizeCache.set(key, isSame ? ComparisonResult.Identical : ComparisonResult.Different);
+
+    return isSame;
+  }
+
   #normalize(type: ts.Type): ts.Type {
     if (type.flags & this.#compiler.TypeFlags.Freshable && (type as ts.FreshableType).freshType === type) {
       return (type as ts.FreshableType).regularType;
     }
 
     if (type.flags & this.#compiler.TypeFlags.UnionOrIntersection) {
-      // biome-ignore lint/style/noNonNullAssertion: intersections or unions have at least two members
-      const candidateType = this.#normalize((type as ts.UnionOrIntersectionType).types[0]!);
+      const parts = this.#deduplicate(type as ts.UnionOrIntersectionType);
 
-      if ((type as ts.UnionOrIntersectionType).types.every((t) => this.compare(this.#normalize(t), candidateType))) {
-        return candidateType;
+      if (parts.length === 1) {
+        return parts.at(0)!;
       }
     }
 

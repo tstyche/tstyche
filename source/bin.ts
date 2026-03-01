@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import process from "node:process";
-import { Cli } from "./tstyche.js";
+import { Cli } from "./api.js";
 
 const cli = new Cli();
 

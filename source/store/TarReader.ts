@@ -1,5 +1,5 @@
 export class TarReader {
-  #leftover: Uint8Array<ArrayBufferLike> = new Uint8Array(0);
+  #leftover: Uint8Array = new Uint8Array(0);
   #reader: ReadableStreamDefaultReader<Uint8Array>;
   #textDecoder = new TextDecoder();
 

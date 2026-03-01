@@ -75,7 +75,10 @@ export class JsonScanner {
     while (!this.isRead()) {
       text += this.#readCharacter();
 
-      if (text.slice(-1) === closingTokenText || (!closingTokenText && /[\s,:\]}]/.test(this.#peekCharacter()))) {
+      if (
+        (text.at(-2) !== "\\" && text.at(-1) === closingTokenText) ||
+        (!closingTokenText && /[\s,:\]}]/.test(this.#peekCharacter()))
+      ) {
         break;
       }
     }

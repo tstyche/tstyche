@@ -7,7 +7,7 @@ Error: Unknown option 'cache'.
   4 |   "globals": { delay: 123 },
   5 |   "globalsTrailing": { break: true, delay: 123, },
 
-      at ./tstyche.config.json:2:3
+      at ./tstyche.json:2:3
 
 Error: Unknown option 'cacheTrailing'.
 
@@ -19,7 +19,7 @@ Error: Unknown option 'cacheTrailing'.
   5 |   "globalsTrailing": { break: true, delay: 123, },
   6 |   "mainBroken":,
 
-      at ./tstyche.config.json:3:3
+      at ./tstyche.json:3:3
 
 Error: Unknown option 'globals'.
 
@@ -31,7 +31,7 @@ Error: Unknown option 'globals'.
   6 |   "mainBroken":,
   7 |   "rootDir": "./path",
 
-      at ./tstyche.config.json:4:3
+      at ./tstyche.json:4:3
 
 Error: Unknown option 'globalsTrailing'.
 
@@ -43,7 +43,7 @@ Error: Unknown option 'globalsTrailing'.
   7 |   "rootDir": "./path",
   8 |   "silent": false,
 
-      at ./tstyche.config.json:5:3
+      at ./tstyche.json:5:3
 
 Error: Unknown option 'mainBroken'.
 
@@ -55,7 +55,7 @@ Error: Unknown option 'mainBroken'.
   8 |   "silent": false,
   9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
 
-      at ./tstyche.config.json:6:3
+      at ./tstyche.json:6:3
 
 Error: Unknown option 'rootDir'.
 
@@ -67,7 +67,7 @@ Error: Unknown option 'rootDir'.
    9 |   "testFileMatch": ["**/packages/*/__typetests__/*.test.ts"],
   10 |   "veryLast": true
 
-       at ./tstyche.config.json:7:3
+       at ./tstyche.json:7:3
 
 Error: Unknown option 'silent'.
 
@@ -79,7 +79,7 @@ Error: Unknown option 'silent'.
   10 |   "veryLast": true
   11 | }
 
-       at ./tstyche.config.json:8:3
+       at ./tstyche.json:8:3
 
 Error: Unknown option 'veryLast'.
 
@@ -90,5 +90,5 @@ Error: Unknown option 'veryLast'.
   11 | }
   12 | 
 
-       at ./tstyche.config.json:10:3
+       at ./tstyche.json:10:3
 

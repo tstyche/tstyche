@@ -1,6 +1,6 @@
 ···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/api-when
 
-uses TypeScript <<version>>
+uses TypeScript <<version>> with baseline TSConfig
 
 pass ./__typetests__/when.tst.ts
   + pick

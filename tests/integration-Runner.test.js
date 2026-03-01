@@ -3,7 +3,7 @@ import path from "node:path";
 import process from "node:process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import * as tstyche from "tstyche/tstyche";
+import * as tstyche from "tstyche/api";
 import { getFixtureFileUrl, getTestFileName } from "./__utilities__/fixture.js";
 
 const isWindows = process.platform === "win32";
@@ -14,13 +14,13 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 const eventEmitter = new tstyche.EventEmitter();
 
 /**
- * @type {import("tstyche/tstyche").Result | undefined}
+ * @type {import("tstyche/api").Result | undefined}
  */
 let result;
 
 class TestResultReporter {
   /**
-   * @param {import("tstyche/tstyche").ReporterEvent} event
+   * @param {import("tstyche/api").ReporterEvent} event
    */
   on([event, payload]) {
     if (event === "run:start") {

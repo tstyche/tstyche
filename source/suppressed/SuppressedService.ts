@@ -51,7 +51,6 @@ export class SuppressedService {
         continue;
       }
 
-      // biome-ignore lint/style/noNonNullAssertion: the logic above makes sure there is only one diagnostic
       let messageText = getDiagnosticMessageText(suppressedError.diagnostics[0]!);
 
       if (Array.isArray(messageText)) {

@@ -36,10 +36,6 @@ export function getThisTypeOfSignature(signature: ts.Signature, typeChecker: ts.
   return signature.thisParameter && typeChecker.getTypeOfSymbol(signature.thisParameter);
 }
 
-export function getTypeParametersOfSignature(signature: ts.Signature): ReadonlyArray<ts.TypeParameter> {
-  return signature.typeParameters ?? [];
-}
-
 export function getTypeParameterModifiers(typeParameter: ts.TypeParameter, compiler: typeof ts): ts.ModifierFlags {
   if (!typeParameter.symbol.declarations) {
     return compiler.ModifierFlags.None;
@@ -62,8 +58,4 @@ export function getTargetSymbol(symbol: ts.Symbol, compiler: typeof ts): ts.Symb
 
 export function isCheckFlagSet(symbol: ts.Symbol, flag: ts.CheckFlags, compiler: typeof ts): boolean {
   return !!(symbol.flags & compiler.SymbolFlags.Transient && (symbol as ts.TransientSymbol).links.checkFlags & flag);
-}
-
-export function isSymbolFromDefaultLibrary(symbol: ts.Symbol, program: ts.Program): boolean {
-  return !!symbol.declarations?.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile()));
 }

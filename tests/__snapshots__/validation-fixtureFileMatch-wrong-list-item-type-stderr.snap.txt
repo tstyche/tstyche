@@ -8,5 +8,5 @@ Error: Item of the 'fixtureFileMatch' list must be of type string.
   6 |   ]
   7 | }
 
-      at ./tstyche.config.json:4:5
+      at ./tstyche.json:4:5
 

@@ -61,23 +61,18 @@ export class FixmeService {
 
     if (owner === FixmeService.#expectRange?.owner) {
       isFail = FixmeService.#expectRange.isFail;
-      FixmeService.#expectRange = FixmeService.#expectRange?.previous;
+      FixmeService.#expectRange = FixmeService.#expectRange.previous;
     }
 
     if (owner === FixmeService.#range?.owner) {
-      isFail = FixmeService.#range?.isFail;
-      FixmeService.#range = FixmeService.#range?.previous;
+      isFail = FixmeService.#range.isFail;
+      FixmeService.#range = FixmeService.#range.previous;
     }
 
     if (isFail === false) {
       const text = [FixmeDiagnosticText.wasSupposedToFail(owner.brand), FixmeDiagnosticText.considerRemoving()];
 
-      const origin = new DiagnosticOrigin(
-        directive.namespace.start,
-        // biome-ignore lint/style/noNonNullAssertion: this is correct for 'fixme' directives
-        directive.directive!.end,
-        directive.sourceFile,
-      );
+      const origin = new DiagnosticOrigin(directive.namespace.start, directive.directive!.end, directive.sourceFile);
 
       onFileDiagnostics([Diagnostic.error(text, origin)]);
     }

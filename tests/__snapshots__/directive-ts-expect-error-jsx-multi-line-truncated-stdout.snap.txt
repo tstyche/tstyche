@@ -1,0 +1,10 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/directive-ts-expect-error
+
+uses TypeScript <<version>> with baseline TSConfig
+
+pass ./__typetests__/sample.tst.tsx
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Suppressed: 8 matched, 8 total
+Duration:   <<timestamp>>

@@ -1,0 +1,14 @@
+Error: Option 'bundler' can only be used when 'module' is set to 'preserve', 'commonjs', or 'es2015' or later. ts(5095)
+
+  1 | {"extends":"./tsconfig.json","compilerOptions":{"module":"node18","moduleResolution":"bundler"}}
+    |                                                                                      ~~~~~~~~~
+
+      at ./<<synthetic>>.tsconfig.json:1:86
+
+Error: Option 'moduleResolution' must be set to 'Node16' (or left unspecified) when option 'module' is set to 'Node18'. ts(5109)
+
+  1 | {"extends":"./tsconfig.json","compilerOptions":{"module":"node18","moduleResolution":"bundler"}}
+    |                                                                                      ~~~~~~~~~
+
+      at ./<<synthetic>>.tsconfig.json:1:86
+

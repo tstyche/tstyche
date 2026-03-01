@@ -1,10 +1,10 @@
 ···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-checkSuppressedErrors
 
-uses TypeScript <<version>>
+uses TypeScript <<version>> with baseline TSConfig
 
 fail ./__typetests__/sample.tst.ts
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Suppressed: 6 failed, 3 matched, 9 total
+Suppressed: 4 failed, 2 matched, 6 total
 Duration:   <<timestamp>>

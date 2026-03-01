@@ -92,7 +92,7 @@ await test("'rejectNeverType' config file option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isRejected.test.ts"]: isRejectedText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -118,7 +118,7 @@ await test("'rejectNeverType' config file option", async (t) => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isRejected.test.ts"]: isRejectedText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

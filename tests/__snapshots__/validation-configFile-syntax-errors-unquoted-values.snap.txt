@@ -1,23 +1,23 @@
-Error: Value for the 'rootPath' option must be a string.
+Error: Value for the 'target' option must be a string.
 
   1 | {
-  2 |     rootPath: ./,
-    |               ~~
+  2 |     target: *,
+    |             ~
   3 |     testFileMatch: [**/*.tst.*]
   4 |   }
   5 | 
 
-      at ./tstyche.config.json:2:15
+      at ./tstyche.json:2:13
 
 Error: Item of the 'testFileMatch' list must be of type string.
 
   1 | {
-  2 |     rootPath: ./,
+  2 |     target: *,
   3 |     testFileMatch: [**/*.tst.*]
     |                     ~~~~~~~~~~
   4 |   }
   5 | 
   6 | 
 
-      at ./tstyche.config.json:3:21
+      at ./tstyche.json:3:21
 

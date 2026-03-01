@@ -1,23 +1,28 @@
 import type ts from "typescript";
-import type { ResolvedConfig } from "#config";
+import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
+import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
 import { SourceService } from "#source";
 import { Version } from "#version";
 
 export class ProjectService {
   #compiler: typeof ts;
+  #host: ts.server.ServerHost;
   #lastSeenProject: string | undefined = "";
+  #projectConfig: ProjectConfig;
   #resolvedConfig: ResolvedConfig;
-  #seenPrograms = new WeakSet<ts.Program>();
+  #seenProjects = new Set<string | undefined>();
   #seenTestFiles = new Set<string>();
   #service: ts.server.ProjectService;
 
   constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#resolvedConfig = resolvedConfig;
+
+    this.#projectConfig = this.#resolveProjectConfig(resolvedConfig.tsconfig);
 
     const noop = () => undefined;
 
@@ -37,8 +42,8 @@ export class ProjectService {
       close: noop,
     };
 
-    const host: ts.server.ServerHost = {
-      ...this.#compiler.sys,
+    this.#host = {
+      ...compiler.sys,
       clearImmediate,
       clearTimeout,
       setImmediate,
@@ -47,10 +52,15 @@ export class ProjectService {
       watchFile: () => noopWatcher,
     };
 
+    if (this.#projectConfig.kind === ProjectConfigKind.Synthetic) {
+      this.#host.readFile = (path) =>
+        path === this.#projectConfig.specifier ? resolvedConfig.tsconfig : compiler.sys.readFile(path);
+    }
+
     this.#service = new this.#compiler.server.ProjectService({
       allowLocalPluginLoads: true,
       cancellationToken: this.#compiler.server.nullCancellationToken,
-      host,
+      host: this.#host,
       logger: noopLogger,
       session: undefined,
       useInferredProjectPerProjectRoot: true,
@@ -74,6 +84,7 @@ export class ProjectService {
       jsx: this.#compiler.JsxEmit.Preserve,
       module: this.#compiler.ModuleKind.NodeNext,
       moduleResolution: this.#compiler.ModuleResolutionKind.NodeNext,
+      noEmit: true,
       noUncheckedIndexedAccess: true,
       resolveJsonModule: true,
       strict: true,
@@ -127,28 +138,44 @@ export class ProjectService {
   }
 
   #isFileIncluded(filePath: string) {
-    const configSourceFile = this.#compiler.readJsonConfigFile(
-      this.#resolvedConfig.tsconfig,
-      this.#compiler.sys.readFile,
-    );
+    const configSourceFile = this.#compiler.readJsonConfigFile(this.#projectConfig.specifier, this.#host.readFile);
 
     const { fileNames } = this.#compiler.parseJsonSourceFileConfigFileContent(
       configSourceFile,
-      this.#compiler.sys,
-      Path.dirname(this.#resolvedConfig.tsconfig),
+      this.#host,
+      Path.dirname(this.#projectConfig.specifier),
       undefined,
-      this.#resolvedConfig.tsconfig,
+      this.#projectConfig.specifier,
     );
 
     return fileNames.includes(filePath);
   }
 
+  #resolveProjectConfig(specifier: string): ProjectConfig {
+    if (specifier === "baseline") {
+      return { kind: ProjectConfigKind.Default, specifier: "baseline" };
+    }
+
+    if (specifier === "findup") {
+      return { kind: ProjectConfigKind.Discovered, specifier: "" };
+    }
+
+    if (Options.isJsonString(specifier)) {
+      return {
+        kind: ProjectConfigKind.Synthetic,
+        specifier: Path.resolve(this.#resolvedConfig.rootPath, `${Math.random().toString(32).slice(2)}.tsconfig.json`),
+      };
+    }
+
+    return { kind: ProjectConfigKind.Provided, specifier };
+  }
+
   openFile(filePath: string, sourceText?: string): void {
-    switch (this.#resolvedConfig.tsconfig) {
-      case "findup":
+    switch (this.#projectConfig.kind) {
+      case ProjectConfigKind.Discovered:
         break;
 
-      case "ignore":
+      case ProjectConfigKind.Default:
         // @ts-expect-error: overriding private method
         this.#service.getConfigFileNameForFile = () => undefined;
         break;
@@ -156,7 +183,7 @@ export class ProjectService {
       default:
         // @ts-expect-error: overriding private method
         this.#service.getConfigFileNameForFile = this.#isFileIncluded(filePath)
-          ? () => this.#resolvedConfig.tsconfig
+          ? () => this.#projectConfig.specifier
           : () => undefined;
     }
 
@@ -170,10 +197,12 @@ export class ProjectService {
     if (configFileName !== this.#lastSeenProject) {
       this.#lastSeenProject = configFileName;
 
-      EventEmitter.dispatch([
-        "project:uses",
-        { compilerVersion: this.#compiler.version, projectConfigFilePath: configFileName },
-      ]);
+      const projectConfig =
+        configFileName != null
+          ? { ...this.#projectConfig, specifier: configFileName }
+          : { kind: ProjectConfigKind.Default, specifier: "baseline" };
+
+      EventEmitter.dispatch(["project:uses", { compilerVersion: this.#compiler.version, projectConfig }]);
 
       if (configFileErrors && configFileErrors.length > 0) {
         EventEmitter.dispatch([
@@ -190,11 +219,11 @@ export class ProjectService {
 
       const program = languageService?.getProgram();
 
-      if (!program || this.#seenPrograms.has(program)) {
+      if (!program || this.#seenProjects.has(configFileName)) {
         return;
       }
 
-      this.#seenPrograms.add(program);
+      this.#seenProjects.add(configFileName);
 
       const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
         if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
@@ -216,10 +245,14 @@ export class ProjectService {
         return false;
       });
 
-      const diagnostics: Array<ts.Diagnostic> = [];
+      const diagnostics = [...program.getOptionsDiagnostics()];
 
       for (const sourceFile of sourceFilesToCheck) {
-        diagnostics.push(...program.getSyntacticDiagnostics(sourceFile), ...program.getSemanticDiagnostics(sourceFile));
+        diagnostics.push(
+          ...program.getSyntacticDiagnostics(sourceFile),
+          ...program.getSemanticDiagnostics(sourceFile),
+          ...program.getDeclarationDiagnostics(sourceFile),
+        );
       }
 
       if (diagnostics.length > 0) {

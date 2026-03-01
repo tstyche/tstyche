@@ -6,5 +6,5 @@ Error: Expected option name.
   3 |   "testFileMatch": ["examples/*.tst.*"
   4 | 
 
-      at ./tstyche.config.json:2:3
+      at ./tstyche.json:2:3
 

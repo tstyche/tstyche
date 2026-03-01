@@ -1,0 +1,147 @@
+Error: Only a single error can be suppressed.
+
+  2 | 
+  3 | /**
+  4 | @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+    | ~~~~~~~~~~~~~~~~
+  5 | texts.push(100); texts.push(100);
+  6 | 
+  7 | /**
+
+      at ./__typetests__/sample.tst.ts:4:1
+
+    The suppressed errors:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      3 | /**
+      4 | @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+      5 | texts.push(100); texts.push(100);
+        |            ~~~
+      6 | 
+      7 | /**
+      8 | // @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+
+          at ./__typetests__/sample.tst.ts:5:12
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      3 | /**
+      4 | @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+      5 | texts.push(100); texts.push(100);
+        |                             ~~~
+      6 | 
+      7 | /**
+      8 | // @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+
+          at ./__typetests__/sample.tst.ts:5:29
+
+Error: Only a single error can be suppressed.
+
+   6 | 
+   7 | /**
+   8 | // @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+     |    ~~~~~~~~~~~~~~~~
+   9 | texts.push(100); texts.push(100);
+  10 | 
+  11 | /**
+
+       at ./__typetests__/sample.tst.ts:8:4
+
+    The suppressed errors:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+       7 | /**
+       8 | // @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+       9 | texts.push(100); texts.push(100);
+         |            ~~~
+      10 | 
+      11 | /**
+      12 |  * @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+
+           at ./__typetests__/sample.tst.ts:9:12
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+       7 | /**
+       8 | // @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+       9 | texts.push(100); texts.push(100);
+         |                             ~~~
+      10 | 
+      11 | /**
+      12 |  * @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+
+           at ./__typetests__/sample.tst.ts:9:29
+
+Error: Only a single error can be suppressed.
+
+  10 | 
+  11 | /**
+  12 |  * @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+     |    ~~~~~~~~~~~~~~~~
+  13 | texts.push(100); texts.push(100);
+  14 | 
+  15 | /*@ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'.*/
+
+       at ./__typetests__/sample.tst.ts:12:4
+
+    The suppressed errors:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      11 | /**
+      12 |  * @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+      13 | texts.push(100); texts.push(100);
+         |            ~~~
+      14 | 
+      15 | /*@ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'.*/
+      16 | texts.push(100); texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:13:12
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      11 | /**
+      12 |  * @ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'. */
+      13 | texts.push(100); texts.push(100);
+         |                             ~~~
+      14 | 
+      15 | /*@ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'.*/
+      16 | texts.push(100); texts.push(100);
+
+           at ./__typetests__/sample.tst.ts:13:29
+
+Error: Only a single error can be suppressed.
+
+  13 | texts.push(100); texts.push(100);
+  14 | 
+  15 | /*@ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'.*/
+     |   ~~~~~~~~~~~~~~~~
+  16 | texts.push(100); texts.push(100);
+  17 | 
+
+       at ./__typetests__/sample.tst.ts:15:3
+
+    The suppressed errors:
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      14 | 
+      15 | /*@ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'.*/
+      16 | texts.push(100); texts.push(100);
+         |            ~~~
+      17 | 
+
+           at ./__typetests__/sample.tst.ts:16:12
+
+    Argument of type 'number' is not assignable to parameter of type 'string'. ts(2345)
+
+      14 | 
+      15 | /*@ts-expect-error  Argument of type 'number' is not assignable to parameter of type 'string'.*/
+      16 | texts.push(100); texts.push(100);
+         |                             ~~~
+      17 | 
+
+           at ./__typetests__/sample.tst.ts:16:29
+

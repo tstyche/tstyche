@@ -1,0 +1,10 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-tsconfig
+
+uses TypeScript <<version>> with inline TSConfig
+
+fail ./__typetests__/hasProperty.tst.ts
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Assertions: 2 failed, 2 total
+Duration:   <<timestamp>>

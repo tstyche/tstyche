@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import { Version } from "tstyche/tstyche";
+import { Version } from "tstyche/api";
 
 test("Version", async (t) => {
   await t.test("'isGreaterThan' method", async (t) => {

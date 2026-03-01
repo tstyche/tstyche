@@ -14,7 +14,7 @@ export function spawnTyche(fixtureUrl, args = [], options = {}) {
       ...process.env,
       ["TSTYCHE_NO_COLOR"]: "true",
       ["TSTYCHE_STORE_PATH"]: "./.store",
-      ...options?.env,
+      ...options.env,
     };
 
     // TODO remove this after dropping support for Node.js 22.18

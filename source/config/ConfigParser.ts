@@ -65,8 +65,8 @@ export class ConfigParser {
           break;
         }
 
-        const rootPath = Path.dirname(this.#sourceFile.fileName);
-        optionValue = Options.resolve(optionDefinition.name, optionValue, rootPath);
+        const basePath = Path.dirname(this.#sourceFile.fileName);
+        optionValue = Options.resolve(optionDefinition.name, optionValue, basePath);
 
         await Options.validate(optionDefinition.name, optionValue, this.#onDiagnostics, jsonNode.origin);
 

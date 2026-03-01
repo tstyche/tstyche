@@ -8,7 +8,7 @@ import type { SuppressedError } from "./types.js";
 export class SuppressedLayer {
   #compiler: typeof ts;
   #editor: SourceTextEditor;
-  #expectErrorRegex = /^(\s*)(\/\/ *@ts-expect-error)(!?)(:? *)(.*)?$/gim;
+  #expectErrorRegex = /^([ \t/*{]*)(@ts-expect-error)(!?)(:? *)(.*?)(?:\*\/.*)?$/gim;
   #resolvedConfig: ResolvedConfig;
   #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
 
@@ -22,11 +22,11 @@ export class SuppressedLayer {
     const ranges: Array<SuppressedError> = [];
 
     for (const match of text.matchAll(this.#expectErrorRegex)) {
-      const offsetText = match?.[1];
-      const directiveText = match?.[2];
-      const ignoreText = match?.[3];
-      const argumentSeparatorText = match?.[4];
-      const argumentText = match?.[5]?.split(/--+/)[0]?.trimEnd();
+      const offsetText = match[1];
+      const directiveText = match[2];
+      const ignoreText = match[3];
+      const argumentSeparatorText = match[4];
+      const argumentText = match[5]?.split(/--+/)[0]?.trimEnd();
 
       if (typeof offsetText !== "string" || !directiveText) {
         continue;
@@ -81,6 +81,7 @@ export class SuppressedLayer {
       }
 
       const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
+
       if (lineText !== "" && !lineText.startsWith("//")) {
         break;
       }

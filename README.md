@@ -9,13 +9,13 @@ Everything You Need for Type Testing.
 
 ---
 
-TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `test()` helpers, `expect`-style assertions and a mighty test runner.
+TSTyche is a type testing tool for TypeScript. It ships with `describe()` and `test()` helpers, `expect` style assertions and a mighty test runner.
 
 ## Helpers
 
-If you are used to test JavaScript, a simple type test file should look familiar:
+If you are used to testing, a type test should look familiar:
 
-```ts twoslash
+```ts
 import { expect, test } from "tstyche";
 
 function isSameLength<T extends { length: number }>(a: T, b: T) {
@@ -30,26 +30,26 @@ test("isSameLength", () => {
 });
 ```
 
-To organize, debug and plan tests TSTyche has:
+To group and organize tests, TSTyche has:
 
 - `test()`, `it()` and `describe()` helpers,
 - with `.only`, `.skip` and `.todo` run mode flags.
 
 ## Assertions
 
-The `expect`-style assertions can check either the inferred type of an expression (as in the example above) or the type directly:
+The `expect` style assertions can check either the inferred type of an expression (as in the example above) or a type directly:
 
 ```ts twoslash
 import { type _, expect } from "tstyche";
 
 type AsyncProps<T> = {
-  [K in keyof T]+?: Promise<T[K]> | T[K];
+  [K in keyof T]+?: T[K] | Promise<T[K]>;
 };
 
 type WithLoading<T extends object> = T & { loading: boolean };
 
-expect<WithLoading<AsyncProps<{ id: string }>>>().type.toBe<{
-  id?: Promise<string> | string;
+expect<WithLoading<AsyncProps<{ query: string }>>>().type.toBe<{
+  query?: string | Promise<string>;
   loading: boolean;
 }>();
 
@@ -67,17 +67,23 @@ Here is the list of all matchers:
 
 ## Runner
 
-The `tstyche` command is the heart of TSTyche. For example, it can select test files by path, filter tests by name and to run the tests against specific versions of TypeScript:
+The `tstyche` command is the heart of TSTyche. It allows you to select test files by path, filter tests by name and run them against specific versions of TypeScript:
 
 ```shell
 tstyche query-params --only multiple --target '>=5.6'
 ```
 
-And there is even more what TSTyche can do:
+It is that simple! Actually, TSTyche does even more:
 
-- check messages of errors silenced by `// @ts-expect-error`,
-- generate type tests from a data table,
-- run tests in watch mode.
+- checks messages of errors suppressed by `@ts-expect-error` directives,
+- generates type tests from a data table,
+- runs tests in watch mode.
+
+## Try It Out
+
+Try TSTyche online on StackBlitz:
+
+[![Open in StackBlitz][starter-badge]][starter-url]
 
 ## Documentation
 
@@ -95,3 +101,5 @@ Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 [install-size-url]: https://packagephobia.com/result?p=tstyche
 [coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
 [coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
+[starter-badge]: https://developer.stackblitz.com/img/open_in_stackblitz.svg
+[starter-url]: https://tstyche.org/new

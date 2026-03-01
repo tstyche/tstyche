@@ -71,7 +71,7 @@ export class ExpectService {
     const matchWorker = new MatchWorker(this.#compiler, this.#program, assertionNode);
 
     if (
-      !(matcherNameText === "toRaiseError" && assertionNode.isNot === false) &&
+      !(matcherNameText === "toRaiseError" && !assertionNode.isNot) &&
       this.#reject.argumentType(
         [
           ["source", assertionNode.source[0]],
@@ -113,7 +113,6 @@ export class ExpectService {
       case "toBeCallableWith":
       case "toBeConstructableWith":
       case "toRaiseError":
-        // biome-ignore lint/style/noNonNullAssertion: collect logic makes sure that 'target' is defined
         return this[matcherNameText].match(matchWorker, assertionNode.source[0], assertionNode.target!, onDiagnostics);
 
       case "toBeInstantiableWith": {

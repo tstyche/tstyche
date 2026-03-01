@@ -1,0 +1,18 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/config-verbose
+
+uses TypeScript <<version>> with baseline TSConfig
+
+pass ./__typetests__/isBoolean.tst.ts
+  + is boolean?
+
+pass ./__typetests__/isNumber.tst.ts
+  + is number?
+
+pass ./__typetests__/isString.tst.ts
+  + is string?
+
+Targets:    1 passed, 1 total
+Test files: 3 passed, 3 total
+Tests:      3 passed, 3 total
+Assertions: 3 passed, 3 total
+Duration:   <<timestamp>>

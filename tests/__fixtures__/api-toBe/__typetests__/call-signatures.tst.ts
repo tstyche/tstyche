@@ -170,6 +170,21 @@ test("'const' type parameters", () => {
   expect(getNames).type.not.toBe(getNamesExactly);
 });
 
+test("unused type parameters", () => {
+  type A = <T>(a: string) => void;
+  type B = (a: string) => void;
+
+  expect<A>().type.toBe<(a: string) => void>();
+  expect<A>().type.toBe<<T>(a: string) => void>();
+  expect<A>().type.toBe<B>();
+  expect<A>().type.not.toBe<<T>(a: string) => T>();
+
+  expect<B>().type.toBe<(a: string) => void>();
+  expect<B>().type.toBe<<T>(a: string) => void>();
+  expect<B>().type.toBe<A>();
+  expect<B>().type.not.toBe<<T>(a: string) => T>();
+});
+
 test("overloads", () => {
   type Sample = {
     (x: string): string;

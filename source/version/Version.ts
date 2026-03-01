@@ -16,8 +16,8 @@ export class Version {
     const targetElements = target.split(/\.|-/);
 
     function compare(index = 0): boolean {
-      const sourceElement = sourceElements[index] as string;
-      const targetElement = targetElements[index] as string;
+      const sourceElement = sourceElements[index]!;
+      const targetElement = targetElements[index]!;
 
       if (sourceElement > targetElement) {
         return true;

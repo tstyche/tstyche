@@ -6,5 +6,5 @@ Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/validation
   3 | }
   4 | 
 
-      at ./tstyche.config.json:2:15
+      at ./tstyche.json:2:15
 

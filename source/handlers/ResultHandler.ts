@@ -59,11 +59,11 @@ export class ResultHandler implements EventHandler {
 
       // TODO consider moving 'new ProjectResult' to the runner
       case "project:uses": {
-        let projectResult = this.#targetResult!.results.get(payload.projectConfigFilePath);
+        let projectResult = this.#targetResult!.results.get(payload.projectConfig.specifier);
 
         if (!projectResult) {
-          projectResult = new ProjectResult(payload.compilerVersion, payload.projectConfigFilePath);
-          this.#targetResult!.results.set(payload.projectConfigFilePath, projectResult);
+          projectResult = new ProjectResult(payload.compilerVersion, payload.projectConfig);
+          this.#targetResult!.results.set(payload.projectConfig.specifier, projectResult);
         }
 
         this.#projectResult = projectResult;

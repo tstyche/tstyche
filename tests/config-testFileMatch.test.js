@@ -91,7 +91,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
         ["__typetests__/isString.tst.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
         ["type-tests/isNumber.tst.ts"]: isNumberTestText,
         ["type-tests/isString.tst.ts"]: isStringTestText,
         ["typetests/isNumber.test.ts"]: isNumberTestText,
@@ -124,7 +124,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
         ["__typetests__/isString.tst.ts"]: isStringTestText,
         ["__typetests__/tsconfig.json"]: JSON.stringify(tsconfig),
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -146,7 +146,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       await writeFixture(fixtureUrl, {
         ["tests/isNumber.tst.ts"]: isNumberTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -172,7 +172,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["_generated/isNumber.tst.ts"]: isNumberTestText,
         ["_nested/.generated/isNumber.tst.ts"]: isNumberTestText,
         ["isNumber.tst.ts"]: isNumberTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -197,7 +197,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["local/node_modules/isString.tst.ts"]: isStringTestText,
         ["node_modules/isString.tst.ts"]: isStringTestText,
         ["node_modules/nested/isString.tst.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -219,7 +219,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
       await writeFixture(fixtureUrl, {
         ["isNumber.tst.ts"]: isNumberTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       await createSymbolicLink(fixtureUrl, "isNumber.tst.ts", "isNumber-link.tst.ts");
@@ -244,7 +244,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/isNumber.test.ts"]: isNumberTestText,
         ["__typetests__/isString.test.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -273,7 +273,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
         ["tests/call.tst.ts"]: isStringTestText,
         ["tests/cast.tst.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -296,7 +296,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/cat.tst.ts"]: isStringTestText,
         ["tests/call.tst.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -320,7 +320,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         [".generated/isString.tst.ts"]: isStringTestText,
         ["_generated/.isNumber.tst.ts"]: isNumberTestText,
         ["_generated/_isNumber.tst.ts"]: isNumberTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -343,7 +343,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
       await writeFixture(fixtureUrl, {
         ["_ode_modules/isNumber.tst.ts"]: isNumberTestText,
         ["node_modules/isString.tst.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -372,7 +372,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
 
         ["packages/one/__typetests__/one.test.ts"]: isStringTestText,
         ["packages/two/__typetests__/two.tst.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -396,7 +396,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["packages/one/__typetests__/one.test.ts"]: isStringTestText,
         ["packages/two/__typetests__/two.tst.ts"]: isStringTestText,
         ["packages/typetests/core.test.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -420,7 +420,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         [".generated/isString.tst.ts"]: isStringTestText,
         ["_generated/.isNumber.tst.ts"]: isNumberTestText,
         ["_generated/_isNumber.tst.ts"]: isNumberTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -443,7 +443,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
       await writeFixture(fixtureUrl, {
         ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
         ["node_modules/isString.tst.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -477,7 +477,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["tests/nested/one.tst.ts"]: isStringTestText,
         ["tests/one.test.ts"]: isStringTestText,
         ["tests/two.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -502,7 +502,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["_generated/.nested/isNumber.tst.ts"]: isNumberTestText,
         ["_generated/_nested/isNumber.tst.ts"]: isNumberTestText,
         ["_generated/isNumber.tst.ts"]: isNumberTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -526,7 +526,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["__typetests__/isNumber.tst.ts"]: isNumberTestText,
         ["local/node_modules/isString.tst.ts"]: isStringTestText,
         ["node_modules/isString.tst.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -552,7 +552,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["tests/isNumber.ts"]: isNumberTestText,
         ["tests/isString.tsx"]: isStringTestText,
         ["tests/sample.js"]: "",
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -579,7 +579,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["two/isNumber.tsx"]: isNumberTestText,
         ["two/isString.ts"]: isStringTestText,
         ["two/sample.js"]: "",
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -603,7 +603,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["tests/isNumber.tsx"]: isNumberTestText,
         ["tests/isString.ts"]: isStringTestText,
         ["tests/sample.js"]: "",
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -628,7 +628,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["one/isString.ts"]: isStringTestText,
         ["two/isNumber.tsx"]: isNumberTestText,
         ["two/isString.ts"]: isStringTestText,
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -652,7 +652,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["tests/isNumber.tsx"]: isNumberTestText,
         ["tests/isString.ts"]: isStringTestText,
         ["tests/sample.js"]: "",
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -676,7 +676,7 @@ await test("'testFileMatch' configuration file option", async (t) => {
         ["tests/isNumber.tsx"]: isNumberTestText,
         ["tests/isString.ts"]: isStringTestText,
         ["tests/sample.js"]: "",
-        ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+        ["tstyche.json"]: JSON.stringify(config, null, 2),
       });
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

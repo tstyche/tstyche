@@ -7,5 +7,5 @@ Error: Value for the 'failFast' option must be a boolean.
   4 | }
   5 | 
 
-      at ./tstyche.config.json:2:15
+      at ./tstyche.json:2:15
 

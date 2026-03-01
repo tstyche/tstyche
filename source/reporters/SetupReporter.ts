@@ -1,11 +1,11 @@
 import { DiagnosticCategory } from "#diagnostic";
-import { addsPackageText, diagnosticText, OutputService } from "#output";
+import { addsText, diagnosticText, OutputService } from "#output";
 import type { ReporterEvent } from "./types.js";
 
 export class SetupReporter {
   on([event, payload]: ReporterEvent): void {
     if (event === "store:adds") {
-      OutputService.writeMessage(addsPackageText(payload.packageVersion, payload.packagePath));
+      OutputService.writeMessage(addsText(payload.packageVersion, payload.packagePath));
       return;
     }
 

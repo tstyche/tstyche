@@ -5,7 +5,7 @@ let config: { timeout?: number } = {};
 // @ts-expect-error Object literal may only specify known properties
 config = { silent: true, timeout: 800 };
 
-// Just like above, object literal may only specify known properties
+// Same as above, object literal may only specify known properties
 expect({ silent: true, timeout: 800 }).type.not.toBeAssignableTo<{ timeout?: number }>();
 expect<{ timeout?: number }>().type.not.toBeAssignableFrom({ silent: true, timeout: 800 });
 

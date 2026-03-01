@@ -20,7 +20,7 @@ await test("'fixtureFileMatch' configuration file option", async (t) => {
   await t.test("when a pattern starts with '/'", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify({ fixtureFileMatch: ["/fixtures"] }, null, 2),
+      ["tstyche.json"]: JSON.stringify({ fixtureFileMatch: ["/fixtures"] }, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -37,7 +37,7 @@ await test("'fixtureFileMatch' configuration file option", async (t) => {
   await t.test("when a pattern starts with '../'", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify({ fixtureFileMatch: ["../fixtures"] }, null, 2),
+      ["tstyche.json"]: JSON.stringify({ fixtureFileMatch: ["../fixtures"] }, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -59,7 +59,7 @@ await test("'fixtureFileMatch' configuration file option", async (t) => {
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -80,7 +80,7 @@ await test("'fixtureFileMatch' configuration file option", async (t) => {
 
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);

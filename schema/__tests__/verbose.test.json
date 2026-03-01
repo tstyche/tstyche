@@ -1,0 +1,19 @@
+{
+  "target": "../config.json",
+  "tests": [
+    {
+      "description": "'verbose' option",
+      "valid": true,
+      "data": {
+        "verbose": true
+      }
+    },
+    {
+      "description": "value of the 'verbose' option must be of type boolean",
+      "valid": false,
+      "data": {
+        "verbose": "never"
+      }
+    }
+  ]
+}

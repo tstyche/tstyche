@@ -78,3 +78,16 @@ test("'asserts this' type predicate", () => {
   expect(fso.isNetworked).type.not.toBe<() => asserts this is Directory & FileSystemObject>();
   expect(fso.isNetworked).type.not.toBe<() => void>();
 });
+
+test("parameter position", () => {
+  type A = (a: unknown, b: unknown) => a is number;
+  type X = (x: unknown, y: unknown) => y is number;
+
+  expect<A>().type.toBe<(a: unknown, b: unknown) => a is number>();
+  expect<A>().type.not.toBe<(a: unknown, b: unknown) => b is number>();
+  expect<A>().type.not.toBe<X>();
+
+  expect<X>().type.toBe<(x: unknown, y: unknown) => y is number>();
+  expect<X>().type.not.toBe<(x: unknown, y: unknown) => x is number>();
+  expect<X>().type.not.toBe<A>();
+});

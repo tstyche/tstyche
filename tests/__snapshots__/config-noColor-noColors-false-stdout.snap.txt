@@ -1,6 +1,6 @@
 <gray>····</> TSTyche <<version>><gray> at <<basePath>>/tests/__fixtures__/.generated/config-noColor</>
 
-<blue>uses</> TypeScript <<version>>
+<blue>uses</> TypeScript <<version>><gray> with baseline TSConfig</>
 
 <green>pass</> <gray>./__typetests__/</>dummy.test.ts
   <green>+</> <gray>is string?</>

@@ -7,5 +7,11 @@
     ":maintainLockFilesWeekly",
     ":semanticCommits",
     "customManagers:biomeVersions"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["typescript"],
+      "enabled": false
+    }
   ]
 }

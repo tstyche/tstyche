@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import * as tstyche from "tstyche/tstyche";
+import * as tstyche from "tstyche/api";
 
 interface JsonSchemaDefinition {
   additionalProperties?: boolean;
@@ -33,9 +33,6 @@ function createJsonSchemaDefinition(
   }
 
   if (defaultValue != null) {
-    if (optionDefinition.name === "rootPath") {
-      defaultValue = "./";
-    }
     if (optionDefinition.name === "target") {
       defaultValue = "*";
     }

@@ -5,7 +5,7 @@ Error: Expected closing '}'.
   3 | 
     | ~
 
-      at ./tstyche.config.json:3:1
+      at ./tstyche.json:3:1
 
     The opening '{' was seen here.
 
@@ -14,5 +14,5 @@ Error: Expected closing '}'.
       2 |   'failFast': true
       3 | 
 
-          at ./tstyche.config.json:1:1
+          at ./tstyche.json:1:1
 

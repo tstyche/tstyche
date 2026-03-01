@@ -1,0 +1,21 @@
+Error: Argument expression expected. ts(1135)
+
+   5 | test("is syntax error?", () => {
+   6 |   one(
+   7 | });
+     | ~
+   8 | 
+   9 | test("is broken?"
+  10 | 
+
+       at ./__typetests__/dummy.test.ts:7:1
+
+Error: ')' expected. ts(1005)
+
+   8 | 
+   9 | test("is broken?"
+  10 | 
+     | ~
+
+       at ./__typetests__/dummy.test.ts:10:1
+

@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import CodeBlockWriter from "code-block-writer";
-import * as tstyche from "tstyche/tstyche";
+import * as tstyche from "tstyche/api";
 
 const commandLineOptions = tstyche.Options.for(tstyche.OptionGroup.CommandLine);
 const configFileOptions = tstyche.Options.for(tstyche.OptionGroup.ConfigFile);

@@ -1,1 +1,1 @@
-export { Cli } from "./Cli.js";
+export { Cli, type CliOptions } from "./Cli.js";

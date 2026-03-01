@@ -1,0 +1,7 @@
+Error: ',' expected. ts(1005)
+
+  1 | {"extends":"./tsconfig.json","compilerOptions":{"lib":["es2020"}}
+    |                                                                ~
+
+      at ./<<synthetic>>.tsconfig.json:1:64
+

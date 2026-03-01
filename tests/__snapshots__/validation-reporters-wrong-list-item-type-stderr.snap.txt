@@ -8,5 +8,5 @@ Error: Item of the 'reporters' list must be of type string.
   6 |   "testFileMatch": [
   7 |     "examples/*.test.*"
 
-      at ./tstyche.config.json:4:5
+      at ./tstyche.json:4:5
 

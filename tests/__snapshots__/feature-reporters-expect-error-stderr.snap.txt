@@ -1,0 +1,11 @@
+Error: Expected 0 arguments, but got 1. ts(2554)
+
+  4 | 
+  5 | test("has assertion type error?", () => {
+  6 |   expect(one("fail")).type.toBe<void>();
+    |              ~~~~~~
+  7 | });
+  8 | 
+
+      at ./__typetests__/dummy.test.ts:6:14
+

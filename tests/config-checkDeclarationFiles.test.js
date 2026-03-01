@@ -69,7 +69,7 @@ await test("'checkDeclarationFiles' config file option", async (t) => {
       ["__typetests__/isString.test.ts"]: isStringTestText,
       ["__typetests__/Sample.ts"]: sourceFileText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
@@ -100,7 +100,7 @@ await test("'checkDeclarationFiles' config file option", async (t) => {
       ["__typetests__/isString.test.ts"]: isStringTestText,
       ["__typetests__/Sample.ts"]: sourceFileText,
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
-      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
