@@ -63,6 +63,7 @@ Here is the list of all matchers:
 - `.toBeApplicable` ensures that the decorator function can be applied,
 - `.toBeCallableWith()` checks whether a function is callable with the given arguments,
 - `.toBeConstructableWith()` checks whether a class is constructable with the given arguments,
+- `.toBeInstantiableWith()` checks whether a generic is instantiable with the given type arguments,
 - `.toHaveProperty()` looks up keys on an object type.
 
 ## Runner

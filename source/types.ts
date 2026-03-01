@@ -138,7 +138,7 @@ interface Matchers {
    */
   toBeConstructableWith: (...args: Array<unknown>) => void;
   /**
-   * Checks if the generic type can be instantiated with the given type arguments.
+   * Checks if the source type is instantiable with the given type arguments.
    */
   // @ts-expect-error 'Target' must be declared like this
   toBeInstantiableWith: <Target extends [...args: Array<unknown>]>() => void;
