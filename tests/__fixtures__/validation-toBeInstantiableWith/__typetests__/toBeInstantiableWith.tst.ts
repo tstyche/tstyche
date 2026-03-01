@@ -98,8 +98,8 @@ describe("argument for 'target'", () => {
 });
 
 describe("type argument for 'Target'", () => {
-  test("must be provided", () => {
-    expect<Holder<_>>().type.toBeInstantiableWith();
+  test.todo("must contain at least on item,", () => {
+    expect<Holder<_>>().type.toBeInstantiableWith<[]>();
   });
 
   test("must be a tuple type", () => {

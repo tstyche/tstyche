@@ -12,7 +12,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
   match(
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
-    targetNode: ArgumentNode,
+    targetNode: ArgumentNode | undefined,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const sourceType = matchWorker.getType(sourceNode);
@@ -41,11 +41,11 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
       return;
     }
 
-    const targetType = matchWorker.getType(targetNode);
+    const targetType = targetNode && matchWorker.getType(targetNode);
 
-    if (!matchWorker.typeChecker.isTupleType(targetType)) {
+    if (targetType != null && !matchWorker.typeChecker.isTupleType(targetType)) {
       const text = ExpectDiagnosticText.typeArgumentMustBe("Target", "a tuple type");
-      const origin = DiagnosticOrigin.fromNode(targetNode);
+      const origin = DiagnosticOrigin.fromNode(targetNode!);
 
       onDiagnostics([Diagnostic.error(text, origin)]);
 

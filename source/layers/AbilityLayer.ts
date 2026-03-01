@@ -147,6 +147,48 @@ export class AbilityLayer {
         break;
       }
 
+      case "toBeInstantiableWith": {
+        const sourceNode = expect.source[0];
+        const targetNode = expect.target?.[0];
+
+        if (!sourceNode || !targetNode) {
+          return;
+        }
+
+        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+          this.#editor.eraseTrailingComma(expect.source);
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              expectExpressionEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+            ],
+            [expectEnd, matcherNameEnd],
+          ]);
+        } else {
+          const sourceText = this.#compiler.isTypeReferenceNode(sourceNode)
+            ? sourceNode.typeName.getText()
+            : sourceNode.getText();
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              matcherNodeEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+                ? `;undefined as any as ${sourceText}`
+                : `undefined as any as ${sourceText}`,
+            ],
+          ]);
+
+          const targetText = `<${targetNode.getText().slice(1, -1)}>`.padStart(targetNode.getFullWidth());
+
+          this.#editor.replaceRanges([[targetNode.getFullStart(), targetNode.getEnd(), targetText]]);
+        }
+
+        break;
+      }
+
       case "toHaveProperty": {
         this.#nodes.push(expect);
 

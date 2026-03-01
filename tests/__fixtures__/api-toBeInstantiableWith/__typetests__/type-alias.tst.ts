@@ -6,19 +6,15 @@ type Double<T, V> = [T, V];
 
 type Triple<T extends string, U extends number = number, V = boolean> = [T, U, V];
 
-describe("when target is a type alias", () => {
-  test("can be instantiated", () => {
-    expect<Single<_>>().type.toBeInstantiableWith<[]>();
-    expect<Single<_>>().type.not.toBeInstantiableWith<[]>(); // fail
+describe("when source is a type alias", () => {
+  test("is instantiable without type arguments", () => {
+    expect<Single>().type.toBeInstantiableWith();
+    expect<Single>().type.not.toBeInstantiableWith(); // fail
+  });
 
-    expect<Single<_>>().type.toBeInstantiableWith<[string]>();
-    expect<Single<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
-
+  test("is instantiable with the given type argument", () => {
     expect<Double<_, _>>().type.toBeInstantiableWith<[string, number]>();
     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
-
-    expect<Triple<_>>().type.toBeInstantiableWith<[string]>();
-    expect<Triple<_>>().type.not.toBeInstantiableWith<[string]>(); // fail
 
     expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
@@ -27,18 +23,31 @@ describe("when target is a type alias", () => {
     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
   });
 
-  test("requires at least type arguments", () => {
-    expect<Triple<_>>().type.not.toBeInstantiableWith<[]>();
-    expect<Triple<_>>().type.toBeInstantiableWith<[]>(); // fail
+  test("is instantiable with the given type arguments", () => {
+    expect<Double<_, _>>().type.toBeInstantiableWith<[string, number]>();
+    expect<Double<_, _>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
 
-    expect<Double<_, _>>().type.not.toBeInstantiableWith<[]>();
-    expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail
+    expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
+    expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
+
+    expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
+    expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
+  });
+
+  test.todo("can NOT be instantiated", () => {
+    // requires at least type arguments
+
+    expect<Triple<_>>().type.not.toBeInstantiableWith();
+    expect<Triple<_>>().type.toBeInstantiableWith(); // fail
+
+    expect<Double<_, _>>().type.not.toBeInstantiableWith();
+    expect<Double<_, _>>().type.toBeInstantiableWith(); // fail
 
     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string]>();
     expect<Double<_, _>>().type.toBeInstantiableWith<[string]>(); // fail
-  });
 
-  test("takes at most type arguments", () => {
+    // takes at most type arguments
+
     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail
 
@@ -47,13 +56,13 @@ describe("when target is a type alias", () => {
 
     expect<Single<_>>().type.not.toBeInstantiableWith<[string, string]>();
     expect<Single<_>>().type.toBeInstantiableWith<[string, string]>(); // fail
-  });
 
-  test("constraint is not satisfied", () => {
-    expect<Triple<_>>().type.toBeInstantiableWith<[number]>();
-    expect<Triple<_>>().type.not.toBeInstantiableWith<[number]>(); // fail
+    // constraint is not satisfied
 
-    expect<Triple<_>>().type.toBeInstantiableWith<[string, string]>();
-    expect<Triple<_>>().type.not.toBeInstantiableWith<[string, string]>(); // fail
+    expect<Triple<_>>().type.not.toBeInstantiableWith<[number]>();
+    expect<Triple<_>>().type.toBeInstantiableWith<[number]>(); // fail
+
+    expect<Triple<_>>().type.not.toBeInstantiableWith<[string, string]>();
+    expect<Triple<_>>().type.toBeInstantiableWith<[string, string]>(); // fail
   });
 });

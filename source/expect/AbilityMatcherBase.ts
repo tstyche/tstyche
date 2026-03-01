@@ -22,29 +22,38 @@ export abstract class AbilityMatcherBase {
     this.compiler = compiler;
   }
 
-  #resolveTargetText(nodes: ArgumentNode | ts.NodeArray<ArgumentNode>) {
-    if (Array.isArray(nodes) && nodes.length === 0) {
-      return "without arguments";
+  #resolveTargetText(node: ts.NodeArray<ArgumentNode> | ArgumentNode | undefined) {
+    const isExpression = node != null && nodeBelongsToArgumentList(this.compiler, Array.isArray(node) ? node[0] : node);
+
+    const targetText = isExpression ? "argument" : "type argument";
+
+    if (!node || (Array.isArray(node) && node.length === 0)) {
+      return `without ${targetText}s`;
     }
 
     if (
-      Array.isArray(nodes) &&
-      (nodes.length > 1 || (nodes.length === 1 && nodes[0]?.kind === this.compiler.SyntaxKind.SpreadElement))
+      Array.isArray(node) &&
+      (node.length > 1 || (node.length === 1 && node[0]?.kind === this.compiler.SyntaxKind.SpreadElement))
     ) {
-      return "with the given arguments";
+      // TODO pluralization should be resolved by counting tuple members for type arguments
+      return `with the given ${targetText}s`;
     }
 
-    return `with the given argument`;
+    return `with the given ${targetText}`;
   }
 
-  explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ArgumentNode | ts.NodeArray<ArgumentNode>) {
+  explain(
+    matchWorker: MatchWorker,
+    sourceNode: ArgumentNode,
+    targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode | undefined,
+  ) {
     const isExpression = nodeBelongsToArgumentList(this.compiler, sourceNode);
 
     const targetText = this.#resolveTargetText(targetNode);
 
     const diagnostics: Array<Diagnostic> = [];
 
-    if (matchWorker.assertionNode.abilityDiagnostics.size > 0) {
+    if (matchWorker.assertionNode.abilityDiagnostics.size > 0 && targetNode != null) {
       for (const diagnostic of matchWorker.assertionNode.abilityDiagnostics) {
         const text = [this.explainNotText(isExpression, targetText), getDiagnosticMessageText(diagnostic)];
 
@@ -81,7 +90,7 @@ export abstract class AbilityMatcherBase {
   abstract match(
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
-    targetNodes: ArgumentNode | ts.NodeArray<ArgumentNode>,
+    targetNodes: ts.NodeArray<ArgumentNode> | ArgumentNode | undefined,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined;
 }
