@@ -71,7 +71,7 @@ export class ExpectService {
     const matchWorker = new MatchWorker(this.#compiler, this.#program, assertionNode);
 
     if (
-      !(matcherNameText === "toRaiseError" && !assertionNode.isNot) &&
+      !(matcherNameText === "toBeInstantiableWith" || (matcherNameText === "toRaiseError" && !assertionNode.isNot)) &&
       this.#reject.argumentType(
         [
           ["source", assertionNode.source[0]],

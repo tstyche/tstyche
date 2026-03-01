@@ -148,10 +148,12 @@ export class AbilityLayer {
       }
 
       case "toBeInstantiableWith": {
+        this.#nodes.push(expect);
+
         const sourceNode = expect.source[0];
         const targetNode = expect.target?.[0];
 
-        if (!sourceNode || !targetNode) {
+        if (!sourceNode) {
           return;
         }
 
@@ -181,9 +183,11 @@ export class AbilityLayer {
             ],
           ]);
 
-          const targetText = `<${targetNode.getText().slice(1, -1)}>`.padStart(targetNode.getFullWidth());
+          if (targetNode != null) {
+            const targetText = `<${targetNode.getText().slice(1, -1)}>`.padStart(targetNode.getFullWidth());
 
-          this.#editor.replaceRanges([[targetNode.getFullStart(), targetNode.getEnd(), targetText]]);
+            this.#editor.replaceRanges([[targetNode.getFullStart(), targetNode.getEnd(), targetText]]);
+          }
         }
 
         break;

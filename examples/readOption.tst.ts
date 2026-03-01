@@ -8,5 +8,3 @@ expect(readOption("example")).type.toBe<unknown>();
 
 expect(readOption<number>("example", 30)).type.toBe<number>();
 expect(readOption("example", { timeout: 30 })).type.toBe<{ timeout: number }>();
-
-expect(readOption).type.not.toBeInstantiableWith<[]>();

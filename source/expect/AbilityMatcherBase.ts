@@ -53,13 +53,17 @@ export abstract class AbilityMatcherBase {
 
     const diagnostics: Array<Diagnostic> = [];
 
-    if (matchWorker.assertionNode.abilityDiagnostics.size > 0 && targetNode != null) {
+    if (matchWorker.assertionNode.abilityDiagnostics.size > 0) {
       for (const diagnostic of matchWorker.assertionNode.abilityDiagnostics) {
         const text = [this.explainNotText(isExpression, targetText), getDiagnosticMessageText(diagnostic)];
 
         let origin: DiagnosticOrigin;
 
-        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNode)) {
+        if (
+          targetNode != null &&
+          isDiagnosticWithLocation(diagnostic) &&
+          diagnosticBelongsToNode(diagnostic, targetNode)
+        ) {
           origin = new DiagnosticOrigin(
             diagnostic.start,
             getTextSpanEnd(diagnostic),
