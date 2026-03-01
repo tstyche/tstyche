@@ -1,65 +1,3 @@
-interface Describe {
-  /**
-   * Defines a group of tests.
-   *
-   * @param name - The name of the group.
-   * @param callback - The function to create a scope for a group of tests.
-   */
-  (name: string, callback: () => void | Promise<void>): void;
-  /**
-   * Marks a group of tests as focused.
-   *
-   * @param name - The name of the group.
-   * @param callback - The function to create a scope for a group of tests.
-   */
-  only: (name: string, callback: () => void | Promise<void>) => void;
-  /**
-   * Marks a group of tests as skipped.
-   *
-   * @param name - The name of the group.
-   * @param callback - The function to create a scope for a group of tests.
-   */
-  skip: (name: string, callback: () => void | Promise<void>) => void;
-  /**
-   * Marks a group of tests as yet to be implemented.
-   *
-   * @param name - The name of the group.
-   * @param callback - The function to create a scope for a group of tests.
-   */
-  todo: (name: string, callback?: () => void | Promise<void>) => void;
-}
-
-interface Test {
-  /**
-   * Defines a single test.
-   *
-   * @param name - The name of the test.
-   * @param callback - The function with a code snippet and assertions.
-   */
-  (name: string, callback: () => void | Promise<void>): void;
-  /**
-   * Marks a test as focused.
-   *
-   * @param name - The name of the test.
-   * @param callback - The function with a code snippet and assertions.
-   */
-  only: (name: string, callback: () => void | Promise<void>) => void;
-  /**
-   * Marks a test as skipped.
-   *
-   * @param name - The name of the test.
-   * @param callback - The function with a code snippet and assertions.
-   */
-  skip: (name: string, callback: () => void | Promise<void>) => void;
-  /**
-   * Marks a test as yet to be implemented.
-   *
-   * @param name - The name of the test.
-   * @param callback - The function with a code snippet and assertions.
-   */
-  todo: (name: string, callback?: () => void | Promise<void>) => void;
-}
-
 interface Matchers {
   /**
    * Checks if the JSX component accepts props of the given type.
@@ -140,7 +78,6 @@ interface Matchers {
   /**
    * Checks if the source type is instantiable with the given type arguments.
    */
-  // @ts-expect-error 'Target' must be declared like this
   toBeInstantiableWith: <Target extends [...args: Array<unknown>]>() => void;
   /**
    * Checks if a property key exists on the source type.
@@ -164,7 +101,7 @@ interface Modifier {
   };
 }
 
-interface Expect {
+export interface Expect {
   /**
    * Builds an assertion.
    *
@@ -212,62 +149,3 @@ interface Expect {
     (source: unknown): Modifier;
   };
 }
-
-/**
- * The fill-in type. Useful to fill in the required type arguments of generic types.
- */
-export type _ = never;
-
-/**
- * Builds an assertion.
- */
-export declare const expect: Expect;
-
-/**
- * Reshapes type of the given object by removing the specified keys.
- */
-export declare function omit<T, K extends PropertyKey>(object: T, ...keys: [K, ...Array<K>]): Omit<T, K>;
-/**
- * Reshapes type of the given object by keeping only the specified keys.
- */
-export declare function pick<T, K extends keyof T>(object: T, ...keys: [K, ...Array<K>]): Pick<T, K>;
-
-/**
- * Defines a test group.
- */
-export declare const describe: Describe;
-/**
- * Defines a single test.
- */
-export declare const it: Test;
-/**
- * Defines a single test.
- */
-export declare const test: Test;
-
-interface Actions {
-  /**
-   * Calls the given function with the provided arguments.
-   */
-  isCalledWith: (...args: Array<unknown>) => void;
-}
-
-interface When {
-  /**
-   * Creates a test plan.
-   *
-   * @template Target - The type upon which an action is performed.
-   */
-  <Target>(): Actions;
-  /**
-   * Creates a test plan.
-   *
-   * @param target - The expression upon which an action is performed.
-   */
-  (target: unknown): Actions;
-}
-
-/**
- * Creates a test plan.
- */
-export declare const when: When;

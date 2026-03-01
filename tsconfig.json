@@ -31,6 +31,7 @@
     { "path": "./source/tsconfig.json" },
     { "path": "./source/output/__tests__/tsconfig.json" },
     { "path": "./source/version/__tests__/tsconfig.json" },
-    { "path": "./tests/tsconfig.json" }
+    { "path": "./tests/tsconfig.json" },
+    { "path": "./types/tsconfig.json" }
   ]
 }

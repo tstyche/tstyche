@@ -111,7 +111,7 @@
 
   "overrides": [
     {
-      "includes": ["**/source/types.ts"],
+      "includes": ["**/types/**/*.ts"],
       "linter": {
         "rules": {
           "correctness": {

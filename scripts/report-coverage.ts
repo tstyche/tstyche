@@ -16,19 +16,19 @@ const config: CoverageReportOptions = {
   entryFilter: {
     "**/node_modules/**": false,
 
+    "**/dist/api.js": true,
     "**/dist/bin.js": true,
     "**/dist/index.js": true,
     "**/dist/tag.js": true,
-    "**/dist/tstyche.js": true,
   },
 
   sourceFilter: {
+    "**/source/api.ts": false,
     "**/source/ts-internals.d.ts": false,
-    "**/source/tstyche.ts": false,
-    "**/source/types.ts": false,
     "**/source/*/*.enum.ts": false,
     "**/source/*/index.ts": false,
     "**/source/*/types.ts": false,
+    "**/types/*.ts": false,
 
     "**/source/*.ts": true,
     "**/source/*/*.ts": true,
