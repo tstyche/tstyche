@@ -39,7 +39,7 @@ To group and organize tests, TSTyche has:
 
 The `expect` style assertions can check either the inferred type of an expression (as in the example above) or a type directly:
 
-```ts twoslash
+```ts
 import { type _, expect } from "tstyche";
 
 type AsyncProps<T> = {
