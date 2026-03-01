@@ -71,7 +71,7 @@ const config: Array<RollupOptions> = [
     external: [/^node:/, "./api.js"],
     input: {
       api: "./source/api.ts",
-      index: "./source/types.ts",
+      index: "./types/index.ts",
       tag: "./source/tag.ts",
     },
     output,
@@ -85,7 +85,7 @@ const config: Array<RollupOptions> = [
   },
 
   {
-    input: "./source/types.ts",
+    input: "./types/index.ts",
     output: {
       file: "./dist/index.d.cts",
       format: "cjs",

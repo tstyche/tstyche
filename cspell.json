@@ -12,6 +12,7 @@
     "scripts/**/*",
     "source/**/*",
     "tests/**/*",
+    "types/**/*",
     "typetests/**/*"
   ],
   "words": [
