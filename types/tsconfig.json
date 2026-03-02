@@ -2,7 +2,9 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "types": []
   },
-  "include": ["**/*"]
+  "include": ["**/*"],
+  "exclude": []
 }
