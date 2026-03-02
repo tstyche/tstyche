@@ -7,4 +7,4 @@ interface Matchers<R, T = unknown> {
 expect<Matchers<_>>().type.toBeInstantiableWith<[void]>();
 expect<Matchers<_>>().type.toBeInstantiableWith<[void, string]>();
 
-expect<Matchers<_>>().type.not.toBeInstantiableWith();
+expect<Matchers<_>>().type.not.toBeInstantiableWith<[]>();

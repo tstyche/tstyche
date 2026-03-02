@@ -22,12 +22,12 @@ export abstract class AbilityMatcherBase {
     this.compiler = compiler;
   }
 
-  #resolveTargetText(node: ts.NodeArray<ArgumentNode> | ArgumentNode | undefined) {
-    const isExpression = node != null && nodeBelongsToArgumentList(this.compiler, Array.isArray(node) ? node[0] : node);
+  #resolveTargetText(node: ts.NodeArray<ArgumentNode> | ArgumentNode) {
+    const isExpression = nodeBelongsToArgumentList(this.compiler, Array.isArray(node) ? node[0] : node);
 
     const targetText = isExpression ? "argument" : "type argument";
 
-    if (!node || (Array.isArray(node) && node.length === 0)) {
+    if (Array.isArray(node) && node.length === 0) {
       return `without ${targetText}s`;
     }
 
@@ -42,11 +42,7 @@ export abstract class AbilityMatcherBase {
     return `with the given ${targetText}`;
   }
 
-  explain(
-    matchWorker: MatchWorker,
-    sourceNode: ArgumentNode,
-    targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode | undefined,
-  ) {
+  explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode) {
     const isExpression = nodeBelongsToArgumentList(this.compiler, sourceNode);
 
     const targetText = this.#resolveTargetText(targetNode);
@@ -59,11 +55,7 @@ export abstract class AbilityMatcherBase {
 
         let origin: DiagnosticOrigin;
 
-        if (
-          targetNode != null &&
-          isDiagnosticWithLocation(diagnostic) &&
-          diagnosticBelongsToNode(diagnostic, targetNode)
-        ) {
+        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNode)) {
           origin = new DiagnosticOrigin(
             diagnostic.start,
             getTextSpanEnd(diagnostic),

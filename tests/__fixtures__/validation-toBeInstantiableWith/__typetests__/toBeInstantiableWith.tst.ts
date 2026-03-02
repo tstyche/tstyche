@@ -21,21 +21,24 @@ class Container<T> {
   }
 }
 
-type None = void;
-
-type Box<T = string> = Array<T>;
-
-interface Holder<T> {
+interface Box<T> {
   contents: T;
   getContents: () => T;
 }
+
+type None = void;
+
+type WithLoading<T = object> = T & { loading: boolean };
 
 describe("argument for 'source'", () => {
   test("must be provided", () => {
     expect().type.toBeInstantiableWith<[never]>();
   });
 
-  test("must be a instantiable expression", () => {
+  test("must be an instantiable expression", () => {
+    expect("abc" as any).type.toBeInstantiableWith<[never]>();
+    expect("abc" as never).type.toBeInstantiableWith<[never]>();
+
     expect("abc").type.toBeInstantiableWith<[never]>();
     expect(123).type.toBeInstantiableWith<[never]>();
     expect(false).type.toBeInstantiableWith<[never]>();
@@ -50,15 +53,16 @@ describe("argument for 'source'", () => {
     expect(readOption).type.toBeInstantiableWith<[string]>();
     expect(Container).type.toBeInstantiableWith<[string]>();
   });
-
-  test("is rejected type?", () => {
-    expect("abc" as any).type.toBeInstantiableWith<[never]>();
-    expect("abc" as never).type.toBeInstantiableWith<[never]>();
-  });
 });
 
 describe("type argument for 'Source'", () => {
-  test("must be a instantiable type", () => {
+  test("must be an instantiable type", () => {
+    type Any = any;
+    type Never = never;
+
+    expect<Any>().type.toBeInstantiableWith<[never]>();
+    expect<Never>().type.toBeInstantiableWith<[never]>();
+
     expect<string>().type.toBeInstantiableWith<[never]>();
     expect<number>().type.toBeInstantiableWith<[never]>();
     expect<boolean>().type.toBeInstantiableWith<[never]>();
@@ -76,34 +80,26 @@ describe("type argument for 'Source'", () => {
 
   test("allowed expressions", () => {
     expect<Container<_>>().type.toBeInstantiableWith<[string]>();
-    expect<Box>().type.toBeInstantiableWith<[string]>();
+    expect<WithLoading>().type.toBeInstantiableWith<[string]>();
+    expect<WithLoading<_>>().type.toBeInstantiableWith<[string]>();
     expect<Box<_>>().type.toBeInstantiableWith<[string]>();
-    expect<Holder<_>>().type.toBeInstantiableWith<[string]>();
-  });
-
-  test("is rejected type?", () => {
-    type Any = any;
-    type Never = never;
-
-    expect<Any>().type.toBeInstantiableWith<[never]>();
-    expect<Never>().type.toBeInstantiableWith<[never]>();
   });
 });
 
 describe("argument for 'target'", () => {
   test.todo("must be type argument", () => {
     // @ts-expect-error!
-    expect<Holder<_>>().type.toBeInstantiableWith(["one"]);
+    expect<Box<_>>().type.toBeInstantiableWith(["one"]);
   });
 });
 
 describe("type argument for 'Target'", () => {
-  test.todo("must contain at least on item,", () => {
-    expect<Holder<_>>().type.toBeInstantiableWith<[]>();
+  test("must be provided", () => {
+    expect<Box<_>>().type.toBeInstantiableWith();
   });
 
   test("must be a tuple type", () => {
     // @ts-expect-error!
-    expect<Holder<_>>().type.toBeInstantiableWith<string>();
+    expect<Box<_>>().type.toBeInstantiableWith<string>();
   });
 });

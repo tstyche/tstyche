@@ -184,9 +184,13 @@ export class AbilityLayer {
           ]);
 
           if (targetNode != null) {
-            const targetText = `<${targetNode.getText().slice(1, -1)}>`.padStart(targetNode.getFullWidth());
+            const targetText = targetNode.getText().slice(1, -1);
 
-            this.#editor.replaceRanges([[targetNode.getFullStart(), targetNode.getEnd(), targetText]]);
+            if (targetText.trim().length > 1) {
+              this.#editor.replaceRanges([
+                [targetNode.getFullStart(), targetNode.getEnd(), `<${targetText}>`.padStart(targetNode.getFullWidth())],
+              ]);
+            }
           }
         }
 

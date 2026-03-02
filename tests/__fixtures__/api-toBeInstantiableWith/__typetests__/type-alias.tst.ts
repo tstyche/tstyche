@@ -8,16 +8,16 @@ type Triple<T extends string, U extends number = number, V = boolean> = [T, U, V
 
 describe("when source is a type alias", () => {
   test("is instantiable without type arguments", () => {
-    expect<Single>().type.toBeInstantiableWith();
-    expect<Single>().type.not.toBeInstantiableWith(); // fail
+    expect<Single>().type.toBeInstantiableWith<[]>();
+    expect<Single>().type.not.toBeInstantiableWith<[]>(); // fail
   });
 
   test("is not instantiable without type arguments", () => {
-    expect<Double<_, _>>().type.not.toBeInstantiableWith();
-    expect<Double<_, _>>().type.toBeInstantiableWith(); // fail: Generic type 'Double' requires 2 type argument(s).
+    expect<Double<_, _>>().type.not.toBeInstantiableWith<[]>();
+    expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail: Generic type 'Double' requires 2 type argument(s).
 
-    expect<Triple<_>>().type.not.toBeInstantiableWith();
-    expect<Triple<_>>().type.toBeInstantiableWith(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
+    expect<Triple<_>>().type.not.toBeInstantiableWith<[]>();
+    expect<Triple<_>>().type.toBeInstantiableWith<[]>(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
   });
 
   test("is instantiable with the given type argument", () => {

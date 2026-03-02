@@ -116,10 +116,16 @@ export class ExpectService {
         return this[matcherNameText].match(matchWorker, assertionNode.source[0], assertionNode.target!, onDiagnostics);
 
       case "toBeInstantiableWith": {
+        if (
+          !argumentIsProvided("Target", assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)
+        ) {
+          return;
+        }
+
         return this.toBeInstantiableWith.match(
           matchWorker,
           assertionNode.source[0],
-          assertionNode.target?.[0],
+          assertionNode.target[0],
           onDiagnostics,
         );
       }
