@@ -34,8 +34,8 @@ export abstract class AbilityMatcherBase {
     return `with the given argument${nodes.length === 1 ? "" : "s"}`;
   }
 
-  protected getTypeArgumentCountText(targetNode: ArgumentNode) {
-    if ((targetNode as ts.TupleTypeNode).elements.length === 0) {
+  protected getTypeArgumentCountText(targetNode: ts.TupleTypeNode) {
+    if (targetNode.elements.length === 0) {
       return "without type arguments";
     }
 

@@ -21,7 +21,7 @@ class Container<T> {
   }
 }
 
-interface Box<T> {
+interface Box<T = unknown> {
   contents: T;
   getContents: () => T;
 }
@@ -36,20 +36,17 @@ describe("argument for 'source'", () => {
   });
 
   test("must be an instantiable expression", () => {
-    expect("abc" as any).type.toBeInstantiableWith<[never]>();
-    expect("abc" as never).type.toBeInstantiableWith<[never]>();
-
     expect("abc").type.toBeInstantiableWith<[never]>();
     expect(123).type.toBeInstantiableWith<[never]>();
     expect(false).type.toBeInstantiableWith<[never]>();
     expect(undefined).type.toBeInstantiableWith<[never]>();
     expect(null).type.toBeInstantiableWith<[never]>();
-
     expect(() => undefined).type.toBeInstantiableWith<[never]>();
-    expect(Person).type.toBeInstantiableWith<[never]>();
   });
 
   test("allowed expressions", () => {
+    expect(Person).type.toBeInstantiableWith<[]>();
+
     expect(readOption).type.toBeInstantiableWith<[string]>();
     expect(Container).type.toBeInstantiableWith<[string]>();
   });
@@ -57,12 +54,6 @@ describe("argument for 'source'", () => {
 
 describe("type argument for 'Source'", () => {
   test("must be an instantiable type", () => {
-    type Any = any;
-    type Never = never;
-
-    expect<Any>().type.toBeInstantiableWith<[never]>();
-    expect<Never>().type.toBeInstantiableWith<[never]>();
-
     expect<string>().type.toBeInstantiableWith<[never]>();
     expect<number>().type.toBeInstantiableWith<[never]>();
     expect<boolean>().type.toBeInstantiableWith<[never]>();
@@ -70,19 +61,21 @@ describe("type argument for 'Source'", () => {
     expect<null>().type.toBeInstantiableWith<[never]>();
 
     expect<() => void>().type.toBeInstantiableWith<[never]>();
-    expect<Func>().type.toBeInstantiableWith<[never]>();
-
-    expect<Person>().type.toBeInstantiableWith<[never]>();
     expect<new () => Person>().type.toBeInstantiableWith<[never]>();
-
-    expect<None>().type.toBeInstantiableWith<[never]>();
   });
 
   test("allowed expressions", () => {
+    expect<Func>().type.toBeInstantiableWith<[]>();
+
+    expect<Person>().type.toBeInstantiableWith<[]>();
     expect<Container<_>>().type.toBeInstantiableWith<[string]>();
+
+    expect<Box>().type.toBeInstantiableWith<[string]>();
+    expect<Box<_>>().type.toBeInstantiableWith<[string]>();
+
+    expect<None>().type.toBeInstantiableWith<[]>();
     expect<WithLoading>().type.toBeInstantiableWith<[string]>();
     expect<WithLoading<_>>().type.toBeInstantiableWith<[string]>();
-    expect<Box<_>>().type.toBeInstantiableWith<[string]>();
   });
 });
 

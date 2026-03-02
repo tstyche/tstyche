@@ -15,16 +15,11 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     targetNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const sourceType = matchWorker.getType(sourceNode);
-
-    // TODO better check here: if is Interface or Type Alias or has signatures (these are all instantiable)
-
     if (
       !(
-        ("aliasTypeArguments" in sourceType && Array.isArray(sourceType.aliasTypeArguments)) ||
-        ("typeArguments" in sourceType && Array.isArray(sourceType.typeArguments)) ||
-        ("typeArguments" in sourceNode && Array.isArray(sourceNode.typeArguments)) ||
-        matchWorker.getSignatures(sourceNode).some((signature) => signature.getTypeParameters() != null)
+        this.compiler.isIdentifier(sourceNode) ||
+        this.compiler.isTypeReferenceNode(sourceNode) ||
+        this.compiler.isExpressionWithTypeArguments(sourceNode)
       )
     ) {
       let text: string;
@@ -42,9 +37,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
       return;
     }
 
-    const targetType = matchWorker.getType(targetNode);
-
-    if (!matchWorker.typeChecker.isTupleType(targetType)) {
+    if (!this.compiler.isTupleTypeNode(targetNode)) {
       const text = ExpectDiagnosticText.typeArgumentMustBe("Target", "a tuple type");
       const origin = DiagnosticOrigin.fromNode(targetNode);
 
