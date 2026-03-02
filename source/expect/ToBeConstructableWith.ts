@@ -39,7 +39,7 @@ export class ToBeConstructableWith extends AbilityMatcherBase {
     }
 
     return {
-      explain: () => this.explain(matchWorker, sourceNode, targetNodes),
+      explain: () => this.explain(matchWorker, sourceNode, targetNodes, () => this.getArgumentCountText(targetNodes)),
       isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
     };
   }

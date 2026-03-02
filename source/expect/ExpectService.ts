@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { argumentIsProvided, argumentOrTypeArgumentIsProvided } from "#ensure";
+import { argumentIsProvided, argumentOrTypeArgumentIsProvided, typeArgumentIsProvided } from "#ensure";
 import type { Reject } from "#reject";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
@@ -12,6 +12,7 @@ import { ToBeAssignableFrom } from "./ToBeAssignableFrom.js";
 import { ToBeAssignableTo } from "./ToBeAssignableTo.js";
 import { ToBeCallableWith } from "./ToBeCallableWith.js";
 import { ToBeConstructableWith } from "./ToBeConstructableWith.js";
+import { ToBeInstantiableWith } from "./ToBeInstantiableWith.js";
 import { ToHaveProperty } from "./ToHaveProperty.js";
 import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult } from "./types.js";
@@ -28,6 +29,7 @@ export class ExpectService {
   private toBeAssignableTo: ToBeAssignableTo;
   private toBeCallableWith: ToBeCallableWith;
   private toBeConstructableWith: ToBeConstructableWith;
+  private toBeInstantiableWith: ToBeInstantiableWith;
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
@@ -43,6 +45,7 @@ export class ExpectService {
     this.toBeAssignableTo = new ToBeAssignableTo();
     this.toBeCallableWith = new ToBeCallableWith(compiler);
     this.toBeConstructableWith = new ToBeConstructableWith(compiler);
+    this.toBeInstantiableWith = new ToBeInstantiableWith(compiler);
     this.toHaveProperty = new ToHaveProperty(compiler);
     this.toRaiseError = new ToRaiseError(compiler);
   }
@@ -68,7 +71,7 @@ export class ExpectService {
     const matchWorker = new MatchWorker(this.#compiler, this.#program, assertionNode);
 
     if (
-      !(matcherNameText === "toRaiseError" && !assertionNode.isNot) &&
+      !(matcherNameText === "toBeInstantiableWith" || (matcherNameText === "toRaiseError" && !assertionNode.isNot)) &&
       this.#reject.argumentType(
         [
           ["source", assertionNode.source[0]],
@@ -112,8 +115,37 @@ export class ExpectService {
       case "toRaiseError":
         return this[matcherNameText].match(matchWorker, assertionNode.source[0], assertionNode.target!, onDiagnostics);
 
+      case "toBeInstantiableWith": {
+        if (
+          !typeArgumentIsProvided(
+            this.#compiler,
+            "Target",
+            assertionNode.target?.[0],
+            assertionNode.matcherNameNode.name,
+            onDiagnostics,
+          )
+        ) {
+          return;
+        }
+
+        return this.toBeInstantiableWith.match(
+          matchWorker,
+          assertionNode.source[0],
+          assertionNode.target[0],
+          onDiagnostics,
+        );
+      }
+
       case "toHaveProperty":
-        if (!argumentIsProvided("key", assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)) {
+        if (
+          !argumentIsProvided(
+            this.#compiler,
+            "key",
+            assertionNode.target?.[0],
+            assertionNode.matcherNameNode.name,
+            onDiagnostics,
+          )
+        ) {
           return;
         }
 

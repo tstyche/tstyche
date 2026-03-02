@@ -2,10 +2,10 @@ import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { EnsureDiagnosticText } from "./EnsureDiagnosticText.js";
 
-export function argumentOrTypeArgumentIsProvided<T>(
+export function argumentOrTypeArgumentIsProvided<T extends ts.Node>(
   argumentNameText: string,
   typeArgumentNameText: string,
-  node: T,
+  node: T | undefined,
   enclosingNode: ts.Node,
   onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
 ): node is NonNullable<T> {

@@ -147,6 +147,60 @@ export class AbilityLayer {
         break;
       }
 
+      case "toBeInstantiableWith": {
+        this.#nodes.push(expect);
+
+        const sourceNode = expect.source[0];
+        const targetNode = expect.target?.[0];
+
+        if (!sourceNode) {
+          return;
+        }
+
+        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+          this.#editor.eraseTrailingComma(expect.source);
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              expectExpressionEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+            ],
+            [expectEnd, matcherNodeEnd],
+          ]);
+
+          if (this.#compiler.isExpressionWithTypeArguments(sourceNode)) {
+            this.#editor.replaceRanges([[sourceNode.expression.getEnd(), sourceNode.getEnd()]]);
+          }
+        } else {
+          const sourceText = this.#compiler.isTypeReferenceNode(sourceNode)
+            ? sourceNode.typeName.getText()
+            : sourceNode.getText();
+
+          this.#editor.replaceRanges([
+            [
+              expectStart,
+              matcherNodeEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+                ? `;undefined as any as ${sourceText}`
+                : `undefined as any as ${sourceText}`,
+            ],
+          ]);
+        }
+
+        if (targetNode != null) {
+          const targetText = targetNode.getText().slice(1, -1);
+
+          if (targetText.trim().length > 1) {
+            this.#editor.replaceRanges([
+              [targetNode.getFullStart(), targetNode.getEnd(), `<${targetText}>`.padStart(targetNode.getFullWidth())],
+            ]);
+          }
+        }
+
+        break;
+      }
+
       case "toHaveProperty": {
         this.#nodes.push(expect);
 

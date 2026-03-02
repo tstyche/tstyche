@@ -6,4 +6,8 @@ export class EnsureDiagnosticText {
   static argumentOrTypeArgumentMustBeProvided(argumentNameText: string, typeArgumentNameText: string): string {
     return `An argument for '${argumentNameText}' or type argument for '${typeArgumentNameText}' must be provided.`;
   }
+
+  static typeArgumentMustBeProvided(typeArgumentNameText: string): string {
+    return `Type argument for '${typeArgumentNameText}' must be provided.`;
+  }
 }

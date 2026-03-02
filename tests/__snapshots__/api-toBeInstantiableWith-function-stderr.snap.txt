@@ -1,0 +1,158 @@
+Error: Expression is instantiable without type arguments.
+
+  20 |   test("is instantiable without type arguments", () => {
+  21 |     expect(createSingle).type.toBeInstantiableWith<[]>();
+  22 |     expect(createSingle).type.not.toBeInstantiableWith<[]>(); // fail
+     |                                   ~~~~~~~~~~~~~~~~~~~~
+  23 |   });
+  24 | 
+  25 |   test("is instantiable with the given type argument", () => {
+
+       at ./__typetests__/function.tst.ts:22:35 ❭ when source is a function ❭ is instantiable without type arguments
+
+Error: Expression is instantiable with the given type argument.
+
+  25 |   test("is instantiable with the given type argument", () => {
+  26 |     expect(createSingle).type.toBeInstantiableWith<[string]>();
+  27 |     expect(createSingle).type.not.toBeInstantiableWith<[string]>(); // fail
+     |                                   ~~~~~~~~~~~~~~~~~~~~
+  28 |   });
+  29 | 
+  30 |   test("is not instantiable with the given type argument", () => {
+
+       at ./__typetests__/function.tst.ts:27:35 ❭ when source is a function ❭ is instantiable with the given type argument
+
+Error: Expression is not instantiable with the given type argument.
+
+Type '<T, V>(first: T, second: V) => [T, V]' has no signatures for which the type argument list is applicable.
+
+  30 |   test("is not instantiable with the given type argument", () => {
+  31 |     expect(createDouble<_, _>).type.not.toBeInstantiableWith<[string]>();
+  32 |     expect(createDouble<_, _>).type.toBeInstantiableWith<[string]>(); // fail: has no signatures for which the type argument list is applicable
+     |                                                           ~~~~~~
+  33 | 
+  34 |     expect(createSingle).type.not.toBeInstantiableWith<[number]>();
+  35 |     expect(createSingle).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+
+       at ./__typetests__/function.tst.ts:32:59 ❭ when source is a function ❭ is not instantiable with the given type argument
+
+Error: Expression is not instantiable with the given type argument.
+
+Type 'number' does not satisfy the constraint 'string'.
+
+  33 | 
+  34 |     expect(createSingle).type.not.toBeInstantiableWith<[number]>();
+  35 |     expect(createSingle).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+     |                                                     ~~~~~~
+  36 | 
+  37 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[number]>();
+  38 |     expect(createTriple<_>).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+
+       at ./__typetests__/function.tst.ts:35:53 ❭ when source is a function ❭ is not instantiable with the given type argument
+
+Error: Expression is not instantiable with the given type argument.
+
+Type 'number' does not satisfy the constraint 'string'.
+
+  36 | 
+  37 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[number]>();
+  38 |     expect(createTriple<_>).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+     |                                                        ~~~~~~
+  39 |   });
+  40 | 
+  41 |   test("is instantiable with the given type arguments", () => {
+
+       at ./__typetests__/function.tst.ts:38:56 ❭ when source is a function ❭ is not instantiable with the given type argument
+
+Error: Expression is instantiable with the given type arguments.
+
+  41 |   test("is instantiable with the given type arguments", () => {
+  42 |     expect(createDouble<_, _>).type.toBeInstantiableWith<[string, number]>();
+  43 |     expect(createDouble<_, _>).type.not.toBeInstantiableWith<[string, number]>(); // fail
+     |                                         ~~~~~~~~~~~~~~~~~~~~
+  44 | 
+  45 |     expect(createTriple<_>).type.toBeInstantiableWith<[string, number]>();
+  46 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[string, number]>(); // fail
+
+       at ./__typetests__/function.tst.ts:43:41 ❭ when source is a function ❭ is instantiable with the given type arguments
+
+Error: Expression is instantiable with the given type arguments.
+
+  44 | 
+  45 |     expect(createTriple<_>).type.toBeInstantiableWith<[string, number]>();
+  46 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[string, number]>(); // fail
+     |                                      ~~~~~~~~~~~~~~~~~~~~
+  47 | 
+  48 |     expect(createTriple<_>).type.toBeInstantiableWith<[string, number, boolean]>();
+  49 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
+
+       at ./__typetests__/function.tst.ts:46:38 ❭ when source is a function ❭ is instantiable with the given type arguments
+
+Error: Expression is instantiable with the given type arguments.
+
+  47 | 
+  48 |     expect(createTriple<_>).type.toBeInstantiableWith<[string, number, boolean]>();
+  49 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
+     |                                      ~~~~~~~~~~~~~~~~~~~~
+  50 |   });
+  51 | 
+  52 |   test("is not instantiable with the given type arguments", () => {
+
+       at ./__typetests__/function.tst.ts:49:38 ❭ when source is a function ❭ is instantiable with the given type arguments
+
+Error: Expression is not instantiable with the given type arguments.
+
+Type '<T extends string = string>(value: T) => [T]' has no signatures for which the type argument list is applicable.
+
+  52 |   test("is not instantiable with the given type arguments", () => {
+  53 |     expect(createSingle<_>).type.not.toBeInstantiableWith<[string, string]>();
+  54 |     expect(createSingle<_>).type.toBeInstantiableWith<[string, string]>(); // fail: has no signatures for which the type argument list is applicable
+     |                                                        ~~~~~~~~~~~~~~
+  55 | 
+  56 |     expect(createDouble<_, _>).type.not.toBeInstantiableWith<[number, number, number]>();
+  57 |     expect(createDouble<_, _>).type.toBeInstantiableWith<[number, number, number]>(); // fail: has no signatures for which the type argument list is applicable
+
+       at ./__typetests__/function.tst.ts:54:56 ❭ when source is a function ❭ is not instantiable with the given type arguments
+
+Error: Expression is not instantiable with the given type arguments.
+
+Type '<T, V>(first: T, second: V) => [T, V]' has no signatures for which the type argument list is applicable.
+
+  55 | 
+  56 |     expect(createDouble<_, _>).type.not.toBeInstantiableWith<[number, number, number]>();
+  57 |     expect(createDouble<_, _>).type.toBeInstantiableWith<[number, number, number]>(); // fail: has no signatures for which the type argument list is applicable
+     |                                                           ~~~~~~~~~~~~~~~~~~~~~~
+  58 | 
+  59 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
+  60 |     expect(createTriple<_>).type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail: has no signatures for which the type argument list is applicable
+
+       at ./__typetests__/function.tst.ts:57:59 ❭ when source is a function ❭ is not instantiable with the given type arguments
+
+Error: Expression is not instantiable with the given type arguments.
+
+Type '<T extends string, U extends number = number, V = boolean>(first: T, second: U, third: V) => [T, U, V]' has no signatures for which the type argument list is applicable.
+
+  58 | 
+  59 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
+  60 |     expect(createTriple<_>).type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail: has no signatures for which the type argument list is applicable
+     |                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  61 | 
+  62 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[string, string]>();
+  63 |     expect(createTriple<_>).type.toBeInstantiableWith<[string, string]>(); // fail: Type 'string' does not satisfy the constraint 'number'.
+
+       at ./__typetests__/function.tst.ts:60:56 ❭ when source is a function ❭ is not instantiable with the given type arguments
+
+Error: Expression is not instantiable with the given type arguments.
+
+Type 'string' does not satisfy the constraint 'number'.
+
+  61 | 
+  62 |     expect(createTriple<_>).type.not.toBeInstantiableWith<[string, string]>();
+  63 |     expect(createTriple<_>).type.toBeInstantiableWith<[string, string]>(); // fail: Type 'string' does not satisfy the constraint 'number'.
+     |                                                                ~~~~~~
+  64 |   });
+  65 | });
+  66 | 
+
+       at ./__typetests__/function.tst.ts:63:64 ❭ when source is a function ❭ is not instantiable with the given type arguments
+

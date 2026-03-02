@@ -1,3 +1,4 @@
+import type ts from "typescript";
 import type { WhenNode } from "#collect";
 import {
   Diagnostic,
@@ -13,17 +14,19 @@ import type { Reject } from "#reject";
 import { WhenDiagnosticText } from "./WhenDiagnosticText.js";
 
 export class WhenService {
+  #compiler: typeof ts;
   #onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
   #reject: Reject;
 
-  constructor(reject: Reject, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>) {
+  constructor(compiler: typeof ts, reject: Reject, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>) {
+    this.#compiler = compiler;
     this.#reject = reject;
     this.#onDiagnostics = onDiagnostics;
   }
 
   action(when: WhenNode): void {
     if (
-      !argumentIsProvided("target", when.target[0], when.node.expression, this.#onDiagnostics) ||
+      !argumentIsProvided(this.#compiler, "target", when.target[0], when.node.expression, this.#onDiagnostics) ||
       this.#reject.argumentType([["target", when.target[0]]], this.#onDiagnostics)
     ) {
       return;

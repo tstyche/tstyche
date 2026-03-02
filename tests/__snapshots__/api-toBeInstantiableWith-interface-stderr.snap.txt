@@ -1,0 +1,186 @@
+Error: Type is instantiable without type arguments.
+
+  19 |   test("is instantiable without type arguments", () => {
+  20 |     expect<Single>().type.toBeInstantiableWith<[]>();
+  21 |     expect<Single>().type.not.toBeInstantiableWith<[]>(); // fail
+     |                               ~~~~~~~~~~~~~~~~~~~~
+  22 |   });
+  23 | 
+  24 |   test("is not instantiable without type arguments", () => {
+
+       at ./__typetests__/interface.tst.ts:21:31 ❭ when source is an interface ❭ is instantiable without type arguments
+
+Error: Type is not instantiable without type arguments.
+
+Generic type 'Double<T, V>' requires 2 type argument(s).
+
+  24 |   test("is not instantiable without type arguments", () => {
+  25 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[]>();
+  26 |     expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail: Generic type 'Double' requires 2 type argument(s).
+     |                                 ~~~~~~~~~~~~~~~~~~~~
+  27 | 
+  28 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[]>();
+  29 |     expect<Triple<_>>().type.toBeInstantiableWith<[]>(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
+
+       at ./__typetests__/interface.tst.ts:26:33 ❭ when source is an interface ❭ is not instantiable without type arguments
+
+Error: Type is not instantiable without type arguments.
+
+Generic type 'Triple<T, U, V>' requires between 1 and 3 type arguments.
+
+  27 | 
+  28 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[]>();
+  29 |     expect<Triple<_>>().type.toBeInstantiableWith<[]>(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
+     |                              ~~~~~~~~~~~~~~~~~~~~
+  30 |   });
+  31 | 
+  32 |   test("is instantiable with the given type argument", () => {
+
+       at ./__typetests__/interface.tst.ts:29:30 ❭ when source is an interface ❭ is not instantiable without type arguments
+
+Error: Type is instantiable with the given type argument.
+
+  32 |   test("is instantiable with the given type argument", () => {
+  33 |     expect<Single>().type.toBeInstantiableWith<[string]>();
+  34 |     expect<Single>().type.not.toBeInstantiableWith<[string]>(); // fail
+     |                               ~~~~~~~~~~~~~~~~~~~~
+  35 |   });
+  36 | 
+  37 |   test("is not instantiable with the given type argument", () => {
+
+       at ./__typetests__/interface.tst.ts:34:31 ❭ when source is an interface ❭ is instantiable with the given type argument
+
+Error: Type is not instantiable with the given type argument.
+
+Generic type 'Double<T, V>' requires 2 type argument(s).
+
+  37 |   test("is not instantiable with the given type argument", () => {
+  38 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string]>();
+  39 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string]>(); // fail: Generic type 'Double' requires 2 type argument(s).
+     |                                 ~~~~~~~~~~~~~~~~~~~~
+  40 | 
+  41 |     expect<Single>().type.not.toBeInstantiableWith<[number]>();
+  42 |     expect<Single>().type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+
+       at ./__typetests__/interface.tst.ts:39:33 ❭ when source is an interface ❭ is not instantiable with the given type argument
+
+Error: Type is not instantiable with the given type argument.
+
+Type 'number' does not satisfy the constraint 'string'.
+
+  40 | 
+  41 |     expect<Single>().type.not.toBeInstantiableWith<[number]>();
+  42 |     expect<Single>().type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+     |                                                 ~~~~~~
+  43 | 
+  44 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[number]>();
+  45 |     expect<Triple<_>>().type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+
+       at ./__typetests__/interface.tst.ts:42:49 ❭ when source is an interface ❭ is not instantiable with the given type argument
+
+Error: Type is not instantiable with the given type argument.
+
+Type 'number' does not satisfy the constraint 'string'.
+
+  43 | 
+  44 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[number]>();
+  45 |     expect<Triple<_>>().type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+     |                                                    ~~~~~~
+  46 |   });
+  47 | 
+  48 |   test("is instantiable with the given type arguments", () => {
+
+       at ./__typetests__/interface.tst.ts:45:52 ❭ when source is an interface ❭ is not instantiable with the given type argument
+
+Error: Type is instantiable with the given type arguments.
+
+  48 |   test("is instantiable with the given type arguments", () => {
+  49 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string, number]>();
+  50 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
+     |                                     ~~~~~~~~~~~~~~~~~~~~
+  51 | 
+  52 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
+  53 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
+
+       at ./__typetests__/interface.tst.ts:50:37 ❭ when source is an interface ❭ is instantiable with the given type arguments
+
+Error: Type is instantiable with the given type arguments.
+
+  51 | 
+  52 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
+  53 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number]>(); // fail
+     |                                  ~~~~~~~~~~~~~~~~~~~~
+  54 | 
+  55 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
+  56 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
+
+       at ./__typetests__/interface.tst.ts:53:34 ❭ when source is an interface ❭ is instantiable with the given type arguments
+
+Error: Type is instantiable with the given type arguments.
+
+  54 | 
+  55 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
+  56 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
+     |                                  ~~~~~~~~~~~~~~~~~~~~
+  57 |   });
+  58 | 
+  59 |   test("is not instantiable with the given type arguments", () => {
+
+       at ./__typetests__/interface.tst.ts:56:34 ❭ when source is an interface ❭ is instantiable with the given type arguments
+
+Error: Type is not instantiable with the given type arguments.
+
+Generic type 'Single<T>' requires between 0 and 1 type arguments.
+
+  59 |   test("is not instantiable with the given type arguments", () => {
+  60 |     expect<Single<_>>().type.not.toBeInstantiableWith<[string, string]>();
+  61 |     expect<Single<_>>().type.toBeInstantiableWith<[string, string]>(); // fail: Generic type 'Single' requires between 0 and 1 type arguments.
+     |                              ~~~~~~~~~~~~~~~~~~~~
+  62 | 
+  63 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[number, number, number]>();
+  64 |     expect<Double<_, _>>().type.toBeInstantiableWith<[number, number, number]>(); // fail: Generic type 'Double' requires 2 type argument(s).
+
+       at ./__typetests__/interface.tst.ts:61:30 ❭ when source is an interface ❭ is not instantiable with the given type arguments
+
+Error: Type is not instantiable with the given type arguments.
+
+Generic type 'Double<T, V>' requires 2 type argument(s).
+
+  62 | 
+  63 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[number, number, number]>();
+  64 |     expect<Double<_, _>>().type.toBeInstantiableWith<[number, number, number]>(); // fail: Generic type 'Double' requires 2 type argument(s).
+     |                                 ~~~~~~~~~~~~~~~~~~~~
+  65 | 
+  66 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
+  67 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
+
+       at ./__typetests__/interface.tst.ts:64:33 ❭ when source is an interface ❭ is not instantiable with the given type arguments
+
+Error: Type is not instantiable with the given type arguments.
+
+Generic type 'Triple<T, U, V>' requires between 1 and 3 type arguments.
+
+  65 | 
+  66 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
+  67 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
+     |                              ~~~~~~~~~~~~~~~~~~~~
+  68 | 
+  69 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, string]>();
+  70 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, string]>(); // fail: Type 'string' does not satisfy the constraint 'number'.
+
+       at ./__typetests__/interface.tst.ts:67:30 ❭ when source is an interface ❭ is not instantiable with the given type arguments
+
+Error: Type is not instantiable with the given type arguments.
+
+Type 'string' does not satisfy the constraint 'number'.
+
+  68 | 
+  69 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[string, string]>();
+  70 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, string]>(); // fail: Type 'string' does not satisfy the constraint 'number'.
+     |                                                            ~~~~~~
+  71 |   });
+  72 | });
+  73 | 
+
+       at ./__typetests__/interface.tst.ts:70:60 ❭ when source is an interface ❭ is not instantiable with the given type arguments
+

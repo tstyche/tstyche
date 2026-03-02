@@ -40,18 +40,20 @@ To group and organize tests, TSTyche has:
 The `expect` style assertions can check either the inferred type of an expression (as in the example above) or a type directly:
 
 ```ts
-import { expect } from "tstyche";
+import { type _, expect } from "tstyche";
 
 type AsyncProps<T> = {
   [K in keyof T]+?: T[K] | Promise<T[K]>;
 };
 
-type WithLoading<T> = T & { loading: boolean };
+type WithLoading<T extends object> = T & { loading: boolean };
 
 expect<WithLoading<AsyncProps<{ query: string }>>>().type.toBe<{
   query?: string | Promise<string>;
   loading: boolean;
 }>();
+
+expect<WithLoading<_>>().type.not.toBeInstantiableWith<[string]>();
 ```
 
 Here is the list of all matchers:
@@ -61,6 +63,7 @@ Here is the list of all matchers:
 - `.toBeApplicable` ensures that the decorator function can be applied,
 - `.toBeCallableWith()` checks whether a function is callable with the given arguments,
 - `.toBeConstructableWith()` checks whether a class is constructable with the given arguments,
+- `.toBeInstantiableWith()` checks whether a generic is instantiable with the given type arguments,
 - `.toHaveProperty()` looks up keys on an object type.
 
 ## Runner

@@ -4,6 +4,10 @@ import type { Test } from "./Test.js";
 import type { When } from "./When.js";
 
 /**
+ * The fill-in type. Useful to fill in the required type arguments of generic types.
+ */
+export type _ = never;
+/**
  * Builds an assertion.
  */
 export declare const expect: Expect;

@@ -1,0 +1,17 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toBeInstantiableWith
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/function.tst.ts
+  when source is a function
+    × is instantiable without type arguments
+    × is instantiable with the given type argument
+    × is not instantiable with the given type argument
+    × is instantiable with the given type arguments
+    × is not instantiable with the given type arguments
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      5 failed, 5 total
+Assertions: 12 failed, 12 passed, 24 total
+Duration:   <<timestamp>>

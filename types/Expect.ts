@@ -76,6 +76,10 @@ interface Matchers {
    */
   toBeConstructableWith: (...args: Array<unknown>) => void;
   /**
+   * Checks if the source type is instantiable with the given type arguments.
+   */
+  toBeInstantiableWith: <Target extends [...args: Array<unknown>]>() => void;
+  /**
    * Checks if a property key exists on the source type.
    */
   toHaveProperty: (key: string | number | symbol) => void;
