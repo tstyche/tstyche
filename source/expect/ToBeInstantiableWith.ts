@@ -16,14 +16,16 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const sourceType = matchWorker.getType(sourceNode);
-    const sourceSymbol = sourceType.aliasSymbol ?? sourceType.symbol;
 
     if (
-      !sourceSymbol?.declarations?.some(
-        (declaration) =>
-          "typeParameters" in declaration &&
-          Array.isArray(declaration.typeParameters) &&
-          declaration.typeParameters.length > 0,
+      !(
+        ("typeArguments" in sourceNode && Array.isArray(sourceNode.typeArguments)) ||
+        Array.isArray(sourceType.aliasTypeArguments) ||
+        sourceType
+          .getSymbol()
+          ?.declarations?.some(
+            (declaration) => "typeParameters" in declaration && Array.isArray(declaration.typeParameters),
+          )
       )
     ) {
       let text: string;

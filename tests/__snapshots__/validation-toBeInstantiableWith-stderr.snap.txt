@@ -262,18 +262,6 @@ Error: A type argument for 'Source' must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:78:12
 
-Error: A type argument for 'Source' must be an instantiable type.
-
-  82 |     expect<Container<_>>().type.toBeInstantiableWith<[string]>();
-  83 |     expect<WithLoading>().type.toBeInstantiableWith<[string]>();
-  84 |     expect<WithLoading<_>>().type.toBeInstantiableWith<[string]>();
-     |            ~~~~~~~~~~~~~~
-  85 |     expect<Box<_>>().type.toBeInstantiableWith<[string]>();
-  86 |   });
-  87 | });
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:84:12
-
 Error: An argument for 'Target' must be provided.
 
    96 | describe("type argument for 'Target'", () => {
