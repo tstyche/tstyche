@@ -3,15 +3,15 @@ import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnost
 import { nodeBelongsToArgumentList } from "#layers";
 import { EnsureDiagnosticText } from "./EnsureDiagnosticText.js";
 
-export function argumentIsProvided<T extends ts.Node>(
+export function typeArgumentIsProvided<T extends ts.Node>(
   compiler: typeof ts,
-  argumentNameText: string,
+  typeArgumentNameText: string,
   node: T | undefined,
   enclosingNode: ts.Node,
   onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
 ): node is NonNullable<T> {
-  if (!node || !nodeBelongsToArgumentList(compiler, node)) {
-    const text = EnsureDiagnosticText.argumentMustBeProvided(argumentNameText);
+  if (!node || nodeBelongsToArgumentList(compiler, node)) {
+    const text = EnsureDiagnosticText.typeArgumentMustBeProvided(typeArgumentNameText);
     const origin = DiagnosticOrigin.fromNode(enclosingNode);
 
     onDiagnostics([Diagnostic.error(text, origin)]);

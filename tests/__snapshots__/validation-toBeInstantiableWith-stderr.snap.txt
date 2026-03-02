@@ -262,27 +262,39 @@ Error: A type argument for 'Source' must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:78:12
 
-Error: An argument for 'Target' must be provided.
+Error: Type argument for 'Target' must be provided.
 
-   96 | describe("type argument for 'Target'", () => {
-   97 |   test("must be provided", () => {
-   98 |     expect<Box<_>>().type.toBeInstantiableWith();
-      |                           ~~~~~~~~~~~~~~~~~~~~
-   99 |   });
-  100 | 
-  101 |   test("must be a tuple type", () => {
+  89 | describe("type argument for 'Target'", () => {
+  90 |   test("must be provided", () => {
+  91 |     expect<Box<_>>().type.toBeInstantiableWith();
+     |                           ~~~~~~~~~~~~~~~~~~~~
+  92 |   });
+  93 | 
+  94 |   test("must be type argument", () => {
 
-        at ./__typetests__/toBeInstantiableWith.tst.ts:98:27
+       at ./__typetests__/toBeInstantiableWith.tst.ts:91:27
+
+Error: Type argument for 'Target' must be provided.
+
+  94 |   test("must be type argument", () => {
+  95 |     // @ts-expect-error!
+  96 |     expect<Box<_>>().type.toBeInstantiableWith(["one"]);
+     |                           ~~~~~~~~~~~~~~~~~~~~
+  97 |   });
+  98 | 
+  99 |   test("must be a tuple type", () => {
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:96:27
 
 Error: A type argument for 'Target' must be a tuple type.
 
-  101 |   test("must be a tuple type", () => {
-  102 |     // @ts-expect-error!
-  103 |     expect<Box<_>>().type.toBeInstantiableWith<string>();
+   99 |   test("must be a tuple type", () => {
+  100 |     // @ts-expect-error!
+  101 |     expect<Box<_>>().type.toBeInstantiableWith<string>();
       |                                                ~~~~~~
-  104 |   });
-  105 | });
-  106 | 
+  102 |   });
+  103 | });
+  104 | 
 
-        at ./__typetests__/toBeInstantiableWith.tst.ts:103:48
+        at ./__typetests__/toBeInstantiableWith.tst.ts:101:48
 

@@ -86,16 +86,14 @@ describe("type argument for 'Source'", () => {
   });
 });
 
-describe("argument for 'target'", () => {
-  test.todo("must be type argument", () => {
-    // @ts-expect-error!
-    expect<Box<_>>().type.toBeInstantiableWith(["one"]);
-  });
-});
-
 describe("type argument for 'Target'", () => {
   test("must be provided", () => {
     expect<Box<_>>().type.toBeInstantiableWith();
+  });
+
+  test("must be type argument", () => {
+    // @ts-expect-error!
+    expect<Box<_>>().type.toBeInstantiableWith(["one"]);
   });
 
   test("must be a tuple type", () => {

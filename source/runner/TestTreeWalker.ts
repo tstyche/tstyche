@@ -46,7 +46,7 @@ export class TestTreeWalker {
     const reject = new Reject(compiler, program, resolvedConfig);
 
     this.#expectService = new ExpectService(compiler, program, reject);
-    this.#whenService = new WhenService(reject, onFileDiagnostics);
+    this.#whenService = new WhenService(compiler, reject, onFileDiagnostics);
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {

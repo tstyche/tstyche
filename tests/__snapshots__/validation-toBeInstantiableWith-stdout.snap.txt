@@ -10,15 +10,14 @@ fail ./__typetests__/toBeInstantiableWith.tst.ts
   type argument for 'Source'
     × must be an instantiable type
     + allowed expressions
-  argument for 'target'
-    - todo must be type argument
   type argument for 'Target'
     × must be provided
+    × must be type argument
     × must be a tuple type
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      5 failed, 2 passed, 1 todo, 8 total
-Assertions: 24 failed, 6 passed, 30 total
+Tests:      6 failed, 2 passed, 8 total
+Assertions: 25 failed, 6 passed, 31 total
 Suppressed: 2 ignored, 2 total
 Duration:   <<timestamp>>

@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { argumentIsProvided, argumentOrTypeArgumentIsProvided } from "#ensure";
+import { argumentIsProvided, argumentOrTypeArgumentIsProvided, typeArgumentIsProvided } from "#ensure";
 import type { Reject } from "#reject";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
@@ -117,7 +117,13 @@ export class ExpectService {
 
       case "toBeInstantiableWith": {
         if (
-          !argumentIsProvided("Target", assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)
+          !typeArgumentIsProvided(
+            this.#compiler,
+            "Target",
+            assertionNode.target?.[0],
+            assertionNode.matcherNameNode.name,
+            onDiagnostics,
+          )
         ) {
           return;
         }
@@ -131,7 +137,15 @@ export class ExpectService {
       }
 
       case "toHaveProperty":
-        if (!argumentIsProvided("key", assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)) {
+        if (
+          !argumentIsProvided(
+            this.#compiler,
+            "key",
+            assertionNode.target?.[0],
+            assertionNode.matcherNameNode.name,
+            onDiagnostics,
+          )
+        ) {
           return;
         }
 
