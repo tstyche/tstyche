@@ -53,7 +53,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     }
 
     return {
-      explain: () => this.explain(matchWorker, sourceNode, targetNode),
+      explain: () => this.explain(matchWorker, sourceNode, targetNode, () => this.getTypeArgumentCountText(targetNode)),
       isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
     };
   }

@@ -22,36 +22,41 @@ export abstract class AbilityMatcherBase {
     this.compiler = compiler;
   }
 
-  #resolveTargetText(node: ts.NodeArray<ArgumentNode> | ArgumentNode) {
-    const isExpression = nodeBelongsToArgumentList(this.compiler, Array.isArray(node) ? node[0] : node);
-
-    const targetText = isExpression ? "argument" : "type argument";
-
-    if (Array.isArray(node) && node.length === 0) {
-      return `without ${targetText}s`;
+  protected getArgumentCountText(nodes: ts.NodeArray<ArgumentNode>) {
+    if (nodes.length === 0) {
+      return "without arguments";
     }
 
-    if (
-      Array.isArray(node) &&
-      (node.length > 1 || (node.length === 1 && node[0]?.kind === this.compiler.SyntaxKind.SpreadElement))
-    ) {
-      // TODO pluralization should be resolved by counting tuple members for type arguments
-      return `with the given ${targetText}s`;
+    if (nodes.length === 1 && nodes[0]?.kind === this.compiler.SyntaxKind.SpreadElement) {
+      return "with the given arguments";
     }
 
-    return `with the given ${targetText}`;
+    return `with the given argument${nodes.length === 1 ? "" : "s"}`;
   }
 
-  explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode) {
+  protected getTypeArgumentCountText(targetNode: ArgumentNode) {
+    if ((targetNode as ts.TupleTypeNode).elements.length === 0) {
+      return "without type arguments";
+    }
+
+    return `with the given type argument${(targetNode as ts.TupleTypeNode).elements.length === 1 ? "" : "s"}`;
+  }
+
+  explain(
+    matchWorker: MatchWorker,
+    sourceNode: ArgumentNode,
+    targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode,
+    getArgumentCountText: () => string,
+  ): Array<Diagnostic> {
     const isExpression = nodeBelongsToArgumentList(this.compiler, sourceNode);
 
-    const targetText = this.#resolveTargetText(targetNode);
+    const argumentCountText = getArgumentCountText();
 
     const diagnostics: Array<Diagnostic> = [];
 
     if (matchWorker.assertionNode.abilityDiagnostics.size > 0) {
       for (const diagnostic of matchWorker.assertionNode.abilityDiagnostics) {
-        const text = [this.explainNotText(isExpression, targetText), getDiagnosticMessageText(diagnostic)];
+        const text = [this.explainNotText(isExpression, argumentCountText), getDiagnosticMessageText(diagnostic)];
 
         let origin: DiagnosticOrigin;
 
@@ -77,7 +82,7 @@ export abstract class AbilityMatcherBase {
     } else {
       const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
 
-      diagnostics.push(Diagnostic.error(this.explainText(isExpression, targetText), origin));
+      diagnostics.push(Diagnostic.error(this.explainText(isExpression, argumentCountText), origin));
     }
 
     return diagnostics;

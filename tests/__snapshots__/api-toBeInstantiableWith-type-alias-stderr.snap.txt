@@ -1,8 +1,8 @@
 Error: Type is instantiable without type arguments.
 
   10 |   test("is instantiable without type arguments", () => {
-  11 |     expect<Single>().type.toBeInstantiableWith();
-  12 |     expect<Single>().type.not.toBeInstantiableWith(); // fail
+  11 |     expect<Single>().type.toBeInstantiableWith<[]>();
+  12 |     expect<Single>().type.not.toBeInstantiableWith<[]>(); // fail
      |                               ~~~~~~~~~~~~~~~~~~~~
   13 |   });
   14 | 
@@ -15,12 +15,12 @@ Error: Type is not instantiable without type arguments.
 Generic type 'Double' requires 2 type argument(s).
 
   15 |   test("is not instantiable without type arguments", () => {
-  16 |     expect<Double<_, _>>().type.not.toBeInstantiableWith();
-  17 |     expect<Double<_, _>>().type.toBeInstantiableWith(); // fail: Generic type 'Double' requires 2 type argument(s).
+  16 |     expect<Double<_, _>>().type.not.toBeInstantiableWith<[]>();
+  17 |     expect<Double<_, _>>().type.toBeInstantiableWith<[]>(); // fail: Generic type 'Double' requires 2 type argument(s).
      |                                 ~~~~~~~~~~~~~~~~~~~~
   18 | 
-  19 |     expect<Triple<_>>().type.not.toBeInstantiableWith();
-  20 |     expect<Triple<_>>().type.toBeInstantiableWith(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
+  19 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[]>();
+  20 |     expect<Triple<_>>().type.toBeInstantiableWith<[]>(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
 
        at ./__typetests__/type-alias.tst.ts:17:33 ❭ when source is a type alias ❭ is not instantiable without type arguments
 
@@ -29,8 +29,8 @@ Error: Type is not instantiable without type arguments.
 Generic type 'Triple' requires between 1 and 3 type arguments.
 
   18 | 
-  19 |     expect<Triple<_>>().type.not.toBeInstantiableWith();
-  20 |     expect<Triple<_>>().type.toBeInstantiableWith(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
+  19 |     expect<Triple<_>>().type.not.toBeInstantiableWith<[]>();
+  20 |     expect<Triple<_>>().type.toBeInstantiableWith<[]>(); // fail: Generic type 'Triple' requires between 1 and 3 type arguments.
      |                              ~~~~~~~~~~~~~~~~~~~~
   21 |   });
   22 | 
@@ -92,7 +92,7 @@ Type 'number' does not satisfy the constraint 'string'.
 
        at ./__typetests__/type-alias.tst.ts:36:52 ❭ when source is a type alias ❭ is not instantiable with the given type argument
 
-Error: Type is instantiable with the given type argument.
+Error: Type is instantiable with the given type arguments.
 
   39 |   test("is instantiable with the given type arguments", () => {
   40 |     expect<Double<_, _>>().type.toBeInstantiableWith<[string, number]>();
@@ -104,7 +104,7 @@ Error: Type is instantiable with the given type argument.
 
        at ./__typetests__/type-alias.tst.ts:41:37 ❭ when source is a type alias ❭ is instantiable with the given type arguments
 
-Error: Type is instantiable with the given type argument.
+Error: Type is instantiable with the given type arguments.
 
   42 | 
   43 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number]>();
@@ -116,7 +116,7 @@ Error: Type is instantiable with the given type argument.
 
        at ./__typetests__/type-alias.tst.ts:44:34 ❭ when source is a type alias ❭ is instantiable with the given type arguments
 
-Error: Type is instantiable with the given type argument.
+Error: Type is instantiable with the given type arguments.
 
   45 | 
   46 |     expect<Triple<_>>().type.toBeInstantiableWith<[string, number, boolean]>();
@@ -128,7 +128,7 @@ Error: Type is instantiable with the given type argument.
 
        at ./__typetests__/type-alias.tst.ts:47:34 ❭ when source is a type alias ❭ is instantiable with the given type arguments
 
-Error: Type is not instantiable with the given type argument.
+Error: Type is not instantiable with the given type arguments.
 
 Generic type 'Single' requires between 0 and 1 type arguments.
 
@@ -142,7 +142,7 @@ Generic type 'Single' requires between 0 and 1 type arguments.
 
        at ./__typetests__/type-alias.tst.ts:52:30 ❭ when source is a type alias ❭ is not instantiable with the given type arguments
 
-Error: Type is not instantiable with the given type argument.
+Error: Type is not instantiable with the given type arguments.
 
 Generic type 'Double' requires 2 type argument(s).
 
@@ -156,7 +156,7 @@ Generic type 'Double' requires 2 type argument(s).
 
        at ./__typetests__/type-alias.tst.ts:55:33 ❭ when source is a type alias ❭ is not instantiable with the given type arguments
 
-Error: Type is not instantiable with the given type argument.
+Error: Type is not instantiable with the given type arguments.
 
 Generic type 'Triple' requires between 1 and 3 type arguments.
 
@@ -170,7 +170,7 @@ Generic type 'Triple' requires between 1 and 3 type arguments.
 
        at ./__typetests__/type-alias.tst.ts:58:30 ❭ when source is a type alias ❭ is not instantiable with the given type arguments
 
-Error: Type is not instantiable with the given type argument.
+Error: Type is not instantiable with the given type arguments.
 
 Type 'string' does not satisfy the constraint 'number'.
 
