@@ -5,22 +5,20 @@ uses TypeScript <<version>> with ./tsconfig.json
 fail ./__typetests__/toBeInstantiableWith.tst.ts
   argument for 'source'
     × must be provided
-    × must be a instantiable expression
+    × must be an instantiable expression
     + allowed expressions
-    × is rejected type?
   type argument for 'Source'
-    × must be a instantiable type
-    + allowed expressions
-    × is rejected type?
+    × must be an instantiable type
+    × allowed expressions
   argument for 'target'
     - todo must be type argument
   type argument for 'Target'
-    - todo must contain at least on item,
+    × must be provided
     × must be a tuple type
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      6 failed, 2 passed, 2 todo, 10 total
-Assertions: 23 failed, 6 passed, 29 total
+Tests:      6 failed, 1 passed, 1 todo, 8 total
+Assertions: 25 failed, 5 passed, 30 total
 Suppressed: 2 ignored, 2 total
 Duration:   <<timestamp>>
