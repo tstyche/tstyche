@@ -56,15 +56,20 @@ expect<WithLoading<AsyncProps<{ query: string }>>>().type.toBe<{
 expect<WithLoading<_>>().type.not.toBeInstantiableWith<[string]>();
 ```
 
-Here is the list of all matchers:
+Relation matchers:
 
-- `.toBe()`, `.toBeAssignableFrom()`, `.toBeAssignableTo()` compare types or type of expressions,
-- `.toAcceptProps()` checks the type of JSX component props,
-- `.toBeApplicable` ensures that the decorator function can be applied,
-- `.toBeCallableWith()` checks whether a function is callable with the given arguments,
-- `.toBeConstructableWith()` checks whether a class is constructable with the given arguments,
-- `.toBeInstantiableWith()` checks whether a generic is instantiable with the given type arguments,
-- `.toHaveProperty()` looks up keys on an object type.
+- `.toBe()` checks if a type is the same as the given type,
+- `.toBeAssignableFrom()` checks if a type is assignable from the given type,
+- `.toBeAssignableTo()` checks if a type is assignable to the given type.
+
+Ability matchers:
+
+- `.toAcceptProps()` checks if a JSX component accepts the given props,
+- `.toBeApplicable` checks if a decorator is applicable to the given class or class member,
+- `.toBeCallableWith()` checks if a function is callable with the given arguments,
+- `.toBeConstructableWith()` checks if a class is constructable with the given arguments,
+- `.toBeInstantiableWith()` checks if a generic is instantiable with the given type arguments,
+- `.toHaveProperty()` checks if a type has the given property.
 
 ## Runner
 

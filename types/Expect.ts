@@ -1,90 +1,81 @@
 interface Matchers {
   /**
-   * Checks if the JSX component accepts props of the given type.
-   *
-   * @remarks
-   *
-   * This is a work in progress feature. Generic components are not yet supported.
+   * Checks if the type is the same as the given type.
+   */
+  toBe: {
+    /**
+     * Checks if the type is the same as the given type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the type is the same as type of the given expression.
+     */
+    (target: unknown): void;
+  };
+  /**
+   * Checks if the type is assignable from the given type.
+   */
+  toBeAssignableFrom: {
+    /**
+     * Checks if the type is assignable from the given type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the type is assignable from type of the given expression.
+     */
+    (target: unknown): void;
+  };
+  /**
+   * Checks if the type is assignable to the given type.
+   */
+  toBeAssignableTo: {
+    /**
+     * Checks if the type is assignable to the given type.
+     */
+    <Target>(): void;
+    /**
+     * Checks if the type is assignable to type of the given expression.
+     */
+    (target: unknown): void;
+  };
+}
+
+interface Matchers {
+  /**
+   * Checks if the JSX component accepts the given props.
    */
   toAcceptProps: {
     /**
      * Checks if the JSX component accepts props of the given type.
-     *
-     * @remarks
-     *
-     * This is a work in progress feature. Generic components are not yet supported.
      */
     <Target>(): void;
     /**
      * Checks if the JSX component accepts the given props.
-     *
-     * @remarks
-     *
-     * This is a work in progress feature. Generic components are not yet supported.
      */
     (target: unknown): void;
   };
   /**
-   * Checks if the source type is the same as the target type.
-   */
-  toBe: {
-    /**
-     * Checks if the source type is the same as the target type.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type is the same as type of the target expression.
-     */
-    (target: unknown): void;
-  };
-  /**
-   * Checks if the decorator function can be applied.
+   * Checks if the decorator is applicable to the given class or class member.
    */
   toBeApplicable: (target: unknown, context: DecoratorContext) => void;
   /**
-   * Checks if the source type is assignable from the target type.
-   */
-  toBeAssignableFrom: {
-    /**
-     * Checks if the source type is assignable from the target type.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type is assignable from type of the target expression.
-     */
-    (target: unknown): void;
-  };
-  /**
-   * Checks if the source type is assignable to the target type.
-   */
-  toBeAssignableTo: {
-    /**
-     * Checks if the source type is assignable to the target type.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the source type is assignable to type of the target expression.
-     */
-    (target: unknown): void;
-  };
-  /**
-   * Checks if the source type is callable with the given arguments.
+   * Checks if the function is callable with the given arguments.
    */
   toBeCallableWith: (...args: Array<unknown>) => void;
   /**
-   * Checks if the source type is constructable with the given arguments.
+   * Checks if the class is constructable with the given arguments.
    */
   toBeConstructableWith: (...args: Array<unknown>) => void;
   /**
-   * Checks if the source type is instantiable with the given type arguments.
+   * Checks if the generic is instantiable with the given type arguments.
    */
   toBeInstantiableWith: <Target extends [...args: Array<unknown>]>() => void;
   /**
-   * Checks if a property key exists on the source type.
+   * Checks if the type has the given property.
    */
   toHaveProperty: (key: string | number | symbol) => void;
   /**
-   * Checks if the source type raises an error.
+   * Checks if the type raises an error.
    */
   toRaiseError: (...target: Array<string | number | RegExp>) => void;
 }
