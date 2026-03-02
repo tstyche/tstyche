@@ -168,6 +168,10 @@ export class AbilityLayer {
             ],
             [expectEnd, matcherNodeEnd],
           ]);
+
+          if (this.#compiler.isExpressionWithTypeArguments(sourceNode)) {
+            this.#editor.replaceRanges([[sourceNode.expression.getEnd(), sourceNode.getEnd()]]);
+          }
         } else {
           const sourceText = this.#compiler.isTypeReferenceNode(sourceNode)
             ? sourceNode.typeName.getText()
@@ -182,15 +186,15 @@ export class AbilityLayer {
                 : `undefined as any as ${sourceText}`,
             ],
           ]);
+        }
 
-          if (targetNode != null) {
-            const targetText = targetNode.getText().slice(1, -1);
+        if (targetNode != null) {
+          const targetText = targetNode.getText().slice(1, -1);
 
-            if (targetText.trim().length > 1) {
-              this.#editor.replaceRanges([
-                [targetNode.getFullStart(), targetNode.getEnd(), `<${targetText}>`.padStart(targetNode.getFullWidth())],
-              ]);
-            }
+          if (targetText.trim().length > 1) {
+            this.#editor.replaceRanges([
+              [targetNode.getFullStart(), targetNode.getEnd(), `<${targetText}>`.padStart(targetNode.getFullWidth())],
+            ]);
           }
         }
 

@@ -14,6 +14,22 @@ await test("toBeInstantiableWith", async (t) => {
     assert.equal(typeof tstyche.expect().type.not.toBeInstantiableWith, "function");
   });
 
+  await t.test("interface", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["interface"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-interface-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-interface-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("type alias", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["type-alias"]);
 
@@ -24,6 +40,38 @@ await test("toBeInstantiableWith", async (t) => {
 
     await assert.matchSnapshot(stderr, {
       fileName: `${testFileName}-type-alias-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("class", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["class"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-class-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-class-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
+  await t.test("function", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["function"]);
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-function-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-function-stderr`,
       testFileUrl: import.meta.url,
     });
 

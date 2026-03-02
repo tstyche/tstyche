@@ -17,9 +17,12 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
   ): MatchResult | undefined {
     const sourceType = matchWorker.getType(sourceNode);
 
+    // TODO better check here: if is Interface or Type Alias or has signatures (these are all instantiable)
+
     if (
       !(
-        Array.isArray(sourceType.aliasTypeArguments) ||
+        ("aliasTypeArguments" in sourceType && Array.isArray(sourceType.aliasTypeArguments)) ||
+        ("typeArguments" in sourceType && Array.isArray(sourceType.typeArguments)) ||
         ("typeArguments" in sourceNode && Array.isArray(sourceNode.typeArguments)) ||
         matchWorker.getSignatures(sourceNode).some((signature) => signature.getTypeParameters() != null)
       )
