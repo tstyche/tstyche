@@ -19,13 +19,9 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
 
     if (
       !(
-        ("typeArguments" in sourceNode && Array.isArray(sourceNode.typeArguments)) ||
         Array.isArray(sourceType.aliasTypeArguments) ||
-        sourceType
-          .getSymbol()
-          ?.declarations?.some(
-            (declaration) => "typeParameters" in declaration && Array.isArray(declaration.typeParameters),
-          )
+        ("typeArguments" in sourceNode && Array.isArray(sourceNode.typeArguments)) ||
+        matchWorker.getSignatures(sourceNode).some((signature) => signature.getTypeParameters() != null)
       )
     ) {
       let text: string;
