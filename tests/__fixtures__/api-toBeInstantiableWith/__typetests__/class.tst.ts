@@ -1,4 +1,4 @@
-import { type _, describe, expect, test } from "tstyche";
+import { describe, expect, test } from "tstyche";
 
 class Single<T extends string = string> {
   value: T;
@@ -54,38 +54,38 @@ describe("when source is a class", () => {
   });
 
   test("is not instantiable with the given type argument", () => {
-    expect(Double<_, _>).type.not.toBeInstantiableWith<[string]>();
-    expect(Double<_, _>).type.toBeInstantiableWith<[string]>(); // fail: Type 'typeof Double' has no signatures for which the type argument list is applicable.
+    expect(Double).type.not.toBeInstantiableWith<[string]>();
+    expect(Double).type.toBeInstantiableWith<[string]>(); // fail: Type 'typeof Double' has no signatures for which the type argument list is applicable.
 
     expect(Single).type.not.toBeInstantiableWith<[number]>();
     expect(Single).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
 
-    expect(Triple<_>).type.not.toBeInstantiableWith<[number]>();
-    expect(Triple<_>).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
+    expect(Triple).type.not.toBeInstantiableWith<[number]>();
+    expect(Triple).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
   });
 
   test("is instantiable with the given type arguments", () => {
-    expect(Double<_, _>).type.toBeInstantiableWith<[string, number]>();
-    expect(Double<_, _>).type.not.toBeInstantiableWith<[string, number]>(); // fail
+    expect(Double).type.toBeInstantiableWith<[string, number]>();
+    expect(Double).type.not.toBeInstantiableWith<[string, number]>(); // fail
 
-    expect(Triple<_>).type.toBeInstantiableWith<[string, number]>();
-    expect(Triple<_>).type.not.toBeInstantiableWith<[string, number]>(); // fail
+    expect(Triple).type.toBeInstantiableWith<[string, number]>();
+    expect(Triple).type.not.toBeInstantiableWith<[string, number]>(); // fail
 
-    expect(Triple<_>).type.toBeInstantiableWith<[string, number, boolean]>();
-    expect(Triple<_>).type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
+    expect(Triple).type.toBeInstantiableWith<[string, number, boolean]>();
+    expect(Triple).type.not.toBeInstantiableWith<[string, number, boolean]>(); // fail
   });
 
   test("is not instantiable with the given type arguments", () => {
-    expect(Single<_>).type.not.toBeInstantiableWith<[string, string]>();
-    expect(Single<_>).type.toBeInstantiableWith<[string, string]>(); // fail: Type 'typeof Single' has no signatures for which the type argument list is applicable.
+    expect(Single).type.not.toBeInstantiableWith<[string, string]>();
+    expect(Single).type.toBeInstantiableWith<[string, string]>(); // fail: Type 'typeof Single' has no signatures for which the type argument list is applicable.
 
-    expect(Double<_, _>).type.not.toBeInstantiableWith<[number, number, number]>();
-    expect(Double<_, _>).type.toBeInstantiableWith<[number, number, number]>(); // fail: Type 'typeof Double' has no signatures for which the type argument list is applicable.
+    expect(Double).type.not.toBeInstantiableWith<[number, number, number]>();
+    expect(Double).type.toBeInstantiableWith<[number, number, number]>(); // fail: Type 'typeof Double' has no signatures for which the type argument list is applicable.
 
-    expect(Triple<_>).type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
-    expect(Triple<_>).type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail: Type 'typeof Triple' has no signatures for which the type argument list is applicable.
+    expect(Triple).type.not.toBeInstantiableWith<[string, number, boolean, boolean]>();
+    expect(Triple).type.toBeInstantiableWith<[string, number, boolean, boolean]>(); // fail: Type 'typeof Triple' has no signatures for which the type argument list is applicable.
 
-    expect(Triple<_>).type.not.toBeInstantiableWith<[string, string]>();
-    expect(Triple<_>).type.toBeInstantiableWith<[string, string]>(); // fail: Type 'string' does not satisfy the constraint 'number'.
+    expect(Triple).type.not.toBeInstantiableWith<[string, string]>();
+    expect(Triple).type.toBeInstantiableWith<[string, string]>(); // fail: Type 'string' does not satisfy the constraint 'number'.
   });
 });
