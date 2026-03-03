@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.0.0-beta.3] - 2026-03-03
+
+### Added
+
+- **New!** Add the `.toBeInstantiableWith()` matcher ([#399](https://github.com/tstyche/tstyche/pull/399))
+
 ## [7.0.0-beta.2] - 2026-02-27
 
 ### Added
@@ -1048,6 +1054,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.3
 [7.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.2
 [7.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.1
 [7.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.0
