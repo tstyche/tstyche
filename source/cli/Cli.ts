@@ -85,7 +85,7 @@ export class Cli {
     if (!commandLineOptions.config) {
       const oldConfigFilePath = Path.resolve(Config.resolveRootPath(commandLineOptions.root), "./tstyche.config.json");
 
-      if (existsSync(oldConfigFilePath) && !environmentOptions.isCi) {
+      if (existsSync(oldConfigFilePath)) {
         const newConfigFilePath = Path.resolve(
           Config.resolveConfigFilePath(/* configPath */ undefined, commandLineOptions.root),
         );

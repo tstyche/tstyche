@@ -1,4 +1,5 @@
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
@@ -41,6 +42,39 @@ await test("'tstyche.json' file", async (t) => {
 
     assert.matchObject(stdout, {
       failFast: true,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("when old config file is detected", async () => {
+    const newConfigUrl = new URL("./tstyche.json", fixtureUrl);
+
+    const config = {};
+
+    await writeFixture(fixtureUrl, {
+      ["tstyche.config.json"]: JSON.stringify(config, null, 2),
+    });
+
+    assert.pathDoesNotExist(newConfigUrl);
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+
+    assert.pathExists(newConfigUrl);
+
+    assert.equal(
+      stderr,
+      [
+        "Warning: The default configuration file location has changed.",
+        "",
+        "The discovered file has been automatically renamed from './tstyche.config.json' to './tstyche.json'.",
+        "",
+        "",
+      ].join("\n"),
+    );
+
+    assert.matchObject(stdout, {
+      configFilePath: fileURLToPath(newConfigUrl).replace(/\\/g, "/"),
     });
 
     assert.equal(exitCode, 0);
