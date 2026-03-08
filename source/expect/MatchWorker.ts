@@ -14,12 +14,12 @@ export class MatchWorker {
     this.assertionNode = assertionNode;
   }
 
-  checkIsAssignableTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    return this.#checkIsRelatedTo(sourceNode, targetNode);
+  checkIsAssignableFrom(sourceNode: ts.Node, targetNode: ts.Node): boolean {
+    return this.#checkIsRelatedTo(targetNode, sourceNode);
   }
 
-  checkIsAssignableWith(sourceNode: ts.Node, targetNode: ts.Node): boolean {
-    return this.#checkIsRelatedTo(targetNode, sourceNode);
+  checkIsAssignableTo(sourceNode: ts.Node, targetNode: ts.Node): boolean {
+    return this.#checkIsRelatedTo(sourceNode, targetNode);
   }
 
   #checkIsRelatedTo(sourceNode: ts.Node, targetNode: ts.Node) {
