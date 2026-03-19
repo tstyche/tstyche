@@ -21,7 +21,7 @@ function getPersonGetter() {
 }
 
 const obj = {
-  // biome-ignore lint/style/useNamingConvention: testing purpose
+  // biome-ignore lint/style/useNamingConvention: test
   Person,
 };
 

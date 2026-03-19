@@ -316,7 +316,7 @@ test("missing constructor", () => {
   class C {
     x!: string;
 
-    // biome-ignore lint/complexity/noUselessConstructor: testing
+    // biome-ignore lint/complexity/noUselessConstructor: test
     constructor() {
       // ...
     }

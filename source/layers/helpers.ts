@@ -8,7 +8,6 @@ export function compareDiagnostics(a: ts.Diagnostic, b: ts.Diagnostic): boolean 
   return deepCompareKeys(a, b, ["start", "length", "code", "messageText"]);
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: 'any' is correct here
 function deepCompareKeys(a: any, b: any, keys: Array<string>): boolean {
   if (a == null || b == null) {
     return a === b;

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schema/2.4.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.8/schema.json",
 
   "json": {
     "parser": {
@@ -55,7 +55,6 @@
       "style": {
         "noImplicitBoolean": "error",
         "noInferrableTypes": "error",
-        "noNegationElse": "error",
         "noParameterProperties": "error",
         "noUselessElse": "error",
         "noYodaExpression": "error",
@@ -97,7 +96,8 @@
         "useErrorMessage": "error",
         "useNumberToFixedDigitsArgument": "error",
 
-        "noConstEnum": "off"
+        "noConstEnum": "off",
+        "noExplicitAny": "off"
       }
     }
   },

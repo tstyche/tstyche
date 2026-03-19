@@ -12,11 +12,11 @@ const noopChain: () => void = new Proxy(noop, {
 });
 
 export {
+  noop as omit,
+  noop as pick,
   noopChain as describe,
   noopChain as expect,
   noopChain as it,
-  noop as omit,
-  noop as pick,
   noopChain as test,
   noopChain as when,
 };

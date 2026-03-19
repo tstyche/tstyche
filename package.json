@@ -57,7 +57,7 @@
     "test:unit": "yarn test:run source/**/__tests__/*.test.js --parallel"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.6",
+    "@biomejs/biome": "2.4.8",
     "@rollup/plugin-typescript": "12.3.0",
     "@types/node": "24.12.0",
     "@types/react": "19.2.14",
