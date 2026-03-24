@@ -27,7 +27,6 @@
     },
     "./api": "./dist/api.js",
     "./tag": "./dist/tag.js",
-    "./schema": "./schema/config.json",
     "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
@@ -35,7 +34,7 @@
   "bin": "./dist/bin.js",
   "files": [
     "dist/**/*",
-    "schema/**/*"
+    "schema/*.json"
   ],
   "scripts": {
     "build": "rollup --config ./scripts/rollup.ts",
