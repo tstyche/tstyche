@@ -33,7 +33,8 @@
   "types": "./dist/index.d.ts",
   "bin": "./dist/bin.js",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "schema/*.json"
   ],
   "scripts": {
     "build": "rollup --config ./scripts/rollup.ts",
