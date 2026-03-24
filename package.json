@@ -27,13 +27,15 @@
     },
     "./api": "./dist/api.js",
     "./tag": "./dist/tag.js",
+    "./schema": "./schema/config.json",
     "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": "./dist/bin.js",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "schema/**/*"
   ],
   "scripts": {
     "build": "rollup --config ./scripts/rollup.ts",
