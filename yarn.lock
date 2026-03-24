@@ -2009,9 +2009,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup-plugin-dts@npm:6.4.0":
-  version: 6.4.0
-  resolution: "rollup-plugin-dts@npm:6.4.0"
+"rollup-plugin-dts@npm:6.4.1":
+  version: 6.4.1
+  resolution: "rollup-plugin-dts@npm:6.4.1"
   dependencies:
     "@babel/code-frame": "npm:^7.29.0"
     "@jridgewell/remapping": "npm:^2.3.5"
@@ -2024,7 +2024,7 @@ __metadata:
   dependenciesMeta:
     "@babel/code-frame":
       optional: true
-  checksum: 10c0/421c5482ae90805ff2a92d6c6b124f15d00d375377742ae8c7c8d394fbddc33f52872ec8391c0219cba8178769bf5adc6dab29623ee6458d16ab0a6d69811587
+  checksum: 10c0/23d51f4780c5878cb31a45103da961e2e1f81fb830d4b53114931060b58ee431e44c561c1215d253477ad884ba50223dd2586fee704763db9a454cb1c6b97a1d
   languageName: node
   linkType: hard
 
@@ -2262,7 +2262,7 @@ __metadata:
     monocart-coverage-reports: "npm:2.12.9"
     pretty-ansi: "npm:3.0.0"
     rollup: "npm:4.59.0"
-    rollup-plugin-dts: "npm:6.4.0"
+    rollup-plugin-dts: "npm:6.4.1"
     tslib: "npm:2.8.1"
     typescript: "npm:6.0.2"
   peerDependencies:
