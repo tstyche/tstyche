@@ -1,27 +1,28 @@
-import process from "node:process";
 import { DiagnosticCategory } from "#diagnostic";
 import type { Event, EventHandler } from "#events";
 
 export class ExitCodeHandler implements EventHandler {
+  #exitCode = 0;
+
+  getExitCode(): number {
+    return this.#exitCode;
+  }
+
   on([event, payload]: Event): void {
     if (event === "run:start") {
       // useful when tests are reran in watch mode
-      this.resetCode();
+      this.#exitCode = 0;
       return;
     }
 
     if ("diagnostics" in payload) {
       if (payload.diagnostics.some((diagnostic) => diagnostic.category === DiagnosticCategory.Error)) {
-        this.#setCode(1);
+        this.#exitCode = 1;
       }
     }
   }
 
-  resetCode(): void {
-    this.#setCode(0);
-  }
-
-  #setCode(exitCode: number): void {
-    process.exitCode = exitCode;
+  reset(): void {
+    this.#exitCode = 0;
   }
 }

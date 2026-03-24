@@ -15,25 +15,33 @@ import { CancellationReason, CancellationToken } from "#token";
 import { FileWatcher, Watcher, type WatchHandler } from "#watch";
 import { CliDiagnosticText } from "./CliDIagnosticText.js";
 
-export interface CliOptions {
-  noErrorExitCode?: boolean;
-}
-
 export class Cli {
   #deferredDiagnostics: Diagnostic | undefined;
   #eventEmitter = new EventEmitter();
-  #noErrorExitCode: boolean;
 
-  constructor(options?: CliOptions) {
-    this.#noErrorExitCode = options?.noErrorExitCode ?? false;
+  async run(commandLine: ReadonlyArray<string>, cancellationToken = new CancellationToken()): Promise<number> {
+    const exitCodeHandler = new ExitCodeHandler();
+    this.#eventEmitter.addHandler(exitCodeHandler);
+
+    await this.#run(commandLine, exitCodeHandler, cancellationToken);
+
+    if (this.#deferredDiagnostics != null) {
+      OutputService.writeBlankLine();
+      OutputService.writeWarning(diagnosticText(this.#deferredDiagnostics));
+    }
+
+    this.#eventEmitter.removeHandlers();
+
+    return exitCodeHandler.getExitCode();
   }
 
-  async run(commandLine: ReadonlyArray<string>, cancellationToken = new CancellationToken()): Promise<void> {
+  async #run(
+    commandLine: ReadonlyArray<string>,
+    exitCodeHandler: ExitCodeHandler,
+    cancellationToken: CancellationToken,
+  ): Promise<void> {
     const cancellationHandler = new CancellationHandler(cancellationToken, CancellationReason.ConfigError);
     this.#eventEmitter.addHandler(cancellationHandler);
-
-    const exitCodeHandler = new ExitCodeHandler();
-    !this.#noErrorExitCode && this.#eventEmitter.addHandler(exitCodeHandler);
 
     const setupReporter = new SetupReporter();
     this.#eventEmitter.addReporter(setupReporter);
@@ -101,7 +109,7 @@ export class Cli {
     do {
       if (cancellationToken.getReason() === CancellationReason.ConfigChange) {
         cancellationToken.reset();
-        exitCodeHandler.resetCode();
+        exitCodeHandler.reset();
 
         OutputService.clearTerminal();
 
@@ -157,13 +165,6 @@ export class Cli {
 
       await runner.run(testFiles, cancellationToken);
     } while (cancellationToken.getReason() === CancellationReason.ConfigChange);
-
-    if (this.#deferredDiagnostics != null) {
-      OutputService.writeBlankLine();
-      OutputService.writeWarning(diagnosticText(this.#deferredDiagnostics));
-    }
-
-    this.#eventEmitter.removeHandlers();
   }
 
   #waitForChangedFiles(resolvedConfig: ResolvedConfig, cancellationToken: CancellationToken) {
