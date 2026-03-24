@@ -34,7 +34,7 @@
   "bin": "./dist/bin.js",
   "files": [
     "dist/**/*",
-    "schema/*.json"
+    "schemas/*.json"
   ],
   "scripts": {
     "build": "rollup --config ./scripts/rollup.ts",
