@@ -10,7 +10,7 @@
   "files": {
     "includes": [
       "**",
-      "!**/.yarn",
+      "!**/.generated",
       "!**/coverage",
       "!**/dist",
       "!**/node_modules",
