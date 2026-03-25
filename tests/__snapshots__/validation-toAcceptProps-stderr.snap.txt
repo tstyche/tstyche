@@ -46,7 +46,7 @@ Error: An argument for 'target' or type argument for 'Target' must be provided.
 
        at ./__typetests__/toAcceptProps.tst.tsx:22:38
 
-Error: An argument for 'target' must be of an object type.
+Error: An argument for 'props' must be of an object type.
 
   25 |   test("must be of object type", () => {
   26 |     // @ts-expect-error!

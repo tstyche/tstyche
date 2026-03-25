@@ -69,10 +69,6 @@ export class ToAcceptProps {
           return false;
         }
 
-        if (this.#isOptionalProperty(targetProperty) && !this.#isOptionalProperty(sourceProperty)) {
-          return false;
-        }
-
         const targetPropertyType = this.#typeChecker.getTypeOfSymbol(targetProperty);
         const sourcePropertyType = this.#typeChecker.getTypeOfSymbol(sourceProperty);
 
@@ -129,19 +125,6 @@ export class ToAcceptProps {
           const text = [
             ExpectDiagnosticText.isNotCompatibleWith(sourceTypeText, targetTypeText),
             ExpectDiagnosticText.doesNotHaveProperty(sourceTypeText, targetPropertyName),
-          ];
-
-          const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
-
-          diagnostics.push(diagnostic.extendWith(text, origin));
-
-          continue;
-        }
-
-        if (this.#isOptionalProperty(targetProperty) && !this.#isOptionalProperty(sourceProperty)) {
-          const text = [
-            ExpectDiagnosticText.isNotAssignableFrom(sourceTypeText, targetTypeText),
-            ExpectDiagnosticText.requiresProperty(sourceTypeText, targetPropertyName),
           ];
 
           const origin = matchWorker.resolveDiagnosticOrigin(targetProperty, targetNode);
@@ -250,10 +233,7 @@ export class ToAcceptProps {
     if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
       const expectedText = "of an object type";
 
-      const text = nodeBelongsToArgumentList(this.#compiler, targetNode)
-        ? ExpectDiagnosticText.argumentMustBe("target", expectedText)
-        : ExpectDiagnosticText.typeArgumentMustBe("Target", expectedText);
-
+      const text = ExpectDiagnosticText.argumentMustBe("props", expectedText);
       const origin = DiagnosticOrigin.fromNode(targetNode);
 
       diagnostics.push(Diagnostic.error(text, origin));
