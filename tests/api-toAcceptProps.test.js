@@ -10,8 +10,8 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 await test("toAcceptProps", async (t) => {
   await t.test("'toAcceptProps' implementation", () => {
-    tstyche.expect().type.toAcceptProps();
-    tstyche.expect().type.not.toAcceptProps();
+    tstyche.expect().type.toAcceptProps({});
+    tstyche.expect().type.not.toAcceptProps({});
   });
 
   await t.test("function components", async () => {
