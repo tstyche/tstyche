@@ -61,7 +61,12 @@ export class ManifestService {
     const packageMetadata = (await response.json()) as PackageMetadata;
 
     for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
-      if (!tag.includes("-") && Version.isSatisfiedWith(tag, "5.4.2")) {
+      if (
+        !tag.includes("-") &&
+        Version.isSatisfiedWith(tag, "5.4") &&
+        // TODO remove after adding support for TypeScript 7
+        !Version.isSatisfiedWith(tag, "7.0")
+      ) {
         versions.push(tag);
 
         packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
@@ -91,6 +96,9 @@ export class ManifestService {
         }
       }
     }
+
+    // TODO remove after adding support for TypeScript 7
+    resolutions["latest"] = versions.findLast((version) => version.startsWith("6"))!;
 
     return new Manifest({ minorVersions, npmRegistry: this.#npmRegistry, packages, resolutions, versions });
   }
