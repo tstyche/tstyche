@@ -65,8 +65,13 @@ interface Matchers {
    * Checks if the type has the given property.
    */
   toHaveProperty: (key: string | number | symbol) => void;
+}
+
+interface Matchers {
   /**
    * Checks if the type raises an error.
+   *
+   * @deprecated This matcher is planned to be removed. For a replacement, see https://tstyche.org/guides/expect-errors.
    */
   toRaiseError: (...target: Array<string | number | RegExp>) => void;
 }
