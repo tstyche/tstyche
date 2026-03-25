@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.0.0-beta.4] - 2026-03-25
+
+### Added
+
+- Publish `schemas/config.json` enabling local reference ([#709](https://github.com/tstyche/tstyche/pull/709))
+
+### Fixed
+
+- Do not add TypeScript 7 to the manifest ([#710](https://github.com/tstyche/tstyche/pull/710))
+
+### Changed
+
+- **Breaking!** Return exit code from `Cli#run()` ([#708](https://github.com/tstyche/tstyche/pull/708))
+
 ## [7.0.0-beta.3] - 2026-03-03
 
 ### Added
@@ -1054,6 +1068,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.4
 [7.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.3
 [7.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.2
 [7.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.1
