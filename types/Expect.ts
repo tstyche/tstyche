@@ -44,16 +44,7 @@ interface Matchers {
   /**
    * Checks if the JSX component accepts the given props.
    */
-  toAcceptProps: {
-    /**
-     * Checks if the JSX component accepts props of the given type.
-     */
-    <Target>(): void;
-    /**
-     * Checks if the JSX component accepts the given props.
-     */
-    (target: unknown): void;
-  };
+  toAcceptProps: (props: Record<string, unknown>) => void;
   /**
    * Checks if the decorator is applicable to the given class or class member.
    */

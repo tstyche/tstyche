@@ -28,7 +28,7 @@ function OverloadFunction(props: FirstProps | SecondProps): React.JSX.Element {
   return <button {...props} />;
 }
 
-describe("when target is a function component", () => {
+describe("when source is a function component", () => {
   test("accepts props of the given type", () => {
     expect(OverloadFunction).type.toAcceptProps({});
     expect(OverloadFunction).type.not.toAcceptProps({}); // fail
@@ -48,27 +48,22 @@ describe("when target is a function component", () => {
   });
 });
 
-describe("when target is a type", () => {
+describe("when source is a type", () => {
   test("accepts props of the given type", () => {
-    expect<Overload>().type.toAcceptProps<{}>();
-    expect<Overload>().type.not.toAcceptProps<{}>(); // fail
+    expect<Overload>().type.toAcceptProps({});
+    expect<Overload>().type.not.toAcceptProps({}); // fail
 
-    expect<Overload>().type.toAcceptProps<{ one: string; two: number }>();
-    expect<Overload>().type.not.toAcceptProps<{ one: string; two: number }>(); // fail
-  });
-
-  test("property is required in props type", () => {
-    expect<Overload>().type.not.toAcceptProps<{ three?: boolean }>();
-    expect<Overload>().type.toAcceptProps<{ three?: boolean }>(); // fail
+    expect<Overload>().type.toAcceptProps({ one: "sample", two: 123 });
+    expect<Overload>().type.not.toAcceptProps({ one: "sample", two: 123 }); // fail
   });
 
   test("property does not exist in props type", () => {
-    expect<Overload>().type.not.toAcceptProps<{ enable: boolean }>();
-    expect<Overload>().type.toAcceptProps<{ enable: boolean }>(); // fail
+    expect<Overload>().type.not.toAcceptProps({ enable: true });
+    expect<Overload>().type.toAcceptProps({ enable: true }); // fail
   });
 
   test("property type is not assignable to prop type", () => {
-    expect<Overload>().type.not.toAcceptProps<{ one: boolean }>();
-    expect<Overload>().type.toAcceptProps<{ one: boolean }>(); // fail
+    expect<Overload>().type.not.toAcceptProps({ one: true });
+    expect<Overload>().type.toAcceptProps({ one: true }); // fail
   });
 });
