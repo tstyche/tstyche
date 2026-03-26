@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.0-beta.5] - 2026-03-26
+
+### Changed
+
+- **Breaking!** Disallow passing type arguments to the `.toAcceptProps()` matcher ([#711](https://github.com/tstyche/tstyche/pull/711))
+- **Breaking!** Deprecate the `.toRaiseError()` matcher ([#705](https://github.com/tstyche/tstyche/pull/705))
+
 ## [7.0.0-beta.4] - 2026-03-25
 
 ### Added
@@ -1068,6 +1075,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.5
 [7.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.4
 [7.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.3
 [7.0.0-beta.2]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.2
