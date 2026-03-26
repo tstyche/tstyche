@@ -84,7 +84,7 @@ Error: An argument for 'source' must be an instantiable expression.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:44:12
 
-Error: A type argument for 'Source' must be an instantiable type.
+Error: The type argument must be an instantiable type.
 
   55 | describe("type argument for 'Source'", () => {
   56 |   test("must be an instantiable type", () => {
@@ -96,7 +96,7 @@ Error: A type argument for 'Source' must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:57:12
 
-Error: A type argument for 'Source' must be an instantiable type.
+Error: The type argument must be an instantiable type.
 
   56 |   test("must be an instantiable type", () => {
   57 |     expect<string>().type.toBeInstantiableWith<[never]>();
@@ -108,7 +108,7 @@ Error: A type argument for 'Source' must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:58:12
 
-Error: A type argument for 'Source' must be an instantiable type.
+Error: The type argument must be an instantiable type.
 
   57 |     expect<string>().type.toBeInstantiableWith<[never]>();
   58 |     expect<number>().type.toBeInstantiableWith<[never]>();
@@ -120,7 +120,7 @@ Error: A type argument for 'Source' must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:59:12
 
-Error: A type argument for 'Source' must be an instantiable type.
+Error: The type argument must be an instantiable type.
 
   58 |     expect<number>().type.toBeInstantiableWith<[never]>();
   59 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
@@ -132,7 +132,7 @@ Error: A type argument for 'Source' must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:60:12
 
-Error: A type argument for 'Source' must be an instantiable type.
+Error: The type argument must be an instantiable type.
 
   59 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
   60 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
@@ -144,7 +144,7 @@ Error: A type argument for 'Source' must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:61:12
 
-Error: A type argument for 'Source' must be an instantiable type.
+Error: The type argument must be an instantiable type.
 
   61 |     expect<null>().type.toBeInstantiableWith<[never]>();
   62 | 
@@ -156,7 +156,7 @@ Error: A type argument for 'Source' must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:63:12
 
-Error: A type argument for 'Source' must be an instantiable type.
+Error: The type argument must be an instantiable type.
 
   62 | 
   63 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
@@ -192,7 +192,7 @@ Error: Type argument for 'Target' must be provided.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:89:27
 
-Error: A type argument for 'Target' must be a tuple type.
+Error: The type argument must be a tuple type.
 
   92 |   test("must be a tuple type", () => {
   93 |     // @ts-expect-error!

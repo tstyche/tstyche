@@ -3,8 +3,8 @@ export class ExpectDiagnosticText {
     return `An argument for '${argumentNameText}' must be ${expectedText}.`;
   }
 
-  static typeArgumentMustBe(argumentNameText: string, expectedText: string): string {
-    return `A type argument for '${argumentNameText}' must be ${expectedText}.`;
+  static typeArgumentMustBe(expectedText: string): string {
+    return `The type argument must be ${expectedText}.`;
   }
 
   static isCallable(isExpression: boolean, targetText: string): string {

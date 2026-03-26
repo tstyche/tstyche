@@ -210,7 +210,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
        at ./__typetests__/toBeConstructableWith.tst.ts:62:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
   66 | describe("type argument for 'Source'", () => {
   67 |   test("must be a constructable type", () => {
@@ -222,7 +222,7 @@ Error: A type argument for 'Source' must be a constructable type.
 
        at ./__typetests__/toBeConstructableWith.tst.ts:68:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
   67 |   test("must be a constructable type", () => {
   68 |     expect<string>().type.toBeConstructableWith();
@@ -234,7 +234,7 @@ Error: A type argument for 'Source' must be a constructable type.
 
        at ./__typetests__/toBeConstructableWith.tst.ts:69:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
   68 |     expect<string>().type.toBeConstructableWith();
   69 |     expect<number>().type.toBeConstructableWith();
@@ -246,7 +246,7 @@ Error: A type argument for 'Source' must be a constructable type.
 
        at ./__typetests__/toBeConstructableWith.tst.ts:70:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
   69 |     expect<number>().type.toBeConstructableWith();
   70 |     expect<boolean>().type.toBeConstructableWith();
@@ -258,7 +258,7 @@ Error: A type argument for 'Source' must be a constructable type.
 
        at ./__typetests__/toBeConstructableWith.tst.ts:71:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
   70 |     expect<boolean>().type.toBeConstructableWith();
   71 |     expect<undefined>().type.toBeConstructableWith();
@@ -270,7 +270,7 @@ Error: A type argument for 'Source' must be a constructable type.
 
        at ./__typetests__/toBeConstructableWith.tst.ts:72:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
 Did you mean to use the '.toBeCallableWith()' matcher?
 
@@ -284,7 +284,7 @@ Did you mean to use the '.toBeCallableWith()' matcher?
 
        at ./__typetests__/toBeConstructableWith.tst.ts:74:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
 Did you mean to use the '.toBeCallableWith()' matcher?
 
@@ -298,7 +298,7 @@ Did you mean to use the '.toBeCallableWith()' matcher?
 
        at ./__typetests__/toBeConstructableWith.tst.ts:75:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
 Did you mean to use the '.toBeCallableWith()' matcher?
 
@@ -312,7 +312,7 @@ Did you mean to use the '.toBeCallableWith()' matcher?
 
        at ./__typetests__/toBeConstructableWith.tst.ts:76:12
 
-Error: A type argument for 'Source' must be a constructable type.
+Error: The type argument must be a constructable type.
 
   79 |     expect<Func>().type.toBeCallableWith("abc");
   80 | 

@@ -126,7 +126,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
        at ./__typetests__/toBeCallableWith.tst.ts:73:12
 
-Error: A type argument for 'Source' must be a callable type.
+Error: The type argument must be a callable type.
 
   77 | describe("type argument for 'Source'", () => {
   78 |   test("must be a callable type", () => {
@@ -138,7 +138,7 @@ Error: A type argument for 'Source' must be a callable type.
 
        at ./__typetests__/toBeCallableWith.tst.ts:79:12
 
-Error: A type argument for 'Source' must be a callable type.
+Error: The type argument must be a callable type.
 
   78 |   test("must be a callable type", () => {
   79 |     expect<string>().type.toBeCallableWith();
@@ -150,7 +150,7 @@ Error: A type argument for 'Source' must be a callable type.
 
        at ./__typetests__/toBeCallableWith.tst.ts:80:12
 
-Error: A type argument for 'Source' must be a callable type.
+Error: The type argument must be a callable type.
 
   79 |     expect<string>().type.toBeCallableWith();
   80 |     expect<number>().type.toBeCallableWith();
@@ -162,7 +162,7 @@ Error: A type argument for 'Source' must be a callable type.
 
        at ./__typetests__/toBeCallableWith.tst.ts:81:12
 
-Error: A type argument for 'Source' must be a callable type.
+Error: The type argument must be a callable type.
 
   80 |     expect<number>().type.toBeCallableWith();
   81 |     expect<boolean>().type.toBeCallableWith();
@@ -174,7 +174,7 @@ Error: A type argument for 'Source' must be a callable type.
 
        at ./__typetests__/toBeCallableWith.tst.ts:82:12
 
-Error: A type argument for 'Source' must be a callable type.
+Error: The type argument must be a callable type.
 
   81 |     expect<boolean>().type.toBeCallableWith();
   82 |     expect<undefined>().type.toBeCallableWith();
@@ -186,7 +186,7 @@ Error: A type argument for 'Source' must be a callable type.
 
        at ./__typetests__/toBeCallableWith.tst.ts:83:12
 
-Error: A type argument for 'Source' must be a callable type.
+Error: The type argument must be a callable type.
 
   90 |     expect<Func>().type.toBeCallableWith("abc");
   91 | 
@@ -198,7 +198,7 @@ Error: A type argument for 'Source' must be a callable type.
 
        at ./__typetests__/toBeCallableWith.tst.ts:92:12
 
-Error: A type argument for 'Source' must be a callable type.
+Error: The type argument must be a callable type.
 
 Did you mean to use the '.toBeConstructableWith()' matcher?
 
@@ -212,7 +212,7 @@ Did you mean to use the '.toBeConstructableWith()' matcher?
 
        at ./__typetests__/toBeCallableWith.tst.ts:93:12
 
-Error: A type argument for 'Source' must be a callable type.
+Error: The type argument must be a callable type.
 
 Did you mean to use the '.toBeConstructableWith()' matcher?
 

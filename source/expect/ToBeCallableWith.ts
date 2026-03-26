@@ -24,7 +24,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
       if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
         text.push(ExpectDiagnosticText.argumentMustBe("source", "a callable expression"));
       } else {
-        text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a callable type"));
+        text.push(ExpectDiagnosticText.typeArgumentMustBe("a callable type"));
       }
 
       if (sourceType.getConstructSignatures().length > 0) {

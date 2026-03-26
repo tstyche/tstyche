@@ -27,7 +27,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
       if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
         text = ExpectDiagnosticText.argumentMustBe("source", "an instantiable expression");
       } else {
-        text = ExpectDiagnosticText.typeArgumentMustBe("Source", "an instantiable type");
+        text = ExpectDiagnosticText.typeArgumentMustBe("an instantiable type");
       }
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
@@ -38,7 +38,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     }
 
     if (!this.compiler.isTupleTypeNode(targetNode)) {
-      const text = ExpectDiagnosticText.typeArgumentMustBe("Target", "a tuple type");
+      const text = ExpectDiagnosticText.typeArgumentMustBe("a tuple type");
       const origin = DiagnosticOrigin.fromNode(targetNode);
 
       onDiagnostics([Diagnostic.error(text, origin)]);
