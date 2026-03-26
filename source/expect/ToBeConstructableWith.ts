@@ -24,7 +24,7 @@ export class ToBeConstructableWith extends AbilityMatcherBase {
       if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
         text.push(ExpectDiagnosticText.argumentMustBe("source", "a constructable expression"));
       } else {
-        text.push(ExpectDiagnosticText.typeArgumentMustBe("Source", "a constructable type"));
+        text.push(ExpectDiagnosticText.typeArgumentMustBe("a constructable type"));
       }
 
       if (sourceType.getCallSignatures().length > 0) {

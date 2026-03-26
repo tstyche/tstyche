@@ -6,7 +6,7 @@ interface Matchers {
     /**
      * Checks if the type is the same as the given type.
      */
-    <Target>(): void;
+    <T>(): void;
     /**
      * Checks if the type is the same as type of the given expression.
      */
@@ -19,7 +19,7 @@ interface Matchers {
     /**
      * Checks if the type is assignable from the given type.
      */
-    <Target>(): void;
+    <T>(): void;
     /**
      * Checks if the type is assignable from type of the given expression.
      */
@@ -32,7 +32,7 @@ interface Matchers {
     /**
      * Checks if the type is assignable to the given type.
      */
-    <Target>(): void;
+    <T>(): void;
     /**
      * Checks if the type is assignable to type of the given expression.
      */
@@ -60,7 +60,7 @@ interface Matchers {
   /**
    * Checks if the generic is instantiable with the given type arguments.
    */
-  toBeInstantiableWith: <Target extends [...args: Array<unknown>]>() => void;
+  toBeInstantiableWith: <T extends [...args: Array<unknown>]>() => void;
   /**
    * Checks if the type has the given property.
    */
@@ -91,14 +91,10 @@ interface Modifier {
 export interface Expect {
   /**
    * Builds an assertion.
-   *
-   * @template Source - The type which is checked.
    */
-  <Source>(): Modifier;
+  <S>(): Modifier;
   /**
    * Builds an assertion.
-   *
-   * @param source - The expression whose type is checked.
    */
   (source: unknown): Modifier;
   /**
@@ -107,14 +103,10 @@ export interface Expect {
   only: {
     /**
      * Marks an assertion as focused.
-     *
-     * @template Source - The type which is checked.
      */
-    <Source>(): Modifier;
+    <S>(): Modifier;
     /**
      * Marks an assertion as focused.
-     *
-     * @param source - The expression whose type is checked.
      */
     (source: unknown): Modifier;
   };
@@ -124,14 +116,10 @@ export interface Expect {
   skip: {
     /**
      * Marks an assertion as skipped.
-     *
-     * @template Source - The type which is checked.
      */
-    <Source>(): Modifier;
+    <S>(): Modifier;
     /**
      * Marks an assertion as skipped.
-     *
-     * @param source - The expression whose type is checked.
      */
     (source: unknown): Modifier;
   };

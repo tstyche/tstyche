@@ -51,7 +51,7 @@ export class ToHaveProperty {
 
       const text = nodeBelongsToArgumentList(this.#compiler, sourceNode)
         ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
-        : ExpectDiagnosticText.typeArgumentMustBe("Source", expectedText);
+        : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 

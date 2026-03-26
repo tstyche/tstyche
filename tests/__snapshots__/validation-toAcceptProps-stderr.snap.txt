@@ -22,7 +22,7 @@ Error: An argument for 'source' must be of a function or class type.
 
        at ./__typetests__/toAcceptProps.tst.tsx:9:12
 
-Error: A type argument for 'Source' must be of a function or class type.
+Error: The type argument must be of a function or class type.
 
   13 | describe("type argument for 'Source'", () => {
   14 |   test("must be of a function or class type", () => {
