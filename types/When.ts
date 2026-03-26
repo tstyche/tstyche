@@ -8,14 +8,10 @@ interface Actions {
 export interface When {
   /**
    * Creates a test plan.
-   *
-   * @template Target - The type upon which an action is performed.
    */
-  <Target>(): Actions;
+  <T>(): Actions;
   /**
    * Creates a test plan.
-   *
-   * @param target - The expression upon which an action is performed.
    */
   (target: unknown): Actions;
 }
