@@ -14,6 +14,9 @@
         packages = with pkgs; [
           corepack_24
           nodejs_24
+
+          mise
+          python3
         ];
       };
     });
