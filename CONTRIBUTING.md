@@ -14,6 +14,20 @@ yarn install
 
 And you are ready!
 
+### Using Nix (alternative)
+
+If you prefer Nix, a `flake.nix` and `.envrc` are provided. Install [Nix](https://nixos.org/download/) and [direnv](https://direnv.net/), then allow the environment:
+
+```shell
+direnv allow
+```
+
+This will automatically provide Node.js and Yarn via corepack. Then install the dependencies:
+
+```shell
+yarn install
+```
+
 ### Why Yarn?
 
 Running `yarn tstyche` in this repository just works. Thanks to Yarn, we can implement new features and immediately try them as a user. To see how that works, run:
