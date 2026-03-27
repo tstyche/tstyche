@@ -1,5 +1,9 @@
 # Changelog
 
+## [7.0.0-rc.0] - 2026-03-27
+
+_Release candidate based on [7.0.0-beta.5]._
+
 ## [7.0.0-beta.5] - 2026-03-26
 
 ### Changed
@@ -1075,6 +1079,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-rc.0
 [7.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.5
 [7.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.4
 [7.0.0-beta.3]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.3
