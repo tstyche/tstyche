@@ -174,12 +174,7 @@ jobs:
         with:
           name: dist-${{ github.sha }}
           path: dist
-      - run: yarn test:e2e
-        env:
-          NODE_V8_COVERAGE: ./coverage/v8-coverage
-      - run: node ./scripts/report-coverage.ts
-        env:
-          FORCE_COLOR: true
+      - run: yarn test:e2e --coverage
       - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
           disable_search: true
