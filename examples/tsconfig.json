@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "noEmit": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,

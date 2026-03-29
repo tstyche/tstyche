@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { expect, test } from "tstyche";
 
 interface ButtonProps {
