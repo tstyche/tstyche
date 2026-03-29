@@ -210,9 +210,11 @@ jobs:
       - run: node ./scripts/report-coverage.ts --merge
         env:
           FORCE_COLOR: true
-      - run: node ./scripts/upload-coverage.ts
+      - uses: codecov/codecov-action@v5
+        with:
+          disable_search: true
+          fail_ci_if_error: true
+          files: ./coverage/codecov.json
+          verbose: true
         env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          COMMIT_SHA: ${{ github.sha }}
-          COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          FORCE_COLOR: true
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

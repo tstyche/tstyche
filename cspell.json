@@ -16,7 +16,6 @@
     "typetests/**/*"
   ],
   "words": [
-    "codacy",
     "direnv",
     "envrc",
     "findup",

@@ -45,7 +45,7 @@ if (process.argv.includes("--merge")) {
     "./coverage/raw-coverage-windows",
   ];
 
-  config.reports = [["codacy", { outputFile: "codacy-coverage.json" }], "console-summary"];
+  config.reports = [["codecov", { outputFile: "codecov.json" }], "console-summary"];
 } else {
   config.all = "./source";
 
