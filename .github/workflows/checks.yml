@@ -176,43 +176,14 @@ jobs:
           path: dist
       - run: yarn test:e2e
         env:
-          NODE_V8_COVERAGE: coverage/v8-coverage
+          NODE_V8_COVERAGE: ./coverage/v8-coverage
       - run: node ./scripts/report-coverage.ts
         env:
           FORCE_COLOR: true
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+      - uses: codecov/codecov-action@v5
         with:
-          name: coverage-${{ matrix.os }}-${{ github.sha }}
-          path: coverage/raw-coverage-*
-
-  coverage-upload:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
-
-    name: Upload Coverage
-    needs:
-      - build
-      - coverage-collect
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
-        with:
-          name: dist-${{ github.sha }}
-          path: dist
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
-        with:
-          merge-multiple: true
-          path: coverage
-          pattern: coverage-*
-      - run: node ./scripts/report-coverage.ts --merge
+          disable_search: true
+          fail_ci_if_error: true
+          files: ./coverage/codecov.json
         env:
-          FORCE_COLOR: true
-      - run: node ./scripts/upload-coverage.ts
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          COMMIT_SHA: ${{ github.sha }}
-          COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          FORCE_COLOR: true
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

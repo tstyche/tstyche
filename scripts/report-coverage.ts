@@ -1,17 +1,11 @@
 import process from "node:process";
 import { CoverageReport, type CoverageReportOptions } from "monocart-coverage-reports";
 
-function resolveReportTarget() {
-  if (process.env["RUNNER_OS"]) {
-    return process.env["RUNNER_OS"].toLowerCase();
-  }
-
-  return "local";
-}
-
 const config: CoverageReportOptions = {
+  all: "./source",
   clean: true,
   cleanCache: true,
+  dataDir: "./coverage/v8-coverage",
 
   entryFilter: {
     "**/node_modules/**": false,
@@ -38,24 +32,7 @@ const config: CoverageReportOptions = {
   outputDir: "./coverage",
 };
 
-if (process.argv.includes("--merge")) {
-  config.inputDir = [
-    "./coverage/raw-coverage-linux",
-    "./coverage/raw-coverage-macos",
-    "./coverage/raw-coverage-windows",
-  ];
-
-  config.reports = [["codacy", { outputFile: "codacy-coverage.json" }], "console-summary"];
-} else {
-  config.all = "./source";
-
-  config.dataDir = "./coverage/v8-coverage";
-
-  config.reports =
-    process.env["CI"] != null
-      ? ["console-details", ["raw", { outputDir: `./raw-coverage-${resolveReportTarget()}` }]]
-      : ["console-details", "v8"];
-}
+config.reports = process.env["CI"] != null ? ["console-details", "codecov"] : ["console-details", "v8"];
 
 const coverageReport = new CoverageReport(config);
 

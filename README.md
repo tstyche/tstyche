@@ -105,7 +105,7 @@ Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 [license-url]: https://github.com/tstyche/tstyche/blob/main/LICENSE.md
 [install-size-badge]: https://badgen.net/packagephobia/install/tstyche
 [install-size-url]: https://packagephobia.com/result?p=tstyche
-[coverage-badge]: https://badgen.net/codacy/coverage/a581ca5c323a455886b7bdd9623c4ec8
-[coverage-url]: https://app.codacy.com/gh/tstyche/tstyche/coverage/dashboard
+[coverage-badge]: https://badgen.net/codecov/github/tstyche/tstyche
+[coverage-url]: https://app.codecov.io/gh/tstyche/tstyche
 [starter-badge]: https://developer.stackblitz.com/img/open_in_stackblitz.svg
 [starter-url]: https://tstyche.org/new
