@@ -1,4 +1,5 @@
 comment:
+  after_n_builds: 3
   require_changes: true
 
 coverage:
