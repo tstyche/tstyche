@@ -26,5 +26,7 @@
     "tsserverlibrary",
     "typetests",
     "uncapitalize"
-  ]
+  ],
+
+  "useGitignore": true
 }
