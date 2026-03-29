@@ -34,15 +34,51 @@ Error: The final element in the chain must be a matcher.
 
        at ./__typetests__/assertion-chain.tst.ts:11:3
 
-Error: The matcher must be called with an argument.
+Error: The matcher must be completed with '()'.
 
   15 | 
-  16 | test("must be called with an argument", () => {
-  17 |   expect().type.not.toBe;
-     |   ~~~~~~~~~~~~~~~~~~~~~~
-  18 | 
-  19 |   expect<string>().type.toBe<string>();
-  20 | });
+  16 | test("must be completed with '()'", () => {
+  17 |   expect().type.toBe;
+     |                 ~~~~
+  18 |   expect().type.toBe<string>;
+  19 |   expect().type.not.toBe;
+  20 |   expect().type.not.toBe<string>;
 
-       at ./__typetests__/assertion-chain.tst.ts:17:3
+       at ./__typetests__/assertion-chain.tst.ts:17:17
+
+Error: The matcher must be completed with '()'.
+
+  16 | test("must be completed with '()'", () => {
+  17 |   expect().type.toBe;
+  18 |   expect().type.toBe<string>;
+     |                 ~~~~~~~~~~~~
+  19 |   expect().type.not.toBe;
+  20 |   expect().type.not.toBe<string>;
+  21 | 
+
+       at ./__typetests__/assertion-chain.tst.ts:18:17
+
+Error: The matcher must be completed with '()'.
+
+  17 |   expect().type.toBe;
+  18 |   expect().type.toBe<string>;
+  19 |   expect().type.not.toBe;
+     |                     ~~~~
+  20 |   expect().type.not.toBe<string>;
+  21 | 
+  22 |   expect<string>().type.toBe<string>();
+
+       at ./__typetests__/assertion-chain.tst.ts:19:21
+
+Error: The matcher must be completed with '()'.
+
+  18 |   expect().type.toBe<string>;
+  19 |   expect().type.not.toBe;
+  20 |   expect().type.not.toBe<string>;
+     |                     ~~~~~~~~~~~~
+  21 | 
+  22 |   expect<string>().type.toBe<string>();
+  23 | });
+
+       at ./__typetests__/assertion-chain.tst.ts:20:21
 

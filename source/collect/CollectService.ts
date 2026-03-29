@@ -78,8 +78,15 @@ export class CollectService {
           const matcherNode = this.#getMatcherNode(matcherNameNode);
 
           if (!matcherNode) {
-            const text = "The matcher must be called with an argument.";
-            const origin = DiagnosticOrigin.fromNode(matcherNameNode);
+            const text = "The matcher must be completed with '()'.";
+
+            const origin = new DiagnosticOrigin(
+              matcherNameNode.name.getStart(),
+              this.#compiler.isExpressionWithTypeArguments(matcherNameNode.parent)
+                ? matcherNameNode.parent.getEnd()
+                : matcherNameNode.getEnd(),
+              matcherNameNode.getSourceFile(),
+            );
 
             this.#onDiagnostics(Diagnostic.error(text, origin));
 

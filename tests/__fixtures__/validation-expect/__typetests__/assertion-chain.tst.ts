@@ -13,8 +13,11 @@ test("the final element must be a matcher", () => {
   expect<string>().type.toBe<string>();
 });
 
-test("must be called with an argument", () => {
+test("must be completed with '()'", () => {
+  expect().type.toBe;
+  expect().type.toBe<string>;
   expect().type.not.toBe;
+  expect().type.not.toBe<string>;
 
   expect<string>().type.toBe<string>();
 });
