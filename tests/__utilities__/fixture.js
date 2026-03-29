@@ -2,11 +2,17 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+const generatedFixtureUrl = new URL("../__fixtures__/.generated/", import.meta.url);
+
 /**
  * @param {URL} fixtureUrl
  */
 export async function clearFixture(fixtureUrl) {
   await fs.rm(fixtureUrl, { force: true, recursive: true, maxRetries: 4 });
+}
+
+export async function cleanFixtureDirectory() {
+  await clearFixture(generatedFixtureUrl);
 }
 
 /**
