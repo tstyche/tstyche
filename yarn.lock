@@ -330,9 +330,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-dotnet@npm:^5.0.12":
-  version: 5.0.12
-  resolution: "@cspell/dict-dotnet@npm:5.0.12"
-  checksum: 10c0/19edcc32fdaff42de7ca993a3a682897e1e92fcd127be79ed6612685ede92d52232bbe9273712eb21c2cfc7daf11f0bcabedbea5d4fe5d3990cfbc65da0914e2
+  version: 5.0.13
+  resolution: "@cspell/dict-dotnet@npm:5.0.13"
+  checksum: 10c0/b34792ea2b1258f4e215487c4ff61de2fb3c9c6e0381fec03c4fb8132f2decd2b7b73a6450c507e8a3211e616282a3ace94e7d99363503e0efa4ef2cb6f2fcca
   languageName: node
   linkType: hard
 
@@ -603,9 +603,9 @@ __metadata:
   linkType: hard
 
 "@cspell/dict-software-terms@npm:^5.1.21":
-  version: 5.2.1
-  resolution: "@cspell/dict-software-terms@npm:5.2.1"
-  checksum: 10c0/4ea83f4781f22a8849cadbfd743343110c189c6530bf5ebca1d3cad42a0a10dd05dff94d7d02aaf3d277faf296dad1e6dcdc746587321fe2a8616c4f448d6c5b
+  version: 5.2.2
+  resolution: "@cspell/dict-software-terms@npm:5.2.2"
+  checksum: 10c0/eca6c5ee91a21c76b9d735c5777521287c896bd03e448c8512b61b75e926a269aef5e03dd0ea3cd2b8291ea56e6f140742f4a4826045603fffdeaba228272557
   languageName: node
   linkType: hard
 
@@ -1767,11 +1767,11 @@ __metadata:
   linkType: hard
 
 "minipass-flush@npm:^1.0.5":
-  version: 1.0.6
-  resolution: "minipass-flush@npm:1.0.6"
+  version: 1.0.7
+  resolution: "minipass-flush@npm:1.0.7"
   dependencies:
-    minipass: "npm:^7.1.3"
-  checksum: 10c0/ece3c2dab3bde9d47f3c29336ed972c4b3cf9008319d43acfefba9a24ef2354244c057300126f3077daf76cb931b9cb6076e5fb63ce5f12e8e60bbaa23cd5815
+    minipass: "npm:^3.0.0"
+  checksum: 10c0/960915c02aa0991662c37c404517dd93708d17f96533b2ca8c1e776d158715d8107c5ced425ffc61674c167d93607f07f48a83c139ce1057f8781e5dfb4b90c2
   languageName: node
   linkType: hard
 
