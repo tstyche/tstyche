@@ -1,206 +1,206 @@
 Error: An argument for 'source' or type argument for 'Source' must be provided.
 
-  33 | describe("argument for 'source'", () => {
-  34 |   test("must be provided", () => {
-  35 |     expect().type.toBeInstantiableWith<[never]>();
+  37 | describe("argument for 'source'", () => {
+  38 |   test("must be provided", () => {
+  39 |     expect().type.toBeInstantiableWith<[never]>();
      |     ~~~~~~
-  36 |   });
-  37 | 
-  38 |   test("must be an instantiable expression", () => {
+  40 |   });
+  41 | 
+  42 |   test("must be an instantiable expression", () => {
 
-       at ./__typetests__/toBeInstantiableWith.tst.ts:35:5
+       at ./__typetests__/toBeInstantiableWith.tst.ts:39:5
 
 Error: An argument for 'source' must be an instantiable expression.
 
-  37 | 
-  38 |   test("must be an instantiable expression", () => {
-  39 |     expect("abc").type.toBeInstantiableWith<[never]>();
+  41 | 
+  42 |   test("must be an instantiable expression", () => {
+  43 |     expect("abc").type.toBeInstantiableWith<[never]>();
      |            ~~~~~
-  40 |     expect(123).type.toBeInstantiableWith<[never]>();
-  41 |     expect(false).type.toBeInstantiableWith<[never]>();
-  42 |     expect(undefined).type.toBeInstantiableWith<[never]>();
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:39:12
-
-Error: An argument for 'source' must be an instantiable expression.
-
-  38 |   test("must be an instantiable expression", () => {
-  39 |     expect("abc").type.toBeInstantiableWith<[never]>();
-  40 |     expect(123).type.toBeInstantiableWith<[never]>();
-     |            ~~~
-  41 |     expect(false).type.toBeInstantiableWith<[never]>();
-  42 |     expect(undefined).type.toBeInstantiableWith<[never]>();
-  43 |     expect(null).type.toBeInstantiableWith<[never]>();
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:40:12
-
-Error: An argument for 'source' must be an instantiable expression.
-
-  39 |     expect("abc").type.toBeInstantiableWith<[never]>();
-  40 |     expect(123).type.toBeInstantiableWith<[never]>();
-  41 |     expect(false).type.toBeInstantiableWith<[never]>();
-     |            ~~~~~
-  42 |     expect(undefined).type.toBeInstantiableWith<[never]>();
-  43 |     expect(null).type.toBeInstantiableWith<[never]>();
-  44 |     expect(() => undefined).type.toBeInstantiableWith<[never]>();
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:41:12
-
-Error: Expression is not instantiable with the given type argument.
-
-Type 'undefined' has no signatures for which the type argument list is applicable.
-
-  40 |     expect(123).type.toBeInstantiableWith<[never]>();
-  41 |     expect(false).type.toBeInstantiableWith<[never]>();
-  42 |     expect(undefined).type.toBeInstantiableWith<[never]>();
-     |                                                  ~~~~~
-  43 |     expect(null).type.toBeInstantiableWith<[never]>();
-  44 |     expect(() => undefined).type.toBeInstantiableWith<[never]>();
-  45 |   });
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:42:50 ❭ argument for 'source' ❭ must be an instantiable expression
-
-Error: An argument for 'source' must be an instantiable expression.
-
-  41 |     expect(false).type.toBeInstantiableWith<[never]>();
-  42 |     expect(undefined).type.toBeInstantiableWith<[never]>();
-  43 |     expect(null).type.toBeInstantiableWith<[never]>();
-     |            ~~~~
-  44 |     expect(() => undefined).type.toBeInstantiableWith<[never]>();
-  45 |   });
-  46 | 
+  44 |     expect(123).type.toBeInstantiableWith<[never]>();
+  45 |     expect(false).type.toBeInstantiableWith<[never]>();
+  46 |     expect(undefined).type.toBeInstantiableWith<[never]>();
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:43:12
 
 Error: An argument for 'source' must be an instantiable expression.
 
-  42 |     expect(undefined).type.toBeInstantiableWith<[never]>();
-  43 |     expect(null).type.toBeInstantiableWith<[never]>();
-  44 |     expect(() => undefined).type.toBeInstantiableWith<[never]>();
-     |            ~~~~~~~~~~~~~~~
-  45 |   });
-  46 | 
-  47 |   test("allowed expressions", () => {
+  42 |   test("must be an instantiable expression", () => {
+  43 |     expect("abc").type.toBeInstantiableWith<[never]>();
+  44 |     expect(123).type.toBeInstantiableWith<[never]>();
+     |            ~~~
+  45 |     expect(false).type.toBeInstantiableWith<[never]>();
+  46 |     expect(undefined).type.toBeInstantiableWith<[never]>();
+  47 |     expect(null).type.toBeInstantiableWith<[never]>();
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:44:12
 
-Error: The type argument must be an instantiable type.
+Error: An argument for 'source' must be an instantiable expression.
 
-  55 | describe("type argument for 'Source'", () => {
-  56 |   test("must be an instantiable type", () => {
-  57 |     expect<string>().type.toBeInstantiableWith<[never]>();
-     |            ~~~~~~
-  58 |     expect<number>().type.toBeInstantiableWith<[never]>();
-  59 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
-  60 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
+  43 |     expect("abc").type.toBeInstantiableWith<[never]>();
+  44 |     expect(123).type.toBeInstantiableWith<[never]>();
+  45 |     expect(false).type.toBeInstantiableWith<[never]>();
+     |            ~~~~~
+  46 |     expect(undefined).type.toBeInstantiableWith<[never]>();
+  47 |     expect(null).type.toBeInstantiableWith<[never]>();
+  48 |     expect(() => undefined).type.toBeInstantiableWith<[never]>();
 
-       at ./__typetests__/toBeInstantiableWith.tst.ts:57:12
+       at ./__typetests__/toBeInstantiableWith.tst.ts:45:12
 
-Error: The type argument must be an instantiable type.
+Error: Expression is not instantiable with the given type argument.
 
-  56 |   test("must be an instantiable type", () => {
-  57 |     expect<string>().type.toBeInstantiableWith<[never]>();
-  58 |     expect<number>().type.toBeInstantiableWith<[never]>();
-     |            ~~~~~~
-  59 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
-  60 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
-  61 |     expect<null>().type.toBeInstantiableWith<[never]>();
+Type 'undefined' has no signatures for which the type argument list is applicable.
 
-       at ./__typetests__/toBeInstantiableWith.tst.ts:58:12
+  44 |     expect(123).type.toBeInstantiableWith<[never]>();
+  45 |     expect(false).type.toBeInstantiableWith<[never]>();
+  46 |     expect(undefined).type.toBeInstantiableWith<[never]>();
+     |                                                  ~~~~~
+  47 |     expect(null).type.toBeInstantiableWith<[never]>();
+  48 |     expect(() => undefined).type.toBeInstantiableWith<[never]>();
+  49 |   });
 
-Error: The type argument must be an instantiable type.
+       at ./__typetests__/toBeInstantiableWith.tst.ts:46:50 ❭ argument for 'source' ❭ must be an instantiable expression
 
-  57 |     expect<string>().type.toBeInstantiableWith<[never]>();
-  58 |     expect<number>().type.toBeInstantiableWith<[never]>();
-  59 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
-     |            ~~~~~~~
-  60 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
-  61 |     expect<null>().type.toBeInstantiableWith<[never]>();
-  62 | 
+Error: An argument for 'source' must be an instantiable expression.
 
-       at ./__typetests__/toBeInstantiableWith.tst.ts:59:12
-
-Error: The type argument must be an instantiable type.
-
-  58 |     expect<number>().type.toBeInstantiableWith<[never]>();
-  59 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
-  60 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
-     |            ~~~~~~~~~
-  61 |     expect<null>().type.toBeInstantiableWith<[never]>();
-  62 | 
-  63 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:60:12
-
-Error: The type argument must be an instantiable type.
-
-  59 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
-  60 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
-  61 |     expect<null>().type.toBeInstantiableWith<[never]>();
+  45 |     expect(false).type.toBeInstantiableWith<[never]>();
+  46 |     expect(undefined).type.toBeInstantiableWith<[never]>();
+  47 |     expect(null).type.toBeInstantiableWith<[never]>();
      |            ~~~~
-  62 | 
-  63 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
-  64 |     expect<new () => Person>().type.toBeInstantiableWith<[never]>();
+  48 |     expect(() => undefined).type.toBeInstantiableWith<[never]>();
+  49 |   });
+  50 | 
 
-       at ./__typetests__/toBeInstantiableWith.tst.ts:61:12
+       at ./__typetests__/toBeInstantiableWith.tst.ts:47:12
+
+Error: An argument for 'source' must be an instantiable expression.
+
+  46 |     expect(undefined).type.toBeInstantiableWith<[never]>();
+  47 |     expect(null).type.toBeInstantiableWith<[never]>();
+  48 |     expect(() => undefined).type.toBeInstantiableWith<[never]>();
+     |            ~~~~~~~~~~~~~~~
+  49 |   });
+  50 | 
+  51 |   test("allowed expressions", () => {
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:48:12
 
 Error: The type argument must be an instantiable type.
 
-  61 |     expect<null>().type.toBeInstantiableWith<[never]>();
-  62 | 
-  63 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
-     |            ~~~~~~~~~~
-  64 |     expect<new () => Person>().type.toBeInstantiableWith<[never]>();
-  65 |   });
-  66 | 
+  60 | describe("type argument for 'Source'", () => {
+  61 |   test("must be an instantiable type", () => {
+  62 |     expect<string>().type.toBeInstantiableWith<[never]>();
+     |            ~~~~~~
+  63 |     expect<number>().type.toBeInstantiableWith<[never]>();
+  64 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
+  65 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:62:12
+
+Error: The type argument must be an instantiable type.
+
+  61 |   test("must be an instantiable type", () => {
+  62 |     expect<string>().type.toBeInstantiableWith<[never]>();
+  63 |     expect<number>().type.toBeInstantiableWith<[never]>();
+     |            ~~~~~~
+  64 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
+  65 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
+  66 |     expect<null>().type.toBeInstantiableWith<[never]>();
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:63:12
 
 Error: The type argument must be an instantiable type.
 
-  62 | 
-  63 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
-  64 |     expect<new () => Person>().type.toBeInstantiableWith<[never]>();
-     |            ~~~~~~~~~~~~~~~~
-  65 |   });
-  66 | 
-  67 |   test("allowed expressions", () => {
+  62 |     expect<string>().type.toBeInstantiableWith<[never]>();
+  63 |     expect<number>().type.toBeInstantiableWith<[never]>();
+  64 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
+     |            ~~~~~~~
+  65 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
+  66 |     expect<null>().type.toBeInstantiableWith<[never]>();
+  67 | 
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:64:12
 
+Error: The type argument must be an instantiable type.
+
+  63 |     expect<number>().type.toBeInstantiableWith<[never]>();
+  64 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
+  65 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
+     |            ~~~~~~~~~
+  66 |     expect<null>().type.toBeInstantiableWith<[never]>();
+  67 | 
+  68 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:65:12
+
+Error: The type argument must be an instantiable type.
+
+  64 |     expect<boolean>().type.toBeInstantiableWith<[never]>();
+  65 |     expect<undefined>().type.toBeInstantiableWith<[never]>();
+  66 |     expect<null>().type.toBeInstantiableWith<[never]>();
+     |            ~~~~
+  67 | 
+  68 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
+  69 |     expect<new () => Person>().type.toBeInstantiableWith<[never]>();
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:66:12
+
+Error: The type argument must be an instantiable type.
+
+  66 |     expect<null>().type.toBeInstantiableWith<[never]>();
+  67 | 
+  68 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
+     |            ~~~~~~~~~~
+  69 |     expect<new () => Person>().type.toBeInstantiableWith<[never]>();
+  70 |   });
+  71 | 
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:68:12
+
+Error: The type argument must be an instantiable type.
+
+  67 | 
+  68 |     expect<() => void>().type.toBeInstantiableWith<[never]>();
+  69 |     expect<new () => Person>().type.toBeInstantiableWith<[never]>();
+     |            ~~~~~~~~~~~~~~~~
+  70 |   });
+  71 | 
+  72 |   test("allowed expressions", () => {
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:69:12
+
 Error: Type argument for 'Target' must be provided.
 
-  82 | describe("type argument for 'Target'", () => {
-  83 |   test("must be provided", () => {
-  84 |     expect<Box<_>>().type.toBeInstantiableWith();
-     |                           ~~~~~~~~~~~~~~~~~~~~
-  85 |   });
-  86 | 
-  87 |   test("must be type argument", () => {
-
-       at ./__typetests__/toBeInstantiableWith.tst.ts:84:27
-
-Error: Type argument for 'Target' must be provided.
-
-  87 |   test("must be type argument", () => {
-  88 |     // @ts-expect-error!
-  89 |     expect<Box<_>>().type.toBeInstantiableWith(["one"]);
+  87 | describe("type argument for 'Target'", () => {
+  88 |   test("must be provided", () => {
+  89 |     expect<Box<_>>().type.toBeInstantiableWith();
      |                           ~~~~~~~~~~~~~~~~~~~~
   90 |   });
   91 | 
-  92 |   test("must be a tuple type", () => {
+  92 |   test("must be type argument", () => {
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:89:27
 
+Error: Type argument for 'Target' must be provided.
+
+  92 |   test("must be type argument", () => {
+  93 |     // @ts-expect-error!
+  94 |     expect<Box<_>>().type.toBeInstantiableWith(["one"]);
+     |                           ~~~~~~~~~~~~~~~~~~~~
+  95 |   });
+  96 | 
+  97 |   test("must be a tuple type", () => {
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:94:27
+
 Error: The type argument must be a tuple type.
 
-  92 |   test("must be a tuple type", () => {
-  93 |     // @ts-expect-error!
-  94 |     expect<Box<_>>().type.toBeInstantiableWith<string>();
-     |                                                ~~~~~~
-  95 |   });
-  96 | });
-  97 | 
+   97 |   test("must be a tuple type", () => {
+   98 |     // @ts-expect-error!
+   99 |     expect<Box<_>>().type.toBeInstantiableWith<string>();
+      |                                                ~~~~~~
+  100 |   });
+  101 | });
+  102 | 
 
-       at ./__typetests__/toBeInstantiableWith.tst.ts:94:48
+        at ./__typetests__/toBeInstantiableWith.tst.ts:99:48
 
