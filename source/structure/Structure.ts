@@ -392,21 +392,23 @@ export class Structure {
       return false;
     }
 
-    for (let i = 0; i < aSignatures.length; i++) {
-      if (aSignatures[i]!.isReadonly !== bSignatures[i]!.isReadonly) {
-        return false;
-      }
+    return aSignatures.every((aSignature) => {
+      return bSignatures.some((bSignature) => {
+        if (aSignature.isReadonly !== bSignature.isReadonly) {
+          return false;
+        }
 
-      if (!this.compare(aSignatures[i]!.keyType, bSignatures[i]!.keyType)) {
-        return false;
-      }
+        if (!this.compare(aSignature.keyType, bSignature.keyType)) {
+          return false;
+        }
 
-      if (!this.compare(aSignatures[i]!.type, bSignatures[i]!.type)) {
-        return false;
-      }
-    }
+        if (!this.compare(aSignature.type, bSignature.type)) {
+          return false;
+        }
 
-    return true;
+        return true;
+      });
+    });
   }
 
   compareTypeParameters(a: ts.TypeParameter, b: ts.TypeParameter): boolean {

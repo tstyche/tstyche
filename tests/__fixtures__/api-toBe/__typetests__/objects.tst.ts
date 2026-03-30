@@ -84,6 +84,15 @@ test("index signatures", () => {
     [key: number]: string;
   };
 
+  type Alpha = {
+    [key: string | number]: string;
+  };
+
+  type Bravo = {
+    [key: number]: string;
+    [key: string]: string;
+  };
+
   expect<StringArray>().type.toBe<{ [index: number]: string }>();
   expect<StringArray>().type.not.toBe<{ [index: string]: string }>();
   expect<StringArray>().type.not.toBe<{ [index: number]: number }>();
@@ -95,6 +104,19 @@ test("index signatures", () => {
   expect<MultiIndex>().type.toBe<{ [key: string]: string | number; [key: number]: string }>();
   expect<MultiIndex>().type.not.toBe<{ [key: string]: string | number }>();
   expect<MultiIndex>().type.not.toBe<{ [key: number]: string }>();
+
+  expect<Alpha>().type.toBe<{ [key: string | number]: string }>();
+  expect<Alpha>().type.toBe<{ [key: number]: string; [key: string]: string }>();
+  expect<Alpha>().type.not.toBe<{ [key: string]: string }>();
+
+  expect<Bravo>().type.toBe<{ [key: number]: string; [key: string]: string }>();
+  expect<Bravo>().type.toBe<{ [key: string | number]: string }>();
+  expect<Bravo>().type.not.toBe<{ [key: string]: string }>();
+
+  expect<Alpha>().type.toBe<Bravo>();
+  expect<Bravo>().type.toBe<Alpha>();
+
+  expect<{ [key: number | symbol | string]: string }>().type.toBe<{ [key: PropertyKey]: string }>();
 });
 
 test("symbol keys", () => {
