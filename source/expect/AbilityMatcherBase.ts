@@ -39,7 +39,7 @@ export abstract class AbilityMatcherBase {
       return "without type arguments";
     }
 
-    return `with the given type argument${(targetNode as ts.TupleTypeNode).elements.length === 1 ? "" : "s"}`;
+    return `with the given type argument${targetNode.elements.length === 1 ? "" : "s"}`;
   }
 
   explain(
