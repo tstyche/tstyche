@@ -16,13 +16,13 @@ And you are ready!
 
 ### Using Nix (alternative)
 
-If you prefer Nix, a `flake.nix` and `.envrc` are provided. Install [Nix](https://nixos.org/download/) and [direnv](https://direnv.net/), then allow the environment:
+If you prefer Nix, a `flake.nix` and `.envrc` are provided. Install [`nix-shell`](https://nixos.org/download) and [`direnv`](https://direnv.net/docs/installation), then allow the environment:
 
 ```shell
 direnv allow
 ```
 
-This will automatically provide Node.js and Yarn via corepack. Then install the dependencies:
+This will automatically provide Node.js and Yarn via `corepack`. Then install the dependencies:
 
 ```shell
 yarn install
@@ -46,16 +46,37 @@ mise exec node@22 -- yarn tstyche template
 
 ## Development
 
-TSTyche mostly relies on the end-to-end tests. Testing the user experience gives confidence that everything works as expected. Therefore, first build the code:
+TSTyche relies primarily on end-to-end tests to verify the user experience. This approach ensures everything works as expected in real-world scenarios.
+
+First, build the library:
 
 ```shell
 yarn build
 ```
 
-and next run the tests:
+Then run the full test suite:
 
 ```shell
 yarn test
+```
+
+Or a particular test file:
+
+```shell
+yarn test:run tests/api-expect.test.js
+```
+
+To collect code coverage for a specific test (the `--sourcemap` flag ensures accurate coverage mapping):
+
+```shell
+yarn build --sourcemap
+yarn test:run tests/api-expect.test.js --coverage
+```
+
+Or run both steps together with:
+
+```shell
+yarn test:run:coverage tests/api-expect.test.js
 ```
 
 ## Before Opening a Pull Request
