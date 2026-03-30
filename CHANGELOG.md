@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.0-rc.1] - 2026-03-30
+
+### Fixed
+
+- When checking type structure, ignore order of index signatures ([#723](https://github.com/tstyche/tstyche/pull/723))
+- Improve validation of `.toBeInstantiableWith()` ([#721](https://github.com/tstyche/tstyche/pull/721))
+
 ## [7.0.0-rc.0] - 2026-03-27
 
 _Release candidate based on [7.0.0-beta.5]._
@@ -1079,6 +1086,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-rc.1
 [7.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-rc.0
 [7.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.5
 [7.0.0-beta.4]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.4
