@@ -18,6 +18,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     if (
       !(
         this.compiler.isIdentifier(sourceNode) ||
+        this.compiler.isPropertyAccessExpression(sourceNode) ||
         this.compiler.isTypeReferenceNode(sourceNode) ||
         this.compiler.isExpressionWithTypeArguments(sourceNode)
       )

@@ -3,6 +3,10 @@ import { type _, describe, expect, test } from "tstyche";
 declare function readOption<T>(section: string): T | undefined;
 declare function readOption<T>(section: string, defaultValue: T): T;
 
+const obj = {
+  read: readOption,
+};
+
 type Func = (arg: string) => void;
 
 class Person {
@@ -48,6 +52,7 @@ describe("argument for 'source'", () => {
     expect(Person).type.toBeInstantiableWith<[]>();
 
     expect(readOption).type.toBeInstantiableWith<[string]>();
+    expect(obj.read).type.toBeInstantiableWith<[string]>();
     expect(Container).type.toBeInstantiableWith<[string]>();
   });
 });
