@@ -48,7 +48,7 @@ mise exec node@22 -- yarn tstyche template
 
 TSTyche relies primarily on end-to-end tests to verify the user experience. This approach ensures everything works as expected in real-world scenarios.
 
-First, build the library:
+Since tests run against the built library, always build your changes first:
 
 ```shell
 yarn build
@@ -66,7 +66,13 @@ Or a particular test file:
 yarn test:run tests/api-expect.test.js
 ```
 
-To collect code coverage for a specific test (the `--sourcemap` flag ensures accurate coverage mapping):
+To update snapshots, run the command with the `--write` flag:
+
+```shell
+yarn test:run tests/api-expect.test.js --write
+```
+
+To collect code coverage, run the command with the `--coverage` flag (note that in this case the library must be build with the `--sourcemap` flag to ensure accurate mapping):
 
 ```shell
 yarn build --sourcemap
