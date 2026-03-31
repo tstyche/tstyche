@@ -1955,10 +1955,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-ansi@npm:3.0.0":
-  version: 3.0.0
-  resolution: "pretty-ansi@npm:3.0.0"
-  checksum: 10c0/7f7fd916d024f2cbf29d7046394a1e965fa47e0dc2ded307b541d97f1a9548235f955df7ca97f486e5993bcf7f7c3ac851388f82087b467870d8aefe5c26f3e0
+"pretty-ansi@npm:4.0.0":
+  version: 4.0.0
+  resolution: "pretty-ansi@npm:4.0.0"
+  checksum: 10c0/60383eb284ce4345c305592ff928a5ab69e76dfb757ed484fee02f8ca42512e9b1ef784d408983472df1679040afac12bb5e394f1438f2a589a8ad6d4e1c9e8c
   languageName: node
   linkType: hard
 
@@ -2260,7 +2260,7 @@ __metadata:
     cspell: "npm:9.7.0"
     magic-string: "npm:0.30.21"
     monocart-coverage-reports: "npm:2.12.9"
-    pretty-ansi: "npm:3.0.0"
+    pretty-ansi: "npm:4.0.0"
     rollup: "npm:4.60.0"
     rollup-plugin-dts: "npm:6.4.1"
     tslib: "npm:2.8.1"
