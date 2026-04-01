@@ -19,7 +19,7 @@ jobs:
       - run: yarn build
       - run: mise run bench
 
-      - uses: bencherdev/bencher@61bbb86961ac5e0e56231dee81f2db9ebd198fbc # main
+      - uses: bencherdev/bencher@f76f8cdbdd4b10c66020928d7bb1ade1e68deda1 # main
       - name: Run bencher
         run: |
           bencher run \
