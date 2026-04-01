@@ -88,7 +88,6 @@ export class ProjectService {
       noUncheckedIndexedAccess: true,
       resolveJsonModule: true,
       strict: true,
-      verbatimModuleSyntax: true,
       target: this.#compiler.ScriptTarget.ESNext,
     };
 
