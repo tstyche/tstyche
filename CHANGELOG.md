@@ -1,5 +1,35 @@
 # Changelog
 
+## [7.0.0] - 2026-04-02
+
+_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-7) page._
+
+### Added
+
+- Publish `schemas/config.json` enabling local reference ([#709](https://github.com/tstyche/tstyche/pull/709))
+- **New!** Add the `.toBeInstantiableWith()` matcher ([#399](https://github.com/tstyche/tstyche/pull/399)), ([#721](https://github.com/tstyche/tstyche/pull/721))
+- Enable checking `@ts-expect-error` directives in multi-line comments ([#696](https://github.com/tstyche/tstyche/pull/696))
+- Enable passing JSON string for `tsconfig` configuration ([#688](https://github.com/tstyche/tstyche/pull/688))
+
+### Fixed
+
+- Remove `verbatimModuleSyntax` from the default compiler options ([#727](https://github.com/tstyche/tstyche/pull/727))
+- When checking type structure, ignore order of index signatures ([#723](https://github.com/tstyche/tstyche/pull/723))
+- Do not add TypeScript 7 to the manifest ([#710](https://github.com/tstyche/tstyche/pull/710))
+- Report incompatible TSConfig options ([#693](https://github.com/tstyche/tstyche/pull/693))
+
+### Changed
+
+- **Breaking!** Disallow passing type arguments to the `.toAcceptProps()` matcher ([#711](https://github.com/tstyche/tstyche/pull/711))
+- **Breaking!** Deprecate the `.toRaiseError()` matcher ([#705](https://github.com/tstyche/tstyche/pull/705))
+- **Breaking!** Return exit code from `Cli#run()` ([#708](https://github.com/tstyche/tstyche/pull/708))
+- **Breaking!** Rename `tstyche/tstyche` entry point to `tstyche/api` ([#697](https://github.com/tstyche/tstyche/pull/697))
+- **Breaking!** Change the default configuration file location to `./tstyche.json` ([#692](https://github.com/tstyche/tstyche/pull/692))
+- **Breaking!** Rename `tsconfig` configuration option `"ignore"` to `"baseline"` ([#691](https://github.com/tstyche/tstyche/pull/691)), ([#687](https://github.com/tstyche/tstyche/pull/687))
+- **Breaking!** Rename `usesText()` component ([#678](https://github.com/tstyche/tstyche/pull/678))
+- **Breaking!** Rename `addsText()` component ([#677](https://github.com/tstyche/tstyche/pull/677))
+- **Breaking!** Remove the `rootPath` configuration option ([#673](https://github.com/tstyche/tstyche/pull/673))
+
 ## [7.0.0-rc.1] - 2026-03-30
 
 ### Fixed
@@ -59,14 +89,13 @@ _Release candidate based on [7.0.0-beta.5]._
 ### Added
 
 - Enable passing JSON string for `tsconfig` configuration ([#688](https://github.com/tstyche/tstyche/pull/688))
-- Add the `baseline` option for `tsconfig` configuration ([#687](https://github.com/tstyche/tstyche/pull/687))
 
 ### Changed
 
 - **Breaking!** Change the default configuration file location to `./tstyche.json` ([#692](https://github.com/tstyche/tstyche/pull/692))
-- **Breaking!** Remove the `ignore` option for `tsconfig` configuration ([#691](https://github.com/tstyche/tstyche/pull/691))
-- **Breaking!** rename `usesText()` component ([#678](https://github.com/tstyche/tstyche/pull/678))
-- **Breaking!** rename `addsText()` component ([#677](https://github.com/tstyche/tstyche/pull/677))
+- **Breaking!** Rename `tsconfig` configuration option `"ignore"` to `"baseline"` ([#691](https://github.com/tstyche/tstyche/pull/691)), ([#687](https://github.com/tstyche/tstyche/pull/687))
+- **Breaking!** Rename `usesText()` component ([#678](https://github.com/tstyche/tstyche/pull/678))
+- **Breaking!** Rename `addsText()` component ([#677](https://github.com/tstyche/tstyche/pull/677))
 - **Breaking!** Remove the `rootPath` configuration option ([#673](https://github.com/tstyche/tstyche/pull/673))
 
 ## [6.2.0] - 2026-02-01
@@ -1086,6 +1115,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.0.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0
 [7.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-rc.1
 [7.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-rc.0
 [7.0.0-beta.5]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-beta.5
