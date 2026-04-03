@@ -95,6 +95,10 @@ Try TSTyche online on StackBlitz:
 
 Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 
+## Roadmap
+
+See [ROADMAP.md](https://github.com/tstyche/tstyche/blob/main/ROADMAP.md) for planned features.
+
 ## License
 
 [MIT][license-url] © TSTyche
