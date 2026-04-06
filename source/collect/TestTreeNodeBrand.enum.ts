@@ -3,5 +3,4 @@ export const enum TestTreeNodeBrand {
   Test = "test",
   It = "it",
   Expect = "expect",
-  When = "when",
 }

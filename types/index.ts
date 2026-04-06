@@ -1,7 +1,6 @@
 import type { Describe } from "./Describe.js";
 import type { Expect } from "./Expect.js";
 import type { Test } from "./Test.js";
-import type { When } from "./When.js";
 
 /**
  * The fill-in type. Useful to fill in the required type arguments of generic types.
@@ -31,9 +30,3 @@ export declare const it: Test;
  * Defines a single test.
  */
 export declare const test: Test;
-/**
- * Creates a test plan.
- *
- * @deprecated This API is planned to be removed. For a replacement, see https://tstyche.org/guides/expect-errors.
- */
-export declare const when: When;

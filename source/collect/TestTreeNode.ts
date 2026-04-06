@@ -4,11 +4,10 @@ import type { ExpectNode } from "./ExpectNode.js";
 import type { TestTree } from "./TestTree.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
-import type { WhenNode } from "./WhenNode.js";
 
 export class TestTreeNode {
   brand: TestTreeNodeBrand;
-  children: Array<TestTreeNode | ExpectNode | WhenNode> = [];
+  children: Array<TestTreeNode | ExpectNode> = [];
   diagnostics = new Set<ts.Diagnostic>();
   flags: TestTreeNodeFlags;
   name = "";

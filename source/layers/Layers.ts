@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { type ExpectNode, type TestTree, TestTreeNodeBrand, type WhenNode } from "#collect";
+import type { ExpectNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import type { ProjectService } from "#project";
 import { AbilityLayer } from "./AbilityLayer.js";
@@ -54,15 +54,7 @@ export class Layers {
     this.#suppressedLayer.close(this.#suppressedDiagnostics);
   }
 
-  visit(node: ExpectNode | WhenNode): void {
-    switch (node.brand) {
-      case TestTreeNodeBrand.Expect:
-        this.#abilityLayer.visitExpect(node as ExpectNode);
-        break;
-
-      case TestTreeNodeBrand.When:
-        this.#abilityLayer.visitWhen(node as WhenNode);
-        break;
-    }
+  visit(node: ExpectNode): void {
+    this.#abilityLayer.visitExpect(node);
   }
 }

@@ -123,9 +123,6 @@ export class IdentifierLookup {
 
       case "expect":
         return { brand: TestTreeNodeBrand.Expect, flags };
-
-      case "when":
-        return { brand: TestTreeNodeBrand.When, flags };
     }
 
     return;

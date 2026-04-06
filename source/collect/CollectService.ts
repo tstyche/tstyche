@@ -11,7 +11,6 @@ import { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
-import { WhenNode } from "./WhenNode.js";
 
 export class CollectService {
   #layers: Layers;
@@ -115,63 +114,6 @@ export class CollectService {
 
           return;
         }
-
-        if (meta.brand === TestTreeNodeBrand.When) {
-          const actionNameNode = this.#getChainedNode(node);
-
-          if (!actionNameNode) {
-            const text = "The final element in the chain must be an action.";
-            const origin = DiagnosticOrigin.fromNode(node);
-
-            this.#onDiagnostics(Diagnostic.error(text, origin));
-
-            return;
-          }
-
-          const actionNode = this.#getActionNode(actionNameNode);
-
-          if (!actionNode) {
-            const text = "The action must be called with an argument.";
-            const origin = DiagnosticOrigin.fromNode(actionNameNode);
-
-            this.#onDiagnostics(Diagnostic.error(text, origin));
-
-            return;
-          }
-
-          this.#compiler.forEachChild(actionNode, (node) => {
-            if (this.#compiler.isCallExpression(node)) {
-              const meta = this.#identifierLookup.resolveTestTreeNodeMeta(node);
-
-              if (
-                meta?.brand === TestTreeNodeBrand.Describe ||
-                meta?.brand === TestTreeNodeBrand.It ||
-                meta?.brand === TestTreeNodeBrand.Test
-              ) {
-                const text = CollectDiagnosticText.cannotBeNestedWithin(meta.brand, "when");
-                const origin = DiagnosticOrigin.fromNode(node);
-
-                this.#onDiagnostics(Diagnostic.error(text, origin));
-              }
-            }
-          });
-
-          const whenNode = new WhenNode(
-            this.#compiler,
-            meta.brand,
-            node,
-            parent,
-            meta.flags,
-            actionNode,
-            actionNameNode,
-          );
-
-          this.#layers.visit(whenNode);
-
-          this.#onNode(whenNode, parent, testTree);
-
-          return;
-        }
       }
     }
 
@@ -231,7 +173,6 @@ export class CollectService {
         break;
 
       case TestTreeNodeBrand.Expect:
-      case TestTreeNodeBrand.When:
         if (parent.brand === TestTreeNodeBrand.Describe) {
           return false;
         }
@@ -269,19 +210,11 @@ export class CollectService {
     return;
   }
 
-  #getActionNode(node: ts.Node): ts.CallExpression | undefined {
-    if (this.#compiler.isCallExpression(node.parent)) {
-      return node.parent;
-    }
-
-    return;
-  }
-
   #onDiagnostics(this: void, diagnostic: Diagnostic) {
     EventEmitter.dispatch(["collect:error", { diagnostics: [diagnostic] }]);
   }
 
-  #onNode(node: TestTreeNode | ExpectNode | WhenNode, parent: TestTree | TestTreeNode, testTree: TestTree) {
+  #onNode(node: TestTreeNode | ExpectNode, parent: TestTree | TestTreeNode, testTree: TestTree) {
     parent.children.push(node);
 
     if (node.flags & TestTreeNodeFlags.Only) {
