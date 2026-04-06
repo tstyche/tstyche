@@ -33,5 +33,7 @@ export declare const it: Test;
 export declare const test: Test;
 /**
  * Creates a test plan.
+ *
+ * @deprecated This API is planned to be removed. For a replacement, see https://tstyche.org/guides/expect-errors.
  */
 export declare const when: When;
