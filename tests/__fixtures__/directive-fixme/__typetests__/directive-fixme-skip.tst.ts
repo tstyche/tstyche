@@ -23,7 +23,7 @@ test.skip("is fixme?", () => {
   // @tstyche fixme -- Consider removing the directive
   expect<number>().type.toBe<number>();
 
-  expect<never>().type.toBe<number>(); // silenced fail
+  expect<never>().type.toBe<number>(); // suppressed fail
   expect<string>().type.toBe<string>();
 });
 
@@ -58,13 +58,13 @@ describe.skip("is fixme?", () => {
   });
 
   test("is number?", () => {
-    expect<never>().type.toBe<number>(); // silenced fail
+    expect<never>().type.toBe<number>(); // suppressed fail
     expect<number>().type.toBe<number>();
   });
 
   // @tstyche fixme
   test("is fixme?", () => {
-    expect<never>().type.toBe<number>(); // silenced fail
+    expect<never>().type.toBe<number>(); // suppressed fail
     expect<string>().type.toBe<string>();
   });
 
@@ -81,7 +81,7 @@ describe.skip("is describe?", () => {
 
   // @tstyche fixme
   test("is fixme?", () => {
-    expect<never>().type.toBe<number>(); // silenced fail
+    expect<never>().type.toBe<number>(); // suppressed fail
     expect<string>().type.toBe<string>();
   });
 
@@ -118,7 +118,7 @@ describe("is describe?", () => {
     // @tstyche fixme
     expect<never>().type.toBe<number>();
 
-    expect<never>().type.toBe<number>(); // silenced fail
+    expect<never>().type.toBe<number>(); // suppressed fail
     expect<number>().type.toBe<number>();
   });
 });

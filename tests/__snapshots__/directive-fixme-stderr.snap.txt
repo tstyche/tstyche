@@ -36,7 +36,7 @@ Consider removing the '// @tstyche fixme' directive.
      |   ~~~~~~~~~~~~~~~~~
   22 |   expect<number>().type.toBe<number>();
   23 | 
-  24 |   expect<never>().type.toBe<number>(); // silenced fail
+  24 |   expect<never>().type.toBe<number>(); // suppressed fail
 
        at ./__typetests__/directive-fixme.tst.ts:21:3
 
