@@ -25,8 +25,4 @@ export class DiagnosticOrigin {
   static fromNode(node: ts.Node, assertionNode?: ExpectNode): DiagnosticOrigin {
     return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), assertionNode);
   }
-
-  static fromNodes(nodes: ts.NodeArray<ts.Node>, assertionNode?: ExpectNode): DiagnosticOrigin {
-    return new DiagnosticOrigin(nodes.pos, nodes.end, nodes[0]!.getSourceFile(), assertionNode);
-  }
 }
