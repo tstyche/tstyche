@@ -352,19 +352,19 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.3.0] - 2025-07-16
 
-## Added
+### Added
 
 - **New!** Add the `fixtureFileMatch` configuration option ([#534](https://github.com/tstyche/tstyche/pull/534))
 
 ## [4.2.0] - 2025-07-15
 
-## Added
+### Added
 
 - **New!** Add support for glob brace expansion ([#523](https://github.com/tstyche/tstyche/pull/523), [#524](https://github.com/tstyche/tstyche/pull/524))
 
 ## [4.1.0] - 2025-06-26
 
-## Added
+### Added
 
 - **New!** Check errors hidden by `// @ts-expect-error` ([#511](https://github.com/tstyche/tstyche/pull/511), [#516](https://github.com/tstyche/tstyche/pull/516))
 - Enable `noUncheckedSideEffectImports` in default compiler options ([#514](https://github.com/tstyche/tstyche/pull/514))
@@ -385,7 +385,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
-## Added
+### Added
 
 - **New!**  Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
 - **New!** Add template test file support ([#468](https://github.com/tstyche/tstyche/pull/468), [#469](https://github.com/tstyche/tstyche/pull/469), [#470](https://github.com/tstyche/tstyche/pull/470))
@@ -426,11 +426,11 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.0.0-rc.1] - 2025-05-25
 
-## Added
+### Added
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
-## Added
+### Added
 
 - **New!**  Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
 
@@ -454,7 +454,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
-## Added
+### Added
 
 - Bring back support for TypeScript >=4.7 ([#476](https://github.com/tstyche/tstyche/pull/476))
 - Add validation for `when()` target ([#480](https://github.com/tstyche/tstyche/pull/480))
@@ -471,7 +471,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
-## Added
+### Added
 
 - Add validation for template test files ([#470](https://github.com/tstyche/tstyche/pull/470))
 
