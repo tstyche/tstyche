@@ -11,7 +11,7 @@ import { Version } from "#version";
 export class ProjectService {
   #compiler: typeof ts;
   #host: ts.server.ServerHost;
-  #lastSeenProject: string | undefined = "";
+  #lastSeenProject: string | undefined = "none";
   #projectConfig: ProjectConfig;
   #resolvedConfig: ResolvedConfig;
   #seenProjects = new Set<string | undefined>();
