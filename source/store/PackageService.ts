@@ -20,38 +20,8 @@ export class PackageService {
     this.#lockService = lockService;
   }
 
-  async #add(packagePath: string, resource: { integrity: string; tarball: string }, diagnostic: Diagnostic) {
-    const request = new Request(resource.tarball, { integrity: resource.integrity });
-
-    const response = await this.#fetcher.get(request, diagnostic);
-
-    if (response?.body != null) {
-      const targetPath = await fs.mkdtemp(`${packagePath}-`);
-
-      const stream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
-      const tarReader = new TarReader(stream);
-
-      for await (const file of tarReader.extract()) {
-        const filePath = Path.join(targetPath, file.name.replace(/^package\//, ""));
-        const directoryPath = Path.dirname(filePath);
-
-        if (!existsSync(directoryPath)) {
-          await fs.mkdir(directoryPath, { recursive: true });
-        }
-
-        await fs.writeFile(filePath, file.content);
-      }
-
-      await fs.rename(targetPath, packagePath);
-
-      return packagePath;
-    }
-
-    return;
-  }
-
   async ensure(packageVersion: string, manifest?: Manifest): Promise<string | undefined> {
-    let packagePath: string | undefined = Path.join(this.#storePath, `typescript@${packageVersion}`);
+    const packagePath = Path.join(this.#storePath, `typescript@${packageVersion}`);
 
     const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageVersion));
 
@@ -67,18 +37,38 @@ export class PackageService {
 
     const resource = manifest?.packages[packageVersion];
 
-    if (resource != null) {
-      const lock = this.#lockService.getLock(packagePath);
-
-      try {
-        packagePath = await this.#add(packagePath, resource, diagnostic);
-      } finally {
-        lock.release();
-      }
-
-      return packagePath;
+    if (!resource) {
+      return;
     }
 
-    return;
+    const lock = this.#lockService.getLock(packagePath);
+
+    try {
+      const request = new Request(resource.tarball, { integrity: resource.integrity });
+      const response = await this.#fetcher.get(request, diagnostic);
+
+      if (!response?.body) {
+        return;
+      }
+
+      const targetPath = await fs.mkdtemp(`${packagePath}-`);
+
+      const stream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
+      const tarReader = new TarReader(stream);
+
+      for await (const file of tarReader.extract()) {
+        const filePath = Path.join(targetPath, file.name.replace(/^package\//, ""));
+        const directoryPath = Path.dirname(filePath);
+
+        await fs.mkdir(directoryPath, { recursive: true });
+        await fs.writeFile(filePath, file.content);
+      }
+
+      await fs.rename(targetPath, packagePath);
+
+      return packagePath;
+    } finally {
+      lock.release();
+    }
   }
 }
