@@ -1,18 +1,10 @@
 import { expect, test } from "tstyche";
 
-interface Context {
-  options?: unknown;
-}
+declare function fetchData(url: string, callback: (error: Error | null, data: unknown) => void): void;
 
-declare function onEvent(handler: (eventName: "start" | "end", context: Context) => Context): void;
-
-test("onEvent", () => {
-  expect(
-    onEvent((eventName, context) => {
-      expect(eventName).type.toBe<"start" | "end">();
-      expect(context).type.toBe<Context>();
-
-      return context;
-    }),
-  ).type.toBe<void>();
+test("fetchData", () => {
+  fetchData("https://api.example.com", (error, data) => {
+    expect(error).type.toBe<Error | null>();
+    expect(data).type.toBe<unknown>();
+  });
 });

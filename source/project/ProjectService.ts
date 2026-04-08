@@ -11,7 +11,7 @@ import { Version } from "#version";
 export class ProjectService {
   #compiler: typeof ts;
   #host: ts.server.ServerHost;
-  #lastSeenProject: string | undefined = "";
+  #lastSeenProject: string | undefined = "none";
   #projectConfig: ProjectConfig;
   #resolvedConfig: ResolvedConfig;
   #seenProjects = new Set<string | undefined>();
@@ -162,7 +162,7 @@ export class ProjectService {
     if (Options.isJsonString(specifier)) {
       return {
         kind: ProjectConfigKind.Synthetic,
-        specifier: Path.resolve(this.#resolvedConfig.rootPath, `${Math.random().toString(32).slice(2)}.tsconfig.json`),
+        specifier: Path.resolve(this.#resolvedConfig.rootPath, `${Date.now().toString(36)}.tsconfig.json`),
       };
     }
 

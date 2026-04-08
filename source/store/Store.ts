@@ -25,16 +25,11 @@ export class Store {
   static {
     Store.#fetcher = new Fetcher(Store.#onDiagnostics, Store.#timeout);
     Store.#lockService = new LockService(Store.#onDiagnostics, Store.#timeout);
-
     Store.#packageService = new PackageService(Store.#storePath, Store.#fetcher, Store.#lockService);
     Store.#manifestService = new ManifestService(Store.#storePath, Store.#npmRegistry, Store.#fetcher);
   }
 
-  static async fetch(tag: string): Promise<void> {
-    if (tag === "*" && environmentOptions.typescriptModule != null) {
-      return;
-    }
-
+  static async #ensure(tag: string) {
     await Store.open();
 
     const version = Store.manifest?.resolve(tag);
@@ -45,7 +40,15 @@ export class Store {
       return;
     }
 
-    await Store.#packageService.ensure(version, Store.manifest);
+    return await Store.#packageService.ensure(version, Store.manifest!);
+  }
+
+  static async fetch(tag: string): Promise<void> {
+    if (tag === "*" && environmentOptions.typescriptModule != null) {
+      return;
+    }
+
+    await Store.#ensure(tag);
   }
 
   static async load(tag: string): Promise<typeof ts | undefined> {
@@ -54,17 +57,7 @@ export class Store {
     if (tag === "*" && environmentOptions.typescriptModule != null) {
       resolvedModule = environmentOptions.typescriptModule;
     } else {
-      await Store.open();
-
-      const version = Store.manifest?.resolve(tag);
-
-      if (!version) {
-        Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
-
-        return;
-      }
-
-      const packagePath = await Store.#packageService.ensure(version, Store.manifest);
+      const packagePath = await Store.#ensure(tag);
 
       if (packagePath != null) {
         resolvedModule = pathToFileURL(`${packagePath}/lib/typescript.js`).toString();
@@ -83,8 +76,9 @@ export class Store {
   }
 
   static async open(): Promise<void> {
-    // ensure '.open()' can only be called once
-    Store.open = () => Promise.resolve();
+    if (Store.manifest != null) {
+      return;
+    }
 
     Store.manifest = await Store.#manifestService.open();
 

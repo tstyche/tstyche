@@ -132,10 +132,7 @@ export class ManifestService {
   }
 
   async #persist(manifest: Manifest): Promise<void> {
-    if (!existsSync(this.#storePath)) {
-      await fs.mkdir(this.#storePath, { recursive: true });
-    }
-
+    await fs.mkdir(this.#storePath, { recursive: true });
     await fs.writeFile(this.#manifestFilePath, manifest.stringify());
   }
 

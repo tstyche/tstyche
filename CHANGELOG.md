@@ -758,7 +758,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ### Fixed
 
-- Remove environment options to `ResolvedConfig` (reverts [#299](https://github.com/tstyche/tstyche/pull/299)) ([#336](https://github.com/tstyche/tstyche/pull/334))
+- Remove environment options from `ResolvedConfig` (reverts [#299](https://github.com/tstyche/tstyche/pull/299)) ([#336](https://github.com/tstyche/tstyche/pull/336))
 
 ### Changed
 
