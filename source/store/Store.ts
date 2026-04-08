@@ -76,8 +76,9 @@ export class Store {
   }
 
   static async open(): Promise<void> {
-    // ensure '.open()' can only be called once
-    Store.open = () => Promise.resolve();
+    if (Store.manifest != null) {
+      return;
+    }
 
     Store.manifest = await Store.#manifestService.open();
 
