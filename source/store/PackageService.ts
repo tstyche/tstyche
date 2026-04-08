@@ -20,7 +20,7 @@ export class PackageService {
     this.#lockService = lockService;
   }
 
-  async ensure(packageVersion: string, manifest?: Manifest): Promise<string | undefined> {
+  async ensure(packageVersion: string, manifest: Manifest): Promise<string | undefined> {
     const packagePath = Path.join(this.#storePath, `typescript@${packageVersion}`);
 
     const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageVersion));
@@ -35,11 +35,7 @@ export class PackageService {
 
     EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
 
-    const resource = manifest?.packages[packageVersion];
-
-    if (!resource) {
-      return;
-    }
+    const resource = manifest.packages[packageVersion]!;
 
     const lock = this.#lockService.getLock(packagePath);
 
