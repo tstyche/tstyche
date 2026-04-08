@@ -26,7 +26,7 @@ export class PackageService {
     const response = await this.#fetcher.get(request, diagnostic);
 
     if (response?.body != null) {
-      const targetPath = `${packagePath}-${Date.now().toString(36)}`;
+      const targetPath = await fs.mkdtemp(`${packagePath}-`);
 
       const stream = response.body.pipeThrough<Uint8Array>(new DecompressionStream("gzip"));
       const tarReader = new TarReader(stream);
