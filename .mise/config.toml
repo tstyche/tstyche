@@ -1,7 +1,7 @@
 [tools]
 hyperfine = "1.20.0"
 jsonschema = "14.17.1"
-node = "24.14.1"
+node = "24.15.0"
 yarn = "4.13.0"
 
 [tasks."generate:schemas"]
