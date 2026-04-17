@@ -2,7 +2,7 @@
 hyperfine = "1.20.0"
 jsonschema = "14.20.2"
 node = "24.15.0"
-yarn = "4.14.0"
+yarn = "4.14.1"
 
 [tasks."generate:schemas"]
 run = "node ./scripts/generate-schemas.ts"
