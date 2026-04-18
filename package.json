@@ -61,7 +61,7 @@
     "code-block-writer": "13.0.3",
     "cspell": "10.0.0",
     "magic-string": "0.30.21",
-    "monocart-coverage-reports": "2.12.9",
+    "monocart-coverage-reports": "2.12.10",
     "pretty-ansi": "4.0.0",
     "rollup": "4.60.1",
     "rollup-plugin-dts": "6.4.1",
