@@ -11,10 +11,6 @@ import type {
   TestResult,
 } from "#result";
 
-export interface EventHandler {
-  on: (event: Event) => void;
-}
-
 export type Event =
   | ["config:error", { diagnostics: Array<Diagnostic> }]
   | ["select:error", { diagnostics: Array<Diagnostic> }]
@@ -53,3 +49,7 @@ export type Event =
   | ["suppressed:match", { result: SuppressedResult }]
   | ["suppressed:ignore", { result: SuppressedResult }]
   | ["watch:error", { diagnostics: Array<Diagnostic> }];
+
+export interface EventHandler {
+  on: (event: Event) => void;
+}
