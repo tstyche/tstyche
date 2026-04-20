@@ -110,14 +110,14 @@ export class Options {
 
     {
       brand: OptionBrand.String,
-      description: "Only run tests with matching name.",
+      description: "Only run tests with a matching name.",
       group: OptionGroup.CommandLine,
       name: "only",
     },
 
     {
       brand: OptionBrand.True,
-      description: "Remove all installed versions of the 'typescript' package and exit.",
+      description: "Remove all fetched versions of the 'typescript' package and exit.",
       group: OptionGroup.CommandLine,
       name: "prune",
     },
@@ -156,7 +156,7 @@ export class Options {
 
     {
       brand: OptionBrand.String,
-      description: "The path to a directory containing files of a test project.",
+      description: "The path to the root directory of a test project.",
       group: OptionGroup.CommandLine,
       name: "root",
     },
@@ -170,14 +170,14 @@ export class Options {
 
     {
       brand: OptionBrand.String,
-      description: "Skip tests with matching name.",
+      description: "Skip tests with a matching name.",
       group: OptionGroup.CommandLine,
       name: "skip",
     },
 
     {
       brand: OptionBrand.SemverRange,
-      description: "The range of TypeScript versions to test against.",
+      description: "The TypeScript version or range of versions to test against.",
       group: OptionGroup.CommandLine | OptionGroup.ConfigFile | OptionGroup.InlineConditions,
       name: "target",
     },
