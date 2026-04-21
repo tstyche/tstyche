@@ -30,14 +30,14 @@ test("isSameLength", () => {
 });
 ```
 
-To group and organize tests, TSTyche has:
+TSTyche lets you organize tests using:
 
-- `test()`, `it()` and `describe()` helpers,
-- with `.only`, `.skip` and `.todo` run mode flags.
+- helpers: `test()`, `it()` and `describe()`
+- run mode flags: `.only`, `.skip` and `.todo`
 
 ## Assertions
 
-The `expect` style assertions can check either the inferred type of an expression (as in the example above) or a type directly:
+The `expect` style assertions can check either the inferred type of an expression or a type directly:
 
 ```ts
 import { type _, expect } from "tstyche";
@@ -58,32 +58,32 @@ expect<WithLoading<_>>().type.not.toBeInstantiableWith<[string]>();
 
 Relation matchers:
 
-- `.toBe()` checks if a type is the same as the given type,
-- `.toBeAssignableFrom()` checks if a type is assignable from the given type,
-- `.toBeAssignableTo()` checks if a type is assignable to the given type.
+- `.toBe()` checks if a type is the same as the given type
+- `.toBeAssignableFrom()` checks if a type is assignable from the given type
+- `.toBeAssignableTo()` checks if a type is assignable to the given type
 
 Ability matchers:
 
-- `.toAcceptProps()` checks if a JSX component accepts the given props,
-- `.toBeApplicable` checks if a decorator is applicable to the given class or class member,
-- `.toBeCallableWith()` checks if a function is callable with the given arguments,
-- `.toBeConstructableWith()` checks if a class is constructable with the given arguments,
-- `.toBeInstantiableWith()` checks if a generic is instantiable with the given type arguments,
-- `.toHaveProperty()` checks if a type has the given property.
+- `.toAcceptProps()` checks if a JSX component accepts the given props
+- `.toBeApplicable` checks if a decorator is applicable to the given class or class member
+- `.toBeCallableWith()` checks if a function is callable with the given arguments
+- `.toBeConstructableWith()` checks if a class is constructable with the given arguments
+- `.toBeInstantiableWith()` checks if a generic is instantiable with the given type arguments
+- `.toHaveProperty()` checks if a type has the given property
 
 ## Runner
 
-The `tstyche` command is the heart of TSTyche. It allows you to select test files by path, filter tests by name and run them against specific versions of TypeScript:
+The `tstyche` command is the heart of TSTyche. It lets you select test files by path, filter tests by name and run them against specific versions of TypeScript:
 
 ```shell
 tstyche query-params --only multiple --target '>=5.6'
 ```
 
-It is that simple! Actually, TSTyche does even more:
+That is just the beginning. It even lets you:
 
-- checks messages of errors suppressed by `@ts-expect-error` directives,
-- generates type tests from a data table,
-- runs tests in watch mode.
+- check messages of errors suppressed by `@ts-expect-error` directives
+- generate type tests from a template file
+- run tests in watch mode
 
 ## Try It Out
 

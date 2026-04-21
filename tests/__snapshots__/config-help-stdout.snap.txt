@@ -31,10 +31,10 @@ Command Line Options
   Print the list of selected test files and exit.
 
   --only  string
-  Only run tests with matching name.
+  Only run tests with a matching name.
 
   --prune
-  Remove all installed versions of the 'typescript' package and exit.
+  Remove all fetched versions of the 'typescript' package and exit.
 
   --quiet  boolean
   Silence all test runner output except errors and warnings.
@@ -43,16 +43,16 @@ Command Line Options
   The list of reporters to use.
 
   --root  string
-  The path to a directory containing files of a test project.
+  The path to the root directory of a test project.
 
   --showConfig
   Print the resolved configuration and exit.
 
   --skip  string
-  Skip tests with matching name.
+  Skip tests with a matching name.
 
   --target  string
-  The range of TypeScript versions to test against.
+  The TypeScript version or range of versions to test against.
 
   --tsconfig  string
   The TSConfig to load.

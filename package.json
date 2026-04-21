@@ -53,20 +53,20 @@
     "test:unit": "yarn test:run source/**/__tests__/*.test.js --parallel"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.10",
+    "@biomejs/biome": "2.4.12",
     "@rollup/plugin-typescript": "12.3.0",
     "@types/node": "24.12.2",
     "@types/react": "19.2.14",
     "cleaner-spec-reporter": "1.0.3",
     "code-block-writer": "13.0.3",
-    "cspell": "9.8.0",
+    "cspell": "10.0.0",
     "magic-string": "0.30.21",
-    "monocart-coverage-reports": "2.12.9",
+    "monocart-coverage-reports": "2.12.10",
     "pretty-ansi": "4.0.0",
     "rollup": "4.60.1",
     "rollup-plugin-dts": "6.4.1",
     "tslib": "2.8.1",
-    "typescript": "6.0.2"
+    "typescript": "6.0.3"
   },
   "peerDependencies": {
     "typescript": ">=5.4"
@@ -76,7 +76,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@4.13.0",
+  "packageManager": "yarn@4.14.1",
   "engines": {
     "node": ">=22.12"
   }
