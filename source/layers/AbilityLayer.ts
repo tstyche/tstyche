@@ -1,6 +1,5 @@
 import type ts from "typescript";
-import type { ExpectNode, WhenNode } from "#collect";
-import { TestTreeNodeBrand } from "#collect";
+import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import { nodeBelongsToArgumentList, nodeIsChildOfExpressionStatement } from "./helpers.js";
 import type { SourceTextEditor } from "./SourceTextEditor.js";
@@ -8,29 +7,18 @@ import type { SourceTextEditor } from "./SourceTextEditor.js";
 export class AbilityLayer {
   #compiler: typeof ts;
   #editor: SourceTextEditor;
-  #nodes: Array<ExpectNode | WhenNode> = [];
+  #nodes: Array<ExpectNode> = [];
 
   constructor(compiler: typeof ts, editor: SourceTextEditor) {
     this.#compiler = compiler;
     this.#editor = editor;
   }
 
-  #belongsToNode(node: ExpectNode | WhenNode, diagnostic: ts.Diagnostic) {
-    switch (node.brand) {
-      case TestTreeNodeBrand.Expect:
-        return (
-          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).matcherNode) ||
-          diagnosticBelongsToNode(diagnostic, (node as ExpectNode).source)
-        );
-
-      case TestTreeNodeBrand.When:
-        return (
-          diagnosticBelongsToNode(diagnostic, (node as WhenNode).actionNode) &&
-          !diagnosticBelongsToNode(diagnostic, (node as WhenNode).target)
-        );
-    }
-
-    return false;
+  #belongsToNode(node: ExpectNode, diagnostic: ts.Diagnostic) {
+    return (
+      diagnosticBelongsToNode(diagnostic, (node as ExpectNode).matcherNode) ||
+      diagnosticBelongsToNode(diagnostic, (node as ExpectNode).source)
+    );
   }
 
   close(diagnostics: Array<ts.Diagnostic> | undefined): void {
@@ -240,27 +228,6 @@ export class AbilityLayer {
 
         break;
       }
-    }
-  }
-
-  visitWhen(when: WhenNode): void {
-    const whenStart = when.node.getStart();
-    const whenExpressionEnd = when.node.expression.getEnd();
-    const whenEnd = when.node.getEnd();
-    const actionNameEnd = when.actionNameNode.getEnd();
-
-    switch (when.actionNameNode.name.text) {
-      case "isCalledWith":
-        this.#nodes.push(when);
-
-        this.#editor.eraseTrailingComma(when.target);
-
-        this.#editor.replaceRanges([
-          [whenStart, whenExpressionEnd, nodeIsChildOfExpressionStatement(this.#compiler, when.actionNode) ? ";" : ""],
-          [whenEnd, actionNameEnd],
-        ]);
-
-        break;
     }
   }
 }

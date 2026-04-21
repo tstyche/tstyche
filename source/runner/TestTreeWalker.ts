@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags, type WhenNode } from "#collect";
+import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -8,7 +8,6 @@ import { Reject } from "#reject";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
-import { WhenService } from "#when";
 import { FixmeService } from "./FixmeService.js";
 import { RunModeFlags } from "./RunModeFlags.enum.js";
 
@@ -26,7 +25,6 @@ export class TestTreeWalker {
   #onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
-  #whenService: WhenService;
 
   constructor(
     compiler: typeof ts,
@@ -46,7 +44,6 @@ export class TestTreeWalker {
     const reject = new Reject(compiler, program, resolvedConfig);
 
     this.#expectService = new ExpectService(compiler, program, reject);
-    this.#whenService = new WhenService(compiler, reject, onFileDiagnostics);
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
@@ -85,7 +82,7 @@ export class TestTreeWalker {
   }
 
   async visit(
-    nodes: Array<TestTreeNode | ExpectNode | WhenNode>,
+    nodes: Array<TestTreeNode | ExpectNode>,
     runModeFlags: RunModeFlags,
     parentResult: DescribeResult | TestResult | undefined,
   ): Promise<void> {
@@ -112,10 +109,6 @@ export class TestTreeWalker {
 
         case TestTreeNodeBrand.Expect:
           await this.#visitExpect(node as ExpectNode, runModeFlags, parentResult as TestResult | undefined);
-          break;
-
-        case TestTreeNodeBrand.When:
-          this.#visitWhen(node as WhenNode);
           break;
       }
 
@@ -258,9 +251,5 @@ export class TestTreeWalker {
     } else {
       EventEmitter.dispatch(["test:fail", { result: testResult }]);
     }
-  }
-
-  #visitWhen(when: WhenNode) {
-    this.#whenService.action(when);
   }
 }
