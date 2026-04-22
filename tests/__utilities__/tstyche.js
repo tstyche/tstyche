@@ -17,11 +17,6 @@ export function spawnTyche(fixtureUrl, args = [], options = {}) {
       ...options.env,
     };
 
-    // TODO remove this after dropping support for Node.js 22.18
-    if (process.versions.node.startsWith("22.12")) {
-      env["NODE_OPTIONS"] = "--experimental-strip-types --no-warnings";
-    }
-
     const tstyche = spawn(["tstyche", ...args].join(" "), {
       cwd: fixtureUrl,
       env,
