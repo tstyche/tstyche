@@ -1,24 +1,19 @@
 // TODO remove the plugin after fixing: https://github.com/yarnpkg/berry/issues/6793
 
-const fs = require("node:fs/promises");
-const path = require("node:path");
-
-/**
- * @typedef {Object} Hooks
- * @property {(executor: () => Promise<number>, _project: never, _locator: never, scriptName: string ) => () => Promise<number>} wrapScriptExecution
- */
+import fs from "node:fs/promises";
+import path from "node:path";
 
 const changelogFileName = "CHANGELOG.md";
 
 const changelogFilePath = path.resolve(changelogFileName);
 const hiddenFilePath = path.resolve(`.${changelogFileName}`);
 
-module.exports = {
-  name: "hide-changelog",
-  factory: () => ({
-    /** @type {Hooks} */
+export const name = "hide-changelog";
+
+export function factory() {
+  return {
     hooks: {
-      wrapScriptExecution(executor, _project, _locator, scriptName) {
+      wrapScriptExecution(executor: () => Promise<number>, _project: any, _locator: any, scriptName: string) {
         if (scriptName.startsWith("publish")) {
           return async () => {
             await fs.rename(changelogFilePath, hiddenFilePath);
@@ -34,5 +29,5 @@ module.exports = {
         return executor;
       },
     },
-  }),
-};
+  };
+}
