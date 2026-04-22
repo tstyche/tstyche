@@ -52,10 +52,7 @@ function tidyDts(): Plugin {
     renderChunk(code) {
       const magicString = new MagicString(code);
 
-      magicString.replaceAll("import", "import type");
-
-      magicString.replaceAll("const enum", "enum");
-
+      magicString.replaceAll(/\bconst enum\b/g, "enum");
       magicString.replaceAll("__version__", packageConfig.version);
 
       return {
