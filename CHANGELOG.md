@@ -19,13 +19,13 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ### Fixed
 
-- Remove `verbatimModuleSyntax` from the default compiler options ([#727](https://github.com/tstyche/tstyche/pull/727))
 - When checking type structure, ignore order of index signatures ([#723](https://github.com/tstyche/tstyche/pull/723))
 - Do not add TypeScript 7 to the manifest ([#710](https://github.com/tstyche/tstyche/pull/710))
 - Report incompatible TSConfig options ([#693](https://github.com/tstyche/tstyche/pull/693))
 
 ### Changed
 
+- Remove `verbatimModuleSyntax` from the default compiler options ([#727](https://github.com/tstyche/tstyche/pull/727))
 - **Breaking!** Disallow passing type arguments to the `.toAcceptProps()` matcher ([#711](https://github.com/tstyche/tstyche/pull/711))
 - **Breaking!** Deprecate the `.toRaiseError()` matcher ([#705](https://github.com/tstyche/tstyche/pull/705))
 - **Breaking!** Return exit code from `Cli#run()` ([#708](https://github.com/tstyche/tstyche/pull/708))
@@ -431,8 +431,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 - **Breaking!** Remove `Version.isVersionTag()` method ([#414](https://github.com/tstyche/tstyche/pull/414))
 
 ## [4.0.0-rc.1] - 2025-05-25
-
-### Added
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
