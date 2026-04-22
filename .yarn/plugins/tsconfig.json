@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "erasableSyntaxOnly": true,
+    "noEmit": true,
+    "rewriteRelativeImportExtensions": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["**/*"],
+  "exclude": []
+}

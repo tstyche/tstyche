@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import fs from "node:fs/promises";
 import CodeBlockWriter from "code-block-writer";
 import * as tstyche from "tstyche/api";
@@ -54,7 +56,7 @@ for (const [identifier, optionDefinitions] of interfacesToWrite) {
 
 writer.writeLine("// #endregion");
 
-const fileUrl = new URL("../source/config/types.ts", import.meta.url);
+const fileUrl = new URL("../../../source/config/types.ts", import.meta.url);
 const fileText = await fs.readFile(fileUrl, { encoding: "utf8" });
 const updatedFileText = fileText.replace(/\/\/ #region[\s\S]*?\/\/ #endregion\n/, writer.toString());
 
