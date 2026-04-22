@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.1.0] - 2026-04-22
+
+### Changed
+
+- Remove the experimental `when()` helper ([#730](https://github.com/tstyche/tstyche/pull/730))
+
 ## [7.0.0] - 2026-04-02
 
 _If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-7) page._
@@ -1115,6 +1121,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.1.0]: https://github.com/tstyche/tstyche/releases/tag/v7.1.0
 [7.0.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0
 [7.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-rc.1
 [7.0.0-rc.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-rc.0
