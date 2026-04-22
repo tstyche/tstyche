@@ -4,15 +4,13 @@ Pull requests and suggestions are welcome! Before submitting new features or beh
 
 ## Prerequisites
 
-To be able to work with this repository, you will need the latest LTS version of Node.js and the latest version of Yarn. We use `mise` to get both of them set up correctly.
+To work with this repository, you will need the latest LTS version of Node.js and the latest version of Yarn. We use `mise` to get both of them set up correctly.
 
-To install `mise`, follow [their instructions](https://mise.jdx.dev/getting-started.html). Next, tell Yarn to install the dependencies:
+To install `mise`, follow [their instructions](https://mise.jdx.dev/getting-started.html). Then install the dependencies:
 
 ```shell
 yarn install
 ```
-
-And you are ready!
 
 ### Using Nix (alternative)
 
@@ -22,7 +20,7 @@ If you prefer Nix, a `flake.nix` and `.envrc` are provided. Install [`nix-shell`
 direnv allow
 ```
 
-This will automatically provide Node.js and Yarn via `corepack`. Then install the dependencies:
+This will automatically provide Node.js and Yarn. Then install the dependencies:
 
 ```shell
 yarn install
@@ -38,7 +36,7 @@ yarn tstyche callbacks
 
 ### Why `mise`?
 
-Its `exec` command simplifies running TSTyche using the specific Node.js version. That is useful while working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
+Its `exec` command simplifies running TSTyche using the specific Node.js version. This is useful when working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
 
 ```shell
 mise exec node@22 -- yarn tstyche template
@@ -46,7 +44,7 @@ mise exec node@22 -- yarn tstyche template
 
 ## Development
 
-TSTyche relies primarily on end-to-end tests to verify the user experience. This approach ensures everything works as expected in real-world scenarios.
+TSTyche relies primarily on end-to-end tests to verify the user experience.
 
 Since tests run against the built library, always build your changes first:
 
@@ -72,7 +70,7 @@ To update snapshots, run the command with the `--write` flag:
 yarn test:run tests/api-expect.test.js --write
 ```
 
-To collect code coverage, run the command with the `--coverage` flag (note that in this case the library must be build with the `--sourcemap` flag to ensure accurate mapping):
+To collect code coverage, run the command with the `--coverage` flag (note that in this case the library must be built with the `--sourcemap` flag to ensure accurate mapping):
 
 ```shell
 yarn build --sourcemap

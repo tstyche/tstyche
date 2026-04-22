@@ -12,11 +12,8 @@
     devShells = forAllSystems (pkgs: {
       default = pkgs.mkShell {
         packages = with pkgs; [
-          corepack_24
           nodejs_24
-
-          mise
-          python3
+          yarn-berry_4
         ];
       };
     });
