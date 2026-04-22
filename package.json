@@ -37,7 +37,7 @@
     "schemas/*.json"
   ],
   "scripts": {
-    "build": "rollup --config ./scripts/rollup.ts",
+    "build": "rollup --config ./.rollup/config.ts",
     "check": "yarn check:spelling && yarn check:types",
     "check:spelling": "cspell --config ./cspell.json --quiet",
     "check:types": "tsc --build --force --verbose",

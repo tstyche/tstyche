@@ -27,7 +27,7 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "./scripts/tsconfig.json" },
+    { "path": "./.rollup/tsconfig.json" },
     { "path": "./source/tsconfig.json" },
     { "path": "./source/output/__tests__/tsconfig.json" },
     { "path": "./source/version/__tests__/tsconfig.json" },
