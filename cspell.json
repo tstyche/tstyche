@@ -7,9 +7,11 @@
   "files": [
     "*.json",
     "*.md",
+    ".mise/**/*",
+    ".rollup/**/*",
+    ".yarn/plugins/**/*",
     "examples/**/*",
     "schemas/**/*",
-    "scripts/**/*",
     "source/**/*",
     "tests/**/*",
     "types/**/*",
