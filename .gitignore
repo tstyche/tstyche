@@ -2,8 +2,6 @@
 .direnv
 .generated
 .idea
-.yarn/*
-!.yarn/plugins
 coverage
 dist
 node_modules

@@ -9,7 +9,6 @@
     "*.md",
     ".mise/**/*",
     ".rollup/**/*",
-    ".yarn/plugins/**/*",
     "examples/**/*",
     "schemas/**/*",
     "source/**/*",

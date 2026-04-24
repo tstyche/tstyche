@@ -25,8 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
-      - run: yarn build --sourcemap
+      - run: aube ci
+      - run: aube run build --sourcemap
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: dist-${{ github.sha }}
@@ -42,8 +42,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
-      - run: yarn biome ci --error-on-warnings
+      - run: aube ci
+      - run: aube exec biome ci --error-on-warnings
 
   check-spelling:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -55,8 +55,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
-      - run: yarn check:spelling
+      - run: aube ci
+      - run: aube run spellcheck
 
   check-types:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -68,12 +68,12 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
+      - run: aube ci
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: dist-${{ github.sha }}
           path: dist
-      - run: yarn check:types
+      - run: aube run typecheck
 
   test-schemas:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -97,7 +97,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
+      - run: aube ci
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: dist-${{ github.sha }}
@@ -106,8 +106,8 @@ jobs:
       - name: Get TypeScript Target
         run: echo "tstyche_target=$(jq -r '.peerDependencies.typescript' ./package.json)" >> "$GITHUB_ENV"
 
-      - run: yarn test:types --target '${{ env.tstyche_target }}'
-      - run: yarn test:examples --target '${{ env.tstyche_target }}'
+      - run: aube run test:types --target '${{ env.tstyche_target }}'
+      - run: aube run test:examples --target '${{ env.tstyche_target }}'
 
   test-node:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -125,12 +125,12 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
+      - run: aube ci
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: dist-${{ github.sha }}
           path: dist
-      - run: mise exec node@${{ matrix.node-version }} -- yarn test
+      - run: mise exec node@${{ matrix.node-version }} -- aube run test
 
   test-os:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -147,12 +147,12 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
+      - run: aube ci
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: dist-${{ github.sha }}
           path: dist
-      - run: yarn test
+      - run: aube run test
 
   test-coverage:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -169,12 +169,12 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
+      - run: aube ci
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: dist-${{ github.sha }}
           path: dist
-      - run: yarn test:e2e --coverage
+      - run: aube run test:e2e --coverage
       - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
           disable_search: true

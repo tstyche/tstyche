@@ -15,8 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
-      - run: yarn build
+      - run: aube ci
+      - run: aube run build
       - run: mise run bench
 
       - uses: bencherdev/bencher@46d007c103827da37db1a25b705dc73d3aaff7e6 # main

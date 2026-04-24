@@ -38,19 +38,18 @@
   ],
   "scripts": {
     "build": "rollup --config ./.rollup/config.ts",
-    "check": "yarn check:spelling && yarn check:types",
-    "check:spelling": "cspell --config ./cspell.json --quiet",
-    "check:types": "tsc --build --force --verbose",
     "format": "biome format --write",
     "lint": "biome lint --write",
-    "publish": "yarn build && yarn npm publish",
-    "test": "yarn test:unit && yarn test:e2e",
-    "test:e2e": "yarn test:run tests/*.test.js",
+    "prepublish": "aube build",
+    "spellcheck": "cspell --config ./cspell.json --quiet",
+    "test": "aube test:unit && aube test:e2e",
+    "test:e2e": "aube test:run tests/*.test.js",
     "test:examples": "tstyche examples",
-    "test:run": "yarn node ./tests/__utilities__/runner.js",
-    "test:run:coverage": "yarn build --sourcemap && yarn test:run --coverage",
+    "test:run": "node ./tests/__utilities__/runner.js",
+    "test:run:coverage": "aube build --sourcemap && aube test:run --coverage",
     "test:types": "tstyche typetests",
-    "test:unit": "yarn test:run source/**/__tests__/*.test.js --parallel"
+    "test:unit": "aube test:run source/**/__tests__/*.test.js --parallel",
+    "typecheck": "tsc --build --force --verbose"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.12",
@@ -76,7 +75,6 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@4.14.1",
   "engines": {
     "node": ">=22.12"
   }

@@ -37,7 +37,7 @@ function getTypeText(definition: tstyche.OptionDefinition | tstyche.ItemDefiniti
 
 const writer = new CodeBlockWriter({ indentNumberOfSpaces: 2 });
 
-writer.writeLine("// #region -- Generated code, to update run: yarn build && mise run generate").blankLine();
+writer.writeLine("// #region -- Generated code, to update run: aube run build && mise run generate").blankLine();
 
 for (const [identifier, optionDefinitions] of interfacesToWrite) {
   writer

@@ -26,7 +26,7 @@ await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
     assert.equal(stderr, "");
 
     assert.matchObject(normalizeOutput(stdout), {
-      typescriptModule: "<<baseUrl>>/node_modules/typescript/lib/typescript.js",
+      typescriptModule: /node_modules\/typescript\/lib\/typescript\.js$/,
     });
 
     assert.equal(exitCode, 0);
