@@ -1,11 +1,4 @@
 [tools]
 aube = "1.0.0"
 hyperfine = "1.20.0"
-jsonschema = "14.20.2"
 node = "24.15.0"
-
-[tasks.generate]
-depends = ["generate:*"]
-
-[tasks."test:schemas"]
-run = "jsonschema test schemas/__tests__/*.test.json"

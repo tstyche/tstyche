@@ -39,6 +39,9 @@
   "scripts": {
     "build": "rollup --config ./.rollup/config.ts",
     "format": "biome format --write",
+    "generate": "aube generate:schemas && generate:types",
+    "generate:schemas": "node ./.aube/generate-schemas.ts",
+    "generate:types": "node ./.aube/generate-types.ts",
     "lint": "biome lint --write",
     "prepublish": "aube build",
     "spellcheck": "cspell --config ./cspell.json --quiet",
@@ -47,6 +50,7 @@
     "test:examples": "tstyche examples",
     "test:run": "node ./tests/__utilities__/runner.js",
     "test:run:coverage": "aube build --sourcemap && aube test:run --coverage",
+    "test:schemas": "jsonschema test schemas/__tests__/*.test.json",
     "test:types": "tstyche typetests",
     "test:unit": "aube test:run source/**/__tests__/*.test.js --parallel",
     "typecheck": "tsc --build --force --verbose"
@@ -54,6 +58,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.12",
     "@rollup/plugin-typescript": "12.3.0",
+    "@sourcemeta/jsonschema": "15.0.0",
     "@types/node": "24.12.2",
     "@types/react": "19.2.14",
     "cleaner-spec-reporter": "1.0.3",

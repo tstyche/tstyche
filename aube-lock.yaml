@@ -102,6 +102,7 @@ time:
   '@rollup/rollup-win32-arm64-msvc@4.60.2': 2026-04-18T13:58:34.533Z
   '@rollup/rollup-win32-x64-gnu@4.60.2': 2026-04-18T13:59:32.651Z
   '@rollup/rollup-win32-x64-msvc@4.60.2': 2026-04-18T13:59:36.248Z
+  '@sourcemeta/jsonschema@15.0.0': 2026-04-23T14:54:17.711Z
   '@types/estree@1.0.8': 2025-06-06T00:04:34.692Z
   '@types/node@24.12.2': 2026-04-03T11:15:02.599Z
   '@types/react@19.2.14': 2026-02-11T11:44:58.515Z
@@ -210,6 +211,9 @@ importers:
       '@rollup/plugin-typescript':
         specifier: 12.3.0
         version: 12.3.0(rollup@4.60.2)(tslib@2.8.1)(typescript@6.0.3)
+      '@sourcemeta/jsonschema':
+        specifier: 15.0.0
+        version: 15.0.0
       '@types/node':
         specifier: 24.12.2
         version: 24.12.2
@@ -661,6 +665,18 @@ packages:
     - win32
     cpu:
     - x64
+
+  '@sourcemeta/jsonschema@15.0.0':
+    resolution: {integrity: sha512-7XGYHQhVxOvu/m9nRRLbdl6z6AYPxvv8rGwHT+t4KA8MwzUaofpAdNigsz0LCeZrG2quKiMjwj4y+T9cb6HTPg==}
+    engines: {node: '>=16'}
+    os:
+    - darwin
+    - linux
+    - win32
+    cpu:
+    - x64
+    - arm64
+    hasBin: true
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
@@ -1276,6 +1292,8 @@ snapshots:
   '@rollup/rollup-win32-x64-gnu@4.60.2': {}
 
   '@rollup/rollup-win32-x64-msvc@4.60.2': {}
+
+  '@sourcemeta/jsonschema@15.0.0': {}
 
   '@types/estree@1.0.8': {}
 

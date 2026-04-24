@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import fs from "node:fs/promises";
 import CodeBlockWriter from "code-block-writer";
 import * as tstyche from "tstyche/api";
@@ -37,7 +35,7 @@ function getTypeText(definition: tstyche.OptionDefinition | tstyche.ItemDefiniti
 
 const writer = new CodeBlockWriter({ indentNumberOfSpaces: 2 });
 
-writer.writeLine("// #region -- Generated code, to update run: aube run build && mise run generate").blankLine();
+writer.writeLine("// #region -- Generated code, to update run: aube run build && aube run generate").blankLine();
 
 for (const [identifier, optionDefinitions] of interfacesToWrite) {
   writer
@@ -56,7 +54,7 @@ for (const [identifier, optionDefinitions] of interfacesToWrite) {
 
 writer.writeLine("// #endregion");
 
-const fileUrl = new URL("../../../source/config/types.ts", import.meta.url);
+const fileUrl = new URL("../source/config/types.ts", import.meta.url);
 const fileText = await fs.readFile(fileUrl, { encoding: "utf8" });
 const updatedFileText = fileText.replace(/\/\/ #region[\s\S]*?\/\/ #endregion\n/, writer.toString());
 
