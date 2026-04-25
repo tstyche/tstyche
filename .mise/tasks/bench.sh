@@ -1,7 +1,9 @@
 #!/bin/bash
 
+mkdir -p benchmark
+
 hyperfine \
-  --export-json 'tstyche.bench.json' \
+  --export-json 'benchmark/results.json' \
   --time-unit 'second' \
   --warmup 2 \
   'yarn test:examples' \
