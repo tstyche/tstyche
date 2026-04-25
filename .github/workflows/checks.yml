@@ -152,6 +152,8 @@ jobs:
         with:
           name: dist-${{ github.sha }}
           path: dist
+      - run: aube config set scriptShell 'C:\\Program Files\\git\\bin\\bash.exe'
+        if: runner.os == 'Windows'
       - run: aube run test
 
   test-coverage:
