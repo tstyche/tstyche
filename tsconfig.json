@@ -27,9 +27,8 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "./.mise/tasks/tsconfig.json" },
+    { "path": "./.aube/tsconfig.json" },
     { "path": "./.rollup/tsconfig.json" },
-    { "path": "./.yarn/plugins/tsconfig.json" },
     { "path": "./source/tsconfig.json" },
     { "path": "./source/output/__tests__/tsconfig.json" },
     { "path": "./source/version/__tests__/tsconfig.json" },

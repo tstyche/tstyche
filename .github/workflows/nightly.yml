@@ -15,9 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
-      - run: yarn build
-      - run: yarn dlx --package typescript@next tsc --build --force --verbose
+      - run: aube ci
+      - run: aube run build
+      - run: aube dlx --package typescript@next tsc --build --force --verbose
 
   test-types:
     name: Test Types
@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - run: yarn install
-      - run: yarn build
-      - run: yarn test:types --target next
-      - run: yarn test:examples --target next
+      - run: aube ci
+      - run: aube run build
+      - run: aube run test:types --target next
+      - run: aube run test:examples --target next

@@ -18,7 +18,12 @@ export function matchObject(source, target) {
 
   for (const key of Object.keys(target)) {
     assert.equal(key in source, true, `Target does not have the '${key}' property.`);
-    assert.deepEqual(source[key], target[key], `Values of the '${key}' properties do not match.`);
+
+    if (target[key] instanceof RegExp && typeof source[key] === "string") {
+      assert.match(source[key], target[key], `Value of the '${key}' property does not match the pattern.`);
+    } else {
+      assert.deepEqual(source[key], target[key], `Values of the '${key}' properties do not match.`);
+    }
   }
 }
 

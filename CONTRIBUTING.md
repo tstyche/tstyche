@@ -4,12 +4,12 @@ Pull requests and suggestions are welcome! Before submitting new features or beh
 
 ## Prerequisites
 
-To work with this repository, you will need the latest LTS version of Node.js and the latest version of Yarn. We use `mise` to get both of them set up correctly.
+To work with this repository, you will need the latest LTS version of Node.js and the latest version of Aube. We use `mise` to get both of them set up correctly.
 
 To install `mise`, follow [their instructions](https://mise.jdx.dev/getting-started.html). Then install the dependencies:
 
 ```shell
-yarn install
+aube install
 ```
 
 ### Using Nix (alternative)
@@ -20,18 +20,18 @@ If you prefer Nix, a `flake.nix` and `.envrc` are provided. Install [`nix-shell`
 direnv allow
 ```
 
-This will automatically provide Node.js and Yarn. Then install the dependencies:
+This will automatically provide Node.js and Aube. Then install the dependencies:
 
 ```shell
-yarn install
+aube install
 ```
 
-### Why Yarn?
+### Why `aube`?
 
-Running `yarn tstyche` in this repository just works. Thanks to Yarn, we can implement new features and immediately try them as a user. To see how that works, run:
+Running `aube exec tstyche` in this repository just works. Thanks to Aube, we can implement new features and immediately try them as a user. To see how that works, run:
 
 ```shell
-yarn tstyche callbacks
+aube exec tstyche callbacks
 ```
 
 ### Why `mise`?
@@ -39,7 +39,7 @@ yarn tstyche callbacks
 Its `exec` command simplifies running TSTyche using the specific Node.js version. This is useful when working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
 
 ```shell
-mise exec node@22 -- yarn tstyche template
+mise exec node@22 -- aube exec tstyche template
 ```
 
 ## Development
@@ -49,38 +49,38 @@ TSTyche relies primarily on end-to-end tests to verify the user experience.
 Since tests run against the built library, always build your changes first:
 
 ```shell
-yarn build
+aube build
 ```
 
 Then run the full test suite:
 
 ```shell
-yarn test
+aube test
 ```
 
 Or a particular test file:
 
 ```shell
-yarn test:run tests/api-expect.test.js
+aube test:run tests/api-expect.test.js
 ```
 
 To update snapshots, run the command with the `--write` flag:
 
 ```shell
-yarn test:run tests/api-expect.test.js --write
+aube test:run tests/api-expect.test.js --write
 ```
 
 To collect code coverage, run the command with the `--coverage` flag (note that in this case the library must be built with the `--sourcemap` flag to ensure accurate mapping):
 
 ```shell
-yarn build --sourcemap
-yarn test:run tests/api-expect.test.js --coverage
+aube build --sourcemap
+aube test:run tests/api-expect.test.js --coverage
 ```
 
 Or run both steps together with:
 
 ```shell
-yarn test:run:coverage tests/api-expect.test.js
+aube test:run:coverage tests/api-expect.test.js
 ```
 
 ## Before Opening a Pull Request
@@ -88,8 +88,9 @@ yarn test:run:coverage tests/api-expect.test.js
 Make sure the following is passing:
 
 ```shell
-yarn build
-yarn lint
-yarn check
-yarn test
+aube build
+aube lint
+aube spellcheck
+aube test
+aube typecheck
 ```
