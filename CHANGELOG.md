@@ -8,7 +8,7 @@
 
 ## [7.0.0] - 2026-04-02
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-7) page._
+_If you are upgrading from a previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-7) page._
 
 ### Added
 
@@ -140,7 +140,7 @@ _Release candidate based on [7.0.0-beta.5]._
 
 ## [6.0.0] - 2026-01-08
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
+_If you are upgrading from a previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
 
 ### Changed
 
@@ -156,15 +156,11 @@ _Release candidate based on [6.0.0-beta.6]._
 
 ## [6.0.0-beta.6] - 2026-01-03
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
-
 ### Fixed
 
 - When checking type structure, handle intersections with instantiable types ([#651](https://github.com/tstyche/tstyche/pull/651))
 
 ## [6.0.0-beta.5] - 2026-01-02
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
 
 ### Fixed
 
@@ -172,15 +168,11 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [6.0.0-beta.4] - 2026-01-01
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
-
 ### Fixed
 
 - When checking type structure, compare template literal types and treat `NoInfer` as substitution type ([#649](https://github.com/tstyche/tstyche/pull/649), [#648](https://github.com/tstyche/tstyche/pull/648))
 
 ## [6.0.0-beta.3] - 2025-12-29
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
 
 ### Changed
 
@@ -189,8 +181,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [6.0.0-beta.2] - 2025-12-23
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
-
 ### Changed
 
 - **Breaking!** Drop support for TypeScript `<=5.3` ([#644](https://github.com/tstyche/tstyche/pull/644))
@@ -198,15 +188,11 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [6.0.0-beta.1] - 2025-12-22
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
-
 ### Fixed
 
 - When checking type structure, compare substitution types, index types, `const` type parameters and indexed access types as well ([#642](https://github.com/tstyche/tstyche/pull/642), [#641](https://github.com/tstyche/tstyche/pull/641), [#640](https://github.com/tstyche/tstyche/pull/640), [#639](https://github.com/tstyche/tstyche/pull/639))
 
 ## [6.0.0-beta.0] - 2025-12-18
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-6) page._
 
 ### Changed
 
@@ -226,7 +212,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [5.0.0] - 2025-10-27
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
+_If you are upgrading from a previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
 
 ### Added
 
@@ -273,15 +259,11 @@ _Release candidate based on [5.0.0-beta.4]._
 
 ## [5.0.0-beta.4] - 2025-10-25
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
-
 ### Changed
 
 - **Breaking!** Drop support for TypeScript `4.x` ([#605](https://github.com/tstyche/tstyche/pull/605))
 
 ## [5.0.0-beta.3] - 2025-10-06
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
 
 ### Added
 
@@ -294,8 +276,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [5.0.0-beta.2] - 2025-09-23
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
-
 ### Added
 
 - **New!** Allow testing of provided types with `.toBeCallableWith()` ([#593](https://github.com/tstyche/tstyche/pull/593))
@@ -306,8 +286,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 - Add validation for assertion and action chains ([#590](https://github.com/tstyche/tstyche/pull/590))
 
 ## [5.0.0-beta.1] - 2025-09-12
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
 
 ### Added
 
@@ -327,8 +305,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 - **Breaking!** Do not export internals ([#578](https://github.com/tstyche/tstyche/pull/578))
 
 ## [5.0.0-beta.0] - 2025-08-29
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-5) page._
 
 ### Added
 
@@ -389,7 +365,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.0.0] - 2025-06-02
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
+_If you are upgrading from a previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -432,8 +408,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.0.0-rc.1] - 2025-05-25
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
-
 ### Added
 
 - **New!**  Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
@@ -448,15 +422,11 @@ _Release candidate based on [4.0.0-beta.10]._
 
 ## [4.0.0-beta.10] - 2025-05-14
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
-
 ### Fixed
 
 - Prepend semicolon only before expression statements in the ability layer ([#483](https://github.com/tstyche/tstyche/pull/483))
 
 ## [4.0.0-beta.9] - 2025-05-08
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -473,8 +443,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.0.0-beta.8] - 2025-05-05
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
-
 ### Added
 
 - Add validation for template test files ([#470](https://github.com/tstyche/tstyche/pull/470))
@@ -487,8 +455,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.0.0-beta.7] - 2025-05-04
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
-
 ### Added
 
 - **New!** Add template test file support ([#468](https://github.com/tstyche/tstyche/pull/468))
@@ -500,23 +466,17 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.0.0-beta.6] - 2025-04-15
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
-
 ### Fixed
 
 - Allow passing property access expressions to the `.toBeCallableWith()` and `.toBeConstructableWith()` matchers ([#457](https://github.com/tstyche/tstyche/pull/457))
 
 ## [4.0.0-beta.5] - 2025-04-15
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
-
 ### Fixed
 
 - Insert missing semicolons in the ability layer text ([#456](https://github.com/tstyche/tstyche/pull/456))
 
 ## [4.0.0-beta.4] - 2025-04-14
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -528,15 +488,11 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.0.0-beta.3] - 2025-04-11
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
-
 ### Fixed
 
 - Relax validation of the target of `.toBeCallableWith()` matcher ([#448](https://github.com/tstyche/tstyche/pull/448))
 
 ## [4.0.0-beta.2] - 2025-04-11
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -552,15 +508,11 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [4.0.0-beta.1] - 2025-04-06
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
-
 ### Added
 
 - **New!** Add the `.toBeApplicable` matcher ([#100](https://github.com/tstyche/tstyche/pull/100))
 
 ## [4.0.0-beta.0] - 2025-03-30
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-4) page._
 
 ### Added
 
@@ -647,7 +599,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [3.0.0] - 2024-11-05
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
+_If you are upgrading from a previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
 
 ### Fixed
 
@@ -697,15 +649,11 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [3.0.0-rc.2] - 2024-11-02
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
-
 ### Added
 
 - Add index signature checks for the `.toHaveProperty()` matcher ([#362](https://github.com/tstyche/tstyche/pull/362))
 
 ## [3.0.0-rc.1] - 2024-10-31
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
 
 ### Fixed
 
@@ -717,16 +665,12 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [3.0.0-rc.0] - 2024-10-30
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
-
 ### Changed
 
 - **Breaking!** Rename the `TSTYCHE_TYPESCRIPT_MODULE` environment variable ([#356](https://github.com/tstyche/tstyche/pull/356))
 - **Breaking!** Use `import.meta.resolve()` ([#355](https://github.com/tstyche/tstyche/pull/355))
 
 ## [3.0.0-beta.6] - 2024-10-27
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
 
 ### Fixed
 
@@ -742,8 +686,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [3.0.0-beta.5] - 2024-10-23
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
-
 ### Fixed
 
 - Mark not existing test file as failed ([#341](https://github.com/tstyche/tstyche/pull/341))
@@ -757,8 +699,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 - **New!** Add the `tsconfig` configuration option ([#343](https://github.com/tstyche/tstyche/pull/343))
 
 ## [3.0.0-beta.4] - 2024-10-17
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
 
 ### Fixed
 
@@ -782,8 +722,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [3.0.0-beta.3] - 2024-10-07
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
-
 ### Fixed
 
 - Fix relative path normalization logic ([#317](https://github.com/tstyche/tstyche/pull/317))
@@ -798,15 +736,11 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [3.0.0-beta.2] - 2024-10-05
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
-
 ### Added
 
 - Add the `JsonScanner` class ([#310](https://github.com/tstyche/tstyche/pull/310))
 
 ## [3.0.0-beta.1] - 2024-08-25
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
 
 ### Fixed
 
@@ -827,8 +761,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 - Add `prune()` method to `StoreService` class ([#298](https://github.com/tstyche/tstyche/pull/298))
 
 ## [3.0.0-beta.0] - 2024-08-12
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-3) page._
 
 ### Fixed
 
@@ -872,7 +804,7 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [2.0.0] - 2024-06-10
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
+_If you are upgrading from a previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
 
 ### Fixed
 
@@ -900,23 +832,17 @@ _If you are upgrading from previous version, please be sure to read the [release
 
 ## [2.0.0-rc.2] - 2024-06-08
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
-
 ### Added
 
 - Exit the watch mode when `q` is pressed ([#218](https://github.com/tstyche/tstyche/pull/218))
 
 ## [2.0.0-rc.1] - 2024-06-04
 
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
-
 ### Fixed
 
 - Show deprecation warnings for each test file ([#217](https://github.com/tstyche/tstyche/pull/217))
 
 ## [2.0.0-rc.0] - 2024-06-03
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
 
 ### Changed
 
@@ -928,8 +854,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 - Allow `./` in the beginning of the `testFileMatch` patterns ([#215](https://github.com/tstyche/tstyche/pull/215))
 
 ## [2.0.0-beta.1] - 2024-05-27
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
 
 ### Changed
 
@@ -950,8 +874,6 @@ _If you are upgrading from previous version, please be sure to read the [release
 - Add the `TestFile` class ([#189](https://github.com/tstyche/tstyche/pull/189))
 
 ## [2.0.0-beta.0] - 2024-03-28
-
-_If you are upgrading from previous version, please be sure to read the [release notes](https://tstyche.org/releases/tstyche-2) page._
 
 ### Changed
 
