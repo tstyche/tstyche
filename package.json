@@ -39,7 +39,7 @@
   "scripts": {
     "build": "rollup --config ./.rollup/config.ts",
     "format": "biome format --write",
-    "generate": "aube generate:schemas && generate:types",
+    "generate": "aube generate:schemas && aube generate:types",
     "generate:schemas": "node ./.aube/generate-schemas.ts",
     "generate:types": "node ./.aube/generate-types.ts",
     "lint": "biome lint --write",
