@@ -1,4 +1,4 @@
 [tools]
-aube = "1.1.0"
+aube = "1.2.0"
 hyperfine = "1.20.0"
 node = "24.15.0"
