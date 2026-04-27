@@ -4,206 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-time:
-  '@babel/code-frame@7.29.0': 2026-01-31T17:39:09.387Z
-  '@babel/helper-validator-identifier@7.28.5': 2025-10-23T15:17:38.203Z
-  '@biomejs/biome@2.4.13': 2026-04-23T15:40:57.553Z
-  '@biomejs/cli-darwin-arm64@2.4.13': 2026-04-23T15:41:08.668Z
-  '@biomejs/cli-linux-arm64-musl@2.4.13': 2026-04-23T15:41:33.094Z
-  '@biomejs/cli-linux-arm64@2.4.13': 2026-04-23T15:41:26.398Z
-  '@biomejs/cli-linux-x64-musl@2.4.13': 2026-04-23T15:41:51.908Z
-  '@biomejs/cli-linux-x64@2.4.13': 2026-04-23T15:41:43.305Z
-  '@biomejs/cli-win32-arm64@2.4.13': 2026-04-23T15:42:00.706Z
-  '@biomejs/cli-win32-x64@2.4.13': 2026-04-23T15:42:10.153Z
-  '@cspell/cspell-bundled-dicts@10.0.0': 2026-04-06T06:05:38.875Z
-  '@cspell/cspell-json-reporter@10.0.0': 2026-04-06T06:05:29.211Z
-  '@cspell/cspell-performance-monitor@10.0.0': 2026-04-06T06:05:21.367Z
-  '@cspell/cspell-pipe@10.0.0': 2026-04-06T06:05:21.235Z
-  '@cspell/cspell-resolver@10.0.0': 2026-04-06T06:05:21.320Z
-  '@cspell/cspell-service-bus@10.0.0': 2026-04-06T06:05:23.769Z
-  '@cspell/cspell-types@10.0.0': 2026-04-06T06:05:24.024Z
-  '@cspell/cspell-worker@10.0.0': 2026-04-06T06:05:45.106Z
-  '@cspell/dict-ada@4.1.1': 2025-07-09T18:54:07.808Z
-  '@cspell/dict-al@1.1.1': 2025-07-09T18:54:07.775Z
-  '@cspell/dict-aws@4.0.17': 2025-12-13T13:49:52.961Z
-  '@cspell/dict-bash@4.2.2': 2025-10-26T11:35:10.205Z
-  '@cspell/dict-companies@3.2.11': 2026-03-09T13:37:06.177Z
-  '@cspell/dict-cpp@7.0.2': 2025-12-20T09:14:44.272Z
-  '@cspell/dict-cryptocurrencies@5.0.5': 2025-07-09T18:54:13.211Z
-  '@cspell/dict-csharp@4.0.8': 2025-12-17T09:12:56.150Z
-  '@cspell/dict-css@4.1.1': 2026-03-09T13:37:07.889Z
-  '@cspell/dict-dart@2.3.2': 2025-12-17T09:12:59.193Z
-  '@cspell/dict-data-science@2.0.13': 2025-12-13T13:49:53.458Z
-  '@cspell/dict-django@4.1.6': 2025-12-17T09:12:59.409Z
-  '@cspell/dict-docker@1.1.17': 2025-12-17T09:12:59.302Z
-  '@cspell/dict-dotnet@5.0.13': 2026-03-27T10:33:55.378Z
-  '@cspell/dict-elixir@4.0.8': 2025-07-09T18:54:23.757Z
-  '@cspell/dict-en-common-misspellings@2.1.12': 2026-01-26T10:12:05.958Z
-  '@cspell/dict-en-gb-mit@3.1.22': 2026-03-24T11:05:01.806Z
-  '@cspell/dict-en_us@4.4.33': 2026-03-24T11:05:04.445Z
-  '@cspell/dict-filetypes@3.0.18': 2026-03-23T07:48:30.870Z
-  '@cspell/dict-flutter@1.1.1': 2025-07-09T18:54:33.750Z
-  '@cspell/dict-fonts@4.0.6': 2026-03-09T13:37:14.829Z
-  '@cspell/dict-fsharp@1.1.1': 2025-07-09T18:54:36.084Z
-  '@cspell/dict-fullstack@3.2.9': 2026-03-23T07:48:31.466Z
-  '@cspell/dict-gaming-terms@1.1.2': 2025-07-09T18:54:38.597Z
-  '@cspell/dict-git@3.1.0': 2026-01-24T10:07:36.995Z
-  '@cspell/dict-golang@6.0.26': 2026-01-04T08:40:10.745Z
-  '@cspell/dict-google@1.0.9': 2025-07-09T18:54:41.254Z
-  '@cspell/dict-haskell@4.0.6': 2025-07-09T18:54:42.647Z
-  '@cspell/dict-html-symbol-entities@4.0.5': 2025-12-17T09:13:02.532Z
-  '@cspell/dict-html@4.0.15': 2026-03-09T13:37:15.737Z
-  '@cspell/dict-java@5.0.12': 2025-07-09T18:54:48.796Z
-  '@cspell/dict-julia@1.1.1': 2025-07-09T18:54:49.136Z
-  '@cspell/dict-k8s@1.0.12': 2025-07-09T18:54:48.791Z
-  '@cspell/dict-kotlin@1.1.1': 2025-07-09T18:54:49.333Z
-  '@cspell/dict-latex@5.1.0': 2026-02-23T18:48:42.500Z
-  '@cspell/dict-lorem-ipsum@4.0.5': 2025-07-09T18:54:51.580Z
-  '@cspell/dict-lua@4.0.8': 2025-07-09T18:54:53.104Z
-  '@cspell/dict-makefile@1.0.5': 2025-07-09T18:54:54.073Z
-  '@cspell/dict-markdown@2.0.16': 2026-03-09T13:37:22.940Z
-  '@cspell/dict-monkeyc@1.0.12': 2025-12-17T09:13:03.197Z
-  '@cspell/dict-node@5.0.9': 2026-01-24T10:07:39.340Z
-  '@cspell/dict-npm@5.2.38': 2026-03-23T07:48:31.854Z
-  '@cspell/dict-php@4.1.1': 2026-01-04T08:40:13.197Z
-  '@cspell/dict-powershell@5.0.15': 2025-07-09T18:55:02.940Z
-  '@cspell/dict-public-licenses@2.0.16': 2026-02-23T15:04:55.176Z
-  '@cspell/dict-python@4.2.26': 2026-03-23T07:48:32.144Z
-  '@cspell/dict-r@2.1.1': 2025-07-09T18:55:05.798Z
-  '@cspell/dict-ruby@5.1.1': 2026-03-09T13:37:17.817Z
-  '@cspell/dict-rust@4.1.2': 2026-02-01T14:16:59.098Z
-  '@cspell/dict-scala@5.0.9': 2026-01-04T08:40:13.493Z
-  '@cspell/dict-shell@1.1.2': 2025-10-26T11:35:06.822Z
-  '@cspell/dict-software-terms@5.2.2': 2026-03-27T10:33:55.278Z
-  '@cspell/dict-sql@2.2.1': 2025-07-09T18:55:13.513Z
-  '@cspell/dict-svelte@1.0.7': 2025-07-09T18:55:16.078Z
-  '@cspell/dict-swift@2.0.6': 2025-07-09T18:55:15.991Z
-  '@cspell/dict-terraform@1.1.3': 2025-07-09T18:55:17.816Z
-  '@cspell/dict-typescript@3.2.3': 2025-07-09T18:55:17.973Z
-  '@cspell/dict-vue@3.0.5': 2025-07-09T18:55:21.047Z
-  '@cspell/dict-zig@1.0.0': 2025-11-15T07:47:10.027Z
-  '@cspell/dynamic-import@10.0.0': 2026-04-06T06:05:32.872Z
-  '@cspell/filetypes@10.0.0': 2026-04-06T06:05:21.054Z
-  '@cspell/rpc@10.0.0': 2026-04-06T06:05:26.648Z
-  '@cspell/strong-weak-map@10.0.0': 2026-04-06T06:05:23.987Z
-  '@cspell/url@10.0.0': 2026-04-06T06:05:24.235Z
-  '@jridgewell/gen-mapping@0.3.13': 2025-08-12T06:43:21.134Z
-  '@jridgewell/remapping@2.3.5': 2025-08-12T06:43:35.321Z
-  '@jridgewell/resolve-uri@3.1.2': 2024-02-14T19:32:38.143Z
-  '@jridgewell/sourcemap-codec@1.5.5': 2025-08-12T06:43:59.139Z
-  '@jridgewell/trace-mapping@0.3.31': 2025-09-10T20:12:49.468Z
-  '@rollup/plugin-typescript@12.3.0': 2025-10-23T13:30:06.175Z
-  '@rollup/pluginutils@5.3.0': 2025-09-04T13:39:25.620Z
-  '@rollup/rollup-darwin-arm64@4.60.2': 2026-04-18T13:58:27.555Z
-  '@rollup/rollup-linux-arm64-gnu@4.60.2': 2026-04-18T13:58:41.555Z
-  '@rollup/rollup-linux-arm64-musl@4.60.2': 2026-04-18T13:58:45.162Z
-  '@rollup/rollup-linux-x64-gnu@4.60.2': 2026-04-18T13:59:43.183Z
-  '@rollup/rollup-linux-x64-musl@4.60.2': 2026-04-18T13:59:46.857Z
-  '@rollup/rollup-win32-arm64-msvc@4.60.2': 2026-04-18T13:58:34.533Z
-  '@rollup/rollup-win32-x64-gnu@4.60.2': 2026-04-18T13:59:32.651Z
-  '@rollup/rollup-win32-x64-msvc@4.60.2': 2026-04-18T13:59:36.248Z
-  '@sourcemeta/jsonschema@15.0.0': 2026-04-23T14:54:17.711Z
-  '@types/estree@1.0.8': 2025-06-06T00:04:34.692Z
-  '@types/node@24.12.2': 2026-04-03T11:15:02.599Z
-  '@types/react@19.2.14': 2026-02-11T11:44:58.515Z
-  acorn-loose@8.5.2: 2025-07-01T19:52:40.651Z
-  acorn-walk@8.3.5: 2026-02-19T15:03:08.080Z
-  acorn@8.16.0: 2026-02-19T15:06:28.070Z
-  ansi-regex@6.2.2: 2025-09-08T14:48:14.264Z
-  array-timsort@1.0.3: 2020-10-01T15:43:16.437Z
-  chalk-template@1.1.2: 2025-09-08T15:13:28.338Z
-  chalk@5.6.2: 2025-09-08T14:47:54.486Z
-  cleaner-spec-reporter@1.0.3: 2025-11-27T03:48:31.485Z
-  code-block-writer@13.0.3: 2024-10-05T13:30:28.911Z
-  commander@14.0.3: 2026-01-31T01:47:17.592Z
-  comment-json@4.6.2: 2026-03-03T07:12:41.764Z
-  console-grid@2.2.4: 2026-04-11T07:28:10.727Z
-  convert-source-map@2.0.0: 2022-10-17T22:06:48.628Z
-  cspell-config-lib@10.0.0: 2026-04-06T06:05:27.305Z
-  cspell-dictionary@10.0.0: 2026-04-06T06:05:33.467Z
-  cspell-gitignore@10.0.0: 2026-04-06T06:05:35.806Z
-  cspell-glob@10.0.0: 2026-04-06T06:05:30.462Z
-  cspell-grammar@10.0.0: 2026-04-06T06:05:27.045Z
-  cspell-io@10.0.0: 2026-04-06T06:05:32.135Z
-  cspell-lib@10.0.0: 2026-04-06T06:05:41.876Z
-  cspell-trie-lib@10.0.0: 2026-04-06T06:05:29.923Z
-  cspell@10.0.0: 2026-04-06T06:05:49.100Z
-  csstype@3.2.3: 2025-11-17T11:42:27.045Z
-  eight-colors@1.3.3: 2026-04-07T10:51:33.444Z
-  env-paths@4.0.0: 2026-01-24T14:29:07.374Z
-  es-errors@1.3.0: 2024-02-05T08:05:51.479Z
-  esprima@4.0.1: 2018-07-13T08:39:14.711Z
-  estree-walker@2.0.2: 2020-12-08T17:07:42.670Z
-  fast-equals@6.0.0: 2025-12-19T09:16:15.936Z
-  fast-json-stable-stringify@2.1.0: 2019-12-14T16:17:57.583Z
-  fdir@6.5.0: 2025-08-14T16:56:03.948Z
-  flatted@3.4.2: 2026-03-17T15:03:56.392Z
-  foreground-child@4.0.3: 2026-02-06T18:01:11.616Z
-  fsevents@2.3.3: 2023-08-21T16:24:22.854Z
-  function-bind@1.1.2: 2023-10-12T19:08:19.687Z
-  gensequence@8.0.8: 2025-11-07T07:13:18.314Z
-  global-directory@5.0.0: 2026-02-02T17:04:24.387Z
-  has-flag@4.0.0: 2019-04-06T15:49:21.907Z
-  hasown@2.0.3: 2026-04-17T22:12:06.275Z
-  html-escaper@2.0.2: 2020-03-27T13:29:45.414Z
-  import-fresh@4.0.0: 2026-02-25T08:03:40.935Z
-  import-meta-resolve@4.2.0: 2025-08-29T18:46:15.488Z
-  ini@6.0.0: 2025-10-22T15:24:55.354Z
-  is-core-module@2.16.1: 2024-12-21T21:23:27.215Z
-  is-safe-filename@0.1.1: 2026-01-25T07:44:20.027Z
-  istanbul-lib-coverage@3.2.2: 2023-11-08T13:31:06.964Z
-  istanbul-lib-report@3.0.1: 2023-07-25T14:31:38.404Z
-  istanbul-reports@3.2.0: 2025-08-18T12:13:17.403Z
-  js-tokens@4.0.0: 2018-01-28T11:58:58.170Z
-  lz-utils@2.1.1: 2026-04-11T08:34:19.306Z
-  magic-string@0.30.21: 2025-10-24T00:59:47.122Z
-  make-dir@4.0.0: 2023-06-23T11:54:08.292Z
-  monocart-coverage-reports@2.12.11: 2026-04-20T06:22:55.806Z
-  monocart-locator@1.0.3: 2026-04-11T10:16:05.498Z
-  path-parse@1.0.7: 2021-05-25T12:57:37.333Z
-  picocolors@1.1.1: 2024-10-16T18:20:03.921Z
-  picomatch@4.0.4: 2026-03-23T20:39:47.960Z
-  pretty-ansi@4.0.0: 2026-03-30T15:53:16.317Z
-  resolve-from@5.0.0: 2019-04-15T04:06:25.601Z
-  resolve@1.22.12: 2026-04-11T17:41:35.049Z
-  rollup-plugin-dts@6.4.1: 2026-03-21T07:41:26.539Z
-  rollup@4.60.2: 2026-04-18T13:59:58.613Z
-  semver@7.7.4: 2026-02-05T17:23:11.131Z
-  signal-exit@4.1.0: 2023-07-29T05:44:56.721Z
-  smol-toml@1.6.1: 2026-03-23T15:48:57.449Z
-  supports-color@7.2.0: 2020-08-28T11:17:34.870Z
-  supports-preserve-symlinks-flag@1.0.0: 2022-01-03T07:22:56.640Z
-  tinyglobby@0.2.16: 2026-04-07T23:37:03.457Z
-  tslib@2.8.1: 2024-10-31T22:42:48.624Z
-  typescript@6.0.3: 2026-04-16T23:38:27.905Z
-  undici-types@7.16.0: 2025-09-09T17:07:27.610Z
-  vscode-languageserver-textdocument@1.0.12: 2024-07-31T15:43:55.080Z
-  vscode-uri@3.1.0: 2025-02-04T18:18:11.908Z
-  xdg-basedir@5.1.0: 2021-08-05T17:30:36.455Z
-  yaml@2.8.3: 2026-03-21T10:37:06.001Z
-
 importers:
 
   .:
-    dependencies:
-      '@cspell/cspell-types':
-        specifier: 10.0.0
-        version: 10.0.0
-      '@cspell/dict-css':
-        specifier: ^4.1.1
-        version: 4.1.1
-      '@cspell/dict-html':
-        specifier: ^4.0.15
-        version: 4.0.15
-      '@cspell/dict-html-symbol-entities':
-        specifier: ^4.0.5
-        version: 4.0.5
-      '@cspell/dict-typescript':
-        specifier: ^3.2.3
-        version: 3.2.3
-      picomatch:
-        specifier: ^3 || ^4
-        version: 4.0.4
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.0
@@ -281,8 +84,6 @@ packages:
     - linux
     cpu:
     - arm64
-    libc:
-    - musl
 
   '@biomejs/cli-linux-arm64@2.4.13':
     resolution: {integrity: sha512-NzkUDSqfvMBrPplKgVr3aXLHZ2NEELvvF4vZxXulEylKWIGqlvNEcwUcj9OLrn75TD3lJ/GIqCVlBwd1MZCuYQ==}
@@ -291,8 +92,6 @@ packages:
     - linux
     cpu:
     - arm64
-    libc:
-    - glibc
 
   '@biomejs/cli-linux-x64-musl@2.4.13':
     resolution: {integrity: sha512-Z601MienRgTBDza/+u2CH3RSrWoXo9rtr8NK6A4KJzqGgfxx+H3VlyLgTJ4sRo40T3pIsqpTmiOQEvYzQvBRvQ==}
@@ -301,8 +100,6 @@ packages:
     - linux
     cpu:
     - x64
-    libc:
-    - musl
 
   '@biomejs/cli-linux-x64@2.4.13':
     resolution: {integrity: sha512-Az3ZZedYRBo9EQzNnD9SxFcR1G5QsGo6VEc2hIyVPZ1rdKwee/7E9oeBBZFpE8Z44ekxsDQBqbiWGW5ShOhUSQ==}
@@ -311,8 +108,6 @@ packages:
     - linux
     cpu:
     - x64
-    libc:
-    - glibc
 
   '@biomejs/cli-win32-arm64@2.4.13':
     resolution: {integrity: sha512-Px9PS2B5/Q183bUwy/5VHqp3J2lzdOCeVGzMpphYfl8oSa7VDCqenBdqWpy6DCy/en4Rbf/Y1RieZF6dJPcc9A==}
@@ -615,8 +410,6 @@ packages:
     - linux
     cpu:
     - arm64
-    libc:
-    - glibc
 
   '@rollup/rollup-linux-arm64-musl@4.60.2':
     resolution: {integrity: sha512-hr26p7e93Rl0Za+JwW7EAnwAvKkehh12BU1Llm9Ykiibg4uIr2rbpxG9WCf56GuvidlTG9KiiQT/TXT1yAWxTA==}
@@ -624,8 +417,6 @@ packages:
     - linux
     cpu:
     - arm64
-    libc:
-    - musl
 
   '@rollup/rollup-linux-x64-gnu@4.60.2':
     resolution: {integrity: sha512-UQjrkIdWrKI626Du8lCQ6MJp/6V1LAo2bOK9OTu4mSn8GGXIkPXk/Vsp4bLHCd9Z9Iz2OTEaokUE90VweJgIYQ==}
@@ -633,8 +424,6 @@ packages:
     - linux
     cpu:
     - x64
-    libc:
-    - glibc
 
   '@rollup/rollup-linux-x64-musl@4.60.2':
     resolution: {integrity: sha512-bTsRGj6VlSdn/XD4CGyzMnzaBs9bsRxy79eTqTCBsA8TMIEky7qg48aPkvJvFe1HyzQ5oMZdg7AnVlWQSKLTnw==}
@@ -642,8 +431,6 @@ packages:
     - linux
     cpu:
     - x64
-    libc:
-    - musl
 
   '@rollup/rollup-win32-arm64-msvc@4.60.2':
     resolution: {integrity: sha512-NCYhOotpgWZ5kdxCZsv6Iudx0wX8980Q/oW4pNFNihpBKsDbEA1zpkfxJGC0yugsUuyDZ7gL37dbzwhR0VI7pQ==}
