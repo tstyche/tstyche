@@ -1,10 +1,20 @@
+import fs from "node:fs/promises";
 import process from "node:process";
-import { pipeline } from "node:stream/promises";
+import stream from "node:stream/promises";
 import { run } from "node:test";
 import { parseArgs } from "node:util";
 import { TestReporter } from "cleaner-spec-reporter";
 import { cleanCoverageDirectory, collectCoverage, reportCoverage } from "./coverage.js";
 import { cleanFixtureDirectory } from "./fixture.js";
+
+/**
+ * @param {Array<string>} testFiles
+ */
+async function expandGlobs(testFiles) {
+  const expanded = await Promise.all(testFiles.map((testFile) => Array.fromAsync(fs.glob(testFile))));
+
+  return expanded.flat();
+}
 
 await cleanCoverageDirectory();
 await cleanFixtureDirectory();
@@ -27,6 +37,10 @@ let {
 
 if (coverage != null) {
   collectCoverage();
+}
+
+if (testFiles.some((testFile) => testFile.includes("*"))) {
+  testFiles = await expandGlobs(testFiles);
 }
 
 if (exclude != null) {
@@ -58,7 +72,7 @@ async function runTests(files, concurrency) {
     })
     .compose(new TestReporter());
 
-  await pipeline(testStream, process.stdout, { end: false });
+  await stream.pipeline(testStream, process.stdout, { end: false });
 }
 
 if (parallelTestFiles.length > 0) {

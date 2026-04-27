@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "lib": ["es2024"],
+    "lib": ["esnext"],
     "noEmit": true,
     "types": ["node"]
   },
