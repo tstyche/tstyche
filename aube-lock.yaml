@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+time:
+  '@sourcemeta/jsonschema@15.2.0': 2026-04-27T21:14:41.628Z
+
 importers:
 
   .:
@@ -15,8 +18,8 @@ importers:
         specifier: ^12.3.0
         version: 12.3.0(rollup@4.60.2)(tslib@2.8.1)(typescript@6.0.3)
       '@sourcemeta/jsonschema':
-        specifier: ^15.0.0
-        version: 15.0.0
+        specifier: ^15.2.0
+        version: 15.2.0
       '@types/node':
         specifier: ^24.12.0
         version: 24.12.2
@@ -453,8 +456,8 @@ packages:
     cpu:
     - x64
 
-  '@sourcemeta/jsonschema@15.0.0':
-    resolution: {integrity: sha512-7XGYHQhVxOvu/m9nRRLbdl6z6AYPxvv8rGwHT+t4KA8MwzUaofpAdNigsz0LCeZrG2quKiMjwj4y+T9cb6HTPg==}
+  '@sourcemeta/jsonschema@15.2.0':
+    resolution: {integrity: sha512-eMkheH7rCTrAOl+PIIOMqVlgexaxycI97MEuVXxL/VdDx1mwKyMNhm4M0VAORIUDZx3bpBwwWBuwBf/GuouV4A==}
     engines: {node: '>=16'}
     os:
     - darwin
@@ -1080,7 +1083,7 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.60.2': {}
 
-  '@sourcemeta/jsonschema@15.0.0': {}
+  '@sourcemeta/jsonschema@15.2.0': {}
 
   '@types/estree@1.0.8': {}
 
