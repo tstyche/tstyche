@@ -119,7 +119,7 @@ export class WatchService {
       const testFiles = await debounce.schedule();
 
       if (testFiles.length > 0) {
-        yield testFiles;
+        yield testFiles.sort((a, b) => a.path.localeCompare(b.path));
       }
     }
   }

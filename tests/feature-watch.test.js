@@ -281,6 +281,7 @@ await test("watch", async (t) => {
       process.resetOutput();
 
       fs.writeFileSync(new URL("a-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
+      fs.writeFileSync(new URL("b-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestText);
       fs.writeFileSync(new URL("b-feature/__typetests__/isNumber.test.ts", fixtureUrl), isNumberTestText);
 
       const filesAdded = await process.waitForIdle();
@@ -341,6 +342,7 @@ await test("watch", async (t) => {
 
       fs.writeFileSync(new URL("a-feature/__typetests__/isNumber.test.ts", fixtureUrl), isNumberTestWithErrorText);
       fs.writeFileSync(new URL("b-feature/__typetests__/isString.test.ts", fixtureUrl), isStringTestWithErrorText);
+      fs.writeFileSync(new URL("b-feature/__typetests__/isNumber.test.ts", fixtureUrl), isStringTestText);
 
       const filesChanged = await process.waitForIdle();
 
