@@ -12,6 +12,10 @@ runs ./b-feature/__typetests__/isNumber.test.ts
 <moveCursorUpBy1Row>
 <eraseLineEnd>
 pass ./b-feature/__typetests__/isNumber.test.ts
+runs ./b-feature/__typetests__/isString.test.ts
+<moveCursorUpBy1Row>
+<eraseLineEnd>
+pass ./b-feature/__typetests__/isString.test.ts
 
 Press a to run all tests.
 Press x to exit.
