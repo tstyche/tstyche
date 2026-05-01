@@ -160,7 +160,7 @@ await test("watch", async (t) => {
   });
 
   await t.test("signal sent", async (t) => {
-    // these test can only run with 'shell: false', but that does not work on Windows
+    // these tests can only run with 'shell: false', but that does not work on Windows
     if (isWindows) {
       t.skip();
 
