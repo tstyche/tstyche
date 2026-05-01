@@ -108,8 +108,8 @@ export class Select {
       Select.#onDiagnostics(Diagnostic.error(SelectDiagnosticText.noTestFilesWereSelected(resolvedConfig)));
     }
 
-    // sorting ensures output remains the same on different systems
-    return testFilePaths.sort();
+    // normalize file order across different file systems
+    return testFilePaths.sort((a, b) => a.localeCompare(b));
   }
 
   static async #visitDirectory(
