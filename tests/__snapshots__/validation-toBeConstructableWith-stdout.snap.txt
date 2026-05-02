@@ -8,7 +8,7 @@ fail ./__typetests__/toBeConstructableWith.tst.ts
     × must be a constructable expression
     + allowed expressions
     × is rejected type?
-  type argument for 'Source'
+  type argument for 'source'
     × must be a constructable type
     × is rejected type?
 

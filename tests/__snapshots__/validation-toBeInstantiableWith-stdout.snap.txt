@@ -7,10 +7,10 @@ fail ./__typetests__/toBeInstantiableWith.tst.ts
     × must be provided
     × must be an instantiable expression
     + allowed expressions
-  type argument for 'Source'
+  type argument for 'source'
     × must be an instantiable type
     + allowed expressions
-  type argument for 'Target'
+  type argument for 'target'
     × must be provided
     × must be type argument
     × must be a tuple type

@@ -28,7 +28,7 @@ describe("argument for 'source'", () => {
   });
 });
 
-describe("type argument for 'Source'", () => {
+describe("type argument for 'source'", () => {
   type Any = any;
 
   test("allows only explicit 'any'", () => {
@@ -61,7 +61,7 @@ describe("argument for 'target'", () => {
   });
 });
 
-describe("type argument for 'Target'", () => {
+describe("type argument for 'target'", () => {
   test("allows only explicit 'any'", () => {
     type Any = any;
 

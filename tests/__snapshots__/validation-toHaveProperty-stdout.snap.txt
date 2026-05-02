@@ -6,7 +6,7 @@ fail ./__typetests__/toHaveProperty.tst.ts
   argument for 'source'
     × must be provided
     × must be of an object type
-  type argument for 'Source'
+  type argument for 'source'
     × must be of an object type
   argument for 'key'
     × must be provided

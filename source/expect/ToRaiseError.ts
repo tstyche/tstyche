@@ -78,7 +78,7 @@ export class ToRaiseError {
       ) {
         const expectedText = "a string, number or regular expression literal";
 
-        const text = ExpectDiagnosticText.argumentMustBe("target", expectedText);
+        const text = ExpectDiagnosticText.argumentMustBe(expectedText);
         const origin = DiagnosticOrigin.fromNode(targetNode);
 
         diagnostics.push(Diagnostic.error(text, origin));

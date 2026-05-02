@@ -22,7 +22,7 @@ export class ToBeConstructableWith extends AbilityMatcherBase {
       const text: Array<string> = [];
 
       if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
-        text.push(ExpectDiagnosticText.argumentMustBe("source", "a constructable expression"));
+        text.push(ExpectDiagnosticText.argumentMustBe("a constructable expression"));
       } else {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("a constructable type"));
       }

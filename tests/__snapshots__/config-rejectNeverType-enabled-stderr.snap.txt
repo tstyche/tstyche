@@ -1,4 +1,4 @@
-Error: An argument for 'source' cannot be of the 'never' type.
+Error: The argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
@@ -13,7 +13,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
       at ./__typetests__/isRejected.test.ts:5:12
 
-Error: An argument for 'source' cannot be of the 'never' type.
+Error: The argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
@@ -28,7 +28,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
       at ./__typetests__/isRejected.test.ts:6:12
 
-Error: An argument for 'source' cannot be of the 'never' type.
+Error: The argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
@@ -43,7 +43,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:19:12
 
-Error: A type argument for 'Source' cannot be of the 'never' type.
+Error: The type argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
@@ -58,7 +58,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:28:12
 
-Error: A type argument for 'Source' cannot be of the 'never' type.
+Error: The type argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
@@ -73,7 +73,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:39:12
 
-Error: An argument for 'target' cannot be of the 'never' type.
+Error: The argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
@@ -88,7 +88,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:45:46
 
-Error: An argument for 'target' cannot be of the 'never' type.
+Error: The argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
@@ -103,7 +103,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:46:36
 
-Error: A type argument for 'Target' cannot be of the 'never' type.
+Error: The type argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.

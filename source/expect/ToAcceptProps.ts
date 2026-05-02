@@ -220,7 +220,7 @@ export class ToAcceptProps {
       const expectedText = "of a function or class type";
 
       const text = nodeBelongsToArgumentList(this.#compiler, sourceNode)
-        ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
+        ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
@@ -233,7 +233,7 @@ export class ToAcceptProps {
     if (!(targetType.flags & this.#compiler.TypeFlags.Object)) {
       const expectedText = "of an object type";
 
-      const text = ExpectDiagnosticText.argumentMustBe("props", expectedText);
+      const text = ExpectDiagnosticText.argumentMustBe(expectedText);
       const origin = DiagnosticOrigin.fromNode(targetNode);
 
       diagnostics.push(Diagnostic.error(text, origin));

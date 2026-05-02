@@ -74,7 +74,7 @@ describe("argument for 'source'", () => {
   });
 });
 
-describe("type argument for 'Source'", () => {
+describe("type argument for 'source'", () => {
   test("must be a callable type", () => {
     expect<string>().type.toBeCallableWith();
     expect<number>().type.toBeCallableWith();

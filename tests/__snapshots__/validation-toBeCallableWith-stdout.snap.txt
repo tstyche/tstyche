@@ -8,7 +8,7 @@ fail ./__typetests__/toBeCallableWith.tst.ts
     × must be a callable expression
     + allowed expressions
     × is rejected type?
-  type argument for 'Source'
+  type argument for 'source'
     × must be a callable type
     × is rejected type?
 

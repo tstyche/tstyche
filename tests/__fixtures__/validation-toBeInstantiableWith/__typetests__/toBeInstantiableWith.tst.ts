@@ -57,7 +57,7 @@ describe("argument for 'source'", () => {
   });
 });
 
-describe("type argument for 'Source'", () => {
+describe("type argument for 'source'", () => {
   test("must be an instantiable type", () => {
     expect<string>().type.toBeInstantiableWith<[never]>();
     expect<number>().type.toBeInstantiableWith<[never]>();
@@ -84,7 +84,7 @@ describe("type argument for 'Source'", () => {
   });
 });
 
-describe("type argument for 'Target'", () => {
+describe("type argument for 'target'", () => {
   test("must be provided", () => {
     expect<Box<_>>().type.toBeInstantiableWith();
   });

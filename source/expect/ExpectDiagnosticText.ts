@@ -1,6 +1,6 @@
 export class ExpectDiagnosticText {
-  static argumentMustBe(argumentNameText: string, expectedText: string): string {
-    return `An argument for '${argumentNameText}' must be ${expectedText}.`;
+  static argumentMustBe(expectedText: string): string {
+    return `The argument must be ${expectedText}.`;
   }
 
   static typeArgumentMustBe(expectedText: string): string {
