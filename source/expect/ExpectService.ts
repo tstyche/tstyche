@@ -2,7 +2,7 @@ import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import type { Reject } from "#reject";
-import { Ensure } from "../ensure/Ensure.js";
+import { Ensure } from "./Ensure.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
