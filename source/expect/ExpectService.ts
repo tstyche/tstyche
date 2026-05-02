@@ -1,7 +1,8 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import type { Reject } from "#reject";
+import { Reject } from "#reject";
 import { Ensure } from "./Ensure.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatchWorker } from "./MatchWorker.js";
@@ -34,12 +35,12 @@ export class ExpectService {
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, program: ts.Program, reject: Reject) {
+  constructor(compiler: typeof ts, program: ts.Program, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#program = program;
 
     this.#ensure = new Ensure(compiler);
-    this.#reject = reject;
+    this.#reject = new Reject(compiler, program, resolvedConfig);
 
     this.toAcceptProps = new ToAcceptProps(compiler, program);
     this.toBe = new ToBe(compiler, program);

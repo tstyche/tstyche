@@ -4,7 +4,6 @@ import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService } from "#expect";
-import { Reject } from "#reject";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import { Version } from "#version";
@@ -41,9 +40,7 @@ export class TestTreeWalker {
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
 
-    const reject = new Reject(compiler, program, resolvedConfig);
-
-    this.#expectService = new ExpectService(compiler, program, reject);
+    this.#expectService = new ExpectService(compiler, program, resolvedConfig);
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
