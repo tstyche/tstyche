@@ -2,8 +2,8 @@ import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import type { Reject } from "#reject";
+import { Ensure } from "../ensure/Ensure.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import { ensureArgument, ensureArgumentOrTypeArgument, ensureTypeArgument } from "./ensure.js";
 import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
@@ -19,6 +19,7 @@ import type { MatchResult } from "./types.js";
 
 export class ExpectService {
   #compiler: typeof ts;
+  #ensure: Ensure;
   #program: ts.Program;
   #reject: Reject;
 
@@ -36,6 +37,8 @@ export class ExpectService {
   constructor(compiler: typeof ts, program: ts.Program, reject: Reject) {
     this.#compiler = compiler;
     this.#program = program;
+
+    this.#ensure = new Ensure(compiler);
     this.#reject = reject;
 
     this.toAcceptProps = new ToAcceptProps(compiler, program);
@@ -56,7 +59,7 @@ export class ExpectService {
   ): MatchResult | undefined {
     const matcherNameText = assertionNode.matcherNameNode.name.text;
 
-    if (!ensureArgumentOrTypeArgument(assertionNode.source[0], assertionNode.node.expression, onDiagnostics)) {
+    if (!this.#ensure.argumentOrTypeArgument(assertionNode.source[0], assertionNode.node.expression, onDiagnostics)) {
       return;
     }
 
@@ -75,7 +78,11 @@ export class ExpectService {
       case "toBeAssignableFrom":
       case "toBeAssignableTo":
         if (
-          !ensureArgumentOrTypeArgument(assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)
+          !this.#ensure.argumentOrTypeArgument(
+            assertionNode.target?.[0],
+            assertionNode.matcherNameNode.name,
+            onDiagnostics,
+          )
         ) {
           return;
         }
@@ -96,14 +103,7 @@ export class ExpectService {
         return this[matcherNameText].match(matchWorker, assertionNode.source[0], assertionNode.target!, onDiagnostics);
 
       case "toBeInstantiableWith": {
-        if (
-          !ensureTypeArgument(
-            this.#compiler,
-            assertionNode.target?.[0],
-            assertionNode.matcherNameNode.name,
-            onDiagnostics,
-          )
-        ) {
+        if (!this.#ensure.typeArgument(assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)) {
           return;
         }
 
@@ -116,9 +116,7 @@ export class ExpectService {
       }
 
       case "toHaveProperty":
-        if (
-          !ensureArgument(this.#compiler, assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)
-        ) {
+        if (!this.#ensure.argument(assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)) {
           return;
         }
 
