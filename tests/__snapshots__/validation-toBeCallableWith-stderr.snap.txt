@@ -1,4 +1,4 @@
-Error: An argument for 'source' or type argument for 'Source' must be provided.
+Error: An argument or type argument must be provided.
 
   23 | describe("argument for 'source'", () => {
   24 |   test("must be provided", () => {
@@ -10,7 +10,7 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
        at ./__typetests__/toBeCallableWith.tst.ts:25:5
 
-Error: An argument for 'source' must be a callable expression.
+Error: The argument must be a callable expression.
 
   27 | 
   28 |   test("must be a callable expression", () => {
@@ -22,7 +22,7 @@ Error: An argument for 'source' must be a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:29:12
 
-Error: An argument for 'source' must be a callable expression.
+Error: The argument must be a callable expression.
 
   28 |   test("must be a callable expression", () => {
   29 |     expect("abc").type.toBeCallableWith();
@@ -34,7 +34,7 @@ Error: An argument for 'source' must be a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:30:12
 
-Error: An argument for 'source' must be a callable expression.
+Error: The argument must be a callable expression.
 
   29 |     expect("abc").type.toBeCallableWith();
   30 |     expect(123).type.toBeCallableWith();
@@ -46,7 +46,7 @@ Error: An argument for 'source' must be a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:31:12
 
-Error: An argument for 'source' must be a callable expression.
+Error: The argument must be a callable expression.
 
   30 |     expect(123).type.toBeCallableWith();
   31 |     expect(false).type.toBeCallableWith();
@@ -58,7 +58,7 @@ Error: An argument for 'source' must be a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:32:12
 
-Error: An argument for 'source' must be a callable expression.
+Error: The argument must be a callable expression.
 
   31 |     expect(false).type.toBeCallableWith();
   32 |     expect(undefined).type.toBeCallableWith();
@@ -70,7 +70,7 @@ Error: An argument for 'source' must be a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:33:12
 
-Error: An argument for 'source' must be a callable expression.
+Error: The argument must be a callable expression.
 
   38 |     expect({} as () => void).type.toBeCallableWith();
   39 | 
@@ -82,7 +82,7 @@ Error: An argument for 'source' must be a callable expression.
 
        at ./__typetests__/toBeCallableWith.tst.ts:40:12
 
-Error: An argument for 'source' must be a callable expression.
+Error: The argument must be a callable expression.
 
 Did you mean to use the '.toBeConstructableWith()' matcher?
 
@@ -96,7 +96,7 @@ Did you mean to use the '.toBeConstructableWith()' matcher?
 
        at ./__typetests__/toBeCallableWith.tst.ts:42:12
 
-Error: An argument for 'source' cannot be of the 'any' type.
+Error: The argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -111,7 +111,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
        at ./__typetests__/toBeCallableWith.tst.ts:72:12
 
-Error: An argument for 'source' cannot be of the 'never' type.
+Error: The argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.
@@ -128,7 +128,7 @@ If this check is necessary, pass 'never' as the type argument explicitly.
 
 Error: The type argument must be a callable type.
 
-  77 | describe("type argument for 'Source'", () => {
+  77 | describe("type argument for 'source'", () => {
   78 |   test("must be a callable type", () => {
   79 |     expect<string>().type.toBeCallableWith();
      |            ~~~~~~
@@ -226,7 +226,7 @@ Did you mean to use the '.toBeConstructableWith()' matcher?
 
        at ./__typetests__/toBeCallableWith.tst.ts:94:12
 
-Error: A type argument for 'Source' cannot be of the 'any' type.
+Error: The type argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -241,7 +241,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
         at ./__typetests__/toBeCallableWith.tst.ts:101:12
 
-Error: A type argument for 'Source' cannot be of the 'never' type.
+Error: The type argument cannot be of the 'never' type.
 
 The 'never' type was rejected because the 'rejectNeverType' option is enabled.
 If this check is necessary, pass 'never' as the type argument explicitly.

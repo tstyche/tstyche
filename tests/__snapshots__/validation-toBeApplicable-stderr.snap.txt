@@ -1,4 +1,4 @@
-Error: An argument for 'source' or type argument for 'Source' must be provided.
+Error: An argument or type argument must be provided.
 
   4 |   test("must be provided", () => {
   5 |     class Fixture {
@@ -10,7 +10,7 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
       at ./__typetests__/toBeApplicable.tst.ts:6:9
 
-Error: An argument for 'source' must be of a function type.
+Error: The argument must be of a function type.
 
   13 |   test("must be of a function type", () => {
   14 |     class Fixture {

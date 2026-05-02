@@ -50,7 +50,7 @@ export class ToHaveProperty {
       const expectedText = "of an object type";
 
       const text = nodeBelongsToArgumentList(this.#compiler, sourceNode)
-        ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
+        ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);
@@ -63,7 +63,7 @@ export class ToHaveProperty {
     if (!(isStringOrNumberLiteralType(this.#compiler, targetType) || isUniqueSymbolType(this.#compiler, targetType))) {
       const expectedText = "of type 'string | number | symbol'";
 
-      const text = ExpectDiagnosticText.argumentMustBe("key", expectedText);
+      const text = ExpectDiagnosticText.argumentMustBe(expectedText);
       const origin = DiagnosticOrigin.fromNode(targetNode);
 
       diagnostics.push(Diagnostic.error(text, origin));

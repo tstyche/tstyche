@@ -26,7 +26,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
       let text: string;
 
       if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
-        text = ExpectDiagnosticText.argumentMustBe("source", "an instantiable expression");
+        text = ExpectDiagnosticText.argumentMustBe("an instantiable expression");
       } else {
         text = ExpectDiagnosticText.typeArgumentMustBe("an instantiable type");
       }

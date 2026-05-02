@@ -1,12 +1,12 @@
 import { capitalize } from "./helpers.js";
 
 export class RejectDiagnosticText {
-  static argumentCannotBeOfType(argumentNameText: string, typeText: string): string {
-    return `An argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
+  static argumentCannotBeOfType(typeText: string): string {
+    return `The argument cannot be of the '${typeText}' type.`;
   }
 
-  static typeArgumentCannotBeOfType(argumentNameText: string, typeText: string): string {
-    return `A type argument for '${argumentNameText}' cannot be of the '${typeText}' type.`;
+  static typeArgumentCannotBeOfType(typeText: string): string {
+    return `The type argument cannot be of the '${typeText}' type.`;
   }
 
   static typeWasRejected(typeText: string): Array<string> {

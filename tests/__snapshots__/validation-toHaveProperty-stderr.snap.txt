@@ -1,4 +1,4 @@
-Error: An argument for 'source' or type argument for 'Source' must be provided.
+Error: An argument or type argument must be provided.
 
   3 | describe("argument for 'source'", () => {
   4 |   test("must be provided", () => {
@@ -10,7 +10,7 @@ Error: An argument for 'source' or type argument for 'Source' must be provided.
 
       at ./__typetests__/toHaveProperty.tst.ts:5:5
 
-Error: An argument for 'source' must be of an object type.
+Error: The argument must be of an object type.
 
    7 | 
    8 |   test("must be of an object type", () => {
@@ -46,7 +46,7 @@ Error: The type argument must be of an object type.
 
        at ./__typetests__/toHaveProperty.tst.ts:18:12
 
-Error: An argument for 'source' must be of an object type.
+Error: The argument must be of an object type.
 
   17 |     expect<any>().type.toHaveProperty("runTest");
   18 |     expect<never>().type.toHaveProperty("runTest");
@@ -70,7 +70,7 @@ Error: The type argument must be of an object type.
 
        at ./__typetests__/toHaveProperty.tst.ts:20:12
 
-Error: An argument for 'key' must be provided.
+Error: An argument must be provided.
 
   25 |   test("must be provided", () => {
   26 |     // @ts-expect-error!
@@ -82,7 +82,7 @@ Error: An argument for 'key' must be provided.
 
        at ./__typetests__/toHaveProperty.tst.ts:27:41
 
-Error: An argument for 'key' must be of type 'string | number | symbol'.
+Error: The argument must be of type 'string | number | symbol'.
 
   30 |   test("must be of type 'string | number | symbol'", () => {
   31 |     // @ts-expect-error!

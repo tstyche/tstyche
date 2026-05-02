@@ -1,4 +1,4 @@
-Error: An argument for 'source' cannot be of the 'any' type.
+Error: The argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -13,7 +13,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
       at ./__typetests__/isRejected.test.ts:6:12
 
-Error: An argument for 'source' cannot be of the 'any' type.
+Error: The argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -28,7 +28,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:8:12
 
-Error: An argument for 'source' cannot be of the 'any' type.
+Error: The argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -43,7 +43,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:21:12
 
-Error: A type argument for 'Source' cannot be of the 'any' type.
+Error: The type argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -58,7 +58,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:30:12
 
-Error: A type argument for 'Source' cannot be of the 'any' type.
+Error: The type argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -73,7 +73,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:41:12
 
-Error: An argument for 'target' cannot be of the 'any' type.
+Error: The argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -88,7 +88,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:48:46
 
-Error: An argument for 'target' cannot be of the 'any' type.
+Error: The argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.
@@ -103,7 +103,7 @@ If this check is necessary, pass 'any' as the type argument explicitly.
 
        at ./__typetests__/isRejected.test.ts:50:36
 
-Error: A type argument for 'Target' cannot be of the 'any' type.
+Error: The type argument cannot be of the 'any' type.
 
 The 'any' type was rejected because the 'rejectAnyType' option is enabled.
 If this check is necessary, pass 'any' as the type argument explicitly.

@@ -10,7 +10,7 @@ describe("argument for 'source'", () => {
   });
 });
 
-describe("type argument for 'Source'", () => {
+describe("type argument for 'source'", () => {
   test("must be of an object type", () => {
     expect<{}>().type.not.toHaveProperty("abc");
 

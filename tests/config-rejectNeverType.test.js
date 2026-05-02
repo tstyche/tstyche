@@ -26,7 +26,7 @@ describe("argument for 'source'", () => {
   });
 });
 
-describe("type argument for 'Source'", () => {
+describe("type argument for 'source'", () => {
   type Never = never;
 
   test("allows only explicit 'never'", () => {
@@ -57,7 +57,7 @@ describe("argument for 'target'", () => {
   });
 });
 
-describe("type argument for 'Target'", () => {
+describe("type argument for 'target'", () => {
   test("allows only explicit 'never'", () => {
     type Never = never;
 

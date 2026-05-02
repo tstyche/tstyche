@@ -7,14 +7,14 @@ pass ./__typetests__/isRejected.test.ts
     + rejects the 'never' type
     + allows '.toBe<never>()'
     + allows '.toRaiseError()', but not '.not.toRaiseError()'
-  type argument for 'Source'
+  type argument for 'source'
     + allows only explicit 'never'
     + allows '.toBe<never>()'
     + allows '.toRaiseError()', but not '.not.toRaiseError()'
   argument for 'target'
     + rejects the 'never' type
     + allows '.toBe<never>()'
-  type argument for 'Target'
+  type argument for 'target'
     + allows only explicit 'never'
     + allows '.toBe<never>()'
 

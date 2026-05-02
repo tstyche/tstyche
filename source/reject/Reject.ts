@@ -23,18 +23,18 @@ export class Reject {
   }
 
   argumentType(
-    target: Array<[name: string, node: ts.Expression | ts.TypeNode | undefined]>,
+    target: Array<ts.Expression | ts.TypeNode | undefined>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): boolean {
     for (const rejectedType of this.#rejectedArgumentTypes) {
       const allowedKeyword = this.#compiler.SyntaxKind[`${capitalize(rejectedType)}Keyword`];
 
       // allows explicit 'expect<any>()', 'expect<never>()', '.toBe<any>()' and '.toBe<never>()'
-      if (target.some(([, node]) => node?.kind === allowedKeyword)) {
+      if (target.some((node) => node?.kind === allowedKeyword)) {
         continue;
       }
 
-      for (const [name, node] of target) {
+      for (const node of target) {
         if (!node) {
           continue;
         }
@@ -42,8 +42,8 @@ export class Reject {
         if (this.#typeChecker.getTypeAtLocation(node).flags & this.#compiler.TypeFlags[capitalize(rejectedType)]) {
           const text = [
             nodeBelongsToArgumentList(this.#compiler, node)
-              ? RejectDiagnosticText.argumentCannotBeOfType(name, rejectedType)
-              : RejectDiagnosticText.typeArgumentCannotBeOfType(capitalize(name), rejectedType),
+              ? RejectDiagnosticText.argumentCannotBeOfType(rejectedType)
+              : RejectDiagnosticText.typeArgumentCannotBeOfType(rejectedType),
             ...RejectDiagnosticText.typeWasRejected(rejectedType),
           ];
 

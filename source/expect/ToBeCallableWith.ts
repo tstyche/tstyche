@@ -22,7 +22,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
       const text: Array<string> = [];
 
       if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
-        text.push(ExpectDiagnosticText.argumentMustBe("source", "a callable expression"));
+        text.push(ExpectDiagnosticText.argumentMustBe("a callable expression"));
       } else {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("a callable type"));
       }

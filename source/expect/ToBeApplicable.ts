@@ -87,7 +87,7 @@ export class ToBeApplicable {
       const expectedText = "of a function type";
 
       const text = nodeBelongsToArgumentList(this.#compiler, sourceNode)
-        ? ExpectDiagnosticText.argumentMustBe("source", expectedText)
+        ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 
       const origin = DiagnosticOrigin.fromNode(sourceNode);

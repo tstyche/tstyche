@@ -6,7 +6,7 @@ fail ./__typetests__/toAcceptProps.tst.tsx
   argument for 'source'
     × must be provided
     × must be of a function or class type
-  type argument for 'Source'
+  type argument for 'source'
     × must be of a function or class type
   argument for 'target'
     × must be provided
