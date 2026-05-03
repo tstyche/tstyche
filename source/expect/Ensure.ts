@@ -15,7 +15,7 @@ export class Ensure {
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
     if (!node || !nodeBelongsToArgumentList(this.#compiler, node)) {
-      this.#onDiagnostic("An argument must be provided.", enclosingNode, onDiagnostics);
+      this.#emitDiagnostic("An argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;
     }
@@ -29,7 +29,7 @@ export class Ensure {
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
     if (!node) {
-      this.#onDiagnostic("An argument or type argument must be provided.", enclosingNode, onDiagnostics);
+      this.#emitDiagnostic("An argument or type argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;
     }
@@ -43,7 +43,7 @@ export class Ensure {
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
     if (!node || nodeBelongsToArgumentList(this.#compiler, node)) {
-      this.#onDiagnostic("Type argument must be provided.", enclosingNode, onDiagnostics);
+      this.#emitDiagnostic("Type argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;
     }
@@ -51,7 +51,7 @@ export class Ensure {
     return true;
   }
 
-  #onDiagnostic(text: string, enclosingNode: ts.Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
+  #emitDiagnostic(text: string, enclosingNode: ts.Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
     const origin = DiagnosticOrigin.fromNode(enclosingNode);
 
     onDiagnostics([Diagnostic.error(text, origin)]);
