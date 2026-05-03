@@ -39,7 +39,7 @@ export class ManifestService {
   }
 
   async #load(options?: { suppressErrors?: boolean }) {
-    const diagnostic = Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry));
+    const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry));
 
     const request = new Request(new URL("typescript", this.#npmRegistry), {
       headers: {
