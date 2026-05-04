@@ -18,9 +18,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when fetch request of metadata fails with 404", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
+    await writeFixture(fixtureUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
@@ -41,9 +39,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when fetch request of metadata times out", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
+    await writeFixture(fixtureUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
@@ -64,9 +60,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when fetch request of metadata fails", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
+    await writeFixture(fixtureUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
@@ -77,7 +71,7 @@ await test("store", async (t) => {
     const expected = [
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
       "",
-      "Might be there is an issue with the registry or the network connection.",
+      "The network connection failed after 3 attempts.",
       "",
       "",
     ].join("\n");

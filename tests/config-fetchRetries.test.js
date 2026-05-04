@@ -29,18 +29,22 @@ await test("'TSTYCHE_FETCH_RETRIES' environment variable", async (t) => {
   await t.test("when retry count is specified", async () => {
     await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
-        ["TSTYCHE_FETCH_RETRIES"]: "5",
+        ["TSTYCHE_FETCH_RETRIES"]: "1",
+        ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
       },
     });
 
-    assert.equal(stderr, "");
+    const expected = [
+      "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
+      "",
+      "The network connection failed after 2 attempts.",
+      "",
+      "",
+    ].join("\n");
 
-    assert.matchObject(normalizeOutput(stdout), {
-      fetchRetries: 5,
-    });
-
-    assert.equal(exitCode, 0);
+    assert.equal(stderr, expected);
+    assert.equal(exitCode, 1);
   });
 });

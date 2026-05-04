@@ -55,7 +55,7 @@ export class Fetcher {
         if (error instanceof Error && error.name === "TimeoutError") {
           this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout)));
         } else {
-          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.networkFailure()));
+          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.networkFailure(this.#retries)));
         }
       }
 
