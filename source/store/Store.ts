@@ -18,13 +18,14 @@ export class Store {
   static #manifestService: ManifestService;
   static #packageService: PackageService;
   static #npmRegistry = environmentOptions.npmRegistry;
+  static #fetchRetries = environmentOptions.fetchRetries;
+  static #fetchTimeout = environmentOptions.fetchTimeout * 1000;
   static #storePath = environmentOptions.storePath;
   static #supportedTags: Array<string> | undefined;
-  static #timeout = environmentOptions.timeout * 1000;
 
   static {
-    Store.#fetcher = new Fetcher(Store.#onDiagnostics, Store.#timeout);
-    Store.#lockService = new LockService(Store.#onDiagnostics, Store.#timeout);
+    Store.#fetcher = new Fetcher(Store.#onDiagnostics, Store.#fetchRetries, Store.#fetchTimeout);
+    Store.#lockService = new LockService(Store.#onDiagnostics, Store.#fetchTimeout);
     Store.#packageService = new PackageService(Store.#storePath, Store.#fetcher, Store.#lockService);
     Store.#manifestService = new ManifestService(Store.#storePath, Store.#npmRegistry, Store.#fetcher);
   }

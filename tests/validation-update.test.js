@@ -64,7 +64,7 @@ await test("'--update' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"], {
       env: {
-        ["TSTYCHE_TIMEOUT"]: "0.001",
+        ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
       },
     });
 

@@ -47,7 +47,7 @@ await test("store", async (t) => {
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
-        ["TSTYCHE_TIMEOUT"]: "0.001",
+        ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
       },
     });
 
@@ -95,7 +95,7 @@ await test("store", async (t) => {
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.6"], {
       env: {
-        ["TSTYCHE_TIMEOUT"]: "0.001",
+        ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
       },
     });
 
@@ -119,7 +119,7 @@ await test("store", async (t) => {
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.4"], {
       env: {
-        ["TSTYCHE_TIMEOUT"]: "1.5",
+        ["TSTYCHE_FETCH_TIMEOUT"]: "1.5",
       },
     });
 
@@ -197,7 +197,7 @@ await test("store", async (t) => {
 
         const { stderr } = await spawnTyche(fixtureUrl, ["--showConfig", "--target", target], {
           env: {
-            ["TSTYCHE_TIMEOUT"]: "0.001",
+            ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
           },
         });
 
@@ -251,7 +251,7 @@ await test("store", async (t) => {
 
         const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--showConfig", "--target", target], {
           env: {
-            ["TSTYCHE_TIMEOUT"]: "0.001",
+            ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
           },
         });
 
@@ -344,7 +344,7 @@ await test("store", async (t) => {
 
       const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
         env: {
-          ["TSTYCHE_TIMEOUT"]: "0.001",
+          ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
         },
       });
 

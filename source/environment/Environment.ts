@@ -6,14 +6,36 @@ import type { EnvironmentOptions } from "./types.js";
 export class Environment {
   static resolve(): EnvironmentOptions {
     return {
+      fetchRetries: Environment.#resolveFetchRetries(),
+      fetchTimeout: Environment.#resolveFetchTimeout(),
       isCi: Environment.#resolveIsCi(),
       noColor: Environment.#resolveNoColor(),
       noInteractive: Environment.#resolveNoInteractive(),
       npmRegistry: Environment.#resolveNpmRegistry(),
       storePath: Environment.#resolveStorePath(),
-      timeout: Environment.#resolveTimeout(),
       typescriptModule: Environment.#resolveTypeScriptModule(),
     };
+  }
+
+  static #resolveFetchRetries() {
+    if (process.env["TSTYCHE_FETCH_RETRIES"] != null) {
+      return Number(process.env["TSTYCHE_FETCH_RETRIES"]);
+    }
+
+    return 2;
+  }
+
+  static #resolveFetchTimeout() {
+    if (process.env["TSTYCHE_FETCH_TIMEOUT"] != null) {
+      return Number.parseFloat(process.env["TSTYCHE_FETCH_TIMEOUT"]);
+    }
+
+    // TODO remove in TSTyche 8
+    if (process.env["TSTYCHE_TIMEOUT"] != null) {
+      return Number.parseFloat(process.env["TSTYCHE_TIMEOUT"]);
+    }
+
+    return 30;
   }
 
   static #resolveIsCi() {
@@ -70,14 +92,6 @@ export class Environment {
     }
 
     return Path.resolve(os.homedir(), ".local", "share", "TSTyche");
-  }
-
-  static #resolveTimeout() {
-    if (process.env["TSTYCHE_TIMEOUT"] != null) {
-      return Number.parseFloat(process.env["TSTYCHE_TIMEOUT"]);
-    }
-
-    return 30;
   }
 
   static #resolveTypeScriptModule() {
