@@ -42,20 +42,16 @@ export class Fetcher {
           return;
         }
 
-        if (suppressErrors) {
-          continue;
+        if (!suppressErrors) {
+          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestFailed(response.status)));
         }
-
-        this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestFailed(response.status)));
       } catch (error) {
-        if (suppressErrors) {
-          continue;
-        }
-
-        if (error instanceof Error && error.name === "TimeoutError") {
-          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout)));
-        } else {
-          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.networkFailure(this.#retries)));
+        if (!suppressErrors) {
+          if (error instanceof Error && error.name === "TimeoutError") {
+            this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout)));
+          } else {
+            this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.networkFailure(this.#retries)));
+          }
         }
       }
 
