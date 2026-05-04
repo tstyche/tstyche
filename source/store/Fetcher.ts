@@ -22,7 +22,7 @@ export class Fetcher {
 
     for (let attempt = 0; attempt <= this.#retries; attempt++) {
       const isLastAttempt = attempt === this.#retries;
-      const suppressErrors = options?.suppressErrors ?? !isLastAttempt;
+      const suppressErrors = options?.suppressErrors || !isLastAttempt;
 
       try {
         const response = await fetch(request, { signal: AbortSignal.timeout(this.#timeout) });
