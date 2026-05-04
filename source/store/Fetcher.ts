@@ -32,22 +32,31 @@ export class Fetcher {
           return response;
         }
 
-        // only retry 5xx, 429 (rate limit) or connection error
+        // do not retry 4xx, except 429 (rate limit)
         if (response.status >= 400 && response.status < 500 && response.status !== 429) {
-          !options?.suppressErrors &&
-            this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestFailed(response.status)));
+          if (options?.suppressErrors) {
+            return;
+          }
+
+          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestFailed(response.status)));
 
           return;
         }
 
-        !suppressErrors &&
-          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestFailed(response.status)));
+        if (suppressErrors) {
+          continue;
+        }
+
+        this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestFailed(response.status)));
       } catch (error) {
+        if (suppressErrors) {
+          continue;
+        }
+
         if (error instanceof Error && error.name === "TimeoutError") {
-          !suppressErrors &&
-            this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout)));
+          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout)));
         } else {
-          !suppressErrors && this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.networkFailure()));
+          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.networkFailure()));
         }
       }
 

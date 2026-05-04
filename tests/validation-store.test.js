@@ -86,7 +86,7 @@ await test("store", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when installing 'typescript' times out", async () => {
+  await t.test("when fetch request of 'typescript' package times out", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
