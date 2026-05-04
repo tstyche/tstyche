@@ -47,3 +47,30 @@ await test("'TSTYCHE_FETCH_TIMEOUT' environment variable", async (t) => {
     assert.equal(exitCode, 1);
   });
 });
+
+await test("'TSTYCHE_TIMEOUT' environment variable", async (t) => {
+  t.afterEach(async () => {
+    await clearFixture(fixtureUrl);
+  });
+
+  await t.test("when timeout is specified", async () => {
+    await writeFixture(fixtureUrl);
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
+      env: {
+        ["TSTYCHE_TIMEOUT"]: "0.001",
+      },
+    });
+
+    const expected = [
+      "Error: Failed to fetch metadata of the 'typescript' package from 'https://registry.npmjs.org'.",
+      "",
+      "The request timeout of 0.001s was exceeded.",
+      "",
+      "",
+    ].join("\n");
+
+    assert.equal(stderr, expected);
+    assert.equal(exitCode, 1);
+  });
+});
