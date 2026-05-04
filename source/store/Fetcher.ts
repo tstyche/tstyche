@@ -18,10 +18,9 @@ export class Fetcher {
     diagnostic: () => Diagnostic,
     options?: { suppressErrors?: boolean | undefined },
   ): Promise<Response | undefined> {
-    let attempt = 0;
     let delay = 3000;
 
-    while (attempt <= this.#retries) {
+    for (let attempt = 0; attempt <= this.#retries; attempt++) {
       const isLastAttempt = attempt === this.#retries;
       const suppressErrors = options?.suppressErrors ?? !isLastAttempt;
 
@@ -64,8 +63,6 @@ export class Fetcher {
         await sleep(delay);
         delay *= 2;
       }
-
-      attempt++;
     }
 
     return;
