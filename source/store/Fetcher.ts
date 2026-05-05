@@ -4,12 +4,12 @@ import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 export class Fetcher {
   #onDiagnostics: DiagnosticsHandler;
+  #retries: number;
   #timeout: number;
-  #retries = 2;
-  #attempt = 0;
 
-  constructor(onDiagnostics: DiagnosticsHandler, timeout: number) {
+  constructor(onDiagnostics: DiagnosticsHandler, retries: number, timeout: number) {
     this.#onDiagnostics = onDiagnostics;
+    this.#retries = retries;
     this.#timeout = timeout;
   }
 
@@ -18,9 +18,12 @@ export class Fetcher {
     diagnostic: () => Diagnostic,
     options?: { suppressErrors?: boolean | undefined },
   ): Promise<Response | undefined> {
-    let delay = 2000;
+    let delay = 3000;
 
-    for (this.#attempt = 0; this.#attempt <= this.#retries; this.#attempt++) {
+    for (let attempt = 0; attempt <= this.#retries; attempt++) {
+      const isLastAttempt = attempt === this.#retries;
+      const suppressErrors = options?.suppressErrors || !isLastAttempt;
+
       try {
         const response = await fetch(request, { signal: AbortSignal.timeout(this.#timeout) });
 
@@ -28,35 +31,36 @@ export class Fetcher {
           return response;
         }
 
-        this.#emitDiagnostic(
-          diagnostic,
-          StoreDiagnosticText.requestFailedWithStatusCode(response.status),
-          options?.suppressErrors,
-        );
+        // do not retry 4xx, except 429 (rate limit)
+        if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+          if (options?.suppressErrors) {
+            return;
+          }
+
+          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestFailed(response.status)));
+
+          return;
+        }
+
+        if (!suppressErrors) {
+          this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestFailed(response.status)));
+        }
       } catch (error) {
-        if (error instanceof Error && error.name === "TimeoutError") {
-          this.#emitDiagnostic(
-            diagnostic,
-            StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout),
-            options?.suppressErrors,
-          );
-        } else {
-          this.#emitDiagnostic(diagnostic, StoreDiagnosticText.maybeNetworkConnectionIssue(), options?.suppressErrors);
+        if (!suppressErrors) {
+          if (error instanceof Error && error.name === "TimeoutError") {
+            this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.requestTimeoutWasExceeded(this.#timeout)));
+          } else {
+            this.#onDiagnostics(diagnostic().extendWith(StoreDiagnosticText.networkFailure(this.#retries)));
+          }
         }
       }
 
-      if (this.#attempt < this.#retries) {
+      if (!isLastAttempt) {
         await sleep(delay);
         delay *= 2;
       }
     }
 
     return;
-  }
-
-  #emitDiagnostic(diagnostic: () => Diagnostic, text: string, suppressErrors?: boolean): void {
-    if (this.#attempt === this.#retries && !suppressErrors) {
-      this.#onDiagnostics(diagnostic().extendWith(text));
-    }
   }
 }

@@ -15,15 +15,15 @@ export class StoreDiagnosticText {
     return `Failed to update metadata of the 'typescript' package from '${registry}'.`;
   }
 
-  static maybeNetworkConnectionIssue(): string {
-    return "Might be there is an issue with the registry or the network connection.";
-  }
-
   static maybeOutdatedResolution(tag: string): string {
     return `The resolution of the '${tag}' tag may be outdated.`;
   }
 
-  static requestFailedWithStatusCode(code: number): string {
+  static networkFailure(retries: number): string {
+    return `The network connection failed after ${retries + 1} attempts.`;
+  }
+
+  static requestFailed(code: number): string {
     return `The request failed with status code ${code}.`;
   }
 

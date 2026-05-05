@@ -18,9 +18,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when fetch request of metadata fails with 404", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
+    await writeFixture(fixtureUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
@@ -41,13 +39,11 @@ await test("store", async (t) => {
   });
 
   await t.test("when fetch request of metadata times out", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
+    await writeFixture(fixtureUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
-        ["TSTYCHE_TIMEOUT"]: "0.001",
+        ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
       },
     });
 
@@ -64,9 +60,7 @@ await test("store", async (t) => {
   });
 
   await t.test("when fetch request of metadata fails", async () => {
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
+    await writeFixture(fixtureUrl);
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
@@ -77,7 +71,7 @@ await test("store", async (t) => {
     const expected = [
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
       "",
-      "Might be there is an issue with the registry or the network connection.",
+      "The network connection failed after 3 attempts.",
       "",
       "",
     ].join("\n");
@@ -86,7 +80,7 @@ await test("store", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when installing 'typescript' times out", async () => {
+  await t.test("when fetch request of 'typescript' package times out", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
@@ -95,7 +89,7 @@ await test("store", async (t) => {
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.6"], {
       env: {
-        ["TSTYCHE_TIMEOUT"]: "0.001",
+        ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
       },
     });
 
@@ -119,7 +113,7 @@ await test("store", async (t) => {
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.4"], {
       env: {
-        ["TSTYCHE_TIMEOUT"]: "1.5",
+        ["TSTYCHE_FETCH_TIMEOUT"]: "1.5",
       },
     });
 
@@ -197,7 +191,7 @@ await test("store", async (t) => {
 
         const { stderr } = await spawnTyche(fixtureUrl, ["--showConfig", "--target", target], {
           env: {
-            ["TSTYCHE_TIMEOUT"]: "0.001",
+            ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
           },
         });
 
@@ -251,7 +245,7 @@ await test("store", async (t) => {
 
         const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--showConfig", "--target", target], {
           env: {
-            ["TSTYCHE_TIMEOUT"]: "0.001",
+            ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
           },
         });
 
@@ -344,7 +338,7 @@ await test("store", async (t) => {
 
       const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
         env: {
-          ["TSTYCHE_TIMEOUT"]: "0.001",
+          ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
         },
       });
 

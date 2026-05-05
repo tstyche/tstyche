@@ -64,7 +64,7 @@ await test("'--update' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"], {
       env: {
-        ["TSTYCHE_TIMEOUT"]: "0.001",
+        ["TSTYCHE_FETCH_TIMEOUT"]: "0.001",
       },
     });
 
@@ -94,10 +94,6 @@ await test("'--update' command line option", async (t) => {
       ["__typetests__/dummy.test.ts"]: isStringTestText,
     });
 
-    await writeFixture(fixtureUrl, {
-      ["__typetests__/dummy.test.ts"]: isStringTestText,
-    });
-
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"], {
       env: {
         ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
@@ -107,7 +103,7 @@ await test("'--update' command line option", async (t) => {
     const expected = [
       "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
       "",
-      "Might be there is an issue with the registry or the network connection.",
+      "The network connection failed after 3 attempts.",
       "",
       "",
     ].join("\n");
