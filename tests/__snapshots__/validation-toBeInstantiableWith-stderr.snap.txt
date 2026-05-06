@@ -168,7 +168,7 @@ Error: The type argument must be an instantiable type.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:69:12
 
-Error: Type argument must be provided.
+Error: A type argument must be provided.
 
   87 | describe("type argument for 'target'", () => {
   88 |   test("must be provided", () => {
@@ -180,7 +180,7 @@ Error: Type argument must be provided.
 
        at ./__typetests__/toBeInstantiableWith.tst.ts:89:27
 
-Error: Type argument must be provided.
+Error: A type argument must be provided.
 
   92 |   test("must be type argument", () => {
   93 |     // @ts-expect-error!

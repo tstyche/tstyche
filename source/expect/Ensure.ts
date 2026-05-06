@@ -43,7 +43,7 @@ export class Ensure {
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
     if (!node || nodeBelongsToArgumentList(this.#compiler, node)) {
-      this.#emitDiagnostic("Type argument must be provided.", enclosingNode, onDiagnostics);
+      this.#emitDiagnostic("A type argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;
     }
