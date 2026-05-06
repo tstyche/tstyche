@@ -13,7 +13,7 @@
       default = pkgs.mkShell {
         packages = with pkgs; [
           nodejs_24
-          yarn-berry_4
+          aube
         ];
       };
     });
