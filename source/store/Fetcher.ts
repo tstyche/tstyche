@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { Diagnostic, DiagnosticsHandler } from "#diagnostic";
 import { sleep } from "./helpers.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
@@ -19,6 +20,8 @@ export class Fetcher {
     options?: { suppressErrors?: boolean | undefined },
   ): Promise<Response | undefined> {
     let delay = 3000;
+
+    request.headers.set("User-Agent", `tstyche/${"__version__"} ${process.platform} ${process.arch}`);
 
     for (let attempt = 0; attempt <= this.#retries; attempt++) {
       const isLastAttempt = attempt === this.#retries;
