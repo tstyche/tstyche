@@ -179,7 +179,7 @@ export class AbilityLayer {
         if (targetNode != null) {
           const targetText = targetNode.getText().slice(1, -1);
 
-          if (targetText.trim().length > 1) {
+          if (targetText.trim().length > 0) {
             this.#editor.replaceRanges([
               [targetNode.getFullStart(), targetNode.getEnd(), `<${targetText}>`.padStart(targetNode.getFullWidth())],
             ]);

@@ -34,6 +34,9 @@ describe("when source is a function", () => {
     expect(createSingle).type.not.toBeInstantiableWith<[number]>();
     expect(createSingle).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
 
+    expect(createSingle).type.not.toBeInstantiableWith<[1]>();
+    expect(createSingle).type.toBeInstantiableWith<[1]>(); // fail: Type '1' does not satisfy the constraint 'string'.
+
     expect(createTriple).type.not.toBeInstantiableWith<[number]>();
     expect(createTriple).type.toBeInstantiableWith<[number]>(); // fail: Type 'number' does not satisfy the constraint 'string'.
   });
