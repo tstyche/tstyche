@@ -7,14 +7,14 @@ settings:
 time:
   '@babel/code-frame@7.29.0': 2026-01-31T17:39:09.387Z
   '@babel/helper-validator-identifier@7.28.5': 2025-10-23T15:17:38.203Z
-  '@biomejs/biome@2.4.14': 2026-05-01T19:22:35.577Z
-  '@biomejs/cli-darwin-arm64@2.4.14': 2026-05-01T19:22:42.660Z
-  '@biomejs/cli-linux-arm64-musl@2.4.14': 2026-05-01T19:23:05.638Z
-  '@biomejs/cli-linux-arm64@2.4.14': 2026-05-01T19:22:58.354Z
-  '@biomejs/cli-linux-x64-musl@2.4.14': 2026-05-01T19:23:23.263Z
-  '@biomejs/cli-linux-x64@2.4.14': 2026-05-01T19:23:14.683Z
-  '@biomejs/cli-win32-arm64@2.4.14': 2026-05-01T19:23:30.906Z
-  '@biomejs/cli-win32-x64@2.4.14': 2026-05-01T19:23:39.641Z
+  '@biomejs/biome@2.4.15': 2026-05-09T17:08:10.962Z
+  '@biomejs/cli-darwin-arm64@2.4.15': 2026-05-09T17:08:17.796Z
+  '@biomejs/cli-linux-arm64-musl@2.4.15': 2026-05-09T17:08:38.890Z
+  '@biomejs/cli-linux-arm64@2.4.15': 2026-05-09T17:08:32.453Z
+  '@biomejs/cli-linux-x64-musl@2.4.15': 2026-05-09T17:08:54.638Z
+  '@biomejs/cli-linux-x64@2.4.15': 2026-05-09T17:08:46.621Z
+  '@biomejs/cli-win32-arm64@2.4.15': 2026-05-09T17:09:01.537Z
+  '@biomejs/cli-win32-x64@2.4.15': 2026-05-09T17:09:09.314Z
   '@cspell/cspell-bundled-dicts@10.0.0': 2026-04-06T06:05:38.875Z
   '@cspell/cspell-json-reporter@10.0.0': 2026-04-06T06:05:29.211Z
   '@cspell/cspell-performance-monitor@10.0.0': 2026-04-06T06:05:21.367Z
@@ -102,9 +102,9 @@ time:
   '@rollup/rollup-win32-arm64-msvc@4.60.3': 2026-05-04T15:34:16.106Z
   '@rollup/rollup-win32-x64-gnu@4.60.3': 2026-05-04T15:35:11.444Z
   '@rollup/rollup-win32-x64-msvc@4.60.3': 2026-05-04T15:35:14.877Z
-  '@sourcemeta/jsonschema@15.6.0': 2026-05-08T23:04:45.175Z
+  '@sourcemeta/jsonschema@15.6.1': 2026-05-11T20:45:28.380Z
   '@types/estree@1.0.8': 2025-06-06T00:04:34.692Z
-  '@types/node@24.12.3': 2026-05-07T22:21:56.254Z
+  '@types/node@24.12.4': 2026-05-11T22:25:29.000Z
   '@types/react@19.2.14': 2026-02-11T11:44:58.515Z
   acorn-loose@8.5.2: 2025-07-01T19:52:40.651Z
   acorn-walk@8.3.5: 2026-02-19T15:03:08.080Z
@@ -168,7 +168,7 @@ time:
   resolve@1.22.12: 2026-04-11T17:41:35.049Z
   rollup-plugin-dts@6.4.1: 2026-03-21T07:41:26.539Z
   rollup@4.60.3: 2026-05-04T15:35:36.791Z
-  semver@7.7.4: 2026-02-05T17:23:11.131Z
+  semver@7.8.0: 2026-05-08T20:31:22.678Z
   signal-exit@4.1.0: 2023-07-29T05:44:56.721Z
   smol-toml@1.6.1: 2026-03-23T15:48:57.449Z
   supports-color@7.2.0: 2020-08-28T11:17:34.870Z
@@ -180,56 +180,56 @@ time:
   vscode-languageserver-textdocument@1.0.12: 2024-07-31T15:43:55.080Z
   vscode-uri@3.1.0: 2025-02-04T18:18:11.908Z
   xdg-basedir@5.1.0: 2021-08-05T17:30:36.455Z
-  yaml@2.8.4: 2026-05-02T09:09:40.093Z
+  yaml@2.9.0: 2026-05-11T10:16:24.045Z
 
 importers:
 
   .:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.4.0
-        version: 2.4.14
+        specifier: ^2.4.15
+        version: 2.4.15
       '@rollup/plugin-typescript':
         specifier: ^12.3.0
         version: 12.3.0(rollup@4.60.3)(tslib@2.8.1)(typescript@6.0.3)
       '@sourcemeta/jsonschema':
-        specifier: ^15.6.0
-        version: 15.6.0
+        specifier: ^15.6.1
+        version: 15.6.1
       '@types/node':
-        specifier: ^24.12.0
-        version: 24.12.3
+        specifier: ^24.12.4
+        version: 24.12.4
       '@types/react':
-        specifier: ^19.2.0
+        specifier: ^19.2.14
         version: 19.2.14
       cleaner-spec-reporter:
-        specifier: ^1.0.0
+        specifier: ^1.0.3
         version: 1.0.3
       code-block-writer:
-        specifier: ^13.0.0
+        specifier: ^13.0.3
         version: 13.0.3
       cspell:
         specifier: ^10.0.0
-        version: 10.0.0
+        version: 10.0.0(@cspell/cspell-types@10.0.0)(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)(picomatch@4.0.4)
       magic-string:
         specifier: 0.30.21
         version: 0.30.21
       monocart-coverage-reports:
-        specifier: ^2.12.0
+        specifier: ^2.12.11
         version: 2.12.11
       pretty-ansi:
         specifier: ^4.0.0
         version: 4.0.0
       rollup:
-        specifier: ^4.60.0
+        specifier: ^4.60.3
         version: 4.60.3
       rollup-plugin-dts:
-        specifier: ^6.4.0
+        specifier: ^6.4.1
         version: 6.4.1(rollup@4.60.3)(typescript@6.0.3)
       tslib:
-        specifier: ^2.8.0
+        specifier: ^2.8.1
         version: 2.8.1
       typescript:
-        specifier: ^6.0.0
+        specifier: ~6.0.3
         version: 6.0.3
 
 packages:
@@ -242,21 +242,21 @@ packages:
     resolution: {integrity: sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q==}
     engines: {node: '>=6.9.0'}
 
-  '@biomejs/biome@2.4.14':
-    resolution: {integrity: sha512-TmAvxOEgrpLypzVGJ8FulIZnlyA9TxrO1hyqYrCz9r+bwma9xXxuLA5IuYnj55XQneFx460KjRbx6SWGLkg3bQ==}
+  '@biomejs/biome@2.4.15':
+    resolution: {integrity: sha512-j5VH3a/h/HXTKBM50MDMxRCzkeLv9S2XJcW2WgnZT1+xyisi+0bISrXR82gCX+8S9lvK0skEvHJRN+3Ktr2hlw==}
     engines: {node: '>=14.21.3'}
     hasBin: true
 
-  '@biomejs/cli-darwin-arm64@2.4.14':
-    resolution: {integrity: sha512-XvgoE9XOawUOQPdmvs4J7wPhi/DLwSCGks3AlPJDmh34O0awRTqCED1HRcRDdpf1Zrp4us4MGOOdIxNpbqNF5Q==}
+  '@biomejs/cli-darwin-arm64@2.4.15':
+    resolution: {integrity: sha512-rF3PPqLq1yoST79zaQbDjVJwsuIeci/O+9bgNmC5QpgOqz6aqYuzA4abyAGx+mgyiDXn4A049xAN8gijbuR1Qg==}
     engines: {node: '>=14.21.3'}
     os:
     - darwin
     cpu:
     - arm64
 
-  '@biomejs/cli-linux-arm64-musl@2.4.14':
-    resolution: {integrity: sha512-/z+6gqAqqUQTHazwStxSXKHg9b8UvqBmDFRp+c4wYbq2KXhELQDon9EoC9RpmQ8JWkqQx/lIUy/cs+MhzDZp6A==}
+  '@biomejs/cli-linux-arm64-musl@2.4.15':
+    resolution: {integrity: sha512-ZPcxznxm0pogHBLZhYntyR3sR+MrZjqJIKEr7ZqVen0Rl+P/4upVmfYXjftizi9RoqZntg33fv/1fbdhbYXpEQ==}
     engines: {node: '>=14.21.3'}
     os:
     - linux
@@ -265,8 +265,8 @@ packages:
     libc:
     - musl
 
-  '@biomejs/cli-linux-arm64@2.4.14':
-    resolution: {integrity: sha512-2TELhZnW5RSLL063l9rc5xLpA0ZIw0Ccwy/0q384rvNAgFw3yI76bd59547yxowdQr5MNPET/xDLrLuvgSeeWQ==}
+  '@biomejs/cli-linux-arm64@2.4.15':
+    resolution: {integrity: sha512-owaAMZD/T4LrD0ELNCk0Km3qrRHuM0X6EAyVE1FSqGY0rbLoiDLrO4Us2tllm6cAeB2Ioa9C2C08NZPdr8+0Ug==}
     engines: {node: '>=14.21.3'}
     os:
     - linux
@@ -275,8 +275,8 @@ packages:
     libc:
     - glibc
 
-  '@biomejs/cli-linux-x64-musl@2.4.14':
-    resolution: {integrity: sha512-R6BWgJdQOwW9ulJatuTVrQkjnODjqHZkKNOqb1sz++3Noe5LYd0i3PchnOBUCYAPHoPWHhjJqbdZlHEu0hpjdA==}
+  '@biomejs/cli-linux-x64-musl@2.4.15':
+    resolution: {integrity: sha512-CNq/9W38SYSH023lfcQ4KKU8K0YX8T//FZUhcgtMMRABDojx5XsMV7jlweAvGSl389wJQB29Qo6Zb/a+jdvt+w==}
     engines: {node: '>=14.21.3'}
     os:
     - linux
@@ -285,8 +285,8 @@ packages:
     libc:
     - musl
 
-  '@biomejs/cli-linux-x64@2.4.14':
-    resolution: {integrity: sha512-zHrlQZDBDUz4OLAraYpWKcnLS6HOewBFWYOzY91d1ZjdqZwibOyb6BEu6WuWLugyo0P3riCmsbV9UqV1cSXwQg==}
+  '@biomejs/cli-linux-x64@2.4.15':
+    resolution: {integrity: sha512-0jj7THz12GbUOLmMibktK6DZjqz2zV64KFxyBtcFTKPiiOIY0a7vns1elpO1dERvxpsZ5ik0oFfz0oGwFde1+g==}
     engines: {node: '>=14.21.3'}
     os:
     - linux
@@ -295,16 +295,16 @@ packages:
     libc:
     - glibc
 
-  '@biomejs/cli-win32-arm64@2.4.14':
-    resolution: {integrity: sha512-M3EH5hqOI/F/FUA2u4xcLoUgmxd218mvuj/6JL7Hv2toQvr2/AdOvKSpGkoRuWFCtQPVa+ZqkEV3Q5xBA9+XSA==}
+  '@biomejs/cli-win32-arm64@2.4.15':
+    resolution: {integrity: sha512-ouhkYdlhp/1GghEJPdWwD/Vi3gQ1nFxuSpMolWsbq3Lsq3QUR4jl6UdhhscdCugKU5vOEuMiJhvKj66O0OCq+w==}
     engines: {node: '>=14.21.3'}
     os:
     - win32
     cpu:
     - arm64
 
-  '@biomejs/cli-win32-x64@2.4.14':
-    resolution: {integrity: sha512-WL0EG5qE+EAKomGXbf2g6VnSKJhTL3tXC0QRzWRwA5VpjxNYa6H4P7ZWfymbGE4IhZZQi1KXQ2R0YjwInmz2fA==}
+  '@biomejs/cli-win32-x64@2.4.15':
+    resolution: {integrity: sha512-zBrGq5mx5wwpnow4+2BxUvleDM+GNd4sLbPaMapsSLQLD0NGRCquqPBTgN+7XkUteHvj7M+BstuI8tmnV7+HgQ==}
     engines: {node: '>=14.21.3'}
     os:
     - win32
@@ -647,8 +647,8 @@ packages:
     cpu:
     - x64
 
-  '@sourcemeta/jsonschema@15.6.0':
-    resolution: {integrity: sha512-f1xePEcUao5KGjrJdqlBgiJPr29iKqSs430B0ujDdsNRhOH6Ty+WaWeAitj6ylG4XwiaBh6ZC8OV+a5nZQQb+A==}
+  '@sourcemeta/jsonschema@15.6.1':
+    resolution: {integrity: sha512-5Y9xqW0dxMMB0xu0xKdzCCSjE6xWsOvRB05mQlJe+TTH1xogLI+2Su5gdDLRv7NjuNyCa6JJmAwxBvIikrAqXA==}
     engines: {node: '>=16'}
     os:
     - darwin
@@ -662,8 +662,8 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
-  '@types/node@24.12.3':
-    resolution: {integrity: sha512-8oljBDGun9cIsZRJR6fkihn0TSXJI0UDOOhncYaERq6M0JMDoPLxyscwruJcb4GKS6dvK/d8xebYBg27h/duaQ==}
+  '@types/node@24.12.4':
+    resolution: {integrity: sha512-GUUEShf+PBCGW2KaXwcIt3Yk+e3pkKwWKb9GSyM9WQVE+ep2jzmHdGsHzu4wgcZy5fN9FBdVzjpBQsYlpfpgLA==}
 
   '@types/react@19.2.14':
     resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
@@ -917,8 +917,8 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  semver@7.7.4:
-    resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
+  semver@7.8.0:
+    resolution: {integrity: sha512-AcM7dV/5ul4EekoQ29Agm5vri8JNqRyj39o0qpX6vDF2GZrtutZl5RwgD1XnZjiTAfncsJhMI48QQH3sN87YNA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -963,8 +963,8 @@ packages:
     resolution: {integrity: sha512-GCPAHLvrIH13+c0SuacwvRYj2SxJXQ4kaVTT5xgL3kPrz56XxkF21IGhjSE1+W0aw7gpBWRGXLCPnPby6lSpmQ==}
     engines: {node: '>=12'}
 
-  yaml@2.8.4:
-    resolution: {integrity: sha512-ml/JPOj9fOQK8RNnWojA67GbZ0ApXAUlN2UQclwv2eVgTgn7O9gg9o7paZWKMp4g0H3nTLtS9LVzhkpOFIKzog==}
+  yaml@2.9.0:
+    resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -978,32 +978,32 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.28.5': {}
 
-  '@biomejs/biome@2.4.14':
+  '@biomejs/biome@2.4.15':
     optionalDependencies:
-      '@biomejs/cli-darwin-arm64': 2.4.14
-      '@biomejs/cli-linux-arm64': 2.4.14
-      '@biomejs/cli-linux-arm64-musl': 2.4.14
-      '@biomejs/cli-linux-x64': 2.4.14
-      '@biomejs/cli-linux-x64-musl': 2.4.14
-      '@biomejs/cli-win32-arm64': 2.4.14
-      '@biomejs/cli-win32-x64': 2.4.14
+      '@biomejs/cli-darwin-arm64': 2.4.15
+      '@biomejs/cli-linux-arm64': 2.4.15
+      '@biomejs/cli-linux-arm64-musl': 2.4.15
+      '@biomejs/cli-linux-x64': 2.4.15
+      '@biomejs/cli-linux-x64-musl': 2.4.15
+      '@biomejs/cli-win32-arm64': 2.4.15
+      '@biomejs/cli-win32-x64': 2.4.15
 
-  '@biomejs/cli-darwin-arm64@2.4.14': {}
+  '@biomejs/cli-darwin-arm64@2.4.15': {}
 
-  '@biomejs/cli-linux-arm64-musl@2.4.14': {}
+  '@biomejs/cli-linux-arm64-musl@2.4.15': {}
 
-  '@biomejs/cli-linux-arm64@2.4.14': {}
+  '@biomejs/cli-linux-arm64@2.4.15': {}
 
-  '@biomejs/cli-linux-x64-musl@2.4.14': {}
+  '@biomejs/cli-linux-x64-musl@2.4.15': {}
 
-  '@biomejs/cli-linux-x64@2.4.14': {}
+  '@biomejs/cli-linux-x64@2.4.15': {}
 
-  '@biomejs/cli-win32-arm64@2.4.14': {}
+  '@biomejs/cli-win32-arm64@2.4.15': {}
 
-  '@biomejs/cli-win32-x64@2.4.14': {}
+  '@biomejs/cli-win32-x64@2.4.15': {}
+  ? '@cspell/cspell-bundled-dicts@10.0.0(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)'
 
-  '@cspell/cspell-bundled-dicts@10.0.0':
-    dependencies:
+  : dependencies:
       '@cspell/dict-ada': 4.1.1
       '@cspell/dict-al': 1.1.1
       '@cspell/dict-aws': 4.0.17
@@ -1079,10 +1079,10 @@ snapshots:
   '@cspell/cspell-service-bus@10.0.0': {}
 
   '@cspell/cspell-types@10.0.0': {}
+  ? '@cspell/cspell-worker@10.0.0(@cspell/cspell-types@10.0.0)(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)'
 
-  '@cspell/cspell-worker@10.0.0':
-    dependencies:
-      cspell-lib: 10.0.0
+  : dependencies:
+      cspell-lib: 10.0.0(@cspell/cspell-types@10.0.0)(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)
 
   '@cspell/dict-ada@4.1.1': {}
 
@@ -1274,11 +1274,11 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.60.3': {}
 
-  '@sourcemeta/jsonschema@15.6.0': {}
+  '@sourcemeta/jsonschema@15.6.1': {}
 
   '@types/estree@1.0.8': {}
 
-  '@types/node@24.12.3':
+  '@types/node@24.12.4':
     dependencies:
       undici-types: 7.16.0
 
@@ -1326,9 +1326,9 @@ snapshots:
       '@cspell/cspell-types': 10.0.0
       comment-json: 4.6.2
       smol-toml: 1.6.1
-      yaml: 2.8.4
+      yaml: 2.9.0
 
-  cspell-dictionary@10.0.0:
+  cspell-dictionary@10.0.0(@cspell/cspell-types@10.0.0):
     dependencies:
       '@cspell/cspell-performance-monitor': 10.0.0
       '@cspell/cspell-pipe': 10.0.0
@@ -1356,10 +1356,10 @@ snapshots:
     dependencies:
       '@cspell/cspell-service-bus': 10.0.0
       '@cspell/url': 10.0.0
+  ? cspell-lib@10.0.0(@cspell/cspell-types@10.0.0)(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)
 
-  cspell-lib@10.0.0:
-    dependencies:
-      '@cspell/cspell-bundled-dicts': 10.0.0
+  : dependencies:
+      '@cspell/cspell-bundled-dicts': 10.0.0(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)
       '@cspell/cspell-performance-monitor': 10.0.0
       '@cspell/cspell-pipe': 10.0.0
       '@cspell/cspell-resolver': 10.0.0
@@ -1370,7 +1370,7 @@ snapshots:
       '@cspell/strong-weak-map': 10.0.0
       '@cspell/url': 10.0.0
       cspell-config-lib: 10.0.0
-      cspell-dictionary: 10.0.0
+      cspell-dictionary: 10.0.0(@cspell/cspell-types@10.0.0)
       cspell-glob: 10.0.0
       cspell-grammar: 10.0.0
       cspell-io: 10.0.0
@@ -1386,14 +1386,14 @@ snapshots:
   cspell-trie-lib@10.0.0(@cspell/cspell-types@10.0.0):
     dependencies:
       '@cspell/cspell-types': 10.0.0
+  ? cspell@10.0.0(@cspell/cspell-types@10.0.0)(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)(picomatch@4.0.4)
 
-  cspell@10.0.0:
-    dependencies:
+  : dependencies:
       '@cspell/cspell-json-reporter': 10.0.0
       '@cspell/cspell-performance-monitor': 10.0.0
       '@cspell/cspell-pipe': 10.0.0
       '@cspell/cspell-types': 10.0.0
-      '@cspell/cspell-worker': 10.0.0
+      '@cspell/cspell-worker': 10.0.0(@cspell/cspell-types@10.0.0)(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)
       '@cspell/dynamic-import': 10.0.0
       '@cspell/url': 10.0.0
       ansi-regex: 6.2.2
@@ -1401,15 +1401,15 @@ snapshots:
       chalk-template: 1.1.2
       commander: 14.0.3
       cspell-config-lib: 10.0.0
-      cspell-dictionary: 10.0.0
+      cspell-dictionary: 10.0.0(@cspell/cspell-types@10.0.0)
       cspell-gitignore: 10.0.0
       cspell-glob: 10.0.0
       cspell-io: 10.0.0
-      cspell-lib: 10.0.0
+      cspell-lib: 10.0.0(@cspell/cspell-types@10.0.0)(@cspell/dict-css@4.1.1)(@cspell/dict-html@4.0.15)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-typescript@3.2.3)
       fast-json-stable-stringify: 2.1.0
       flatted: 3.4.2
-      semver: 7.7.4
-      tinyglobby: 0.2.16
+      semver: 7.8.0
+      tinyglobby: 0.2.16(picomatch@4.0.4)
 
   csstype@3.2.3: {}
 
@@ -1492,7 +1492,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.7.4
+      semver: 7.8.0
 
   monocart-coverage-reports@2.12.11:
     dependencies:
@@ -1553,7 +1553,7 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.60.3
       fsevents: 2.3.3
 
-  semver@7.7.4: {}
+  semver@7.8.0: {}
 
   signal-exit@4.1.0: {}
 
@@ -1565,7 +1565,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  tinyglobby@0.2.16:
+  tinyglobby@0.2.16(picomatch@4.0.4):
     dependencies:
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
@@ -1582,4 +1582,4 @@ snapshots:
 
   xdg-basedir@5.1.0: {}
 
-  yaml@2.8.4: {}
+  yaml@2.9.0: {}
