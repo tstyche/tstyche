@@ -1,6 +1,7 @@
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import { getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -13,30 +14,48 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("store", async (t) => {
+  const serverUrl = getServerUrl();
+
+  t.before(async () => {
+    await startServer([
+      { status: 404, body: { error: "Not found" } },
+      { status: 429, body: { error: "Too many requests" } },
+      { status: 500, body: { error: "Server error" } },
+    ]);
+  });
+
+  t.after(async () => {
+    await stopServer();
+  });
+
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
 
-  await t.test("when fetch request of metadata fails with 404", async () => {
-    await writeFixture(fixtureUrl);
+  const statusCodes = [404, 429, 500];
 
-    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
-      env: {
-        ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org",
-      },
+  for (const statusCode of statusCodes) {
+    await t.test(`when fetch request of metadata fails with ${statusCode}`, async () => {
+      await writeFixture(fixtureUrl);
+
+      const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
+        env: {
+          ["TSTYCHE_NPM_REGISTRY"]: `${serverUrl}/status/${statusCode}/`,
+        },
+      });
+
+      const expected = [
+        `Error: Failed to fetch metadata of the 'typescript' package from '${serverUrl}/status/${statusCode}/'.`,
+        "",
+        `The request failed with status code ${statusCode}.`,
+        "",
+        "",
+      ].join("\n");
+
+      assert.equal(stderr, expected);
+      assert.equal(exitCode, 1);
     });
-
-    const expected = [
-      "Error: Failed to fetch metadata of the 'typescript' package from 'https://tstyche.org'.",
-      "",
-      "The request failed with status code 404.",
-      "",
-      "",
-    ].join("\n");
-
-    assert.equal(stderr, expected);
-    assert.equal(exitCode, 1);
-  });
+  }
 
   await t.test("when fetch request of metadata times out", async () => {
     await writeFixture(fixtureUrl);

@@ -1,6 +1,7 @@
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
+import { getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -13,6 +14,16 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("'--update' command line option", async (t) => {
+  const serverUrl = getServerUrl();
+
+  t.before(async () => {
+    await startServer([{ status: 404, body: { error: "Not found" } }]);
+  });
+
+  t.after(async () => {
+    await stopServer();
+  });
+
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -21,7 +32,7 @@ await test("'--update' command line option", async (t) => {
     const storeManifest = {
       $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
-      npmRegistry: "https://tstyche.org",
+      npmRegistry: `${serverUrl}/status/404/`,
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
@@ -32,12 +43,12 @@ await test("'--update' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"], {
       env: {
-        ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org",
+        ["TSTYCHE_NPM_REGISTRY"]: `${serverUrl}/status/404/`,
       },
     });
 
     const expected = [
-      "Error: Failed to fetch metadata of the 'typescript' package from 'https://tstyche.org'.",
+      `Error: Failed to fetch metadata of the 'typescript' package from '${serverUrl}/status/404/'.`,
       "",
       "The request failed with status code 404.",
       "",

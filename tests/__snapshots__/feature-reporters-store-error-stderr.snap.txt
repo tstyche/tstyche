@@ -1,4 +1,4 @@
-Error: Failed to fetch metadata of the 'typescript' package from 'https://tstyche.org'.
+Error: Failed to fetch metadata of the 'typescript' package from 'http://localhost:3000/status/404/'.
 
 The request failed with status code 404.
 

@@ -3,6 +3,7 @@ import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
+import { getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const passingTestText = `import { expect, test } from "tstyche";
@@ -52,6 +53,16 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("reporters", async (t) => {
+  const serverUrl = getServerUrl();
+
+  t.before(async () => {
+    await startServer([{ status: 404, body: { error: "Not found" } }]);
+  });
+
+  t.after(async () => {
+    await stopServer();
+  });
+
   const reporters = ["dot", "list"];
 
   for (const reporter of reporters) {
@@ -276,7 +287,7 @@ await test("reporters", async (t) => {
         const { exitCode, stderr, stdout } = await spawnTyche(
           fixtureUrl,
           ["--reporters", reporter, "--target", "5.8"],
-          { env: { ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org" } },
+          { env: { ["TSTYCHE_NPM_REGISTRY"]: `${serverUrl}/status/404/` } },
         );
 
         await assert.matchSnapshot(prettyAnsi(normalizeOutput(stderr)), {
