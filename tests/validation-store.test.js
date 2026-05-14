@@ -13,19 +13,23 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("store", async (t) => {
-  const serverUrl = getServerUrl();
+/** @type {string | undefined} */
+let testServerUrl;
 
+await test("store", async (t) => {
   t.before(async () => {
     await startServer([
       { status: 404, body: { error: "Not found" } },
       { status: 429, body: { error: "Too many requests" } },
       { status: 500, body: { error: "Server error" } },
     ]);
+
+    testServerUrl = getServerUrl();
   });
 
   t.after(async () => {
     await stopServer();
+    testServerUrl = undefined;
   });
 
   t.afterEach(async () => {
@@ -40,12 +44,12 @@ await test("store", async (t) => {
 
       const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
         env: {
-          ["TSTYCHE_NPM_REGISTRY"]: `${serverUrl}/status/${statusCode}/`,
+          ["TSTYCHE_NPM_REGISTRY"]: `${testServerUrl}/status/${statusCode}/`,
         },
       });
 
       const expected = [
-        `Error: Failed to fetch metadata of the 'typescript' package from '${serverUrl}/status/${statusCode}/'.`,
+        `Error: Failed to fetch metadata of the 'typescript' package from '${testServerUrl}/status/${statusCode}/'.`,
         "",
         `The request failed with status code ${statusCode}.`,
         "",

@@ -52,15 +52,18 @@ test.todo("is number?");
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("reporters", async (t) => {
-  const serverUrl = getServerUrl();
+/** @type {string | undefined} */
+let testServerUrl;
 
+await test("reporters", async (t) => {
   t.before(async () => {
     await startServer([{ status: 404, body: { error: "Not found" } }]);
+    testServerUrl = getServerUrl();
   });
 
   t.after(async () => {
     await stopServer();
+    testServerUrl = undefined;
   });
 
   const reporters = ["dot", "list"];
@@ -287,7 +290,7 @@ await test("reporters", async (t) => {
         const { exitCode, stderr, stdout } = await spawnTyche(
           fixtureUrl,
           ["--reporters", reporter, "--target", "5.8"],
-          { env: { ["TSTYCHE_NPM_REGISTRY"]: `${serverUrl}/status/404/` } },
+          { env: { ["TSTYCHE_NPM_REGISTRY"]: `${testServerUrl}/status/404/` } },
         );
 
         await assert.matchSnapshot(prettyAnsi(normalizeOutput(stderr)), {

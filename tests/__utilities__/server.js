@@ -1,13 +1,17 @@
 import http from "node:http";
 
-const serverPort = 3000;
-const serverHost = "localhost";
-
 /** @type {http.Server | undefined} */
 let server;
 
+/** @type {string | undefined} */
+let serverUrl;
+
 export function getServerUrl() {
-  return `http://${serverHost}:${serverPort}`;
+  if (!serverUrl) {
+    throw new Error("Server not started. Call 'startServer()' first.");
+  }
+
+  return serverUrl;
 }
 
 /**
@@ -31,8 +35,18 @@ export function startServer(configs) {
   });
 
   return new Promise((resolve, reject) => {
-    server?.listen(serverPort, serverHost, () => {
-      resolve();
+    const serverHost = "localhost";
+
+    // Automatically assign an available port (0 = dynamic port allocation) to avoid conflicts in CI environments
+    server?.listen(0, serverHost, () => {
+      const address = server?.address();
+      if (address && typeof address !== "string") {
+        serverUrl = `http://${serverHost}:${address.port}`;
+
+        resolve();
+      } else {
+        reject(new Error("Failed to get server address."));
+      }
     });
 
     server?.on("error", reject);

@@ -15,5 +15,6 @@ export function normalizeOutput(output) {
     .replace(new RegExp(basePath, "g"), "<<basePath>>")
     .replace(/(Duration:\s{2})\s((?:\d\.?)+s)/g, "$1 <<timestamp>>")
     .replace(new RegExp(`TypeScript ${ts.version}`, "g"), "TypeScript <<version>>")
-    .replace(new RegExp(`TSTyche ${packageConfig.version}`, "g"), "TSTyche <<version>>");
+    .replace(new RegExp(`TSTyche ${packageConfig.version}`, "g"), "TSTyche <<version>>")
+    .replace(/http:\/\/localhost:\d+/g, "http://localhost:<<port>>");
 }

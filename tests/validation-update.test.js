@@ -13,15 +13,18 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("'--update' command line option", async (t) => {
-  const serverUrl = getServerUrl();
+/** @type {string | undefined} */
+let testServerUrl;
 
+await test("'--update' command line option", async (t) => {
   t.before(async () => {
     await startServer([{ status: 404, body: { error: "Not found" } }]);
+    testServerUrl = getServerUrl();
   });
 
   t.after(async () => {
     await stopServer();
+    testServerUrl = undefined;
   });
 
   t.afterEach(async () => {
@@ -32,7 +35,7 @@ await test("'--update' command line option", async (t) => {
     const storeManifest = {
       $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
-      npmRegistry: `${serverUrl}/status/404/`,
+      npmRegistry: `${testServerUrl}/status/404/`,
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
@@ -43,12 +46,12 @@ await test("'--update' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"], {
       env: {
-        ["TSTYCHE_NPM_REGISTRY"]: `${serverUrl}/status/404/`,
+        ["TSTYCHE_NPM_REGISTRY"]: `${testServerUrl}/status/404/`,
       },
     });
 
     const expected = [
-      `Error: Failed to fetch metadata of the 'typescript' package from '${serverUrl}/status/404/'.`,
+      `Error: Failed to fetch metadata of the 'typescript' package from '${testServerUrl}/status/404/'.`,
       "",
       "The request failed with status code 404.",
       "",
