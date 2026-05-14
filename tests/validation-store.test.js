@@ -1,8 +1,13 @@
+import fs from "node:fs/promises";
+import process from "node:process";
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
-import { getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
+import { clearRequests, getRequests, getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
+
+const packageConfigText = await fs.readFile(new URL("../package.json", import.meta.url), { encoding: "utf8" });
+const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -18,12 +23,7 @@ let testServerUrl;
 
 await test("store", async (t) => {
   t.before(async () => {
-    await startServer([
-      { status: 404, body: { error: "Not found" } },
-      { status: 429, body: { error: "Too many requests" } },
-      { status: 500, body: { error: "Server error" } },
-    ]);
-
+    await startServer();
     testServerUrl = getServerUrl();
   });
 
@@ -33,12 +33,17 @@ await test("store", async (t) => {
   });
 
   t.afterEach(async () => {
+    clearRequests();
     await clearFixture(fixtureUrl);
   });
 
-  const statusCodes = [404, 429, 500];
+  const testCases = [
+    { requestCount: 1, statusCode: 404 },
+    { requestCount: 3, statusCode: 429 },
+    { requestCount: 3, statusCode: 500 },
+  ];
 
-  for (const statusCode of statusCodes) {
+  for (const { requestCount, statusCode } of testCases) {
     await t.test(`when fetch request of metadata fails with ${statusCode}`, async () => {
       await writeFixture(fixtureUrl);
 
@@ -58,6 +63,11 @@ await test("store", async (t) => {
 
       assert.equal(stderr, expected);
       assert.equal(exitCode, 1);
+
+      const requests = getRequests();
+
+      assert.equal(requestCount, requests.length);
+      assert.equal(`tstyche/${version} ${process.platform} ${process.arch}`, requests[0]?.headers["user-agent"]);
     });
   }
 

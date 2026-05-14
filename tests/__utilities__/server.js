@@ -1,7 +1,15 @@
 import http from "node:http";
 
-/** @type {http.Server | undefined} */
-let server;
+/** @type {Array<http.IncomingMessage>} */
+let requests = [];
+
+export function getRequests() {
+  return requests;
+}
+
+export function clearRequests() {
+  requests = [];
+}
 
 /** @type {string | undefined} */
 let serverUrl;
@@ -14,24 +22,19 @@ export function getServerUrl() {
   return serverUrl;
 }
 
-/**
- * @param {Array<{ status: number; body: Record<string, string> }>} configs
- * @returns {Promise<void>}
- */
-export function startServer(configs) {
+/** @type {http.Server | undefined} */
+let server;
+
+/** @returns {Promise<void>} */
+export function startServer() {
   server = http.createServer((request, response) => {
+    requests.push(request);
+
     const statusMatch = request.url?.match(/\/(\d{3})/);
     const statusCode = statusMatch?.[1] ? Number.parseInt(statusMatch[1], 10) : 200;
 
-    const config = configs.find((config) => config.status === statusCode);
-
     response.writeHead(statusCode, { "Content-Type": "application/json" });
-
-    if (config) {
-      response.end(JSON.stringify(config.body));
-    } else {
-      response.end(JSON.stringify({ body: {} }));
-    }
+    response.end(JSON.stringify({ body: {} }));
   });
 
   return new Promise((resolve, reject) => {
@@ -53,9 +56,7 @@ export function startServer(configs) {
   });
 }
 
-/**
- * @returns {Promise<void>}
- */
+/** @returns {Promise<void>} */
 export function stopServer() {
   return new Promise((resolve, reject) => {
     server?.close((error) => {

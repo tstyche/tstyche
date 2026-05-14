@@ -18,7 +18,7 @@ let testServerUrl;
 
 await test("'--update' command line option", async (t) => {
   t.before(async () => {
-    await startServer([{ status: 404, body: { error: "Not found" } }]);
+    await startServer();
     testServerUrl = getServerUrl();
   });
 

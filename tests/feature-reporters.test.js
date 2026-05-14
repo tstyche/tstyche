@@ -57,7 +57,7 @@ let testServerUrl;
 
 await test("reporters", async (t) => {
   t.before(async () => {
-    await startServer([{ status: 404, body: { error: "Not found" } }]);
+    await startServer();
     testServerUrl = getServerUrl();
   });
 
