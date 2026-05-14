@@ -1,11 +1,8 @@
-import fs from "node:fs/promises";
 import test from "node:test";
+import packageConfig from "../package.json" with { type: "json" };
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
-
-const packageConfigText = await fs.readFile(new URL("../package.json", import.meta.url), { encoding: "utf8" });
-const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
@@ -43,7 +40,7 @@ await test("'--version' command line option", async (t) => {
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
       assert.equal(stderr, "");
-      assert.equal(stdout, `${version}\n`);
+      assert.equal(stdout, `${packageConfig.version}\n`);
       assert.equal(exitCode, 0);
     });
   }

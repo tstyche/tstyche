@@ -1,13 +1,10 @@
-import fs from "node:fs/promises";
 import process from "node:process";
 import test from "node:test";
+import packageConfig from "../package.json" with { type: "json" };
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { clearRequests, getRequests, getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
-
-const packageConfigText = await fs.readFile(new URL("../package.json", import.meta.url), { encoding: "utf8" });
-const { version } = /** @type {{ version: string }} */ (JSON.parse(packageConfigText));
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -67,7 +64,10 @@ await test("store", async (t) => {
       const requests = getRequests();
 
       assert.equal(requestCount, requests.length);
-      assert.equal(`tstyche/${version} ${process.platform} ${process.arch}`, requests[0]?.headers["user-agent"]);
+      assert.equal(
+        `tstyche/${packageConfig.version} ${process.platform} ${process.arch}`,
+        requests[0]?.headers["user-agent"],
+      );
     });
   }
 
