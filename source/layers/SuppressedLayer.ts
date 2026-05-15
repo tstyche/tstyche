@@ -2,17 +2,17 @@ import type ts from "typescript";
 import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { isDiagnosticWithLocation } from "#diagnostic";
-import type { SourceTextEditor } from "./SourceTextEditor.js";
+import type { TextEditor } from "#source";
 import type { SuppressedError } from "./types.js";
 
 export class SuppressedLayer {
   #compiler: typeof ts;
-  #editor: SourceTextEditor;
+  #editor: TextEditor;
   #expectErrorRegex = /^([ \t/*{]*)(@ts-expect-error)(!?)(:? *)(.*?)(?:\*\/.*)?$/gim;
   #resolvedConfig: ResolvedConfig;
   #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
 
-  constructor(compiler: typeof ts, editor: SourceTextEditor, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts, editor: TextEditor, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#editor = editor;
     this.#resolvedConfig = resolvedConfig;
@@ -101,7 +101,7 @@ export class SuppressedLayer {
     for (const suppressedError of suppressedErrors) {
       const { start, end } = suppressedError.directive;
 
-      this.#editor.replaceRange(start + 2, end);
+      this.#editor.erase(start + 2, end);
 
       if (this.#suppressedErrorsMap != null) {
         const { line } = tree.sourceFile.getLineAndCharacterOfPosition(start);

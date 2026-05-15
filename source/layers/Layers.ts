@@ -2,14 +2,14 @@ import type ts from "typescript";
 import type { ExpectNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import type { ProjectService } from "#project";
+import { TextEditor } from "#source";
 import { AbilityLayer } from "./AbilityLayer.js";
 import { compareDiagnostics } from "./helpers.js";
-import { SourceTextEditor } from "./SourceTextEditor.js";
 import { SuppressedLayer } from "./SuppressedLayer.js";
 
 export class Layers {
   #abilityLayer: AbilityLayer;
-  #editor = new SourceTextEditor();
+  #editor = new TextEditor();
   #projectService: ProjectService;
   #suppressedDiagnostics: Array<ts.Diagnostic> | undefined;
   #suppressedLayer: SuppressedLayer;

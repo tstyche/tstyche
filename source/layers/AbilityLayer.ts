@@ -1,15 +1,15 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
+import type { TextEditor } from "#source";
 import { nodeBelongsToArgumentList, nodeIsChildOfExpressionStatement } from "./helpers.js";
-import type { SourceTextEditor } from "./SourceTextEditor.js";
 
 export class AbilityLayer {
   #compiler: typeof ts;
-  #editor: SourceTextEditor;
+  #editor: TextEditor;
   #nodes: Array<ExpectNode> = [];
 
-  constructor(compiler: typeof ts, editor: SourceTextEditor) {
+  constructor(compiler: typeof ts, editor: TextEditor) {
     this.#compiler = compiler;
     this.#editor = editor;
   }
@@ -54,10 +54,7 @@ export class AbilityLayer {
       case "toBeApplicable":
         this.#nodes.push(expect);
 
-        this.#editor.replaceRanges([
-          [expectStart, expectExpressionEnd],
-          [expectEnd, matcherNameEnd],
-        ]);
+        this.#editor.erase(expectStart, expectExpressionEnd).erase(expectEnd, matcherNameEnd);
 
         break;
 
@@ -71,28 +68,24 @@ export class AbilityLayer {
         }
 
         if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
-          this.#editor.eraseTrailingComma(expect.source);
-
-          this.#editor.replaceRanges([
-            [
+          this.#editor
+            .eraseTrailingComma(expect.source)
+            .update(
               expectStart,
               expectExpressionEnd,
               nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
-            ],
-            [expectEnd, matcherNameEnd],
-          ]);
+            )
+            .erase(expectEnd, matcherNameEnd);
         } else {
           const sourceText = sourceNode.getFullText();
 
-          this.#editor.replaceRanges([
-            [
-              expectStart,
-              matcherNameEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
-                ? `;(undefined as any as ${sourceText})`
-                : `(undefined as any as ${sourceText})`,
-            ],
-          ]);
+          this.#editor.update(
+            expectStart,
+            matcherNameEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+              ? `;(undefined as any as ${sourceText})`
+              : `(undefined as any as ${sourceText})`,
+          );
         }
 
         break;
@@ -108,28 +101,24 @@ export class AbilityLayer {
         }
 
         if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
-          this.#editor.eraseTrailingComma(expect.source);
-
-          this.#editor.replaceRanges([
-            [
+          this.#editor
+            .eraseTrailingComma(expect.source)
+            .update(
               expectStart,
               expectExpressionEnd,
               nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
-            ],
-            [expectEnd, matcherNameEnd],
-          ]);
+            )
+            .erase(expectEnd, matcherNameEnd);
         } else {
           const sourceText = sourceNode.getFullText();
 
-          this.#editor.replaceRanges([
-            [
-              expectStart,
-              matcherNameEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
-                ? `;new (undefined as any as ${sourceText})`
-                : `new (undefined as any as ${sourceText})`,
-            ],
-          ]);
+          this.#editor.update(
+            expectStart,
+            matcherNameEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+              ? `;new (undefined as any as ${sourceText})`
+              : `new (undefined as any as ${sourceText})`,
+          );
         }
 
         break;
@@ -146,43 +135,41 @@ export class AbilityLayer {
         }
 
         if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
-          this.#editor.eraseTrailingComma(expect.source);
-
-          this.#editor.replaceRanges([
-            [
+          this.#editor
+            .eraseTrailingComma(expect.source)
+            .update(
               expectStart,
               expectExpressionEnd,
               nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
-            ],
-            [expectEnd, matcherNodeEnd],
-          ]);
+            )
+            .erase(expectEnd, matcherNodeEnd);
 
           if (this.#compiler.isExpressionWithTypeArguments(sourceNode)) {
-            this.#editor.replaceRanges([[sourceNode.expression.getEnd(), sourceNode.getEnd()]]);
+            this.#editor.erase(sourceNode.expression.getEnd(), sourceNode.getEnd());
           }
         } else {
           const sourceText = this.#compiler.isTypeReferenceNode(sourceNode)
             ? sourceNode.typeName.getText()
             : sourceNode.getText();
 
-          this.#editor.replaceRanges([
-            [
-              expectStart,
-              matcherNodeEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
-                ? `;undefined as any as ${sourceText}`
-                : `undefined as any as ${sourceText}`,
-            ],
-          ]);
+          this.#editor.update(
+            expectStart,
+            matcherNodeEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+              ? `;undefined as any as ${sourceText}`
+              : `undefined as any as ${sourceText}`,
+          );
         }
 
         if (targetNode != null) {
           const targetText = targetNode.getText().slice(1, -1);
 
           if (targetText.trim().length > 0) {
-            this.#editor.replaceRanges([
-              [targetNode.getFullStart(), targetNode.getEnd(), `<${targetText}>`.padStart(targetNode.getFullWidth())],
-            ]);
+            this.#editor.update(
+              targetNode.getFullStart(),
+              targetNode.getEnd(),
+              `<${targetText}>`.padStart(targetNode.getFullWidth()),
+            );
           }
         }
 
@@ -203,27 +190,23 @@ export class AbilityLayer {
         const targetText = targetNode.getFullText();
 
         if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
-          this.#editor.eraseTrailingComma(expect.source);
-
-          this.#editor.replaceRanges([
-            [
+          this.#editor
+            .eraseTrailingComma(expect.source)
+            .update(
               expectStart,
               matcherNodeEnd,
               nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
                 ? `;(${sourceText})[${targetText}]`
                 : `(${sourceText})[${targetText}]`,
-            ],
-          ]);
+            );
         } else {
-          this.#editor.replaceRanges([
-            [
-              expectStart,
-              matcherNodeEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
-                ? `;(undefined as any as ${sourceText})[${targetText}]`
-                : `(undefined as any as ${sourceText})[${targetText}]`,
-            ],
-          ]);
+          this.#editor.update(
+            expectStart,
+            matcherNodeEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+              ? `;(undefined as any as ${sourceText})[${targetText}]`
+              : `(undefined as any as ${sourceText})[${targetText}]`,
+          );
         }
 
         break;

@@ -1,7 +1,7 @@
 import type ts from "typescript";
-import { SourceService } from "#source";
+import { SourceService } from "./SourceService.js";
 
-export class SourceTextEditor {
+export class TextEditor {
   #filePath = "";
   #sourceFile: ts.SourceFile | undefined;
   #text = "";
@@ -24,13 +24,21 @@ export class SourceTextEditor {
     this.#text = "";
   }
 
-  eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>): void {
-    if (node.hasTrailingComma) {
-      this.replaceRange(node.end - 1, node.end);
-    }
+  erase(start: number, end: number): this {
+    this.#text = this.#text.slice(0, start) + this.#getErased(start, end) + this.#text.slice(end);
+
+    return this;
   }
 
-  #getErasedRange(start: number, end: number) {
+  eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>): this {
+    if (node.hasTrailingComma) {
+      this.erase(node.end - 1, node.end);
+    }
+
+    return this;
+  }
+
+  #getErased(start: number, end: number) {
     if (this.#text.indexOf("\n", start) >= end) {
       return " ".repeat(end - start);
     }
@@ -62,18 +70,10 @@ export class SourceTextEditor {
     return this.#text;
   }
 
-  replaceRange(start: number, end: number, replacement?: string) {
-    const rangeText =
-      replacement != null
-        ? `${replacement}${this.#getErasedRange(start, end).slice(replacement.length)}`
-        : this.#getErasedRange(start, end);
+  update(start: number, end: number, text: string): this {
+    this.#text =
+      this.#text.slice(0, start) + text + this.#getErased(start, end).slice(text.length) + this.#text.slice(end);
 
-    this.#text = `${this.#text.slice(0, start)}${rangeText}${this.#text.slice(end)}`;
-  }
-
-  replaceRanges(ranges: Array<[start: number, end: number, replacement?: string]>): void {
-    for (const [start, end, replacement] of ranges) {
-      this.replaceRange(start, end, replacement);
-    }
+    return this;
   }
 }
