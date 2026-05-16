@@ -192,6 +192,53 @@ test("Pair", () => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("handles parentheses", async (t) => {
+    const toBeConstructableWithText = `import { expect, test } from "tstyche";
+
+class Pair<T> {
+  left: T;
+  right: T;
+
+  constructor(left: T, right: T) {
+    this.left = left;
+    this.right = right;
+  }
+}
+
+test("handles parentheses?", () => {
+  (expect(Pair).type.toBeConstructableWith(true, false));
+  (expect(Pair).type.not.toBeConstructableWith(true, false)); // fail
+
+  (expect<typeof Pair>().type.toBeConstructableWith(true, false));
+  (expect<typeof Pair>().type.not.toBeConstructableWith(true, false)); // fail
+});
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toBeConstructableWith.tst.ts"]: toBeConstructableWithText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-parentheses-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-parentheses-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("handles '// @ts-expect-error' directive", async (t) => {
     const toBeConstructableWithText = `import { expect, test } from "tstyche";
 

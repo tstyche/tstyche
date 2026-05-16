@@ -98,7 +98,7 @@ expect(createSingle<_>).type.toBeInstantiableWith<[string]>();
 expect(createSingle<string>).type.toBeInstantiableWith<[string]>();
 expect(createSingle<_>).type.not.toBeInstantiableWith<[number]>();
 expect(createSingle<string>).type.not.toBeInstantiableWith<[number]>();
-  `;
+`;
 
     const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
@@ -120,5 +120,86 @@ expect(createSingle<string>).type.not.toBeInstantiableWith<[number]>();
     });
 
     assert.equal(exitCode, 0);
+  });
+
+  await t.test("handles missing semicolons", async (t) => {
+    const toBeInstantiableWithText = `import { type _, expect } from "tstyche"
+
+type WithLoading<T extends object> = T & { loading: boolean }
+
+function pickLonger<T extends { length: number }>(a: T, b: T) {
+  return a.length >= b.length ? a : b
+}
+
+expect(pickLonger).type.toBeInstantiableWith<[string]>()
+expect(pickLonger).type.not.toBeInstantiableWith<[number]>()
+
+expect<WithLoading<_>>().type.toBeInstantiableWith<[{}]>()
+expect<WithLoading<_>>().type.not.toBeInstantiableWith<[string]>()
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toBeInstantiableWith.tst.ts"]: toBeInstantiableWithText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-missing-semicolons-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("handles parentheses", async (t) => {
+    const toBeInstantiableWithText = `import { type _, expect, test } from "tstyche";
+
+type WithLoading<T extends object> = T & { loading: boolean };
+
+function pickLonger<T extends { length: number }>(a: T, b: T) {
+  return a.length >= b.length ? a : b;
+}
+
+test("handles parentheses?", () => {
+  (expect(pickLonger).type.toBeInstantiableWith<[string]>());
+  (expect(pickLonger).type.not.toBeInstantiableWith<[string]>()); // fail
+
+  (expect<WithLoading<_>>().type.toBeInstantiableWith<[{}]>());
+  (expect<WithLoading<_>>().type.not.toBeInstantiableWith<[{}]>()); // fail
+});
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toBeInstantiableWith.tst.ts"]: toBeInstantiableWithText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-parentheses-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-parentheses-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
   });
 });

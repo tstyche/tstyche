@@ -1,0 +1,23 @@
+Error: Expression is instantiable with the given type argument.
+
+   9 | test("handles parentheses?", () => {
+  10 |   (expect(pickLonger).type.toBeInstantiableWith<[string]>());
+  11 |   (expect(pickLonger).type.not.toBeInstantiableWith<[string]>()); // fail
+     |                                ~~~~~~~~~~~~~~~~~~~~
+  12 | 
+  13 |   (expect<WithLoading<_>>().type.toBeInstantiableWith<[{}]>());
+  14 |   (expect<WithLoading<_>>().type.not.toBeInstantiableWith<[{}]>()); // fail
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:11:32 ❭ handles parentheses?
+
+Error: Type is instantiable with the given type argument.
+
+  12 | 
+  13 |   (expect<WithLoading<_>>().type.toBeInstantiableWith<[{}]>());
+  14 |   (expect<WithLoading<_>>().type.not.toBeInstantiableWith<[{}]>()); // fail
+     |                                      ~~~~~~~~~~~~~~~~~~~~
+  15 | });
+  16 | 
+
+       at ./__typetests__/toBeInstantiableWith.tst.ts:14:38 ❭ handles parentheses?
+

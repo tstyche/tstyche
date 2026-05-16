@@ -178,6 +178,47 @@ test("handles trailing comma?", () => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("handles parentheses", async (t) => {
+    const toBeCallableWithText = `import { expect, test } from "tstyche";
+
+function isSameLength<T extends { length: number }>(a: T, b: T) {
+  return a.length === b.length;
+}
+
+test("handles parentheses?", () => {
+  (expect(isSameLength).type.toBeCallableWith("one", "two"));
+  (expect(isSameLength).type.not.toBeCallableWith("one", "two")); // fail
+
+  (expect<(a: string) => void>().type.toBeCallableWith("one"));
+  (expect<(a: string) => void>().type.not.toBeCallableWith("two")); // fail
+});
+`;
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toBeCallableWith.tst.ts"]: toBeCallableWithText,
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-parentheses-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-parentheses-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("handles '// @ts-expect-error' directive", async (t) => {
     const toBeCallableWithText = `import { expect, test } from "tstyche";
 

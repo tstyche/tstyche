@@ -1,0 +1,23 @@
+Error: Expression is callable with the given arguments.
+
+   7 | test("handles parentheses?", () => {
+   8 |   (expect(isSameLength).type.toBeCallableWith("one", "two"));
+   9 |   (expect(isSameLength).type.not.toBeCallableWith("one", "two")); // fail
+     |                                  ~~~~~~~~~~~~~~~~
+  10 | 
+  11 |   (expect<(a: string) => void>().type.toBeCallableWith("one"));
+  12 |   (expect<(a: string) => void>().type.not.toBeCallableWith("two")); // fail
+
+       at ./__typetests__/toBeCallableWith.tst.ts:9:34 ❭ handles parentheses?
+
+Error: Type is callable with the given argument.
+
+  10 | 
+  11 |   (expect<(a: string) => void>().type.toBeCallableWith("one"));
+  12 |   (expect<(a: string) => void>().type.not.toBeCallableWith("two")); // fail
+     |                                           ~~~~~~~~~~~~~~~~
+  13 | });
+  14 | 
+
+       at ./__typetests__/toBeCallableWith.tst.ts:12:43 ❭ handles parentheses?
+

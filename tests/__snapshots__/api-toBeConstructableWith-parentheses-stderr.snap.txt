@@ -1,0 +1,23 @@
+Error: Expression is constructable with the given arguments.
+
+  13 | test("handles parentheses?", () => {
+  14 |   (expect(Pair).type.toBeConstructableWith(true, false));
+  15 |   (expect(Pair).type.not.toBeConstructableWith(true, false)); // fail
+     |                          ~~~~~~~~~~~~~~~~~~~~~
+  16 | 
+  17 |   (expect<typeof Pair>().type.toBeConstructableWith(true, false));
+  18 |   (expect<typeof Pair>().type.not.toBeConstructableWith(true, false)); // fail
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:15:26 ❭ handles parentheses?
+
+Error: Type is constructable with the given arguments.
+
+  16 | 
+  17 |   (expect<typeof Pair>().type.toBeConstructableWith(true, false));
+  18 |   (expect<typeof Pair>().type.not.toBeConstructableWith(true, false)); // fail
+     |                                   ~~~~~~~~~~~~~~~~~~~~~
+  19 | });
+  20 | 
+
+       at ./__typetests__/toBeConstructableWith.tst.ts:18:35 ❭ handles parentheses?
+
