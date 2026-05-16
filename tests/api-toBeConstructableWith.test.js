@@ -239,7 +239,7 @@ test("handles parentheses?", () => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles '// @ts-expect-error' directive", async (t) => {
+  await t.test("handles '@ts-expect-error' directive", async (t) => {
     const toBeConstructableWithText = `import { expect, test } from "tstyche";
 
 class Person {
@@ -254,7 +254,7 @@ function getPersonConstructor() {
   return Person;
 }
 
-test("handles '// @ts-expect-error' directive", () => {
+test("handles '@ts-expect-error' directive", () => {
   expect(getPersonConstructor()).type.toBeConstructableWith("abc");
   expect(getPersonConstructor()).type.not.toBeConstructableWith();
 

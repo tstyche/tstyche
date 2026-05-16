@@ -8,7 +8,7 @@ Error: Expression is callable with the given argument.
   17 |   // @ts-expect-error!
   18 |   expect(concat(3)).type.not.toBeCallableWith();
 
-       at ./__typetests__/toBeCallableWith.tst.ts:15:30 ❭ handles '// @ts-expect-error' directive
+       at ./__typetests__/toBeCallableWith.tst.ts:15:30 ❭ handles '@ts-expect-error' directive
 
 Error: Expression is not callable without arguments.
 
@@ -21,7 +21,7 @@ Expected 1 arguments, but got 0.
   21 | });
   22 | 
 
-       at ./__typetests__/toBeCallableWith.tst.ts:20:26 ❭ handles '// @ts-expect-error' directive
+       at ./__typetests__/toBeCallableWith.tst.ts:20:26 ❭ handles '@ts-expect-error' directive
 
     An argument for 'second' was not provided. ts(6210)
 
@@ -31,7 +31,7 @@ Expected 1 arguments, but got 0.
         |    ~~~~~~~~~~~~~~
       6 |     first + second;
       7 | 
-      8 | test("handles '// @ts-expect-error' directive", () => {
+      8 | test("handles '@ts-expect-error' directive", () => {
 
           at ./__typetests__/toBeCallableWith.tst.ts:5:4
 

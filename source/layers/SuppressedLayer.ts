@@ -101,7 +101,7 @@ export class SuppressedLayer {
     for (const suppressedError of suppressedErrors) {
       const { start, end } = suppressedError.directive;
 
-      this.#editor.erase(start + 2, end);
+      this.#editor.erase(start, end);
 
       if (this.#suppressedErrorsMap != null) {
         const { line } = tree.sourceFile.getLineAndCharacterOfPosition(start);

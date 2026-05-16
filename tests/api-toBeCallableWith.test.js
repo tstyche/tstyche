@@ -219,7 +219,7 @@ test("handles parentheses?", () => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("handles '// @ts-expect-error' directive", async (t) => {
+  await t.test("handles '@ts-expect-error' directive", async (t) => {
     const toBeCallableWithText = `import { expect, test } from "tstyche";
 
 const concat =
@@ -227,7 +227,7 @@ const concat =
   (second: string): string =>
     first + second;
 
-test("handles '// @ts-expect-error' directive", () => {
+test("handles '@ts-expect-error' directive", () => {
   expect(concat("one")).type.toBeCallableWith("two");
   expect(concat("one")).type.not.toBeCallableWith();
 
