@@ -1,4 +1,4 @@
-Error: Failed to fetch metadata of the 'typescript' package from 'http://localhost:<<port>>/status/404/'.
+Error: Failed to fetch metadata of the 'typescript' package from 'https://mockhttp.org/status/404/'.
 
 The request failed with status code 404.
 

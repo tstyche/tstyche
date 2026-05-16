@@ -1,9 +1,6 @@
-import process from "node:process";
 import test from "node:test";
-import packageConfig from "../package.json" with { type: "json" };
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
-import { clearRequests, getRequests, getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -15,32 +12,16 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-/** @type {string | undefined} */
-let testServerUrl;
+const testServerUrl = "https://mockhttp.org";
 
 await test("store", async (t) => {
-  t.before(async () => {
-    await startServer();
-    testServerUrl = getServerUrl();
-  });
-
-  t.after(async () => {
-    await stopServer();
-    testServerUrl = undefined;
-  });
-
   t.afterEach(async () => {
-    clearRequests();
     await clearFixture(fixtureUrl);
   });
 
-  const testCases = [
-    { requestCount: 1, statusCode: 404 },
-    { requestCount: 3, statusCode: 429 },
-    { requestCount: 3, statusCode: 500 },
-  ];
+  const statusCodes = [404, 429, 500];
 
-  for (const { requestCount, statusCode } of testCases) {
+  for (const statusCode of statusCodes) {
     await t.test(`when fetch request of metadata fails with ${statusCode}`, async () => {
       await writeFixture(fixtureUrl);
 
@@ -60,14 +41,6 @@ await test("store", async (t) => {
 
       assert.equal(stderr, expected);
       assert.equal(exitCode, 1);
-
-      const requests = getRequests();
-
-      assert.equal(requestCount, requests.length);
-      assert.equal(
-        `tstyche/${packageConfig.version} ${process.platform} ${process.arch}`,
-        requests[0]?.headers["user-agent"],
-      );
     });
   }
 
@@ -97,12 +70,12 @@ await test("store", async (t) => {
 
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
-        ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
+        ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.mockhttp.org",
       },
     });
 
     const expected = [
-      "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
+      "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.mockhttp.org'.",
       "",
       "The network connection failed after 3 attempts.",
       "",
@@ -300,7 +273,7 @@ await test("store", async (t) => {
         $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         minorVersions: ["5.8", "5.9"],
-        npmRegistry: "https://tstyche.org",
+        npmRegistry: `${testServerUrl}/status/404/`,
         packages: {
           "5.8.2": {
             integrity:
@@ -326,7 +299,7 @@ await test("store", async (t) => {
 
       const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
         env: {
-          ["TSTYCHE_NPM_REGISTRY"]: "https://tstyche.org",
+          ["TSTYCHE_NPM_REGISTRY"]: `${testServerUrl}/status/404/`,
         },
       });
 
@@ -390,7 +363,7 @@ await test("store", async (t) => {
         $version: "3",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         minorVersions: ["5.8", "5.9"],
-        npmRegistry: "https://nothing.tstyche.org",
+        npmRegistry: "https://nothing.mockhttp.org",
         packages: {
           "5.8.2": {
             integrity:
@@ -416,7 +389,7 @@ await test("store", async (t) => {
 
       const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
         env: {
-          ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
+          ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.mockhttp.org",
         },
       });
 

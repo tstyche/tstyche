@@ -3,7 +3,6 @@ import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
-import { getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const passingTestText = `import { expect, test } from "tstyche";
@@ -52,20 +51,9 @@ test.todo("is number?");
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-/** @type {string | undefined} */
-let testServerUrl;
+const testServerUrl = "https://mockhttp.org";
 
 await test("reporters", async (t) => {
-  t.before(async () => {
-    await startServer();
-    testServerUrl = getServerUrl();
-  });
-
-  t.after(async () => {
-    await stopServer();
-    testServerUrl = undefined;
-  });
-
   const reporters = ["dot", "list"];
 
   for (const reporter of reporters) {

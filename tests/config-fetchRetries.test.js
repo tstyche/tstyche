@@ -32,12 +32,12 @@ await test("'TSTYCHE_FETCH_RETRIES' environment variable", async (t) => {
     const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "5.8"], {
       env: {
         ["TSTYCHE_FETCH_RETRIES"]: "1",
-        ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
+        ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.mockhttp.org",
       },
     });
 
     const expected = [
-      "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
+      "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.mockhttp.org'.",
       "",
       "The network connection failed after 2 attempts.",
       "",

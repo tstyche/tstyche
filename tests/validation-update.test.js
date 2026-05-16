@@ -1,7 +1,6 @@
 import test from "node:test";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
-import { getServerUrl, startServer, stopServer } from "./__utilities__/server.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
@@ -13,20 +12,9 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-/** @type {string | undefined} */
-let testServerUrl;
+const testServerUrl = "https://mockhttp.org";
 
 await test("'--update' command line option", async (t) => {
-  t.before(async () => {
-    await startServer();
-    testServerUrl = getServerUrl();
-  });
-
-  t.after(async () => {
-    await stopServer();
-    testServerUrl = undefined;
-  });
-
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -67,7 +55,7 @@ await test("'--update' command line option", async (t) => {
     const storeManifest = {
       $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
-      npmRegistry: "https://nothing.tstyche.org",
+      npmRegistry: "https://registry.npmjs.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
@@ -99,7 +87,7 @@ await test("'--update' command line option", async (t) => {
     const storeManifest = {
       $version: "3",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
-      npmRegistry: "https://nothing.tstyche.org",
+      npmRegistry: "https://nothing.mockhttp.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
     };
 
@@ -110,12 +98,12 @@ await test("'--update' command line option", async (t) => {
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--update"], {
       env: {
-        ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.tstyche.org",
+        ["TSTYCHE_NPM_REGISTRY"]: "https://nothing.mockhttp.org",
       },
     });
 
     const expected = [
-      "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.tstyche.org'.",
+      "Error: Failed to fetch metadata of the 'typescript' package from 'https://nothing.mockhttp.org'.",
       "",
       "The network connection failed after 3 attempts.",
       "",
