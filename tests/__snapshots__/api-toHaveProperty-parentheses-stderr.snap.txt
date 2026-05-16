@@ -1,0 +1,23 @@
+Error: Type '{ one: boolean; }' has property 'one'.
+
+  3 | test("handles parentheses?", () => {
+  4 |   (expect({ one: true }).type.toHaveProperty("one"));
+  5 |   (expect({ one: true }).type.not.toHaveProperty("one")); // fail
+    |                                                  ~~~~~
+  6 | 
+  7 |   (expect<{ one: unknown }>().type.toHaveProperty("one"));
+  8 |   (expect<{ one: unknown }>().type.not.toHaveProperty("one")); // fail
+
+      at ./__typetests__/toHaveProperty.tst.ts:5:50 ❭ handles parentheses?
+
+Error: Type '{ one: unknown; }' has property 'one'.
+
+   6 | 
+   7 |   (expect<{ one: unknown }>().type.toHaveProperty("one"));
+   8 |   (expect<{ one: unknown }>().type.not.toHaveProperty("one")); // fail
+     |                                                       ~~~~~
+   9 | });
+  10 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:8:55 ❭ handles parentheses?
+

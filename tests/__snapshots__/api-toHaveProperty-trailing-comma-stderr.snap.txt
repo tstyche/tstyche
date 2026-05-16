@@ -1,0 +1,35 @@
+Error: Type '{ one: boolean; }' does not have property 'two'.
+
+  4 |   expect(
+  5 |     { one: true },
+  6 |   ).type.toHaveProperty("two"); // fail
+    |                         ~~~~~
+  7 |   expect(
+  8 |     { one: true },
+  9 |   ).type.toHaveProperty("three"); // fail
+
+      at ./__typetests__/toHaveProperty.tst.ts:6:25 ❭ handles trailing comma?
+
+Error: Type '{ one: boolean; }' does not have property 'three'.
+
+   7 |   expect(
+   8 |     { one: true },
+   9 |   ).type.toHaveProperty("three"); // fail
+     |                         ~~~~~~~
+  10 |   expect(
+  11 |     { one: true }  ,
+  12 |   ).type.toHaveProperty("nope"); // fail
+
+       at ./__typetests__/toHaveProperty.tst.ts:9:25 ❭ handles trailing comma?
+
+Error: Type '{ one: boolean; }' does not have property 'nope'.
+
+  10 |   expect(
+  11 |     { one: true }  ,
+  12 |   ).type.toHaveProperty("nope"); // fail
+     |                         ~~~~~~
+  13 | });
+  14 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:12:25 ❭ handles trailing comma?
+

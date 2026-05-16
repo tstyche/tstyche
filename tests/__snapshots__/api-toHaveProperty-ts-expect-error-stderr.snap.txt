@@ -1,0 +1,35 @@
+Error: Type '{ one: unknown; }' has property 'one'.
+
+   5 | test("handles '@ts-expect-error' directive", () => {
+   6 |   expect(sample()).type.toHaveProperty("one");
+   7 |   expect(sample()).type.not.toHaveProperty("one"); // fail
+     |                                            ~~~~~
+   8 | 
+   9 |   // @ts-expect-error!
+  10 |   expect(sample(false)).type.toHaveProperty("one");
+
+       at ./__typetests__/toHaveProperty.tst.ts:7:44 ❭ handles '@ts-expect-error' directive
+
+Error: Type '{ one: unknown; }' has property 'one'.
+
+  10 |   expect(sample(false)).type.toHaveProperty("one");
+  11 |   // @ts-expect-error!
+  12 |   expect(sample(false)).type.not.toHaveProperty("one"); // fail
+     |                                                 ~~~~~
+  13 | 
+  14 |   // @ts-expect-error!
+  15 |   expect(sample(false)).type.not.toHaveProperty("two");
+
+       at ./__typetests__/toHaveProperty.tst.ts:12:49 ❭ handles '@ts-expect-error' directive
+
+Error: Type '{ one: unknown; }' does not have property 'two'.
+
+  15 |   expect(sample(false)).type.not.toHaveProperty("two");
+  16 |   // @ts-expect-error!
+  17 |   expect(sample(false)).type.toHaveProperty("two"); // fail
+     |                                             ~~~~~
+  18 | });
+  19 | 
+
+       at ./__typetests__/toHaveProperty.tst.ts:17:45 ❭ handles '@ts-expect-error' directive
+

@@ -149,8 +149,8 @@ export class AbilityLayer {
           }
         } else {
           const sourceText = this.#compiler.isTypeReferenceNode(sourceNode)
-            ? sourceNode.typeName.getText()
-            : sourceNode.getText();
+            ? sourceNode.typeName.getFullText()
+            : sourceNode.getFullText();
 
           this.#editor.update(
             expectStart,
@@ -182,31 +182,41 @@ export class AbilityLayer {
         const sourceNode = expect.source[0];
         const targetNode = expect.target?.[0];
 
-        if (!sourceNode || !targetNode) {
+        if (!sourceNode) {
           return;
         }
-
-        const sourceText = sourceNode.getFullText();
-        const targetText = targetNode.getFullText();
 
         if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
-              matcherNodeEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
-                ? `;(${sourceText})[${targetText}]`
-                : `(${sourceText})[${targetText}]`,
-            );
+              expectExpressionEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+            )
+            .erase(expectEnd, matcherNodeEnd);
         } else {
+          const sourceText = sourceNode.getFullText();
+
           this.#editor.update(
             expectStart,
             matcherNodeEnd,
             nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
-              ? `;(undefined as any as ${sourceText})[${targetText}]`
-              : `(undefined as any as ${sourceText})[${targetText}]`,
+              ? `;(undefined as any as ${sourceText})`
+              : `(undefined as any as ${sourceText})`,
           );
+        }
+
+        if (targetNode != null) {
+          const targetText = targetNode.getText();
+
+          if (targetText.trim().length > 0) {
+            this.#editor.update(
+              targetNode.getFullStart() - 1,
+              targetNode.getEnd() + 1,
+              `[${targetText}]`.padStart(targetNode.getFullWidth()),
+            );
+          }
         }
 
         break;
