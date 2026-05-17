@@ -4,7 +4,7 @@ Pull requests and suggestions are welcome! Before submitting new features or beh
 
 ## Prerequisites
 
-To work with this repository, you will need the latest LTS version of Node.js and the latest version of Aube. We use `mise` to get both of them set up correctly.
+To work with this repository, you will need the latest LTS version of [Node.js](https://nodejs.org) and the latest version of [Aube](https://aube.en.dev). We use `mise` to get both of them set up correctly.
 
 To install `mise`, follow [their instructions](https://mise.jdx.dev/getting-started.html). Then install the dependencies:
 
@@ -28,10 +28,10 @@ aube install
 
 ### Why `aube`?
 
-Running `aube exec tstyche` in this repository just works. Thanks to Aube, we can implement new features and immediately try them as a user. To see how that works, run:
+Running `aube run tstyche` in this repository just works. Thanks to Aube, we can implement new features and immediately try them as a user. To see how that works, run:
 
 ```shell
-aube exec tstyche callbacks
+aube run tstyche callbacks
 ```
 
 ### Why `mise`?
@@ -39,7 +39,7 @@ aube exec tstyche callbacks
 Its `exec` command simplifies running TSTyche using the specific Node.js version. This is useful when working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
 
 ```shell
-mise exec node@22 -- aube exec tstyche template
+mise exec node@22 -- aube run tstyche template
 ```
 
 ## Development
@@ -70,17 +70,19 @@ To update snapshots, run the command with the `--write` flag:
 aube test:run tests/api-expect.test.js --write
 ```
 
-To collect code coverage, run the command with the `--coverage` flag (note that in this case the library must be built with the `--sourcemap` flag to ensure accurate mapping):
+To collect code coverage, run the command with the `--coverage` flag (build with `--sourcemap` for accurate source mapping):
 
 ```shell
 aube build --sourcemap
 aube test:run tests/api-expect.test.js --coverage
 ```
 
-Or run both steps together with:
+To run `tstyche` or a single test with the inspector enabled, pass the `--inspect` flag to `aube run` (build with `--sourcemap` for accurate source mapping):
 
 ```shell
-aube test:run:coverage tests/api-expect.test.js
+aube build --sourcemap
+aube run --inspect tstyche callbacks
+aube run --inspect test:run tests/api-expect.test.js
 ```
 
 ## Before Opening a Pull Request

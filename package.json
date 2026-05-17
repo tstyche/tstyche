@@ -49,7 +49,6 @@
     "test:e2e": "aube test:run tests/*.test.js",
     "test:examples": "tstyche examples",
     "test:run": "node ./tests/__utilities__/runner.js",
-    "test:run:coverage": "aube build --sourcemap && aube test:run --coverage",
     "test:schemas": "jsonschema test schemas/__tests__/*.test.json",
     "test:types": "tstyche typetests",
     "test:unit": "aube test:run source/**/__tests__/*.test.js --parallel",
