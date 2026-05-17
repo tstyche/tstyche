@@ -3,7 +3,6 @@ import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnost
 import { nodeBelongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
-import { isStringOrNumberLiteralType, isUniqueSymbolType } from "./predicates.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToHaveProperty {
@@ -19,8 +18,8 @@ export class ToHaveProperty {
     const targetType = matchWorker.getType(targetNode);
     let propertyNameText: string;
 
-    if (isStringOrNumberLiteralType(this.#compiler, targetType)) {
-      propertyNameText = targetType.value.toString();
+    if (targetType.flags & (this.#compiler.TypeFlags.StringLiteral | this.#compiler.TypeFlags.NumberLiteral)) {
+      propertyNameText = (targetType as ts.StringLiteralType | ts.NumberLiteralType).value.toString();
     } else {
       propertyNameText = `[${this.#compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
     }
@@ -60,7 +59,14 @@ export class ToHaveProperty {
 
     const targetType = matchWorker.getType(targetNode);
 
-    if (!(isStringOrNumberLiteralType(this.#compiler, targetType) || isUniqueSymbolType(this.#compiler, targetType))) {
+    if (
+      !(
+        targetType.flags &
+        (this.#compiler.TypeFlags.StringLiteral |
+          this.#compiler.TypeFlags.NumberLiteral |
+          this.#compiler.TypeFlags.UniqueESSymbol)
+      )
+    ) {
       const expectedText = "of type 'string | number | symbol'";
 
       const text = ExpectDiagnosticText.argumentMustBe(expectedText);
