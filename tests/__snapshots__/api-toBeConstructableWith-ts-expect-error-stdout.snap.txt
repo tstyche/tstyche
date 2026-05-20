@@ -2,7 +2,7 @@
 
 uses TypeScript <<version>> with baseline TSConfig
 
-fail ./__typetests__/toBeCallableWith.tst.ts
+fail ./__typetests__/toBeConstructableWith.tst.ts
   × handles '@ts-expect-error' directive
 
 Targets:    1 failed, 1 total
