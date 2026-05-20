@@ -51,6 +51,70 @@ export class AbilityLayer {
     const matcherNodeEnd = expect.matcherNode.getEnd();
 
     switch (expect.matcherNameNode.name.text) {
+      case "toAcceptProps": {
+        this.#nodes.push(expect);
+
+        const sourceNode = expect.source[0];
+        const targetNode = expect.target?.[0];
+
+        if (
+          !sourceNode ||
+          !targetNode ||
+          !this.#compiler.isObjectLiteralExpression(targetNode) ||
+          !targetNode.properties.every(
+            (property) => this.#compiler.isPropertyAssignment(property) || this.#compiler.isSpreadAssignment(property),
+          )
+        ) {
+          return;
+        }
+
+        const sourceText = sourceNode.getFullText();
+
+        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+          this.#editor
+            .eraseTrailingComma(expect.source)
+            .update(
+              expectStart,
+              matcherNodeEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+            )
+            .update(sourceNode.getFullStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
+        } else {
+          this.#editor.update(
+            expectStart,
+            matcherNodeEnd,
+            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+              ? `;<undefined as any as ${sourceText}`
+              : `<undefined as any as ${sourceText}`,
+          );
+        }
+
+        for (const property of targetNode.properties) {
+          if (this.#compiler.isPropertyAssignment(property)) {
+            this.#editor
+              .update(property.name.getFullStart(), property.name.getEnd() + 1, property.name.getFullText() + "=")
+              .update(property.initializer.getFullStart(), property.initializer.getFullStart(), "{")
+              .update(
+                property.initializer.getFullStart(),
+                property.initializer.getEnd(),
+                property.initializer.getFullText() + "}",
+              );
+
+            continue;
+          }
+
+          if (this.#compiler.isSpreadAssignment(property)) {
+            this.#editor
+              .update(property.getFullStart(), property.getFullStart(), "{")
+              .update(property.getFullStart(), property.getEnd(), property.getFullText() + "}");
+          }
+        }
+
+        this.#editor.update(matcherNodeEnd - 1, matcherNodeEnd, "/>");
+
+        break;
+      }
+
       case "toBeApplicable":
         this.#nodes.push(expect);
 

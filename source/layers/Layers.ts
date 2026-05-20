@@ -43,7 +43,7 @@ export class Layers {
   }
 
   open(tree: TestTree): void {
-    this.#editor.open(tree.sourceFile);
+    this.#editor.open(tree.sourceFile.fileName, tree.sourceFile.text);
     this.#suppressedLayer.open(tree);
 
     this.#suppressedDiagnostics = this.#projectService.getDiagnostics(

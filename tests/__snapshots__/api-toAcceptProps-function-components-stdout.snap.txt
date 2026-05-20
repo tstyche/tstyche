@@ -17,5 +17,5 @@ fail ./__typetests__/function-components.tst.tsx
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      8 failed, 8 total
-Assertions: 60 failed, 60 passed, 120 total
+Assertions: 32 failed, 36 passed, 68 total
 Duration:   <<timestamp>>

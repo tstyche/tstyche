@@ -81,7 +81,8 @@
         "useThrowNewError": "error",
         "useTrimStartEnd": "error",
 
-        "noNonNullAssertion": "off"
+        "noNonNullAssertion": "off",
+        "useTemplate": "off"
       },
 
       "suspicious": {

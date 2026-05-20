@@ -1,23 +1,24 @@
 import type ts from "typescript";
+import { type Offset, SourceFile } from "./SourceFile.js";
 import { SourceService } from "./SourceService.js";
 
 export class TextEditor {
   #filePath = "";
-  #sourceFile: ts.SourceFile | undefined;
+  #offsets: Array<Offset> = [];
+  #sourceText = "";
   #text = "";
 
-  open(sourceFile: ts.SourceFile) {
-    this.#sourceFile = sourceFile;
-
-    this.#filePath = sourceFile.fileName;
-    this.#text = sourceFile.text;
+  open(filePath: string, text: string): void {
+    this.#filePath = filePath;
+    this.#sourceText = text;
+    this.#text = text;
   }
 
-  close() {
-    if (this.#sourceFile != null) {
-      SourceService.set(this.#sourceFile);
+  close(): void {
+    if (this.#sourceText === "") {
+      SourceService.set(new SourceFile(this.#filePath, this.#sourceText, this.#offsets));
 
-      this.#sourceFile = undefined;
+      this.#sourceText = "";
     }
 
     this.#filePath = "";
@@ -25,12 +26,17 @@ export class TextEditor {
   }
 
   erase(start: number, end: number): this {
-    this.#text = this.#text.slice(0, start) + this.#getErased(start, end) + this.#text.slice(end);
+    const offset = this.#getOffset(start);
+
+    this.#text =
+      this.#text.slice(0, start + offset) +
+      this.#getErased(start + offset, end + offset) +
+      this.#text.slice(end + offset);
 
     return this;
   }
 
-  eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>): this {
+  eraseTrailingComma(node: ts.NodeArray<ts.Node>): this {
     if (node.hasTrailingComma) {
       this.erase(node.end - 1, node.end);
     }
@@ -66,13 +72,42 @@ export class TextEditor {
     return this.#filePath;
   }
 
+  #getOffset(position: number) {
+    let diff = 0;
+
+    for (const offset of this.#offsets) {
+      if (position < offset.position) {
+        break;
+      }
+
+      diff += offset.diff;
+    }
+
+    return diff;
+  }
+
   getText(): string {
     return this.#text;
   }
 
+  #setOffset(start: number, end: number, text: string) {
+    const diff = text.length - (end - start);
+
+    if (diff > 0) {
+      this.#offsets.push({ position: end, diff });
+    }
+  }
+
   update(start: number, end: number, text: string): this {
+    const offset = this.#getOffset(start);
+
     this.#text =
-      this.#text.slice(0, start) + text + this.#getErased(start, end).slice(text.length) + this.#text.slice(end);
+      this.#text.slice(0, start + offset) +
+      text +
+      this.#getErased(start + offset, end + offset).slice(text.length) +
+      this.#text.slice(end + offset);
+
+    this.#setOffset(start, end, text);
 
     return this;
   }

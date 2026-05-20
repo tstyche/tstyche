@@ -1,18 +1,18 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import type { JsonSourceFile } from "#json";
-import { SourceService } from "../source/SourceService.js";
+import { type SourceFile, SourceService } from "#source";
 
 export class DiagnosticOrigin {
   assertionNode: ExpectNode | undefined;
   end: number;
-  sourceFile: ts.SourceFile | JsonSourceFile;
+  sourceFile: SourceFile;
   start: number;
 
-  constructor(start: number, end: number, sourceFile: ts.SourceFile | JsonSourceFile, assertionNode?: ExpectNode) {
+  constructor(start: number, end: number, source: ts.SourceFile | JsonSourceFile, assertionNode?: ExpectNode) {
     this.start = start;
     this.end = end;
-    this.sourceFile = SourceService.get(sourceFile);
+    this.sourceFile = SourceService.get(source);
     this.assertionNode = assertionNode;
   }
 
