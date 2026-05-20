@@ -277,7 +277,7 @@ test("handles '@ts-expect-error' directive", () => {
     });
 
     await writeFixture(fixtureUrl, {
-      ["__typetests__/toBeCallableWith.tst.ts"]: toBeConstructableWithText,
+      ["__typetests__/toBeConstructableWith.tst.ts"]: toBeConstructableWithText,
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
