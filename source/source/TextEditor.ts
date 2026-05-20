@@ -12,17 +12,18 @@ export class TextEditor {
     this.#filePath = filePath;
     this.#sourceText = text;
     this.#text = text;
+
+    this.#offsets = [];
   }
 
   close(): void {
-    if (this.#sourceText === "") {
-      SourceService.set(new SourceFile(this.#filePath, this.#sourceText, this.#offsets));
-
-      this.#sourceText = "";
-    }
+    SourceService.set(new SourceFile(this.#filePath, this.#sourceText, this.#offsets));
 
     this.#filePath = "";
+    this.#sourceText = "";
     this.#text = "";
+
+    this.#offsets = [];
   }
 
   erase(start: number, end: number): this {
