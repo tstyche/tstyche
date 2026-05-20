@@ -182,7 +182,7 @@ export class AbilityLayer {
         const sourceNode = expect.source[0];
         const targetNode = expect.target?.[0];
 
-        if (!sourceNode) {
+        if (!sourceNode || !targetNode) {
           return;
         }
 
@@ -207,16 +207,14 @@ export class AbilityLayer {
           );
         }
 
-        if (targetNode != null) {
-          const targetText = targetNode.getText();
+        const targetText = targetNode.getText();
 
-          if (targetText.trim().length > 0) {
-            this.#editor.update(
-              targetNode.getFullStart() - 1,
-              targetNode.getEnd() + 1,
-              `[${targetText}]`.padStart(targetNode.getFullWidth()),
-            );
-          }
+        if (targetText.trim().length > 0) {
+          this.#editor.update(
+            targetNode.getFullStart() - 1,
+            targetNode.getEnd() + 1,
+            `[${targetText}]`.padStart(targetNode.getFullWidth()),
+          );
         }
 
         break;
