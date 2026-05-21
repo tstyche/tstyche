@@ -15,10 +15,7 @@ export class AbilityLayer {
   }
 
   #belongsToNode(node: ExpectNode, diagnostic: ts.Diagnostic) {
-    return (
-      diagnosticBelongsToNode(diagnostic, (node as ExpectNode).matcherNode) ||
-      diagnosticBelongsToNode(diagnostic, (node as ExpectNode).source)
-    );
+    return diagnosticBelongsToNode(diagnostic, node.matcherNode) || diagnosticBelongsToNode(diagnostic, node.source);
   }
 
   close(diagnostics: Array<ts.Diagnostic> | undefined): void {
