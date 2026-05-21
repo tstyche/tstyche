@@ -11,31 +11,39 @@ export class SourceFile {
 
   constructor(filePath: string, text: string, offsets?: Array<Offset>) {
     this.#filePath = filePath;
-
-    this.#offsets = offsets ?? [];
     this.#text = text;
+    this.#offsets = offsets ?? [];
   }
 
   #createLineMap() {
     const result = [0];
-
     let position = 0;
 
     while (position < this.#text.length) {
-      if (this.#text.charAt(position - 1) === "\r") {
-        position++;
-      }
+      const character = this.#text.charAt(position);
 
-      if (this.#text.charAt(position - 1) === "\n") {
-        result.push(this.#getMapped(position));
+      switch (character) {
+        case "\n":
+          result.push(position + 1);
+          break;
+
+        case "\r":
+          if (this.#text.charAt(position + 1) === "\n") {
+            result.push(position + 2);
+            position++;
+          }
+
+          break;
       }
 
       position++;
     }
 
-    result.push(this.#getMapped(position));
-
     return result;
+  }
+
+  getFilePath(): string {
+    return this.#filePath;
   }
 
   getLineStarts(): Array<number> {
@@ -56,10 +64,6 @@ export class SourceFile {
     const character = position - this.getLineStarts()[line]!;
 
     return { line, character };
-  }
-
-  getFilePath(): string {
-    return this.#filePath;
   }
 
   #getMapped(position: number): number {

@@ -4,7 +4,6 @@ Error: The specified path '<<basePath>>/tests/__fixtures__/.generated/validation
   2 |   "tsconfig": "./not.tsconfig.json"
     |               ~~~~~~~~~~~~~~~~~~~~~
   3 | }
-  4 | 
 
       at ./tstyche.json:2:15
 

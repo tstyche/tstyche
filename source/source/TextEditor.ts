@@ -5,34 +5,33 @@ import { SourceService } from "./SourceService.js";
 export class TextEditor {
   #filePath = "";
   #offsets: Array<Offset> = [];
-  #sourceText = "";
   #text = "";
+  #offsetText = "";
 
   open(filePath: string, text: string): void {
     this.#filePath = filePath;
-    this.#sourceText = text;
     this.#text = text;
 
     this.#offsets = [];
+    this.#offsetText = text;
   }
 
   close(): void {
-    SourceService.set(new SourceFile(this.#filePath, this.#sourceText, this.#offsets));
+    SourceService.set(new SourceFile(this.#filePath, this.#text, this.#offsets));
 
     this.#filePath = "";
-    this.#sourceText = "";
     this.#text = "";
-
+    this.#offsetText = "";
     this.#offsets = [];
   }
 
   erase(start: number, end: number): this {
     const offset = this.#getOffset(start);
 
-    this.#text =
-      this.#text.slice(0, start + offset) +
+    this.#offsetText =
+      this.#offsetText.slice(0, start + offset) +
       this.#getErased(start + offset, end + offset) +
-      this.#text.slice(end + offset);
+      this.#offsetText.slice(end + offset);
 
     return this;
   }
@@ -46,14 +45,14 @@ export class TextEditor {
   }
 
   #getErased(start: number, end: number) {
-    if (this.#text.indexOf("\n", start) >= end) {
+    if (this.#offsetText.indexOf("\n", start) >= end) {
       return " ".repeat(end - start);
     }
 
     const text: Array<string> = [];
 
     for (let index = start; index < end; index++) {
-      const character = this.#text.charAt(index);
+      const character = this.#offsetText.charAt(index);
 
       switch (character) {
         case "\n":
@@ -88,7 +87,7 @@ export class TextEditor {
   }
 
   getText(): string {
-    return this.#text;
+    return this.#offsetText;
   }
 
   #setOffset(start: number, end: number, text: string) {
@@ -102,11 +101,11 @@ export class TextEditor {
   update(start: number, end: number, text: string): this {
     const offset = this.#getOffset(start);
 
-    this.#text =
-      this.#text.slice(0, start + offset) +
+    this.#offsetText =
+      this.#offsetText.slice(0, start + offset) +
       text +
       this.#getErased(start + offset, end + offset).slice(text.length) +
-      this.#text.slice(end + offset);
+      this.#offsetText.slice(end + offset);
 
     this.#setOffset(start, end, text);
 

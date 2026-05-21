@@ -5,7 +5,6 @@ Error: Value for the 'testFileMatch' option must be a list.
     |                    ~~~~~~~~~
   3 |   "failFast": true
   4 | }
-  5 | 
 
       at ./tstyche.json:2:20
 
