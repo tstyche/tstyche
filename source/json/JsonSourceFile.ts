@@ -12,22 +12,27 @@ export class JsonSourceFile {
 
   #createLineMap() {
     const result = [0];
-
     let position = 0;
 
     while (position < this.text.length) {
-      if (this.text.charAt(position - 1) === "\r") {
-        position++;
-      }
+      const character = this.text.charAt(position);
 
-      if (this.text.charAt(position - 1) === "\n") {
-        result.push(position);
+      switch (character) {
+        case "\n":
+          result.push(position + 1);
+          break;
+
+        case "\r":
+          if (this.text.charAt(position + 1) === "\n") {
+            result.push(position + 2);
+            position++;
+          }
+
+          break;
       }
 
       position++;
     }
-
-    result.push(position);
 
     return result;
   }

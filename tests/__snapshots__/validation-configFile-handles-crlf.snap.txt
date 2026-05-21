@@ -17,7 +17,6 @@ Error: Value for the 'target' option must be a string.
     |             ~~~~
   4 | }
   5 | 
-  6 | 
 
       at ./tstyche.json:3:13
 

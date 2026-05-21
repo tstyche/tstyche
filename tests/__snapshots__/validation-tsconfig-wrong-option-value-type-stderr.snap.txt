@@ -4,7 +4,6 @@ Error: Value for the 'tsconfig' option must be a string.
   2 |   "tsconfig": 123
     |               ~~~
   3 | }
-  4 | 
 
       at ./tstyche.json:2:15
 
