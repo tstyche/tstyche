@@ -1,5 +1,4 @@
 import type ts from "typescript";
-import type { JsonSourceFile } from "#json";
 import { SourceFile } from "./SourceFile.js";
 
 export class SourceService {
@@ -9,7 +8,7 @@ export class SourceService {
     SourceService.#files.delete(filePath);
   }
 
-  static get(source: ts.SourceFile | JsonSourceFile): SourceFile {
+  static get(source: ts.SourceFile): SourceFile {
     const file = SourceService.#files.get(source.fileName);
 
     if (file != null) {
