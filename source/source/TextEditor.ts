@@ -30,7 +30,7 @@ export class TextEditor {
     return this;
   }
 
-  eraseTrailingComma(node: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>): this {
+  eraseTrailingComma(node: ts.NodeArray<ts.Node>): this {
     if (node.hasTrailingComma) {
       this.erase(node.end - 1, node.end);
     }
