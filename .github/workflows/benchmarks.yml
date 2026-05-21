@@ -21,7 +21,7 @@ jobs:
       - run: aube run build
       - run: mise run bench
 
-      - uses: bencherdev/bencher@fa25a72c516046b4c0e31659bef70c5266b0f94d # main
+      - uses: bencherdev/bencher@99117a626dc634b8ad817f38abcf4876b3b0668b # main
       - name: Run bencher
         run: |
           bencher run \
