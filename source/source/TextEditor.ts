@@ -4,6 +4,7 @@ import { SourceService } from "./SourceService.js";
 
 export class TextEditor {
   #filePath = "";
+  #offset = 0;
   #offsets: Array<Offset> = [];
   #text = "";
   #offsetText = "";
@@ -12,6 +13,7 @@ export class TextEditor {
     this.#filePath = filePath;
     this.#text = text;
 
+    this.#offset = 0;
     this.#offsets = [];
     this.#offsetText = text;
   }
@@ -21,17 +23,16 @@ export class TextEditor {
 
     this.#filePath = "";
     this.#text = "";
-    this.#offsetText = "";
+    this.#offset = 0;
     this.#offsets = [];
+    this.#offsetText = "";
   }
 
   erase(start: number, end: number): this {
-    const offset = this.#getOffset(start);
-
     this.#offsetText =
-      this.#offsetText.slice(0, start + offset) +
-      this.#getErased(start + offset, end + offset) +
-      this.#offsetText.slice(end + offset);
+      this.#offsetText.slice(0, start + this.#offset) +
+      this.#getErased(start + this.#offset, end + this.#offset) +
+      this.#offsetText.slice(end + this.#offset);
 
     return this;
   }
@@ -72,20 +73,6 @@ export class TextEditor {
     return this.#filePath;
   }
 
-  #getOffset(position: number) {
-    let diff = 0;
-
-    for (const offset of this.#offsets) {
-      if (offset.position > position) {
-        break;
-      }
-
-      diff += offset.diff;
-    }
-
-    return diff;
-  }
-
   getText(): string {
     return this.#offsetText;
   }
@@ -94,18 +81,17 @@ export class TextEditor {
     const diff = text.length - (end - start);
 
     if (diff > 0) {
+      this.#offset += diff;
       this.#offsets.push({ position: end, diff });
     }
   }
 
   update(start: number, end: number, text: string): this {
-    const offset = this.#getOffset(start);
-
     this.#offsetText =
-      this.#offsetText.slice(0, start + offset) +
+      this.#offsetText.slice(0, start + this.#offset) +
       text +
-      this.#getErased(start + offset, end + offset).slice(text.length) +
-      this.#offsetText.slice(end + offset);
+      this.#getErased(start + this.#offset, end + this.#offset).slice(text.length) +
+      this.#offsetText.slice(end + this.#offset);
 
     this.#setOffset(start, end, text);
 
