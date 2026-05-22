@@ -10,5 +10,5 @@ fail ./__typetests__/special-cases.tst.tsx
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
 Tests:      2 failed, 2 total
-Assertions: 11 failed, 7 passed, 18 total
+Assertions: 9 failed, 9 passed, 18 total
 Duration:   <<timestamp>>

@@ -76,7 +76,7 @@ export class TextEditor {
     let diff = 0;
 
     for (const offset of this.#offsets) {
-      if (position < offset.position) {
+      if (offset.position > position) {
         break;
       }
 

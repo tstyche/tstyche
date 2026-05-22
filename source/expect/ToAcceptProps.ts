@@ -34,7 +34,7 @@ export class ToAcceptProps extends AbilityMatcherBase {
     const targetType = matchWorker.getType(targetNode);
 
     if (!(targetType.flags & this.compiler.TypeFlags.Object)) {
-      const expectedText = "of an object type";
+      const expectedText = "an object literal";
 
       const text = ExpectDiagnosticText.argumentMustBe(expectedText);
       const origin = DiagnosticOrigin.fromNode(targetNode);
@@ -49,8 +49,7 @@ export class ToAcceptProps extends AbilityMatcherBase {
     }
 
     return {
-      // TODO implement count text getter
-      explain: () => this.explain(matchWorker, sourceNode, targetNode, () => "this.getArgumentCountText(targetNode)"),
+      explain: () => this.explain(matchWorker, sourceNode, targetNode),
       isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
     };
   }

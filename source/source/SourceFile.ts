@@ -56,32 +56,25 @@ export class SourceFile {
     return this.#lineMap;
   }
 
-  getLineAndCharacterOfPosition(position: number): { line: number; character: number } {
-    position = this.#getMapped(position);
-
+  getLocation(position: number): { line: number; character: number } {
     const line = this.getLineStarts().findLastIndex((line) => line <= position);
-
     const character = position - this.getLineStarts()[line]!;
 
     return { line, character };
   }
 
-  #getMapped(position: number): number {
-    if (this.#offsets.length === 0) {
-      return position;
-    }
-
+  getOffset(position: number) {
     let diff = 0;
 
     for (const offset of this.#offsets) {
-      if (offset.position + diff > position) {
+      if (offset.position > position - diff) {
         break;
       }
 
       diff += offset.diff;
     }
 
-    return position - diff;
+    return diff;
   }
 
   getText(): string {

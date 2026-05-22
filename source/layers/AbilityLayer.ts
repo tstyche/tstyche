@@ -107,7 +107,7 @@ export class AbilityLayer {
           }
         }
 
-        this.#editor.update(matcherNodeEnd - 1, matcherNodeEnd, "/>");
+        this.#editor.update(matcherNodeEnd, matcherNodeEnd, "/>");
 
         break;
       }

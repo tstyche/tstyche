@@ -18,6 +18,12 @@ export class SourceService {
     return new SourceFile(source.fileName, source.text);
   }
 
+  static getOffset(position: number, source: ts.SourceFile): number {
+    const sourceFile = SourceService.get(source);
+
+    return sourceFile.getOffset(position);
+  }
+
   static set(source: SourceFile): void {
     SourceService.#files.set(source.getFilePath(), source);
   }

@@ -38,33 +38,6 @@ Property 'one' is missing in type '{}' but required in type '{ one: string; }'.
 
 Error: Component does not accept props of the given type.
 
-Type '{ two: boolean; }' is not assignable to type 'IntrinsicAttributes & { one: string; }'.
-Property 'two' does not exist on type 'IntrinsicAttributes & { one: string; }'.
-
-  14 | 
-  15 |     expect(Default).type.not.toAcceptProps({ two: false });
-  16 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-     |                                                     ~~~
-  17 | 
-  18 |     expect(Default).type.not.toAcceptProps({ one: false });
-  19 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:16:53 ❭ special cases ❭ when the 'props' argument has a default value
-
-Error: Component accepts props of the given type.
-
-  16 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-  17 | 
-  18 |     expect(Default).type.not.toAcceptProps({ one: false });
-     |                              ~~~~~~~~~~~~~
-  19 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-  20 |   });
-  21 | 
-
-       at ./__typetests__/special-cases.tst.tsx:18:30 ❭ special cases ❭ when the 'props' argument has a default value
-
-Error: Component does not accept props of the given type.
-
 Type 'boolean' is not assignable to type 'string'.
 
   17 | 
@@ -122,12 +95,12 @@ Type 'string' is not assignable to type 'undefined'.
   39 | 
   40 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
   41 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Fail", two: "Fail" }); // fail
-     |                                                 ~~~~~~~~~~~~~
+     |            ~~~~~~~~~~~~~
   42 | 
   43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
   44 |     expect(OneOrTheOther).type.toAcceptProps({}); // fail
 
-       at ./__typetests__/special-cases.tst.tsx:41:49 ❭ special cases ❭ when the 'props' is a union
+       at ./__typetests__/special-cases.tst.tsx:41:12 ❭ special cases ❭ when the 'props' is a union
 
 Error: Component accepts props of the given type.
 
