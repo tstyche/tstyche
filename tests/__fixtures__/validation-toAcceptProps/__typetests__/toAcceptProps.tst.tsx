@@ -22,7 +22,7 @@ describe("argument for 'target'", () => {
     expect(() => <>{"test"}</>).type.toAcceptProps();
   });
 
-  test("must be of object type", () => {
+  test("must be an object literal", () => {
     // @ts-expect-error!
     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
   });

@@ -10,7 +10,7 @@ fail ./__typetests__/toAcceptProps.tst.tsx
     × must be of a function or class type
   argument for 'target'
     × must be provided
-    × must be of object type
+    × must be an object literal
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total

@@ -42,13 +42,13 @@ Error: An argument or type argument must be provided.
      |                                      ~~~~~~~~~~~~~
   23 |   });
   24 | 
-  25 |   test("must be of object type", () => {
+  25 |   test("must be an object literal", () => {
 
        at ./__typetests__/toAcceptProps.tst.tsx:22:38
 
-Error: The argument must be an object literal.
+Error: The argument must be an object literal with key-value pairs.
 
-  25 |   test("must be of object type", () => {
+  25 |   test("must be an object literal", () => {
   26 |     // @ts-expect-error!
   27 |     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
      |                                                    ~~~~~~

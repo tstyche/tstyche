@@ -34,7 +34,7 @@ export class ToAcceptProps extends AbilityMatcherBase {
     const targetType = matchWorker.getType(targetNode);
 
     if (!(targetType.flags & this.compiler.TypeFlags.Object)) {
-      const expectedText = "an object literal";
+      const expectedText = "an object literal with key-value pairs";
 
       const text = ExpectDiagnosticText.argumentMustBe(expectedText);
       const origin = DiagnosticOrigin.fromNode(targetNode);
