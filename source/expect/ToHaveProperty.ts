@@ -67,7 +67,7 @@ export class ToHaveProperty {
           this.#compiler.TypeFlags.UniqueESSymbol)
       )
     ) {
-      const expectedText = "of type 'string | number | symbol'";
+      const expectedText = "a string, number or symbol";
 
       const text = ExpectDiagnosticText.argumentMustBe(expectedText);
       const origin = DiagnosticOrigin.fromNode(targetNode);

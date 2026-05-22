@@ -78,13 +78,13 @@ Error: An argument must be provided.
      |                                         ~~~~~~~~~~~~~~
   28 |   });
   29 | 
-  30 |   test("must be of type 'string | number | symbol'", () => {
+  30 |   test("must be of type a string, number or symbol", () => {
 
        at ./__typetests__/toHaveProperty.tst.ts:27:41
 
-Error: The argument must be of type 'string | number | symbol'.
+Error: The argument must be a string, number or symbol.
 
-  30 |   test("must be of type 'string | number | symbol'", () => {
+  30 |   test("must be of type a string, number or symbol", () => {
   31 |     // @ts-expect-error!
   32 |     expect<{ test: () => void }>().type.toHaveProperty(["test"]);
      |                                                        ~~~~~~~~

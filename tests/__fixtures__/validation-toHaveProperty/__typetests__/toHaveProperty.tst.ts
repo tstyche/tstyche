@@ -27,7 +27,7 @@ describe("argument for 'key'", () => {
     expect<{ test: () => void }>().type.toHaveProperty();
   });
 
-  test("must be of type 'string | number | symbol'", () => {
+  test("must be of type a string, number or symbol", () => {
     // @ts-expect-error!
     expect<{ test: () => void }>().type.toHaveProperty(["test"]);
   });
