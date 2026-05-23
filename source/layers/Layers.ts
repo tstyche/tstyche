@@ -41,8 +41,6 @@ export class Layers {
       }
     }
 
-    // console.log(this.#editor.getText());
-
     this.#abilityLayer.close(abilityDiagnostics);
     this.#editor.close();
   }
