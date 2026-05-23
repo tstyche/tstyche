@@ -55,7 +55,7 @@ export class Layers {
     );
 
     this.#suppressedLayer.close(
-      this.#suppressedDiagnostics?.map((diagnostic) => new MappedDiagnostic(tree.sourceFile, diagnostic, [])),
+      this.#suppressedDiagnostics?.map((diagnostic) => new MappedDiagnostic(tree.sourceFile, diagnostic)),
     );
   }
 

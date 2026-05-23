@@ -11,7 +11,7 @@ export class MappedDiagnostic {
   relatedInformation?: Array<ts.DiagnosticRelatedInformation>;
   start: number | undefined;
 
-  constructor(sourceFile: ts.SourceFile, diagnostic: ts.Diagnostic, offsets: Array<Offset>) {
+  constructor(sourceFile: ts.SourceFile, diagnostic: ts.Diagnostic, offsets: Array<Offset> = []) {
     this.file = sourceFile;
 
     if (diagnostic.start != null) {
