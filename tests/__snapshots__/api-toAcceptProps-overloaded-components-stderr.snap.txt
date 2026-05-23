@@ -84,7 +84,7 @@ Type 'true' is not assignable to type 'undefined'.
 
            at ./__typetests__/overloaded-components.tst.tsx:11:3
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -98,7 +98,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
        at ./__typetests__/overloaded-components.tst.tsx:53:29 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -112,7 +112,7 @@ JSX elements cannot have multiple attributes with the same name.
 
        at ./__typetests__/overloaded-components.tst.tsx:53:29 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -126,7 +126,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
        at ./__typetests__/overloaded-components.tst.tsx:56:29 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -140,7 +140,7 @@ JSX elements cannot have multiple attributes with the same name.
 
        at ./__typetests__/overloaded-components.tst.tsx:56:29 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -154,7 +154,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
        at ./__typetests__/overloaded-components.tst.tsx:62:29 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -168,7 +168,7 @@ JSX elements cannot have multiple attributes with the same name.
 
        at ./__typetests__/overloaded-components.tst.tsx:62:29 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -182,7 +182,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
        at ./__typetests__/overloaded-components.tst.tsx:67:29 ❭ when source is a type ❭ property type is not assignable to prop type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 

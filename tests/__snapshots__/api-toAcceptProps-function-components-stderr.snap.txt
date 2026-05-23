@@ -341,7 +341,7 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
            at ./__typetests__/function-components.tst.tsx:10:3
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -355,7 +355,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
        at ./__typetests__/function-components.tst.tsx:94:25 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -369,7 +369,7 @@ JSX elements cannot have multiple attributes with the same name.
 
        at ./__typetests__/function-components.tst.tsx:94:25 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -383,7 +383,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:98:25 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -397,7 +397,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:98:25 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -411,7 +411,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:100:26 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -425,7 +425,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:100:26 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -439,7 +439,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:103:26 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -453,7 +453,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:103:26 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -467,7 +467,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:106:27 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -481,7 +481,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:106:27 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -495,7 +495,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:109:27 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -509,7 +509,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:109:27 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -523,7 +523,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:115:27 ❭ when source is a type ❭ property is required in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -537,7 +537,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:115:27 ❭ when source is a type ❭ property is required in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -551,7 +551,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:118:27 ❭ when source is a type ❭ property is required in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -565,7 +565,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:118:27 ❭ when source is a type ❭ property is required in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -579,7 +579,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:123:26 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -593,7 +593,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:123:26 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -607,7 +607,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:126:26 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -621,7 +621,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:126:26 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -635,7 +635,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:129:27 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -649,7 +649,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:129:27 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -663,7 +663,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:132:27 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -677,7 +677,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:132:27 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -691,7 +691,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:135:27 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -705,7 +705,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:135:27 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -719,7 +719,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:138:27 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -733,7 +733,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:138:27 ❭ when source is a type ❭ property does not exist in props type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -747,7 +747,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:143:26 ❭ when source is a type ❭ property type is not assignable to prop type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -761,7 +761,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:143:26 ❭ when source is a type ❭ property type is not assignable to prop type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -775,7 +775,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:146:27 ❭ when source is a type ❭ property type is not assignable to prop type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 
@@ -789,7 +789,7 @@ JSX elements cannot have multiple attributes with the same name.
 
         at ./__typetests__/function-components.tst.tsx:146:27 ❭ when source is a type ❭ property type is not assignable to prop type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
@@ -803,7 +803,7 @@ Property 'undefined' does not exist on type 'JSX.IntrinsicElements'.
 
         at ./__typetests__/function-components.tst.tsx:149:27 ❭ when source is a type ❭ property type is not assignable to prop type
 
-Error: Component type does not accept props of the given type.
+Error: Type does not accept props of the given type.
 
 JSX elements cannot have multiple attributes with the same name.
 

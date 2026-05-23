@@ -36,11 +36,11 @@ export class ExpectDiagnosticText {
   }
 
   static acceptsProps(isExpression: boolean): string {
-    return `${isExpression ? "Component" : "Component type"} accepts props of the given type.`;
+    return `${isExpression ? "Component" : "Type"} accepts props of the given type.`;
   }
 
   static doesNotAcceptProps(isExpression: boolean): string {
-    return `${isExpression ? "Component" : "Component type"} does not accept props of the given type.`;
+    return `${isExpression ? "Component" : "Type"} does not accept props of the given type.`;
   }
 
   static canBeApplied(targetText: string): string {
