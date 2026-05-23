@@ -76,7 +76,7 @@ export class ToRaiseError {
           this.#compiler.isRegularExpressionLiteral(targetNode)
         )
       ) {
-        const expectedText = "a string, number or regular expression literal";
+        const expectedText = "a string, number or regular expression";
 
         const text = ExpectDiagnosticText.argumentMustBe(expectedText);
         const origin = DiagnosticOrigin.fromNode(targetNode);

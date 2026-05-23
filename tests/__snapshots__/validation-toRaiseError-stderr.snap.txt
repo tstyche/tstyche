@@ -10,7 +10,7 @@ Error: An argument or type argument must be provided.
 
       at ./__typetests__/toRaiseError.tst.ts:5:5
 
-Error: The argument must be a string, number or regular expression literal.
+Error: The argument must be a string, number or regular expression.
 
   14 |   test("must be of type 'string | number'", () => {
   15 |     // @ts-expect-error!
@@ -22,7 +22,7 @@ Error: The argument must be a string, number or regular expression literal.
 
        at ./__typetests__/toRaiseError.tst.ts:16:42
 
-Error: The argument must be a string, number or regular expression literal.
+Error: The argument must be a string, number or regular expression.
 
   14 |   test("must be of type 'string | number'", () => {
   15 |     // @ts-expect-error!
