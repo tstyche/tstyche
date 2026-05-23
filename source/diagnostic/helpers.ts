@@ -1,5 +1,5 @@
 import type ts from "typescript";
-import type { Offset } from "./MappedDiagnostic.js";
+import type { Offset } from "./types.js";
 
 export function diagnosticBelongsToNode(diagnostic: ts.Diagnostic, node: ts.NodeArray<ts.Node> | ts.Node): boolean {
   return diagnostic.start != null && diagnostic.start >= node.pos && diagnostic.start <= node.end;

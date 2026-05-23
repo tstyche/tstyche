@@ -9,10 +9,10 @@ export class DiagnosticOrigin {
   sourceFile: ts.SourceFile | JsonSourceFile;
   start: number;
 
-  constructor(start: number, end: number, source: ts.SourceFile | JsonSourceFile, assertionNode?: ExpectNode) {
+  constructor(start: number, end: number, sourceFile: ts.SourceFile | JsonSourceFile, assertionNode?: ExpectNode) {
     this.start = start;
     this.end = end;
-    this.sourceFile = source;
+    this.sourceFile = sourceFile;
     this.assertionNode = assertionNode;
   }
 

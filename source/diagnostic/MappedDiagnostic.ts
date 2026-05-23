@@ -1,10 +1,6 @@
 import type ts from "typescript";
 import { getOffset } from "./helpers.js";
-
-export interface Offset {
-  position: number;
-  diff: number;
-}
+import type { Offset } from "./types.js";
 
 export class MappedDiagnostic {
   category: ts.DiagnosticCategory;

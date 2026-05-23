@@ -1,9 +1,5 @@
 import type ts from "typescript";
-
-export interface Offset {
-  position: number;
-  diff: number;
-}
+import type { Offset } from "#diagnostic";
 
 export class TextEditor {
   #filePath = "";
