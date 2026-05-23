@@ -70,20 +70,25 @@ export class AbilityLayer {
         if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
           this.#editor
             .eraseTrailingComma(expect.source)
+            .erase(expectStart, matcherNodeEnd)
             .update(
               expectStart,
-              matcherNodeEnd,
+              matcherNameEnd,
               nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
             )
             .update(sourceNode.getFullStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
         } else {
-          this.#editor.update(
-            expectStart,
-            matcherNodeEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
-              ? `;<undefined as any as ${sourceText}`
-              : `<undefined as any as ${sourceText}`,
-          );
+          const id = [sourceText, expectStart, expectEnd].join("_");
+
+          this.#editor
+            .erase(expectStart, matcherNodeEnd)
+            .update(
+              expectStart,
+              matcherNameEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+                ? `;const ${id} = undefined as any as ${sourceText};<${id}`
+                : `const ${id} = undefined as any as ${sourceText};<${id}`,
+            );
         }
 
         for (const property of targetNode.properties) {
