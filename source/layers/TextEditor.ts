@@ -1,38 +1,37 @@
 import type ts from "typescript";
-import { type Offset, SourceFile } from "./SourceFile.js";
-import { SourceService } from "./SourceService.js";
+
+export interface Offset {
+  position: number;
+  diff: number;
+}
 
 export class TextEditor {
   #filePath = "";
   #offset = 0;
   #offsets: Array<Offset> = [];
   #text = "";
-  #offsetText = "";
 
-  open(filePath: string, text: string): void {
-    this.#filePath = filePath;
-    this.#text = text;
+  open(sourceFile: ts.SourceFile): void {
+    this.#filePath = sourceFile.fileName;
+    this.#text = sourceFile.text;
 
     this.#offset = 0;
     this.#offsets = [];
-    this.#offsetText = text;
   }
 
   close(): void {
-    SourceService.set(new SourceFile(this.#filePath, this.#text, this.#offsets));
-
     this.#filePath = "";
     this.#text = "";
+
     this.#offset = 0;
     this.#offsets = [];
-    this.#offsetText = "";
   }
 
   erase(start: number, end: number): this {
-    this.#offsetText =
-      this.#offsetText.slice(0, start + this.#offset) +
+    this.#text =
+      this.#text.slice(0, start + this.#offset) +
       this.#getErased(start + this.#offset, end + this.#offset) +
-      this.#offsetText.slice(end + this.#offset);
+      this.#text.slice(end + this.#offset);
 
     return this;
   }
@@ -46,14 +45,14 @@ export class TextEditor {
   }
 
   #getErased(start: number, end: number) {
-    if (this.#offsetText.indexOf("\n", start) >= end) {
+    if (this.#text.indexOf("\n", start) >= end) {
       return " ".repeat(end - start);
     }
 
     const text: Array<string> = [];
 
     for (let index = start; index < end; index++) {
-      const character = this.#offsetText.charAt(index);
+      const character = this.#text.charAt(index);
 
       switch (character) {
         case "\n":
@@ -73,8 +72,12 @@ export class TextEditor {
     return this.#filePath;
   }
 
+  getOffsets(): Array<Offset> {
+    return this.#offsets;
+  }
+
   getText(): string {
-    return this.#offsetText;
+    return this.#text;
   }
 
   #setOffset(start: number, end: number, text: string) {
@@ -87,11 +90,11 @@ export class TextEditor {
   }
 
   update(start: number, end: number, text: string): this {
-    this.#offsetText =
-      this.#offsetText.slice(0, start + this.#offset) +
+    this.#text =
+      this.#text.slice(0, start + this.#offset) +
       text +
       this.#getErased(start + this.#offset, end + this.#offset).slice(text.length) +
-      this.#offsetText.slice(end + this.#offset);
+      this.#text.slice(end + this.#offset);
 
     this.#setOffset(start, end, text);
 

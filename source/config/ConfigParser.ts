@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
-import type { JsonNode, JsonScanner } from "#json";
+import type { JsonNode, JsonScanner, JsonSourceFile } from "#json";
 import { Path } from "#path";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
@@ -14,12 +14,12 @@ export class ConfigParser {
   #jsonScanner: JsonScanner;
   #onDiagnostics: DiagnosticsHandler;
   #options: Map<string, OptionDefinition>;
-  #sourceFile: ts.SourceFile;
+  #sourceFile: ts.SourceFile | JsonSourceFile;
 
   constructor(
     configOptions: Record<string, OptionValue>,
     optionGroup: OptionGroup,
-    sourceFile: ts.SourceFile,
+    sourceFile: ts.SourceFile | JsonSourceFile,
     jsonScanner: JsonScanner,
     onDiagnostics: DiagnosticsHandler,
   ) {

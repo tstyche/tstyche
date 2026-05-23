@@ -1,4 +1,5 @@
 import type ts from "typescript";
+import type { Offset } from "./MappedDiagnostic.js";
 
 export function diagnosticBelongsToNode(diagnostic: ts.Diagnostic, node: ts.NodeArray<ts.Node> | ts.Node): boolean {
   return diagnostic.start != null && diagnostic.start >= node.pos && diagnostic.start <= node.end;
@@ -20,6 +21,20 @@ export function getDiagnosticMessageText(diagnostic: ts.Diagnostic): string | Ar
   return typeof diagnostic.messageText === "string"
     ? diagnostic.messageText
     : diagnosticMessageChainToText(diagnostic.messageText);
+}
+
+export function getOffset(position: number, offsets: Array<Offset>): number {
+  let diff = 0;
+
+  for (const offset of offsets) {
+    if (offset.position > position - diff) {
+      break;
+    }
+
+    diff += offset.diff;
+  }
+
+  return diff;
 }
 
 export function getTextSpanEnd(span: ts.TextSpan): number {

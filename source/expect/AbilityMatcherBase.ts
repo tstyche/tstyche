@@ -59,9 +59,8 @@ export abstract class AbilityMatcherBase {
 
         let origin: DiagnosticOrigin;
 
-        // TODO add 'abilityDiagnosticBelongsToNode()' to check offset positions as well?
         if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNode)) {
-          origin = DiagnosticOrigin.fromAbilityDiagnostic(diagnostic, sourceNode, matchWorker.assertionNode);
+          origin = DiagnosticOrigin.fromAbilityDiagnostic(diagnostic, matchWorker.assertionNode);
         } else {
           origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
         }

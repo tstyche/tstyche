@@ -2,7 +2,7 @@ import type ts from "typescript";
 import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { isDiagnosticWithLocation } from "#diagnostic";
-import type { TextEditor } from "#source";
+import type { TextEditor } from "./TextEditor.js";
 import type { SuppressedError } from "./types.js";
 
 export class SuppressedLayer {

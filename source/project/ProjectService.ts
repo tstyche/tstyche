@@ -5,7 +5,6 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
-import { SourceService } from "#source";
 import { Version } from "#version";
 
 export class ProjectService {
@@ -72,7 +71,6 @@ export class ProjectService {
 
   closeFile(filePath: string): void {
     this.#service.closeClientFile(filePath);
-    SourceService.delete(filePath);
   }
 
   #getDefaultCompilerOptions() {
@@ -113,21 +111,11 @@ export class ProjectService {
     return project;
   }
 
-  getDiagnostics(
-    filePath: string,
-    sourceText: string,
-    shouldInclude?: (diagnostic: ts.Diagnostic) => boolean,
-  ): Array<ts.Diagnostic> | undefined {
+  getDiagnostics(filePath: string, sourceText: string): Array<ts.Diagnostic> | undefined {
     this.openFile(filePath, sourceText);
 
     const languageService = this.getLanguageService(filePath);
-    const diagnostics = languageService?.getSemanticDiagnostics(filePath);
-
-    if (diagnostics != null && shouldInclude != null) {
-      return diagnostics.filter(shouldInclude);
-    }
-
-    return diagnostics;
+    return languageService?.getSemanticDiagnostics(filePath);
   }
 
   getLanguageService(filePath: string): ts.LanguageService | undefined {

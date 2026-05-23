@@ -72,12 +72,10 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
 
-  const { character: firstMarkedCharacter, line: firstMarkedLine } = diagnosticOrigin.sourceFile.getLocation(
-    diagnosticOrigin.start,
-  );
-  const { character: lastMarkedCharacter, line: lastMarkedLine } = diagnosticOrigin.sourceFile.getLocation(
-    diagnosticOrigin.end,
-  );
+  const { character: firstMarkedCharacter, line: firstMarkedLine } =
+    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
+  const { character: lastMarkedCharacter, line: lastMarkedLine } =
+    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
 
   const firstLine = Math.max(firstMarkedLine - linesAbove, 0);
   const lastLine = Math.min(lastMarkedLine + linesBelow, lineMap.length - 1);
@@ -99,9 +97,9 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   for (let index = firstLine; index <= lastLine; index++) {
     const lineStart = lineMap[index];
-    const lineEnd = index === lineMap.length - 1 ? diagnosticOrigin.sourceFile.getText().length : lineMap[index + 1];
+    const lineEnd = index === lineMap.length - 1 ? diagnosticOrigin.sourceFile.text.length : lineMap[index + 1];
 
-    const lineText = diagnosticOrigin.sourceFile.getText().slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
+    const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
     if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeFrame.push(
@@ -155,7 +153,7 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
     <Line>
       {" ".repeat(gutterWidth + 2)}
       <Text color={Color.Gray}>{" at "}</Text>
-      <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.getFilePath())}</Text>
+      <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
       <Text color={Color.Gray}>{`:${firstMarkedLine + 1}:${firstMarkedCharacter + 1}`}</Text>
       {breadcrumbs}
     </Line>

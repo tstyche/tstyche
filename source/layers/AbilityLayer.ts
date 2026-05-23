@@ -1,8 +1,8 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import type { TextEditor } from "#source";
 import { nodeBelongsToArgumentList, nodeIsChildOfExpressionStatement } from "./helpers.js";
+import type { TextEditor } from "./TextEditor.js";
 
 export class AbilityLayer {
   #compiler: typeof ts;
@@ -18,8 +18,8 @@ export class AbilityLayer {
     return diagnosticBelongsToNode(diagnostic, node.matcherNode) || diagnosticBelongsToNode(diagnostic, node.source);
   }
 
-  close(diagnostics: Array<ts.Diagnostic> | undefined): void {
-    if (diagnostics != null && this.#nodes.length > 0) {
+  close(diagnostics: Array<ts.Diagnostic>): void {
+    if (diagnostics.length > 0 && this.#nodes.length > 0) {
       this.#nodes.reverse();
 
       for (const diagnostic of diagnostics) {
