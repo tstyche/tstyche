@@ -26,4 +26,10 @@ describe("argument for 'target'", () => {
     // @ts-expect-error!
     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
   });
+
+  test("must only contain key-value pairs", () => {
+    const b = "no";
+    const c = { c: true };
+    expect(() => <>{"test"}</>).type.toAcceptProps({ a: "yes", b, ...c });
+  });
 });

@@ -31,15 +31,24 @@ export class ToAcceptProps extends AbilityMatcherBase {
       diagnostics.push(Diagnostic.error(text, origin));
     }
 
-    const targetType = matchWorker.getType(targetNode);
-
-    if (!(targetType.flags & this.compiler.TypeFlags.Object)) {
+    if (!this.compiler.isObjectLiteralExpression(targetNode)) {
       const expectedText = "an object literal with key-value pairs";
 
       const text = ExpectDiagnosticText.argumentMustBe(expectedText);
       const origin = DiagnosticOrigin.fromNode(targetNode);
 
       diagnostics.push(Diagnostic.error(text, origin));
+    } else {
+      for (const property of targetNode.properties) {
+        if (!(this.compiler.isPropertyAssignment(property) || this.compiler.isSpreadAssignment(property))) {
+          const expectedText = "a key-value pair or a spread element";
+
+          const text = ExpectDiagnosticText.eachMustBe("property", expectedText);
+          const origin = DiagnosticOrigin.fromNode(property);
+
+          diagnostics.push(Diagnostic.error(text, origin));
+        }
+      }
     }
 
     if (diagnostics.length > 0) {

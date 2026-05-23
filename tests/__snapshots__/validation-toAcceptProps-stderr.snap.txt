@@ -53,8 +53,20 @@ Error: The argument must be an object literal with key-value pairs.
   27 |     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
      |                                                    ~~~~~~
   28 |   });
-  29 | });
-  30 | 
+  29 | 
+  30 |   test("must only contain key-value pairs", () => {
 
        at ./__typetests__/toAcceptProps.tst.tsx:27:52
+
+Error: Each property must be a key-value pair or a spread element.
+
+  31 |     const b = "no";
+  32 |     const c = { c: true };
+  33 |     expect(() => <>{"test"}</>).type.toAcceptProps({ a: "yes", b, ...c });
+     |                                                                ~
+  34 |   });
+  35 | });
+  36 | 
+
+       at ./__typetests__/toAcceptProps.tst.tsx:33:64
 
