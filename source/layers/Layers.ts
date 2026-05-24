@@ -23,8 +23,12 @@ export class Layers {
   }
 
   close(tree: TestTree): void {
-    const seenDiagnostics: Array<ts.Diagnostic> = this.#suppressedDiagnostics ?? [];
-    this.#suppressedDiagnostics = undefined;
+    let seenDiagnostics: Array<ts.Diagnostic> = [];
+
+    if (this.#suppressedDiagnostics != null) {
+      seenDiagnostics = this.#suppressedDiagnostics;
+      this.#suppressedDiagnostics = undefined;
+    }
 
     const diagnostics = this.#projectService.getDiagnostics(this.#editor.getFilePath(), this.#editor.getText());
     const offsets = this.#editor.getOffsets();
