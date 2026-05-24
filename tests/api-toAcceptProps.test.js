@@ -187,4 +187,66 @@ test("accepts props?", () => {
 
     assert.equal(exitCode, 1);
   });
+
+  await t.test("handles brackets", async (t) => {
+    const toAcceptPropsText = `import { expect, test } from "tstyche";
+
+interface ButtonProps {
+  text: string;
+  type?: "reset" | "submit";
+}
+
+function Button({ text, type }: ButtonProps) {
+  return <button type={type}>{text}</button>;
+}
+
+interface SecondProps {
+  one: string | undefined;
+  two?: boolean;
+}
+
+type Second = (props: SecondProps) => React.ReactElement;
+
+test("accepts props?", () => {
+  [expect(Button).type.toAcceptProps({ text: "Send" })];
+  [expect(Button).type.not.toAcceptProps({ text: "Send" })]; // fail
+
+  [expect<Second>().type.toAcceptProps({ one: "sample" })];
+  [expect<Second>().type.not.toAcceptProps({ one: "sample" })]; // fail
+});
+`;
+
+    const tsconfig = {
+      extends: "../../../tsconfig.json",
+      compilerOptions: {
+        jsx: "react-jsx",
+      },
+      include: ["**/*"],
+    };
+
+    const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
+
+    t.after(async () => {
+      await clearFixture(fixtureUrl);
+    });
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/toAcceptProps.tst.tsx"]: toAcceptPropsText,
+      ["__typetests__/tsconfig.json"]: JSON.stringify(tsconfig),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-parentheses-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-parentheses-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
 });
