@@ -5,251 +5,111 @@ Error: Component accepts props of the given type.
   28 |     expect(None).type.not.toAcceptProps({}); // fail
      |                           ~~~~~~~~~~~~~
   29 | 
-  30 |     expect(None).type.not.toAcceptProps({ one: "sample" });
-  31 |     expect(None).type.toAcceptProps({ one: "sample" }); // fail
+  30 |     expect(First).type.toAcceptProps({});
+  31 |     expect(First).type.not.toAcceptProps({}); // fail
 
        at ./__typetests__/function-components.tst.tsx:28:27 ❭ when source is a function component ❭ accepts props of the given type
 
-Error: Component does not accept props of the given type.
-
-Type '{ one: string; }' is not assignable to type 'IntrinsicAttributes'.
-Property 'one' does not exist on type 'IntrinsicAttributes'.
+Error: Component accepts props of the given type.
 
   29 | 
-  30 |     expect(None).type.not.toAcceptProps({ one: "sample" });
-  31 |     expect(None).type.toAcceptProps({ one: "sample" }); // fail
-     |                                       ~~~
+  30 |     expect(First).type.toAcceptProps({});
+  31 |     expect(First).type.not.toAcceptProps({}); // fail
+     |                            ~~~~~~~~~~~~~
   32 | 
-  33 |     expect(First).type.toAcceptProps({});
-  34 |     expect(First).type.not.toAcceptProps({}); // fail
+  33 |     expect(First).type.toAcceptProps({ one: "sample" });
+  34 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
 
-       at ./__typetests__/function-components.tst.tsx:31:39 ❭ when source is a function component ❭ accepts props of the given type
+       at ./__typetests__/function-components.tst.tsx:31:28 ❭ when source is a function component ❭ accepts props of the given type
 
 Error: Component accepts props of the given type.
 
   32 | 
-  33 |     expect(First).type.toAcceptProps({});
-  34 |     expect(First).type.not.toAcceptProps({}); // fail
+  33 |     expect(First).type.toAcceptProps({ one: "sample" });
+  34 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
      |                            ~~~~~~~~~~~~~
   35 | 
-  36 |     expect(First).type.toAcceptProps({ one: "sample" });
-  37 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
+  36 |     expect(Second).type.toAcceptProps({ one: "sample" });
+  37 |     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
 
        at ./__typetests__/function-components.tst.tsx:34:28 ❭ when source is a function component ❭ accepts props of the given type
 
 Error: Component accepts props of the given type.
 
   35 | 
-  36 |     expect(First).type.toAcceptProps({ one: "sample" });
-  37 |     expect(First).type.not.toAcceptProps({ one: "sample" }); // fail
-     |                            ~~~~~~~~~~~~~
+  36 |     expect(Second).type.toAcceptProps({ one: "sample" });
+  37 |     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
+     |                             ~~~~~~~~~~~~~
   38 | 
-  39 |     expect(Second).type.toAcceptProps({ one: "sample" });
-  40 |     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
+  39 |     const oneProp = { one: "sample" };
+  40 |     expect(Second).type.toAcceptProps({ ...oneProp });
 
-       at ./__typetests__/function-components.tst.tsx:37:28 ❭ when source is a function component ❭ accepts props of the given type
+       at ./__typetests__/function-components.tst.tsx:37:29 ❭ when source is a function component ❭ accepts props of the given type
 
 Error: Component accepts props of the given type.
 
-  38 | 
-  39 |     expect(Second).type.toAcceptProps({ one: "sample" });
-  40 |     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
+  39 |     const oneProp = { one: "sample" };
+  40 |     expect(Second).type.toAcceptProps({ ...oneProp });
+  41 |     expect(Second).type.not.toAcceptProps({ ...oneProp }); // fail
      |                             ~~~~~~~~~~~~~
-  41 | 
-  42 |     expect(Second).type.toAcceptProps({ one: "sample", two: true });
-  43 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
+  42 | 
+  43 |     expect(Second).type.toAcceptProps({ one: "sample", two: true });
+  44 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
 
-       at ./__typetests__/function-components.tst.tsx:40:29 ❭ when source is a function component ❭ accepts props of the given type
+       at ./__typetests__/function-components.tst.tsx:41:29 ❭ when source is a function component ❭ accepts props of the given type
 
 Error: Component accepts props of the given type.
 
-  41 | 
-  42 |     expect(Second).type.toAcceptProps({ one: "sample", two: true });
-  43 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
+  42 | 
+  43 |     expect(Second).type.toAcceptProps({ one: "sample", two: true });
+  44 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
      |                             ~~~~~~~~~~~~~
-  44 |   });
   45 | 
-  46 |   test("property is required in props type", () => {
+  46 |     const twoProps = { one: "sample", two: true };
+  47 |     expect(Second).type.toAcceptProps({ ...twoProps });
 
-       at ./__typetests__/function-components.tst.tsx:43:29 ❭ when source is a function component ❭ accepts props of the given type
+       at ./__typetests__/function-components.tst.tsx:44:29 ❭ when source is a function component ❭ accepts props of the given type
 
-Error: Component does not accept props of the given type.
+Error: Component accepts props of the given type.
 
-Property 'one' is missing in type '{}' but required in type 'SecondProps'.
+  46 |     const twoProps = { one: "sample", two: true };
+  47 |     expect(Second).type.toAcceptProps({ ...twoProps });
+  48 |     expect(Second).type.not.toAcceptProps({ ...twoProps }); // fail
+     |                             ~~~~~~~~~~~~~
+  49 |   });
+  50 | 
+  51 |   test("does not accept props of the given type", () => {
 
-  46 |   test("property is required in props type", () => {
-  47 |     expect(Second).type.not.toAcceptProps({});
-  48 |     expect(Second).type.toAcceptProps({}); // fail
-     |                         ~~~~~~~~~~~~~
-  49 | 
-  50 |     expect(Second).type.not.toAcceptProps({ two: true });
-  51 |     expect(Second).type.toAcceptProps({ two: true }); // fail
-
-       at ./__typetests__/function-components.tst.tsx:48:25 ❭ when source is a function component ❭ property is required in props type
-
-    'one' is declared here. ts(2728)
-
-       7 | 
-       8 | interface SecondProps {
-       9 |   one: string | undefined;
-         |   ~~~
-      10 |   two?: boolean;
-      11 | }
-      12 | 
-
-           at ./__typetests__/function-components.tst.tsx:9:3
+       at ./__typetests__/function-components.tst.tsx:48:29 ❭ when source is a function component ❭ accepts props of the given type
 
 Error: Component does not accept props of the given type.
 
-Property 'one' is missing in type '{ two: true; }' but required in type 'SecondProps'.
+Type '{ one: string; }' is not assignable to type 'IntrinsicAttributes'.
+Property 'one' does not exist on type 'IntrinsicAttributes'.
 
-  49 | 
-  50 |     expect(Second).type.not.toAcceptProps({ two: true });
-  51 |     expect(Second).type.toAcceptProps({ two: true }); // fail
-     |                         ~~~~~~~~~~~~~
-  52 |   });
-  53 | 
-  54 |   test("property does not exist in props type", () => {
+  51 |   test("does not accept props of the given type", () => {
+  52 |     expect(None).type.not.toAcceptProps({ one: "sample" });
+  53 |     expect(None).type.toAcceptProps({ one: "sample" }); // fail: Property 'one' does not exist
+     |                                       ~~~
+  54 | 
+  55 |     expect(First).type.not.toAcceptProps({ one: 1 });
+  56 |     expect(First).type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
 
-       at ./__typetests__/function-components.tst.tsx:51:25 ❭ when source is a function component ❭ property is required in props type
-
-    'one' is declared here. ts(2728)
-
-       7 | 
-       8 | interface SecondProps {
-       9 |   one: string | undefined;
-         |   ~~~
-      10 |   two?: boolean;
-      11 | }
-      12 | 
-
-           at ./__typetests__/function-components.tst.tsx:9:3
-
-Error: Component does not accept props of the given type.
-
-Type '{ two: boolean; }' is not assignable to type 'IntrinsicAttributes & FirstProps'.
-Property 'two' does not exist on type 'IntrinsicAttributes & FirstProps'.
-
-  54 |   test("property does not exist in props type", () => {
-  55 |     expect(First).type.not.toAcceptProps({ two: false });
-  56 |     expect(First).type.toAcceptProps({ two: false }); // fail
-     |                                        ~~~
-  57 | 
-  58 |     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
-  59 |     expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail
-
-       at ./__typetests__/function-components.tst.tsx:56:40 ❭ when source is a function component ❭ property does not exist in props type
-
-Error: Component does not accept props of the given type.
-
-Type '{ one: string; two: boolean; }' is not assignable to type 'IntrinsicAttributes & FirstProps'.
-Property 'two' does not exist on type 'IntrinsicAttributes & FirstProps'.
-
-  57 | 
-  58 |     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
-  59 |     expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail
-     |                                                       ~~~
-  60 | 
-  61 |     expect(Second).type.not.toAcceptProps({ three: 123 });
-  62 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail
-
-       at ./__typetests__/function-components.tst.tsx:59:55 ❭ when source is a function component ❭ property does not exist in props type
-
-Error: Component does not accept props of the given type.
-
-Type '{ three: number; }' is not assignable to type 'IntrinsicAttributes & SecondProps'.
-Property 'three' does not exist on type 'IntrinsicAttributes & SecondProps'.
-
-  60 | 
-  61 |     expect(Second).type.not.toAcceptProps({ three: 123 });
-  62 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail
-     |                                         ~~~~~
-  63 | 
-  64 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
-  65 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
-
-       at ./__typetests__/function-components.tst.tsx:62:41 ❭ when source is a function component ❭ property does not exist in props type
-
-Error: Component does not accept props of the given type.
-
-Type 'string' is not assignable to type 'boolean | undefined'.
-
-  63 | 
-  64 |     expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
-  65 |     expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
-     |                                         ~~~
-  66 | 
-  67 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
-  68 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
-
-       at ./__typetests__/function-components.tst.tsx:65:41 ❭ when source is a function component ❭ property does not exist in props type
-
-    The expected type comes from property 'two' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
-
-       8 | interface SecondProps {
-       9 |   one: string | undefined;
-      10 |   two?: boolean;
-         |   ~~~
-      11 | }
-      12 | 
-      13 | describe("when source is a function component", () => {
-
-           at ./__typetests__/function-components.tst.tsx:10:3
-
-Error: Component does not accept props of the given type.
-
-Type 'string' is not assignable to type 'boolean | undefined'.
-
-  66 | 
-  67 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
-  68 |     expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
-     |                                                        ~~~
-  69 | 
-  70 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
-  71 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
-
-       at ./__typetests__/function-components.tst.tsx:68:56 ❭ when source is a function component ❭ property does not exist in props type
-
-    The expected type comes from property 'two' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
-
-       8 | interface SecondProps {
-       9 |   one: string | undefined;
-      10 |   two?: boolean;
-         |   ~~~
-      11 | }
-      12 | 
-      13 | describe("when source is a function component", () => {
-
-           at ./__typetests__/function-components.tst.tsx:10:3
-
-Error: Component does not accept props of the given type.
-
-Type '{ one: string; two: true; three: number; }' is not assignable to type 'IntrinsicAttributes & SecondProps'.
-Property 'three' does not exist on type 'IntrinsicAttributes & SecondProps'.
-
-  69 | 
-  70 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
-  71 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
-     |                                                                   ~~~~~
-  72 |   });
-  73 | 
-  74 |   test("property type is not assignable to prop type", () => {
-
-       at ./__typetests__/function-components.tst.tsx:71:67 ❭ when source is a function component ❭ property does not exist in props type
+       at ./__typetests__/function-components.tst.tsx:53:39 ❭ when source is a function component ❭ does not accept props of the given type
 
 Error: Component does not accept props of the given type.
 
 Type 'number' is not assignable to type 'string'.
 
-  74 |   test("property type is not assignable to prop type", () => {
-  75 |     expect(First).type.not.toAcceptProps({ one: 1 });
-  76 |     expect(First).type.toAcceptProps({ one: 1 }); // fail
+  54 | 
+  55 |     expect(First).type.not.toAcceptProps({ one: 1 });
+  56 |     expect(First).type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
      |                                        ~~~
-  77 | 
-  78 |     expect(Second).type.not.toAcceptProps({ one: 1 });
-  79 |     expect(Second).type.toAcceptProps({ one: 1 }); // fail
+  57 | 
+  58 |     expect(First).type.not.toAcceptProps({ two: false });
+  59 |     expect(First).type.toAcceptProps({ two: false }); // fail: Property 'two' does not exist
 
-       at ./__typetests__/function-components.tst.tsx:76:40 ❭ when source is a function component ❭ property type is not assignable to prop type
+       at ./__typetests__/function-components.tst.tsx:56:40 ❭ when source is a function component ❭ does not accept props of the given type
 
     The expected type comes from property 'one' which is declared here on type 'IntrinsicAttributes & FirstProps' ts(6500)
 
@@ -265,19 +125,49 @@ Type 'number' is not assignable to type 'string'.
 
 Error: Component does not accept props of the given type.
 
-Type 'number' is not assignable to type 'string'.
+Type '{ two: boolean; }' is not assignable to type 'IntrinsicAttributes & FirstProps'.
+Property 'two' does not exist on type 'IntrinsicAttributes & FirstProps'.
 
-  77 | 
-  78 |     expect(Second).type.not.toAcceptProps({ one: 1 });
-  79 |     expect(Second).type.toAcceptProps({ one: 1 }); // fail
-     |                                         ~~~
-  80 | 
-  81 |     expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
-  82 |     expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
+  57 | 
+  58 |     expect(First).type.not.toAcceptProps({ two: false });
+  59 |     expect(First).type.toAcceptProps({ two: false }); // fail: Property 'two' does not exist
+     |                                        ~~~
+  60 | 
+  61 |     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
+  62 |     expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail: Property 'two' does not exist
 
-       at ./__typetests__/function-components.tst.tsx:79:41 ❭ when source is a function component ❭ property type is not assignable to prop type
+       at ./__typetests__/function-components.tst.tsx:59:40 ❭ when source is a function component ❭ does not accept props of the given type
 
-    The expected type comes from property 'one' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
+Error: Component does not accept props of the given type.
+
+Type '{ one: string; two: boolean; }' is not assignable to type 'IntrinsicAttributes & FirstProps'.
+Property 'two' does not exist on type 'IntrinsicAttributes & FirstProps'.
+
+  60 | 
+  61 |     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
+  62 |     expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail: Property 'two' does not exist
+     |                                                       ~~~
+  63 | 
+  64 |     expect(Second).type.not.toAcceptProps({});
+  65 |     expect(Second).type.toAcceptProps({}); // fail: Property 'one' is missing
+
+       at ./__typetests__/function-components.tst.tsx:62:55 ❭ when source is a function component ❭ does not accept props of the given type
+
+Error: Component does not accept props of the given type.
+
+Property 'one' is missing in type '{}' but required in type 'SecondProps'.
+
+  63 | 
+  64 |     expect(Second).type.not.toAcceptProps({});
+  65 |     expect(Second).type.toAcceptProps({}); // fail: Property 'one' is missing
+     |                         ~~~~~~~~~~~~~
+  66 | 
+  67 |     expect(Second).type.not.toAcceptProps({ one: 1 });
+  68 |     expect(Second).type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
+
+       at ./__typetests__/function-components.tst.tsx:65:25 ❭ when source is a function component ❭ does not accept props of the given type
+
+    'one' is declared here. ts(2728)
 
        7 | 
        8 | interface SecondProps {
@@ -293,15 +183,15 @@ Error: Component does not accept props of the given type.
 
 Type 'number' is not assignable to type 'string'.
 
-  80 | 
-  81 |     expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
-  82 |     expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
+  66 | 
+  67 |     expect(Second).type.not.toAcceptProps({ one: 1 });
+  68 |     expect(Second).type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
      |                                         ~~~
-  83 |   });
-  84 | });
-  85 | 
+  69 | 
+  70 |     const oneProp = { one: 1 };
+  71 |     expect(Second).type.not.toAcceptProps({ ...oneProp });
 
-       at ./__typetests__/function-components.tst.tsx:82:41 ❭ when source is a function component ❭ property type is not assignable to prop type
+       at ./__typetests__/function-components.tst.tsx:68:41 ❭ when source is a function component ❭ does not accept props of the given type
 
     The expected type comes from property 'one' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
 
@@ -314,20 +204,36 @@ Type 'number' is not assignable to type 'string'.
       12 | 
 
            at ./__typetests__/function-components.tst.tsx:9:3
+
+Error: Component does not accept props of the given type.
+
+Type '{ one: number; }' is not assignable to type 'SecondProps'.
+Types of property 'one' are incompatible.
+Type 'number' is not assignable to type 'string'.
+
+  70 |     const oneProp = { one: 1 };
+  71 |     expect(Second).type.not.toAcceptProps({ ...oneProp });
+  72 |     expect(Second).type.toAcceptProps({ ...oneProp }); // fail: Type 'number' is not assignable
+     |                         ~~~~~~~~~~~~~
+  73 | 
+  74 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: 2 });
+  75 |     expect(Second).type.toAcceptProps({ one: "sample", two: 2 }); // fail: Type 'number' is not assignable
+
+       at ./__typetests__/function-components.tst.tsx:72:25 ❭ when source is a function component ❭ does not accept props of the given type
 
 Error: Component does not accept props of the given type.
 
 Type 'number' is not assignable to type 'boolean | undefined'.
 
-  80 | 
-  81 |     expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
-  82 |     expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
-     |                                                 ~~~
-  83 |   });
-  84 | });
-  85 | 
+  73 | 
+  74 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: 2 });
+  75 |     expect(Second).type.toAcceptProps({ one: "sample", two: 2 }); // fail: Type 'number' is not assignable
+     |                                                        ~~~
+  76 | 
+  77 |     const twoProps = { one: "sample", two: 2 };
+  78 |     expect(Second).type.not.toAcceptProps({ ...twoProps });
 
-       at ./__typetests__/function-components.tst.tsx:82:49 ❭ when source is a function component ❭ property type is not assignable to prop type
+       at ./__typetests__/function-components.tst.tsx:75:56 ❭ when source is a function component ❭ does not accept props of the given type
 
     The expected type comes from property 'two' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
 
@@ -341,258 +247,190 @@ Type 'number' is not assignable to type 'boolean | undefined'.
 
            at ./__typetests__/function-components.tst.tsx:10:3
 
+Error: Component does not accept props of the given type.
+
+Type '{ one: string; two: number; }' is not assignable to type 'SecondProps'.
+Types of property 'two' are incompatible.
+Type 'number' is not assignable to type 'boolean | undefined'.
+
+  77 |     const twoProps = { one: "sample", two: 2 };
+  78 |     expect(Second).type.not.toAcceptProps({ ...twoProps });
+  79 |     expect(Second).type.toAcceptProps({ ...twoProps }); // fail: Type 'number' is not assignable
+     |                         ~~~~~~~~~~~~~
+  80 | 
+  81 |     expect(Second).type.not.toAcceptProps({ two: true });
+  82 |     expect(Second).type.toAcceptProps({ two: true }); // fail: Property 'one' is missing
+
+       at ./__typetests__/function-components.tst.tsx:79:25 ❭ when source is a function component ❭ does not accept props of the given type
+
+Error: Component does not accept props of the given type.
+
+Property 'one' is missing in type '{ two: true; }' but required in type 'SecondProps'.
+
+  80 | 
+  81 |     expect(Second).type.not.toAcceptProps({ two: true });
+  82 |     expect(Second).type.toAcceptProps({ two: true }); // fail: Property 'one' is missing
+     |                         ~~~~~~~~~~~~~
+  83 | 
+  84 |     expect(Second).type.not.toAcceptProps({ three: 123 });
+  85 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail: Property 'three' does not exist
+
+       at ./__typetests__/function-components.tst.tsx:82:25 ❭ when source is a function component ❭ does not accept props of the given type
+
+    'one' is declared here. ts(2728)
+
+       7 | 
+       8 | interface SecondProps {
+       9 |   one: string | undefined;
+         |   ~~~
+      10 |   two?: boolean;
+      11 | }
+      12 | 
+
+           at ./__typetests__/function-components.tst.tsx:9:3
+
+Error: Component does not accept props of the given type.
+
+Type '{ three: number; }' is not assignable to type 'IntrinsicAttributes & SecondProps'.
+Property 'three' does not exist on type 'IntrinsicAttributes & SecondProps'.
+
+  83 | 
+  84 |     expect(Second).type.not.toAcceptProps({ three: 123 });
+  85 |     expect(Second).type.toAcceptProps({ three: 123 }); // fail: Property 'three' does not exist
+     |                                         ~~~~~
+  86 | 
+  87 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
+  88 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail: Property 'three' does not exist
+
+       at ./__typetests__/function-components.tst.tsx:85:41 ❭ when source is a function component ❭ does not accept props of the given type
+
+Error: Component does not accept props of the given type.
+
+Type '{ one: string; two: true; three: number; }' is not assignable to type 'IntrinsicAttributes & SecondProps'.
+Property 'three' does not exist on type 'IntrinsicAttributes & SecondProps'.
+
+  86 | 
+  87 |     expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
+  88 |     expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail: Property 'three' does not exist
+     |                                                                   ~~~~~
+  89 |   });
+  90 | });
+  91 | 
+
+       at ./__typetests__/function-components.tst.tsx:88:67 ❭ when source is a function component ❭ does not accept props of the given type
+
 Error: Type accepts props of the given type.
 
-  93 |   test("accepts props of the given type", () => {
-  94 |     expect<None>().type.toAcceptProps({});
-  95 |     expect<None>().type.not.toAcceptProps({}); // fail
-     |                             ~~~~~~~~~~~~~
-  96 | 
-  97 |     expect<None>().type.not.toAcceptProps({ one: "sample" });
-  98 |     expect<None>().type.toAcceptProps({ one: "sample" }); // fail
-
-       at ./__typetests__/function-components.tst.tsx:95:29 ❭ when source is a type ❭ accepts props of the given type
-
-Error: Type does not accept props of the given type.
-
-Type '{ one: string; }' is not assignable to type 'IntrinsicAttributes'.
-Property 'one' does not exist on type 'IntrinsicAttributes'.
-
-   96 | 
-   97 |     expect<None>().type.not.toAcceptProps({ one: "sample" });
-   98 |     expect<None>().type.toAcceptProps({ one: "sample" }); // fail
-      |                                         ~~~
-   99 | 
-  100 |     expect<First>().type.toAcceptProps({});
-  101 |     expect<First>().type.not.toAcceptProps({}); // fail
-
-        at ./__typetests__/function-components.tst.tsx:98:41 ❭ when source is a type ❭ accepts props of the given type
-
-Error: Type accepts props of the given type.
-
-   99 | 
-  100 |     expect<First>().type.toAcceptProps({});
-  101 |     expect<First>().type.not.toAcceptProps({}); // fail
-      |                              ~~~~~~~~~~~~~
+   99 |   test("accepts props of the given type", () => {
+  100 |     expect<None>().type.toAcceptProps({});
+  101 |     expect<None>().type.not.toAcceptProps({}); // fail
+      |                             ~~~~~~~~~~~~~
   102 | 
-  103 |     expect<First>().type.toAcceptProps({ one: "sample" });
-  104 |     expect<First>().type.not.toAcceptProps({ one: "sample" }); // fail
+  103 |     expect<First>().type.toAcceptProps({});
+  104 |     expect<First>().type.not.toAcceptProps({}); // fail
 
-        at ./__typetests__/function-components.tst.tsx:101:30 ❭ when source is a type ❭ accepts props of the given type
+        at ./__typetests__/function-components.tst.tsx:101:29 ❭ when source is a type ❭ accepts props of the given type
 
 Error: Type accepts props of the given type.
 
   102 | 
-  103 |     expect<First>().type.toAcceptProps({ one: "sample" });
-  104 |     expect<First>().type.not.toAcceptProps({ one: "sample" }); // fail
+  103 |     expect<First>().type.toAcceptProps({});
+  104 |     expect<First>().type.not.toAcceptProps({}); // fail
       |                              ~~~~~~~~~~~~~
   105 | 
-  106 |     expect<Second>().type.toAcceptProps({ one: "sample" });
-  107 |     expect<Second>().type.not.toAcceptProps({ one: "sample" }); // fail
+  106 |     expect<First>().type.toAcceptProps({ one: "sample" });
+  107 |     expect<First>().type.not.toAcceptProps({ one: "sample" }); // fail
 
         at ./__typetests__/function-components.tst.tsx:104:30 ❭ when source is a type ❭ accepts props of the given type
 
 Error: Type accepts props of the given type.
 
   105 | 
-  106 |     expect<Second>().type.toAcceptProps({ one: "sample" });
-  107 |     expect<Second>().type.not.toAcceptProps({ one: "sample" }); // fail
-      |                               ~~~~~~~~~~~~~
+  106 |     expect<First>().type.toAcceptProps({ one: "sample" });
+  107 |     expect<First>().type.not.toAcceptProps({ one: "sample" }); // fail
+      |                              ~~~~~~~~~~~~~
   108 | 
-  109 |     expect<Second>().type.toAcceptProps({ one: "sample", two: true });
-  110 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true }); // fail
+  109 |     expect<Second>().type.toAcceptProps({ one: "sample" });
+  110 |     expect<Second>().type.not.toAcceptProps({ one: "sample" }); // fail
 
-        at ./__typetests__/function-components.tst.tsx:107:31 ❭ when source is a type ❭ accepts props of the given type
+        at ./__typetests__/function-components.tst.tsx:107:30 ❭ when source is a type ❭ accepts props of the given type
 
 Error: Type accepts props of the given type.
 
   108 | 
-  109 |     expect<Second>().type.toAcceptProps({ one: "sample", two: true });
-  110 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true }); // fail
+  109 |     expect<Second>().type.toAcceptProps({ one: "sample" });
+  110 |     expect<Second>().type.not.toAcceptProps({ one: "sample" }); // fail
       |                               ~~~~~~~~~~~~~
-  111 |   });
-  112 | 
-  113 |   test("property is required in props type", () => {
+  111 | 
+  112 |     const oneProp = { one: "sample" };
+  113 |     expect<Second>().type.toAcceptProps({ ...oneProp });
 
         at ./__typetests__/function-components.tst.tsx:110:31 ❭ when source is a type ❭ accepts props of the given type
 
-Error: Type does not accept props of the given type.
+Error: Type accepts props of the given type.
 
-Property 'one' is missing in type '{}' but required in type 'SecondProps'.
+  112 |     const oneProp = { one: "sample" };
+  113 |     expect<Second>().type.toAcceptProps({ ...oneProp });
+  114 |     expect<Second>().type.not.toAcceptProps({ ...oneProp }); // fail
+      |                               ~~~~~~~~~~~~~
+  115 | 
+  116 |     expect<Second>().type.toAcceptProps({ one: "sample", two: true });
+  117 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true }); // fail
 
-  113 |   test("property is required in props type", () => {
-  114 |     expect<Second>().type.not.toAcceptProps({});
-  115 |     expect<Second>().type.toAcceptProps({}); // fail
-      |                           ~~~~~~~~~~~~~
-  116 | 
-  117 |     expect<Second>().type.not.toAcceptProps({ two: true });
-  118 |     expect<Second>().type.toAcceptProps({ two: true }); // fail
+        at ./__typetests__/function-components.tst.tsx:114:31 ❭ when source is a type ❭ accepts props of the given type
 
-        at ./__typetests__/function-components.tst.tsx:115:27 ❭ when source is a type ❭ property is required in props type
+Error: Type accepts props of the given type.
 
-    'one' is declared here. ts(2728)
+  115 | 
+  116 |     expect<Second>().type.toAcceptProps({ one: "sample", two: true });
+  117 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true }); // fail
+      |                               ~~~~~~~~~~~~~
+  118 | 
+  119 |     const twoProps = { one: "sample", two: true };
+  120 |     expect<Second>().type.toAcceptProps({ ...twoProps });
 
-       7 | 
-       8 | interface SecondProps {
-       9 |   one: string | undefined;
-         |   ~~~
-      10 |   two?: boolean;
-      11 | }
-      12 | 
+        at ./__typetests__/function-components.tst.tsx:117:31 ❭ when source is a type ❭ accepts props of the given type
 
-           at ./__typetests__/function-components.tst.tsx:9:3
+Error: Type accepts props of the given type.
 
-Error: Type does not accept props of the given type.
+  119 |     const twoProps = { one: "sample", two: true };
+  120 |     expect<Second>().type.toAcceptProps({ ...twoProps });
+  121 |     expect<Second>().type.not.toAcceptProps({ ...twoProps }); // fail
+      |                               ~~~~~~~~~~~~~
+  122 |   });
+  123 | 
+  124 |   test("does not accept props of the given type", () => {
 
-Property 'one' is missing in type '{ two: true; }' but required in type 'SecondProps'.
-
-  116 | 
-  117 |     expect<Second>().type.not.toAcceptProps({ two: true });
-  118 |     expect<Second>().type.toAcceptProps({ two: true }); // fail
-      |                           ~~~~~~~~~~~~~
-  119 |   });
-  120 | 
-  121 |   test("property does not exist in props type", () => {
-
-        at ./__typetests__/function-components.tst.tsx:118:27 ❭ when source is a type ❭ property is required in props type
-
-    'one' is declared here. ts(2728)
-
-       7 | 
-       8 | interface SecondProps {
-       9 |   one: string | undefined;
-         |   ~~~
-      10 |   two?: boolean;
-      11 | }
-      12 | 
-
-           at ./__typetests__/function-components.tst.tsx:9:3
+        at ./__typetests__/function-components.tst.tsx:121:31 ❭ when source is a type ❭ accepts props of the given type
 
 Error: Type does not accept props of the given type.
 
-Type '{ two: boolean; }' is not assignable to type 'IntrinsicAttributes & FirstProps'.
-Property 'two' does not exist on type 'IntrinsicAttributes & FirstProps'.
+Type '{ one: string; }' is not assignable to type 'IntrinsicAttributes'.
+Property 'one' does not exist on type 'IntrinsicAttributes'.
 
-  121 |   test("property does not exist in props type", () => {
-  122 |     expect<First>().type.not.toAcceptProps({ two: false });
-  123 |     expect<First>().type.toAcceptProps({ two: false }); // fail
-      |                                          ~~~
-  124 | 
-  125 |     expect<First>().type.not.toAcceptProps({ one: "sample", two: false });
-  126 |     expect<First>().type.toAcceptProps({ one: "sample", two: false }); // fail
-
-        at ./__typetests__/function-components.tst.tsx:123:42 ❭ when source is a type ❭ property does not exist in props type
-
-Error: Type does not accept props of the given type.
-
-Type '{ one: string; two: boolean; }' is not assignable to type 'IntrinsicAttributes & FirstProps'.
-Property 'two' does not exist on type 'IntrinsicAttributes & FirstProps'.
-
-  124 | 
-  125 |     expect<First>().type.not.toAcceptProps({ one: "sample", two: false });
-  126 |     expect<First>().type.toAcceptProps({ one: "sample", two: false }); // fail
-      |                                                         ~~~
+  124 |   test("does not accept props of the given type", () => {
+  125 |     expect<None>().type.not.toAcceptProps({ one: "sample" });
+  126 |     expect<None>().type.toAcceptProps({ one: "sample" }); // fail: Property 'one' does not exist
+      |                                         ~~~
   127 | 
-  128 |     expect<Second>().type.not.toAcceptProps({ three: 123 });
-  129 |     expect<Second>().type.toAcceptProps({ three: 123 }); // fail
+  128 |     expect<First>().type.not.toAcceptProps({ one: 1 });
+  129 |     expect<First>().type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
 
-        at ./__typetests__/function-components.tst.tsx:126:57 ❭ when source is a type ❭ property does not exist in props type
-
-Error: Type does not accept props of the given type.
-
-Type '{ three: number; }' is not assignable to type 'IntrinsicAttributes & SecondProps'.
-Property 'three' does not exist on type 'IntrinsicAttributes & SecondProps'.
-
-  127 | 
-  128 |     expect<Second>().type.not.toAcceptProps({ three: 123 });
-  129 |     expect<Second>().type.toAcceptProps({ three: 123 }); // fail
-      |                                           ~~~~~
-  130 | 
-  131 |     expect<Second>().type.not.toAcceptProps({ two: "no", three: 123 });
-  132 |     expect<Second>().type.toAcceptProps({ two: "no", three: 123 }); // fail
-
-        at ./__typetests__/function-components.tst.tsx:129:43 ❭ when source is a type ❭ property does not exist in props type
-
-Error: Type does not accept props of the given type.
-
-Type 'string' is not assignable to type 'boolean | undefined'.
-
-  130 | 
-  131 |     expect<Second>().type.not.toAcceptProps({ two: "no", three: 123 });
-  132 |     expect<Second>().type.toAcceptProps({ two: "no", three: 123 }); // fail
-      |                                           ~~~
-  133 | 
-  134 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
-  135 |     expect<Second>().type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
-
-        at ./__typetests__/function-components.tst.tsx:132:43 ❭ when source is a type ❭ property does not exist in props type
-
-    The expected type comes from property 'two' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
-
-       8 | interface SecondProps {
-       9 |   one: string | undefined;
-      10 |   two?: boolean;
-         |   ~~~
-      11 | }
-      12 | 
-      13 | describe("when source is a function component", () => {
-
-           at ./__typetests__/function-components.tst.tsx:10:3
-
-Error: Type does not accept props of the given type.
-
-Type 'string' is not assignable to type 'boolean | undefined'.
-
-  133 | 
-  134 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
-  135 |     expect<Second>().type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
-      |                                                          ~~~
-  136 | 
-  137 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
-  138 |     expect<Second>().type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
-
-        at ./__typetests__/function-components.tst.tsx:135:58 ❭ when source is a type ❭ property does not exist in props type
-
-    The expected type comes from property 'two' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
-
-       8 | interface SecondProps {
-       9 |   one: string | undefined;
-      10 |   two?: boolean;
-         |   ~~~
-      11 | }
-      12 | 
-      13 | describe("when source is a function component", () => {
-
-           at ./__typetests__/function-components.tst.tsx:10:3
-
-Error: Type does not accept props of the given type.
-
-Type '{ one: string; two: true; three: number; }' is not assignable to type 'IntrinsicAttributes & SecondProps'.
-Property 'three' does not exist on type 'IntrinsicAttributes & SecondProps'.
-
-  136 | 
-  137 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
-  138 |     expect<Second>().type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
-      |                                                                     ~~~~~
-  139 |   });
-  140 | 
-  141 |   test("property type is not assignable to prop type", () => {
-
-        at ./__typetests__/function-components.tst.tsx:138:69 ❭ when source is a type ❭ property does not exist in props type
+        at ./__typetests__/function-components.tst.tsx:126:41 ❭ when source is a type ❭ does not accept props of the given type
 
 Error: Type does not accept props of the given type.
 
 Type 'number' is not assignable to type 'string'.
 
-  141 |   test("property type is not assignable to prop type", () => {
-  142 |     expect<First>().type.not.toAcceptProps({ one: 1 });
-  143 |     expect<First>().type.toAcceptProps({ one: 1 }); // fail
+  127 | 
+  128 |     expect<First>().type.not.toAcceptProps({ one: 1 });
+  129 |     expect<First>().type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
       |                                          ~~~
-  144 | 
-  145 |     expect<Second>().type.not.toAcceptProps({ one: 1 });
-  146 |     expect<Second>().type.toAcceptProps({ one: 1 }); // fail
+  130 | 
+  131 |     expect<First>().type.not.toAcceptProps({ two: false });
+  132 |     expect<First>().type.toAcceptProps({ two: false }); // fail: Property 'two' does not exist
 
-        at ./__typetests__/function-components.tst.tsx:143:42 ❭ when source is a type ❭ property type is not assignable to prop type
+        at ./__typetests__/function-components.tst.tsx:129:42 ❭ when source is a type ❭ does not accept props of the given type
 
     The expected type comes from property 'one' which is declared here on type 'IntrinsicAttributes & FirstProps' ts(6500)
 
@@ -608,19 +446,49 @@ Type 'number' is not assignable to type 'string'.
 
 Error: Type does not accept props of the given type.
 
-Type 'number' is not assignable to type 'string'.
+Type '{ two: boolean; }' is not assignable to type 'IntrinsicAttributes & FirstProps'.
+Property 'two' does not exist on type 'IntrinsicAttributes & FirstProps'.
 
-  144 | 
-  145 |     expect<Second>().type.not.toAcceptProps({ one: 1 });
-  146 |     expect<Second>().type.toAcceptProps({ one: 1 }); // fail
-      |                                           ~~~
-  147 | 
-  148 |     expect<Second>().type.not.toAcceptProps({ one: 1, two: 2 });
-  149 |     expect<Second>().type.toAcceptProps({ one: 1, two: 2 }); // fail
+  130 | 
+  131 |     expect<First>().type.not.toAcceptProps({ two: false });
+  132 |     expect<First>().type.toAcceptProps({ two: false }); // fail: Property 'two' does not exist
+      |                                          ~~~
+  133 | 
+  134 |     expect<First>().type.not.toAcceptProps({ one: "sample", two: false });
+  135 |     expect<First>().type.toAcceptProps({ one: "sample", two: false }); // fail: Property 'two' does not exist
 
-        at ./__typetests__/function-components.tst.tsx:146:43 ❭ when source is a type ❭ property type is not assignable to prop type
+        at ./__typetests__/function-components.tst.tsx:132:42 ❭ when source is a type ❭ does not accept props of the given type
 
-    The expected type comes from property 'one' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
+Error: Type does not accept props of the given type.
+
+Type '{ one: string; two: boolean; }' is not assignable to type 'IntrinsicAttributes & FirstProps'.
+Property 'two' does not exist on type 'IntrinsicAttributes & FirstProps'.
+
+  133 | 
+  134 |     expect<First>().type.not.toAcceptProps({ one: "sample", two: false });
+  135 |     expect<First>().type.toAcceptProps({ one: "sample", two: false }); // fail: Property 'two' does not exist
+      |                                                         ~~~
+  136 | 
+  137 |     expect<Second>().type.not.toAcceptProps({});
+  138 |     expect<Second>().type.toAcceptProps({}); // fail: Property 'one' is missing
+
+        at ./__typetests__/function-components.tst.tsx:135:57 ❭ when source is a type ❭ does not accept props of the given type
+
+Error: Type does not accept props of the given type.
+
+Property 'one' is missing in type '{}' but required in type 'SecondProps'.
+
+  136 | 
+  137 |     expect<Second>().type.not.toAcceptProps({});
+  138 |     expect<Second>().type.toAcceptProps({}); // fail: Property 'one' is missing
+      |                           ~~~~~~~~~~~~~
+  139 | 
+  140 |     expect<Second>().type.not.toAcceptProps({ one: 1 });
+  141 |     expect<Second>().type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
+
+        at ./__typetests__/function-components.tst.tsx:138:27 ❭ when source is a type ❭ does not accept props of the given type
+
+    'one' is declared here. ts(2728)
 
        7 | 
        8 | interface SecondProps {
@@ -636,15 +504,15 @@ Error: Type does not accept props of the given type.
 
 Type 'number' is not assignable to type 'string'.
 
-  147 | 
-  148 |     expect<Second>().type.not.toAcceptProps({ one: 1, two: 2 });
-  149 |     expect<Second>().type.toAcceptProps({ one: 1, two: 2 }); // fail
+  139 | 
+  140 |     expect<Second>().type.not.toAcceptProps({ one: 1 });
+  141 |     expect<Second>().type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
       |                                           ~~~
-  150 |   });
-  151 | });
-  152 | 
+  142 | 
+  143 |     const oneProp = { one: 1 };
+  144 |     expect<Second>().type.not.toAcceptProps({ ...oneProp });
 
-        at ./__typetests__/function-components.tst.tsx:149:43 ❭ when source is a type ❭ property type is not assignable to prop type
+        at ./__typetests__/function-components.tst.tsx:141:43 ❭ when source is a type ❭ does not accept props of the given type
 
     The expected type comes from property 'one' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
 
@@ -657,20 +525,36 @@ Type 'number' is not assignable to type 'string'.
       12 | 
 
            at ./__typetests__/function-components.tst.tsx:9:3
+
+Error: Type does not accept props of the given type.
+
+Type '{ one: number; }' is not assignable to type 'SecondProps'.
+Types of property 'one' are incompatible.
+Type 'number' is not assignable to type 'string'.
+
+  143 |     const oneProp = { one: 1 };
+  144 |     expect<Second>().type.not.toAcceptProps({ ...oneProp });
+  145 |     expect<Second>().type.toAcceptProps({ ...oneProp }); // fail: Type 'number' is not assignable
+      |                           ~~~~~~~~~~~~~
+  146 | 
+  147 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: 2 });
+  148 |     expect<Second>().type.toAcceptProps({ one: "sample", two: 2 }); // fail: Type 'number' is not assignable
+
+        at ./__typetests__/function-components.tst.tsx:145:27 ❭ when source is a type ❭ does not accept props of the given type
 
 Error: Type does not accept props of the given type.
 
 Type 'number' is not assignable to type 'boolean | undefined'.
 
-  147 | 
-  148 |     expect<Second>().type.not.toAcceptProps({ one: 1, two: 2 });
-  149 |     expect<Second>().type.toAcceptProps({ one: 1, two: 2 }); // fail
-      |                                                   ~~~
-  150 |   });
-  151 | });
-  152 | 
+  146 | 
+  147 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: 2 });
+  148 |     expect<Second>().type.toAcceptProps({ one: "sample", two: 2 }); // fail: Type 'number' is not assignable
+      |                                                          ~~~
+  149 | 
+  150 |     const twoProps = { one: "sample", two: 2 };
+  151 |     expect<Second>().type.not.toAcceptProps({ ...twoProps });
 
-        at ./__typetests__/function-components.tst.tsx:149:51 ❭ when source is a type ❭ property type is not assignable to prop type
+        at ./__typetests__/function-components.tst.tsx:148:58 ❭ when source is a type ❭ does not accept props of the given type
 
     The expected type comes from property 'two' which is declared here on type 'IntrinsicAttributes & SecondProps' ts(6500)
 
@@ -683,4 +567,76 @@ Type 'number' is not assignable to type 'boolean | undefined'.
       13 | describe("when source is a function component", () => {
 
            at ./__typetests__/function-components.tst.tsx:10:3
+
+Error: Type does not accept props of the given type.
+
+Type '{ one: string; two: number; }' is not assignable to type 'SecondProps'.
+Types of property 'two' are incompatible.
+Type 'number' is not assignable to type 'boolean | undefined'.
+
+  150 |     const twoProps = { one: "sample", two: 2 };
+  151 |     expect<Second>().type.not.toAcceptProps({ ...twoProps });
+  152 |     expect<Second>().type.toAcceptProps({ ...twoProps }); // fail: Type 'number' is not assignable
+      |                           ~~~~~~~~~~~~~
+  153 | 
+  154 |     expect<Second>().type.not.toAcceptProps({ two: true });
+  155 |     expect<Second>().type.toAcceptProps({ two: true }); // fail: Property 'one' is missing
+
+        at ./__typetests__/function-components.tst.tsx:152:27 ❭ when source is a type ❭ does not accept props of the given type
+
+Error: Type does not accept props of the given type.
+
+Property 'one' is missing in type '{ two: true; }' but required in type 'SecondProps'.
+
+  153 | 
+  154 |     expect<Second>().type.not.toAcceptProps({ two: true });
+  155 |     expect<Second>().type.toAcceptProps({ two: true }); // fail: Property 'one' is missing
+      |                           ~~~~~~~~~~~~~
+  156 | 
+  157 |     expect<Second>().type.not.toAcceptProps({ three: 123 });
+  158 |     expect<Second>().type.toAcceptProps({ three: 123 }); // fail: Property 'three' does not exist
+
+        at ./__typetests__/function-components.tst.tsx:155:27 ❭ when source is a type ❭ does not accept props of the given type
+
+    'one' is declared here. ts(2728)
+
+       7 | 
+       8 | interface SecondProps {
+       9 |   one: string | undefined;
+         |   ~~~
+      10 |   two?: boolean;
+      11 | }
+      12 | 
+
+           at ./__typetests__/function-components.tst.tsx:9:3
+
+Error: Type does not accept props of the given type.
+
+Type '{ three: number; }' is not assignable to type 'IntrinsicAttributes & SecondProps'.
+Property 'three' does not exist on type 'IntrinsicAttributes & SecondProps'.
+
+  156 | 
+  157 |     expect<Second>().type.not.toAcceptProps({ three: 123 });
+  158 |     expect<Second>().type.toAcceptProps({ three: 123 }); // fail: Property 'three' does not exist
+      |                                           ~~~~~
+  159 | 
+  160 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
+  161 |     expect<Second>().type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail: Property 'three' does not exist
+
+        at ./__typetests__/function-components.tst.tsx:158:43 ❭ when source is a type ❭ does not accept props of the given type
+
+Error: Type does not accept props of the given type.
+
+Type '{ one: string; two: true; three: number; }' is not assignable to type 'IntrinsicAttributes & SecondProps'.
+Property 'three' does not exist on type 'IntrinsicAttributes & SecondProps'.
+
+  159 | 
+  160 |     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
+  161 |     expect<Second>().type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail: Property 'three' does not exist
+      |                                                                     ~~~~~
+  162 |   });
+  163 | });
+  164 | 
+
+        at ./__typetests__/function-components.tst.tsx:161:69 ❭ when source is a type ❭ does not accept props of the given type
 

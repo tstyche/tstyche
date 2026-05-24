@@ -27,9 +27,6 @@ describe("when source is a function component", () => {
     expect(None).type.toAcceptProps({});
     expect(None).type.not.toAcceptProps({}); // fail
 
-    expect(None).type.not.toAcceptProps({ one: "sample" });
-    expect(None).type.toAcceptProps({ one: "sample" }); // fail
-
     expect(First).type.toAcceptProps({});
     expect(First).type.not.toAcceptProps({}); // fail
 
@@ -39,47 +36,56 @@ describe("when source is a function component", () => {
     expect(Second).type.toAcceptProps({ one: "sample" });
     expect(Second).type.not.toAcceptProps({ one: "sample" }); // fail
 
+    const oneProp = { one: "sample" };
+    expect(Second).type.toAcceptProps({ ...oneProp });
+    expect(Second).type.not.toAcceptProps({ ...oneProp }); // fail
+
     expect(Second).type.toAcceptProps({ one: "sample", two: true });
     expect(Second).type.not.toAcceptProps({ one: "sample", two: true }); // fail
+
+    const twoProps = { one: "sample", two: true };
+    expect(Second).type.toAcceptProps({ ...twoProps });
+    expect(Second).type.not.toAcceptProps({ ...twoProps }); // fail
   });
 
-  test("property is required in props type", () => {
-    expect(Second).type.not.toAcceptProps({});
-    expect(Second).type.toAcceptProps({}); // fail
+  test("does not accept props of the given type", () => {
+    expect(None).type.not.toAcceptProps({ one: "sample" });
+    expect(None).type.toAcceptProps({ one: "sample" }); // fail: Property 'one' does not exist
 
-    expect(Second).type.not.toAcceptProps({ two: true });
-    expect(Second).type.toAcceptProps({ two: true }); // fail
-  });
+    expect(First).type.not.toAcceptProps({ one: 1 });
+    expect(First).type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
 
-  test("property does not exist in props type", () => {
     expect(First).type.not.toAcceptProps({ two: false });
-    expect(First).type.toAcceptProps({ two: false }); // fail
+    expect(First).type.toAcceptProps({ two: false }); // fail: Property 'two' does not exist
 
     expect(First).type.not.toAcceptProps({ one: "sample", two: false });
-    expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail
+    expect(First).type.toAcceptProps({ one: "sample", two: false }); // fail: Property 'two' does not exist
 
-    expect(Second).type.not.toAcceptProps({ three: 123 });
-    expect(Second).type.toAcceptProps({ three: 123 }); // fail
-
-    expect(Second).type.not.toAcceptProps({ two: "no", three: 123 });
-    expect(Second).type.toAcceptProps({ two: "no", three: 123 }); // fail
-
-    expect(Second).type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
-    expect(Second).type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
-
-    expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
-    expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
-  });
-
-  test("property type is not assignable to prop type", () => {
-    expect(First).type.not.toAcceptProps({ one: 1 });
-    expect(First).type.toAcceptProps({ one: 1 }); // fail
+    expect(Second).type.not.toAcceptProps({});
+    expect(Second).type.toAcceptProps({}); // fail: Property 'one' is missing
 
     expect(Second).type.not.toAcceptProps({ one: 1 });
-    expect(Second).type.toAcceptProps({ one: 1 }); // fail
+    expect(Second).type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
 
-    expect(Second).type.not.toAcceptProps({ one: 1, two: 2 });
-    expect(Second).type.toAcceptProps({ one: 1, two: 2 }); // fail
+    const oneProp = { one: 1 };
+    expect(Second).type.not.toAcceptProps({ ...oneProp });
+    expect(Second).type.toAcceptProps({ ...oneProp }); // fail: Type 'number' is not assignable
+
+    expect(Second).type.not.toAcceptProps({ one: "sample", two: 2 });
+    expect(Second).type.toAcceptProps({ one: "sample", two: 2 }); // fail: Type 'number' is not assignable
+
+    const twoProps = { one: "sample", two: 2 };
+    expect(Second).type.not.toAcceptProps({ ...twoProps });
+    expect(Second).type.toAcceptProps({ ...twoProps }); // fail: Type 'number' is not assignable
+
+    expect(Second).type.not.toAcceptProps({ two: true });
+    expect(Second).type.toAcceptProps({ two: true }); // fail: Property 'one' is missing
+
+    expect(Second).type.not.toAcceptProps({ three: 123 });
+    expect(Second).type.toAcceptProps({ three: 123 }); // fail: Property 'three' does not exist
+
+    expect(Second).type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
+    expect(Second).type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail: Property 'three' does not exist
   });
 });
 
@@ -94,9 +100,6 @@ describe("when source is a type", () => {
     expect<None>().type.toAcceptProps({});
     expect<None>().type.not.toAcceptProps({}); // fail
 
-    expect<None>().type.not.toAcceptProps({ one: "sample" });
-    expect<None>().type.toAcceptProps({ one: "sample" }); // fail
-
     expect<First>().type.toAcceptProps({});
     expect<First>().type.not.toAcceptProps({}); // fail
 
@@ -106,46 +109,55 @@ describe("when source is a type", () => {
     expect<Second>().type.toAcceptProps({ one: "sample" });
     expect<Second>().type.not.toAcceptProps({ one: "sample" }); // fail
 
+    const oneProp = { one: "sample" };
+    expect<Second>().type.toAcceptProps({ ...oneProp });
+    expect<Second>().type.not.toAcceptProps({ ...oneProp }); // fail
+
     expect<Second>().type.toAcceptProps({ one: "sample", two: true });
     expect<Second>().type.not.toAcceptProps({ one: "sample", two: true }); // fail
+
+    const twoProps = { one: "sample", two: true };
+    expect<Second>().type.toAcceptProps({ ...twoProps });
+    expect<Second>().type.not.toAcceptProps({ ...twoProps }); // fail
   });
 
-  test("property is required in props type", () => {
-    expect<Second>().type.not.toAcceptProps({});
-    expect<Second>().type.toAcceptProps({}); // fail
+  test("does not accept props of the given type", () => {
+    expect<None>().type.not.toAcceptProps({ one: "sample" });
+    expect<None>().type.toAcceptProps({ one: "sample" }); // fail: Property 'one' does not exist
 
-    expect<Second>().type.not.toAcceptProps({ two: true });
-    expect<Second>().type.toAcceptProps({ two: true }); // fail
-  });
+    expect<First>().type.not.toAcceptProps({ one: 1 });
+    expect<First>().type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
 
-  test("property does not exist in props type", () => {
     expect<First>().type.not.toAcceptProps({ two: false });
-    expect<First>().type.toAcceptProps({ two: false }); // fail
+    expect<First>().type.toAcceptProps({ two: false }); // fail: Property 'two' does not exist
 
     expect<First>().type.not.toAcceptProps({ one: "sample", two: false });
-    expect<First>().type.toAcceptProps({ one: "sample", two: false }); // fail
+    expect<First>().type.toAcceptProps({ one: "sample", two: false }); // fail: Property 'two' does not exist
 
-    expect<Second>().type.not.toAcceptProps({ three: 123 });
-    expect<Second>().type.toAcceptProps({ three: 123 }); // fail
-
-    expect<Second>().type.not.toAcceptProps({ two: "no", three: 123 });
-    expect<Second>().type.toAcceptProps({ two: "no", three: 123 }); // fail
-
-    expect<Second>().type.not.toAcceptProps({ one: "sample", two: "no", three: 123 });
-    expect<Second>().type.toAcceptProps({ one: "sample", two: "no", three: 123 }); // fail
-
-    expect<Second>().type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
-    expect<Second>().type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail
-  });
-
-  test("property type is not assignable to prop type", () => {
-    expect<First>().type.not.toAcceptProps({ one: 1 });
-    expect<First>().type.toAcceptProps({ one: 1 }); // fail
+    expect<Second>().type.not.toAcceptProps({});
+    expect<Second>().type.toAcceptProps({}); // fail: Property 'one' is missing
 
     expect<Second>().type.not.toAcceptProps({ one: 1 });
-    expect<Second>().type.toAcceptProps({ one: 1 }); // fail
+    expect<Second>().type.toAcceptProps({ one: 1 }); // fail: Type 'number' is not assignable
 
-    expect<Second>().type.not.toAcceptProps({ one: 1, two: 2 });
-    expect<Second>().type.toAcceptProps({ one: 1, two: 2 }); // fail
+    const oneProp = { one: 1 };
+    expect<Second>().type.not.toAcceptProps({ ...oneProp });
+    expect<Second>().type.toAcceptProps({ ...oneProp }); // fail: Type 'number' is not assignable
+
+    expect<Second>().type.not.toAcceptProps({ one: "sample", two: 2 });
+    expect<Second>().type.toAcceptProps({ one: "sample", two: 2 }); // fail: Type 'number' is not assignable
+
+    const twoProps = { one: "sample", two: 2 };
+    expect<Second>().type.not.toAcceptProps({ ...twoProps });
+    expect<Second>().type.toAcceptProps({ ...twoProps }); // fail: Type 'number' is not assignable
+
+    expect<Second>().type.not.toAcceptProps({ two: true });
+    expect<Second>().type.toAcceptProps({ two: true }); // fail: Property 'one' is missing
+
+    expect<Second>().type.not.toAcceptProps({ three: 123 });
+    expect<Second>().type.toAcceptProps({ three: 123 }); // fail: Property 'three' does not exist
+
+    expect<Second>().type.not.toAcceptProps({ one: "sample", two: true, three: 123 });
+    expect<Second>().type.toAcceptProps({ one: "sample", two: true, three: 123 }); // fail: Property 'three' does not exist
   });
 });
