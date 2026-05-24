@@ -78,7 +78,7 @@ export class AbilityLayer {
             )
             .update(sourceNode.getFullStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
         } else {
-          const id = [sourceText, expectStart, expectEnd].join("_");
+          const id = ["C", expectStart, Date.now().toString(36)].join("_");
 
           this.#editor
             .erase(expectStart, matcherNodeEnd)
