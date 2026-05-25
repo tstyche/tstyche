@@ -65,8 +65,20 @@ Error: Each property must be a key-value pair or a spread element.
   33 |     expect(() => <>{"test"}</>).type.toAcceptProps({ a: "yes", b, ...c });
      |                                                                ~
   34 |   });
-  35 | });
-  36 | 
+  35 | 
+  36 |   test("property keys must be static identifiers or string literals", () => {
 
        at ./__typetests__/toAcceptProps.tst.tsx:33:64
+
+Error: Property keys must be static identifiers or string literals.
+
+  35 | 
+  36 |   test("property keys must be static identifiers or string literals", () => {
+  37 |     expect(() => <>{"test"}</>).type.toAcceptProps({ ["a"]: "nope" });
+     |                                                      ~~~~~
+  38 |   });
+  39 | });
+  40 | 
+
+       at ./__typetests__/toAcceptProps.tst.tsx:37:54
 

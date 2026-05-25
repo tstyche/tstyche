@@ -12,10 +12,11 @@ fail ./__typetests__/toAcceptProps.tst.tsx
     × must be provided
     × must be an object literal
     × must only contain key-value pairs
+    × property keys must be static identifiers or string literals
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      6 failed, 6 total
-Assertions: 6 failed, 6 total
+Tests:      7 failed, 7 total
+Assertions: 7 failed, 7 total
 Suppressed: 2 ignored, 2 total
 Duration:   <<timestamp>>

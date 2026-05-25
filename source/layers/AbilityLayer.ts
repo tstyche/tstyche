@@ -59,13 +59,16 @@ export class AbilityLayer {
           !targetNode ||
           !this.#compiler.isObjectLiteralExpression(targetNode) ||
           !targetNode.properties.every(
-            (property) => this.#compiler.isPropertyAssignment(property) || this.#compiler.isSpreadAssignment(property),
+            (property) =>
+              (this.#compiler.isPropertyAssignment(property) &&
+                (this.#compiler.isIdentifier(property.name) || this.#compiler.isStringLiteral(property.name))) ||
+              this.#compiler.isSpreadAssignment(property),
           )
         ) {
           return;
         }
 
-        const sourceText = sourceNode.getFullText();
+        const sourceText = sourceNode.getText();
 
         if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
           this.#editor
@@ -76,9 +79,9 @@ export class AbilityLayer {
               matcherNameEnd,
               nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
             )
-            .update(sourceNode.getFullStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
+            .update(sourceNode.getStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
         } else {
-          const id = ["C", expectStart, Date.now().toString(36)].join("_");
+          const id = ["SC", expectStart, Date.now().toString(36)].join("_");
 
           this.#editor
             .erase(expectStart, matcherNodeEnd)
@@ -94,12 +97,18 @@ export class AbilityLayer {
         for (const property of targetNode.properties) {
           if (this.#compiler.isPropertyAssignment(property)) {
             this.#editor
-              .update(property.name.getFullStart(), property.name.getEnd() + 1, property.name.getFullText() + "=")
-              .update(property.initializer.getFullStart(), property.initializer.getFullStart(), "{")
               .update(
-                property.initializer.getFullStart(),
+                property.name.getStart(),
+                property.name.getEnd() + 1,
+                this.#compiler.isStringLiteral(property.name)
+                  ? ` ${property.name.getText().slice(1, -1)} =`
+                  : property.name.getText() + "=",
+              )
+              .update(property.initializer.getStart(), property.initializer.getStart(), "{")
+              .update(
+                property.initializer.getStart(),
                 property.initializer.getEnd(),
-                property.initializer.getFullText() + "}",
+                property.initializer.getText() + "}",
               );
 
             continue;
@@ -107,8 +116,8 @@ export class AbilityLayer {
 
           if (this.#compiler.isSpreadAssignment(property)) {
             this.#editor
-              .update(property.getFullStart(), property.getFullStart(), "{")
-              .update(property.getFullStart(), property.getEnd(), property.getFullText() + "}");
+              .update(property.getStart(), property.getStart(), "{")
+              .update(property.getStart(), property.getEnd(), property.getText() + "}");
           }
         }
 

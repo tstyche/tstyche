@@ -57,6 +57,23 @@ describe("special cases", () => {
     expect(Card).type.not.toAcceptProps({});
     expect(Card).type.toAcceptProps({}); // fail
   });
-});
 
-// kebab-case
+  test("when kebab-case props are provided", () => {
+    interface KebabProps {
+      "one-one": string;
+    }
+
+    function KebabCase(props: KebabProps) {
+      return <>{JSON.stringify(props)}</>;
+    }
+
+    expect(KebabCase).type.toAcceptProps({ "one-one": "test" });
+    expect(KebabCase).type.not.toAcceptProps({ "one-one": "test" }); // fail
+
+    expect(KebabCase).type.not.toAcceptProps({ "one-one": 123 });
+    expect(KebabCase).type.toAcceptProps({ "one-one": 123 }); // fail
+
+    expect(KebabCase).type.not.toAcceptProps({ "two-two": "test" });
+    expect(KebabCase).type.toAcceptProps({ "two-two": "test" }); // fail
+  });
+});

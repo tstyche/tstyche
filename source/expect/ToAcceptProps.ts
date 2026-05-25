@@ -41,10 +41,20 @@ export class ToAcceptProps extends AbilityMatcherBase {
     } else {
       for (const property of targetNode.properties) {
         if (!(this.compiler.isPropertyAssignment(property) || this.compiler.isSpreadAssignment(property))) {
-          const expectedText = "a key-value pair or a spread element";
-
-          const text = ExpectDiagnosticText.eachMustBe("property", expectedText);
+          const text = "Each property must be a key-value pair or a spread element.";
           const origin = DiagnosticOrigin.fromNode(property);
+
+          diagnostics.push(Diagnostic.error(text, origin));
+
+          continue;
+        }
+
+        if (
+          this.compiler.isPropertyAssignment(property) &&
+          !(this.compiler.isIdentifier(property.name) || this.compiler.isStringLiteral(property.name))
+        ) {
+          const text = "Property keys must be static identifiers or string literals.";
+          const origin = DiagnosticOrigin.fromNode(property.name);
 
           diagnostics.push(Diagnostic.error(text, origin));
         }

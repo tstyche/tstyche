@@ -126,8 +126,62 @@ Type '{}' is missing the following properties from type 'CardProps': title, chil
   58 |     expect(Card).type.toAcceptProps({}); // fail
      |                       ~~~~~~~~~~~~~
   59 |   });
-  60 | });
-  61 | 
+  60 | 
+  61 |   test("when kebab-case props are provided", () => {
 
        at ./__typetests__/special-cases.tst.tsx:58:23 ❭ special cases ❭ when component requires children
+
+Error: Component accepts props of the given type.
+
+  69 | 
+  70 |     expect(KebabCase).type.toAcceptProps({ "one-one": "test" });
+  71 |     expect(KebabCase).type.not.toAcceptProps({ "one-one": "test" }); // fail
+     |                                ~~~~~~~~~~~~~
+  72 | 
+  73 |     expect(KebabCase).type.not.toAcceptProps({ "one-one": 123 });
+  74 |     expect(KebabCase).type.toAcceptProps({ "one-one": 123 }); // fail
+
+       at ./__typetests__/special-cases.tst.tsx:71:32 ❭ special cases ❭ when kebab-case props are provided
+
+Error: Component does not accept props of the given type.
+
+Type '{ "one-one": number; }' is not assignable to type 'KebabProps'.
+Types of property '"one-one"' are incompatible.
+Type 'number' is not assignable to type 'string'.
+
+  72 | 
+  73 |     expect(KebabCase).type.not.toAcceptProps({ "one-one": 123 });
+  74 |     expect(KebabCase).type.toAcceptProps({ "one-one": 123 }); // fail
+     |                            ~~~~~~~~~~~~~
+  75 | 
+  76 |     expect(KebabCase).type.not.toAcceptProps({ "two-two": "test" });
+  77 |     expect(KebabCase).type.toAcceptProps({ "two-two": "test" }); // fail
+
+       at ./__typetests__/special-cases.tst.tsx:74:28 ❭ special cases ❭ when kebab-case props are provided
+
+Error: Component does not accept props of the given type.
+
+Property '"one-one"' is missing in type '{ "two-two": string; }' but required in type 'KebabProps'.
+
+  75 | 
+  76 |     expect(KebabCase).type.not.toAcceptProps({ "two-two": "test" });
+  77 |     expect(KebabCase).type.toAcceptProps({ "two-two": "test" }); // fail
+     |                            ~~~~~~~~~~~~~
+  78 |   });
+  79 | });
+  80 | 
+
+       at ./__typetests__/special-cases.tst.tsx:77:28 ❭ special cases ❭ when kebab-case props are provided
+
+    '"one-one"' is declared here. ts(2728)
+
+      61 |   test("when kebab-case props are provided", () => {
+      62 |     interface KebabProps {
+      63 |       "one-one": string;
+         |       ~~~~~~~~~
+      64 |     }
+      65 | 
+      66 |     function KebabCase(props: KebabProps) {
+
+           at ./__typetests__/special-cases.tst.tsx:63:7
 

@@ -32,4 +32,8 @@ describe("argument for 'target'", () => {
     const c = { c: true };
     expect(() => <>{"test"}</>).type.toAcceptProps({ a: "yes", b, ...c });
   });
+
+  test("property keys must be static identifiers or string literals", () => {
+    expect(() => <>{"test"}</>).type.toAcceptProps({ ["a"]: "nope" });
+  });
 });

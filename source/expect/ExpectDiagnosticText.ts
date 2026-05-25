@@ -3,10 +3,6 @@ export class ExpectDiagnosticText {
     return `The argument must be ${expectedText}.`;
   }
 
-  static eachMustBe(targetText: string, expectedText: string): string {
-    return `Each ${targetText} must be ${expectedText}.`;
-  }
-
   static typeArgumentMustBe(expectedText: string): string {
     return `The type argument must be ${expectedText}.`;
   }
