@@ -1,8 +1,8 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import type { TextEditor } from "#source";
 import { nodeBelongsToArgumentList, nodeIsChildOfExpressionStatement } from "./helpers.js";
+import type { TextEditor } from "./TextEditor.js";
 
 export class AbilityLayer {
   #compiler: typeof ts;
@@ -18,8 +18,8 @@ export class AbilityLayer {
     return diagnosticBelongsToNode(diagnostic, node.matcherNode) || diagnosticBelongsToNode(diagnostic, node.source);
   }
 
-  close(diagnostics: Array<ts.Diagnostic> | undefined): void {
-    if (diagnostics != null && this.#nodes.length > 0) {
+  close(diagnostics: Array<ts.Diagnostic>): void {
+    if (diagnostics.length > 0 && this.#nodes.length > 0) {
       this.#nodes.reverse();
 
       for (const diagnostic of diagnostics) {
@@ -48,6 +48,84 @@ export class AbilityLayer {
     const matcherNodeEnd = expect.matcherNode.getEnd();
 
     switch (expect.matcherNameNode.name.text) {
+      case "toAcceptProps": {
+        this.#nodes.push(expect);
+
+        const sourceNode = expect.source[0];
+        const targetNode = expect.target?.[0];
+
+        if (
+          !sourceNode ||
+          !targetNode ||
+          !this.#compiler.isObjectLiteralExpression(targetNode) ||
+          !targetNode.properties.every(
+            (property) =>
+              (this.#compiler.isPropertyAssignment(property) &&
+                (this.#compiler.isIdentifier(property.name) || this.#compiler.isStringLiteral(property.name))) ||
+              this.#compiler.isSpreadAssignment(property),
+          )
+        ) {
+          return;
+        }
+
+        const sourceText = sourceNode.getText();
+
+        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+          this.#editor
+            .eraseTrailingComma(expect.source)
+            .erase(expectStart, matcherNodeEnd)
+            .update(
+              expectStart,
+              matcherNameEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+            )
+            .update(sourceNode.getStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
+        } else {
+          const id = ["SC", expectStart, Date.now().toString(36)].join("_");
+
+          this.#editor
+            .erase(expectStart, matcherNodeEnd)
+            .update(
+              expectStart,
+              matcherNameEnd,
+              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+                ? `;const ${id} = undefined as any as ${sourceText};<${id}`
+                : `const ${id} = undefined as any as ${sourceText};<${id}`,
+            );
+        }
+
+        for (const property of targetNode.properties) {
+          if (this.#compiler.isPropertyAssignment(property)) {
+            this.#editor
+              .update(
+                property.name.getStart(),
+                property.name.getEnd() + 1,
+                this.#compiler.isStringLiteral(property.name)
+                  ? ` ${property.name.getText().slice(1, -1)} =`
+                  : property.name.getText() + "=",
+              )
+              .update(property.initializer.getStart(), property.initializer.getStart(), "{")
+              .update(
+                property.initializer.getStart(),
+                property.initializer.getEnd(),
+                property.initializer.getText() + "}",
+              );
+
+            continue;
+          }
+
+          if (this.#compiler.isSpreadAssignment(property)) {
+            this.#editor
+              .update(property.getStart(), property.getStart(), "{")
+              .update(property.getStart(), property.getEnd(), property.getText() + "}");
+          }
+        }
+
+        this.#editor.update(matcherNodeEnd, matcherNodeEnd, "/>");
+
+        break;
+      }
+
       case "toBeApplicable":
         this.#nodes.push(expect);
 

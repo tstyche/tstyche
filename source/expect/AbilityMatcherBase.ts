@@ -5,7 +5,6 @@ import {
   type DiagnosticsHandler,
   diagnosticBelongsToNode,
   getDiagnosticMessageText,
-  getTextSpanEnd,
   isDiagnosticWithLocation,
 } from "#diagnostic";
 import { nodeBelongsToArgumentList } from "#layers";
@@ -13,8 +12,8 @@ import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export abstract class AbilityMatcherBase {
-  abstract explainText(isExpression: boolean, targetText: string): string;
-  abstract explainNotText(isExpression: boolean, targetText: string): string;
+  abstract explainText(isExpression: boolean, targetText?: string): string;
+  abstract explainNotText(isExpression: boolean, targetText?: string): string;
 
   protected compiler: typeof ts;
 
@@ -46,11 +45,11 @@ export abstract class AbilityMatcherBase {
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
     targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode,
-    getArgumentCountText: () => string,
+    getArgumentCountText?: () => string,
   ): Array<Diagnostic> {
     const isExpression = nodeBelongsToArgumentList(this.compiler, sourceNode);
 
-    const argumentCountText = getArgumentCountText();
+    const argumentCountText = getArgumentCountText?.();
 
     const diagnostics: Array<Diagnostic> = [];
 
@@ -61,12 +60,7 @@ export abstract class AbilityMatcherBase {
         let origin: DiagnosticOrigin;
 
         if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNode)) {
-          origin = new DiagnosticOrigin(
-            diagnostic.start,
-            getTextSpanEnd(diagnostic),
-            sourceNode.getSourceFile(),
-            matchWorker.assertionNode,
-          );
+          origin = DiagnosticOrigin.fromAbilityDiagnostic(diagnostic, matchWorker.assertionNode);
         } else {
           origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
         }

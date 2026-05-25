@@ -22,8 +22,18 @@ describe("argument for 'target'", () => {
     expect(() => <>{"test"}</>).type.toAcceptProps();
   });
 
-  test("must be of object type", () => {
+  test("must be an object literal", () => {
     // @ts-expect-error!
     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
+  });
+
+  test("must only contain key-value pairs", () => {
+    const b = "no";
+    const c = { c: true };
+    expect(() => <>{"test"}</>).type.toAcceptProps({ a: "yes", b, ...c });
+  });
+
+  test("property keys must be static identifiers or string literals", () => {
+    expect(() => <>{"test"}</>).type.toAcceptProps({ ["a"]: "nope" });
   });
 });

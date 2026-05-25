@@ -42,7 +42,7 @@ export class ExpectService {
     this.#ensure = new Ensure(compiler);
     this.#reject = new Reject(compiler, program, resolvedConfig);
 
-    this.toAcceptProps = new ToAcceptProps(compiler, program);
+    this.toAcceptProps = new ToAcceptProps(compiler);
     this.toBe = new ToBe(compiler, program);
     this.toBeApplicable = new ToBeApplicable(compiler);
     this.toBeAssignableFrom = new ToBeAssignableFrom();

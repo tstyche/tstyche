@@ -1,0 +1,23 @@
+Error: Component accepts props of the given type.
+
+  19 | test("accepts props?", () => {
+  20 |   [expect(Button).type.toAcceptProps({ text: "Send" })];
+  21 |   [expect(Button).type.not.toAcceptProps({ text: "Send" })]; // fail
+     |                            ~~~~~~~~~~~~~
+  22 | 
+  23 |   [expect<Second>().type.toAcceptProps({ one: "sample" })];
+  24 |   [expect<Second>().type.not.toAcceptProps({ one: "sample" })]; // fail
+
+       at ./__typetests__/toAcceptProps.tst.tsx:21:28 ❭ accepts props?
+
+Error: Type accepts props of the given type.
+
+  22 | 
+  23 |   [expect<Second>().type.toAcceptProps({ one: "sample" })];
+  24 |   [expect<Second>().type.not.toAcceptProps({ one: "sample" })]; // fail
+     |                              ~~~~~~~~~~~~~
+  25 | });
+  26 | 
+
+       at ./__typetests__/toAcceptProps.tst.tsx:24:30 ❭ accepts props?
+

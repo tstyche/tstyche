@@ -10,11 +10,13 @@ fail ./__typetests__/toAcceptProps.tst.tsx
     × must be of a function or class type
   argument for 'target'
     × must be provided
-    × must be of object type
+    × must be an object literal
+    × must only contain key-value pairs
+    × property keys must be static identifiers or string literals
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      5 failed, 5 total
-Assertions: 5 failed, 5 total
+Tests:      7 failed, 7 total
+Assertions: 7 failed, 7 total
 Suppressed: 2 ignored, 2 total
 Duration:   <<timestamp>>

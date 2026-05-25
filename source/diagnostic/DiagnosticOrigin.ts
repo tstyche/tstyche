@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import type { JsonSourceFile } from "#json";
-import { SourceService } from "../source/SourceService.js";
+import { getTextSpanEnd } from "./helpers.js";
 
 export class DiagnosticOrigin {
   assertionNode: ExpectNode | undefined;
@@ -12,8 +12,12 @@ export class DiagnosticOrigin {
   constructor(start: number, end: number, sourceFile: ts.SourceFile | JsonSourceFile, assertionNode?: ExpectNode) {
     this.start = start;
     this.end = end;
-    this.sourceFile = SourceService.get(sourceFile);
+    this.sourceFile = sourceFile;
     this.assertionNode = assertionNode;
+  }
+
+  static fromAbilityDiagnostic(diagnostic: ts.DiagnosticWithLocation, assertionNode: ExpectNode): DiagnosticOrigin {
+    return new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), diagnostic.file, assertionNode);
   }
 
   static fromAssertion(assertionNode: ExpectNode): DiagnosticOrigin {

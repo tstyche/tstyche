@@ -32,11 +32,11 @@ export class ExpectDiagnosticText {
   }
 
   static acceptsProps(isExpression: boolean): string {
-    return `${isExpression ? "Component" : "Component type"} accepts props of the given type.`;
+    return `${isExpression ? "Component" : "Type"} accepts props of the given type.`;
   }
 
   static doesNotAcceptProps(isExpression: boolean): string {
-    return `${isExpression ? "Component" : "Component type"} does not accept props of the given type.`;
+    return `${isExpression ? "Component" : "Type"} does not accept props of the given type.`;
   }
 
   static canBeApplied(targetText: string): string {
@@ -61,10 +61,6 @@ export class ExpectDiagnosticText {
 
   static matcherIsNotSupported(matcherNameText: string): string {
     return `The '.${matcherNameText}()' matcher is not supported.`;
-  }
-
-  static overloadGaveTheFollowingError(index: number, count: number, signatureText: string): string {
-    return `Overload ${index} of ${count}, '${signatureText}', gave the following error.`;
   }
 
   static raisedTypeError(count = 1): string {
@@ -115,17 +111,5 @@ export class ExpectDiagnosticText {
 
   static isNotTheSame(sourceTypeText: string, targetTypeText: string): string {
     return `Type '${sourceTypeText}' is not the same as type '${targetTypeText}'.`;
-  }
-
-  static isNotCompatibleWith(sourceTypeText: string, targetTypeText: string): string {
-    return `Type '${sourceTypeText}' is not compatible with type '${targetTypeText}'.`;
-  }
-
-  static requiresProperty(typeText: string, propertyNameText: string): string {
-    return `Type '${typeText}' requires property '${propertyNameText}'.`;
-  }
-
-  static typesOfPropertyAreNotCompatible(propertyNameText: string): string {
-    return `Types of property '${propertyNameText}' are not compatible.`;
   }
 }

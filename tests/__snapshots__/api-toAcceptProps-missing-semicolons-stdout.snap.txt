@@ -1,0 +1,12 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/api-toAcceptProps
+
+uses TypeScript <<version>> with ./__typetests__/tsconfig.json
+
+pass ./__typetests__/toAcceptProps.tst.tsx
+  + accepts props?
+
+Targets:    1 passed, 1 total
+Test files: 1 passed, 1 total
+Tests:      1 passed, 1 total
+Assertions: 4 passed, 4 total
+Duration:   <<timestamp>>

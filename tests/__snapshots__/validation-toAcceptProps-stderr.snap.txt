@@ -42,19 +42,43 @@ Error: An argument or type argument must be provided.
      |                                      ~~~~~~~~~~~~~
   23 |   });
   24 | 
-  25 |   test("must be of object type", () => {
+  25 |   test("must be an object literal", () => {
 
        at ./__typetests__/toAcceptProps.tst.tsx:22:38
 
-Error: The argument must be of an object type.
+Error: The argument must be an object literal with key-value pairs.
 
-  25 |   test("must be of object type", () => {
+  25 |   test("must be an object literal", () => {
   26 |     // @ts-expect-error!
   27 |     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
      |                                                    ~~~~~~
   28 |   });
-  29 | });
-  30 | 
+  29 | 
+  30 |   test("must only contain key-value pairs", () => {
 
        at ./__typetests__/toAcceptProps.tst.tsx:27:52
+
+Error: Each property must be a key-value pair or a spread element.
+
+  31 |     const b = "no";
+  32 |     const c = { c: true };
+  33 |     expect(() => <>{"test"}</>).type.toAcceptProps({ a: "yes", b, ...c });
+     |                                                                ~
+  34 |   });
+  35 | 
+  36 |   test("property keys must be static identifiers or string literals", () => {
+
+       at ./__typetests__/toAcceptProps.tst.tsx:33:64
+
+Error: Property keys must be static identifiers or string literals.
+
+  35 | 
+  36 |   test("property keys must be static identifiers or string literals", () => {
+  37 |     expect(() => <>{"test"}</>).type.toAcceptProps({ ["a"]: "nope" });
+     |                                                      ~~~~~
+  38 |   });
+  39 | });
+  40 | 
+
+       at ./__typetests__/toAcceptProps.tst.tsx:37:54
 

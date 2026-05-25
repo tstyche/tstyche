@@ -1,235 +1,187 @@
 Error: Component accepts props of the given type.
 
-Type '{ one: string; }' is assignable from type '{ one: string; }'.
+  16 | 
+  17 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Pass" });
+  18 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Pass" }); // fail
+     |                                    ~~~~~~~~~~~~~
+  19 | 
+  20 |     expect(OneOrTheOther).type.toAcceptProps({ two: "Pass" });
+  21 |     expect(OneOrTheOther).type.not.toAcceptProps({ two: "Pass" }); // fail
 
-   8 | 
-   9 |     expect(Default).type.toAcceptProps({ one: "sample" });
-  10 |     expect(Default).type.not.toAcceptProps({ one: "sample" }); // fail
-     |                                            ~~~~~~~~~~~~~~~~~
-  11 | 
-  12 |     expect(Default).type.not.toAcceptProps({});
-  13 |     expect(Default).type.toAcceptProps({}); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:10:44 ❭ special cases ❭ when the 'props' argument has a default value
-
-Error: Component does not accept props of the given type.
-
-Type '{ one: string; }' is not assignable from type '{}'.
-Type '{ one: string; }' requires property 'one'.
-
-  11 | 
-  12 |     expect(Default).type.not.toAcceptProps({});
-  13 |     expect(Default).type.toAcceptProps({}); // fail
-     |                                        ~~
-  14 | 
-  15 |     expect(Default).type.not.toAcceptProps({ two: false });
-  16 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:13:40 ❭ special cases ❭ when the 'props' argument has a default value
-
-Error: Component does not accept props of the given type.
-
-Type '{ one: string; }' is not compatible with type '{ two: boolean; }'.
-Type '{ one: string; }' does not have property 'two'.
-
-  14 | 
-  15 |     expect(Default).type.not.toAcceptProps({ two: false });
-  16 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-     |                                          ~~~
-  17 | 
-  18 |     expect(Default).type.not.toAcceptProps({ one: false });
-  19 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:16:42 ❭ special cases ❭ when the 'props' argument has a default value
-
-Error: Component does not accept props of the given type.
-
-Type '{ one: string; }' is not assignable from type '{ two: boolean; }'.
-Type '{ one: string; }' requires property 'one'.
-
-  14 | 
-  15 |     expect(Default).type.not.toAcceptProps({ two: false });
-  16 |     expect(Default).type.toAcceptProps({ two: false }); // fail
-     |                                        ~~~~~~~~~~~~~~
-  17 | 
-  18 |     expect(Default).type.not.toAcceptProps({ one: false });
-  19 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:16:40 ❭ special cases ❭ when the 'props' argument has a default value
-
-Error: Component does not accept props of the given type.
-
-Type '{ one: string; }' is not assignable from type '{ one: boolean; }'.
-Types of property 'one' are not compatible.
-Type 'string' is not assignable from type 'boolean'.
-
-  17 | 
-  18 |     expect(Default).type.not.toAcceptProps({ one: false });
-  19 |     expect(Default).type.toAcceptProps({ one: false }); // fail
-     |                                          ~~~
-  20 |   });
-  21 | 
-  22 |   test("when the 'props' is a union", () => {
-
-       at ./__typetests__/special-cases.tst.tsx:19:42 ❭ special cases ❭ when the 'props' argument has a default value
+       at ./__typetests__/special-cases.tst.tsx:18:36 ❭ special cases ❭ when the 'props' is a union
 
 Error: Component accepts props of the given type.
 
-Type 'One | Other' is assignable from type '{ one: string; }'.
-Type 'One' is assignable from type '{ one: string; }'.
+  19 | 
+  20 |     expect(OneOrTheOther).type.toAcceptProps({ two: "Pass" });
+  21 |     expect(OneOrTheOther).type.not.toAcceptProps({ two: "Pass" }); // fail
+     |                                    ~~~~~~~~~~~~~
+  22 | 
+  23 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
+  24 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Fail", two: "Fail" }); // fail
 
-  33 | 
-  34 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Pass" });
-  35 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Pass" }); // fail
-     |                                                  ~~~~~~~~~~~~~~~
-  36 | 
-  37 |     expect(OneOrTheOther).type.toAcceptProps({ two: "Pass" });
-  38 |     expect(OneOrTheOther).type.not.toAcceptProps({ two: "Pass" }); // fail
+       at ./__typetests__/special-cases.tst.tsx:21:36 ❭ special cases ❭ when the 'props' is a union
 
-       at ./__typetests__/special-cases.tst.tsx:35:50 ❭ special cases ❭ when the 'props' is a union
+Error: Component does not accept props of the given type.
+
+Type '{ one: string; two: string; }' is not assignable to type 'IntrinsicAttributes & (One | Other)'.
+Types of property 'two' are incompatible.
+Type 'string' is not assignable to type 'undefined'.
+
+  22 | 
+  23 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
+  24 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Fail", two: "Fail" }); // fail
+     |                                ~~~~~~~~~~~~~
+  25 | 
+  26 |     expect(OneOrTheOther).type.not.toAcceptProps({});
+  27 |     expect(OneOrTheOther).type.toAcceptProps({}); // fail
+
+       at ./__typetests__/special-cases.tst.tsx:24:32 ❭ special cases ❭ when the 'props' is a union
+
+Error: Component does not accept props of the given type.
+
+Type '{}' is not assignable to type 'IntrinsicAttributes & (One | Other)'.
+
+  25 | 
+  26 |     expect(OneOrTheOther).type.not.toAcceptProps({});
+  27 |     expect(OneOrTheOther).type.toAcceptProps({}); // fail
+     |                                ~~~~~~~~~~~~~
+  28 | 
+  29 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
+  30 |     expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
+
+       at ./__typetests__/special-cases.tst.tsx:27:32 ❭ special cases ❭ when the 'props' is a union
+
+Error: Component does not accept props of the given type.
+
+Type '{ three: boolean; }' is not assignable to type 'IntrinsicAttributes & (One | Other)'.
+Property 'three' does not exist on type 'IntrinsicAttributes & (One | Other)'.
+
+  28 | 
+  29 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
+  30 |     expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
+     |                                                ~~~~~
+  31 |   });
+  32 | 
+  33 |   test("when component requires children", () => {
+
+       at ./__typetests__/special-cases.tst.tsx:30:48 ❭ special cases ❭ when the 'props' is a union
 
 Error: Component accepts props of the given type.
 
-Type 'One | Other' is assignable from type '{ two: string; }'.
-Type 'Other' is assignable from type '{ two: string; }'.
-
-  36 | 
-  37 |     expect(OneOrTheOther).type.toAcceptProps({ two: "Pass" });
-  38 |     expect(OneOrTheOther).type.not.toAcceptProps({ two: "Pass" }); // fail
-     |                                                  ~~~~~~~~~~~~~~~
-  39 | 
-  40 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
-  41 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Fail", two: "Fail" }); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:38:50 ❭ special cases ❭ when the 'props' is a union
-
-Error: Component does not accept props of the given type.
-
-Type 'One | Other' is not assignable from type '{ one: string; two: string; }'.
-Type 'One' is not assignable from type '{ one: string; two: string; }'.
-Types of property 'two' are not compatible.
-Type 'undefined' is not assignable from type 'string'.
-
-  39 | 
-  40 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
-  41 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Fail", two: "Fail" }); // fail
-     |                                                             ~~~
-  42 | 
-  43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
-  44 |     expect(OneOrTheOther).type.toAcceptProps({}); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:41:61 ❭ special cases ❭ when the 'props' is a union
-
-Error: Component does not accept props of the given type.
-
-Type 'One | Other' is not assignable from type '{ one: string; two: string; }'.
-Type 'Other' is not assignable from type '{ one: string; two: string; }'.
-Types of property 'one' are not compatible.
-Type 'undefined' is not assignable from type 'string'.
-
-  39 | 
-  40 |     expect(OneOrTheOther).type.not.toAcceptProps({ one: "Fail", two: "Fail" });
-  41 |     expect(OneOrTheOther).type.toAcceptProps({ one: "Fail", two: "Fail" }); // fail
-     |                                                ~~~
-  42 | 
-  43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
-  44 |     expect(OneOrTheOther).type.toAcceptProps({}); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:41:48 ❭ special cases ❭ when the 'props' is a union
-
-Error: Component does not accept props of the given type.
-
-Type 'One | Other' is not assignable from type '{}'.
-Type 'One' is not assignable from type '{}'.
-Type 'One' requires property 'one'.
-
-  42 | 
-  43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
-  44 |     expect(OneOrTheOther).type.toAcceptProps({}); // fail
-     |                                              ~~
-  45 | 
-  46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
-  47 |     expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:44:46 ❭ special cases ❭ when the 'props' is a union
-
-Error: Component does not accept props of the given type.
-
-Type 'One | Other' is not assignable from type '{}'.
-Type 'Other' is not assignable from type '{}'.
-Type 'Other' requires property 'two'.
-
-  42 | 
-  43 |     expect(OneOrTheOther).type.not.toAcceptProps({});
-  44 |     expect(OneOrTheOther).type.toAcceptProps({}); // fail
-     |                                              ~~
-  45 | 
-  46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
-  47 |     expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
-
-       at ./__typetests__/special-cases.tst.tsx:44:46 ❭ special cases ❭ when the 'props' is a union
-
-Error: Component does not accept props of the given type.
-
-Type 'One | Other' is not assignable from type '{ three: boolean; }'.
-Type 'One' is not compatible with type '{ three: boolean; }'.
-Type 'One' does not have property 'three'.
-
-  45 | 
-  46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
-  47 |     expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
-     |                                                ~~~~~
-  48 |   });
-  49 | });
+  47 | 
+  48 |     expect(Card).type.toAcceptProps({ title: "Hello", children: "Click me" });
+  49 |     expect(Card).type.not.toAcceptProps({ title: "Hello", children: "Click me" }); //fail
+     |                           ~~~~~~~~~~~~~
   50 | 
+  51 |     expect(Card).type.toAcceptProps({ title: "Hello", children: <span>Click me</span> });
+  52 |     expect(Card).type.not.toAcceptProps({ title: "Hello", children: <span>Click me</span> }); // fail
 
-       at ./__typetests__/special-cases.tst.tsx:47:48 ❭ special cases ❭ when the 'props' is a union
+       at ./__typetests__/special-cases.tst.tsx:49:27 ❭ special cases ❭ when component requires children
+
+Error: Component accepts props of the given type.
+
+  50 | 
+  51 |     expect(Card).type.toAcceptProps({ title: "Hello", children: <span>Click me</span> });
+  52 |     expect(Card).type.not.toAcceptProps({ title: "Hello", children: <span>Click me</span> }); // fail
+     |                           ~~~~~~~~~~~~~
+  53 | 
+  54 |     expect(Card).type.not.toAcceptProps({ title: "Hello" });
+  55 |     expect(Card).type.toAcceptProps({ title: "Hello" }); // fail
+
+       at ./__typetests__/special-cases.tst.tsx:52:27 ❭ special cases ❭ when component requires children
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable from type '{ three: boolean; }'.
-Type 'One' is not assignable from type '{ three: boolean; }'.
-Type 'One' requires property 'one'.
+Property 'children' is missing in type '{ title: string; }' but required in type 'CardProps'.
 
-  45 | 
-  46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
-  47 |     expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
-     |                                              ~~~~~~~~~~~~~~~~
-  48 |   });
-  49 | });
-  50 | 
+  53 | 
+  54 |     expect(Card).type.not.toAcceptProps({ title: "Hello" });
+  55 |     expect(Card).type.toAcceptProps({ title: "Hello" }); // fail
+     |                       ~~~~~~~~~~~~~
+  56 | 
+  57 |     expect(Card).type.not.toAcceptProps({});
+  58 |     expect(Card).type.toAcceptProps({}); // fail
 
-       at ./__typetests__/special-cases.tst.tsx:47:46 ❭ special cases ❭ when the 'props' is a union
+       at ./__typetests__/special-cases.tst.tsx:55:23 ❭ special cases ❭ when component requires children
 
-Error: Component does not accept props of the given type.
+    'children' is declared here. ts(2728)
 
-Type 'One | Other' is not assignable from type '{ three: boolean; }'.
-Type 'Other' is not compatible with type '{ three: boolean; }'.
-Type 'Other' does not have property 'three'.
+      34 |     interface CardProps {
+      35 |       title: string;
+      36 |       children: ReactNode;
+         |       ~~~~~~~~
+      37 |     }
+      38 | 
+      39 |     function Card({ title, children }: CardProps) {
 
-  45 | 
-  46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
-  47 |     expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
-     |                                                ~~~~~
-  48 |   });
-  49 | });
-  50 | 
-
-       at ./__typetests__/special-cases.tst.tsx:47:48 ❭ special cases ❭ when the 'props' is a union
+           at ./__typetests__/special-cases.tst.tsx:36:7
 
 Error: Component does not accept props of the given type.
 
-Type 'One | Other' is not assignable from type '{ three: boolean; }'.
-Type 'Other' is not assignable from type '{ three: boolean; }'.
-Type 'Other' requires property 'two'.
+Type '{}' is missing the following properties from type 'CardProps': title, children
 
-  45 | 
-  46 |     expect(OneOrTheOther).type.not.toAcceptProps({ three: false });
-  47 |     expect(OneOrTheOther).type.toAcceptProps({ three: false }); // fail
-     |                                              ~~~~~~~~~~~~~~~~
-  48 |   });
-  49 | });
-  50 | 
+  56 | 
+  57 |     expect(Card).type.not.toAcceptProps({});
+  58 |     expect(Card).type.toAcceptProps({}); // fail
+     |                       ~~~~~~~~~~~~~
+  59 |   });
+  60 | 
+  61 |   test("when kebab-case props are provided", () => {
 
-       at ./__typetests__/special-cases.tst.tsx:47:46 ❭ special cases ❭ when the 'props' is a union
+       at ./__typetests__/special-cases.tst.tsx:58:23 ❭ special cases ❭ when component requires children
+
+Error: Component accepts props of the given type.
+
+  69 | 
+  70 |     expect(KebabCase).type.toAcceptProps({ "one-one": "test" });
+  71 |     expect(KebabCase).type.not.toAcceptProps({ "one-one": "test" }); // fail
+     |                                ~~~~~~~~~~~~~
+  72 | 
+  73 |     expect(KebabCase).type.not.toAcceptProps({ "one-one": 123 });
+  74 |     expect(KebabCase).type.toAcceptProps({ "one-one": 123 }); // fail
+
+       at ./__typetests__/special-cases.tst.tsx:71:32 ❭ special cases ❭ when kebab-case props are provided
+
+Error: Component does not accept props of the given type.
+
+Type '{ "one-one": number; }' is not assignable to type 'KebabProps'.
+Types of property '"one-one"' are incompatible.
+Type 'number' is not assignable to type 'string'.
+
+  72 | 
+  73 |     expect(KebabCase).type.not.toAcceptProps({ "one-one": 123 });
+  74 |     expect(KebabCase).type.toAcceptProps({ "one-one": 123 }); // fail
+     |                            ~~~~~~~~~~~~~
+  75 | 
+  76 |     expect(KebabCase).type.not.toAcceptProps({ "two-two": "test" });
+  77 |     expect(KebabCase).type.toAcceptProps({ "two-two": "test" }); // fail
+
+       at ./__typetests__/special-cases.tst.tsx:74:28 ❭ special cases ❭ when kebab-case props are provided
+
+Error: Component does not accept props of the given type.
+
+Property '"one-one"' is missing in type '{ "two-two": string; }' but required in type 'KebabProps'.
+
+  75 | 
+  76 |     expect(KebabCase).type.not.toAcceptProps({ "two-two": "test" });
+  77 |     expect(KebabCase).type.toAcceptProps({ "two-two": "test" }); // fail
+     |                            ~~~~~~~~~~~~~
+  78 |   });
+  79 | });
+  80 | 
+
+       at ./__typetests__/special-cases.tst.tsx:77:28 ❭ special cases ❭ when kebab-case props are provided
+
+    '"one-one"' is declared here. ts(2728)
+
+      61 |   test("when kebab-case props are provided", () => {
+      62 |     interface KebabProps {
+      63 |       "one-one": string;
+         |       ~~~~~~~~~
+      64 |     }
+      65 | 
+      66 |     function KebabCase(props: KebabProps) {
+
+           at ./__typetests__/special-cases.tst.tsx:63:7
 

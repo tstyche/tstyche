@@ -72,9 +72,9 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
 
-  const { character: firstMarkedLineCharacter, line: firstMarkedLine } =
+  const { character: firstMarkedCharacter, line: firstMarkedLine } =
     diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
-  const { character: lastMarkedLineCharacter, line: lastMarkedLine } =
+  const { character: lastMarkedCharacter, line: lastMarkedLine } =
     diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
 
   const firstLine = Math.max(firstMarkedLine - linesAbove, 0);
@@ -114,13 +114,13 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
       if (index === firstMarkedLine) {
         const squiggleLength =
           index === lastMarkedLine
-            ? lastMarkedLineCharacter - firstMarkedLineCharacter
-            : lineText.length - firstMarkedLineCharacter;
+            ? lastMarkedCharacter - firstMarkedCharacter
+            : lineText.length - firstMarkedCharacter;
 
         codeFrame.push(
           <SquiggleLineText
             gutterWidth={gutterWidth}
-            indentWidth={firstMarkedLineCharacter}
+            indentWidth={firstMarkedCharacter}
             squiggleColor={highlightColor}
             squiggleWidth={squiggleLength}
           />,
@@ -130,7 +130,7 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
           <SquiggleLineText
             gutterWidth={gutterWidth}
             squiggleColor={highlightColor}
-            squiggleWidth={lastMarkedLineCharacter}
+            squiggleWidth={lastMarkedCharacter}
           />,
         );
       } else {
@@ -154,7 +154,7 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
       {" ".repeat(gutterWidth + 2)}
       <Text color={Color.Gray}>{" at "}</Text>
       <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
-      <Text color={Color.Gray}>{`:${firstMarkedLine + 1}:${firstMarkedLineCharacter + 1}`}</Text>
+      <Text color={Color.Gray}>{`:${firstMarkedLine + 1}:${firstMarkedCharacter + 1}`}</Text>
       {breadcrumbs}
     </Line>
   );

@@ -1,31 +1,33 @@
 import type ts from "typescript";
-import { SourceService } from "./SourceService.js";
+import type { Offset } from "#diagnostic";
 
 export class TextEditor {
   #filePath = "";
-  #sourceFile: ts.SourceFile | undefined;
+  #offset = 0;
+  #offsets: Array<Offset> = [];
   #text = "";
 
-  open(sourceFile: ts.SourceFile) {
-    this.#sourceFile = sourceFile;
-
+  open(sourceFile: ts.SourceFile): void {
     this.#filePath = sourceFile.fileName;
     this.#text = sourceFile.text;
+
+    this.#offset = 0;
+    this.#offsets = [];
   }
 
-  close() {
-    if (this.#sourceFile != null) {
-      SourceService.set(this.#sourceFile);
-
-      this.#sourceFile = undefined;
-    }
-
+  close(): void {
     this.#filePath = "";
     this.#text = "";
+
+    this.#offset = 0;
+    this.#offsets = [];
   }
 
   erase(start: number, end: number): this {
-    this.#text = this.#text.slice(0, start) + this.#getErased(start, end) + this.#text.slice(end);
+    this.#text =
+      this.#text.slice(0, start + this.#offset) +
+      this.#getErased(start + this.#offset, end + this.#offset) +
+      this.#text.slice(end + this.#offset);
 
     return this;
   }
@@ -66,13 +68,31 @@ export class TextEditor {
     return this.#filePath;
   }
 
+  getOffsets(): Array<Offset> {
+    return this.#offsets;
+  }
+
   getText(): string {
     return this.#text;
   }
 
+  #setOffset(start: number, end: number, text: string) {
+    const diff = text.length - (end - start);
+
+    if (diff > 0) {
+      this.#offset += diff;
+      this.#offsets.push({ position: end, diff });
+    }
+  }
+
   update(start: number, end: number, text: string): this {
     this.#text =
-      this.#text.slice(0, start) + text + this.#getErased(start, end).slice(text.length) + this.#text.slice(end);
+      this.#text.slice(0, start + this.#offset) +
+      text +
+      this.#getErased(start + this.#offset, end + this.#offset).slice(text.length) +
+      this.#text.slice(end + this.#offset);
+
+    this.#setOffset(start, end, text);
 
     return this;
   }

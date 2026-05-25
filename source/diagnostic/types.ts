@@ -4,3 +4,8 @@ export type DiagnosticsHandler<T extends Diagnostic | Array<Diagnostic> = Diagno
   this: void,
   diagnostics: T,
 ) => void;
+
+export interface Offset {
+  position: number;
+  diff: number;
+}

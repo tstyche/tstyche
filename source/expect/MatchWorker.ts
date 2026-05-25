@@ -1,6 +1,5 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
-import { DiagnosticOrigin } from "#diagnostic";
 
 export class MatchWorker {
   assertionNode: ExpectNode;
@@ -38,16 +37,6 @@ export class MatchWorker {
     return this.typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
   }
 
-  getParameterType(signature: ts.Signature, index: number): ts.Type | undefined {
-    const parameter = signature.getDeclaration().parameters[index];
-
-    if (!parameter) {
-      return;
-    }
-
-    return this.getType(parameter);
-  }
-
   getSignatures(node: ts.Node): Array<ts.Signature> {
     let signatures = this.#signatureCache.get(node);
 
@@ -71,20 +60,5 @@ export class MatchWorker {
 
   getType(node: ts.Node): ts.Type {
     return this.typeChecker.getTypeAtLocation(node);
-  }
-
-  resolveDiagnosticOrigin(symbol: ts.Symbol, enclosingNode: ts.Node) {
-    if (
-      symbol.valueDeclaration != null &&
-      (this.#compiler.isPropertySignature(symbol.valueDeclaration) ||
-        this.#compiler.isPropertyAssignment(symbol.valueDeclaration) ||
-        this.#compiler.isShorthandPropertyAssignment(symbol.valueDeclaration)) &&
-      symbol.valueDeclaration.getStart() >= enclosingNode.getStart() &&
-      symbol.valueDeclaration.getEnd() <= enclosingNode.getEnd()
-    ) {
-      return DiagnosticOrigin.fromNode(symbol.valueDeclaration.name, this.assertionNode);
-    }
-
-    return DiagnosticOrigin.fromNode(enclosingNode, this.assertionNode);
   }
 }
