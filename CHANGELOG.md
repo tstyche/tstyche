@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.2.0] - 2026-05-25
+
+### Fixed
+
+- Fix argument length detection for `.toBeInstantiableWith()` ([#754](https://github.com/tstyche/tstyche/pull/754))
+- Always sort test files by name in watch mode ([#748](https://github.com/tstyche/tstyche/pull/748))
+
+### Changed
+
+- Reimplement `.toAcceptProps()` logic using the ability layer ([#755](https://github.com/tstyche/tstyche/pull/755))
+- Add `User-Agent` header to registry requests ([#753](https://github.com/tstyche/tstyche/pull/753))
+- Add `TSTYCHE_FETCH_RETRIES` and `TSTYCHE_FETCH_TIMEOUT` environment variables ([#751](https://github.com/tstyche/tstyche/pull/751))
+- Add fetch retry logic ([#750](https://github.com/tstyche/tstyche/pull/750))
+
 ## [7.1.0] - 2026-04-22
 
 ### Changed
@@ -1041,6 +1055,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.2.0]: https://github.com/tstyche/tstyche/releases/tag/v7.2.0
 [7.1.0]: https://github.com/tstyche/tstyche/releases/tag/v7.1.0
 [7.0.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0
 [7.0.0-rc.1]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0-rc.1
