@@ -99,29 +99,27 @@ export class AbilityLayer {
             this.#editor
               .update(
                 property.name.getStart(),
-                property.name.getEnd() + 1,
+                property.name.getEnd(),
                 this.#compiler.isStringLiteral(property.name)
-                  ? ` ${property.name.getText().slice(1, -1)} =`
-                  : property.name.getText() + "=",
+                  ? ` ${property.name.getText().slice(1, -1)} `
+                  : property.name.getText(),
               )
-              .update(property.initializer.getStart(), property.initializer.getStart(), "{")
-              .update(
-                property.initializer.getStart(),
-                property.initializer.getEnd(),
-                property.initializer.getText() + "}",
-              );
+              .insert(property.initializer.getStart(), "={")
+              .update(property.initializer.getStart(), property.initializer.getEnd(), property.initializer.getText())
+              .insert(property.initializer.getEnd(), "}");
 
             continue;
           }
 
           if (this.#compiler.isSpreadAssignment(property)) {
             this.#editor
-              .update(property.getStart(), property.getStart(), "{")
-              .update(property.getStart(), property.getEnd(), property.getText() + "}");
+              .insert(property.getStart(), "{")
+              .update(property.getStart(), property.getEnd(), property.getText())
+              .insert(property.getEnd(), "}");
           }
         }
 
-        this.#editor.update(matcherNodeEnd, matcherNodeEnd, "/>");
+        this.#editor.insert(matcherNodeEnd, "/>");
 
         break;
       }

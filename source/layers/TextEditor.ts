@@ -40,6 +40,12 @@ export class TextEditor {
     return this;
   }
 
+  insert(position: number, text: string): this {
+    this.update(position, position, text);
+
+    return this;
+  }
+
   #getErased(start: number, end: number) {
     if (this.#text.indexOf("\n", start) >= end) {
       return " ".repeat(end - start);
