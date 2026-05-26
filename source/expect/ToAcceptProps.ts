@@ -9,6 +9,10 @@ export class ToAcceptProps extends AbilityMatcherBase {
   explainText = ExpectDiagnosticText.acceptsProps;
   explainNotText = ExpectDiagnosticText.doesNotAcceptProps;
 
+  #isValidIdentifier(target: string) {
+    return target[0] === target[0]!.toUpperCase() && /^[A-Z_$]/.test(target[0]);
+  }
+
   match(
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
@@ -26,6 +30,11 @@ export class ToAcceptProps extends AbilityMatcherBase {
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 
+      const origin = DiagnosticOrigin.fromNode(sourceNode);
+
+      diagnostics.push(Diagnostic.error(text, origin));
+    } else if (nodeBelongsToArgumentList(this.compiler, sourceNode) && !this.#isValidIdentifier(sourceNode.getText())) {
+      const text = "Component names must begin with an uppercase letter.";
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
       diagnostics.push(Diagnostic.error(text, origin));

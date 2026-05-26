@@ -1,84 +1,96 @@
 Error: An argument or type argument must be provided.
 
-  3 | describe("argument for 'source'", () => {
-  4 |   test("must be provided", () => {
-  5 |     expect().type.toAcceptProps({ test: false });
-    |     ~~~~~~
-  6 |   });
-  7 | 
-  8 |   test("must be of a function or class type", () => {
+   8 | describe("argument for 'source'", () => {
+   9 |   test("must be provided", () => {
+  10 |     expect().type.toAcceptProps({ test: false });
+     |     ~~~~~~
+  11 |   });
+  12 | 
+  13 |   test("must be of a function or class type", () => {
 
-      at ./__typetests__/toAcceptProps.tst.tsx:5:5
+       at ./__typetests__/toAcceptProps.tst.tsx:10:5
 
 Error: The argument must be of a function or class type.
 
-   7 | 
-   8 |   test("must be of a function or class type", () => {
-   9 |     expect({ a: "sample" }).type.toAcceptProps({ test: false });
-     |            ~~~~~~~~~~~~~~~
-  10 |   });
-  11 | });
   12 | 
+  13 |   test("must be of a function or class type", () => {
+  14 |     expect({ a: "sample" }).type.toAcceptProps({ test: false });
+     |            ~~~~~~~~~~~~~~~
+  15 |   });
+  16 | 
+  17 |   test("must begin with an uppercase letter", () => {
 
-       at ./__typetests__/toAcceptProps.tst.tsx:9:12
+       at ./__typetests__/toAcceptProps.tst.tsx:14:12
+
+Error: Component names must begin with an uppercase letter.
+
+  16 | 
+  17 |   test("must begin with an uppercase letter", () => {
+  18 |     expect(dummy).type.toAcceptProps({});
+     |            ~~~~~
+  19 |   });
+  20 | 
+  21 |   test("allowed names", () => {
+
+       at ./__typetests__/toAcceptProps.tst.tsx:18:12
 
 Error: The type argument must be of a function or class type.
 
-  13 | describe("type argument for 'source'", () => {
-  14 |   test("must be of a function or class type", () => {
-  15 |     expect<{ a: string }>().type.not.toAcceptProps({});
+  28 | describe("type argument for 'source'", () => {
+  29 |   test("must be of a function or class type", () => {
+  30 |     expect<{ a: string }>().type.not.toAcceptProps({});
      |            ~~~~~~~~~~~~~
-  16 |   });
-  17 | });
-  18 | 
+  31 |   });
+  32 | });
+  33 | 
 
-       at ./__typetests__/toAcceptProps.tst.tsx:15:12
+       at ./__typetests__/toAcceptProps.tst.tsx:30:12
 
 Error: An argument or type argument must be provided.
 
-  20 |   test("must be provided", () => {
-  21 |     // @ts-expect-error!
-  22 |     expect(() => <>{"test"}</>).type.toAcceptProps();
-     |                                      ~~~~~~~~~~~~~
-  23 |   });
-  24 | 
-  25 |   test("must be an object literal", () => {
+  35 |   test("must be provided", () => {
+  36 |     // @ts-expect-error!
+  37 |     expect(Dummy).type.toAcceptProps();
+     |                        ~~~~~~~~~~~~~
+  38 |   });
+  39 | 
+  40 |   test("must be an object literal", () => {
 
-       at ./__typetests__/toAcceptProps.tst.tsx:22:38
+       at ./__typetests__/toAcceptProps.tst.tsx:37:24
 
 Error: The argument must be an object literal with key-value pairs.
 
-  25 |   test("must be an object literal", () => {
-  26 |     // @ts-expect-error!
-  27 |     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
-     |                                                    ~~~~~~
-  28 |   });
-  29 | 
-  30 |   test("must only contain key-value pairs", () => {
+  40 |   test("must be an object literal", () => {
+  41 |     // @ts-expect-error!
+  42 |     expect(Dummy).type.toAcceptProps("nope");
+     |                                      ~~~~~~
+  43 |   });
+  44 | 
+  45 |   test("must only contain key-value pairs", () => {
 
-       at ./__typetests__/toAcceptProps.tst.tsx:27:52
+       at ./__typetests__/toAcceptProps.tst.tsx:42:38
 
 Error: Each property must be a key-value pair or a spread element.
 
-  31 |     const b = "no";
-  32 |     const c = { c: true };
-  33 |     expect(() => <>{"test"}</>).type.toAcceptProps({ a: "yes", b, ...c });
-     |                                                                ~
-  34 |   });
-  35 | 
-  36 |   test("property keys must be static identifiers or string literals", () => {
+  46 |     const b = "no";
+  47 |     const c = { c: true };
+  48 |     expect(Dummy).type.toAcceptProps({ a: "yes", b, ...c });
+     |                                                  ~
+  49 |   });
+  50 | 
+  51 |   test("property keys must be static identifiers or string literals", () => {
 
-       at ./__typetests__/toAcceptProps.tst.tsx:33:64
+       at ./__typetests__/toAcceptProps.tst.tsx:48:50
 
 Error: Property keys must be static identifiers or string literals.
 
-  35 | 
-  36 |   test("property keys must be static identifiers or string literals", () => {
-  37 |     expect(() => <>{"test"}</>).type.toAcceptProps({ ["a"]: "nope" });
-     |                                                      ~~~~~
-  38 |   });
-  39 | });
-  40 | 
+  50 | 
+  51 |   test("property keys must be static identifiers or string literals", () => {
+  52 |     expect(Dummy).type.toAcceptProps({ ["a"]: "nope" });
+     |                                        ~~~~~
+  53 |   });
+  54 | });
+  55 | 
 
-       at ./__typetests__/toAcceptProps.tst.tsx:37:54
+       at ./__typetests__/toAcceptProps.tst.tsx:52:40
 
