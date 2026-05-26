@@ -1,4 +1,4 @@
-Error: The matcher requires a '.tsx' or '.jsx' file extension.
+Error: The matcher requires a '.tsx' file extension.
 
   5 | }
   6 | 
