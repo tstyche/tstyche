@@ -45,7 +45,7 @@ export class Ensure {
     }
 
     if (node.getSourceFile().languageVariant !== this.#compiler.LanguageVariant.JSX) {
-      diagnosticText.push("The matcher requires a '.tsx' or '.jsx' file extension.");
+      diagnosticText.push("The matcher requires a '.tsx' file extension.");
     }
 
     if (diagnosticText.length > 0) {
