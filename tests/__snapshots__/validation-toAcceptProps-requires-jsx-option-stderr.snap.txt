@@ -1,0 +1,10 @@
+Error: The matcher requires the 'jsx' compiler option to be configured.
+
+  5 | }
+  6 | 
+  7 | expect(Component).type.toAcceptProps({});
+    |                        ~~~~~~~~~~~~~
+  8 | 
+
+      at ./__typetests__/toAcceptProps.tst.tsx:7:24
+

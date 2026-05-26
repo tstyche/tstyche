@@ -60,11 +60,16 @@ export class ExpectService {
   ): MatchResult | undefined {
     const matcherNameText = assertionNode.matcherNameNode.name.text;
 
-    if (!this.#ensure.argumentOrTypeArgument(assertionNode.source[0], assertionNode.node.expression, onDiagnostics)) {
+    if (
+      matcherNameText === "toAcceptProps" &&
+      !this.#ensure.jsxSetup(this.#program, assertionNode.matcherNameNode.name, onDiagnostics)
+    ) {
       return;
     }
 
-    const matchWorker = new MatchWorker(this.#compiler, this.#program, assertionNode);
+    if (!this.#ensure.argumentOrTypeArgument(assertionNode.source[0], assertionNode.node.expression, onDiagnostics)) {
+      return;
+    }
 
     if (
       !(matcherNameText === "toBeInstantiableWith" || (matcherNameText === "toRaiseError" && !assertionNode.isNot)) &&
@@ -72,6 +77,8 @@ export class ExpectService {
     ) {
       return;
     }
+
+    const matchWorker = new MatchWorker(this.#compiler, this.#program, assertionNode);
 
     switch (matcherNameText) {
       case "toAcceptProps":

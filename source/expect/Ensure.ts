@@ -37,6 +37,26 @@ export class Ensure {
     return true;
   }
 
+  jsxSetup(program: ts.Program, node: ts.Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): boolean {
+    const diagnosticText: Array<string> = [];
+
+    if (!program.getCompilerOptions().jsx) {
+      diagnosticText.push("The matcher requires the 'jsx' compiler option to be configured.");
+    }
+
+    if (node.getSourceFile().languageVariant !== this.#compiler.LanguageVariant.JSX) {
+      diagnosticText.push("The matcher requires a '.tsx' or '.jsx' file extension.");
+    }
+
+    if (diagnosticText.length > 0) {
+      this.#emitDiagnostic(diagnosticText, node, onDiagnostics);
+
+      return false;
+    }
+
+    return true;
+  }
+
   typeArgument<T extends ts.Node>(
     node: T | undefined,
     enclosingNode: ts.Node,
@@ -51,9 +71,17 @@ export class Ensure {
     return true;
   }
 
-  #emitDiagnostic(text: string, enclosingNode: ts.Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): void {
+  #emitDiagnostic(
+    text: string | Array<string>,
+    enclosingNode: ts.Node,
+    onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
+  ): void {
+    if (!Array.isArray(text)) {
+      text = [text];
+    }
+
     const origin = DiagnosticOrigin.fromNode(enclosingNode);
 
-    onDiagnostics([Diagnostic.error(text, origin)]);
+    onDiagnostics(text.map((text) => Diagnostic.error(text, origin)));
   }
 }
