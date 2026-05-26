@@ -10,7 +10,7 @@ export class ToAcceptProps extends AbilityMatcherBase {
   explainNotText = ExpectDiagnosticText.doesNotAcceptProps;
 
   #isValidIdentifier(target: string) {
-    return /^[A-Z_$]/.test(target[0]);
+    return /^[A-Z_$]/.test(target[0]!);
   }
 
   match(
