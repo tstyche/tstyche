@@ -21,7 +21,7 @@ export class Fetcher {
   ): Promise<Response | undefined> {
     let delay = 3000;
 
-    request.headers.set("User-Agent", `tstyche/${"__version__"} ${process.platform} ${process.arch}`);
+    request.headers.set("User-Agent", `tstyche/__version__ ${process.platform} ${process.arch}`);
 
     for (let attempt = 0; attempt <= this.#retries; attempt++) {
       const isLastAttempt = attempt === this.#retries;
