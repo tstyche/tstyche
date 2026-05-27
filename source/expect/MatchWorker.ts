@@ -4,7 +4,6 @@ import type { ExpectNode } from "#collect";
 export class MatchWorker {
   assertionNode: ExpectNode;
   #compiler: typeof ts;
-  #signatureCache = new Map<ts.Node, Array<ts.Signature>>();
   typeChecker: ts.TypeChecker;
 
   constructor(compiler: typeof ts, program: ts.Program, assertionNode: ExpectNode) {
@@ -35,22 +34,6 @@ export class MatchWorker {
         : ({ flags: this.#compiler.TypeFlags.NonPrimitive } as ts.Type); // TODO remove this workaround after dropping support for TypeScript 5.8
 
     return this.typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
-  }
-
-  getSignatures(node: ts.Node): Array<ts.Signature> {
-    let signatures = this.#signatureCache.get(node);
-
-    if (!signatures) {
-      const type = this.getType(node);
-
-      signatures = type.getCallSignatures() as Array<ts.Signature>;
-
-      if (signatures.length === 0) {
-        signatures = type.getConstructSignatures() as Array<ts.Signature>;
-      }
-    }
-
-    return signatures;
   }
 
   getTypeText(node: ts.Node): string {

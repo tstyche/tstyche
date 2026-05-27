@@ -1,84 +1,132 @@
 Error: An argument or type argument must be provided.
 
-  3 | describe("argument for 'source'", () => {
-  4 |   test("must be provided", () => {
-  5 |     expect().type.toAcceptProps({ test: false });
-    |     ~~~~~~
-  6 |   });
-  7 | 
-  8 |   test("must be of a function or class type", () => {
+  17 | 
+  18 |   test("must be provided", () => {
+  19 |     expect().type.toAcceptProps({ test: false });
+     |     ~~~~~~
+  20 |   });
+  21 | 
+  22 |   test("must be an identifier of a JSX component", () => {
 
-      at ./__typetests__/toAcceptProps.tst.tsx:5:5
+       at ./__typetests__/toAcceptProps.tst.tsx:19:5
 
-Error: The argument must be of a function or class type.
+Error: The argument must be an identifier of a JSX component.
 
-   7 | 
-   8 |   test("must be of a function or class type", () => {
-   9 |     expect({ a: "sample" }).type.toAcceptProps({ test: false });
+  21 | 
+  22 |   test("must be an identifier of a JSX component", () => {
+  23 |     expect({ a: "sample" }).type.toAcceptProps({ test: false });
      |            ~~~~~~~~~~~~~~~
-  10 |   });
-  11 | });
-  12 | 
+  24 |     expect(() => {}).type.toAcceptProps({ test: false });
+  25 |   });
+  26 | 
 
-       at ./__typetests__/toAcceptProps.tst.tsx:9:12
+       at ./__typetests__/toAcceptProps.tst.tsx:23:12
 
-Error: The type argument must be of a function or class type.
+Error: The argument must be an identifier of a JSX component.
 
-  13 | describe("type argument for 'source'", () => {
-  14 |   test("must be of a function or class type", () => {
-  15 |     expect<{ a: string }>().type.not.toAcceptProps({});
+  22 |   test("must be an identifier of a JSX component", () => {
+  23 |     expect({ a: "sample" }).type.toAcceptProps({ test: false });
+  24 |     expect(() => {}).type.toAcceptProps({ test: false });
+     |            ~~~~~~~~
+  25 |   });
+  26 | 
+  27 |   test("must an identifier that begins with an uppercase letter", () => {
+
+       at ./__typetests__/toAcceptProps.tst.tsx:24:12
+
+Error: The argument must be an identifier that begins with an uppercase letter.
+
+  26 | 
+  27 |   test("must an identifier that begins with an uppercase letter", () => {
+  28 |     expect(component).type.toAcceptProps({});
+     |            ~~~~~~~~~
+  29 |   });
+  30 | 
+  31 |   test("allowed expressions", () => {
+
+       at ./__typetests__/toAcceptProps.tst.tsx:28:12
+
+Error: The type argument must be an identifier of a JSX component.
+
+  49 | 
+  50 |   test("must be an identifier of a JSX component", () => {
+  51 |     expect<{ a: string }>().type.not.toAcceptProps({});
      |            ~~~~~~~~~~~~~
-  16 |   });
-  17 | });
-  18 | 
+  52 |     expect<() => string>().type.not.toAcceptProps({});
+  53 |   });
+  54 | 
 
-       at ./__typetests__/toAcceptProps.tst.tsx:15:12
+       at ./__typetests__/toAcceptProps.tst.tsx:51:12
+
+Error: The type argument must be an identifier of a JSX component.
+
+  50 |   test("must be an identifier of a JSX component", () => {
+  51 |     expect<{ a: string }>().type.not.toAcceptProps({});
+  52 |     expect<() => string>().type.not.toAcceptProps({});
+     |            ~~~~~~~~~~~~
+  53 |   });
+  54 | 
+  55 |   test("must an identifier that begins with an uppercase letter", () => {
+
+       at ./__typetests__/toAcceptProps.tst.tsx:52:12
+
+Error: The type argument must be an identifier that begins with an uppercase letter.
+
+  54 | 
+  55 |   test("must an identifier that begins with an uppercase letter", () => {
+  56 |     expect<component>().type.toAcceptProps({});
+     |            ~~~~~~~~~
+  57 |   });
+  58 | 
+  59 |   test("allowed types", () => {
+
+       at ./__typetests__/toAcceptProps.tst.tsx:56:12
 
 Error: An argument or type argument must be provided.
 
-  20 |   test("must be provided", () => {
-  21 |     // @ts-expect-error!
-  22 |     expect(() => <>{"test"}</>).type.toAcceptProps();
-     |                                      ~~~~~~~~~~~~~
-  23 |   });
-  24 | 
-  25 |   test("must be an object literal", () => {
+  67 |   test("must be provided", () => {
+  68 |     // @ts-expect-error!
+  69 |     expect(Component).type.toAcceptProps();
+     |                            ~~~~~~~~~~~~~
+  70 |   });
+  71 | 
+  72 |   test("must be an object literal", () => {
 
-       at ./__typetests__/toAcceptProps.tst.tsx:22:38
+       at ./__typetests__/toAcceptProps.tst.tsx:69:28
 
 Error: The argument must be an object literal with key-value pairs.
 
-  25 |   test("must be an object literal", () => {
-  26 |     // @ts-expect-error!
-  27 |     expect(() => <>{"test"}</>).type.toAcceptProps("nope");
-     |                                                    ~~~~~~
-  28 |   });
-  29 | 
-  30 |   test("must only contain key-value pairs", () => {
+  72 |   test("must be an object literal", () => {
+  73 |     // @ts-expect-error!
+  74 |     expect(Component).type.toAcceptProps("nope");
+     |                                          ~~~~~~
+  75 |   });
+  76 | 
+  77 |   test("must only contain key-value pairs", () => {
 
-       at ./__typetests__/toAcceptProps.tst.tsx:27:52
+       at ./__typetests__/toAcceptProps.tst.tsx:74:42
 
 Error: Each property must be a key-value pair or a spread element.
 
-  31 |     const b = "no";
-  32 |     const c = { c: true };
-  33 |     expect(() => <>{"test"}</>).type.toAcceptProps({ a: "yes", b, ...c });
-     |                                                                ~
-  34 |   });
-  35 | 
-  36 |   test("property keys must be static identifiers or string literals", () => {
+  78 |     const b = "no";
+  79 |     const c = { c: true };
+  80 |     expect(Component).type.toAcceptProps({ a: "yes", b, ...c });
+     |                                                      ~
+  81 |   });
+  82 | 
+  83 |   test("property keys must be static identifiers or string literals", () => {
 
-       at ./__typetests__/toAcceptProps.tst.tsx:33:64
+       at ./__typetests__/toAcceptProps.tst.tsx:80:54
 
 Error: Property keys must be static identifiers or string literals.
 
-  35 | 
-  36 |   test("property keys must be static identifiers or string literals", () => {
-  37 |     expect(() => <>{"test"}</>).type.toAcceptProps({ ["a"]: "nope" });
-     |                                                      ~~~~~
-  38 |   });
-  39 | });
-  40 | 
+  82 | 
+  83 |   test("property keys must be static identifiers or string literals", () => {
+  84 |     expect(Component).type.toAcceptProps({ ["a"]: "nope" });
+     |                                            ~~~~~
+  85 |   });
+  86 | });
+  87 | 
 
-       at ./__typetests__/toAcceptProps.tst.tsx:37:54
+       at ./__typetests__/toAcceptProps.tst.tsx:84:44
 
