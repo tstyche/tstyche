@@ -1,0 +1,17 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/api-toAcceptProps
+
+uses TypeScript <<version>> with ./tsconfig.json
+
+fail ./__typetests__/generic-components.tst.tsx
+  when source is an expression
+    × accepts the given props
+    × does not accept the given props
+  when source is a type
+    × accepts the given props
+    × does not accept the given props
+
+Targets:    1 failed, 1 total
+Test files: 1 failed, 1 total
+Tests:      4 failed, 4 total
+Assertions: 6 failed, 6 passed, 12 total
+Duration:   <<timestamp>>

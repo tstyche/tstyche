@@ -62,6 +62,22 @@ await test("toAcceptProps", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("generic components", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["generic-components"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-generic-components-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-generic-components-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("special cases", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["special-cases"]);
 
