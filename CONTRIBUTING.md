@@ -12,18 +12,12 @@ To install `mise`, follow [their instructions](https://mise.jdx.dev/getting-star
 aube install
 ```
 
-### Using Nix (alternative)
+### Why `mise`?
 
-If you prefer Nix, a `flake.nix` and `.envrc` are provided. Install [`nix-shell`](https://nixos.org/download) and [`direnv`](https://direnv.net/docs/installation), then allow the environment:
-
-```shell
-direnv allow
-```
-
-This will automatically provide Node.js and Aube. Then install the dependencies:
+Its `exec` command simplifies running TSTyche using the specific Node.js version. This is useful when working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
 
 ```shell
-aube install
+mise exec node@22 -- aube run tstyche template
 ```
 
 ### Why `aube`?
@@ -32,14 +26,6 @@ Running `aube run tstyche` in this repository just works. Thanks to Aube, we can
 
 ```shell
 aube run tstyche callbacks
-```
-
-### Why `mise`?
-
-Its `exec` command simplifies running TSTyche using the specific Node.js version. This is useful when working with reported bugs or trying out new features. For example, the following works smoothly only with the recent Node.js versions:
-
-```shell
-mise exec node@22 -- aube run tstyche template
 ```
 
 ## Development
