@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.2.1] - 2026-05-27
+
+### Fixed
+
+- Improve validation of arguments passed to the `.toAcceptProps()` matcher ([#759](https://github.com/tstyche/tstyche/pull/759))
+- Validate jsx setup for `.toAcceptProps` matcher ([#758](https://github.com/tstyche/tstyche/pull/758))
+
 ## [7.2.0] - 2026-05-25
 
 ### Fixed
@@ -1055,6 +1062,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.2.1]: https://github.com/tstyche/tstyche/releases/tag/v7.2.1
 [7.2.0]: https://github.com/tstyche/tstyche/releases/tag/v7.2.0
 [7.1.0]: https://github.com/tstyche/tstyche/releases/tag/v7.1.0
 [7.0.0]: https://github.com/tstyche/tstyche/releases/tag/v7.0.0
