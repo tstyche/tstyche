@@ -25,7 +25,7 @@ await test("toAcceptProps", async (t) => {
   await t.test("requires the 'jsx' compiler option", async (t) => {
     const toAcceptPropsText = `import { expect } from "tstyche";
 
-export default function Component() {
+function Component() {
   return "Test";
 }
 
@@ -66,7 +66,7 @@ expect(Component).type.toAcceptProps({});
   await t.test("requires the 'tsx' file extension", async (t) => {
     const toAcceptPropsText = `import { expect } from "tstyche";
 
-export default function Component() {
+function Component() {
   return "Test";
 }
 
