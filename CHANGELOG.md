@@ -390,7 +390,7 @@ _If you are upgrading from a previous version, please be sure to read the [relea
 
 ### Added
 
-- **New!**  Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
+- **New!** Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
 - **New!** Add template test file support ([#468](https://github.com/tstyche/tstyche/pull/468), [#469](https://github.com/tstyche/tstyche/pull/469), [#470](https://github.com/tstyche/tstyche/pull/470))
 - **New!** Add the `when()` utility and the `.isCalledWith()` action ([#460](https://github.com/tstyche/tstyche/pull/460), [#466](https://github.com/tstyche/tstyche/pull/466), [#480](https://github.com/tstyche/tstyche/pull/480))
 - **New!** Add the `.toBeConstructableWith()` matcher ([#451](https://github.com/tstyche/tstyche/pull/451), [#456](https://github.com/tstyche/tstyche/pull/456), [#457](https://github.com/tstyche/tstyche/pull/457), [#479](https://github.com/tstyche/tstyche/pull/479), [#483](https://github.com/tstyche/tstyche/pull/483))
@@ -431,7 +431,7 @@ _If you are upgrading from a previous version, please be sure to read the [relea
 
 ### Added
 
-- **New!**  Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
+- **New!** Add the `// @tstyche if` directive, which makes it possible to skip tests or assertions conditionally ([#490](https://github.com/tstyche/tstyche/pull/490), [#493](https://github.com/tstyche/tstyche/pull/493))
 
 ### Fixed
 
