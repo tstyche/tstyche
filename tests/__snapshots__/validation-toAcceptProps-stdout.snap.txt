@@ -5,11 +5,13 @@ uses TypeScript <<version>> with ./tsconfig.json
 fail ./__typetests__/toAcceptProps.tst.tsx
   argument for 'source'
     × must be provided
-    × must be of a function or class type
-    × must begin with an uppercase letter
-    + allowed names
+    × must be an identifier of a JSX component
+    × must an identifier that begins with an uppercase letter
+    + allowed expressions
   type argument for 'source'
-    × must be of a function or class type
+    × must be an identifier of a JSX component
+    × must an identifier that begins with an uppercase letter
+    + allowed types
   argument for 'target'
     × must be provided
     × must be an object literal
@@ -18,7 +20,7 @@ fail ./__typetests__/toAcceptProps.tst.tsx
 
 Targets:    1 failed, 1 total
 Test files: 1 failed, 1 total
-Tests:      8 failed, 1 passed, 9 total
-Assertions: 8 failed, 3 passed, 11 total
+Tests:      9 failed, 2 passed, 11 total
+Assertions: 11 failed, 9 passed, 20 total
 Suppressed: 2 ignored, 2 total
 Duration:   <<timestamp>>

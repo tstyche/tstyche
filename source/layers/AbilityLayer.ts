@@ -57,6 +57,13 @@ export class AbilityLayer {
         if (
           !sourceNode ||
           !targetNode ||
+          !(
+            this.#compiler.isIdentifier(sourceNode) ||
+            this.#compiler.isPropertyAccessExpression(sourceNode) ||
+            this.#compiler.isTypeReferenceNode(sourceNode) ||
+            this.#compiler.isExpressionWithTypeArguments(sourceNode)
+          ) ||
+          !/^[A-Z_$]/.test(sourceNode.getText()[0]!) ||
           !this.#compiler.isObjectLiteralExpression(targetNode) ||
           !targetNode.properties.every(
             (property) =>

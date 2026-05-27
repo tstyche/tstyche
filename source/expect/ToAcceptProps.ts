@@ -9,10 +9,6 @@ export class ToAcceptProps extends AbilityMatcherBase {
   explainText = ExpectDiagnosticText.acceptsProps;
   explainNotText = ExpectDiagnosticText.doesNotAcceptProps;
 
-  #isValidIdentifier(target: string) {
-    return /^[A-Z_$]/.test(target[0]!);
-  }
-
   match(
     matchWorker: MatchWorker,
     sourceNode: ArgumentNode,
@@ -21,11 +17,18 @@ export class ToAcceptProps extends AbilityMatcherBase {
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];
 
-    const signatures = matchWorker.getSignatures(sourceNode);
+    const sourceType = matchWorker.getType(sourceNode);
 
-    if (signatures.length === 0) {
-      const expectedText = "of a function or class type";
-
+    if (
+      !(
+        this.compiler.isIdentifier(sourceNode) ||
+        this.compiler.isPropertyAccessExpression(sourceNode) ||
+        this.compiler.isTypeReferenceNode(sourceNode) ||
+        this.compiler.isExpressionWithTypeArguments(sourceNode)
+      ) ||
+      !(sourceType.getCallSignatures().length > 0 || sourceType.getConstructSignatures().length > 0)
+    ) {
+      const expectedText = "an identifier of a JSX component";
       const text = nodeBelongsToArgumentList(this.compiler, sourceNode)
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
@@ -33,8 +36,12 @@ export class ToAcceptProps extends AbilityMatcherBase {
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
       diagnostics.push(Diagnostic.error(text, origin));
-    } else if (nodeBelongsToArgumentList(this.compiler, sourceNode) && !this.#isValidIdentifier(sourceNode.getText())) {
-      const text = "Component names must begin with an uppercase letter.";
+    } else if (!/^[A-Z_$]/.test(sourceNode.getText()[0]!)) {
+      const expectedText = "an identifier that begins with an uppercase letter";
+      const text = nodeBelongsToArgumentList(this.compiler, sourceNode)
+        ? ExpectDiagnosticText.argumentMustBe(expectedText)
+        : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
+
       const origin = DiagnosticOrigin.fromNode(sourceNode);
 
       diagnostics.push(Diagnostic.error(text, origin));
