@@ -1,5 +1,5 @@
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { nodeBelongsToArgumentList } from "#layers";
+import { belongsToArgumentList, isCapitaizedIdentifierLike, isIdentifierLike } from "#layers";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -20,25 +20,13 @@ export class ToAcceptProps extends AbilityMatcherBase {
     const sourceType = matchWorker.getType(sourceNode);
 
     if (
-      !(
-        this.compiler.isIdentifier(sourceNode) ||
-        this.compiler.isPropertyAccessExpression(sourceNode) ||
-        this.compiler.isTypeReferenceNode(sourceNode) ||
-        this.compiler.isExpressionWithTypeArguments(sourceNode)
-      ) ||
+      !isCapitaizedIdentifierLike(sourceNode, this.compiler) ||
       !(sourceType.getCallSignatures().length > 0 || sourceType.getConstructSignatures().length > 0)
     ) {
-      const expectedText = "an identifier of a JSX component";
-      const text = nodeBelongsToArgumentList(this.compiler, sourceNode)
-        ? ExpectDiagnosticText.argumentMustBe(expectedText)
-        : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
-
-      const origin = DiagnosticOrigin.fromNode(sourceNode);
-
-      diagnostics.push(Diagnostic.error(text, origin));
-    } else if (!/^[A-Z_$]/.test(sourceNode.getText()[0]!)) {
-      const expectedText = "an identifier that begins with an uppercase letter";
-      const text = nodeBelongsToArgumentList(this.compiler, sourceNode)
+      const expectedText = !isIdentifierLike(sourceNode, this.compiler)
+        ? "an identifier of a JSX component"
+        : "an identifier that begins with an uppercase letter";
+      const text = belongsToArgumentList(sourceNode, this.compiler)
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 

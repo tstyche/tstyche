@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { nodeBelongsToArgumentList } from "#layers";
+import { belongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -48,7 +48,7 @@ export class ToHaveProperty {
     ) {
       const expectedText = "of an object type";
 
-      const text = nodeBelongsToArgumentList(this.#compiler, sourceNode)
+      const text = belongsToArgumentList(sourceNode, this.#compiler)
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 

@@ -1,7 +1,7 @@
 import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { nodeBelongsToArgumentList } from "#layers";
+import { belongsToArgumentList } from "#layers";
 import { capitalize } from "./helpers.js";
 import { RejectDiagnosticText } from "./RejectDiagnosticText.js";
 
@@ -41,7 +41,7 @@ export class Reject {
 
         if (this.#typeChecker.getTypeAtLocation(node).flags & this.#compiler.TypeFlags[capitalize(rejectedType)]) {
           const text = [
-            nodeBelongsToArgumentList(this.#compiler, node)
+            belongsToArgumentList(node, this.#compiler)
               ? RejectDiagnosticText.argumentCannotBeOfType(rejectedType)
               : RejectDiagnosticText.typeArgumentCannotBeOfType(rejectedType),
             ...RejectDiagnosticText.typeWasRejected(rejectedType),

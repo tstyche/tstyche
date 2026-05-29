@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { nodeBelongsToArgumentList } from "#layers";
+import { belongsToArgumentList } from "#layers";
 
 export class Ensure {
   #compiler: typeof ts;
@@ -14,7 +14,7 @@ export class Ensure {
     enclosingNode: ts.Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
-    if (!node || !nodeBelongsToArgumentList(this.#compiler, node)) {
+    if (!node || !belongsToArgumentList(node, this.#compiler)) {
       this.#emitDiagnostic("An argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;
@@ -62,7 +62,7 @@ export class Ensure {
     enclosingNode: ts.Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
-    if (!node || nodeBelongsToArgumentList(this.#compiler, node)) {
+    if (!node || belongsToArgumentList(node, this.#compiler)) {
       this.#emitDiagnostic("A type argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;

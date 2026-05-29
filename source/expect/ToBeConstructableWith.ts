@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { nodeBelongsToArgumentList } from "#layers";
+import { belongsToArgumentList } from "#layers";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -21,7 +21,7 @@ export class ToBeConstructableWith extends AbilityMatcherBase {
     if (sourceType.getConstructSignatures().length === 0) {
       const text: Array<string> = [];
 
-      if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
+      if (belongsToArgumentList(sourceNode, this.compiler)) {
         text.push(ExpectDiagnosticText.argumentMustBe("a constructable expression"));
       } else {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("a constructable type"));

@@ -1,6 +1,6 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
-import { nodeBelongsToArgumentList } from "#layers";
+import { belongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -13,7 +13,7 @@ export class ToRaiseError {
   }
 
   #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
-    const isExpression = nodeBelongsToArgumentList(this.#compiler, sourceNode);
+    const isExpression = belongsToArgumentList(sourceNode, this.#compiler);
 
     const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
 

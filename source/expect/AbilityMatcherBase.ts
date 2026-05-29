@@ -7,7 +7,7 @@ import {
   getDiagnosticMessageText,
   isDiagnosticWithLocation,
 } from "#diagnostic";
-import { nodeBelongsToArgumentList } from "#layers";
+import { belongsToArgumentList } from "#layers";
 import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
@@ -47,7 +47,7 @@ export abstract class AbilityMatcherBase {
     targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode,
     getArgumentCountText?: () => string,
   ): Array<Diagnostic> {
-    const isExpression = nodeBelongsToArgumentList(this.compiler, sourceNode);
+    const isExpression = belongsToArgumentList(sourceNode, this.compiler);
 
     const argumentCountText = getArgumentCountText?.();
 

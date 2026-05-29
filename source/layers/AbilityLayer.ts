@@ -1,7 +1,12 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import { nodeBelongsToArgumentList, nodeIsChildOfExpressionStatement } from "./helpers.js";
+import {
+  belongsToArgumentList,
+  isCapitaizedIdentifierLike,
+  isChildOfExpressionStatement,
+  isIdentifierLike,
+} from "./helpers.js";
 import type { TextEditor } from "./TextEditor.js";
 
 export class AbilityLayer {
@@ -14,30 +19,25 @@ export class AbilityLayer {
     this.#editor = editor;
   }
 
-  #belongsToNode(node: ExpectNode, diagnostic: ts.Diagnostic) {
-    return diagnosticBelongsToNode(diagnostic, node.matcherNode) || diagnosticBelongsToNode(diagnostic, node.source);
-  }
-
   close(diagnostics: Array<ts.Diagnostic>): void {
     if (diagnostics.length > 0 && this.#nodes.length > 0) {
       this.#nodes.reverse();
 
       for (const diagnostic of diagnostics) {
-        this.#mapToNodes(diagnostic);
+        for (const node of this.#nodes) {
+          if (
+            diagnosticBelongsToNode(diagnostic, node.matcherNode) ||
+            diagnosticBelongsToNode(diagnostic, node.source)
+          ) {
+            node.abilityDiagnostics.add(diagnostic);
+
+            break;
+          }
+        }
       }
     }
 
     this.#nodes = [];
-  }
-
-  #mapToNodes(diagnostic: ts.Diagnostic) {
-    for (const node of this.#nodes) {
-      if (this.#belongsToNode(node, diagnostic)) {
-        node.abilityDiagnostics.add(diagnostic);
-
-        break;
-      }
-    }
   }
 
   visitExpect(expect: ExpectNode): void {
@@ -57,13 +57,7 @@ export class AbilityLayer {
         if (
           !sourceNode ||
           !targetNode ||
-          !(
-            this.#compiler.isIdentifier(sourceNode) ||
-            this.#compiler.isPropertyAccessExpression(sourceNode) ||
-            this.#compiler.isTypeReferenceNode(sourceNode) ||
-            this.#compiler.isExpressionWithTypeArguments(sourceNode)
-          ) ||
-          !/^[A-Z_$]/.test(sourceNode.getText()[0]!) ||
+          !isCapitaizedIdentifierLike(sourceNode, this.#compiler) ||
           !this.#compiler.isObjectLiteralExpression(targetNode) ||
           !targetNode.properties.every(
             (property) =>
@@ -77,14 +71,14 @@ export class AbilityLayer {
 
         const sourceText = sourceNode.getText();
 
-        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+        if (belongsToArgumentList(sourceNode, this.#compiler)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .erase(expectStart, matcherNodeEnd)
             .update(
               expectStart,
               matcherNameEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? ";" : "",
             )
             .update(sourceNode.getStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
         } else {
@@ -95,7 +89,7 @@ export class AbilityLayer {
             .update(
               expectStart,
               matcherNameEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+              isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
                 ? `;const ${id} = undefined as any as ${sourceText};<${id}`
                 : `const ${id} = undefined as any as ${sourceText};<${id}`,
             );
@@ -147,13 +141,13 @@ export class AbilityLayer {
           return;
         }
 
-        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+        if (belongsToArgumentList(sourceNode, this.#compiler)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
               expectExpressionEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? ";" : "",
             )
             .erase(expectEnd, matcherNameEnd);
         } else {
@@ -162,7 +156,7 @@ export class AbilityLayer {
           this.#editor.update(
             expectStart,
             matcherNameEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+            isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
               ? `;(undefined as any as ${sourceText})`
               : `(undefined as any as ${sourceText})`,
           );
@@ -180,13 +174,13 @@ export class AbilityLayer {
           return;
         }
 
-        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+        if (belongsToArgumentList(sourceNode, this.#compiler)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
               expectExpressionEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? "; new" : "new",
+              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? "; new" : "new",
             )
             .erase(expectEnd, matcherNameEnd);
         } else {
@@ -195,7 +189,7 @@ export class AbilityLayer {
           this.#editor.update(
             expectStart,
             matcherNameEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+            isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
               ? `;new (undefined as any as ${sourceText})`
               : `new (undefined as any as ${sourceText})`,
           );
@@ -210,17 +204,17 @@ export class AbilityLayer {
         const sourceNode = expect.source[0];
         const targetNode = expect.target?.[0];
 
-        if (!sourceNode) {
+        if (!sourceNode || !targetNode || !isIdentifierLike(sourceNode, this.#compiler)) {
           return;
         }
 
-        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+        if (belongsToArgumentList(sourceNode, this.#compiler)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
               expectExpressionEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? ";" : "",
             )
             .erase(expectEnd, matcherNodeEnd);
 
@@ -235,22 +229,20 @@ export class AbilityLayer {
           this.#editor.update(
             expectStart,
             matcherNodeEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+            isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
               ? `;undefined as any as ${sourceText}`
               : `undefined as any as ${sourceText}`,
           );
         }
 
-        if (targetNode != null) {
-          const targetText = targetNode.getText().slice(1, -1);
+        const targetText = targetNode.getText().slice(1, -1);
 
-          if (targetText.trim().length > 0) {
-            this.#editor.update(
-              targetNode.getFullStart(),
-              targetNode.getEnd(),
-              `<${targetText}>`.padStart(targetNode.getFullWidth()),
-            );
-          }
+        if (targetText.trim().length > 0) {
+          this.#editor.update(
+            targetNode.getFullStart(),
+            targetNode.getEnd(),
+            `<${targetText}>`.padStart(targetNode.getFullWidth()),
+          );
         }
 
         break;
@@ -266,13 +258,13 @@ export class AbilityLayer {
           return;
         }
 
-        if (nodeBelongsToArgumentList(this.#compiler, sourceNode)) {
+        if (belongsToArgumentList(sourceNode, this.#compiler)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
               expectExpressionEnd,
-              nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode) ? ";" : "",
+              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? ";" : "",
             )
             .erase(expectEnd, matcherNodeEnd);
         } else {
@@ -281,7 +273,7 @@ export class AbilityLayer {
           this.#editor.update(
             expectStart,
             matcherNodeEnd,
-            nodeIsChildOfExpressionStatement(this.#compiler, expect.matcherNode)
+            isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
               ? `;(undefined as any as ${sourceText})`
               : `(undefined as any as ${sourceText})`,
           );

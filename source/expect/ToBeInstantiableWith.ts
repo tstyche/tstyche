@@ -1,5 +1,5 @@
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { nodeBelongsToArgumentList } from "#layers";
+import { belongsToArgumentList, isIdentifierLike } from "#layers";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { MatchWorker } from "./MatchWorker.js";
@@ -15,17 +15,10 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     targetNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    if (
-      !(
-        this.compiler.isIdentifier(sourceNode) ||
-        this.compiler.isPropertyAccessExpression(sourceNode) ||
-        this.compiler.isTypeReferenceNode(sourceNode) ||
-        this.compiler.isExpressionWithTypeArguments(sourceNode)
-      )
-    ) {
+    if (!isIdentifierLike(sourceNode, this.compiler)) {
       let text: string;
 
-      if (nodeBelongsToArgumentList(this.compiler, sourceNode)) {
+      if (belongsToArgumentList(sourceNode, this.compiler)) {
         text = ExpectDiagnosticText.argumentMustBe("an instantiable expression");
       } else {
         text = ExpectDiagnosticText.typeArgumentMustBe("an instantiable type");
