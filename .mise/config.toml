@@ -2,3 +2,4 @@
 aube = "latest"
 hyperfine = "latest"
 node = "lts"
+typos = "latest"

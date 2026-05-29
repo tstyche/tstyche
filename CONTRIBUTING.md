@@ -78,7 +78,6 @@ Make sure the following is passing:
 ```shell
 aube build
 aube lint
-aube spellcheck
 aube test
 aube typecheck
 ```

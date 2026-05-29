@@ -6,7 +6,6 @@
   "editor.formatOnSave": true,
   "editor.rulers": [80, 120],
   "files.associations": {
-    "cspell.json": "jsonc",
     "tstyche.json": "jsonc"
   },
   "js/ts.preferences.importModuleSpecifierEnding": "js",
