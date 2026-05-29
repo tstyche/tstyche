@@ -1,8 +1,8 @@
 import type ts from "typescript";
+import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import { belongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToRaiseError {
@@ -12,41 +12,41 @@ export class ToRaiseError {
     this.#compiler = compiler;
   }
 
-  #explain(matchWorker: MatchWorker, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
+  #explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
     const isExpression = belongsToArgumentList(sourceNode, this.#compiler);
 
-    const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
+    const origin = DiagnosticOrigin.fromAssertion(expectNode);
 
-    if (matchWorker.assertionNode.diagnostics.size === 0) {
+    if (expectNode.diagnostics.size === 0) {
       const text = ExpectDiagnosticText.didNotRaiseError(isExpression);
 
       return [Diagnostic.error(text, origin)];
     }
 
-    if (matchWorker.assertionNode.diagnostics.size !== targetNodes.length) {
-      const count = matchWorker.assertionNode.diagnostics.size;
+    if (expectNode.diagnostics.size !== targetNodes.length) {
+      const count = expectNode.diagnostics.size;
 
       const text = ExpectDiagnosticText.raisedError(isExpression, count, targetNodes.length);
 
       const related = [
         Diagnostic.error(ExpectDiagnosticText.raisedTypeError(count)),
-        ...Diagnostic.fromDiagnostics([...matchWorker.assertionNode.diagnostics]),
+        ...Diagnostic.fromDiagnostics([...expectNode.diagnostics]),
       ];
 
       return [Diagnostic.error(text, origin).add({ related })];
     }
 
-    return [...matchWorker.assertionNode.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
+    return [...expectNode.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
       const targetNode = targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral;
 
       const isMatch = this.#matchExpectedError(diagnostic, targetNode);
 
-      if (matchWorker.assertionNode.isNot ? isMatch : !isMatch) {
-        const text = matchWorker.assertionNode.isNot
+      if (expectNode.isNot ? isMatch : !isMatch) {
+        const text = expectNode.isNot
           ? ExpectDiagnosticText.raisedMatchingError(isExpression)
           : ExpectDiagnosticText.didNotRaiseMatchingError(isExpression);
 
-        const origin = DiagnosticOrigin.fromNode(targetNode, matchWorker.assertionNode);
+        const origin = DiagnosticOrigin.fromNode(targetNode, expectNode);
 
         const related = [
           Diagnostic.error(ExpectDiagnosticText.raisedTypeError()),
@@ -61,7 +61,7 @@ export class ToRaiseError {
   }
 
   match(
-    matchWorker: MatchWorker,
+    expectNode: ExpectNode,
     sourceNode: ArgumentNode,
     targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
@@ -94,11 +94,11 @@ export class ToRaiseError {
     let isMatch: boolean | undefined;
 
     if (targetNodes.length === 0) {
-      isMatch = matchWorker.assertionNode.diagnostics.size > 0;
+      isMatch = expectNode.diagnostics.size > 0;
     } else {
       isMatch =
-        matchWorker.assertionNode.diagnostics.size === targetNodes.length &&
-        [...matchWorker.assertionNode.diagnostics].every((diagnostic, index) =>
+        expectNode.diagnostics.size === targetNodes.length &&
+        [...expectNode.diagnostics].every((diagnostic, index) =>
           this.#matchExpectedError(
             diagnostic,
             targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral | ts.RegularExpressionLiteral,
@@ -107,7 +107,7 @@ export class ToRaiseError {
     }
 
     return {
-      explain: () => this.#explain(matchWorker, sourceNode, targetNodes),
+      explain: () => this.#explain(expectNode, sourceNode, targetNodes),
       isMatch,
     };
   }

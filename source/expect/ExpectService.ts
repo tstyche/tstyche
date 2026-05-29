@@ -5,7 +5,6 @@ import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnost
 import { Reject } from "#reject";
 import { Ensure } from "./Ensure.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import { MatchWorker } from "./MatchWorker.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
 import { ToBe } from "./ToBe.js";
 import { ToBeApplicable } from "./ToBeApplicable.js";
@@ -19,7 +18,6 @@ import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult } from "./types.js";
 
 export class ExpectService {
-  #compiler: typeof ts;
   #ensure: Ensure;
   #program: ts.Program;
   #reject: Reject;
@@ -36,49 +34,46 @@ export class ExpectService {
   private toRaiseError: ToRaiseError;
 
   constructor(compiler: typeof ts, program: ts.Program, resolvedConfig: ResolvedConfig) {
-    this.#compiler = compiler;
     this.#program = program;
 
     this.#ensure = new Ensure(compiler);
     this.#reject = new Reject(compiler, program, resolvedConfig);
 
-    this.toAcceptProps = new ToAcceptProps(compiler);
+    this.toAcceptProps = new ToAcceptProps(compiler, program);
     this.toBe = new ToBe(compiler, program);
-    this.toBeApplicable = new ToBeApplicable(compiler);
-    this.toBeAssignableFrom = new ToBeAssignableFrom();
-    this.toBeAssignableTo = new ToBeAssignableTo();
-    this.toBeCallableWith = new ToBeCallableWith(compiler);
-    this.toBeConstructableWith = new ToBeConstructableWith(compiler);
-    this.toBeInstantiableWith = new ToBeInstantiableWith(compiler);
-    this.toHaveProperty = new ToHaveProperty(compiler);
+    this.toBeApplicable = new ToBeApplicable(compiler, program);
+    this.toBeAssignableFrom = new ToBeAssignableFrom(compiler, program);
+    this.toBeAssignableTo = new ToBeAssignableTo(compiler, program);
+    this.toBeCallableWith = new ToBeCallableWith(compiler, program);
+    this.toBeConstructableWith = new ToBeConstructableWith(compiler, program);
+    this.toBeInstantiableWith = new ToBeInstantiableWith(compiler, program);
+    this.toHaveProperty = new ToHaveProperty(compiler, program);
     this.toRaiseError = new ToRaiseError(compiler);
   }
 
   match(
-    assertionNode: ExpectNode,
+    expectNode: ExpectNode,
     onDiagnostics: DiagnosticsHandler<Diagnostic | Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const matcherNameText = assertionNode.matcherNameNode.name.text;
+    const matcherNameText = expectNode.matcherNameNode.name.text;
 
     if (
       matcherNameText === "toAcceptProps" &&
-      !this.#ensure.jsxSetup(this.#program, assertionNode.matcherNameNode.name, onDiagnostics)
+      !this.#ensure.jsxSetup(this.#program, expectNode.matcherNameNode.name, onDiagnostics)
     ) {
       return;
     }
 
-    if (!this.#ensure.argumentOrTypeArgument(assertionNode.source[0], assertionNode.node.expression, onDiagnostics)) {
+    if (!this.#ensure.argumentOrTypeArgument(expectNode.source[0], expectNode.node.expression, onDiagnostics)) {
       return;
     }
 
     if (
-      !(matcherNameText === "toBeInstantiableWith" || (matcherNameText === "toRaiseError" && !assertionNode.isNot)) &&
-      this.#reject.argumentType([assertionNode.source[0], assertionNode.target?.[0]], onDiagnostics)
+      !(matcherNameText === "toBeInstantiableWith" || (matcherNameText === "toRaiseError" && !expectNode.isNot)) &&
+      this.#reject.argumentType([expectNode.source[0], expectNode.target?.[0]], onDiagnostics)
     ) {
       return;
     }
-
-    const matchWorker = new MatchWorker(this.#compiler, this.#program, assertionNode);
 
     switch (matcherNameText) {
       case "toAcceptProps":
@@ -86,60 +81,46 @@ export class ExpectService {
       case "toBeAssignableFrom":
       case "toBeAssignableTo":
         if (
-          !this.#ensure.argumentOrTypeArgument(
-            assertionNode.target?.[0],
-            assertionNode.matcherNameNode.name,
-            onDiagnostics,
-          )
+          !this.#ensure.argumentOrTypeArgument(expectNode.target?.[0], expectNode.matcherNameNode.name, onDiagnostics)
         ) {
           return;
         }
 
-        return this[matcherNameText].match(
-          matchWorker,
-          assertionNode.source[0],
-          assertionNode.target[0],
-          onDiagnostics,
-        );
+        return this[matcherNameText].match(expectNode, expectNode.source[0], expectNode.target[0], onDiagnostics);
 
       case "toBeApplicable":
-        return this.toBeApplicable.match(matchWorker, assertionNode.source[0], onDiagnostics);
+        return this.toBeApplicable.match(expectNode, expectNode.source[0], onDiagnostics);
 
       case "toBeCallableWith":
       case "toBeConstructableWith":
       case "toRaiseError":
-        return this[matcherNameText].match(matchWorker, assertionNode.source[0], assertionNode.target!, onDiagnostics);
+        return this[matcherNameText].match(expectNode, expectNode.source[0], expectNode.target!, onDiagnostics);
 
       case "toBeInstantiableWith": {
-        if (!this.#ensure.typeArgument(assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)) {
+        if (!this.#ensure.typeArgument(expectNode.target?.[0], expectNode.matcherNameNode.name, onDiagnostics)) {
           return;
         }
 
-        return this.toBeInstantiableWith.match(
-          matchWorker,
-          assertionNode.source[0],
-          assertionNode.target[0],
-          onDiagnostics,
-        );
+        return this.toBeInstantiableWith.match(expectNode, expectNode.source[0], expectNode.target[0], onDiagnostics);
       }
 
       case "toHaveProperty":
-        if (!this.#ensure.argument(assertionNode.target?.[0], assertionNode.matcherNameNode.name, onDiagnostics)) {
+        if (!this.#ensure.argument(expectNode.target?.[0], expectNode.matcherNameNode.name, onDiagnostics)) {
           return;
         }
 
-        return this.toHaveProperty.match(matchWorker, assertionNode.source[0], assertionNode.target[0], onDiagnostics);
+        return this.toHaveProperty.match(expectNode, expectNode.source[0], expectNode.target[0], onDiagnostics);
 
       default:
-        this.#onMatcherIsNotSupported(matcherNameText, assertionNode, onDiagnostics);
+        this.#onMatcherIsNotSupported(matcherNameText, expectNode, onDiagnostics);
     }
 
     return;
   }
 
-  #onMatcherIsNotSupported(matcherNameText: string, assertionNode: ExpectNode, onDiagnostics: DiagnosticsHandler) {
+  #onMatcherIsNotSupported(matcherNameText: string, expectNode: ExpectNode, onDiagnostics: DiagnosticsHandler) {
     const text = ExpectDiagnosticText.matcherIsNotSupported(matcherNameText);
-    const origin = DiagnosticOrigin.fromNode(assertionNode.matcherNameNode.name);
+    const origin = DiagnosticOrigin.fromNode(expectNode.matcherNameNode.name);
 
     onDiagnostics(Diagnostic.error(text, origin));
   }

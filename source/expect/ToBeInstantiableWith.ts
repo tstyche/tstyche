@@ -1,8 +1,8 @@
+import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { belongsToArgumentList, isIdentifierLike } from "#layers";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToBeInstantiableWith extends AbilityMatcherBase {
@@ -10,7 +10,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
   explainNotText = ExpectDiagnosticText.isNotInstantiable;
 
   match(
-    matchWorker: MatchWorker,
+    expectNode: ExpectNode,
     sourceNode: ArgumentNode,
     targetNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
@@ -41,8 +41,8 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     }
 
     return {
-      explain: () => this.explain(matchWorker, sourceNode, targetNode, () => this.getTypeArgumentCountText(targetNode)),
-      isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
+      explain: () => this.explain(expectNode, sourceNode, targetNode, () => this.getTypeArgumentCountText(targetNode)),
+      isMatch: expectNode.abilityDiagnostics.size === 0,
     };
   }
 }

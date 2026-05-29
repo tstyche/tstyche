@@ -4,29 +4,29 @@ import type { JsonSourceFile } from "#json";
 import { getTextSpanEnd } from "./helpers.js";
 
 export class DiagnosticOrigin {
-  assertionNode: ExpectNode | undefined;
+  expectNode: ExpectNode | undefined;
   end: number;
   sourceFile: ts.SourceFile | JsonSourceFile;
   start: number;
 
-  constructor(start: number, end: number, sourceFile: ts.SourceFile | JsonSourceFile, assertionNode?: ExpectNode) {
+  constructor(start: number, end: number, sourceFile: ts.SourceFile | JsonSourceFile, expectNode?: ExpectNode) {
     this.start = start;
     this.end = end;
     this.sourceFile = sourceFile;
-    this.assertionNode = assertionNode;
+    this.expectNode = expectNode;
   }
 
-  static fromAbilityDiagnostic(diagnostic: ts.DiagnosticWithLocation, assertionNode: ExpectNode): DiagnosticOrigin {
-    return new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), diagnostic.file, assertionNode);
+  static fromAbilityDiagnostic(diagnostic: ts.DiagnosticWithLocation, expectNode: ExpectNode): DiagnosticOrigin {
+    return new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), diagnostic.file, expectNode);
   }
 
-  static fromAssertion(assertionNode: ExpectNode): DiagnosticOrigin {
-    const node = assertionNode.matcherNameNode.name;
+  static fromAssertion(expectNode: ExpectNode): DiagnosticOrigin {
+    const node = expectNode.matcherNameNode.name;
 
-    return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), assertionNode);
+    return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), expectNode);
   }
 
-  static fromNode(node: ts.Node, assertionNode?: ExpectNode): DiagnosticOrigin {
-    return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), assertionNode);
+  static fromNode(node: ts.Node, expectNode?: ExpectNode): DiagnosticOrigin {
+    return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), expectNode);
   }
 }

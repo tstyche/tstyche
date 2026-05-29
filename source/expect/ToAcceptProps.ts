@@ -1,8 +1,8 @@
+import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { belongsToArgumentList, isCapitaizedIdentifierLike, isIdentifierLike } from "#layers";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchWorker } from "./MatchWorker.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToAcceptProps extends AbilityMatcherBase {
@@ -10,14 +10,14 @@ export class ToAcceptProps extends AbilityMatcherBase {
   explainNotText = ExpectDiagnosticText.doesNotAcceptProps;
 
   match(
-    matchWorker: MatchWorker,
+    expectNode: ExpectNode,
     sourceNode: ArgumentNode,
     targetNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];
 
-    const sourceType = matchWorker.getType(sourceNode);
+    const sourceType = this.getType(sourceNode);
 
     if (
       !isCapitaizedIdentifierLike(sourceNode, this.compiler) ||
@@ -72,8 +72,8 @@ export class ToAcceptProps extends AbilityMatcherBase {
     }
 
     return {
-      explain: () => this.explain(matchWorker, sourceNode, targetNode),
-      isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
+      explain: () => this.explain(expectNode, sourceNode, targetNode),
+      isMatch: expectNode.abilityDiagnostics.size === 0,
     };
   }
 }

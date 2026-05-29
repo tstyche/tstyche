@@ -1,42 +1,37 @@
 import type ts from "typescript";
+import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import { belongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import type { MatchWorker } from "./MatchWorker.js";
+import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
-export class ToBeApplicable {
-  #compiler: typeof ts;
-
-  constructor(compiler: typeof ts) {
-    this.#compiler = compiler;
-  }
-
+export class ToBeApplicable extends MatcherBase {
   #resolveTargetText(node: ts.Node) {
     let text = "";
 
     switch (node.kind) {
-      case this.#compiler.SyntaxKind.ClassDeclaration:
+      case this.compiler.SyntaxKind.ClassDeclaration:
         text = "class";
         break;
 
-      case this.#compiler.SyntaxKind.MethodDeclaration:
+      case this.compiler.SyntaxKind.MethodDeclaration:
         text = "method";
         break;
 
-      case this.#compiler.SyntaxKind.PropertyDeclaration:
+      case this.compiler.SyntaxKind.PropertyDeclaration:
         text = (node as ts.PropertyDeclaration).modifiers?.some(
-          (modifier) => modifier.kind === this.#compiler.SyntaxKind.AccessorKeyword,
+          (modifier) => modifier.kind === this.compiler.SyntaxKind.AccessorKeyword,
         )
           ? "accessor"
           : "field";
         break;
 
-      case this.#compiler.SyntaxKind.GetAccessor:
+      case this.compiler.SyntaxKind.GetAccessor:
         text = "getter";
         break;
 
-      case this.#compiler.SyntaxKind.SetAccessor:
+      case this.compiler.SyntaxKind.SetAccessor:
         text = "setter";
         break;
     }
@@ -48,15 +43,15 @@ export class ToBeApplicable {
     return text;
   }
 
-  #explain(matchWorker: MatchWorker) {
-    const targetText = this.#resolveTargetText(matchWorker.assertionNode.matcherNode.parent);
+  #explain(expectNode: ExpectNode) {
+    const targetText = this.#resolveTargetText(expectNode.matcherNode.parent);
 
     const diagnostics: Array<Diagnostic> = [];
 
-    if (matchWorker.assertionNode.abilityDiagnostics.size > 0) {
-      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
+    if (expectNode.abilityDiagnostics.size > 0) {
+      const origin = DiagnosticOrigin.fromAssertion(expectNode);
 
-      for (const diagnostic of matchWorker.assertionNode.abilityDiagnostics) {
+      for (const diagnostic of expectNode.abilityDiagnostics) {
         const text = [ExpectDiagnosticText.cannotBeApplied(targetText), getDiagnosticMessageText(diagnostic)];
 
         let related: Array<Diagnostic> | undefined;
@@ -68,7 +63,7 @@ export class ToBeApplicable {
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
       }
     } else {
-      const origin = DiagnosticOrigin.fromAssertion(matchWorker.assertionNode);
+      const origin = DiagnosticOrigin.fromAssertion(expectNode);
 
       diagnostics.push(Diagnostic.error(ExpectDiagnosticText.canBeApplied(targetText), origin));
     }
@@ -77,16 +72,16 @@ export class ToBeApplicable {
   }
 
   match(
-    matchWorker: MatchWorker,
+    expectNode: ExpectNode,
     sourceNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const type = matchWorker.getType(sourceNode);
+    const type = this.getType(sourceNode);
 
     if (type.getCallSignatures().length === 0) {
       const expectedText = "of a function type";
 
-      const text = belongsToArgumentList(sourceNode, this.#compiler)
+      const text = belongsToArgumentList(sourceNode, this.compiler)
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 
@@ -98,8 +93,8 @@ export class ToBeApplicable {
     }
 
     return {
-      explain: () => this.#explain(matchWorker),
-      isMatch: matchWorker.assertionNode.abilityDiagnostics.size === 0,
+      explain: () => this.#explain(expectNode),
+      isMatch: expectNode.abilityDiagnostics.size === 0,
     };
   }
 }
