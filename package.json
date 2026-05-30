@@ -54,7 +54,7 @@
     "typecheck": "tsc --build --force --verbose"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.15",
+    "@biomejs/biome": "^2.4.16",
     "@rollup/plugin-typescript": "^12.3.0",
     "@sourcemeta/jsonschema": "^15.6.3",
     "@types/node": "^24.12.4",
@@ -62,7 +62,7 @@
     "cleaner-spec-reporter": "^1.0.3",
     "code-block-writer": "^13.0.3",
     "magic-string": "0.30.21",
-    "monocart-coverage-reports": "^2.12.11",
+    "monocart-coverage-reports": "^2.12.12",
     "pretty-ansi": "^4.0.0",
     "rollup": "^4.60.4",
     "rollup-plugin-dts": "^6.4.1",
