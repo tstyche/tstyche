@@ -545,7 +545,7 @@ export class Structure {
   }
 
   #memoize(a: ts.Type, b: ts.Type, compare: () => boolean): boolean {
-    const key = [a.id, b.id].sort().join(":");
+    const key = [a.id, b.id].sort((a, b) => a - b).join(":");
     const result = this.#memoizeCache.get(key);
 
     if (result !== undefined) {

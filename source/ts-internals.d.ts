@@ -24,7 +24,7 @@ declare module "typescript" {
   }
 
   interface Type {
-    /** @internal */ id: unknown;
+    /** @internal */ id: number;
   }
 
   interface TypeChecker {
