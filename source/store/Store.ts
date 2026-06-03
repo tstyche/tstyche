@@ -31,7 +31,7 @@ export class Store {
   }
 
   static async #ensure(tag: string) {
-    await Store.open();
+    await Store.open({ preview: tag === "preview" });
 
     const version = Store.manifest?.resolve(tag);
 
@@ -76,12 +76,12 @@ export class Store {
     EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
   }
 
-  static async open(): Promise<void> {
+  static async open(options?: { preview?: boolean; refresh?: boolean }): Promise<void> {
     if (Store.manifest != null) {
       return;
     }
 
-    Store.manifest = await Store.#manifestService.open();
+    Store.manifest = await Store.#manifestService.open({ preview: options?.preview });
 
     if (Store.manifest != null) {
       Store.#supportedTags = [...Object.keys(Store.manifest.resolutions), ...Store.manifest.versions];
@@ -97,7 +97,7 @@ export class Store {
   }
 
   static async validateTag(tag: string): Promise<boolean | undefined> {
-    if (tag === "*") {
+    if (tag === "*" || tag === "preview") {
       return true;
     }
 

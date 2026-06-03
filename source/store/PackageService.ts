@@ -5,7 +5,7 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { Fetcher } from "./Fetcher.js";
 import type { LockService } from "./LockService.js";
-import type { Manifest } from "./Manifest.js";
+import type { Manifest, Resource } from "./Manifest.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import { TarReader } from "./TarReader.js";
 
@@ -37,6 +37,18 @@ export class PackageService {
 
     const resource = manifest.packages[packageVersion]!;
 
+    await this.#fetch(packagePath, packageVersion, resource);
+
+    if (resource.binary) {
+      await this.#fetch(`${packagePath}-binary`, `${packageVersion}-binary`, resource.binary);
+    }
+
+    return packagePath;
+  }
+
+  async #fetch(packagePath: string, packageVersion: string, resource: Resource): Promise<undefined> {
+    const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageVersion));
+
     const lock = this.#lockService.getLock(packagePath);
 
     try {
@@ -61,8 +73,6 @@ export class PackageService {
       }
 
       await fs.rename(targetPath, packagePath);
-
-      return packagePath;
     } finally {
       lock.release();
     }
