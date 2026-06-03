@@ -68,6 +68,34 @@ url = "https://github.com/sharkdp/hyperfine/releases/download/v1.20.0/hyperfine-
 checksum = "sha256:2508c549b049b1d4342d08edc1cb42bfac169082b6e3069431b5bab9822dbb32"
 url = "https://github.com/sharkdp/hyperfine/releases/download/v1.20.0/hyperfine-v1.20.0-x86_64-pc-windows-msvc.zip"
 
+[[tools.jaq]]
+version = "3.0.0"
+backend = "aqua:01mf02/jaq"
+
+[tools.jaq."platforms.linux-arm64"]
+checksum = "sha256:774b2446b7bff9f020ec9078a81e5c55853e87944d16fbeed8bae68ed8d42c81"
+url = "https://github.com/01mf02/jaq/releases/download/v3.0.0/jaq-aarch64-unknown-linux-gnu"
+
+[tools.jaq."platforms.linux-x64"]
+checksum = "sha256:5beeeadd874b0bc9e4fdacff00b4dc5f8fb1430a85b3734e2c7210085dd1be08"
+url = "https://github.com/01mf02/jaq/releases/download/v3.0.0/jaq-x86_64-unknown-linux-musl"
+
+[tools.jaq."platforms.linux-x64-musl"]
+checksum = "sha256:5beeeadd874b0bc9e4fdacff00b4dc5f8fb1430a85b3734e2c7210085dd1be08"
+url = "https://github.com/01mf02/jaq/releases/download/v3.0.0/jaq-x86_64-unknown-linux-musl"
+
+[tools.jaq."platforms.macos-arm64"]
+checksum = "sha256:61f666342a8d9569768ca69acefc28bacabfcfb2cf932d0717e50332f34302c5"
+url = "https://github.com/01mf02/jaq/releases/download/v3.0.0/jaq-aarch64-apple-darwin"
+
+[tools.jaq."platforms.macos-x64"]
+checksum = "sha256:361a9280910c9e4fda95cb1cb72b5f88ec2e2b0c8322cafbdc6c0aa6625e1a7d"
+url = "https://github.com/01mf02/jaq/releases/download/v3.0.0/jaq-x86_64-apple-darwin"
+
+[tools.jaq."platforms.windows-x64"]
+checksum = "sha256:07dfa5f20a9372ce96f26d5fbfdcedc4baad2162b487b3d980f35d0d0dce632f"
+url = "https://github.com/01mf02/jaq/releases/download/v3.0.0/jaq-x86_64-pc-windows-msvc.exe"
+
 [[tools.node]]
 version = "24.16.0"
 backend = "core:node"

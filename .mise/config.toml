@@ -1,5 +1,6 @@
 [tools]
 aube = "latest"
 hyperfine = "latest"
+jaq = "latest"
 node = "lts"
 typos = "latest"

@@ -103,7 +103,7 @@ jobs:
           path: dist
 
       - name: Get TypeScript Target
-        run: echo "tstyche_target=$(jq -r '.peerDependencies.typescript' ./package.json)" >> "$GITHUB_ENV"
+        run: echo "tstyche_target=$(jaq -r '.peerDependencies.typescript' package.json)" >> "$GITHUB_ENV"
 
       - run: aube run test:types --target "$tstyche_target"
       - run: aube run test:examples --target "$tstyche_target"
