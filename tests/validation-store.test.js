@@ -175,7 +175,7 @@ await test("store", async (t) => {
     for (const { target, testCase } of testCases) {
       await t.test(testCase, async () => {
         const storeManifest = {
-          $version: "3",
+          $version: "4",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
           minorVersions: ["5.7", "5.8"],
           npmRegistry: "https://registry.npmjs.org",
@@ -233,7 +233,7 @@ await test("store", async (t) => {
     for (const { target, testCase } of testCases) {
       await t.test(testCase, async () => {
         const storeManifest = {
-          $version: "3",
+          $version: "4",
           minorVersions: ["5.8", "5.9"],
           npmRegistry: "https://registry.npmjs.org",
           lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
@@ -270,7 +270,7 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.8.2"]);
 
       const storeManifest = {
-        $version: "3",
+        $version: "4",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         minorVersions: ["5.8", "5.9"],
         npmRegistry: `${testServerUrl}/status/404/`,
@@ -315,7 +315,7 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.8.2"]);
 
       const storeManifest = {
-        $version: "3",
+        $version: "4",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         minorVersions: ["5.8", "5.9"],
         npmRegistry: "https://registry.npmjs.org",
@@ -360,7 +360,7 @@ await test("store", async (t) => {
       await spawnTyche(fixtureUrl, ["--target", "5.8.2"]);
 
       const storeManifest = {
-        $version: "3",
+        $version: "4",
         lastUpdated: Date.now() - 2.25 * 60 * 60 * 1000, // 2 hours and 15 minutes
         minorVersions: ["5.8", "5.9"],
         npmRegistry: "https://nothing.mockhttp.org",

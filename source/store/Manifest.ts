@@ -18,7 +18,7 @@ export interface ManifestData {
 }
 
 export class Manifest {
-  static #version = "3";
+  static #version = "4";
 
   $version: string;
   lastUpdated: number;
