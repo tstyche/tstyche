@@ -102,15 +102,18 @@ export class Runner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await Store.load(target);
+      const ts = await Store.load(target);
 
-      if (compiler) {
+      if (ts != null) {
         // TODO to improve performance, runners (or even test projects) could be cached in the future
-        const fileRunner = new FileRunner(compiler, this.#resolvedConfig);
+        const fileRunner = new FileRunner(ts, this.#resolvedConfig);
 
         for (const file of files) {
           await fileRunner.run(file, cancellationToken);
         }
+
+        // TODO consider caching instances and cleaning up outside of '#run' for better watch mode performance
+        await ts.close();
       }
 
       EventEmitter.dispatch(["target:end", { result: targetResult }]);

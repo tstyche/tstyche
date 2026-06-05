@@ -1,8 +1,8 @@
-import { pathToFileURL } from "node:url";
-import type ts from "typescript";
+import fs from "node:fs/promises";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
+import { CompatTypeScript, NativeTypeScript, type TypeScript } from "#typescript";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
@@ -45,31 +45,38 @@ export class Store {
   }
 
   static async fetch(tag: string): Promise<void> {
-    if (tag === "*" && environmentOptions.typescriptModule != null) {
+    if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
       return;
     }
 
     await Store.#ensure(tag);
   }
 
-  static async load(tag: string): Promise<typeof ts | undefined> {
-    let resolvedModule: string | undefined;
+  static async #getAdapter(specifier: string) {
+    const packageJson = await fs.readFile(new URL("package.json", specifier), { encoding: "utf8" });
+    const { version } = JSON.parse(packageJson) as { version: string };
 
-    if (tag === "*" && environmentOptions.typescriptModule != null) {
-      resolvedModule = environmentOptions.typescriptModule;
-    } else {
-      const packagePath = await Store.#ensure(tag);
-
-      if (packagePath != null) {
-        resolvedModule = pathToFileURL(`${packagePath}/lib/typescript.js`).toString();
-      }
+    if (Version.isSatisfiedWith(version, "7.0")) {
+      return new NativeTypeScript(version);
     }
 
-    if (resolvedModule != null) {
-      return (await import(resolvedModule)).default;
+    const compiler = (await import(new URL("lib/typescript.js", specifier).toString())).default;
+
+    return new CompatTypeScript(compiler, version);
+  }
+
+  static async load(tag: string): Promise<TypeScript | undefined> {
+    if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
+      return Store.#getAdapter(environmentOptions.typescriptSpecifier);
     }
 
-    return;
+    const specifier = await Store.#ensure(tag);
+
+    if (!specifier) {
+      return;
+    }
+
+    return Store.#getAdapter(specifier);
   }
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {

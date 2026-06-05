@@ -149,7 +149,7 @@ await test("'--target' command line option", async (t) => {
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"*"'], {
-      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
+      env: { ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "" },
     });
 
     assert.equal(stderr, "");
@@ -383,7 +383,7 @@ await test("'target' configuration file option", async (t) => {
     });
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-      env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: "" },
+      env: { ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "" },
     });
 
     assert.equal(stderr, "");

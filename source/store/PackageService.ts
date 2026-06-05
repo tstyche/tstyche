@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
@@ -29,21 +30,19 @@ export class PackageService {
       return;
     }
 
-    if (existsSync(packagePath)) {
-      return packagePath;
+    if (!existsSync(packagePath)) {
+      EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
+
+      const resource = manifest.packages[packageVersion]!;
+
+      await this.#fetch(packagePath, packageVersion, resource);
+
+      if (resource.binary) {
+        await this.#fetch(`${packagePath}-binary`, `${packageVersion}-binary`, resource.binary);
+      }
     }
 
-    EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
-
-    const resource = manifest.packages[packageVersion]!;
-
-    await this.#fetch(packagePath, packageVersion, resource);
-
-    if (resource.binary) {
-      await this.#fetch(`${packagePath}-binary`, `${packageVersion}-binary`, resource.binary);
-    }
-
-    return packagePath;
+    return `${pathToFileURL(packagePath)}/`;
   }
 
   async #fetch(packagePath: string, packageVersion: string, resource: Resource): Promise<undefined> {

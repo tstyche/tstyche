@@ -9,23 +9,28 @@ import { ProjectService } from "#project";
 import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
 import type { CancellationToken } from "#token";
+import type { CompatTypeScript, TypeScript } from "#typescript";
 import { Version } from "#version";
 import { RunModeFlags } from "./RunModeFlags.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
 export class FileRunner {
   #collectService: CollectService;
-  #compiler: typeof ts;
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
   #suppressedService = new SuppressedService();
+  #ts: TypeScript;
 
-  constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
-    this.#compiler = compiler;
+  constructor(ts: TypeScript, resolvedConfig: ResolvedConfig) {
+    this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#projectService = new ProjectService(compiler, this.#resolvedConfig);
-    this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
+    this.#projectService = new ProjectService((ts as CompatTypeScript).compiler, this.#resolvedConfig);
+    this.#collectService = new CollectService(
+      (ts as CompatTypeScript).compiler,
+      this.#projectService,
+      this.#resolvedConfig,
+    );
   }
 
   #onDiagnostics(this: void, diagnostics: Array<Diagnostic>, result: FileResult) {
@@ -75,10 +80,10 @@ export class FileRunner {
       return;
     }
 
-    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, sourceFile);
+    const directiveRanges = Directive.getDirectiveRanges((this.#ts as CompatTypeScript).compiler, sourceFile);
     const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
-    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
+    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#ts.version, inlineConfig.if.target)) {
       runModeFlags |= RunModeFlags.Skip;
     }
 
@@ -127,11 +132,17 @@ export class FileRunner {
       this.#onDiagnostics(diagnostics, fileResult);
     };
 
-    const testTreeWalker = new TestTreeWalker(this.#compiler, facts.program, this.#resolvedConfig, onFileDiagnostics, {
-      cancellationToken,
-      hasOnly: facts.testTree.hasOnly,
-      position: file.position,
-    });
+    const testTreeWalker = new TestTreeWalker(
+      (this.#ts as CompatTypeScript).compiler,
+      facts.program,
+      this.#resolvedConfig,
+      onFileDiagnostics,
+      {
+        cancellationToken,
+        hasOnly: facts.testTree.hasOnly,
+        position: file.position,
+      },
+    );
 
     await testTreeWalker.visit(facts.testTree.children, facts.runModeFlags, /* parentResult */ undefined);
   }
