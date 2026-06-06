@@ -35,17 +35,21 @@ export class PackageService {
 
       const resource = manifest.packages[packageVersion]!;
 
-      await this.#fetch(packagePath, packageVersion, resource);
+      let success = await this.#fetch(packagePath, packageVersion, resource);
 
-      if (resource.binary) {
-        await this.#fetch(`${packagePath}-binary`, `${packageVersion}-binary`, resource.binary);
+      if (success && resource.binary) {
+        success = await this.#fetch(`${packagePath}-binary`, `${packageVersion}-binary`, resource.binary);
+      }
+
+      if (!success) {
+        return;
       }
     }
 
     return `${pathToFileURL(packagePath)}/`;
   }
 
-  async #fetch(packagePath: string, packageVersion: string, resource: Resource): Promise<undefined> {
+  async #fetch(packagePath: string, packageVersion: string, resource: Resource): Promise<boolean> {
     const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageVersion));
 
     const lock = this.#lockService.getLock(packagePath);
@@ -55,7 +59,7 @@ export class PackageService {
       const response = await this.#fetcher.get(request, diagnostic);
 
       if (!response?.body) {
-        return;
+        return false;
       }
 
       const targetPath = await fs.mkdtemp(`${packagePath}-`);
@@ -72,6 +76,8 @@ export class PackageService {
       }
 
       await fs.rename(targetPath, packagePath);
+
+      return true;
     } finally {
       lock.release();
     }
