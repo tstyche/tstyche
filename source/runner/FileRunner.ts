@@ -80,7 +80,7 @@ export class FileRunner {
       return;
     }
 
-    const directiveRanges = Directive.getDirectiveRanges((this.#ts as CompatTypeScript).compiler, sourceFile);
+    const directiveRanges = Directive.getDirectiveRanges(this.#ts, sourceFile);
     const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
     if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#ts.version, inlineConfig.if.target)) {
@@ -132,17 +132,11 @@ export class FileRunner {
       this.#onDiagnostics(diagnostics, fileResult);
     };
 
-    const testTreeWalker = new TestTreeWalker(
-      (this.#ts as CompatTypeScript).compiler,
-      facts.program,
-      this.#resolvedConfig,
-      onFileDiagnostics,
-      {
-        cancellationToken,
-        hasOnly: facts.testTree.hasOnly,
-        position: file.position,
-      },
-    );
+    const testTreeWalker = new TestTreeWalker(this.#ts, facts.program, this.#resolvedConfig, onFileDiagnostics, {
+      cancellationToken,
+      hasOnly: facts.testTree.hasOnly,
+      position: file.position,
+    });
 
     await testTreeWalker.visit(facts.testTree.children, facts.runModeFlags, /* parentResult */ undefined);
   }

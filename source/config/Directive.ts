@@ -1,8 +1,8 @@
-import type ts from "typescript";
 import type { TestTreeNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { JsonScanner } from "#json";
+import type { CommentRange, Node, SourceFile, TypeScript } from "#typescript";
 import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
@@ -10,36 +10,33 @@ import type { DirectiveRange, InlineConfig, OptionValue } from "./types.js";
 
 export class Directive {
   static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
-  static #rangeCache = new WeakMap<ts.Node, Array<DirectiveRange>>();
+  static #rangeCache = new WeakMap<Node, Array<DirectiveRange>>();
 
-  static getDirectiveRange(
-    compiler: typeof ts,
-    owner: TestTreeNode,
-    directiveText: string,
-  ): DirectiveRange | undefined {
-    const directiveRanges = Directive.getDirectiveRanges(compiler, owner.node);
+  static getDirectiveRange(ts: TypeScript, owner: TestTreeNode, directiveText: string): DirectiveRange | undefined {
+    const directiveRanges = Directive.getDirectiveRanges(ts, owner.node);
 
     return directiveRanges?.find((range) => range.directive?.text === directiveText);
   }
 
-  static getDirectiveRanges(compiler: typeof ts, node: ts.Node): Array<DirectiveRange> | undefined {
+  static getDirectiveRanges(ts: TypeScript, node: Node): Array<DirectiveRange> | undefined {
     let ranges = Directive.#rangeCache.get(node);
 
     if (ranges != null) {
       return ranges;
     }
 
-    let sourceFile: ts.SourceFile;
+    let sourceFile: SourceFile;
     let position = 0;
 
-    if (compiler.isSourceFile(node)) {
+    if (ts.isSourceFile(node)) {
       sourceFile = node;
     } else {
       sourceFile = node.getSourceFile();
+      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
       position = node.getFullStart();
     }
 
-    const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
+    const comments = ts.getLeadingCommentRanges(sourceFile.text, position);
 
     if (!comments || comments.length === 0) {
       return;
@@ -48,7 +45,7 @@ export class Directive {
     ranges = [];
 
     for (const comment of comments) {
-      if (comment.kind !== compiler.SyntaxKind.SingleLineCommentTrivia) {
+      if (comment.kind !== ts.SyntaxKind.SingleLineCommentTrivia) {
         continue;
       }
 
@@ -82,7 +79,7 @@ export class Directive {
     return inlineConfig;
   }
 
-  static #getRange(sourceFile: ts.SourceFile, comment: ts.CommentRange) {
+  static #getRange(sourceFile: SourceFile, comment: CommentRange) {
     const [text] = sourceFile.text.substring(comment.pos, comment.end).split(/--+/);
     const match = text?.match(Directive.#directiveRegex);
 
@@ -162,7 +159,7 @@ export class Directive {
     Directive.#onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  static async #parseJson(sourceFile: ts.SourceFile, start: number, end: number): Promise<Record<string, OptionValue>> {
+  static async #parseJson(sourceFile: SourceFile, start: number, end: number): Promise<Record<string, OptionValue>> {
     const inlineOptions: Record<string, OptionValue> = {};
 
     const configParser = new ConfigParser(

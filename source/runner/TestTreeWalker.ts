@@ -6,6 +6,7 @@ import { EventEmitter } from "#events";
 import { ExpectService } from "#expect";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
+import type { CompatTypeScript, TypeScript } from "#typescript";
 import { Version } from "#version";
 import { FixmeService } from "./FixmeService.js";
 import { RunModeFlags } from "./RunModeFlags.enum.js";
@@ -18,21 +19,21 @@ interface TestTreeWalkerOptions {
 
 export class TestTreeWalker {
   #cancellationToken: CancellationToken | undefined;
-  #compiler: typeof ts;
   #expectService: ExpectService;
   #hasOnly: boolean;
   #onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
+  #ts: TypeScript;
 
   constructor(
-    compiler: typeof ts,
+    ts: TypeScript,
     program: ts.Program,
     resolvedConfig: ResolvedConfig,
     onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
     options: TestTreeWalkerOptions,
   ) {
-    this.#compiler = compiler;
+    this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
     this.#onFileDiagnostics = onFileDiagnostics;
 
@@ -40,14 +41,14 @@ export class TestTreeWalker {
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
 
-    this.#expectService = new ExpectService(compiler, program, resolvedConfig);
+    this.#expectService = new ExpectService((ts as CompatTypeScript).compiler, program, resolvedConfig);
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
-    const ifDirective = Directive.getDirectiveRange(this.#compiler, node, "if");
+    const ifDirective = Directive.getDirectiveRange(this.#ts, node, "if");
     const inlineConfig = await Directive.getInlineConfig(ifDirective);
 
-    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
+    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#ts.version, inlineConfig.if.target)) {
       flags |= RunModeFlags.Void;
     }
 
@@ -88,7 +89,7 @@ export class TestTreeWalker {
         break;
       }
 
-      const fixmeDirective = Directive.getDirectiveRange(this.#compiler, node, "fixme");
+      const fixmeDirective = Directive.getDirectiveRange(this.#ts, node, "fixme");
 
       if (fixmeDirective) {
         await FixmeService.start(fixmeDirective, node);

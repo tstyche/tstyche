@@ -54,10 +54,12 @@ export class Store {
 
   static async #getAdapter(specifier: string) {
     const packageJson = await fs.readFile(new URL("package.json", specifier), { encoding: "utf8" });
-    const { version } = JSON.parse(packageJson) as { version: string };
+    const { exports, version } = JSON.parse(packageJson) as { exports: Record<string, string>; version: string };
 
     if (Version.isSatisfiedWith(version, "7.0")) {
-      return new NativeTypeScript(version);
+      const ast = await import(new URL(exports["./unstable/ast"]!, specifier).toString());
+
+      return new NativeTypeScript(ast, version);
     }
 
     const compiler = (await import(new URL("lib/typescript.js", specifier).toString())).default;
