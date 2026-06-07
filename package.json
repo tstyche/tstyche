@@ -59,6 +59,7 @@
     "@sourcemeta/jsonschema": "^15.8.0",
     "@types/node": "^24.13.1",
     "@types/react": "^19.2.17",
+    "@typescript/native-preview": "^7.0.0-dev.20260607.1",
     "cleaner-spec-reporter": "^1.0.3",
     "code-block-writer": "^13.0.3",
     "magic-string": "0.30.21",
