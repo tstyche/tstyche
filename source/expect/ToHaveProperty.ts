@@ -1,6 +1,7 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import type { LiteralType } from "#typescript";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -12,10 +13,11 @@ export class ToHaveProperty extends MatcherBase {
     const targetType = this.getType(targetNode);
     let propertyNameText: string;
 
-    if (targetType.flags & (this.ts.TypeFlags.StringLiteral | this.ts.TypeFlags.NumberLiteral)) {
-      propertyNameText = (targetType as ts.StringLiteralType | ts.NumberLiteralType).value.toString();
+    if (targetType.flags & this.ts.TypeFlags.Literal) {
+      propertyNameText = (targetType as LiteralType).value.toString();
     } else {
-      propertyNameText = `[${this.ts.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
+      const symbol = targetType.getSymbol();
+      propertyNameText = `[${symbol?.name}]`;
     }
 
     const origin = DiagnosticOrigin.fromNode(targetNode, expectNode);

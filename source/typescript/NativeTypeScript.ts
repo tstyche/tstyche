@@ -1,20 +1,7 @@
 import type * as tsAst from "@typescript/native-preview/unstable/ast";
 import type * as tsApi from "@typescript/native-preview/unstable/sync";
-import type { NamespaceImport } from "typescript";
 import { BaseAdapter } from "./BaseAdapter.js";
-import type {
-  CallbackFunction,
-  Decorator,
-  ImportDeclaration,
-  NamedImports,
-  Node,
-  ObjectLiteralExpression,
-  ParenthesizedExpression,
-  PropertyAssignment,
-  SpreadAssignment,
-  StringLiteral,
-  StringLiteralLikeNode,
-} from "./types.js";
+import type { CallbackFunction, ImportDeclaration, Node } from "./types.js";
 
 export class NativeTypeScript extends BaseAdapter {
   #ast: typeof tsAst;
@@ -36,7 +23,7 @@ export class NativeTypeScript extends BaseAdapter {
     this.TypeFlags = api.TypeFlags;
   }
 
-  async close() {
+  override async close() {
     // await this.#cleanup();
   }
 
@@ -48,52 +35,7 @@ export class NativeTypeScript extends BaseAdapter {
     return this.#ast.isArrowFunction(node as tsAst.Node) || this.#ast.isFunctionExpression(node as tsAst.Node);
   }
 
-  isDecorator(node: Node): node is Decorator {
-    return this.#ast.isDecorator(node as tsAst.Node);
-  }
-
-  isImportDeclaration(node: Node): node is ImportDeclaration {
-    return this.#ast.isImportDeclaration(node as tsAst.Node);
-  }
-
-  isNamespaceImport(node: Node): node is NamespaceImport {
-    return this.#ast.isNamespaceImport(node as tsAst.Node);
-  }
-
-  isNamedImports(node: Node): node is NamedImports {
-    return this.#ast.isNamedImports(node as tsAst.Node);
-  }
-
-  isObjectLiteralExpression(node: Node): node is ObjectLiteralExpression {
-    return this.#ast.isObjectLiteralExpression(node as tsAst.Node);
-  }
-
-  isParenthesizedExpression(node: Node): node is ParenthesizedExpression {
-    return this.#ast.isParenthesizedExpression(node as tsAst.Node);
-  }
-
-  isPropertyAssignment(node: Node): node is PropertyAssignment {
-    return this.#ast.isPropertyAssignment(node as tsAst.Node);
-  }
-
-  isSpreadAssignment(node: Node): node is SpreadAssignment {
-    return this.#ast.isSpreadAssignment(node as tsAst.Node);
-  }
-
-  isStringLiteral(node: Node): node is StringLiteral {
-    return this.#ast.isStringLiteral(node as tsAst.Node);
-  }
-
-  isStringLiteralLikeNode(node: Node): node is StringLiteralLikeNode {
-    return this.#ast.isStringLiteralLikeNode(node as tsAst.Node);
-  }
-
   isTypeOnlyImportDeclaration(node: ImportDeclaration): boolean {
     return node.importClause?.phaseModifier !== this.SyntaxKind.TypeKeyword;
-  }
-
-  // TODO the '.unescapeLeadingUnderscores()' utility is missing in TS7, find out if it is needed or not
-  unescapeLeadingUnderscores(identifier: any): string {
-    return identifier;
   }
 }

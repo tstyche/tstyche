@@ -6,6 +6,7 @@ export type {
   Decorator,
   Expression,
   ImportDeclaration,
+  LiteralType,
   Node,
   NodeArray,
   NumericLiteral,

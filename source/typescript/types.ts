@@ -1,4 +1,5 @@
 import type * as tsAst from "@typescript/native-preview/unstable/ast";
+import type * as tsApi from "@typescript/native-preview/unstable/sync";
 import type ts6 from "typescript";
 import type { CompatTypeScript } from "./CompatTypeScript.js";
 import type { NativeTypeScript } from "./NativeTypeScript.js";
@@ -14,6 +15,7 @@ export type ExpressionStatement = tsAst.ExpressionStatement | ts6.ExpressionStat
 export type ExpressionWithTypeArguments = tsAst.ExpressionWithTypeArguments | ts6.ExpressionWithTypeArguments;
 export type Identifier = tsAst.Identifier | ts6.Identifier;
 export type ImportDeclaration = tsAst.ImportDeclaration | ts6.ImportDeclaration;
+export type LiteralType = tsApi.LiteralType | ts6.LiteralType;
 export type NamespaceImport = tsAst.NamespaceImport | ts6.NamespaceImport;
 export type NamedImports = tsAst.NamedImports | ts6.NamedImports;
 export type Node = tsAst.Node | ts6.Node;
