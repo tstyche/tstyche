@@ -26,11 +26,7 @@ export class FileRunner {
     this.#resolvedConfig = resolvedConfig;
 
     this.#projectService = new ProjectService((ts as CompatTypeScript).compiler, this.#resolvedConfig);
-    this.#collectService = new CollectService(
-      (ts as CompatTypeScript).compiler,
-      this.#projectService,
-      this.#resolvedConfig,
-    );
+    this.#collectService = new CollectService(ts, this.#projectService, this.#resolvedConfig);
   }
 
   #onDiagnostics(this: void, diagnostics: Array<Diagnostic>, result: FileResult) {

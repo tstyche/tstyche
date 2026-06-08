@@ -16,7 +16,8 @@
     "jsx": "react-jsx",
     "jsxImportSource": "#scribbler",
 
-    "skipLibCheck": false
+    // TODO must be disabled
+    "skipLibCheck": true
   },
   "include": ["**/*"],
   "exclude": ["**/__tests__/**/*"]

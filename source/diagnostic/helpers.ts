@@ -1,7 +1,8 @@
 import type ts from "typescript";
+import type { Node, NodeArray } from "#typescript";
 import type { Offset } from "./types.js";
 
-export function diagnosticBelongsToNode(diagnostic: ts.Diagnostic, node: ts.NodeArray<ts.Node> | ts.Node): boolean {
+export function diagnosticBelongsToNode(diagnostic: ts.Diagnostic, node: NodeArray<Node> | Node): boolean {
   return diagnostic.start != null && diagnostic.start >= node.pos && diagnostic.start <= node.end;
 }
 

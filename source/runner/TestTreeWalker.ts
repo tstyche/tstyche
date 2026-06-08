@@ -6,7 +6,7 @@ import { EventEmitter } from "#events";
 import { ExpectService } from "#expect";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
-import type { CompatTypeScript, TypeScript } from "#typescript";
+import type { TypeScript } from "#typescript";
 import { Version } from "#version";
 import { FixmeService } from "./FixmeService.js";
 import { RunModeFlags } from "./RunModeFlags.enum.js";
@@ -41,7 +41,7 @@ export class TestTreeWalker {
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
 
-    this.#expectService = new ExpectService((ts as CompatTypeScript).compiler, program, resolvedConfig);
+    this.#expectService = new ExpectService(ts, program, resolvedConfig);
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {
@@ -70,6 +70,7 @@ export class TestTreeWalker {
       flags |= RunModeFlags.Todo;
     }
 
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     if (this.#position != null && node.node.getStart() === this.#position) {
       flags |= RunModeFlags.Only;
       // skip mode is overridden, when 'position' is specified

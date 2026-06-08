@@ -1,21 +1,16 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import {
-  belongsToArgumentList,
-  isCapitaizedIdentifierLike,
-  isChildOfExpressionStatement,
-  isIdentifierLike,
-} from "./helpers.js";
+import type { TypeScript } from "#typescript";
 import type { TextEditor } from "./TextEditor.js";
 
 export class AbilityLayer {
-  #compiler: typeof ts;
   #editor: TextEditor;
   #nodes: Array<ExpectNode> = [];
+  #ts: TypeScript;
 
-  constructor(compiler: typeof ts, editor: TextEditor) {
-    this.#compiler = compiler;
+  constructor(ts: TypeScript, editor: TextEditor) {
+    this.#ts = ts;
     this.#editor = editor;
   }
 
@@ -41,10 +36,15 @@ export class AbilityLayer {
   }
 
   visitExpect(expect: ExpectNode): void {
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const expectStart = expect.node.getStart();
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const expectExpressionEnd = expect.node.expression.getEnd();
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const expectEnd = expect.node.getEnd();
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const matcherNameEnd = expect.matcherNameNode.getEnd();
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const matcherNodeEnd = expect.matcherNode.getEnd();
 
     switch (expect.matcherNameNode.name.text) {
@@ -57,29 +57,27 @@ export class AbilityLayer {
         if (
           !sourceNode ||
           !targetNode ||
-          !isCapitaizedIdentifierLike(sourceNode, this.#compiler) ||
-          !this.#compiler.isObjectLiteralExpression(targetNode) ||
+          !this.#ts.isCapitaizedIdentifierLike(sourceNode) ||
+          !this.#ts.isObjectLiteralExpression(targetNode) ||
           !targetNode.properties.every(
             (property) =>
-              (this.#compiler.isPropertyAssignment(property) &&
-                (this.#compiler.isIdentifier(property.name) || this.#compiler.isStringLiteral(property.name))) ||
-              this.#compiler.isSpreadAssignment(property),
+              (this.#ts.isPropertyAssignment(property) &&
+                (this.#ts.isIdentifier(property.name) || this.#ts.isStringLiteral(property.name))) ||
+              this.#ts.isSpreadAssignment(property),
           )
         ) {
           return;
         }
 
+        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
         const sourceText = sourceNode.getText();
 
-        if (belongsToArgumentList(sourceNode, this.#compiler)) {
+        if (this.#ts.belongsToArgumentList(sourceNode)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .erase(expectStart, matcherNodeEnd)
-            .update(
-              expectStart,
-              matcherNameEnd,
-              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? ";" : "",
-            )
+            .update(expectStart, matcherNameEnd, this.#ts.isChildOfExpressionStatement(expect.matcherNode) ? ";" : "")
+            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             .update(sourceNode.getStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
         } else {
           const id = ["SC", expectStart, Date.now().toString(36)].join("_");
@@ -89,33 +87,43 @@ export class AbilityLayer {
             .update(
               expectStart,
               matcherNameEnd,
-              isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
+              this.#ts.isChildOfExpressionStatement(expect.matcherNode)
                 ? `;const ${id} = undefined as any as ${sourceText};<${id}`
                 : `const ${id} = undefined as any as ${sourceText};<${id}`,
             );
         }
 
         for (const property of targetNode.properties) {
-          if (this.#compiler.isPropertyAssignment(property)) {
+          if (this.#ts.isPropertyAssignment(property)) {
             this.#editor
               .update(
+                // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
                 property.name.getStart(),
+                // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
                 property.name.getEnd(),
-                this.#compiler.isStringLiteral(property.name)
-                  ? ` ${property.name.getText().slice(1, -1)} `
-                  : property.name.getText(),
+                this.#ts.isStringLiteral(property.name)
+                  ? // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
+                    ` ${property.name.getText().slice(1, -1)} `
+                  : // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
+                    property.name.getText(),
               )
+              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .insert(property.initializer.getStart(), "={")
+              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .update(property.initializer.getStart(), property.initializer.getEnd(), property.initializer.getText())
+              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .insert(property.initializer.getEnd(), "}");
 
             continue;
           }
 
-          if (this.#compiler.isSpreadAssignment(property)) {
+          if (this.#ts.isSpreadAssignment(property)) {
             this.#editor
+              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .insert(property.getStart(), "{")
+              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .update(property.getStart(), property.getEnd(), property.getText())
+              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .insert(property.getEnd(), "}");
           }
         }
@@ -141,22 +149,23 @@ export class AbilityLayer {
           return;
         }
 
-        if (belongsToArgumentList(sourceNode, this.#compiler)) {
+        if (this.#ts.belongsToArgumentList(sourceNode)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
               expectExpressionEnd,
-              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? ";" : "",
+              this.#ts.isChildOfExpressionStatement(expect.matcherNode) ? ";" : "",
             )
             .erase(expectEnd, matcherNameEnd);
         } else {
+          // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
           const sourceText = sourceNode.getFullText();
 
           this.#editor.update(
             expectStart,
             matcherNameEnd,
-            isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
+            this.#ts.isChildOfExpressionStatement(expect.matcherNode)
               ? `;(undefined as any as ${sourceText})`
               : `(undefined as any as ${sourceText})`,
           );
@@ -174,22 +183,23 @@ export class AbilityLayer {
           return;
         }
 
-        if (belongsToArgumentList(sourceNode, this.#compiler)) {
+        if (this.#ts.belongsToArgumentList(sourceNode)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
               expectExpressionEnd,
-              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? "; new" : "new",
+              this.#ts.isChildOfExpressionStatement(expect.matcherNode) ? "; new" : "new",
             )
             .erase(expectEnd, matcherNameEnd);
         } else {
+          // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
           const sourceText = sourceNode.getFullText();
 
           this.#editor.update(
             expectStart,
             matcherNameEnd,
-            isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
+            this.#ts.isChildOfExpressionStatement(expect.matcherNode)
               ? `;new (undefined as any as ${sourceText})`
               : `new (undefined as any as ${sourceText})`,
           );
@@ -204,43 +214,50 @@ export class AbilityLayer {
         const sourceNode = expect.source[0];
         const targetNode = expect.target?.[0];
 
-        if (!sourceNode || !targetNode || !isIdentifierLike(sourceNode, this.#compiler)) {
+        if (!sourceNode || !targetNode || !this.#ts.isIdentifierLike(sourceNode)) {
           return;
         }
 
-        if (belongsToArgumentList(sourceNode, this.#compiler)) {
+        if (this.#ts.belongsToArgumentList(sourceNode)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
               expectExpressionEnd,
-              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? ";" : "",
+              this.#ts.isChildOfExpressionStatement(expect.matcherNode) ? ";" : "",
             )
             .erase(expectEnd, matcherNodeEnd);
 
-          if (this.#compiler.isExpressionWithTypeArguments(sourceNode)) {
+          if (this.#ts.isExpressionWithTypeArguments(sourceNode)) {
+            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             this.#editor.erase(sourceNode.expression.getEnd(), sourceNode.getEnd());
           }
         } else {
-          const sourceText = this.#compiler.isTypeReferenceNode(sourceNode)
-            ? sourceNode.typeName.getFullText()
-            : sourceNode.getFullText();
+          const sourceText = this.#ts.isTypeReferenceNode(sourceNode)
+            ? // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
+              sourceNode.typeName.getFullText()
+            : // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
+              sourceNode.getFullText();
 
           this.#editor.update(
             expectStart,
             matcherNodeEnd,
-            isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
+            this.#ts.isChildOfExpressionStatement(expect.matcherNode)
               ? `;undefined as any as ${sourceText}`
               : `undefined as any as ${sourceText}`,
           );
         }
 
+        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
         const targetText = targetNode.getText().slice(1, -1);
 
         if (targetText.trim().length > 0) {
           this.#editor.update(
+            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             targetNode.getFullStart(),
+            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             targetNode.getEnd(),
+            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             `<${targetText}>`.padStart(targetNode.getFullWidth()),
           );
         }
@@ -258,33 +275,38 @@ export class AbilityLayer {
           return;
         }
 
-        if (belongsToArgumentList(sourceNode, this.#compiler)) {
+        if (this.#ts.belongsToArgumentList(sourceNode)) {
           this.#editor
             .eraseTrailingComma(expect.source)
             .update(
               expectStart,
               expectExpressionEnd,
-              isChildOfExpressionStatement(expect.matcherNode, this.#compiler) ? ";" : "",
+              this.#ts.isChildOfExpressionStatement(expect.matcherNode) ? ";" : "",
             )
             .erase(expectEnd, matcherNodeEnd);
         } else {
+          // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
           const sourceText = sourceNode.getFullText();
 
           this.#editor.update(
             expectStart,
             matcherNodeEnd,
-            isChildOfExpressionStatement(expect.matcherNode, this.#compiler)
+            this.#ts.isChildOfExpressionStatement(expect.matcherNode)
               ? `;(undefined as any as ${sourceText})`
               : `(undefined as any as ${sourceText})`,
           );
         }
 
+        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
         const targetText = targetNode.getText();
 
         if (targetText.trim().length > 0) {
           this.#editor.update(
+            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             targetNode.getFullStart() - 1,
+            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             targetNode.getEnd() + 1,
+            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             `[${targetText}]`.padStart(targetNode.getFullWidth()),
           );
         }

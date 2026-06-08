@@ -24,6 +24,7 @@ export class DiagnosticOrigin {
   static fromAssertion(expectNode: ExpectNode): DiagnosticOrigin {
     const node = expectNode.matcherNameNode.name;
 
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     return new DiagnosticOrigin(node.getStart(), node.getEnd(), node.getSourceFile(), expectNode);
   }
 

@@ -1,4 +1,3 @@
-import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import {
   Diagnostic,
@@ -8,7 +7,7 @@ import {
   getDiagnosticMessageText,
   isDiagnosticWithLocation,
 } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
+import type { NodeArray, TupleTypeNode } from "#typescript";
 import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
@@ -16,19 +15,19 @@ export abstract class AbilityMatcherBase extends MatcherBase {
   abstract explainText(isExpression: boolean, targetText?: string): string;
   abstract explainNotText(isExpression: boolean, targetText?: string): string;
 
-  protected getArgumentCountText(nodes: ts.NodeArray<ArgumentNode>) {
+  protected getArgumentCountText(nodes: NodeArray<ArgumentNode>) {
     if (nodes.length === 0) {
       return "without arguments";
     }
 
-    if (nodes.length === 1 && nodes[0]?.kind === this.compiler.SyntaxKind.SpreadElement) {
+    if (nodes.length === 1 && nodes[0]?.kind === this.ts.SyntaxKind.SpreadElement) {
       return "with the given arguments";
     }
 
     return `with the given argument${nodes.length === 1 ? "" : "s"}`;
   }
 
-  protected getTypeArgumentCountText(targetNode: ts.TupleTypeNode) {
+  protected getTypeArgumentCountText(targetNode: TupleTypeNode) {
     if (targetNode.elements.length === 0) {
       return "without type arguments";
     }
@@ -39,10 +38,10 @@ export abstract class AbilityMatcherBase extends MatcherBase {
   explain(
     expectNode: ExpectNode,
     sourceNode: ArgumentNode,
-    targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode,
+    targetNode: NodeArray<ArgumentNode> | ArgumentNode,
     getArgumentCountText?: () => string,
   ): Array<Diagnostic> {
-    const isExpression = belongsToArgumentList(sourceNode, this.compiler);
+    const isExpression = this.ts.belongsToArgumentList(sourceNode);
 
     const argumentCountText = getArgumentCountText?.();
 
@@ -80,7 +79,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
   abstract match(
     expectNode: ExpectNode,
     sourceNode: ArgumentNode,
-    targetNodes: ts.NodeArray<ArgumentNode> | ArgumentNode | undefined,
+    targetNodes: NodeArray<ArgumentNode> | ArgumentNode | undefined,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined;
 }

@@ -1,7 +1,7 @@
-import type ts from "typescript";
 import type { Diagnostic } from "#diagnostic";
+import type { Expression, TypeNode } from "#typescript";
 
-export type ArgumentNode = ts.Expression | ts.TypeNode;
+export type ArgumentNode = Expression | TypeNode;
 
 export interface MatchResult {
   explain: () => Array<Diagnostic>;

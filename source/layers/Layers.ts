@@ -3,6 +3,7 @@ import type { ExpectNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { MappedDiagnostic } from "#diagnostic";
 import type { ProjectService } from "#project";
+import type { TypeScript } from "#typescript";
 import { AbilityLayer } from "./AbilityLayer.js";
 import { compareDiagnostics } from "./helpers.js";
 import { SuppressedLayer } from "./SuppressedLayer.js";
@@ -15,11 +16,11 @@ export class Layers {
   #suppressedDiagnostics: Array<ts.Diagnostic> | undefined;
   #suppressedLayer: SuppressedLayer;
 
-  constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
+  constructor(ts: TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#projectService = projectService;
 
-    this.#abilityLayer = new AbilityLayer(compiler, this.#editor);
-    this.#suppressedLayer = new SuppressedLayer(compiler, this.#editor, resolvedConfig);
+    this.#abilityLayer = new AbilityLayer(ts, this.#editor);
+    this.#suppressedLayer = new SuppressedLayer(this.#editor, resolvedConfig);
   }
 
   close(tree: TestTree): void {
@@ -37,7 +38,7 @@ export class Layers {
 
     if (diagnostics != null) {
       for (const diagnostic of diagnostics) {
-        const mappedDiagnostic = new MappedDiagnostic(tree.sourceFile, diagnostic, offsets);
+        const mappedDiagnostic = new MappedDiagnostic(tree.sourceFile as ts.SourceFile, diagnostic, offsets);
 
         if (!seenDiagnostics.some((seenDiagnostic) => compareDiagnostics(mappedDiagnostic, seenDiagnostic))) {
           abilityDiagnostics.push(mappedDiagnostic);
@@ -59,7 +60,9 @@ export class Layers {
     );
 
     this.#suppressedLayer.close(
-      this.#suppressedDiagnostics?.map((diagnostic) => new MappedDiagnostic(tree.sourceFile, diagnostic)),
+      this.#suppressedDiagnostics?.map(
+        (diagnostic) => new MappedDiagnostic(tree.sourceFile as ts.SourceFile, diagnostic),
+      ),
     );
   }
 

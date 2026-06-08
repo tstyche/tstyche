@@ -57,9 +57,10 @@ export class Store {
     const { exports, version } = JSON.parse(packageJson) as { exports: Record<string, string>; version: string };
 
     if (Version.isSatisfiedWith(version, "7.0")) {
+      const api = await import(new URL(exports["./unstable/sync"]!, specifier).toString());
       const ast = await import(new URL(exports["./unstable/ast"]!, specifier).toString());
 
-      return new NativeTypeScript(ast, version);
+      return new NativeTypeScript(api, ast, version);
     }
 
     const compiler = (await import(new URL("lib/typescript.js", specifier).toString())).default;

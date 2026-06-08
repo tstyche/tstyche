@@ -4,6 +4,7 @@ import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Layers } from "#layers";
 import type { ProjectService } from "#project";
+import type { CallExpression, Decorator, Node, SourceFile, TypeScript } from "#typescript";
 import { CollectDiagnosticText } from "./CollectDiagnosticText.js";
 import { ExpectNode } from "./ExpectNode.js";
 import { IdentifierLookup, type TestTreeNodeMeta } from "./IdentifierLookup.js";
@@ -14,18 +15,18 @@ import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
 export class CollectService {
   #layers: Layers;
-  #compiler: typeof ts;
   #identifierLookup: IdentifierLookup;
+  #ts: TypeScript;
 
-  constructor(compiler: typeof ts, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
-    this.#compiler = compiler;
+  constructor(ts: TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
+    this.#ts = ts;
 
-    this.#layers = new Layers(compiler, projectService, resolvedConfig);
-    this.#identifierLookup = new IdentifierLookup(compiler);
+    this.#layers = new Layers(this.#ts, projectService, resolvedConfig);
+    this.#identifierLookup = new IdentifierLookup(this.#ts);
   }
 
-  #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode, testTree: TestTree) {
-    if (this.#compiler.isCallExpression(node)) {
+  #collectTestTreeNodes(node: Node, parent: TestTree | TestTreeNode, testTree: TestTree) {
+    if (this.#ts.isCallExpression(node)) {
       const meta = this.#identifierLookup.resolveTestTreeNodeMeta(node);
 
       if (meta != null) {
@@ -38,9 +39,9 @@ export class CollectService {
           meta.brand === TestTreeNodeBrand.It ||
           meta.brand === TestTreeNodeBrand.Test
         ) {
-          const testTreeNode = new TestTreeNode(this.#compiler, meta.brand, node, parent, meta.flags);
+          const testTreeNode = new TestTreeNode(this.#ts, meta.brand, node, parent, meta.flags);
 
-          this.#compiler.forEachChild(node, (node) => {
+          node.forEachChild((node) => {
             this.#collectTestTreeNodes(node, testTreeNode, testTree);
           });
 
@@ -80,10 +81,13 @@ export class CollectService {
             const text = "The matcher must be completed with '()'.";
 
             const origin = new DiagnosticOrigin(
+              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               matcherNameNode.name.getStart(),
-              this.#compiler.isExpressionWithTypeArguments(matcherNameNode.parent)
-                ? matcherNameNode.parent.getEnd()
-                : matcherNameNode.getEnd(),
+              this.#ts.isExpressionWithTypeArguments(matcherNameNode.parent)
+                ? // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
+                  matcherNameNode.parent.getEnd()
+                : // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
+                  matcherNameNode.getEnd(),
               matcherNameNode.getSourceFile(),
             );
 
@@ -93,7 +97,7 @@ export class CollectService {
           }
 
           const expectNode = new ExpectNode(
-            this.#compiler,
+            this.#ts,
             meta.brand,
             node,
             parent,
@@ -106,7 +110,7 @@ export class CollectService {
 
           this.#layers.visit(expectNode);
 
-          this.#compiler.forEachChild(node, (node) => {
+          node.forEachChild((node) => {
             this.#collectTestTreeNodes(node, expectNode, testTree);
           });
 
@@ -117,18 +121,18 @@ export class CollectService {
       }
     }
 
-    if (this.#compiler.isImportDeclaration(node)) {
+    if (this.#ts.isImportDeclaration(node)) {
       this.#identifierLookup.handleImportDeclaration(node);
 
       return;
     }
 
-    this.#compiler.forEachChild(node, (node) => {
+    node.forEachChild((node) => {
       this.#collectTestTreeNodes(node, parent, testTree);
     });
   }
 
-  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
+  createTestTree(sourceFile: SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);
@@ -145,7 +149,7 @@ export class CollectService {
     return testTree;
   }
 
-  #checkNode(node: ts.Node, meta: TestTreeNodeMeta, parent: TestTree | TestTreeNode) {
+  #checkNode(node: Node, meta: TestTreeNodeMeta, parent: TestTree | TestTreeNode) {
     if ("brand" in parent && !this.#isNodeAllowed(meta, parent)) {
       const text = CollectDiagnosticText.cannotBeNestedWithin(meta.brand, parent.brand);
       const origin = DiagnosticOrigin.fromNode(node);
@@ -182,11 +186,12 @@ export class CollectService {
     return true;
   }
 
-  #getChainedNode({ parent }: ts.Node, name?: string) {
-    if (!this.#compiler.isPropertyAccessExpression(parent)) {
+  #getChainedNode({ parent }: Node, name?: string) {
+    if (!this.#ts.isPropertyAccessExpression(parent)) {
       return;
     }
 
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     if (name != null && name !== parent.name.getText()) {
       return;
     }
@@ -194,16 +199,16 @@ export class CollectService {
     return parent;
   }
 
-  #getMatcherNode(node: ts.Node): ts.CallExpression | ts.Decorator | undefined {
-    if (this.#compiler.isCallExpression(node.parent)) {
+  #getMatcherNode(node: Node): CallExpression | Decorator | undefined {
+    if (this.#ts.isCallExpression(node.parent)) {
       return node.parent;
     }
 
-    if (this.#compiler.isDecorator(node.parent)) {
+    if (this.#ts.isDecorator(node.parent)) {
       return node.parent;
     }
 
-    if (this.#compiler.isParenthesizedExpression(node.parent)) {
+    if (this.#ts.isParenthesizedExpression(node.parent)) {
       return this.#getMatcherNode(node.parent);
     }
 

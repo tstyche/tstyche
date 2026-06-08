@@ -1,7 +1,6 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -13,10 +12,10 @@ export class ToHaveProperty extends MatcherBase {
     const targetType = this.getType(targetNode);
     let propertyNameText: string;
 
-    if (targetType.flags & (this.compiler.TypeFlags.StringLiteral | this.compiler.TypeFlags.NumberLiteral)) {
+    if (targetType.flags & (this.ts.TypeFlags.StringLiteral | this.ts.TypeFlags.NumberLiteral)) {
       propertyNameText = (targetType as ts.StringLiteralType | ts.NumberLiteralType).value.toString();
     } else {
-      propertyNameText = `[${this.compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
+      propertyNameText = `[${this.ts.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
     }
 
     const origin = DiagnosticOrigin.fromNode(targetNode, expectNode);
@@ -30,7 +29,7 @@ export class ToHaveProperty extends MatcherBase {
     const nonPrimitiveType =
       "getNonPrimitiveType" in this.typeChecker
         ? this.typeChecker.getNonPrimitiveType()
-        : ({ flags: this.compiler.TypeFlags.NonPrimitive } as ts.Type); // TODO remove this workaround after dropping support for TypeScript 5.8
+        : ({ flags: this.ts.TypeFlags.NonPrimitive } as ts.Type); // TODO remove this workaround after dropping support for TypeScript 5.8
 
     return this.typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
   }
@@ -47,12 +46,12 @@ export class ToHaveProperty extends MatcherBase {
 
     if (
       // TODO disallow enum types, these are not objects
-      sourceType.flags & (this.compiler.TypeFlags.Any | this.compiler.TypeFlags.Never) ||
+      sourceType.flags & (this.ts.TypeFlags.Any | this.ts.TypeFlags.Never) ||
       !this.#extendsObjectType(sourceType)
     ) {
       const expectedText = "of an object type";
 
-      const text = belongsToArgumentList(sourceNode, this.compiler)
+      const text = this.ts.belongsToArgumentList(sourceNode)
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 
@@ -66,9 +65,7 @@ export class ToHaveProperty extends MatcherBase {
     if (
       !(
         targetType.flags &
-        (this.compiler.TypeFlags.StringLiteral |
-          this.compiler.TypeFlags.NumberLiteral |
-          this.compiler.TypeFlags.UniqueESSymbol)
+        (this.ts.TypeFlags.StringLiteral | this.ts.TypeFlags.NumberLiteral | this.ts.TypeFlags.UniqueESSymbol)
       )
     ) {
       const expectedText = "a string, number or symbol";

@@ -1,20 +1,20 @@
 import type ts from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
+import type { Node, TypeScript } from "#typescript";
 
 export class Ensure {
-  #compiler: typeof ts;
+  #ts: TypeScript;
 
-  constructor(compiler: typeof ts) {
-    this.#compiler = compiler;
+  constructor(ts: TypeScript) {
+    this.#ts = ts;
   }
 
-  argument<T extends ts.Node>(
+  argument<T extends Node>(
     node: T | undefined,
-    enclosingNode: ts.Node,
+    enclosingNode: Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
-    if (!node || !belongsToArgumentList(node, this.#compiler)) {
+    if (!node || !this.#ts.belongsToArgumentList(node)) {
       this.#emitDiagnostic("An argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;
@@ -23,9 +23,9 @@ export class Ensure {
     return true;
   }
 
-  argumentOrTypeArgument<T extends ts.Node>(
+  argumentOrTypeArgument<T extends Node>(
     node: T | undefined,
-    enclosingNode: ts.Node,
+    enclosingNode: Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
     if (!node) {
@@ -37,14 +37,14 @@ export class Ensure {
     return true;
   }
 
-  jsxSetup(program: ts.Program, node: ts.Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): boolean {
+  jsxSetup(program: ts.Program, node: Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): boolean {
     const diagnosticText: Array<string> = [];
 
     if (!program.getCompilerOptions().jsx) {
       diagnosticText.push("The matcher requires the 'jsx' compiler option to be configured.");
     }
 
-    if (node.getSourceFile().languageVariant !== this.#compiler.LanguageVariant.JSX) {
+    if (node.getSourceFile().languageVariant !== this.#ts.LanguageVariant.JSX) {
       diagnosticText.push("The matcher requires a '.tsx' file extension.");
     }
 
@@ -57,12 +57,12 @@ export class Ensure {
     return true;
   }
 
-  typeArgument<T extends ts.Node>(
+  typeArgument<T extends Node>(
     node: T | undefined,
-    enclosingNode: ts.Node,
+    enclosingNode: Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
-    if (!node || belongsToArgumentList(node, this.#compiler)) {
+    if (!node || this.#ts.belongsToArgumentList(node)) {
       this.#emitDiagnostic("A type argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;
@@ -73,7 +73,7 @@ export class Ensure {
 
   #emitDiagnostic(
     text: string | Array<string>,
-    enclosingNode: ts.Node,
+    enclosingNode: Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): void {
     if (!Array.isArray(text)) {

@@ -1,19 +1,25 @@
 import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
+import type {
+  NodeArray,
+  NumericLiteral,
+  RegularExpressionLiteral,
+  StringLiteralLikeNode,
+  TypeScript,
+} from "#typescript";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToRaiseError {
-  #compiler: typeof ts;
+  #ts: TypeScript;
 
-  constructor(compiler: typeof ts) {
-    this.#compiler = compiler;
+  constructor(ts: TypeScript) {
+    this.#ts = ts;
   }
 
-  #explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
-    const isExpression = belongsToArgumentList(sourceNode, this.#compiler);
+  #explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNodes: NodeArray<ArgumentNode>) {
+    const isExpression = this.#ts.belongsToArgumentList(sourceNode);
 
     const origin = DiagnosticOrigin.fromAssertion(expectNode);
 
@@ -37,7 +43,7 @@ export class ToRaiseError {
     }
 
     return [...expectNode.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
-      const targetNode = targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral;
+      const targetNode = targetNodes[index] as StringLiteralLikeNode | NumericLiteral;
 
       const isMatch = this.#matchExpectedError(diagnostic, targetNode);
 
@@ -63,7 +69,7 @@ export class ToRaiseError {
   match(
     expectNode: ExpectNode,
     sourceNode: ArgumentNode,
-    targetNodes: ts.NodeArray<ArgumentNode>,
+    targetNodes: NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];
@@ -71,9 +77,9 @@ export class ToRaiseError {
     for (const targetNode of targetNodes) {
       if (
         !(
-          this.#compiler.isStringLiteralLike(targetNode) ||
-          this.#compiler.isNumericLiteral(targetNode) ||
-          this.#compiler.isRegularExpressionLiteral(targetNode)
+          this.#ts.isStringLiteralLikeNode(targetNode) ||
+          this.#ts.isNumericLiteral(targetNode) ||
+          this.#ts.isRegularExpressionLiteral(targetNode)
         )
       ) {
         const expectedText = "a string, number or regular expression";
@@ -101,7 +107,7 @@ export class ToRaiseError {
         [...expectNode.diagnostics].every((diagnostic, index) =>
           this.#matchExpectedError(
             diagnostic,
-            targetNodes[index] as ts.StringLiteralLike | ts.NumericLiteral | ts.RegularExpressionLiteral,
+            targetNodes[index] as StringLiteralLikeNode | NumericLiteral | RegularExpressionLiteral,
           ),
         );
     }
@@ -114,9 +120,9 @@ export class ToRaiseError {
 
   #matchExpectedError(
     diagnostic: ts.Diagnostic,
-    targetNode: ts.StringLiteralLike | ts.NumericLiteral | ts.RegularExpressionLiteral,
+    targetNode: StringLiteralLikeNode | NumericLiteral | RegularExpressionLiteral,
   ) {
-    if (this.#compiler.isNumericLiteral(targetNode)) {
+    if (this.#ts.isNumericLiteral(targetNode)) {
       return Number.parseInt(targetNode.text, 10) === diagnostic.code;
     }
 
@@ -126,7 +132,7 @@ export class ToRaiseError {
       messageText = messageText.join("\n");
     }
 
-    if (this.#compiler.isRegularExpressionLiteral(targetNode)) {
+    if (this.#ts.isRegularExpressionLiteral(targetNode)) {
       const targetRegex = new RegExp(...(targetNode.text.slice(1).split("/") as [pattern: string, flags: string]));
 
       return targetRegex.test(messageText);

@@ -1,3 +1,19 @@
 export { CompatTypeScript } from "./CompatTypeScript.js";
 export { NativeTypeScript } from "./NativeTypeScript.js";
-export type { CommentRange, Node, SourceFile, TypeScript } from "./types.js";
+export type {
+  CallExpression,
+  CommentRange,
+  Decorator,
+  Expression,
+  ImportDeclaration,
+  Node,
+  NodeArray,
+  NumericLiteral,
+  PropertyAccessExpression,
+  RegularExpressionLiteral,
+  SourceFile,
+  StringLiteralLikeNode,
+  TupleTypeNode,
+  TypeNode,
+  TypeScript,
+} from "./types.js";

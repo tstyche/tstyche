@@ -3,6 +3,7 @@ import type { ExpectNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { Reject } from "#reject";
+import type { TypeScript } from "#typescript";
 import { Ensure } from "./Ensure.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { ToAcceptProps } from "./ToAcceptProps.js";
@@ -33,22 +34,22 @@ export class ExpectService {
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
-  constructor(compiler: typeof ts, program: ts.Program, resolvedConfig: ResolvedConfig) {
+  constructor(ts: TypeScript, program: ts.Program, resolvedConfig: ResolvedConfig) {
     this.#program = program;
 
-    this.#ensure = new Ensure(compiler);
-    this.#reject = new Reject(compiler, program, resolvedConfig);
+    this.#ensure = new Ensure(ts);
+    this.#reject = new Reject(ts, program, resolvedConfig);
 
-    this.toAcceptProps = new ToAcceptProps(compiler, program);
-    this.toBe = new ToBe(compiler, program);
-    this.toBeApplicable = new ToBeApplicable(compiler, program);
-    this.toBeAssignableFrom = new ToBeAssignableFrom(compiler, program);
-    this.toBeAssignableTo = new ToBeAssignableTo(compiler, program);
-    this.toBeCallableWith = new ToBeCallableWith(compiler, program);
-    this.toBeConstructableWith = new ToBeConstructableWith(compiler, program);
-    this.toBeInstantiableWith = new ToBeInstantiableWith(compiler, program);
-    this.toHaveProperty = new ToHaveProperty(compiler, program);
-    this.toRaiseError = new ToRaiseError(compiler);
+    this.toAcceptProps = new ToAcceptProps(ts, program);
+    this.toBe = new ToBe(ts, program);
+    this.toBeApplicable = new ToBeApplicable(ts, program);
+    this.toBeAssignableFrom = new ToBeAssignableFrom(ts, program);
+    this.toBeAssignableTo = new ToBeAssignableTo(ts, program);
+    this.toBeCallableWith = new ToBeCallableWith(ts, program);
+    this.toBeConstructableWith = new ToBeConstructableWith(ts, program);
+    this.toBeInstantiableWith = new ToBeInstantiableWith(ts, program);
+    this.toHaveProperty = new ToHaveProperty(ts, program);
+    this.toRaiseError = new ToRaiseError(ts);
   }
 
   match(
