@@ -53,19 +53,23 @@ export class Store {
   }
 
   static async #getAdapter(specifier: string) {
-    const packageJson = await fs.readFile(new URL("package.json", specifier), { encoding: "utf8" });
-    const { exports, version } = JSON.parse(packageJson) as { exports: Record<string, string>; version: string };
+    const packageJsonText = await fs.readFile(new URL("package.json", specifier), { encoding: "utf8" });
+    const packageJson = JSON.parse(packageJsonText) as {
+      exports: Record<string, string>;
+      main: string;
+      version: string;
+    };
 
-    if (Version.isSatisfiedWith(version, "7.0")) {
-      const api = await import(new URL(exports["./unstable/sync"]!, specifier).toString());
-      const ast = await import(new URL(exports["./unstable/ast"]!, specifier).toString());
+    if (Version.isSatisfiedWith(packageJson.version, "7")) {
+      const api = await import(new URL(packageJson.exports["./unstable/sync"]!, specifier).toString());
+      const ast = await import(new URL(packageJson.exports["./unstable/ast"]!, specifier).toString());
 
-      return new NativeTypeScript(api, ast, version);
+      return new NativeTypeScript(api, ast, packageJson.version);
     }
 
-    const compiler = (await import(new URL("lib/typescript.js", specifier).toString())).default;
+    const compiler = (await import(new URL(packageJson.main, specifier).toString())).default;
 
-    return new CompatTypeScript(compiler, version);
+    return new CompatTypeScript(compiler, packageJson.version);
   }
 
   static async load(tag: string): Promise<TypeScript | undefined> {
