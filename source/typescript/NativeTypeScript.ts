@@ -17,7 +17,6 @@ export class NativeTypeScript extends BaseAdapter {
     this.#ast = ast;
     this.version = version;
 
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4237
     this.LanguageVariant = ast.LanguageVariant;
     this.SyntaxKind = ast.SyntaxKind;
     this.TypeFlags = api.TypeFlags;
