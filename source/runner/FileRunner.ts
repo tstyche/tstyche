@@ -90,7 +90,7 @@ export class FileRunner {
         return;
       }
 
-      const moduleSpecifier = fileNameToDocumentURI(file.path).toString();
+      const moduleSpecifier = fileNameToDocumentURI(file.path);
       const testText = (await import(moduleSpecifier))?.default;
 
       if (typeof testText !== "string") {

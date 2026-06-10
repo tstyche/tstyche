@@ -285,7 +285,7 @@ export class Options {
 
         try {
           if (optionValue.startsWith(".")) {
-            optionValue = fileNameToDocumentURI(Path.relative(".", Path.resolve(basePath, optionValue))).toString();
+            optionValue = fileNameToDocumentURI(Path.resolve(basePath, optionValue));
           } else {
             optionValue = import.meta.resolve(optionValue);
           }
