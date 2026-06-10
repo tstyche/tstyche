@@ -16,6 +16,7 @@ time:
   magic-string@0.30.21: 2025-10-24T00:59:47.122Z
   monocart-coverage-reports@2.12.12: 2026-05-29T13:54:39.773Z
   pretty-ansi@4.0.0: 2026-03-30T15:53:16.317Z
+  rollup-plugin-cleanup@3.2.1: 2020-09-23T01:02:40.566Z
   rollup-plugin-dts@6.4.1: 2026-03-21T07:41:26.539Z
   rollup@4.61.1: 2026-06-04T05:23:41.959Z
   tslib@2.8.1: 2024-10-31T22:42:48.624Z
@@ -64,6 +65,9 @@ importers:
       rollup:
         specifier: ^4.61.1
         version: 4.61.1
+      rollup-plugin-cleanup:
+        specifier: ^3.2.1
+        version: 3.2.1(rollup@4.61.1)
       rollup-plugin-dts:
         specifier: ^6.4.1
         version: 6.4.1(rollup@4.61.1)(typescript@6.0.3)
@@ -377,6 +381,9 @@ packages:
     resolution: {integrity: sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==}
     engines: {node: '>= 0.4'}
 
+  estree-walker@0.6.1:
+    resolution: {integrity: sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==}
+
   estree-walker@2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
 
@@ -423,11 +430,18 @@ packages:
     resolution: {integrity: sha512-HGYWWS/ehqTV3xN10i23tkPkpH46MLCIMFNCaaKNavAXTF1RkqxawEPtnjnGZ6XKSInBKkiOA5BKS+aZiY3AvA==}
     engines: {node: '>=8'}
 
+  js-cleanup@1.2.0:
+    resolution: {integrity: sha512-JeDD0yiiSt80fXzAVa/crrS0JDPQljyBG/RpOtaSbyDq03VHa9szJWMaWOYU/bcTn412uMN2MxApXq8v79cUiQ==}
+    engines: {node: ^10.14.2 || >=12.0.0}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
   lz-utils@2.1.1:
     resolution: {integrity: sha512-d3Thjos0PSJQAoyMj6vipSSrtrRHS7DImqUNR8x9NW3+zQIftPIbMJAWhi5nPdg5Q9zHz6lxtN8kp/VdMlhi/Q==}
+
+  magic-string@0.25.9:
+    resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -446,6 +460,10 @@ packages:
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
 
+  perf-regexes@1.0.1:
+    resolution: {integrity: sha512-L7MXxUDtqr4PUaLFCDCXBfGV/6KLIuSEccizDI7JxT+c9x1G1v04BQ4+4oag84SHaCdrBgQAIs/Cqn+flwFPng==}
+    engines: {node: '>=6.14'}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -462,12 +480,21 @@ packages:
     engines: {node: '>= 0.4'}
     hasBin: true
 
+  rollup-plugin-cleanup@3.2.1:
+    resolution: {integrity: sha512-zuv8EhoO3TpnrU8MX8W7YxSbO4gmOR0ny06Lm3nkFfq0IVKdBUtHwhVzY1OAJyNCIAdLiyPnOrU0KnO0Fri1GQ==}
+    engines: {node: ^10.14.2 || >=12.0.0}
+    peerDependencies:
+      rollup: '>=2.0'
+
   rollup-plugin-dts@6.4.1:
     resolution: {integrity: sha512-l//F3Zf7ID5GoOfLfD8kroBjQKEKpy1qfhtAdnpibFZMffPaylrg1CoDC2vGkPeTeyxUe4bVFCln2EFuL7IGGg==}
     engines: {node: '>=20'}
     peerDependencies:
       rollup: ^3.29.4 || ^4
       typescript: ^4.5 || ^5.0 || ^6.0
+
+  rollup-pluginutils@2.8.2:
+    resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
 
   rollup@4.61.1:
     resolution: {integrity: sha512-I4KW6iuRpuu2uHBLraZ1wNZe0DP7lnRha+VJ9tNaYVaVgKhW0aI3h4RYnoRPeql0flHm/Co55b7snEDcOfOJrA==}
@@ -482,6 +509,13 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+
+  skip-regex@1.0.2:
+    resolution: {integrity: sha512-pEjMUbwJ5Pl/6Vn6FsamXHXItJXSRftcibixDmNCWbWhic0hzHrwkMZo0IZ7fMRH9KxcWDFSkzhccB4285PutA==}
+    engines: {node: '>=4.2'}
+
+  sourcemap-codec@1.4.8:
+    resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
 
   supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
@@ -655,6 +689,8 @@ snapshots:
 
   es-errors@1.3.0: {}
 
+  estree-walker@0.6.1: {}
+
   estree-walker@2.0.2: {}
 
   foreground-child@4.0.3:
@@ -692,9 +728,19 @@ snapshots:
       html-escaper: 2.0.2
       istanbul-lib-report: 3.0.1
 
+  js-cleanup@1.2.0:
+    dependencies:
+      magic-string: 0.25.9
+      perf-regexes: 1.0.1
+      skip-regex: 1.0.2
+
   js-tokens@4.0.0: {}
 
   lz-utils@2.1.1: {}
+
+  magic-string@0.25.9:
+    dependencies:
+      sourcemap-codec: 1.4.8
 
   magic-string@0.30.21:
     dependencies:
@@ -723,6 +769,8 @@ snapshots:
 
   path-parse@1.0.7: {}
 
+  perf-regexes@1.0.1: {}
+
   picocolors@1.1.1: {}
 
   picomatch@4.0.4: {}
@@ -736,6 +784,12 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
+  rollup-plugin-cleanup@3.2.1(rollup@4.61.1):
+    dependencies:
+      js-cleanup: 1.2.0
+      rollup: 4.61.1
+      rollup-pluginutils: 2.8.2
+
   rollup-plugin-dts@6.4.1(rollup@4.61.1)(typescript@6.0.3):
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -746,6 +800,10 @@ snapshots:
       typescript: 6.0.3
     optionalDependencies:
       '@babel/code-frame': 7.29.7
+
+  rollup-pluginutils@2.8.2:
+    dependencies:
+      estree-walker: 0.6.1
 
   rollup@4.61.1:
     dependencies:
@@ -764,6 +822,10 @@ snapshots:
   semver@7.8.2: {}
 
   signal-exit@4.1.0: {}
+
+  skip-regex@1.0.2: {}
+
+  sourcemap-codec@1.4.8: {}
 
   supports-color@7.2.0:
     dependencies:
