@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { documentURIToFileName, fileNameToDocumentURI } from "@typescript/native-preview/unstable/sync";
 import { Diagnostic, type DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { Path } from "#path";
@@ -272,7 +272,7 @@ export class Options {
         }
 
         if (optionValue.startsWith("file:")) {
-          optionValue = fileURLToPath(optionValue);
+          optionValue = documentURIToFileName(optionValue);
         }
 
         optionValue = Path.resolve(basePath, optionValue);
@@ -285,7 +285,7 @@ export class Options {
 
         try {
           if (optionValue.startsWith(".")) {
-            optionValue = pathToFileURL(Path.relative(".", Path.resolve(basePath, optionValue))).toString();
+            optionValue = fileNameToDocumentURI(Path.relative(".", Path.resolve(basePath, optionValue))).toString();
           } else {
             optionValue = import.meta.resolve(optionValue);
           }

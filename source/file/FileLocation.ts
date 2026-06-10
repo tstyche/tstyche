@@ -1,6 +1,7 @@
-import { fileURLToPath } from "node:url";
+import { documentURIToFileName } from "@typescript/native-preview/unstable/sync";
 import { Path } from "#path";
 
+// TODO rename to 'FilePosition', consider using 'type FileIdentifier = string | { uri: string; }'
 export class FileLocation {
   path: string;
   position: number | undefined;
@@ -15,6 +16,6 @@ export class FileLocation {
       return file;
     }
 
-    return fileURLToPath(file);
+    return documentURIToFileName(file.toString());
   }
 }

@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
     "@sourcemeta/jsonschema": "^15.8.0",
     "@types/node": "^24.13.1",

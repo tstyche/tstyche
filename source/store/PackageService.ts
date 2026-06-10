@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import { pathToFileURL } from "node:url";
+import { fileNameToDocumentURI } from "@typescript/native-preview/unstable/sync";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
@@ -46,7 +46,7 @@ export class PackageService {
       }
     }
 
-    return `${pathToFileURL(packagePath)}/`;
+    return `${fileNameToDocumentURI(packagePath)}/`;
   }
 
   async #fetch(packagePath: string, packageVersion: string, resource: Resource): Promise<boolean> {

@@ -1,4 +1,4 @@
-import { pathToFileURL } from "node:url";
+import { fileNameToDocumentURI } from "@typescript/native-preview/unstable/sync";
 import type ts from "typescript";
 import { CollectService, type TestTree } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
@@ -90,7 +90,7 @@ export class FileRunner {
         return;
       }
 
-      const moduleSpecifier = pathToFileURL(file.path).toString();
+      const moduleSpecifier = fileNameToDocumentURI(file.path).toString();
       const testText = (await import(moduleSpecifier))?.default;
 
       if (typeof testText !== "string") {

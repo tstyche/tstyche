@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import MagicString from "magic-string";
 import type { Plugin, RollupOptions } from "rollup";
@@ -74,6 +75,8 @@ const config: Array<RollupOptions> = [
     output,
     plugins: [
       clean(),
+      // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
+      resolve({ preferBuiltins: true }),
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
       typescript({ tsconfig }),
       dts({ tsconfig }),
