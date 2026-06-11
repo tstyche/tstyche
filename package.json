@@ -55,7 +55,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16",
-    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
     "@sourcemeta/jsonschema": "^15.8.0",
     "@types/node": "^24.13.1",
@@ -67,7 +66,6 @@
     "monocart-coverage-reports": "^2.12.12",
     "pretty-ansi": "^4.0.0",
     "rollup": "^4.61.1",
-    "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-dts": "^6.4.1",
     "tslib": "^2.8.1",
     "typescript": "~6.0.3"
