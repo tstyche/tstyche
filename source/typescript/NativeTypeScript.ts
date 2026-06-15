@@ -35,6 +35,6 @@ export class NativeTypeScript extends BaseAdapter {
   }
 
   isTypeOnlyImportDeclaration(node: ImportDeclaration): boolean {
-    return node.importClause?.phaseModifier !== this.SyntaxKind.TypeKeyword;
+    return node.importClause?.phaseModifier === this.SyntaxKind.TypeKeyword;
   }
 }
