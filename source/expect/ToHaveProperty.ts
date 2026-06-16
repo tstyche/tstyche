@@ -1,7 +1,7 @@
-import type ts from "typescript";
+import type ts6 from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import type { LiteralType } from "#typescript";
+import type * as ts from "#typescript";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -13,8 +13,9 @@ export class ToHaveProperty extends MatcherBase {
     const targetType = this.getType(targetNode);
     let propertyNameText: string;
 
-    if (targetType.flags & this.ts.TypeFlags.Literal) {
-      propertyNameText = (targetType as LiteralType).value.toString();
+    if ((targetType.flags & this.ts.TypeFlags.StringLiteral) | this.ts.TypeFlags.NumberLiteral) {
+      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4319
+      propertyNameText = (targetType as ts.StringLiteralType | ts.NumberLiteralType).value.toString();
     } else {
       const symbol = targetType.getSymbol();
       propertyNameText = `[${symbol?.name}]`;
@@ -33,7 +34,7 @@ export class ToHaveProperty extends MatcherBase {
         ? this.typeChecker.getNonPrimitiveType()
         : ({ flags: this.ts.TypeFlags.NonPrimitive } as ts.Type); // TODO remove this workaround after dropping support for TypeScript 5.8
 
-    return this.typeChecker.isTypeAssignableTo(type, nonPrimitiveType);
+    return this.typeChecker.isTypeAssignableTo(type as ts6.Type, nonPrimitiveType as ts6.Type);
   }
 
   match(

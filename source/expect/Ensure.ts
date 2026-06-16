@@ -1,17 +1,17 @@
-import type ts from "typescript";
+import type ts6 from "typescript";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import type { Node, TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 
 export class Ensure {
-  #ts: TypeScript;
+  #ts: ts.TypeScript;
 
-  constructor(ts: TypeScript) {
+  constructor(ts: ts.TypeScript) {
     this.#ts = ts;
   }
 
-  argument<T extends Node>(
+  argument<T extends ts.Node>(
     node: T | undefined,
-    enclosingNode: Node,
+    enclosingNode: ts.Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
     if (!node || !this.#ts.belongsToArgumentList(node)) {
@@ -23,9 +23,9 @@ export class Ensure {
     return true;
   }
 
-  argumentOrTypeArgument<T extends Node>(
+  argumentOrTypeArgument<T extends ts.Node>(
     node: T | undefined,
-    enclosingNode: Node,
+    enclosingNode: ts.Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
     if (!node) {
@@ -37,7 +37,7 @@ export class Ensure {
     return true;
   }
 
-  jsxSetup(program: ts.Program, node: Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): boolean {
+  jsxSetup(program: ts6.Program, node: ts.Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): boolean {
     const diagnosticText: Array<string> = [];
 
     if (!program.getCompilerOptions().jsx) {
@@ -57,9 +57,9 @@ export class Ensure {
     return true;
   }
 
-  typeArgument<T extends Node>(
+  typeArgument<T extends ts.Node>(
     node: T | undefined,
-    enclosingNode: Node,
+    enclosingNode: ts.Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
     if (!node || this.#ts.belongsToArgumentList(node)) {
@@ -73,7 +73,7 @@ export class Ensure {
 
   #emitDiagnostic(
     text: string | Array<string>,
-    enclosingNode: Node,
+    enclosingNode: ts.Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): void {
     if (!Array.isArray(text)) {

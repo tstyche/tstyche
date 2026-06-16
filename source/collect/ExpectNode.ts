@@ -1,14 +1,5 @@
-import type ts from "typescript";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import type {
-  CallExpression,
-  Decorator,
-  Expression,
-  NodeArray,
-  PropertyAccessExpression,
-  TypeNode,
-  TypeScript,
-} from "#typescript";
+import type * as ts from "#typescript";
 import type { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
@@ -17,23 +8,23 @@ import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 export class ExpectNode extends TestTreeNode {
   abilityDiagnostics = new Set<ts.Diagnostic>();
   isNot: boolean;
-  matcherNode: CallExpression | Decorator;
-  matcherNameNode: PropertyAccessExpression;
-  modifierNode: PropertyAccessExpression;
-  notNode: PropertyAccessExpression | undefined;
-  source: NodeArray<Expression> | NodeArray<TypeNode>;
-  target: NodeArray<Expression> | NodeArray<TypeNode> | undefined;
+  matcherNode: ts.CallExpression | ts.Decorator;
+  matcherNameNode: ts.PropertyAccessExpression;
+  modifierNode: ts.PropertyAccessExpression;
+  notNode: ts.PropertyAccessExpression | undefined;
+  source: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode>;
+  target: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> | undefined;
 
   constructor(
-    ts: TypeScript,
+    ts: ts.TypeScript,
     brand: TestTreeNodeBrand,
-    node: CallExpression,
+    node: ts.CallExpression,
     parent: TestTree | TestTreeNode,
     flags: TestTreeNodeFlags,
-    matcherNode: CallExpression | Decorator,
-    matcherNameNode: PropertyAccessExpression,
-    modifierNode: PropertyAccessExpression,
-    notNode: PropertyAccessExpression | undefined,
+    matcherNode: ts.CallExpression | ts.Decorator,
+    matcherNameNode: ts.PropertyAccessExpression,
+    modifierNode: ts.PropertyAccessExpression,
+    notNode: ts.PropertyAccessExpression | undefined,
   ) {
     super(ts, brand, node, parent, flags);
 

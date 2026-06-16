@@ -1,13 +1,12 @@
-import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
-import type { Node } from "#typescript";
+import type * as ts from "#typescript";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToBeApplicable extends MatcherBase {
-  #resolveTargetText(node: Node) {
+  #resolveTargetText(node: ts.Node) {
     let text = "";
 
     switch (node.kind) {
@@ -57,7 +56,7 @@ export class ToBeApplicable extends MatcherBase {
         let related: Array<Diagnostic> | undefined;
 
         if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts.Diagnostic>);
         }
 
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));

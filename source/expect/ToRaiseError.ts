@@ -1,24 +1,17 @@
-import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
-import type {
-  NodeArray,
-  NumericLiteral,
-  RegularExpressionLiteral,
-  StringLiteralLikeNode,
-  TypeScript,
-} from "#typescript";
+import type * as ts from "#typescript";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToRaiseError {
-  #ts: TypeScript;
+  #ts: ts.TypeScript;
 
-  constructor(ts: TypeScript) {
+  constructor(ts: ts.TypeScript) {
     this.#ts = ts;
   }
 
-  #explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNodes: NodeArray<ArgumentNode>) {
+  #explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNodes: ts.NodeArray<ArgumentNode>) {
     const isExpression = this.#ts.belongsToArgumentList(sourceNode);
 
     const origin = DiagnosticOrigin.fromAssertion(expectNode);
@@ -43,7 +36,7 @@ export class ToRaiseError {
     }
 
     return [...expectNode.diagnostics].reduce<Array<Diagnostic>>((accumulator, diagnostic, index) => {
-      const targetNode = targetNodes[index] as StringLiteralLikeNode | NumericLiteral;
+      const targetNode = targetNodes[index] as ts.StringLiteralLikeNode | ts.NumericLiteral;
 
       const isMatch = this.#matchExpectedError(diagnostic, targetNode);
 
@@ -69,7 +62,7 @@ export class ToRaiseError {
   match(
     expectNode: ExpectNode,
     sourceNode: ArgumentNode,
-    targetNodes: NodeArray<ArgumentNode>,
+    targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];
@@ -107,7 +100,7 @@ export class ToRaiseError {
         [...expectNode.diagnostics].every((diagnostic, index) =>
           this.#matchExpectedError(
             diagnostic,
-            targetNodes[index] as StringLiteralLikeNode | NumericLiteral | RegularExpressionLiteral,
+            targetNodes[index] as ts.StringLiteralLikeNode | ts.NumericLiteral | ts.RegularExpressionLiteral,
           ),
         );
     }
@@ -120,7 +113,7 @@ export class ToRaiseError {
 
   #matchExpectedError(
     diagnostic: ts.Diagnostic,
-    targetNode: StringLiteralLikeNode | NumericLiteral | RegularExpressionLiteral,
+    targetNode: ts.StringLiteralLikeNode | ts.NumericLiteral | ts.RegularExpressionLiteral,
   ) {
     if (this.#ts.isNumericLiteral(targetNode)) {
       return Number.parseInt(targetNode.text, 10) === diagnostic.code;

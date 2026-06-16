@@ -1,7 +1,7 @@
-import type ts from "typescript";
+import type * as ts from "#typescript";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
-import { getDiagnosticMessageText, getTextSpanEnd, isDiagnosticWithLocation } from "./helpers.js";
+import { getDiagnosticMessageText, getTextSpanEnd, isDiagnosticPosition } from "./helpers.js";
 
 export class Diagnostic {
   category: DiagnosticCategory;
@@ -41,14 +41,21 @@ export class Diagnostic {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
-      if (isDiagnosticWithLocation(diagnostic)) {
-        origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), diagnostic.file);
+      if (isDiagnosticPosition(diagnostic)) {
+        if ("fileName" in diagnostic) {
+          // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4316
+          origin = new DiagnosticOrigin(diagnostic.pos, diagnostic.end, diagnostic.getSourceFile());
+        }
+
+        if ("file" in diagnostic) {
+          origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), diagnostic.file.getSourceFile());
+        }
       }
 
       let related: Array<Diagnostic> | undefined;
 
       if (diagnostic.relatedInformation != null) {
-        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts.Diagnostic>);
       }
 
       const text = getDiagnosticMessageText(diagnostic);

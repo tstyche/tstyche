@@ -1,5 +1,5 @@
 import { DiagnosticOrigin } from "#diagnostic";
-import type { SourceFile } from "#typescript";
+import type * as ts from "#typescript";
 import { JsonNode } from "./JsonNode.js";
 import type { JsonSourceFile } from "./JsonSourceFile.js";
 
@@ -12,9 +12,9 @@ export class JsonScanner {
   #end: number;
   #position: number;
   #previousPosition: number;
-  #sourceFile: SourceFile | JsonSourceFile;
+  #sourceFile: ts.SourceFile | JsonSourceFile;
 
-  constructor(sourceFile: SourceFile | JsonSourceFile, options?: JsonScannerOptions) {
+  constructor(sourceFile: ts.SourceFile | JsonSourceFile, options?: JsonScannerOptions) {
     this.#end = options?.end ?? sourceFile.text.length;
     this.#position = options?.start ?? 0;
     this.#previousPosition = options?.start ?? 0;

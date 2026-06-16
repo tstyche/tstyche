@@ -1,23 +1,24 @@
-import type ts from "typescript";
+import type ts6 from "typescript";
 import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
+import type * as ts from "#typescript";
 import { Version } from "#version";
 
 export class ProjectService {
-  #compiler: typeof ts;
-  #host: ts.server.ServerHost;
+  #compiler: typeof ts6;
+  #host: ts6.server.ServerHost;
   #lastSeenProject: string | undefined = "none";
   #projectConfig: ProjectConfig;
   #resolvedConfig: ResolvedConfig;
   #seenProjects = new Set<string | undefined>();
   #seenTestFiles = new Set<string>();
-  #service: ts.server.ProjectService;
+  #service: ts6.server.ProjectService;
 
-  constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts6, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
     this.#resolvedConfig = resolvedConfig;
 
@@ -25,7 +26,7 @@ export class ProjectService {
 
     const noop = () => undefined;
 
-    const noopLogger: ts.server.Logger = {
+    const noopLogger: ts6.server.Logger = {
       close: noop,
       endGroup: noop,
       getLogFileName: noop,
@@ -74,7 +75,7 @@ export class ProjectService {
   }
 
   #getDefaultCompilerOptions() {
-    const defaultCompilerOptions: ts.server.protocol.CompilerOptions = {
+    const defaultCompilerOptions: ts6.server.protocol.CompilerOptions = {
       allowJs: true,
       checkJs: true,
       allowImportingTsExtensions: true,
@@ -96,7 +97,7 @@ export class ProjectService {
     return defaultCompilerOptions;
   }
 
-  getDefaultProject(filePath: string): ts.server.Project | undefined {
+  getDefaultProject(filePath: string): ts6.server.Project | undefined {
     const project = this.#service.getDefaultProjectForFile(
       this.#compiler.server.toNormalizedPath(filePath),
       /* ensureProject */ true,
@@ -118,7 +119,7 @@ export class ProjectService {
     return languageService?.getSemanticDiagnostics(filePath);
   }
 
-  getLanguageService(filePath: string): ts.LanguageService | undefined {
+  getLanguageService(filePath: string): ts6.LanguageService | undefined {
     const project = this.getDefaultProject(filePath);
 
     return project?.getLanguageService(/* ensureSynchronized */ true);

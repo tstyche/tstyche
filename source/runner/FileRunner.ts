@@ -1,5 +1,5 @@
 import { pathToFileURL } from "node:url";
-import type ts from "typescript";
+import type ts6 from "typescript";
 import { CollectService, type TestTree } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
@@ -9,7 +9,7 @@ import { ProjectService } from "#project";
 import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
 import type { CancellationToken } from "#token";
-import type { CompatTypeScript, TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import { Version } from "#version";
 import { RunModeFlags } from "./RunModeFlags.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
@@ -19,13 +19,13 @@ export class FileRunner {
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
   #suppressedService = new SuppressedService();
-  #ts: TypeScript;
+  #ts: ts.TypeScript;
 
-  constructor(ts: TypeScript, resolvedConfig: ResolvedConfig) {
+  constructor(ts: ts.TypeScript, resolvedConfig: ResolvedConfig) {
     this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#projectService = new ProjectService((ts as CompatTypeScript).compiler, this.#resolvedConfig);
+    this.#projectService = new ProjectService((ts as ts.CompatTypeScript).compiler, this.#resolvedConfig);
     this.#collectService = new CollectService(ts, this.#projectService, this.#resolvedConfig);
   }
 
@@ -55,7 +55,7 @@ export class FileRunner {
     file: FileLocation,
     fileResult: FileResult,
     runModeFlags: RunModeFlags,
-  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts.Program } | undefined> {
+  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts6.Program } | undefined> {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
     const languageService = this.#projectService.getLanguageService(file.path);

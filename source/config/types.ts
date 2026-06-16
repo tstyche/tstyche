@@ -1,4 +1,4 @@
-import type { SourceFile } from "#typescript";
+import type * as ts from "#typescript";
 
 // #region -- Generated code, to update run: aube run build && aube run generate
 
@@ -64,7 +64,7 @@ export interface TextRange {
 }
 
 export interface DirectiveRange {
-  sourceFile: SourceFile;
+  sourceFile: ts.SourceFile;
   namespace: TextRange;
   directive?: TextRange;
   argument?: TextRange;

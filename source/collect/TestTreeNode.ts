@@ -1,6 +1,5 @@
-import type ts from "typescript";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import type { CallExpression, TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import type { ExpectNode } from "./ExpectNode.js";
 import type { TestTree } from "./TestTree.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
@@ -12,13 +11,13 @@ export class TestTreeNode {
   diagnostics = new Set<ts.Diagnostic>();
   flags: TestTreeNodeFlags;
   name = "";
-  node: CallExpression;
+  node: ts.CallExpression;
   parent: TestTree | TestTreeNode;
 
   constructor(
-    ts: TypeScript,
+    ts: ts.TypeScript,
     brand: TestTreeNodeBrand,
-    node: CallExpression,
+    node: ts.CallExpression,
     parent: TestTree | TestTreeNode,
     flags: TestTreeNodeFlags,
   ) {

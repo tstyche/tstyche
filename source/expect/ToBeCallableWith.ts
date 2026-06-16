@@ -1,6 +1,6 @@
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import type { NodeArray } from "#typescript";
+import type * as ts from "#typescript";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -12,7 +12,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
   match(
     expectNode: ExpectNode,
     sourceNode: ArgumentNode,
-    targetNodes: NodeArray<ArgumentNode>,
+    targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
     const sourceType = this.getType(sourceNode);

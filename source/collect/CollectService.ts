@@ -1,10 +1,9 @@
-import type ts from "typescript";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Layers } from "#layers";
 import type { ProjectService } from "#project";
-import type { CallExpression, Decorator, Node, SourceFile, TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import { CollectDiagnosticText } from "./CollectDiagnosticText.js";
 import { ExpectNode } from "./ExpectNode.js";
 import { IdentifierLookup, type TestTreeNodeMeta } from "./IdentifierLookup.js";
@@ -16,16 +15,16 @@ import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 export class CollectService {
   #layers: Layers;
   #identifierLookup: IdentifierLookup;
-  #ts: TypeScript;
+  #ts: ts.TypeScript;
 
-  constructor(ts: TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
+  constructor(ts: ts.TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#ts = ts;
 
     this.#layers = new Layers(this.#ts, projectService, resolvedConfig);
     this.#identifierLookup = new IdentifierLookup(this.#ts);
   }
 
-  #collectTestTreeNodes(node: Node, parent: TestTree | TestTreeNode, testTree: TestTree) {
+  #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode, testTree: TestTree) {
     if (this.#ts.isCallExpression(node)) {
       const meta = this.#identifierLookup.resolveTestTreeNodeMeta(node);
 
@@ -132,7 +131,7 @@ export class CollectService {
     });
   }
 
-  createTestTree(sourceFile: SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
+  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);
@@ -149,7 +148,7 @@ export class CollectService {
     return testTree;
   }
 
-  #checkNode(node: Node, meta: TestTreeNodeMeta, parent: TestTree | TestTreeNode) {
+  #checkNode(node: ts.Node, meta: TestTreeNodeMeta, parent: TestTree | TestTreeNode) {
     if ("brand" in parent && !this.#isNodeAllowed(meta, parent)) {
       const text = CollectDiagnosticText.cannotBeNestedWithin(meta.brand, parent.brand);
       const origin = DiagnosticOrigin.fromNode(node);
@@ -186,7 +185,7 @@ export class CollectService {
     return true;
   }
 
-  #getChainedNode({ parent }: Node, name?: string) {
+  #getChainedNode({ parent }: ts.Node, name?: string) {
     if (!this.#ts.isPropertyAccessExpression(parent)) {
       return;
     }
@@ -199,7 +198,7 @@ export class CollectService {
     return parent;
   }
 
-  #getMatcherNode(node: Node): CallExpression | Decorator | undefined {
+  #getMatcherNode(node: ts.Node): ts.CallExpression | ts.Decorator | undefined {
     if (this.#ts.isCallExpression(node.parent)) {
       return node.parent;
     }

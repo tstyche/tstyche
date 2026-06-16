@@ -1,15 +1,14 @@
-import type ts from "typescript";
 import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
-import type { TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import type { TextEditor } from "./TextEditor.js";
 
 export class AbilityLayer {
   #editor: TextEditor;
   #nodes: Array<ExpectNode> = [];
-  #ts: TypeScript;
+  #ts: ts.TypeScript;
 
-  constructor(ts: TypeScript, editor: TextEditor) {
+  constructor(ts: ts.TypeScript, editor: TextEditor) {
     this.#ts = ts;
     this.#editor = editor;
   }

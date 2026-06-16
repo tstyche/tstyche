@@ -2,7 +2,8 @@ import fs from "node:fs/promises";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { CompatTypeScript, NativeTypeScript, type TypeScript } from "#typescript";
+import type * as ts from "#typescript";
+import { CompatTypeScript, NativeTypeScript } from "#typescript";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
@@ -72,7 +73,7 @@ export class Store {
     return new CompatTypeScript(compiler, packageJson.version);
   }
 
-  static async load(tag: string): Promise<TypeScript | undefined> {
+  static async load(tag: string): Promise<ts.TypeScript | undefined> {
     if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
       return Store.#getAdapter(environmentOptions.typescriptSpecifier);
     }

@@ -1,5 +1,5 @@
 import type { Offset } from "#diagnostic";
-import type { Node, NodeArray, SourceFile } from "#typescript";
+import type * as ts from "#typescript";
 
 export class TextEditor {
   #filePath = "";
@@ -7,7 +7,7 @@ export class TextEditor {
   #offsets: Array<Offset> = [];
   #text = "";
 
-  open(sourceFile: SourceFile): void {
+  open(sourceFile: ts.SourceFile): void {
     this.#filePath = sourceFile.fileName;
     this.#text = sourceFile.text;
 
@@ -32,7 +32,7 @@ export class TextEditor {
     return this;
   }
 
-  eraseTrailingComma(node: NodeArray<Node>): this {
+  eraseTrailingComma(node: ts.NodeArray<ts.Node>): this {
     if (node.hasTrailingComma) {
       this.erase(node.end - 1, node.end);
     }

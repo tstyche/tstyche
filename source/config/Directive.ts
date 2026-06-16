@@ -2,7 +2,7 @@ import type { TestTreeNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { JsonScanner } from "#json";
-import type { CommentRange, Node, SourceFile, TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
@@ -10,22 +10,22 @@ import type { DirectiveRange, InlineConfig, OptionValue } from "./types.js";
 
 export class Directive {
   static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
-  static #rangeCache = new WeakMap<Node, Array<DirectiveRange>>();
+  static #rangeCache = new WeakMap<ts.Node, Array<DirectiveRange>>();
 
-  static getDirectiveRange(ts: TypeScript, owner: TestTreeNode, directiveText: string): DirectiveRange | undefined {
+  static getDirectiveRange(ts: ts.TypeScript, owner: TestTreeNode, directiveText: string): DirectiveRange | undefined {
     const directiveRanges = Directive.getDirectiveRanges(ts, owner.node);
 
     return directiveRanges?.find((range) => range.directive?.text === directiveText);
   }
 
-  static getDirectiveRanges(ts: TypeScript, node: Node): Array<DirectiveRange> | undefined {
+  static getDirectiveRanges(ts: ts.TypeScript, node: ts.Node): Array<DirectiveRange> | undefined {
     let ranges = Directive.#rangeCache.get(node);
 
     if (ranges != null) {
       return ranges;
     }
 
-    let sourceFile: SourceFile;
+    let sourceFile: ts.SourceFile;
     let position = 0;
 
     if (ts.isSourceFile(node)) {
@@ -79,7 +79,7 @@ export class Directive {
     return inlineConfig;
   }
 
-  static #getRange(sourceFile: SourceFile, comment: CommentRange) {
+  static #getRange(sourceFile: ts.SourceFile, comment: ts.CommentRange) {
     const [text] = sourceFile.text.substring(comment.pos, comment.end).split(/--+/);
     const match = text?.match(Directive.#directiveRegex);
 
@@ -159,7 +159,7 @@ export class Directive {
     Directive.#onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  static async #parseJson(sourceFile: SourceFile, start: number, end: number): Promise<Record<string, OptionValue>> {
+  static async #parseJson(sourceFile: ts.SourceFile, start: number, end: number): Promise<Record<string, OptionValue>> {
     const inlineOptions: Record<string, OptionValue> = {};
 
     const configParser = new ConfigParser(

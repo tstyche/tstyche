@@ -1,4 +1,4 @@
-import type { CallExpression, ImportDeclaration, TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
@@ -13,15 +13,15 @@ export interface TestTreeNodeMeta {
 }
 
 export class IdentifierLookup {
-  #ts: TypeScript;
+  #ts: ts.TypeScript;
   #identifiers!: Identifiers;
   #moduleSpecifiers = ['"tstyche"', "'tstyche'"];
 
-  constructor(ts: TypeScript) {
+  constructor(ts: ts.TypeScript) {
     this.#ts = ts;
   }
 
-  handleImportDeclaration(node: ImportDeclaration): void {
+  handleImportDeclaration(node: ts.ImportDeclaration): void {
     if (
       // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
       this.#moduleSpecifiers.includes(node.moduleSpecifier.getText()) &&
@@ -72,7 +72,7 @@ export class IdentifierLookup {
     };
   }
 
-  resolveTestTreeNodeMeta(node: CallExpression): TestTreeNodeMeta | undefined {
+  resolveTestTreeNodeMeta(node: ts.CallExpression): TestTreeNodeMeta | undefined {
     let flags = TestTreeNodeFlags.None;
     let expression = node.expression;
 

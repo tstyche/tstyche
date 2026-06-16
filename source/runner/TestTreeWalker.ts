@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts6 from "typescript";
 import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
@@ -6,7 +6,7 @@ import { EventEmitter } from "#events";
 import { ExpectService } from "#expect";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
-import type { TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import { Version } from "#version";
 import { FixmeService } from "./FixmeService.js";
 import { RunModeFlags } from "./RunModeFlags.enum.js";
@@ -24,11 +24,11 @@ export class TestTreeWalker {
   #onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>;
   #position: number | undefined;
   #resolvedConfig: ResolvedConfig;
-  #ts: TypeScript;
+  #ts: ts.TypeScript;
 
   constructor(
-    ts: TypeScript,
-    program: ts.Program,
+    ts: ts.TypeScript,
+    program: ts6.Program,
     resolvedConfig: ResolvedConfig,
     onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
     options: TestTreeWalkerOptions,

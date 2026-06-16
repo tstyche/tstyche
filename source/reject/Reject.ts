@@ -1,16 +1,16 @@
-import type ts from "typescript";
+import type ts6 from "typescript";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import type { Expression, TypeNode, TypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import { capitalize } from "./helpers.js";
 import { RejectDiagnosticText } from "./RejectDiagnosticText.js";
 
 export class Reject {
   #rejectedArgumentTypes = new Set<"any" | "never">();
-  #typeChecker: ts.TypeChecker;
-  #ts: TypeScript;
+  #typeChecker: ts6.TypeChecker;
+  #ts: ts.TypeScript;
 
-  constructor(ts: TypeScript, program: ts.Program, resolvedConfig: ResolvedConfig) {
+  constructor(ts: ts.TypeScript, program: ts6.Program, resolvedConfig: ResolvedConfig) {
     this.#ts = ts;
     this.#typeChecker = program.getTypeChecker();
 
@@ -23,7 +23,7 @@ export class Reject {
   }
 
   argumentType(
-    target: Array<Expression | TypeNode | undefined>,
+    target: Array<ts.Expression | ts.TypeNode | undefined>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): boolean {
     for (const rejectedType of this.#rejectedArgumentTypes) {
@@ -39,7 +39,9 @@ export class Reject {
           continue;
         }
 
-        if (this.#typeChecker.getTypeAtLocation(node as ts.Node).flags & this.#ts.TypeFlags[capitalize(rejectedType)]) {
+        if (
+          this.#typeChecker.getTypeAtLocation(node as ts6.Node).flags & this.#ts.TypeFlags[capitalize(rejectedType)]
+        ) {
           const text = [
             this.#ts.belongsToArgumentList(node)
               ? RejectDiagnosticText.argumentCannotBeOfType(rejectedType)
