@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";

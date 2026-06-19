@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 import type { ExpectNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { MappedDiagnostic } from "#diagnostic";

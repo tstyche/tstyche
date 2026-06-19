@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 
 export function compareDiagnostics(a: ts.Diagnostic, b: ts.Diagnostic): boolean {
   if (a.file?.fileName !== b.file?.fileName) {

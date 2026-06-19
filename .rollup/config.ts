@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import typescript from "@rollup/plugin-typescript";
+import ts6 from "@typescript/typescript6";
 import MagicString from "magic-string";
 import type { Plugin, RollupOptions } from "rollup";
 import dts from "rollup-plugin-dts";
@@ -75,7 +76,7 @@ const config: Array<RollupOptions> = [
     plugins: [
       clean(),
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ tsconfig }),
+      typescript({ typescript: ts6, tsconfig }),
       dts({ tsconfig }),
       tidyDts(),
     ],
@@ -89,7 +90,7 @@ const config: Array<RollupOptions> = [
     },
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ tsconfig }),
+      typescript({ typescript: ts6, tsconfig }),
       dts({ tsconfig }),
     ],
   },
@@ -105,7 +106,11 @@ const config: Array<RollupOptions> = [
     output,
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true }, tsconfig }),
+      typescript({
+        compilerOptions: { removeComments: true },
+        typescript: ts6,
+        tsconfig,
+      }),
       tidyJs(),
     ],
   },
@@ -118,7 +123,11 @@ const config: Array<RollupOptions> = [
     },
     plugins: [
       // @ts-expect-error TODO: https://github.com/rollup/plugins/issues/1541
-      typescript({ compilerOptions: { removeComments: true }, tsconfig }),
+      typescript({
+        compilerOptions: { removeComments: true },
+        typescript: ts6,
+        tsconfig,
+      }),
     ],
   },
 ];

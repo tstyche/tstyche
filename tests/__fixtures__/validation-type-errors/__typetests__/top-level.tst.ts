@@ -1,5 +1,5 @@
+import type ts from "@typescript/typescript6";
 import { expect, test } from "tstyche";
-import type ts from "typescript";
 
 test("is string?", () => {
   expect<string>().type.toBe<string>();
