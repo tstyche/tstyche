@@ -30,11 +30,6 @@ export class Environment {
       return Number.parseFloat(process.env["TSTYCHE_FETCH_TIMEOUT"]);
     }
 
-    // TODO remove in TSTyche 8
-    if (process.env["TSTYCHE_TIMEOUT"] != null) {
-      return Number.parseFloat(process.env["TSTYCHE_TIMEOUT"]);
-    }
-
     return 30;
   }
 
