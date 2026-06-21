@@ -90,22 +90,26 @@ export class Environment {
   }
 
   static #resolveTypeScriptSpecifier() {
-    let specifier = "typescript";
+    function resolve(specifier: string) {
+      return import.meta.resolve(`${specifier}/package.json`).replace(/package\.json$/, "");
+    }
 
     if (process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"] != null) {
-      specifier = process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"];
-    }
+      const specifier = process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"];
 
-    let resolvedSpecifier: string | undefined;
+      if (specifier !== "") {
+        return resolve(specifier);
+      }
+
+      return;
+    }
 
     try {
-      if (specifier) {
-        resolvedSpecifier = import.meta.resolve(`${specifier}/package.json`).replace(/package\.json$/, "");
-      }
+      return resolve("typescript");
     } catch {
-      // module was not found
+      // 'typescript' is not installed
     }
 
-    return resolvedSpecifier;
+    return;
   }
 }
