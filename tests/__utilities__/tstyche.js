@@ -14,7 +14,7 @@ export function spawnTyche(fixtureUrl, args = [], options = {}) {
       ...process.env,
       ["TSTYCHE_NO_COLOR"]: "true",
       ["TSTYCHE_STORE_PATH"]: "./.store",
-      ["TSTYCHE_TYPESCRIPT_MODULE"]: "@typescript/typescript6",
+      ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "@typescript/typescript6",
       ...options.env,
     };
 
