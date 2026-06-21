@@ -6,5 +6,5 @@ export interface EnvironmentOptions {
   noInteractive: boolean;
   npmRegistry: string;
   storePath: string;
-  typescriptModule: string | undefined;
+  typescriptSpecifier: string | undefined;
 }

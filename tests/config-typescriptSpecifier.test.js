@@ -13,7 +13,7 @@ test("is string?", () => {
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
-await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
+await test("'TSTYCHE_TYPESCRIPT_SPECIFIER' environment variable", async (t) => {
   t.afterEach(async () => {
     await clearFixture(fixtureUrl);
   });
@@ -26,7 +26,7 @@ await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
     assert.equal(stderr, "");
 
     assert.matchObject(normalizeOutput(stdout), {
-      typescriptModule: /node_modules\/typescript\/lib\/typescript\.js$/,
+      typescriptSpecifier: /node_modules\/typescript\/$/,
     });
 
     assert.equal(exitCode, 0);
@@ -39,11 +39,11 @@ await test("'TSTYCHE_TYPESCRIPT_MODULE' environment variable", async (t) => {
 
     await spawnTyche(fixtureUrl, ["--fetch", "--target", "5.8.2"]);
 
-    const typescriptModule = new URL("./.store/typescript@5.8.2/lib/typescript.js", fixtureUrl).toString();
+    const typescriptSpecifier = new URL("./.store/typescript@5.8.2", fixtureUrl).toString();
 
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
       env: {
-        ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule,
+        ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: typescriptSpecifier,
       },
     });
 
