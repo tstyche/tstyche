@@ -1,3 +1,4 @@
+import fs from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import type ts from "typescript";
 import { Diagnostic } from "#diagnostic";
@@ -45,7 +46,7 @@ export class Store {
   }
 
   static async fetch(tag: string): Promise<void> {
-    if (tag === "*" && environmentOptions.typescriptModule != null) {
+    if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
       return;
     }
 
@@ -53,20 +54,23 @@ export class Store {
   }
 
   static async load(tag: string): Promise<typeof ts | undefined> {
-    let resolvedModule: string | undefined;
+    let specifier: string | undefined;
 
-    if (tag === "*" && environmentOptions.typescriptModule != null) {
-      resolvedModule = environmentOptions.typescriptModule;
+    if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
+      specifier = environmentOptions.typescriptSpecifier;
     } else {
       const packagePath = await Store.#ensure(tag);
 
       if (packagePath != null) {
-        resolvedModule = pathToFileURL(`${packagePath}/lib/typescript.js`).toString();
+        specifier = pathToFileURL(`${packagePath}/`).toString();
       }
     }
 
-    if (resolvedModule != null) {
-      return (await import(resolvedModule)).default;
+    if (specifier != null) {
+      const packageJsonText = await fs.readFile(new URL("package.json", specifier), { encoding: "utf8" });
+      const packageJson = JSON.parse(packageJsonText) as { main: string; version: string };
+
+      return (await import(new URL(packageJson.main, specifier).toString())).default;
     }
 
     return;

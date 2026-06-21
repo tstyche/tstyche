@@ -13,7 +13,7 @@ export class Environment {
       noInteractive: Environment.#resolveNoInteractive(),
       npmRegistry: Environment.#resolveNpmRegistry(),
       storePath: Environment.#resolveStorePath(),
-      typescriptModule: Environment.#resolveTypeScriptModule(),
+      typescriptSpecifier: Environment.#resolveTypeScriptSpecifier(),
     };
   }
 
@@ -89,21 +89,23 @@ export class Environment {
     return Path.resolve(os.homedir(), ".local", "share", "TSTyche");
   }
 
-  static #resolveTypeScriptModule() {
+  static #resolveTypeScriptSpecifier() {
     let specifier = "typescript";
 
-    if (process.env["TSTYCHE_TYPESCRIPT_MODULE"] != null) {
-      specifier = process.env["TSTYCHE_TYPESCRIPT_MODULE"];
+    if (process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"] != null) {
+      specifier = process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"];
     }
 
-    let resolvedModule: string | undefined;
+    let resolvedSpecifier: string | undefined;
 
     try {
-      resolvedModule = import.meta.resolve(specifier);
+      if (specifier) {
+        resolvedSpecifier = import.meta.resolve(`${specifier}/package.json`).replace(/package\.json$/, "");
+      }
     } catch {
       // module was not found
     }
 
-    return resolvedModule;
+    return resolvedSpecifier;
   }
 }
