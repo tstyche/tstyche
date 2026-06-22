@@ -1,7 +1,7 @@
+import type ts6 from "typescript";
 import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { isDiagnosticPosition } from "#diagnostic";
-import type * as ts from "#typescript";
+import { isDiagnosticWithLocation } from "#diagnostic";
 import type { TextEditor } from "./TextEditor.js";
 import type { SuppressedError } from "./types.js";
 
@@ -50,7 +50,7 @@ export class SuppressedLayer {
     return ranges;
   }
 
-  close(diagnostics: Array<ts.Diagnostic> | undefined): void {
+  close(diagnostics: Array<ts6.Diagnostic> | undefined): void {
     if (diagnostics != null && this.#suppressedErrorsMap != null) {
       for (const diagnostic of diagnostics) {
         this.#mapToDirectives(diagnostic);
@@ -60,27 +60,15 @@ export class SuppressedLayer {
     this.#suppressedErrorsMap = undefined;
   }
 
-  #mapToDirectives(diagnostic: ts.Diagnostic) {
-    if (!isDiagnosticPosition(diagnostic)) {
+  #mapToDirectives(diagnostic: ts6.Diagnostic) {
+    if (!isDiagnosticWithLocation(diagnostic)) {
       return;
     }
 
-    let file: ts.SourceFile;
-    let pos: number;
+    const { file, start } = diagnostic;
 
-    if ("fileName" in diagnostic) {
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4316
-      file = diagnostic.getSourceFile();
-      pos = diagnostic.pos;
-    } else {
-      file = diagnostic.file;
-      pos = diagnostic.start;
-    }
-
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const lineMap = file.getLineStarts();
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
-    let line = file.getLineAndCharacterOfPosition(pos).line - 1;
+    let line = file.getLineAndCharacterOfPosition(start).line - 1;
 
     while (line >= 0) {
       const suppressedError = this.#suppressedErrorsMap?.get(line);

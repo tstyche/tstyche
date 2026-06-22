@@ -1,3 +1,4 @@
+import type ts6 from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import type * as ts from "#typescript";
@@ -56,7 +57,7 @@ export class ToBeApplicable extends MatcherBase {
         let related: Array<Diagnostic> | undefined;
 
         if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts.Diagnostic>);
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts6.Diagnostic>);
         }
 
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));

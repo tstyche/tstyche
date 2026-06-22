@@ -1,3 +1,4 @@
+import type ts6 from "typescript";
 import type { ExpectNode } from "#collect";
 import {
   Diagnostic,
@@ -5,7 +6,7 @@ import {
   type DiagnosticsHandler,
   diagnosticBelongsToNode,
   getDiagnosticMessageText,
-  isDiagnosticPosition,
+  isDiagnosticWithLocation,
 } from "#diagnostic";
 import type * as ts from "#typescript";
 import { MatcherBase } from "./MatcherBase.js";
@@ -53,7 +54,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
 
         let origin: DiagnosticOrigin;
 
-        if (isDiagnosticPosition(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNode)) {
+        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNode)) {
           origin = DiagnosticOrigin.fromAbilityDiagnostic(diagnostic, expectNode);
         } else {
           origin = DiagnosticOrigin.fromAssertion(expectNode);
@@ -62,7 +63,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
         let related: Array<Diagnostic> | undefined;
 
         if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts.Diagnostic>);
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts6.Diagnostic>);
         }
 
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));

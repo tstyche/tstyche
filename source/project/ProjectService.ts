@@ -5,7 +5,6 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
-import type * as ts from "#typescript";
 import { Version } from "#version";
 
 export class ProjectService {
@@ -112,7 +111,7 @@ export class ProjectService {
     return project;
   }
 
-  getDiagnostics(filePath: string, sourceText: string): Array<ts.Diagnostic> | undefined {
+  getDiagnostics(filePath: string, sourceText: string): Array<ts6.Diagnostic> | undefined {
     this.openFile(filePath, sourceText);
 
     const languageService = this.getLanguageService(filePath);
@@ -195,7 +194,7 @@ export class ProjectService {
       if (configFileErrors && configFileErrors.length > 0) {
         EventEmitter.dispatch([
           "project:error",
-          { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>) },
+          { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts6.Diagnostic>) },
         ]);
       }
     }

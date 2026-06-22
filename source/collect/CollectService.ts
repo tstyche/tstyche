@@ -1,3 +1,4 @@
+import type ts6 from "typescript";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -131,7 +132,7 @@ export class CollectService {
     });
   }
 
-  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
+  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts6.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);

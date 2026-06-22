@@ -10,10 +10,6 @@ export type CallbackFunction =
   | (ts6.ArrowFunction | ts6.FunctionExpression);
 export type CommentRange = tsAst.CommentRange | ts6.CommentRange;
 export type Decorator = tsAst.Decorator | ts6.Decorator;
-export type Diagnostic = tsApi.Diagnostic | ts6.Diagnostic;
-export type DiagnosticPosition =
-  | (tsApi.Diagnostic & Required<Pick<tsApi.Diagnostic, "fileName" | "pos" | "end">>)
-  | ts6.DiagnosticWithLocation;
 export type Expression = tsAst.Expression | ts6.Expression;
 export type ExpressionStatement = tsAst.ExpressionStatement | ts6.ExpressionStatement;
 export type ExpressionWithTypeArguments = tsAst.ExpressionWithTypeArguments | ts6.ExpressionWithTypeArguments;

@@ -5,7 +5,7 @@ export {
   diagnosticBelongsToNode,
   getDiagnosticMessageText,
   getTextSpanEnd,
-  isDiagnosticPosition,
+  isDiagnosticWithLocation,
 } from "./helpers.js";
 export { MappedDiagnostic } from "./MappedDiagnostic.js";
 export type { DiagnosticsHandler, Offset } from "./types.js";

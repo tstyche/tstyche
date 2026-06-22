@@ -4,8 +4,6 @@ export type {
   CallExpression,
   CommentRange,
   Decorator,
-  Diagnostic,
-  DiagnosticPosition,
   Expression,
   ImportDeclaration,
   LiteralType,

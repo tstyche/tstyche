@@ -1,3 +1,4 @@
+import type ts6 from "typescript";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import type * as ts from "#typescript";
@@ -112,7 +113,7 @@ export class ToRaiseError {
   }
 
   #matchExpectedError(
-    diagnostic: ts.Diagnostic,
+    diagnostic: ts6.Diagnostic,
     targetNode: ts.StringLiteralLikeNode | ts.NumericLiteral | ts.RegularExpressionLiteral,
   ) {
     if (this.#ts.isNumericLiteral(targetNode)) {
