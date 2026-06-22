@@ -45,12 +45,11 @@
     "schemas/*.json"
   ],
   "scripts": {
-    "build": "./.aube/build.sh",
-    "postbuild": "node ./.aube/postbuild.ts",
+    "build": "./scripts/build.sh",
     "format": "biome format --write",
     "generate": "aube generate:schemas && aube generate:types",
-    "generate:schemas": "node ./.aube/generate-schemas.ts",
-    "generate:types": "node ./.aube/generate-types.ts",
+    "generate:schemas": "node ./scripts/generate-schemas.ts",
+    "generate:types": "node ./scripts/generate-types.ts",
     "lint": "biome lint --write",
     "prepublish": "aube build",
     "test": "aube test:unit && aube test:e2e",
