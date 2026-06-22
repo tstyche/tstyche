@@ -24,15 +24,19 @@ for await (const file of files) {
     newText = text.replaceAll("__version__", packageConfig.version);
   }
 
-  if (filePath.endsWith("bin.js")) {
-    await fs.chmod(filePath, 0o755);
-  }
-
   if (filePath.endsWith(".d.ts")) {
     newText = text.replaceAll(/\bconst enum\b/g, "enum");
   }
 
   if (newText != null && text !== newText) {
     await fs.writeFile(filePath, newText, { encoding: "utf-8" });
+  }
+
+  if (filePath.endsWith("bin.js")) {
+    await fs.chmod(filePath, 0o755);
+  }
+
+  if (filePath.endsWith("bin.d.ts")) {
+    await fs.rm(filePath);
   }
 }
