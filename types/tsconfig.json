@@ -3,11 +3,7 @@
   "compilerOptions": {
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "types": [],
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "noEmit": false,
-    "outDir": "../dist"
+    "types": []
   },
   "include": ["**/*"],
   "exclude": []

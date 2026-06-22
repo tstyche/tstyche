@@ -38,6 +38,9 @@ importers:
       typescript:
         specifier: 7.0.1-rc
         version: 7.0.1-rc
+      zx:
+        specifier: ^8.8.5-lite
+        version: 8.8.5
 
 packages:
 
@@ -335,6 +338,11 @@ packages:
   undici-types@8.3.0:
     resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
 
+  zx@8.8.5:
+    resolution: {integrity: sha512-SNgDF5L0gfN7FwVOdEFguY3orU5AkfFZm9B5YSHog/UDHv+lvmd82ZAsOenOkQixigwH2+yyH198AwNdKhj+RA==}
+    engines: {node: '>= 12.17.0'}
+    hasBin: true
+
 snapshots:
 
   '@biomejs/biome@2.5.0':
@@ -548,3 +556,5 @@ snapshots:
       '@typescript/typescript-win32-x64': 7.0.1-rc
 
   undici-types@8.3.0: {}
+
+  zx@8.8.5: {}

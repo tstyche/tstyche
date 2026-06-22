@@ -18,6 +18,7 @@
     "types": ["node"],
 
     "noEmit": true,
+    "outDir": "./dist",
 
     "checkJs": true,
 

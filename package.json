@@ -45,9 +45,7 @@
     "schemas/*.json"
   ],
   "scripts": {
-    "prebuild": "node ./.aube/prebuild.ts",
-    "build": "tsc --project ./source/tsconfig.json && tsc --project ./types/tsconfig.json",
-    "postbuild": "node ./.aube/postbuild.ts",
+    "build": "node ./.aube/build.ts",
     "format": "biome format --write",
     "generate": "aube generate:schemas && aube generate:types",
     "generate:schemas": "node ./.aube/generate-schemas.ts",
@@ -73,7 +71,8 @@
     "code-block-writer": "^13.0.3",
     "monocart-coverage-reports": "^2.12.12",
     "pretty-ansi": "^4.0.0",
-    "typescript": "7.0.1-rc"
+    "typescript": "7.0.1-rc",
+    "zx": "^8.8.5-lite"
   },
   "peerDependencies": {
     "typescript": ">=5.4"
