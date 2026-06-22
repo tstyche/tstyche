@@ -4,13 +4,15 @@ import process from "node:process";
 import { $ } from "zx";
 import packageConfig from "../package.json" with { type: "json" };
 
+// prebuild
+
+await fs.rm("./dist", { force: true, recursive: true });
+
 // build
 
 const sourceMap = process.argv.includes("--sourcemap");
 
 try {
-  await fs.rm("./dist", { force: true, recursive: true });
-
   await fs.copyFile("./source/index.ts", "./source/index.cts");
   await fs.copyFile("./types/index.ts", "./types/index.cts");
 
