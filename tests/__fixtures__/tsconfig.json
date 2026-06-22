@@ -5,6 +5,7 @@
     "noEmit": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "rootDir": "../../",
     "types": []
   },
   "include": ["**/*"],
