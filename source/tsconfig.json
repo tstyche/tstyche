@@ -6,6 +6,7 @@
     "moduleResolution": "node16",
 
     "preserveConstEnums": true,
+    "outDir": "../dist",
     "verbatimModuleSyntax": false, // otherwise const enums are not inlined, unfortunately
 
     "jsx": "react-jsx",
