@@ -20,8 +20,8 @@ try {
   await $`tsc --project ./source/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
   await $`tsc --project ./types/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
 } finally {
-  await fs.rm("./source/index.cts");
-  await fs.rm("./types/index.cts");
+  await fs.rm("./source/index.cts", { force: true });
+  await fs.rm("./types/index.cts", { force: true });
 }
 
 // postbuild
