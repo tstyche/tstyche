@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 import { isCheckFlagSet } from "./helpers.js";
 
 export function getPropertyType(

@@ -1,6 +1,6 @@
 import process from "node:process";
 import { pathToFileURL } from "node:url";
-import ts from "typescript";
+import ts from "@typescript/typescript6";
 import packageConfig from "../../package.json" with { type: "json" };
 
 const basePath = process.cwd().replace(/\\/g, "/");

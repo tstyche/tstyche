@@ -18,6 +18,7 @@
     "types": ["node"],
 
     "noEmit": true,
+    "outDir": "./dist",
 
     "checkJs": true,
 
@@ -28,7 +29,6 @@
   "include": [],
   "references": [
     { "path": "./.aube/tsconfig.json" },
-    { "path": "./.rollup/tsconfig.json" },
     { "path": "./source/tsconfig.json" },
     { "path": "./source/output/__tests__/tsconfig.json" },
     { "path": "./source/version/__tests__/tsconfig.json" },

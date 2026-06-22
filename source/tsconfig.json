@@ -5,11 +5,6 @@
     "module": "node16",
     "moduleResolution": "node16",
 
-    "paths": {
-      "#scribbler/jsx-runtime": ["./scribbler/jsxRuntime.js"],
-      "#*": ["./*/index.js"]
-    },
-
     "preserveConstEnums": true,
     "verbatimModuleSyntax": false, // otherwise const enums are not inlined, unfortunately
 

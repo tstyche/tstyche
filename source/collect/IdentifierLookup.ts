@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 

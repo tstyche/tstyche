@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 
 export function containsInstantiable(target: ts.Type, compiler: typeof ts): boolean {
   return (

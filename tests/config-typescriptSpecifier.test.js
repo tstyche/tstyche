@@ -26,7 +26,7 @@ await test("'TSTYCHE_TYPESCRIPT_SPECIFIER' environment variable", async (t) => {
     assert.equal(stderr, "");
 
     assert.matchObject(normalizeOutput(stdout), {
-      typescriptSpecifier: /node_modules\/typescript\/$/,
+      typescriptSpecifier: /node_modules\/@typescript\/typescript6\/$/,
     });
 
     assert.equal(exitCode, 0);

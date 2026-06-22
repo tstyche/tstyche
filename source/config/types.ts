@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 
 // #region -- Generated code, to update run: aube run build && aube run generate
 

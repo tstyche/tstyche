@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import { Structure } from "#structure";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";

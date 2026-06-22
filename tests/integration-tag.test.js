@@ -1,4 +1,5 @@
 import { exec } from "node:child_process";
+import process from "node:process";
 import test from "node:test";
 import { promisify } from "node:util";
 import prettyAnsi from "pretty-ansi";
@@ -11,14 +12,28 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("@tstyche/tag", async (t) => {
   await t.test("passing test", async () => {
-    const { stderr, stdout } = await promisify(exec)(`node ./__tests__/pass.test.js`, { cwd: fixtureUrl });
+    const { stderr, stdout } = await promisify(exec)(`node ./__tests__/pass.test.js`, {
+      cwd: fixtureUrl,
+      // TODO remove 'env' after adding support for TypeScript 7
+      env: {
+        ...process.env,
+        ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "@typescript/typescript6",
+      },
+    });
 
     assert.equal(stderr, "");
     assert.equal(stdout, "");
   });
 
   await t.test("failing test", async () => {
-    const { stderr, stdout } = await promisify(exec)(`node ./__tests__/fail.test.js`, { cwd: fixtureUrl });
+    const { stderr, stdout } = await promisify(exec)(`node ./__tests__/fail.test.js`, {
+      cwd: fixtureUrl,
+      // TODO remove 'env' after adding support for TypeScript 7
+      env: {
+        ...process.env,
+        ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "@typescript/typescript6",
+      },
+    });
 
     await assert.matchSnapshot(prettyAnsi(normalizeOutput(stderr)), {
       fileName: `${testFileName}-fail-stderr`,
