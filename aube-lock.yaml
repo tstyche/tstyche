@@ -14,6 +14,9 @@ importers:
       '@sourcemeta/jsonschema':
         specifier: ^16.0.0
         version: 16.0.0
+      '@types/fs-extra':
+        specifier: ^11.0.4
+        version: 11.0.4
       '@types/node':
         specifier: ^26.0.0
         version: 26.0.0
@@ -107,6 +110,12 @@ packages:
     cpu: [x64, arm64]
     os: [darwin, linux, win32]
     hasBin: true
+
+  '@types/fs-extra@11.0.4':
+    resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
+
+  '@types/jsonfile@6.1.4':
+    resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
 
   '@types/node@26.0.0':
     resolution: {integrity: sha512-vf2YFi1iY9lHGwNJMs01biZFbKJkrZR1T6/MlzjhJLPdntOHLhTrDSnSVcdtvjihi4VQNlrFRIxLsDBlQpAipA==}
@@ -381,6 +390,15 @@ snapshots:
     optional: true
 
   '@sourcemeta/jsonschema@16.0.0': {}
+
+  '@types/fs-extra@11.0.4':
+    dependencies:
+      '@types/jsonfile': 6.1.4
+      '@types/node': 26.0.0
+
+  '@types/jsonfile@6.1.4':
+    dependencies:
+      '@types/node': 26.0.0
 
   '@types/node@26.0.0':
     dependencies:
