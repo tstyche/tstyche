@@ -1,6 +1,6 @@
-import "typescript";
+import "@typescript/typescript6";
 
-declare module "typescript" {
+declare module "@typescript/typescript6" {
   /** @internal */
   enum CheckFlags {
     None = 0,

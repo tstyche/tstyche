@@ -1,4 +1,4 @@
-import type ts6 from "typescript";
+import type ts6 from "@typescript/typescript6";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import type * as ts from "#typescript";
 

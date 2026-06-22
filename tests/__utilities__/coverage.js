@@ -24,10 +24,8 @@ export async function reportCoverage() {
     entryFilter: {
       "**/node_modules/**": false,
 
-      "**/dist/api.js": true,
-      "**/dist/bin.js": true,
-      "**/dist/index.js": true,
-      "**/dist/tag.js": true,
+      "**/dist/*.js": true,
+      "**/dist/*/*.js": true,
     },
 
     sourceFilter: {
@@ -36,7 +34,6 @@ export async function reportCoverage() {
       "**/source/*/*.enum.ts": false,
       "**/source/*/index.ts": false,
       "**/source/*/types.ts": false,
-      "**/types/*.ts": false,
 
       "**/source/*.ts": true,
       "**/source/*/*.ts": true,

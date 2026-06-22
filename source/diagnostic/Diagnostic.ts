@@ -1,4 +1,4 @@
-import type ts6 from "typescript";
+import type ts6 from "@typescript/typescript6";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
 import { getDiagnosticMessageText, getTextSpanEnd, isDiagnosticWithLocation } from "./helpers.js";

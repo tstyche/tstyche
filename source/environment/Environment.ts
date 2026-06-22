@@ -30,11 +30,6 @@ export class Environment {
       return Number.parseFloat(process.env["TSTYCHE_FETCH_TIMEOUT"]);
     }
 
-    // TODO remove in TSTyche 8
-    if (process.env["TSTYCHE_TIMEOUT"] != null) {
-      return Number.parseFloat(process.env["TSTYCHE_TIMEOUT"]);
-    }
-
     return 30;
   }
 
@@ -95,22 +90,26 @@ export class Environment {
   }
 
   static #resolveTypeScriptSpecifier() {
-    let specifier = "typescript";
+    function resolve(specifier: string) {
+      return import.meta.resolve(`${specifier}/package.json`).replace(/package\.json$/, "");
+    }
 
     if (process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"] != null) {
-      specifier = process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"];
-    }
+      const specifier = process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"];
 
-    let resolvedSpecifier: string | undefined;
+      if (specifier !== "") {
+        return resolve(specifier);
+      }
+
+      return;
+    }
 
     try {
-      if (process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"] !== "") {
-        resolvedSpecifier = import.meta.resolve(`${specifier}/package.json`).replace(/package\.json$/, "");
-      }
+      return resolve("typescript");
     } catch {
-      // module was not found
+      // 'typescript' is not installed
     }
 
-    return resolvedSpecifier;
+    return;
   }
 }

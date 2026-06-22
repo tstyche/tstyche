@@ -1,5 +1,5 @@
-import type * as tsAst from "@typescript/native-preview/unstable/ast";
-import type * as tsApi from "@typescript/native-preview/unstable/sync";
+import type * as tsAst from "typescript/unstable/ast";
+import type * as tsApi from "typescript/unstable/sync";
 import { BaseAdapter } from "./BaseAdapter.js";
 import type { CallbackFunction, ImportDeclaration, Node } from "./types.js";
 

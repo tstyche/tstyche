@@ -1,4 +1,4 @@
-import type ts6 from "typescript";
+import type ts6 from "@typescript/typescript6";
 import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { isDiagnosticWithLocation } from "#diagnostic";

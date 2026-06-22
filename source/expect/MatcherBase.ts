@@ -1,4 +1,4 @@
-import type ts6 from "typescript";
+import type ts6 from "@typescript/typescript6";
 import type * as ts from "#typescript";
 
 export abstract class MatcherBase {

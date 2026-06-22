@@ -1,4 +1,4 @@
-import type ts from "typescript";
+import type ts from "@typescript/typescript6";
 import { getOffset } from "./helpers.js";
 import type { Offset } from "./types.js";
 

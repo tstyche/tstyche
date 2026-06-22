@@ -1,4 +1,4 @@
-import type ts6 from "typescript";
+import type ts6 from "@typescript/typescript6";
 import type { TextRange } from "#config";
 
 export interface SuppressedError {

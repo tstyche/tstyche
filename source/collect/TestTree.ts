@@ -1,4 +1,4 @@
-import type ts6 from "typescript";
+import type ts6 from "@typescript/typescript6";
 import type { SuppressedError } from "#layers";
 import type * as ts from "#typescript";
 import type { ExpectNode } from "./ExpectNode.js";

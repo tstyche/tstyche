@@ -1,4 +1,4 @@
-import type ts6 from "typescript";
+import type ts6 from "@typescript/typescript6";
 import { BaseAdapter } from "./BaseAdapter.js";
 import type { CallbackFunction, ImportDeclaration, Node } from "./types.js";
 
