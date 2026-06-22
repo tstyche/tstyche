@@ -15,16 +15,18 @@ await fs.copyFile("./types/index.ts", "./types/index.cts");
 
 const sourceMap = process.argv.includes("--sourcemap");
 
-await $`tsc --project ./source/tsconfig.json --checkJs false --noEmit false --removeComments true --sourceMap ${sourceMap}`;
-await $`tsc --project ./source/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
-await $`tsc --project ./types/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
+try {
+  await $`tsc --project ./source/tsconfig.json --checkJs false --noEmit false --removeComments true --sourceMap ${sourceMap}`;
+  await $`tsc --project ./source/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
+  await $`tsc --project ./types/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
+} finally {
+  await fs.rm("./source/index.cts");
+  await fs.rm("./types/index.cts");
+}
 
 // postbuild
 
 // TODO handle sourcemaps
-
-await fs.rm("./source/index.cts");
-await fs.rm("./types/index.cts");
 
 const files = fs.glob("dist/**/*", { withFileTypes: true });
 
