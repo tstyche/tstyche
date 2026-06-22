@@ -5,11 +5,6 @@
     "module": "node16",
     "moduleResolution": "node16",
 
-    "paths": {
-      "#scribbler/jsx-runtime": ["./scribbler/jsxRuntime.js"],
-      "#*": ["./*/index.js"]
-    },
-
     "declaration": true,
     "noEmit": false,
     "outDir": "../dist",
