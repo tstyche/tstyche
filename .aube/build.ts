@@ -15,9 +15,9 @@ await fs.copyFile("./types/index.ts", "./types/index.cts");
 
 const sourceMap = process.argv.includes("--sourcemap");
 
-await $`tsc --project ./source/tsconfig.json --noEmit false --removeComments true --sourceMap ${sourceMap}`;
-await $`tsc --project ./source/tsconfig.json --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
-await $`tsc --project ./types/tsconfig.json --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
+await $`tsc --project ./source/tsconfig.json --checkJs false --noEmit false --removeComments true --sourceMap ${sourceMap}`;
+await $`tsc --project ./source/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
+await $`tsc --project ./types/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap ${sourceMap}`;
 
 // postbuild
 
