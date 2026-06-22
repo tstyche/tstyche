@@ -10,7 +10,11 @@
       "#*": ["./*/index.js"]
     },
 
+    "declaration": true,
+    "noEmit": false,
+    "outDir": "../dist",
     "preserveConstEnums": true,
+    "removeComments": true,
     "verbatimModuleSyntax": false, // otherwise const enums are not inlined, unfortunately
 
     "jsx": "react-jsx",
