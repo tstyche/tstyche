@@ -59,7 +59,7 @@
     "test:schemas": "jsonschema test schemas/__tests__/*.test.json",
     "test:types": "tstyche typetests",
     "test:unit": "aube test:run source/**/__tests__/*.test.js --parallel",
-    "typecheck": "tsc --build --force --verbose"
+    "typecheck": "tsgo --build --force --verbose"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.0",
@@ -71,7 +71,7 @@
     "code-block-writer": "^13.0.3",
     "monocart-coverage-reports": "^2.12.12",
     "pretty-ansi": "^4.0.0",
-    "typescript": "7.0.1-rc"
+    "typescript": "npm:@typescript/native-preview@^7.0.0-dev.20260630.1"
   },
   "peerDependencies": {
     "typescript": ">=5.4"

@@ -23,7 +23,6 @@ export class IdentifierLookup {
 
   handleImportDeclaration(node: ts.ImportDeclaration): void {
     if (
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
       this.#moduleSpecifiers.includes(node.moduleSpecifier.getText()) &&
       !this.#ts.isTypeOnlyImportDeclaration(node) &&
       node.importClause?.namedBindings != null
@@ -37,22 +36,18 @@ export class IdentifierLookup {
           let identifierKey: string;
 
           if (element.propertyName) {
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             identifierKey = element.propertyName.getText();
           } else {
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             identifierKey = element.name.getText();
           }
 
           if (identifierKey in this.#identifiers.namedImports) {
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             this.#identifiers.namedImports[identifierKey] = element.name.getText();
           }
         }
       }
 
       if (this.#ts.isNamespaceImport(node.importClause.namedBindings)) {
-        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
         this.#identifiers.namespace = node.importClause.namedBindings.name.getText();
       }
     }
@@ -77,12 +72,10 @@ export class IdentifierLookup {
     let expression = node.expression;
 
     while (this.#ts.isPropertyAccessExpression(expression)) {
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
       if (expression.expression.getText() === this.#identifiers.namespace) {
         break;
       }
 
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
       switch (expression.name.getText()) {
         case "only":
           flags |= TestTreeNodeFlags.Only;
@@ -104,14 +97,11 @@ export class IdentifierLookup {
 
     if (
       this.#ts.isPropertyAccessExpression(expression) &&
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
       expression.expression.getText() === this.#identifiers.namespace
     ) {
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
       identifier = expression.name.getText();
     } else {
       identifier = Object.keys(this.#identifiers.namedImports).find(
-        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
         (key) => this.#identifiers.namedImports[key] === expression.getText(),
       );
     }

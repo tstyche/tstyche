@@ -32,7 +32,6 @@ export class Directive {
       sourceFile = node;
     } else {
       sourceFile = node.getSourceFile();
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
       position = node.getFullStart();
     }
 

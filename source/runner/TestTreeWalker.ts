@@ -70,7 +70,6 @@ export class TestTreeWalker {
       flags |= RunModeFlags.Todo;
     }
 
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     if (this.#position != null && node.node.getStart() === this.#position) {
       flags |= RunModeFlags.Only;
       // skip mode is overridden, when 'position' is specified

@@ -120,7 +120,6 @@ export abstract class BaseAdapter {
   }
 
   isCapitaizedIdentifierLike(node: Node): boolean {
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     return this.isIdentifierLike(node) && /^[A-Z_$]/.test(node.getText());
   }
 

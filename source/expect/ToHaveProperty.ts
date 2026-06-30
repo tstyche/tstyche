@@ -14,7 +14,6 @@ export class ToHaveProperty extends MatcherBase {
     let propertyNameText: string;
 
     if (targetType.flags & (this.ts.TypeFlags.StringLiteral | this.ts.TypeFlags.NumberLiteral)) {
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4319
       propertyNameText = (targetType as ts.StringLiteralType | ts.NumberLiteralType).value.toString();
     } else {
       const symbol = targetType.getSymbol();

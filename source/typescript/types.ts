@@ -27,6 +27,7 @@ export type NodeArray<T extends Node> = T extends tsAst.Node
     : never;
 
 export type NumericLiteral = tsAst.NumericLiteral | ts6.NumericLiteral;
+export type NumberLiteralType = tsApi.NumberLiteralType | ts6.NumberLiteralType;
 export type ObjectLiteralExpression = tsAst.ObjectLiteralExpression | ts6.ObjectLiteralExpression;
 export type ParenthesizedExpression = tsAst.ParenthesizedExpression | ts6.ParenthesizedExpression;
 export type PropertyAccessExpression = tsAst.PropertyAccessExpression | ts6.PropertyAccessExpression;
@@ -37,6 +38,7 @@ export type SourceFile = tsAst.SourceFile | ts6.SourceFile;
 export type SpreadAssignment = tsAst.SpreadAssignment | ts6.SpreadAssignment;
 export type StringLiteral = tsAst.StringLiteral | ts6.StringLiteral;
 export type StringLiteralLikeNode = tsAst.StringLiteralLikeNode | ts6.StringLiteralLike;
+export type StringLiteralType = tsApi.StringLiteralType | ts6.StringLiteralType;
 export type TupleTypeNode = tsAst.TupleTypeNode | ts6.TupleTypeNode;
 export type Type = tsApi.Type | ts6.Type;
 export type TypeNode = tsAst.TypeNode | ts6.TypeNode;

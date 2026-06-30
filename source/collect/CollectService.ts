@@ -81,13 +81,10 @@ export class CollectService {
             const text = "The matcher must be completed with '()'.";
 
             const origin = new DiagnosticOrigin(
-              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               matcherNameNode.name.getStart(),
               this.#ts.isExpressionWithTypeArguments(matcherNameNode.parent)
-                ? // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
-                  matcherNameNode.parent.getEnd()
-                : // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
-                  matcherNameNode.getEnd(),
+                ? matcherNameNode.parent.getEnd()
+                : matcherNameNode.getEnd(),
               matcherNameNode.getSourceFile(),
             );
 
@@ -191,7 +188,6 @@ export class CollectService {
       return;
     }
 
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     if (name != null && name !== parent.name.getText()) {
       return;
     }

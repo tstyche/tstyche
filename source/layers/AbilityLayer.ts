@@ -36,15 +36,10 @@ export class AbilityLayer {
   }
 
   visitExpect(expect: ExpectNode): void {
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const expectStart = expect.node.getStart();
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const expectExpressionEnd = expect.node.expression.getEnd();
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const expectEnd = expect.node.getEnd();
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const matcherNameEnd = expect.matcherNameNode.getEnd();
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
     const matcherNodeEnd = expect.matcherNode.getEnd();
 
     switch (expect.matcherNameNode.name.text) {
@@ -69,7 +64,6 @@ export class AbilityLayer {
           return;
         }
 
-        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
         const sourceText = sourceNode.getText();
 
         if (this.#ts.belongsToArgumentList(sourceNode)) {
@@ -77,7 +71,6 @@ export class AbilityLayer {
             .eraseTrailingComma(expect.source)
             .erase(expectStart, matcherNodeEnd)
             .update(expectStart, matcherNameEnd, this.#ts.isChildOfExpressionStatement(expect.matcherNode) ? ";" : "")
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             .update(sourceNode.getStart() - 1, sourceNode.getEnd(), `<${sourceText}`);
         } else {
           const id = ["SC", expectStart, Date.now().toString(36)].join("_");
@@ -97,21 +90,14 @@ export class AbilityLayer {
           if (this.#ts.isPropertyAssignment(property)) {
             this.#editor
               .update(
-                // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
                 property.name.getStart(),
-                // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
                 property.name.getEnd(),
                 this.#ts.isStringLiteral(property.name)
-                  ? // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
-                    ` ${property.name.getText().slice(1, -1)} `
-                  : // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
-                    property.name.getText(),
+                  ? ` ${property.name.getText().slice(1, -1)} `
+                  : property.name.getText(),
               )
-              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .insert(property.initializer.getStart(), "={")
-              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .update(property.initializer.getStart(), property.initializer.getEnd(), property.initializer.getText())
-              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .insert(property.initializer.getEnd(), "}");
 
             continue;
@@ -119,11 +105,8 @@ export class AbilityLayer {
 
           if (this.#ts.isSpreadAssignment(property)) {
             this.#editor
-              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .insert(property.getStart(), "{")
-              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .update(property.getStart(), property.getEnd(), property.getText())
-              // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
               .insert(property.getEnd(), "}");
           }
         }
@@ -159,7 +142,6 @@ export class AbilityLayer {
             )
             .erase(expectEnd, matcherNameEnd);
         } else {
-          // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
           const sourceText = sourceNode.getFullText();
 
           this.#editor.update(
@@ -193,7 +175,6 @@ export class AbilityLayer {
             )
             .erase(expectEnd, matcherNameEnd);
         } else {
-          // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
           const sourceText = sourceNode.getFullText();
 
           this.#editor.update(
@@ -229,15 +210,12 @@ export class AbilityLayer {
             .erase(expectEnd, matcherNodeEnd);
 
           if (this.#ts.isExpressionWithTypeArguments(sourceNode)) {
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             this.#editor.erase(sourceNode.expression.getEnd(), sourceNode.getEnd());
           }
         } else {
           const sourceText = this.#ts.isTypeReferenceNode(sourceNode)
-            ? // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
-              sourceNode.typeName.getFullText()
-            : // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
-              sourceNode.getFullText();
+            ? sourceNode.typeName.getFullText()
+            : sourceNode.getFullText();
 
           this.#editor.update(
             expectStart,
@@ -248,16 +226,12 @@ export class AbilityLayer {
           );
         }
 
-        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
         const targetText = targetNode.getText().slice(1, -1);
 
         if (targetText.trim().length > 0) {
           this.#editor.update(
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             targetNode.getFullStart(),
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             targetNode.getEnd(),
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             `<${targetText}>`.padStart(targetNode.getFullWidth()),
           );
         }
@@ -285,7 +259,6 @@ export class AbilityLayer {
             )
             .erase(expectEnd, matcherNodeEnd);
         } else {
-          // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
           const sourceText = sourceNode.getFullText();
 
           this.#editor.update(
@@ -297,16 +270,12 @@ export class AbilityLayer {
           );
         }
 
-        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
         const targetText = targetNode.getText();
 
         if (targetText.trim().length > 0) {
           this.#editor.update(
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             targetNode.getFullStart() - 1,
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             targetNode.getEnd() + 1,
-            // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4216
             `[${targetText}]`.padStart(targetNode.getFullWidth()),
           );
         }
