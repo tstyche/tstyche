@@ -21,8 +21,8 @@ export class CollectService {
   constructor(ts: ts.TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#ts = ts;
 
-    this.#layers = new Layers(this.#ts, projectService, resolvedConfig);
-    this.#identifierLookup = new IdentifierLookup(this.#ts);
+    this.#layers = new Layers(ts, projectService, resolvedConfig);
+    this.#identifierLookup = new IdentifierLookup(ts);
   }
 
   #collectTestTreeNodes(node: ts.Node, parent: TestTree | TestTreeNode, testTree: TestTree) {

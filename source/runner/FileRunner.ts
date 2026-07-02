@@ -5,7 +5,7 @@ import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { FileLocation } from "#file";
-import { ProjectService } from "#project";
+import type { CompatProjectService, ProjectService } from "#project";
 import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
 import type { CancellationToken } from "#token";
@@ -25,8 +25,14 @@ export class FileRunner {
     this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#projectService = new ProjectService((ts as ts.CompatTypeScript).compiler, this.#resolvedConfig);
-    this.#collectService = new CollectService(ts, this.#projectService, this.#resolvedConfig);
+    this.#projectService = ts.createProjectService(resolvedConfig);
+    this.#collectService = new CollectService(ts, this.#projectService, resolvedConfig);
+  }
+
+  close(): void {
+    if ("close" in this.#projectService) {
+      this.#projectService.close();
+    }
   }
 
   #onDiagnostics(this: void, diagnostics: Array<Diagnostic>, result: FileResult) {
@@ -58,7 +64,7 @@ export class FileRunner {
   ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts6.Program } | undefined> {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
-    const languageService = this.#projectService.getLanguageService(file.path);
+    const languageService = (this.#projectService as CompatProjectService).getLanguageService(file.path);
 
     const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(file.path);
 

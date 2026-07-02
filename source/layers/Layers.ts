@@ -2,7 +2,7 @@ import type ts from "@typescript/typescript6";
 import type { ExpectNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { MappedDiagnostic } from "#diagnostic";
-import type { ProjectService } from "#project";
+import type { CompatProjectService, ProjectService } from "#project";
 import type { TypeScript } from "#typescript";
 import { AbilityLayer } from "./AbilityLayer.js";
 import { compareDiagnostics } from "./helpers.js";
@@ -31,7 +31,10 @@ export class Layers {
       this.#suppressedDiagnostics = undefined;
     }
 
-    const diagnostics = this.#projectService.getDiagnostics(this.#editor.getFilePath(), this.#editor.getText());
+    const diagnostics = (this.#projectService as CompatProjectService).getDiagnostics(
+      this.#editor.getFilePath(),
+      this.#editor.getText(),
+    );
     const offsets = this.#editor.getOffsets();
 
     const abilityDiagnostics: Array<ts.Diagnostic> = [];
@@ -54,7 +57,7 @@ export class Layers {
     this.#editor.open(tree.sourceFile);
     this.#suppressedLayer.open(tree);
 
-    this.#suppressedDiagnostics = this.#projectService.getDiagnostics(
+    this.#suppressedDiagnostics = (this.#projectService as CompatProjectService).getDiagnostics(
       this.#editor.getFilePath(),
       this.#editor.getText(),
     );

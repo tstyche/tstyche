@@ -27,10 +27,6 @@ export abstract class BaseAdapter {
   abstract SyntaxKind: any;
   abstract TypeFlags: any;
 
-  async close() {
-    // does nothing
-  }
-
   // ast
 
   isCallExpression(node: Node): node is CallExpression {
@@ -135,6 +131,4 @@ export abstract class BaseAdapter {
       this.isExpressionWithTypeArguments(node)
     );
   }
-
-  // types
 }

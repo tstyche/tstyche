@@ -1,4 +1,6 @@
 import type ts6 from "@typescript/typescript6";
+import type { ResolvedConfig } from "#config";
+import { CompatProjectService } from "#project";
 import { BaseAdapter } from "./BaseAdapter.js";
 import type { CallbackFunction, ImportDeclaration, Node } from "./types.js";
 
@@ -24,6 +26,10 @@ export class CompatTypeScript extends BaseAdapter {
 
   getLeadingCommentRanges(text: string, pos: number) {
     return this.compiler.getLeadingCommentRanges(text, pos);
+  }
+
+  createProjectService(resolvedConfig: ResolvedConfig): CompatProjectService {
+    return new CompatProjectService(this.compiler, resolvedConfig);
   }
 
   isCallbackFunction(node: Node): node is CallbackFunction {
