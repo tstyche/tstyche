@@ -1,4 +1,4 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { isDiagnosticWithLocation } from "#diagnostic";
@@ -6,14 +6,12 @@ import type { TextEditor } from "./TextEditor.js";
 import type { SuppressedError } from "./types.js";
 
 export class SuppressedLayer {
-  #compiler: typeof ts;
   #editor: TextEditor;
   #expectErrorRegex = /^([ \t/*{]*)(@ts-expect-error)(!?)(:? *)(.*?)(?:\*\/.*)?$/gim;
   #resolvedConfig: ResolvedConfig;
   #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
 
-  constructor(compiler: typeof ts, editor: TextEditor, resolvedConfig: ResolvedConfig) {
-    this.#compiler = compiler;
+  constructor(editor: TextEditor, resolvedConfig: ResolvedConfig) {
     this.#editor = editor;
     this.#resolvedConfig = resolvedConfig;
   }
@@ -52,7 +50,7 @@ export class SuppressedLayer {
     return ranges;
   }
 
-  close(diagnostics: Array<ts.Diagnostic> | undefined): void {
+  close(diagnostics: Array<ts6.Diagnostic> | undefined): void {
     if (diagnostics != null && this.#suppressedErrorsMap != null) {
       for (const diagnostic of diagnostics) {
         this.#mapToDirectives(diagnostic);
@@ -62,7 +60,7 @@ export class SuppressedLayer {
     this.#suppressedErrorsMap = undefined;
   }
 
-  #mapToDirectives(diagnostic: ts.Diagnostic) {
+  #mapToDirectives(diagnostic: ts6.Diagnostic) {
     if (!isDiagnosticWithLocation(diagnostic)) {
       return;
     }
@@ -70,7 +68,7 @@ export class SuppressedLayer {
     const { file, start } = diagnostic;
 
     const lineMap = file.getLineStarts();
-    let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
+    let line = file.getLineAndCharacterOfPosition(start).line - 1;
 
     while (line >= 0) {
       const suppressedError = this.#suppressedErrorsMap?.get(line);
@@ -104,6 +102,7 @@ export class SuppressedLayer {
       this.#editor.erase(start, end);
 
       if (this.#suppressedErrorsMap != null) {
+        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4215
         const { line } = tree.sourceFile.getLineAndCharacterOfPosition(start);
 
         this.#suppressedErrorsMap.set(line, suppressedError);

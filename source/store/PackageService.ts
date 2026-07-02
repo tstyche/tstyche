@@ -1,11 +1,12 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { Fetcher } from "./Fetcher.js";
 import type { LockService } from "./LockService.js";
-import type { Manifest } from "./Manifest.js";
+import type { Manifest, Resource } from "./Manifest.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import { TarReader } from "./TarReader.js";
 
@@ -29,13 +30,27 @@ export class PackageService {
       return;
     }
 
-    if (existsSync(packagePath)) {
-      return packagePath;
+    if (!existsSync(packagePath)) {
+      EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
+
+      const resource = manifest.packages[packageVersion]!;
+
+      let success = await this.#fetch(packagePath, packageVersion, resource);
+
+      if (success && resource.binary) {
+        success = await this.#fetch(`${packagePath}-binary`, `${packageVersion}-binary`, resource.binary);
+      }
+
+      if (!success) {
+        return;
+      }
     }
 
-    EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
+    return `${pathToFileURL(packagePath)}/`;
+  }
 
-    const resource = manifest.packages[packageVersion]!;
+  async #fetch(packagePath: string, packageVersion: string, resource: Resource): Promise<boolean> {
+    const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageVersion));
 
     const lock = this.#lockService.getLock(packagePath);
 
@@ -44,7 +59,7 @@ export class PackageService {
       const response = await this.#fetcher.get(request, diagnostic);
 
       if (!response?.body) {
-        return;
+        return false;
       }
 
       const targetPath = await fs.mkdtemp(`${packagePath}-`);
@@ -62,7 +77,7 @@ export class PackageService {
 
       await fs.rename(targetPath, packagePath);
 
-      return packagePath;
+      return true;
     } finally {
       lock.release();
     }

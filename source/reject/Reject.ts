@@ -1,17 +1,17 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
+import type * as ts from "#typescript";
 import { capitalize } from "./helpers.js";
 import { RejectDiagnosticText } from "./RejectDiagnosticText.js";
 
 export class Reject {
-  #compiler: typeof ts;
   #rejectedArgumentTypes = new Set<"any" | "never">();
-  #typeChecker: ts.TypeChecker;
+  #typeChecker: ts6.TypeChecker;
+  #ts: ts.TypeScript;
 
-  constructor(compiler: typeof ts, program: ts.Program, resolvedConfig: ResolvedConfig) {
-    this.#compiler = compiler;
+  constructor(ts: ts.TypeScript, program: ts6.Program, resolvedConfig: ResolvedConfig) {
+    this.#ts = ts;
     this.#typeChecker = program.getTypeChecker();
 
     if (resolvedConfig.rejectAnyType) {
@@ -27,7 +27,7 @@ export class Reject {
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): boolean {
     for (const rejectedType of this.#rejectedArgumentTypes) {
-      const allowedKeyword = this.#compiler.SyntaxKind[`${capitalize(rejectedType)}Keyword`];
+      const allowedKeyword = this.#ts.SyntaxKind[`${capitalize(rejectedType)}Keyword`];
 
       // allows explicit 'expect<any>()', 'expect<never>()', '.toBe<any>()' and '.toBe<never>()'
       if (target.some((node) => node?.kind === allowedKeyword)) {
@@ -39,9 +39,11 @@ export class Reject {
           continue;
         }
 
-        if (this.#typeChecker.getTypeAtLocation(node).flags & this.#compiler.TypeFlags[capitalize(rejectedType)]) {
+        if (
+          this.#typeChecker.getTypeAtLocation(node as ts6.Node).flags & this.#ts.TypeFlags[capitalize(rejectedType)]
+        ) {
           const text = [
-            belongsToArgumentList(node, this.#compiler)
+            this.#ts.belongsToArgumentList(node)
               ? RejectDiagnosticText.argumentCannotBeOfType(rejectedType)
               : RejectDiagnosticText.typeArgumentCannotBeOfType(rejectedType),
             ...RejectDiagnosticText.typeWasRejected(rejectedType),

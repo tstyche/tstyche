@@ -1,16 +1,17 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import type { SuppressedError } from "#layers";
+import type * as ts from "#typescript";
 import type { ExpectNode } from "./ExpectNode.js";
 import type { TestTreeNode } from "./TestTreeNode.js";
 
 export class TestTree {
   children: Array<TestTreeNode | ExpectNode> = [];
-  diagnostics: Set<ts.Diagnostic>;
+  diagnostics: Set<ts6.Diagnostic>;
   hasOnly = false;
   sourceFile: ts.SourceFile;
   suppressedErrors: Array<SuppressedError> | undefined;
 
-  constructor(diagnostics: Set<ts.Diagnostic>, sourceFile: ts.SourceFile) {
+  constructor(diagnostics: Set<ts6.Diagnostic>, sourceFile: ts.SourceFile) {
     this.diagnostics = diagnostics;
     this.sourceFile = sourceFile;
   }

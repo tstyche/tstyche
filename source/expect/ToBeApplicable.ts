@@ -1,7 +1,7 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
+import type * as ts from "#typescript";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -11,27 +11,27 @@ export class ToBeApplicable extends MatcherBase {
     let text = "";
 
     switch (node.kind) {
-      case this.compiler.SyntaxKind.ClassDeclaration:
+      case this.ts.SyntaxKind.ClassDeclaration:
         text = "class";
         break;
 
-      case this.compiler.SyntaxKind.MethodDeclaration:
+      case this.ts.SyntaxKind.MethodDeclaration:
         text = "method";
         break;
 
-      case this.compiler.SyntaxKind.PropertyDeclaration:
+      case this.ts.SyntaxKind.PropertyDeclaration:
         text = (node as ts.PropertyDeclaration).modifiers?.some(
-          (modifier) => modifier.kind === this.compiler.SyntaxKind.AccessorKeyword,
+          (modifier) => modifier.kind === this.ts.SyntaxKind.AccessorKeyword,
         )
           ? "accessor"
           : "field";
         break;
 
-      case this.compiler.SyntaxKind.GetAccessor:
+      case this.ts.SyntaxKind.GetAccessor:
         text = "getter";
         break;
 
-      case this.compiler.SyntaxKind.SetAccessor:
+      case this.ts.SyntaxKind.SetAccessor:
         text = "setter";
         break;
     }
@@ -57,7 +57,7 @@ export class ToBeApplicable extends MatcherBase {
         let related: Array<Diagnostic> | undefined;
 
         if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts6.Diagnostic>);
         }
 
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
@@ -81,7 +81,7 @@ export class ToBeApplicable extends MatcherBase {
     if (type.getCallSignatures().length === 0) {
       const expectedText = "of a function type";
 
-      const text = belongsToArgumentList(sourceNode, this.compiler)
+      const text = this.ts.belongsToArgumentList(sourceNode)
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 

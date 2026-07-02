@@ -22,9 +22,9 @@ if [[ "$*" == *"--sourcemap"* ]]; then
   sourceMap="true"
 fi
 
-tsc --project ./source/tsconfig.json --checkJs false --noEmit false --removeComments true --sourceMap $sourceMap
-tsc --project ./source/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap $sourceMap
-tsc --project ./types/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap $sourceMap
+tsgo --project ./source/tsconfig.json --checkJs false --noEmit false --removeComments true --sourceMap $sourceMap
+tsgo --project ./source/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap $sourceMap
+tsgo --project ./types/tsconfig.json --checkJs false --noEmit false --declaration --emitDeclarationOnly --declarationMap $sourceMap
 
 # postbuild
 

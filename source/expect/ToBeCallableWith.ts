@@ -1,7 +1,6 @@
-import type ts from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
+import type * as ts from "#typescript";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -21,7 +20,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
     if (sourceType.getCallSignatures().length === 0) {
       const text: Array<string> = [];
 
-      if (belongsToArgumentList(sourceNode, this.compiler)) {
+      if (this.ts.belongsToArgumentList(sourceNode)) {
         text.push(ExpectDiagnosticText.argumentMustBe("a callable expression"));
       } else {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("a callable type"));

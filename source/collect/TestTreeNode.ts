@@ -1,5 +1,6 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import { diagnosticBelongsToNode } from "#diagnostic";
+import type * as ts from "#typescript";
 import type { ExpectNode } from "./ExpectNode.js";
 import type { TestTree } from "./TestTree.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
@@ -8,14 +9,14 @@ import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 export class TestTreeNode {
   brand: TestTreeNodeBrand;
   children: Array<TestTreeNode | ExpectNode> = [];
-  diagnostics = new Set<ts.Diagnostic>();
+  diagnostics = new Set<ts6.Diagnostic>();
   flags: TestTreeNodeFlags;
   name = "";
   node: ts.CallExpression;
   parent: TestTree | TestTreeNode;
 
   constructor(
-    compiler: typeof ts,
+    ts: ts.TypeScript,
     brand: TestTreeNodeBrand,
     node: ts.CallExpression,
     parent: TestTree | TestTreeNode,
@@ -26,13 +27,13 @@ export class TestTreeNode {
     this.parent = parent;
     this.flags = flags;
 
-    if (node.arguments[0] != null && compiler.isStringLiteralLike(node.arguments[0])) {
+    if (node.arguments[0] != null && ts.isStringLiteralLikeNode(node.arguments[0])) {
       this.name = node.arguments[0].text;
     }
 
-    if (node.arguments[1] != null && compiler.isFunctionLike(node.arguments[1])) {
+    if (node.arguments[1] != null && ts.isCallbackFunction(node.arguments[1])) {
       for (const diagnostic of parent.diagnostics) {
-        if (diagnosticBelongsToNode(diagnostic, node.arguments[1].body)) {
+        if (node.arguments[1].body != null && diagnosticBelongsToNode(diagnostic, node.arguments[1].body)) {
           this.diagnostics.add(diagnostic);
 
           parent.diagnostics.delete(diagnostic);

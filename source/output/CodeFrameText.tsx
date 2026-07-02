@@ -70,11 +70,14 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
   const linesBelow = options?.linesBelow ?? 3;
   const showBreadcrumbs = options?.showBreadcrumbs ?? true;
 
+  // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4215
   const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
 
   const { character: firstMarkedCharacter, line: firstMarkedLine } =
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4215
     diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
   const { character: lastMarkedCharacter, line: lastMarkedLine } =
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4215
     diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
 
   const firstLine = Math.max(firstMarkedLine - linesAbove, 0);

@@ -1,5 +1,5 @@
-import type ts from "@typescript/typescript6";
 import type { Offset } from "#diagnostic";
+import type * as ts from "#typescript";
 
 export class TextEditor {
   #filePath = "";

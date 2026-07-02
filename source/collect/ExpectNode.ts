@@ -1,12 +1,13 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import { diagnosticBelongsToNode } from "#diagnostic";
+import type * as ts from "#typescript";
 import type { TestTree } from "./TestTree.js";
 import { TestTreeNode } from "./TestTreeNode.js";
 import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
 export class ExpectNode extends TestTreeNode {
-  abilityDiagnostics = new Set<ts.Diagnostic>();
+  abilityDiagnostics = new Set<ts6.Diagnostic>();
   isNot: boolean;
   matcherNode: ts.CallExpression | ts.Decorator;
   matcherNameNode: ts.PropertyAccessExpression;
@@ -16,7 +17,7 @@ export class ExpectNode extends TestTreeNode {
   target: ts.NodeArray<ts.Expression> | ts.NodeArray<ts.TypeNode> | undefined;
 
   constructor(
-    compiler: typeof ts,
+    ts: ts.TypeScript,
     brand: TestTreeNodeBrand,
     node: ts.CallExpression,
     parent: TestTree | TestTreeNode,
@@ -26,7 +27,7 @@ export class ExpectNode extends TestTreeNode {
     modifierNode: ts.PropertyAccessExpression,
     notNode: ts.PropertyAccessExpression | undefined,
   ) {
-    super(compiler, brand, node, parent, flags);
+    super(ts, brand, node, parent, flags);
 
     this.isNot = notNode != null;
     this.matcherNode = matcherNode;
@@ -34,7 +35,7 @@ export class ExpectNode extends TestTreeNode {
     this.modifierNode = modifierNode;
     this.source = this.node.typeArguments ?? this.node.arguments;
 
-    if (compiler.isCallExpression(this.matcherNode)) {
+    if (ts.isCallExpression(this.matcherNode)) {
       this.target = this.matcherNode.typeArguments ?? this.matcherNode.arguments;
     }
 

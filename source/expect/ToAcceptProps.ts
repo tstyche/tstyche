@@ -1,6 +1,5 @@
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { belongsToArgumentList, isCapitaizedIdentifierLike, isIdentifierLike } from "#layers";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -20,13 +19,13 @@ export class ToAcceptProps extends AbilityMatcherBase {
     const sourceType = this.getType(sourceNode);
 
     if (
-      !isCapitaizedIdentifierLike(sourceNode, this.compiler) ||
+      !this.ts.isCapitaizedIdentifierLike(sourceNode) ||
       !(sourceType.getCallSignatures().length > 0 || sourceType.getConstructSignatures().length > 0)
     ) {
-      const expectedText = !isIdentifierLike(sourceNode, this.compiler)
+      const expectedText = !this.ts.isIdentifierLike(sourceNode)
         ? "an identifier of a JSX component"
         : "an identifier that begins with an uppercase letter";
-      const text = belongsToArgumentList(sourceNode, this.compiler)
+      const text = this.ts.belongsToArgumentList(sourceNode)
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 
@@ -35,7 +34,7 @@ export class ToAcceptProps extends AbilityMatcherBase {
       diagnostics.push(Diagnostic.error(text, origin));
     }
 
-    if (!this.compiler.isObjectLiteralExpression(targetNode)) {
+    if (!this.ts.isObjectLiteralExpression(targetNode)) {
       const expectedText = "an object literal with key-value pairs";
 
       const text = ExpectDiagnosticText.argumentMustBe(expectedText);
@@ -44,7 +43,7 @@ export class ToAcceptProps extends AbilityMatcherBase {
       diagnostics.push(Diagnostic.error(text, origin));
     } else {
       for (const property of targetNode.properties) {
-        if (!(this.compiler.isPropertyAssignment(property) || this.compiler.isSpreadAssignment(property))) {
+        if (!(this.ts.isPropertyAssignment(property) || this.ts.isSpreadAssignment(property))) {
           const text = "Each property must be a key-value pair or a spread element.";
           const origin = DiagnosticOrigin.fromNode(property);
 
@@ -54,8 +53,8 @@ export class ToAcceptProps extends AbilityMatcherBase {
         }
 
         if (
-          this.compiler.isPropertyAssignment(property) &&
-          !(this.compiler.isIdentifier(property.name) || this.compiler.isStringLiteral(property.name))
+          this.ts.isPropertyAssignment(property) &&
+          !(this.ts.isIdentifier(property.name) || this.ts.isStringLiteral(property.name))
         ) {
           const text = "Property keys must be static identifiers or string literals.";
           const origin = DiagnosticOrigin.fromNode(property.name);

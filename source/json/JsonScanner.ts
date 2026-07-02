@@ -1,5 +1,5 @@
-import type ts from "@typescript/typescript6";
 import { DiagnosticOrigin } from "#diagnostic";
+import type * as ts from "#typescript";
 import { JsonNode } from "./JsonNode.js";
 import type { JsonSourceFile } from "./JsonSourceFile.js";
 

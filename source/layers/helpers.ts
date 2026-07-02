@@ -29,24 +29,3 @@ function deepCompareKeys(a: any, b: any, keys: Array<string>): boolean {
 
   return true;
 }
-
-export function isCapitaizedIdentifierLike(node: ts.Node, compiler: typeof ts): boolean {
-  return isIdentifierLike(node, compiler) && /^[A-Z_$]/.test(node.getText()[0]!);
-}
-
-export function isChildOfExpressionStatement(node: ts.Node, compiler: typeof ts): boolean {
-  return compiler.isExpressionStatement(node.parent);
-}
-
-export function isIdentifierLike(node: ts.Node, compiler: typeof ts): boolean {
-  return (
-    compiler.isIdentifier(node) ||
-    compiler.isPropertyAccessExpression(node) ||
-    compiler.isTypeReferenceNode(node) ||
-    compiler.isExpressionWithTypeArguments(node)
-  );
-}
-
-export function belongsToArgumentList(node: ts.Node, compiler: typeof ts): boolean {
-  return compiler.isCallExpression(node.parent) && node.parent.arguments.some((argument) => argument === node);
-}

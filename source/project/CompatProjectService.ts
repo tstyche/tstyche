@@ -1,31 +1,31 @@
-import type ts from "@typescript/typescript6";
-import { Options, type ResolvedConfig } from "#config";
+import type ts6 from "@typescript/typescript6";
+import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import { type ProjectConfig, ProjectConfigKind } from "#result";
+import { ProjectConfigKind } from "#result";
 import { Select } from "#select";
 import { Version } from "#version";
+import { BaseProjectService } from "./BaseProjectService.js";
 
-export class ProjectService {
-  #compiler: typeof ts;
-  #host: ts.server.ServerHost;
+export class CompatProjectService extends BaseProjectService {
+  #compiler: typeof ts6;
+  #host: ts6.server.ServerHost;
   #lastSeenProject: string | undefined = "none";
-  #projectConfig: ProjectConfig;
   #resolvedConfig: ResolvedConfig;
   #seenProjects = new Set<string | undefined>();
   #seenTestFiles = new Set<string>();
-  #service: ts.server.ProjectService;
+  #service: ts6.server.ProjectService;
 
-  constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts6, resolvedConfig: ResolvedConfig) {
+    super(resolvedConfig);
+
     this.#compiler = compiler;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#projectConfig = this.#resolveProjectConfig(resolvedConfig.tsconfig);
-
     const noop = () => undefined;
 
-    const noopLogger: ts.server.Logger = {
+    const noopLogger: ts6.server.Logger = {
       close: noop,
       endGroup: noop,
       getLogFileName: noop,
@@ -51,9 +51,9 @@ export class ProjectService {
       watchFile: () => noopWatcher,
     };
 
-    if (this.#projectConfig.kind === ProjectConfigKind.Synthetic) {
+    if (this.projectConfig.kind === ProjectConfigKind.Synthetic) {
       this.#host.readFile = (path) =>
-        path === this.#projectConfig.specifier ? resolvedConfig.tsconfig : compiler.sys.readFile(path);
+        path === this.projectConfig.specifier ? resolvedConfig.tsconfig : compiler.sys.readFile(path);
     }
 
     this.#service = new this.#compiler.server.ProjectService({
@@ -74,7 +74,7 @@ export class ProjectService {
   }
 
   #getDefaultCompilerOptions() {
-    const defaultCompilerOptions: ts.server.protocol.CompilerOptions = {
+    const defaultCompilerOptions: ts6.server.protocol.CompilerOptions = {
       allowJs: true,
       checkJs: true,
       allowImportingTsExtensions: true,
@@ -96,7 +96,7 @@ export class ProjectService {
     return defaultCompilerOptions;
   }
 
-  getDefaultProject(filePath: string): ts.server.Project | undefined {
+  getDefaultProject(filePath: string): ts6.server.Project | undefined {
     const project = this.#service.getDefaultProjectForFile(
       this.#compiler.server.toNormalizedPath(filePath),
       /* ensureProject */ true,
@@ -111,54 +111,35 @@ export class ProjectService {
     return project;
   }
 
-  getDiagnostics(filePath: string, sourceText: string): Array<ts.Diagnostic> | undefined {
+  getDiagnostics(filePath: string, sourceText: string): Array<ts6.Diagnostic> | undefined {
     this.openFile(filePath, sourceText);
 
     const languageService = this.getLanguageService(filePath);
     return languageService?.getSemanticDiagnostics(filePath);
   }
 
-  getLanguageService(filePath: string): ts.LanguageService | undefined {
+  getLanguageService(filePath: string): ts6.LanguageService | undefined {
     const project = this.getDefaultProject(filePath);
 
     return project?.getLanguageService(/* ensureSynchronized */ true);
   }
 
   #isFileIncluded(filePath: string) {
-    const configSourceFile = this.#compiler.readJsonConfigFile(this.#projectConfig.specifier, this.#host.readFile);
+    const configSourceFile = this.#compiler.readJsonConfigFile(this.projectConfig.specifier, this.#host.readFile);
 
     const { fileNames } = this.#compiler.parseJsonSourceFileConfigFileContent(
       configSourceFile,
       this.#host,
-      Path.dirname(this.#projectConfig.specifier),
+      Path.dirname(this.projectConfig.specifier),
       undefined,
-      this.#projectConfig.specifier,
+      this.projectConfig.specifier,
     );
 
     return fileNames.includes(filePath);
   }
 
-  #resolveProjectConfig(specifier: string): ProjectConfig {
-    if (specifier === "baseline") {
-      return { kind: ProjectConfigKind.Default, specifier: "baseline" };
-    }
-
-    if (specifier === "findup") {
-      return { kind: ProjectConfigKind.Discovered, specifier: "" };
-    }
-
-    if (Options.isJsonString(specifier)) {
-      return {
-        kind: ProjectConfigKind.Synthetic,
-        specifier: Path.resolve(this.#resolvedConfig.rootPath, `${Date.now().toString(36)}.tsconfig.json`),
-      };
-    }
-
-    return { kind: ProjectConfigKind.Provided, specifier };
-  }
-
   openFile(filePath: string, sourceText?: string): void {
-    switch (this.#projectConfig.kind) {
+    switch (this.projectConfig.kind) {
       case ProjectConfigKind.Discovered:
         break;
 
@@ -170,7 +151,7 @@ export class ProjectService {
       default:
         // @ts-expect-error: overriding private method
         this.#service.getConfigFileNameForFile = this.#isFileIncluded(filePath)
-          ? () => this.#projectConfig.specifier
+          ? () => this.projectConfig.specifier
           : () => undefined;
     }
 
@@ -186,7 +167,7 @@ export class ProjectService {
 
       const projectConfig =
         configFileName != null
-          ? { ...this.#projectConfig, specifier: configFileName }
+          ? { ...this.projectConfig, specifier: configFileName }
           : { kind: ProjectConfigKind.Default, specifier: "baseline" };
 
       EventEmitter.dispatch(["project:uses", { compilerVersion: this.#compiler.version, projectConfig }]);
@@ -194,7 +175,7 @@ export class ProjectService {
       if (configFileErrors && configFileErrors.length > 0) {
         EventEmitter.dispatch([
           "project:error",
-          { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>) },
+          { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts6.Diagnostic>) },
         ]);
       }
     }

@@ -1,7 +1,7 @@
-import type ts from "@typescript/typescript6";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import type { JsonNode, JsonScanner, JsonSourceFile } from "#json";
 import { Path } from "#path";
+import type * as ts from "#typescript";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import type { OptionGroup } from "./OptionGroup.enum.js";

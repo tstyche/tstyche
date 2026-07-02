@@ -1,4 +1,4 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
 import { getDiagnosticMessageText, getTextSpanEnd, isDiagnosticWithLocation } from "./helpers.js";
@@ -36,7 +36,7 @@ export class Diagnostic {
     return new Diagnostic([this.text, text].flat(), this.category, origin ?? this.origin);
   }
 
-  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>): Array<Diagnostic> {
+  static fromDiagnostics(diagnostics: Array<ts6.Diagnostic>): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
@@ -48,7 +48,7 @@ export class Diagnostic {
       let related: Array<Diagnostic> | undefined;
 
       if (diagnostic.relatedInformation != null) {
-        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts6.Diagnostic>);
       }
 
       const text = getDiagnosticMessageText(diagnostic);

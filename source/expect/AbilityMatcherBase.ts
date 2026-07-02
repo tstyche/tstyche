@@ -1,4 +1,4 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import {
   Diagnostic,
@@ -8,7 +8,7 @@ import {
   getDiagnosticMessageText,
   isDiagnosticWithLocation,
 } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
+import type * as ts from "#typescript";
 import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
@@ -21,7 +21,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
       return "without arguments";
     }
 
-    if (nodes.length === 1 && nodes[0]?.kind === this.compiler.SyntaxKind.SpreadElement) {
+    if (nodes.length === 1 && nodes[0]?.kind === this.ts.SyntaxKind.SpreadElement) {
       return "with the given arguments";
     }
 
@@ -42,7 +42,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
     targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode,
     getArgumentCountText?: () => string,
   ): Array<Diagnostic> {
-    const isExpression = belongsToArgumentList(sourceNode, this.compiler);
+    const isExpression = this.ts.belongsToArgumentList(sourceNode);
 
     const argumentCountText = getArgumentCountText?.();
 
@@ -63,7 +63,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
         let related: Array<Diagnostic> | undefined;
 
         if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts6.Diagnostic>);
         }
 
         diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));

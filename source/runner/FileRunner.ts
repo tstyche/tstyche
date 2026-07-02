@@ -1,31 +1,38 @@
 import { pathToFileURL } from "node:url";
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import { CollectService, type TestTree } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { FileLocation } from "#file";
-import { ProjectService } from "#project";
+import type { CompatProjectService, ProjectService } from "#project";
 import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
 import type { CancellationToken } from "#token";
+import type * as ts from "#typescript";
 import { Version } from "#version";
 import { RunModeFlags } from "./RunModeFlags.enum.js";
 import { TestTreeWalker } from "./TestTreeWalker.js";
 
 export class FileRunner {
   #collectService: CollectService;
-  #compiler: typeof ts;
   #projectService: ProjectService;
   #resolvedConfig: ResolvedConfig;
   #suppressedService = new SuppressedService();
+  #ts: ts.TypeScript;
 
-  constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
-    this.#compiler = compiler;
+  constructor(ts: ts.TypeScript, resolvedConfig: ResolvedConfig) {
+    this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#projectService = new ProjectService(compiler, this.#resolvedConfig);
-    this.#collectService = new CollectService(compiler, this.#projectService, this.#resolvedConfig);
+    this.#projectService = ts.createProjectService(resolvedConfig);
+    this.#collectService = new CollectService(ts, this.#projectService, resolvedConfig);
+  }
+
+  close(): void {
+    if ("close" in this.#projectService) {
+      this.#projectService.close();
+    }
   }
 
   #onDiagnostics(this: void, diagnostics: Array<Diagnostic>, result: FileResult) {
@@ -54,10 +61,10 @@ export class FileRunner {
     file: FileLocation,
     fileResult: FileResult,
     runModeFlags: RunModeFlags,
-  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts.Program } | undefined> {
+  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts6.Program } | undefined> {
     // wrapping around the language service allows querying on per file basis
     // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
-    const languageService = this.#projectService.getLanguageService(file.path);
+    const languageService = (this.#projectService as CompatProjectService).getLanguageService(file.path);
 
     const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(file.path);
 
@@ -75,10 +82,10 @@ export class FileRunner {
       return;
     }
 
-    const directiveRanges = Directive.getDirectiveRanges(this.#compiler, sourceFile);
+    const directiveRanges = Directive.getDirectiveRanges(this.#ts, sourceFile);
     const inlineConfig = await Directive.getInlineConfig(directiveRanges);
 
-    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#compiler.version, inlineConfig.if.target)) {
+    if (inlineConfig?.if?.target != null && !Version.isIncluded(this.#ts.version, inlineConfig.if.target)) {
       runModeFlags |= RunModeFlags.Skip;
     }
 
@@ -127,7 +134,7 @@ export class FileRunner {
       this.#onDiagnostics(diagnostics, fileResult);
     };
 
-    const testTreeWalker = new TestTreeWalker(this.#compiler, facts.program, this.#resolvedConfig, onFileDiagnostics, {
+    const testTreeWalker = new TestTreeWalker(this.#ts, facts.program, this.#resolvedConfig, onFileDiagnostics, {
       cancellationToken,
       hasOnly: facts.testTree.hasOnly,
       position: file.position,
