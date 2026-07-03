@@ -12,7 +12,6 @@ export class CompatProjectService extends BaseProjectService {
   #compiler: typeof ts6;
   #host: ts6.server.ServerHost;
   #lastSeenProject: string | undefined = "none";
-  #resolvedConfig: ResolvedConfig;
   #seenProjects = new Set<string | undefined>();
   #seenTestFiles = new Set<string>();
   #service: ts6.server.ProjectService;
@@ -21,7 +20,6 @@ export class CompatProjectService extends BaseProjectService {
     super(resolvedConfig);
 
     this.#compiler = compiler;
-    this.#resolvedConfig = resolvedConfig;
 
     const noop = () => undefined;
 
@@ -104,7 +102,7 @@ export class CompatProjectService extends BaseProjectService {
 
     const compilerOptions = project?.getCompilerOptions();
 
-    if (this.#resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
+    if (this.resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
       project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
     }
 
@@ -159,7 +157,7 @@ export class CompatProjectService extends BaseProjectService {
       filePath,
       sourceText,
       /* scriptKind */ undefined,
-      this.#resolvedConfig.rootPath,
+      this.resolvedConfig.rootPath,
     );
 
     if (configFileName !== this.#lastSeenProject) {
@@ -198,15 +196,15 @@ export class CompatProjectService extends BaseProjectService {
           return false;
         }
 
-        if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+        if (this.resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
           return true;
         }
 
-        if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+        if (Select.isFixtureFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
           return true;
         }
 
-        if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+        if (Select.isTestFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
           return false;
         }
 

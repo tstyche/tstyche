@@ -4,8 +4,11 @@ import { type ProjectConfig, ProjectConfigKind } from "#result";
 
 export abstract class BaseProjectService {
   protected projectConfig: ProjectConfig;
+  protected resolvedConfig: ResolvedConfig;
 
   constructor(resolvedConfig: ResolvedConfig) {
+    this.resolvedConfig = resolvedConfig;
+
     this.projectConfig = this.#resolveProjectConfig(resolvedConfig);
   }
 

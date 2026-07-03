@@ -5,20 +5,31 @@ import { EventEmitter } from "#events";
 import { ProjectConfigKind } from "#result";
 import type { NativeTypeScript } from "#typescript";
 import { BaseProjectService } from "./BaseProjectService.js";
+import type { FileSystem } from "./types.js";
 
 export class NativeProjectService extends BaseProjectService {
   #api: InstanceType<NativeTypeScript["API"]>;
   #lastSeenProject: tsApi.Project | undefined;
   #ts: NativeTypeScript;
 
-  // TODO must have instance of 'vfs'
-
   constructor(ts: NativeTypeScript, resolvedConfig: ResolvedConfig) {
     super(resolvedConfig);
 
     this.#ts = ts;
 
-    this.#api = new ts.API();
+    const fs: FileSystem = {};
+
+    if (this.projectConfig.kind >= ProjectConfigKind.Default) {
+      fs.fileExists = (path) => !/\/(tsconfig|jsconfig)\.json$/.test(path);
+    }
+
+    if (this.projectConfig.kind === ProjectConfigKind.Synthetic) {
+      fs.readFile = (path) => (path === this.projectConfig.specifier ? this.resolvedConfig.tsconfig : undefined);
+    }
+
+    // TODO waiting for: https://github.com/microsoft/typescript-go/issues/4503
+
+    this.#api = new ts.API({ fs });
   }
 
   close(): void {
@@ -30,33 +41,16 @@ export class NativeProjectService extends BaseProjectService {
   }
 
   getProject(filePath: string): tsApi.Project {
-    let snapshot: tsApi.Snapshot;
-    let project: tsApi.Project | undefined;
+    if (this.projectConfig.kind >= ProjectConfigKind.Provided) {
+      const snapshot = this.#api.updateSnapshot({ openProjects: [this.projectConfig.specifier] });
+      const project = snapshot.getDefaultProjectForFile(filePath);
 
-    switch (this.projectConfig.kind) {
-      case ProjectConfigKind.Discovered:
-        break;
-
-      case ProjectConfigKind.Provided:
-      case ProjectConfigKind.Synthetic:
-        snapshot = this.#api.updateSnapshot({ openProjects: [this.projectConfig.specifier] });
-        project = snapshot.getDefaultProjectForFile(filePath);
-
-        break;
-
-      case ProjectConfigKind.Default:
-        // TODO try handling through 'vfs' by returning undefined
-
-        break;
+      if (project != null) {
+        return project;
+      }
     }
 
-    if (project) {
-      return project;
-    }
-
-    snapshot = this.#api.updateSnapshot({ openFiles: [filePath] });
-
-    return snapshot.getDefaultProjectForFile(filePath)!;
+    return this.#api.updateSnapshot({ openFiles: [filePath] }).getDefaultProjectForFile(filePath)!;
   }
 
   openFile(filePath: string): void {
