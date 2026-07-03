@@ -1,7 +1,6 @@
 import { DiagnosticOrigin } from "#diagnostic";
-import type * as ts from "#typescript";
+import type { TextFile } from "#text";
 import { JsonNode } from "./JsonNode.js";
-import type { JsonSourceFile } from "./JsonSourceFile.js";
 
 export interface JsonScannerOptions {
   start?: number;
@@ -10,19 +9,19 @@ export interface JsonScannerOptions {
 
 export class JsonScanner {
   #end: number;
+  #file: TextFile;
   #position: number;
   #previousPosition: number;
-  #sourceFile: ts.SourceFile | JsonSourceFile;
 
-  constructor(sourceFile: ts.SourceFile | JsonSourceFile, options?: JsonScannerOptions) {
-    this.#end = options?.end ?? sourceFile.text.length;
+  constructor(file: TextFile, options?: JsonScannerOptions) {
+    this.#end = options?.end ?? file.text.length;
+    this.#file = file;
     this.#position = options?.start ?? 0;
     this.#previousPosition = options?.start ?? 0;
-    this.#sourceFile = sourceFile;
   }
 
   #getOrigin() {
-    return new DiagnosticOrigin(this.#previousPosition, this.#position, this.#sourceFile);
+    return new DiagnosticOrigin(this.#previousPosition, this.#position, this.#file);
   }
 
   isRead(): boolean {
@@ -30,11 +29,11 @@ export class JsonScanner {
   }
 
   #peekCharacter() {
-    return this.#sourceFile.text.charAt(this.#position);
+    return this.#file.text.charAt(this.#position);
   }
 
   #peekNextCharacter() {
-    return this.#sourceFile.text.charAt(this.#position + 1);
+    return this.#file.text.charAt(this.#position + 1);
   }
 
   peekToken(token: string): boolean {
@@ -87,7 +86,7 @@ export class JsonScanner {
   }
 
   #readCharacter() {
-    return this.#sourceFile.text.charAt(this.#position++);
+    return this.#file.text.charAt(this.#position++);
   }
 
   readToken(token: string | RegExp): JsonNode {

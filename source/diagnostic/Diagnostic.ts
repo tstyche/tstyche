@@ -1,7 +1,8 @@
-import type ts6 from "@typescript/typescript6";
+import { getTextFile } from "#text";
+import type * as ts from "#typescript";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
-import { getDiagnosticMessageText, getTextSpanEnd, isDiagnosticWithLocation } from "./helpers.js";
+import { getDiagnosticMessageText, isDiagnosticLocation, isDiagnosticPosition } from "./helpers.js";
 
 export class Diagnostic {
   category: DiagnosticCategory;
@@ -36,19 +37,27 @@ export class Diagnostic {
     return new Diagnostic([this.text, text].flat(), this.category, origin ?? this.origin);
   }
 
-  static fromDiagnostics(diagnostics: Array<ts6.Diagnostic>): Array<Diagnostic> {
+  static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
-      if (isDiagnosticWithLocation(diagnostic)) {
-        origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), diagnostic.file);
+      if (isDiagnosticPosition(diagnostic)) {
+        origin = new DiagnosticOrigin(diagnostic.pos, diagnostic.end, getTextFile(diagnostic.fileName));
+      }
+
+      if (isDiagnosticLocation(diagnostic)) {
+        origin = new DiagnosticOrigin(
+          diagnostic.start,
+          diagnostic.start + diagnostic.length,
+          getTextFile(diagnostic.file),
+        );
       }
 
       let related: Array<Diagnostic> | undefined;
 
       if (diagnostic.relatedInformation != null) {
-        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts6.Diagnostic>);
+        related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
       }
 
       const text = getDiagnosticMessageText(diagnostic);

@@ -171,10 +171,7 @@ export class CompatProjectService extends BaseProjectService {
       EventEmitter.dispatch(["project:uses", { compilerVersion: this.#compiler.version, projectConfig }]);
 
       if (configFileErrors && configFileErrors.length > 0) {
-        EventEmitter.dispatch([
-          "project:error",
-          { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts6.Diagnostic>) },
-        ]);
+        EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(configFileErrors) }]);
       }
     }
 

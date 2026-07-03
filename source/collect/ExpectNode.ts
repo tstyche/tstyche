@@ -1,4 +1,3 @@
-import type ts6 from "@typescript/typescript6";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type * as ts from "#typescript";
 import type { TestTree } from "./TestTree.js";
@@ -7,7 +6,7 @@ import type { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
 export class ExpectNode extends TestTreeNode {
-  abilityDiagnostics = new Set<ts6.Diagnostic>();
+  abilityDiagnostics = new Set<ts.Diagnostic>();
   isNot: boolean;
   matcherNode: ts.CallExpression | ts.Decorator;
   matcherNameNode: ts.PropertyAccessExpression;

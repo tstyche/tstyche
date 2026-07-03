@@ -1,4 +1,3 @@
-import type ts6 from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type * as ts from "#typescript";
@@ -14,7 +13,7 @@ export class AbilityLayer {
     this.#editor = editor;
   }
 
-  close(diagnostics: Array<ts6.Diagnostic>): void {
+  close(diagnostics: Array<ts.Diagnostic>): void {
     if (diagnostics.length > 0 && this.#nodes.length > 0) {
       this.#nodes.reverse();
 

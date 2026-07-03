@@ -1,9 +1,9 @@
-import type ts6 from "@typescript/typescript6";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Layers } from "#layers";
 import type { ProjectService } from "#project";
+import { getTextFile } from "#text";
 import type * as ts from "#typescript";
 import { CollectDiagnosticText } from "./CollectDiagnosticText.js";
 import { ExpectNode } from "./ExpectNode.js";
@@ -85,7 +85,7 @@ export class CollectService {
               this.#ts.isExpressionWithTypeArguments(matcherNameNode.parent)
                 ? matcherNameNode.parent.getEnd()
                 : matcherNameNode.getEnd(),
-              matcherNameNode.getSourceFile(),
+              getTextFile(matcherNameNode.getSourceFile()),
             );
 
             this.#onDiagnostics(Diagnostic.error(text, origin));
@@ -129,7 +129,7 @@ export class CollectService {
     });
   }
 
-  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts6.Diagnostic> = []): TestTree {
+  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);

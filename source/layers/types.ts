@@ -1,9 +1,9 @@
-import type ts6 from "@typescript/typescript6";
-import type { TextRange } from "#config";
+import type { TextRange } from "#text";
+import type * as ts from "#typescript";
 
 export interface SuppressedError {
   directive: TextRange;
   ignore: boolean;
   argument?: TextRange;
-  diagnostics: Array<ts6.Diagnostic>;
+  diagnostics: Array<ts.Diagnostic>;
 }

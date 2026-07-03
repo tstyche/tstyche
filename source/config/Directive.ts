@@ -2,6 +2,7 @@ import type { TestTreeNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { JsonScanner } from "#json";
+import { getTextFile, type TextFile } from "#text";
 import type * as ts from "#typescript";
 import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
@@ -89,7 +90,7 @@ export class Directive {
     }
 
     const range: DirectiveRange = {
-      sourceFile,
+      file: getTextFile(sourceFile),
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 
@@ -124,14 +125,14 @@ export class Directive {
         {
           if (!range.argument?.text) {
             const text = DirectiveDiagnosticText.requiresArgument();
-            const origin = new DiagnosticOrigin(range.namespace.start, range.directive.end, range.sourceFile);
+            const origin = new DiagnosticOrigin(range.namespace.start, range.directive.end, range.file);
 
             Directive.#onDiagnostics(Diagnostic.error(text, origin));
 
             return;
           }
 
-          const value = await Directive.#parseJson(range.sourceFile, range.argument.start, range.argument.end);
+          const value = await Directive.#parseJson(range.file, range.argument.start, range.argument.end);
 
           inlineConfig.if = value;
         }
@@ -141,7 +142,7 @@ export class Directive {
       case "template":
         if (range.argument?.text != null) {
           const text = DirectiveDiagnosticText.doesNotTakeArgument();
-          const origin = new DiagnosticOrigin(range.argument.start, range.argument.end, range.sourceFile);
+          const origin = new DiagnosticOrigin(range.argument.start, range.argument.end, range.file);
 
           Directive.#onDiagnostics(Diagnostic.error(text, origin));
         }
@@ -153,19 +154,19 @@ export class Directive {
     const target = range.directive ?? range.namespace;
 
     const text = DirectiveDiagnosticText.isNotSupported(target.text);
-    const origin = new DiagnosticOrigin(target.start, target.end, range.sourceFile);
+    const origin = new DiagnosticOrigin(target.start, target.end, range.file);
 
     Directive.#onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  static async #parseJson(sourceFile: ts.SourceFile, start: number, end: number): Promise<Record<string, OptionValue>> {
+  static async #parseJson(file: TextFile, start: number, end: number): Promise<Record<string, OptionValue>> {
     const inlineOptions: Record<string, OptionValue> = {};
 
     const configParser = new ConfigParser(
       inlineOptions,
       OptionGroup.InlineConditions,
-      sourceFile,
-      new JsonScanner(sourceFile, { start, end }),
+      file,
+      new JsonScanner(file, { start, end }),
       Directive.#onDiagnostics,
     );
 

@@ -1,4 +1,3 @@
-import type ts6 from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import type * as ts from "#typescript";
@@ -113,18 +112,14 @@ export class ToRaiseError {
   }
 
   #matchExpectedError(
-    diagnostic: ts6.Diagnostic,
+    diagnostic: ts.Diagnostic,
     targetNode: ts.StringLiteralLikeNode | ts.NumericLiteral | ts.RegularExpressionLiteral,
   ) {
     if (this.#ts.isNumericLiteral(targetNode)) {
       return Number.parseInt(targetNode.text, 10) === diagnostic.code;
     }
 
-    let messageText = getDiagnosticMessageText(diagnostic);
-
-    if (Array.isArray(messageText)) {
-      messageText = messageText.join("\n");
-    }
+    const messageText = getDiagnosticMessageText(diagnostic).join("\n");
 
     if (this.#ts.isRegularExpressionLiteral(targetNode)) {
       const targetRegex = new RegExp(...(targetNode.text.slice(1).split("/") as [pattern: string, flags: string]));

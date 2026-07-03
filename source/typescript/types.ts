@@ -10,6 +10,9 @@ export type CallbackFunction =
   | (ts6.ArrowFunction | ts6.FunctionExpression);
 export type CommentRange = tsAst.CommentRange | ts6.CommentRange;
 export type Decorator = tsAst.Decorator | ts6.Decorator;
+export type Diagnostic = tsApi.Diagnostic | ts6.Diagnostic;
+export type DiagnosticLocation = ts6.DiagnosticWithLocation;
+export type DiagnosticPosition = tsApi.Diagnostic & { fileName: string };
 export type Expression = tsAst.Expression | ts6.Expression;
 export type ExpressionStatement = tsAst.ExpressionStatement | ts6.ExpressionStatement;
 export type ExpressionWithTypeArguments = tsAst.ExpressionWithTypeArguments | ts6.ExpressionWithTypeArguments;
@@ -19,13 +22,11 @@ export type LiteralType = tsApi.LiteralType | ts6.LiteralType;
 export type NamespaceImport = tsAst.NamespaceImport | ts6.NamespaceImport;
 export type NamedImports = tsAst.NamedImports | ts6.NamedImports;
 export type Node = tsAst.Node | ts6.Node;
-
 export type NodeArray<T extends Node> = T extends tsAst.Node
   ? tsAst.NodeArray<T>
   : T extends ts6.Node
     ? ts6.NodeArray<T>
     : never;
-
 export type NumericLiteral = tsAst.NumericLiteral | ts6.NumericLiteral;
 export type NumberLiteralType = tsApi.NumberLiteralType | ts6.NumberLiteralType;
 export type ObjectLiteralExpression = tsAst.ObjectLiteralExpression | ts6.ObjectLiteralExpression;

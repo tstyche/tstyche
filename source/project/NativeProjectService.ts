@@ -73,7 +73,6 @@ export class NativeProjectService extends BaseProjectService {
       if (configFileParsingDiagnostics.length > 0) {
         EventEmitter.dispatch([
           "project:error",
-          // @ts-expect-error TODO handle native diagnostics
           { diagnostics: Diagnostic.fromDiagnostics(configFileParsingDiagnostics) },
         ]);
       }

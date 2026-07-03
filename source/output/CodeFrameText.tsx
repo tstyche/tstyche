@@ -70,15 +70,13 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
   const linesBelow = options?.linesBelow ?? 3;
   const showBreadcrumbs = options?.showBreadcrumbs ?? true;
 
-  // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4215
-  const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
+  const lineMap = diagnosticOrigin.file.getLineMap();
 
   const { character: firstMarkedCharacter, line: firstMarkedLine } =
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4215
-    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
-  const { character: lastMarkedCharacter, line: lastMarkedLine } =
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4215
-    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
+    diagnosticOrigin.file.getLineAndCharacterOfPosition(diagnosticOrigin.start);
+  const { character: lastMarkedCharacter, line: lastMarkedLine } = diagnosticOrigin.file.getLineAndCharacterOfPosition(
+    diagnosticOrigin.end,
+  );
 
   const firstLine = Math.max(firstMarkedLine - linesAbove, 0);
   const lastLine = Math.min(lastMarkedLine + linesBelow, lineMap.length - 1);
@@ -100,9 +98,9 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   for (let index = firstLine; index <= lastLine; index++) {
     const lineStart = lineMap[index];
-    const lineEnd = index === lineMap.length - 1 ? diagnosticOrigin.sourceFile.text.length : lineMap[index + 1];
+    const lineEnd = index === lineMap.length - 1 ? diagnosticOrigin.file.text.length : lineMap[index + 1];
 
-    const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
+    const lineText = diagnosticOrigin.file.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
     if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeFrame.push(
@@ -156,7 +154,7 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
     <Line>
       {" ".repeat(gutterWidth + 2)}
       <Text color={Color.Gray}>{" at "}</Text>
-      <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
+      <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.file.path)}</Text>
       <Text color={Color.Gray}>{`:${firstMarkedLine + 1}:${firstMarkedCharacter + 1}`}</Text>
       {breadcrumbs}
     </Line>

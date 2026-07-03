@@ -1,4 +1,3 @@
-import type ts6 from "@typescript/typescript6";
 import { diagnosticBelongsToNode } from "#diagnostic";
 import type * as ts from "#typescript";
 import type { ExpectNode } from "./ExpectNode.js";
@@ -9,7 +8,7 @@ import type { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 export class TestTreeNode {
   brand: TestTreeNodeBrand;
   children: Array<TestTreeNode | ExpectNode> = [];
-  diagnostics = new Set<ts6.Diagnostic>();
+  diagnostics = new Set<ts.Diagnostic>();
   flags: TestTreeNodeFlags;
   name = "";
   node: ts.CallExpression;

@@ -4,8 +4,8 @@ export { DiagnosticOrigin } from "./DiagnosticOrigin.js";
 export {
   diagnosticBelongsToNode,
   getDiagnosticMessageText,
-  getTextSpanEnd,
-  isDiagnosticWithLocation,
+  isDiagnosticLocation,
+  isDiagnosticPosition,
 } from "./helpers.js";
 export { MappedDiagnostic } from "./MappedDiagnostic.js";
 export type { DiagnosticsHandler, Offset } from "./types.js";

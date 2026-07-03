@@ -1,13 +1,11 @@
-export class JsonSourceFile {
-  fileName: string;
-  #lineMap: Array<number>;
+export class TextFile {
+  path: string;
+  #lineMap: Array<number> | undefined;
   text: string;
 
-  constructor(fileName: string, text: string) {
-    this.fileName = fileName;
+  constructor(path: string, text: string) {
+    this.path = path;
     this.text = text;
-
-    this.#lineMap = this.#createLineMap();
   }
 
   #createLineMap() {
@@ -37,14 +35,19 @@ export class JsonSourceFile {
     return result;
   }
 
-  getLineStarts(): Array<number> {
+  getLineMap(): Array<number> {
+    if (!this.#lineMap) {
+      this.#lineMap = this.#createLineMap();
+    }
+
     return this.#lineMap;
   }
 
   getLineAndCharacterOfPosition(position: number): { line: number; character: number } {
-    const line = this.#lineMap.findLastIndex((line) => line <= position);
+    const lineMap = this.getLineMap();
+    const line = lineMap.findLastIndex((line) => line <= position);
 
-    const character = position - this.#lineMap[line]!;
+    const character = position - lineMap[line]!;
 
     return { line, character };
   }

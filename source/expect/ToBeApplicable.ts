@@ -1,4 +1,3 @@
-import type ts6 from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import type * as ts from "#typescript";
@@ -52,15 +51,15 @@ export class ToBeApplicable extends MatcherBase {
       const origin = DiagnosticOrigin.fromAssertion(expectNode);
 
       for (const diagnostic of expectNode.abilityDiagnostics) {
-        const text = [ExpectDiagnosticText.cannotBeApplied(targetText), getDiagnosticMessageText(diagnostic)];
+        const text = [ExpectDiagnosticText.cannotBeApplied(targetText), ...getDiagnosticMessageText(diagnostic)];
 
         let related: Array<Diagnostic> | undefined;
 
         if (diagnostic.relatedInformation != null) {
-          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation as Array<ts6.Diagnostic>);
+          related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
         }
 
-        diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
+        diagnostics.push(Diagnostic.error(text, origin).add({ related }));
       }
     } else {
       const origin = DiagnosticOrigin.fromAssertion(expectNode);

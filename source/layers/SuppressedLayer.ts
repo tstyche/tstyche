@@ -1,7 +1,8 @@
-import type ts6 from "@typescript/typescript6";
 import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { isDiagnosticWithLocation } from "#diagnostic";
+import { isDiagnosticLocation, isDiagnosticPosition } from "#diagnostic";
+import { getTextFile, type TextFile } from "#text";
+import type * as ts from "#typescript";
 import type { TextEditor } from "./TextEditor.js";
 import type { SuppressedError } from "./types.js";
 
@@ -50,7 +51,7 @@ export class SuppressedLayer {
     return ranges;
   }
 
-  close(diagnostics: Array<ts6.Diagnostic> | undefined): void {
+  close(diagnostics: Array<ts.Diagnostic> | undefined): void {
     if (diagnostics != null && this.#suppressedErrorsMap != null) {
       for (const diagnostic of diagnostics) {
         this.#mapToDirectives(diagnostic);
@@ -60,15 +61,25 @@ export class SuppressedLayer {
     this.#suppressedErrorsMap = undefined;
   }
 
-  #mapToDirectives(diagnostic: ts6.Diagnostic) {
-    if (!isDiagnosticWithLocation(diagnostic)) {
+  #mapToDirectives(diagnostic: ts.Diagnostic) {
+    let file: TextFile | undefined;
+    let position: number | undefined;
+
+    if (isDiagnosticPosition(diagnostic)) {
+      file = getTextFile(diagnostic.fileName);
+      position = diagnostic.pos;
+    }
+    if (isDiagnosticLocation(diagnostic)) {
+      file = getTextFile(diagnostic.file);
+      position = diagnostic.start;
+    }
+
+    if (!file || !position) {
       return;
     }
 
-    const { file, start } = diagnostic;
-
-    const lineMap = file.getLineStarts();
-    let line = file.getLineAndCharacterOfPosition(start).line - 1;
+    const lineMap = file.getLineMap();
+    let line = file.getLineAndCharacterOfPosition(position).line - 1;
 
     while (line >= 0) {
       const suppressedError = this.#suppressedErrorsMap?.get(line);
