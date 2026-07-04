@@ -43,7 +43,7 @@ export class TextFile {
     return this.#lineMap;
   }
 
-  getLineAndCharacterOfPosition(position: number): { line: number; character: number } {
+  getLocation(position: number): { line: number; character: number } {
     const lineMap = this.getLineMap();
     const line = lineMap.findLastIndex((line) => line <= position);
 

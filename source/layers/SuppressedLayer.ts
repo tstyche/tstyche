@@ -79,7 +79,7 @@ export class SuppressedLayer {
     }
 
     const lineMap = file.getLineMap();
-    let line = file.getLineAndCharacterOfPosition(position).line - 1;
+    let line = file.getLocation(position).line - 1;
 
     while (line >= 0) {
       const suppressedError = this.#suppressedErrorsMap?.get(line);
@@ -113,8 +113,7 @@ export class SuppressedLayer {
       this.#editor.erase(start, end);
 
       if (this.#suppressedErrorsMap != null) {
-        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4215
-        const { line } = tree.sourceFile.getLineAndCharacterOfPosition(start);
+        const { line } = getTextFile(tree.sourceFile).getLocation(start);
 
         this.#suppressedErrorsMap.set(line, suppressedError);
       }
