@@ -5,11 +5,12 @@ import { EventEmitter } from "#events";
 import { ProjectConfigKind } from "#result";
 import type { NativeTypeScript } from "#typescript";
 import { BaseProjectService } from "./BaseProjectService.js";
-import type { FileSystem } from "./types.js";
+import { FileSystem } from "./FileSystem.js";
 
 export class NativeProjectService extends BaseProjectService {
   #api: InstanceType<NativeTypeScript["API"]>;
   #currentProject: tsApi.Project | undefined;
+  #fs = new FileSystem();
   #ts: NativeTypeScript;
 
   constructor(ts: NativeTypeScript, resolvedConfig: ResolvedConfig) {
@@ -17,19 +18,17 @@ export class NativeProjectService extends BaseProjectService {
 
     this.#ts = ts;
 
-    const fs: FileSystem = {};
-
     if (this.projectConfig.kind >= ProjectConfigKind.Default) {
-      fs.fileExists = (path) => !/\/(tsconfig|jsconfig)\.json$/.test(path);
+      this.#fs.ignorePattern(/\/(tsconfig|jsconfig)\.json$/);
     }
 
     if (this.projectConfig.kind === ProjectConfigKind.Synthetic) {
-      fs.readFile = (path) => (path === this.projectConfig.specifier ? this.resolvedConfig.tsconfig : undefined);
+      this.#fs.updateFile(this.projectConfig.specifier, this.resolvedConfig.tsconfig);
     }
 
     // TODO waiting for: https://github.com/microsoft/typescript-go/issues/4503
 
-    this.#api = new ts.API({ fs });
+    this.#api = new ts.API({ fs: this.#fs.get() });
   }
 
   close(): void {
@@ -90,5 +89,14 @@ export class NativeProjectService extends BaseProjectService {
         ]);
       }
     }
+  }
+
+  updateFile(filePath: string, sourceText: string): this {
+    this.#fs.updateFile(filePath, sourceText);
+    this.#api.updateSnapshot({ fileChanges: { changed: [filePath] } });
+
+    this.#currentProject = this.#getProject(filePath);
+
+    return this;
   }
 }

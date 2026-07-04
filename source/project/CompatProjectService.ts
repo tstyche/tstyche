@@ -14,7 +14,6 @@ export class CompatProjectService extends BaseProjectService {
   #host: ts6.server.ServerHost;
   #lastSeenProject: string | undefined = "none";
   #seenProjects = new Set<string | undefined>();
-  #seenTestFiles = new Set<string>();
   #service: ts6.server.ProjectService;
 
   constructor(compiler: typeof ts6, resolvedConfig: ResolvedConfig) {
@@ -114,10 +113,7 @@ export class CompatProjectService extends BaseProjectService {
     return project?.getLanguageService(/* ensureSynchronized */ true);
   }
 
-  getSemanticDiagnostics(filePath: string, sourceText?: string): Array<ts6.Diagnostic> | undefined {
-    // TODO must be move to '.updateFile()'
-    this.openFile(filePath, sourceText);
-
+  getSemanticDiagnostics(filePath: string): Array<ts6.Diagnostic> | undefined {
     return this.#languageService?.getSemanticDiagnostics(filePath);
   }
 
@@ -139,7 +135,7 @@ export class CompatProjectService extends BaseProjectService {
     return fileNames.includes(filePath);
   }
 
-  openFile(filePath: string, sourceText?: string): void {
+  openFile(filePath: string): void {
     switch (this.projectConfig.kind) {
       case ProjectConfigKind.Discovered:
         break;
@@ -158,7 +154,7 @@ export class CompatProjectService extends BaseProjectService {
 
     const { configFileErrors, configFileName } = this.#service.openClientFile(
       filePath,
-      sourceText,
+      /* fileContent */ undefined,
       /* scriptKind */ undefined,
       this.resolvedConfig.rootPath,
     );
@@ -179,50 +175,52 @@ export class CompatProjectService extends BaseProjectService {
       }
     }
 
-    if (!this.#seenTestFiles.has(filePath)) {
-      this.#seenTestFiles.add(filePath);
+    const program = this.getProgram();
 
-      const program = this.getProgram();
-
-      if (!program || this.#seenProjects.has(configFileName)) {
-        return;
-      }
-
-      this.#seenProjects.add(configFileName);
-
-      const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
-        if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
-          return false;
-        }
-
-        if (this.resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
-          return true;
-        }
-
-        if (Select.isFixtureFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
-          return true;
-        }
-
-        if (Select.isTestFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
-          return false;
-        }
-
-        return false;
-      });
-
-      const diagnostics = [...program.getOptionsDiagnostics()];
-
-      for (const sourceFile of sourceFilesToCheck) {
-        diagnostics.push(
-          ...program.getSyntacticDiagnostics(sourceFile),
-          ...program.getSemanticDiagnostics(sourceFile),
-          ...program.getDeclarationDiagnostics(sourceFile),
-        );
-      }
-
-      if (diagnostics.length > 0) {
-        EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
-      }
+    if (!program || this.#seenProjects.has(configFileName)) {
+      return;
     }
+
+    this.#seenProjects.add(configFileName);
+
+    const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
+      if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
+        return false;
+      }
+
+      if (this.resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+        return true;
+      }
+
+      if (Select.isFixtureFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
+        return true;
+      }
+
+      if (Select.isTestFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
+        return false;
+      }
+
+      return false;
+    });
+
+    const diagnostics = [...program.getOptionsDiagnostics()];
+
+    for (const sourceFile of sourceFilesToCheck) {
+      diagnostics.push(
+        ...program.getSyntacticDiagnostics(sourceFile),
+        ...program.getSemanticDiagnostics(sourceFile),
+        ...program.getDeclarationDiagnostics(sourceFile),
+      );
+    }
+
+    if (diagnostics.length > 0) {
+      EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
+    }
+  }
+
+  updateFile(filePath: string, sourceText: string): this {
+    this.#service.openClientFile(filePath, sourceText, /* scriptKind */ undefined, this.resolvedConfig.rootPath);
+
+    return this;
   }
 }

@@ -100,7 +100,7 @@ export class FileRunner {
         return;
       }
 
-      this.#projectService.openFile(file.path, testText);
+      this.#projectService.updateFile(file.path, testText);
 
       return this.#resolveFileFacts(file, fileResult, runModeFlags);
     }
