@@ -3,6 +3,7 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ProjectConfigKind } from "#result";
+import { Select } from "#select";
 import type { NativeTypeScript } from "#typescript";
 import { BaseProjectService } from "./BaseProjectService.js";
 import { FileSystem } from "./FileSystem.js";
@@ -11,6 +12,7 @@ export class NativeProjectService extends BaseProjectService {
   #api: InstanceType<NativeTypeScript["API"]>;
   #currentProject: tsApi.Project | undefined;
   #fs = new FileSystem();
+  #seenProjects = new WeakSet<tsApi.Project>();
   #ts: NativeTypeScript;
 
   constructor(ts: NativeTypeScript, resolvedConfig: ResolvedConfig) {
@@ -32,6 +34,9 @@ export class NativeProjectService extends BaseProjectService {
   }
 
   close(): void {
+    this.#currentProject?.dispose();
+    this.#currentProject = undefined;
+
     this.#api.close();
   }
 
@@ -88,6 +93,51 @@ export class NativeProjectService extends BaseProjectService {
           { diagnostics: Diagnostic.fromDiagnostics(configFileParsingDiagnostics) },
         ]);
       }
+    }
+
+    if (this.#seenProjects.has(project)) {
+      return;
+    }
+
+    this.#seenProjects.add(project);
+
+    const program = this.getProgram();
+
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4502
+    const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
+      if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
+        return false;
+      }
+
+      if (this.resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+        return true;
+      }
+
+      if (Select.isFixtureFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
+        return true;
+      }
+
+      if (Select.isTestFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
+        return false;
+      }
+
+      return false;
+    });
+
+    const diagnostics = [...program.getProgramDiagnostics()];
+
+    for (const sourceFile of sourceFilesToCheck) {
+      diagnostics.push(
+        // TODO consider including '.getBindDiagnostics()'
+
+        ...program.getSyntacticDiagnostics(sourceFile),
+        ...program.getSemanticDiagnostics(sourceFile),
+        ...program.getDeclarationDiagnostics(sourceFile),
+      );
+    }
+
+    if (diagnostics.length > 0) {
+      EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
     }
   }
 
