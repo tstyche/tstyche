@@ -31,10 +31,10 @@ export class Layers {
       this.#suppressedDiagnostics = undefined;
     }
 
-    const diagnostics = (this.#projectService as CompatProjectService).getSemanticDiagnostics(
-      this.#editor.getFilePath(),
-      this.#editor.getText(),
-    );
+    const diagnostics = (this.#projectService as CompatProjectService)
+      .updateFile(this.#editor.getFilePath(), this.#editor.getText())
+      .getSemanticDiagnostics(this.#editor.getFilePath());
+
     const offsets = this.#editor.getOffsets();
 
     const abilityDiagnostics: Array<ts6.Diagnostic> = [];
@@ -57,10 +57,9 @@ export class Layers {
     this.#editor.open(tree.sourceFile);
     this.#suppressedLayer.open(tree);
 
-    this.#suppressedDiagnostics = (this.#projectService as CompatProjectService).getSemanticDiagnostics(
-      this.#editor.getFilePath(),
-      this.#editor.getText(),
-    );
+    this.#suppressedDiagnostics = (this.#projectService as CompatProjectService)
+      .updateFile(this.#editor.getFilePath(), this.#editor.getText())
+      .getSemanticDiagnostics(this.#editor.getFilePath());
 
     this.#suppressedLayer.close(
       this.#suppressedDiagnostics?.map(
