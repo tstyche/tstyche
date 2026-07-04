@@ -1,17 +1,17 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import { getOffset } from "./helpers.js";
 import type { Offset } from "./types.js";
 
 export class MappedDiagnostic {
-  category: ts.DiagnosticCategory;
+  category: ts6.DiagnosticCategory;
   code: number;
-  file: ts.SourceFile;
+  file: ts6.SourceFile;
   length: number | undefined;
-  messageText: string | ts.DiagnosticMessageChain;
-  relatedInformation?: Array<ts.DiagnosticRelatedInformation>;
+  messageText: string | ts6.DiagnosticMessageChain;
+  relatedInformation?: Array<ts6.DiagnosticRelatedInformation>;
   start: number | undefined;
 
-  constructor(sourceFile: ts.SourceFile, diagnostic: ts.Diagnostic, offsets: Array<Offset> = []) {
+  constructor(sourceFile: ts6.SourceFile, diagnostic: ts6.Diagnostic, offsets: Array<Offset> = []) {
     this.file = sourceFile;
 
     if (diagnostic.start != null) {

@@ -129,7 +129,7 @@ export class CollectService {
     });
   }
 
-  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: Array<ts.Diagnostic> = []): TestTree {
+  createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: ReadonlyArray<ts.Diagnostic> = []): TestTree {
     const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);

@@ -31,6 +31,7 @@ export type NumericLiteral = tsAst.NumericLiteral | ts6.NumericLiteral;
 export type NumberLiteralType = tsApi.NumberLiteralType | ts6.NumberLiteralType;
 export type ObjectLiteralExpression = tsAst.ObjectLiteralExpression | ts6.ObjectLiteralExpression;
 export type ParenthesizedExpression = tsAst.ParenthesizedExpression | ts6.ParenthesizedExpression;
+export type Program = tsApi.Program | ts6.Program;
 export type PropertyAccessExpression = tsAst.PropertyAccessExpression | ts6.PropertyAccessExpression;
 export type PropertyDeclaration = tsAst.PropertyDeclaration | ts6.PropertyDeclaration;
 export type PropertyAssignment = tsAst.PropertyAssignment | ts6.PropertyAssignment;

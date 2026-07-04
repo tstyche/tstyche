@@ -10,6 +10,7 @@ import { BaseProjectService } from "./BaseProjectService.js";
 
 export class CompatProjectService extends BaseProjectService {
   #compiler: typeof ts6;
+  #languageService: ts6.LanguageService | undefined;
   #host: ts6.server.ServerHost;
   #lastSeenProject: string | undefined = "none";
   #seenProjects = new Set<string | undefined>();
@@ -94,7 +95,11 @@ export class CompatProjectService extends BaseProjectService {
     return defaultCompilerOptions;
   }
 
-  getDefaultProject(filePath: string): ts6.server.Project | undefined {
+  getProgram(): ts6.Program | undefined {
+    return this.#languageService?.getProgram();
+  }
+
+  #getLanguageService(filePath: string) {
     const project = this.#service.getDefaultProjectForFile(
       this.#compiler.server.toNormalizedPath(filePath),
       /* ensureProject */ true,
@@ -106,20 +111,18 @@ export class CompatProjectService extends BaseProjectService {
       project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
     }
 
-    return project;
+    return project?.getLanguageService(/* ensureSynchronized */ true);
   }
 
-  getDiagnostics(filePath: string, sourceText: string): Array<ts6.Diagnostic> | undefined {
+  getSemanticDiagnostics(filePath: string, sourceText?: string): Array<ts6.Diagnostic> | undefined {
+    // TODO must be move to '.updateFile()'
     this.openFile(filePath, sourceText);
 
-    const languageService = this.getLanguageService(filePath);
-    return languageService?.getSemanticDiagnostics(filePath);
+    return this.#languageService?.getSemanticDiagnostics(filePath);
   }
 
-  getLanguageService(filePath: string): ts6.LanguageService | undefined {
-    const project = this.getDefaultProject(filePath);
-
-    return project?.getLanguageService(/* ensureSynchronized */ true);
+  getSyntacticDiagnostics(filePath: string): Array<ts6.Diagnostic> | undefined {
+    return this.#languageService?.getSyntacticDiagnostics(filePath);
   }
 
   #isFileIncluded(filePath: string) {
@@ -162,6 +165,7 @@ export class CompatProjectService extends BaseProjectService {
 
     if (configFileName !== this.#lastSeenProject) {
       this.#lastSeenProject = configFileName;
+      this.#languageService = this.#getLanguageService(filePath);
 
       const projectConfig =
         configFileName != null
@@ -178,9 +182,7 @@ export class CompatProjectService extends BaseProjectService {
     if (!this.#seenTestFiles.has(filePath)) {
       this.#seenTestFiles.add(filePath);
 
-      const languageService = this.getLanguageService(filePath);
-
-      const program = languageService?.getProgram();
+      const program = this.getProgram();
 
       if (!program || this.#seenProjects.has(configFileName)) {
         return;

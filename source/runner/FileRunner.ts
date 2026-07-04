@@ -1,11 +1,10 @@
 import { pathToFileURL } from "node:url";
-import type ts6 from "@typescript/typescript6";
 import { CollectService, type TestTree } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import type { FileLocation } from "#file";
-import type { CompatProjectService, ProjectService } from "#project";
+import type { ProjectService } from "#project";
 import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
 import type { CancellationToken } from "#token";
@@ -61,12 +60,8 @@ export class FileRunner {
     file: FileLocation,
     fileResult: FileResult,
     runModeFlags: RunModeFlags,
-  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts6.Program } | undefined> {
-    // wrapping around the language service allows querying on per file basis
-    // reference: https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#design-goals
-    const languageService = (this.#projectService as CompatProjectService).getLanguageService(file.path);
-
-    const syntacticDiagnostics = languageService?.getSyntacticDiagnostics(file.path);
+  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts.Program } | undefined> {
+    const syntacticDiagnostics = this.#projectService.getSyntacticDiagnostics(file.path);
 
     if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
       this.#onDiagnostics(Diagnostic.fromDiagnostics(syntacticDiagnostics), fileResult);
@@ -74,8 +69,8 @@ export class FileRunner {
       return;
     }
 
-    const semanticDiagnostics = languageService?.getSemanticDiagnostics(file.path);
-    const program = languageService?.getProgram();
+    const semanticDiagnostics = this.#projectService.getSemanticDiagnostics(file.path);
+    const program = this.#projectService.getProgram();
     const sourceFile = program?.getSourceFile(file.path);
 
     if (!program || !sourceFile) {

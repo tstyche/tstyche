@@ -28,7 +28,7 @@ export class TestTreeWalker {
 
   constructor(
     ts: ts.TypeScript,
-    program: ts6.Program,
+    program: ts.Program,
     resolvedConfig: ResolvedConfig,
     onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
     options: TestTreeWalkerOptions,
@@ -41,7 +41,7 @@ export class TestTreeWalker {
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
 
-    this.#expectService = new ExpectService(ts, program, resolvedConfig);
+    this.#expectService = new ExpectService(ts, program as ts6.Program, resolvedConfig);
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {

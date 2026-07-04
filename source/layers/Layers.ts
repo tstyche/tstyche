@@ -1,4 +1,4 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
 import type { ExpectNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { MappedDiagnostic } from "#diagnostic";
@@ -13,7 +13,7 @@ export class Layers {
   #abilityLayer: AbilityLayer;
   #editor = new TextEditor();
   #projectService: ProjectService;
-  #suppressedDiagnostics: Array<ts.Diagnostic> | undefined;
+  #suppressedDiagnostics: Array<ts6.Diagnostic> | undefined;
   #suppressedLayer: SuppressedLayer;
 
   constructor(ts: TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
@@ -24,24 +24,24 @@ export class Layers {
   }
 
   close(tree: TestTree): void {
-    let seenDiagnostics: Array<ts.Diagnostic> = [];
+    let seenDiagnostics: Array<ts6.Diagnostic> = [];
 
     if (this.#suppressedDiagnostics != null) {
       seenDiagnostics = this.#suppressedDiagnostics;
       this.#suppressedDiagnostics = undefined;
     }
 
-    const diagnostics = (this.#projectService as CompatProjectService).getDiagnostics(
+    const diagnostics = (this.#projectService as CompatProjectService).getSemanticDiagnostics(
       this.#editor.getFilePath(),
       this.#editor.getText(),
     );
     const offsets = this.#editor.getOffsets();
 
-    const abilityDiagnostics: Array<ts.Diagnostic> = [];
+    const abilityDiagnostics: Array<ts6.Diagnostic> = [];
 
     if (diagnostics != null) {
       for (const diagnostic of diagnostics) {
-        const mappedDiagnostic = new MappedDiagnostic(tree.sourceFile as ts.SourceFile, diagnostic, offsets);
+        const mappedDiagnostic = new MappedDiagnostic(tree.sourceFile as ts6.SourceFile, diagnostic, offsets);
 
         if (!seenDiagnostics.some((seenDiagnostic) => compareDiagnostics(mappedDiagnostic, seenDiagnostic))) {
           abilityDiagnostics.push(mappedDiagnostic);
@@ -57,14 +57,14 @@ export class Layers {
     this.#editor.open(tree.sourceFile);
     this.#suppressedLayer.open(tree);
 
-    this.#suppressedDiagnostics = (this.#projectService as CompatProjectService).getDiagnostics(
+    this.#suppressedDiagnostics = (this.#projectService as CompatProjectService).getSemanticDiagnostics(
       this.#editor.getFilePath(),
       this.#editor.getText(),
     );
 
     this.#suppressedLayer.close(
       this.#suppressedDiagnostics?.map(
-        (diagnostic) => new MappedDiagnostic(tree.sourceFile as ts.SourceFile, diagnostic),
+        (diagnostic) => new MappedDiagnostic(tree.sourceFile as ts6.SourceFile, diagnostic),
       ),
     );
   }

@@ -14,6 +14,7 @@ export type {
   NodeArray,
   NumberLiteralType,
   NumericLiteral,
+  Program,
   PropertyAccessExpression,
   PropertyDeclaration,
   RegularExpressionLiteral,

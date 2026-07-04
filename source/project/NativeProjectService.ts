@@ -9,7 +9,7 @@ import type { FileSystem } from "./types.js";
 
 export class NativeProjectService extends BaseProjectService {
   #api: InstanceType<NativeTypeScript["API"]>;
-  #lastSeenProject: tsApi.Project | undefined;
+  #currentProject: tsApi.Project | undefined;
   #ts: NativeTypeScript;
 
   constructor(ts: NativeTypeScript, resolvedConfig: ResolvedConfig) {
@@ -40,7 +40,11 @@ export class NativeProjectService extends BaseProjectService {
     this.#api.updateSnapshot({ closeFiles: [filePath] });
   }
 
-  getProject(filePath: string): tsApi.Project {
+  getProgram(): tsApi.Program {
+    return this.#currentProject!.program;
+  }
+
+  #getProject(filePath: string) {
     if (this.projectConfig.kind >= ProjectConfigKind.Provided) {
       const snapshot = this.#api.updateSnapshot({ openProjects: [this.projectConfig.specifier] });
       const project = snapshot.getDefaultProjectForFile(filePath);
@@ -53,12 +57,21 @@ export class NativeProjectService extends BaseProjectService {
     return this.#api.updateSnapshot({ openFiles: [filePath] }).getDefaultProjectForFile(filePath)!;
   }
 
-  openFile(filePath: string): void {
-    const project = this.getProject(filePath);
+  getSemanticDiagnostics(filePath: string): ReadonlyArray<tsApi.Diagnostic> {
+    return this.#currentProject!.program.getSemanticDiagnostics(filePath);
+  }
 
-    if (project !== this.#lastSeenProject) {
-      this.#lastSeenProject?.dispose();
-      this.#lastSeenProject = project;
+  getSyntacticDiagnostics(filePath: string): ReadonlyArray<tsApi.Diagnostic> {
+    // TODO consider including '.getBindDiagnostics()'
+    return this.#currentProject!.program.getSyntacticDiagnostics(filePath);
+  }
+
+  openFile(filePath: string): void {
+    const project = this.#getProject(filePath);
+
+    if (project !== this.#currentProject) {
+      this.#currentProject?.dispose();
+      this.#currentProject = project;
 
       const projectConfig =
         // TODO waiting for: https://github.com/microsoft/typescript-go/issues/4519
