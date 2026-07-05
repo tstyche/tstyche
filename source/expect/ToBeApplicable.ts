@@ -77,6 +77,7 @@ export class ToBeApplicable extends MatcherBase {
   ): MatchResult | undefined {
     const type = this.getType(sourceNode);
 
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4536
     if (type.getCallSignatures().length === 0) {
       const expectedText = "of a function type";
 

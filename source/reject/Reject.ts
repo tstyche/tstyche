@@ -1,4 +1,3 @@
-import type ts6 from "@typescript/typescript6";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import type * as ts from "#typescript";
@@ -6,13 +5,13 @@ import { capitalize } from "./helpers.js";
 import { RejectDiagnosticText } from "./RejectDiagnosticText.js";
 
 export class Reject {
+  #checker: ts.Checker;
   #rejectedArgumentTypes = new Set<"any" | "never">();
-  #typeChecker: ts6.TypeChecker;
   #ts: ts.TypeScript;
 
-  constructor(ts: ts.TypeScript, program: ts6.Program, resolvedConfig: ResolvedConfig) {
+  constructor(ts: ts.TypeScript, checker: ts.Checker, resolvedConfig: ResolvedConfig) {
     this.#ts = ts;
-    this.#typeChecker = program.getTypeChecker();
+    this.#checker = checker;
 
     if (resolvedConfig.rejectAnyType) {
       this.#rejectedArgumentTypes.add("any");
@@ -39,9 +38,7 @@ export class Reject {
           continue;
         }
 
-        if (
-          this.#typeChecker.getTypeAtLocation(node as ts6.Node).flags & this.#ts.TypeFlags[capitalize(rejectedType)]
-        ) {
+        if (this.#checker.getTypeAtLocation(node as any)!.flags & this.#ts.TypeFlags[capitalize(rejectedType)]) {
           const text = [
             this.#ts.belongsToArgumentList(node)
               ? RejectDiagnosticText.argumentCannotBeOfType(rejectedType)

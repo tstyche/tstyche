@@ -1,7 +1,7 @@
-import type ts6 from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
+import type { ProjectService } from "#project";
 import { Reject } from "#reject";
 import type * as ts from "#typescript";
 import { Ensure } from "./Ensure.js";
@@ -19,8 +19,9 @@ import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult } from "./types.js";
 
 export class ExpectService {
+  #checker: ts.Checker;
   #ensure: Ensure;
-  #program: ts6.Program;
+  #program: ts.Program;
   #reject: Reject;
 
   private toAcceptProps: ToAcceptProps;
@@ -34,21 +35,22 @@ export class ExpectService {
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
-  constructor(ts: ts.TypeScript, program: ts6.Program, resolvedConfig: ResolvedConfig) {
-    this.#program = program;
+  constructor(ts: ts.TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
+    this.#program = projectService.getProgram()!;
+    this.#checker = projectService.getChecker()!;
 
-    this.#ensure = new Ensure(ts);
-    this.#reject = new Reject(ts, program, resolvedConfig);
+    this.#ensure = new Ensure(ts, this.#program);
+    this.#reject = new Reject(ts, this.#checker, resolvedConfig);
 
-    this.toAcceptProps = new ToAcceptProps(ts, program);
-    this.toBe = new ToBe(ts, program);
-    this.toBeApplicable = new ToBeApplicable(ts, program);
-    this.toBeAssignableFrom = new ToBeAssignableFrom(ts, program);
-    this.toBeAssignableTo = new ToBeAssignableTo(ts, program);
-    this.toBeCallableWith = new ToBeCallableWith(ts, program);
-    this.toBeConstructableWith = new ToBeConstructableWith(ts, program);
-    this.toBeInstantiableWith = new ToBeInstantiableWith(ts, program);
-    this.toHaveProperty = new ToHaveProperty(ts, program);
+    this.toAcceptProps = new ToAcceptProps(ts, this.#checker);
+    this.toBe = new ToBe(ts, this.#program, this.#checker);
+    this.toBeApplicable = new ToBeApplicable(ts, this.#checker);
+    this.toBeAssignableFrom = new ToBeAssignableFrom(ts, this.#checker);
+    this.toBeAssignableTo = new ToBeAssignableTo(ts, this.#checker);
+    this.toBeCallableWith = new ToBeCallableWith(ts, this.#checker);
+    this.toBeConstructableWith = new ToBeConstructableWith(ts, this.#checker);
+    this.toBeInstantiableWith = new ToBeInstantiableWith(ts, this.#checker);
+    this.toHaveProperty = new ToHaveProperty(ts, this.#checker);
     this.toRaiseError = new ToRaiseError(ts);
   }
 
@@ -58,10 +60,7 @@ export class ExpectService {
   ): MatchResult | undefined {
     const matcherNameText = expectNode.matcherNameNode.name.text;
 
-    if (
-      matcherNameText === "toAcceptProps" &&
-      !this.#ensure.jsxSetup(this.#program, expectNode.matcherNameNode.name, onDiagnostics)
-    ) {
+    if (matcherNameText === "toAcceptProps" && !this.#ensure.jsxSetup(expectNode.matcherNameNode.name, onDiagnostics)) {
       return;
     }
 

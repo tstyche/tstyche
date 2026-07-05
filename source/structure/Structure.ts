@@ -1,4 +1,5 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
+import type * as ts from "#typescript";
 import { ComparisonResult } from "./ComparisonResult.enum.js";
 import {
   containsInstantiable,
@@ -12,20 +13,20 @@ import { getParameterCount, getParameterFacts } from "./parameters.js";
 import { getPropertyType, isOptionalProperty, isReadonlyProperty } from "./properties.js";
 
 export class Structure {
-  #compiler: typeof ts;
+  #compiler: typeof ts6;
   #compilerOptions: ts.CompilerOptions;
-  #typeChecker: ts.TypeChecker;
+  #typeChecker: ts6.TypeChecker;
 
-  #deduplicateCache = new WeakMap<ts.Type, Array<ts.Type>>();
+  #deduplicateCache = new WeakMap<ts6.Type, Array<ts6.Type>>();
   #memoizeCache = new Map<string, ComparisonResult>();
 
-  constructor(compiler: typeof ts, program: ts.Program) {
+  constructor(compiler: typeof ts6, program: ts.Program, checker: ts.Checker) {
     this.#compiler = compiler;
+    this.#typeChecker = checker as ts6.TypeChecker;
     this.#compilerOptions = program.getCompilerOptions();
-    this.#typeChecker = program.getTypeChecker();
   }
 
-  #compareMaybeNullish(a: ts.Type | undefined, b: ts.Type | undefined) {
+  #compareMaybeNullish(a: ts6.Type | undefined, b: ts6.Type | undefined) {
     if (a != null && b != null) {
       return this.compare(a, b);
     }
@@ -33,7 +34,7 @@ export class Structure {
     return !a && !b;
   }
 
-  compare(a: ts.Type, b: ts.Type): boolean {
+  compare(a: ts6.Type, b: ts6.Type): boolean {
     a = this.#normalize(a);
     b = this.#normalize(b);
 
@@ -53,7 +54,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.StructuredType) {
       if (a.flags & this.#compiler.TypeFlags.StructuredType && b.flags & this.#compiler.TypeFlags.StructuredType) {
-        return this.#memoize(a, b, () => this.compareStructured(a as ts.StructuredType, b as ts.StructuredType));
+        return this.#memoize(a, b, () => this.compareStructured(a as ts6.StructuredType, b as ts6.StructuredType));
       }
 
       return false;
@@ -61,7 +62,9 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Instantiable) {
       if (a.flags & this.#compiler.TypeFlags.Instantiable && b.flags & this.#compiler.TypeFlags.Instantiable) {
-        return this.#memoize(a, b, () => this.compareInstantiable(a as ts.InstantiableType, b as ts.InstantiableType));
+        return this.#memoize(a, b, () =>
+          this.compareInstantiable(a as ts6.InstantiableType, b as ts6.InstantiableType),
+        );
       }
 
       return false;
@@ -70,7 +73,7 @@ export class Structure {
     return false;
   }
 
-  compareStructured(a: ts.StructuredType, b: ts.StructuredType): boolean {
+  compareStructured(a: ts6.StructuredType, b: ts6.StructuredType): boolean {
     if (this.#typeChecker.isTupleType(a) || this.#typeChecker.isTupleType(b)) {
       if (this.#typeChecker.isTupleType(a) && this.#typeChecker.isTupleType(b)) {
         return this.compareTuples(a, b);
@@ -81,7 +84,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Union) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Union) {
-        return this.compareUnions(a as ts.UnionType, b as ts.UnionType);
+        return this.compareUnions(a as ts6.UnionType, b as ts6.UnionType);
       }
 
       return false;
@@ -89,7 +92,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Intersection) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Intersection) {
-        if (this.compareIntersections(a as ts.IntersectionType, b as ts.IntersectionType)) {
+        if (this.compareIntersections(a as ts6.IntersectionType, b as ts6.IntersectionType)) {
           return true;
         }
       }
@@ -101,17 +104,17 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Object) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Object) {
-        return this.compareObjects(a as ts.ObjectType, b as ts.ObjectType);
+        return this.compareObjects(a as ts6.ObjectType, b as ts6.ObjectType);
       }
     }
 
     return this.compareStructures(a, b);
   }
 
-  compareInstantiable(a: ts.InstantiableType, b: ts.InstantiableType): boolean {
+  compareInstantiable(a: ts6.InstantiableType, b: ts6.InstantiableType): boolean {
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.TypeParameter) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.TypeParameter) {
-        return this.compareTypeParameters(a as ts.TypeParameter, b as ts.TypeParameter);
+        return this.compareTypeParameters(a as ts6.TypeParameter, b as ts6.TypeParameter);
       }
 
       return false;
@@ -119,7 +122,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.IndexedAccess) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.IndexedAccess) {
-        return this.compareIndexedAccessTypes(a as ts.IndexedAccessType, b as ts.IndexedAccessType);
+        return this.compareIndexedAccessTypes(a as ts6.IndexedAccessType, b as ts6.IndexedAccessType);
       }
 
       return false;
@@ -127,7 +130,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Conditional) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Conditional) {
-        return this.compareConditionalTypes(a as ts.ConditionalType, b as ts.ConditionalType);
+        return this.compareConditionalTypes(a as ts6.ConditionalType, b as ts6.ConditionalType);
       }
 
       return false;
@@ -135,7 +138,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Substitution) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Substitution) {
-        return this.compareSubstitutionTypes(a as ts.SubstitutionType, b as ts.SubstitutionType);
+        return this.compareSubstitutionTypes(a as ts6.SubstitutionType, b as ts6.SubstitutionType);
       }
 
       return false;
@@ -143,7 +146,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.Index) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.Index) {
-        return this.compare((a as ts.IndexType).type, (b as ts.IndexType).type);
+        return this.compare((a as ts6.IndexType).type, (b as ts6.IndexType).type);
       }
 
       return false;
@@ -151,7 +154,7 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.TemplateLiteral) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.TemplateLiteral) {
-        return this.compareTemplateLiteralTypes(a as ts.TemplateLiteralType, b as ts.TemplateLiteralType);
+        return this.compareTemplateLiteralTypes(a as ts6.TemplateLiteralType, b as ts6.TemplateLiteralType);
       }
 
       return false;
@@ -159,14 +162,14 @@ export class Structure {
 
     if ((a.flags | b.flags) & this.#compiler.TypeFlags.StringMapping) {
       if (a.flags & b.flags & this.#compiler.TypeFlags.StringMapping) {
-        return this.compareStringMappingTypes(a as ts.StringMappingType, b as ts.StringMappingType);
+        return this.compareStringMappingTypes(a as ts6.StringMappingType, b as ts6.StringMappingType);
       }
     }
 
     return false;
   }
 
-  compareIntersections(a: ts.IntersectionType, b: ts.IntersectionType): boolean {
+  compareIntersections(a: ts6.IntersectionType, b: ts6.IntersectionType): boolean {
     const aTypes = this.#deduplicate(a);
     const bTypes = this.#deduplicate(b);
 
@@ -177,7 +180,7 @@ export class Structure {
     return aTypes.every((aType, i) => this.compare(aType, bTypes[i]!));
   }
 
-  compareUnions(a: ts.UnionType, b: ts.UnionType): boolean {
+  compareUnions(a: ts6.UnionType, b: ts6.UnionType): boolean {
     const aTypes = this.#deduplicate(a);
     const bTypes = this.#deduplicate(b);
 
@@ -188,17 +191,17 @@ export class Structure {
     return aTypes.every((aType) => bTypes.some((bType) => this.compare(aType, bType)));
   }
 
-  compareObjects(a: ts.ObjectType, b: ts.ObjectType): boolean {
+  compareObjects(a: ts6.ObjectType, b: ts6.ObjectType): boolean {
     if (a.objectFlags & b.objectFlags & this.#compiler.ObjectFlags.Reference) {
       if (!((a.objectFlags | b.objectFlags) & this.#compiler.ObjectFlags.ClassOrInterface)) {
-        return this.compareTypeReferences(a as ts.TypeReference, b as ts.TypeReference);
+        return this.compareTypeReferences(a as ts6.TypeReference, b as ts6.TypeReference);
       }
     }
 
     return this.compareStructures(a, b);
   }
 
-  compareTypeReferences(a: ts.TypeReference, b: ts.TypeReference): boolean {
+  compareTypeReferences(a: ts6.TypeReference, b: ts6.TypeReference): boolean {
     if (this.compare(a.target, b.target)) {
       const aTypeArguments = this.#typeChecker.getTypeArguments(a);
       const bTypeArguments = this.#typeChecker.getTypeArguments(b);
@@ -219,7 +222,7 @@ export class Structure {
     return this.compareStructures(a, b);
   }
 
-  compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {
+  compareTuples(a: ts6.TupleTypeReference, b: ts6.TupleTypeReference): boolean {
     if (a.target.readonly !== b.target.readonly) {
       return false;
     }
@@ -244,7 +247,7 @@ export class Structure {
     return true;
   }
 
-  compareStructures(a: ts.StructuredType, b: ts.StructuredType): boolean {
+  compareStructures(a: ts6.StructuredType, b: ts6.StructuredType): boolean {
     if (!this.compareProperties(a, b)) {
       return false;
     }
@@ -264,7 +267,7 @@ export class Structure {
     return true;
   }
 
-  compareProperties(a: ts.Type, b: ts.Type): boolean {
+  compareProperties(a: ts6.Type, b: ts6.Type): boolean {
     const aProperties = this.#typeChecker.getPropertiesOfType(a);
     const bProperties = this.#typeChecker.getPropertiesOfType(b);
 
@@ -319,7 +322,7 @@ export class Structure {
     return true;
   }
 
-  compareSignatures(a: ts.Type, b: ts.Type, kind: ts.SignatureKind): boolean {
+  compareSignatures(a: ts6.Type, b: ts6.Type, kind: ts6.SignatureKind): boolean {
     const aSignatures = getSignatures(a, kind, this.#compiler, this.#typeChecker);
     const bSignatures = getSignatures(b, kind, this.#compiler, this.#typeChecker);
 
@@ -384,7 +387,7 @@ export class Structure {
     return true;
   }
 
-  compareIndexSignatures(a: ts.Type, b: ts.Type): boolean {
+  compareIndexSignatures(a: ts6.Type, b: ts6.Type): boolean {
     const aSignatures = getIndexSignatures(a, this.#compiler, this.#typeChecker);
     const bSignatures = getIndexSignatures(b, this.#compiler, this.#typeChecker);
 
@@ -411,7 +414,7 @@ export class Structure {
     });
   }
 
-  compareTypeParameters(a: ts.TypeParameter, b: ts.TypeParameter): boolean {
+  compareTypeParameters(a: ts6.TypeParameter, b: ts6.TypeParameter): boolean {
     if (getTypeParameterModifiers(a, this.#compiler) !== getTypeParameterModifiers(b, this.#compiler)) {
       return false;
     }
@@ -437,7 +440,7 @@ export class Structure {
     return true;
   }
 
-  compareIndexedAccessTypes(a: ts.IndexedAccessType, b: ts.IndexedAccessType): boolean {
+  compareIndexedAccessTypes(a: ts6.IndexedAccessType, b: ts6.IndexedAccessType): boolean {
     if (!this.compare(a.objectType, b.objectType)) {
       return false;
     }
@@ -449,7 +452,7 @@ export class Structure {
     return true;
   }
 
-  compareConditionalTypes(a: ts.ConditionalType, b: ts.ConditionalType): boolean {
+  compareConditionalTypes(a: ts6.ConditionalType, b: ts6.ConditionalType): boolean {
     if (!this.compare(a.checkType, b.checkType)) {
       return false;
     }
@@ -481,7 +484,7 @@ export class Structure {
     return true;
   }
 
-  compareSubstitutionTypes(a: ts.SubstitutionType, b: ts.SubstitutionType): boolean {
+  compareSubstitutionTypes(a: ts6.SubstitutionType, b: ts6.SubstitutionType): boolean {
     if (!this.compare(a.baseType, b.baseType)) {
       return false;
     }
@@ -493,7 +496,7 @@ export class Structure {
     return true;
   }
 
-  compareTemplateLiteralTypes(a: ts.TemplateLiteralType, b: ts.TemplateLiteralType): boolean {
+  compareTemplateLiteralTypes(a: ts6.TemplateLiteralType, b: ts6.TemplateLiteralType): boolean {
     // 'texts' always has one element more than 'types'
     if (a.texts.length !== b.texts.length) {
       return false;
@@ -512,7 +515,7 @@ export class Structure {
     return true;
   }
 
-  compareStringMappingTypes(a: ts.StringMappingType, b: ts.StringMappingType): boolean {
+  compareStringMappingTypes(a: ts6.StringMappingType, b: ts6.StringMappingType): boolean {
     if (a.symbol !== b.symbol) {
       return false;
     }
@@ -524,7 +527,7 @@ export class Structure {
     return true;
   }
 
-  #deduplicate(target: ts.UnionOrIntersectionType): Array<ts.Type> {
+  #deduplicate(target: ts6.UnionOrIntersectionType): Array<ts6.Type> {
     let result = this.#deduplicateCache.get(target);
 
     if (result) {
@@ -544,7 +547,7 @@ export class Structure {
     return result;
   }
 
-  #memoize(a: ts.Type, b: ts.Type, compare: () => boolean): boolean {
+  #memoize(a: ts6.Type, b: ts6.Type, compare: () => boolean): boolean {
     const key = [a.id, b.id].sort((a, b) => a - b).join(":");
     const result = this.#memoizeCache.get(key);
 
@@ -561,13 +564,13 @@ export class Structure {
     return isSame;
   }
 
-  #normalize(type: ts.Type): ts.Type {
-    if (type.flags & this.#compiler.TypeFlags.Freshable && (type as ts.FreshableType).freshType === type) {
-      return (type as ts.FreshableType).regularType;
+  #normalize(type: ts6.Type): ts6.Type {
+    if (type.flags & this.#compiler.TypeFlags.Freshable && (type as ts6.FreshableType).freshType === type) {
+      return (type as ts6.FreshableType).regularType;
     }
 
     if (type.flags & this.#compiler.TypeFlags.UnionOrIntersection) {
-      const parts = this.#deduplicate(type as ts.UnionOrIntersectionType);
+      const parts = this.#deduplicate(type as ts6.UnionOrIntersectionType);
 
       if (parts.length === 1) {
         return parts.at(0)!;

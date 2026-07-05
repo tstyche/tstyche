@@ -1,4 +1,3 @@
-import type ts6 from "@typescript/typescript6";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
 import type * as ts from "#typescript";
@@ -8,7 +7,7 @@ import type { ArgumentNode, MatchResult } from "./types.js";
 
 export class ToHaveProperty extends MatcherBase {
   #explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
-    const sourceTypeText = this.getTypeText(sourceNode, this.typeChecker);
+    const sourceTypeText = this.getTypeText(sourceNode);
 
     const targetType = this.getType(targetNode);
     let propertyNameText: string;
@@ -29,11 +28,11 @@ export class ToHaveProperty extends MatcherBase {
 
   #extendsObjectType(type: ts.Type): boolean {
     const nonPrimitiveType =
-      "getNonPrimitiveType" in this.typeChecker
-        ? this.typeChecker.getNonPrimitiveType()
+      "getNonPrimitiveType" in this.checker
+        ? this.checker.getNonPrimitiveType()
         : ({ flags: this.ts.TypeFlags.NonPrimitive } as ts.Type); // TODO remove this workaround after dropping support for TypeScript 5.8
 
-    return this.typeChecker.isTypeAssignableTo(type as ts6.Type, nonPrimitiveType as ts6.Type);
+    return this.checker.isTypeAssignableTo(type as any, nonPrimitiveType as any);
   }
 
   match(

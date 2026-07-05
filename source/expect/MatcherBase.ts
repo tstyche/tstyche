@@ -1,21 +1,20 @@
-import type ts6 from "@typescript/typescript6";
 import type * as ts from "#typescript";
 
 export abstract class MatcherBase {
   protected ts: ts.TypeScript;
-  protected typeChecker: ts6.TypeChecker;
+  protected checker: ts.Checker;
 
-  constructor(ts: ts.TypeScript, program: ts6.Program) {
+  constructor(ts: ts.TypeScript, checker: ts.Checker) {
     this.ts = ts;
-    this.typeChecker = program.getTypeChecker();
+    this.checker = checker;
   }
 
-  protected getType(node: ts.Node): ts6.Type {
-    return this.typeChecker.getTypeAtLocation(node as ts6.Node);
+  protected getType(node: ts.Node): ts.Type {
+    return this.checker.getTypeAtLocation(node as any)!;
   }
 
-  protected getTypeText(node: ts.Node, typeChecker: ts6.TypeChecker): string {
+  protected getTypeText(node: ts.Node): string {
     // TODO consider passing 'enclosingDeclaration' as well
-    return typeChecker.typeToString(typeChecker.getTypeAtLocation(node as ts6.Node));
+    return this.checker.typeToString(this.getType(node) as any);
   }
 }

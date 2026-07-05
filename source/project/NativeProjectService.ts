@@ -44,6 +44,10 @@ export class NativeProjectService extends BaseProjectService {
     this.#api.updateSnapshot({ closeFiles: [filePath] });
   }
 
+  getChecker(): tsApi.Checker {
+    return this.#currentProject!.checker;
+  }
+
   getProgram(): tsApi.Program {
     return this.#currentProject!.program;
   }

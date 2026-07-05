@@ -8,8 +8,8 @@ export abstract class RelationMatcherBase extends MatcherBase {
   abstract explainNotText(sourceTypeText: string, targetTypeText: string): string;
 
   protected explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
-    const sourceTypeText = this.getTypeText(sourceNode, this.typeChecker);
-    const targetTypeText = this.getTypeText(targetNode, this.typeChecker);
+    const sourceTypeText = this.getTypeText(sourceNode);
+    const targetTypeText = this.getTypeText(targetNode);
 
     const text = expectNode.isNot
       ? this.explainText(sourceTypeText, targetTypeText)

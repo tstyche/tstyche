@@ -60,7 +60,7 @@ export class FileRunner {
     file: FileLocation,
     fileResult: FileResult,
     runModeFlags: RunModeFlags,
-  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree; program: ts.Program } | undefined> {
+  ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree } | undefined> {
     const syntacticDiagnostics = this.#projectService.getSyntacticDiagnostics(file.path);
 
     if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
@@ -73,7 +73,7 @@ export class FileRunner {
     const program = this.#projectService.getProgram();
     const sourceFile = program?.getSourceFile(file.path);
 
-    if (!program || !sourceFile) {
+    if (!sourceFile) {
       return;
     }
 
@@ -109,7 +109,7 @@ export class FileRunner {
 
     this.#suppressedService.match(testTree);
 
-    return { runModeFlags, testTree, program };
+    return { runModeFlags, testTree };
   }
 
   async #run(file: FileLocation, fileResult: FileResult, cancellationToken: CancellationToken) {
@@ -129,7 +129,7 @@ export class FileRunner {
       this.#onDiagnostics(diagnostics, fileResult);
     };
 
-    const testTreeWalker = new TestTreeWalker(this.#ts, facts.program, this.#resolvedConfig, onFileDiagnostics, {
+    const testTreeWalker = new TestTreeWalker(this.#ts, this.#projectService, this.#resolvedConfig, onFileDiagnostics, {
       cancellationToken,
       hasOnly: facts.testTree.hasOnly,
       position: file.position,

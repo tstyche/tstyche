@@ -20,6 +20,7 @@ export class ToAcceptProps extends AbilityMatcherBase {
 
     if (
       !this.ts.isCapitaizedIdentifierLike(sourceNode) ||
+      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4536
       !(sourceType.getCallSignatures().length > 0 || sourceType.getConstructSignatures().length > 0)
     ) {
       const expectedText = !this.ts.isIdentifierLike(sourceNode)

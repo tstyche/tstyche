@@ -94,6 +94,10 @@ export class CompatProjectService extends BaseProjectService {
     return defaultCompilerOptions;
   }
 
+  getChecker(): ts6.TypeChecker {
+    return this.#languageService!.getProgram()!.getTypeChecker();
+  }
+
   getProgram(): ts6.Program | undefined {
     return this.#languageService?.getProgram();
   }
