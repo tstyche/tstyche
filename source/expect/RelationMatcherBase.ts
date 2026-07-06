@@ -1,15 +1,21 @@
+import type { Checker } from "#checker";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
-import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
-export abstract class RelationMatcherBase extends MatcherBase {
+export abstract class RelationMatcherBase {
+  protected checker: Checker;
+
+  constructor(checker: Checker) {
+    this.checker = checker;
+  }
+
   abstract explainText(sourceTypeText: string, targetTypeText: string): string;
   abstract explainNotText(sourceTypeText: string, targetTypeText: string): string;
 
   protected explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
-    const sourceTypeText = this.getTypeText(sourceNode);
-    const targetTypeText = this.getTypeText(targetNode);
+    const sourceTypeText = this.checker.getTypeText(sourceNode);
+    const targetTypeText = this.checker.getTypeText(targetNode);
 
     const text = expectNode.isNot
       ? this.explainText(sourceTypeText, targetTypeText)

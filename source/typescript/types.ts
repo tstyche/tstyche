@@ -8,7 +8,6 @@ export type CallExpression = tsAst.CallExpression | ts6.CallExpression;
 export type CallbackFunction =
   | (tsAst.ArrowFunction | tsAst.FunctionExpression)
   | (ts6.ArrowFunction | ts6.FunctionExpression);
-export type Checker = tsApi.Checker | ts6.TypeChecker;
 export type CommentRange = tsAst.CommentRange | ts6.CommentRange;
 export type CompilerOptions = tsApi.CompilerOptions | ts6.CompilerOptions;
 export type Decorator = tsAst.Decorator | ts6.Decorator;

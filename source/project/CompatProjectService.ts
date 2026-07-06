@@ -1,4 +1,5 @@
 import type ts6 from "@typescript/typescript6";
+import { CompatCheckerAdapter } from "#checker";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -94,8 +95,8 @@ export class CompatProjectService extends BaseProjectService {
     return defaultCompilerOptions;
   }
 
-  getChecker(): ts6.TypeChecker {
-    return this.#languageService!.getProgram()!.getTypeChecker();
+  getChecker(): CompatCheckerAdapter {
+    return new CompatCheckerAdapter(this.#compiler, this.#languageService!.getProgram()!.getTypeChecker());
   }
 
   getProgram(): ts6.Program | undefined {

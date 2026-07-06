@@ -1,3 +1,4 @@
+import type { Checker } from "#checker";
 import type { ExpectNode } from "#collect";
 import {
   Diagnostic,
@@ -9,10 +10,17 @@ import {
   isDiagnosticPosition,
 } from "#diagnostic";
 import type * as ts from "#typescript";
-import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
-export abstract class AbilityMatcherBase extends MatcherBase {
+export abstract class AbilityMatcherBase {
+  protected checker: Checker;
+  protected ts: ts.TypeScript;
+
+  constructor(ts: ts.TypeScript, checker: Checker) {
+    this.ts = ts;
+    this.checker = checker;
+  }
+
   abstract explainText(isExpression: boolean, targetText?: string): string;
   abstract explainNotText(isExpression: boolean, targetText?: string): string;
 

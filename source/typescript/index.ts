@@ -2,7 +2,6 @@ export { CompatTypeScript } from "./CompatTypeScript.js";
 export { NativeTypeScript } from "./NativeTypeScript.js";
 export type {
   CallExpression,
-  Checker,
   CommentRange,
   CompilerOptions,
   Decorator,

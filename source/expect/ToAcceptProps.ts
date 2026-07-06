@@ -16,7 +16,7 @@ export class ToAcceptProps extends AbilityMatcherBase {
   ): MatchResult | undefined {
     const diagnostics: Array<Diagnostic> = [];
 
-    const sourceType = this.getType(sourceNode);
+    const sourceType = this.checker.getType(sourceNode);
 
     if (
       !this.ts.isCapitaizedIdentifierLike(sourceNode) ||

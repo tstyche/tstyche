@@ -10,7 +10,7 @@ export class ToBeAssignableTo extends RelationMatcherBase {
   match(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNode: ArgumentNode): MatchResult {
     return {
       explain: () => this.explain(expectNode, sourceNode, targetNode),
-      isMatch: this.checker.isTypeAssignableTo(this.getType(sourceNode) as any, this.getType(targetNode) as any),
+      isMatch: this.checker.isTypeAssignableTo(this.checker.getType(sourceNode), this.checker.getType(targetNode)),
     };
   }
 }

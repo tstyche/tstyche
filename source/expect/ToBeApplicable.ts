@@ -1,36 +1,44 @@
+import type { Checker } from "#checker";
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler, getDiagnosticMessageText } from "#diagnostic";
 import type * as ts from "#typescript";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
-import { MatcherBase } from "./MatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
-export class ToBeApplicable extends MatcherBase {
+export class ToBeApplicable {
+  #checker: Checker;
+  #ts: ts.TypeScript;
+
+  constructor(ts: ts.TypeScript, checker: Checker) {
+    this.#ts = ts;
+    this.#checker = checker;
+  }
+
   #resolveTargetText(node: ts.Node) {
     let text = "";
 
     switch (node.kind) {
-      case this.ts.SyntaxKind.ClassDeclaration:
+      case this.#ts.SyntaxKind.ClassDeclaration:
         text = "class";
         break;
 
-      case this.ts.SyntaxKind.MethodDeclaration:
+      case this.#ts.SyntaxKind.MethodDeclaration:
         text = "method";
         break;
 
-      case this.ts.SyntaxKind.PropertyDeclaration:
+      case this.#ts.SyntaxKind.PropertyDeclaration:
         text = (node as ts.PropertyDeclaration).modifiers?.some(
-          (modifier) => modifier.kind === this.ts.SyntaxKind.AccessorKeyword,
+          (modifier) => modifier.kind === this.#ts.SyntaxKind.AccessorKeyword,
         )
           ? "accessor"
           : "field";
         break;
 
-      case this.ts.SyntaxKind.GetAccessor:
+      case this.#ts.SyntaxKind.GetAccessor:
         text = "getter";
         break;
 
-      case this.ts.SyntaxKind.SetAccessor:
+      case this.#ts.SyntaxKind.SetAccessor:
         text = "setter";
         break;
     }
@@ -75,13 +83,13 @@ export class ToBeApplicable extends MatcherBase {
     sourceNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const type = this.getType(sourceNode);
+    const type = this.#checker.getType(sourceNode);
 
     // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4536
     if (type.getCallSignatures().length === 0) {
       const expectedText = "of a function type";
 
-      const text = this.ts.belongsToArgumentList(sourceNode)
+      const text = this.#ts.belongsToArgumentList(sourceNode)
         ? ExpectDiagnosticText.argumentMustBe(expectedText)
         : ExpectDiagnosticText.typeArgumentMustBe(expectedText);
 

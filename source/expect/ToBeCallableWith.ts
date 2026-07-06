@@ -15,7 +15,7 @@ export class ToBeCallableWith extends AbilityMatcherBase {
     targetNodes: ts.NodeArray<ArgumentNode>,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    const sourceType = this.getType(sourceNode);
+    const sourceType = this.checker.getType(sourceNode);
 
     // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4536
     if (sourceType.getCallSignatures().length === 0) {

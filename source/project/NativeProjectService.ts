@@ -1,4 +1,5 @@
 import type * as tsApi from "typescript/unstable/sync";
+import { CheckerAdapter } from "#checker";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
@@ -44,8 +45,8 @@ export class NativeProjectService extends BaseProjectService {
     this.#api.updateSnapshot({ closeFiles: [filePath] });
   }
 
-  getChecker(): tsApi.Checker {
-    return this.#currentProject!.checker;
+  getChecker(): CheckerAdapter {
+    return new CheckerAdapter(this.#currentProject!.checker);
   }
 
   getProgram(): tsApi.Program {

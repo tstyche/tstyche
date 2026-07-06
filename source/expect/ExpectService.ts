@@ -1,3 +1,4 @@
+import type { Checker } from "#checker";
 import type { ExpectNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
@@ -19,7 +20,7 @@ import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult } from "./types.js";
 
 export class ExpectService {
-  #checker: ts.Checker;
+  #checker: Checker;
   #ensure: Ensure;
   #program: ts.Program;
   #reject: Reject;
@@ -37,7 +38,7 @@ export class ExpectService {
 
   constructor(ts: ts.TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#program = projectService.getProgram()!;
-    this.#checker = projectService.getChecker()!;
+    this.#checker = projectService.getChecker();
 
     this.#ensure = new Ensure(ts, this.#program);
     this.#reject = new Reject(ts, this.#checker, resolvedConfig);
@@ -45,8 +46,8 @@ export class ExpectService {
     this.toAcceptProps = new ToAcceptProps(ts, this.#checker);
     this.toBe = new ToBe(ts, this.#program, this.#checker);
     this.toBeApplicable = new ToBeApplicable(ts, this.#checker);
-    this.toBeAssignableFrom = new ToBeAssignableFrom(ts, this.#checker);
-    this.toBeAssignableTo = new ToBeAssignableTo(ts, this.#checker);
+    this.toBeAssignableFrom = new ToBeAssignableFrom(this.#checker);
+    this.toBeAssignableTo = new ToBeAssignableTo(this.#checker);
     this.toBeCallableWith = new ToBeCallableWith(ts, this.#checker);
     this.toBeConstructableWith = new ToBeConstructableWith(ts, this.#checker);
     this.toBeInstantiableWith = new ToBeInstantiableWith(ts, this.#checker);
