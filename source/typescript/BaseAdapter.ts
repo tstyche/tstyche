@@ -10,6 +10,7 @@ import type {
   Node,
   NumericLiteral,
   ObjectLiteralExpression,
+  ParameterDeclaration,
   ParenthesizedExpression,
   PropertyAccessExpression,
   PropertyAssignment,
@@ -24,6 +25,10 @@ import type {
 
 export abstract class BaseAdapter {
   abstract LanguageVariant: any;
+  abstract ModifierFlags: any;
+  abstract ObjectFlags: any;
+  abstract SignatureKind: any;
+  abstract SymbolFlags: any;
   abstract SyntaxKind: any;
   abstract TypeFlags: any;
 
@@ -67,6 +72,10 @@ export abstract class BaseAdapter {
 
   isObjectLiteralExpression(node: Node): node is ObjectLiteralExpression {
     return node.kind === this.SyntaxKind.ObjectLiteralExpression;
+  }
+
+  isParameterDeclaration(node: Node): node is ParameterDeclaration {
+    return node.kind === this.SyntaxKind.Parameter;
   }
 
   isParenthesizedExpression(node: Node): node is ParenthesizedExpression {

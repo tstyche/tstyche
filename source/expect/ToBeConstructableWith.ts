@@ -17,8 +17,7 @@ export class ToBeConstructableWith extends AbilityMatcherBase {
   ): MatchResult | undefined {
     const sourceType = this.checker.getType(sourceNode);
 
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4536
-    if (sourceType.getConstructSignatures().length === 0) {
+    if (!this.checker.hasConstructSignatures(sourceType)) {
       const text: Array<string> = [];
 
       if (this.ts.belongsToArgumentList(sourceNode)) {
@@ -27,8 +26,7 @@ export class ToBeConstructableWith extends AbilityMatcherBase {
         text.push(ExpectDiagnosticText.typeArgumentMustBe("a constructable type"));
       }
 
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4536
-      if (sourceType.getCallSignatures().length > 0) {
+      if (this.checker.hasCallSignatures(sourceType)) {
         text.push(ExpectDiagnosticText.didYouMeanToUse("the '.toBeCallableWith()' matcher"));
       }
 

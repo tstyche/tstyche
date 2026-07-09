@@ -46,7 +46,7 @@ export class NativeProjectService extends BaseProjectService {
   }
 
   getChecker(): CheckerAdapter {
-    return new CheckerAdapter(this.#currentProject!.checker);
+    return new CheckerAdapter(this.#ts, this.#currentProject!.checker);
   }
 
   getProgram(): tsApi.Program {

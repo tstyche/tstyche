@@ -10,6 +10,10 @@ export class CompatTypeScript extends BaseAdapter {
   version: string;
 
   LanguageVariant: typeof ts6.LanguageVariant;
+  ModifierFlags: typeof ts6.ModifierFlags;
+  ObjectFlags: typeof ts6.ObjectFlags;
+  SignatureKind: typeof ts6.SignatureKind;
+  SymbolFlags: typeof ts6.SymbolFlags;
   SyntaxKind: typeof ts6.SyntaxKind;
   TypeFlags: typeof ts6.TypeFlags;
 
@@ -20,6 +24,10 @@ export class CompatTypeScript extends BaseAdapter {
     this.version = version;
 
     this.LanguageVariant = compiler.LanguageVariant;
+    this.ModifierFlags = compiler.ModifierFlags;
+    this.ObjectFlags = compiler.ObjectFlags;
+    this.SignatureKind = compiler.SignatureKind;
+    this.SymbolFlags = compiler.SymbolFlags;
     this.SyntaxKind = compiler.SyntaxKind;
     this.TypeFlags = compiler.TypeFlags;
   }

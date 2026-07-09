@@ -10,7 +10,12 @@ export class NativeTypeScript extends BaseAdapter {
   version: string;
 
   API: typeof tsApi.API;
+  ElementFlags: typeof tsApi.ElementFlags;
   LanguageVariant: typeof tsAst.LanguageVariant;
+  ModifierFlags: typeof tsApi.ModifierFlags;
+  ObjectFlags: typeof tsApi.ObjectFlags;
+  SignatureKind: typeof tsApi.SignatureKind;
+  SymbolFlags: typeof tsApi.SymbolFlags;
   SyntaxKind: typeof tsAst.SyntaxKind;
   TypeFlags: typeof tsApi.TypeFlags;
 
@@ -21,7 +26,12 @@ export class NativeTypeScript extends BaseAdapter {
     this.version = version;
 
     this.API = api.API;
+    this.ElementFlags = api.ElementFlags;
     this.LanguageVariant = ast.LanguageVariant;
+    this.ModifierFlags = api.ModifierFlags;
+    this.ObjectFlags = api.ObjectFlags;
+    this.SignatureKind = api.SignatureKind;
+    this.SymbolFlags = api.SymbolFlags;
     this.SyntaxKind = ast.SyntaxKind;
     this.TypeFlags = api.TypeFlags;
   }

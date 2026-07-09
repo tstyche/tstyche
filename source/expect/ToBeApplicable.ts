@@ -85,8 +85,7 @@ export class ToBeApplicable {
   ): MatchResult | undefined {
     const type = this.#checker.getType(sourceNode);
 
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4536
-    if (type.getCallSignatures().length === 0) {
+    if (!this.#checker.hasCallSignatures(type)) {
       const expectedText = "of a function type";
 
       const text = this.#ts.belongsToArgumentList(sourceNode)
