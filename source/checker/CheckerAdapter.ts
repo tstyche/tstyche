@@ -46,7 +46,7 @@ export class CheckerAdapter extends BaseCheckerAdapter {
     signature = signature as tsApi.Signature;
 
     if (signature.declaration != null && signature.hasRestParameter) {
-      const restType = this.checker.getTypeOfSymbol(signature.getParameters().at(-1)!)!;
+      const restType = this.checker.getTypeOfSymbol(signature.getParameters().at(-1)!);
 
       if (this.isTupleType(restType)) {
         return signature.parameters.length + this.getTypeArguments(restType).length - 1;
@@ -60,7 +60,7 @@ export class CheckerAdapter extends BaseCheckerAdapter {
     signature = signature as tsApi.Signature;
 
     if (parameterIndex >= signature.parameters.length - 1 && signature.hasRestParameter) {
-      const restType = this.checker.getTypeOfSymbol(signature.getParameters().at(-1)!)!;
+      const restType = this.checker.getTypeOfSymbol(signature.getParameters().at(-1)!);
 
       if (this.isTupleType(restType)) {
         const fixedLength = signature.parameters.length - 1;
@@ -74,7 +74,7 @@ export class CheckerAdapter extends BaseCheckerAdapter {
     return {
       isOptional: this.#isOptionalParameter(parameter),
       isRest: this.#isRestParameter(parameter),
-      getType: () => this.checker.getParameterType(signature, parameterIndex)!,
+      getType: () => this.checker.getParameterType(signature, parameterIndex),
     };
   }
 
@@ -112,7 +112,7 @@ export class CheckerAdapter extends BaseCheckerAdapter {
   }
 
   getPropertyType = (symbol: ts.Symbol, compilerOptions: ts.CompilerOptions): ts.Type => {
-    const type = this.checker.getTypeOfSymbol(symbol as tsApi.Symbol)!;
+    const type = this.checker.getTypeOfSymbol(symbol as tsApi.Symbol);
 
     if (compilerOptions.exactOptionalPropertyTypes && this.isOptionalProperty(symbol)) {
       if (type.flags & this.ts.TypeFlags.Union) {
@@ -163,7 +163,7 @@ export class CheckerAdapter extends BaseCheckerAdapter {
 
   signature = {
     getReturnType: (signature: ts.Signature): ts.Type => {
-      return this.checker.getReturnTypeOfSignature(signature as tsApi.Signature)!;
+      return this.checker.getReturnTypeOfSignature(signature as tsApi.Signature);
     },
     getThisParameterType: (signature: ts.Signature): ts.Type | undefined => {
       const thisParameter = (signature as tsApi.Signature).getThisParameter();
