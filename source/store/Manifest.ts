@@ -67,7 +67,7 @@ export class Manifest {
       return this.resolutions["latest"];
     }
 
-    if (this.versions.includes(tag) || tag === "preview") {
+    if (this.versions.includes(tag)) {
       return tag;
     }
 

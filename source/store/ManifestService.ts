@@ -34,8 +34,8 @@ export class ManifestService {
     this.#manifestFilePath = Path.join(storePath, "store-manifest.json");
   }
 
-  async #create(options?: { preview?: boolean | undefined }) {
-    const manifest = await this.#fetch({ preview: options?.preview });
+  async #create() {
+    const manifest = await this.#fetch();
 
     if (manifest != null) {
       await this.#persist(manifest);
@@ -44,10 +44,10 @@ export class ManifestService {
     return manifest;
   }
 
-  async #fetchPackageMetadata(packageName: string, options?: { suppressErrors?: boolean | undefined }) {
+  async #fetchMetadata<R>(packageSpecifier: string, options?: { suppressErrors?: boolean | undefined }) {
     const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry));
 
-    const request = new Request(new URL(packageName, this.#npmRegistry), {
+    const request = new Request(new URL(packageSpecifier, this.#npmRegistry), {
       headers: {
         // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
         ["Accept"]: "application/vnd.npm.install-v1+json;q=1.0, application/json;q=0.8, */*",
@@ -60,11 +60,13 @@ export class ManifestService {
       return;
     }
 
-    return (await response.json()) as PackageMetadata;
+    return (await response.json()) as R;
   }
 
-  async #fetch(options?: { preview?: boolean | undefined; suppressErrors?: boolean | undefined }) {
-    const packageMetadata = await this.#fetchPackageMetadata("typescript", { suppressErrors: options?.suppressErrors });
+  async #fetch(options?: { suppressErrors?: boolean | undefined }) {
+    const packageMetadata = await this.#fetchMetadata<PackageMetadata>("typescript", {
+      suppressErrors: options?.suppressErrors,
+    });
 
     if (!packageMetadata) {
       return;
@@ -75,12 +77,7 @@ export class ManifestService {
     const versions: Manifest["versions"] = [];
 
     for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
-      if (
-        !tag.includes("-") &&
-        Version.isSatisfiedWith(tag, "5.4") &&
-        // TODO remove after adding support for TypeScript 7
-        !Version.isSatisfiedWith(tag, "7.0")
-      ) {
+      if (!tag.includes("-") && !tag.startsWith("7.0") && Version.isSatisfiedWith(tag, "5.4")) {
         versions.push(tag);
 
         packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
@@ -111,40 +108,33 @@ export class ManifestService {
       }
     }
 
-    // TODO remove after adding support for TypeScript 7
-    resolutions["latest"] = versions.findLast((version) => version.startsWith("6"))!;
+    for (const tag in packages) {
+      if (!Version.isSatisfiedWith(tag, "7.0")) {
+        continue;
+      }
 
-    // TODO roughly this logic must add binary resource for each TypeScript version that has 'optionalDependencies'
-    if (options?.preview) {
-      const packageMetadata = await this.#fetchPackageMetadata("@typescript/native-preview", {
+      const packageBinaryName = `@typescript/typescript-${process.platform}-${process.arch}`;
+      const packageBinaryVersion = packageMetadata.versions[tag]?.optionalDependencies[packageBinaryName];
+
+      if (!packageBinaryVersion) {
+        // TODO Error: "Unable to resolve " + binaryPackageName + ". Your platform is not supported."
+
+        continue;
+      }
+
+      const packageSpecifier = `${packageBinaryName}/${packageBinaryVersion}`;
+      const versionMetadata = await this.#fetchMetadata<VersionMetadata>(packageSpecifier, {
         suppressErrors: options?.suppressErrors,
       });
 
-      if (packageMetadata != null) {
-        const latest = packageMetadata["dist-tags"]["latest"]!;
-        const meta = packageMetadata.versions[latest]!;
-
-        packages["preview"] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
-
-        const packageBinaryName = `@typescript/native-preview-${process.platform}-${process.arch}`;
-        const packageBinaryVersion = meta.optionalDependencies[packageBinaryName];
-
-        if (packageBinaryVersion != null) {
-          const packageMetadata = await this.#fetchPackageMetadata(packageBinaryName, {
-            suppressErrors: options?.suppressErrors,
-          });
-
-          // TODO Error: "Unable to resolve " + binaryPackageName + ". The package is missing in the registry."
-
-          const meta = packageMetadata?.versions[packageBinaryVersion];
-
-          // TODO Error: "Unable to resolve " + binaryPackageName + ". Your platform is not supported."
-
-          if (meta != null) {
-            packages["preview"].binary = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
-          }
-        }
+      if (!versionMetadata) {
+        continue;
       }
+
+      packages[tag]!.binary = {
+        integrity: versionMetadata.dist.integrity,
+        tarball: versionMetadata.dist.tarball,
+      };
     }
 
     return new Manifest({
@@ -156,12 +146,9 @@ export class ManifestService {
     });
   }
 
-  async open(options?: {
-    preview?: boolean | undefined;
-    refresh?: boolean | undefined;
-  }): Promise<Manifest | undefined> {
+  async open(options?: { refresh?: boolean | undefined }): Promise<Manifest | undefined> {
     if (!existsSync(this.#manifestFilePath)) {
-      return this.#create({ preview: options?.preview });
+      return this.#create();
     }
 
     const manifestText = await fs.readFile(this.#manifestFilePath, { encoding: "utf8" });
@@ -170,12 +157,12 @@ export class ManifestService {
     if (!manifest || manifest.npmRegistry !== this.#npmRegistry) {
       await this.prune();
 
-      return this.#create({ preview: options?.preview });
+      return this.#create();
     }
 
     if (manifest.isOutdated() || options?.refresh) {
       // error events are dispatched only when manifest refresh is requested explicitly (e.g. via the '--update' option)
-      const freshManifest = await this.#fetch({ preview: options?.preview, suppressErrors: !options?.refresh });
+      const freshManifest = await this.#fetch({ suppressErrors: !options?.refresh });
 
       if (freshManifest != null) {
         await this.#persist(freshManifest);

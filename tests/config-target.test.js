@@ -148,7 +148,7 @@ await test("'--target' command line option", async (t) => {
       ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--target", '"*"'], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch", "--target", '"*"'], {
       env: { ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "" },
     });
 
@@ -382,7 +382,7 @@ await test("'target' configuration file option", async (t) => {
       ["tstyche.json"]: JSON.stringify(config, null, 2),
     });
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--fetch"], {
       env: { ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "" },
     });
 

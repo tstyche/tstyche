@@ -32,7 +32,7 @@ export class Store {
   }
 
   static async #ensure(tag: string) {
-    await Store.open({ preview: tag === "preview" });
+    await Store.open();
 
     const version = Store.manifest?.resolve(tag);
 
@@ -60,6 +60,8 @@ export class Store {
       main: string;
       version: string;
     };
+
+    // TODO report TypeScript 7.0 as not supported
 
     if (Version.isSatisfiedWith(packageJson.version, "7")) {
       const api = await import(new URL(packageJson.exports["./unstable/sync"]!, specifier).toString());
@@ -91,12 +93,12 @@ export class Store {
     EventEmitter.dispatch(["store:error", { diagnostics: [diagnostic] }]);
   }
 
-  static async open(options?: { preview?: boolean; refresh?: boolean }): Promise<void> {
+  static async open(): Promise<void> {
     if (Store.manifest != null) {
       return;
     }
 
-    Store.manifest = await Store.#manifestService.open({ preview: options?.preview });
+    Store.manifest = await Store.#manifestService.open();
 
     if (Store.manifest != null) {
       Store.#supportedTags = [...Object.keys(Store.manifest.resolutions), ...Store.manifest.versions];
@@ -112,7 +114,7 @@ export class Store {
   }
 
   static async validateTag(tag: string): Promise<boolean | undefined> {
-    if (tag === "*" || tag === "preview") {
+    if (tag === "*") {
       return true;
     }
 
