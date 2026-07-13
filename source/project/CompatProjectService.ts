@@ -1,26 +1,27 @@
 import type ts6 from "@typescript/typescript6";
 import { CompatCheckerAdapter } from "#checker";
-import type { ResolvedConfig } from "#config";
+import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
-import { ProjectConfigKind } from "#result";
+import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
 import { Version } from "#version";
-import { BaseProjectService } from "./BaseProjectService.js";
 
-export class CompatProjectService extends BaseProjectService {
+export class CompatProjectService {
   #compiler: typeof ts6;
   #languageService: ts6.LanguageService | undefined;
   #host: ts6.server.ServerHost;
   #lastSeenProject: string | undefined = "none";
+  #projectConfig: ProjectConfig;
+  #resolvedConfig: ResolvedConfig;
   #seenProjects = new Set<string | undefined>();
   #service: ts6.server.ProjectService;
 
   constructor(compiler: typeof ts6, resolvedConfig: ResolvedConfig) {
-    super(resolvedConfig);
-
     this.#compiler = compiler;
+    this.#projectConfig = this.#resolveProjectConfig(resolvedConfig);
+    this.#resolvedConfig = resolvedConfig;
 
     const noop = () => undefined;
 
@@ -50,9 +51,9 @@ export class CompatProjectService extends BaseProjectService {
       watchFile: () => noopWatcher,
     };
 
-    if (this.projectConfig.kind === ProjectConfigKind.Synthetic) {
+    if (this.#projectConfig.kind === ProjectConfigKind.Synthetic) {
       this.#host.readFile = (path) =>
-        path === this.projectConfig.specifier ? resolvedConfig.tsconfig : compiler.sys.readFile(path);
+        path === this.#projectConfig.specifier ? resolvedConfig.tsconfig : compiler.sys.readFile(path);
     }
 
     this.#service = new this.#compiler.server.ProjectService({
@@ -111,7 +112,7 @@ export class CompatProjectService extends BaseProjectService {
 
     const compilerOptions = project?.getCompilerOptions();
 
-    if (this.resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
+    if (this.#resolvedConfig.checkDeclarationFiles && compilerOptions?.skipLibCheck) {
       project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
     }
 
@@ -127,21 +128,21 @@ export class CompatProjectService extends BaseProjectService {
   }
 
   #isFileIncluded(filePath: string) {
-    const configSourceFile = this.#compiler.readJsonConfigFile(this.projectConfig.specifier, this.#host.readFile);
+    const configSourceFile = this.#compiler.readJsonConfigFile(this.#projectConfig.specifier, this.#host.readFile);
 
     const { fileNames } = this.#compiler.parseJsonSourceFileConfigFileContent(
       configSourceFile,
       this.#host,
-      Path.dirname(this.projectConfig.specifier),
+      Path.dirname(this.#projectConfig.specifier),
       undefined,
-      this.projectConfig.specifier,
+      this.#projectConfig.specifier,
     );
 
     return fileNames.includes(filePath);
   }
 
   openFile(filePath: string): void {
-    switch (this.projectConfig.kind) {
+    switch (this.#projectConfig.kind) {
       case ProjectConfigKind.Discovered:
         break;
 
@@ -153,7 +154,7 @@ export class CompatProjectService extends BaseProjectService {
       default:
         // @ts-expect-error: overriding private method
         this.#service.getConfigFileNameForFile = this.#isFileIncluded(filePath)
-          ? () => this.projectConfig.specifier
+          ? () => this.#projectConfig.specifier
           : () => undefined;
     }
 
@@ -161,7 +162,7 @@ export class CompatProjectService extends BaseProjectService {
       filePath,
       /* fileContent */ undefined,
       /* scriptKind */ undefined,
-      this.resolvedConfig.rootPath,
+      this.#resolvedConfig.rootPath,
     );
 
     if (configFileName !== this.#lastSeenProject) {
@@ -170,7 +171,7 @@ export class CompatProjectService extends BaseProjectService {
 
       const projectConfig =
         configFileName != null
-          ? { ...this.projectConfig, specifier: configFileName }
+          ? { ...this.#projectConfig, specifier: configFileName }
           : { kind: ProjectConfigKind.Default, specifier: "baseline" };
 
       EventEmitter.dispatch(["project:uses", { compilerVersion: this.#compiler.version, projectConfig }]);
@@ -193,15 +194,15 @@ export class CompatProjectService extends BaseProjectService {
         return false;
       }
 
-      if (this.resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+      if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
         return true;
       }
 
-      if (Select.isFixtureFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
+      if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
         return true;
       }
 
-      if (Select.isTestFile(sourceFile.fileName, { ...this.resolvedConfig, pathMatch: [] })) {
+      if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
         return false;
       }
 
@@ -223,8 +224,27 @@ export class CompatProjectService extends BaseProjectService {
     }
   }
 
+  #resolveProjectConfig(resolvedConfig: ResolvedConfig): ProjectConfig {
+    if (resolvedConfig.tsconfig === "baseline") {
+      return { kind: ProjectConfigKind.Default, specifier: "baseline" };
+    }
+
+    if (resolvedConfig.tsconfig === "findup") {
+      return { kind: ProjectConfigKind.Discovered, specifier: "" };
+    }
+
+    if (Options.isJsonString(resolvedConfig.tsconfig)) {
+      return {
+        kind: ProjectConfigKind.Synthetic,
+        specifier: Path.resolve(resolvedConfig.rootPath, `${Date.now().toString(36)}.tsconfig.json`),
+      };
+    }
+
+    return { kind: ProjectConfigKind.Provided, specifier: resolvedConfig.tsconfig };
+  }
+
   updateFile(filePath: string, sourceText: string): this {
-    this.#service.openClientFile(filePath, sourceText, /* scriptKind */ undefined, this.resolvedConfig.rootPath);
+    this.#service.openClientFile(filePath, sourceText, /* scriptKind */ undefined, this.#resolvedConfig.rootPath);
 
     return this;
   }

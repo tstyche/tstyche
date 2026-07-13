@@ -53,7 +53,9 @@ export class FileRunner {
 
     EventEmitter.dispatch(["file:end", { result: fileResult }]);
 
-    this.#projectService.closeFile(file.path);
+    if ("closeFile" in this.#projectService) {
+      this.#projectService.closeFile(file.path);
+    }
   }
 
   async #resolveFileFacts(
