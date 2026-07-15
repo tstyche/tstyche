@@ -5,8 +5,7 @@ import { BaseAdapter } from "./BaseAdapter.js";
 import type { CallbackFunction, ImportDeclaration, Node } from "./types.js";
 
 export class CompatTypeScript extends BaseAdapter {
-  // TODO make this private after implementing all needed methods
-  compiler: typeof ts6;
+  #compiler: typeof ts6;
   version: string;
 
   LanguageVariant: typeof ts6.LanguageVariant;
@@ -20,7 +19,7 @@ export class CompatTypeScript extends BaseAdapter {
   constructor(compiler: typeof ts6, version: string) {
     super();
 
-    this.compiler = compiler;
+    this.#compiler = compiler;
     this.version = version;
 
     this.LanguageVariant = compiler.LanguageVariant;
@@ -33,15 +32,15 @@ export class CompatTypeScript extends BaseAdapter {
   }
 
   getLeadingCommentRanges(text: string, pos: number) {
-    return this.compiler.getLeadingCommentRanges(text, pos);
+    return this.#compiler.getLeadingCommentRanges(text, pos);
   }
 
   getProjectService(resolvedConfig: ResolvedConfig): CompatProjectService {
-    return new CompatProjectService(this.compiler, resolvedConfig);
+    return new CompatProjectService(this.#compiler, resolvedConfig);
   }
 
   isCallbackFunction(node: Node): node is CallbackFunction {
-    return this.compiler.isArrowFunction(node as ts6.Node) || this.compiler.isFunctionExpression(node as ts6.Node);
+    return this.#compiler.isArrowFunction(node as ts6.Node) || this.#compiler.isFunctionExpression(node as ts6.Node);
   }
 
   isTypeOnlyImportDeclaration(node: ImportDeclaration): boolean {

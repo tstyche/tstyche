@@ -1,8 +1,8 @@
 import type * as ts from "#typescript";
-import type { CheckerAdapter } from "./CheckerAdapter.js";
 import type { CompatCheckerAdapter } from "./CompatCheckerAdapter.js";
+import type { NativeCheckerAdapter } from "./NativeCheckerAdapter.js";
 
-export type Checker = CheckerAdapter | CompatCheckerAdapter;
+export type Checker = NativeCheckerAdapter | CompatCheckerAdapter;
 
 export interface ParameterFacts {
   isRest: boolean;

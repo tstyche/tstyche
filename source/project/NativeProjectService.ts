@@ -1,6 +1,6 @@
 import type * as tsAst from "typescript/unstable/ast";
 import type * as tsApi from "typescript/unstable/sync";
-import { CheckerAdapter } from "#checker";
+import { NativeCheckerAdapter } from "#checker";
 import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import type { Offset } from "#editor";
@@ -39,8 +39,8 @@ export class NativeProjectService {
     this.#api.close();
   }
 
-  getChecker(): CheckerAdapter {
-    return new CheckerAdapter(this.#ts, this.#currentProject!.checker);
+  getChecker(): NativeCheckerAdapter {
+    return new NativeCheckerAdapter(this.#ts, this.#currentProject!.checker);
   }
 
   #getDefaultCompilerOptions() {

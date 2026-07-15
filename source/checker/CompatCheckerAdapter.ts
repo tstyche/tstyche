@@ -15,12 +15,11 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
   }
 
   containsInstantiable(target: ts.Type): boolean {
-    return (
-      "types" in target &&
-      (target as ts6.Type & { types: Array<ts6.Type> }).types.some(
-        (type) => type.flags & this.ts.TypeFlags.Instantiable,
-      )
-    );
+    if ("types" in target) {
+      (target as { types: Array<ts6.Type> }).types.some((type) => type.flags & this.ts.TypeFlags.Instantiable);
+    }
+
+    return false;
   }
 
   getDeclarationModifierFlags(symbol: ts.Symbol): ts.ModifierFlags {

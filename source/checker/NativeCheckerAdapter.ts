@@ -3,7 +3,7 @@ import type * as ts from "#typescript";
 import { BaseCheckerAdapter } from "./BaseCheckerAdapter.js";
 import type { ParameterFacts } from "./types.js";
 
-export class CheckerAdapter extends BaseCheckerAdapter {
+export class NativeCheckerAdapter extends BaseCheckerAdapter {
   checker: tsApi.Checker;
   ts: ts.NativeTypeScript;
 
@@ -15,12 +15,13 @@ export class CheckerAdapter extends BaseCheckerAdapter {
   }
 
   containsInstantiable(target: ts.Type): boolean {
-    return (
-      "getTypes" in target &&
-      (target as tsApi.Type & { getTypes(): ReadonlyArray<tsApi.Type> })
-        .getTypes()
-        .some((type) => type.flags & this.ts.TypeFlags.Instantiable)
-    );
+    if ("getTypes" in target) {
+      const types = (target as { getTypes(): ReadonlyArray<tsApi.Type> | undefined }).getTypes();
+
+      return types?.some((type) => type.flags & this.ts.TypeFlags.Instantiable) ?? false;
+    }
+
+    return false;
   }
 
   getDeclarationModifierFlags(symbol: ts.Symbol): ts.ModifierFlags {
