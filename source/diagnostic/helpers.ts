@@ -1,8 +1,48 @@
 import type * as ts from "#typescript";
-import type { Node, NodeArray } from "#typescript";
-import type { Offset } from "./types.js";
 
-export function diagnosticBelongsToNode(diagnostic: ts.Diagnostic, node: NodeArray<Node> | Node): boolean {
+export function compareDiagnostics(a: ts.Diagnostic, b: ts.Diagnostic): boolean {
+  if (isDiagnosticPosition(a) && isDiagnosticPosition(b)) {
+    if (a.fileName !== b.fileName) {
+      return false;
+    }
+
+    return deepCompareKeys(a, b, ["pos", "end", "code", "text"]);
+  }
+
+  if (isDiagnosticLocation(a) && isDiagnosticLocation(b)) {
+    if (a.file?.fileName !== b.file?.fileName) {
+      return false;
+    }
+
+    return deepCompareKeys(a, b, ["start", "length", "code", "messageText"]);
+  }
+
+  return false;
+}
+
+function deepCompareKeys(a: any, b: any, keys: Array<string>): boolean {
+  if (a == null || b == null) {
+    return a === b;
+  }
+
+  if (typeof a !== typeof b) {
+    return false;
+  }
+
+  if (typeof a !== "object") {
+    return a === b;
+  }
+
+  for (const key of Object.keys(a).filter((key) => keys.includes(key))) {
+    if (!(key in b) || !deepCompareKeys(a[key], b[key], keys)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function diagnosticBelongsToNode(diagnostic: ts.Diagnostic, node: ts.NodeArray<ts.Node> | ts.Node): boolean {
   if (isDiagnosticPosition(diagnostic)) {
     return diagnostic.pos >= node.pos && diagnostic.pos <= node.end;
   }
@@ -55,20 +95,6 @@ export function getDiagnosticMessageText(diagnostic: ts.Diagnostic): Array<strin
   return typeof diagnostic.messageText === "string"
     ? [diagnostic.messageText]
     : flattenDiagnosticText(diagnostic.messageText);
-}
-
-export function getOffset(position: number, offsets: Array<Offset>): number {
-  let diff = 0;
-
-  for (const offset of offsets) {
-    if (offset.position > position - diff) {
-      break;
-    }
-
-    diff += offset.diff;
-  }
-
-  return diff;
 }
 
 export function isDiagnosticLocation(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticLocation {

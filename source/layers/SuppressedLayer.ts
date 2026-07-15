@@ -1,9 +1,9 @@
 import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { isDiagnosticLocation, isDiagnosticPosition } from "#diagnostic";
+import type { TextEditor } from "#editor";
 import { getTextFile, type TextFile } from "#text";
 import type * as ts from "#typescript";
-import type { TextEditor } from "./TextEditor.js";
 import type { SuppressedError } from "./types.js";
 
 export class SuppressedLayer {

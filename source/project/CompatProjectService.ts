@@ -2,11 +2,14 @@ import type ts6 from "@typescript/typescript6";
 import { CompatCheckerAdapter } from "#checker";
 import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
+import type { Offset } from "#editor";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
+import type * as ts from "#typescript";
 import { Version } from "#version";
+import { CompatMappedDiagnostic } from "./CompatMappedDiagnostic.js";
 
 export class CompatProjectService {
   #compiler: typeof ts6;
@@ -98,6 +101,14 @@ export class CompatProjectService {
 
   getChecker(): CompatCheckerAdapter {
     return new CompatCheckerAdapter(this.#compiler, this.#languageService!.getProgram()!.getTypeChecker());
+  }
+
+  getMappedDiagnostic(
+    sourceFile: ts.SourceFile,
+    diagnostic: ts.Diagnostic,
+    offsets?: Array<Offset>,
+  ): CompatMappedDiagnostic {
+    return new CompatMappedDiagnostic(sourceFile as ts6.SourceFile, diagnostic as ts6.Diagnostic, offsets);
   }
 
   getProgram(): ts6.Program | undefined {

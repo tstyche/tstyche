@@ -1,11 +1,25 @@
-import type { Offset } from "#diagnostic";
 import type * as ts from "#typescript";
+import type { Offset } from "./types.js";
 
 export class TextEditor {
   #filePath = "";
   #offset = 0;
   #offsets: Array<Offset> = [];
   #text = "";
+
+  static getOffset(position: number, offsets: Array<Offset>): number {
+    let diff = 0;
+
+    for (const offset of offsets) {
+      if (offset.position > position - diff) {
+        break;
+      }
+
+      diff += offset.diff;
+    }
+
+    return diff;
+  }
 
   open(sourceFile: ts.SourceFile): void {
     this.#filePath = sourceFile.fileName;

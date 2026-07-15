@@ -1,7 +1,7 @@
 import type { ExpectNode } from "#collect";
 import { diagnosticBelongsToNode } from "#diagnostic";
+import type { TextEditor } from "#editor";
 import type * as ts from "#typescript";
-import type { TextEditor } from "./TextEditor.js";
 
 export class AbilityLayer {
   #editor: TextEditor;

@@ -1,22 +1,20 @@
-import type ts6 from "@typescript/typescript6";
 import type { ExpectNode, TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { MappedDiagnostic } from "#diagnostic";
-import type { CompatProjectService, ProjectService } from "#project";
-import type { TypeScript } from "#typescript";
+import { compareDiagnostics } from "#diagnostic";
+import { TextEditor } from "#editor";
+import type { ProjectService } from "#project";
+import type * as ts from "#typescript";
 import { AbilityLayer } from "./AbilityLayer.js";
-import { compareDiagnostics } from "./helpers.js";
 import { SuppressedLayer } from "./SuppressedLayer.js";
-import { TextEditor } from "./TextEditor.js";
 
 export class Layers {
   #abilityLayer: AbilityLayer;
   #editor = new TextEditor();
   #projectService: ProjectService;
-  #suppressedDiagnostics: Array<ts6.Diagnostic> | undefined;
+  #suppressedDiagnostics: ReadonlyArray<ts.Diagnostic> | undefined;
   #suppressedLayer: SuppressedLayer;
 
-  constructor(ts: TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
+  constructor(ts: ts.TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#projectService = projectService;
 
     this.#abilityLayer = new AbilityLayer(ts, this.#editor);
@@ -24,24 +22,24 @@ export class Layers {
   }
 
   close(tree: TestTree): void {
-    let seenDiagnostics: Array<ts6.Diagnostic> = [];
+    let seenDiagnostics: ReadonlyArray<ts.Diagnostic> = [];
 
     if (this.#suppressedDiagnostics != null) {
       seenDiagnostics = this.#suppressedDiagnostics;
       this.#suppressedDiagnostics = undefined;
     }
 
-    const diagnostics = (this.#projectService as CompatProjectService)
+    const diagnostics = this.#projectService
       .updateFile(this.#editor.getFilePath(), this.#editor.getText())
       .getSemanticDiagnostics(this.#editor.getFilePath());
 
     const offsets = this.#editor.getOffsets();
 
-    const abilityDiagnostics: Array<ts6.Diagnostic> = [];
+    const abilityDiagnostics: Array<ts.Diagnostic> = [];
 
     if (diagnostics != null) {
       for (const diagnostic of diagnostics) {
-        const mappedDiagnostic = new MappedDiagnostic(tree.sourceFile as ts6.SourceFile, diagnostic, offsets);
+        const mappedDiagnostic = this.#projectService.getMappedDiagnostic(tree.sourceFile, diagnostic, offsets);
 
         if (!seenDiagnostics.some((seenDiagnostic) => compareDiagnostics(mappedDiagnostic, seenDiagnostic))) {
           abilityDiagnostics.push(mappedDiagnostic);
@@ -57,13 +55,13 @@ export class Layers {
     this.#editor.open(tree.sourceFile);
     this.#suppressedLayer.open(tree);
 
-    this.#suppressedDiagnostics = (this.#projectService as CompatProjectService)
+    this.#suppressedDiagnostics = this.#projectService
       .updateFile(this.#editor.getFilePath(), this.#editor.getText())
       .getSemanticDiagnostics(this.#editor.getFilePath());
 
     this.#suppressedLayer.close(
-      this.#suppressedDiagnostics?.map(
-        (diagnostic) => new MappedDiagnostic(tree.sourceFile as ts6.SourceFile, diagnostic),
+      this.#suppressedDiagnostics?.map((diagnostic) =>
+        this.#projectService.getMappedDiagnostic(tree.sourceFile, diagnostic),
       ),
     );
   }

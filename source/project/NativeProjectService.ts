@@ -1,13 +1,16 @@
+import type * as tsAst from "typescript/unstable/ast";
 import type * as tsApi from "typescript/unstable/sync";
 import { CheckerAdapter } from "#checker";
 import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
+import type { Offset } from "#editor";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { ProjectConfigKind } from "#result";
 import { Select } from "#select";
-import type { NativeTypeScript } from "#typescript";
+import type * as ts from "#typescript";
 import { FileSystem } from "./FileSystem.js";
+import { NativeMappedDiagnostic } from "./NativeMappedDiagnostic.js";
 import { ProjectConfigService } from "./ProjectConfigService.js";
 
 export class NativeProjectService {
@@ -17,10 +20,10 @@ export class NativeProjectService {
   #fs = new FileSystem();
   #projectConfig: ProjectConfigService;
   #resolvedConfig: ResolvedConfig;
-  #ts: NativeTypeScript;
+  #ts: ts.NativeTypeScript;
   #tsconfigPath: string;
 
-  constructor(ts: NativeTypeScript, resolvedConfig: ResolvedConfig) {
+  constructor(ts: ts.NativeTypeScript, resolvedConfig: ResolvedConfig) {
     this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
 
@@ -58,6 +61,14 @@ export class NativeProjectService {
     };
 
     return options;
+  }
+
+  getMappedDiagnostic(
+    sourceFile: ts.SourceFile,
+    diagnostic: ts.Diagnostic,
+    offsets?: Array<Offset>,
+  ): NativeMappedDiagnostic {
+    return new NativeMappedDiagnostic(sourceFile as tsAst.SourceFile, diagnostic as tsApi.Diagnostic, offsets);
   }
 
   getProgram(): tsApi.Program {
