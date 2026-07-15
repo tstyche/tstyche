@@ -1,4 +1,3 @@
-import { existsSync } from "node:fs";
 import type * as tsApi from "typescript/unstable/sync";
 import { CheckerAdapter } from "#checker";
 import { Options, type ResolvedConfig } from "#config";
@@ -9,12 +8,14 @@ import { ProjectConfigKind } from "#result";
 import { Select } from "#select";
 import type { NativeTypeScript } from "#typescript";
 import { FileSystem } from "./FileSystem.js";
+import { ProjectConfigService } from "./ProjectConfigService.js";
 
 export class NativeProjectService {
   #api: InstanceType<typeof tsApi.API>;
   #currentProject: tsApi.Project | undefined;
   #currentSpecifier: string | undefined;
   #fs = new FileSystem();
+  #projectConfig: ProjectConfigService;
   #resolvedConfig: ResolvedConfig;
   #ts: NativeTypeScript;
   #tsconfigPath: string;
@@ -24,6 +25,7 @@ export class NativeProjectService {
     this.#resolvedConfig = resolvedConfig;
 
     this.#api = new ts.API({ fs: this.#fs });
+    this.#projectConfig = new ProjectConfigService(this.#api, resolvedConfig);
     this.#tsconfigPath = Path.resolve(resolvedConfig.rootPath, `${Date.now().toString(36)}.tsconfig.json`);
   }
 
@@ -73,12 +75,12 @@ export class NativeProjectService {
 
       case "findup":
         {
-          const baseConfig = this.#resolveBaseConfig(filePath);
+          const configPath = this.#projectConfig.findUp(filePath);
 
-          if (baseConfig != null) {
+          if (configPath != null) {
             compilerOptions = {};
             kind = ProjectConfigKind.Discovered;
-            specifier = baseConfig;
+            specifier = configPath;
           }
         }
         break;
@@ -103,6 +105,8 @@ export class NativeProjectService {
     if (this.#resolvedConfig.checkDeclarationFiles) {
       compilerOptions = { ...compilerOptions, skipLibCheck: false };
     }
+
+    // TODO 'ProjectConfigKind.Synthetic' should be also extended with 'skipLibCheck: false'
 
     const tsconfigText =
       kind === ProjectConfigKind.Synthetic
@@ -163,71 +167,46 @@ export class NativeProjectService {
     this.#currentProject?.dispose();
     this.#currentProject = project;
 
-    const sourceFilesToCheck = project.program
-      // TODO use '.getSourceFiles()', waiting for: https://github.com/microsoft/typescript-go/issues/4502
-      .getSourceFileNames()
-      .map((sourceFile) => project.program.getSourceFile(sourceFile)!)
-      .filter((sourceFile) => {
-        if (
-          project.program.isSourceFileFromExternalLibrary(sourceFile) ||
-          project.program.isSourceFileDefaultLibrary(sourceFile)
-        ) {
-          return false;
-        }
+    // TODO use '.getSourceFiles()': https://github.com/microsoft/typescript-go/issues/4502
+    const filesToCheck = project.program.getSourceFileNames().filter((filePath) => {
+      const sourceFile = project.program.getSourceFile(filePath)!;
 
-        if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
-          return true;
-        }
-
-        if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-          return true;
-        }
-
-        if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-          return false;
-        }
-
+      if (
+        project.program.isSourceFileFromExternalLibrary(sourceFile) ||
+        project.program.isSourceFileDefaultLibrary(sourceFile)
+      ) {
         return false;
-      });
+      }
+
+      if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+        return true;
+      }
+
+      if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+        return true;
+      }
+
+      if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+        return false;
+      }
+
+      return false;
+    });
 
     const diagnostics = [...project.program.getProgramDiagnostics()];
 
-    for (const sourceFile of sourceFilesToCheck) {
+    for (const filePath of filesToCheck) {
       diagnostics.push(
-        // TODO consider including '.getBindDiagnostics()'
-
-        ...project.program.getBindDiagnostics(sourceFile.fileName),
-        ...project.program.getSyntacticDiagnostics(sourceFile.fileName),
-        ...project.program.getSemanticDiagnostics(sourceFile.fileName),
-        ...project.program.getDeclarationDiagnostics(sourceFile.fileName),
+        ...project.program.getBindDiagnostics(filePath),
+        ...project.program.getSyntacticDiagnostics(filePath),
+        ...project.program.getSemanticDiagnostics(filePath),
+        ...project.program.getDeclarationDiagnostics(filePath),
       );
     }
 
     if (diagnostics.length > 0) {
       EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
     }
-  }
-
-  #resolveBaseConfig(filePath: string, currentPath = Path.dirname(filePath)): string | undefined {
-    for (const configName of ["tsconfig.json", "jsconfig.json"]) {
-      const probePath = Path.join(currentPath, configName);
-
-      if (existsSync(probePath) && this.#api.parseConfigFile(probePath).fileNames.includes(filePath)) {
-        return probePath;
-      }
-    }
-
-    if (currentPath === this.#resolvedConfig.rootPath) {
-      return;
-    }
-
-    const parentPath = Path.dirname(currentPath);
-
-    if (parentPath === currentPath) {
-      return;
-    }
-
-    return this.#resolveBaseConfig(filePath, parentPath);
   }
 
   updateFile(filePath: string, text: string): this {
