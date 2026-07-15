@@ -40,7 +40,7 @@ export class NativeTypeScript extends BaseAdapter {
     return this.#ast.getLeadingCommentRanges(text, pos);
   }
 
-  createProjectService(resolvedConfig: ResolvedConfig): NativeProjectService {
+  getProjectService(resolvedConfig: ResolvedConfig): NativeProjectService {
     return new NativeProjectService(this, resolvedConfig);
   }
 

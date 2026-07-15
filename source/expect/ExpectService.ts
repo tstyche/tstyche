@@ -2,7 +2,6 @@ import type { Checker } from "#checker";
 import type { ExpectNode } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import type { ProjectService } from "#project";
 import { Reject } from "#reject";
 import type * as ts from "#typescript";
 import { Ensure } from "./Ensure.js";
@@ -20,9 +19,7 @@ import { ToRaiseError } from "./ToRaiseError.js";
 import type { MatchResult } from "./types.js";
 
 export class ExpectService {
-  #checker: Checker;
   #ensure: Ensure;
-  #program: ts.Program;
   #reject: Reject;
 
   private toAcceptProps: ToAcceptProps;
@@ -36,22 +33,19 @@ export class ExpectService {
   private toHaveProperty: ToHaveProperty;
   private toRaiseError: ToRaiseError;
 
-  constructor(ts: ts.TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
-    this.#program = projectService.getProgram()!;
-    this.#checker = projectService.getChecker();
+  constructor(ts: ts.TypeScript, program: ts.Program, checker: Checker, resolvedConfig: ResolvedConfig) {
+    this.#ensure = new Ensure(ts, program);
+    this.#reject = new Reject(ts, checker, resolvedConfig);
 
-    this.#ensure = new Ensure(ts, this.#program);
-    this.#reject = new Reject(ts, this.#checker, resolvedConfig);
-
-    this.toAcceptProps = new ToAcceptProps(ts, this.#checker);
-    this.toBe = new ToBe(ts, this.#program, this.#checker);
-    this.toBeApplicable = new ToBeApplicable(ts, this.#checker);
-    this.toBeAssignableFrom = new ToBeAssignableFrom(this.#checker);
-    this.toBeAssignableTo = new ToBeAssignableTo(this.#checker);
-    this.toBeCallableWith = new ToBeCallableWith(ts, this.#checker);
-    this.toBeConstructableWith = new ToBeConstructableWith(ts, this.#checker);
-    this.toBeInstantiableWith = new ToBeInstantiableWith(ts, this.#checker);
-    this.toHaveProperty = new ToHaveProperty(ts, this.#checker);
+    this.toAcceptProps = new ToAcceptProps(ts, checker);
+    this.toBe = new ToBe(ts, program, checker);
+    this.toBeApplicable = new ToBeApplicable(ts, checker);
+    this.toBeAssignableFrom = new ToBeAssignableFrom(checker);
+    this.toBeAssignableTo = new ToBeAssignableTo(checker);
+    this.toBeCallableWith = new ToBeCallableWith(ts, checker);
+    this.toBeConstructableWith = new ToBeConstructableWith(ts, checker);
+    this.toBeInstantiableWith = new ToBeInstantiableWith(ts, checker);
+    this.toHaveProperty = new ToHaveProperty(ts, checker);
     this.toRaiseError = new ToRaiseError(ts);
   }
 

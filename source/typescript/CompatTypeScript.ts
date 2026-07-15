@@ -36,7 +36,7 @@ export class CompatTypeScript extends BaseAdapter {
     return this.compiler.getLeadingCommentRanges(text, pos);
   }
 
-  createProjectService(resolvedConfig: ResolvedConfig): CompatProjectService {
+  getProjectService(resolvedConfig: ResolvedConfig): CompatProjectService {
     return new CompatProjectService(this.compiler, resolvedConfig);
   }
 

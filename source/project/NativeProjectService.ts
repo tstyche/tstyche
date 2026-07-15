@@ -75,6 +75,10 @@ export class NativeProjectService {
     return this.#currentProject!.program;
   }
 
+  getSourceFile(filePath: string): tsAst.SourceFile | undefined {
+    return this.#currentProject!.program.getSourceFile(filePath);
+  }
+
   #getProjectFacts(filePath: string) {
     let compilerOptions = this.#getDefaultCompilerOptions();
     let kind = ProjectConfigKind.Default;

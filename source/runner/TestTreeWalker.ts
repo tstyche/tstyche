@@ -1,9 +1,9 @@
+import type { Checker } from "#checker";
 import { type ExpectNode, type TestTreeNode, TestTreeNodeBrand, TestTreeNodeFlags } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { ExpectService } from "#expect";
-import type { ProjectService } from "#project";
 import { DescribeResult, ExpectResult, TestResult } from "#result";
 import type { CancellationToken } from "#token";
 import type * as ts from "#typescript";
@@ -28,7 +28,8 @@ export class TestTreeWalker {
 
   constructor(
     ts: ts.TypeScript,
-    projectService: ProjectService,
+    program: ts.Program,
+    checker: Checker,
     resolvedConfig: ResolvedConfig,
     onFileDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
     options: TestTreeWalkerOptions,
@@ -41,7 +42,7 @@ export class TestTreeWalker {
     this.#hasOnly = options.hasOnly || resolvedConfig.only != null || options.position != null;
     this.#position = options.position;
 
-    this.#expectService = new ExpectService(ts, projectService, resolvedConfig);
+    this.#expectService = new ExpectService(ts, program, checker, resolvedConfig);
   }
 
   async #resolveRunMode(flags: RunModeFlags, node: TestTreeNode) {

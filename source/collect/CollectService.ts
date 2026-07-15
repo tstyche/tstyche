@@ -16,10 +16,12 @@ import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 export class CollectService {
   #layers: Layers;
   #identifierLookup: IdentifierLookup;
+  #projectService: ProjectService;
   #ts: ts.TypeScript;
 
   constructor(ts: ts.TypeScript, projectService: ProjectService, resolvedConfig: ResolvedConfig) {
     this.#ts = ts;
+    this.#projectService = projectService;
 
     this.#layers = new Layers(ts, projectService, resolvedConfig);
     this.#identifierLookup = new IdentifierLookup(ts);
@@ -130,7 +132,7 @@ export class CollectService {
   }
 
   createTestTree(sourceFile: ts.SourceFile, semanticDiagnostics: ReadonlyArray<ts.Diagnostic> = []): TestTree {
-    const testTree = new TestTree(new Set(semanticDiagnostics), sourceFile);
+    const testTree = new TestTree(this.#projectService, sourceFile, new Set(semanticDiagnostics));
 
     EventEmitter.dispatch(["collect:start", { tree: testTree }]);
 

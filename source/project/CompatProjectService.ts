@@ -111,8 +111,12 @@ export class CompatProjectService {
     return new CompatMappedDiagnostic(sourceFile as ts6.SourceFile, diagnostic as ts6.Diagnostic, offsets);
   }
 
-  getProgram(): ts6.Program | undefined {
-    return this.#languageService?.getProgram();
+  getProgram(): ts6.Program {
+    return this.#languageService!.getProgram()!;
+  }
+
+  getSourceFile(filePath: string): ts6.SourceFile | undefined {
+    return this.#languageService!.getProgram()!.getSourceFile(filePath);
   }
 
   #getLanguageService(filePath: string) {

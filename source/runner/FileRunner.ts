@@ -24,7 +24,7 @@ export class FileRunner {
     this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#projectService = ts.createProjectService(resolvedConfig);
+    this.#projectService = ts.getProjectService(resolvedConfig);
     this.#collectService = new CollectService(ts, this.#projectService, resolvedConfig);
   }
 
@@ -72,8 +72,7 @@ export class FileRunner {
     }
 
     const semanticDiagnostics = this.#projectService.getSemanticDiagnostics(file.path);
-    const program = this.#projectService.getProgram();
-    const sourceFile = program?.getSourceFile(file.path);
+    const sourceFile = this.#projectService.getSourceFile(file.path);
 
     if (!sourceFile) {
       return;
@@ -131,11 +130,18 @@ export class FileRunner {
       this.#onDiagnostics(diagnostics, fileResult);
     };
 
-    const testTreeWalker = new TestTreeWalker(this.#ts, this.#projectService, this.#resolvedConfig, onFileDiagnostics, {
-      cancellationToken,
-      hasOnly: facts.testTree.hasOnly,
-      position: file.position,
-    });
+    const testTreeWalker = new TestTreeWalker(
+      this.#ts,
+      facts.testTree.program,
+      facts.testTree.checker,
+      this.#resolvedConfig,
+      onFileDiagnostics,
+      {
+        cancellationToken,
+        hasOnly: facts.testTree.hasOnly,
+        position: file.position,
+      },
+    );
 
     await testTreeWalker.visit(facts.testTree.children, facts.runModeFlags, /* parentResult */ undefined);
   }
