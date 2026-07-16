@@ -4,7 +4,7 @@ export interface Resource {
 }
 
 export interface PackageResource extends Resource {
-  binary?: Resource;
+  binary?: Resource & { name: string };
 }
 
 export interface ManifestData {

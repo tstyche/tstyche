@@ -27,7 +27,7 @@ export class NativeProjectService {
     this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#api = new ts.API({ fs: this.#fs });
+    this.#api = ts.getApi(this.#fs);
     this.#projectConfig = new ProjectConfigService(this.#api, resolvedConfig);
     this.#tsconfigPath = Path.resolve(resolvedConfig.rootPath, `${Date.now().toString(36)}.tsconfig.json`);
   }

@@ -132,6 +132,7 @@ export class ManifestService {
       }
 
       packages[tag]!.binary = {
+        name: packageBinaryName,
         integrity: versionMetadata.dist.integrity,
         tarball: versionMetadata.dist.tarball,
       };
