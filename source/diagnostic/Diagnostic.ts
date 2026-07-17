@@ -43,14 +43,14 @@ export class Diagnostic {
       let origin: DiagnosticOrigin | undefined;
 
       if (isDiagnosticPosition(diagnostic)) {
-        origin = new DiagnosticOrigin(diagnostic.pos, diagnostic.end, TextFileService.getTextFile(diagnostic.fileName));
+        origin = new DiagnosticOrigin(diagnostic.pos, diagnostic.end, TextFileService.get(diagnostic.fileName));
       }
 
       if (isDiagnosticLocation(diagnostic)) {
         origin = new DiagnosticOrigin(
           diagnostic.start,
           diagnostic.start + diagnostic.length,
-          TextFileService.getTextFile(diagnostic.file),
+          TextFileService.get(diagnostic.file),
         );
       }
 

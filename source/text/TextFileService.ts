@@ -11,11 +11,7 @@ export class TextFileService {
     TextFileService.#program = undefined;
   }
 
-  static open(program: ts.Program): void {
-    TextFileService.#program = program;
-  }
-
-  static getTextFile(source: ts.SourceFile | string): TextFile {
+  static get(source: ts.SourceFile | string): TextFile {
     let path: string | undefined;
     let text: string | undefined;
 
@@ -35,5 +31,9 @@ export class TextFileService {
     }
 
     return textFile;
+  }
+
+  static open(program: ts.Program): void {
+    TextFileService.#program = program;
   }
 }

@@ -66,11 +66,11 @@ export class SuppressedLayer {
     let position: number | undefined;
 
     if (isDiagnosticPosition(diagnostic)) {
-      file = TextFileService.getTextFile(diagnostic.fileName);
+      file = TextFileService.get(diagnostic.fileName);
       position = diagnostic.pos;
     }
     if (isDiagnosticLocation(diagnostic)) {
-      file = TextFileService.getTextFile(diagnostic.file);
+      file = TextFileService.get(diagnostic.file);
       position = diagnostic.start;
     }
 
@@ -113,7 +113,8 @@ export class SuppressedLayer {
       this.#editor.erase(start, end);
 
       if (this.#suppressedErrorsMap != null) {
-        const { line } = TextFileService.getTextFile(tree.sourceFile).getLocation(start);
+        const file = TextFileService.get(tree.sourceFile);
+        const { line } = file.getLocation(start);
 
         this.#suppressedErrorsMap.set(line, suppressedError);
       }

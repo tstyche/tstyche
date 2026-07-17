@@ -24,7 +24,7 @@ export class DiagnosticOrigin {
       return new DiagnosticOrigin(
         diagnostic.pos,
         diagnostic.end,
-        TextFileService.getTextFile(diagnostic.fileName),
+        TextFileService.get(diagnostic.fileName),
         expectNode,
       );
     }
@@ -32,7 +32,7 @@ export class DiagnosticOrigin {
     return new DiagnosticOrigin(
       diagnostic.start,
       diagnostic.start + diagnostic.length,
-      TextFileService.getTextFile(diagnostic.file),
+      TextFileService.get(diagnostic.file),
       expectNode,
     );
   }
@@ -43,7 +43,7 @@ export class DiagnosticOrigin {
     return new DiagnosticOrigin(
       node.getStart(),
       node.getEnd(),
-      TextFileService.getTextFile(node.getSourceFile()),
+      TextFileService.get(node.getSourceFile()),
       expectNode,
     );
   }
@@ -52,7 +52,7 @@ export class DiagnosticOrigin {
     return new DiagnosticOrigin(
       node.getStart(),
       node.getEnd(),
-      TextFileService.getTextFile(node.getSourceFile()),
+      TextFileService.get(node.getSourceFile()),
       expectNode,
     );
   }

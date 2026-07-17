@@ -90,7 +90,7 @@ export class Directive {
     }
 
     const range: DirectiveRange = {
-      file: TextFileService.getTextFile(sourceFile),
+      file: TextFileService.get(sourceFile),
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 

@@ -33,7 +33,7 @@ export class SuppressedService {
       const origin = new DiagnosticOrigin(
         suppressedError.directive.start,
         suppressedError.directive.end,
-        TextFileService.getTextFile(testTree.sourceFile),
+        TextFileService.get(testTree.sourceFile),
       );
 
       if (!suppressedError.argument?.text) {
@@ -60,7 +60,7 @@ export class SuppressedService {
         const origin = new DiagnosticOrigin(
           suppressedError.argument.start,
           suppressedError.argument.end,
-          TextFileService.getTextFile(testTree.sourceFile),
+          TextFileService.get(testTree.sourceFile),
         );
 
         this.#onDiagnostics(Diagnostic.error(text, origin).add({ related }), suppressedResult);

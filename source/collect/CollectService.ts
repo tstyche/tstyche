@@ -87,7 +87,7 @@ export class CollectService {
               this.#ts.isExpressionWithTypeArguments(matcherNameNode.parent)
                 ? matcherNameNode.parent.getEnd()
                 : matcherNameNode.getEnd(),
-              TextFileService.getTextFile(matcherNameNode.getSourceFile()),
+              TextFileService.get(matcherNameNode.getSourceFile()),
             );
 
             this.#onDiagnostics(Diagnostic.error(text, origin));
