@@ -1,8 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { Path } from "#path";
 
-// TODO rename to 'FilePosition'
-export class FileLocation {
+export class FilePosition {
   path: string;
   position: number | undefined;
 

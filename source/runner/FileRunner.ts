@@ -3,7 +3,7 @@ import { CollectService, type TestTree } from "#collect";
 import { Directive, type ResolvedConfig } from "#config";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { EventEmitter } from "#events";
-import type { FileLocation } from "#file";
+import type { FilePosition } from "#file";
 import type { ProjectService } from "#project";
 import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
@@ -38,7 +38,7 @@ export class FileRunner {
     EventEmitter.dispatch(["file:error", { diagnostics, result }]);
   }
 
-  async run(file: FileLocation, cancellationToken: CancellationToken): Promise<void> {
+  async run(file: FilePosition, cancellationToken: CancellationToken): Promise<void> {
     if (cancellationToken.isCancellationRequested()) {
       return;
     }
@@ -59,7 +59,7 @@ export class FileRunner {
   }
 
   async #resolveFileFacts(
-    file: FileLocation,
+    file: FilePosition,
     fileResult: FileResult,
     runModeFlags: RunModeFlags,
   ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree } | undefined> {
@@ -113,7 +113,7 @@ export class FileRunner {
     return { runModeFlags, testTree };
   }
 
-  async #run(file: FileLocation, fileResult: FileResult, cancellationToken: CancellationToken) {
+  async #run(file: FilePosition, fileResult: FileResult, cancellationToken: CancellationToken) {
     const facts = await this.#resolveFileFacts(file, fileResult, RunModeFlags.None);
 
     if (!facts) {
