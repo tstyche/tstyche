@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.2.2] - 2026-07-17
+
+### Fixed
+
+- Use TypeScript v6 when v7 is installed ([#775](https://github.com/tstyche/tstyche/pull/775))
+
 ## [7.2.1] - 2026-05-27
 
 ### Fixed
@@ -1062,6 +1068,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.2.2]: https://github.com/tstyche/tstyche/releases/tag/v7.2.2
 [7.2.1]: https://github.com/tstyche/tstyche/releases/tag/v7.2.1
 [7.2.0]: https://github.com/tstyche/tstyche/releases/tag/v7.2.0
 [7.1.0]: https://github.com/tstyche/tstyche/releases/tag/v7.1.0
