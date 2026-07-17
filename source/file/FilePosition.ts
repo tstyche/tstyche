@@ -1,7 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { Path } from "#path";
 
-export class FileLocation {
+export class FilePosition {
   path: string;
   position: number | undefined;
 
