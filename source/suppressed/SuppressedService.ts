@@ -2,7 +2,7 @@ import type { TestTree } from "#collect";
 import { Diagnostic, DiagnosticOrigin, getDiagnosticMessageText } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { SuppressedResult } from "#result";
-import { getTextFile } from "#text";
+import { TextFileService } from "#text";
 import { SuppressedDiagnosticText } from "./SuppressedDiagnosticText.js";
 
 export class SuppressedService {
@@ -33,7 +33,7 @@ export class SuppressedService {
       const origin = new DiagnosticOrigin(
         suppressedError.directive.start,
         suppressedError.directive.end,
-        getTextFile(testTree.sourceFile),
+        TextFileService.getTextFile(testTree.sourceFile),
       );
 
       if (!suppressedError.argument?.text) {
@@ -60,7 +60,7 @@ export class SuppressedService {
         const origin = new DiagnosticOrigin(
           suppressedError.argument.start,
           suppressedError.argument.end,
-          getTextFile(testTree.sourceFile),
+          TextFileService.getTextFile(testTree.sourceFile),
         );
 
         this.#onDiagnostics(Diagnostic.error(text, origin).add({ related }), suppressedResult);

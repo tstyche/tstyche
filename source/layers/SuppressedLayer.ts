@@ -2,7 +2,7 @@ import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
 import { isDiagnosticLocation, isDiagnosticPosition } from "#diagnostic";
 import type { TextEditor } from "#editor";
-import { getTextFile, type TextFile } from "#text";
+import { type TextFile, TextFileService } from "#text";
 import type * as ts from "#typescript";
 import type { SuppressedError } from "./types.js";
 
@@ -66,11 +66,11 @@ export class SuppressedLayer {
     let position: number | undefined;
 
     if (isDiagnosticPosition(diagnostic)) {
-      file = getTextFile(diagnostic.fileName);
+      file = TextFileService.getTextFile(diagnostic.fileName);
       position = diagnostic.pos;
     }
     if (isDiagnosticLocation(diagnostic)) {
-      file = getTextFile(diagnostic.file);
+      file = TextFileService.getTextFile(diagnostic.file);
       position = diagnostic.start;
     }
 
@@ -113,7 +113,7 @@ export class SuppressedLayer {
       this.#editor.erase(start, end);
 
       if (this.#suppressedErrorsMap != null) {
-        const { line } = getTextFile(tree.sourceFile).getLocation(start);
+        const { line } = TextFileService.getTextFile(tree.sourceFile).getLocation(start);
 
         this.#suppressedErrorsMap.set(line, suppressedError);
       }

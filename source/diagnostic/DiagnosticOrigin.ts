@@ -1,5 +1,5 @@
 import type { ExpectNode } from "#collect";
-import { getTextFile, type TextFile } from "#text";
+import { type TextFile, TextFileService } from "#text";
 import type * as ts from "#typescript";
 import { isDiagnosticPosition } from "./helpers.js";
 
@@ -21,13 +21,18 @@ export class DiagnosticOrigin {
     expectNode: ExpectNode,
   ): DiagnosticOrigin {
     if (isDiagnosticPosition(diagnostic)) {
-      return new DiagnosticOrigin(diagnostic.pos, diagnostic.end, getTextFile(diagnostic.fileName), expectNode);
+      return new DiagnosticOrigin(
+        diagnostic.pos,
+        diagnostic.end,
+        TextFileService.getTextFile(diagnostic.fileName),
+        expectNode,
+      );
     }
 
     return new DiagnosticOrigin(
       diagnostic.start,
       diagnostic.start + diagnostic.length,
-      getTextFile(diagnostic.file),
+      TextFileService.getTextFile(diagnostic.file),
       expectNode,
     );
   }
@@ -35,10 +40,20 @@ export class DiagnosticOrigin {
   static fromAssertion(expectNode: ExpectNode): DiagnosticOrigin {
     const node = expectNode.matcherNameNode.name;
 
-    return new DiagnosticOrigin(node.getStart(), node.getEnd(), getTextFile(node.getSourceFile()), expectNode);
+    return new DiagnosticOrigin(
+      node.getStart(),
+      node.getEnd(),
+      TextFileService.getTextFile(node.getSourceFile()),
+      expectNode,
+    );
   }
 
   static fromNode(node: ts.Node, expectNode?: ExpectNode): DiagnosticOrigin {
-    return new DiagnosticOrigin(node.getStart(), node.getEnd(), getTextFile(node.getSourceFile()), expectNode);
+    return new DiagnosticOrigin(
+      node.getStart(),
+      node.getEnd(),
+      TextFileService.getTextFile(node.getSourceFile()),
+      expectNode,
+    );
   }
 }

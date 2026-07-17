@@ -3,7 +3,7 @@ import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Layers } from "#layers";
 import type { ProjectService } from "#project";
-import { getTextFile } from "#text";
+import { TextFileService } from "#text";
 import type * as ts from "#typescript";
 import { CollectDiagnosticText } from "./CollectDiagnosticText.js";
 import { ExpectNode } from "./ExpectNode.js";
@@ -87,7 +87,7 @@ export class CollectService {
               this.#ts.isExpressionWithTypeArguments(matcherNameNode.parent)
                 ? matcherNameNode.parent.getEnd()
                 : matcherNameNode.getEnd(),
-              getTextFile(matcherNameNode.getSourceFile()),
+              TextFileService.getTextFile(matcherNameNode.getSourceFile()),
             );
 
             this.#onDiagnostics(Diagnostic.error(text, origin));

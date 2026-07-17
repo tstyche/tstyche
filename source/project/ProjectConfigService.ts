@@ -17,7 +17,7 @@ interface ParsedConfig {
 
 export class ProjectConfigService {
   #api: InstanceType<typeof tsApi.API>;
-  #parsedConfigCache = new Map<string, ParsedConfig>();
+  #configCache = new Map<string, ParsedConfig>();
   #resolvedConfig: ResolvedConfig;
 
   constructor(api: InstanceType<typeof tsApi.API>, resolvedConfig: ResolvedConfig) {
@@ -69,7 +69,7 @@ export class ProjectConfigService {
   }
 
   #getParsedConfig(filePath: string): ParsedConfig | undefined {
-    let config = this.#parsedConfigCache.get(filePath);
+    let config = this.#configCache.get(filePath);
 
     if (!config) {
       if (!existsSync(filePath)) {
@@ -77,7 +77,7 @@ export class ProjectConfigService {
       }
 
       config = this.#api.parseConfigFile(filePath);
-      this.#parsedConfigCache.set(filePath, config);
+      this.#configCache.set(filePath, config);
     }
 
     return config;

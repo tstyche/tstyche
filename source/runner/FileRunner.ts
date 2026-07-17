@@ -53,9 +53,7 @@ export class FileRunner {
 
     EventEmitter.dispatch(["file:end", { result: fileResult }]);
 
-    if ("closeFile" in this.#projectService) {
-      this.#projectService.closeFile(file.path);
-    }
+    this.#projectService.closeFile(file.path);
   }
 
   async #resolveFileFacts(
@@ -100,6 +98,8 @@ export class FileRunner {
 
         return;
       }
+
+      // TODO must call '.openFile()' with updated text, otherwise 'ProjectService#getProgram()' points to outdated program
 
       this.#projectService.updateFile(file.path, testText);
 

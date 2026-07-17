@@ -1,4 +1,4 @@
-import { getTextFile } from "#text";
+import { TextFileService } from "#text";
 import type * as ts from "#typescript";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
@@ -43,14 +43,14 @@ export class Diagnostic {
       let origin: DiagnosticOrigin | undefined;
 
       if (isDiagnosticPosition(diagnostic)) {
-        origin = new DiagnosticOrigin(diagnostic.pos, diagnostic.end, getTextFile(diagnostic.fileName));
+        origin = new DiagnosticOrigin(diagnostic.pos, diagnostic.end, TextFileService.getTextFile(diagnostic.fileName));
       }
 
       if (isDiagnosticLocation(diagnostic)) {
         origin = new DiagnosticOrigin(
           diagnostic.start,
           diagnostic.start + diagnostic.length,
-          getTextFile(diagnostic.file),
+          TextFileService.getTextFile(diagnostic.file),
         );
       }
 

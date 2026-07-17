@@ -2,7 +2,7 @@ import type { TestTreeNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { JsonScanner } from "#json";
-import { getTextFile, type TextFile } from "#text";
+import { type TextFile, TextFileService } from "#text";
 import type * as ts from "#typescript";
 import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
@@ -90,7 +90,7 @@ export class Directive {
     }
 
     const range: DirectiveRange = {
-      file: getTextFile(sourceFile),
+      file: TextFileService.getTextFile(sourceFile),
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 

@@ -9,6 +9,7 @@ import { Path } from "#path";
 import { ProjectConfigKind } from "#result";
 import { Select } from "#select";
 import type * as ts from "#typescript";
+import { TextFileService } from "../text/TextFileService.js";
 import { FileSystem } from "./FileSystem.js";
 import { NativeMappedDiagnostic } from "./NativeMappedDiagnostic.js";
 import { ProjectConfigService } from "./ProjectConfigService.js";
@@ -37,6 +38,10 @@ export class NativeProjectService {
     this.#currentProject = undefined;
 
     this.#api.close();
+  }
+
+  closeFile(): void {
+    TextFileService.close();
   }
 
   getChecker(): NativeCheckerAdapter {
@@ -156,6 +161,8 @@ export class NativeProjectService {
 
   openFile(filePath: string): void {
     const { kind, project, specifier } = this.#getProjectFacts(filePath);
+
+    TextFileService.open(project.program);
 
     if (specifier !== this.#currentSpecifier) {
       this.#currentSpecifier = specifier;
