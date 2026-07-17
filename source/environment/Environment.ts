@@ -109,6 +109,6 @@ export class Environment {
       // module was not found
     }
 
-    return resolvedModule;
+    return resolvedModule?.endsWith("lib/typescript.js") ? resolvedModule : undefined;
   }
 }
