@@ -95,20 +95,24 @@ export class Environment {
   }
 
   static #resolveTypeScriptModule() {
-    let specifier = "typescript";
-
     if (process.env["TSTYCHE_TYPESCRIPT_MODULE"] != null) {
-      specifier = process.env["TSTYCHE_TYPESCRIPT_MODULE"];
+      const specifier = process.env["TSTYCHE_TYPESCRIPT_MODULE"];
+
+      if (specifier !== "") {
+        return import.meta.resolve(specifier);
+      }
+
+      return;
     }
 
     let resolvedModule: string | undefined;
 
     try {
-      resolvedModule = import.meta.resolve(specifier);
+      resolvedModule = import.meta.resolve("typescript");
     } catch {
-      // module was not found
+      // 'typescript' is not installed
     }
 
-    return resolvedModule;
+    return resolvedModule?.endsWith("lib/typescript.js") ? resolvedModule : undefined;
   }
 }
