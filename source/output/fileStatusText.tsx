@@ -1,4 +1,4 @@
-import type { FileLocation } from "#file";
+import type { FilePosition } from "#file";
 import { Path } from "#path";
 import { type FileResultStatus, ResultStatus } from "#result";
 import { Color, Line, type ScribblerJsx, Text } from "#scribbler";
@@ -23,7 +23,7 @@ function FileNameText({ filePath }: FileNameTextProps) {
   );
 }
 
-export function fileStatusText(status: FileResultStatus, file: FileLocation): ScribblerJsx.Element {
+export function fileStatusText(status: FileResultStatus, file: FilePosition): ScribblerJsx.Element {
   let statusText: string;
 
   switch (status) {
