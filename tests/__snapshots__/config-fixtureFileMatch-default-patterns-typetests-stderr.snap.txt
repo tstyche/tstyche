@@ -2,31 +2,107 @@ Error: Type 'number' is not assignable to type 'string'. ts(2322)
 
   1 | export const x: string = 10;
     |              ~
-  2 | 
+  2 | let y = 20; let y = 30;
+  3 | 
 
       at ./__typetests__/__fixtures__/a.ts:1:14
 
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |     ~
+  3 | 
+
+      at ./__typetests__/__fixtures__/a.ts:2:5
+
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |                 ~
+  3 | 
+
+      at ./__typetests__/__fixtures__/a.ts:2:17
+
 Error: Type 'number' is not assignable to type 'string'. ts(2322)
 
   1 | export const x: string = 10;
     |              ~
-  2 | 
+  2 | let y = 20; let y = 30;
+  3 | 
 
       at ./__typetests__/fixtures/b.ts:1:14
 
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |     ~
+  3 | 
+
+      at ./__typetests__/fixtures/b.ts:2:5
+
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |                 ~
+  3 | 
+
+      at ./__typetests__/fixtures/b.ts:2:17
+
 Error: Type 'number' is not assignable to type 'string'. ts(2322)
 
   1 | export const x: string = 10;
     |              ~
-  2 | 
+  2 | let y = 20; let y = 30;
+  3 | 
 
       at ./typetests/__fixtures__/a.ts:1:14
 
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |     ~
+  3 | 
+
+      at ./typetests/__fixtures__/a.ts:2:5
+
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |                 ~
+  3 | 
+
+      at ./typetests/__fixtures__/a.ts:2:17
+
 Error: Type 'number' is not assignable to type 'string'. ts(2322)
 
   1 | export const x: string = 10;
     |              ~
-  2 | 
+  2 | let y = 20; let y = 30;
+  3 | 
 
       at ./typetests/fixtures/b.ts:1:14
+
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |     ~
+  3 | 
+
+      at ./typetests/fixtures/b.ts:2:5
+
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |                 ~
+  3 | 
+
+      at ./typetests/fixtures/b.ts:2:17
 

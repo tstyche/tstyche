@@ -63,18 +63,14 @@ export class FileRunner {
   ): Promise<{ runModeFlags: RunModeFlags; testTree: TestTree } | undefined> {
     const syntacticDiagnostics = this.#projectService.getSyntacticDiagnostics(file.path);
 
-    if (syntacticDiagnostics != null && syntacticDiagnostics.length > 0) {
+    if (syntacticDiagnostics.length > 0) {
       this.#onDiagnostics(Diagnostic.fromDiagnostics(syntacticDiagnostics), fileResult);
 
       return;
     }
 
     const semanticDiagnostics = this.#projectService.getSemanticDiagnostics(file.path);
-    const sourceFile = this.#projectService.getSourceFile(file.path);
-
-    if (!sourceFile) {
-      return;
-    }
+    const sourceFile = this.#projectService.getSourceFile(file.path)!;
 
     const directiveRanges = Directive.getDirectiveRanges(this.#ts, sourceFile);
     const inlineConfig = await Directive.getInlineConfig(directiveRanges);
@@ -84,7 +80,7 @@ export class FileRunner {
     }
 
     if (inlineConfig?.template) {
-      if (semanticDiagnostics != null && semanticDiagnostics.length > 0) {
+      if (semanticDiagnostics.length > 0) {
         this.#onDiagnostics(Diagnostic.fromDiagnostics(semanticDiagnostics), fileResult);
 
         return;

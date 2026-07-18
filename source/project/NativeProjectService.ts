@@ -151,11 +151,13 @@ export class NativeProjectService {
   }
 
   getSemanticDiagnostics(filePath: string): ReadonlyArray<tsApi.Diagnostic> {
-    return this.#currentProject!.program.getSemanticDiagnostics(filePath);
+    return [
+      ...this.#currentProject!.program.getBindDiagnostics(filePath),
+      ...this.#currentProject!.program.getSemanticDiagnostics(filePath),
+    ].sort((a, b) => a.pos - b.pos);
   }
 
   getSyntacticDiagnostics(filePath: string): ReadonlyArray<tsApi.Diagnostic> {
-    // TODO consider including '.getBindDiagnostics()'
     return this.#currentProject!.program.getSyntacticDiagnostics(filePath);
   }
 
@@ -219,16 +221,17 @@ export class NativeProjectService {
       return false;
     });
 
-    const diagnostics = [...project.program.getProgramDiagnostics()];
-
-    for (const filePath of filesToCheck) {
-      diagnostics.push(
-        ...project.program.getBindDiagnostics(filePath),
-        ...project.program.getSyntacticDiagnostics(filePath),
-        ...project.program.getSemanticDiagnostics(filePath),
-        ...project.program.getDeclarationDiagnostics(filePath),
-      );
-    }
+    const diagnostics = [
+      ...project.program.getProgramDiagnostics(),
+      ...filesToCheck.flatMap((filePath) =>
+        [
+          ...project.program.getSyntacticDiagnostics(filePath),
+          ...project.program.getBindDiagnostics(filePath),
+          ...project.program.getSemanticDiagnostics(filePath),
+          ...project.program.getDeclarationDiagnostics(filePath),
+        ].sort((a, b) => a.pos - b.pos),
+      ),
+    ];
 
     if (diagnostics.length > 0) {
       EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);

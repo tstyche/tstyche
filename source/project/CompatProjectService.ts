@@ -136,12 +136,12 @@ export class CompatProjectService {
     return project?.getLanguageService(/* ensureSynchronized */ true);
   }
 
-  getSemanticDiagnostics(filePath: string): Array<ts6.Diagnostic> | undefined {
-    return this.#languageService?.getSemanticDiagnostics(filePath);
+  getSemanticDiagnostics(filePath: string): ReadonlyArray<ts6.Diagnostic> {
+    return this.getProgram().getSemanticDiagnostics(this.getSourceFile(filePath)!);
   }
 
-  getSyntacticDiagnostics(filePath: string): Array<ts6.Diagnostic> | undefined {
-    return this.#languageService?.getSyntacticDiagnostics(filePath);
+  getSyntacticDiagnostics(filePath: string): ReadonlyArray<ts6.Diagnostic> {
+    return this.getProgram().getSyntacticDiagnostics(this.getSourceFile(filePath)!);
   }
 
   #isFileIncluded(filePath: string) {
@@ -202,7 +202,7 @@ export class CompatProjectService {
 
     TextFileService.open(program);
 
-    if (!program || this.#seenProjects.has(configFileName)) {
+    if (this.#seenProjects.has(configFileName)) {
       return;
     }
 
@@ -228,15 +228,16 @@ export class CompatProjectService {
       return false;
     });
 
-    const diagnostics = [...program.getOptionsDiagnostics()];
-
-    for (const sourceFile of sourceFilesToCheck) {
-      diagnostics.push(
-        ...program.getSyntacticDiagnostics(sourceFile),
-        ...program.getSemanticDiagnostics(sourceFile),
-        ...program.getDeclarationDiagnostics(sourceFile),
-      );
-    }
+    const diagnostics = [
+      ...program.getOptionsDiagnostics(),
+      ...sourceFilesToCheck.flatMap((sourceFile) =>
+        [
+          ...program.getSyntacticDiagnostics(sourceFile),
+          ...program.getSemanticDiagnostics(sourceFile),
+          ...program.getDeclarationDiagnostics(sourceFile),
+        ].sort((a, b) => a.start! - b.start!),
+      ),
+    ];
 
     if (diagnostics.length > 0) {
       EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
