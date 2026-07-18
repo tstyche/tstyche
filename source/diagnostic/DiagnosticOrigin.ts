@@ -21,12 +21,7 @@ export class DiagnosticOrigin {
     expectNode: ExpectNode,
   ): DiagnosticOrigin {
     if (isDiagnosticPosition(diagnostic)) {
-      return new DiagnosticOrigin(
-        diagnostic.pos,
-        diagnostic.end,
-        TextFileService.get(diagnostic.fileName),
-        expectNode,
-      );
+      return new DiagnosticOrigin(diagnostic.pos, diagnostic.end, TextFileService.get(diagnostic.fileName), expectNode);
     }
 
     return new DiagnosticOrigin(
@@ -40,20 +35,10 @@ export class DiagnosticOrigin {
   static fromAssertion(expectNode: ExpectNode): DiagnosticOrigin {
     const node = expectNode.matcherNameNode.name;
 
-    return new DiagnosticOrigin(
-      node.getStart(),
-      node.getEnd(),
-      TextFileService.get(node.getSourceFile()),
-      expectNode,
-    );
+    return new DiagnosticOrigin(node.getStart(), node.getEnd(), TextFileService.get(node.getSourceFile()), expectNode);
   }
 
   static fromNode(node: ts.Node, expectNode?: ExpectNode): DiagnosticOrigin {
-    return new DiagnosticOrigin(
-      node.getStart(),
-      node.getEnd(),
-      TextFileService.get(node.getSourceFile()),
-      expectNode,
-    );
+    return new DiagnosticOrigin(node.getStart(), node.getEnd(), TextFileService.get(node.getSourceFile()), expectNode);
   }
 }
