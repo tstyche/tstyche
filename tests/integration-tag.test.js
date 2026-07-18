@@ -1,5 +1,4 @@
 import { exec } from "node:child_process";
-import process from "node:process";
 import test from "node:test";
 import { promisify } from "node:util";
 import prettyAnsi from "pretty-ansi";
