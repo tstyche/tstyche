@@ -14,8 +14,8 @@ export class JsonScanner {
   #previousPosition: number;
 
   constructor(file: TextFile, options?: JsonScannerOptions) {
-    this.#end = options?.end ?? file.text.length;
     this.#file = file;
+    this.#end = options?.end ?? file.getText().length;
     this.#position = options?.start ?? 0;
     this.#previousPosition = options?.start ?? 0;
   }
@@ -29,11 +29,11 @@ export class JsonScanner {
   }
 
   #peekCharacter() {
-    return this.#file.text.charAt(this.#position);
+    return this.#file.getText().charAt(this.#position);
   }
 
   #peekNextCharacter() {
-    return this.#file.text.charAt(this.#position + 1);
+    return this.#file.getText().charAt(this.#position + 1);
   }
 
   peekToken(token: string): boolean {
@@ -86,7 +86,7 @@ export class JsonScanner {
   }
 
   #readCharacter() {
-    return this.#file.text.charAt(this.#position++);
+    return this.#file.getText().charAt(this.#position++);
   }
 
   readToken(token: string | RegExp): JsonNode {

@@ -1,19 +1,25 @@
+import { readFileSync } from "node:fs";
+import type * as ts from "#typescript";
+
 export class TextFile {
   path: string;
   #lineMap: Array<number> | undefined;
-  text: string;
+  #sourceFile: ts.SourceFile | string;
+  #program: ts.Program | undefined;
+  #text: string | undefined;
 
-  constructor(path: string, text: string) {
+  constructor(path: string, sourceFile: ts.SourceFile | string, program?: ts.Program | undefined) {
     this.path = path;
-    this.text = text;
+    this.#sourceFile = sourceFile;
+    this.#program = program;
   }
 
   #createLineMap() {
     const result = [0];
     let position = 0;
 
-    while (position < this.text.length) {
-      const character = this.text.charAt(position);
+    while (position < this.getText().length) {
+      const character = this.getText().charAt(position);
 
       switch (character) {
         case "\n":
@@ -21,7 +27,7 @@ export class TextFile {
           break;
 
         case "\r":
-          if (this.text.charAt(position + 1) === "\n") {
+          if (this.getText().charAt(position + 1) === "\n") {
             result.push(position + 2);
             position++;
           }
@@ -41,6 +47,18 @@ export class TextFile {
     }
 
     return this.#lineMap;
+  }
+
+  getText(): string {
+    if (!this.#text) {
+      this.#text =
+        typeof this.#sourceFile === "string"
+          ? (this.#program?.getSourceFile(this.#sourceFile)?.text ??
+            readFileSync(this.#sourceFile, { encoding: "utf8" }))
+          : this.#sourceFile.text;
+    }
+
+    return this.#text;
   }
 
   getLocation(position: number): { line: number; character: number } {

@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import type * as ts from "#typescript";
 import { TextFile } from "./TextFile.js";
 
@@ -11,26 +10,17 @@ export class TextFileService {
     TextFileService.#program = undefined;
   }
 
-  static get(source: ts.SourceFile | string): TextFile {
-    let path: string | undefined;
-    let text: string | undefined;
+  static get(sourceFile: ts.SourceFile | string): TextFile {
+    const filePath = typeof sourceFile === "string" ? sourceFile : sourceFile.fileName;
 
-    if (typeof source === "string") {
-      path = source;
-      text = text = TextFileService.#program?.getSourceFile(source)?.text ?? readFileSync(source, { encoding: "utf8" });
-    } else {
-      path = source.fileName;
-      text = source.text;
+    let file = TextFileService.#fileCache.get(filePath);
+
+    if (!file) {
+      file = new TextFile(filePath, sourceFile, TextFileService.#program);
+      TextFileService.#fileCache.set(filePath, file);
     }
 
-    let textFile = TextFileService.#fileCache.get(path);
-
-    if (!textFile) {
-      textFile = new TextFile(path, text);
-      TextFileService.#fileCache.set(path, textFile);
-    }
-
-    return textFile;
+    return file;
   }
 
   static open(program: ts.Program): void {

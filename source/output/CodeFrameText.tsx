@@ -96,9 +96,9 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   for (let index = firstLine; index <= lastLine; index++) {
     const lineStart = lineMap[index];
-    const lineEnd = index === lineMap.length - 1 ? file.text.length : lineMap[index + 1];
+    const lineEnd = index === lineMap.length - 1 ? file.getText().length : lineMap[index + 1];
 
-    const lineText = file.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
+    const lineText = file.getText().slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
     if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeFrame.push(
