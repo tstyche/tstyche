@@ -99,9 +99,7 @@ export class FileRunner {
         return;
       }
 
-      // TODO must call '.openFile()' with updated text, otherwise 'ProjectService#getProgram()' points to outdated program
-
-      this.#projectService.updateFile(file.path, testText);
+      this.#projectService.openFile(file.path, testText);
 
       return this.#resolveFileFacts(file, fileResult, runModeFlags);
     }

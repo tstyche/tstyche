@@ -84,7 +84,7 @@ export class NativeProjectService {
     return this.#currentProject!.program.getSourceFile(filePath);
   }
 
-  #getProjectFacts(filePath: string) {
+  #getProjectFacts(filePath: string, options?: { changed?: boolean }) {
     let compilerOptions = this.#getDefaultCompilerOptions();
     let kind = ProjectConfigKind.Default;
     let specifier = "baseline";
@@ -118,7 +118,7 @@ export class NativeProjectService {
         break;
     }
 
-    if (kind !== ProjectConfigKind.Default && specifier === this.#currentSpecifier) {
+    if (kind !== ProjectConfigKind.Default && specifier === this.#currentSpecifier && !options?.changed) {
       return { kind, project: this.#currentProject!, specifier };
     }
 
@@ -142,7 +142,7 @@ export class NativeProjectService {
 
     const snapshot = this.#api.updateSnapshot({
       openProjects: [this.#tsconfigPath],
-      fileChanges: { changed: [this.#tsconfigPath] },
+      fileChanges: { changed: [filePath] },
     });
 
     const project = snapshot.getProject(this.#tsconfigPath)!;
@@ -159,8 +159,12 @@ export class NativeProjectService {
     return this.#currentProject!.program.getSyntacticDiagnostics(filePath);
   }
 
-  openFile(filePath: string): void {
-    const { kind, project, specifier } = this.#getProjectFacts(filePath);
+  openFile(filePath: string, fileText?: string): void {
+    if (fileText != null) {
+      this.#fs.writeFile(filePath, fileText);
+    }
+
+    const { kind, project, specifier } = this.#getProjectFacts(filePath, { changed: true });
 
     TextFileService.open(project.program);
 
@@ -233,6 +237,8 @@ export class NativeProjectService {
 
   updateFile(filePath: string, text: string): this {
     this.#fs.writeFile(filePath, text);
+
+    // TODO consider using 'this.#api.runWithTemporaryFileUpdate()' instead
 
     const snapshot = this.#api.updateSnapshot({ fileChanges: { changed: [filePath] } });
     this.#currentProject = snapshot.getProject(this.#tsconfigPath)!;

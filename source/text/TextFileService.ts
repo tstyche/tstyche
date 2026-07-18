@@ -34,6 +34,7 @@ export class TextFileService {
   }
 
   static open(program: ts.Program): void {
+    TextFileService.#fileCache.clear();
     TextFileService.#program = program;
   }
 }

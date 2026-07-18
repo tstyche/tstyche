@@ -7,6 +7,7 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
+import { TextFileService } from "#text";
 import type * as ts from "#typescript";
 import { Version } from "#version";
 import { CompatMappedDiagnostic } from "./CompatMappedDiagnostic.js";
@@ -73,6 +74,7 @@ export class CompatProjectService {
   }
 
   closeFile(filePath: string): void {
+    TextFileService.close();
     this.#service.closeClientFile(filePath);
   }
 
@@ -156,7 +158,7 @@ export class CompatProjectService {
     return fileNames.includes(filePath);
   }
 
-  openFile(filePath: string): void {
+  openFile(filePath: string, fileText?: string): void {
     switch (this.#projectConfig.kind) {
       case ProjectConfigKind.Discovered:
         break;
@@ -175,7 +177,7 @@ export class CompatProjectService {
 
     const { configFileErrors, configFileName } = this.#service.openClientFile(
       filePath,
-      /* fileContent */ undefined,
+      fileText,
       /* scriptKind */ undefined,
       this.#resolvedConfig.rootPath,
     );
@@ -197,6 +199,8 @@ export class CompatProjectService {
     }
 
     const program = this.getProgram();
+
+    TextFileService.open(program);
 
     if (!program || this.#seenProjects.has(configFileName)) {
       return;
