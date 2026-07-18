@@ -71,7 +71,7 @@
     "code-block-writer": "^13.0.3",
     "monocart-coverage-reports": "^2.12.12",
     "pretty-ansi": "^4.0.0",
-    "typescript": "^7.1.0-dev.20260715"
+    "typescript": "^7.1.0-dev.20260717"
   },
   "peerDependencies": {
     "typescript": ">=5.4"
