@@ -4,13 +4,11 @@ import type * as ts from "#typescript";
 export class TextFile {
   path: string;
   #lineMap: Array<number> | undefined;
-  #sourceFile: ts.SourceFile | string;
   #program: ts.Program | undefined;
   #text: string | undefined;
 
-  constructor(path: string, sourceFile: ts.SourceFile | string, program?: ts.Program | undefined) {
+  constructor(path: string, program?: ts.Program | undefined) {
     this.path = path;
-    this.#sourceFile = sourceFile;
     this.#program = program;
   }
 
@@ -51,11 +49,7 @@ export class TextFile {
 
   getText(): string {
     if (!this.#text) {
-      this.#text =
-        typeof this.#sourceFile === "string"
-          ? (this.#program?.getSourceFile(this.#sourceFile)?.text ??
-            readFileSync(this.#sourceFile, { encoding: "utf8" }))
-          : this.#sourceFile.text;
+      this.#text = this.#program?.getSourceFile(this.path)?.text ?? readFileSync(this.path, { encoding: "utf8" });
     }
 
     return this.#text;

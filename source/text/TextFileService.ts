@@ -16,7 +16,7 @@ export class TextFileService {
     let file = TextFileService.#fileCache.get(filePath);
 
     if (!file) {
-      file = new TextFile(filePath, sourceFile, TextFileService.#program);
+      file = new TextFile(filePath, TextFileService.#program);
       TextFileService.#fileCache.set(filePath, file);
     }
 

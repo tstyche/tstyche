@@ -1,5 +1,4 @@
 import { existsSync } from "node:fs";
-import fs from "node:fs/promises";
 import type { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { JsonScanner } from "#json";
@@ -41,11 +40,7 @@ export class Config {
     const configFilePath = Config.resolveConfigFilePath(configPath, rootPath);
 
     if (existsSync(configFilePath)) {
-      const configFileText = await fs.readFile(configFilePath, {
-        encoding: "utf8",
-      });
-
-      const file = new TextFile(configFilePath, configFileText);
+      const file = new TextFile(configFilePath);
 
       const configFileParser = new ConfigParser(
         configFileOptions as Record<string, OptionValue>,
