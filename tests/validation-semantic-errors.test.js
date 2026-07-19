@@ -7,6 +7,24 @@ import { spawnTyche } from "./__utilities__/tstyche.js";
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
 
+await test("bind errors", async (t) => {
+  await t.test("handles bind level errors", async () => {
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["bind-level"]);
+
+    await assert.matchSnapshot(stderr, {
+      fileName: `${testFileName}-bind-level-errors-stderr`,
+      testFileUrl: import.meta.url,
+    });
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-bind-level-errors-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 1);
+  });
+});
+
 await test("type errors", async (t) => {
   await t.test("handles top level type errors", async () => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["top-level"]);

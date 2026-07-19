@@ -1,4 +1,4 @@
-···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-type-errors
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/validation-semantic-errors
 
 uses TypeScript <<version>> with ./tsconfig.json
 
