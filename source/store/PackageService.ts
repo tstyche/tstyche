@@ -40,7 +40,7 @@ export class PackageService {
 
       if (success && resource.binary) {
         const binaryPackagePath = Path.join(packagePath, "node_modules", resource.binary.name);
-        const binaryPackageSpecifier = `${resource.binary}@${packageVersion}`;
+        const binaryPackageSpecifier = `${resource.binary.name}@${packageVersion}`;
 
         success = await this.#fetch(binaryPackagePath, binaryPackageSpecifier, resource.binary);
       }
