@@ -37,11 +37,11 @@ export class Process {
     const spawnOptions = {
       cwd: fixtureUrl,
       env: {
+        // TODO remove after adding support for TypeScript 7
+        ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "@typescript/typescript6",
         ...process.env,
         ["TSTYCHE_NO_COLOR"]: "true",
         ["TSTYCHE_STORE_PATH"]: "./.store",
-        // TODO remove after adding support for TypeScript 7
-        ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "@typescript/typescript6",
         ...options.env,
       },
       shell: isWindows,
