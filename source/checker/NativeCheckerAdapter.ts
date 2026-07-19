@@ -25,13 +25,13 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
   }
 
   getDeclarationModifierFlags(symbol: ts.Symbol): ts.ModifierFlags {
-    const modifiers = this.ts.ModifierFlags.None;
+    let modifiers = this.ts.ModifierFlags.None;
 
     for (const declaration of (symbol as tsApi.Symbol).declarations) {
       const node = declaration.resolve()!;
 
       if ("modifierFlags" in node) {
-        modifiers | (node.modifierFlags as ts.ModifierFlags);
+        modifiers |= node.modifierFlags as ts.ModifierFlags;
       }
     }
 
