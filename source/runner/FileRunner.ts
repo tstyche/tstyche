@@ -7,6 +7,7 @@ import type { FilePosition } from "#file";
 import type { ProjectService } from "#project";
 import { FileResult } from "#result";
 import { SuppressedService } from "#suppressed";
+import { TextFile, TextFileService } from "#text";
 import type { CancellationToken } from "#token";
 import type * as ts from "#typescript";
 import { Version } from "#version";
@@ -95,6 +96,7 @@ export class FileRunner {
         return;
       }
 
+      TextFileService.set(file.path, new TextFile(file.path, /* program */ undefined, testText));
       this.#projectService.openFile(file.path, testText);
 
       return this.#resolveFileFacts(file, fileResult, runModeFlags);

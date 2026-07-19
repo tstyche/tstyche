@@ -24,7 +24,10 @@ export class TextFileService {
   }
 
   static open(program: ts.Program): void {
-    TextFileService.#fileCache.clear();
     TextFileService.#program = program;
+  }
+
+  static set(filePath: string, file: TextFile) {
+    TextFileService.#fileCache.set(filePath, file);
   }
 }

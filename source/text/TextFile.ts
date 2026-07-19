@@ -7,9 +7,10 @@ export class TextFile {
   #program: ts.Program | undefined;
   #text: string | undefined;
 
-  constructor(path: string, program?: ts.Program | undefined) {
+  constructor(path: string, program?: ts.Program | undefined, text?: string | undefined) {
     this.path = path;
     this.#program = program;
+    this.#text = text;
   }
 
   #createLineMap() {

@@ -8,6 +8,7 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { ProjectConfigKind } from "#result";
 import { Select } from "#select";
+import { TextFile } from "#text";
 import type * as ts from "#typescript";
 import { TextFileService } from "../text/TextFileService.js";
 import { FileSystem } from "./FileSystem.js";
@@ -23,6 +24,7 @@ export class NativeProjectService {
   #resolvedConfig: ResolvedConfig;
   #ts: ts.NativeTypeScript;
   #tsconfigPath: string;
+  #tsconfigSyntheticPath: string;
 
   constructor(ts: ts.NativeTypeScript, resolvedConfig: ResolvedConfig) {
     this.#ts = ts;
@@ -30,7 +32,11 @@ export class NativeProjectService {
 
     this.#api = ts.getApi(this.#fs);
     this.#projectConfig = new ProjectConfigService(this.#api, resolvedConfig);
-    this.#tsconfigPath = Path.resolve(resolvedConfig.rootPath, `${Date.now().toString(36)}.tsconfig.json`);
+
+    const id = Date.now().toString(36);
+
+    this.#tsconfigPath = Path.resolve(resolvedConfig.rootPath, `${id}.tsconfig.json`);
+    this.#tsconfigSyntheticPath = Path.resolve(resolvedConfig.rootPath, `${id}-synthetic.tsconfig.json`);
   }
 
   close(): void {
@@ -108,7 +114,12 @@ export class NativeProjectService {
       default:
         if (Options.isJsonString(this.#resolvedConfig.tsconfig)) {
           kind = ProjectConfigKind.Synthetic;
-          specifier = this.#tsconfigPath;
+          specifier = this.#tsconfigSyntheticPath;
+
+          TextFileService.set(
+            this.#tsconfigSyntheticPath,
+            new TextFile(this.#tsconfigSyntheticPath, /* program */ undefined, this.#resolvedConfig.tsconfig),
+          );
         } else if (this.#api.parseConfigFile(this.#resolvedConfig.tsconfig).fileNames.includes(filePath)) {
           compilerOptions = {};
           kind = ProjectConfigKind.Provided;
@@ -126,17 +137,16 @@ export class NativeProjectService {
       compilerOptions = { ...compilerOptions, skipLibCheck: false };
     }
 
-    // TODO 'ProjectConfigKind.Synthetic' should be also extended with 'skipLibCheck: false'
+    if (kind === ProjectConfigKind.Synthetic) {
+      this.#fs.writeFile(this.#tsconfigSyntheticPath, this.#resolvedConfig.tsconfig);
+    }
 
-    const tsconfigText =
-      kind === ProjectConfigKind.Synthetic
-        ? this.#resolvedConfig.tsconfig
-        : JSON.stringify({
-            extends: kind === ProjectConfigKind.Default ? undefined : specifier,
-            compilerOptions,
-            include:
-              kind === ProjectConfigKind.Default ? [Path.relative(this.#resolvedConfig.rootPath, filePath)] : undefined,
-          });
+    const tsconfigText = JSON.stringify({
+      extends: kind === ProjectConfigKind.Default ? undefined : specifier,
+      compilerOptions,
+      include:
+        kind === ProjectConfigKind.Default ? [Path.relative(this.#resolvedConfig.rootPath, filePath)] : undefined,
+    });
 
     this.#fs.writeFile(this.#tsconfigPath, tsconfigText);
 
