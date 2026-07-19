@@ -29,9 +29,7 @@ export class Layers {
       this.#suppressedDiagnostics = undefined;
     }
 
-    const diagnostics = this.#projectService
-      .updateFile(this.#editor.getFilePath(), this.#editor.getText())
-      .getSemanticDiagnostics(this.#editor.getFilePath());
+    const diagnostics = this.#projectService.openLayer(this.#editor.getFilePath(), this.#editor.getText());
 
     const offsets = this.#editor.getOffsets();
 
@@ -55,9 +53,7 @@ export class Layers {
     this.#editor.open(tree.sourceFile);
     this.#suppressedLayer.open(tree);
 
-    this.#suppressedDiagnostics = this.#projectService
-      .updateFile(this.#editor.getFilePath(), this.#editor.getText())
-      .getSemanticDiagnostics(this.#editor.getFilePath());
+    this.#suppressedDiagnostics = this.#projectService.openLayer(this.#editor.getFilePath(), this.#editor.getText());
 
     this.#suppressedLayer.close(
       this.#suppressedDiagnostics?.map((diagnostic) =>

@@ -244,6 +244,12 @@ export class CompatProjectService {
     }
   }
 
+  openLayer(filePath: string, fileText: string): ReadonlyArray<ts.Diagnostic> {
+    this.#service.openClientFile(filePath, fileText, /* scriptKind */ undefined, this.#resolvedConfig.rootPath);
+
+    return this.getSemanticDiagnostics(filePath);
+  }
+
   #resolveProjectConfig(resolvedConfig: ResolvedConfig): ProjectConfig {
     if (resolvedConfig.tsconfig === "baseline") {
       return { kind: ProjectConfigKind.Default, specifier: "baseline" };
@@ -261,11 +267,5 @@ export class CompatProjectService {
     }
 
     return { kind: ProjectConfigKind.Provided, specifier: resolvedConfig.tsconfig };
-  }
-
-  updateFile(filePath: string, sourceText: string): this {
-    this.#service.openClientFile(filePath, sourceText, /* scriptKind */ undefined, this.#resolvedConfig.rootPath);
-
-    return this;
   }
 }

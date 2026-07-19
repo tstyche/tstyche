@@ -142,7 +142,7 @@ export class NativeProjectService {
 
     const snapshot = this.#api.updateSnapshot({
       openProjects: [this.#tsconfigPath],
-      fileChanges: { changed: [filePath] },
+      fileChanges: { changed: options?.changed ? [filePath] : [] },
     });
 
     const project = snapshot.getProject(this.#tsconfigPath)!;
@@ -238,14 +238,15 @@ export class NativeProjectService {
     }
   }
 
-  updateFile(filePath: string, text: string): this {
-    this.#fs.writeFile(filePath, text);
-
-    // TODO consider using 'this.#api.runWithTemporaryFileUpdate()' instead
+  openLayer(filePath: string, fileText: string): ReadonlyArray<ts.Diagnostic> {
+    this.#fs.writeFile(filePath, fileText);
 
     const snapshot = this.#api.updateSnapshot({ fileChanges: { changed: [filePath] } });
-    this.#currentProject = snapshot.getProject(this.#tsconfigPath)!;
+    const project = snapshot.getProject(this.#tsconfigPath)!;
+    const diagnostics = project.program.getSemanticDiagnostics(filePath);
 
-    return this;
+    snapshot.dispose();
+
+    return diagnostics;
   }
 }
