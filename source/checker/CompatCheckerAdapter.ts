@@ -16,7 +16,7 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
 
   containsInstantiable(target: ts.Type): boolean {
     if ("types" in target) {
-      (target as { types: Array<ts6.Type> }).types.some((type) => type.flags & this.ts.TypeFlags.Instantiable);
+      return (target as { types: Array<ts6.Type> }).types.some((type) => type.flags & this.ts.TypeFlags.Instantiable);
     }
 
     return false;
