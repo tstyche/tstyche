@@ -1,7 +1,8 @@
 import process from "node:process";
 import { pathToFileURL } from "node:url";
-import ts from "@typescript/typescript6";
-import packageConfig from "../../package.json" with { type: "json" };
+import ts6 from "@typescript/typescript6";
+import tstyche from "tstyche/package.json" with { type: "json" };
+import ts from "typescript/package.json" with { type: "json" };
 
 const basePath = process.cwd().replace(/\\/g, "/");
 const baseUrl = pathToFileURL(process.cwd()).toString();
@@ -14,6 +15,7 @@ export function normalizeOutput(output) {
     .replace(new RegExp(baseUrl, "g"), "<<baseUrl>>")
     .replace(new RegExp(basePath, "g"), "<<basePath>>")
     .replace(/(Duration:\s{2})\s((?:\d\.?)+s)/g, "$1 <<timestamp>>")
+    .replace(new RegExp(`TypeScript ${ts6.version}`, "g"), "TypeScript <<version>>")
     .replace(new RegExp(`TypeScript ${ts.version}`, "g"), "TypeScript <<version>>")
-    .replace(new RegExp(`TSTyche ${packageConfig.version}`, "g"), "TSTyche <<version>>");
+    .replace(new RegExp(`TSTyche ${tstyche.version}`, "g"), "TSTyche <<version>>");
 }
