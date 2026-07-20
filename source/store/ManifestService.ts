@@ -10,7 +10,7 @@ import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
 interface VersionMetadata {
   dist: { integrity: string; tarball: string };
-  optionalDependencies: Record<string, string>;
+  optionalDependencies?: Record<string, string>;
 }
 
 interface PackageMetadata {
@@ -114,7 +114,7 @@ export class ManifestService {
       }
 
       const packageBinaryName = `@typescript/typescript-${process.platform}-${process.arch}`;
-      const packageBinaryVersion = packageMetadata.versions[tag]?.optionalDependencies[packageBinaryName];
+      const packageBinaryVersion = packageMetadata.versions[tag]?.optionalDependencies?.[packageBinaryName];
 
       if (!packageBinaryVersion) {
         // TODO Error: "Unable to resolve " + binaryPackageName + ". Your platform is not supported."
