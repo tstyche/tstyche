@@ -152,7 +152,7 @@ export class NativeProjectService {
 
     const snapshot = this.#api.updateSnapshot({
       openProjects: [this.#tsconfigPath],
-      fileChanges: { changed: options?.changed ? [filePath] : [] },
+      fileChanges: { changed: options?.changed ? [filePath, this.#tsconfigPath] : [this.#tsconfigPath] },
     });
 
     const project = snapshot.getProject(this.#tsconfigPath)!;
