@@ -46,6 +46,8 @@ export class PackageService {
       }
 
       if (!success) {
+        await fs.rm(packagePath, { recursive: true, force: true });
+
         return;
       }
     }
