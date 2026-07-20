@@ -284,6 +284,25 @@ test("inheritance", () => {
   expect<Pick<Derived, "greet">>().type.not.toBe<{ greet(): void }>();
 });
 
+test("instantiated", () => {
+  class Base<T> {
+    private value!: T;
+  }
+
+  class Alpha extends Base<string> {}
+  class Bravo extends Base<string> {}
+
+  class Charlie {
+    private value!: string;
+  }
+
+  expect<Alpha>().type.toBe<Bravo>();
+  expect<Bravo>().type.toBe<Alpha>();
+
+  expect<Alpha>().type.not.toBe<Charlie>();
+  expect<Bravo>().type.not.toBe<Charlie>();
+});
+
 test("abstract", () => {
   abstract class Base {
     abstract getName(): string;
