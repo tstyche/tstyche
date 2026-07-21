@@ -3,16 +3,10 @@ import type * as tsApi from "typescript/unstable/sync";
 import type { ResolvedConfig } from "#config";
 import { Path } from "#path";
 
-interface ProjectReference {
-  path: string;
-  originalPath?: string;
-  circular?: boolean;
-}
-
 interface ParsedConfig {
   options: Record<string, unknown>;
   fileNames: Array<string>;
-  projectReferences?: Array<ProjectReference> | undefined;
+  projectReferences?: Array<tsApi.ProjectReference> | undefined;
 }
 
 export class ProjectConfigService {

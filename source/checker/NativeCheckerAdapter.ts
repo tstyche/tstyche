@@ -238,11 +238,9 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
 
   typeParameter = {
     getConstraint(type: ts.TypeParameter): ts.Type | undefined {
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4553
       return (type as tsApi.TypeParameter).getConstraint();
     },
     getDefault(type: ts.TypeParameter): ts.Type | undefined {
-      // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4553
       return (type as tsApi.TypeParameter).getDefault();
     },
   };
