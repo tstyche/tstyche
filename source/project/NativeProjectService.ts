@@ -125,8 +125,6 @@ export class NativeProjectService {
           kind = ProjectConfigKind.Provided;
           specifier = this.#resolvedConfig.tsconfig;
         }
-
-        break;
     }
 
     if (kind !== ProjectConfigKind.Default && specifier === this.#currentSpecifier && !options?.changed) {
@@ -152,7 +150,9 @@ export class NativeProjectService {
 
     const snapshot = this.#api.updateSnapshot({
       openProjects: [this.#tsconfigPath],
-      fileChanges: { changed: options?.changed ? [filePath, this.#tsconfigPath] : [this.#tsconfigPath] },
+      fileChanges: {
+        changed: options?.changed ? [filePath, ...this.#fs.getChanged()] : [...this.#fs.getChanged()],
+      },
     });
 
     const project = snapshot.getProject(this.#tsconfigPath)!;
