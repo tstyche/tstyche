@@ -2,26 +2,32 @@ import { expect, test } from "tstyche";
 
 declare function lines(a: { b: string }): void;
 
+const sample = { b: 123 };
+
 test("expression raises matching type error", () => {
-  expect(lines({})).type.toRaiseError(
-    `Argument of type '{}' is not assignable to parameter of type '{ b: string; }'.
-Property 'b' is missing in type '{}' but required in type '{ b: string; }'.`,
+  expect(lines(sample)).type.toRaiseError(
+    `Argument of type '{ b: number; }' is not assignable to parameter of type '{ b: string; }'.
+Types of property 'b' are incompatible.
+Type 'number' is not assignable to type 'string'.`,
   );
 
-  expect(lines({})).type.not.toRaiseError(
-    `Argument of type '{}' is not assignable to parameter of type '{ b: string; }'.
-Property 'b' is missing in type '{}' but required in type '{ b: string; }'.`,
+  expect(lines(sample)).type.not.toRaiseError(
+    `Argument of type '{ b: number; }' is not assignable to parameter of type '{ b: string; }'.
+Types of property 'b' are incompatible.
+Type 'number' is not assignable to type 'string'.`,
   );
 });
 
 test("expression raises not matching type error", () => {
-  expect(lines({})).type.not.toRaiseError(
-    `Argument of type '{}' is not assignable to parameter of type '{ a: string; }'.
-Property 'a' is missing in type '{}' but required in type '{ b: string; }'.`,
+  expect(lines(sample)).type.not.toRaiseError(
+    `Argument of type '{ a: number; }' is not assignable to parameter of type '{ a: string; }'.
+Types of property 'a' are incompatible.
+Type 'number' is not assignable to type 'string'.`,
   );
 
-  expect(lines({})).type.toRaiseError(
-    `Argument of type '{}' is not assignable to parameter of type '{ a: string; }'.
-Property 'a' is missing in type '{}' but required in type '{ a: string; }'.`,
+  expect(lines(sample)).type.toRaiseError(
+    `Argument of type '{ a: number; }' is not assignable to parameter of type '{ a: string; }'.
+Types of property 'a' are incompatible.
+Type 'number' is not assignable to type 'string'.`,
   );
 });
