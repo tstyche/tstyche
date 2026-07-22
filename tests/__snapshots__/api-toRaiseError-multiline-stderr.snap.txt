@@ -1,84 +1,66 @@
 Error: Expression raised a matching type error.
 
-  10 | 
-  11 |   expect(lines({})).type.not.toRaiseError(
-  12 |     `Argument of type '{}' is not assignable to parameter of type '{ b: string; }'.
-     |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  13 | Property 'b' is missing in type '{}' but required in type '{ b: string; }'.`,
-     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  14 |   );
-  15 | });
-  16 | 
+  13 | 
+  14 |   expect(lines(sample)).type.not.toRaiseError(
+  15 |     `Argument of type '{ b: number; }' is not assignable to parameter of type '{ b: string; }'.
+     |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  16 | Types of property 'b' are incompatible.
+     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  17 | Type 'number' is not assignable to type 'string'.`,
+     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  18 |   );
+  19 | });
+  20 | 
 
-       at ./__typetests__/toRaiseError-multiline.tst.ts:12:5 ❭ expression raises matching type error
+       at ./__typetests__/toRaiseError-multiline.tst.ts:15:5 ❭ expression raises matching type error
 
     The raised type error:
 
-    Argument of type '{}' is not assignable to parameter of type '{ b: string; }'. ts(2345)
+    Argument of type '{ b: number; }' is not assignable to parameter of type '{ b: string; }'. ts(2345)
 
-    Property 'b' is missing in type '{}' but required in type '{ b: string; }'.
+    Types of property 'b' are incompatible.
+    Type 'number' is not assignable to type 'string'.
 
-       9 |   );
-      10 | 
-      11 |   expect(lines({})).type.not.toRaiseError(
-         |                ~~
-      12 |     `Argument of type '{}' is not assignable to parameter of type '{ b: string; }'.
-      13 | Property 'b' is missing in type '{}' but required in type '{ b: string; }'.`,
-      14 |   );
+      12 |   );
+      13 | 
+      14 |   expect(lines(sample)).type.not.toRaiseError(
+         |                ~~~~~~
+      15 |     `Argument of type '{ b: number; }' is not assignable to parameter of type '{ b: string; }'.
+      16 | Types of property 'b' are incompatible.
+      17 | Type 'number' is not assignable to type 'string'.`,
 
-           at ./__typetests__/toRaiseError-multiline.tst.ts:11:16
-
-        'b' is declared here. ts(2728)
-
-          1 | import { expect, test } from "tstyche";
-          2 | 
-          3 | declare function lines(a: { b: string }): void;
-            |                             ~
-          4 | 
-          5 | test("expression raises matching type error", () => {
-          6 |   expect(lines({})).type.toRaiseError(
-
-              at ./__typetests__/toRaiseError-multiline.tst.ts:3:29
+           at ./__typetests__/toRaiseError-multiline.tst.ts:14:16
 
 Error: Expression did not raise a matching type error.
 
-  22 | 
-  23 |   expect(lines({})).type.toRaiseError(
-  24 |     `Argument of type '{}' is not assignable to parameter of type '{ a: string; }'.
-     |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  25 | Property 'a' is missing in type '{}' but required in type '{ a: string; }'.`,
-     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  26 |   );
-  27 | });
-  28 | 
+  27 | 
+  28 |   expect(lines(sample)).type.toRaiseError(
+  29 |     `Argument of type '{ a: number; }' is not assignable to parameter of type '{ a: string; }'.
+     |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  30 | Types of property 'a' are incompatible.
+     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  31 | Type 'number' is not assignable to type 'string'.`,
+     | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  32 |   );
+  33 | });
+  34 | 
 
-       at ./__typetests__/toRaiseError-multiline.tst.ts:24:5 ❭ expression raises not matching type error
+       at ./__typetests__/toRaiseError-multiline.tst.ts:29:5 ❭ expression raises not matching type error
 
     The raised type error:
 
-    Argument of type '{}' is not assignable to parameter of type '{ b: string; }'. ts(2345)
+    Argument of type '{ b: number; }' is not assignable to parameter of type '{ b: string; }'. ts(2345)
 
-    Property 'b' is missing in type '{}' but required in type '{ b: string; }'.
+    Types of property 'b' are incompatible.
+    Type 'number' is not assignable to type 'string'.
 
-      21 |   );
-      22 | 
-      23 |   expect(lines({})).type.toRaiseError(
-         |                ~~
-      24 |     `Argument of type '{}' is not assignable to parameter of type '{ a: string; }'.
-      25 | Property 'a' is missing in type '{}' but required in type '{ a: string; }'.`,
       26 |   );
+      27 | 
+      28 |   expect(lines(sample)).type.toRaiseError(
+         |                ~~~~~~
+      29 |     `Argument of type '{ a: number; }' is not assignable to parameter of type '{ a: string; }'.
+      30 | Types of property 'a' are incompatible.
+      31 | Type 'number' is not assignable to type 'string'.`,
 
-           at ./__typetests__/toRaiseError-multiline.tst.ts:23:16
-
-        'b' is declared here. ts(2728)
-
-          1 | import { expect, test } from "tstyche";
-          2 | 
-          3 | declare function lines(a: { b: string }): void;
-            |                             ~
-          4 | 
-          5 | test("expression raises matching type error", () => {
-          6 |   expect(lines({})).type.toRaiseError(
-
-              at ./__typetests__/toRaiseError-multiline.tst.ts:3:29
+           at ./__typetests__/toRaiseError-multiline.tst.ts:28:16
 
