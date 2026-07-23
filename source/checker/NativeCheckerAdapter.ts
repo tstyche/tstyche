@@ -112,30 +112,10 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     return this.checker.getIndexInfosOfType(type as tsApi.Type);
   }
 
-  getPropertyType = (symbol: ts.Symbol, compilerOptions: ts.CompilerOptions): ts.Type => {
-    const type = this.checker.getTypeOfSymbol(symbol as tsApi.Symbol);
-
-    if (compilerOptions.exactOptionalPropertyTypes && this.isOptionalProperty(symbol)) {
-      if (type.flags & this.ts.TypeFlags.Union) {
-        const types = (type as tsApi.UnionType).getTypes();
-
-        // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4081
-        const filteredType = types.filter((type) => !type.isMissingType());
-
-        if (filteredType.length === types.length) {
-          return type;
-        }
-
-        if (filteredType.length === 1) {
-          return filteredType.at(0)!;
-        }
-
-        return { ...type, getTypes: () => filteredType } as tsApi.UnionType;
-      }
-    }
-
-    return type;
-  };
+  getPropertyType(symbol: ts.Symbol): ts.Type {
+    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4081
+    return this.checker.getNonMissingTypeOfSymbol(symbol as tsApi.Symbol);
+  }
 
   getSignatures(type: ts.Type, kind: ts.SignatureKind): ReadonlyArray<ts.Signature> {
     if (type.flags & this.ts.TypeFlags.Intersection) {

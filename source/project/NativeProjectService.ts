@@ -90,7 +90,7 @@ export class NativeProjectService {
     return this.#currentProject!.program.getSourceFile(filePath);
   }
 
-  #getProjectFacts(filePath: string, options?: { changed?: boolean }) {
+  #getProjectFacts(filePath: string) {
     let compilerOptions = this.#getDefaultCompilerOptions();
     let kind = ProjectConfigKind.Default;
     let specifier = "baseline";
@@ -127,7 +127,7 @@ export class NativeProjectService {
         }
     }
 
-    if (kind !== ProjectConfigKind.Default && specifier === this.#currentSpecifier && !options?.changed) {
+    if (kind !== ProjectConfigKind.Default && specifier === this.#currentSpecifier && !this.#fs.hasChanged()) {
       return { kind, project: this.#currentProject!, specifier };
     }
 
@@ -151,7 +151,7 @@ export class NativeProjectService {
     const snapshot = this.#api.updateSnapshot({
       openProjects: [this.#tsconfigPath],
       fileChanges: {
-        changed: options?.changed ? [filePath, ...this.#fs.getChanged()] : [...this.#fs.getChanged()],
+        changed: [...this.#fs.getChanged()],
       },
     });
 
@@ -161,10 +161,7 @@ export class NativeProjectService {
   }
 
   getSemanticDiagnostics(filePath: string): ReadonlyArray<tsApi.Diagnostic> {
-    return [
-      ...this.#currentProject!.program.getBindDiagnostics(filePath),
-      ...this.#currentProject!.program.getSemanticDiagnostics(filePath),
-    ].sort((a, b) => a.pos - b.pos);
+    return this.#currentProject!.program.getSemanticDiagnostics(filePath);
   }
 
   getSyntacticDiagnostics(filePath: string): ReadonlyArray<tsApi.Diagnostic> {
@@ -176,7 +173,7 @@ export class NativeProjectService {
       this.#fs.writeFile(filePath, fileText);
     }
 
-    const { kind, project, specifier } = this.#getProjectFacts(filePath, { changed: true });
+    const { kind, project, specifier } = this.#getProjectFacts(filePath);
 
     TextFileService.open(project.program);
 
@@ -224,10 +221,6 @@ export class NativeProjectService {
         return true;
       }
 
-      if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-        return false;
-      }
-
       return false;
     });
 
@@ -236,7 +229,6 @@ export class NativeProjectService {
       ...filesToCheck.flatMap((filePath) =>
         [
           ...project.program.getSyntacticDiagnostics(filePath),
-          ...project.program.getBindDiagnostics(filePath),
           ...project.program.getSemanticDiagnostics(filePath),
           ...project.program.getDeclarationDiagnostics(filePath),
         ].sort((a, b) => a.pos - b.pos),
@@ -249,7 +241,7 @@ export class NativeProjectService {
   }
 
   openLayer(filePath: string, fileText: string): ReadonlyArray<ts.Diagnostic> {
-    this.#fs.writeFile(filePath, fileText);
+    this.#fs.writeTempFile(filePath, fileText);
 
     const snapshot = this.#api.updateSnapshot({ fileChanges: { changed: [filePath] } });
     const project = snapshot.getProject(this.#tsconfigPath)!;
