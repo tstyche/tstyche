@@ -49,7 +49,7 @@ await test("TSConfig", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when inline config has incompatible options", async () => {
+  await t.test("when TSConfig has incompatible options", async () => {
     const tsconfig = {
       compilerOptions: {
         module: "node18",
