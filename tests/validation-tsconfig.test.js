@@ -73,7 +73,7 @@ await test("'--tsconfig' command line option", async (t) => {
     ]);
 
     await assert.matchSnapshot(
-      normalizeOutput(stderr).replaceAll(/\.\/(\w*)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
+      normalizeOutput(stderr).replaceAll(/\.\/(\w*(-\w*)?)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
       {
         fileName: `${testFileName}-inline-config-error`,
         testFileUrl: import.meta.url,
@@ -95,7 +95,7 @@ await test("'--tsconfig' command line option", async (t) => {
     ]);
 
     await assert.matchSnapshot(
-      normalizeOutput(stderr).replaceAll(/\.\/(\w*)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
+      normalizeOutput(stderr).replaceAll(/\.\/(\w*(-\w*)?)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
       {
         fileName: `${testFileName}-inline-config-incompatible`,
         testFileUrl: import.meta.url,
@@ -165,7 +165,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(
-      normalizeOutput(stderr).replaceAll(/\.\/(\w*)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
+      normalizeOutput(stderr).replaceAll(/\.\/(\w*(-\w*)?)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
       {
         fileName: `${testFileName}-inline-config-error`,
         testFileUrl: import.meta.url,
@@ -189,7 +189,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     const { exitCode, stderr } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(
-      normalizeOutput(stderr).replaceAll(/\.\/(\w*)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
+      normalizeOutput(stderr).replaceAll(/\.\/(\w*(-\w*)?)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
       {
         fileName: `${testFileName}-inline-config-incompatible`,
         testFileUrl: import.meta.url,

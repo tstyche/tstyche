@@ -1,8 +1,9 @@
-import type ts from "@typescript/typescript6";
 import type { TestTreeNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { JsonScanner } from "#json";
+import { type TextFile, TextFileService } from "#text";
+import type * as ts from "#typescript";
 import { ConfigParser } from "./ConfigParser.js";
 import { DirectiveDiagnosticText } from "./DirectiveDiagnosticText.js";
 import { OptionGroup } from "./OptionGroup.enum.js";
@@ -12,17 +13,13 @@ export class Directive {
   static #directiveRegex = /^(\/\/ *@tstyche)( *|-)?(\S*)?( *)?(.*)?/i;
   static #rangeCache = new WeakMap<ts.Node, Array<DirectiveRange>>();
 
-  static getDirectiveRange(
-    compiler: typeof ts,
-    owner: TestTreeNode,
-    directiveText: string,
-  ): DirectiveRange | undefined {
-    const directiveRanges = Directive.getDirectiveRanges(compiler, owner.node);
+  static getDirectiveRange(ts: ts.TypeScript, owner: TestTreeNode, directiveText: string): DirectiveRange | undefined {
+    const directiveRanges = Directive.getDirectiveRanges(ts, owner.node);
 
     return directiveRanges?.find((range) => range.directive?.text === directiveText);
   }
 
-  static getDirectiveRanges(compiler: typeof ts, node: ts.Node): Array<DirectiveRange> | undefined {
+  static getDirectiveRanges(ts: ts.TypeScript, node: ts.Node): Array<DirectiveRange> | undefined {
     let ranges = Directive.#rangeCache.get(node);
 
     if (ranges != null) {
@@ -32,14 +29,14 @@ export class Directive {
     let sourceFile: ts.SourceFile;
     let position = 0;
 
-    if (compiler.isSourceFile(node)) {
+    if (ts.isSourceFile(node)) {
       sourceFile = node;
     } else {
       sourceFile = node.getSourceFile();
       position = node.getFullStart();
     }
 
-    const comments = compiler.getLeadingCommentRanges(sourceFile.text, position);
+    const comments = ts.getLeadingCommentRanges(sourceFile.text, position);
 
     if (!comments || comments.length === 0) {
       return;
@@ -48,7 +45,7 @@ export class Directive {
     ranges = [];
 
     for (const comment of comments) {
-      if (comment.kind !== compiler.SyntaxKind.SingleLineCommentTrivia) {
+      if (comment.kind !== ts.SyntaxKind.SingleLineCommentTrivia) {
         continue;
       }
 
@@ -93,7 +90,7 @@ export class Directive {
     }
 
     const range: DirectiveRange = {
-      sourceFile,
+      file: TextFileService.get(sourceFile),
       namespace: { start: comment.pos, end: comment.pos + namespaceText.length, text: namespaceText },
     };
 
@@ -128,14 +125,14 @@ export class Directive {
         {
           if (!range.argument?.text) {
             const text = DirectiveDiagnosticText.requiresArgument();
-            const origin = new DiagnosticOrigin(range.namespace.start, range.directive.end, range.sourceFile);
+            const origin = new DiagnosticOrigin(range.namespace.start, range.directive.end, range.file);
 
             Directive.#onDiagnostics(Diagnostic.error(text, origin));
 
             return;
           }
 
-          const value = await Directive.#parseJson(range.sourceFile, range.argument.start, range.argument.end);
+          const value = await Directive.#parseJson(range.file, range.argument.start, range.argument.end);
 
           inlineConfig.if = value;
         }
@@ -145,7 +142,7 @@ export class Directive {
       case "template":
         if (range.argument?.text != null) {
           const text = DirectiveDiagnosticText.doesNotTakeArgument();
-          const origin = new DiagnosticOrigin(range.argument.start, range.argument.end, range.sourceFile);
+          const origin = new DiagnosticOrigin(range.argument.start, range.argument.end, range.file);
 
           Directive.#onDiagnostics(Diagnostic.error(text, origin));
         }
@@ -157,19 +154,19 @@ export class Directive {
     const target = range.directive ?? range.namespace;
 
     const text = DirectiveDiagnosticText.isNotSupported(target.text);
-    const origin = new DiagnosticOrigin(target.start, target.end, range.sourceFile);
+    const origin = new DiagnosticOrigin(target.start, target.end, range.file);
 
     Directive.#onDiagnostics(Diagnostic.error(text, origin));
   }
 
-  static async #parseJson(sourceFile: ts.SourceFile, start: number, end: number): Promise<Record<string, OptionValue>> {
+  static async #parseJson(file: TextFile, start: number, end: number): Promise<Record<string, OptionValue>> {
     const inlineOptions: Record<string, OptionValue> = {};
 
     const configParser = new ConfigParser(
       inlineOptions,
       OptionGroup.InlineConditions,
-      sourceFile,
-      new JsonScanner(sourceFile, { start, end }),
+      file,
+      new JsonScanner(file, { start, end }),
       Directive.#onDiagnostics,
     );
 

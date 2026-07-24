@@ -2,8 +2,9 @@ import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import type { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
-import { JsonScanner, JsonSourceFile } from "#json";
+import { JsonScanner } from "#json";
 import { Path } from "#path";
+import { TextFile } from "#text";
 import { CommandParser } from "./CommandParser.js";
 import { ConfigParser } from "./ConfigParser.js";
 import { defaultOptions } from "./defaultOptions.js";
@@ -44,13 +45,13 @@ export class Config {
         encoding: "utf8",
       });
 
-      const sourceFile = new JsonSourceFile(configFilePath, configFileText);
+      const file = new TextFile(configFilePath, /* program */ undefined, configFileText);
 
       const configFileParser = new ConfigParser(
         configFileOptions as Record<string, OptionValue>,
         OptionGroup.ConfigFile,
-        sourceFile,
-        new JsonScanner(sourceFile),
+        file,
+        new JsonScanner(file),
         Config.#onDiagnostics,
       );
 

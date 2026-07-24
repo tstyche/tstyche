@@ -1,4 +1,4 @@
-import type ts from "@typescript/typescript6";
+import type { TextFile, TextRange } from "#text";
 
 // #region -- Generated code, to update run: aube run build && aube run generate
 
@@ -57,14 +57,8 @@ export interface ResolvedConfig
   rootPath: string;
 }
 
-export interface TextRange {
-  start: number;
-  end: number;
-  text: string;
-}
-
 export interface DirectiveRange {
-  sourceFile: ts.SourceFile;
+  file: TextFile;
   namespace: TextRange;
   directive?: TextRange;
   argument?: TextRange;

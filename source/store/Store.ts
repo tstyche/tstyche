@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
-import { pathToFileURL } from "node:url";
-import type ts from "@typescript/typescript6";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
+import type * as ts from "#typescript";
+import { CompatTypeScript, NativeTypeScript } from "#typescript";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
@@ -53,27 +53,40 @@ export class Store {
     await Store.#ensure(tag);
   }
 
-  static async load(tag: string): Promise<typeof ts | undefined> {
-    let specifier: string | undefined;
+  static async #getAdapter(specifier: string) {
+    const packageJsonText = await fs.readFile(new URL("package.json", specifier), { encoding: "utf8" });
+    const packageJson = JSON.parse(packageJsonText) as {
+      exports: Record<string, string>;
+      main: string;
+      version: string;
+    };
 
+    if (Version.isSatisfiedWith(packageJson.version, "7")) {
+      const api = await import(new URL(packageJson.exports["./unstable/sync"]!, specifier).toString());
+      const ast = await import(new URL(packageJson.exports["./unstable/ast"]!, specifier).toString());
+
+      return new NativeTypeScript(api, ast, packageJson.version);
+    }
+
+    const compiler = (await import(new URL(packageJson.main, specifier).toString())).default;
+
+    return new CompatTypeScript(compiler, packageJson.version);
+  }
+
+  static async load(tag: string): Promise<ts.TypeScript | undefined> {
     if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
-      specifier = environmentOptions.typescriptSpecifier;
-    } else {
-      const packagePath = await Store.#ensure(tag);
+      // TODO fallback to TypeScript v7.1 when v7.0 is installed
 
-      if (packagePath != null) {
-        specifier = pathToFileURL(`${packagePath}/`).toString();
-      }
+      return Store.#getAdapter(environmentOptions.typescriptSpecifier);
     }
 
-    if (specifier != null) {
-      const packageJsonText = await fs.readFile(new URL("package.json", specifier), { encoding: "utf8" });
-      const packageJson = JSON.parse(packageJsonText) as { main: string; version: string };
+    const specifier = await Store.#ensure(tag);
 
-      return (await import(new URL(packageJson.main, specifier).toString())).default;
+    if (!specifier) {
+      return;
     }
 
-    return;
+    return Store.#getAdapter(specifier);
   }
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {

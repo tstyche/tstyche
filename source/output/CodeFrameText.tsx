@@ -70,12 +70,11 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
   const linesBelow = options?.linesBelow ?? 3;
   const showBreadcrumbs = options?.showBreadcrumbs ?? true;
 
-  const lineMap = diagnosticOrigin.sourceFile.getLineStarts();
+  const { start, end, file, expectNode } = diagnosticOrigin;
 
-  const { character: firstMarkedCharacter, line: firstMarkedLine } =
-    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.start);
-  const { character: lastMarkedCharacter, line: lastMarkedLine } =
-    diagnosticOrigin.sourceFile.getLineAndCharacterOfPosition(diagnosticOrigin.end);
+  const lineMap = file.getLineMap();
+  const { character: firstMarkedCharacter, line: firstMarkedLine } = file.getLocation(start);
+  const { character: lastMarkedCharacter, line: lastMarkedLine } = file.getLocation(end);
 
   const firstLine = Math.max(firstMarkedLine - linesAbove, 0);
   const lastLine = Math.min(lastMarkedLine + linesBelow, lineMap.length - 1);
@@ -97,9 +96,9 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   for (let index = firstLine; index <= lastLine; index++) {
     const lineStart = lineMap[index];
-    const lineEnd = index === lineMap.length - 1 ? diagnosticOrigin.sourceFile.text.length : lineMap[index + 1];
+    const lineEnd = index === lineMap.length - 1 ? file.getText().length : lineMap[index + 1];
 
-    const lineText = diagnosticOrigin.sourceFile.text.slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
+    const lineText = file.getText().slice(lineStart, lineEnd).trimEnd().replace(/\t/g, " ");
 
     if (index >= firstMarkedLine && index <= lastMarkedLine) {
       codeFrame.push(
@@ -145,15 +144,15 @@ export function CodeFrameText({ diagnosticCategory, diagnosticOrigin, options }:
 
   let breadcrumbs: ScribblerJsx.Element | undefined;
 
-  if (showBreadcrumbs && diagnosticOrigin.expectNode != null) {
-    breadcrumbs = <BreadcrumbsText ancestor={diagnosticOrigin.expectNode.parent} />;
+  if (showBreadcrumbs && expectNode != null) {
+    breadcrumbs = <BreadcrumbsText ancestor={expectNode.parent} />;
   }
 
   const location = (
     <Line>
       {" ".repeat(gutterWidth + 2)}
       <Text color={Color.Gray}>{" at "}</Text>
-      <Text color={Color.Cyan}>{Path.relative("", diagnosticOrigin.sourceFile.fileName)}</Text>
+      <Text color={Color.Cyan}>{Path.relative("", file.path)}</Text>
       <Text color={Color.Gray}>{`:${firstMarkedLine + 1}:${firstMarkedCharacter + 1}`}</Text>
       {breadcrumbs}
     </Line>

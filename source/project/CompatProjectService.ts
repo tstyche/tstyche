@@ -1,31 +1,35 @@
-import type ts from "@typescript/typescript6";
+import type ts6 from "@typescript/typescript6";
+import { CompatCheckerAdapter } from "#checker";
 import { Options, type ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
+import type { Offset } from "#editor";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
+import { TextFile, TextFileService } from "#text";
+import type * as ts from "#typescript";
 import { Version } from "#version";
+import { CompatMappedDiagnostic } from "./CompatMappedDiagnostic.js";
 
-export class ProjectService {
-  #compiler: typeof ts;
-  #host: ts.server.ServerHost;
+export class CompatProjectService {
+  #compiler: typeof ts6;
+  #languageService: ts6.LanguageService | undefined;
+  #host: ts6.server.ServerHost;
   #lastSeenProject: string | undefined = "none";
   #projectConfig: ProjectConfig;
   #resolvedConfig: ResolvedConfig;
   #seenProjects = new Set<string | undefined>();
-  #seenTestFiles = new Set<string>();
-  #service: ts.server.ProjectService;
+  #service: ts6.server.ProjectService;
 
-  constructor(compiler: typeof ts, resolvedConfig: ResolvedConfig) {
+  constructor(compiler: typeof ts6, resolvedConfig: ResolvedConfig) {
     this.#compiler = compiler;
+    this.#projectConfig = this.#resolveProjectConfig(resolvedConfig);
     this.#resolvedConfig = resolvedConfig;
-
-    this.#projectConfig = this.#resolveProjectConfig(resolvedConfig.tsconfig);
 
     const noop = () => undefined;
 
-    const noopLogger: ts.server.Logger = {
+    const noopLogger: ts6.server.Logger = {
       close: noop,
       endGroup: noop,
       getLogFileName: noop,
@@ -52,6 +56,11 @@ export class ProjectService {
     };
 
     if (this.#projectConfig.kind === ProjectConfigKind.Synthetic) {
+      TextFileService.set(
+        this.#projectConfig.specifier,
+        new TextFile(this.#projectConfig.specifier, /* program */ undefined, this.#resolvedConfig.tsconfig),
+      );
+
       this.#host.readFile = (path) =>
         path === this.#projectConfig.specifier ? resolvedConfig.tsconfig : compiler.sys.readFile(path);
     }
@@ -70,11 +79,12 @@ export class ProjectService {
   }
 
   closeFile(filePath: string): void {
+    TextFileService.close();
     this.#service.closeClientFile(filePath);
   }
 
   #getDefaultCompilerOptions() {
-    const defaultCompilerOptions: ts.server.protocol.CompilerOptions = {
+    const defaultCompilerOptions: ts6.server.protocol.CompilerOptions = {
       allowJs: true,
       checkJs: true,
       allowImportingTsExtensions: true,
@@ -96,7 +106,27 @@ export class ProjectService {
     return defaultCompilerOptions;
   }
 
-  getDefaultProject(filePath: string): ts.server.Project | undefined {
+  getChecker(): CompatCheckerAdapter {
+    return new CompatCheckerAdapter(this.#compiler, this.#languageService!.getProgram()!.getTypeChecker());
+  }
+
+  getMappedDiagnostic(
+    sourceFile: ts.SourceFile,
+    diagnostic: ts.Diagnostic,
+    offsets?: Array<Offset>,
+  ): CompatMappedDiagnostic {
+    return new CompatMappedDiagnostic(sourceFile as ts6.SourceFile, diagnostic as ts6.Diagnostic, offsets);
+  }
+
+  getProgram(): ts6.Program {
+    return this.#languageService!.getProgram()!;
+  }
+
+  getSourceFile(filePath: string): ts6.SourceFile | undefined {
+    return this.#languageService!.getProgram()!.getSourceFile(filePath);
+  }
+
+  #getLanguageService(filePath: string) {
     const project = this.#service.getDefaultProjectForFile(
       this.#compiler.server.toNormalizedPath(filePath),
       /* ensureProject */ true,
@@ -108,20 +138,15 @@ export class ProjectService {
       project?.setCompilerOptions({ ...compilerOptions, skipLibCheck: false });
     }
 
-    return project;
-  }
-
-  getDiagnostics(filePath: string, sourceText: string): Array<ts.Diagnostic> | undefined {
-    this.openFile(filePath, sourceText);
-
-    const languageService = this.getLanguageService(filePath);
-    return languageService?.getSemanticDiagnostics(filePath);
-  }
-
-  getLanguageService(filePath: string): ts.LanguageService | undefined {
-    const project = this.getDefaultProject(filePath);
-
     return project?.getLanguageService(/* ensureSynchronized */ true);
+  }
+
+  getSemanticDiagnostics(filePath: string): ReadonlyArray<ts6.Diagnostic> {
+    return this.getProgram().getSemanticDiagnostics(this.getSourceFile(filePath)!);
+  }
+
+  getSyntacticDiagnostics(filePath: string): ReadonlyArray<ts6.Diagnostic> {
+    return this.getProgram().getSyntacticDiagnostics(this.getSourceFile(filePath)!);
   }
 
   #isFileIncluded(filePath: string) {
@@ -138,26 +163,7 @@ export class ProjectService {
     return fileNames.includes(filePath);
   }
 
-  #resolveProjectConfig(specifier: string): ProjectConfig {
-    if (specifier === "baseline") {
-      return { kind: ProjectConfigKind.Default, specifier: "baseline" };
-    }
-
-    if (specifier === "findup") {
-      return { kind: ProjectConfigKind.Discovered, specifier: "" };
-    }
-
-    if (Options.isJsonString(specifier)) {
-      return {
-        kind: ProjectConfigKind.Synthetic,
-        specifier: Path.resolve(this.#resolvedConfig.rootPath, `${Date.now().toString(36)}.tsconfig.json`),
-      };
-    }
-
-    return { kind: ProjectConfigKind.Provided, specifier };
-  }
-
-  openFile(filePath: string, sourceText?: string): void {
+  openFile(filePath: string, fileText?: string): void {
     switch (this.#projectConfig.kind) {
       case ProjectConfigKind.Discovered:
         break;
@@ -176,13 +182,14 @@ export class ProjectService {
 
     const { configFileErrors, configFileName } = this.#service.openClientFile(
       filePath,
-      sourceText,
+      fileText,
       /* scriptKind */ undefined,
       this.#resolvedConfig.rootPath,
     );
 
     if (configFileName !== this.#lastSeenProject) {
       this.#lastSeenProject = configFileName;
+      this.#languageService = this.#getLanguageService(filePath);
 
       const projectConfig =
         configFileName != null
@@ -192,59 +199,78 @@ export class ProjectService {
       EventEmitter.dispatch(["project:uses", { compilerVersion: this.#compiler.version, projectConfig }]);
 
       if (configFileErrors && configFileErrors.length > 0) {
-        EventEmitter.dispatch([
-          "project:error",
-          { diagnostics: Diagnostic.fromDiagnostics(configFileErrors as Array<ts.Diagnostic>) },
-        ]);
+        EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(configFileErrors) }]);
       }
     }
 
-    if (!this.#seenTestFiles.has(filePath)) {
-      this.#seenTestFiles.add(filePath);
+    const program = this.getProgram();
 
-      const languageService = this.getLanguageService(filePath);
+    TextFileService.open(program);
 
-      const program = languageService?.getProgram();
+    if (this.#seenProjects.has(configFileName)) {
+      return;
+    }
 
-      if (!program || this.#seenProjects.has(configFileName)) {
-        return;
+    this.#seenProjects.add(configFileName);
+
+    const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
+      if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
+        return false;
       }
 
-      this.#seenProjects.add(configFileName);
+      if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+        return true;
+      }
 
-      const sourceFilesToCheck = program.getSourceFiles().filter((sourceFile) => {
-        if (program.isSourceFileFromExternalLibrary(sourceFile) || program.isSourceFileDefaultLibrary(sourceFile)) {
-          return false;
-        }
+      if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+        return true;
+      }
 
-        if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
-          return true;
-        }
-
-        if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-          return true;
-        }
-
-        if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-          return false;
-        }
-
+      if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
         return false;
-      });
+      }
 
-      const diagnostics = [...program.getOptionsDiagnostics()];
+      return false;
+    });
 
-      for (const sourceFile of sourceFilesToCheck) {
-        diagnostics.push(
+    const diagnostics = [
+      ...program.getOptionsDiagnostics(),
+      ...sourceFilesToCheck.flatMap((sourceFile) =>
+        [
           ...program.getSyntacticDiagnostics(sourceFile),
           ...program.getSemanticDiagnostics(sourceFile),
           ...program.getDeclarationDiagnostics(sourceFile),
-        );
-      }
+        ].sort((a, b) => a.start! - b.start!),
+      ),
+    ];
 
-      if (diagnostics.length > 0) {
-        EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
-      }
+    if (diagnostics.length > 0) {
+      EventEmitter.dispatch(["project:error", { diagnostics: Diagnostic.fromDiagnostics(diagnostics) }]);
     }
+  }
+
+  openLayer(filePath: string, fileText: string): ReadonlyArray<ts.Diagnostic> {
+    this.#service.openClientFile(filePath, fileText, /* scriptKind */ undefined, this.#resolvedConfig.rootPath);
+
+    return this.getSemanticDiagnostics(filePath);
+  }
+
+  #resolveProjectConfig(resolvedConfig: ResolvedConfig): ProjectConfig {
+    if (resolvedConfig.tsconfig === "baseline") {
+      return { kind: ProjectConfigKind.Default, specifier: "baseline" };
+    }
+
+    if (resolvedConfig.tsconfig === "findup") {
+      return { kind: ProjectConfigKind.Discovered, specifier: "" };
+    }
+
+    if (Options.isJsonString(resolvedConfig.tsconfig)) {
+      return {
+        kind: ProjectConfigKind.Synthetic,
+        specifier: Path.resolve(resolvedConfig.rootPath, `${Date.now().toString(36)}.tsconfig.json`),
+      };
+    }
+
+    return { kind: ProjectConfigKind.Provided, specifier: resolvedConfig.tsconfig };
   }
 }

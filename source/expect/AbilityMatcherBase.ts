@@ -1,4 +1,4 @@
-import type ts from "@typescript/typescript6";
+import type { Checker } from "#checker";
 import type { ExpectNode } from "#collect";
 import {
   Diagnostic,
@@ -6,13 +6,21 @@ import {
   type DiagnosticsHandler,
   diagnosticBelongsToNode,
   getDiagnosticMessageText,
-  isDiagnosticWithLocation,
+  isDiagnosticLocation,
+  isDiagnosticPosition,
 } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
-import { MatcherBase } from "./MatcherBase.js";
+import type * as ts from "#typescript";
 import type { ArgumentNode, MatchResult } from "./types.js";
 
-export abstract class AbilityMatcherBase extends MatcherBase {
+export abstract class AbilityMatcherBase {
+  protected checker: Checker;
+  protected ts: ts.TypeScript;
+
+  constructor(ts: ts.TypeScript, checker: Checker) {
+    this.ts = ts;
+    this.checker = checker;
+  }
+
   abstract explainText(isExpression: boolean, targetText?: string): string;
   abstract explainNotText(isExpression: boolean, targetText?: string): string;
 
@@ -21,7 +29,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
       return "without arguments";
     }
 
-    if (nodes.length === 1 && nodes[0]?.kind === this.compiler.SyntaxKind.SpreadElement) {
+    if (nodes.length === 1 && nodes[0]?.kind === this.ts.SyntaxKind.SpreadElement) {
       return "with the given arguments";
     }
 
@@ -42,7 +50,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
     targetNode: ts.NodeArray<ArgumentNode> | ArgumentNode,
     getArgumentCountText?: () => string,
   ): Array<Diagnostic> {
-    const isExpression = belongsToArgumentList(sourceNode, this.compiler);
+    const isExpression = this.ts.belongsToArgumentList(sourceNode);
 
     const argumentCountText = getArgumentCountText?.();
 
@@ -50,11 +58,14 @@ export abstract class AbilityMatcherBase extends MatcherBase {
 
     if (expectNode.abilityDiagnostics.size > 0) {
       for (const diagnostic of expectNode.abilityDiagnostics) {
-        const text = [this.explainNotText(isExpression, argumentCountText), getDiagnosticMessageText(diagnostic)];
+        const text = [this.explainNotText(isExpression, argumentCountText), ...getDiagnosticMessageText(diagnostic)];
 
         let origin: DiagnosticOrigin;
 
-        if (isDiagnosticWithLocation(diagnostic) && diagnosticBelongsToNode(diagnostic, targetNode)) {
+        if (
+          (isDiagnosticPosition(diagnostic) || isDiagnosticLocation(diagnostic)) &&
+          diagnosticBelongsToNode(diagnostic, targetNode)
+        ) {
           origin = DiagnosticOrigin.fromAbilityDiagnostic(diagnostic, expectNode);
         } else {
           origin = DiagnosticOrigin.fromAssertion(expectNode);
@@ -66,7 +77,7 @@ export abstract class AbilityMatcherBase extends MatcherBase {
           related = Diagnostic.fromDiagnostics(diagnostic.relatedInformation);
         }
 
-        diagnostics.push(Diagnostic.error(text.flat(), origin).add({ related }));
+        diagnostics.push(Diagnostic.error(text, origin).add({ related }));
       }
     } else {
       const origin = DiagnosticOrigin.fromAssertion(expectNode);
