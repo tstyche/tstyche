@@ -89,10 +89,7 @@ export class SuppressedLayer {
         break;
       }
 
-      const lineText = file
-        .getText()
-        .slice(lineMap[line], lineMap[line + 1])
-        .trim();
+      const lineText = file.text.slice(lineMap[line], lineMap[line + 1]).trim();
 
       if (lineText !== "" && !lineText.startsWith("//")) {
         break;

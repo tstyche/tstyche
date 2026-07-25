@@ -3,15 +3,9 @@ import type * as tsApi from "typescript/unstable/sync";
 import type { ResolvedConfig } from "#config";
 import { Path } from "#path";
 
-interface ParsedConfig {
-  options: Record<string, unknown>;
-  fileNames: Array<string>;
-  projectReferences?: Array<tsApi.ProjectReference> | undefined;
-}
-
 export class ProjectConfigService {
   #api: InstanceType<typeof tsApi.API>;
-  #configCache = new Map<string, ParsedConfig>();
+  #configCache = new Map<string, tsApi.ParsedCommandLine>();
   #resolvedConfig: ResolvedConfig;
 
   constructor(api: InstanceType<typeof tsApi.API>, resolvedConfig: ResolvedConfig) {
@@ -62,7 +56,7 @@ export class ProjectConfigService {
     return;
   }
 
-  #getParsedConfig(filePath: string): ParsedConfig | undefined {
+  #getParsedConfig(filePath: string): tsApi.ParsedCommandLine | undefined {
     let config = this.#configCache.get(filePath);
 
     if (!config) {
@@ -77,7 +71,11 @@ export class ProjectConfigService {
     return config;
   }
 
-  #resolveInProjectReferences(filePath: string, config: ParsedConfig, visited: Set<string>): string | undefined {
+  #resolveInProjectReferences(
+    filePath: string,
+    config: tsApi.ParsedCommandLine,
+    visited: Set<string>,
+  ): string | undefined {
     if (!config.projectReferences) {
       return;
     }

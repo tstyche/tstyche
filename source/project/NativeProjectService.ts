@@ -8,7 +8,6 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { ProjectConfigKind } from "#result";
 import { Select } from "#select";
-import { TextFile } from "#text";
 import type * as ts from "#typescript";
 import { TextFileService } from "../text/TextFileService.js";
 import { FileSystem } from "./FileSystem.js";
@@ -113,13 +112,13 @@ export class NativeProjectService {
 
       default:
         if (Options.isJsonString(this.#resolvedConfig.tsconfig)) {
-          kind = ProjectConfigKind.Synthetic;
-          specifier = this.#tsconfigSyntheticPath;
+          this.#fs.writeFile(this.#tsconfigSyntheticPath, this.#resolvedConfig.tsconfig);
 
-          TextFileService.set(
-            this.#tsconfigSyntheticPath,
-            new TextFile(this.#tsconfigSyntheticPath, /* program */ undefined, this.#resolvedConfig.tsconfig),
-          );
+          if (this.#api.parseConfigFile(this.#tsconfigSyntheticPath).fileNames.includes(filePath)) {
+            compilerOptions = {};
+            kind = ProjectConfigKind.Synthetic;
+            specifier = this.#tsconfigSyntheticPath;
+          }
         } else if (this.#api.parseConfigFile(this.#resolvedConfig.tsconfig).fileNames.includes(filePath)) {
           compilerOptions = {};
           kind = ProjectConfigKind.Provided;
@@ -133,10 +132,6 @@ export class NativeProjectService {
 
     if (this.#resolvedConfig.checkDeclarationFiles) {
       compilerOptions = { ...compilerOptions, skipLibCheck: false };
-    }
-
-    if (kind === ProjectConfigKind.Synthetic) {
-      this.#fs.writeFile(this.#tsconfigSyntheticPath, this.#resolvedConfig.tsconfig);
     }
 
     const tsconfigText = JSON.stringify({
@@ -225,7 +220,13 @@ export class NativeProjectService {
     });
 
     const diagnostics = [
-      ...project.program.getProgramDiagnostics(),
+      ...project.program.getProgramDiagnostics().map((diagnostic) => {
+        if (diagnostic.fileName === this.#tsconfigPath || diagnostic.fileName === this.#tsconfigSyntheticPath) {
+          return { ...diagnostic, fileName: undefined, pos: -1, end: -1 };
+        }
+
+        return diagnostic;
+      }),
       ...filesToCheck.flatMap((filePath) =>
         [
           ...project.program.getSyntacticDiagnostics(filePath),

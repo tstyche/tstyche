@@ -45,7 +45,7 @@ export class Config {
         encoding: "utf8",
       });
 
-      const file = new TextFile(configFilePath, /* program */ undefined, configFileText);
+      const file = new TextFile(configFilePath, configFileText);
 
       const configFileParser = new ConfigParser(
         configFileOptions as Record<string, OptionValue>,

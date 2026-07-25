@@ -7,7 +7,7 @@ import { EventEmitter } from "#events";
 import { Path } from "#path";
 import { type ProjectConfig, ProjectConfigKind } from "#result";
 import { Select } from "#select";
-import { TextFile, TextFileService } from "#text";
+import { TextFileService } from "#text";
 import type * as ts from "#typescript";
 import { Version } from "#version";
 import { CompatMappedDiagnostic } from "./CompatMappedDiagnostic.js";
@@ -56,11 +56,6 @@ export class CompatProjectService {
     };
 
     if (this.#projectConfig.kind === ProjectConfigKind.Synthetic) {
-      TextFileService.set(
-        this.#projectConfig.specifier,
-        new TextFile(this.#projectConfig.specifier, /* program */ undefined, this.#resolvedConfig.tsconfig),
-      );
-
       this.#host.readFile = (path) =>
         path === this.#projectConfig.specifier ? resolvedConfig.tsconfig : compiler.sys.readFile(path);
     }
@@ -204,8 +199,6 @@ export class CompatProjectService {
     }
 
     const program = this.getProgram();
-
-    TextFileService.open(program);
 
     if (this.#seenProjects.has(configFileName)) {
       return;

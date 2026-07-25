@@ -96,7 +96,7 @@ export class FileRunner {
         return;
       }
 
-      TextFileService.set(file.path, new TextFile(file.path, /* program */ undefined, testText));
+      TextFileService.set(file.path, new TextFile(file.path, testText));
       this.#projectService.openFile(file.path, testText);
 
       return this.#resolveFileFacts(file, fileResult, runModeFlags);
