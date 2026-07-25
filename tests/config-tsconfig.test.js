@@ -136,6 +136,27 @@ await test("'--tsconfig' command line option", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("uses baseline TSConfig when file is not included in inline TSConfig", async () => {
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/hasProperty.tst.ts"]: hasPropertyTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [
+      "--tsconfig",
+      '"{\\"extends\\":\\"./tsconfig.json\\",\\"compilerOptions\\":{\\"lib\\":[\\"es2020\\"]},\\"include\\":[\\"src/**/*\\"]}"',
+    ]);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-inline-not-included-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("overrides configuration file option", async () => {
     const config = {
       tsconfig: "baseline",
@@ -288,5 +309,28 @@ await test("'tsconfig' configuration file option", async (t) => {
     });
 
     assert.equal(exitCode, 1);
+  });
+
+  await t.test("uses baseline TSConfig when file is not included in inline TSConfig", async () => {
+    const config = {
+      tsconfig: '{"extends":"./tsconfig.json","compilerOptions":{"lib":["es2020"]},"include":["src/**/*"]}',
+    };
+
+    await writeFixture(fixtureUrl, {
+      ["__typetests__/hasProperty.tst.ts"]: hasPropertyTestText,
+      ["tsconfig.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tstyche.json"]: JSON.stringify(config, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-inline-not-included-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
   });
 });
