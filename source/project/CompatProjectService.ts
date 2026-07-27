@@ -215,12 +215,8 @@ export class CompatProjectService {
         return true;
       }
 
-      if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+      if (Select.isFixtureFile(sourceFile.fileName, this.#resolvedConfig)) {
         return true;
-      }
-
-      if (Select.isTestFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
-        return false;
       }
 
       return false;

@@ -212,7 +212,7 @@ export class NativeProjectService {
         return true;
       }
 
-      if (Select.isFixtureFile(sourceFile.fileName, { ...this.#resolvedConfig, pathMatch: [] })) {
+      if (Select.isFixtureFile(sourceFile.fileName, this.#resolvedConfig)) {
         return true;
       }
 
@@ -220,13 +220,10 @@ export class NativeProjectService {
     });
 
     const diagnostics = [
-      ...project.program.getProgramDiagnostics().map((diagnostic) => {
-        if (diagnostic.fileName === this.#tsconfigPath || diagnostic.fileName === this.#tsconfigSyntheticPath) {
-          return { ...diagnostic, fileName: undefined, pos: -1, end: -1 };
-        }
-
-        return diagnostic;
-      }),
+      ...project.program
+        .getProgramDiagnostics()
+        // these are always pointing to synthetic TSConfig file
+        .map((diagnostic) => ({ ...diagnostic, fileName: undefined, pos: -1, end: -1 })),
       ...filesToCheck.flatMap((filePath) =>
         [
           ...project.program.getSyntacticDiagnostics(filePath),
