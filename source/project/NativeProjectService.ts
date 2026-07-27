@@ -245,8 +245,6 @@ export class NativeProjectService {
     const project = snapshot.getProject(this.#tsconfigPath)!;
     const diagnostics = project.program.getSemanticDiagnostics(filePath);
 
-    snapshot.dispose();
-
     return diagnostics;
   }
 }
