@@ -29,13 +29,13 @@ export class Layers {
       this.#suppressedDiagnostics = undefined;
     }
 
-    const diagnostics = this.#projectService.openLayer(this.#editor.getFilePath(), this.#editor.getText());
-
-    const offsets = this.#editor.getOffsets();
-
     const abilityDiagnostics: Array<ts.Diagnostic> = [];
 
-    if (diagnostics != null) {
+    if (this.#abilityLayer.hasChanges()) {
+      const diagnostics = this.#projectService.openLayer(this.#editor.getFilePath(), this.#editor.getText());
+
+      const offsets = this.#editor.getOffsets();
+
       for (const diagnostic of diagnostics) {
         const mappedDiagnostic = this.#projectService.getMappedDiagnostic(tree.sourceFile, diagnostic, offsets);
 
@@ -53,7 +53,9 @@ export class Layers {
     this.#editor.open(tree.sourceFile);
     this.#suppressedLayer.open(tree);
 
-    this.#suppressedDiagnostics = this.#projectService.openLayer(this.#editor.getFilePath(), this.#editor.getText());
+    if (this.#suppressedLayer.hasChanges()) {
+      this.#suppressedDiagnostics = this.#projectService.openLayer(this.#editor.getFilePath(), this.#editor.getText());
+    }
 
     this.#suppressedLayer.close(
       this.#suppressedDiagnostics?.map((diagnostic) =>

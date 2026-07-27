@@ -61,6 +61,10 @@ export class SuppressedLayer {
     this.#suppressedErrorsMap = undefined;
   }
 
+  hasChanges(): boolean {
+    return this.#suppressedErrorsMap != null;
+  }
+
   #mapToDirectives(diagnostic: ts.Diagnostic) {
     let file: TextFile | undefined;
     let position: number | undefined;

@@ -14,7 +14,7 @@ export class AbilityLayer {
   }
 
   close(diagnostics: Array<ts.Diagnostic>): void {
-    if (diagnostics.length > 0 && this.#nodes.length > 0) {
+    if (diagnostics.length > 0 && this.hasChanges()) {
       this.#nodes.reverse();
 
       for (const diagnostic of diagnostics) {
@@ -32,6 +32,10 @@ export class AbilityLayer {
     }
 
     this.#nodes = [];
+  }
+
+  hasChanges(): boolean {
+    return this.#nodes.length > 0;
   }
 
   visitExpect(expect: ExpectNode): void {
