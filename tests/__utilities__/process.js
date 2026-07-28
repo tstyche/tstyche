@@ -37,9 +37,9 @@ export class Process {
     const spawnOptions = {
       cwd: fixtureUrl,
       env: {
-        ...process.env,
         ["TSTYCHE_NO_COLOR"]: "true",
         ["TSTYCHE_STORE_PATH"]: "./.store",
+        ...process.env,
         ...options.env,
       },
       shell: isWindows,
