@@ -11,9 +11,9 @@ export function spawnTyche(fixtureUrl, args = [], options = {}) {
   return new Promise((resolve, reject) => {
     /** @type {NodeJS.ProcessEnv} */
     const env = {
+      ...process.env,
       ["TSTYCHE_NO_COLOR"]: "true",
       ["TSTYCHE_STORE_PATH"]: "./.store",
-      ...process.env,
       ...options.env,
     };
 
