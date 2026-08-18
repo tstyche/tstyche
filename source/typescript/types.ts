@@ -54,7 +54,7 @@ export type StringLiteral = tsAst.StringLiteral | ts6.StringLiteral;
 export type StringLiteralLikeNode = tsAst.StringLiteralLikeNode | ts6.StringLiteralLike;
 export type StringLiteralType = tsApi.StringLiteralType | ts6.StringLiteralType;
 export type StringMappingType = tsApi.StringMappingType | ts6.StringMappingType;
-export type StructuredType = TStructuredType | ts6.StructuredType;
+export type StructuredType = tsApi.StructuredType | ts6.StructuredType;
 export type SubstitutionType = tsApi.SubstitutionType | ts6.SubstitutionType;
 export type Symbol = tsApi.Symbol | ts6.Symbol;
 export type TemplateLiteralType = tsApi.TemplateLiteralType | ts6.TemplateLiteralType;
@@ -70,9 +70,6 @@ export type TypeReferenceNode = tsAst.TypeReferenceNode | ts6.TypeReferenceNode;
 export type UnionType = tsApi.UnionType | ts6.UnionType;
 
 export type TypeScript = NativeTypeScript | CompatTypeScript;
-
-// TODO waiting for: https://github.com/microsoft/typescript-go/issues/4539
-type TStructuredType = tsApi.ObjectType | tsApi.UnionType | tsApi.IntersectionType;
 
 // TODO waiting for: https://github.com/microsoft/typescript-go/issues/4499
 interface TTupleTypeReference extends tsApi.TypeReference {

@@ -212,7 +212,7 @@ export class NativeProjectService {
         return true;
       }
 
-      if (Select.isFixtureFile(sourceFile.fileName, this.#resolvedConfig)) {
+      if (Select.isFixtureFile(filePath, this.#resolvedConfig)) {
         return true;
       }
 

@@ -39,7 +39,6 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
   }
 
   getNonPrimitiveType(): ts.Type {
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/2850
     return this.checker.getNonPrimitiveType();
   }
 
