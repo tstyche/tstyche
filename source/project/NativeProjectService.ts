@@ -18,6 +18,7 @@ export class NativeProjectService {
   #api: InstanceType<typeof tsApi.API>;
   #currentProject: tsApi.Project | undefined;
   #currentSpecifier: string | undefined;
+  #declarationFileRegex = /\.d\.[cm]?ts$/;
   #fs = new FileSystem();
   #projectConfig: ProjectConfigService;
   #resolvedConfig: ResolvedConfig;
@@ -197,18 +198,14 @@ export class NativeProjectService {
     this.#currentProject?.dispose();
     this.#currentProject = project;
 
-    // TODO use '.getSourceFiles()': https://github.com/microsoft/typescript-go/issues/4502
     const filesToCheck = project.program.getSourceFileNames().filter((filePath) => {
-      const sourceFile = project.program.getSourceFile(filePath)!;
+      const sourceFileMetadata = project.program.getSourceFileMetadata(filePath)!;
 
-      if (
-        project.program.isSourceFileFromExternalLibrary(sourceFile) ||
-        project.program.isSourceFileDefaultLibrary(sourceFile)
-      ) {
+      if (sourceFileMetadata.isFromExternalLibrary || sourceFileMetadata.isDefaultLibrary) {
         return false;
       }
 
-      if (this.#resolvedConfig.checkDeclarationFiles && sourceFile.isDeclarationFile) {
+      if (this.#declarationFileRegex.test(filePath)) {
         return true;
       }
 
