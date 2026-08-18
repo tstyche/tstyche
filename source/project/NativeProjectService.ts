@@ -205,7 +205,7 @@ export class NativeProjectService {
         return false;
       }
 
-      if (this.#declarationFileRegex.test(filePath)) {
+      if (this.#resolvedConfig.checkDeclarationFiles && this.#declarationFileRegex.test(filePath)) {
         return true;
       }
 
