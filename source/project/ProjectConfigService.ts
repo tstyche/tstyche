@@ -24,13 +24,7 @@ export class ProjectConfigService {
       return;
     }
 
-    const parentPath = Path.dirname(currentPath);
-
-    if (parentPath === currentPath) {
-      return;
-    }
-
-    return this.findUp(filePath, parentPath);
+    return this.findUp(filePath, Path.dirname(currentPath));
   }
 
   #resolveConfigPath(filePath: string, currentPath: string): string | undefined {
