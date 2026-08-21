@@ -9,8 +9,8 @@ export class NativeMappedDiagnostic {
   code: number;
   category: tsApi.DiagnosticCategory;
   text: string;
-  messageChain: ReadonlyArray<tsApi.Diagnostic> | undefined;
-  relatedInformation: ReadonlyArray<tsApi.Diagnostic> | undefined;
+  messageChain?: Array<tsApi.Diagnostic>;
+  relatedInformation?: Array<tsApi.Diagnostic>;
 
   constructor(sourceFile: tsAst.SourceFile, diagnostic: tsApi.Diagnostic, offsets: Array<Offset> = []) {
     this.fileName = sourceFile.fileName;

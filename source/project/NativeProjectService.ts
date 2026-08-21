@@ -217,10 +217,11 @@ export class NativeProjectService {
     });
 
     const diagnostics = [
-      ...project.program
-        .getProgramDiagnostics()
-        // these are always pointing to synthetic TSConfig file
-        .map((diagnostic) => ({ ...diagnostic, fileName: undefined, pos: -1, end: -1 })),
+      ...project.program.getProgramDiagnostics().map((diagnostic) => {
+        const { fileName, ...rest } = diagnostic;
+        // program diagnostics are always pointing to synthetic TSConfig file
+        return { ...rest, pos: -1, end: -1 };
+      }),
       ...filesToCheck.flatMap((filePath) =>
         [
           ...project.program.getSyntacticDiagnostics(filePath),

@@ -116,6 +116,10 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     return this.checker.getNonMissingTypeOfSymbol(symbol as tsApi.Symbol);
   }
 
+  getReducedType(type: ts.Type): ts.Type {
+    return this.checker.getReducedType(type as tsApi.Type);
+  }
+
   getSignatures(type: ts.Type, kind: ts.SignatureKind): ReadonlyArray<ts.Signature> {
     if (type.flags & this.ts.TypeFlags.Intersection) {
       return (type as tsApi.IntersectionType).getTypes().flatMap((type) => this.getSignatures(type, kind));

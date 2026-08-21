@@ -124,6 +124,11 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
     return type;
   };
 
+  getReducedType(type: ts.Type): ts.Type {
+    // TODO
+    return type as ts6.Type;
+  }
+
   getSignatures(type: ts.Type, kind: ts.SignatureKind): ReadonlyArray<ts.Signature> {
     if (type.flags & this.ts.TypeFlags.Intersection) {
       return (type as ts6.IntersectionType).types.flatMap((type) => this.getSignatures(type, kind));

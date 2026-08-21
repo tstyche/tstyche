@@ -560,6 +560,8 @@ export class Structure {
   }
 
   #normalize(type: ts.Type): ts.Type {
+    type = this.#checker.getReducedType(type);
+
     if (
       type.flags & this.#ts.TypeFlags.Freshable &&
       this.#checker.freshableType.getFreshType(type as ts.FreshableType) === type

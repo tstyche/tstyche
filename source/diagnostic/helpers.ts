@@ -102,5 +102,5 @@ export function isDiagnosticLocation(diagnostic: ts.Diagnostic): diagnostic is t
 }
 
 export function isDiagnosticPosition(diagnostic: ts.Diagnostic): diagnostic is ts.DiagnosticPosition {
-  return "fileName" in diagnostic && diagnostic.fileName != null && diagnostic.pos != null && diagnostic.end != null;
+  return "fileName" in diagnostic && diagnostic.fileName != null && diagnostic.pos >= 0 && diagnostic.end >= 0;
 }
