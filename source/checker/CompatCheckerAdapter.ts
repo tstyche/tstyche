@@ -125,7 +125,13 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
   };
 
   getReducedType(type: ts.Type): ts.Type {
-    // TODO
+    // ensures 'resolvedReducedType' is computed
+    this.checker.typeToString(type as ts6.Type);
+
+    if ("resolvedReducedType" in type) {
+      return type.resolvedReducedType as ts6.Type;
+    }
+
     return type as ts6.Type;
   }
 
