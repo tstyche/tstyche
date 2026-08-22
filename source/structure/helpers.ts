@@ -19,6 +19,17 @@ export function getIndexSignatures(
   return typeChecker.getIndexInfosOfType(type);
 }
 
+export function getReducedType(type: ts.Type, typeChecker: ts.TypeChecker): ts.Type {
+  // ensures 'resolvedReducedType' is computed
+  typeChecker.typeToString(type);
+
+  if ("resolvedReducedType" in type) {
+    return type.resolvedReducedType as ts.Type;
+  }
+
+  return type;
+}
+
 export function getSignatures(
   type: ts.Type,
   kind: ts.SignatureKind,

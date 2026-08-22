@@ -173,3 +173,20 @@ test("string mapping", () => {
   expect<D>().type.not.toBe<E>();
   expect<E>().type.not.toBe<F>();
 });
+
+test("collapsing discriminant", () => {
+  interface TaggedError<Tag extends string> {
+    readonly _tag: Tag;
+  }
+
+  interface RateLimitError extends TaggedError<"RateLimitError"> {
+    readonly retryAfter: number;
+  }
+
+  interface QuotaExceededError extends TaggedError<"QuotaExceededError"> {
+    readonly limit: number;
+  }
+
+  expect<RateLimitError | (RateLimitError & QuotaExceededError)>().type.toBe<RateLimitError>();
+  expect<RateLimitError | (RateLimitError & QuotaExceededError)>().type.not.toBe<QuotaExceededError>();
+});
