@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.2.3] - 2026-08-22
+
+### Fixes
+
+- Handle reduced types when comparing type structures ([#788](https://github.com/tstyche/tstyche/pull/788))
+
 ## [7.2.2] - 2026-07-17
 
 ### Fixed
