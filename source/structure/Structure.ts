@@ -3,6 +3,7 @@ import { ComparisonResult } from "./ComparisonResult.enum.js";
 import {
   containsInstantiable,
   getIndexSignatures,
+  getReducedType,
   getSignatures,
   getTargetSymbol,
   getThisTypeOfSignature,
@@ -562,6 +563,8 @@ export class Structure {
   }
 
   #normalize(type: ts.Type): ts.Type {
+    type = getReducedType(type, this.#typeChecker);
+
     if (type.flags & this.#compiler.TypeFlags.Freshable && (type as ts.FreshableType).freshType === type) {
       return (type as ts.FreshableType).regularType;
     }
