@@ -16,11 +16,6 @@ export abstract class BaseCheckerAdapter {
     return this.checker.getTypeAtLocation(node);
   }
 
-  getTypeText(node: ts.Node): string {
-    // TODO consider passing 'enclosingDeclaration' as well
-    return this.checker.typeToString(this.getType(node));
-  }
-
   getTypeArguments(type: ts.TypeReference): ReadonlyArray<ts.Type> {
     return this.checker.getTypeArguments(type);
   }
@@ -39,5 +34,10 @@ export abstract class BaseCheckerAdapter {
 
   isTypeAssignableTo(source: ts.Type, target: ts.Type): boolean {
     return this.checker.isTypeAssignableTo(source, target);
+  }
+
+  typeToString(type: ts.Type): string {
+    // TODO consider passing 'enclosingDeclaration' as well
+    return this.checker.typeToString(type);
   }
 }

@@ -15,7 +15,8 @@ export class ToHaveProperty {
   }
 
   #explain(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNode: ArgumentNode) {
-    const sourceTypeText = this.#checker.getTypeText(sourceNode);
+    const sourceType = this.#checker.getType(sourceNode);
+    const sourceTypeText = this.#checker.typeToString(sourceType);
 
     const targetType = this.#checker.getType(targetNode);
     let propertyNameText: string;
