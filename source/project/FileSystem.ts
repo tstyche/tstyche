@@ -20,7 +20,6 @@ export class FileSystem implements tsVfs.FileSystem {
 
     if (content) {
       this.#tempFiles.delete(path);
-      this.#changed.add(path);
       return content;
     }
 
