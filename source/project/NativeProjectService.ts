@@ -157,11 +157,28 @@ export class NativeProjectService {
   }
 
   getSemanticDiagnostics(filePath: string): ReadonlyArray<tsApi.Diagnostic> {
-    return this.#currentProject!.program.getSemanticDiagnostics(filePath);
+    return this.#normalizeDiagnostics(this.#currentProject!.program.getSemanticDiagnostics(filePath));
   }
 
   getSyntacticDiagnostics(filePath: string): ReadonlyArray<tsApi.Diagnostic> {
-    return this.#currentProject!.program.getSyntacticDiagnostics(filePath);
+    return this.#normalizeDiagnostics(this.#currentProject!.program.getSyntacticDiagnostics(filePath));
+  }
+
+  #normalizeDiagnostics(diagnostics: ReadonlyArray<tsApi.Diagnostic>) {
+    return diagnostics.map(function normalize(diagnostic: tsApi.Diagnostic): tsApi.Diagnostic {
+      // remove fields that are redundant and may contain incorrect information
+      const { startPosition, endPosition, sourceLines, ...rest } = diagnostic;
+
+      return {
+        ...rest,
+        ...(diagnostic.messageChain && {
+          messageChain: diagnostic.messageChain.map((msg) => normalize(msg)),
+        }),
+        ...(diagnostic.relatedInformation && {
+          relatedInformation: diagnostic.relatedInformation.map((info) => normalize(info)),
+        }),
+      };
+    });
   }
 
   openFile(filePath: string, fileText?: string): void {
@@ -217,15 +234,14 @@ export class NativeProjectService {
     });
 
     const diagnostics = [
-      ...project.program
-        .getProgramDiagnostics()
+      ...this.#normalizeDiagnostics(project.program.getProgramDiagnostics())
         // program diagnostics are always pointing to synthetic TSConfig file
         .map(({ fileName, ...rest }) => ({ ...rest, pos: -1, end: -1 })),
       ...filesToCheck.flatMap((filePath) =>
         [
-          ...project.program.getSyntacticDiagnostics(filePath),
-          ...project.program.getSemanticDiagnostics(filePath),
-          ...project.program.getDeclarationDiagnostics(filePath),
+          ...this.#normalizeDiagnostics(project.program.getSyntacticDiagnostics(filePath)),
+          ...this.#normalizeDiagnostics(project.program.getSemanticDiagnostics(filePath)),
+          ...this.#normalizeDiagnostics(project.program.getDeclarationDiagnostics(filePath)),
         ].sort((a, b) => a.pos - b.pos),
       ),
     ];
