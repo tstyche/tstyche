@@ -61,6 +61,12 @@ export class Store {
       version: string;
     };
 
+    if (packageJson.version.startsWith("7.0")) {
+      Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.versionIsNotSupported()));
+
+      return;
+    }
+
     if (Version.isSatisfiedWith(packageJson.version, "7")) {
       const api = await import(new URL(packageJson.exports["./unstable/sync"]!, specifier).toString());
       const ast = await import(new URL(packageJson.exports["./unstable/ast"]!, specifier).toString());
@@ -75,8 +81,6 @@ export class Store {
 
   static async load(tag: string): Promise<ts.TypeScript | undefined> {
     if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
-      // TODO fallback to TypeScript v7.1 when v7.0 is installed
-
       return Store.#getAdapter(environmentOptions.typescriptSpecifier);
     }
 
