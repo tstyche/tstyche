@@ -49,6 +49,7 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
       const restType = this.checker.getTypeOfSymbol(signature.getParameters().at(-1)!);
 
       if (this.isTupleType(restType)) {
+        // @ts-expect-error waiting for: https://github.com/microsoft/TypeScript/issues/64065
         return signature.parameters.length + this.getTypeArguments(restType).length - 1;
       }
     }
@@ -112,7 +113,6 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
   }
 
   getPropertyType(symbol: ts.Symbol): ts.Type {
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4081
     return this.checker.getNonMissingTypeOfSymbol(symbol as tsApi.Symbol);
   }
 
@@ -128,7 +128,7 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     return this.checker.getSignaturesOfType(type as tsApi.Type, kind);
   }
 
-  getTargetSymbol(symbol: ts.Symbol): ts.Symbol | undefined {
+  getTargetSymbol(symbol: ts.Symbol): ts.Symbol {
     return this.checker.getTargetSymbol(symbol as tsApi.Symbol);
   }
 
@@ -140,7 +140,6 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
   }
 
   isReadonlyProperty(symbol: ts.Symbol): boolean {
-    // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4080
     return this.checker.isReadonlySymbol(symbol as tsApi.Symbol);
   }
 

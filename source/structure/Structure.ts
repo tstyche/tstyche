@@ -214,14 +214,18 @@ export class Structure {
   }
 
   compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {
+    // @ts-expect-error waiting for: https://github.com/microsoft/TypeScript/issues/64065
     const aTarget = this.#checker.typeReference.getTarget(a) as ts.TupleType;
+    // @ts-expect-error waiting for: https://github.com/microsoft/TypeScript/issues/64065
     const bTarget = this.#checker.typeReference.getTarget(b) as ts.TupleType;
 
     if (aTarget.readonly !== bTarget.readonly) {
       return false;
     }
 
+    // @ts-expect-error waiting for: https://github.com/microsoft/TypeScript/issues/64065
     const aTypeArguments = this.#checker.getTypeArguments(a);
+    // @ts-expect-error waiting for: https://github.com/microsoft/TypeScript/issues/64065
     const bTypeArguments = this.#checker.getTypeArguments(b);
 
     if (aTypeArguments.length !== bTypeArguments.length) {

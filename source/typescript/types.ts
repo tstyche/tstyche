@@ -71,7 +71,7 @@ export type UnionType = tsApi.UnionType | ts6.UnionType;
 
 export type TypeScript = NativeTypeScript | CompatTypeScript;
 
-// TODO waiting for: https://github.com/microsoft/typescript-go/issues/4499
+// @ts-expect-error waiting for: https://github.com/microsoft/TypeScript/issues/64065
 interface TTupleTypeReference extends tsApi.TypeReference {
   getTarget(): tsApi.TupleType;
 }
