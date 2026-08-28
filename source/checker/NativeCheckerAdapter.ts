@@ -129,8 +129,7 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
   }
 
   getTargetSymbol(symbol: ts.Symbol): ts.Symbol | undefined {
-    // @ts-expect-error waiting for:
-    return this.checker.getTargetSymbol(symbol);
+    return this.checker.getTargetSymbol(symbol as tsApi.Symbol);
   }
 
   getTypeParameterModifiers(typeParameter: ts.TypeParameter): ts.ModifierFlags {
