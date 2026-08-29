@@ -156,7 +156,7 @@ await test("'--target' command line option", async (t) => {
     // TODO revert after TypeScript 7.1 is released
     // assert.equal(stderr, "");
     await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-typescript-70-installed-${getTypeScriptVersionMajor()}`,
+      fileName: `${testFileName}-typescript-70-installed`,
       testFileUrl: import.meta.url,
     });
 
@@ -396,7 +396,7 @@ await test("'target' configuration file option", async (t) => {
     // TODO revert after TypeScript 7.1 is released
     // assert.equal(stderr, "");
     await assert.matchSnapshot(normalizeOutput(stderr), {
-      fileName: `${testFileName}-typescript-70-installed-${getTypeScriptVersionMajor()}`,
+      fileName: `${testFileName}-typescript-70-installed`,
       testFileUrl: import.meta.url,
     });
 
