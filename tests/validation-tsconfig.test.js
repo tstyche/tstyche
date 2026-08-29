@@ -3,6 +3,7 @@ import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
+import { getTypeScriptVersionMajor } from "./__utilities__/typescript.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -97,7 +98,7 @@ await test("'--tsconfig' command line option", async (t) => {
     await assert.matchSnapshot(
       normalizeOutput(stderr).replaceAll(/\.\/(\w*(-\w*)?)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
       {
-        fileName: `${testFileName}-inline-config-incompatible`,
+        fileName: `${testFileName}-inline-config-incompatible-${getTypeScriptVersionMajor()}`,
         testFileUrl: import.meta.url,
       },
     );
@@ -191,7 +192,7 @@ await test("'tsconfig' configuration file option", async (t) => {
     await assert.matchSnapshot(
       normalizeOutput(stderr).replaceAll(/\.\/(\w*(-\w*)?)\.tsconfig\.json/g, "./<<synthetic>>.tsconfig.json"),
       {
-        fileName: `${testFileName}-inline-config-incompatible`,
+        fileName: `${testFileName}-inline-config-incompatible-${getTypeScriptVersionMajor()}`,
         testFileUrl: import.meta.url,
       },
     );

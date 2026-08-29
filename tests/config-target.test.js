@@ -3,6 +3,7 @@ import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
+import { getTypeScriptVersionMajor } from "./__utilities__/typescript.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -152,10 +153,16 @@ await test("'--target' command line option", async (t) => {
       env: { ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "" },
     });
 
-    assert.equal(stderr, "");
+    // TODO revert after TypeScript 7.1 is released
+    // assert.equal(stderr, "");
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-typescript-70-installed-${getTypeScriptVersionMajor()}`,
+      testFileUrl: import.meta.url,
+    });
+
     assert.match(stdout, /adds TypeScript/);
 
-    assert.equal(exitCode, 0);
+    assert.equal(exitCode, 1);
   });
 
   await t.test("when 'target' configuration file option is specified", async () => {
@@ -386,9 +393,15 @@ await test("'target' configuration file option", async (t) => {
       env: { ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "" },
     });
 
-    assert.equal(stderr, "");
+    // TODO revert after TypeScript 7.1 is released
+    // assert.equal(stderr, "");
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-typescript-70-installed-${getTypeScriptVersionMajor()}`,
+      testFileUrl: import.meta.url,
+    });
+
     assert.match(stdout, /adds TypeScript/);
 
-    assert.equal(exitCode, 0);
+    assert.equal(exitCode, 1);
   });
 });
