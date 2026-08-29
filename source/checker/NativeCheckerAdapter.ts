@@ -49,7 +49,6 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
       const restType = this.checker.getTypeOfSymbol(signature.getParameters().at(-1)!);
 
       if (this.isTupleType(restType)) {
-        // @ts-expect-error waiting for: https://github.com/microsoft/TypeScript/issues/64065
         return signature.parameters.length + this.getTypeArguments(restType).length - 1;
       }
     }
@@ -79,9 +78,8 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     };
   }
 
-  // @ts-expect-error waiting for: https://github.com/microsoft/typescript-go/issues/4499
   #getParameterFactsFromTuple(type: tsApi.TupleTypeReference, position: number): ParameterFacts {
-    const target = type.getTarget() as tsApi.TupleType;
+    const target = type.getTarget();
 
     return {
       isOptional: !!(target.elementFlags[position]! & this.ts.ElementFlags.Optional),

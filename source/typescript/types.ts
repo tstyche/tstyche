@@ -60,7 +60,7 @@ export type Symbol = tsApi.Symbol | ts6.Symbol;
 export type TemplateLiteralType = tsApi.TemplateLiteralType | ts6.TemplateLiteralType;
 export type TupleType = tsApi.TupleType | ts6.TupleType;
 export type TupleTypeNode = tsAst.TupleTypeNode | ts6.TupleTypeNode;
-export type TupleTypeReference = TTupleTypeReference | ts6.TupleTypeReference;
+export type TupleTypeReference = tsApi.TupleTypeReference | ts6.TupleTypeReference;
 export type Type = tsApi.Type | ts6.Type;
 export type TypeNode = tsAst.TypeNode | ts6.TypeNode;
 export type TypeParameter = tsApi.TypeParameter | ts6.TypeParameter;
@@ -70,8 +70,3 @@ export type TypeReferenceNode = tsAst.TypeReferenceNode | ts6.TypeReferenceNode;
 export type UnionType = tsApi.UnionType | ts6.UnionType;
 
 export type TypeScript = NativeTypeScript | CompatTypeScript;
-
-// @ts-expect-error waiting for: https://github.com/microsoft/TypeScript/issues/64065
-interface TTupleTypeReference extends tsApi.TypeReference {
-  getTarget(): tsApi.TupleType;
-}
