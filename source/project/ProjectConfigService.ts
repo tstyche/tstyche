@@ -51,6 +51,8 @@ export class ProjectConfigService {
   }
 
   #getParsedConfig(filePath: string): tsApi.ParsedCommandLine | undefined {
+    filePath = filePath.endsWith("json") ? filePath : `${filePath}/tsconfig.json`;
+
     let config = this.#configCache.get(filePath);
 
     if (!config) {
