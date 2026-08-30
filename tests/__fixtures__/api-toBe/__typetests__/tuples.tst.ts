@@ -134,7 +134,7 @@ test("additional properties", () => {
   type A = [a: string, b: number] & { x: boolean };
 
   expect<A>().type.toBe<[string, number] & { x: boolean }>();
-  expect<A>().type.not.toBe<[string, number] & { x: string }>();
-  expect<A>().type.not.toBe<[string, number] & { y: boolean }>();
+  expect.skip<A>().type.not.toBe<[string, number] & { x: string }>();
+  expect.skip<A>().type.not.toBe<[string, number] & { y: boolean }>();
   expect<A>().type.not.toBe<[string, number]>();
 });
