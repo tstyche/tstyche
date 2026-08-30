@@ -131,7 +131,7 @@ jobs:
         with:
           name: dist-${{ github.sha }}
           path: dist
-      - run: mise exec node@${{ matrix.node-version }} -- aube run test
+      - run: mise exec node@${{ matrix.node-version }} -- mise run test
 
   test-os:
     name: Test Build on ${{ matrix.os }}
