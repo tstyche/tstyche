@@ -211,6 +211,38 @@ test("'useUnknownInCatchVariables': false", () => {
     assert.equal(exitCode, 0);
   });
 
+  await t.test("when 'tsconfig.json#references' is specified without file name", async () => {
+    await writeFixture(fixtureUrl, {
+      ["a/__typetests__/isNumber.tst.ts"]: isNumberTestText,
+      ["a/tsconfig.json"]: JSON.stringify({ extends: "../tsconfig.base.json", include: ["src/**/*"] }, null, 2),
+      ["b/__typetests__/isString.tst.ts"]: isStringTestText,
+      ["b/tsconfig.json"]: JSON.stringify({ extends: "../tsconfig.base.json", include: ["src/**/*"] }, null, 2),
+      ["tsconfig.json"]: JSON.stringify(
+        { include: [], references: [{ path: "./tsconfig.project.json" }, { path: "./tsconfig.test.json" }] },
+        null,
+        2,
+      ),
+      ["tsconfig.base.json"]: JSON.stringify(tsconfig, null, 2),
+      ["tsconfig.project.json"]: JSON.stringify(
+        { include: [], references: [{ path: "./a" }, { path: "./b" }] },
+        null,
+        2,
+      ),
+      ["tsconfig.test.json"]: JSON.stringify({ extends: "./tsconfig.base.json", include: ["**/*.tst.*"] }, null, 2),
+    });
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
+
+    assert.equal(stderr, "");
+
+    await assert.matchSnapshot(normalizeOutput(stdout), {
+      fileName: `${testFileName}-without-file-name-stdout`,
+      testFileUrl: import.meta.url,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
   await t.test("when 'tsconfig.json#references' does not exist", async () => {
     await writeFixture(fixtureUrl, {
       ["__typetests__/isNumber.tst.ts"]: isNumberTestText,

@@ -1,0 +1,12 @@
+···· TSTyche <<version>> at <<basePath>>/tests/__fixtures__/.generated/project-tsconfig
+
+uses TypeScript <<version>> with ./tsconfig.test.json
+
+pass ./a/__typetests__/isNumber.tst.ts
+pass ./b/__typetests__/isString.tst.ts
+
+Targets:    1 passed, 1 total
+Test files: 2 passed, 2 total
+Tests:      2 passed, 2 total
+Assertions: 2 passed, 2 total
+Duration:   <<timestamp>>
