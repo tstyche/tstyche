@@ -76,7 +76,7 @@ async function runTests(files, concurrency) {
 }
 
 if (parallelTestFiles.length > 0) {
-  await runTests(parallelTestFiles, false);
+  await runTests(parallelTestFiles, true);
 }
 
 if (serialTestFiles.length > 0) {
