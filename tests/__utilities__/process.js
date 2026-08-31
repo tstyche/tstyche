@@ -38,7 +38,6 @@ export class Process {
       cwd: fixtureUrl,
       env: {
         ...process.env,
-        ["GOMAXPROCS"]: "1",
         ["TSTYCHE_NO_COLOR"]: "true",
         ["TSTYCHE_STORE_PATH"]: "./.store",
         ...options.env,

@@ -12,7 +12,6 @@ export function spawnTyche(fixtureUrl, args = [], options = {}) {
     /** @type {NodeJS.ProcessEnv} */
     const env = {
       ...process.env,
-      ["GOMAXPROCS"]: "1",
       ["TSTYCHE_NO_COLOR"]: "true",
       ["TSTYCHE_STORE_PATH"]: "./.store",
       ...options.env,

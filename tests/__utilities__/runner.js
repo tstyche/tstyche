@@ -1,4 +1,3 @@
-import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import process from "node:process";
 import stream from "node:stream/promises";
@@ -8,8 +7,7 @@ import { TestReporter } from "cleaner-spec-reporter";
 import { cleanCoverageDirectory, collectCoverage, reportCoverage } from "./coverage.js";
 import { cleanFixtureDirectory } from "./fixture.js";
 
-const isMac = process.platform === "darwin";
-const isWindows = process.platform === "win32";
+const isCi = process.env["CI"] === "true";
 
 /**
  * @param {Array<string>} testFiles
@@ -70,7 +68,11 @@ if (debug) {
  * @param {boolean} concurrency
  */
 async function runTests(files, concurrency) {
-  const testStream = run({ argv: options, concurrency, files, only })
+  if (isCi) {
+    concurrency = false;
+  }
+
+  const testStream = run({ argv: options, env: { ...process.env, ["GOMAXPROCS"]: "1" }, concurrency, files, only })
     .on("test:fail", () => {
       process.exitCode = 1;
     })
@@ -79,28 +81,12 @@ async function runTests(files, concurrency) {
   await stream.pipeline(testStream, process.stdout, { end: false });
 }
 
-/**
- * @param {Array<string>} files
- */
-async function runTestsFallback(files) {
-  for (const file of files) {
-    const passed = await new Promise((resolve) => {
-      const child = spawn("node", [file], { stdio: "inherit" });
-      child.on("close", (code) => resolve(code === 0));
-    });
-
-    if (!passed) {
-      process.exitCode = 1;
-    }
-  }
-}
-
 if (parallelTestFiles.length > 0) {
-  isMac || isWindows ? await runTests(parallelTestFiles, true) : await runTestsFallback(parallelTestFiles);
+  await runTests(parallelTestFiles, true);
 }
 
 if (serialTestFiles.length > 0) {
-  isMac || isWindows ? await runTests(serialTestFiles, false) : await runTestsFallback(serialTestFiles);
+  await runTests(serialTestFiles, false);
 }
 
 if (coverage != null) {
