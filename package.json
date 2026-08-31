@@ -62,14 +62,14 @@
     "typecheck": "tsc --build --force --verbose"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.9",
+    "@biomejs/biome": "^2.5.11",
     "@sourcemeta/jsonschema": "^16.8.0",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.4.0",
     "@types/react": "^19.2.18",
     "@typescript/typescript6": "^6.0.2",
     "cleaner-spec-reporter": "^1.0.3",
     "code-block-writer": "^13.0.3",
-    "monocart-coverage-reports": "^2.12.12",
+    "monocart-coverage-reports": "^2.13.0",
     "pretty-ansi": "^4.0.0",
     "typescript": "^7.1.0-dev.20260829"
   },
