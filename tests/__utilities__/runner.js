@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import process from "node:process";
 import stream from "node:stream/promises";
@@ -6,6 +7,9 @@ import { parseArgs } from "node:util";
 import { TestReporter } from "cleaner-spec-reporter";
 import { cleanCoverageDirectory, collectCoverage, reportCoverage } from "./coverage.js";
 import { cleanFixtureDirectory } from "./fixture.js";
+
+const isMac = process.platform === "darwin";
+const isWindows = process.platform === "win32";
 
 /**
  * @param {Array<string>} testFiles
@@ -75,12 +79,28 @@ async function runTests(files, concurrency) {
   await stream.pipeline(testStream, process.stdout, { end: false });
 }
 
+/**
+ * @param {Array<string>} files
+ */
+async function runTestsFallback(files) {
+  for (const file of files) {
+    const passed = await new Promise((resolve) => {
+      const child = spawn("node", [file], { stdio: "inherit" });
+      child.on("close", (code) => resolve(code === 0));
+    });
+
+    if (!passed) {
+      process.exitCode = 1;
+    }
+  }
+}
+
 if (parallelTestFiles.length > 0) {
-  await runTests(parallelTestFiles, true);
+  isMac || isWindows ? await runTests(parallelTestFiles, true) : await runTestsFallback(parallelTestFiles);
 }
 
 if (serialTestFiles.length > 0) {
-  await runTests(serialTestFiles, false);
+  isMac || isWindows ? await runTests(serialTestFiles, false) : await runTestsFallback(serialTestFiles);
 }
 
 if (coverage != null) {

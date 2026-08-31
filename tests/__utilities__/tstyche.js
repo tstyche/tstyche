@@ -17,7 +17,7 @@ export function spawnTyche(fixtureUrl, args = [], options = {}) {
       ...options.env,
     };
 
-    const tstyche = spawn(["npx", "tstyche", ...args].join(" "), {
+    const tstyche = spawn(["tstyche", ...args].join(" "), {
       cwd: fixtureUrl,
       env,
       shell: true,

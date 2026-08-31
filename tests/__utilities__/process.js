@@ -46,8 +46,8 @@ export class Process {
     };
 
     this.#subprocess = isWindows
-      ? spawn(["aubx", "tstyche", ...args].join(" "), spawnOptions)
-      : spawn("aubx", ["tstyche", ...args], spawnOptions);
+      ? spawn(["tstyche", ...args].join(" "), spawnOptions)
+      : spawn("tstyche", [...args], spawnOptions);
 
     this.#subprocess.stdout.setEncoding("utf8");
 
