@@ -72,7 +72,7 @@ async function runTests(files, concurrency) {
     concurrency = false;
   }
 
-  const testStream = run({ argv: options, env: { ...process.env, ["GOMAXPROCS"]: "1" }, concurrency, files, only })
+  const testStream = run({ argv: options, env: { ...process.env, ["GOMAXPROCS"]: "2" }, concurrency, files, only })
     .on("test:fail", () => {
       process.exitCode = 1;
     })
