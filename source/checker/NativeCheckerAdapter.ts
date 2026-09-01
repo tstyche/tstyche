@@ -14,10 +14,14 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     this.checker = checker;
   }
 
-  containsInstantiable(target: unknown): boolean {
-    const types = (target as { getTypes(): ReadonlyArray<tsApi.Type> | undefined }).getTypes();
+  containsInstantiable(target: ts.Type): boolean {
+    if (target.flags & (this.ts.TypeFlags.Union | this.ts.TypeFlags.Intersection | this.ts.TypeFlags.TemplateLiteral)) {
+      return (target as tsApi.UnionType | tsApi.IntersectionType | tsApi.TemplateLiteralType)
+        .getTypes()
+        .some((type) => type.flags & this.ts.TypeFlags.Instantiable);
+    }
 
-    return types?.some((type) => type.flags & this.ts.TypeFlags.Instantiable) ?? false;
+    return false;
   }
 
   getDeclarationModifierFlags(symbol: ts.Symbol): ts.ModifierFlags {
