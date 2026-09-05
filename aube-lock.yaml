@@ -36,8 +36,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       typescript:
-        specifier: ^7.1.0-dev.20260903
-        version: 7.1.0-dev.20260903.1
+        specifier: ^7.1.0-dev.20260905
+        version: 7.1.0-dev.20260905.1
 
 packages:
 
@@ -117,44 +117,44 @@ packages:
     hasBin: true
     aliasOf: typescript
 
-  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260903.1':
-    resolution: {integrity: sha512-+CQ/ky5OkDHN+9gXJKrbUTpbNHRi7e6XOS5icdyBN57OqXhWygT8JH2XpTl1j5T9MxaoMzLjYRW+OaCwvNDpNQ==}
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260905.1':
+    resolution: {integrity: sha512-gHEeeSmgK38t2yJG+iMP3TIQkNO4PSUP5IJzjtUn6JNar4E8UL9BRUuweJ1pbs4mp8XcJKqHINVzfPsAvUPcWg==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [darwin]
 
-  '@typescript/typescript-darwin-x64@7.1.0-dev.20260903.1':
-    resolution: {integrity: sha512-qeocDSgcslTWBVdg1IA2/OcYg1vDXBDpnjdTaTdbB8npgcQxFA1iyGnajJFd2WtEgiNDWvRO239CPiJYJpsTfw==}
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20260905.1':
+    resolution: {integrity: sha512-Cs3RRpCeq5wjgflC3ujuUV6obcXup9KeaK7d39X7EgTHjFkcsQswGYeRTU9J3LbZ0KLoE3x67IrdHns3XmlHsQ==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [darwin]
 
-  '@typescript/typescript-linux-arm64@7.1.0-dev.20260903.1':
-    resolution: {integrity: sha512-HZ3RWslCTyC3RcvD31bbmqFjg8PPthPqUvJzlnpbw/jsUnsCE/LaKrTC/8AQtkqb0XHi0Mhi/VT+kHZWKugpMg==}
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20260905.1':
+    resolution: {integrity: sha512-pyVQWuI/Z35810vwClCr2hV03u+59qdvFYnbuUjEbpYdAcmT64i+XpNRjzd877DDpI+vJDp9I9HPajERMp6yaA==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [linux]
 
-  '@typescript/typescript-linux-arm@7.1.0-dev.20260903.1':
-    resolution: {integrity: sha512-OddAcYjjW/N3YIlnLLrifVxrFONAAF835L+JfXozQwsSq/4w6sQBaGw8WVRs+KJuCNZ2z9dTvx0EmEhm9jI8YQ==}
+  '@typescript/typescript-linux-arm@7.1.0-dev.20260905.1':
+    resolution: {integrity: sha512-hiQiVNQVfw08mbCorLgVQ4U+J1riXOe6KsGb6V/SAHyR98zlBC45hRZHFGm6ws6eToQBniD6pbXi/n+nWyrN9w==}
     engines: {node: '>=16.20.0'}
     cpu: [arm]
     os: [linux]
 
-  '@typescript/typescript-linux-x64@7.1.0-dev.20260903.1':
-    resolution: {integrity: sha512-zKK5QxJSofs6V6w4lbgdRf9R10fdbBjHZ1sF6uRZePmzjqDCS6ELTPSEujPR+Iy8iFqZBo87ZmR1baDmuFtJjw==}
+  '@typescript/typescript-linux-x64@7.1.0-dev.20260905.1':
+    resolution: {integrity: sha512-qThqylINQT0Bjx9CaL/6Fb48j2UVVjf6KOrqOXjp9Mo2z+eNymfvff/UoqTMlGbg77+YxbrQuSutEOzKVrW7DA==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [linux]
 
-  '@typescript/typescript-win32-arm64@7.1.0-dev.20260903.1':
-    resolution: {integrity: sha512-IT0nShRuiDbHl+3wRwXjCQA+PDE3pRwhRz+97z+UlRSjyQ3UgWNNdGEh/pALk6gK2hBfsEuoKNtHLHquq8hRug==}
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20260905.1':
+    resolution: {integrity: sha512-mGEjNFdp+K5/M/Q65jhf7Ssf5r5EzEYHRpLun+YGiQg2Z5i4IpBRl/fnXzCpDQHR/4AQ3kHGErGGJriUzLDU0w==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [win32]
 
-  '@typescript/typescript-win32-x64@7.1.0-dev.20260903.1':
-    resolution: {integrity: sha512-iK/eeSrtrIsFPGKBhsxnHC7P/hX2FwzVff3j0UnbCDKNiJb4G6WUiC9+qth30QBCCBGJ5ba70RG0qcuUcLm+0A==}
+  '@typescript/typescript-win32-x64@7.1.0-dev.20260905.1':
+    resolution: {integrity: sha512-3zDjLgV2fgRJtkCAlerLX/EIcuA0p73H9SwDoZYTe/lvACa5vTgkDPDXnBm88QrtXIYLwsz1iUR7hF5OlnRHjw==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [win32]
@@ -250,8 +250,8 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
-  typescript@7.1.0-dev.20260903.1:
-    resolution: {integrity: sha512-xp/rsu6Whgm+q5K4Ym4KvQ7NBd1Zp9PtU9fdYdCwYvLUL80lA749aKr81fgBHYm/p2Bql4hMoM7NeGQCLe36YQ==}
+  typescript@7.1.0-dev.20260905.1:
+    resolution: {integrity: sha512-omiZbvsEDSrYyq49VLAhcGDXgXMRMe6kngb2BgFiDnsaYKaspI7aKjq0i7eW44m0YeiWiQGIlTn1dvR0Pf+3+A==}
     engines: {node: '>=16.20.0'}
     hasBin: true
 
@@ -307,25 +307,25 @@ snapshots:
 
   '@typescript/old@6.0.3': {}
 
-  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260903.1':
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20260905.1':
     optional: true
 
-  '@typescript/typescript-darwin-x64@7.1.0-dev.20260903.1':
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20260905.1':
     optional: true
 
-  '@typescript/typescript-linux-arm64@7.1.0-dev.20260903.1':
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20260905.1':
     optional: true
 
-  '@typescript/typescript-linux-arm@7.1.0-dev.20260903.1':
+  '@typescript/typescript-linux-arm@7.1.0-dev.20260905.1':
     optional: true
 
-  '@typescript/typescript-linux-x64@7.1.0-dev.20260903.1':
+  '@typescript/typescript-linux-x64@7.1.0-dev.20260905.1':
     optional: true
 
-  '@typescript/typescript-win32-arm64@7.1.0-dev.20260903.1':
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20260905.1':
     optional: true
 
-  '@typescript/typescript-win32-x64@7.1.0-dev.20260903.1':
+  '@typescript/typescript-win32-x64@7.1.0-dev.20260905.1':
     optional: true
 
   '@typescript/typescript6@6.0.2':
@@ -408,14 +408,14 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
-  typescript@7.1.0-dev.20260903.1:
+  typescript@7.1.0-dev.20260905.1:
     optionalDependencies:
-      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20260903.1
-      '@typescript/typescript-darwin-x64': 7.1.0-dev.20260903.1
-      '@typescript/typescript-linux-arm': 7.1.0-dev.20260903.1
-      '@typescript/typescript-linux-arm64': 7.1.0-dev.20260903.1
-      '@typescript/typescript-linux-x64': 7.1.0-dev.20260903.1
-      '@typescript/typescript-win32-arm64': 7.1.0-dev.20260903.1
-      '@typescript/typescript-win32-x64': 7.1.0-dev.20260903.1
+      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20260905.1
+      '@typescript/typescript-darwin-x64': 7.1.0-dev.20260905.1
+      '@typescript/typescript-linux-arm': 7.1.0-dev.20260905.1
+      '@typescript/typescript-linux-arm64': 7.1.0-dev.20260905.1
+      '@typescript/typescript-linux-x64': 7.1.0-dev.20260905.1
+      '@typescript/typescript-win32-arm64': 7.1.0-dev.20260905.1
+      '@typescript/typescript-win32-x64': 7.1.0-dev.20260905.1
 
   undici-types@8.3.0: {}
