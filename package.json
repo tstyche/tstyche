@@ -1,6 +1,6 @@
 {
   "name": "tstyche",
-  "version": "7.2.3",
+  "version": "7.2.4",
   "description": "Everything You Need for Type Testing.",
   "keywords": [
     "typescript",
@@ -62,9 +62,9 @@
     "typecheck": "tsc --build --force --verbose"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.11",
-    "@sourcemeta/jsonschema": "^16.8.0",
-    "@types/node": "^26.4.0",
+    "@biomejs/biome": "^2.5.12",
+    "@sourcemeta/jsonschema": "^16.9.0",
+    "@types/node": "^26.4.1",
     "@types/react": "^19.2.18",
     "@typescript/typescript6": "^6.0.2",
     "cleaner-spec-reporter": "^1.0.3",

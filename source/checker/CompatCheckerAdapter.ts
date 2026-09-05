@@ -143,6 +143,14 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
     return this.checker.getSignaturesOfType(type as ts6.Type, kind);
   }
 
+  getSymbol(type: ts.Type): ts.Symbol | undefined {
+    return (type as ts6.Type).symbol;
+  }
+
+  getAliasSymbol(type: ts.Type): ts.Symbol | undefined {
+    return (type as ts6.Type).aliasSymbol;
+  }
+
   getTargetSymbol(symbol: ts.Symbol): ts.Symbol | undefined {
     return this.#isCheckFlagSet(symbol as ts6.Symbol, this.ts.CheckFlags.Instantiated)
       ? (symbol as ts6.TransientSymbol).links.target

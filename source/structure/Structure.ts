@@ -9,6 +9,7 @@ export class Structure {
 
   #deduplicateCache = new WeakMap<ts.Type, Array<ts.Type>>();
   #memoizeCache = new Map<string, ComparisonResult>();
+  #recursionStack: Array<{ aId: number; bId: number; aIdentity: ts.Symbol; bIdentity: ts.Symbol }> = [];
 
   constructor(compiler: ts.TypeScript, program: ts.Program, checker: Checker) {
     this.#ts = compiler;
@@ -542,6 +543,35 @@ export class Structure {
     return result;
   }
 
+  #getRecursionIdentity(type: ts.Type): ts.Symbol | undefined {
+    return this.#checker.getAliasSymbol(type) ?? this.#checker.getSymbol(type);
+  }
+
+  #isInfiniteRecursion(a: ts.Type, b: ts.Type): boolean {
+    const aIdentity = this.#getRecursionIdentity(a);
+    const bIdentity = this.#getRecursionIdentity(b);
+
+    if (!aIdentity || !bIdentity) {
+      return false;
+    }
+
+    let matches = 0;
+
+    for (const frame of this.#recursionStack) {
+      // increasing ids on both sides of a matching identity signal a fresh instantiation, not a true revisit
+      if (frame.aIdentity === aIdentity && frame.bIdentity === bIdentity && a.id > frame.aId && b.id > frame.bId) {
+        matches++;
+
+        // require 2 repeats to avoid false positives
+        if (matches >= 2) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   #memoize(a: ts.Type, b: ts.Type, compare: () => boolean): boolean {
     const key = [a.id, b.id].sort((a, b) => a - b).join(":");
     const result = this.#memoizeCache.get(key);
@@ -550,9 +580,25 @@ export class Structure {
       return result !== ComparisonResult.Different;
     }
 
+    if (this.#isInfiniteRecursion(a, b)) {
+      this.#memoizeCache.set(key, ComparisonResult.Identical);
+      return true;
+    }
+
     this.#memoizeCache.set(key, ComparisonResult.Pending);
 
+    const aIdentity = this.#getRecursionIdentity(a);
+    const bIdentity = this.#getRecursionIdentity(b);
+
+    if (aIdentity != null && bIdentity != null) {
+      this.#recursionStack.push({ aId: a.id, bId: b.id, aIdentity, bIdentity });
+    }
+
     const isSame = compare();
+
+    if (aIdentity != null && bIdentity != null) {
+      this.#recursionStack.pop();
+    }
 
     this.#memoizeCache.set(key, isSame ? ComparisonResult.Identical : ComparisonResult.Different);
 
