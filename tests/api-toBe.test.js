@@ -49,6 +49,7 @@ await test("toBe", async (t) => {
       "classes",
       "conditional",
       "enums",
+      "infinite-recursion",
       "interfaces",
       "intersections",
       "mapped",
