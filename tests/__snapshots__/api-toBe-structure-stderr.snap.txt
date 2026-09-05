@@ -1,0 +1,22 @@
+Error: Type 'ReadonlyCollection<{}>' is not the same as type 'ReadonlyCollection<{ x: string; }>'.
+
+   9 | 
+  10 | expect<ReadonlyCollection<{}>>().type.not.toBe<ReadonlyCollection<{ x: string }>>();
+  11 | expect<ReadonlyCollection<{}>>().type.toBe<ReadonlyCollection<{ x: string }>>(); // fail
+     |                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  12 | 
+  13 | type Box<T> = {
+  14 |   value: T;
+
+       at ./__typetests__/infinite-recursion.tst.ts:11:44
+
+Error: Type 'Box<Box<Box<string>>>' is not the same as type 'Box<Box<Box<number>>>'.
+
+  16 | 
+  17 | expect<Box<Box<Box<string>>>>().type.not.toBe<Box<Box<Box<number>>>>();
+  18 | expect<Box<Box<Box<string>>>>().type.toBe<Box<Box<Box<number>>>>(); // fail
+     |                                           ~~~~~~~~~~~~~~~~~~~~~
+  19 | 
+
+       at ./__typetests__/infinite-recursion.tst.ts:18:43
+

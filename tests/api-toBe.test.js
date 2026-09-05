@@ -49,6 +49,7 @@ await test("toBe", async (t) => {
       "classes",
       "conditional",
       "enums",
+      "infinite-recursion",
       "interfaces",
       "intersections",
       "mapped",
@@ -66,14 +67,17 @@ await test("toBe", async (t) => {
       "./tsconfig-exact.json",
     ]);
 
-    assert.equal(stderr, "");
+    await assert.matchSnapshot(normalizeOutput(stderr), {
+      fileName: `${testFileName}-structure-stderr`,
+      testFileUrl: import.meta.url,
+    });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
       fileName: `${testFileName}-structure-stdout`,
       testFileUrl: import.meta.url,
     });
 
-    assert.equal(exitCode, 0);
+    assert.equal(exitCode, 1);
   });
 
   await t.test("exact optional property types", async () => {

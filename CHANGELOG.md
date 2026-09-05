@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.2.4] - 2026-09-05
+
+### Fixed
+
+- Prevent infinite recursion when comparing self-referential generic types ([#791](https://github.com/tstyche/tstyche/pull/791))
+
 ## [7.2.3] - 2026-08-22
 
 ### Fixed
@@ -1074,6 +1080,8 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.2.4]: https://github.com/tstyche/tstyche/releases/tag/v7.2.4
+[7.2.3]: https://github.com/tstyche/tstyche/releases/tag/v7.2.3
 [7.2.2]: https://github.com/tstyche/tstyche/releases/tag/v7.2.2
 [7.2.1]: https://github.com/tstyche/tstyche/releases/tag/v7.2.1
 [7.2.0]: https://github.com/tstyche/tstyche/releases/tag/v7.2.0
