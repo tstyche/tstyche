@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
+import process from "node:process";
 import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import { Version } from "#version";
@@ -7,11 +8,16 @@ import type { Fetcher } from "./Fetcher.js";
 import { Manifest } from "./Manifest.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
+interface VersionMetadata {
+  dist: { integrity: string; tarball: string };
+  optionalDependencies?: Record<string, string>;
+}
+
 interface PackageMetadata {
   ["dist-tags"]: Record<string, string>;
   modified: string;
   name: string;
-  versions: Record<string, { dist: { integrity: string; tarball: string } }>;
+  versions: Record<string, VersionMetadata>;
 }
 
 export class ManifestService {
@@ -29,7 +35,7 @@ export class ManifestService {
   }
 
   async #create() {
-    const manifest = await this.#load();
+    const manifest = await this.#fetch();
 
     if (manifest != null) {
       await this.#persist(manifest);
@@ -38,10 +44,10 @@ export class ManifestService {
     return manifest;
   }
 
-  async #load(options?: { suppressErrors?: boolean }) {
+  async #fetchMetadata<R>(packageSpecifier: string, options?: { suppressErrors?: boolean | undefined }) {
     const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry));
 
-    const request = new Request(new URL("typescript", this.#npmRegistry), {
+    const request = new Request(new URL(packageSpecifier, this.#npmRegistry), {
       headers: {
         // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
         ["Accept"]: "application/vnd.npm.install-v1+json;q=1.0, application/json;q=0.8, */*",
@@ -54,19 +60,24 @@ export class ManifestService {
       return;
     }
 
+    return (await response.json()) as R;
+  }
+
+  async #fetch(options?: { suppressErrors?: boolean | undefined }) {
+    const packageMetadata = await this.#fetchMetadata<PackageMetadata>("typescript", {
+      suppressErrors: options?.suppressErrors,
+    });
+
+    if (!packageMetadata) {
+      return;
+    }
+
     const resolutions: Manifest["resolutions"] = {};
     const packages: Manifest["packages"] = {};
     const versions: Manifest["versions"] = [];
 
-    const packageMetadata = (await response.json()) as PackageMetadata;
-
     for (const [tag, meta] of Object.entries(packageMetadata.versions)) {
-      if (
-        !tag.includes("-") &&
-        Version.isSatisfiedWith(tag, "5.4") &&
-        // TODO remove after adding support for TypeScript 7
-        !Version.isSatisfiedWith(tag, "7.0")
-      ) {
+      if (!tag.includes("-") && !tag.startsWith("7.0") && Version.isSatisfiedWith(tag, "5.4")) {
         versions.push(tag);
 
         packages[tag] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
@@ -97,13 +108,46 @@ export class ManifestService {
       }
     }
 
-    // TODO remove after adding support for TypeScript 7
-    resolutions["latest"] = versions.findLast((version) => version.startsWith("6"))!;
+    for (const tag in packages) {
+      if (!Version.isSatisfiedWith(tag, "7.0")) {
+        continue;
+      }
 
-    return new Manifest({ minorVersions, npmRegistry: this.#npmRegistry, packages, resolutions, versions });
+      const packageBinaryName = `@typescript/typescript-${process.platform}-${process.arch}`;
+      const packageBinaryVersion = packageMetadata.versions[tag]?.optionalDependencies?.[packageBinaryName];
+
+      if (!packageBinaryVersion) {
+        // TODO Error: "Unable to resolve " + binaryPackageName + ". Your platform is not supported."
+
+        continue;
+      }
+
+      const packageSpecifier = `${packageBinaryName}/${packageBinaryVersion}`;
+      const versionMetadata = await this.#fetchMetadata<VersionMetadata>(packageSpecifier, {
+        suppressErrors: options?.suppressErrors,
+      });
+
+      if (!versionMetadata) {
+        continue;
+      }
+
+      packages[tag]!.binary = {
+        name: packageBinaryName,
+        integrity: versionMetadata.dist.integrity,
+        tarball: versionMetadata.dist.tarball,
+      };
+    }
+
+    return new Manifest({
+      minorVersions,
+      npmRegistry: this.#npmRegistry,
+      packages,
+      resolutions,
+      versions,
+    });
   }
 
-  async open(options?: { refresh?: boolean }): Promise<Manifest | undefined> {
+  async open(options?: { refresh?: boolean | undefined }): Promise<Manifest | undefined> {
     if (!existsSync(this.#manifestFilePath)) {
       return this.#create();
     }
@@ -119,7 +163,7 @@ export class ManifestService {
 
     if (manifest.isOutdated() || options?.refresh) {
       // error events are dispatched only when manifest refresh is requested explicitly (e.g. via the '--update' option)
-      const freshManifest = await this.#load({ suppressErrors: !options?.refresh });
+      const freshManifest = await this.#fetch({ suppressErrors: !options?.refresh });
 
       if (freshManifest != null) {
         await this.#persist(freshManifest);

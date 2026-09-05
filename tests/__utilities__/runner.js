@@ -7,6 +7,8 @@ import { TestReporter } from "cleaner-spec-reporter";
 import { cleanCoverageDirectory, collectCoverage, reportCoverage } from "./coverage.js";
 import { cleanFixtureDirectory } from "./fixture.js";
 
+const isCi = process.env["CI"] === "true";
+
 /**
  * @param {Array<string>} testFiles
  */
@@ -66,7 +68,11 @@ if (debug) {
  * @param {boolean} concurrency
  */
 async function runTests(files, concurrency) {
-  const testStream = run({ argv: options, concurrency, files, only })
+  if (isCi) {
+    concurrency = false;
+  }
+
+  const testStream = run({ argv: options, env: { ...process.env, ["GOMAXPROCS"]: "1" }, concurrency, files, only })
     .on("test:fail", () => {
       process.exitCode = 1;
     })

@@ -1,5 +1,5 @@
-import type ts from "@typescript/typescript6";
 import type { Diagnostic } from "#diagnostic";
+import type * as ts from "#typescript";
 
 export type ArgumentNode = ts.Expression | ts.TypeNode;
 

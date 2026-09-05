@@ -1,7 +1,8 @@
-import type ts from "@typescript/typescript6";
+import { TextFileService } from "#text";
+import type * as ts from "#typescript";
 import { DiagnosticCategory } from "./DiagnosticCategory.enum.js";
 import { DiagnosticOrigin } from "./DiagnosticOrigin.js";
-import { getDiagnosticMessageText, getTextSpanEnd, isDiagnosticWithLocation } from "./helpers.js";
+import { getDiagnosticMessageText, isDiagnosticLocation, isDiagnosticPosition } from "./helpers.js";
 
 export class Diagnostic {
   category: DiagnosticCategory;
@@ -36,13 +37,21 @@ export class Diagnostic {
     return new Diagnostic([this.text, text].flat(), this.category, origin ?? this.origin);
   }
 
-  static fromDiagnostics(diagnostics: Array<ts.Diagnostic>): Array<Diagnostic> {
+  static fromDiagnostics(diagnostics: ReadonlyArray<ts.Diagnostic>): Array<Diagnostic> {
     return diagnostics.map((diagnostic) => {
       const code = `ts(${diagnostic.code})`;
       let origin: DiagnosticOrigin | undefined;
 
-      if (isDiagnosticWithLocation(diagnostic)) {
-        origin = new DiagnosticOrigin(diagnostic.start, getTextSpanEnd(diagnostic), diagnostic.file);
+      if (isDiagnosticPosition(diagnostic)) {
+        origin = new DiagnosticOrigin(diagnostic.pos, diagnostic.end, TextFileService.get(diagnostic.fileName));
+      }
+
+      if (isDiagnosticLocation(diagnostic)) {
+        origin = new DiagnosticOrigin(
+          diagnostic.start,
+          diagnostic.start + diagnostic.length,
+          TextFileService.get(diagnostic.file),
+        );
       }
 
       let related: Array<Diagnostic> | undefined;

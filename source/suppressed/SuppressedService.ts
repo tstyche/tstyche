@@ -2,6 +2,7 @@ import type { TestTree } from "#collect";
 import { Diagnostic, DiagnosticOrigin, getDiagnosticMessageText } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { SuppressedResult } from "#result";
+import { TextFileService } from "#text";
 import { SuppressedDiagnosticText } from "./SuppressedDiagnosticText.js";
 
 export class SuppressedService {
@@ -32,7 +33,7 @@ export class SuppressedService {
       const origin = new DiagnosticOrigin(
         suppressedError.directive.start,
         suppressedError.directive.end,
-        testTree.sourceFile,
+        TextFileService.get(testTree.sourceFile),
       );
 
       if (!suppressedError.argument?.text) {
@@ -51,11 +52,7 @@ export class SuppressedService {
         continue;
       }
 
-      let messageText = getDiagnosticMessageText(suppressedError.diagnostics[0]!);
-
-      if (Array.isArray(messageText)) {
-        messageText = messageText.join("\n");
-      }
+      const messageText = getDiagnosticMessageText(suppressedError.diagnostics[0]!).join("\n");
 
       if (!this.#matchMessage(messageText, suppressedError.argument.text)) {
         const text = SuppressedDiagnosticText.messageDidNotMatch();
@@ -63,7 +60,7 @@ export class SuppressedService {
         const origin = new DiagnosticOrigin(
           suppressedError.argument.start,
           suppressedError.argument.end,
-          testTree.sourceFile,
+          TextFileService.get(testTree.sourceFile),
         );
 
         this.#onDiagnostics(Diagnostic.error(text, origin).add({ related }), suppressedResult);

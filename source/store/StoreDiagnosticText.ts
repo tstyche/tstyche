@@ -7,8 +7,8 @@ export class StoreDiagnosticText {
     return `Failed to fetch metadata of the 'typescript' package from '${registry}'.`;
   }
 
-  static failedToFetchPackage(version: string): string {
-    return `Failed to fetch the 'typescript@${version}' package.`;
+  static failedToFetchPackage(packageSpecifier: string): string {
+    return `Failed to fetch the '${packageSpecifier}' package.`;
   }
 
   static failedToUpdateMetadata(registry: string): string {
@@ -33,5 +33,13 @@ export class StoreDiagnosticText {
 
   static lockWaitTimeoutWasExceeded(timeout: number): string {
     return `Lock wait timeout of ${timeout / 1000}s was exceeded.`;
+  }
+
+  static versionIsNotSupported(): Array<string> {
+    return [
+      "The installed TypeScript version 7.0 is not supported.",
+      "Please upgrade to TypeScript 7.1 or later.",
+      "Or use the '--target' command line option to specify a supported version explicitly.",
+    ];
   }
 }

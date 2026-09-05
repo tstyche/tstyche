@@ -4,6 +4,7 @@ import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
+import { getTypeScriptVersionMajor } from "./__utilities__/typescript.js";
 
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName);
@@ -50,7 +51,7 @@ await test("toAcceptProps", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["overloaded-components"]);
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-overloaded-components-stderr`,
+      fileName: `${testFileName}-overloaded-components-stderr-${getTypeScriptVersionMajor()}`,
       testFileUrl: import.meta.url,
     });
 

@@ -30,7 +30,7 @@ export async function reportCoverage() {
 
     sourceFilter: {
       "**/source/api.ts": false,
-      "**/source/ts-internals.d.ts": false,
+      "**/source/typescript/typescript6.d.ts": false,
       "**/source/*/*.enum.ts": false,
       "**/source/*/index.ts": false,
       "**/source/*/types.ts": false,

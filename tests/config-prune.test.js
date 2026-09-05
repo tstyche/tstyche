@@ -38,7 +38,7 @@ await test("'--prune' command line option", async (t) => {
 
   for (const { args, testCase } of testCases) {
     await t.test(testCase, async () => {
-      const storeManifest = { $version: "3" };
+      const storeManifest = { $version: "4" };
       const storeUrl = new URL("./.store", fixtureUrl);
 
       await writeFixture(fixtureUrl, {

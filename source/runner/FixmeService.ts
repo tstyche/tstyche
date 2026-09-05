@@ -72,7 +72,7 @@ export class FixmeService {
     if (isFail === false) {
       const text = [FixmeDiagnosticText.wasSupposedToFail(owner.brand), FixmeDiagnosticText.considerRemoving()];
 
-      const origin = new DiagnosticOrigin(directive.namespace.start, directive.directive!.end, directive.sourceFile);
+      const origin = new DiagnosticOrigin(directive.namespace.start, directive.directive!.end, directive.file);
 
       onFileDiagnostics([Diagnostic.error(text, origin)]);
     }

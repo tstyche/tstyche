@@ -1,19 +1,18 @@
-import type ts from "@typescript/typescript6";
 import type { TestTree } from "#collect";
 import type { ResolvedConfig } from "#config";
-import { isDiagnosticWithLocation } from "#diagnostic";
-import type { TextEditor } from "./TextEditor.js";
+import { isDiagnosticLocation, isDiagnosticPosition } from "#diagnostic";
+import type { TextEditor } from "#editor";
+import { type TextFile, TextFileService } from "#text";
+import type * as ts from "#typescript";
 import type { SuppressedError } from "./types.js";
 
 export class SuppressedLayer {
-  #compiler: typeof ts;
   #editor: TextEditor;
   #expectErrorRegex = /^([ \t/*{]*)(@ts-expect-error)(!?)(:? *)(.*?)(?:\*\/.*)?$/gim;
   #resolvedConfig: ResolvedConfig;
   #suppressedErrorsMap: Map<number, SuppressedError> | undefined;
 
-  constructor(compiler: typeof ts, editor: TextEditor, resolvedConfig: ResolvedConfig) {
-    this.#compiler = compiler;
+  constructor(editor: TextEditor, resolvedConfig: ResolvedConfig) {
     this.#editor = editor;
     this.#resolvedConfig = resolvedConfig;
   }
@@ -62,15 +61,29 @@ export class SuppressedLayer {
     this.#suppressedErrorsMap = undefined;
   }
 
+  hasChanges(): boolean {
+    return this.#suppressedErrorsMap != null;
+  }
+
   #mapToDirectives(diagnostic: ts.Diagnostic) {
-    if (!isDiagnosticWithLocation(diagnostic)) {
+    let file: TextFile | undefined;
+    let position: number | undefined;
+
+    if (isDiagnosticPosition(diagnostic)) {
+      file = TextFileService.get(diagnostic.fileName);
+      position = diagnostic.pos;
+    }
+    if (isDiagnosticLocation(diagnostic)) {
+      file = TextFileService.get(diagnostic.file);
+      position = diagnostic.start;
+    }
+
+    if (!file || !position) {
       return;
     }
 
-    const { file, start } = diagnostic;
-
-    const lineMap = file.getLineStarts();
-    let line = this.#compiler.getLineAndCharacterOfPosition(file, start).line - 1;
+    const lineMap = file.getLineMap();
+    let line = file.getLocation(position).line - 1;
 
     while (line >= 0) {
       const suppressedError = this.#suppressedErrorsMap?.get(line);
@@ -104,7 +117,8 @@ export class SuppressedLayer {
       this.#editor.erase(start, end);
 
       if (this.#suppressedErrorsMap != null) {
-        const { line } = tree.sourceFile.getLineAndCharacterOfPosition(start);
+        const file = TextFileService.get(tree.sourceFile);
+        const { line } = file.getLocation(start);
 
         this.#suppressedErrorsMap.set(line, suppressedError);
       }

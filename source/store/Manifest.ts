@@ -1,21 +1,30 @@
+export interface Resource {
+  integrity: string;
+  tarball: string;
+}
+
+export interface PackageResource extends Resource {
+  binary?: Resource & { name: string };
+}
+
 export interface ManifestData {
   $version?: string;
   lastUpdated?: number;
   minorVersions: Array<string>;
   npmRegistry: string;
-  packages: Record<string, { integrity: string; tarball: string }>;
+  packages: Record<string, PackageResource>;
   resolutions: Record<string, string>;
   versions: Array<string>;
 }
 
 export class Manifest {
-  static #version = "3";
+  static #version = "4";
 
   $version: string;
   lastUpdated: number;
   minorVersions: Array<string>;
   npmRegistry: string;
-  packages: Record<string, { integrity: string; tarball: string }>;
+  packages: Record<string, PackageResource>;
   resolutions: Record<string, string>;
   versions: Array<string>;
 
