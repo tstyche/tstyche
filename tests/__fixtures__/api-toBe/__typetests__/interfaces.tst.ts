@@ -61,6 +61,9 @@ test("unused type parameters", () => {
   interface C<T, U = boolean> {
     x: T;
   }
+  interface D<T, U extends T = T> {
+    value: U;
+  }
 
   class Alpha<T> {}
   class Bravo {}
@@ -90,6 +93,12 @@ test("unused type parameters", () => {
 
   expect<C<number, true>>().type.toBe<C<number>>();
   expect<C<number>>().type.toBe<C<number, false>>();
+
+  expect<D<string, never>>().type.toBe<D<number, never>>();
+  expect<D<number, never>>().type.toBe<D<string, never>>();
+
+  expect<D<string>>().type.not.toBe<D<number>>();
+  expect<D<number>>().type.not.toBe<D<string>>();
 
   expect<Alpha<string>>().type.toBe<{}>();
   expect<{}>().type.toBe<Alpha<number>>();

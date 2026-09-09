@@ -256,8 +256,10 @@ export class Structure {
     return result;
   }
 
-  #isSymbolUsedIn(node: ts.Node, symbol: ts.Symbol, identifier: ts.Identifier): boolean {
-    if (node === identifier) {
+  #isSymbolUsedIn(node: ts.Node, symbol: ts.Symbol, identifier: ts.Identifier, enclosingNode = node): boolean {
+    // skip the type parameter's own identifier, and any type parameter that belongs to 'enclosingNode',
+    // because a constraint or default there doesn't affect the resulting structure
+    if (node === identifier || (this.#compiler.isTypeParameterDeclaration(node) && node.parent === enclosingNode)) {
       return false;
     }
 
@@ -265,7 +267,7 @@ export class Structure {
       return true;
     }
 
-    return node.forEachChild((node) => this.#isSymbolUsedIn(node, symbol, identifier)) ?? false;
+    return node.forEachChild((child) => this.#isSymbolUsedIn(child, symbol, identifier, enclosingNode)) ?? false;
   }
 
   compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {
