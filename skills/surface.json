@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "package": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "./api": "./dist/api.js",
+      "./tag": "./dist/tag.js",
+      "./package.json": "./package.json"
+    },
+    "engines": {
+      "node": ">=22"
+    },
+    "peerDependencies": {
+      "typescript": ">=5.4"
+    },
+    "bin": "./dist/bin.js",
+    "files": ["dist/**/*", "schemas/*.json"]
+  },
+  "inputs": {
+    "package.json": "6030ed49cfd8d776439feb0bdcbecf2e62ac6524d1d2ca5db7ed07b61248890d",
+    "dist/index.d.ts": "df93219ea46e8824d564dd9f292547f15e17efe51b697bd76fa46c0296690251",
+    "dist/api.d.ts": "e616be1ba804068577991734b3125051c488f5708be20734ec31e4f96bb7258b",
+    "dist/tag.d.ts": "f7b653b1b6917cab3c5be0c403a9f2adb6197791fb0e2f7839272dcd17a4b4b4",
+    "schemas/config.json": "86d1c561a1a4a05898516f08727251bdf42156bf2e30c98585b90d66884398e7",
+    "dist/bin.js": "dabd7f861c5b42e04e063dfac5dbc3fec1c4347f20477a6b35f55cc1b83de2a7",
+    "source/config/Directive.ts": "23bb06a8270bda75c7e73e4456264509d559b34692e0ddd7da8a1c95e92db033",
+    "source/environment/Environment.ts": "3915007a8ca96ab933f334ff1ae6b2332d310686a0052cabcd170d841e2f25e9"
+  }
+}
