@@ -8,6 +8,9 @@ test("edge cases", () => {
 
   expect<{ a: string }>().type.toBe<(({ a: string } & { a: string }) | { a: string }) & { a: string }>();
   expect<{ a: string }>().type.not.toBe<(({ a: string } & { a: string }) | { a: string }) & { b: string }>();
+
+  expect<{}>().type.not.toBe<Record<string, never>>();
+  expect<Record<string, never>>().type.not.toBe<{}>();
 });
 
 test("optional", () => {
