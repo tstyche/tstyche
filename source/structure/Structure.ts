@@ -10,6 +10,7 @@ export class Structure {
   #deduplicateCache = new WeakMap<ts.Type, Array<ts.Type>>();
   #memoizeCache = new Map<string, ComparisonResult>();
   #recursionStack: Array<{ aId: number; bId: number; aIdentity: ts.Symbol; bIdentity: ts.Symbol }> = [];
+  #unusedTypeParametersLookup = new WeakMap<ts.Symbol, Set<number>>();
 
   constructor(compiler: ts.TypeScript, program: ts.Program, checker: Checker) {
     this.#ts = compiler;
@@ -198,11 +199,13 @@ export class Structure {
       const aTypeArguments = this.#checker.getTypeArguments(a);
       const bTypeArguments = this.#checker.getTypeArguments(b);
 
-      if (aTypeArguments.length !== bTypeArguments.length) {
-        return false;
-      }
+      const unusedTypeParameters = this.#getUnusedTypeParameterIndexes(a.target);
 
       for (let i = 0; i < aTypeArguments.length; i++) {
+        if (unusedTypeParameters.has(i)) {
+          continue;
+        }
+
         if (!this.compare(aTypeArguments[i]!, bTypeArguments[i]!)) {
           return false;
         }
@@ -212,6 +215,52 @@ export class Structure {
     }
 
     return this.compareStructures(a, b);
+  }
+
+  #getUnusedTypeParameterIndexes(type: ts.GenericType): Set<number> {
+    const result = new Set<number>();
+
+    if (type.typeParameters != null) {
+      const symbol = type.getSymbol();
+      const declarations = symbol?.getDeclarations();
+
+      if (symbol != null && declarations != null) {
+        const cached = this.#unusedTypeParametersLookup.get(symbol);
+
+        if (cached != null) {
+          return cached;
+        }
+
+        for (let i = 0; i < type.typeParameters.length; i++) {
+          const symbol = type.typeParameters[i]!.getSymbol()!;
+          const identifier = (symbol!.declarations![0] as ts.TypeParameterDeclaration).name;
+
+          const isUsed = declarations.some((declaration) => this.#isSymbolUsedIn(declaration, symbol, identifier));
+
+          if (!isUsed) {
+            result.add(i);
+          }
+        }
+
+        this.#unusedTypeParametersLookup.set(symbol, result);
+      }
+    }
+
+    return result;
+  }
+
+  #isSymbolUsedIn(node: ts.Node, symbol: ts.Symbol, identifier: ts.Identifier, enclosingNode = node): boolean {
+    // skip the type parameter's own identifier, and any type parameter that belongs to 'enclosingNode',
+    // because a constraint or default there doesn't affect the resulting structure
+    if (node === identifier || (this.#compiler.isTypeParameterDeclaration(node) && node.parent === enclosingNode)) {
+      return false;
+    }
+
+    if (this.#compiler.isIdentifier(node) && this.#typeChecker.getSymbolAtLocation(node) === symbol) {
+      return true;
+    }
+
+    return node.forEachChild((child) => this.#isSymbolUsedIn(child, symbol, identifier, enclosingNode)) ?? false;
   }
 
   compareTuples(a: ts.TupleTypeReference, b: ts.TupleTypeReference): boolean {

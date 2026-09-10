@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.2.5] - 2026-09-10
+
+### Fixed
+
+- Ignore unused type parameters when comparing type references ([#792](https://github.com/tstyche/tstyche/pull/792))
+
 ## [7.2.4] - 2026-09-05
 
 ### Fixed
@@ -1080,6 +1086,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[7.2.5]: https://github.com/tstyche/tstyche/releases/tag/v7.2.5
 [7.2.4]: https://github.com/tstyche/tstyche/releases/tag/v7.2.4
 [7.2.3]: https://github.com/tstyche/tstyche/releases/tag/v7.2.3
 [7.2.2]: https://github.com/tstyche/tstyche/releases/tag/v7.2.2
