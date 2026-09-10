@@ -132,6 +132,111 @@ test("skill synchronization detects public contract and metadata drift", async (
     assert.notEqual(result.code, 0);
     assert.match(result.output, /every coverage entry requires url, owner, topics, and resources/);
   });
+
+  await t.test("fails when SKILL.md is missing", async () => {
+    const fixtureRoot = await createFixture(fixtureParent);
+    await fs.rm(path.join(fixtureRoot, "skills/tstyche-type-tests/SKILL.md"));
+
+    const result = await runChecker(fixtureRoot);
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /SKILL\.md is missing/);
+  });
+
+  await t.test("fails when skill frontmatter name does not match directory", async () => {
+    const fixtureRoot = await createFixture(fixtureParent);
+    const skillPath = path.join(fixtureRoot, "skills/tstyche-type-tests/SKILL.md");
+    const text = await fs.readFile(skillPath, "utf8");
+    await fs.writeFile(
+      skillPath,
+      text.replace("name: tstyche-type-tests", "name: tstyche-type-test"),
+    );
+
+    const result = await runChecker(fixtureRoot);
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /name must match the directory and Agent Skills naming rules/);
+  });
+
+  await t.test("fails when skill description is missing", async () => {
+    const fixtureRoot = await createFixture(fixtureParent);
+    const skillPath = path.join(fixtureRoot, "skills/tstyche-type-tests/SKILL.md");
+    const text = await fs.readFile(skillPath, "utf8");
+    await fs.writeFile(
+      skillPath,
+      text.replace(/^description: .*$/m, "description:"),
+    );
+
+    const result = await runChecker(fixtureRoot);
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /description must be 1-1024 characters/);
+  });
+
+  await t.test("fails when a skill owns no contract inputs", async () => {
+    const fixtureRoot = await createFixture(fixtureParent);
+    const sourcesPath = path.join(fixtureRoot, "skills/sources.json");
+    const sources = JSON.parse(await fs.readFile(sourcesPath, "utf8"));
+    sources.contractInputs = sources.contractInputs.filter(
+      (input) => input.owner !== "tstyche-programmatic-api",
+    );
+    await fs.writeFile(sourcesPath, `${JSON.stringify(sources, null, 2)}\n`);
+
+    const result = await runChecker(fixtureRoot);
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /skill tstyche-programmatic-api owns no contract inputs/);
+  });
+
+  await t.test("fails when coverage topics contain non-strings", async () => {
+    const fixtureRoot = await createFixture(fixtureParent);
+    const sourcesPath = path.join(fixtureRoot, "skills/sources.json");
+    const sources = JSON.parse(await fs.readFile(sourcesPath, "utf8"));
+    sources.coverage[0].topics = ["valid", 7];
+    await fs.writeFile(sourcesPath, `${JSON.stringify(sources, null, 2)}\n`);
+
+    const result = await runChecker(fixtureRoot);
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /every coverage entry requires url, owner, topics, and resources/);
+  });
+
+  await t.test("fails when a coverage resource resolves to a directory", async () => {
+    const fixtureRoot = await createFixture(fixtureParent);
+    const sourcesPath = path.join(fixtureRoot, "skills/sources.json");
+    const sources = JSON.parse(await fs.readFile(sourcesPath, "utf8"));
+    sources.coverage[0].resources = ["tstyche-type-tests/references"];
+    await fs.writeFile(sourcesPath, `${JSON.stringify(sources, null, 2)}\n`);
+
+    const result = await runChecker(fixtureRoot);
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /points to missing resource/);
+  });
+
+  await t.test("fails when a package version mismatch is not refreshed", async () => {
+    const fixtureRoot = await createFixture(fixtureParent);
+    const packagePath = path.join(fixtureRoot, "package.json");
+    const packageJson = JSON.parse(await fs.readFile(packagePath, "utf8"));
+    packageJson.version = "7.2.5";
+    await fs.writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
+
+    const result = await runChecker(fixtureRoot);
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /packageVersion must match package\.json/);
+  });
+
+  await t.test("reports added and removed contract inputs separately", async () => {
+    const fixtureRoot = await createFixture(fixtureParent);
+    const sourcesPath = path.join(fixtureRoot, "skills/sources.json");
+    const sources = JSON.parse(await fs.readFile(sourcesPath, "utf8"));
+    sources.contractInputs.shift();
+    sources.contractInputs.push({
+      path: "schemas/__tests__/rejectAnyType.test.json",
+      owner: "tstyche-project-setup",
+      kind: "json",
+    });
+    await fs.writeFile(sourcesPath, `${JSON.stringify(sources, null, 2)}\n`);
+
+    const result = await runChecker(fixtureRoot);
+    assert.notEqual(result.code, 0);
+    assert.match(result.output, /contract input added: schemas\/__tests__\/rejectAnyType\.test\.json/);
+    assert.match(result.output, /contract input removed: package\.json/);
+  });
 });
 
 /**

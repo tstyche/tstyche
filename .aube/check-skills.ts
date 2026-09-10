@@ -4,6 +4,39 @@ import { existsSync, readdirSync, readFileSync, renameSync, statSync, writeFileS
 import { dirname, join, relative, resolve } from "node:path";
 import process from "node:process";
 
+/**
+ * Validates and refreshes the repository-local TSTyche Agent Skills.
+ *
+ * A skill is a directory under `skills/` containing a `SKILL.md` entrypoint
+ * (with Agent Skills frontmatter: `name` matching the directory, `description`
+ * 1-1024 chars, total length <= 500 lines) and any number of focused Markdown
+ * references in `references/`.
+ *
+ * `skills/sources.json` is the manifest. It records:
+ *  - `contractInputs`: every file the skill is contractually responsible for,
+ *    tagged by `kind` (`package`, `declaration`, `cli-help`, `json`,
+ *    `behavior`). Each kind is hashed differently — for example, `package` and
+ *    `json` inputs are re-stringified to ignore formatting, `cli-help` inputs
+ *    are captured by running the CLI with `--help`, and `declaration` /
+ *    `behavior` inputs are normalized for line endings and trailing
+ *    whitespace.
+ *  - `coverage`: the documentation URLs each skill owns, with the local
+ *    resources that document them.
+ *
+ * `skills/surface.json` is the deterministic, content-hashed snapshot of every
+ * contract input plus a subset of the public `package.json` surface. The check
+ * is "did any contract input hash change, was one added, or was one removed?"
+ * — internal-only edits to non-contract files are intentionally invisible.
+ *
+ * Two commands:
+ *  - `skills:check` (the default): validate structure and surface; fail on
+ *    drift, missing files, or schema violations.
+ *  - `skills:update` (`--write`): same validation, but on success refresh the
+ *    `surface.json` snapshot and the `packageVersion` field in `sources.json`
+ *    from the current `package.json`. The script refuses to write when any
+ *    error remains, so `--write` cannot mask a malformed manifest.
+ */
+
 interface PackageJson {
   bin?: unknown;
   engines?: unknown;
@@ -14,13 +47,10 @@ interface PackageJson {
   version?: string;
 }
 
-interface PackageSurface {
-  bin?: unknown;
-  engines?: unknown;
-  exports?: unknown;
-  files?: unknown;
-  peerDependencies?: unknown;
-}
+type PackageSurface = Pick<
+  PackageJson,
+  "bin" | "engines" | "exports" | "files" | "peerDependencies"
+>;
 
 interface Surface {
   inputs: Record<string, string>;
@@ -220,6 +250,7 @@ function validateSources(skillDirs: Array<string>, packageData: PackageJson, man
         typeof entry.owner !== "string" ||
         !Array.isArray(entry.topics) ||
         entry.topics.length === 0 ||
+        !entry.topics.every((topic) => typeof topic === "string") ||
         !Array.isArray(entry.resources) ||
         entry.resources.length === 0 ||
         !entry.resources.every((resource) => typeof resource === "string")
@@ -367,18 +398,35 @@ function validateSurface(surface: Surface): void {
   }
 
   if (JSON.stringify(committed) !== JSON.stringify(surface)) {
-    const changedInputs = Object.keys(surface.inputs).filter(
-      (input) => committed.inputs?.[input] !== surface.inputs[input],
+    const surfaceInputs = surface.inputs;
+    const committedInputs = committed.inputs ?? {};
+    const addedInputs = Object.keys(surfaceInputs).filter((input) => !(input in committedInputs));
+    const changedInputs = Object.keys(surfaceInputs).filter(
+      (input) => input in committedInputs && committedInputs[input] !== surfaceInputs[input],
     );
-    const removedInputs = Object.keys(committed.inputs ?? {}).filter((input) => !(input in surface.inputs));
-    for (const input of [...changedInputs, ...removedInputs]) {
+    const removedInputs = Object.keys(committedInputs).filter((input) => !(input in surfaceInputs));
+    for (const input of addedInputs) {
+      const owner = getInputOwner(input);
+      fail(
+        `contract input added: ${input}; add it to skill ${owner}, then run ` +
+          "`npm run skills:update` after updating the guidance",
+      );
+    }
+    for (const input of changedInputs) {
       const owner = getInputOwner(input);
       fail(
         `contract input changed: ${input}; review owning skill ${owner}, then run ` +
           "`npm run skills:update` after updating the guidance",
       );
     }
-    if (changedInputs.length === 0 && removedInputs.length === 0) {
+    for (const input of removedInputs) {
+      const owner = getInputOwner(input);
+      fail(
+        `contract input removed: ${input}; was owned by ${owner}; remove it from the skill and run ` +
+          "`npm run skills:update` after updating the guidance",
+      );
+    }
+    if (addedInputs.length === 0 && changedInputs.length === 0 && removedInputs.length === 0) {
       fail("skills/surface.json metadata is stale; run `npm run skills:update` after reviewing skill guidance");
     }
   }
