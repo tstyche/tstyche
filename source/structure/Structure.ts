@@ -12,8 +12,8 @@ export class Structure {
   #recursionStack: Array<{ aId: number; bId: number; aIdentity: ts.Symbol; bIdentity: ts.Symbol }> = [];
   #unusedTypeParametersLookup = new WeakMap<ts.Symbol, Set<number>>();
 
-  constructor(compiler: ts.TypeScript, program: ts.Program, checker: Checker) {
-    this.#ts = compiler;
+  constructor(ts: ts.TypeScript, program: ts.Program, checker: Checker) {
+    this.#ts = ts;
     this.#checker = checker;
     this.#compilerOptions = program.getCompilerOptions();
   }
@@ -199,7 +199,7 @@ export class Structure {
       const aTypeArguments = this.#checker.getTypeArguments(a);
       const bTypeArguments = this.#checker.getTypeArguments(b);
 
-      const unusedTypeParameters = this.#getUnusedTypeParameterIndexes(a.target);
+      const unusedTypeParameters = this.#getUnusedTypeParameterIndexes(this.#checker.typeReference.getTarget(a));
 
       for (let i = 0; i < aTypeArguments.length; i++) {
         if (unusedTypeParameters.has(i)) {
@@ -220,19 +220,21 @@ export class Structure {
   #getUnusedTypeParameterIndexes(type: ts.GenericType): Set<number> {
     const result = new Set<number>();
 
-    if (type.typeParameters != null) {
-      const symbol = type.getSymbol();
-      const declarations = symbol?.getDeclarations();
+    const symbol = type.getSymbol();
+    const typeParameters = this.#checker.genericType.getTypeParameters(type);
 
-      if (symbol != null && declarations != null) {
+    if (symbol != null) {
+      const declarations = this.#checker.getDeclarations(symbol);
+
+      if (declarations != null) {
         const cached = this.#unusedTypeParametersLookup.get(symbol);
 
         if (cached != null) {
           return cached;
         }
 
-        for (let i = 0; i < type.typeParameters.length; i++) {
-          const symbol = type.typeParameters[i]!.getSymbol()!;
+        for (let i = 0; i < typeParameters.length; i++) {
+          const symbol = typeParameters[i]!.getSymbol()!;
           const identifier = (symbol!.declarations![0] as ts.TypeParameterDeclaration).name;
 
           const isUsed = declarations.some((declaration) => this.#isSymbolUsedIn(declaration, symbol, identifier));
@@ -252,11 +254,11 @@ export class Structure {
   #isSymbolUsedIn(node: ts.Node, symbol: ts.Symbol, identifier: ts.Identifier, enclosingNode = node): boolean {
     // skip the type parameter's own identifier, and any type parameter that belongs to 'enclosingNode',
     // because a constraint or default there doesn't affect the resulting structure
-    if (node === identifier || (this.#compiler.isTypeParameterDeclaration(node) && node.parent === enclosingNode)) {
+    if (node === identifier || (this.#ts.isTypeParameterDeclaration(node) && node.parent === enclosingNode)) {
       return false;
     }
 
-    if (this.#compiler.isIdentifier(node) && this.#typeChecker.getSymbolAtLocation(node) === symbol) {
+    if (this.#ts.isIdentifier(node) && this.#checker.getSymbolAtLocation(node) === symbol) {
       return true;
     }
 
@@ -593,7 +595,7 @@ export class Structure {
   }
 
   #getRecursionIdentity(type: ts.Type): ts.Symbol | undefined {
-    return this.#checker.getAliasSymbol(type) ?? this.#checker.getSymbol(type);
+    return this.#checker.getAliasSymbol(type) ?? type.getSymbol();
   }
 
   #isInfiniteRecursion(a: ts.Type, b: ts.Type): boolean {

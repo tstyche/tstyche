@@ -20,6 +20,7 @@ import type {
   StringLiteral,
   StringLiteralLikeNode,
   TupleTypeNode,
+  TypeParameterDeclaration,
   TypeReferenceNode,
 } from "./types.js";
 
@@ -116,6 +117,10 @@ export abstract class BaseAdapter {
 
   isTypeReferenceNode(node: Node): node is TypeReferenceNode {
     return node.kind === this.SyntaxKind.TypeReference;
+  }
+
+  isTypeParameterDeclaration(node: Node): node is TypeParameterDeclaration {
+    return node.kind === this.SyntaxKind.TypeParameter;
   }
 
   // ast utils

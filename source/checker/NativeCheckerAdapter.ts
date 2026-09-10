@@ -24,6 +24,12 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     return false;
   }
 
+  getDeclarations(symbol: ts.Symbol): Array<ts.Declaration> | undefined {
+    return (symbol as tsApi.Symbol).declarations
+      .map((declaration) => declaration.resolve())
+      .filter((declaration) => declaration != null);
+  }
+
   getDeclarationModifierFlags(symbol: ts.Symbol): ts.ModifierFlags {
     let modifiers = this.ts.ModifierFlags.None;
 
@@ -126,10 +132,6 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     return this.checker.getSignaturesOfType(type as tsApi.Type, kind);
   }
 
-  getSymbol(type: ts.Type): ts.Symbol | undefined {
-    return (type as tsApi.Type).getSymbol();
-  }
-
   getAliasSymbol(type: ts.Type): ts.Symbol | undefined {
     return (type as tsApi.Type).getAliasSymbol();
   }
@@ -175,6 +177,12 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     },
     getFalseType(type: ts.ConditionalType): ts.Type {
       return (type as tsApi.ConditionalType).getFalseType();
+    },
+  };
+
+  genericType = {
+    getTypeParameters(type: ts.GenericType): ReadonlyArray<ts.TypeParameter> {
+      return (type as tsApi.GenericType).getTypeParameters();
     },
   };
 
@@ -233,7 +241,7 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
   };
 
   typeReference = {
-    getTarget(type: ts.TypeReference): ts.Type {
+    getTarget(type: ts.TypeReference): ts.GenericType {
       return (type as tsApi.TypeReference).getTarget();
     },
   };

@@ -12,6 +12,10 @@ export abstract class BaseCheckerAdapter {
     return this.checker.getPropertiesOfType(type);
   }
 
+  getSymbolAtLocation(node: ts.Node): ts.Symbol | undefined {
+    return this.checker.getSymbolAtLocation(node);
+  }
+
   getType(node: ts.Node): ts.Type {
     return this.checker.getTypeAtLocation(node);
   }

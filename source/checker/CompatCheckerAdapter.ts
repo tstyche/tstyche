@@ -22,6 +22,10 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
     return false;
   }
 
+  getDeclarations(symbol: ts.Symbol): Array<ts.Declaration> | undefined {
+    return (symbol as ts6.Symbol).getDeclarations();
+  }
+
   getDeclarationModifierFlags(symbol: ts.Symbol): ts.ModifierFlags {
     return this.ts.getDeclarationModifierFlagsFromSymbol(symbol as ts6.Symbol);
   }
@@ -143,10 +147,6 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
     return this.checker.getSignaturesOfType(type as ts6.Type, kind);
   }
 
-  getSymbol(type: ts.Type): ts.Symbol | undefined {
-    return (type as ts6.Type).symbol;
-  }
-
   getAliasSymbol(type: ts.Type): ts.Symbol | undefined {
     return (type as ts6.Type).aliasSymbol;
   }
@@ -215,6 +215,12 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
     },
   };
 
+  genericType = {
+    getTypeParameters(type: ts.GenericType): ReadonlyArray<ts.TypeParameter> {
+      return (type as ts6.GenericType).typeParameters ?? [];
+    },
+  };
+
   freshableType = {
     getFreshType(type: ts.FreshableType): ts.Type {
       return (type as ts6.FreshableType).freshType;
@@ -270,7 +276,7 @@ export class CompatCheckerAdapter extends BaseCheckerAdapter {
   };
 
   typeReference = {
-    getTarget(type: ts.TypeReference): ts.Type {
+    getTarget(type: ts.TypeReference): ts.GenericType {
       return (type as ts6.TypeReference).target;
     },
   };
