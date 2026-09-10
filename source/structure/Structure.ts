@@ -220,7 +220,7 @@ export class Structure {
   #getUnusedTypeParameterIndexes(type: ts.GenericType): Set<number> {
     const result = new Set<number>();
 
-    const symbol = type.getSymbol();
+    const symbol = this.#checker.getSymbol(type);
     const typeParameters = this.#checker.genericType.getTypeParameters(type);
 
     if (symbol != null) {
@@ -234,8 +234,8 @@ export class Structure {
         }
 
         for (let i = 0; i < typeParameters.length; i++) {
-          const symbol = typeParameters[i]!.getSymbol()!;
-          const identifier = (symbol!.declarations![0] as ts.TypeParameterDeclaration).name;
+          const symbol = this.#checker.getSymbol(typeParameters[i]!)!;
+          const identifier = (symbol.declarations![0] as ts.TypeParameterDeclaration).name;
 
           const isUsed = declarations.some((declaration) => this.#isSymbolUsedIn(declaration, symbol, identifier));
 
@@ -561,7 +561,7 @@ export class Structure {
   }
 
   compareStringMappingTypes(a: ts.StringMappingType, b: ts.StringMappingType): boolean {
-    if (a.getSymbol() !== b.getSymbol()) {
+    if (this.#checker.getSymbol(a) !== this.#checker.getSymbol(b)) {
       return false;
     }
 
@@ -595,7 +595,7 @@ export class Structure {
   }
 
   #getRecursionIdentity(type: ts.Type): ts.Symbol | undefined {
-    return this.#checker.getAliasSymbol(type) ?? type.getSymbol();
+    return this.#checker.getAliasSymbol(type) ?? this.#checker.getSymbol(type);
   }
 
   #isInfiniteRecursion(a: ts.Type, b: ts.Type): boolean {

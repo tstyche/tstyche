@@ -24,7 +24,7 @@ export class ToHaveProperty {
     if (targetType.flags & (this.#ts.TypeFlags.StringLiteral | this.#ts.TypeFlags.NumberLiteral)) {
       propertyNameText = (targetType as ts.StringLiteralType | ts.NumberLiteralType).value.toString();
     } else {
-      const symbol = targetType.getSymbol();
+      const symbol = this.#checker.getSymbol(targetType);
       propertyNameText = `[${symbol?.name}]`;
     }
 

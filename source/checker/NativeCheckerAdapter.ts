@@ -132,6 +132,10 @@ export class NativeCheckerAdapter extends BaseCheckerAdapter {
     return this.checker.getSignaturesOfType(type as tsApi.Type, kind);
   }
 
+  getSymbol(type: ts.Type): ts.Symbol | undefined {
+    return (type as tsApi.Type).getSymbol();
+  }
+
   getAliasSymbol(type: ts.Type): ts.Symbol | undefined {
     return (type as tsApi.Type).getAliasSymbol();
   }
