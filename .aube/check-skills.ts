@@ -47,10 +47,7 @@ interface PackageJson {
   version?: string;
 }
 
-type PackageSurface = Pick<
-  PackageJson,
-  "bin" | "engines" | "exports" | "files" | "peerDependencies"
->;
+type PackageSurface = Pick<PackageJson, "bin" | "engines" | "exports" | "files" | "peerDependencies">;
 
 interface Surface {
   inputs: Record<string, string>;

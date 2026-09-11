@@ -146,10 +146,7 @@ test("skill synchronization detects public contract and metadata drift", async (
     const fixtureRoot = await createFixture(fixtureParent);
     const skillPath = path.join(fixtureRoot, "skills/tstyche-type-tests/SKILL.md");
     const text = await fs.readFile(skillPath, "utf8");
-    await fs.writeFile(
-      skillPath,
-      text.replace("name: tstyche-type-tests", "name: tstyche-type-test"),
-    );
+    await fs.writeFile(skillPath, text.replace("name: tstyche-type-tests", "name: tstyche-type-test"));
 
     const result = await runChecker(fixtureRoot);
     assert.notEqual(result.code, 0);
@@ -160,10 +157,7 @@ test("skill synchronization detects public contract and metadata drift", async (
     const fixtureRoot = await createFixture(fixtureParent);
     const skillPath = path.join(fixtureRoot, "skills/tstyche-type-tests/SKILL.md");
     const text = await fs.readFile(skillPath, "utf8");
-    await fs.writeFile(
-      skillPath,
-      text.replace(/^description: .*$/m, "description:"),
-    );
+    await fs.writeFile(skillPath, text.replace(/^description: .*$/m, "description:"));
 
     const result = await runChecker(fixtureRoot);
     assert.notEqual(result.code, 0);
@@ -175,6 +169,7 @@ test("skill synchronization detects public contract and metadata drift", async (
     const sourcesPath = path.join(fixtureRoot, "skills/sources.json");
     const sources = JSON.parse(await fs.readFile(sourcesPath, "utf8"));
     sources.contractInputs = sources.contractInputs.filter(
+      /** @param {{owner?: string}} input */
       (input) => input.owner !== "tstyche-programmatic-api",
     );
     await fs.writeFile(sourcesPath, `${JSON.stringify(sources, null, 2)}\n`);
