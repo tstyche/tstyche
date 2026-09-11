@@ -1,0 +1,237 @@
+{
+  "package": "tstyche",
+  "packageVersion": "7.2.5",
+  "upstream": {
+    "name": "TSTyche documentation",
+    "baseUrl": "https://tstyche.org",
+    "retrievedAt": "2026-09-09",
+    "policy": "Treat built declarations, schema, CLI help, environment behavior, and source directives as contract authorities. Use the website for user-facing guidance and compatibility context."
+  },
+  "contractInputs": [
+    {
+      "path": "package.json",
+      "owner": "tstyche-project-setup",
+      "kind": "package"
+    },
+    {
+      "path": "dist/index.d.ts",
+      "owner": "tstyche-type-tests",
+      "kind": "declaration"
+    },
+    {
+      "path": "dist/api.d.ts",
+      "owner": "tstyche-programmatic-api",
+      "kind": "declaration"
+    },
+    {
+      "path": "dist/tag.d.ts",
+      "owner": "tstyche-programmatic-api",
+      "kind": "declaration"
+    },
+    {
+      "path": "schemas/config.json",
+      "owner": "tstyche-project-setup",
+      "kind": "json"
+    },
+    {
+      "path": "dist/bin.js",
+      "owner": "tstyche-project-setup",
+      "kind": "cli-help"
+    },
+    {
+      "path": "source/config/Directive.ts",
+      "owner": "tstyche-type-tests",
+      "kind": "behavior"
+    },
+    {
+      "path": "source/environment/Environment.ts",
+      "owner": "tstyche-project-setup",
+      "kind": "behavior"
+    }
+  ],
+  "coverage": [
+    {
+      "url": "/get-started/introduction",
+      "owner": "tstyche-project-setup",
+      "topics": ["purpose", "architecture", "language-service-model", "goals"],
+      "resources": ["tstyche-project-setup/SKILL.md"]
+    },
+    {
+      "url": "/get-started/first-steps",
+      "owner": "tstyche-project-setup",
+      "topics": ["requirements", "installation", "first-test", "run", "failure-output"],
+      "resources": ["tstyche-project-setup/SKILL.md", "tstyche-project-setup/references/layout-and-tsconfig.md"]
+    },
+    {
+      "url": "/get-started/walkthrough",
+      "owner": "tstyche-project-setup",
+      "topics": [
+        "version-testing",
+        "expect-errors",
+        "reject-any",
+        "reject-never",
+        "templates",
+        "unit-test-integration",
+        "programmatic-overview"
+      ],
+      "resources": [
+        "tstyche-project-setup/references/templates-and-ci.md",
+        "tstyche-type-tests/references/expect-api.md"
+      ]
+    },
+    {
+      "url": "/project/file-structure",
+      "owner": "tstyche-project-setup",
+      "topics": ["dedicated-tests", "shared-tests", "adjacent-tests", "isolated-tsconfig"],
+      "resources": ["tstyche-project-setup/references/layout-and-tsconfig.md"]
+    },
+    {
+      "url": "/project/compiler-options",
+      "owner": "tstyche-project-setup",
+      "topics": ["compiler-options", "typescript-config"],
+      "resources": [
+        "tstyche-project-setup/references/layout-and-tsconfig.md",
+        "tstyche-project-setup/references/configuration.md"
+      ]
+    },
+    {
+      "url": "/guides/typescript-versions",
+      "owner": "tstyche-project-setup",
+      "topics": ["supported-versions", "targets", "ranges", "conditional-tests", "store", "nightly"],
+      "resources": [
+        "tstyche-project-setup/references/cli-and-versions.md",
+        "tstyche-project-setup/references/templates-and-ci.md"
+      ]
+    },
+    {
+      "url": "/guides/expect-errors",
+      "owner": "tstyche-type-tests",
+      "topics": ["ts-expect-error", "ability-matchers", "message-matching", "ellipsis", "ignore-directive"],
+      "resources": [
+        "tstyche-type-tests/references/expect-api.md",
+        "tstyche-type-tests/references/testing-and-directives.md"
+      ]
+    },
+    {
+      "url": "/guides/template-test-files",
+      "owner": "tstyche-project-setup",
+      "topics": ["template-files", "generated-tests"],
+      "resources": [
+        "tstyche-project-setup/references/templates-and-ci.md",
+        "tstyche-type-tests/references/testing-and-directives.md"
+      ]
+    },
+    {
+      "url": "/guides/reporters",
+      "owner": "tstyche-programmatic-api",
+      "topics": ["builtin-reporters", "custom-reporters", "reporter-events"],
+      "resources": ["tstyche-programmatic-api/references/reporters-events-results.md"]
+    },
+    {
+      "url": "/guides/plugins",
+      "owner": "tstyche-project-setup",
+      "topics": ["plugins"],
+      "resources": ["tstyche-project-setup/SKILL.md"],
+      "status": "verify-current-route-and-package-support"
+    },
+    {
+      "url": "/guides/programmatic-usage",
+      "owner": "tstyche-programmatic-api",
+      "topics": ["tag-entrypoint", "runner", "unit-test-integration"],
+      "resources": [
+        "tstyche-programmatic-api/references/entrypoints-and-runner.md",
+        "tstyche-programmatic-api/references/embedding-and-failures.md"
+      ]
+    },
+    {
+      "url": "/reference/expect-api",
+      "owner": "tstyche-type-tests",
+      "topics": ["expect", "modifiers", "relation-matchers", "ability-matchers", "deprecated-matcher"],
+      "resources": ["tstyche-type-tests/references/expect-api.md"]
+    },
+    {
+      "url": "/reference/testing-api",
+      "owner": "tstyche-type-tests",
+      "topics": ["describe", "test", "it", "run-mode-flags", "name-literals"],
+      "resources": ["tstyche-type-tests/references/testing-and-directives.md"]
+    },
+    {
+      "url": "/reference/type-utilities",
+      "owner": "tstyche-type-tests",
+      "topics": ["underscore", "pick", "omit"],
+      "resources": ["tstyche-type-tests/SKILL.md", "tstyche-type-tests/references/expect-api.md"]
+    },
+    {
+      "url": "/reference/directives",
+      "owner": "tstyche-type-tests",
+      "topics": ["fixme", "if", "template", "scope", "inline-json"],
+      "resources": ["tstyche-type-tests/references/testing-and-directives.md"]
+    },
+    {
+      "url": "/reference/config-file",
+      "owner": "tstyche-project-setup",
+      "topics": ["schema", "defaults", "options", "precedence", "paths", "globs"],
+      "resources": ["tstyche-project-setup/references/configuration.md"]
+    },
+    {
+      "url": "/reference/command-line",
+      "owner": "tstyche-project-setup",
+      "topics": ["selection", "filters", "targets", "tsconfig", "store-commands", "watch"],
+      "resources": ["tstyche-project-setup/references/cli-and-versions.md"]
+    },
+    {
+      "url": "/reference/environment",
+      "owner": "tstyche-project-setup",
+      "topics": ["environment-options", "defaults", "precedence"],
+      "resources": ["tstyche-project-setup/references/environment.md"]
+    },
+    {
+      "url": "/explanations/type-inference",
+      "owner": "tstyche-type-tests",
+      "topics": ["inference", "assertion-design", "compiler-behavior"],
+      "resources": ["tstyche-type-tests/references/inference-and-compatibility.md"]
+    },
+    {
+      "url": "/releases/tstyche-7",
+      "owner": "tstyche-project-setup",
+      "topics": ["migration", "breaking-changes", "compatibility"],
+      "resources": ["tstyche-project-setup/references/cli-and-versions.md"],
+      "status": "historical-context"
+    },
+    {
+      "url": "/releases/tstyche-6",
+      "owner": "tstyche-project-setup",
+      "topics": ["migration", "compatibility"],
+      "resources": ["tstyche-project-setup/references/cli-and-versions.md"],
+      "status": "historical-context"
+    },
+    {
+      "url": "/releases/tstyche-5",
+      "owner": "tstyche-project-setup",
+      "topics": ["migration", "compatibility"],
+      "resources": ["tstyche-project-setup/references/cli-and-versions.md"],
+      "status": "historical-context"
+    },
+    {
+      "url": "/releases/tstyche-4",
+      "owner": "tstyche-project-setup",
+      "topics": ["migration", "compatibility"],
+      "resources": ["tstyche-project-setup/references/cli-and-versions.md"],
+      "status": "historical-context"
+    },
+    {
+      "url": "/releases/tstyche-3",
+      "owner": "tstyche-project-setup",
+      "topics": ["migration", "compatibility"],
+      "resources": ["tstyche-project-setup/references/cli-and-versions.md"],
+      "status": "historical-context"
+    },
+    {
+      "url": "/releases/tstyche-2",
+      "owner": "tstyche-project-setup",
+      "topics": ["migration", "compatibility"],
+      "resources": ["tstyche-project-setup/references/cli-and-versions.md"],
+      "status": "historical-context"
+    }
+  ]
+}
