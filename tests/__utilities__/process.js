@@ -67,8 +67,11 @@ export class Process {
       this.#idleTimeout?.refresh();
     });
 
+    activeProcesses.add(this);
+
     this.#subprocess.on("close", (exitCode) => {
       this.#onExit.resolve({ exitCode, stderr: this.#output.stderr, stdout: this.#output.stdout });
+      activeProcesses.delete(this);
     });
   }
 
@@ -108,4 +111,15 @@ export class Process {
   waitForExit() {
     return this.#onExit.promise;
   }
+}
+
+/** @type {Set<Process>} */
+const activeProcesses = new Set();
+
+export function killActiveProcesses() {
+  for (const process of activeProcesses) {
+    process.kill("SIGKILL");
+  }
+
+  activeProcesses.clear();
 }
