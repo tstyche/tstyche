@@ -99,14 +99,14 @@ test("skill synchronization detects public contract and metadata drift", async (
     const fixtureRoot = await createFixture(fixtureParent);
     const packagePath = path.join(fixtureRoot, "package.json");
     const packageJson = JSON.parse(await fs.readFile(packagePath, "utf8"));
-    packageJson.version = "7.2.5";
+    packageJson.version = "7.2.6";
     await fs.writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
 
     const result = await runChecker(fixtureRoot, ["--write"]);
     assert.equal(result.code, 0, result.output);
 
     const sources = JSON.parse(await fs.readFile(path.join(fixtureRoot, "skills/sources.json"), "utf8"));
-    assert.equal(sources.packageVersion, "7.2.5");
+    assert.equal(sources.packageVersion, "7.2.6");
 
     const secondResult = await runChecker(fixtureRoot);
     assert.equal(secondResult.code, 0, secondResult.output);
@@ -207,7 +207,7 @@ test("skill synchronization detects public contract and metadata drift", async (
     const fixtureRoot = await createFixture(fixtureParent);
     const packagePath = path.join(fixtureRoot, "package.json");
     const packageJson = JSON.parse(await fs.readFile(packagePath, "utf8"));
-    packageJson.version = "7.2.5";
+    packageJson.version = "7.2.6";
     await fs.writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
 
     const result = await runChecker(fixtureRoot);
