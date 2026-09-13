@@ -13,7 +13,9 @@ export class ToHaveProperty extends MatcherBase {
     const targetType = this.getType(targetNode);
     let propertyNameText: string;
 
-    if (targetType.flags & (this.compiler.TypeFlags.StringLiteral | this.compiler.TypeFlags.NumberLiteral)) {
+    if (targetType.flags & this.compiler.TypeFlags.EnumLiteral) {
+      propertyNameText = `[${this.getTypeText(targetNode, this.typeChecker)}]`;
+    } else if (targetType.flags & (this.compiler.TypeFlags.StringLiteral | this.compiler.TypeFlags.NumberLiteral)) {
       propertyNameText = (targetType as ts.StringLiteralType | ts.NumberLiteralType).value.toString();
     } else {
       propertyNameText = `[${this.compiler.unescapeLeadingUnderscores(targetType.symbol.escapedName)}]`;
