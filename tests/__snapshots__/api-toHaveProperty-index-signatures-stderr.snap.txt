@@ -34,7 +34,7 @@ Error: Type 'Record<string, unknown>' has property 'abc'.
 
        at ./__typetests__/index-signatures.tst.ts:36:63 ❭ index signatures ❭ has expected string property key
 
-Error: Type 'Record<string, unknown>' has property '0'.
+Error: Type 'Record<string, unknown>' has property '[Result.Fail]'.
 
   37 | 
   38 |     expect<Record<string, unknown>>().type.toHaveProperty(Result.Fail);
@@ -46,7 +46,7 @@ Error: Type 'Record<string, unknown>' has property '0'.
 
        at ./__typetests__/index-signatures.tst.ts:39:63 ❭ index signatures ❭ has expected string property key
 
-Error: Type 'Record<string, unknown>' has property 'down'.
+Error: Type 'Record<string, unknown>' has property '[Scroll.Down]'.
 
   40 | 
   41 |     expect<Record<string, unknown>>().type.toHaveProperty(Scroll.Down);
@@ -94,7 +94,7 @@ Error: Type 'Record<number, unknown>' has property '123'.
 
        at ./__typetests__/index-signatures.tst.ts:53:63 ❭ index signatures ❭ has expected number property key
 
-Error: Type 'Record<number, unknown>' has property '0'.
+Error: Type 'Record<number, unknown>' has property '[Result.Fail]'.
 
   54 | 
   55 |     expect<Record<number, unknown>>().type.toHaveProperty(Result.Fail);
@@ -130,7 +130,7 @@ Error: Type 'Record<number, unknown>' does not have property 'abc'.
 
        at ./__typetests__/index-signatures.tst.ts:64:59 ❭ index signatures ❭ does not have expected number property key
 
-Error: Type 'Record<number, unknown>' does not have property 'up'.
+Error: Type 'Record<number, unknown>' does not have property '[Scroll.Up]'.
 
   65 | 
   66 |     expect<Record<number, unknown>>().type.not.toHaveProperty(Scroll.Up);
@@ -166,7 +166,7 @@ Error: Type 'PropertyMap' has property '[symbolKey]'.
 
        at ./__typetests__/index-signatures.tst.ts:77:51 ❭ index signatures ❭ has expected symbol property key
 
-Error: Type 'ScrollMap' has property 'up'.
+Error: Type 'ScrollMap' has property '[Scroll.Up]'.
 
   80 |   test("has expected enum property key", () => {
   81 |     expect<ScrollMap>().type.toHaveProperty(Scroll.Up);
@@ -178,7 +178,7 @@ Error: Type 'ScrollMap' has property 'up'.
 
        at ./__typetests__/index-signatures.tst.ts:82:49 ❭ index signatures ❭ has expected enum property key
 
-Error: Type 'ResultMap' has property '1'.
+Error: Type 'ResultMap' has property '[Result.Pass]'.
 
   83 | 
   84 |     expect<ResultMap>().type.toHaveProperty(Result.Pass);
@@ -190,7 +190,7 @@ Error: Type 'ResultMap' has property '1'.
 
        at ./__typetests__/index-signatures.tst.ts:85:49 ❭ index signatures ❭ has expected enum property key
 
-Error: Type 'ScrollMap' does not have property '0'.
+Error: Type 'ScrollMap' does not have property '[Result.Fail]'.
 
   88 |   test("does not have expected enum property key", () => {
   89 |     expect<ScrollMap>().type.not.toHaveProperty(Result.Fail);
@@ -202,7 +202,7 @@ Error: Type 'ScrollMap' does not have property '0'.
 
        at ./__typetests__/index-signatures.tst.ts:90:45 ❭ index signatures ❭ does not have expected enum property key
 
-Error: Type 'ResultMap' does not have property 'down'.
+Error: Type 'ResultMap' does not have property '[Scroll.Down]'.
 
   91 | 
   92 |     expect<ResultMap>().type.not.toHaveProperty(Scroll.Down);

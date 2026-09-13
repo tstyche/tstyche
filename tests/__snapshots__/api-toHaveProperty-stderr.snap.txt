@@ -118,7 +118,7 @@ Error: Type 'Worker<Sample>' does not have property '[kFour]'.
 
         at ./__typetests__/toHaveProperty.tst.ts:104:50 ❭ when source is a type ❭ does NOT have expected symbol property key
 
-Error: Type 'Worker<Sample>' has property '0'.
+Error: Type 'Worker<Sample>' has property '[E1.A]'.
 
   108 |     expect<Worker<Sample>>().type.toHaveProperty(E1.A);
   109 | 
@@ -130,7 +130,7 @@ Error: Type 'Worker<Sample>' has property '0'.
 
         at ./__typetests__/toHaveProperty.tst.ts:110:54 ❭ when source is a type ❭ has expected numeric enum property key
 
-Error: Type 'Worker<Sample>' does not have property '1'.
+Error: Type 'Worker<Sample>' does not have property '[E1.B]'.
 
   114 |     expect<Worker<Sample>>().type.not.toHaveProperty(E1.B);
   115 | 
@@ -142,7 +142,7 @@ Error: Type 'Worker<Sample>' does not have property '1'.
 
         at ./__typetests__/toHaveProperty.tst.ts:116:50 ❭ when source is a type ❭ does NOT have expected numeric enum property key
 
-Error: Type 'Worker<Sample>' has property 'B'.
+Error: Type 'Worker<Sample>' has property '[E2.B]'.
 
   120 |     expect<Worker<Sample>>().type.toHaveProperty(E2.B);
   121 | 
@@ -154,7 +154,7 @@ Error: Type 'Worker<Sample>' has property 'B'.
 
         at ./__typetests__/toHaveProperty.tst.ts:122:54 ❭ when source is a type ❭ has expected string enum property key
 
-Error: Type 'Worker<Sample>' does not have property 'A'.
+Error: Type 'Worker<Sample>' does not have property '[E2.A]'.
 
   126 |     expect<Worker<Sample>>().type.not.toHaveProperty(E2.A);
   127 | 
@@ -286,7 +286,7 @@ Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: strin
 
         at ./__typetests__/toHaveProperty.tst.ts:202:40 ❭ when source is a value ❭ does NOT have expected symbol property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '0'.
+Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[E1.A]'.
 
   206 |     expect(sample).type.toHaveProperty(E1.A);
   207 | 
@@ -298,7 +298,7 @@ Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: strin
 
         at ./__typetests__/toHaveProperty.tst.ts:208:44 ❭ when source is a value ❭ has expected numeric enum property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '1'.
+Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '[E1.B]'.
 
   212 |     expect(sample).type.not.toHaveProperty(E1.B);
   213 | 
@@ -310,7 +310,7 @@ Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: strin
 
         at ./__typetests__/toHaveProperty.tst.ts:214:40 ❭ when source is a value ❭ does NOT have expected numeric enum property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property 'B'.
+Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[E2.B]'.
 
   218 |     expect(sample).type.toHaveProperty(E2.B);
   219 | 
@@ -322,7 +322,7 @@ Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: strin
 
         at ./__typetests__/toHaveProperty.tst.ts:220:44 ❭ when source is a value ❭ has expected string enum property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property 'A'.
+Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '[E2.A]'.
 
   224 |     expect(sample).type.not.toHaveProperty(E2.A);
   225 | 
