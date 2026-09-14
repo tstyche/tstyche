@@ -62,10 +62,10 @@
     "typecheck": "tsc --build --force --verbose"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.12",
-    "@sourcemeta/jsonschema": "^16.9.0",
-    "@types/node": "^26.4.1",
-    "@types/react": "^19.2.18",
+    "@biomejs/biome": "^2.5.13",
+    "@sourcemeta/jsonschema": "^16.10.0",
+    "@types/node": "^26.5.1",
+    "@types/react": "^19.3.0",
     "@typescript/typescript6": "^6.0.2",
     "cleaner-spec-reporter": "^1.0.3",
     "code-block-writer": "^13.0.3",
