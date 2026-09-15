@@ -12,12 +12,25 @@ describe("argument for 'source'", () => {
 
 describe("type argument for 'source'", () => {
   test("must be of an object type", () => {
+    enum Color {
+      Red,
+      Green,
+      Blue,
+    }
+
+    const enum Result {
+      Fail,
+      Pass,
+    }
+
     expect<{}>().type.not.toHaveProperty("abc");
 
     expect<any>().type.toHaveProperty("runTest");
     expect<never>().type.toHaveProperty("runTest");
     expect(null).type.toHaveProperty("runTest");
     expect<"one" | "two">().type.toHaveProperty("runTest");
+    expect<Color>().type.toHaveProperty("Red");
+    expect<Result>().type.toHaveProperty("Fail");
   });
 });
 

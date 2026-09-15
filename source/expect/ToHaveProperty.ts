@@ -21,7 +21,9 @@ export class ToHaveProperty {
     const targetType = this.#checker.getType(targetNode);
     let propertyNameText: string;
 
-    if (targetType.flags & (this.#ts.TypeFlags.StringLiteral | this.#ts.TypeFlags.NumberLiteral)) {
+    if (targetType.flags & this.#ts.TypeFlags.EnumLiteral) {
+      propertyNameText = `[${this.#checker.typeToString(targetType)}]`;
+    } else if (targetType.flags & (this.#ts.TypeFlags.StringLiteral | this.#ts.TypeFlags.NumberLiteral)) {
       propertyNameText = (targetType as ts.StringLiteralType | ts.NumberLiteralType).value.toString();
     } else {
       const symbol = this.#checker.getSymbol(targetType);
