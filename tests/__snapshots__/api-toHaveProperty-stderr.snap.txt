@@ -1,336 +1,336 @@
 Error: Type 'Worker<Sample>' has property 'runTest'.
 
-  48 |     expect<Worker<Sample>>().type.toHaveProperty("runTest");
-  49 | 
-  50 |     expect<Worker<Sample>>().type.not.toHaveProperty("runTest");
+  47 |     expect<Worker<Sample>>().type.toHaveProperty("runTest");
+  48 | 
+  49 |     expect<Worker<Sample>>().type.not.toHaveProperty("runTest");
      |                                                      ~~~~~~~~~
-  51 |   });
-  52 | 
-  53 |   test("has expected optional string property key", () => {
+  50 |   });
+  51 | 
+  52 |   test("has expected optional string property key", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:50:54 ❭ when source is a type ❭ has expected string property key
+       at ./__typetests__/toHaveProperty.tst.ts:49:54 ❭ when source is a type ❭ has expected string property key
 
 Error: Type 'Worker<Sample>' has property 'isBusy'.
 
-  54 |     expect<Worker<Sample>>().type.toHaveProperty("isBusy");
-  55 | 
-  56 |     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
+  53 |     expect<Worker<Sample>>().type.toHaveProperty("isBusy");
+  54 | 
+  55 |     expect<Worker<Sample>>().type.not.toHaveProperty("isBusy");
      |                                                      ~~~~~~~~
-  57 |   });
-  58 | 
-  59 |   test("has expected escaped string property key", () => {
+  56 |   });
+  57 | 
+  58 |   test("has expected escaped string property key", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:56:54 ❭ when source is a type ❭ has expected optional string property key
+       at ./__typetests__/toHaveProperty.tst.ts:55:54 ❭ when source is a type ❭ has expected optional string property key
 
 Error: Type 'Worker<Sample>' has property '__check'.
 
-  60 |     expect<Worker<Sample>>().type.toHaveProperty("__check");
-  61 | 
-  62 |     expect<Worker<Sample>>().type.not.toHaveProperty("__check");
+  59 |     expect<Worker<Sample>>().type.toHaveProperty("__check");
+  60 | 
+  61 |     expect<Worker<Sample>>().type.not.toHaveProperty("__check");
      |                                                      ~~~~~~~~~
-  63 |   });
-  64 | 
-  65 |   test("does NOT have expected string property key", () => {
+  62 |   });
+  63 | 
+  64 |   test("does NOT have expected string property key", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:62:54 ❭ when source is a type ❭ has expected escaped string property key
+       at ./__typetests__/toHaveProperty.tst.ts:61:54 ❭ when source is a type ❭ has expected escaped string property key
 
 Error: Type 'Worker<Sample>' does not have property 'endTest'.
 
-  66 |     expect<Worker<Sample>>().type.not.toHaveProperty("endTest");
-  67 | 
-  68 |     expect<Worker<Sample>>().type.toHaveProperty("endTest");
+  65 |     expect<Worker<Sample>>().type.not.toHaveProperty("endTest");
+  66 | 
+  67 |     expect<Worker<Sample>>().type.toHaveProperty("endTest");
      |                                                  ~~~~~~~~~
-  69 |   });
-  70 | 
-  71 |   test("has expected number property key", () => {
+  68 |   });
+  69 | 
+  70 |   test("has expected number property key", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:68:50 ❭ when source is a type ❭ does NOT have expected string property key
+       at ./__typetests__/toHaveProperty.tst.ts:67:50 ❭ when source is a type ❭ does NOT have expected string property key
 
 Error: Type 'Worker<Sample>' has property '123'.
 
-  72 |     expect<Worker<Sample>>().type.toHaveProperty(123);
-  73 | 
-  74 |     expect<Worker<Sample>>().type.not.toHaveProperty(123);
+  71 |     expect<Worker<Sample>>().type.toHaveProperty(123);
+  72 | 
+  73 |     expect<Worker<Sample>>().type.not.toHaveProperty(123);
      |                                                      ~~~
-  75 |   });
-  76 | 
-  77 |   test("has expected optional number property key", () => {
+  74 |   });
+  75 | 
+  76 |   test("has expected optional number property key", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:74:54 ❭ when source is a type ❭ has expected number property key
+       at ./__typetests__/toHaveProperty.tst.ts:73:54 ❭ when source is a type ❭ has expected number property key
 
 Error: Type 'Worker<Sample>' has property '789'.
 
-  78 |     expect<Worker<Sample>>().type.toHaveProperty(789);
-  79 | 
-  80 |     expect<Worker<Sample>>().type.not.toHaveProperty(789);
+  77 |     expect<Worker<Sample>>().type.toHaveProperty(789);
+  78 | 
+  79 |     expect<Worker<Sample>>().type.not.toHaveProperty(789);
      |                                                      ~~~
-  81 |   });
-  82 | 
-  83 |   test("does NOT have expected number property key", () => {
+  80 |   });
+  81 | 
+  82 |   test("does NOT have expected number property key", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:80:54 ❭ when source is a type ❭ has expected optional number property key
+       at ./__typetests__/toHaveProperty.tst.ts:79:54 ❭ when source is a type ❭ has expected optional number property key
 
 Error: Type 'Worker<Sample>' does not have property '456'.
 
-  84 |     expect<Worker<Sample>>().type.not.toHaveProperty(456);
-  85 | 
-  86 |     expect<Worker<Sample>>().type.toHaveProperty(456);
+  83 |     expect<Worker<Sample>>().type.not.toHaveProperty(456);
+  84 | 
+  85 |     expect<Worker<Sample>>().type.toHaveProperty(456);
      |                                                  ~~~
-  87 |   });
-  88 | 
-  89 |   test("has expected symbol property key", () => {
+  86 |   });
+  87 | 
+  88 |   test("has expected symbol property key", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:86:50 ❭ when source is a type ❭ does NOT have expected number property key
+       at ./__typetests__/toHaveProperty.tst.ts:85:50 ❭ when source is a type ❭ does NOT have expected number property key
 
 Error: Type 'Worker<Sample>' has property '[kOne]'.
 
-  90 |     expect<Worker<Sample>>().type.toHaveProperty(kOne);
-  91 | 
-  92 |     expect<Worker<Sample>>().type.not.toHaveProperty(kOne);
+  89 |     expect<Worker<Sample>>().type.toHaveProperty(kOne);
+  90 | 
+  91 |     expect<Worker<Sample>>().type.not.toHaveProperty(kOne);
      |                                                      ~~~~
-  93 |   });
-  94 | 
-  95 |   test("has expected global symbol property key", () => {
+  92 |   });
+  93 | 
+  94 |   test("has expected global symbol property key", () => {
 
-       at ./__typetests__/toHaveProperty.tst.ts:92:54 ❭ when source is a type ❭ has expected symbol property key
+       at ./__typetests__/toHaveProperty.tst.ts:91:54 ❭ when source is a type ❭ has expected symbol property key
 
 Error: Type 'Worker<Sample>' has property '[kTwo]'.
 
-   96 |     expect<Worker<Sample>>().type.toHaveProperty(kTwo);
-   97 | 
-   98 |     expect<Worker<Sample>>().type.not.toHaveProperty(kTwo);
+   95 |     expect<Worker<Sample>>().type.toHaveProperty(kTwo);
+   96 | 
+   97 |     expect<Worker<Sample>>().type.not.toHaveProperty(kTwo);
       |                                                      ~~~~
-   99 |   });
-  100 | 
-  101 |   test("does NOT have expected symbol property key", () => {
+   98 |   });
+   99 | 
+  100 |   test("does NOT have expected symbol property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:98:54 ❭ when source is a type ❭ has expected global symbol property key
+        at ./__typetests__/toHaveProperty.tst.ts:97:54 ❭ when source is a type ❭ has expected global symbol property key
 
 Error: Type 'Worker<Sample>' does not have property '[kFour]'.
 
-  102 |     expect<Worker<Sample>>().type.not.toHaveProperty(kFour);
-  103 | 
-  104 |     expect<Worker<Sample>>().type.toHaveProperty(kFour);
+  101 |     expect<Worker<Sample>>().type.not.toHaveProperty(kFour);
+  102 | 
+  103 |     expect<Worker<Sample>>().type.toHaveProperty(kFour);
       |                                                  ~~~~~
-  105 |   });
-  106 | 
-  107 |   test("has expected numeric enum property key", () => {
+  104 |   });
+  105 | 
+  106 |   test("has expected numeric enum property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:104:50 ❭ when source is a type ❭ does NOT have expected symbol property key
+        at ./__typetests__/toHaveProperty.tst.ts:103:50 ❭ when source is a type ❭ does NOT have expected symbol property key
 
-Error: Type 'Worker<Sample>' has property '[E1.A]'.
+Error: Type 'Worker<Sample>' has property '[Color.Red]'.
 
-  108 |     expect<Worker<Sample>>().type.toHaveProperty(E1.A);
-  109 | 
-  110 |     expect<Worker<Sample>>().type.not.toHaveProperty(E1.A);
-      |                                                      ~~~~
-  111 |   });
-  112 | 
-  113 |   test("does NOT have expected numeric enum property key", () => {
+  107 |     expect<Worker<Sample>>().type.toHaveProperty(Color.Red);
+  108 | 
+  109 |     expect<Worker<Sample>>().type.not.toHaveProperty(Color.Red);
+      |                                                      ~~~~~~~~~
+  110 |   });
+  111 | 
+  112 |   test("does NOT have expected numeric enum property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:110:54 ❭ when source is a type ❭ has expected numeric enum property key
+        at ./__typetests__/toHaveProperty.tst.ts:109:54 ❭ when source is a type ❭ has expected numeric enum property key
 
-Error: Type 'Worker<Sample>' does not have property '[E1.B]'.
+Error: Type 'Worker<Sample>' does not have property '[Color.Green]'.
 
-  114 |     expect<Worker<Sample>>().type.not.toHaveProperty(E1.B);
-  115 | 
-  116 |     expect<Worker<Sample>>().type.toHaveProperty(E1.B);
-      |                                                  ~~~~
-  117 |   });
-  118 | 
-  119 |   test("has expected string enum property key", () => {
+  113 |     expect<Worker<Sample>>().type.not.toHaveProperty(Color.Green);
+  114 | 
+  115 |     expect<Worker<Sample>>().type.toHaveProperty(Color.Green);
+      |                                                  ~~~~~~~~~~~
+  116 |   });
+  117 | 
+  118 |   test("has expected string enum property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:116:50 ❭ when source is a type ❭ does NOT have expected numeric enum property key
+        at ./__typetests__/toHaveProperty.tst.ts:115:50 ❭ when source is a type ❭ does NOT have expected numeric enum property key
 
-Error: Type 'Worker<Sample>' has property '[E2.B]'.
+Error: Type 'Worker<Sample>' has property '[Result.Pass]'.
 
-  120 |     expect<Worker<Sample>>().type.toHaveProperty(E2.B);
-  121 | 
-  122 |     expect<Worker<Sample>>().type.not.toHaveProperty(E2.B);
-      |                                                      ~~~~
-  123 |   });
-  124 | 
-  125 |   test("does NOT have expected string enum property key", () => {
+  119 |     expect<Worker<Sample>>().type.toHaveProperty(Result.Pass);
+  120 | 
+  121 |     expect<Worker<Sample>>().type.not.toHaveProperty(Result.Pass);
+      |                                                      ~~~~~~~~~~~
+  122 |   });
+  123 | 
+  124 |   test("does NOT have expected string enum property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:122:54 ❭ when source is a type ❭ has expected string enum property key
+        at ./__typetests__/toHaveProperty.tst.ts:121:54 ❭ when source is a type ❭ has expected string enum property key
 
-Error: Type 'Worker<Sample>' does not have property '[E2.A]'.
+Error: Type 'Worker<Sample>' does not have property '[Result.Fail]'.
 
-  126 |     expect<Worker<Sample>>().type.not.toHaveProperty(E2.A);
-  127 | 
-  128 |     expect<Worker<Sample>>().type.toHaveProperty(E2.A);
-      |                                                  ~~~~
-  129 |   });
-  130 | });
-  131 | 
+  125 |     expect<Worker<Sample>>().type.not.toHaveProperty(Result.Fail);
+  126 | 
+  127 |     expect<Worker<Sample>>().type.toHaveProperty(Result.Fail);
+      |                                                  ~~~~~~~~~~~
+  128 |   });
+  129 | });
+  130 | 
 
-        at ./__typetests__/toHaveProperty.tst.ts:128:50 ❭ when source is a type ❭ does NOT have expected string enum property key
+        at ./__typetests__/toHaveProperty.tst.ts:127:50 ❭ when source is a type ❭ does NOT have expected string enum property key
 
 Error: Type 'ColorfulCircle' has property 'radius'.
 
-  144 |     expect<ColorfulCircle>().type.toHaveProperty("radius");
-  145 | 
-  146 |     expect<ColorfulCircle>().type.not.toHaveProperty("radius");
+  143 |     expect<ColorfulCircle>().type.toHaveProperty("radius");
+  144 | 
+  145 |     expect<ColorfulCircle>().type.not.toHaveProperty("radius");
       |                                                      ~~~~~~~~
-  147 |   });
-  148 | 
-  149 |   test("does NOT have expected property key", () => {
+  146 |   });
+  147 | 
+  148 |   test("does NOT have expected property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:146:54 ❭ when source is an intersection ❭ has expected property key
+        at ./__typetests__/toHaveProperty.tst.ts:145:54 ❭ when source is an intersection ❭ has expected property key
 
 Error: Type 'ColorfulCircle' does not have property 'shade'.
 
-  150 |     expect<ColorfulCircle>().type.not.toHaveProperty("shade");
-  151 | 
-  152 |     expect<ColorfulCircle>().type.toHaveProperty("shade");
+  149 |     expect<ColorfulCircle>().type.not.toHaveProperty("shade");
+  150 | 
+  151 |     expect<ColorfulCircle>().type.toHaveProperty("shade");
       |                                                  ~~~~~~~
-  153 |   });
-  154 | });
-  155 | 
+  152 |   });
+  153 | });
+  154 | 
 
-        at ./__typetests__/toHaveProperty.tst.ts:152:50 ❭ when source is an intersection ❭ does NOT have expected property key
+        at ./__typetests__/toHaveProperty.tst.ts:151:50 ❭ when source is an intersection ❭ does NOT have expected property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property 'runTest'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property 'runTest'.
 
-  158 |     expect(sample).type.toHaveProperty("runTest");
-  159 | 
-  160 |     expect(sample).type.not.toHaveProperty("runTest");
+  157 |     expect(sample).type.toHaveProperty("runTest");
+  158 | 
+  159 |     expect(sample).type.not.toHaveProperty("runTest");
       |                                            ~~~~~~~~~
-  161 |   });
-  162 | 
-  163 |   test("has expected escaped string property key", () => {
+  160 |   });
+  161 | 
+  162 |   test("has expected escaped string property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:160:44 ❭ when source is a value ❭ has expected string property key
+        at ./__typetests__/toHaveProperty.tst.ts:159:44 ❭ when source is a value ❭ has expected string property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '__check'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '__check'.
 
-  164 |     expect(sample).type.toHaveProperty("__check");
-  165 | 
-  166 |     expect(sample).type.not.toHaveProperty("__check");
+  163 |     expect(sample).type.toHaveProperty("__check");
+  164 | 
+  165 |     expect(sample).type.not.toHaveProperty("__check");
       |                                            ~~~~~~~~~
-  167 |   });
-  168 | 
-  169 |   test("does NOT have expected string property key", () => {
+  166 |   });
+  167 | 
+  168 |   test("does NOT have expected string property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:166:44 ❭ when source is a value ❭ has expected escaped string property key
+        at ./__typetests__/toHaveProperty.tst.ts:165:44 ❭ when source is a value ❭ has expected escaped string property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property 'endTest'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property 'endTest'.
 
-  170 |     expect(sample).type.not.toHaveProperty("endTest");
-  171 | 
-  172 |     expect(sample).type.toHaveProperty("endTest");
+  169 |     expect(sample).type.not.toHaveProperty("endTest");
+  170 | 
+  171 |     expect(sample).type.toHaveProperty("endTest");
       |                                        ~~~~~~~~~
-  173 |   });
-  174 | 
-  175 |   test("has expected number property key", () => {
+  172 |   });
+  173 | 
+  174 |   test("has expected number property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:172:40 ❭ when source is a value ❭ does NOT have expected string property key
+        at ./__typetests__/toHaveProperty.tst.ts:171:40 ❭ when source is a value ❭ does NOT have expected string property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '123'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '123'.
 
-  176 |     expect(sample).type.toHaveProperty(123);
-  177 | 
-  178 |     expect(sample).type.not.toHaveProperty(123);
+  175 |     expect(sample).type.toHaveProperty(123);
+  176 | 
+  177 |     expect(sample).type.not.toHaveProperty(123);
       |                                            ~~~
-  179 |   });
-  180 | 
-  181 |   test("does NOT have expected number property key", () => {
+  178 |   });
+  179 | 
+  180 |   test("does NOT have expected number property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:178:44 ❭ when source is a value ❭ has expected number property key
+        at ./__typetests__/toHaveProperty.tst.ts:177:44 ❭ when source is a value ❭ has expected number property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '456'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '456'.
 
-  182 |     expect(sample).type.not.toHaveProperty(456);
-  183 | 
-  184 |     expect(sample).type.toHaveProperty(456);
+  181 |     expect(sample).type.not.toHaveProperty(456);
+  182 | 
+  183 |     expect(sample).type.toHaveProperty(456);
       |                                        ~~~
-  185 |   });
-  186 | 
-  187 |   test("has expected symbol property key", () => {
+  184 |   });
+  185 | 
+  186 |   test("has expected symbol property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:184:40 ❭ when source is a value ❭ does NOT have expected number property key
+        at ./__typetests__/toHaveProperty.tst.ts:183:40 ❭ when source is a value ❭ does NOT have expected number property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[kOne]'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[kOne]'.
 
-  188 |     expect(sample).type.toHaveProperty(kOne);
-  189 | 
-  190 |     expect(sample).type.not.toHaveProperty(kOne);
+  187 |     expect(sample).type.toHaveProperty(kOne);
+  188 | 
+  189 |     expect(sample).type.not.toHaveProperty(kOne);
       |                                            ~~~~
-  191 |   });
-  192 | 
-  193 |   test("has expected global symbol property key", () => {
+  190 |   });
+  191 | 
+  192 |   test("has expected global symbol property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:190:44 ❭ when source is a value ❭ has expected symbol property key
+        at ./__typetests__/toHaveProperty.tst.ts:189:44 ❭ when source is a value ❭ has expected symbol property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[kTwo]'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[kTwo]'.
 
-  194 |     expect(sample).type.toHaveProperty(kTwo);
-  195 | 
-  196 |     expect(sample).type.not.toHaveProperty(kTwo);
+  193 |     expect(sample).type.toHaveProperty(kTwo);
+  194 | 
+  195 |     expect(sample).type.not.toHaveProperty(kTwo);
       |                                            ~~~~
-  197 |   });
-  198 | 
-  199 |   test("does NOT have expected symbol property key", () => {
+  196 |   });
+  197 | 
+  198 |   test("does NOT have expected symbol property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:196:44 ❭ when source is a value ❭ has expected global symbol property key
+        at ./__typetests__/toHaveProperty.tst.ts:195:44 ❭ when source is a value ❭ has expected global symbol property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '[kFour]'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '[kFour]'.
 
-  200 |     expect(sample).type.not.toHaveProperty(kFour);
-  201 | 
-  202 |     expect(sample).type.toHaveProperty(kFour);
+  199 |     expect(sample).type.not.toHaveProperty(kFour);
+  200 | 
+  201 |     expect(sample).type.toHaveProperty(kFour);
       |                                        ~~~~~
-  203 |   });
-  204 | 
-  205 |   test("has expected numeric enum property key", () => {
+  202 |   });
+  203 | 
+  204 |   test("has expected numeric enum property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:202:40 ❭ when source is a value ❭ does NOT have expected symbol property key
+        at ./__typetests__/toHaveProperty.tst.ts:201:40 ❭ when source is a value ❭ does NOT have expected symbol property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[E1.A]'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[Color.Red]'.
 
-  206 |     expect(sample).type.toHaveProperty(E1.A);
-  207 | 
-  208 |     expect(sample).type.not.toHaveProperty(E1.A);
-      |                                            ~~~~
-  209 |   });
-  210 | 
-  211 |   test("does NOT have expected numeric enum property key", () => {
+  205 |     expect(sample).type.toHaveProperty(Color.Red);
+  206 | 
+  207 |     expect(sample).type.not.toHaveProperty(Color.Red);
+      |                                            ~~~~~~~~~
+  208 |   });
+  209 | 
+  210 |   test("does NOT have expected numeric enum property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:208:44 ❭ when source is a value ❭ has expected numeric enum property key
+        at ./__typetests__/toHaveProperty.tst.ts:207:44 ❭ when source is a value ❭ has expected numeric enum property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '[E1.B]'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '[Color.Green]'.
 
-  212 |     expect(sample).type.not.toHaveProperty(E1.B);
-  213 | 
-  214 |     expect(sample).type.toHaveProperty(E1.B);
-      |                                        ~~~~
-  215 |   });
-  216 | 
-  217 |   test("has expected string enum property key", () => {
+  211 |     expect(sample).type.not.toHaveProperty(Color.Green);
+  212 | 
+  213 |     expect(sample).type.toHaveProperty(Color.Green);
+      |                                        ~~~~~~~~~~~
+  214 |   });
+  215 | 
+  216 |   test("has expected string enum property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:214:40 ❭ when source is a value ❭ does NOT have expected numeric enum property key
+        at ./__typetests__/toHaveProperty.tst.ts:213:40 ❭ when source is a value ❭ does NOT have expected numeric enum property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[E2.B]'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' has property '[Result.Pass]'.
 
-  218 |     expect(sample).type.toHaveProperty(E2.B);
-  219 | 
-  220 |     expect(sample).type.not.toHaveProperty(E2.B);
-      |                                            ~~~~
-  221 |   });
-  222 | 
-  223 |   test("does NOT have expected string enum property key", () => {
+  217 |     expect(sample).type.toHaveProperty(Result.Pass);
+  218 | 
+  219 |     expect(sample).type.not.toHaveProperty(Result.Pass);
+      |                                            ~~~~~~~~~~~
+  220 |   });
+  221 | 
+  222 |   test("does NOT have expected string enum property key", () => {
 
-        at ./__typetests__/toHaveProperty.tst.ts:220:44 ❭ when source is a value ❭ has expected string enum property key
+        at ./__typetests__/toHaveProperty.tst.ts:219:44 ❭ when source is a value ❭ has expected string enum property key
 
-Error: Type '{ 123: number; 0: boolean; B: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '[E2.A]'.
+Error: Type '{ 123: number; 0: boolean; pass: null; __check: boolean; [kOne]: string; [kTwo]: string; runTest: () => boolean; }' does not have property '[Result.Fail]'.
 
-  224 |     expect(sample).type.not.toHaveProperty(E2.A);
-  225 | 
-  226 |     expect(sample).type.toHaveProperty(E2.A);
-      |                                        ~~~~
-  227 |   });
-  228 | });
-  229 | 
+  223 |     expect(sample).type.not.toHaveProperty(Result.Fail);
+  224 | 
+  225 |     expect(sample).type.toHaveProperty(Result.Fail);
+      |                                        ~~~~~~~~~~~
+  226 |   });
+  227 | });
+  228 | 
 
-        at ./__typetests__/toHaveProperty.tst.ts:226:40 ❭ when source is a value ❭ does NOT have expected string enum property key
+        at ./__typetests__/toHaveProperty.tst.ts:225:40 ❭ when source is a value ❭ does NOT have expected string enum property key
 
