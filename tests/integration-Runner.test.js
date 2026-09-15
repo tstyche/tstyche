@@ -43,8 +43,7 @@ await test("Runner", async (t) => {
     });
 
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
-    // TODO remove 'target' after adding support for TypeScript 7
-    const runner = new tstyche.Runner({ ...resolvedConfig, target: ["6.0"] });
+    const runner = new tstyche.Runner({ ...resolvedConfig, quiet: true });
 
     const testCases = [
       {
@@ -98,8 +97,7 @@ await test("Runner", async (t) => {
     });
 
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
-    // TODO remove 'target' after adding support for TypeScript 7
-    const runner = new tstyche.Runner({ ...resolvedConfig, target: ["6.0"] });
+    const runner = new tstyche.Runner({ ...resolvedConfig, quiet: true });
 
     const testCases = [
       {
@@ -194,8 +192,7 @@ await test("Runner", async (t) => {
       const resolvedConfig = tstyche.Config.resolve({
         configFileOptions: { reporters: [], failFast: true },
       });
-      // TODO remove 'target' after adding support for TypeScript 7
-      const runner = new tstyche.Runner({ ...resolvedConfig, target: ["6.0"] });
+      const runner = new tstyche.Runner({ ...resolvedConfig, quiet: true });
 
       const testFiles = [
         new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl),

@@ -1,5 +1,5 @@
-import type ts from "@typescript/typescript6";
-import type { TextRange } from "#config";
+import type { TextRange } from "#text";
+import type * as ts from "#typescript";
 
 export interface SuppressedError {
   directive: TextRange;

@@ -1,12 +1,13 @@
-import type ts from "@typescript/typescript6";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { belongsToArgumentList } from "#layers";
+import type * as ts from "#typescript";
 
 export class Ensure {
-  #compiler: typeof ts;
+  #compilerOptions: ts.CompilerOptions;
+  #ts: ts.TypeScript;
 
-  constructor(compiler: typeof ts) {
-    this.#compiler = compiler;
+  constructor(ts: ts.TypeScript, program: ts.Program) {
+    this.#ts = ts;
+    this.#compilerOptions = program.getCompilerOptions();
   }
 
   argument<T extends ts.Node>(
@@ -14,7 +15,7 @@ export class Ensure {
     enclosingNode: ts.Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
-    if (!node || !belongsToArgumentList(node, this.#compiler)) {
+    if (!node || !this.#ts.belongsToArgumentList(node)) {
       this.#emitDiagnostic("An argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;
@@ -37,14 +38,14 @@ export class Ensure {
     return true;
   }
 
-  jsxSetup(program: ts.Program, node: ts.Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): boolean {
+  jsxSetup(node: ts.Node, onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>): boolean {
     const diagnosticText: Array<string> = [];
 
-    if (!program.getCompilerOptions().jsx) {
+    if (!this.#compilerOptions.jsx) {
       diagnosticText.push("The matcher requires the 'jsx' compiler option to be configured.");
     }
 
-    if (node.getSourceFile().languageVariant !== this.#compiler.LanguageVariant.JSX) {
+    if (node.getSourceFile().languageVariant !== this.#ts.LanguageVariant.JSX) {
       diagnosticText.push("The matcher requires a '.tsx' file extension.");
     }
 
@@ -62,7 +63,7 @@ export class Ensure {
     enclosingNode: ts.Node,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): node is NonNullable<T> {
-    if (!node || belongsToArgumentList(node, this.#compiler)) {
+    if (!node || this.#ts.belongsToArgumentList(node)) {
       this.#emitDiagnostic("A type argument must be provided.", enclosingNode, onDiagnostics);
 
       return false;

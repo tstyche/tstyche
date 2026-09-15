@@ -1,6 +1,7 @@
-import type ts from "@typescript/typescript6";
+import type { Checker } from "#checker";
 import type { ExpectNode } from "#collect";
 import { Structure } from "#structure";
+import type * as ts from "#typescript";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import { RelationMatcherBase } from "./RelationMatcherBase.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -8,10 +9,10 @@ import type { ArgumentNode, MatchResult } from "./types.js";
 export class ToBe extends RelationMatcherBase {
   #structure: Structure;
 
-  constructor(compiler: typeof ts, program: ts.Program) {
-    super(compiler, program);
+  constructor(ts: ts.TypeScript, program: ts.Program, checker: Checker) {
+    super(checker);
 
-    this.#structure = new Structure(compiler, program);
+    this.#structure = new Structure(ts, program, checker);
   }
 
   explainText = ExpectDiagnosticText.isTheSame;
@@ -20,7 +21,7 @@ export class ToBe extends RelationMatcherBase {
   match(expectNode: ExpectNode, sourceNode: ArgumentNode, targetNode: ArgumentNode): MatchResult {
     return {
       explain: () => this.explain(expectNode, sourceNode, targetNode),
-      isMatch: this.#structure.compare(this.getType(sourceNode), this.getType(targetNode)),
+      isMatch: this.#structure.compare(this.checker.getType(sourceNode), this.checker.getType(targetNode)),
     };
   }
 }

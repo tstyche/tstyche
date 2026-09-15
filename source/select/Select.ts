@@ -70,11 +70,8 @@ export class Select {
     return matchPatterns.includedDirectory.test(directoryPath);
   }
 
-  static #isFileIncluded(filePath: string, matchPatterns: MatchPatterns, resolvedConfig: ResolvedConfig) {
-    if (
-      resolvedConfig.pathMatch.length > 0 &&
-      !resolvedConfig.pathMatch.some((match) => filePath.toLowerCase().includes(match.toLowerCase()))
-    ) {
+  static #isFileIncluded(filePath: string, matchPatterns: MatchPatterns, pathMatch: Array<string> = []) {
+    if (pathMatch.length > 0 && !pathMatch.some((match) => filePath.toLowerCase().includes(match.toLowerCase()))) {
       return false;
     }
 
@@ -84,13 +81,17 @@ export class Select {
   static isFixtureFile(filePath: string, resolvedConfig: ResolvedConfig): boolean {
     const matchPatterns = Select.#getMatchPatterns(resolvedConfig.fixtureFileMatch);
 
-    return Select.#isFileIncluded(Path.relative(resolvedConfig.rootPath, filePath), matchPatterns, resolvedConfig);
+    return Select.#isFileIncluded(Path.relative(resolvedConfig.rootPath, filePath), matchPatterns);
   }
 
   static isTestFile(filePath: string, resolvedConfig: ResolvedConfig): boolean {
     const matchPatterns = Select.#getMatchPatterns(resolvedConfig.testFileMatch);
 
-    return Select.#isFileIncluded(Path.relative(resolvedConfig.rootPath, filePath), matchPatterns, resolvedConfig);
+    return Select.#isFileIncluded(
+      Path.relative(resolvedConfig.rootPath, filePath),
+      matchPatterns,
+      resolvedConfig.pathMatch,
+    );
   }
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {
@@ -133,7 +134,7 @@ export class Select {
     for (const fileName of entries.files) {
       const filePath = [currentPath, fileName].join("/");
 
-      if (Select.#isFileIncluded(filePath, matchPatterns, resolvedConfig)) {
+      if (Select.#isFileIncluded(filePath, matchPatterns, resolvedConfig.pathMatch)) {
         testFilePaths.push([targetPath, fileName].join("/"));
       }
     }

@@ -122,6 +122,17 @@
     },
 
     {
+      "includes": ["source/typescript/*.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
+          }
+        }
+      }
+    },
+
+    {
       "includes": ["**/*.tst.ts", "**/*.tst.tsx"],
       "linter": {
         "rules": {

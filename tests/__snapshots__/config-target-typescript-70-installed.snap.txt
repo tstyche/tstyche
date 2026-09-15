@@ -1,0 +1,5 @@
+Error: The installed TypeScript version 7.0 is not supported.
+
+Please upgrade to TypeScript 7.1 or later.
+Or use the '--target' command line option to specify a supported version explicitly.
+
