@@ -31,4 +31,3 @@ Use this skill when the task is about a `.tst.*` file, TSTyche assertions or tes
 - Matcher signatures and semantics: [references/expect-api.md](references/expect-api.md)
 - Helpers, modifiers, and directives: [references/testing-and-directives.md](references/testing-and-directives.md)
 - Inference and compatibility design: [references/inference-and-compatibility.md](references/inference-and-compatibility.md)
-- Documentation/source coverage and ownership: [../sources.json](../sources.json)

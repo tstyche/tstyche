@@ -95,12 +95,6 @@ Try TSTyche online on StackBlitz:
 
 Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 
-## Agent Skills
-
-This repository includes repository-local Agent Skills under [`skills/`](skills/). Load them with a skills-compatible agent or inspect the focused `SKILL.md` files for guidance on type tests, project setup, and programmatic integrations. They are source-control assets and are not included in the published npm package.
-
-When changing a public TSTyche contract, run `npm run skills:check`. If the checked-in contract snapshot is intentionally changed, review the owning skill and then run `npm run skills:update`.
-
 ## Roadmap
 
 See [ROADMAP.md](https://github.com/tstyche/tstyche/blob/main/ROADMAP.md) for planned features.

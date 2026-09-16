@@ -51,9 +51,7 @@
     "test:schemas": "jsonschema test schemas/__tests__/*.test.json",
     "test:types": "tstyche typetests",
     "test:unit": "aube test:run source/**/__tests__/*.test.js --parallel",
-    "typecheck": "tsc --build --force --verbose",
-    "skills:check": "node ./.aube/check-skills.ts",
-    "skills:update": "node ./.aube/check-skills.ts --write"
+    "typecheck": "tsc --build --force --verbose"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.0",

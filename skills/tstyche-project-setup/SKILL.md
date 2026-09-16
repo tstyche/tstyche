@@ -30,4 +30,3 @@ Use this skill when adding TSTyche to a project, changing `tstyche.json` or TSCo
 - CLI, targets, store, and watch: [references/cli-and-versions.md](references/cli-and-versions.md)
 - Environment variables and precedence: [references/environment.md](references/environment.md)
 - Templates and CI: [references/templates-and-ci.md](references/templates-and-ci.md)
-- Documentation/source coverage and ownership: [../sources.json](../sources.json)

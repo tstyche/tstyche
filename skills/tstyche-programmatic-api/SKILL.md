@@ -26,4 +26,3 @@ Use this skill for `tstyche/tag`, `tstyche/api`, custom reporters, embedded runs
 - Entry points and runner/tag patterns: [references/entrypoints-and-runner.md](references/entrypoints-and-runner.md)
 - Reporter, event, and result contracts: [references/reporters-events-results.md](references/reporters-events-results.md)
 - Config/CLI embedding and failure handling: [references/embedding-and-failures.md](references/embedding-and-failures.md)
-- Documentation/source coverage and ownership: [../sources.json](../sources.json)

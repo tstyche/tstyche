@@ -82,24 +82,5 @@ aube test
 aube typecheck
 ```
 
-For changes to public TSTyche behavior, build first and run the Agent Skills contract check:
-
-```shell
-aube build
-npm run skills:check
-```
-
-The checker validates the built declarations, schema, CLI help, directive and
-environment authorities, and every local Markdown reference. If it reports a
-changed contract, update the owning skill under `skills/`, review the source
-mapping in `skills/sources.json`, then refresh the deterministic snapshot and
-release metadata with:
-
-```shell
-npm run skills:update
-npm run skills:check
-```
-
-The skills are repository-local maintenance assets. They are not included in
-the published npm package unless the package `files` policy is changed
-deliberately.
+When changing public TSTyche behavior, review the repository-local Agent Skills
+under `skills/` and update any affected guidance.
