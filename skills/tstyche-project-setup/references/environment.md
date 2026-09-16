@@ -18,4 +18,4 @@ Values are not validated by TSTyche: booleans are true for any non-empty value, 
 
 Store defaults vary by platform and `XDG_DATA_HOME`/`LocalAppData`. Keep CI deterministic by setting a writable store path and disabling interactive/color output where needed.
 
-The website currently documents `TSTYCHE_TIMEOUT` but source 7.2.4 introduces the more specific fetch variables. Treat this as compatibility-sensitive and update both the skill and coverage checker when source behavior changes.
+The source retains `TSTYCHE_TIMEOUT` as a legacy fallback, while the website documents the more specific fetch variables. Treat this as compatibility-sensitive and update the skill when source behavior changes.

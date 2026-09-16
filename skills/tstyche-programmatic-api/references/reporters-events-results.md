@@ -12,7 +12,7 @@ export default class Reporter {
 
   on([event, payload]) {
     if (event === "run:start") {
-      for (const task of payload.result.tasks) console.log(task.filePath);
+      for (const file of payload.result.files) console.log(file.path);
     }
   }
 }
@@ -26,6 +26,6 @@ Configure it by package name or local path in `reporters`. Builtins are `dot`, `
 
 ## Result typing
 
-Result types include `Result`, `TargetResult`, `ProjectResult`, `FileResult`, `DescribeResult`, `TestResult`, `ExpectResult`, and `SuppressedResult`, with `ResultStatus`, counts, timing, and project-config types. Consume documented fields such as `tasks`, file paths, status/counts, and timing only after checking the declaration for the package version in use.
+Result types include `Result`, `TargetResult`, `ProjectResult`, `FileResult`, `DescribeResult`, `TestResult`, `ExpectResult`, and `SuppressedResult`, with `ResultStatus`, counts, timing, and project-config types. Consume documented fields such as `files`, each file's `path`, status/counts, and timing only after checking the declaration for the package version in use.
 
 When a reporter needs diagnostics, handle the corresponding `*:error` event and its typed diagnostics array. Do not infer process exit status from an individual pass/fail event; let `Cli`/runner completion determine overall success.

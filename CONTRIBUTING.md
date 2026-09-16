@@ -81,6 +81,3 @@ aube lint
 aube test
 aube typecheck
 ```
-
-When changing public TSTyche behavior, review the repository-local Agent Skills
-under `skills/` and update any affected guidance.
