@@ -67,7 +67,6 @@ if (debug) {
  */
 async function runTests(files, concurrency) {
   const testStream = run({ argv: options, concurrency, files, only })
-
     .on("test:fail", () => {
       process.exitCode = 1;
     })
