@@ -3,6 +3,7 @@ import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
+import { getTypeScriptVersionMajor } from "./__utilities__/typescript.js";
 
 const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
@@ -179,7 +180,9 @@ test("is string?", () => {
     });
 
     await assert.matchSnapshot(normalizeOutput(stdout), {
-      fileName: `${testFileName}-not-valid-range-within-union-stdout`,
+      // TODO revert after TypeScript 7.1 is released
+      // fileName: `${testFileName}-not-valid-range-within-union-stdout`,
+      fileName: `${testFileName}-not-valid-range-within-union-stdout-${getTypeScriptVersionMajor()}`,
       testFileUrl: import.meta.url,
     });
 

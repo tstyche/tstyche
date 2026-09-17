@@ -1,11 +1,12 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Diagnostic } from "#diagnostic";
 import { EventEmitter } from "#events";
 import { Path } from "#path";
 import type { Fetcher } from "./Fetcher.js";
 import type { LockService } from "./LockService.js";
-import type { Manifest } from "./Manifest.js";
+import type { Manifest, Resource } from "./Manifest.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 import { TarReader } from "./TarReader.js";
 
@@ -21,21 +22,41 @@ export class PackageService {
   }
 
   async ensure(packageVersion: string, manifest: Manifest): Promise<string | undefined> {
-    const packagePath = Path.join(this.#storePath, `typescript@${packageVersion}`);
+    const packageSpecifier = `typescript@${packageVersion}`;
+    const packagePath = Path.join(this.#storePath, packageSpecifier);
 
-    const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageVersion));
+    const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageSpecifier));
 
     if (await this.#lockService.isLocked(packagePath, diagnostic)) {
       return;
     }
 
-    if (existsSync(packagePath)) {
-      return packagePath;
+    if (!existsSync(packagePath)) {
+      EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
+
+      const resource = manifest.packages[packageVersion]!;
+
+      let success = await this.#fetch(packagePath, packageSpecifier, resource);
+
+      if (success && resource.binary) {
+        const binaryPackagePath = Path.join(packagePath, "node_modules", resource.binary.name);
+        const binaryPackageSpecifier = `${resource.binary.name}@${packageVersion}`;
+
+        success = await this.#fetch(binaryPackagePath, binaryPackageSpecifier, resource.binary);
+      }
+
+      if (!success) {
+        await fs.rm(packagePath, { recursive: true, force: true });
+
+        return;
+      }
     }
 
-    EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
+    return `${pathToFileURL(packagePath)}/`;
+  }
 
-    const resource = manifest.packages[packageVersion]!;
+  async #fetch(packagePath: string, packageSpecifier: string, resource: Resource): Promise<boolean> {
+    const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageSpecifier));
 
     const lock = this.#lockService.getLock(packagePath);
 
@@ -44,7 +65,7 @@ export class PackageService {
       const response = await this.#fetcher.get(request, diagnostic);
 
       if (!response?.body) {
-        return;
+        return false;
       }
 
       const targetPath = await fs.mkdtemp(`${packagePath}-`);
@@ -58,11 +79,15 @@ export class PackageService {
 
         await fs.mkdir(directoryPath, { recursive: true });
         await fs.writeFile(filePath, file.content);
+
+        if ((file.mode & fs.constants.S_IXUSR) !== 0) {
+          await fs.chmod(filePath, file.mode);
+        }
       }
 
       await fs.rename(targetPath, packagePath);
 
-      return packagePath;
+      return true;
     } finally {
       lock.release();
     }

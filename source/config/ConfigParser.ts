@@ -1,7 +1,7 @@
-import type ts from "@typescript/typescript6";
 import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
-import type { JsonNode, JsonScanner, JsonSourceFile } from "#json";
+import type { JsonNode, JsonScanner } from "#json";
 import { Path } from "#path";
+import type { TextFile } from "#text";
 import { ConfigDiagnosticText } from "./ConfigDiagnosticText.js";
 import { OptionBrand } from "./OptionBrand.enum.js";
 import type { OptionGroup } from "./OptionGroup.enum.js";
@@ -11,22 +11,22 @@ import type { OptionValue } from "./types.js";
 
 export class ConfigParser {
   #configFileOptions: Record<string, OptionValue>;
+  #file: TextFile;
   #jsonScanner: JsonScanner;
   #onDiagnostics: DiagnosticsHandler;
   #options: Map<string, OptionDefinition>;
-  #sourceFile: ts.SourceFile | JsonSourceFile;
 
   constructor(
     configOptions: Record<string, OptionValue>,
     optionGroup: OptionGroup,
-    sourceFile: ts.SourceFile | JsonSourceFile,
+    file: TextFile,
     jsonScanner: JsonScanner,
     onDiagnostics: DiagnosticsHandler,
   ) {
     this.#configFileOptions = configOptions;
+    this.#file = file;
     this.#jsonScanner = jsonScanner;
     this.#onDiagnostics = onDiagnostics;
-    this.#sourceFile = sourceFile;
 
     this.#options = Options.for(optionGroup);
   }
@@ -65,7 +65,7 @@ export class ConfigParser {
           break;
         }
 
-        const basePath = Path.dirname(this.#sourceFile.fileName);
+        const basePath = Path.dirname(this.#file.path);
         optionValue = Options.resolve(optionDefinition.name, optionValue, basePath);
 
         await Options.validate(optionDefinition.name, optionValue, this.#onDiagnostics, jsonNode.origin);
