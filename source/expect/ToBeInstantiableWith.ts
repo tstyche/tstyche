@@ -1,6 +1,5 @@
 import type { ExpectNode } from "#collect";
 import { Diagnostic, DiagnosticOrigin, type DiagnosticsHandler } from "#diagnostic";
-import { belongsToArgumentList, isIdentifierLike } from "#layers";
 import { AbilityMatcherBase } from "./AbilityMatcherBase.js";
 import { ExpectDiagnosticText } from "./ExpectDiagnosticText.js";
 import type { ArgumentNode, MatchResult } from "./types.js";
@@ -15,10 +14,10 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
     targetNode: ArgumentNode,
     onDiagnostics: DiagnosticsHandler<Array<Diagnostic>>,
   ): MatchResult | undefined {
-    if (!isIdentifierLike(sourceNode, this.compiler)) {
+    if (!this.ts.isIdentifierLike(sourceNode)) {
       let text: string;
 
-      if (belongsToArgumentList(sourceNode, this.compiler)) {
+      if (this.ts.belongsToArgumentList(sourceNode)) {
         text = ExpectDiagnosticText.argumentMustBe("an instantiable expression");
       } else {
         text = ExpectDiagnosticText.typeArgumentMustBe("an instantiable type");
@@ -31,7 +30,7 @@ export class ToBeInstantiableWith extends AbilityMatcherBase {
       return;
     }
 
-    if (!this.compiler.isTupleTypeNode(targetNode)) {
+    if (!this.ts.isTupleTypeNode(targetNode)) {
       const text = ExpectDiagnosticText.typeArgumentMustBe("a tuple type");
       const origin = DiagnosticOrigin.fromNode(targetNode);
 

@@ -11,8 +11,6 @@ export function spawnTyche(fixtureUrl, args = [], options = {}) {
   return new Promise((resolve, reject) => {
     /** @type {NodeJS.ProcessEnv} */
     const env = {
-      // TODO remove after adding support for TypeScript 7
-      ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: "@typescript/typescript6",
       ...process.env,
       ["TSTYCHE_NO_COLOR"]: "true",
       ["TSTYCHE_STORE_PATH"]: "./.store",
