@@ -95,6 +95,10 @@ Try TSTyche online on StackBlitz:
 
 Visit [tstyche.org](https://tstyche.org) to view the full documentation.
 
+## Agent Skills
+
+Skills for AI coding agents are available in the [tstyche/tstyche-skills](https://github.com/tstyche/tstyche-skills) repository.
+
 ## Roadmap
 
 See [ROADMAP.md](https://github.com/tstyche/tstyche/blob/main/ROADMAP.md) for planned features.
