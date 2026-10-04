@@ -3,38 +3,38 @@
 lockfile_version = 2
 
 [[tools.aube]]
-version = "2.2.16"
+version = "2.4.0"
 backend = "packslip:github.com/aubepkg/aube"
 specifiers = ["latest"]
 
 [tools.aube."platforms.linux-arm64"]
-checksum = "sha256:a3b3a44ebff731672741c41d65b806dc8e138252f81e50240e3f8a359deb065d"
-url = "https://github.com/aubepkg/aube/releases/download/v2.2.16/aube-v2.2.16-aarch64-unknown-linux-gnu.tar.gz"
+checksum = "sha256:cb21f9acd7240253021662d4f874912ef8614ad2af7847083e7370c518e419aa"
+url = "https://github.com/aubepkg/aube/releases/download/v2.4.0/aube-v2.4.0-aarch64-unknown-linux-gnu.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [tools.aube."platforms.linux-arm64-musl"]
-checksum = "sha256:2ee2ada278809c180bae121863093158b7dc1f6983aa96db6cee1ce1a49a4a0f"
-url = "https://github.com/aubepkg/aube/releases/download/v2.2.16/aube-v2.2.16-aarch64-unknown-linux-musl.tar.gz"
+checksum = "sha256:015e34008dafffda17a3f05ffb7affdeec71c0bea31847c57c95c7d4bdbb59d3"
+url = "https://github.com/aubepkg/aube/releases/download/v2.4.0/aube-v2.4.0-aarch64-unknown-linux-musl.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [tools.aube."platforms.linux-x64"]
-checksum = "sha256:f459e96c1eba2068ea921875748fe1777e78b919886f2a83058b8c5c50e139ef"
-url = "https://github.com/aubepkg/aube/releases/download/v2.2.16/aube-v2.2.16-x86_64-unknown-linux-gnu.tar.gz"
+checksum = "sha256:7896047bcbf2b21bc278c0a766d6d8a200ca1e4a37d261552e7e97788be0d3d5"
+url = "https://github.com/aubepkg/aube/releases/download/v2.4.0/aube-v2.4.0-x86_64-unknown-linux-gnu.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [tools.aube."platforms.linux-x64-musl"]
-checksum = "sha256:61097c72679196bae2a0ae19dd6cc9113e6a950ae7c84753b4b66526509d230d"
-url = "https://github.com/aubepkg/aube/releases/download/v2.2.16/aube-v2.2.16-x86_64-unknown-linux-musl.tar.gz"
+checksum = "sha256:69aef2a7cec0f2bcb88504bf06c418c788f47cf11d8830c831bb42cbf6e156c8"
+url = "https://github.com/aubepkg/aube/releases/download/v2.4.0/aube-v2.4.0-x86_64-unknown-linux-musl.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [tools.aube."platforms.macos-arm64"]
-checksum = "sha256:325b967ee1f554012e56db3b57473924352302468fc3dcbf37f0336efdc03597"
-url = "https://github.com/aubepkg/aube/releases/download/v2.2.16/aube-v2.2.16-aarch64-apple-darwin.tar.gz"
+checksum = "sha256:93c782fa74a5558c8f67d43b15b1db85598b61df84faf19ba8e72698e38ef9b1"
+url = "https://github.com/aubepkg/aube/releases/download/v2.4.0/aube-v2.4.0-aarch64-apple-darwin.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [tools.aube."platforms.windows-x64"]
-checksum = "sha256:e7fba256b8f966e1063099644f765ad23ce713a4fc938ce0c41dcf76378a55d1"
-url = "https://github.com/aubepkg/aube/releases/download/v2.2.16/aube-v2.2.16-x86_64-pc-windows-msvc.zip"
+checksum = "sha256:8357e02ea6251ad325ccc8c99163a3d0a63ca8eaf2e7e75f0ed8578a81847455"
+url = "https://github.com/aubepkg/aube/releases/download/v2.4.0/aube-v2.4.0-x86_64-pc-windows-msvc.zip"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [[tools.hyperfine]]
@@ -108,37 +108,37 @@ url = "https://github.com/01mf02/jaq/releases/download/v3.1.1/jaq-x86_64-pc-wind
 url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/502328777"
 
 [[tools.node]]
-version = "26.8.2"
+version = "26.10.0"
 backend = "core:node"
 specifiers = ["latest"]
 
 [tools.node."platforms.linux-arm64"]
-checksum = "sha256:746cdbf21565b4ea06f77642bb0e85466de8bb722242be2c5e006f272c361c63"
-url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-linux-arm64.tar.gz"
+checksum = "sha256:423a41bff8e2a2fa15e702fefe2919ef95823b2378744daccb8439302534b44f"
+url = "https://nodejs.org/dist/v26.10.0/node-v26.10.0-linux-arm64.tar.gz"
 
 [tools.node."platforms.linux-arm64-musl"]
-checksum = "sha256:125437a0b59d69592b8f4bb813a47245337afac8c973d15ab7720f0ec55d182d"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-arm64-musl.tar.gz"
+checksum = "sha256:d26027bff3197050d2a2b0bfa151b18e8378ed81affa2bf5093804db158979b6"
+url = "https://unofficial-builds.nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-arm64-musl.tar.gz"
 
 [tools.node."platforms.linux-x64"]
-checksum = "sha256:badb3fe6a61b85e1352ca6564dc56b8b7bd5ecd5c474c52acc21dd0cdd586f35"
-url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-linux-x64.tar.gz"
+checksum = "sha256:cb5c9ce9c80d7b8821e3a258543c71b939138cf17c74d5cc44bbe85d6dbc5ad8"
+url = "https://nodejs.org/dist/v26.10.0/node-v26.10.0-linux-x64.tar.gz"
 
 [tools.node."platforms.linux-x64-musl"]
-checksum = "sha256:696eb0180248a06c9893f3f07bcc4e2680891c83118c73aaf1de330efd053910"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-x64-musl.tar.gz"
+checksum = "sha256:e42da94821b9422eb76bf5aaf4de0977e04ba320b8aff6148d895a94b08ee223"
+url = "https://unofficial-builds.nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-x64-musl.tar.gz"
 
 [tools.node."platforms.macos-arm64"]
-checksum = "sha256:974b6d5fb2fc7c33ff2354db0902b4e91c2de01ec8acc6de48e543c97e18c9e1"
-url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-darwin-arm64.tar.gz"
+checksum = "sha256:751fdf7439f115d87ee2a8f3f18c065b6151852068e3e666ac60ac2996f75ac9"
+url = "https://nodejs.org/dist/v26.10.0/node-v26.10.0-darwin-arm64.tar.gz"
 
 [tools.node."platforms.macos-x64"]
-checksum = "sha256:adb8feb2d4987df3d72d2ec46f4fc4b58039c859b8c3f0e3cc2d3c6cbaf8629c"
-url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-darwin-x64.tar.gz"
+checksum = "sha256:ebbe9ab9b58ad6bb54390d6e2c862c1afa7d4475fb7e8ae8146acde211bf70df"
+url = "https://nodejs.org/dist/v26.10.0/node-v26.10.0-darwin-x64.tar.gz"
 
 [tools.node."platforms.windows-x64"]
-checksum = "sha256:cf02f5d0c06c794b84f277177d5cf3743d0924ca49f6641cd435dd7cb6ee9085"
-url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-win-x64.zip"
+checksum = "sha256:9fef7eca6743a6b910989cd8e78712376b394fcb9b6e1e9c44a0799a287f90c5"
+url = "https://nodejs.org/dist/v26.10.0/node-v26.10.0-win-x64.zip"
 
 [[tools.rg]]
 version = "15.2.0"
@@ -181,41 +181,41 @@ url = "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15
 url_api = "https://api.github.com/repos/BurntSushi/ripgrep/releases/assets/478119643"
 
 [[tools.typos]]
-version = "1.50.1"
+version = "1.50.2"
 backend = "aqua:crate-ci/typos"
 specifiers = ["latest"]
 
 [tools.typos."platforms.linux-arm64"]
-checksum = "sha256:a48feb58c517977ca953e634507c72819d64df8717c33ced3e43868d174fd39e"
-url = "https://github.com/crate-ci/typos/releases/download/v1.50.1/typos-v1.50.1-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/539857357"
+checksum = "sha256:27c4b6d0ba6f37d120ce32117777d703fc9d57ba71f16e8bcde5b35c987cf9b8"
+url = "https://github.com/crate-ci/typos/releases/download/v1.50.2/typos-v1.50.2-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/565799446"
 
 [tools.typos."platforms.linux-arm64-musl"]
-checksum = "sha256:a48feb58c517977ca953e634507c72819d64df8717c33ced3e43868d174fd39e"
-url = "https://github.com/crate-ci/typos/releases/download/v1.50.1/typos-v1.50.1-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/539857357"
+checksum = "sha256:27c4b6d0ba6f37d120ce32117777d703fc9d57ba71f16e8bcde5b35c987cf9b8"
+url = "https://github.com/crate-ci/typos/releases/download/v1.50.2/typos-v1.50.2-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/565799446"
 
 [tools.typos."platforms.linux-x64"]
-checksum = "sha256:edf0545109aee6a22751d04ddecb97c45be47d3aa0409564fb895eeeace91b1e"
-url = "https://github.com/crate-ci/typos/releases/download/v1.50.1/typos-v1.50.1-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/539858793"
+checksum = "sha256:abcb3e257c7c2abeff4d903f7fe68071357637605bdb283ce2251f44bc70dc09"
+url = "https://github.com/crate-ci/typos/releases/download/v1.50.2/typos-v1.50.2-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/565795694"
 
 [tools.typos."platforms.linux-x64-musl"]
-checksum = "sha256:edf0545109aee6a22751d04ddecb97c45be47d3aa0409564fb895eeeace91b1e"
-url = "https://github.com/crate-ci/typos/releases/download/v1.50.1/typos-v1.50.1-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/539858793"
+checksum = "sha256:abcb3e257c7c2abeff4d903f7fe68071357637605bdb283ce2251f44bc70dc09"
+url = "https://github.com/crate-ci/typos/releases/download/v1.50.2/typos-v1.50.2-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/565795694"
 
 [tools.typos."platforms.macos-arm64"]
-checksum = "sha256:2c940734b44b6e199e165278b662b7e17c68f068471a2a8a5e491ce635414ae6"
-url = "https://github.com/crate-ci/typos/releases/download/v1.50.1/typos-v1.50.1-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/539861019"
+checksum = "sha256:70d61e9d682034133f0aa56f5a02bae0de168495f3cce62a87054aa7186c1901"
+url = "https://github.com/crate-ci/typos/releases/download/v1.50.2/typos-v1.50.2-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/565802016"
 
 [tools.typos."platforms.macos-x64"]
-checksum = "sha256:b31ccf2f21154b2bc8d2a84f395f746106edda0feec4817fbecdb12216df53bd"
-url = "https://github.com/crate-ci/typos/releases/download/v1.50.1/typos-v1.50.1-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/539861041"
+checksum = "sha256:7480a081e51d428d94f560ef8b855ae0decb7c35cc686925ed887c5f51b1ecf1"
+url = "https://github.com/crate-ci/typos/releases/download/v1.50.2/typos-v1.50.2-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/565800683"
 
 [tools.typos."platforms.windows-x64"]
-checksum = "sha256:8740867a0d9e44a62f0803e37a669ec3c6cd17ab63cd49d00e14a96d3e03ccc3"
-url = "https://github.com/crate-ci/typos/releases/download/v1.50.1/typos-v1.50.1-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/539862554"
+checksum = "sha256:8474ca8bd72df497b7dee2272345bdea0d4926b18b708faea492fc9bcfd0b0e9"
+url = "https://github.com/crate-ci/typos/releases/download/v1.50.2/typos-v1.50.2-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/crate-ci/typos/releases/assets/565798642"
