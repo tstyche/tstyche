@@ -10,16 +10,17 @@ import { ProjectConfigKind } from "#result";
 import { Select } from "#select";
 import type * as ts from "#typescript";
 import { TextFileService } from "../text/TextFileService.js";
-import { FileSystem } from "./FileSystem.js";
+import { FileMapService } from "./FileMapService.js";
 import { NativeMappedDiagnostic } from "./NativeMappedDiagnostic.js";
 import { ProjectConfigService } from "./ProjectConfigService.js";
 
 export class NativeProjectService {
   #api: InstanceType<typeof tsApi.API>;
+  #currentSnapshot: tsApi.Snapshot;
   #currentProject: tsApi.Project | undefined;
   #currentSpecifier: string | undefined;
   #declarationFileRegex = /\.d\.[cm]?ts$/;
-  #fs = new FileSystem();
+  #fileMap = new FileMapService();
   #projectConfig: ProjectConfigService;
   #resolvedConfig: ResolvedConfig;
   #ts: ts.NativeTypeScript;
@@ -30,7 +31,8 @@ export class NativeProjectService {
     this.#ts = ts;
     this.#resolvedConfig = resolvedConfig;
 
-    this.#api = ts.getApi(this.#fs);
+    this.#api = ts.getApi();
+    this.#currentSnapshot = this.#api.createSnapshot();
     this.#projectConfig = new ProjectConfigService(this.#api, resolvedConfig);
 
     const id = Date.now().toString(36);
@@ -113,7 +115,7 @@ export class NativeProjectService {
 
       default:
         if (Options.isJsonString(this.#resolvedConfig.tsconfig)) {
-          this.#fs.writeFile(this.#tsconfigSyntheticPath, this.#resolvedConfig.tsconfig);
+          this.#fileMap.add(this.#tsconfigSyntheticPath, this.#resolvedConfig.tsconfig);
 
           if (this.#api.parseConfigFile(this.#tsconfigSyntheticPath).fileNames.includes(filePath)) {
             compilerOptions = {};
@@ -127,7 +129,7 @@ export class NativeProjectService {
         }
     }
 
-    if (kind !== ProjectConfigKind.Default && specifier === this.#currentSpecifier && !this.#fs.hasChanged()) {
+    if (kind !== ProjectConfigKind.Default && specifier === this.#currentSpecifier && !this.#fileMap.hasChanged()) {
       return { kind, project: this.#currentProject!, specifier };
     }
 
@@ -142,16 +144,18 @@ export class NativeProjectService {
         kind === ProjectConfigKind.Default ? [Path.relative(this.#resolvedConfig.rootPath, filePath)] : undefined,
     });
 
-    this.#fs.writeFile(this.#tsconfigPath, tsconfigText);
+    this.#fileMap.add(this.#tsconfigPath, tsconfigText);
 
-    const snapshot = this.#api.updateSnapshot({
+    this.#currentSnapshot = this.#currentSnapshot.update({
       openProjects: [this.#tsconfigPath],
-      fileChanges: {
-        changed: [...this.#fs.getChanged()],
+      fileSystem: {
+        kind: "layer",
+        files: this.#fileMap.get(),
       },
+      ensurePrograms: true,
     });
 
-    const project = snapshot.getProject(this.#tsconfigPath)!;
+    const project = this.#currentSnapshot.getConfiguredProject(this.#tsconfigPath)!;
 
     return { kind, project, specifier };
   }
@@ -183,7 +187,7 @@ export class NativeProjectService {
 
   openFile(filePath: string, fileText?: string): void {
     if (fileText != null) {
-      this.#fs.writeFile(filePath, fileText);
+      this.#fileMap.add(filePath, fileText);
     }
 
     const { kind, project, specifier } = this.#getProjectFacts(filePath);
@@ -252,11 +256,13 @@ export class NativeProjectService {
   }
 
   openLayer(filePath: string, fileText: string): ReadonlyArray<ts.Diagnostic> {
-    this.#fs.writeTempFile(filePath, fileText);
+    let diagnostics: ReadonlyArray<tsApi.Diagnostic> = [];
 
-    const snapshot = this.#api.updateSnapshot({ fileChanges: { changed: [filePath] } });
-    const project = snapshot.getProject(this.#tsconfigPath)!;
-    const diagnostics = project.program.getSemanticDiagnostics(filePath);
+    this.#api.runWithTemporaryFileUpdate(this.#currentSnapshot, filePath, fileText, (snapshot) => {
+      const project = snapshot.getConfiguredProject(this.#tsconfigPath)!;
+
+      diagnostics = project.program.getSemanticDiagnostics(filePath);
+    });
 
     return diagnostics;
   }

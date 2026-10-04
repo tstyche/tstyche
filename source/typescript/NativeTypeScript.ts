@@ -1,5 +1,4 @@
 import type * as tsAst from "typescript/unstable/ast";
-import type * as tsVfs from "typescript/unstable/fs";
 import type * as tsApi from "typescript/unstable/sync";
 import type { ResolvedConfig } from "#config";
 import { NativeProjectService } from "#project";
@@ -37,8 +36,8 @@ export class NativeTypeScript extends BaseAdapter {
     this.TypeFlags = api.TypeFlags;
   }
 
-  getApi(fs: tsVfs.FileSystem) {
-    return new this.#api.API({ fs });
+  getApi() {
+    return new this.#api.API();
   }
 
   getLeadingCommentRanges(text: string, pos: number): Array<tsAst.CommentRange> | undefined {
