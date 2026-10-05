@@ -16,7 +16,8 @@ import { ProjectConfigService } from "./ProjectConfigService.js";
 
 export class NativeProjectService {
   #api: InstanceType<typeof tsApi.API>;
-  #currentSnapshot: tsApi.Snapshot;
+  #baseSnapshot: tsApi.Snapshot;
+  #currentSnapshot: tsApi.Snapshot | undefined;
   #currentProject: tsApi.Project | undefined;
   #currentSpecifier: string | undefined;
   #declarationFileRegex = /\.d\.[cm]?ts$/;
@@ -32,7 +33,7 @@ export class NativeProjectService {
     this.#resolvedConfig = resolvedConfig;
 
     this.#api = ts.getApi();
-    this.#currentSnapshot = this.#api.createSnapshot();
+    this.#baseSnapshot = this.#api.createSnapshot();
     this.#projectConfig = new ProjectConfigService(this.#api, resolvedConfig);
 
     const id = Date.now().toString(36);
@@ -115,9 +116,16 @@ export class NativeProjectService {
 
       default:
         if (Options.isJsonString(this.#resolvedConfig.tsconfig)) {
-          this.#fileMap.add(this.#tsconfigSyntheticPath, this.#resolvedConfig.tsconfig);
+          if (
+            this.#api
+              // TODO use 'parseConfigFileTextToJson()' instead of 'JSON.parse()'
+              .parseJsonConfigFileContent(JSON.parse(this.#resolvedConfig.tsconfig), {
+                configFileName: this.#tsconfigSyntheticPath,
+              })
+              .fileNames.includes(filePath)
+          ) {
+            this.#fileMap.add(this.#tsconfigSyntheticPath, this.#resolvedConfig.tsconfig);
 
-          if (this.#api.parseConfigFile(this.#tsconfigSyntheticPath).fileNames.includes(filePath)) {
             compilerOptions = {};
             kind = ProjectConfigKind.Synthetic;
             specifier = this.#tsconfigSyntheticPath;
@@ -146,7 +154,8 @@ export class NativeProjectService {
 
     this.#fileMap.add(this.#tsconfigPath, tsconfigText);
 
-    this.#currentSnapshot = this.#currentSnapshot.update({
+    this.#currentSnapshot?.dispose();
+    this.#currentSnapshot = this.#baseSnapshot.update({
       openProjects: [this.#tsconfigPath],
       fileSystem: {
         kind: "layer",
@@ -258,7 +267,7 @@ export class NativeProjectService {
   openLayer(filePath: string, fileText: string): ReadonlyArray<ts.Diagnostic> {
     let diagnostics: ReadonlyArray<tsApi.Diagnostic> = [];
 
-    this.#api.runWithTemporaryFileUpdate(this.#currentSnapshot, filePath, fileText, (snapshot) => {
+    this.#api.runWithTemporaryFileUpdate(this.#currentSnapshot!, filePath, fileText, (snapshot) => {
       const project = snapshot.getConfiguredProject(this.#tsconfigPath)!;
 
       diagnostics = project.program.getSemanticDiagnostics(filePath);
