@@ -265,13 +265,18 @@ export class NativeProjectService {
   }
 
   openLayer(filePath: string, fileText: string): ReadonlyArray<ts.Diagnostic> {
-    let diagnostics: ReadonlyArray<tsApi.Diagnostic> = [];
-
-    this.#api.runWithTemporaryFileUpdate(this.#currentSnapshot!, filePath, fileText, (snapshot) => {
-      const project = snapshot.getConfiguredProject(this.#tsconfigPath)!;
-
-      diagnostics = project.program.getSemanticDiagnostics(filePath);
+    const snapshot = this.#currentSnapshot!.update({
+      fileSystem: {
+        kind: "layer",
+        files: { [filePath]: fileText },
+      },
+      ensurePrograms: true,
     });
+
+    const project = snapshot.getConfiguredProject(this.#tsconfigPath)!;
+    const diagnostics = project.program.getSemanticDiagnostics(filePath);
+
+    snapshot.dispose();
 
     return diagnostics;
   }
