@@ -37,7 +37,7 @@ export class NativeTypeScript extends BaseAdapter {
   }
 
   getApi() {
-    return new this.#api.API();
+    return new this.#api.API({ runExternalCode: true });
   }
 
   getLeadingCommentRanges(text: string, pos: number): Array<tsAst.CommentRange> | undefined {
