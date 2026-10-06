@@ -3,7 +3,7 @@ import type * as tsApi from "typescript/unstable/sync";
 import { type Offset, TextEditor } from "#editor";
 
 export class NativeMappedDiagnostic {
-  fileName: string;
+  fileName: tsAst.RootedFilePath;
   pos: number;
   end: number;
   code: number;

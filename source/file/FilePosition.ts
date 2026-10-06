@@ -1,12 +1,13 @@
 import { fileURLToPath } from "node:url";
+import type * as tsAst from "typescript/unstable/ast";
 import { Path } from "#path";
 
 export class FilePosition {
-  path: string;
+  path: tsAst.RootedFilePath;
   position: number | undefined;
 
   constructor(file: string | URL, position?: number) {
-    this.path = Path.resolve(this.#toPath(file));
+    this.path = Path.resolve(this.#toPath(file)) as tsAst.RootedFilePath;
     this.position = position;
   }
 

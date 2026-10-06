@@ -1,4 +1,5 @@
 import { existsSync } from "node:fs";
+import type * as tsAst from "typescript/unstable/ast";
 import type * as tsApi from "typescript/unstable/sync";
 import type { ResolvedConfig } from "#config";
 import { Path } from "#path";
@@ -13,7 +14,7 @@ export class ProjectConfigService {
     this.#resolvedConfig = resolvedConfig;
   }
 
-  findUp(filePath: string, currentPath = Path.dirname(filePath)): string | undefined {
+  findUp(filePath: tsAst.RootedFilePath, currentPath = Path.dirname(filePath)): string | undefined {
     const configPath = this.#resolveConfigPath(filePath, currentPath);
 
     if (configPath) {
@@ -27,7 +28,7 @@ export class ProjectConfigService {
     return this.findUp(filePath, Path.dirname(currentPath));
   }
 
-  #resolveConfigPath(filePath: string, currentPath: string): string | undefined {
+  #resolveConfigPath(filePath: tsAst.RootedFilePath, currentPath: string): string | undefined {
     for (const configName of ["tsconfig.json", "jsconfig.json"]) {
       const probePath = Path.join(currentPath, configName);
       const config = this.#getParsedConfig(probePath);
@@ -68,7 +69,7 @@ export class ProjectConfigService {
   }
 
   #resolveInProjectReferences(
-    filePath: string,
+    filePath: tsAst.RootedFilePath,
     config: tsApi.ParsedCommandLine,
     visited: Set<string>,
   ): string | undefined {

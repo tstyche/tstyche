@@ -93,7 +93,7 @@ export class NativeProjectService {
     return this.#currentProject!.program.getSourceFile(filePath);
   }
 
-  #getProjectFacts(filePath: string) {
+  #getProjectFacts(filePath: tsAst.RootedFilePath) {
     let compilerOptions = this.#getDefaultCompilerOptions();
     let kind = ProjectConfigKind.Default;
     let specifier = "baseline";
@@ -194,7 +194,7 @@ export class NativeProjectService {
     });
   }
 
-  openFile(filePath: string, fileText?: string): void {
+  openFile(filePath: tsAst.RootedFilePath, fileText?: string): void {
     if (fileText != null) {
       this.#fileMap.add(filePath, fileText);
     }
