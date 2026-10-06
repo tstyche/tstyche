@@ -73,15 +73,15 @@ export class Runner {
       OutputService.writeMessage(prologueText(Runner.version, this.#resolvedConfig.rootPath));
     }
 
-    const fileLocations = files.map((file) => (file instanceof FilePosition ? file : new FilePosition(file)));
+    const filePositions = files.map((file) => (file instanceof FilePosition ? file : new FilePosition(file)));
 
     this.#addHandlers(cancellationToken);
     await this.#addReporters();
 
-    await this.#run(fileLocations, cancellationToken);
+    await this.#run(filePositions, cancellationToken);
 
     if (this.#resolvedConfig.watch) {
-      await this.#watch(fileLocations, cancellationToken);
+      await this.#watch(filePositions, cancellationToken);
     }
 
     this.#eventEmitter.removeReporters();
