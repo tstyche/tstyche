@@ -1,4 +1,4 @@
-import type ts from "@typescript/typescript6";
+import type * as ts from "#typescript";
 import { TestTreeNodeBrand } from "./TestTreeNodeBrand.enum.js";
 import { TestTreeNodeFlags } from "./TestTreeNodeFlags.enum.js";
 
@@ -13,22 +13,21 @@ export interface TestTreeNodeMeta {
 }
 
 export class IdentifierLookup {
-  #compiler: typeof ts;
+  #ts: ts.TypeScript;
   #identifiers!: Identifiers;
   #moduleSpecifiers = ['"tstyche"', "'tstyche'"];
 
-  constructor(compiler: typeof ts) {
-    this.#compiler = compiler;
+  constructor(ts: ts.TypeScript) {
+    this.#ts = ts;
   }
 
   handleImportDeclaration(node: ts.ImportDeclaration): void {
     if (
       this.#moduleSpecifiers.includes(node.moduleSpecifier.getText()) &&
-      // TODO use '.phaseModifier' after dropping support for TypeScript 5.8
-      node.importClause?.isTypeOnly !== true &&
+      !this.#ts.isTypeOnlyImportDeclaration(node) &&
       node.importClause?.namedBindings != null
     ) {
-      if (this.#compiler.isNamedImports(node.importClause.namedBindings)) {
+      if (this.#ts.isNamedImports(node.importClause.namedBindings)) {
         for (const element of node.importClause.namedBindings.elements) {
           if (element.isTypeOnly) {
             continue;
@@ -48,7 +47,7 @@ export class IdentifierLookup {
         }
       }
 
-      if (this.#compiler.isNamespaceImport(node.importClause.namedBindings)) {
+      if (this.#ts.isNamespaceImport(node.importClause.namedBindings)) {
         this.#identifiers.namespace = node.importClause.namedBindings.name.getText();
       }
     }
@@ -72,7 +71,7 @@ export class IdentifierLookup {
     let flags = TestTreeNodeFlags.None;
     let expression = node.expression;
 
-    while (this.#compiler.isPropertyAccessExpression(expression)) {
+    while (this.#ts.isPropertyAccessExpression(expression)) {
       if (expression.expression.getText() === this.#identifiers.namespace) {
         break;
       }
@@ -97,7 +96,7 @@ export class IdentifierLookup {
     let identifier: string | undefined;
 
     if (
-      this.#compiler.isPropertyAccessExpression(expression) &&
+      this.#ts.isPropertyAccessExpression(expression) &&
       expression.expression.getText() === this.#identifiers.namespace
     ) {
       identifier = expression.name.getText();

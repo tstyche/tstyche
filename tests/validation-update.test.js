@@ -21,7 +21,7 @@ await test("'--update' command line option", async (t) => {
 
   await t.test("when fetch request of metadata fails with 404", async () => {
     const storeManifest = {
-      $version: "3",
+      $version: "4",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: `${testServerUrl}/status/404/`,
       versions: ["5.0.2", "5.0.3", "5.0.4"],
@@ -53,7 +53,7 @@ await test("'--update' command line option", async (t) => {
 
   await t.test("when fetch request of metadata times out", async () => {
     const storeManifest = {
-      $version: "3",
+      $version: "4",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://registry.npmjs.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],
@@ -85,7 +85,7 @@ await test("'--update' command line option", async (t) => {
 
   await t.test("when fetch request of metadata fails", async () => {
     const storeManifest = {
-      $version: "3",
+      $version: "4",
       lastUpdated: Date.now(), // this is considered fresh during regular test run
       npmRegistry: "https://nothing.mockhttp.org",
       versions: ["5.0.2", "5.0.3", "5.0.4"],

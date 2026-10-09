@@ -29,7 +29,6 @@ declare module "@typescript/typescript6" {
 
   interface TypeChecker {
     /** @internal */ getParameterType(signature: Signature, parameterIndex: number): Type;
-    isTupleType(type: Type): type is TupleTypeReference;
   }
 
   /** @internal */

@@ -7,7 +7,7 @@ export class TarReader {
     this.#reader = stream.getReader();
   }
 
-  async *extract(): AsyncIterable<{ name: string; content: Uint8Array }> {
+  async *extract(): AsyncIterable<{ name: string; mode: number; content: Uint8Array }> {
     while (true) {
       const header = await this.#read(512);
 
@@ -16,11 +16,12 @@ export class TarReader {
       }
 
       const name = this.#textDecoder.decode(header.subarray(0, 100)).replace(/\0.*$/, "");
+      const mode = Number.parseInt(this.#textDecoder.decode(header.subarray(100, 108)).replace(/\0.*$/, "").trim(), 8);
       const sizeOctal = this.#textDecoder.decode(header.subarray(124, 136)).replace(/\0.*$/, "").trim();
       const size = Number.parseInt(sizeOctal, 8);
       const content = await this.#read(size);
 
-      yield { name, content };
+      yield { name, mode, content };
 
       // Skip padding to next 512 block
       if (size % 512 !== 0) {
