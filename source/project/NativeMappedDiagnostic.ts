@@ -1,5 +1,5 @@
-import type * as tsAst from "typescript/unstable/ast";
-import type * as tsApi from "typescript/unstable/sync";
+import type * as tsAst from "typescript/ast";
+import type * as tsApi from "typescript/sync";
 import { type Offset, TextEditor } from "#editor";
 
 export class NativeMappedDiagnostic {

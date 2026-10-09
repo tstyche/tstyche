@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import type * as tsAst from "typescript/unstable/ast";
+import type * as tsAst from "typescript/ast";
 import { Path } from "#path";
 
 export class FilePosition {

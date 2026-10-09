@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
-import type * as tsAst from "typescript/unstable/ast";
-import type * as tsApi from "typescript/unstable/sync";
+import type * as tsAst from "typescript/ast";
+import type * as tsApi from "typescript/sync";
 import type { ResolvedConfig } from "#config";
 import { Path } from "#path";
 

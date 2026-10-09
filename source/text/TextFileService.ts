@@ -1,4 +1,4 @@
-import type * as tsApi from "typescript/unstable/sync";
+import type * as tsApi from "typescript/sync";
 import type * as ts from "#typescript";
 import { TextFile } from "./TextFile.js";
 

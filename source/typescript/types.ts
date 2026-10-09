@@ -1,6 +1,6 @@
 import type ts6 from "@typescript/typescript6";
-import type * as tsAst from "typescript/unstable/ast";
-import type * as tsApi from "typescript/unstable/sync";
+import type * as tsAst from "typescript/ast";
+import type * as tsApi from "typescript/sync";
 import type { CompatTypeScript } from "./CompatTypeScript.js";
 import type { NativeTypeScript } from "./NativeTypeScript.js";
 

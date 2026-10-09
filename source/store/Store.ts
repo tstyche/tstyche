@@ -68,8 +68,8 @@ export class Store {
     }
 
     if (Version.isSatisfiedWith(packageJson.version, "7")) {
-      const api = await import(new URL(packageJson.exports["./unstable/sync"]!, specifier).toString());
-      const ast = await import(new URL(packageJson.exports["./unstable/ast"]!, specifier).toString());
+      const api = await import(new URL(packageJson.exports["./sync"]!, specifier).toString());
+      const ast = await import(new URL(packageJson.exports["./ast"]!, specifier).toString());
 
       return new NativeTypeScript(api, ast, packageJson.version);
     }
