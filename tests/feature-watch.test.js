@@ -4,7 +4,7 @@ import prettyAnsi from "pretty-ansi";
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
-import { isWindows, Process } from "./__utilities__/process.js";
+import { isWindows, killActiveProcesses, Process } from "./__utilities__/process.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -45,6 +45,10 @@ const testFileName = getTestFileName(import.meta.url);
 const fixtureUrl = getFixtureFileUrl(testFileName, { generated: true });
 
 await test("watch", async (t) => {
+  t.afterEach(() => {
+    killActiveProcesses();
+  });
+
   await t.test("interactive input", async (t) => {
     t.afterEach(async () => {
       await clearFixture(fixtureUrl);

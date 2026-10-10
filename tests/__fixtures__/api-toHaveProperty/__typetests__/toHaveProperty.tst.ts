@@ -8,22 +8,21 @@ const kOne = Symbol("one");
 const kTwo = Symbol.for("two");
 const kFour = Symbol.for("four");
 
-const enum E1 {
-  A,
-  B,
-  C,
+const enum Color {
+  Red,
+  Green,
+  Blue,
 }
-const enum E2 {
-  A = "A",
-  B = "B",
-  C = "C",
+const enum Result {
+  Fail = "fail",
+  Pass = "pass",
 }
 
 interface Sample {
   123: number;
   789?: string | undefined;
-  [E1.A]: string;
-  [E2.B]: string;
+  [Color.Red]: string;
+  [Result.Pass]: string;
   __check: boolean;
   isBusy?: boolean | undefined;
   [kOne]: () => void;
@@ -35,8 +34,8 @@ interface Sample {
 
 const sample = {
   123: 3,
-  [E1.A]: true,
-  [E2.B]: null,
+  [Color.Red]: true,
+  [Result.Pass]: null,
   __check: true,
   [kOne]: "one",
   [kTwo]: "two",
@@ -105,27 +104,27 @@ describe("when source is a type", () => {
   });
 
   test("has expected numeric enum property key", () => {
-    expect<Worker<Sample>>().type.toHaveProperty(E1.A);
+    expect<Worker<Sample>>().type.toHaveProperty(Color.Red);
 
-    expect<Worker<Sample>>().type.not.toHaveProperty(E1.A);
+    expect<Worker<Sample>>().type.not.toHaveProperty(Color.Red);
   });
 
   test("does NOT have expected numeric enum property key", () => {
-    expect<Worker<Sample>>().type.not.toHaveProperty(E1.B);
+    expect<Worker<Sample>>().type.not.toHaveProperty(Color.Green);
 
-    expect<Worker<Sample>>().type.toHaveProperty(E1.B);
+    expect<Worker<Sample>>().type.toHaveProperty(Color.Green);
   });
 
   test("has expected string enum property key", () => {
-    expect<Worker<Sample>>().type.toHaveProperty(E2.B);
+    expect<Worker<Sample>>().type.toHaveProperty(Result.Pass);
 
-    expect<Worker<Sample>>().type.not.toHaveProperty(E2.B);
+    expect<Worker<Sample>>().type.not.toHaveProperty(Result.Pass);
   });
 
   test("does NOT have expected string enum property key", () => {
-    expect<Worker<Sample>>().type.not.toHaveProperty(E2.A);
+    expect<Worker<Sample>>().type.not.toHaveProperty(Result.Fail);
 
-    expect<Worker<Sample>>().type.toHaveProperty(E2.A);
+    expect<Worker<Sample>>().type.toHaveProperty(Result.Fail);
   });
 });
 
@@ -203,26 +202,26 @@ describe("when source is a value", () => {
   });
 
   test("has expected numeric enum property key", () => {
-    expect(sample).type.toHaveProperty(E1.A);
+    expect(sample).type.toHaveProperty(Color.Red);
 
-    expect(sample).type.not.toHaveProperty(E1.A);
+    expect(sample).type.not.toHaveProperty(Color.Red);
   });
 
   test("does NOT have expected numeric enum property key", () => {
-    expect(sample).type.not.toHaveProperty(E1.B);
+    expect(sample).type.not.toHaveProperty(Color.Green);
 
-    expect(sample).type.toHaveProperty(E1.B);
+    expect(sample).type.toHaveProperty(Color.Green);
   });
 
   test("has expected string enum property key", () => {
-    expect(sample).type.toHaveProperty(E2.B);
+    expect(sample).type.toHaveProperty(Result.Pass);
 
-    expect(sample).type.not.toHaveProperty(E2.B);
+    expect(sample).type.not.toHaveProperty(Result.Pass);
   });
 
   test("does NOT have expected string enum property key", () => {
-    expect(sample).type.not.toHaveProperty(E2.A);
+    expect(sample).type.not.toHaveProperty(Result.Fail);
 
-    expect(sample).type.toHaveProperty(E2.A);
+    expect(sample).type.toHaveProperty(Result.Fail);
   });
 });

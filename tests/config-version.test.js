@@ -1,5 +1,5 @@
 import test from "node:test";
-import packageConfig from "../package.json" with { type: "json" };
+import tstyche from "tstyche/package.json" with { type: "json" };
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -40,7 +40,7 @@ await test("'--version' command line option", async (t) => {
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, args);
 
       assert.equal(stderr, "");
-      assert.equal(stdout, `${packageConfig.version}\n`);
+      assert.equal(stdout, `${tstyche.version}\n`);
       assert.equal(exitCode, 0);
     });
   }

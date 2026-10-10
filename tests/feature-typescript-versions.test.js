@@ -34,10 +34,10 @@ await test("TypeScript versions", async (t) => {
     await t.test(`uses TypeScript ${version} as the target`, async () => {
       await spawnTyche(fixtureUrl, ["--fetch", "--target", version]);
 
-      const typescriptModule = new URL(`./typescript@${version}/lib/typescript.js`, storeUrl).toString();
+      const typescriptSpecifier = new URL(`./typescript@${version}`, storeUrl).toString();
 
       const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, [], {
-        env: { ["TSTYCHE_TYPESCRIPT_MODULE"]: typescriptModule },
+        env: { ["TSTYCHE_TYPESCRIPT_SPECIFIER"]: typescriptSpecifier },
       });
 
       assert.equal(stderr, "");

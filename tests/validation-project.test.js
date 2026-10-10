@@ -3,6 +3,7 @@ import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
+import { getTypeScriptVersionMajor } from "./__utilities__/typescript.js";
 
 const isStringTestText = `import { expect, test } from "tstyche";
 test("is string?", () => {
@@ -49,7 +50,7 @@ await test("TSConfig", async (t) => {
     assert.equal(exitCode, 1);
   });
 
-  await t.test("when inline config has incompatible options", async () => {
+  await t.test("when TSConfig has incompatible options", async () => {
     const tsconfig = {
       compilerOptions: {
         module: "node18",
@@ -67,7 +68,7 @@ await test("TSConfig", async (t) => {
     const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl);
 
     await assert.matchSnapshot(stderr, {
-      fileName: `${testFileName}-tsconfig-incompatible-stderr`,
+      fileName: `${testFileName}-tsconfig-incompatible-stderr-${getTypeScriptVersionMajor()}`,
       testFileUrl: import.meta.url,
     });
 

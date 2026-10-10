@@ -1,0 +1,32 @@
+Error: Cannot redeclare block-scoped variable 'x'. ts(2451)
+
+  1 | const x = 1;
+    |       ~
+  2 | // biome-ignore lint/suspicious/noRedeclare: test
+  3 | let x = 2;
+  4 | 
+
+      at ./__typetests__/bind-level.tst.ts:1:7
+
+Error: Cannot redeclare block-scoped variable 'x'. ts(2451)
+
+  1 | const x = 1;
+  2 | // biome-ignore lint/suspicious/noRedeclare: test
+  3 | let x = 2;
+    |     ~
+  4 | 
+  5 | x = true;
+  6 | 
+
+      at ./__typetests__/bind-level.tst.ts:3:5
+
+Error: Cannot assign to 'x' because it is a constant. ts(2588)
+
+  3 | let x = 2;
+  4 | 
+  5 | x = true;
+    | ~
+  6 | 
+
+      at ./__typetests__/bind-level.tst.ts:5:1
+

@@ -1,5 +1,5 @@
 import test from "node:test";
-import packageConfig from "../package.json" with { type: "json" };
+import tstyche from "tstyche/package.json" with { type: "json" };
 import * as assert from "./__utilities__/assert.js";
 import { clearFixture, getFixtureFileUrl, getTestFileName, writeFixture } from "./__utilities__/fixture.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
@@ -43,7 +43,7 @@ await test("'--help' command line option", async (t) => {
 
       assert.equal(stderr, "");
 
-      await assert.matchSnapshot(stdout.replace(packageConfig.version, "<<version>>"), {
+      await assert.matchSnapshot(stdout.replace(tstyche.version, "<<version>>"), {
         fileName: `${testFileName}-stdout`,
         testFileUrl: import.meta.url,
       });

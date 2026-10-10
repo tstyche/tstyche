@@ -1,8 +1,9 @@
-import { pathToFileURL } from "node:url";
-import type ts from "typescript";
+import fs from "node:fs/promises";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
+import type * as ts from "#typescript";
+import { CompatTypeScript, NativeTypeScript } from "#typescript";
 import { Version } from "#version";
 import { Fetcher } from "./Fetcher.js";
 import { LockService } from "./LockService.js";
@@ -45,31 +46,51 @@ export class Store {
   }
 
   static async fetch(tag: string): Promise<void> {
-    if (tag === "*" && environmentOptions.typescriptModule != null) {
+    if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
       return;
     }
 
     await Store.#ensure(tag);
   }
 
-  static async load(tag: string): Promise<typeof ts | undefined> {
-    let resolvedModule: string | undefined;
+  static async #getAdapter(specifier: string) {
+    const packageJsonText = await fs.readFile(new URL("package.json", specifier), { encoding: "utf8" });
+    const packageJson = JSON.parse(packageJsonText) as {
+      exports: Record<string, string>;
+      main: string;
+      version: string;
+    };
 
-    if (tag === "*" && environmentOptions.typescriptModule != null) {
-      resolvedModule = environmentOptions.typescriptModule;
-    } else {
-      const packagePath = await Store.#ensure(tag);
+    if (packageJson.version.startsWith("7.0")) {
+      Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.versionIsNotSupported()));
 
-      if (packagePath != null) {
-        resolvedModule = pathToFileURL(`${packagePath}/lib/typescript.js`).toString();
-      }
+      return;
     }
 
-    if (resolvedModule != null) {
-      return (await import(resolvedModule)).default;
+    if (Version.isSatisfiedWith(packageJson.version, "7")) {
+      const api = await import(new URL(packageJson.exports["./sync"]!, specifier).toString());
+      const ast = await import(new URL(packageJson.exports["./ast"]!, specifier).toString());
+
+      return new NativeTypeScript(api, ast, packageJson.version);
     }
 
-    return;
+    const compiler = (await import(new URL(packageJson.main, specifier).toString())).default;
+
+    return new CompatTypeScript(compiler, packageJson.version);
+  }
+
+  static async load(tag: string): Promise<ts.TypeScript | undefined> {
+    if (tag === "*" && environmentOptions.typescriptSpecifier != null) {
+      return Store.#getAdapter(environmentOptions.typescriptSpecifier);
+    }
+
+    const specifier = await Store.#ensure(tag);
+
+    if (!specifier) {
+      return;
+    }
+
+    return Store.#getAdapter(specifier);
   }
 
   static #onDiagnostics(this: void, diagnostic: Diagnostic) {

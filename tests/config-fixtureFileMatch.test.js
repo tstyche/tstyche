@@ -5,6 +5,7 @@ import { normalizeOutput } from "./__utilities__/output.js";
 import { spawnTyche } from "./__utilities__/tstyche.js";
 
 const fixtureWithAnErrorText = `export const x: string = 10;
+let y = 20; let y = 30;
 `;
 
 const isStringTestText = `import { expect, test } from "tstyche";

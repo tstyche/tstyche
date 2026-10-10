@@ -1,7 +1,7 @@
 import type { ResolvedConfig } from "#config";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { FileLocation } from "#file";
+import { FilePosition } from "#file";
 import { CancellationHandler, ResultHandler } from "#handlers";
 import { OutputService, prologueText } from "#output";
 import { DotReporter, ListReporter, type Reporter, SummaryReporter, WatchReporter } from "#reporters";
@@ -64,7 +64,7 @@ export class Runner {
     }
   }
 
-  async run(files: Array<string | URL | FileLocation>, cancellationToken = new CancellationToken()): Promise<void> {
+  async run(files: Array<string | URL | FilePosition>, cancellationToken = new CancellationToken()): Promise<void> {
     if (this.#resolvedConfig.quiet) {
       OutputService.outputStream.disable();
     }
@@ -73,15 +73,15 @@ export class Runner {
       OutputService.writeMessage(prologueText(Runner.version, this.#resolvedConfig.rootPath));
     }
 
-    const fileLocations = files.map((file) => (file instanceof FileLocation ? file : new FileLocation(file)));
+    const filePositions = files.map((file) => (file instanceof FilePosition ? file : new FilePosition(file)));
 
     this.#addHandlers(cancellationToken);
     await this.#addReporters();
 
-    await this.#run(fileLocations, cancellationToken);
+    await this.#run(filePositions, cancellationToken);
 
     if (this.#resolvedConfig.watch) {
-      await this.#watch(fileLocations, cancellationToken);
+      await this.#watch(filePositions, cancellationToken);
     }
 
     this.#eventEmitter.removeReporters();
@@ -92,7 +92,7 @@ export class Runner {
     }
   }
 
-  async #run(files: Array<FileLocation>, cancellationToken: CancellationToken) {
+  async #run(files: Array<FilePosition>, cancellationToken: CancellationToken) {
     const result = new Result(files);
 
     EventEmitter.dispatch(["run:start", { result }]);
@@ -102,15 +102,17 @@ export class Runner {
 
       EventEmitter.dispatch(["target:start", { result: targetResult }]);
 
-      const compiler = await Store.load(target);
+      const ts = await Store.load(target);
 
-      if (compiler) {
-        // TODO to improve performance, runners (or even test projects) could be cached in the future
-        const fileRunner = new FileRunner(compiler, this.#resolvedConfig);
+      if (ts != null) {
+        const fileRunner = new FileRunner(ts, this.#resolvedConfig);
 
         for (const file of files) {
           await fileRunner.run(file, cancellationToken);
         }
+
+        // TODO consider caching 'FileRunner' instances and cleaning up outside of '#run' for better watch mode performance
+        fileRunner.close();
       }
 
       EventEmitter.dispatch(["target:end", { result: targetResult }]);
@@ -123,7 +125,7 @@ export class Runner {
     }
   }
 
-  async #watch(files: Array<FileLocation>, cancellationToken: CancellationToken) {
+  async #watch(files: Array<FilePosition>, cancellationToken: CancellationToken) {
     const watchService = new WatchService(this.#resolvedConfig, files);
 
     for await (const testFiles of watchService.watch(cancellationToken)) {

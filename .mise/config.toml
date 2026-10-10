@@ -2,5 +2,6 @@
 aube = "latest"
 hyperfine = "latest"
 jaq = "latest"
-node = "lts"
+node = "latest"
+rg = "latest"
 typos = "latest"

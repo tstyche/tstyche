@@ -11,14 +11,18 @@ const fixtureUrl = getFixtureFileUrl(testFileName);
 
 test("@tstyche/tag", async (t) => {
   await t.test("passing test", async () => {
-    const { stderr, stdout } = await promisify(exec)(`node ./__tests__/pass.test.js`, { cwd: fixtureUrl });
+    const { stderr, stdout } = await promisify(exec)(`node ./__tests__/pass.test.js`, {
+      cwd: fixtureUrl,
+    });
 
     assert.equal(stderr, "");
     assert.equal(stdout, "");
   });
 
   await t.test("failing test", async () => {
-    const { stderr, stdout } = await promisify(exec)(`node ./__tests__/fail.test.js`, { cwd: fixtureUrl });
+    const { stderr, stdout } = await promisify(exec)(`node ./__tests__/fail.test.js`, {
+      cwd: fixtureUrl,
+    });
 
     await assert.matchSnapshot(prettyAnsi(normalizeOutput(stderr)), {
       fileName: `${testFileName}-fail-stderr`,

@@ -1,1 +1,1 @@
-export { FileLocation } from "./FileLocation.js";
+export { FilePosition } from "./FilePosition.js";

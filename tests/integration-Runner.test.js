@@ -43,7 +43,7 @@ await test("Runner", async (t) => {
     });
 
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
-    const runner = new tstyche.Runner(resolvedConfig);
+    const runner = new tstyche.Runner({ ...resolvedConfig, quiet: true });
 
     const testCases = [
       {
@@ -87,7 +87,7 @@ await test("Runner", async (t) => {
     }
   });
 
-  await t.test("run tests when test file is 'FileLocation' object", async (t) => {
+  await t.test("run tests when test file is 'FilePosition' object", async (t) => {
     t.before(() => {
       eventEmitter.addReporter(new TestResultReporter());
     });
@@ -97,7 +97,7 @@ await test("Runner", async (t) => {
     });
 
     const resolvedConfig = tstyche.Config.resolve({ configFileOptions: { reporters: [] } });
-    const runner = new tstyche.Runner(resolvedConfig);
+    const runner = new tstyche.Runner({ ...resolvedConfig, quiet: true });
 
     const testCases = [
       {
@@ -116,7 +116,7 @@ await test("Runner", async (t) => {
 
     for (const { testCase, filePath } of testCases) {
       await t.test(testCase, async () => {
-        const files = [new tstyche.FileLocation(filePath)];
+        const files = [new tstyche.FilePosition(filePath)];
 
         await runner.run(files);
 
@@ -129,7 +129,7 @@ await test("Runner", async (t) => {
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'expect'`, async () => {
         const position = isWindows ? 73 : 70;
-        const file = new tstyche.FileLocation(filePath, position);
+        const file = new tstyche.FilePosition(filePath, position);
 
         await runner.run([file]);
 
@@ -142,7 +142,7 @@ await test("Runner", async (t) => {
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'expect.skip'`, async () => {
         const position = isWindows ? 281 : 269;
-        const file = new tstyche.FileLocation(filePath, position);
+        const file = new tstyche.FilePosition(filePath, position);
 
         await runner.run([file]);
 
@@ -155,7 +155,7 @@ await test("Runner", async (t) => {
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'test'`, async () => {
         const position = isWindows ? 43 : 41;
-        const file = new tstyche.FileLocation(filePath, position);
+        const file = new tstyche.FilePosition(filePath, position);
 
         await runner.run([file]);
 
@@ -168,7 +168,7 @@ await test("Runner", async (t) => {
     for (const { testCase, filePath } of testCases) {
       await t.test(`${testCase} with position pointing to 'test.skip'`, async () => {
         const position = isWindows ? 119 : 113;
-        const file = new tstyche.FileLocation(filePath, position);
+        const file = new tstyche.FilePosition(filePath, position);
 
         await runner.run([file]);
 
@@ -192,7 +192,7 @@ await test("Runner", async (t) => {
       const resolvedConfig = tstyche.Config.resolve({
         configFileOptions: { reporters: [], failFast: true },
       });
-      const runner = new tstyche.Runner(resolvedConfig);
+      const runner = new tstyche.Runner({ ...resolvedConfig, quiet: true });
 
       const testFiles = [
         new URL("./__typetests__/toBeNumber.tst.ts", fixtureUrl),

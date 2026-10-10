@@ -2,7 +2,7 @@ import type { ResolvedConfig } from "#config";
 import { Diagnostic } from "#diagnostic";
 import { environmentOptions } from "#environment";
 import { EventEmitter } from "#events";
-import { FileLocation } from "#file";
+import { FilePosition } from "#file";
 import { type InputHandler, InputService } from "#input";
 import { Select, SelectDiagnosticText } from "#select";
 import { CancellationReason, type CancellationToken } from "#token";
@@ -11,13 +11,13 @@ import { FileWatcher } from "./FileWatcher.js";
 import { Watcher, type WatchHandler } from "./Watcher.js";
 
 export class WatchService {
-  #changedTestFiles = new Map<string, FileLocation>();
+  #changedTestFiles = new Map<string, FilePosition>();
   #inputService: InputService | undefined;
   #resolvedConfig: ResolvedConfig;
-  #watchedTestFiles: Map<string, FileLocation>;
+  #watchedTestFiles: Map<string, FilePosition>;
   #watchers: Array<Watcher> = [];
 
-  constructor(resolvedConfig: ResolvedConfig, files: Array<FileLocation>) {
+  constructor(resolvedConfig: ResolvedConfig, files: Array<FilePosition>) {
     this.#resolvedConfig = resolvedConfig;
 
     this.#watchedTestFiles = new Map(files.map((file) => [file.path, file]));
@@ -27,15 +27,15 @@ export class WatchService {
     EventEmitter.dispatch(["watch:error", { diagnostics: [diagnostic] }]);
   }
 
-  async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<FileLocation>> {
-    const onResolve: ResolveHandler<Array<FileLocation>> = () => {
+  async *watch(cancellationToken: CancellationToken): AsyncIterable<Array<FilePosition>> {
+    const onResolve: ResolveHandler<Array<FilePosition>> = () => {
       const testFiles = [...this.#changedTestFiles.values()];
       this.#changedTestFiles.clear();
 
       return testFiles;
     };
 
-    const debounce = new Debounce<Array<FileLocation>>(100, onResolve);
+    const debounce = new Debounce<Array<FilePosition>>(100, onResolve);
 
     const onClose = (reason: CancellationReason) => {
       debounce.cancel();
@@ -85,7 +85,7 @@ export class WatchService {
       if (file != null) {
         this.#changedTestFiles.set(filePath, file);
       } else if (Select.isTestFile(filePath, this.#resolvedConfig)) {
-        file = new FileLocation(filePath);
+        file = new FilePosition(filePath);
 
         this.#changedTestFiles.set(filePath, file);
         this.#watchedTestFiles.set(filePath, file);

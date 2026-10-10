@@ -2,7 +2,26 @@ Error: Type 'number' is not assignable to type 'string'. ts(2322)
 
   1 | export const x: string = 10;
     |              ~
-  2 | 
+  2 | let y = 20; let y = 30;
+  3 | 
 
       at ./type-tests/fixtures/b.ts:1:14
+
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |     ~
+  3 | 
+
+      at ./type-tests/fixtures/b.ts:2:5
+
+Error: Cannot redeclare block-scoped variable 'y'. ts(2451)
+
+  1 | export const x: string = 10;
+  2 | let y = 20; let y = 30;
+    |                 ~
+  3 | 
+
+      at ./type-tests/fixtures/b.ts:2:17
 

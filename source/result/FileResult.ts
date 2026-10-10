@@ -1,4 +1,4 @@
-import type { FileLocation } from "#file";
+import type { FilePosition } from "#file";
 import type { DescribeResult } from "./DescribeResult.js";
 import type { ExpectResult } from "./ExpectResult.js";
 import { createAssertionCounts, createResultTiming, createSuppressedCounts, createTestCounts } from "./helpers.js";
@@ -8,14 +8,14 @@ import type { FileResultStatus } from "./types.js";
 
 export class FileResult {
   assertionCounts = createAssertionCounts();
-  file: FileLocation;
+  file: FilePosition;
   results: Array<DescribeResult | TestResult | ExpectResult> = [];
   suppressedCounts = createSuppressedCounts();
   status: FileResultStatus = ResultStatus.Runs;
   testCounts = createTestCounts();
   timing = createResultTiming();
 
-  constructor(file: FileLocation) {
+  constructor(file: FilePosition) {
     this.file = file;
   }
 }

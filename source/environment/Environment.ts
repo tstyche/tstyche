@@ -13,7 +13,7 @@ export class Environment {
       noInteractive: Environment.#resolveNoInteractive(),
       npmRegistry: Environment.#resolveNpmRegistry(),
       storePath: Environment.#resolveStorePath(),
-      typescriptModule: Environment.#resolveTypeScriptModule(),
+      typescriptSpecifier: Environment.#resolveTypeScriptSpecifier(),
     };
   }
 
@@ -28,11 +28,6 @@ export class Environment {
   static #resolveFetchTimeout() {
     if (process.env["TSTYCHE_FETCH_TIMEOUT"] != null) {
       return Number.parseFloat(process.env["TSTYCHE_FETCH_TIMEOUT"]);
-    }
-
-    // TODO remove in TSTyche 8
-    if (process.env["TSTYCHE_TIMEOUT"] != null) {
-      return Number.parseFloat(process.env["TSTYCHE_TIMEOUT"]);
     }
 
     return 30;
@@ -94,25 +89,27 @@ export class Environment {
     return Path.resolve(os.homedir(), ".local", "share", "TSTyche");
   }
 
-  static #resolveTypeScriptModule() {
-    if (process.env["TSTYCHE_TYPESCRIPT_MODULE"] != null) {
-      const specifier = process.env["TSTYCHE_TYPESCRIPT_MODULE"];
+  static #resolveTypeScriptSpecifier() {
+    function resolve(specifier: string) {
+      return import.meta.resolve(`${specifier}/package.json`).replace(/package\.json$/, "");
+    }
+
+    if (process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"] != null) {
+      const specifier = process.env["TSTYCHE_TYPESCRIPT_SPECIFIER"];
 
       if (specifier !== "") {
-        return import.meta.resolve(specifier);
+        return resolve(specifier);
       }
 
       return;
     }
 
-    let resolvedModule: string | undefined;
-
     try {
-      resolvedModule = import.meta.resolve("typescript");
+      return resolve("typescript");
     } catch {
       // 'typescript' is not installed
     }
 
-    return resolvedModule?.endsWith("lib/typescript.js") ? resolvedModule : undefined;
+    return;
   }
 }
