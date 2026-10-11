@@ -4,7 +4,6 @@ mkdir -p benchmark
 
 hyperfine \
   --export-json 'benchmark/results.json' \
-  --time-unit 'second' \
   --warmup 2 \
   'aube run test:examples' \
   --command-name 'warm cache: tstyche examples' \

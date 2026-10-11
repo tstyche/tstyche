@@ -15,8 +15,8 @@ importers:
         specifier: ^16.12.0
         version: 16.12.0
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       '@types/react':
         specifier: ^19.3.0
         version: 19.3.0
@@ -30,8 +30,8 @@ importers:
         specifier: ^13.0.3
         version: 13.0.3
       monocart-coverage-reports:
-        specifier: ^2.13.0
-        version: 2.13.0
+        specifier: ^2.13.2
+        version: 2.13.2
       pretty-ansi:
         specifier: ^4.0.0
         version: 4.0.0
@@ -105,8 +105,8 @@ packages:
     os: [darwin, linux, win32]
     hasBin: true
 
-  '@types/node@26.6.4':
-    resolution: {integrity: sha512-ldVPDCzj7fsaGZrLB0NuHuTvJcsNasysBAqMolr/cgxrLd1xbqxIr3XJiPnHHJUCxj5sNF1vnRj9aWnrVh5Jcg==}
+  '@types/node@26.6.5':
+    resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
 
   '@types/react@19.3.0':
     resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
@@ -176,6 +176,11 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  acorn@8.19.0:
+    resolution: {integrity: sha512-oJlA3XiRm7Cyk6qFD2Jn8ak9B7jSy0qy00ADO3+8dpT0LSjFihQYv4C02LFCSYJV3Q37xYwwRy5m+IpIiUzqWw==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+
   cleaner-spec-reporter@1.0.3:
     resolution: {integrity: sha512-LgsmrqWRVLcfpyom+A50ukifqg0To+G3UJwKLg/C9r+flm+3MZQQe2MpX4T1fRhMV9VPe+8JuTkGU2gp375G2A==}
     engines: {node: '>= 22.21.0'}
@@ -183,9 +188,9 @@ packages:
   code-block-writer@13.0.3:
     resolution: {integrity: sha512-Oofo0pq3IKnsFtuHqSF7TqBfr71aeyZDVJ0HpmqB7FBM2qEigL0iPONSCZSO9pE9dZTAxANe5XHG9Uy0YMv8cg==}
 
-  commander@14.0.3:
-    resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
-    engines: {node: '>=20'}
+  commander@15.0.0:
+    resolution: {integrity: sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg==}
+    engines: {node: '>=22.12.0'}
 
   console-grid@2.2.4:
     resolution: {integrity: sha512-OLjCRTiHhOpTRo9lQp/2FgJDyq5uQHwkEmVJulEnQ6JVf27oKKzXHZnNOv/e72V4++UdMZCrDWtvXW5sx4lyQg==}
@@ -226,12 +231,12 @@ packages:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
     engines: {node: '>=10'}
 
-  monocart-coverage-reports@2.13.0:
-    resolution: {integrity: sha512-RJfwzbn+EvR0OhCSU3bX2mKd0tSv4RLvood0weoCZV1L99+kBYH0Yq5SnnBFRik7nRoEoGB4mLuZAvO1Fr3DpQ==}
+  monocart-coverage-reports@2.13.2:
+    resolution: {integrity: sha512-G6m6BO3wzidg9UrK2JRMW+err7OxB+iFn0kWkprQyHTUtvbv9vM8u0SrgHW1rWpOQXC4eB+nvat/xa7mLDE/9w==}
     hasBin: true
 
-  monocart-locator@1.0.3:
-    resolution: {integrity: sha512-pe29W2XAoA1WQmZZqxXoP7s06ZEXUhcb81086v68cqjk1HnVL7Q/iU/WJnnetxjPcLqwb4qG8vaSGUOMQU602g==}
+  monocart-locator@1.0.6:
+    resolution: {integrity: sha512-P4DCDxeOhy59KexF3yx/kD7y64HVxHO0lskxjxAML9kTOvQnD2jTpZWFQFEFyyABx32at3t77mWLKftFfk1wHQ==}
 
   pretty-ansi@4.0.0:
     resolution: {integrity: sha512-e+hWevDKx5BWF9nGpWssm6rSTynBbD9aIvuySBSpormiLR3pmR+ey2DVUILVHcKgHEHLm5lEzIHLEtyhO8oEdw==}
@@ -297,7 +302,7 @@ snapshots:
 
   '@sourcemeta/jsonschema@16.12.0': {}
 
-  '@types/node@26.6.4':
+  '@types/node@26.6.5':
     dependencies:
       undici-types: 8.9.0
 
@@ -342,11 +347,13 @@ snapshots:
 
   acorn@8.18.0: {}
 
+  acorn@8.19.0: {}
+
   cleaner-spec-reporter@1.0.3: {}
 
   code-block-writer@13.0.3: {}
 
-  commander@14.0.3: {}
+  commander@15.0.0: {}
 
   console-grid@2.2.4: {}
 
@@ -381,12 +388,12 @@ snapshots:
     dependencies:
       semver: 7.8.5
 
-  monocart-coverage-reports@2.13.0:
+  monocart-coverage-reports@2.13.2:
     dependencies:
-      acorn: 8.18.0
+      acorn: 8.19.0
       acorn-loose: 8.5.2
       acorn-walk: 8.3.5
-      commander: 14.0.3
+      commander: 15.0.0
       console-grid: 2.2.4
       eight-colors: 1.3.3
       foreground-child: 4.0.3
@@ -394,9 +401,9 @@ snapshots:
       istanbul-lib-report: 3.0.1
       istanbul-reports: 3.2.0
       lz-utils: 2.1.1
-      monocart-locator: 1.0.3
+      monocart-locator: 1.0.6
 
-  monocart-locator@1.0.3: {}
+  monocart-locator@1.0.6: {}
 
   pretty-ansi@4.0.0: {}
 

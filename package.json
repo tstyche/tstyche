@@ -64,12 +64,12 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.15",
     "@sourcemeta/jsonschema": "^16.12.0",
-    "@types/node": "^26.6.4",
+    "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@typescript/typescript6": "^6.0.2",
     "cleaner-spec-reporter": "^1.0.3",
     "code-block-writer": "^13.0.3",
-    "monocart-coverage-reports": "^2.13.0",
+    "monocart-coverage-reports": "^2.13.2",
     "pretty-ansi": "^4.0.0",
     "typescript": "^7.1.0-dev.20261009"
   },
