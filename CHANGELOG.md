@@ -1,5 +1,21 @@
 # Changelog
 
+## [8.0.0-beta.0] - 2026-10-11
+
+### Added
+
+- **Breaking!** Add TypeScript 7 support ([#763](https://github.com/tstyche/tstyche/pull/763))
+
+### Fixed
+
+- Show enum member property names in `.toHaveProperty()` error messages ([#795](https://github.com/tstyche/tstyche/pull/795))
+
+### Changed
+
+- **Breaking!** Rename `FileLocation` to `FilePosition` ([#776](https://github.com/tstyche/tstyche/pull/776))
+- **Breaking!** Rename `TSTYCHE_TYPESCRIPT_MODULE` environment variable to `TSTYCHE_TYPESCRIPT_SPECIFIER` ([#770](https://github.com/tstyche/tstyche/pull/770))
+- **Breaking!** Remove `TSTYCHE_TIMEOUT` environment variable in favour of `TSTYCHE_FETCH_TIMEOUT` ([#769](https://github.com/tstyche/tstyche/pull/769))
+
 ## [7.2.5] - 2026-09-10
 
 ### Fixed
@@ -1086,6 +1102,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[8.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v8.0.0-beta.0
 [7.2.5]: https://github.com/tstyche/tstyche/releases/tag/v7.2.5
 [7.2.4]: https://github.com/tstyche/tstyche/releases/tag/v7.2.4
 [7.2.3]: https://github.com/tstyche/tstyche/releases/tag/v7.2.3
