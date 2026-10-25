@@ -20,7 +20,23 @@ await test("'TSTYCHE_FETCH_TIMEOUT' environment variable", async (t) => {
     assert.equal(stderr, "");
 
     assert.matchObject(normalizeOutput(stdout), {
-      fetchTimeout: 30,
+      fetchTimeout: 60,
+    });
+
+    assert.equal(exitCode, 0);
+  });
+
+  await t.test("has default value, when in continuous integration environment", async () => {
+    await writeFixture(fixtureUrl);
+
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
+      env: { ["CI"]: "true" },
+    });
+
+    assert.equal(stderr, "");
+
+    assert.matchObject(normalizeOutput(stdout), {
+      fetchTimeout: 180,
     });
 
     assert.equal(exitCode, 0);
