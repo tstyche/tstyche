@@ -3,38 +3,38 @@
 lockfile_version = 3
 
 [[tools.aube]]
-version = "2.7.2"
+version = "2.8.2"
 backend = "packslip:github.com/aubepkg/aube"
 specifiers = ["latest"]
 
 [tools.aube."platforms.linux-arm64"]
-checksum = "sha256:fccdb28fe420560eb0d18c64c69a755c2b2aa0223fcf6f953ade264685273ef5"
-url = "https://github.com/aubepkg/aube/releases/download/v2.7.2/aube-v2.7.2-aarch64-unknown-linux-gnu.tar.gz"
+checksum = "sha256:1a4d640140f6def6a18fdee28d33a54ac818f4b28e32c36ae66c452e1e41a400"
+url = "https://github.com/aubepkg/aube/releases/download/v2.8.2/aube-v2.8.2-aarch64-unknown-linux-gnu.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release.yml"
 
 [tools.aube."platforms.linux-arm64-musl"]
-checksum = "sha256:0a03c4da9df28cb2e14c2c45ecf2ea32fb8d33027c43e37e8455fd69b09c7fa7"
-url = "https://github.com/aubepkg/aube/releases/download/v2.7.2/aube-v2.7.2-aarch64-unknown-linux-musl.tar.gz"
+checksum = "sha256:dc859a371c6ff8636022b55ebece0088e573b904b6deb768ee0eb0c1a5cb9472"
+url = "https://github.com/aubepkg/aube/releases/download/v2.8.2/aube-v2.8.2-aarch64-unknown-linux-musl.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release.yml"
 
 [tools.aube."platforms.linux-x64"]
-checksum = "sha256:64a28eb9a324a4a0a1142345555f157ff0415ab68195ec6bff6d24ba4a245486"
-url = "https://github.com/aubepkg/aube/releases/download/v2.7.2/aube-v2.7.2-x86_64-unknown-linux-gnu.tar.gz"
+checksum = "sha256:778dec9a531f362ef28dd8de025ea760ef53ab7cd363841be51d383093843ff4"
+url = "https://github.com/aubepkg/aube/releases/download/v2.8.2/aube-v2.8.2-x86_64-unknown-linux-gnu.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release.yml"
 
 [tools.aube."platforms.linux-x64-musl"]
-checksum = "sha256:6993e1157f854f24a0afd95b9e27d27fffe560acf55cbe31b74361d1f6ae0953"
-url = "https://github.com/aubepkg/aube/releases/download/v2.7.2/aube-v2.7.2-x86_64-unknown-linux-musl.tar.gz"
+checksum = "sha256:2f8850cf7860385ed859b12d63ea01a475e4be989dc7ecdca1a27954e8cd955f"
+url = "https://github.com/aubepkg/aube/releases/download/v2.8.2/aube-v2.8.2-x86_64-unknown-linux-musl.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release.yml"
 
 [tools.aube."platforms.macos-arm64"]
-checksum = "sha256:38c144fcd38350cea58d680c351c2f2d85891dabf65821e3d0711a331250c3dd"
-url = "https://github.com/aubepkg/aube/releases/download/v2.7.2/aube-v2.7.2-aarch64-apple-darwin.tar.gz"
+checksum = "sha256:81a509aea6f0ef7339e173e0e6f0f44154fe2a49284a1942255dc5f09429e44b"
+url = "https://github.com/aubepkg/aube/releases/download/v2.8.2/aube-v2.8.2-aarch64-apple-darwin.tar.gz"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release.yml"
 
 [tools.aube."platforms.windows-x64"]
-checksum = "sha256:bf814eeacd96ca19d6810d1d32d33c45b95fa5ca8bd5bce5b0748c2baa74b9c5"
-url = "https://github.com/aubepkg/aube/releases/download/v2.7.2/aube-v2.7.2-x86_64-pc-windows-msvc.zip"
+checksum = "sha256:d033e7a34593715c278a5ef4611ca11c6f1c9f1f8179c87b2707206448fbba97"
+url = "https://github.com/aubepkg/aube/releases/download/v2.8.2/aube-v2.8.2-x86_64-pc-windows-msvc.zip"
 signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release.yml"
 
 [[tools.hyperfine]]
@@ -78,77 +78,77 @@ url = "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v
 url_api = "https://api.github.com/repos/sharkdp/hyperfine/releases/assets/619834237"
 
 [[tools.jaq]]
-version = "3.1.1"
+version = "3.1.2"
 backend = "aqua:01mf02/jaq"
 specifiers = ["latest"]
 
 [tools.jaq."platforms.linux-arm64"]
-checksum = "sha256:bdda42d5a8c060a2c7916b287a227e7750d5fccbd4c37aacf0ab863010921829"
-url = "https://github.com/01mf02/jaq/releases/download/v3.1.1/jaq-aarch64-unknown-linux-gnu"
-url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/502327954"
+checksum = "sha256:1aa1b9c0a3b73f016f6a8d407fa21a89174d01a8e4b9df449eaad49603426734"
+url = "https://github.com/01mf02/jaq/releases/download/v3.1.2/jaq-aarch64-unknown-linux-gnu"
+url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/662247781"
 
 [tools.jaq."platforms.linux-arm64-musl"]
-checksum = "sha256:bdda42d5a8c060a2c7916b287a227e7750d5fccbd4c37aacf0ab863010921829"
-url = "https://github.com/01mf02/jaq/releases/download/v3.1.1/jaq-aarch64-unknown-linux-gnu"
-url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/502327954"
+checksum = "sha256:1aa1b9c0a3b73f016f6a8d407fa21a89174d01a8e4b9df449eaad49603426734"
+url = "https://github.com/01mf02/jaq/releases/download/v3.1.2/jaq-aarch64-unknown-linux-gnu"
+url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/662247781"
 
 [tools.jaq."platforms.linux-x64"]
-checksum = "sha256:5922c7b67d9bd6841d6676d1f954410c6bf04b47203dcb661c4f052dfef7f454"
-url = "https://github.com/01mf02/jaq/releases/download/v3.1.1/jaq-x86_64-unknown-linux-gnu"
-url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/502327122"
+checksum = "sha256:df94e0ce3658897a5677958417347e1109f91f72b9f75b8fe8f028a70c90b766"
+url = "https://github.com/01mf02/jaq/releases/download/v3.1.2/jaq-x86_64-unknown-linux-gnu"
+url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/662247829"
 
 [tools.jaq."platforms.linux-x64-musl"]
-checksum = "sha256:b9a07a6f10f0305d96d333ea7db69d60704eb4d4e71c98094157e3cc9fe08110"
-url = "https://github.com/01mf02/jaq/releases/download/v3.1.1/jaq-x86_64-unknown-linux-musl"
-url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/502327739"
+checksum = "sha256:a469f5e6980fe2c7e73dce0a1db5176eb4a717b933b77fa32fa1da7847c12232"
+url = "https://github.com/01mf02/jaq/releases/download/v3.1.2/jaq-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/662247705"
 
 [tools.jaq."platforms.macos-arm64"]
-checksum = "sha256:b1a2e63384e156d90bbf61a1142302aa59bfebd8c89e24dfc9b5747618880fcd"
-url = "https://github.com/01mf02/jaq/releases/download/v3.1.1/jaq-aarch64-apple-darwin"
-url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/502328070"
+checksum = "sha256:977685a0d4138585055c25631ec6970ab666ce37aefc7f6786033548292d18ef"
+url = "https://github.com/01mf02/jaq/releases/download/v3.1.2/jaq-aarch64-apple-darwin"
+url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/662248648"
 
 [tools.jaq."platforms.macos-x64"]
-checksum = "sha256:34b1a9495dbd28df09ad83c832a2ae4be60657d8c24e72f28565cd19b98ed0af"
-url = "https://github.com/01mf02/jaq/releases/download/v3.1.1/jaq-x86_64-apple-darwin"
-url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/502327833"
+checksum = "sha256:e0c1542e3be024c5c7cf787c68ea345468c28e0a1f8393ff148531f0fcdb1469"
+url = "https://github.com/01mf02/jaq/releases/download/v3.1.2/jaq-x86_64-apple-darwin"
+url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/662248196"
 
 [tools.jaq."platforms.windows-x64"]
-checksum = "sha256:7b2f5153d11118c3ccff01859743e09842cabc42ba08f8876489c1be30d1d08d"
-url = "https://github.com/01mf02/jaq/releases/download/v3.1.1/jaq-x86_64-pc-windows-msvc.exe"
-url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/502328777"
+checksum = "sha256:8159fcd68008e0dbaeca5c48afcf89acbbf15ccec36d1de9b1bd8658d07143ed"
+url = "https://github.com/01mf02/jaq/releases/download/v3.1.2/jaq-x86_64-pc-windows-msvc.exe"
+url_api = "https://api.github.com/repos/01mf02/jaq/releases/assets/662252361"
 
 [[tools.node]]
-version = "26.12.0"
+version = "26.12.1"
 backend = "core:node"
 specifiers = ["latest"]
 
 [tools.node."platforms.linux-arm64"]
-checksum = "sha256:ec53c915c3fdd8786c5685abd25ae3fe9fba0692307f9811d7caaadea1bcaf03"
-url = "https://nodejs.org/dist/v26.12.0/node-v26.12.0-linux-arm64.tar.gz"
+checksum = "sha256:a6c01af459dd8972ab3fb08ee5da81244d26ba8c4944a62d5bbba8c597ae154f"
+url = "https://nodejs.org/dist/v26.12.1/node-v26.12.1-linux-arm64.tar.gz"
 
 [tools.node."platforms.linux-arm64-musl"]
-checksum = "sha256:2e70b6d5adbae94546c4d7e01de7b64c50bf8d3dbfaad2bb0774942e9da902b8"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.12.0/node-v26.12.0-linux-arm64-musl.tar.gz"
+checksum = "sha256:c3694551f6cb888fe0befb4cb2e13ffe45b0bb2528ec141e7c3a29a7d7974d13"
+url = "https://unofficial-builds.nodejs.org/download/release/v26.12.1/node-v26.12.1-linux-arm64-musl.tar.gz"
 
 [tools.node."platforms.linux-x64"]
-checksum = "sha256:d9f88af72ad34f7ddf8e67289829f1698f54b6254f7d4f54b7453117ff1a3d2c"
-url = "https://nodejs.org/dist/v26.12.0/node-v26.12.0-linux-x64.tar.gz"
+checksum = "sha256:0fd1eb7770598f52a21995edf6ed35fc690400fa437c2386af329519e9143132"
+url = "https://nodejs.org/dist/v26.12.1/node-v26.12.1-linux-x64.tar.gz"
 
 [tools.node."platforms.linux-x64-musl"]
-checksum = "sha256:48ba1cdf21e684f13f38b6295f43bfea951f1ffd008b4cf93361c966b33f6938"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.12.0/node-v26.12.0-linux-x64-musl.tar.gz"
+checksum = "sha256:8bf9cc0e7f8e3c7ec5368dca19242cad651b6b09d35bcdcf290ac3f80925e8dd"
+url = "https://unofficial-builds.nodejs.org/download/release/v26.12.1/node-v26.12.1-linux-x64-musl.tar.gz"
 
 [tools.node."platforms.macos-arm64"]
-checksum = "sha256:2a154d4a5458930e0a2d6a1ecf64eddf5a2b3e1c13636b609c2ecb042e8c4553"
-url = "https://nodejs.org/dist/v26.12.0/node-v26.12.0-darwin-arm64.tar.gz"
+checksum = "sha256:1901d539912c02afa10d1cc126943a8855a7eedebe830119463470db5e6c59e8"
+url = "https://nodejs.org/dist/v26.12.1/node-v26.12.1-darwin-arm64.tar.gz"
 
 [tools.node."platforms.macos-x64"]
-checksum = "sha256:878ecede191c7abc1bff01d3fb81f7ed81aa1161040dba18776b8ff8593614b1"
-url = "https://nodejs.org/dist/v26.12.0/node-v26.12.0-darwin-x64.tar.gz"
+checksum = "sha256:b85c2ea4420ad0bc4abf2dc6cf1f55130ed681f1cabf60cf3f526e4c9e2712ff"
+url = "https://nodejs.org/dist/v26.12.1/node-v26.12.1-darwin-x64.tar.gz"
 
 [tools.node."platforms.windows-x64"]
-checksum = "sha256:50efaf01a08c520b4bbe499c09a8c5a5c370002c419c0d9da2c6815d3066a453"
-url = "https://nodejs.org/dist/v26.12.0/node-v26.12.0-win-x64.zip"
+checksum = "sha256:b3efd5c70cba3308ed46e7e699a9b8aac075bbc6b027fcb39c84c31acc25e2b4"
+url = "https://nodejs.org/dist/v26.12.1/node-v26.12.1-win-x64.zip"
 
 [[tools.rg]]
 version = "15.2.0"
