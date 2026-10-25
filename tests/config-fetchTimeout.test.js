@@ -15,7 +15,9 @@ await test("'TSTYCHE_FETCH_TIMEOUT' environment variable", async (t) => {
   await t.test("has default value", async () => {
     await writeFixture(fixtureUrl);
 
-    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"]);
+    const { exitCode, stderr, stdout } = await spawnTyche(fixtureUrl, ["--showConfig"], {
+      env: { ["CI"]: undefined },
+    });
 
     assert.equal(stderr, "");
 
