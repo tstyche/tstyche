@@ -30,7 +30,7 @@ export class Environment {
       return Number.parseFloat(process.env["TSTYCHE_FETCH_TIMEOUT"]);
     }
 
-    return 30;
+    return process.env["CI"] != null && process.env["CI"] !== "" ? 180 : 60;
   }
 
   static #resolveIsCi() {
