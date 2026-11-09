@@ -114,16 +114,17 @@ export class NativeProjectService {
         }
         break;
 
-      default:
+      default: {
         if (Options.isJsonString(this.#resolvedConfig.tsconfig)) {
-          if (
-            this.#api
-              // TODO use 'parseConfigFileTextToJson()' instead of 'JSON.parse()'
-              .parseJsonConfigFileContent(JSON.parse(this.#resolvedConfig.tsconfig), {
-                configFileName: this.#tsconfigSyntheticPath,
-              })
-              .fileNames.includes(filePath)
-          ) {
+          const { config } = this.#api.parseConfigFileTextToJson(
+            this.#tsconfigSyntheticPath,
+            this.#resolvedConfig.tsconfig,
+          );
+          const { fileNames } = this.#api.parseJsonConfigFileContent(config, {
+            configFileName: this.#tsconfigSyntheticPath,
+          });
+
+          if (fileNames.includes(filePath)) {
             this.#fileMap.add(this.#tsconfigSyntheticPath, this.#resolvedConfig.tsconfig);
 
             compilerOptions = {};
@@ -135,6 +136,7 @@ export class NativeProjectService {
           kind = ProjectConfigKind.Provided;
           specifier = this.#resolvedConfig.tsconfig;
         }
+      }
     }
 
     if (kind !== ProjectConfigKind.Default && specifier === this.#currentSpecifier && !this.#fileMap.hasChanged()) {
