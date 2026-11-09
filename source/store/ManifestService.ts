@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import process from "node:process";
-import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import { Version } from "#version";
 import type { Fetcher } from "./Fetcher.js";
@@ -24,11 +24,9 @@ export class ManifestService {
   #fetcher: Fetcher;
   #manifestFilePath: string;
   #npmRegistry: string;
-  #onDiagnostics: DiagnosticsHandler;
   #storePath: string;
 
-  constructor(onDiagnostics: DiagnosticsHandler, storePath: string, npmRegistry: string, fetcher: Fetcher) {
-    this.#onDiagnostics = onDiagnostics;
+  constructor(storePath: string, npmRegistry: string, fetcher: Fetcher) {
     this.#storePath = storePath;
     this.#npmRegistry = npmRegistry;
     this.#fetcher = fetcher;
@@ -119,7 +117,7 @@ export class ManifestService {
       const packageBinaryVersion = packageMetadata.versions[tag]?.optionalDependencies?.[packageBinaryName];
 
       if (!packageBinaryVersion) {
-        this.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.platformIsNotSupported(tag, packageBinaryName)));
+        // TODO Error: "Unable to resolve " + binaryPackageName + ". Your platform is not supported."
 
         continue;
       }

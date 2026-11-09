@@ -28,12 +28,7 @@ export class Store {
     Store.#fetcher = new Fetcher(Store.#onDiagnostics, Store.#fetchRetries, Store.#fetchTimeout);
     Store.#lockService = new LockService(Store.#onDiagnostics, Store.#fetchTimeout);
     Store.#packageService = new PackageService(Store.#storePath, Store.#fetcher, Store.#lockService);
-    Store.#manifestService = new ManifestService(
-      Store.#onDiagnostics,
-      Store.#storePath,
-      Store.#npmRegistry,
-      Store.#fetcher,
-    );
+    Store.#manifestService = new ManifestService(Store.#storePath, Store.#npmRegistry, Store.#fetcher);
   }
 
   static async #ensure(tag: string) {
