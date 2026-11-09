@@ -23,6 +23,13 @@ export class StoreDiagnosticText {
     return `The network connection failed after ${retries + 1} attempts.`;
   }
 
+  static platformIsNotSupported(tag: string): Array<string> {
+    return [
+      `Unable to resolve the binary for the 'typescript@${tag}'.`,
+      "The binary is not available for your platform.",
+    ];
+  }
+
   static requestFailed(code: number): string {
     return `The request failed with status code ${code}.`;
   }

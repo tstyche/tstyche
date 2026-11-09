@@ -117,7 +117,7 @@ export class ManifestService {
       const packageBinaryVersion = packageMetadata.versions[tag]?.optionalDependencies?.[packageBinaryName];
 
       if (!packageBinaryVersion) {
-        // TODO Error: "Unable to resolve " + binaryPackageName + ". Your platform is not supported."
+        // the missing binary is reported by the 'Store' when this version is actually requested
 
         continue;
       }

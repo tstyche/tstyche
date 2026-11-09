@@ -61,13 +61,21 @@ export class Store {
       version: string;
     };
 
-    if (packageJson.version.startsWith("7.0")) {
-      Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.versionIsNotSupported()));
-
-      return;
-    }
-
     if (Version.isSatisfiedWith(packageJson.version, "7")) {
+      if (packageJson.version.startsWith("7.0")) {
+        Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.versionIsNotSupported()));
+
+        return;
+      }
+
+      const packageResource = Store.manifest?.packages[packageJson.version];
+
+      if (packageResource != null && !packageResource.binary) {
+        Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.platformIsNotSupported(packageJson.version)));
+
+        return;
+      }
+
       const api = await import(new URL(packageJson.exports["./sync"]!, specifier).toString());
       const ast = await import(new URL(packageJson.exports["./ast"]!, specifier).toString());
 

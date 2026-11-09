@@ -135,6 +135,45 @@ await test("store", async (t) => {
     assert.equal(exitCode, 1);
   });
 
+  await t.test("when binary of the 'typescript' package is not available for the platform", async () => {
+    const storeManifest = {
+      $version: "4",
+      lastUpdated: Date.now(),
+      minorVersions: ["7.1"],
+      npmRegistry: "https://registry.npmjs.org",
+      packages: {
+        "7.1.0": {
+          integrity: "sha512-dummy",
+          tarball: "https://registry.npmjs.org/typescript/-/typescript-7.1.0.tgz",
+          // no 'binary' property, the binary was not available
+        },
+      },
+      resolutions: {
+        ["7.1"]: "7.1.0",
+      },
+      versions: ["7.1.0"],
+    };
+
+    await writeFixture(fixtureUrl, {
+      [".store/store-manifest.json"]: JSON.stringify(storeManifest),
+      [".store/typescript@7.1.0/package.json"]: JSON.stringify({ version: "7.1.0" }),
+      ["__typetests__/dummy.test.ts"]: isStringTestText,
+    });
+
+    const { exitCode, stderr } = await spawnTyche(fixtureUrl, ["--target", "7.1"]);
+
+    const expected = [
+      "Error: Unable to resolve the binary for the 'typescript@7.1.0'.",
+      "",
+      "The binary is not available for your platform.",
+      "",
+      "",
+    ].join("\n");
+
+    assert.equal(stderr, expected);
+    assert.equal(exitCode, 1);
+  });
+
   await t.test("warns if resolution of a tag may be outdated", async (t) => {
     const testCases = [
       {
