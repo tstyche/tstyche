@@ -42,6 +42,12 @@ export class Store {
       return;
     }
 
+    if (Version.isSatisfiedWith(version, "7") && !Store.manifest?.packages[version]?.binary) {
+      Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.platformIsNotSupported(version)));
+
+      return;
+    }
+
     return await Store.#packageService.ensure(version, Store.manifest!);
   }
 
