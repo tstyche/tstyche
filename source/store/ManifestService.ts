@@ -117,8 +117,7 @@ export class ManifestService {
       const packageBinaryVersion = packageMetadata.versions[tag]?.optionalDependencies?.[packageBinaryName];
 
       if (!packageBinaryVersion) {
-        // the missing binary is reported by the 'Store' when this version is actually requested
-
+        // the missing binary is reported by the store
         continue;
       }
 
@@ -128,7 +127,7 @@ export class ManifestService {
       });
 
       if (!versionMetadata) {
-        continue;
+        return;
       }
 
       packages[tag]!.binary = {
