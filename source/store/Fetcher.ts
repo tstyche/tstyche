@@ -1,15 +1,29 @@
 import process from "node:process";
-import type { Diagnostic, DiagnosticsHandler } from "#diagnostic";
+import { Diagnostic, type DiagnosticsHandler } from "#diagnostic";
 import { sleep } from "./helpers.js";
 import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
 
+export interface VersionMetadata {
+  dist: { integrity: string; tarball: string };
+  optionalDependencies?: Record<string, string>;
+}
+
+export interface PackageMetadata {
+  ["dist-tags"]: Record<string, string>;
+  modified: string;
+  name: string;
+  versions: Record<string, VersionMetadata>;
+}
+
 export class Fetcher {
   #onDiagnostics: DiagnosticsHandler;
+  #registry: string;
   #retries: number;
   #timeout: number;
 
-  constructor(onDiagnostics: DiagnosticsHandler, retries: number, timeout: number) {
+  constructor(onDiagnostics: DiagnosticsHandler, registry: string, retries: number, timeout: number) {
     this.#onDiagnostics = onDiagnostics;
+    this.#registry = registry;
     this.#retries = retries;
     this.#timeout = timeout;
   }
@@ -65,5 +79,27 @@ export class Fetcher {
     }
 
     return;
+  }
+
+  async getMetadata<T>(
+    packageSpecifier: string,
+    options?: { suppressErrors?: boolean | undefined },
+  ): Promise<T | undefined> {
+    const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#registry));
+
+    const request = new Request(new URL(packageSpecifier, this.#registry), {
+      headers: {
+        // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
+        ["Accept"]: "application/vnd.npm.install-v1+json;q=1.0, application/json;q=0.8, */*",
+      },
+    });
+
+    const response = await this.get(request, diagnostic, { suppressErrors: options?.suppressErrors });
+
+    if (!response) {
+      return;
+    }
+
+    return (await response.json()) as T;
   }
 }
