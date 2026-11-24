@@ -123,7 +123,7 @@ export class PackageService {
     packageVersion: string,
     packageJson: Uint8Array,
   ): Promise<Uint8Array | undefined> {
-    const { optionalDependencies } = JSON.parse(new TextDecoder("utf-8").decode(packageJson)) as {
+    const { optionalDependencies } = JSON.parse(new TextDecoder().decode(packageJson)) as {
       optionalDependencies?: Record<string, string>;
     };
 
