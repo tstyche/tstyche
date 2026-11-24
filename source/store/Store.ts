@@ -25,9 +25,14 @@ export class Store {
   static #supportedTags: Array<string> | undefined;
 
   static {
-    Store.#fetcher = new Fetcher(Store.#onDiagnostics, Store.#fetchRetries, Store.#fetchTimeout);
+    Store.#fetcher = new Fetcher(Store.#onDiagnostics, Store.#npmRegistry, Store.#fetchRetries, Store.#fetchTimeout);
     Store.#lockService = new LockService(Store.#onDiagnostics, Store.#fetchTimeout);
-    Store.#packageService = new PackageService(Store.#storePath, Store.#fetcher, Store.#lockService);
+    Store.#packageService = new PackageService(
+      Store.#onDiagnostics,
+      Store.#storePath,
+      Store.#fetcher,
+      Store.#lockService,
+    );
     Store.#manifestService = new ManifestService(Store.#storePath, Store.#npmRegistry, Store.#fetcher);
   }
 
@@ -38,12 +43,6 @@ export class Store {
 
     if (!version) {
       Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.cannotAddTypeScriptPackage(tag)));
-
-      return;
-    }
-
-    if (Version.isSatisfiedWith(version, "7") && !Store.manifest?.packages[version]?.binary) {
-      Store.#onDiagnostics(Diagnostic.error(StoreDiagnosticText.platformIsNotSupported(version)));
 
       return;
     }

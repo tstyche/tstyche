@@ -3,16 +3,12 @@ export interface Resource {
   tarball: string;
 }
 
-export interface PackageResource extends Resource {
-  binary?: Resource & { name: string };
-}
-
 export interface ManifestData {
   $version?: string;
   lastUpdated?: number;
   minorVersions: Array<string>;
   npmRegistry: string;
-  packages: Record<string, PackageResource>;
+  packages: Record<string, Resource>;
   resolutions: Record<string, string>;
   versions: Array<string>;
 }
@@ -24,7 +20,7 @@ export class Manifest {
   lastUpdated: number;
   minorVersions: Array<string>;
   npmRegistry: string;
-  packages: Record<string, PackageResource>;
+  packages: Record<string, Resource>;
   resolutions: Record<string, string>;
   versions: Array<string>;
 

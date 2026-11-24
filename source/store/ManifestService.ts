@@ -1,24 +1,9 @@
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
-import process from "node:process";
-import { Diagnostic } from "#diagnostic";
 import { Path } from "#path";
 import { Version } from "#version";
-import type { Fetcher } from "./Fetcher.js";
+import type { Fetcher, PackageMetadata } from "./Fetcher.js";
 import { Manifest } from "./Manifest.js";
-import { StoreDiagnosticText } from "./StoreDiagnosticText.js";
-
-interface VersionMetadata {
-  dist: { integrity: string; tarball: string };
-  optionalDependencies?: Record<string, string>;
-}
-
-interface PackageMetadata {
-  ["dist-tags"]: Record<string, string>;
-  modified: string;
-  name: string;
-  versions: Record<string, VersionMetadata>;
-}
 
 export class ManifestService {
   #fetcher: Fetcher;
@@ -44,27 +29,8 @@ export class ManifestService {
     return manifest;
   }
 
-  async #fetchMetadata<R>(packageSpecifier: string, options?: { suppressErrors?: boolean | undefined }) {
-    const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchMetadata(this.#npmRegistry));
-
-    const request = new Request(new URL(packageSpecifier, this.#npmRegistry), {
-      headers: {
-        // reference: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
-        ["Accept"]: "application/vnd.npm.install-v1+json;q=1.0, application/json;q=0.8, */*",
-      },
-    });
-
-    const response = await this.#fetcher.get(request, diagnostic, { suppressErrors: options?.suppressErrors });
-
-    if (!response) {
-      return;
-    }
-
-    return (await response.json()) as R;
-  }
-
   async #fetch(options?: { suppressErrors?: boolean | undefined }) {
-    const packageMetadata = await this.#fetchMetadata<PackageMetadata>("typescript", {
+    const packageMetadata = await this.#fetcher.getMetadata<PackageMetadata>("typescript", {
       suppressErrors: options?.suppressErrors,
     });
 
@@ -106,35 +72,6 @@ export class ManifestService {
           packages[version] = { integrity: meta.dist.integrity, tarball: meta.dist.tarball };
         }
       }
-    }
-
-    for (const tag in packages) {
-      if (!Version.isSatisfiedWith(tag, "7.0")) {
-        continue;
-      }
-
-      const packageBinaryName = `@typescript/typescript-${process.platform}-${process.arch}`;
-      const packageBinaryVersion = packageMetadata.versions[tag]?.optionalDependencies?.[packageBinaryName];
-
-      if (!packageBinaryVersion) {
-        // the missing binary is reported by the store
-        continue;
-      }
-
-      const packageSpecifier = `${packageBinaryName}/${packageBinaryVersion}`;
-      const versionMetadata = await this.#fetchMetadata<VersionMetadata>(packageSpecifier, {
-        suppressErrors: options?.suppressErrors,
-      });
-
-      if (!versionMetadata) {
-        return;
-      }
-
-      packages[tag]!.binary = {
-        name: packageBinaryName,
-        integrity: versionMetadata.dist.integrity,
-        tarball: versionMetadata.dist.tarball,
-      };
     }
 
     return new Manifest({
