@@ -21,8 +21,8 @@
 
     "checkJs": true,
 
-    "lib": ["es2023"], // do not use the "dom" type definitions
-    "target": "es2022"
+    "lib": ["esnext"], // do not use the "dom" type definitions
+    "target": "esnext"
   },
   "files": [],
   "include": [],

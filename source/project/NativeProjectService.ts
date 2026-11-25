@@ -267,7 +267,7 @@ export class NativeProjectService {
   }
 
   openLayer(filePath: string, fileText: string): ReadonlyArray<ts.Diagnostic> {
-    const snapshot = this.#currentSnapshot!.update({
+    using snapshot = this.#currentSnapshot!.update({
       fileSystem: {
         kind: "layer",
         files: { [filePath]: fileText },
@@ -277,8 +277,6 @@ export class NativeProjectService {
 
     const project = snapshot.getConfiguredProject(this.#tsconfigPath)!;
     const diagnostics = project.program.getSemanticDiagnostics(filePath);
-
-    snapshot.dispose();
 
     return diagnostics;
   }
