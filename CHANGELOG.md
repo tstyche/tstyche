@@ -1,5 +1,18 @@
 # Changelog
 
+## [8.0.0-beta.1] - 2026-11-25
+
+### Fixed
+
+- Increase the default of `TSTYCHE_FETCH_TIMEOUT` from 30s to 60s ([#807](https://github.com/tstyche/tstyche/pull/807))
+- Report missing binary packages ([#815](https://github.com/tstyche/tstyche/pull/815))
+- Use single lock for `typescript` package and binary downloads ([#820](https://github.com/tstyche/tstyche/pull/#820))
+
+### Changed
+
+- Replace `JSON.parse()` workaround with `parseConfigFileTextToJson()` ([#812](https://github.com/tstyche/tstyche/pull/812))
+- **Breaking!** Drop support for Node.js 22 ([#821](https://github.com/tstyche/tstyche/pull/821))
+
 ## [8.0.0-beta.0] - 2026-10-11
 
 ### Added
@@ -1102,6 +1115,7 @@ _Stable release based on [1.0.0-rc.2]._
 
 _First pre-release._
 
+[8.0.0-beta.1]: https://github.com/tstyche/tstyche/releases/tag/v8.0.0-beta.1
 [8.0.0-beta.0]: https://github.com/tstyche/tstyche/releases/tag/v8.0.0-beta.0
 [7.2.5]: https://github.com/tstyche/tstyche/releases/tag/v7.2.5
 [7.2.4]: https://github.com/tstyche/tstyche/releases/tag/v7.2.4
