@@ -1,10 +1,6 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2024"],
-    "module": "node16",
-    "moduleResolution": "node16",
-
     "preserveConstEnums": true,
     "outDir": "../dist",
     "verbatimModuleSyntax": false, // otherwise const enums are not inlined, unfortunately

@@ -28,7 +28,7 @@ export class PackageService {
   async ensure(packageVersion: string, manifest: Manifest): Promise<string | undefined> {
     const packageSpecifier = `typescript@${packageVersion}`;
     const packagePath = Path.join(this.#storePath, packageSpecifier);
-    const packageUrl = `${pathToFileURL(packagePath)}/`;
+    const packageResource = manifest.packages[packageVersion]!;
 
     const diagnostic = () => Diagnostic.error(StoreDiagnosticText.failedToFetchPackage(packageSpecifier));
 
@@ -36,47 +36,31 @@ export class PackageService {
       return;
     }
 
-    if (existsSync(packagePath)) {
-      return packageUrl;
-    }
+    if (!existsSync(packagePath)) {
+      EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
 
-    EventEmitter.dispatch(["store:adds", { packagePath, packageVersion }]);
+      using _lock = this.#lockService.getLock(packagePath);
 
-    const packageResource = manifest.packages[packageVersion]!;
-    const lock = this.#lockService.getLock(packagePath);
+      await using temp = await fs.mkdtempDisposable(`${packagePath}-`);
 
-    let tempPath: string | undefined;
-
-    try {
-      // TODO use 'fs.mkdtempDisposable()' after dropping support for Node.js 22
-      // await using temp = await fs.mkdtempDisposable(`${packagePath}-`);
-
-      tempPath = await fs.mkdtemp(`${packagePath}-`);
-
-      const packageJson = await this.#fetch(tempPath, packageSpecifier, packageResource);
+      const packageJson = await this.#fetch(temp.path, packageSpecifier, packageResource);
 
       if (!packageJson) {
         return;
       }
 
       if (Version.isSatisfiedWith(packageVersion, "7.0")) {
-        const binaryPackageJson = await this.#fetchBinary(tempPath, packageVersion, packageJson);
+        const binaryPackageJson = await this.#fetchBinary(temp.path, packageVersion, packageJson);
 
         if (!binaryPackageJson) {
           return;
         }
       }
 
-      await fs.rename(tempPath, packagePath);
-    } finally {
-      if (tempPath != null) {
-        await fs.rm(tempPath, { recursive: true, force: true });
-      }
-
-      lock.release();
+      await fs.rename(temp.path, packagePath);
     }
 
-    return packageUrl;
+    return `${pathToFileURL(packagePath)}/`;
   }
 
   async #fetch(
