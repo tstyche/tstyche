@@ -15,9 +15,9 @@ export class Lock implements Disposable {
     process.on("exit", this.#onExit);
   }
 
-  #onExit() {
+  #onExit = () => {
     this[Symbol.dispose]();
-  }
+  };
 
   [Symbol.dispose](): void {
     if (this.#isDisposed) {
